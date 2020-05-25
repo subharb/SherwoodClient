@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import styled from 'styled-components';
+import CryptoJS from 'crypto-js';
+import { loginUser } from '../actions';
 import FieldSherwood  from './FieldSherwood';
 import Header from './header';
 import { validateField } from '../utils';
@@ -25,14 +28,21 @@ class Login extends Component {
         super(props);
 
         this.state = {loading:false, error:false};
-
-
+    }
+    componentDidMount(){
+        //this.props.loginUser("test@email.com", "xx");
     }
     handleLogin(values){
         console.log("HandleLogin", values);
-           
+        
+        const hashPassword = CryptoJS.SHA256("Message").toString(CryptoJS.enc.Base64)
+        console.log("hashPassword", hashPassword);
+        this.props.loginUser(values.email, hashPassword);
+        this.setState({loading:true})
     }
     render() {
+        console.log("Render");
+        
         return ([
             <Header key="header" />,
             <Container key="container" >            
@@ -43,7 +53,9 @@ class Login extends Component {
                             <span className="card-title">Login</span>
                             <div className="row">
                                 <form onSubmit={this.props.handleSubmit(values => this.handleLogin(values))} className="col s12 text-center">
-                                    
+                                    {this.state.loading &&
+                                        <span>Cargando...</span>
+                                    }
                                     <div className="row">
                                         <div className="input-field col s12">
                                             <Field key="email" type="text" name="email" required={true} validation="email" component={FieldSherwood} label="Email"/>
@@ -54,6 +66,7 @@ class Login extends Component {
                                         <Field key="password" type="password" name="password" required={true} validation="password" component={FieldSherwood} label="Password"/>
                                         </div>
                                     </div>
+                                    
                                     <button className="waves-effect waves-light btn">Login</button>
                                 </form>
                             </div>
@@ -99,4 +112,4 @@ function validate(values){
 export default reduxForm({
     validate : validate,
     form : 'loginForm'
-})(Login)
+})(connect(null, { loginUser })(Login))
