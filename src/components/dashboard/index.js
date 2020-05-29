@@ -3,6 +3,7 @@ import Header from '../header';
 import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
 import { Translate } from 'react-localize-redux';
+import Toolbar from './toolbar';
 
 export default class Dashboard extends Component{
     componentDidMount(){
@@ -26,7 +27,7 @@ export default class Dashboard extends Component{
             <div>
                 <Header />
                     <Translate id="dashboard.greetings" />
-                   
+                    <Toolbar  /> 
             </div>
         )
     }
