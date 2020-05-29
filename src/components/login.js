@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import styled from 'styled-components';
@@ -29,16 +30,40 @@ class Login extends Component {
 
         this.state = {loading:false, error:false};
     }
+    componentWillUpdate(nextProps, nextState) {
+        //Si se ha terminado la conexión de login y hay un token, entonces redirijo al panel
+        if(!nextState.loading && this.state.loading && localStorage.getItem("jwt") !== "" && nextState.error === 0){
+            this.props.history.push("/dashboard");
+        }
+    }
     componentDidMount(){
-        //this.props.loginUser("test@email.com", "xx");
+        if(localStorage.getItem("jwt") !== ""){
+            this.props.history.push("/dashboard");
+        }
+    }
+    async loginUser(email, password) {
+        const postObj = {email:email, password:password};
+        const request = await axios.post(process.env.REACT_APP_API_URL+'/researchers/login', postObj)
+            .catch(err => console.log('Catch', err)); 
+        
+        //Guardamos el token si la request fue exitosa
+        let error = 0;
+        if(request.status === 200){
+            console.log("TOKEN: "+request.data.token);
+            localStorage.setItem("jwt", request.data.token);
+        }
+        else{
+            error = 1;
+        }
+        this.setState({loading:false, error:error})
     }
     handleLogin(values){
         console.log("HandleLogin", values);
-        
+        this.setState({loading:true})
         const hashPassword = CryptoJS.SHA256("Message").toString(CryptoJS.enc.Base64)
         console.log("hashPassword", hashPassword);
-        this.props.loginUser(values.email, hashPassword);
-        this.setState({loading:true})
+        this.loginUser(values.email, hashPassword);
+       
     }
     render() {
         console.log("Render");

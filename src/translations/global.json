@@ -1,0 +1,6 @@
+{
+    "home" : ["Welcome", "Bienvenido"],
+    "dashboard":{
+        "greetings" : ["Welcome", "Bienvenido"]
+    }
+}

@@ -1,7 +1,8 @@
-import LOGIN_USER from '../actions/types';
+import { LOGIN_USER } from '../actions/types.js';
 
 export default function(state = null, action){
     console.log(action)
+    
     switch(action.type){
         case LOGIN_USER:
             if(action.payload.status === 200){
