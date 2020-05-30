@@ -1,13 +1,12 @@
 import axios from 'axios'
 
-import { LOGIN_USER } from './types';
+import { LOGIN_USER, LOADING } from './types';
 
 /**
- * Makes a request to login a user
- * @constructor
+ *  Makes a request to login a user
  * @param {string} email - Email of the user.
  * @param {string} password - Password hashed already
- */
+*/
 export const loginUser = (email, password) => async dispatch => {
     const postObj = {email:email, password:password};
     const request = await axios.post(process.env.REACT_APP_API_URL+'/researchers/login', postObj)
@@ -22,4 +21,17 @@ export const loginUser = (email, password) => async dispatch => {
     //     type : LOGIN_USER,
     //     payload : request.data
     // });
+}
+
+/**
+ * Changes the state of Loading, that hides or shows the loading screen
+ * @constructor
+ * @param {string} email - Email of the user.
+ * @param {string} password - Password hashed already
+ */
+export const toogleLoading = ()  => dispatch => {
+    
+    dispatch({
+        type : LOADING
+    });
 }

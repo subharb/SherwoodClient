@@ -32,6 +32,8 @@ ReactDom.render(
                 <Switch>
                 <Route exact path="/login" children={(props) => <Login {...props} /> } />
                 <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
+                <Route exact path="/investigation/:action" children={(props) => <Dashboard {...props} /> } />
+                
                 <Route exact path="/" children={(props) => <Home {...props} />} />
                 </Switch>
             </BrowserRouter>

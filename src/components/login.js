@@ -4,12 +4,20 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import styled from 'styled-components';
 import CryptoJS from 'crypto-js';
-import { loginUser } from '../actions';
-import FieldSherwood  from './FieldSherwood';
+import { loginUser, toogleLoading } from '../actions';
+import { TextField }  from './FieldSherwood';
 import Header from './header';
+import LoadingScreen from '../components/general/loading_screen';
 import { validateField } from '../utils';
 
-
+/**
+ * Component for login researchers
+ * 
+ * @component
+ * return (
+ *   <Login  />
+ * )
+ */
 const Container = styled.div`
     justify-content:center;
 `;
@@ -32,12 +40,13 @@ class Login extends Component {
     }
     componentWillUpdate(nextProps, nextState) {
         //Si se ha terminado la conexión de login y hay un token, entonces redirijo al panel
-        if(!nextState.loading && this.state.loading && localStorage.getItem("jwt") !== "" && nextState.error === 0){
+        if(!nextState.loading && this.state.loading && localStorage.getItem("jwt") && nextState.error === 0){
             this.props.history.push("/dashboard");
         }
     }
     componentDidMount(){
-        if(localStorage.getItem("jwt") !== ""){
+        console.log("Current Token", localStorage.getItem("jwt"));
+        if(localStorage.getItem("jwt")){
             this.props.history.push("/dashboard");
         }
     }
@@ -55,11 +64,13 @@ class Login extends Component {
         else{
             error = 1;
         }
-        this.setState({loading:false, error:error})
+        this.setState({loading:false, error:error});
+        this.props.toogleLoading();
     }
     handleLogin(values){
         console.log("HandleLogin", values);
-        this.setState({loading:true})
+        this.setState({loading:true});
+        this.props.toogleLoading();
         const hashPassword = CryptoJS.SHA256("Message").toString(CryptoJS.enc.Base64)
         console.log("hashPassword", hashPassword);
         this.loginUser(values.email, hashPassword);
@@ -69,6 +80,7 @@ class Login extends Component {
         console.log("Render");
         
         return ([
+            <LoadingScreen />,
             <Header key="header" />,
             <Container key="container" >            
                 <div className="row">
@@ -83,16 +95,16 @@ class Login extends Component {
                                     }
                                     <div className="row">
                                         <div className="input-field col s12">
-                                            <Field key="email" type="text" name="email" required={true} validation="email" component={FieldSherwood} label="Email"/>
+                                            <Field disabled={this.state.loading} key="email" type="text" name="email" required={true} validation="email" component={TextField} label="Email"/>
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="input-field col s12">
-                                        <Field key="password" type="password" name="password" required={true} validation="password" component={FieldSherwood} label="Password"/>
+                                        <Field disabled={this.state.loading} key="password" type="password" name="password" required={true} validation="password" component={TextField} label="Password"/>
                                         </div>
                                     </div>
                                     
-                                    <button className="waves-effect waves-light btn">Login</button>
+                                    <button disabled={this.state.loading} className="waves-effect waves-light btn">Login</button>
                                 </form>
                             </div>
                         </div>
@@ -137,4 +149,4 @@ function validate(values){
 export default reduxForm({
     validate : validate,
     form : 'loginForm'
-})(connect(null, { loginUser })(Login))
+})(connect(null, { loginUser, toogleLoading })(Login))
