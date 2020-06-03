@@ -13,10 +13,8 @@ const SpanFunc = styled.span`
 `;
 export default class Toolbar extends Component {
     componentDidMount(){
-        document.addEventListener('DOMContentLoaded', function() {
-            var elems = document.querySelectorAll('.collapsible');
-            var instances = M.Collapsible.init(elems, {});
-          });
+        var elems = document.querySelectorAll('.collapsible');
+        var instances = M.Collapsible.init(elems, {});
     }
     render() {
         return (

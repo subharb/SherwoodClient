@@ -11,10 +11,13 @@ import reducers from './reducers';
 import Home from './components/home';
 import Login from './components/login';
 import Dashboard from './components/dashboard';
+import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
 
 const store = createStore(reducers, {}, applyMiddleware(thunk));
-
+document.addEventListener('DOMContentLoaded', function() {
+    M.AutoInit();
+});
 ReactDom.render(
     <Provider store={store}>
         <LocalizeProvider initialize={{

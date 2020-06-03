@@ -5,7 +5,7 @@ import { reduxForm, Field } from 'redux-form';
 import styled from 'styled-components';
 import CryptoJS from 'crypto-js';
 import { loginUser, toogleLoading } from '../actions';
-import { TextField }  from './FieldSherwood';
+import FieldSherwood  from './FieldSherwood';
 import Header from './header';
 import LoadingScreen from '../components/general/loading_screen';
 import { validateField } from '../utils';
@@ -95,12 +95,12 @@ class Login extends Component {
                                     }
                                     <div className="row">
                                         <div className="input-field col s12">
-                                            <Field disabled={this.state.loading} key="email" type="text" name="email" required={true} validation="email" component={TextField} label="Email"/>
+                                            <Field disabled={this.state.loading} key="email" type="text" name="email" required={true} validation="email" component={FieldSherwood} label="login.email"/>
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="input-field col s12">
-                                        <Field disabled={this.state.loading} key="password" type="password" name="password" required={true} validation="password" component={TextField} label="Password"/>
+                                        <Field disabled={this.state.loading} key="password" type="password" name="password" required={true} validation="password" component={FieldSherwood} label="login.password"/>
                                         </div>
                                     </div>
                                     

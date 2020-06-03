@@ -13,26 +13,41 @@ export function validateField(field){
     const response = {};
     //Si el campo es obligatorio o si tiene un valor, validamos su contenido
     if(field.required || !field.value){
+        const pathErroTranslation = "investigation.errors.";
         switch(field.validation){
             case "email" : 
                 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 response.result = re.test(String(field.value).toLowerCase());
-                response.messageCode = "error_email";
-                return response;
+                response.messageCode = pathErroTranslation+"error_email";
+                break;
             case "password":
                 response.result = field.value && field.value.length > 6;
-                response.messageCode = "error_password"
-                return response;
+                response.messageCode =  pathErroTranslation+"error_password"
+                break;
+            case "textMin2" : 
+                response.result = field.value && field.value.length > 2;
+                response.messageCode =  pathErroTranslation+"error_length2"
+                break;
+            case "textMin6" : 
+                response.result = field.value && field.value.length > 6;
+                response.messageCode =  pathErroTranslation+"error_length6"
+                break;
+            case "notEmpty" : 
+                response.result = field.value && field.value !== "";
+                response.messageCode =  pathErroTranslation+"error_not_empty"
+                break;
             default:
                 console.log("Validación no definida");
                 response.result = false;
-                response.messageCode = "error_not_defined"
-                return response;
+                response.messageCode =  pathErroTranslation+"error_not_defined"
+                break;
         }
     }
     else{
-        return true;
+        response.result = true;
+        response.messageCode =  "";
     }
+    return response;
     
 }
 
