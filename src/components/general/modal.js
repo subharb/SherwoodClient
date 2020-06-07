@@ -1,4 +1,4 @@
-import React, {useEffect, Component} from 'react';
+import React, {Component} from 'react';
 import styled from 'styled-components';
 import M from 'materialize-css';
 import "materialize-css/dist/css/materialize.min.css";
@@ -11,10 +11,15 @@ const ModalContainer = styled.div`
 export default class Modal extends Component{
     constructor(props){
         super(props);
-
+        console.log("Constructor Modal");
         this.instance = null;
+        this.modal = React.createRef();
+    }
+    static propTypes = {
+        open: PropTypes.bool
     }
     componentDidMount(){
+        console.log("componentDidMount Modal");
         const options = {
             onOpenStart: () => {
               console.log("Open Start");
@@ -35,25 +40,25 @@ export default class Modal extends Component{
             startingTop: "4%",
             endingTop: "10%"
           };
-        var elems = document.querySelectorAll('.modal');
-        var instances = M.Modal.init(elems, options);
-        //instances[0].open();
-        this.instance = instances[0];
-            // instance.close();
-            // instance.destroy();
+        this.instance = M.Modal.init(this.modal.current, options);  
     }
-    componentWillUpdate(nextProps, nextState) {
-        if(nextProps.open === true){
+    componentDidUpdate(prevProps, nextState) {
+        console.log("componentDidUpdate");
+        console.log("prevProps", prevProps.open);
+        console.log("this.props", this.props.open);
+        if(this.props.open === true && !this.instance.isOpen){
+            console.log("Abrimos", this.instance);
             this.instance.open();
         }
-        else{
+        else if(this.props.open === false && this.instance.isOpen){
+            console.log("Cerramos");
             this.instance.close();
         }
     }
     render(){
         return (
-            <div id="modal1" class="modal">
-                <div class="modal-content">
+            <div ref={this.modal}  id="modal1" className="modal">
+                <div className="modal-content">
                     <h4>{this.props.title}</h4>
                     {this.props.component}
                 </div>

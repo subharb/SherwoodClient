@@ -38,7 +38,7 @@ class Login extends Component {
 
         this.state = {loading:false, error:false};
     }
-    componentWillUpdate(nextProps, nextState) {
+    componentDidUpdate(nextProps, nextState) {
         //Si se ha terminado la conexión de login y hay un token, entonces redirijo al panel
         if(!nextState.loading && this.state.loading && localStorage.getItem("jwt") && nextState.error === 0){
             this.props.history.push("/dashboard");

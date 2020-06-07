@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link changes the class when hovered 1`] = `
+<form
+  onSubmit={[Function]}
+>
+  <div
+    className="row"
+  >
+    <div
+      className="input-field col s12"
+    >
+      <label>
+        <input
+          checked={false}
+          name="is_personal_data"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onDragStart={[Function]}
+          onDrop={[Function]}
+          onFocus={[Function]}
+          type="checkbox"
+          value=""
+        />
+        <span>
+          Missing translationId: investigation.create.personal_info for language: \${ languageCode }
+        </span>
+      </label>
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="input-field col s12"
+    >
+      <input
+        className="validate "
+        id="name"
+        name="name"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onDragStart={[Function]}
+        onDrop={[Function]}
+        onFocus={[Function]}
+        type="text"
+        value=""
+      />
+      <label
+        htmlFor="name"
+      >
+        Missing translationId: investigation.create.name_field for language: \${ languageCode }
+      </label>
+      <span
+        className="error text"
+      />
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="input-field col s12"
+    >
+      <select
+        name="type"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onDragStart={[Function]}
+        onDrop={[Function]}
+        onFocus={[Function]}
+        value=""
+      >
+        <option
+          disabled={true}
+          value=""
+        >
+          Missing translationId: investigation.create.choose for language: \${ languageCode }
+        </option>
+        <option
+          value="text"
+        >
+          Missing translationId: investigation.create.type_text for language: \${ languageCode }
+        </option>
+        <option
+          value="number"
+        >
+          Missing translationId: investigation.create.type_number for language: \${ languageCode }
+        </option>
+        <option
+          value="date"
+        >
+          Missing translationId: investigation.create.type_date for language: \${ languageCode }
+        </option>
+      </select>
+      <label>
+        Missing translationId: investigation.create.choose for language: \${ languageCode }
+      </label>
+      <span
+        className="error text"
+      />
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="input-field col s6"
+    >
+      <input
+        className="validate "
+        id="question"
+        name="question"
+        onBlur={[Function]}
+        onChange={[Function]}
+        onDragStart={[Function]}
+        onDrop={[Function]}
+        onFocus={[Function]}
+        type="text"
+        value=""
+      />
+      <label
+        htmlFor="question"
+      >
+        Missing translationId: investigation.create.question_field for language: \${ languageCode }
+      </label>
+      <span
+        className="error text"
+      />
+    </div>
+  </div>
+  <button
+    className="waves-effect waves-light btn"
+  >
+    Missing translationId: investigation.create.add_field for language: \${ languageCode }
+  </button>
+</form>
+`;

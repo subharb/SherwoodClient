@@ -3,7 +3,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import { Field, reduxForm } from 'redux-form'
 import FieldSherwood from '../FieldSherwood';
 import { validateField } from '../../utils/index';
-
+import PropTypes from 'prop-types';
  /**
  * Component that renders a form with the values passed by props
  * 
@@ -14,7 +14,7 @@ class Form extends Component {
   
     render() {
         return(
-            <form onSubmit={this.props.handleSubmit(values => this.props.callBackForm(values))}  >
+            <form className="form" onSubmit={this.props.handleSubmit(values => this.props.callBackForm(values))}  >
                 {Object.keys(this.props.fields).map(key => {
                     return (
                     <div className="row" key={key}>
@@ -28,7 +28,10 @@ class Form extends Component {
         ) 
     }
 }
-
+Form.propTypes = {
+    fields: PropTypes.object,
+    callBackForm: PropTypes.func
+  };
 
 function validate(values, props){
     const errors = {};

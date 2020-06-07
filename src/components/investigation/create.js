@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import _ from 'lodash';
 import styled from 'styled-components';
-import { Field, reduxForm } from 'redux-form'
-import FieldSherwood from '../FieldSherwood';
+
 import Form from '../general/form';
 import Modal from '../general/modal';
 
@@ -48,8 +47,13 @@ const FIELDS = {
         size : "s6"
     }
 }
-
+/**
+ * Component that renders the fields created and stores them in the server
+ */
 class CreateInvestigation extends Component {
+    static propTypes = {
+        //No parameters
+      }
     constructor(props){
         super(props);
 
@@ -66,8 +70,7 @@ class CreateInvestigation extends Component {
         //Pongo a false el "addinField", para que desaparezca el formulario
         tempState.addingField = false;
         tempState.fields.push(values);
-        //Vacío el form
-        this.props.reset();
+        
 
         this.setState(tempState);
     }
@@ -99,12 +102,12 @@ class CreateInvestigation extends Component {
             return <Translate id="investigation.create.no_fields" />
         }
         else{
-            return [<table className="striped">
+            return [<table key="table-fields" className="striped">
                         <thead>
                         <tr>
                             {Object.values(FIELDS).map(value => {
                                 return (
-                                    <th>{this.props.translate(value.shortLabel)}</th>
+                                    <th key={value.shortLabel}>{this.props.translate(value.shortLabel)}</th>
                                 )
                             })}
                             <th></th>
@@ -114,30 +117,30 @@ class CreateInvestigation extends Component {
                         {
                             this.state.fields.map(field => {
                                 return(
-                                    <tr>
+                                    <tr key={field.name}>
                                         <td>{field.is_personal_data ? this.props.translate("general.yes") : this.props.translate("general.no")}</td>
                                         <td>{field.name}</td>
                                         <td>{field.type}</td>
                                         <td>{field.question}</td>
-                                        <td><DeleteHolder onClick={() => this.deleteField(field)}><i class="material-icons">delete</i></DeleteHolder></td>
+                                        <td><DeleteHolder onClick={() => this.deleteField(field)}><i className="material-icons">delete</i></DeleteHolder></td>
                                     </tr>)
                             })
                         }
                         </tbody>
                     </table>,
-                    <button className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i class="material-icons right">send</i></button>
+                    <button key="save-investigation" id="save-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
             ]
         }
     }
     render() {
         return([
-        <Modal open={this.state.addingField} title={this.props.translate("investigation.create.add_field")} component={<Form fields={FIELDS} callBackForm={this.handleAddField} />} />,
-            <div className="row">
+            <Modal key="modal" open={this.state.addingField} title={this.props.translate("investigation.create.add_field")} component={<Form fields={FIELDS} callBackForm={this.handleAddField} />} />,
+            <div key="content" className="row">
                 <div className="col-12">
-                    <h3><Translate id="investigation.create.title" /></h3>
+                    <h4><Translate id="investigation.create.title" /></h4>
                     <p><Translate id="investigation.create.explanation" /></p>
                     <Translate id="investigation.create.add_field" />
-                    <a className="btn-floating btn-large waves-effect waves-light red" onClick={this.addField}><i className="material-icons">add</i></a>
+                    <a className="add-field btn-floating btn-large waves-effect waves-light red" onClick={this.addField}><i className="material-icons">add</i></a>
                 </div>
                 <div>
                     { this.renderAddedFields() }
@@ -148,20 +151,4 @@ class CreateInvestigation extends Component {
     }
 }
 
-function validate(values){
-    const errors = {};
-
-    // Object.keys(FIELDS).forEach(key => {
-    //     console.log(key);
-    //     const validation = validateField({value : values[key], validation:FIELDS[key].validation, required:FIELDS[key].required})
-    //     if(!validation.result){
-    //         errors[key] = validation.messageCode;
-    //     }
-    // })
-    return errors;
-}
-export default withLocalize(reduxForm({
-    // a unique name for the form
-    validate,
-    form: 'newField'
-  })(CreateInvestigation))
+export default withLocalize(CreateInvestigation);

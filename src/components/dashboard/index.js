@@ -13,15 +13,13 @@ export default class Dashboard extends Component{
         //Compruebo que hay un jwt
         if(localStorage.getItem("jwt") !==""){
             document.addEventListener('DOMContentLoaded', function() {
-                var elems = document.querySelectorAll('.sidenav');
-                var instances = M.Sidenav.init(elems, {isFixed:true});
-                
+                let elems = document.querySelectorAll('.sidenav');
+                M.Sidenav.init(elems, {isFixed:true});
             });
         }
         else{
             this.props.history.push("/login");
         }
-        
     }
     renderMainContent(){
         console.log(this.props.match.params.action);
@@ -34,7 +32,6 @@ export default class Dashboard extends Component{
         }
     }
     render(){
-        
         return ([
             <LoadingScreen key="loading_screen" />,
             <div key="container" className="container">
@@ -54,8 +51,6 @@ export default class Dashboard extends Component{
                 </div>
             </div>
         ]
-            
-            
         )
     }
 }
