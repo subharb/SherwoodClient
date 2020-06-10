@@ -13,24 +13,8 @@ class FieldSherwood extends Component{
         let errorClass = (meta.touched && meta.error) ? "invalid" : "";
         switch(type){
             case "select":
-                
-
                 return (
-                    // <div className={`input-field col ${sizeCurrent}`}>
-                    //     <InputLabel id="demo-simple-select-label">{this.props.translate(label)}</InputLabel>
-                    //     <Select  {...input}
-                    //         labelId="demo-simple-select-label"
-                    //         id="demo-simple-select"
-                    //         value={defaultOption.value}
-                    //         >
-                    //         {
-                    //             options.map(option => {
-                    //                 return <MenuItem value={option.value}>{this.props.translate(option.text)}</MenuItem>
-                    //             })
-                    //         }
-                    //     </Select>
-                    // </div>
-                        <div className={`input-field col ${sizeCurrent}`}>
+                    <div className={`input-field col ${sizeCurrent}`}>
                         <select {...input} >
                             <option value={defaultOption.value} disabled>{this.props.translate(defaultOption.text)}</option>
                             {
@@ -56,8 +40,8 @@ class FieldSherwood extends Component{
                 )
             default:               
                 return(
-                    <div className={`input-field col ${sizeCurrent}`}>
-                        <input {...input} className={`validate ${errorClass}`} key={input.name} id={input.name} name={input.name} type={type} disabled={disabled} />
+                    <div  className={`input-field col ${sizeCurrent}`}>
+                        <input data-testid={input.name} {...input}  className={`validate ${errorClass}`} key={input.name} id={input.name} name={input.name} type={type} disabled={disabled} />
                         <label key={`label_${input.name}`} htmlFor={input.name}>{this.props.translate(label)}</label>
                         <span className="error text">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
                     </div>

@@ -2,7 +2,8 @@
     "home" : ["Welcome", "Bienvenido"],
     "general" : {
         "yes" : ["Yes", "No"], 
-        "no" : ["No", "No"]
+        "no" : ["No", "No"], 
+        "delete" : ["Delete", "Borrar"]
     },
     "dashboard":{
         "greetings" : ["Welcome", "Bienvenido"],
@@ -16,18 +17,27 @@
     },
     "investigation" : {
         "create" : {
-            "title" : ["Create Investigation", "Crear Investigation"],
-            "add_field" : ["Add field", "añadir campo"], 
-            "name_field" : ["Name of the field in your report", "Nombre del campo en los informes"], 
-            "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?"], 
-            "question_field" : ["Question that will be shown in the form", "La pregunta que aparecerá en el formulario"],
-            "no_fields" : ["No fields added yet", "No se han añadido campos aún"], 
-            "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
-            "type_text" : ["Text", "texto"],
-            "type_number" : ["Number", "Número"],
-            "type_date" : ["Date", "fecha"], 
-            "choose" : ["Choose your option", "Elija una opción"],
-            "personal_info" : ["Is it a personal data", "¿Es un dato personal?"],
+            "survey" : {
+                "title" : ["Create Investigation", "Crear Investigation"],
+                "name" : ["Investigation's name", "Nombre de la investigación"],
+                "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
+                "description" : ["Description", "Descripción"],
+                "add_field" : ["Add field", "añadir campo"], 
+                "name_field" : ["Name of the field in your report", "Nombre del campo en los informes"], 
+                "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?"], 
+                "question_field" : ["Question that will be shown in the form", "La pregunta que aparecerá en el formulario"],
+                "no_fields" : ["No fields added yet", "No se han añadido campos aún"], 
+                "type_text" : ["Text", "texto"],
+                "type_number" : ["Number", "Número"],
+                "type_date" : ["Date", "fecha"], 
+                "choose" : ["Choose your option", "Elija una opción"],
+                "personal_info" : ["Is it a personal data", "¿Es un dato personal?"]
+            },
+            "add_patients" : {
+                "title" : ["Add patients", "Añadir pacientes"],
+                "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
+                "email" : ["Email", "Email"]
+            },
             "save" : ["Save", "Guardar"]
         },
         "table" : {

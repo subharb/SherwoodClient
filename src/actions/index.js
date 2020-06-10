@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { LOGIN_USER, LOADING } from './types';
+import { LOGIN_USER, LOADING, MODAL_SHOW } from './types';
 
 /**
  *  Makes a request to login a user
@@ -25,9 +25,6 @@ export const loginUser = (email, password) => async dispatch => {
 
 /**
  * Changes the state of Loading, that hides or shows the loading screen
- * @constructor
- * @param {string} email - Email of the user.
- * @param {string} password - Password hashed already
  */
 export const toogleLoading = ()  => dispatch => {
     

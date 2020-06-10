@@ -3,8 +3,10 @@ import CreateInvestigation from '../components/investigation/create';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
+import axios from 'axios';
+import {render, cleanup} from '@testing-library/react';
 import { shallow,  mount, configure } from 'enzyme';
-import { FIELDS } from './helpers';
+
 
 const TEST_INVESTIGATION = [
     {name : "edad", type : "text", question : "¿cúal es tu edad", "is_personal_data" : true},
@@ -38,10 +40,15 @@ test('Add a new field to the investigation', () => {
         createInvestigationTest.find('.add-field').simulate('click');
     }
     //Envío los datos al servidor
-    createInvestigationTest.find('#save-investigation').simulate('click');
-    //Compruebo respuesta
-    
-    
+    const fakeResponse = {title:"Test"};
 
-    
+    jest.spyOn(axios, "post").mockImplementation(() => {
+      const fetchResponse = {
+        json: () => Promise.resolve(fakeResponse)
+      };
+      return Promise.resolve(fetchResponse);
+    });
+    createInvestigationTest.find('#save-investigation').simulate('click');
+    //Compruebo que el elemento success existe
+    expect(createInvestigationTest.find('.success').children()).toHaveLength(1);
 });

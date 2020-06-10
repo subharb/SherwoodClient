@@ -8,15 +8,16 @@ const ModalContainer = styled.div`
     display:none;
     max-height: 90%;
 `;
+const CloseButton = styled.button`
+    position: absolute;
+    bottom: 1.3rem;
+    right: 1rem;
+`;
 export default class Modal extends Component{
     constructor(props){
         super(props);
-        console.log("Constructor Modal");
         this.instance = null;
         this.modal = React.createRef();
-    }
-    static propTypes = {
-        open: PropTypes.bool
     }
     componentDidMount(){
         console.log("componentDidMount Modal");
@@ -43,11 +44,9 @@ export default class Modal extends Component{
         this.instance = M.Modal.init(this.modal.current, options);  
     }
     componentDidUpdate(prevProps, nextState) {
-        console.log("componentDidUpdate");
-        console.log("prevProps", prevProps.open);
-        console.log("this.props", this.props.open);
+        console.log("Modal componentDidUpdate");
         if(this.props.open === true && !this.instance.isOpen){
-            console.log("Abrimos", this.instance);
+            console.log("Abrimos");
             this.instance.open();
         }
         else if(this.props.open === false && this.instance.isOpen){
@@ -56,14 +55,32 @@ export default class Modal extends Component{
         }
     }
     render(){
-        return (
-            <div ref={this.modal}  id="modal1" className="modal">
-                <div className="modal-content">
-                    <h4>{this.props.title}</h4>
-                    {this.props.component}
-                </div>
-            </div> 
-        );
+        console.log("Modal render");
+        if(this.props.open){
+            return (
+                <div ref={this.modal}  id="modal1" className="modal">
+                    <div className="modal-content">
+                        <h4>{this.props.title}</h4>
+                        {this.props.component}
+                        <CloseButton data-testid="cancel" onClick={this.props.closeCallBack} className="waves-effect waves-light btn red lighten-1">Cancel</CloseButton>
+                    </div>
+                    
+                </div> 
+            );
+        }
+        else{
+            return(
+                <div ref={this.modal}  id="modal1" className="modal">
+                    <div className="modal-content">
+                        
+                    </div>
+                </div> 
+            );
+        }
+        
+    }
+    static propTypes = {
+        open: PropTypes.bool
     }
 }
 

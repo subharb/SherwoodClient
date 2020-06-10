@@ -14,15 +14,15 @@ class Form extends Component {
   
     render() {
         return(
-            <form className="form" onSubmit={this.props.handleSubmit(values => this.props.callBackForm(values))}  >
+            <form data-testid="form" className="form" onSubmit={this.props.handleSubmit(values => this.props.callBackForm(values))}  >
                 {Object.keys(this.props.fields).map(key => {
                     return (
                     <div className="row" key={key}>
                         <Field name={key} {...this.props.fields[key]} type={this.props.fields[key].type} label={this.props.fields[key].label} component={FieldSherwood} />
                     </div>);
                 })}
-                <button className="waves-effect waves-light btn">
-                    {this.props.translate("investigation.create.add_field")}
+                <button data-testid="submit-form" className="waves-effect waves-light btn">
+                    {this.props.translate("investigation.create.save")}
                 </button>
             </form>
         ) 

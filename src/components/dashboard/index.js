@@ -5,11 +5,10 @@ import 'materialize-css/dist/css/materialize.min.css';
 import { Translate } from 'react-localize-redux';
 import Toolbar from './toolbar';
 import LoadingScreen from '../general/loading_screen';
-import CreateInvestigation from '../investigation/create';
+import CreateInvestigation from '../investigation/new_investigation';
 
 export default class Dashboard extends Component{
     componentDidMount(){
-    
         //Compruebo que hay un jwt
         if(localStorage.getItem("jwt") !==""){
             document.addEventListener('DOMContentLoaded', function() {
@@ -34,10 +33,8 @@ export default class Dashboard extends Component{
     render(){
         return ([
             <LoadingScreen key="loading_screen" />,
+            <Header />,
             <div key="container" className="container">
-                <div className="row">
-                    <Header />
-                </div>
                 <div className="row">
                     <Translate id="dashboard.greetings" />
                 </div>
