@@ -15,7 +15,7 @@ class FieldSherwood extends Component{
             case "select":
                 return (
                     <div className={`input-field col ${sizeCurrent}`}>
-                        <select {...input} >
+                        <select data-testid={input.name} {...input} >
                             <option value={defaultOption.value} disabled>{this.props.translate(defaultOption.text)}</option>
                             {
                                 options.map(option => {
@@ -32,7 +32,7 @@ class FieldSherwood extends Component{
                 return (
                     <div className={`input-field col ${sizeCurrent}`}>
                         <label>
-                            <input {...input} type="checkbox"/>
+                            <input data-testid={input.name} {...input} type="checkbox"/>
                             <span>{this.props.translate(label)}</span>
                         </label>
                         

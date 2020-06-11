@@ -41,6 +41,8 @@ export default class NewInvestigation extends Component {
                 return <Summary survey={this.state.survey} 
                             patientsEmail={this.state.patientsEmail} 
                             callBackData={this.addData} 
+                            saveAndSend={this.saveAndSend}
+                            saveForLater={this.saveForLater}
                         />
             default:
                 return "Something went wrong"

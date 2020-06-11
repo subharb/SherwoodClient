@@ -68,9 +68,7 @@ const FIELDS_INVESTIGATION = {
  * Component that renders the fields created and stores them in the server
  */
 class CreateSurvey extends Component {
-    static propTypes = {
-        //No parameters
-      }
+    
     constructor(props){
         super(props);
 
@@ -173,9 +171,14 @@ class CreateSurvey extends Component {
                         }
                         </tbody>
                     </table>,
-                    <button type="submit" key="save-investigation" id="save-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
+                    <button data-testid="save-investigation" type="submit" key="save-investigation" id="save-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
             ]
         }
+    }
+    storeData(values){
+        let surveyInfo = {...values};
+        surveyInfo.fields = this.state.fields;
+        this.props.callBackData(surveyInfo)
     }
     render() {
         //Se ha enviado la info sin errores
@@ -192,7 +195,7 @@ class CreateSurvey extends Component {
                     component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} />} 
                     closeCallBack={this.closeModal}
                 />,
-                <form className="form" onSubmit={this.props.handleSubmit(values => this.props.callBackData(values))}  >
+                <form key="form" className="form" onSubmit={this.props.handleSubmit(values => this.storeData(values))}  >
                     <div key="content" className="row">
                         <div className="col-12">
                             <h4><Translate id="investigation.create.survey.title" /></h4>
@@ -200,7 +203,10 @@ class CreateSurvey extends Component {
                             <Field name="title" {...FIELDS_INVESTIGATION["title"]} component={FieldSherwood} />
                             <Field name="description"  {...FIELDS_INVESTIGATION["description"]} component={FieldSherwood} />
                             <Translate id="investigation.create.survey.add_field" />
-                            <button className="add-field btn-floating btn-large waves-effect waves-light red" onClick={this.addField}><i className="material-icons">add</i></button>
+                            <button data-testid="add-field" type="button"
+                                    className="add-field btn-floating btn-large waves-effect waves-light red" 
+                                    onClick={this.addField}><i className="material-icons">add</i>
+                            </button>
                         </div>
                         <div>
                             { this.renderAddedFields() }

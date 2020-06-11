@@ -3,8 +3,16 @@ import { render, cleanup, fireEvent, waitForDomChange, waitForElementToBeRemoved
 import AddPatients from '../components/investigation/add_patients';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from "redux";
-import configureStore from 'redux-mock-store';
+// import configureStore from 'redux-mock-store';
+// import { configure } from 'enzyme';
+// import Adapter from 'enzyme-adapter-react-16';
 import { reducer as formReducer } from "redux-form";
+
+
+// const mockStore = configureStore();
+// const store = mockStore();
+
+// configure({adapter: new Adapter()});
 
 //afterEach(cleanup);
 
@@ -25,9 +33,7 @@ const renderWithRedux = (
 
 test("Testing Adding/Removing One Patient", async() => {
     const { debug, getByTestId, getByText, getByLabelText } = renderWithRedux(
-        
             <AddPatients />
-        
     );
     const addEmailButton = getByTestId("add-email"); 
     //Hacemos click en añadir un paciente
@@ -66,8 +72,9 @@ test("Testing Adding/Removing One Patient", async() => {
 });
 
 test("Testing Adding and saving One Patient", async() => {
+    const myMockFn = jest.fn();
     const { debug, getByTestId, getByText, getByLabelText } = renderWithRedux(
-        <AddPatients />
+        <AddPatients callBackData = {myMockFn}/>
     );
     const addEmailButton = getByTestId("add-email"); 
     //Hacemos click en añadir un paciente
@@ -84,5 +91,6 @@ test("Testing Adding and saving One Patient", async() => {
     fireEvent.click(submitFormButton); 
     const savePatientsButton = getByTestId("save-patients"); 
     fireEvent.click(savePatientsButton);
+    expect(myMockFn.mock.calls.length).toBe(1);
     debug();
 });

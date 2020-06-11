@@ -1,3 +1,24 @@
+import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore, combineReducers } from "redux";
+import { render } from '@testing-library/react';
+import { reducer as formReducer } from "redux-form";
+
+export const renderWithRedux = (
+    component,
+    {
+      initialState,
+      store = createStore(
+        combineReducers({ form: formReducer }),
+        initialState
+      )
+    } = {}
+  ) => {
+    return {
+      ...render(<Provider store={store}>{component}</Provider>)
+    };
+  };
+
 export const FIELDS = {
     "is_personal_data":{
         required : false,
@@ -5,7 +26,7 @@ export const FIELDS = {
         label:"investigation.create.personal_info",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty",
-        value : false
+        value : true
     },
     "name" : {
         required : true,

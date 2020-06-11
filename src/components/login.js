@@ -25,7 +25,7 @@ const Container = styled.div`
 const FIELDS = {
     "email" : {
         required : true,
-        validation : "email"
+        validation : "validEmail"
     },
     "password" : {
         required : true,
@@ -52,8 +52,8 @@ class Login extends Component {
     }
     async loginUser(email, password) {
         const postObj = {email:email, password:password};
-        const request = await axios.post(process.env.REACT_APP_API_URL+'/researchers/login', postObj)
-            .catch(err => console.log('Catch', err)); 
+        const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/login', postObj)
+            .catch(err => {console.log('Catch', err); return err;}); 
         
         //Guardamos el token si la request fue exitosa
         let error = 0;
@@ -95,12 +95,12 @@ class Login extends Component {
                                     }
                                     <div className="row">
                                         <div className="input-field col s12">
-                                            <Field disabled={this.state.loading} key="email" type="text" name="email" required={true} validation="email" component={FieldSherwood} label="login.email"/>
+                                            <Field disabled={this.state.loading} key="email" type="text" name="email" required={true}  component={FieldSherwood} label="login.email"/>
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="input-field col s12">
-                                        <Field disabled={this.state.loading} key="password" type="password" name="password" required={true} validation="password" component={FieldSherwood} label="login.password"/>
+                                        <Field disabled={this.state.loading} key="password" type="password" name="password" required={true}  component={FieldSherwood} label="login.password"/>
                                         </div>
                                     </div>
                                     
