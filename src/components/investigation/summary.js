@@ -19,6 +19,7 @@ class Summary extends Component {
                 <div className="col-12">
                     <h4><Translate id="investigation.summary.title" /></h4>
                     <p><Translate id="investigation.summary.explanation" /></p>
+                    <p><SpanField><Translate id="investigation.create.summary.review_consents" ></Translate>:</SpanField> LINK REVISAR CONSENTIMIENTO</p>
                     <p><SpanField><Translate id="investigation.create.survey.name" ></Translate>:</SpanField> {this.props.survey.title}</p>
                     <p><SpanField><Translate id="investigation.create.survey.description" ></Translate>:</SpanField> {this.props.survey.description}</p>
                     <table id="survey-info" key="table-fields" className="striped">

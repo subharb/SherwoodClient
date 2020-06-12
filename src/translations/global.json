@@ -36,7 +36,13 @@
             "add_patients" : {
                 "title" : ["Add patients", "Añadir pacientes"],
                 "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
+                "personal_data" : ["Add the reasons why you need the personal data"],
                 "email" : ["Email", "Email"]
+            },
+            "consentment" : {
+                "title" : ["Add consentments", "Añadir consentimientos"],
+                "explanation" : ["In order to create a consentment agreement we need you write down the reason why you are asking for the personal data. These reasons why appear in the consentment for the patient to understand what will be the use of that data"],
+                "consentment" : ["consentment", "Consentimiento"]
             },
             "save_and_send" : ["Save & send e-consents", "Guardar y enviar consentimientos"],
             "save" : ["Save", "Guardar"]
@@ -51,7 +57,8 @@
             "title" : ["Summary Investigation", "ResumenInvestigation"],
             "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
             "patients" : ["Patients", "Pacientes"],
-            "email" : ["email", "email"]
+            "email" : ["email", "email"],
+            "review_consents" : ["Review consent", "Revisar el consentimiento"]
         },
 
         "errors" : {
