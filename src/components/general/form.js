@@ -15,6 +15,19 @@ class Form extends Component {
         console.log("CALLBACK!"); 
         return this.props.callBackForm(values);
     }
+    componentDidMount(){
+        //Busco el campo DefaultValue para inicializar el form con esos valores
+        let initData = {};
+        Object.keys(this.props.fields).forEach(key => {
+            if(this.props.fields[key].hasOwnProperty("defaultValue")){
+                initData[key] = this.props.fields[key].defaultValue;
+            }
+            else if(this.props.fields[key].type === "checkbox"){
+                initData[key] = false;
+            }
+        });
+        this.props.initialize(initData)
+    }
     render() {
         return(
             <form data-testid="form" className="form" onSubmit={this.props.handleSubmit(values => this.callBackForm(values))}  >

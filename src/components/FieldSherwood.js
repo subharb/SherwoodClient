@@ -29,11 +29,12 @@ class FieldSherwood extends Component{
                     
                 );
             case "checkbox":
+                const className = (meta.touched && meta.error) ? "error text" : ""
                 return (
                     <div className={`input-field col ${sizeCurrent}`}>
                         <label>
                             <input data-testid={input.name} {...input} type="checkbox"/>
-                            <span>{this.props.translate(label)}</span>
+                            <span className={className}>{this.props.translate(label)}</span>
                         </label>
                         
                     </div>

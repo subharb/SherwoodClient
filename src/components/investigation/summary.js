@@ -2,24 +2,40 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from '../general/modal';
+import PreviewConsents from '../consent/preview';
 import styled from 'styled-components';
 
 const SpanField = styled.span`
     font-weight:bold;
 `;
 class Summary extends Component {
+    constructor(props){
+        super(props);
+
+        this.showConsents = this.showConsents.bind(this);
+
+        this.state = {showConsents : false}
+    }
+    showConsents(){
+        this.setState({showConsents:true});
+    }
+    modalComponent(){
+        const filteredFields2 = this.props.survey.fields.filter(field => field["is_personal_data"].value);
+        let component = <PreviewConsents consents={this.props.consents}  personalFields={filteredFields2} />
+        return component;
+    }
     render() {
         return([
-            <Modal key="modal" open={false} 
+            <Modal key="modal" open={this.state.showConsents} 
                 title={this.props.translate("investigation.create.survey.add_field")} 
-                component={{}} 
+                component={this.modalComponent()} 
                 closeCallBack={this.closeModal}
             />,
             <div key="content" className="row">
                 <div className="col-12">
                     <h4><Translate id="investigation.summary.title" /></h4>
                     <p><Translate id="investigation.summary.explanation" /></p>
-                    <p><SpanField><Translate id="investigation.create.summary.review_consents" ></Translate>:</SpanField> LINK REVISAR CONSENTIMIENTO</p>
+                    <p><SpanField><Translate id="investigation.create.summary.review_consents" ></Translate>:</SpanField> <button onClick={this.showConsents}>Ver consents</button></p>
                     <p><SpanField><Translate id="investigation.create.survey.name" ></Translate>:</SpanField> {this.props.survey.title}</p>
                     <p><SpanField><Translate id="investigation.create.survey.description" ></Translate>:</SpanField> {this.props.survey.description}</p>
                     <table id="survey-info" key="table-fields" className="striped">

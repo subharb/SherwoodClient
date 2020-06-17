@@ -39,10 +39,16 @@
                 "personal_data" : ["Add the reasons why you need the personal data"],
                 "email" : ["Email", "Email"]
             },
-            "consentment" : {
-                "title" : ["Add consentments", "Añadir consentimientos"],
-                "explanation" : ["In order to create a consentment agreement we need you write down the reason why you are asking for the personal data. These reasons why appear in the consentment for the patient to understand what will be the use of that data"],
-                "consentment" : ["consentment", "Consentimiento"]
+            "consent" : {
+                "title" : ["Add consents", "Añadir consentimientos"],
+                "explanation" : ["In order to create a consent agreement we need you write down the reason why you are asking for the personal data. These reasons why appear in the consent for the patient to understand what will be the use of that data"],
+                "consent" : ["consent", "Consentimiento"],
+                "field" : ["Field", "Campo"],
+                "reason" : ["reason", "razón"],
+                "other_consent" : ["Other consent", "Otros consentimientos"],
+                "personal_data" : ["Here are the personal data you are asking to the patients, please add an explanation of why each is necessary", "A continuación encontrará los datos personales que ha pedido en el paso anterior. Por favor, añada una explicación de por qué son necesarios."],
+                "is_required" : ["Is a required consent to participate in the investigation", "Es un consentimiento obligatorio para participar en la investigation"],
+                "required" : ["Required", "Obligatorio"]
             },
             "save_and_send" : ["Save & send e-consents", "Guardar y enviar consentimientos"],
             "save" : ["Save", "Guardar"]
@@ -60,7 +66,6 @@
             "email" : ["email", "email"],
             "review_consents" : ["Review consent", "Revisar el consentimiento"]
         },
-
         "errors" : {
             "error_email" : ["Email not valid", "Email no válido"],
             "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres"],
@@ -69,5 +74,9 @@
             "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío"]
 
         }
+    },
+    "consent" : {
+        "personal_data_header" : ["These are the personal data that are required to participate in the investigation", "Estos son los datos personales necesarios para participar en la investigación"],
+        "personal_data" : ["Personal Data"]
     }
 }

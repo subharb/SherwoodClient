@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import NewSurvey  from './new_survey';
 import AddPatients from './add_patients';
 import Summary from './summary';
+import PreviewConsents from '../consent/preview';
 import AddConsents from './consent';
 import styled from 'styled-components';
 
@@ -14,7 +15,7 @@ export default class NewInvestigation extends Component {
         
         this.addData = this.addData.bind(this);
 
-        this.state = {step:1, 
+        this.state = {step:3, 
             survey: {
                 title : "My first investigation",
                 description: "My first description",
@@ -35,7 +36,7 @@ export default class NewInvestigation extends Component {
                             shortLabel: "investigation.table.type"                                                
                         },
                         "question" : {
-                            value : "¿cuál es su nombre",
+                            value : "¿cuál es su nombre?",
                             label : "investigation.create.survey.question_field",
                             shortLabel: "investigation.table.question",
                         }
@@ -84,22 +85,39 @@ export default class NewInvestigation extends Component {
                         }
                     }
                 ]}
-            , patientsEmail:[
+            ,patientsEmail:[
                 "david@sherwood.science",
                 "Pedro.rodriguez@hotmail.com"
-            ]}
+            ], 
+            consents: {
+                name: {
+                value: 'Identification purposes',
+                required: true,
+                is_personal_data: true
+                },
+                surnames: {
+                value: 'Identification purposes',
+                required: true,
+                is_personal_data: true
+                },
+                '1hgqrcsn1gv81fh52yd1z': { value: 'Store biological material', is_personal_data: false }
+            }
+        }
     }
     addData(data){
-        console.log("New Data!", data);
+        console.log("New Data!", JSON.stringify(data));
         let tempState = {...this.state};
         switch(this.state.step){
             case 0:
                 tempState.survey = data;
                 break;
             case 1:
-                tempState.patientsEmail = data
+                tempState.consents = data;
                 break;
             case 2:
+                tempState.patientsEmail = data;
+                break;
+            case 3:
                 console.log("Send Information!");
                 break;
             default:
@@ -124,6 +142,7 @@ export default class NewInvestigation extends Component {
                 break;
             case 3:
                 component = <Summary survey={this.state.survey} 
+                            consents = {this.state.consents}
                             patientsEmail={this.state.patientsEmail} 
                             callBackData={this.addData} 
                             saveAndSend={this.saveAndSend}

@@ -12,7 +12,7 @@
 export function validateField(field){
     const response = {};
     //Si el campo es obligatorio o si tiene un valor, validamos su contenido
-    if(field.required || !field.value){
+    if(field.required || (field.value !== "" && typeof field.value === 'string') ){
         const pathErroTranslation = "investigation.errors.";
         switch(field.validation){
             case "validEmail" : 

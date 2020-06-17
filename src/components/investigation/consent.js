@@ -1,21 +1,47 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Translate, withLocalize } from 'react-localize-redux';
-import FieldSherwood from '../FieldSherwood';
+import _ from 'lodash';
 import Modal from '../general/modal';
 import Form from '../general/form';
 import { toogleLoading } from '../../actions';
-import {DeleteHolder} from "../general/mini_components";
+import {DeleteHolder, EditConsent} from "../general/mini_components";
 
 const FIELDS_FORM = {
-    "consentment":{
+    "required":{
+        required : false,
+        type:"checkbox",
+        label:"investigation.create.consent.is_required",
+        shortLabel: "investigation.create.consent.is_required",
+        validation : "notEmpty"
+    },
+    "consent":{
         required : true,
         type:"text",
-        label:"investigation.create.consentment.consentment",
-        shortLabel: "investigation.create.consentment.consentment",
+        label:"investigation.create.consent.consent",
+        shortLabel: "investigation.create.consent.consent",
         validation : "notEmpty"
+    }
+}
+
+const PERSONAL_FORM = {
+    "required":{
+        required : false,
+        type:"checkbox",
+        label:"investigation.create.consent.is_required",
+        shortLabel: "investigation.create.consent.is_required",
+        validation : "notEmpty",
+        defaultValue : true
+    },
+    "reason" : {
+        required : true,
+        type:"text",
+        label:"investigation.create.consent.reason",
+        shortLabel: "investigation.create.consent.reason",
+        validation : "notEmpty",
+        is_personal_data:true
     }
 }
 
@@ -26,84 +52,154 @@ class AddConsents extends Component {
     constructor(props){
         super(props);
 
+        this.currentFormModal = PERSONAL_FORM;
         this.handleConsent = this.handleConsent.bind(this);
-
         this.deleteConsent = this.deleteConsent.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.saveConsents = this.saveConsents.bind(this);
+        this.renderConsents = this.renderConsents.bind(this);
+        this.addConsent = this.addConsent.bind(this);
         
-        this.state = {addingConsentment : false, consents : []}
+        this.state = {addingConsent : false, consents : {}}
     }
     
     saveConsents(){
-        console.log("saveConsentment", this.state.consents);
-        this.props.callBackData(this.state.patientsEmail);
-    }
-    addConsentment(){
-        console.log("Nuevo consentimiento!");
-        this.setState({addingConsentment : true});
+        console.log("saveconsent", this.state.consents);
+        //Comprobar 
+        this.props.callBackData(this.state.consents);
     }
     closeModal(){
         console.log("Cerramos modal");
-        this.setState({addingConsentment : false});
+        this.setState({addingConsent : false});
     }
     handleConsent(value){
-        console.log("Callback:", value);
+        console.log("Callback handleConsent:", value);
         let tempState = {...this.state};
-        tempState.patientsEmail.push(value.email);
-        tempState.addingConsentment = false;
+        //Estoy añadiendo un consentimiento de dato personal?
+        console.log(this.currentFormModal.reason);
+        let tempbObj = {};
+        if(this.currentFormModal.hasOwnProperty("reason")){
+            tempbObj = {value : value.reason, required: value.required, is_personal_data : true};
+            tempState.consents[this.currentFormModal.reason.callBackParam] = tempbObj; 
+        }
+        else{
+            tempbObj = {value : value.consent, is_personal_data : false};
+            tempState.consents[this.currentFormModal.consent.callBackParam] = tempbObj; 
+        }
+        
+        tempState.addingConsent = false;
+        this.currentFormModal = null;
         this.setState(tempState);
     }
-    deleteConsent(index){
-        console.log("Delete ", index);
+    deleteConsent(key){
+        console.log("Delete ", key);
         let tempState = {...this.state};
-        tempState.consents.splice(index, 1);
+        delete tempState.consents[key];
         this.setState(tempState);
+    }
+    addConsent(){
+        this.currentFormModal = FIELDS_FORM;
+        const randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        this.currentFormModal.consent.callBackParam = randomString;
+        this.setState({addingConsent : true});
+
+    }
+    addReasonPersonal(field){
+        this.currentFormModal = PERSONAL_FORM;
+        this.currentFormModal.reason.callBackParam = field;
+        this.setState({addingConsent : true});
     }
     renderPersonalDataReason(){
         console.log(this.props.personalFields);
+        if(this.props.personalFields.length > 0){
+            return([
+                <p key="parag"><Translate id="investigation.create.consent.personal_data"/></p>,
+                <table key="table-fields" className="striped">
+                    <thead>
+                    <tr>
+                        <th ><Translate id="investigation.create.consent.field"></Translate></th>
+                        <th ><Translate id="investigation.create.consent.reason"></Translate></th>
+                        <th ><Translate id="investigation.create.consent.required"></Translate></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        this.props.personalFields.map((field, idx) => {
+                            return(
+                                <tr key={field.name.value}>
+                                    <td>{field.name.value}</td>
+                                    {this.state.consents.hasOwnProperty(field.name.value) ? 
+                                        <td>{this.state.consents[field.name.value].value} <EditConsent onClick={() => this.editConsent(idx)} className="material-icons">edit</EditConsent></td>
+                                        : <td><button data-testid="add-personal-consent" className="add-personal-consent btn-floating btn-small waves-effect waves-light red" onClick={() => this.addReasonPersonal(field.name.value)} ><i className="material-icons">add</i></button></td>
+                                    }   
+                                    <td>{this.state.consents[field.name.value] ? this.state.consents[field.name.value].required : ""}</td>
+                                </tr>
+                            )
+                        })
+                    }
+                    </tbody>
+                </table>
+            ]);
+        }
     }
     renderConsents(){
-        if(this.props.fields.length > 0){
+        console.log("RenderConsents");
+        const nonPersonalConsents = {};
+        Object.keys(this.state.consents).forEach(key => {
+            const consent = this.state.consents[key];
+            if(!consent.is_personal_data){
+                nonPersonalConsents[key] = consent;
+            }
+        });
+        console.log(nonPersonalConsents);
+        if(!_.isEmpty(nonPersonalConsents)){
             return([
                 <table key="table-fields" className="striped">
                     <thead>
                     <tr>
-                        <th key="email">{this.props.translate("investigation.create.add_patients.email")}</th>
+                        <th key="consent">{this.props.translate("investigation.create.consent.consent")}</th>
                         <th key="delete">{this.props.translate("general.delete")}</th>
                     </tr>
                     </thead>
                     <tbody>
                     {
-                        this.state.patientsEmail.map((field, idx) => {
+                        Object.keys(nonPersonalConsents).map((key) => {
+                            const field = nonPersonalConsents[key];
                             return(
-                                <tr key={field}>
-                                    <td>{field}</td>
-                                    <td><DeleteHolder data-testid="delete" onClick={() => this.deleteEmail(idx)}><i className="material-icons">delete</i></DeleteHolder></td>
+                                <tr key={key}>
+                                    <td>{field.value}</td>
+                                    <td><DeleteHolder data-testid="delete" onClick={() => this.deleteConsent(key)}><i className="material-icons">delete</i></DeleteHolder></td>
                                 </tr>
                             )
                         })
                     }
                     </tbody>
                 </table>,
-                <button data-testid="save-patients" onClick={this.saveConsents} type="submit" key="save-patients" id="save-patients" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
                 ]);
         }
     }
     render() {
+        //El form se puede enviar si se han metido las razones de todos los datos personales, puede no haber más consentimientos
+        const disableButton = this.props.personalFields.length > 0 && !this.props.personalFields.reduce((accumulator, pField) => {
+            console.log("Reducing", pField);
+            console.log(this.state.consents);
+            return accumulator && this.state.consents.hasOwnProperty(pField.name.value);
+        }, true);
         return ([
-            <Modal key="modal" open={this.state.addingConsentment} 
+            <Modal key="modal" open={this.state.addingConsent} 
                 title={this.props.translate("investigation.create.survey.add_field")} 
-                component={<Form fields={FIELDS_FORM} callBackForm={this.handleConsent} />} 
+                component={<Form fields={this.currentFormModal} callBackForm={this.handleConsent} />} 
                 closeCallBack={this.closeModal}
             />,
             <div key="container">
-                <h4><Translate id="investigation.create.consentment.title" /></h4>
-                <p><Translate id="investigation.create.consentment.explanation"/></p>
-                <p><Translate id="investigation.create.consentment.personal_data"/></p>
+                <h4><Translate id="investigation.create.consent.title" /></h4>
+                <p><Translate id="investigation.create.consent.explanation"/></p>
                 {this.renderPersonalDataReason()}
-                <button data-testid="add-email" className="add-email btn-floating btn-large waves-effect waves-light red" onClick={this.addPatientEmail} ><i className="material-icons">add</i></button>    
-                {this.renderConsents()}              
+                <p><Translate id="investigation.create.consent.other_consent"/>
+                    <button data-testid="add-consent" className="add-consent btn-floating btn-large waves-effect waves-light red" onClick={this.addConsent} ><i className="material-icons">add</i></button>    
+                </p>
+                {this.renderConsents()}    
+                <button data-testid="save-consents" disabled={disableButton} onClick={this.saveConsents} type="submit" key="save-consents" id="save-consents" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>          
             </div>
         ])
     }
@@ -129,5 +225,5 @@ function validate(values){
 export default withLocalize(reduxForm({
     // a unique name for the form
     validate,
-    form: 'addConsentment'
+    form: 'addConsent'
   })(connect(null, { toogleLoading })(AddConsents)))
