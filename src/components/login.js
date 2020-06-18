@@ -38,17 +38,15 @@ class Login extends Component {
 
         this.state = {loading:false, error:false};
     }
-    componentDidUpdate(nextProps, nextState) {
-        //Si se ha terminado la conexión de login y hay un token, entonces redirijo al panel
-        if(!nextState.loading && this.state.loading && localStorage.getItem("jwt") && nextState.error === 0){
-            this.props.history.push("/dashboard");
-        }
-    }
+    // componentDidUpdate(nextProps, nextState) {
+    //     //Si se ha terminado la conexión de login y hay un token, entonces redirijo al panel
+    //     if(!nextState.loading && this.state.loading && localStorage.getItem("jwt") && nextState.error === 0){
+    //         this.props.history.push("/dashboard");
+    //     }
+    // }
     componentDidMount(){
         console.log("Current Token", localStorage.getItem("jwt"));
-        if(localStorage.getItem("jwt")){
-            this.props.history.push("/dashboard");
-        }
+        
     }
     async loginUser(email, password) {
         const postObj = {email:email, password:password};
@@ -58,8 +56,10 @@ class Login extends Component {
         //Guardamos el token si la request fue exitosa
         let error = 0;
         if(request.status === 200){
-            console.log("TOKEN: "+request.data.token);
-            localStorage.setItem("jwt", request.data.token);
+            console.log("TOKEN: "+request.data.jwt);
+            localStorage.setItem("jwt", request.data.jwt);
+            axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
+            this.props.history.push("/dashboard");
         }
         else{
             error = 1;

@@ -141,13 +141,7 @@ export default class NewInvestigation extends Component {
                 component = <AddPatients callBackData={this.addData} />
                 break;
             case 3:
-                component = <Summary survey={this.state.survey} 
-                            consents = {this.state.consents}
-                            patientsEmail={this.state.patientsEmail} 
-                            callBackData={this.addData} 
-                            saveAndSend={this.saveAndSend}
-                            saveForLater={this.saveForLater}
-                        />
+                component = <Summary investigation={this.state} />
                 break;
             default:
                 component = "Something went wrong";

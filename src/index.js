@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import { Provider } from 'react-redux';
+import axios from 'axios';
 import { LocalizeProvider } from "react-localize-redux";
 import globalTranslations from "./translations/global.json";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -18,6 +19,9 @@ const store = createStore(reducers, {}, applyMiddleware(thunk));
 document.addEventListener('DOMContentLoaded', function() {
     M.AutoInit();
 });
+
+axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
+
 ReactDom.render(
     <Provider store={store}>
         <LocalizeProvider initialize={{

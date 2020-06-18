@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Component }  from 'react'
+import axios from 'axios';
 import Header from '../header';
 import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
@@ -8,9 +9,20 @@ import LoadingScreen from '../general/loading_screen';
 import CreateInvestigation from '../investigation/new_investigation';
 
 export default class Dashboard extends Component{
-    componentDidMount(){
+    async componentDidMount(){
         //Compruebo que hay un jwt
         if(localStorage.getItem("jwt") !==""){
+            console.log(localStorage.getItem('jwt'));
+            const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/validate')
+            .catch(err => {console.log('Catch', err); return err;}); 
+        
+            //Guardamos el token si la request fue exitosa
+            let error = 0;
+            if(request.status !== 200){
+                //redirec a /login
+                this.props.history.push("/login");
+            }
+            
             document.addEventListener('DOMContentLoaded', function() {
                 let elems = document.querySelectorAll('.sidenav');
                 M.Sidenav.init(elems, {isFixed:true});
