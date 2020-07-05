@@ -2,9 +2,16 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+const BreadCrumbContainer = styled.div`
+    display: flex;
+    justify-content: center;
+`;
 const BreadButton = styled.button`
     &:last-child {
         color: rgba(255,255,255,0.7);
+    }
+    &:focus {
+        background: none;
     }
     background: none;
     border: none;
@@ -18,13 +25,13 @@ export default class Breadcrumb extends Component {
         return (
             <nav>
                 <div className="nav-wrapper">
-                <div className="col s12">
+                <BreadCrumbContainer className="col s12">
                     { 
                         this.props.stages.map((stage, index) => {
                             return <BreadButton selected={index === this.props.selected} onClick={() => this.props.callBack(index)} className="breadcrumb">{stage}</BreadButton>                            
                         })
                     }
-                </div>
+                </BreadCrumbContainer>
                 </div>
             </nav>
         );

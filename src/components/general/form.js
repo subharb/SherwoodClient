@@ -51,7 +51,6 @@ Form.propTypes = {
 
 function validate(values, props){
     const errors = {};
-
     Object.keys(props.fields).forEach(key => {
         console.log(key+" : "+props.fields[key].validation+" "+values[key]);
         const validation = validateField({value : values[key], validation:props.fields[key].validation, required:props.fields[key].required})
