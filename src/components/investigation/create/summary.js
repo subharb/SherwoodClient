@@ -132,7 +132,7 @@ class Summary extends Component {
                             })
                         }
                         </tbody>
-                    </table>
+                    </table> 
                     <Translate id="investigation.create.summary.patients" ></Translate>
                     <table id="survey-info" key="table-emails" className="striped">
                         <thead>
