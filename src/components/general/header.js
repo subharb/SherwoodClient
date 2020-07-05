@@ -11,7 +11,8 @@ export default class Header extends Component {
                     
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li><Link to="/login">Login</Link></li>
-                        <li><Link to="/register">Register</Link></li>
+                        <li><Link to="/register/researcher">Register Researcher</Link></li>
+                        <li><Link to="/register/patient">Register Patient</Link></li>
                     </ul>
                 </div>
             </nav>
