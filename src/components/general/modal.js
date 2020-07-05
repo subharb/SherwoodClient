@@ -60,9 +60,11 @@ export default class Modal extends Component{
             return (
                 <div ref={this.modal}  id="modal1" className="modal">
                     <div className="modal-content">
-                        <h4>{this.props.title}</h4>
+                        <h4>{this.props.component.title}</h4>
                         {this.props.component}
-                        <CloseButton data-testid="cancel" onClick={this.props.closeCallBack} className="waves-effect waves-light btn red lighten-1">Cancel</CloseButton>
+                        {this.props.closeCallBack &&
+                            <CloseButton data-testid="cancel" onClick={this.props.closeCallBack} className="waves-effect waves-light btn red lighten-1">Cancel</CloseButton>
+                        }                        
                     </div>
                     
                 </div> 

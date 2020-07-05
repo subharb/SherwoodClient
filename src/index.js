@@ -10,7 +10,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 import Home from './components/home';
-import Login from './components/login';
+import Login from './components/dashboard/login';
 import Dashboard from './components/dashboard';
 import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
@@ -39,8 +39,7 @@ ReactDom.render(
                 <Switch>
                 <Route exact path="/login" children={(props) => <Login {...props} /> } />
                 <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
-                <Route exact path="/investigation/:action" children={(props) => <Dashboard {...props} /> } />
-                
+                <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
                 <Route exact path="/" children={(props) => <Home {...props} />} />
                 </Switch>
             </BrowserRouter>

@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { reduxForm } from 'redux-form';
 import { Translate, withLocalize } from 'react-localize-redux';
 import _ from 'lodash';
-import Modal from '../general/modal';
-import Form from '../general/form';
-import { toogleLoading } from '../../actions';
-import {DeleteHolder, EditConsent} from "../general/mini_components";
+import Modal from '../../general/modal';
+import Form from '../../general/form';
+import { toogleLoading } from '../../../actions';
+import {DeleteHolder, EditConsent} from "../../general/mini_components";
 
 const FIELDS_FORM = {
     "required":{

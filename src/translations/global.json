@@ -55,18 +55,28 @@
                 "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
                 "patients" : ["Patients", "Pacientes"],
                 "email" : ["email", "email"],
-                "review_consents" : ["Review consent", "Revisar el consentimiento"]
+                "review_consents" : ["Review consent", "Revisar el consentimiento"],
+                "success" : {
+                    "title" : ["Success!", "Enhorabuena!"],
+                    "description" : ["You have successfully created an investigation", "Has creado una investigación"],
+                    "continue" : ["Continue", "Continuar"]
+                }
             },
             "save_and_send" : ["Save & send e-consents", "Guardar y enviar consentimientos"],
             "save" : ["Save", "Guardar"]
+        },
+        "show" : {
+            "view_investigation" : ["View Investigation", "Ver investigación"],
+            "title" : ["Title", "Título"],
+            "date_created" : ["Date create", "Fecha de creación"],
+            "description" : ["Description", "Descripción"]
         },
         "table" : {
             "is_personal_data" : ["personal data", "dato personal"],
             "name" : ["name field", "nombre campo"], 
             "type" : ["type", "tipo"], 
             "question" : ["question", "pregunta"]
-        },
-        
+        },    
         "errors" : {
             "error_email" : ["Email not valid", "Email no válido"],
             "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres"],

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import { Field, reduxForm } from 'redux-form'
-import FieldSherwood from '../FieldSherwood';
+import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
  /**

@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import styled from 'styled-components';
 import CryptoJS from 'crypto-js';
-import { loginUser, toogleLoading } from '../actions';
-import FieldSherwood  from './FieldSherwood';
-import Header from './header';
-import LoadingScreen from '../components/general/loading_screen';
-import { validateField } from '../utils';
+import { loginUser, toogleLoading } from '../../actions';
+import FieldSherwood  from '../general/FieldSherwood';
+import Header from '../general/header';
+import LoadingScreen from '../general/loading_screen';
+import { validateField } from '../../utils';
 
 /**
  * Component for login researchers

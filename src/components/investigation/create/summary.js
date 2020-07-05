@@ -1,16 +1,36 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
-import Modal from '../general/modal';
-import PreviewConsents from '../consent/preview';
+import Modal from '../../general/modal';
+import PreviewConsents from '../../consent/preview';
 import styled from 'styled-components';
-import { toogleLoading } from '../../actions';
+import { toogleLoading } from '../../../actions';
+import successImage from '../../../img/7893-confetti-cannons.gif';
 
 const SpanField = styled.span`
     font-weight:bold;
 `;
+
+const ResultContainer = styled.div`
+    background-color:red;
+`;
+
+const SuccessContainer = styled.div`
+    text-align:center;
+`;
+const SuccessComponent = (props) => {
+    return(
+    <SuccessContainer>
+        <h4><Translate id="investigation.create.summary.success.title" /></h4>
+        <div><img src={successImage} width="200" alt="Success!" /></div>
+        <div><Translate id="investigation.create.summary.success.description" /></div>
+        <button data-testid="continue" onClick={props.continue} type="submit" key="continue" id="continue" className="waves-effect waves-light btn"><Translate id="investigation.create.summary.success.continue" /></button>   
+    </SuccessContainer>
+    )
+  }
 class Summary extends Component {
     constructor(props){
         super(props);
@@ -18,14 +38,31 @@ class Summary extends Component {
         this.showConsents = this.showConsents.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.saveForLater = this.saveForLater.bind(this);
-        this.state = {showConsents : false}
+        this.continueModal = this.continueModal.bind(this);
+        this.state = {showConsents : false, showResult:false, result : 0}//Resultado 0, no enviado, 1 recibido y con error; 2 recibido y correcto
     }
     showConsents(){
         this.setState({showConsents:true});
     }
     modalComponent(){
-        const filteredFields2 = this.props.investigation.survey.fields.filter(field => field["is_personal_data"].value);
-        let component = <PreviewConsents consents={this.props.investigation.consents}  personalFields={filteredFields2} />
+
+        let component;
+        switch(this.state.result){
+            case 0:
+                const filteredFields2 = this.props.investigation.survey.fields.filter(field => field["is_personal_data"].value);
+                component = <PreviewConsents title={this.props.translate("investigation.create.survey.add_field")} consents={this.props.investigation.consents}  personalFields={filteredFields2} />
+                break;
+            case 1:
+                component = "error!";
+                break;
+            case 2:
+                component = <ResultContainer title="Suecess!">Success!</ResultContainer>
+                break;
+            default:
+                component = "Unexpected";
+                break;
+        }
+        
         return component;
     }
     closeModal(){
@@ -36,30 +73,38 @@ class Summary extends Component {
         const request = await axios.post(process.env.REACT_APP_API_URL+'/investigation', this.props.investigation,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
         
-        //Guardamos el token si la request fue exitosa
         let error = 0;
         if(request.status === 200){
-            console.log("Success!")
+            console.log("Success!");
+
+            this.setState({showResult:true, result:2});
         }
         else if(request.status === 401){
             localStorage.removeItem("jwt");
             error = 1;
+            this.setState({showResult:true, result:1});
         }
         this.props.toogleLoading();
         //this.setState({loading:false, error:error});
         
     }
+    continueModal(){
+        console.log("Continue!");
+        this.props.history.push("/investigation");
+    }
     render() {
         return([
-            <Modal key="modal" open={this.state.showConsents} 
-                title={this.props.translate("investigation.create.survey.add_field")} 
+            <Modal key="modal" open={this.state.showConsents}  
                 component={this.modalComponent()} 
                 closeCallBack={this.closeModal}
             />,
+            <Modal key="modal" open={this.state.showResult}  
+                component={<SuccessComponent title="Success!" continue ={this.continueModal} />} 
+            />,
             <div key="content" className="row">
                 <div className="col-12">
-                    <h4><Translate id="investigation.summary.title" /></h4>
-                    <p><Translate id="investigation.summary.explanation" /></p>
+                    <h4><Translate id="investigation.create.summary.title" /></h4>
+                    <p><Translate id="investigation.create.summary.explanation" /></p>
                     <p><SpanField><Translate id="investigation.create.summary.review_consents" ></Translate>:</SpanField> <button className="waves-effect waves-light btn lime" onClick={this.showConsents}>Ver consents</button></p>
                     <p><SpanField><Translate id="investigation.create.survey.name" ></Translate>:</SpanField> {this.props.investigation.survey.title}</p>
                     <p><SpanField><Translate id="investigation.create.survey.description" ></Translate>:</SpanField> {this.props.investigation.survey.description}</p>
@@ -88,11 +133,11 @@ class Summary extends Component {
                         }
                         </tbody>
                     </table>
-                    <Translate id="investigation.summary.patients" ></Translate>
+                    <Translate id="investigation.create.summary.patients" ></Translate>
                     <table id="survey-info" key="table-emails" className="striped">
                         <thead>
                         <tr>
-                            <th key="email"><Translate id="investigation.summary.email" ></Translate></th>   
+                            <th key="email"><Translate id="investigation.create.summary.email" ></Translate></th>   
                         </tr>
                         </thead>
                         <tbody>
@@ -119,4 +164,4 @@ Summary.propTypes = {
     investigation : PropTypes.object
 }
 
-export default withLocalize((connect(null, { toogleLoading })(Summary)));
+export default withRouter(withLocalize((connect(null, { toogleLoading })(Summary))));

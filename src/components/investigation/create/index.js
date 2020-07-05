@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import NewSurvey  from './new_survey';
 import AddPatients from './add_patients';
 import Summary from './summary';
-import PreviewConsents from '../consent/preview';
+import PreviewConsents from '../../consent/preview';
 import AddConsents from './consent';
 import styled from 'styled-components';
 

@@ -6,12 +6,12 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import styled from 'styled-components';
 import axios from 'axios';
-import { validateField } from '../../utils';
-import Form from '../general/form';
-import Modal from '../general/modal';
-import { toogleLoading } from '../../actions';
-import {DeleteHolder} from "../general/mini_components";
-import FieldSherwood from '../FieldSherwood';
+import { validateField } from '../../../utils';
+import Form from '../../general/form';
+import Modal from '../../general/modal';
+import { toogleLoading } from '../../../actions';
+import {DeleteHolder} from "../../general/mini_components";
+import FieldSherwood from '../../general/FieldSherwood';
 
 const FIELDS_FORM = {
     "is_personal_data":{

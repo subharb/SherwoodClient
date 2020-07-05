@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { reduxForm, Field } from 'redux-form';
 import { Translate, withLocalize } from 'react-localize-redux';
-import FieldSherwood from '../FieldSherwood';
-import Modal from '../general/modal';
-import Form from '../general/form';
-import { toogleLoading } from '../../actions';
-import {DeleteHolder} from "../general/mini_components";
+import FieldSherwood from '../../general/FieldSherwood';
+import Modal from '../../general/modal';
+import Form from '../../general/form';
+import { toogleLoading } from '../../../actions';
+import {DeleteHolder} from "../../general/mini_components";
 
 const FIELDS_FORM = {
     "email":{
