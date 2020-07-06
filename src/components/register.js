@@ -30,9 +30,8 @@ const forms = {
             required : true,
             type:"select",
             defaultOption:{"text" : "register.personal_info.country", "value" : ""},
-            options:[{"text" : "investigation.create.survey.type_text", "value" : "text"},
-                    {"text": "investigation.create.survey.type_number", "value" : "number"}, 
-                    {"text": "investigation.create.survey.type_date", "value" : "date"}],
+            options:[{"text" : "investigation.create.survey.loading", "value" : "text"}],
+            optionsUrl: process.env.REACT_APP_API_URL+"/countries",
             label:"register.personal_info.surnames",
             shortLabel: "register.personal_info.surnames",
             validation : "notEmpty"
@@ -83,15 +82,18 @@ export default class Register extends Component {
         this.setState(tempState);
 
     }
+    componentDidMount(){
+
+    }
     render() {
         const currentSection  = this.sections[this.state.selected];
         return ([
             <Header key="header"/>,
-            <div class="container">
+            <div className="container" key="container">
                 <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={["Personal Info", "Contact Info", "Key Generation"]} />    
                 <p><Translate id={`register.${currentSection}.explanation`} /></p>
                 <div className="row">
-                    <div class="col s5 offset-s4">
+                    <div className="col s5 offset-s4">
                         <div className="row">
                             <Form fields={forms[currentSection]} callBackForm={this.saveData} />
                         </div>

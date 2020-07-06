@@ -1,11 +1,23 @@
 import React, { Component } from 'react'
 import M from 'materialize-css';
 import { withLocalize } from 'react-localize-redux';
+import axios from 'axios';
 
 class FieldSherwood extends Component{
-    componentDidMount(){
+    constructor(props){
+        super(props);
+
+        this.state = {options : []}
+    }
+    async componentDidMount(){
         let selects = document.querySelectorAll('select');
         var instances = M.FormSelect.init(selects, {});
+        if(typeof this.props.optionsUrl !== "undefined"){
+            const request = await axios.get(this.props.optionsUrl);
+            if(request.status === 200){
+                this.setState({options : request.data});
+            }
+        }
     }
     render(){
         const {input, label, meta, type, disabled, options, defaultOption, size} = this.props;
@@ -13,14 +25,23 @@ class FieldSherwood extends Component{
         let errorClass = (meta.touched && meta.error) ? "invalid" : "";
         switch(type){
             case "select":
+                let optionsArray = [];
+                if(typeof this.props.optionsUrl !== "undefined"){
+                    optionsArray = this.state.options.map(option => {
+                        return <option key={option.code} value={option.code}>{this.props.translate(option.code)}</option>
+                    })
+                }
+                else{
+                    optionsArray = options.map(option => {
+                        return <option key={option.value} value={option.value}>{this.props.translate(option.text)}</option>
+                    })
+                }
                 return (
                     <div className={`input-field col ${sizeCurrent}`}>
                         <select data-testid={input.name} {...input} >
                             <option value={defaultOption.value} disabled>{this.props.translate(defaultOption.text)}</option>
                             {
-                                options.map(option => {
-                                    return <option key={option.value} value={option.value}>{this.props.translate(option.text)}</option>
-                                })
+                                optionsArray
                             }
                         </select>
                         <label>{this.props.translate(label)}</label>
