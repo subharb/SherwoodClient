@@ -9,9 +9,12 @@ class FieldSherwood extends Component{
 
         this.state = {options : []}
     }
-    async componentDidMount(){
+    componentDidUpdate(){
         let selects = document.querySelectorAll('select');
         var instances = M.FormSelect.init(selects, {});
+    }
+    async componentDidMount(){
+        
         if(typeof this.props.optionsUrl !== "undefined"){
             const request = await axios.get(this.props.optionsUrl);
             if(request.status === 200){
@@ -20,15 +23,15 @@ class FieldSherwood extends Component{
         }
     }
     render(){
-        const {input, label, meta, type, disabled, options, defaultOption, size} = this.props;
+        const {input, label, meta, type, disabled, options, defaultOption, size, option} = this.props;
         const sizeCurrent = size ? size : "s12";
         let errorClass = (meta.touched && meta.error) ? "invalid" : "";
         switch(type){
             case "select":
                 let optionsArray = [];
                 if(typeof this.props.optionsUrl !== "undefined"){
-                    optionsArray = this.state.options.map(option => {
-                        return <option key={option.code} value={option.code}>{this.props.translate(option.code)}</option>
+                    optionsArray = this.state.options.map(anOption => {
+                        return <option key={anOption[option.value]} value={anOption[option.value]}>{anOption[option.text]}</option>
                     })
                 }
                 else{

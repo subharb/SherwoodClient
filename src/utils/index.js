@@ -9,16 +9,22 @@
  * @returns {boolean} result - This object contains the result and the message
  * @returns {string} messageCode - Code message to be encoded
  */
-export function validateField(field){
+export function validateField(field, fieldCompare){
     const response = {};
     //Si el campo es obligatorio o si tiene un valor, validamos su contenido
     if(field.required || (field.value !== "" && typeof field.value === 'string') ){
         const pathErroTranslation = "investigation.errors.";
+        let re;
         switch(field.validation){
             case "validEmail" : 
-                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 response.result = re.test(String(field.value).toLowerCase());
                 response.messageCode = pathErroTranslation+"error_email";
+                break;
+            case "validPhone" : 
+                re = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+                response.result = re.test(String(field.value).toLowerCase());
+                response.messageCode = pathErroTranslation+"error_phone";
                 break;
             case "password":
                 response.result = Boolean(field.value && field.value.length > 6);
@@ -36,6 +42,10 @@ export function validateField(field){
                 response.result = Boolean(field.value && field.value !== "");
                 response.messageCode =  pathErroTranslation+"error_not_empty"
                 break;
+            case "equalTo":
+                response.result = Boolean(field.value === fieldCompare.value);
+                response.messageCode =  pathErroTranslation+"error_not_same"
+                break;
             default:
                 console.log("Validación no definida");
                 response.result = false;
@@ -51,14 +61,24 @@ export function validateField(field){
     
 }
 
-Object.defineProperty(String.prototype, 'hashCode', {
-    value: function() {
-      var hash = 0, i, chr;
-      for (i = 0; i < this.length; i++) {
-        chr   = this.charCodeAt(i);
-        hash  = ((hash << 5) - hash) + chr;
-        hash |= 0; // Convert to 32bit integer
-      }
-      return hash;
+/**
+ * Generates a random value as long as keyLength
+ * 
+ * @param {number} keyLength - Length of the key generated
+ * @returns {string} key - Key generated
+ */
+
+export function generateKey(keyLength){
+    var chars =
+    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
+    // create a key for symmetric encryption
+    // pass in the desired length of your key
+    var randomstring = '';
+    
+    for (var i=0; i < keyLength; i++) {
+        var rnum = Math.floor(Math.random() * chars.length);
+        randomstring += chars.substring(rnum,rnum+1);
     }
-  });
+    return randomstring;
+    
+}

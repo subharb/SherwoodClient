@@ -53,7 +53,13 @@ function validate(values, props){
     const errors = {};
     Object.keys(props.fields).forEach(key => {
         console.log(key+" : "+props.fields[key].validation+" "+values[key]);
-        const validation = validateField({value : values[key], validation:props.fields[key].validation, required:props.fields[key].required})
+        //Se puede comparar con otro valor del form si existe el campo validationField
+        const fieldCompare = props.fields[key].validationField ? {value: values[props.fields[key].validationField]} : null;
+        const validation = validateField({  value : values[key], 
+                                            validation:props.fields[key].validation, 
+                                            required:props.fields[key].required
+                                        },
+                                        fieldCompare)
         if(!validation.result){
             errors[key] = validation.messageCode;
         }

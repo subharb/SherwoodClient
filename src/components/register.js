@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Translate } from 'react-localize-redux';
+import { generateKey } from '../utils';
 import Header from './general/header';
 import Form from '../components/general/form';
 import Breadcrumb from './general/breadcrumb';
@@ -30,7 +31,11 @@ const forms = {
             required : true,
             type:"select",
             defaultOption:{"text" : "register.personal_info.country", "value" : ""},
-            options:[{"text" : "investigation.create.survey.loading", "value" : "text"}],
+            options:[],
+            option : {
+                "value" : "id",
+                "text" : "code"
+            },
             optionsUrl: process.env.REACT_APP_API_URL+"/countries",
             label:"register.personal_info.surnames",
             shortLabel: "register.personal_info.surnames",
@@ -41,28 +46,42 @@ const forms = {
         "email":{
             required : true,
             type:"text",
-            label:"register.personal_info.email",
-            shortLabel: "register.personal_info.email",
-            validation : "notEmpty"
+            label:"register.contact_info.email",
+            shortLabel: "register.contact_info.email",
+            validation : "validEmail"
         },
         "phone" : {
             required : true,
             type:"text",
-            label:"register.personal_info.phone",
-            shortLabel: "register.personal_info.phone",
-            validation : "notEmpty"
+            label:"register.contact_info.phone",
+            shortLabel: "register.contact_info.phone",
+            validation : "validPhone"
         },
     },
-    "key_generation" : {
-
+    "password" : {
+        "password":{
+            required : true,
+            type:"password",
+            label:"register.password.password",
+            shortLabel: "register.password.password",
+            validation : "textMin6"
+        },
+        "repeat_password":{
+            required : true,
+            type:"password",
+            label:"register.password.repeat_password",
+            shortLabel: "register.password.repeat_password",
+            validation : "equalTo",
+            validationField: "password"
+        },
     }
     
 }
 export default class Register extends Component {
     constructor(props){
         super(props);
-        this.sections = ["personal_info", "contact_info", "key_generation"]
-        this.state = {selected:0, info : {}}
+        this.sections = ["personal_info", "contact_info", "password", "key_generation"]
+        this.state = {selected:2, info : {}}
 
         this.saveData = this.saveData.bind(this);
     }
@@ -87,6 +106,7 @@ export default class Register extends Component {
     }
     render() {
         const currentSection  = this.sections[this.state.selected];
+        
         return ([
             <Header key="header"/>,
             <div className="container" key="container">
@@ -95,6 +115,9 @@ export default class Register extends Component {
                 <div className="row">
                     <div className="col s5 offset-s4">
                         <div className="row">
+                            {
+                                generateKey(80)
+                            }
                             <Form fields={forms[currentSection]} callBackForm={this.saveData} />
                         </div>
                     </div>

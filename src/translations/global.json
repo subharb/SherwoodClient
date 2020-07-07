@@ -26,6 +26,12 @@
             "explanation" : ["Loremipsum contact_info"],
             "email" : ["Email", "Email"],
             "phone" : ["Phone", "Teléfono"]
+        },
+        "password" : {
+            "explanation" : ["Loremipsum key_generation"],
+            "key" : ["Key", "Clave"],
+            "password" : ["Password", "Contraseña"],
+            "repeat_password" : ["Repeat Password", "Repetir Contraseña"]
         }
     },
     "investigation" : {
@@ -92,10 +98,12 @@
         },    
         "errors" : {
             "error_email" : ["Email not valid", "Email no válido"],
+            "error_phone" : ["Phone not valid", "Teléfono no válido"],
             "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres"],
             "error_length6" : ["It has to be at least 6 characters long","Debe tener una longitud de al menos 6 caracteres"],
             "error_length2" : ["It has to be at least 2 characters long","Debe tener una longitud de al menos 2 caracteres"],
-            "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío"]
+            "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío"],
+            "error_not_same" : ["Fields have to be the same", "El valor tiene que ser igual"]
 
         }
     },
