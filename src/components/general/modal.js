@@ -4,9 +4,8 @@ import M from 'materialize-css';
 import "materialize-css/dist/css/materialize.min.css";
 import PropTypes from 'prop-types'; 
 
-const ModalContainer = styled.div`
-    display:none;
-    max-height: 90%;
+const ModalContent = styled.div`
+    text-align:center;
 `;
 const CloseButton = styled.button`
     position: absolute;
@@ -59,13 +58,16 @@ export default class Modal extends Component{
         if(this.props.open){
             return (
                 <div ref={this.modal}  id="modal1" className="modal">
-                    <div className="modal-content">
-                        <h4>{this.props.component.title}</h4>
+                    <ModalContent className="modal-content">
+                        <h4>{this.props.title}</h4>
                         {this.props.component}
+                        {this.props.callBackForm &&
+                            <button data-testid="cancel" onClick={this.props.callBackForm} className="waves-effect waves-light btn">Continue</button>
+                        } 
                         {this.props.closeCallBack &&
                             <CloseButton data-testid="cancel" onClick={this.props.closeCallBack} className="waves-effect waves-light btn red lighten-1">Cancel</CloseButton>
                         }                        
-                    </div>
+                    </ModalContent>
                     
                 </div> 
             );
@@ -81,9 +83,16 @@ export default class Modal extends Component{
         }
         
     }
-    static propTypes = {
-        open: PropTypes.bool
-    }
+    
 }
 
-
+Modal.propTypes = {
+    open: PropTypes.bool.isRequired,
+    title: PropTypes.oneOfType([
+        PropTypes.string.isRequired,
+        PropTypes.object.isRequired
+    ]),
+    component:PropTypes.object.isRequired,
+    callBackForm:PropTypes.func,
+    closeCallBack:PropTypes.func
+}

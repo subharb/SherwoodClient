@@ -71,7 +71,7 @@ class Login extends Component {
         console.log("HandleLogin", values);
         this.setState({loading:true});
         this.props.toogleLoading();
-        const hashPassword = CryptoJS.SHA256("Message").toString(CryptoJS.enc.Base64)
+        const hashPassword = CryptoJS.SHA256(values.password).toString(CryptoJS.enc.Base64)
         console.log("hashPassword", hashPassword);
         this.loginUser(values.email, hashPassword);
        
@@ -130,18 +130,6 @@ function validate(values){
             errors[key] = validation.messageCode;
         }
     })
-        
-    
-
-    // if(!validateField({value : values.email, validation:"email"}).result){
-    //     errors.email = "Error email"
-    // }
-    // if(!validateField({value : values.password, validation:"password"}).result){
-    //     errors.password = "Error password";
-    // }
-    // if(!values.email || values.email.length > 4){
-    //     errors.email = "Error email";
-    // }
     
     return errors;
 }

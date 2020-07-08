@@ -43,7 +43,7 @@ export function validateField(field, fieldCompare){
                 response.messageCode =  pathErroTranslation+"error_not_empty"
                 break;
             case "equalTo":
-                response.result = Boolean(field.value === fieldCompare.value);
+                response.result = Boolean(field.value === fieldCompare);
                 response.messageCode =  pathErroTranslation+"error_not_same"
                 break;
             default:
@@ -58,27 +58,5 @@ export function validateField(field, fieldCompare){
         response.messageCode =  "";
     }
     return response;
-    
-}
-
-/**
- * Generates a random value as long as keyLength
- * 
- * @param {number} keyLength - Length of the key generated
- * @returns {string} key - Key generated
- */
-
-export function generateKey(keyLength){
-    var chars =
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
-    // create a key for symmetric encryption
-    // pass in the desired length of your key
-    var randomstring = '';
-    
-    for (var i=0; i < keyLength; i++) {
-        var rnum = Math.floor(Math.random() * chars.length);
-        randomstring += chars.substring(rnum,rnum+1);
-    }
-    return randomstring;
     
 }

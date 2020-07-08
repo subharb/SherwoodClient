@@ -28,10 +28,17 @@
             "phone" : ["Phone", "Teléfono"]
         },
         "password" : {
-            "explanation" : ["Loremipsum key_generation"],
-            "key" : ["Key", "Clave"],
+            "explanation" : ["Loremipsum password"],
             "password" : ["Password", "Contraseña"],
             "repeat_password" : ["Repeat Password", "Repetir Contraseña"]
+        },
+        "key_generation" : {
+            "explanation" : ["Loremipsum key_generation"],
+            "key" : ["Key", "Clave"],
+            "success_title" : ["Success!", "Enhorabuena!"],
+            "success_text" : ["An email is coming your way, click on it to verify your account and in no time your will be able to create investigations with privacy as a priority",
+                                "Un email está en camino, haz click en el link que hay dentro para verificar tu cuenta. Dentro de poco podrás crear investigaciones con la privacidad como prioridad"],
+            "confirm" : ["CONFIRM", "CONFIRMAR"]
         }
     },
     "investigation" : {

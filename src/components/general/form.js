@@ -12,7 +12,6 @@ import PropTypes from 'prop-types';
  */
 class Form extends Component {
     callBackForm(values){
-        console.log("CALLBACK!"); 
         return this.props.callBackForm(values);
     }
     componentDidMount(){
@@ -53,13 +52,13 @@ function validate(values, props){
     const errors = {};
     Object.keys(props.fields).forEach(key => {
         console.log(key+" : "+props.fields[key].validation+" "+values[key]);
-        //Se puede comparar con otro valor del form si existe el campo validationField
-        const fieldCompare = props.fields[key].validationField ? {value: values[props.fields[key].validationField]} : null;
+        //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
+        const fieldValueCompare = props.fields[key].validationField ? values[props.fields[key].validationField] : props.fields[key].validationValue ? props.translate(props.fields[key].validationValue) : null;
         const validation = validateField({  value : values[key], 
                                             validation:props.fields[key].validation, 
                                             required:props.fields[key].required
                                         },
-                                        fieldCompare)
+                                        fieldValueCompare);
         if(!validation.result){
             errors[key] = validation.messageCode;
         }
