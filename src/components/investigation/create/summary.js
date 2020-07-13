@@ -70,7 +70,7 @@ class Summary extends Component {
         this.setState({showConsents:false});
     }
     async saveForLater(){
-        //this.props.toogleLoading();
+        this.props.toogleLoading();
         const request = await axios.post(process.env.REACT_APP_API_URL+'/investigation', this.props.investigation,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
         
@@ -85,7 +85,7 @@ class Summary extends Component {
             error = 1;
             this.setState({showResult:true, result:1});
         }
-        //this.props.toogleLoading();
+        this.props.toogleLoading();
         
         
     }
