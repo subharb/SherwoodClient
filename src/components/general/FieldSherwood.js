@@ -53,6 +53,7 @@ class FieldSherwood extends Component{
                     
                 );
             case "checkbox":
+                console.log("Value checkbox: "+input.name+" "+input.value);
                 const className = (meta.touched && meta.error) ? "error text" : ""
                 return (
                     <div className={`input-field col ${sizeCurrent}`}>

@@ -54,7 +54,8 @@ function validate(values, props){
         console.log(key+" : "+props.fields[key].validation+" "+values[key]);
         //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
         const fieldValueCompare = props.fields[key].validationField ? values[props.fields[key].validationField] : props.fields[key].validationValue ? props.translate(props.fields[key].validationValue) : null;
-        const validation = validateField({  value : values[key], 
+        const validation = validateField({  
+                                            value : values[key], 
                                             validation:props.fields[key].validation, 
                                             required:props.fields[key].required
                                         },
@@ -63,7 +64,7 @@ function validate(values, props){
             errors[key] = validation.messageCode;
         }
     });
-    console.log(errors);
+    //console.log(errors);
     return errors;
 }
 export default withLocalize(reduxForm({

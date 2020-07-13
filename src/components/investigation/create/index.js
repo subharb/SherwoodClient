@@ -134,7 +134,8 @@ export default class NewInvestigation extends Component {
                 component = <NewSurvey callBackData={this.addData} />
                 break;
             case 1:
-                const filteredFields = this.state.survey.fields.filter(field => field["is_personal_data"].value);
+                const filteredFields = this.state.survey.fields.filter(field => field.is_personal_data === true);
+                console.log("filteredFields", filteredFields);
                 component = <AddConsents personalFields={filteredFields} callBackData={this.addData} />
                 break;
             case 2:

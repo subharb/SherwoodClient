@@ -117,29 +117,7 @@ class CreateSurvey extends Component {
         }
         this.setState(tempState);
     }
-    // saveSurvey(values){
-        
-    //     this.props.toogleLoading();
-    //     this.setState({loading:true});
 
-    //     const postObj = {title:values.title, description:values.description, survey:{fields:this.state.fields}};
-    //     const request = axios.post(process.env.REACT_APP_API_URL+'/investigation', postObj)
-    //                     .then((req) => {
-    //                         //Si es exitosa, mostrarmos success
-    //                         let error = 0;
-    //                         if(request.status === 200){
-    //                             error = 1;
-    //                         }
-                            
-    //                         this.setState({loading:false, error:error});
-    //                         this.props.toogleLoading();
-    //                     })
-    //                     .catch(err => {
-    //                         console.log('Catch', err);
-    //                         this.setState({loading:false, error:1});
-    //                         this.props.toogleLoading();
-    //                     }); 
-    // }
     renderAddedFields(){
         if(this.state.fields.length === 0){
             return <Translate id="investigation.create.survey.no_fields" />
