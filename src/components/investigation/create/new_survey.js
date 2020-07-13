@@ -78,7 +78,7 @@ class CreateSurvey extends Component {
         this.renderAddedFields = this.renderAddedFields.bind(this);
         this.closeModal = this.closeModal.bind(this);
         //this.saveSurvey = this.saveSurvey.bind(this);
-        this.state = {fields : [{name: "age", type:"number", question : "¿cuál es tu edad?"}], addingField : false, loading : false, error : false};
+        this.state = {fields : [], addingField : false, loading : false, error : false};
     }
     handleAddField(values){
         console.log("handleAddField", values);
@@ -185,7 +185,7 @@ class CreateSurvey extends Component {
         if(this.state.loading === false && this.state.error === 0){
             return(
                 <div className="success">
-                    sucess!
+                    Success!
                 </div>);
         }
         else{

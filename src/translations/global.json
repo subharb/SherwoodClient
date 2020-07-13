@@ -95,7 +95,11 @@
             "view_investigation" : ["View Investigation", "Ver investigación"],
             "title" : ["Title", "Título"],
             "date_created" : ["Date create", "Fecha de creación"],
-            "description" : ["Description", "Descripción"]
+            "description" : ["Description", "Descripción"],
+            "all" : {
+                "no_investigations" : ["You don't have any investigations yet", "Aún no ha subido ninguna investigación"],
+                "add_first_investigation" : ["Add your first investigation", "Cree su primera investigación"]
+            }
         },
         "table" : {
             "is_personal_data" : ["personal data", "dato personal"],

@@ -41,13 +41,13 @@ class FieldSherwood extends Component{
                 }
                 return (
                     <div className={`input-field col ${sizeCurrent}`}>
-                        <select data-testid={input.name} {...input} >
+                        <select data-testid={input.name} {...input} aria-labelledby={this.props.translate(label)} >
                             <option value={defaultOption.value} disabled>{this.props.translate(defaultOption.text)}</option>
                             {
                                 optionsArray
                             }
                         </select>
-                        <label>{this.props.translate(label)}</label>
+                        <label aria-label={this.props.translate(label)}>{this.props.translate(label)}</label>
                         <span className="error text">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
                     </div>
                     

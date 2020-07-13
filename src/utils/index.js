@@ -1,3 +1,6 @@
+import { func } from "prop-types";
+import CryptoJS from 'crypto-js';
+
 /**
  * Function that validates fields from anywhere in the app
  * 
@@ -60,3 +63,59 @@ export function validateField(field, fieldCompare){
     return response;
     
 }
+
+export async function generateKey(){
+    const genObj = await crypto.subtle.generateKey(
+        {
+          name: "AES-GCM",
+          length: 256
+        },
+        true,
+        ["encrypt", "decrypt"]
+      );
+    //A partir del objeto cryptoObj obtenemos la clave
+    const cryptoObj = await crypto.subtle.exportKey("jwk", genObj);
+    const keyString = cryptoObj.k;
+
+    return keyString;
+}
+
+export async function importKey(key){
+    let keyObj = await crypto.subtle.importKey(
+        "jwk",
+        {
+            alg: "A256GCM",
+            ext: true,
+            k: key,
+            key_ops: ["encrypt", "decrypt"],
+            kty: "oct"
+        },
+        {
+            name: "AES-GCM",
+            length: 256
+        },
+        true,
+        ["encrypt", "decrypt"]
+    );
+
+    return keyObj;
+}
+
+export async function encriptData(data, key){
+    var KeyObj = CryptoJS.AES.encrypt(data, key);
+    var ciphertext = KeyObj.toString();
+    console.log(KeyObj);
+    return ciphertext;
+}
+
+export async function decryptData(ciphertext, key){
+
+     var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
+    var originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+    console.log(originalText);
+
+    return originalText;
+
+}
+

@@ -26,7 +26,14 @@ class AllInvestigations extends Component {
             return "CARGANDO...";
         }
         else if(this.state.investigations.length === 0){
-            return "No hay investigaciones"
+            return (
+                <div>
+                    <Translate id="investigation.show.all.no_investigations" />
+                    <Translate id="investigation.show.all.add_first_investigation" />
+                    <Link to="/investigation/create" className="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></Link>
+  
+                </div>
+                );
         }
         else{
             return this.state.investigations.map(inves => {

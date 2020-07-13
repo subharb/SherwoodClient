@@ -5,6 +5,7 @@ import { Translate } from 'react-localize-redux';
 import Modal from './general/modal';
 import Header from './general/header';
 import Form from '../components/general/form';
+import { generateKey, encriptData, decryptData } from '../utils';
 import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
 import { toogleLoading } from '../actions';
@@ -121,38 +122,41 @@ class Register extends Component {
     crumbSelected(index){
         console.log(`Index selected ${index}`); 
     }
-    async encodeKeyResearcher(password, keyString){
-        let keyObj = await crypto.subtle.importKey(
-            "jwk",
-            {
-                alg: "A256GCM",
-                ext: true,
-                k: keyString,
-                key_ops: ["encrypt", "decrypt"],
-                kty: "oct"
-            },
-            {
-                "name":"AES-GCM",
-                "length":256
-            },
-            true,
-            ['encrypt','decrypt']
-        );
-        console.log(keyObj);
-        let enc = new TextEncoder();
-        let encoded = enc.encode(password);
-        // The iv must never be reused with a given key.
-        this.iv = window.crypto.getRandomValues(new Uint8Array(12));
-        let ciphertext = await window.crypto.subtle.encrypt(
-            {
-                name: "AES-GCM",
-                iv: this.iv
-            },
-            keyObj,
-            encoded
-        );
-        let buffer = new Uint8Array(ciphertext, 0, 5);
-        return buffer;
+    async encodeKeyResearcher(data, keyString){
+        // Encrypt
+        
+
+        // let keyObj = await crypto.subtle.importKey(
+        //     "jwk",
+        //     {
+        //         alg: "A256GCM",
+        //         ext: true,
+        //         k: keyString,
+        //         key_ops: ["encrypt", "decrypt"],
+        //         kty: "oct"
+        //     },
+        //     {
+        //         "name":"AES-GCM",
+        //         "length":256
+        //     },
+        //     true,
+        //     ['encrypt','decrypt']
+        // );
+        // console.log(keyObj);
+        // let enc = new TextEncoder();
+        // let encoded = enc.encode(password);
+        // // The iv must never be reused with a given key.
+        // this.iv = window.crypto.getRandomValues(new Uint8Array(12));
+        // let ciphertext = await window.crypto.subtle.encrypt(
+        //     {
+        //         name: "AES-GCM",
+        //         iv: this.iv
+        //     },
+        //     keyObj,
+        //     encoded
+        // );
+        // let buffer = new Uint8Array(ciphertext, 0, 5);
+        // return buffer;
     }
     async saveData(data){
         let tempState = this.state;
@@ -162,7 +166,7 @@ class Register extends Component {
             //Trato los datos que voy a enviar
             delete tempState.info.repeat_password;
             const hashPassword = CryptoJS.SHA256(tempState.info.password).toString(CryptoJS.enc.Base64)
-            tempState.info.key = await this.encodeKeyResearcher(tempState.info.password, this.state.key);
+            tempState.info.key = await encriptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
             tempState.info.password = hashPassword;
             //Hay que guardar tb el this.iv
             console.log(JSON.stringify(tempState.info));
@@ -176,19 +180,28 @@ class Register extends Component {
 
     }
     async generateKey(){
-        const values =  await crypto.subtle.generateKey({
-            "name":"AES-GCM",
-            "length":256
-          },true,['encrypt','decrypt']);
-        console.log(values);
-        const cryptoObj = await crypto.subtle.exportKey("jwk", values);
-        let tempState = this.state;
-        tempState.key = cryptoObj.k
-        this.setState(tempState);
-        console.log("KEY", cryptoObj);
+        
+        const researcherKey = await generateKey();
+        console.log("researcherKey", researcherKey);
+        this.setState({key:researcherKey});
+
+        
+
+        // const decrypted = await decryptData(encriptedData, "12345");
+
+        // console.log("decrypted", decrypted);
+
+        
+        // // Decrypt
+        
+
+        // 'my message'
+        
+
+        // return originalText;
     }
     continue(){
-        console.log("Sucess!");
+        console.log("Success!");
     }
     render() {
         const currentSection  = this.sections[this.state.selected];
@@ -200,7 +213,7 @@ class Register extends Component {
         }
         else{
             if(this.sections[this.state.selected] === "key_generation" && this.state.key === null){
-                this.generateKey();
+                this.generateKey(); 
             }
             content = [<ParaKey>{ this.state.key }</ParaKey>, <Form fields={forms[currentSection]} callBackForm={this.saveData} />];
         }
