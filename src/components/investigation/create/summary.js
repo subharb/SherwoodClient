@@ -39,7 +39,8 @@ class Summary extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.saveForLater = this.saveForLater.bind(this);
         this.continueModal = this.continueModal.bind(this);
-        this.state = {showConsents : false, showResult:false, result : 0}//Resultado 0, no enviado, 1 recibido y con error; 2 recibido y correcto
+        this.state = {showConsents : false, showResult:false, result : 0}
+        //Resultado 0, no enviado, 1 recibido y con error; 2 recibido y correcto
     }
     showConsents(){
         this.setState({showConsents:true});
@@ -69,7 +70,7 @@ class Summary extends Component {
         this.setState({showConsents:false});
     }
     async saveForLater(){
-        this.props.toogleLoading();
+        //this.props.toogleLoading();
         const request = await axios.post(process.env.REACT_APP_API_URL+'/investigation', this.props.investigation,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
         
@@ -84,8 +85,8 @@ class Summary extends Component {
             error = 1;
             this.setState({showResult:true, result:1});
         }
-        this.props.toogleLoading();
-        //this.setState({loading:false, error:error});
+        //this.props.toogleLoading();
+        
         
     }
     continueModal(){
@@ -94,11 +95,11 @@ class Summary extends Component {
     }
     render() {
         return([
-            <Modal key="modal" open={this.state.showConsents}  
+            <Modal key="modal1" open={this.state.showConsents}  
                 component={this.modalComponent()} 
                 closeCallBack={this.closeModal}
             />,
-            <Modal key="modal" open={this.state.showResult}  
+            <Modal key="modal2" open={this.state.showResult}  
                 component={<SuccessComponent title="Success!" continue ={this.continueModal} />} 
             />,
             <div key="content" className="row">
@@ -123,11 +124,11 @@ class Summary extends Component {
                         {
                             this.props.investigation.survey.fields.map(field => {
                                 return(
-                                    <tr key={field.name.value}>
-                                        <td>{field.is_personal_data.value ? this.props.translate("general.yes") : this.props.translate("general.no")}</td>
-                                        <td>{field.name.value}</td>
-                                        <td>{field.type.value}</td>
-                                        <td>{field.question.value}</td>
+                                    <tr key={field.name}>
+                                        <td>{field.is_personal_data ? this.props.translate("general.yes") : this.props.translate("general.no")}</td>
+                                        <td>{field.name}</td>
+                                        <td>{field.type}</td>
+                                        <td>{field.question}</td>
                                     </tr>)
                             })
                         }

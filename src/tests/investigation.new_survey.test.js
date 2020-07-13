@@ -69,7 +69,7 @@ test("Testing Creating a survey", async() => {
                 }                
             }
             else{
-                fireEvent.change(getByTestId(key), {
+                fireEvent.change(getByTestId(key), { 
                     target: { value: field.value }
                 });
             }
@@ -85,5 +85,5 @@ test("Testing Creating a survey", async() => {
     fireEvent.click(getByTestId("save-investigation"));
     expect(myMockFn.mock.calls.length).toBe(1);
 
-    debug();
+    //debug();
 });

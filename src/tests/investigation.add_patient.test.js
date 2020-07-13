@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, cleanup, fireEvent, waitForDomChange, waitForElementToBeRemoved } from '@testing-library/react';
-import AddPatients from '../components/investigation/add_patients';
+import AddPatients from '../components/investigation/create/add_patients';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from "redux";
 // import configureStore from 'redux-mock-store';

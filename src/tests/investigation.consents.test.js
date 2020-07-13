@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitForDomChange, waitForElementToBeRemoved } from '@testing-library/react';
-import AddConsent from '../components/investigation/consent';
+import AddConsent from '../components/investigation/create/consent';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from "redux";
 // import configureStore from 'redux-mock-store';
@@ -10,50 +10,17 @@ import { reducer as formReducer } from "redux-form";
 
 const reasonPersonalData = ["Identification purposes", "Identification purposes"];
 const OTHER_CONSENT = ["Store biological material"];
-const PERSONAL_FIELDS = 
-     [
-    {   "is_personal_data":{
-            value:true,
-            label:"investigation.create.survey.personal_info",
-            shortLabel: "investigation.table.is_personal_data",
-        },
-        "name" : {
-            value : "name",
-            label:"investigation.create.survey.name_field",
-            shortLabel: "investigation.table.name",
-        },
-        "type" : {
-            value:"text",
-            label : "investigation.create.survey.choose",
-            shortLabel: "investigation.table.type"                                                
-        },
-        "question" : {
-            value : "¿cuál es su nombre",
-            label : "investigation.create.survey.question_field",
-            shortLabel: "investigation.table.question",
-        }
+const PERSONAL_FIELDS =  
+[
+    {   "is_personal_data": true,
+        "name" : "name",
+        "type" : "text",
+        "question" :"¿cuál es su nombre?"
     },
-    {   "is_personal_data":{
-            value:true,
-            label:"investigation.create.survey.personal_info",
-            shortLabel: "investigation.table.is_personal_data",
-            
-        },
-        "name" : {
-            value : "surnames",
-            label:"investigation.create.survey.name_field",
-            shortLabel: "investigation.table.name",
-        },
-        "type" : {
-            value:"text",
-            label : "investigation.create.survey.choose",
-            shortLabel: "investigation.table.type"                                                
-        },
-        "question" : {
-            value : "¿cuáles son sus apellidos",
-            label : "investigation.create.survey.question_field",
-            shortLabel: "investigation.table.question",
-        }
+    {   "is_personal_data": true,
+        "name" : "surnames",
+        "type" : "text",
+        "question" : "¿cuáles son sus apellidos"
     }
 ]
 
@@ -77,13 +44,20 @@ test("Testing Adding/Removing Consents", async() => {
     const { debug, getByTestId, getByText, getAllByTestId, getByLabelText } = renderWithRedux(
             <AddConsent personalFields={PERSONAL_FIELDS} callBackData={myMockFn}  />
     );
-    
+    //Compruebo que los consentimientos de datos personales aparecen
+    for(let i = 0; i < PERSONAL_FIELDS.length; i++){
+        expect(getByText(PERSONAL_FIELDS[i].name)).toBeInTheDocument()
+    }
     const addConsentButtons = getAllByTestId("add-personal-consent");
+    
     for(let i = 0;i < addConsentButtons.length;i++){
         //Recorremos todos los botones y añadimos un consentimiento para los campos personales
         const aButton = addConsentButtons[i];
         fireEvent.click(aButton);
+        console.log("Abro el modal"); 
+        await waitForDomChange();
         //Meto un consentimiento en el form
+        console.log("Reason", reasonPersonalData[i]);
         fireEvent.change(getByLabelText("Missing translationId: investigation.create.consent.reason for language: ${ languageCode }"), {
             target: { value: reasonPersonalData[i] }
         });

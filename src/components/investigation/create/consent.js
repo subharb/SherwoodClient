@@ -126,13 +126,13 @@ class AddConsents extends Component {
                     {
                         this.props.personalFields.map((field, idx) => {
                             return(
-                                <tr key={field.name.value}>
-                                    <td>{field.name.value}</td>
-                                    {this.state.consents.hasOwnProperty(field.name.value) ? 
-                                        <td>{this.state.consents[field.name.value].value} <EditConsent onClick={() => this.editConsent(idx)} className="material-icons">edit</EditConsent></td>
-                                        : <td><button data-testid="add-personal-consent" className="add-personal-consent btn-floating btn-small waves-effect waves-light red" onClick={() => this.addReasonPersonal(field.name.value)} ><i className="material-icons">add</i></button></td>
+                                <tr key={field.name}>
+                                    <td>{field.name}</td>
+                                    {this.state.consents.hasOwnProperty(field.name) ? 
+                                        <td>{this.state.consents[field.name].value} <EditConsent onClick={() => this.editConsent(idx)} className="material-icons">edit</EditConsent></td>
+                                        : <td><button data-testid="add-personal-consent" className="add-personal-consent btn-floating btn-small waves-effect waves-light red" onClick={() => this.addReasonPersonal(field.name)} ><i className="material-icons">add</i></button></td>
                                     }   
-                                    <td>{this.state.consents[field.name.value] ? this.state.consents[field.name.value].required : ""}</td>
+                                    <td>{this.state.consents.hasOwnProperty(field.name) ? "Yes" : "-"}</td>
                                 </tr>
                             )
                         })
@@ -175,7 +175,7 @@ class AddConsents extends Component {
                     }
                     </tbody>
                 </table>,
-                ]);
+            ]);
         }
     }
     render() {
@@ -183,7 +183,7 @@ class AddConsents extends Component {
         const disableButton = this.props.personalFields.length > 0 && !this.props.personalFields.reduce((accumulator, pField) => {
             console.log("Reducing", pField);
             console.log(this.state.consents);
-            return accumulator && this.state.consents.hasOwnProperty(pField.name.value);
+            return accumulator && this.state.consents.hasOwnProperty(pField.name);
         }, true);
         return ([
             <Modal key="modal" open={this.state.addingConsent} 
