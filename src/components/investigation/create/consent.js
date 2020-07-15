@@ -60,7 +60,11 @@ class AddConsents extends Component {
         this.renderConsents = this.renderConsents.bind(this);
         this.addConsent = this.addConsent.bind(this);
         
-        this.state = {addingConsent : false, consents : {}}
+        let consents = {};
+        if(props.consents){
+            consents = props.consents;
+        }
+        this.state = {addingConsent : false, consents : consents}
     }
     
     saveConsents(){

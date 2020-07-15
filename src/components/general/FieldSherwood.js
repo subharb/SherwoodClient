@@ -14,7 +14,6 @@ class FieldSherwood extends Component{
         var instances = M.FormSelect.init(selects, {});
     }
     async componentDidMount(){
-        
         if(typeof this.props.optionsUrl !== "undefined"){
             const request = await axios.get(this.props.optionsUrl);
             if(request.status === 200){
@@ -64,11 +63,14 @@ class FieldSherwood extends Component{
                         
                     </div>
                 )
-            default:               
+            default:     
+                const isActive = input.value !== "" ? "active" : "";
                 return(
                     <div  className={`input-field col ${sizeCurrent}`}>
-                        <input data-testid={input.name} {...input}  className={`validate ${errorClass}`} key={input.name} id={input.name} name={input.name} type={type} disabled={disabled} />
-                        <label key={`label_${input.name}`} htmlFor={input.name}>{this.props.translate(label)}</label>
+                        <input data-testid={input.name} {...input}  
+                            className={`validate ${errorClass}`} key={input.name} id={input.name} 
+                            name={input.name} type={type} disabled={disabled} />
+                        <label className={isActive} key={`label_${input.name}`} htmlFor={input.name}>{this.props.translate(label)}</label>
                         <span className="error text">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
                     </div>
                 );

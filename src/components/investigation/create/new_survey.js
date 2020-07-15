@@ -55,7 +55,8 @@ const FIELDS_INVESTIGATION = {
         required : false,
         type:"text",
         label:"investigation.create.survey.name",
-        validation : "notEmpty"
+        validation : "notEmpty",
+        value: "TEST"
     },
     "description" : {
         required : true,
@@ -78,7 +79,12 @@ class CreateSurvey extends Component {
         this.renderAddedFields = this.renderAddedFields.bind(this);
         this.closeModal = this.closeModal.bind(this);
         //this.saveSurvey = this.saveSurvey.bind(this);
-        this.state = {fields : [], addingField : false, loading : false, error : false};
+        let fields = []
+        //Si se pasa por parametro una investigacion, la meto en el estado
+        if(props.investigation){
+            fields = props.investigation.survey.fields;
+        }
+        this.state = {fields : fields, addingField : false};
     }
     handleAddField(values){
         console.log("handleAddField", values);
@@ -158,42 +164,42 @@ class CreateSurvey extends Component {
         surveyInfo.fields = this.state.fields;
         this.props.callBackData(surveyInfo)
     }
+    componentDidMount(){
+        if(this.props.investigation){
+            console.log("Hay props");
+            this.props.initialize(this.props.investigation);
+               
+        }
+    }
     render() {
         //Se ha enviado la info sin errores
-        if(this.state.loading === false && this.state.error === 0){
-            return(
-                <div className="success">
-                    Success!
-                </div>);
-        }
-        else{
-            return([
-                <Modal key="modal" open={this.state.addingField} 
-                    title={this.props.translate("investigation.create.survey.add_field")} 
-                    component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} />} 
-                    closeCallBack={this.closeModal}
-                />,
-                <form key="form" className="form" onSubmit={this.props.handleSubmit(values => this.storeData(values))}  >
-                    <div key="content" className="row">
-                        <div className="col-12">
-                            <h4><Translate id="investigation.create.survey.title" /></h4>
-                            <p><Translate id="investigation.create.survey.explanation" /></p>
-                            <Field name="title" {...FIELDS_INVESTIGATION["title"]} component={FieldSherwood} />
-                            <Field name="description"  {...FIELDS_INVESTIGATION["description"]} component={FieldSherwood} />
-                            <Translate id="investigation.create.survey.add_field" />
-                            <button data-testid="add-field" type="button"
-                                    className="add-field btn-floating btn-large waves-effect waves-light red" 
-                                    onClick={this.addField}><i className="material-icons">add</i>
-                            </button>
-                        </div>
-                        <div>
-                            { this.renderAddedFields() }
-                        </div>
+        return([
+            <Modal key="modal" open={this.state.addingField} 
+                title={this.props.translate("investigation.create.survey.add_field")} 
+                component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} />} 
+                closeCallBack={this.closeModal}
+            />,
+            <form key="form" className="form" onSubmit={this.props.handleSubmit(values => this.storeData(values))}  >
+                <div key="content" className="row">
+                    <div className="col-12">
+                        <h4><Translate id="investigation.create.survey.title" /></h4>
+                        <p><Translate id="investigation.create.survey.explanation" /></p>
+                        <Field name="title" {...FIELDS_INVESTIGATION["title"]} component={FieldSherwood} />
+                        <Field name="description"  {...FIELDS_INVESTIGATION["description"]} component={FieldSherwood} />
+                        <Translate id="investigation.create.survey.add_field" />
+                        <button data-testid="add-field" type="button"
+                                className="add-field btn-floating btn-large waves-effect waves-light red" 
+                                onClick={this.addField}><i className="material-icons">add</i>
+                        </button>
                     </div>
-                </form>
-                ]
-            );
-        }
+                    <div>
+                        { this.renderAddedFields() }
+                    </div>
+                </div>
+            </form>
+            ]
+        );
+        
     }
 }
 CreateSurvey.propTypes = {

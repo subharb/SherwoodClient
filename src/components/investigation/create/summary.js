@@ -69,9 +69,11 @@ class Summary extends Component {
     closeModal(){
         this.setState({showConsents:false});
     }
-    async saveForLater(){
+    async send(consents){
         this.props.toogleLoading();
-        const request = await axios.post(process.env.REACT_APP_API_URL+'/investigation', this.props.investigation,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        let investigationInfo = {... this.props.investigation };
+        investigationInfo.consents = consents;
+        const request = await axios.post(process.env.REACT_APP_API_URL+'/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
         
         let error = 0;
@@ -153,8 +155,8 @@ class Summary extends Component {
                         </tbody>
                     </table>
                 </div>
-                <button data-testid="publish-investigation" onClick={this.saveAndSend} type="button" key="publish-investigation" id="publish-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save_and_send")}<i className="material-icons right">send</i></button>
-                <button data-testid="save-for-later-investigation" onClick={this.saveForLater} type="button" key="save-for-later-investigation" id="save-for-later-investigation" className="waves-effect waves-light btn lime right">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
+                <button data-testid="publish-investigation" onClick={this.send(true)} type="button" key="publish-investigation" id="publish-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save_and_send")}<i className="material-icons right">send</i></button>
+                <button data-testid="save-for-later-investigation" onClick={this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" className="waves-effect waves-light btn lime right">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
             </div>
             ]
         );

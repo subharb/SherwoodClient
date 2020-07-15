@@ -1,2 +1,4 @@
 export const LOGIN_USER = "LOGIN_USER";
 export const LOADING = "LOADING";
+export const FETCH_INVESTIGATION = "FETCH_INVESTIGATION";
+

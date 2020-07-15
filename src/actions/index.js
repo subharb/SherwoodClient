@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { LOGIN_USER, LOADING, MODAL_SHOW } from './types';
+import { LOGIN_USER, LOADING, FETCH_INVESTIGATION } from './types';
 
 /**
  *  Makes a request to login a user
@@ -21,6 +21,24 @@ export const loginUser = (email, password) => async dispatch => {
     //     type : LOGIN_USER,
     //     payload : request.data
     // });
+}
+
+
+
+/**
+ *  Fetches an investigation
+ * @param {string} uuidInvestigation - uuidInvestigation
+*/
+export const fetchInvestigation = (uuidInvestigation) => async dispatch => {
+    
+    const request = await axios.get(process.env.REACT_APP_API_URL+'/investigation/'+uuidInvestigation)
+        .catch(err => console.log('Catch', err)); 
+    
+    dispatch({
+        type : FETCH_INVESTIGATION,
+        payload : request,
+        meta: uuidInvestigation
+    });
 }
 
 /**

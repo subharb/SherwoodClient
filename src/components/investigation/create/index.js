@@ -1,15 +1,17 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import NewSurvey  from './new_survey';
 import AddPatients from './add_patients';
 import Summary from './summary';
-import PreviewConsents from '../../consent/preview';
+import { fetchInvestigation } from '../../../actions';
 import AddConsents from './consent';
-import styled from 'styled-components';
 
 const Container = styled.div`
     padding:1rem;
 `;
-export default class NewInvestigation extends Component {
+class NewInvestigation extends Component {
     constructor(props){
         super(props);
         
@@ -78,22 +80,30 @@ export default class NewInvestigation extends Component {
 
         this.setState(tempState);
     }
+    componentDidMount(){
+        if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
+            this.props.fetchInvestigation(this.props.uuid);
+        }
+    }
     render() {
         let component = null;
+        if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
+            return "CARGANDO";
+        }
         switch(this.state.step){
             case 0:
-                component = <NewSurvey callBackData={this.addData} />
+                component = <NewSurvey investigation={ this.props.investigation ? this.props.investigation : null } callBackData={this.addData} />
                 break;
             case 1:
                 const filteredFields = this.state.survey.fields.filter(field => field.is_personal_data === true);
                 console.log("filteredFields", filteredFields);
-                component = <AddConsents personalFields={filteredFields} callBackData={this.addData} />
+                component = <AddConsents consents={ this.props.investigation ? this.props.investigation.consents : null }  personalFields={filteredFields} callBackData={this.addData} />
                 break;
             case 2:
-                component = <AddPatients callBackData={this.addData} />
+                component = <AddPatients patientsEmail={ this.props.investigation ? this.props.investigation.patientsEmail : null }  callBackData={this.addData} />
                 break;
             case 3:
-                component = <Summary investigation={this.state} />
+                component = <Summary investigation={ this.props.investigation ? this.props.investigation : this.state} />
                 break;
             default:
                 component = "Something went wrong";
@@ -107,3 +117,24 @@ export default class NewInvestigation extends Component {
         
     }
 }
+
+NewInvestigation.propTypes = {
+    uuid: PropTypes.string
+}
+
+
+function mapStateToProps(state, ownProps){
+    if(state.investigations.hasOwnProperty(ownProps.uuid)){
+        return{
+            investigation : state.investigations[ownProps.uuid]
+        }
+    }
+    else{
+        return{
+            investigation : null
+        }
+    }
+    
+}
+
+export default connect(mapStateToProps, { fetchInvestigation})(NewInvestigation)

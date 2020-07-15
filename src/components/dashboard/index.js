@@ -24,6 +24,8 @@ class Dashboard extends Component{
                 return <CreateInvestigation />
             case "show":
                 return <ShowInvestigations uuid={this.props.match.params.uuid} />
+            case "edit":
+                return <CreateInvestigation  uuid={this.props.match.params.uuid} />
             default:
                 return "RESUMEN"
         }
