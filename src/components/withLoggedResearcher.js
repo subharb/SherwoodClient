@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
-export default function withLoggedResearcher(WrappedComponent, selectData) {
+export default ChildComponent => {
     // ...y devuelve otro componente...
-    return class extends React.Component {
+    class withLoggedResearcher extends React.Component {
         async componentDidMount(){
             //Compruebo que hay un jwt
             if(localStorage.getItem("jwt") !==""){
@@ -26,7 +27,9 @@ export default function withLoggedResearcher(WrappedComponent, selectData) {
       render() {
         // ... y renderiza el componente envuelto con los datos frescos!
         // Toma nota de que pasamos cualquier prop adicional
-        return <WrappedComponent {...this.props} />;
+        return <ChildComponent {...this.props} />;
       }
-    };
+    }
+    return withRouter(withLoggedResearcher);
   }
+  
