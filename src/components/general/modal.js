@@ -42,6 +42,11 @@ export default class Modal extends Component{
           };
         this.instance = M.Modal.init(this.modal.current, options);  
     }
+    componentWillUnmount(){
+        if(this.instance.isOpen){
+            this.instance.close();
+        }
+    }
     componentDidUpdate(prevProps, nextState) {
         console.log("Modal componentDidUpdate");
         if(this.props.open === true && !this.instance.isOpen){
@@ -68,7 +73,6 @@ export default class Modal extends Component{
                             <CloseButton data-testid="cancel" onClick={this.props.closeCallBack} className="waves-effect waves-light btn red lighten-1">Cancel</CloseButton>
                         }                        
                     </ModalContent>
-                    
                 </div> 
             );
         }
@@ -81,9 +85,7 @@ export default class Modal extends Component{
                 </div> 
             );
         }
-        
     }
-    
 }
 
 Modal.propTypes = {

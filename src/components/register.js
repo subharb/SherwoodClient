@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CryptoJS from 'crypto-js';
+import axios from 'axios';
 import { Translate } from 'react-localize-redux';
 import Modal from './general/modal';
 import Header from './general/header';
@@ -10,10 +11,10 @@ import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
 import { toogleLoading } from '../actions';
 import successImage from '../img/7893-confetti-cannons.gif';
+import { withRouter } from 'react-router-dom';
 
-const FormContainer = styled.div`
-    display:flex;
-    justify-content:center;
+const SpanError = styled.span`
+    color:red;
 `;
 const ParaKey = styled.p`
 
@@ -114,10 +115,11 @@ class Register extends Component {
         super(props);
         this.iv = null;
         this.sections = ["personal_info", "contact_info", "password", "key_generation"]
-        this.state = {selected:0, info : {}, key : null, success : false}
+        this.state = {selected:0, info : {}, key : null, success : false, error : null}
 
         this.generateKey = this.generateKey.bind(this);
         this.saveData = this.saveData.bind(this);
+        this.continue = this.continue.bind(this);
     }
     crumbSelected(index){
         console.log(`Index selected ${index}`); 
@@ -166,11 +168,19 @@ class Register extends Component {
             //Trato los datos que voy a enviar
             delete tempState.info.repeat_password;
             const hashPassword = CryptoJS.SHA256(tempState.info.password).toString(CryptoJS.enc.Base64)
-            tempState.info.key = await encriptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
-            tempState.info.password = hashPassword;
             //Hay que guardar tb el this.iv
+            tempState.info.keyEncrypted = await encriptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
+            tempState.info.password = hashPassword;
             console.log(JSON.stringify(tempState.info));
-            tempState.success = true;
+            const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/register', tempState.info)
+                            .catch(err => {console.log('Catch', err); return err;}); 
+            if(request.status === 200){
+                tempState.success = true;
+            }
+            else{
+                tempState.success = false;
+                tempState.error = true
+            }
         }
         else{
             tempState.info = data;
@@ -184,24 +194,11 @@ class Register extends Component {
         const researcherKey = await generateKey();
         console.log("researcherKey", researcherKey);
         this.setState({key:researcherKey});
-
-        
-
-        // const decrypted = await decryptData(encriptedData, "12345");
-
-        // console.log("decrypted", decrypted);
-
-        
-        // // Decrypt
-        
-
-        // 'my message'
-        
-
-        // return originalText;
     }
     continue(){
         console.log("Success!");
+        this.setState({success : false});
+        this.props.history.push("/login");
     }
     render() {
         const currentSection  = this.sections[this.state.selected];
@@ -233,6 +230,9 @@ class Register extends Component {
                     <div className="col s5 offset-s4">
                         <div className="row">
                             { content }
+                            {this.state.error && 
+                                <SpanError><Translate id="register.key_generation.email_error" /></SpanError>
+                            }
                         </div>
                     </div>
                 </div>
@@ -242,4 +242,4 @@ class Register extends Component {
     }
 }
 
-export default (connect(null, { toogleLoading })(Register))
+export default withRouter(connect(null, { toogleLoading })(Register))

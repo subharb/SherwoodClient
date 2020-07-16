@@ -38,7 +38,8 @@
             "success_title" : ["Success!", "Enhorabuena!"],
             "success_text" : ["An email is coming your way, click on it to verify your account and in no time your will be able to create investigations with privacy as a priority",
                                 "Un email está en camino, haz click en el link que hay dentro para verificar tu cuenta. Dentro de poco podrás crear investigaciones con la privacidad como prioridad"],
-            "confirm" : ["CONFIRM", "CONFIRMAR"]
+            "confirm" : ["CONFIRM", "CONFIRMAR"],
+            "email_error" : ["This email is already in use", "Este email ya se ha usado"]
         }
     },
     "investigation" : {

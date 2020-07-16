@@ -92,7 +92,13 @@ class CreateSurvey extends Component {
         let tempState = {...this.state};
         //Pongo a false el "addinField", para que desaparezca el formulario
         tempState.addingField = false;
-        tempState.fields.push(values);
+        //No quiero guardar el field tal cual viene de redux form, tiene demasiada informacion
+        let newField = { 
+                        name : values.name, 
+                        is_personal_data:values.is_personal_data, 
+                        question:values.question
+                    }
+        tempState.fields.push(newField);
 
         this.setState(tempState);
     }
@@ -172,7 +178,7 @@ class CreateSurvey extends Component {
         }
     }
     render() {
-        //Se ha enviado la info sin errores
+
         return([
             <Modal key="modal" open={this.state.addingField} 
                 title={this.props.translate("investigation.create.survey.add_field")} 
