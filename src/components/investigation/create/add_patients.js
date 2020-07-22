@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { reduxForm, Field } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Translate, withLocalize } from 'react-localize-redux';
-import FieldSherwood from '../../general/FieldSherwood';
+import { generateKey, encriptData } from '../../../utils';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { toogleLoading } from '../../../actions';
@@ -33,36 +33,51 @@ class AddPatients extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.savePatients = this.savePatients.bind(this);
         
-        this.state = {addingPatient : false, patientsEmail : []}
+        let patients = [];
+        if(props.patients){
+            patients = props.patients;
+        }
+        this.state = {addingPatient : false, patients : patients}
     }
     
     savePatients(){
-        console.log("savePatients",this.state.patientsEmail);
-        this.props.callBackData(this.state.patientsEmail);
+        console.log("savePatients",this.state.patients);
+        this.props.callBackData(this.state.patients);
     }
     addPatientEmail(){
         console.log("Nuevo paciente!");
+        
         this.setState({addingPatient : true});
     }
     closeModal(){
         console.log("Cerramos modal");
         this.setState({addingPatient : false});
     }
-    handleAddField(value){
+    async handleAddField(value){
         console.log("Callback:", value);
-        let tempState = {... this.state};
-        tempState.patientsEmail.push(value.email);
+        const patientRawKey = await generateKey();
+        
+        const tempKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        const keyPatientEncr = await encriptData(patientRawKey, tempKey);
+        let tempState = {...this.state};
+        tempState.patients.push({
+            email:value.email,
+            keyPatientEncr : keyPatientEncr,
+            tempKey : tempKey
+        });
+        console.log("keyPatientEncr", keyPatientEncr);
+        console.log("tempKey", tempKey);
         tempState.addingPatient = false;
         this.setState(tempState);
     }
     deleteEmail(index){
         console.log("Delete ", index);
         let tempState = {...this.state};
-        tempState.patientsEmail.splice(index, 1);
+        tempState.patients.splice(index, 1);
         this.setState(tempState);
     }
     renderPatients(){
-        if(this.state.patientsEmail.length > 0){
+        if(this.state.patients.length > 0){
             return([
                 <table key="table-fields" className="striped">
                     <thead>
@@ -73,10 +88,10 @@ class AddPatients extends Component {
                     </thead>
                     <tbody>
                     {
-                        this.state.patientsEmail.map((field, idx) => {
+                        this.state.patients.map((field, idx) => {
                             return(
-                                <tr key={field}>
-                                    <td>{field}</td>
+                                <tr key={field.email}>
+                                    <td>{field.email}</td>
                                     <td><DeleteHolder data-testid="delete" onClick={() => this.deleteEmail(idx)}><i className="material-icons">delete</i></DeleteHolder></td>
                                 </tr>)
                         })

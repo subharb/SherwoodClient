@@ -37,7 +37,7 @@ class Summary extends Component {
 
         this.showConsents = this.showConsents.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.saveForLater = this.saveForLater.bind(this);
+        this.send = this.send.bind(this);
         this.continueModal = this.continueModal.bind(this);
         this.state = {showConsents : false, showResult:false, result : 0}
         //Resultado 0, no enviado, 1 recibido y con error; 2 recibido y correcto
@@ -46,11 +46,10 @@ class Summary extends Component {
         this.setState({showConsents:true});
     }
     modalComponent(){
-
         let component;
         switch(this.state.result){
             case 0:
-                const filteredFields2 = this.props.investigation.survey.fields.filter(field => field["is_personal_data"].value);
+                const filteredFields2 = [];//Object.values(this.props.investigation.consents).filter(consent => consent.is_personal_data);
                 component = <PreviewConsents title={this.props.translate("investigation.create.survey.add_field")} consents={this.props.investigation.consents}  personalFields={filteredFields2} />
                 break;
             case 1:
@@ -71,8 +70,10 @@ class Summary extends Component {
     }
     async send(consents){
         this.props.toogleLoading();
-        let investigationInfo = {... this.props.investigation };
-        investigationInfo.consents = consents;
+        let investigationInfo = {...this.props.investigation };
+        investigationInfo.sendConsents = consents;
+        console.log("Enviamos: "+JSON.stringify(investigationInfo));
+        
         const request = await axios.post(process.env.REACT_APP_API_URL+'/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
         
@@ -145,18 +146,18 @@ class Summary extends Component {
                         </thead>
                         <tbody>
                         {
-                            this.props.investigation.patientsEmail.map(email => {
+                            this.props.investigation.patients.map(patient => {
                                 return(
-                                    <tr key={email}>
-                                        <td>{email}</td>
+                                    <tr key={patient.email}>
+                                        <td>{patient.email}</td>
                                     </tr>)
                             })
                         }
                         </tbody>
                     </table>
                 </div>
-                <button data-testid="publish-investigation" onClick={this.send(true)} type="button" key="publish-investigation" id="publish-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save_and_send")}<i className="material-icons right">send</i></button>
-                <button data-testid="save-for-later-investigation" onClick={this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" className="waves-effect waves-light btn lime right">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
+                <button data-testid="publish-investigation" onClick={()=>this.send(true)} type="button" key="publish-investigation" id="publish-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save_and_send")}<i className="material-icons right">send</i></button>
+                <button data-testid="save-for-later-investigation" onClick={()=>this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" className="waves-effect waves-light btn lime right">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
             </div>
             ]
         );

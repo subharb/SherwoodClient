@@ -16,46 +16,57 @@ class NewInvestigation extends Component {
         super(props);
         
         this.addData = this.addData.bind(this);
-        this.state = {step : 0, survey:{}, consents:{}, patientsEmail:[]}
-        // this.state = {step:1, 
-        //     survey: {
-        //         title : "My first investigation",
-        //         description: "My first description",
-        //         fields : [
-        //             {   "is_personal_data": true,
-        //                 "name" : "name",
-        //                 "type" : "text",
-        //                 "question" :"¿cuál es su nombre?"
-        //             },
-        //             {   "is_personal_data": true,
-        //                 "name" : "surnames",
-        //                 "type" : "text",
-        //                 "question" : "¿cuáles son sus apellidos"
-        //             },   
-        //             {   "is_personal_data": false,
-        //                 "name" : "hemo",
-        //                 "type" : "text",
-        //                 "question" : "Hemoglobina"
-        //             }
-        //         ]}
-        //     ,patientsEmail:[
-        //         "david@sherwood.science",
-        //         "Pedro.rodriguez@hotmail.com"
-        //     ], 
-        //     consents: {
-        //         name: {
-        //         value: 'Identification purposes',
-        //         required: true,
-        //         is_personal_data: true
-        //         },
-        //         surnames: {
-        //         value: 'Identification purposes',
-        //         required: true,
-        //         is_personal_data: true
-        //         },
-        //         '1hgqrcsn1gv81fh52yd1z': { value: 'Store biological material', is_personal_data: false }
-        //     }
-        // }
+        let survey = {};
+        let consents = {};
+        let patients = [];
+
+        if(props.investigation){
+            survey = props.investigation.survey;
+            consents = props.investigation.consents;
+            patients = props.investigation.patients
+        }
+        //this.state = {step : 0, survey, consents, patients}
+        this.state = {step:2, 
+            survey: {
+                title : "My first investigation",
+                description: "My first description",
+                fields : [
+                    {   "is_personal_data": true,
+                        "name" : "name",
+                        "type" : "text",
+                        "question" :"¿cuál es su nombre?"
+                    },
+                    {   "is_personal_data": true,
+                        "name" : "surnames",
+                        "type" : "text",
+                        "question" : "¿cuáles son sus apellidos"
+                    },   
+                    {   "is_personal_data": false,
+                        "name" : "hemo",
+                        "type" : "text",
+                        "question" : "Hemoglobina"
+                    }
+                ]}
+            ,patients:[
+                {"email" : "david@sherwood.science", 
+                   "keyPatientEncr" : "U2FsdGVkX18UwefjYdNNYrbOXGfhaosgCltu1Rf7YeALN4SA57aQbejaIP2iczRDOPzzu+WJuJQIon1giKE7uQ==", "tempKey" :"ffu2wyexjxbw6n3sn3tngh"},
+                {"email" : "Pedro.rodriguez@hotmail.com",
+                    "keyPatientEncr" : "U2FsdGVkX1/h++4ISsIqAUMsgn6LByXuSlYe5XZLv/IDxPZVK2Sa404sfjyEz5RSubMxp3a5P2YDd5RtK2p/lA==", "tempKey" : "2h1n2cg3inci9irlqugur"}
+            ], 
+            consents: {
+                name: {
+                value: 'Identification purposes',
+                required: true,
+                is_personal_data: true
+                },
+                surnames: {
+                value: 'Identification purposes',
+                required: true,
+                is_personal_data: true
+                },
+                '1hgqrcsn1gv81fh52yd1z': { value: 'Store biological material', is_personal_data: false }
+            }
+        }
     }
     addData(data){
         console.log("New Data!", JSON.stringify(data));
@@ -68,7 +79,7 @@ class NewInvestigation extends Component {
                 tempState.consents = data;
                 break;
             case 2:
-                tempState.patientsEmail = data;
+                tempState.patients = data;
                 break;
             case 3:
                 console.log("Send Information!");
@@ -97,13 +108,13 @@ class NewInvestigation extends Component {
             case 1:
                 const filteredFields = this.state.survey.fields.filter(field => field.is_personal_data === true);
                 console.log("filteredFields", filteredFields);
-                component = <AddConsents consents={ this.props.investigation ? this.props.investigation.consents : null }  personalFields={filteredFields} callBackData={this.addData} />
+                component = <AddConsents consents={ this.state.consents}  personalFields={filteredFields} callBackData={this.addData} />
                 break;
             case 2:
-                component = <AddPatients patientsEmail={ this.props.investigation ? this.props.investigation.patientsEmail : null }  callBackData={this.addData} />
+                component = <AddPatients patients={ this.state.patients }  callBackData={this.addData} />
                 break;
             case 3:
-                component = <Summary investigation={ this.props.investigation ? this.props.investigation : this.state} />
+                component = <Summary investigation={ this.state } />
                 break;
             default:
                 component = "Something went wrong";

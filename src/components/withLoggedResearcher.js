@@ -14,7 +14,7 @@ export default ChildComponent => {
             
                 //Guardamos el token si la request fue exitosa
                 if(request.status !== 200){
-                    //redirec a /login
+                    //redirect a /login
                     this.props.history.push("/login");
                 }
             }
