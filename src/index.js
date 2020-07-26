@@ -11,7 +11,7 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 import Home from './components/home';
 import Login from './components/dashboard/login';
-import RegisterReseacher from './components/register';
+import RegisterUser from './components/register';
 import Dashboard from './components/dashboard';
 import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
@@ -39,7 +39,8 @@ ReactDom.render(
             <BrowserRouter>
                 <Switch>
                 <Route exact path="/login" children={(props) => <Login {...props} /> } />
-                <Route exact path="/register/researcher" children={(props) => <RegisterReseacher {...props} /> } />
+                <Route exact path="/register/researcher" children={(props) => <RegisterUser type="researcher" {...props} /> } />
+                <Route exact path="/register/patient/:uuid" children={(props) => <RegisterUser type="patient" {...props} /> } />
                 <Route exact path="/register/patient" children={(props) => <Login {...props} /> } />
                 <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
                 <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />

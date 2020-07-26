@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
@@ -40,29 +41,29 @@ const forms = {
         "name":{
             required : true,
             type:"text",
-            label:"register.personal_info.name",
-            shortLabel: "register.personal_info.name",
+            label:"register.common.personal_info.name",
+            shortLabel: "register.common.personal_info.name",
             validation : "notEmpty"
         },
         "surnames" : {
             required : true,
             type:"text",
-            label:"register.personal_info.surnames",
-            shortLabel: "register.personal_info.surnames",
+            label:"register.common.personal_info.surnames",
+            shortLabel: "register.common.personal_info.surnames",
             validation : "notEmpty"
         },
         "country" : {
             required : true,
             type:"select",
-            defaultOption:{"text" : "register.personal_info.country", "value" : ""},
+            defaultOption:{"text" : "register.common.personal_info.country", "value" : ""},
             options:[],
             option : {
                 "value" : "id",
                 "text" : "code"
             },
             optionsUrl: process.env.REACT_APP_API_URL+"/countries",
-            label:"register.personal_info.surnames",
-            shortLabel: "register.personal_info.surnames",
+            label:"register.common.personal_info.surnames",
+            shortLabel: "register.common.personal_info.surnames",
             validation : "notEmpty"
         }
     },
@@ -70,15 +71,15 @@ const forms = {
         "email":{
             required : true,
             type:"text",
-            label:"register.contact_info.email",
-            shortLabel: "register.contact_info.email",
+            label:"register.common.contact_info.email",
+            shortLabel: "register.common.contact_info.email",
             validation : "validEmail"
         },
         "phone" : {
             required : true,
             type:"text",
-            label:"register.contact_info.phone",
-            shortLabel: "register.contact_info.phone",
+            label:"register.common.contact_info.phone",
+            shortLabel: "register.common.contact_info.phone",
             validation : "validPhone"
         },
     },
@@ -86,27 +87,26 @@ const forms = {
         "password":{
             required : true,
             type:"password",
-            label:"register.password.password",
-            shortLabel: "register.password.password",
+            label:"register.common.password.password",
+            shortLabel: "register.common.password.password",
             validation : "textMin6"
         },
         "repeat_password":{
             required : true,
             type:"password",
-            label:"register.password.repeat_password",
-            shortLabel: "register.password.repeat_password",
+            label:"register.common.password.repeat_password",
+            shortLabel: "register.common.password.repeat_password",
             validation : "equalTo",
             validationField: "password"
         },
     },
-    "key_generation" : {
-        "confirm":{
+    "key_decrypt" : {
+        "tempKey":{
             required : true,
             type:"text",
-            label:"register.key_generation.confirm",
+            label:"register.common.key_generation.confirm",
             shortLabel: "register.key_generation.confirm",
-            validation : "equalTo",
-            validationValue: "register.key_generation.confirm"
+            validation : "textMin6",
         }
     }
 }
@@ -114,7 +114,7 @@ class Register extends Component {
     constructor(props){
         super(props);
         this.iv = null;
-        this.sections = ["personal_info", "contact_info", "password", "key_generation"]
+        this.sections = props.type === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_decrypt"];
         this.state = {selected:0, info : {}, key : null, success : false, error : null}
 
         this.generateKey = this.generateKey.bind(this);
@@ -162,6 +162,9 @@ class Register extends Component {
     }
     async saveData(data){
         let tempState = this.state;
+        if(this.sections[this.state.selected] === "key_decrypt"){
+            tempState.key = await decryptData(, data.tempKey);
+        }
         //Si es el último caso
         if(tempState.selected === this.sections.length -1){
             this.props.toogleLoading();
@@ -172,8 +175,21 @@ class Register extends Component {
             tempState.info.keyEncrypted = await encriptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
             tempState.info.password = hashPassword;
             console.log(JSON.stringify(tempState.info));
-            const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/register', tempState.info)
+            let request = null
+            
+            if(this.props.type === "researcher"){
+                request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/register', tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
+            }
+            else if(this.props.type === "patient"){
+                request = await axios.put(process.env.REACT_APP_API_URL+'/patient/register/'+this.props.match.params.uuid, tempState.info)
+                            .catch(err => {console.log('Catch', err); return err;}); 
+            }
+            else{
+                //Si no es ninguno de los dos algo raro pasa.
+                throw "Error";
+            }
+         
             if(request.status === 200){
                 tempState.success = true;
             }
@@ -198,14 +214,14 @@ class Register extends Component {
     continue(){
         console.log("Success!");
         this.setState({success : false});
-        this.props.history.push("/login");
+        this.props.history.push(this.props.type+"/login");
     }
     render() {
         const currentSection  = this.sections[this.state.selected];
         
         let content = null;
-        //Si es una de las 3 primeras secciones
-        if(this.state.selected < 3){
+        //Si no es key_generation fase
+        if(this.sections[this.state.selected] !== "key_generation"){
             content = <Form fields={forms[currentSection]} callBackForm={this.saveData} />
         }
         else{
@@ -216,22 +232,22 @@ class Register extends Component {
         }
 
         return ([
-            <Modal key="modal" open={this.state.success} title={<Translate id="register.key_generation.success_title" />}
+            <Modal key="modal" open={this.state.success} title={<Translate id="register.common.key_generation.success_title" />}
                     component={<SuccessContainer>
                                 <ImageSuccess src={successImage} width="200" alt="Success!" />
-                                <SuccessText><Translate id="register.key_generation.success_text" /></SuccessText>
+                                <SuccessText><Translate id="register.common.key_generation.success_text" /></SuccessText>
                                 </SuccessContainer>} 
                     callBackForm={this.continue}/>,
             <Header key="header"/>,
             <div className="container" key="container">
-                <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={["Personal Info", "Contact Info", "Key Generation"]} />    
-                <p><Translate id={`register.${currentSection}.explanation`} /></p>
+                <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections} />    
+                <p><Translate id={`register.${this.props.type}.${currentSection}.explanation`} /></p>
                 <div className="row">
                     <div className="col s5 offset-s4">
                         <div className="row">
                             { content }
                             {this.state.error && 
-                                <SpanError><Translate id="register.key_generation.email_error" /></SpanError>
+                                <SpanError><Translate id={`register.${this.props.type}.key_generation.email_error`} /></SpanError>
                             }
                         </div>
                     </div>
@@ -240,6 +256,10 @@ class Register extends Component {
         ]
         )
     }
+}
+
+Register.propTypes = {
+    type:PropTypes.string
 }
 
 export default withRouter(connect(null, { toogleLoading })(Register))
