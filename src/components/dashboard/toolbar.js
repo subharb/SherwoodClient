@@ -17,24 +17,48 @@ export default class Toolbar extends Component {
         var instances = M.Collapsible.init(elems, {});
     }
     render() {
-        return (
-            <Container>
-                <ul className="collapsible">
-                    <li>
-                        <div className="collapsible-header"><i className="material-icons">biotech</i><Translate id="dashboard.investigation" /></div>
-                        <div className="collapsible-body"><Link to="/investigation/create"><Translate id="dashboard.create_investigation" /></Link></div>
-                        <div className="collapsible-body"><SpanFunc><Link to="/investigation/show"><Translate id="dashboard.show_investigations" /></Link></SpanFunc></div>
-                    </li>
-                    <li>
-                    <div className="collapsible-header"><i className="material-icons">place</i>Second</div>
-                    <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                    </li>
-                    <li>
-                    <div className="collapsible-header"><i className="material-icons">whatshot</i>Third</div>
-                    <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-                    </li>
-                </ul>
-            </Container>
-        )
+        if(localStorage.getItem("type") === "researcher"){
+            return (
+                <Container>
+                    <ul className="collapsible">
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">biotech</i><Translate id="dashboard.investigation" /></div>
+                            <div className="collapsible-body"><Link to="/investigation/create"><Translate id="dashboard.create_investigation" /></Link></div>
+                            <div className="collapsible-body"><SpanFunc><Link to="/investigation/show"><Translate id="dashboard.show_investigations" /></Link></SpanFunc></div>
+                        </li>
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">place</i>Second</div>
+                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                        </li>
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">whatshot</i>Third</div>
+                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                        </li>
+                    </ul>
+                </Container>
+            )
+        }
+        else if(localStorage.getItem("type") === "patient"){
+            return (
+                <Container>
+                    <ul className="collapsible">
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">biotech</i><Translate id="dashboard.investigation" /></div>
+                            <div className="collapsible-body"><Link to="/investigation/pending"><Translate id="dashboard.pending" /></Link></div>
+                            <div className="collapsible-body"><SpanFunc><Link to="/investigation/show"><Translate id="dashboard.show_investigations" /></Link></SpanFunc></div>
+                        </li>
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">place</i>Second</div>
+                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                        </li>
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">whatshot</i>Third</div>
+                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                        </li>
+                    </ul>
+                </Container>
+            )
+        }
+        
     }
 }

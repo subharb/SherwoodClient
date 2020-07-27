@@ -48,9 +48,9 @@ test("Testing Data appears in summary", async() => {
         },
         patientsEmail:[
             {"email" : "david@sherwood.science", 
-                   "keyPatientEncr" : "", "tempKey" :""},
+                   "keyPatInvEncr" : "", "tempKey" :""},
             {"email" : "Pedro.rodriguez@hotmail.com",
-                "keyPatientEncr" : "", "tempKey" : ""}
+                "keyPatInvEncr" : "", "tempKey" : ""}
         ]
     }
     const myMockFnSave = jest.fn();

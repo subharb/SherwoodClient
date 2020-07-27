@@ -5,9 +5,14 @@
         "no" : ["No", "No"], 
         "delete" : ["Delete", "Borrar"]
     },
+    "breadcrumb" : {
+        "password" : ["Password", "Contraseña"],
+        "key_generation": ["Key Generation", "Generación de clave"]
+    },
     "dashboard":{
         "greetings" : ["Welcome", "Bienvenido"],
         "investigation" : ["Investigation", "Investigación"],
+        "pending" : ["Pending Investigations", "Investigaciones pendientes"],
         "create_investigation" : ["Create investigation", "Crear investigación"],
         "show_investigations" : ["Show investigations", "Mostrar investigaciones"]
     },

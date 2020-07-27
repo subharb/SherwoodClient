@@ -38,10 +38,8 @@ ReactDom.render(
         }}>
             <BrowserRouter>
                 <Switch>
-                <Route exact path="/login" children={(props) => <Login {...props} /> } />
-                <Route exact path="/register/researcher" children={(props) => <RegisterUser type="researcher" {...props} /> } />
-                <Route exact path="/register/patient/:uuid" children={(props) => <RegisterUser type="patient" {...props} /> } />
-                <Route exact path="/register/patient" children={(props) => <Login {...props} /> } />
+                <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
+                <Route exact path="/:type(patient|researcher)/register" children={(props) => <RegisterUser {...props} /> } />
                 <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
                 <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
                 <Route exact path="/" children={(props) => <Home {...props} />} />

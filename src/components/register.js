@@ -100,13 +100,14 @@ const forms = {
             validationField: "password"
         },
     },
-    "key_decrypt" : {
-        "tempKey":{
+    "key_generation" : {
+        "confirm":{
             required : true,
             type:"text",
             label:"register.common.key_generation.confirm",
             shortLabel: "register.key_generation.confirm",
-            validation : "textMin6",
+            validation : "equalTo",
+            validationValue: "register.common.key_generation.confirm"
         }
     }
 }
@@ -114,7 +115,7 @@ class Register extends Component {
     constructor(props){
         super(props);
         this.iv = null;
-        this.sections = props.type === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_decrypt"];
+        this.sections = props.type === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_generation"];
         this.state = {selected:0, info : {}, key : null, success : false, error : null}
 
         this.generateKey = this.generateKey.bind(this);
@@ -162,9 +163,6 @@ class Register extends Component {
     }
     async saveData(data){
         let tempState = this.state;
-        if(this.sections[this.state.selected] === "key_decrypt"){
-            tempState.key = await decryptData(, data.tempKey);
-        }
         //Si es el último caso
         if(tempState.selected === this.sections.length -1){
             this.props.toogleLoading();
@@ -177,11 +175,11 @@ class Register extends Component {
             console.log(JSON.stringify(tempState.info));
             let request = null
             
-            if(this.props.type === "researcher"){
+            if(this.props.match.params.type === "researcher"){
                 request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/register', tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
-            else if(this.props.type === "patient"){
+            else if(this.props.match.params.type === "patient"){
                 request = await axios.put(process.env.REACT_APP_API_URL+'/patient/register/'+this.props.match.params.uuid, tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
@@ -214,7 +212,7 @@ class Register extends Component {
     continue(){
         console.log("Success!");
         this.setState({success : false});
-        this.props.history.push(this.props.type+"/login");
+        this.props.history.push("/"+this.props.match.params+"/login");
     }
     render() {
         const currentSection  = this.sections[this.state.selected];
@@ -241,13 +239,13 @@ class Register extends Component {
             <Header key="header"/>,
             <div className="container" key="container">
                 <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections} />    
-                <p><Translate id={`register.${this.props.type}.${currentSection}.explanation`} /></p>
+                <p><Translate id={`register.${this.props.match.params.type}.${currentSection}.explanation`} /></p>
                 <div className="row">
                     <div className="col s5 offset-s4">
                         <div className="row">
                             { content }
                             {this.state.error && 
-                                <SpanError><Translate id={`register.${this.props.type}.key_generation.email_error`} /></SpanError>
+                                <SpanError><Translate id={`register.${this.props.match.params.type}.key_generation.email_error`} /></SpanError>
                             }
                         </div>
                     </div>
@@ -259,7 +257,7 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-    type:PropTypes.string
+    
 }
 
 export default withRouter(connect(null, { toogleLoading })(Register))

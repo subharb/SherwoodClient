@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Translate } from 'react-localize-redux';
 
 const BreadCrumbContainer = styled.div`
     display: flex;
@@ -28,7 +29,7 @@ export default class Breadcrumb extends Component {
                 <BreadCrumbContainer className="col s12">
                     { 
                         this.props.stages.map((stage, index) => {
-                            return <BreadButton key={index} selected={index === this.props.selected} onClick={() => this.props.callBack(index)} className="breadcrumb">{stage}</BreadButton>                            
+                            return <BreadButton key={index} selected={index === this.props.selected} onClick={() => this.props.callBack(index)} className="breadcrumb"><Translate id={`breadcrumb.${stage}`}/></BreadButton>                            
                         })
                     }
                 </BreadCrumbContainer>

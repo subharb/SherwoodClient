@@ -58,14 +58,14 @@ class AddPatients extends Component {
         const patientRawKey = await generateKey();
         
         const tempKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        const keyPatientEncr = await encriptData(patientRawKey, tempKey);
+        const keyPatInvEncr = await encriptData(patientRawKey, tempKey);
         let tempState = {...this.state};
         tempState.patients.push({
             email:value.email,
-            keyPatientEncr : keyPatientEncr,
+            keyPatInvEncr : keyPatInvEncr,
             tempKey : tempKey
         });
-        console.log("keyPatientEncr", keyPatientEncr);
+        console.log("keyPatInvEncr", keyPatInvEncr);
         console.log("tempKey", tempKey);
         tempState.addingPatient = false;
         this.setState(tempState);

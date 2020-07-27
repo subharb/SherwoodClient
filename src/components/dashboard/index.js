@@ -9,6 +9,8 @@ import LoadingScreen from '../general/loading_screen';
 import CreateInvestigation from '../investigation/create';
 import ShowInvestigations from '../investigation/show';
 import withLoggedResearcher from '../withLoggedResearcher';
+import AllInvestigations from '../investigation/show/all_investigations';
+import SingleInvestigation from '../investigation/show/single_investigation';
 
 class Dashboard extends Component{
    componentDidMount(){
@@ -23,9 +25,17 @@ class Dashboard extends Component{
             case "create":
                 return <CreateInvestigation />
             case "show":
-                return <ShowInvestigations uuid={this.props.match.params.uuid} />
+                if(typeof this.props.match.params.uuid === "undefined"){
+                    return <AllInvestigations uuid={this.props.match.params.uuid} />
+                }
+                else{
+                    return <SingleInvestigation uuid={this.props.match.params.uuid} />
+                }
+                
             case "edit":
                 return <CreateInvestigation  uuid={this.props.match.params.uuid} />
+            case "pending":
+                return <ShowInvestigations uuid={this.props.match.params.uuid} />
             default:
                 return "RESUMEN"
         }

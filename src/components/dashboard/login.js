@@ -50,7 +50,8 @@ class Login extends Component {
     }
     async loginUser(email, password) {
         const postObj = {email:email, password:password};
-        const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/login', postObj)
+
+        const request = await axios.post(process.env.REACT_APP_API_URL+'/'+this.props.match.params.type+'/login', postObj)
             .catch(err => {console.log('Catch', err); return err;}); 
         
         //Guardamos el token si la request fue exitosa
@@ -58,6 +59,7 @@ class Login extends Component {
         if(request.status === 200){
             console.log("TOKEN: "+request.data.jwt);
             localStorage.setItem("jwt", request.data.jwt);
+            localStorage.setItem("type", this.props.match.params.type);
             axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
             this.props.history.push("/dashboard");
         }

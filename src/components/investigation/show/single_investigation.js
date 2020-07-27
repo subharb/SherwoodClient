@@ -12,12 +12,6 @@ class SingleInvestigation extends Component {
         this.state = {investigation : null}
     }
     async componentDidMount(){  
-        // const request = await axios.get(process.env.REACT_APP_API_URL+'/investigation/'+this.props.uuid)
-        //         .catch(err => {console.log('Catch', err); return err;}); 
-        // if(request.status === 200){
-        //     //redirec a /login
-        //     this.setState({investigation:request.data.investigation})
-        // }
         if(this.props.investigation === null){
             this.props.fetchInvestigation(this.props.uuid);
         }        

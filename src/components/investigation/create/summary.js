@@ -73,7 +73,7 @@ class Summary extends Component {
         let investigationInfo = {...this.props.investigation };
         investigationInfo.sendConsents = consents;
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
-        
+
         const request = await axios.post(process.env.REACT_APP_API_URL+'/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
         
@@ -94,7 +94,7 @@ class Summary extends Component {
     }
     continueModal(){
         console.log("Continue!");
-        this.props.history.push("/investigation");
+        this.props.history.push("/investigations/show");
     }
     render() {
         return([
