@@ -9,9 +9,10 @@ export default class Header extends Component {
                 <div className="nav-wrapper teal lighten-1">
                     <Link to="/" className="left brand-logo">Sherwood</Link>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        <li><Link to="/login">Login</Link></li>
-                        <li><Link to="/register/researcher">Register Researcher</Link></li>
-                        <li><Link to="/register/patient">Register Patient</Link></li>
+                        <li><Link to="/researcher/login">Login Researcher</Link></li>
+                        <li><Link to="/patient/login">Login Patient</Link></li>
+                        <li><Link to="/researcher/register">Register Researcher</Link></li>
+                        <li><Link to="/patient/register">Register Patient</Link></li>
                     </ul>
                 </div>
             </nav>

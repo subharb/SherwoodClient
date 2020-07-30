@@ -7,7 +7,6 @@ import { Translate } from 'react-localize-redux';
 import Toolbar from './toolbar';
 import LoadingScreen from '../general/loading_screen';
 import CreateInvestigation from '../investigation/create';
-import ShowInvestigations from '../investigation/show';
 import withLoggedResearcher from '../withLoggedResearcher';
 import AllInvestigations from '../investigation/show/all_investigations';
 import SingleInvestigation from '../investigation/show/single_investigation';
@@ -35,7 +34,7 @@ class Dashboard extends Component{
             case "edit":
                 return <CreateInvestigation  uuid={this.props.match.params.uuid} />
             case "pending":
-                return <ShowInvestigations uuid={this.props.match.params.uuid} />
+                return <AllInvestigations uuid={this.props.match.params.uuid} />
             default:
                 return "RESUMEN"
         }

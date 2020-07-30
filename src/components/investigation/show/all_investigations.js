@@ -11,7 +11,7 @@ class AllInvestigations extends Component {
         this.state = {investigations : null}
     }
     async componentDidMount(){  
-        const request = await axios.get(process.env.REACT_APP_API_URL+'/investigation/all')
+        const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem('type')+'/investigation/all')
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(request.status === 200){
             //redirec a /login
