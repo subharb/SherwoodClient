@@ -7,7 +7,9 @@
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],
-        "key_generation": ["Key Generation", "Generación de clave"]
+        "key_generation": ["Key Generation", "Generación de clave"],
+        "personal_info" : ["Personal Info", "Datos personales"],
+        "contact_info" : ["Contact Info", "Datos de contacto"]
     },
     "dashboard":{
         "greetings" : ["Welcome", "Bienvenido"],
@@ -37,7 +39,8 @@
             },
             "key_generation" : {
                 "confirm" : ["CONFIRM", "CONFIRMAR"]
-            }
+            },
+            "success_title" : ["Success!", "Enhorabuena!"]
         },
         "researcher" : {
             "personal_info" : {
@@ -52,11 +55,10 @@
             "key_generation" : {
                 "explanation" : ["Loremipsum key_generation"],
                 "key" : ["Key", "Clave"],
-                "success_title" : ["Success!", "Enhorabuena!"],
-                "success_text" : ["An email is coming your way, click on it to verify your account and in no time your will be able to create investigations with privacy as a priority",
-                                    "Un email está en camino, haz click en el link que hay dentro para verificar tu cuenta. Dentro de poco podrás crear investigaciones con la privacidad como prioridad"],
-                
                 "email_error" : ["This email is already in use", "Este email ya se ha usado"]
+            },
+            "error" : {
+                "account_registered" : ["This account has already been activated", "Esta cuenta ya ha sido activada"]
             }
         },
         "patient" : {
@@ -69,8 +71,12 @@
                 "success_title" : ["Success!", "Enhorabuena!"],
                 "success_text" : ["An email is coming your way, click on it to verify your account and in no time your will be able to create investigations with privacy as a priority",
                                     "Un email está en camino, haz click en el link que hay dentro para verificar tu cuenta. Dentro de poco podrás crear investigaciones con la privacidad como prioridad"],
-                "confirm" : ["CONFIRM", "CONFIRMAR"],
-                "email_error" : ["This email is already in use", "Este email ya se ha usado"]
+                "confirm" : ["CONFIRM", "CONFIRMAR"]
+            },
+            "success_text" : ["You are only one step ahead to participate in the investigation and grant access to your personal information, deny or see who has accesed it.",
+                "Estás a un paso de participar en la investigación y dar acceso a tus datos personales, denegarlo o ver quien ha accedido a ellos."],
+            "error" : {
+                "account_registered" : ["This account has already been activated", "Esta cuenta ya ha sido activada"]
             }
         }
         
