@@ -22,9 +22,10 @@ class FieldSherwood extends Component{
         }
     }
     render(){
-        const {input, label, meta, type, disabled, options, defaultOption, size, option} = this.props;
+        const {input, label, meta, type, disabled, options, defaultOption, size, option, removeClass} = this.props;
         const sizeCurrent = size ? size : "s12";
         let errorClass = (meta.touched && meta.error) ? "invalid" : "";
+        const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
                 let optionsArray = [];
@@ -40,29 +41,33 @@ class FieldSherwood extends Component{
                 }
                 return (
                     <div className={`input-field col ${sizeCurrent}`}>
-                        <select data-testid={input.name} {...input} aria-labelledby={this.props.translate(label)} >
+                        <select data-testid={input.name} {...input} aria-labelledby={labelString} >
                             <option value={defaultOption.value} disabled>{this.props.translate(defaultOption.text)}</option>
                             {
                                 optionsArray
                             }
                         </select>
-                        <label aria-label={this.props.translate(label)}>{this.props.translate(label)}</label>
+                        <label aria-label={labelString}>{labelString}</label>
                         <span className="error text">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
                     </div>
                     
                 );
             case "checkbox":
                 console.log("Value checkbox: "+input.name+" "+input.value);
-                const className = (meta.touched && meta.error) ? "error text" : ""
+                const classNameError = (meta.touched && meta.error) ? "error text" : "";
+                const className = removeClass ?  `col ${sizeCurrent}` : `input-field col ${sizeCurrent}`
                 return (
-                    <div className={`input-field col ${sizeCurrent}`}>
+                    <div className={className}>
                         <label>
-                            <input data-testid={input.name} {...input} type="checkbox"/>
-                            <span className={className}>{this.props.translate(label)}</span>
+                            <input className={classNameError} data-testid={input.name} {...input} type="checkbox"/>
+                            <span className={classNameError}>{labelString}</span>
                         </label>
-                        
                     </div>
                 )
+            case "hidden":
+                return(
+                    <input data-testid={input.name} key={input.name} value={input.value} type="hidden" {...input} />
+                );
             default:     
                 const isActive = input.value !== "" ? "active" : "";
                 return(
@@ -70,7 +75,7 @@ class FieldSherwood extends Component{
                         <input data-testid={input.name} {...input}  
                             className={`validate ${errorClass}`} key={input.name} id={input.name} 
                             name={input.name} type={type} disabled={disabled} />
-                        <label className={isActive} key={`label_${input.name}`} htmlFor={input.name}>{this.props.translate(label)}</label>
+                        <label className={isActive} key={`label_${input.name}`} htmlFor={input.name}>{labelString}</label>
                         <span className="error text">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
                     </div>
                 );

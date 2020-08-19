@@ -18,25 +18,47 @@ class AllInvestigations extends Component {
             this.setState({investigations:request.data})
         }
         else if(request.status === 401){
-            this.props.history.push("/login");
+            this.props.history.push(localStorage.getItem('type')+"/login");
         } 
     }
     render() {
         if(this.state.investigations === null){
             return "CARGANDO...";
         }
-        else if(this.state.investigations.length === 0){
+        const filteredInvestigations = this.state.investigations.filter(inv => { 
+            if(this.props.filter === "pending"){
+                return inv.status === 2
+            }
+            if(this.props.filter === "ongoing"){
+                return inv.status === 3
+            }
+            //Filtros de researcher
+            if(this.props.filter === "draft"){
+                return inv.status === 0
+            }
+            if(this.props.filter === "live"){
+                return inv.status === 1
+            }
+            else return true
+        });
+
+        if(filteredInvestigations.length === 0){
             return (
                 <div>
-                    <Translate id="investigation.show.all.no_investigations" />
-                    <Translate id="investigation.show.all.add_first_investigation" />
-                    <Link to="/investigation/create" className="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></Link>
-  
+                    <Translate id={`investigation.show.all.${localStorage.getItem('type')}.no_investigations`} />
+                    {localStorage.getItem('type') === "researcher" && 
+                    [
+                        <Translate id="investigation.show.all.add_first_investigation" />,
+                        <Link to="/investigation/create" className="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></Link>
+                    ]
+                    }
+                    
                 </div>
-                );
+            );
+            
         }
         else{
-            return this.state.investigations.map(inves => {
+            return filteredInvestigations.map(inves => {
                 return(
                     <div class="col s12 m6">
                         <div class="card blue-grey darken-1">

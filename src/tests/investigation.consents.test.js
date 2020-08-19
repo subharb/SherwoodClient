@@ -58,7 +58,7 @@ test("Testing Adding/Removing Consents", async() => {
         await waitForDomChange();
         //Meto un consentimiento en el form
         console.log("Reason", reasonPersonalData[i]);
-        fireEvent.change(getByLabelText("Missing translationId: investigation.create.consent.reason for language: ${ languageCode }"), {
+        fireEvent.change(getByLabelText("investigation.create.consent.reason"), {
             target: { value: reasonPersonalData[i] }
         });
         //Añado el campo
@@ -69,7 +69,7 @@ test("Testing Adding/Removing Consents", async() => {
     for(let j=0;j < OTHER_CONSENT.length; j++){
         fireEvent.click(getByTestId("add-consent"));
         //Meto un consentimiento en el form
-        fireEvent.change(getByLabelText("Missing translationId: investigation.create.consent.consent for language: ${ languageCode }"), {
+        fireEvent.change(getByLabelText("investigation.create.consent.consent"), {
             target: { value: OTHER_CONSENT[j] }
         });
         //Añado el campo
@@ -80,5 +80,5 @@ test("Testing Adding/Removing Consents", async() => {
     }
     fireEvent.click(getByTestId("save-consents")); 
     expect(myMockFn.mock.calls.length).toBe(1);
-    //debug();
+    debug();
 });

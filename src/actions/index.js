@@ -32,7 +32,7 @@ export const loginUser = (email, password) => async dispatch => {
 export const fetchInvestigation = (uuidInvestigation) => async dispatch => {
     
     const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem('type')+'/investigation/'+uuidInvestigation)
-        .catch(err => console.log('Catch', err)); 
+       
     
     dispatch({
         type : FETCH_INVESTIGATION,
@@ -44,7 +44,7 @@ export const fetchInvestigation = (uuidInvestigation) => async dispatch => {
 /**
  * Changes the state of Loading, that hides or shows the loading screen
  */
-export const toogleLoading = ()  => dispatch => {
+export const toggleLoading = ()  => dispatch => {
     
     dispatch({
         type : LOADING

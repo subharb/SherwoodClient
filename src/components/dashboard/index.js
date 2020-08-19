@@ -7,9 +7,9 @@ import { Translate } from 'react-localize-redux';
 import Toolbar from './toolbar';
 import LoadingScreen from '../general/loading_screen';
 import CreateInvestigation from '../investigation/create';
-import withLoggedResearcher from '../withLoggedResearcher';
-import AllInvestigations from '../investigation/show/all_investigations';
-import SingleInvestigation from '../investigation/show/single_investigation';
+import withLoggedUser from '../withLoggedUser';
+import GridInvestigations from '../investigation/show/all';
+import SingleInvestigation from '../investigation/show/single';
 
 class Dashboard extends Component{
    componentDidMount(){
@@ -25,16 +25,19 @@ class Dashboard extends Component{
                 return <CreateInvestigation />
             case "show":
                 if(typeof this.props.match.params.uuid === "undefined"){
-                    return <AllInvestigations uuid={this.props.match.params.uuid} />
+                    return <GridInvestigations />
                 }
                 else{
                     return <SingleInvestigation uuid={this.props.match.params.uuid} />
                 }
                 
             case "edit":
-                return <CreateInvestigation  uuid={this.props.match.params.uuid} />
+                return <CreateInvestigation uuid={this.props.match.params.uuid} />
             case "pending":
-                return <AllInvestigations uuid={this.props.match.params.uuid} />
+            case "ongoing":
+            case "draft":
+            case "live":
+                return <GridInvestigations filter={this.props.match.params.action} />
             default:
                 return "RESUMEN"
         }
@@ -61,4 +64,4 @@ class Dashboard extends Component{
     }
 }
 
-export default withLoggedResearcher(Dashboard)
+export default withLoggedUser(Dashboard)

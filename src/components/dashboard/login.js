@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import styled from 'styled-components';
 import CryptoJS from 'crypto-js';
-import { loginUser, toogleLoading } from '../../actions';
+import { loginUser, toggleLoading } from '../../actions';
 import FieldSherwood  from '../general/FieldSherwood';
 import Header from '../general/header';
 import LoadingScreen from '../general/loading_screen';
@@ -67,12 +67,12 @@ class Login extends Component {
             error = 1;
         }
         this.setState({loading:false, error:error});
-        this.props.toogleLoading();
+        this.props.toggleLoading();
     }
     handleLogin(values){
         console.log("HandleLogin", values);
         this.setState({loading:true});
-        this.props.toogleLoading();
+        this.props.toggleLoading();
         const hashPassword = CryptoJS.SHA256(values.password).toString(CryptoJS.enc.Base64)
         console.log("hashPassword", hashPassword);
         this.loginUser(values.email, hashPassword);
@@ -139,4 +139,4 @@ function validate(values){
 export default reduxForm({
     validate : validate,
     form : 'loginForm'
-})(connect(null, { loginUser, toogleLoading })(Login))
+})(connect(null, { loginUser, toggleLoading })(Login))

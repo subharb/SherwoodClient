@@ -10,7 +10,7 @@ import Form from '../components/general/form';
 import { generateKey, encriptData, decryptData } from '../utils';
 import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
-import { toogleLoading } from '../actions';
+import { toggleLoading } from '../actions';
 import successImage from '../img/7893-confetti-cannons.gif';
 import { withRouter } from 'react-router-dom';
 
@@ -165,7 +165,7 @@ class Register extends Component {
         let tempState = this.state;
         //Si es el último caso
         if(tempState.selected === this.sections.length -1){
-            this.props.toogleLoading();
+            this.props.toggleLoading();
             //Trato los datos que voy a enviar
             delete tempState.info.repeat_password;
             const hashPassword = CryptoJS.SHA256(tempState.info.password).toString(CryptoJS.enc.Base64)
@@ -200,7 +200,7 @@ class Register extends Component {
                     tempState.errorMessage = "account_registered";
                 }
             }
-            this.props.toogleLoading();
+            this.props.toggleLoading();
         }
         else{
             tempState.info = data;
@@ -266,4 +266,4 @@ Register.propTypes = {
     
 }
 
-export default withRouter(connect(null, { toogleLoading })(Register))
+export default withRouter(connect(null, { toggleLoading })(Register))

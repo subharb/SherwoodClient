@@ -16,7 +16,10 @@
         "investigation" : ["Investigation", "Investigación"],
         "pending" : ["Pending Investigations", "Investigaciones pendientes"],
         "create_investigation" : ["Create investigation", "Crear investigación"],
-        "show_investigations" : ["Show investigations", "Mostrar investigaciones"]
+        "show_investigations" : ["Show investigations", "Mostrar investigaciones"],
+        "draft_investigations" : ["Draft investigations", "Investigaciones Draft"],
+        "live_investigations" : ["Live investigations", "Investigaciones Live"],
+        "ongoing" : ["Show ongoing investigations", "Mostrar investigaciones corriente"]
     },
     "login":{
         "email":["Email", "Email"],
@@ -137,8 +140,24 @@
             "date_created" : ["Date create", "Fecha de creación"],
             "description" : ["Description", "Descripción"],
             "all" : {
-                "no_investigations" : ["You don't have any investigations yet", "Aún no ha subido ninguna investigación"],
-                "add_first_investigation" : ["Add your first investigation", "Cree su primera investigación"]
+                "researcher" : {
+                    "no_investigations" : ["You don't have any investigations yet", "Aún no ha subido ninguna investigación"],
+                    "add_first_investigation" : ["Add your first investigation", "Cree su primera investigación"]
+                },
+                "patient" : {
+                    "pending" : {
+                        "no_investigations" : ["You don't have any pending investigations yet", "No tiene ninguna investigación pendiente"]
+                    }
+                    
+                }
+                
+            },
+            "accept_consents" : {
+                "success" : {
+                    "description" : ["You have succesfully joined the investigation. The researcher will contact you soon via email", "Se ha unido correctamente a la investigación. El investigador se pondrá en contacto contigo pronto via email"],
+                    "title" : ["Great!", "Genial!"]
+                }, 
+                "continue" : ["Continue", "Continuar"]
             }
         },
         "table" : {
@@ -159,7 +178,10 @@
         }
     },
     "consent" : {
+        "title" : ["Accept Consents", "Aceptación de consentimientos"],
         "personal_data_header" : ["These are the personal data that are required to participate in the investigation", "Estos son los datos personales necesarios para participar en la investigación"],
-        "personal_data" : ["Personal Data"]
+        "personal_data" : ["Personal Data"],
+        "give_consent" : ["I give consent to store 'NAME'", "Doy consentimiento para guardar 'NAME'"],
+        "consent_reason" : ["The researcher group requires this data for 'CONSENT'", "El grupo investigador pide este dato para 'CONSENT'"]
     }
 }

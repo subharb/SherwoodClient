@@ -42,7 +42,7 @@ export function validateField(field, fieldCompare){
                 response.messageCode =  pathErroTranslation+"error_length6"
                 break;
             case "notEmpty" : 
-                response.result = Boolean(field.value && field.value !== "");
+                response.result = notEmpty(field.value);
                 response.messageCode =  pathErroTranslation+"error_not_empty"
                 break;
             case "equalTo":
@@ -60,8 +60,15 @@ export function validateField(field, fieldCompare){
         response.result = true;
         response.messageCode =  "";
     }
-    return response;
-    
+    return response;   
+}
+
+//Wrapper para que funcione en la validación por campo
+export function fieldLevelNotEmpty(value){
+    return notEmpty(value) ? undefined : "investigation.errors.error_not_empty"
+}
+export function notEmpty(value){
+    return Boolean(value && value !== "");
 }
 
 export async function generateKey(){
@@ -110,12 +117,11 @@ export async function encriptData(data, key){
 
 export async function decryptData(ciphertext, key){
 
-     var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
+    var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
     var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
     console.log(originalText);
 
     return originalText;
-
 }
 

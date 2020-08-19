@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+//NO HACE FALTA; USO FORM
 import { reduxForm } from 'redux-form';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { generateKey, encriptData } from '../../../utils';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
-import { toogleLoading } from '../../../actions';
+import { toggleLoading } from '../../../actions';
 import {DeleteHolder} from "../../general/mini_components";
 
 const FIELDS_FORM = {
@@ -140,4 +141,4 @@ export default withLocalize(reduxForm({
     // a unique name for the form
     validate,
     form: 'newInvestigation'
-  })(connect(null, { toogleLoading })(AddPatients)))
+  })(connect(null, { toggleLoading })(AddPatients)))

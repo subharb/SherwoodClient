@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 export default ChildComponent => {
     // ...y devuelve otro componente...
-    class withLoggedResearcher extends React.Component {
+    class withLoggedUser extends React.Component {
         async componentDidMount(){
             //Compruebo que hay un jwt
             if(localStorage.getItem("jwt") !==""){
@@ -15,11 +15,11 @@ export default ChildComponent => {
                 //Guardamos el token si la request fue exitosa
                 if(request.status !== 200){
                     //redirect a /login
-                    this.props.history.push("/login");
+                    this.props.history.push("/"+localStorage.getItem('type')+"/login");
                 }
             }
             else{
-                this.props.history.push("/login");
+                this.props.history.push("/"+localStorage.getItem('type')+"/login");
             }
         }
   
@@ -30,6 +30,6 @@ export default ChildComponent => {
         return <ChildComponent {...this.props} />;
       }
     }
-    return withRouter(withLoggedResearcher);
+    return withRouter(withLoggedUser);
   }
   

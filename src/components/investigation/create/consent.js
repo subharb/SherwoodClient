@@ -6,7 +6,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import _ from 'lodash';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
-import { toogleLoading } from '../../../actions';
+import { toggleLoading } from '../../../actions';
 import {DeleteHolder, EditConsent} from "../../general/mini_components";
 
 const FIELDS_FORM = {
@@ -230,4 +230,4 @@ export default withLocalize(reduxForm({
     // a unique name for the form
     validate,
     form: 'addConsent'
-  })(connect(null, { toogleLoading })(AddConsents)))
+  })(connect(null, { toggleLoading })(AddConsents)))

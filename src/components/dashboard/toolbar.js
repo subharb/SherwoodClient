@@ -24,7 +24,8 @@ export default class Toolbar extends Component {
                         <li>
                             <div className="collapsible-header"><i className="material-icons">biotech</i><Translate id="dashboard.investigation" /></div>
                             <div className="collapsible-body"><Link to="/investigation/create"><Translate id="dashboard.create_investigation" /></Link></div>
-                            <div className="collapsible-body"><SpanFunc><Link to="/investigation/show"><Translate id="dashboard.show_investigations" /></Link></SpanFunc></div>
+                            <div className="collapsible-body"><SpanFunc><Link to="/investigation/draft"><Translate id="dashboard.draft_investigations" /></Link></SpanFunc></div>
+                            <div className="collapsible-body"><SpanFunc><Link to="/investigation/live"><Translate id="dashboard.live_investigations" /></Link></SpanFunc></div>
                         </li>
                         <li>
                             <div className="collapsible-header"><i className="material-icons">place</i>Second</div>
@@ -45,7 +46,7 @@ export default class Toolbar extends Component {
                         <li>
                             <div className="collapsible-header"><i className="material-icons">biotech</i><Translate id="dashboard.investigation" /></div>
                             <div className="collapsible-body"><Link to="/investigation/pending"><Translate id="dashboard.pending" /></Link></div>
-                            <div className="collapsible-body"><SpanFunc><Link to="/investigation/show"><Translate id="dashboard.show_investigations" /></Link></SpanFunc></div>
+                            <div className="collapsible-body"><SpanFunc><Link to="/investigation/ongoing"><Translate id="dashboard.ongoing" /></Link></SpanFunc></div>
                         </li>
                         <li>
                             <div className="collapsible-header"><i className="material-icons">place</i>Second</div>

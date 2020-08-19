@@ -9,7 +9,7 @@ import axios from 'axios';
 import { validateField } from '../../../utils';
 import Form from '../../general/form';
 import Modal from '../../general/modal';
-import { toogleLoading } from '../../../actions';
+import { toggleLoading } from '../../../actions';
 import {DeleteHolder} from "../../general/mini_components";
 import FieldSherwood from '../../general/FieldSherwood';
 
@@ -227,4 +227,4 @@ export default withLocalize(reduxForm({
     // a unique name for the form
     validate,
     form: 'newInvestigation'
-  })(connect(null, { toogleLoading })(CreateSurvey)))
+  })(connect(null, { toggleLoading })(CreateSurvey)))

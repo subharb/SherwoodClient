@@ -70,5 +70,5 @@ function validate(values, props){
 export default withLocalize(reduxForm({
     // a unique name for the form
     validate,
-    form: 'newField'
+    form: 'form'
   })(Form))

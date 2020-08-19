@@ -7,8 +7,9 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from '../../general/modal';
 import PreviewConsents from '../../consent/preview';
 import styled from 'styled-components';
-import { toogleLoading } from '../../../actions';
-import successImage from '../../../img/7893-confetti-cannons.gif';
+import { toggleLoading } from '../../../actions';
+import SuccessComponent from '../../../components/general/success_component';
+
 
 const SpanField = styled.span`
     font-weight:bold;
@@ -18,19 +19,7 @@ const ResultContainer = styled.div`
     background-color:red;
 `;
 
-const SuccessContainer = styled.div`
-    text-align:center;
-`;
-const SuccessComponent = (props) => {
-    return(
-    <SuccessContainer>
-        <h4><Translate id="investigation.create.summary.success.title" /></h4>
-        <div><img src={successImage} width="200" alt="Success!" /></div>
-        <div><Translate id="investigation.create.summary.success.description" /></div>
-        <button data-testid="continue" onClick={props.continue} type="submit" key="continue" id="continue" className="waves-effect waves-light btn"><Translate id="investigation.create.summary.success.continue" /></button>   
-    </SuccessContainer>
-    )
-  }
+
 class Summary extends Component {
     constructor(props){
         super(props);
@@ -69,7 +58,7 @@ class Summary extends Component {
         this.setState({showConsents:false});
     }
     async send(consents){
-        this.props.toogleLoading();
+        this.props.toggleLoading();
         let investigationInfo = {...this.props.investigation };
         investigationInfo.sendConsents = consents;
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
@@ -88,13 +77,13 @@ class Summary extends Component {
             error = 1;
             this.setState({showResult:true, result:1});
         }
-        this.props.toogleLoading();
+        this.props.toggleLoading();
         
         
     }
     continueModal(){
         console.log("Continue!");
-        this.props.history.push("/investigations/show");
+        this.props.history.push("/investigation/show");
     }
     render() {
         return([
@@ -103,7 +92,10 @@ class Summary extends Component {
                 closeCallBack={this.closeModal}
             />,
             <Modal key="modal2" open={this.state.showResult}  
-                component={<SuccessComponent title="Success!" continue ={this.continueModal} />} 
+                component={<SuccessComponent title="investigation.create.summary.success.title" 
+                                            description="investigation.create.summary.success.description" 
+                                            successButtonText = "investigation.create.summary.success.continue"
+                                            callBackContinue ={this.continueModal} />} 
             />,
             <div key="content" className="row">
                 <div className="col-12">
@@ -168,4 +160,4 @@ Summary.propTypes = {
     investigation : PropTypes.object
 }
 
-export default withRouter(withLocalize((connect(null, { toogleLoading })(Summary))));
+export default withRouter(withLocalize((connect(null, { toggleLoading })(Summary))));
