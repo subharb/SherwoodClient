@@ -158,7 +158,8 @@
                     "title" : ["Great!", "Genial!"]
                 }, 
                 "continue" : ["Continue", "Continuar"]
-            }
+            },
+            "patient_consents" : ["Patient Consents" , "Consentimiento de pacientes"]
         },
         "table" : {
             "is_personal_data" : ["personal data", "dato personal"],

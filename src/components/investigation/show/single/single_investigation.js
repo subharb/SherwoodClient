@@ -4,7 +4,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
+import Table from '../../../general/table';
 import PendingConsents from './accept_consents';
 
 const ButtonHolder = styled.div`
@@ -15,7 +15,7 @@ const RowConsent = styled.div`
 `;
 
 class SingleInvestigation extends Component {
- 
+    
     render() {
         if(this.props.investigation.status === 0){
             return (
@@ -28,6 +28,15 @@ class SingleInvestigation extends Component {
             )
         }
         else{
+            const headerTable = this.props.investigation.consents.map(consent => {return consent.value});
+            const valuesTable = Object.values(this.props.investigation.patientConsents).map(row => {
+                return row.map(dict => {
+                    if(dict.value === null){
+                        return dict.accepted;
+                    }
+                    return dict.value
+                })
+            })
             return (
                 <div>
                     <p><Translate id="investigation.show.title" />: { this.props.investigation.title }</p>
@@ -35,7 +44,9 @@ class SingleInvestigation extends Component {
                     <p><Translate id="investigation.show.description" />: { this.props.investigation.description }</p>
                     <p><Translate id="investigation.show.data" />:</p>
                     TABLA CON DATOS
-                    <p><Translate id="investigation.show.consents" />:</p>
+                    <p><Translate id="investigation.show.patient_consents" />:</p>
+                    <Table header={headerTable} 
+                            values={valuesTable} />
                     
                 </div>
             )
