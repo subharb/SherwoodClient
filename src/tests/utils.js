@@ -22,32 +22,131 @@ export const renderWithRedux = (
 };
 
 export const InvestigationConsents = {
-    
     "title": "My first investigation",
-    "uuid": "614f1b64-78d1-4a66-92d1-231ee6967a8f",
+    "uuid": "538e9dde-d81c-4f49-b22f-b7d791af4119",
     "description": "My first description",
+    "survey": {
+        "fields": [
+            {
+                "is_personal_data": {
+                    "value": true,
+                    "label": "investigation.create.survey.personal_info",
+                    "shortLabel": "investigation.table.is_personal_data"
+                },
+                "name": {
+                    "value": "name",
+                    "label": "investigation.create.survey.name_field",
+                    "shortLabel": "investigation.table.name"
+                },
+                "type": {
+                    "value": "text",
+                    "label": "investigation.create.survey.choose",
+                    "shortLabel": "investigation.table.type"
+                },
+                "question": {
+                    "value": "¿cuál es su nombre?",
+                    "label": "investigation.create.survey.question_field",
+                    "shortLabel": "investigation.table.question"
+                }
+            },
+            {
+                "is_personal_data": {
+                    "value": true,
+                    "label": "investigation.create.survey.personal_info",
+                    "shortLabel": "investigation.table.is_personal_data"
+                },
+                "name": {
+                    "value": "surnames",
+                    "label": "investigation.create.survey.name_field",
+                    "shortLabel": "investigation.table.name"
+                },
+                "type": {
+                    "value": "text",
+                    "label": "investigation.create.survey.choose",
+                    "shortLabel": "investigation.table.type"
+                },
+                "question": {
+                    "value": "¿cuáles son sus apellidos",
+                    "label": "investigation.create.survey.question_field",
+                    "shortLabel": "investigation.table.question"
+                }
+            },
+            {
+                "is_personal_data": {
+                    "value": false,
+                    "label": "investigation.create.survey.personal_info",
+                    "shortLabel": "investigation.table.is_personal_data"
+                },
+                "name": {
+                    "value": "hemo",
+                    "label": "investigation.create.survey.name_field",
+                    "shortLabel": "investigation.table.name"
+                },
+                "type": {
+                    "value": "text",
+                    "label": "investigation.create.survey.choose",
+                    "shortLabel": "investigation.table.type"
+                },
+                "question": {
+                    "value": "Hemoglobina",
+                    "label": "investigation.create.survey.question_field",
+                    "shortLabel": "investigation.table.question"
+                }
+            }
+        ],
+        "_id": "5f3be145b5588a3509a59ae1",
+        "created_At": "2020-08-18T14:10:13.859Z",
+        "updated_At": "2020-08-18T14:10:13.859Z",
+        "__v": 0
+    },
+    "status": 1,
+    "patientsEmail": [
+        "Pedro.rodriguez@hotmail.com",
+        "david@sherwood.science"
+    ],
     "consents": [
         {
-            "id": 292,
-            "required": true,
+            "value": "name",
             "text": "Identification purposes",
-            "is_personal_data": true,
-            "name": "name"
+            "id": 310,
+            "required": true,
+            "is_personal_data": true
         },
         {
-            "id": 293,
-            "required": true,
+            "value": "surnames",
             "text": "Identification purposes",
-            "is_personal_data": true,
-            "name": "surnames"
+            "id": 311,
+            "required": true,
+            "is_personal_data": true
         },
         {
-            "id": 294,
-            "required": false,
+            "value": "1hgqrcsn1gv81fh52yd1z",
             "text": "Store biological material",
-            "is_personal_data": false,
-            "name": "1hgqrcsn1gv81fh52yd1z"
+            "id": 312,
+            "required": false,
+            "is_personal_data": false
         }
-    ]
-    
+    ],
+    "patientConsents": {
+        "224": [
+            {
+                "accepted": true,
+                "value": "David",
+                "idPatInv": 224,
+                "consentInv": 310
+            },
+            {
+                "accepted": true,
+                "value": "Shaikh",
+                "idPatInv": 224,
+                "consentInv": 311
+            },
+            {
+                "accepted": true,
+                "value": null,
+                "idPatInv": 224,
+                "consentInv": 312
+            }
+        ]
+    }
 }

@@ -40,16 +40,19 @@ test("Accept all consents and add data", async() => {
             <AcceptConsents investigation = {InvestigationConsents} 
                              />
     );
-    fireEvent.click(getByTestId("292_check"));
-    fireEvent.click(getByTestId("293_check"));
-    fireEvent.click(getByTestId("294_check"));
+    //Busco que estén los patientConsents y marco los checks
+    Object.values(InvestigationConsents.consents).forEach(consent => {
+        fireEvent.click(getByTestId(consent.id+"_check"));
+    });
+    //Pongo los datos en los datos personales
+    Object.values(InvestigationConsents.consents).forEach(consent => {
+        if(consent.is_personal_data){
+            fireEvent.change(getByLabelText(consent.value), {
+                target: { value: "TEST" }
+            });
+        }
+    });
     
-    fireEvent.change(getByLabelText("name"), {
-        target: { value: "David" }
-    });
-    fireEvent.change(getByLabelText("surnames"), {
-        target: { value: "Shaikh" }
-    });
     const saveConsentsButton = getByTestId("save-consents"); 
     fireEvent.click(saveConsentsButton);
     debug()

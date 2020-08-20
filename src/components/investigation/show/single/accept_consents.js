@@ -99,7 +99,7 @@ class AcceptConsents extends Component {
                             callBackContinue ={this.continueModal} />
                     } 
                 />,
-                <div>
+                <div key="container">
 
                     {this.state.success === true  && 
                         <span data-testid="resolved">success</span>
@@ -126,7 +126,7 @@ class AcceptConsents extends Component {
                                                     <span>{this.props.translate("consent.consent_reason").replace("CONSENT", consent.text)}</span>
                                                 </div>
                                                 <div className="col s6">
-                                                    <Field name={consent.id} data-testid={consent.id+"_check"} size="s12" type="text" validate = {[fieldLevelNotEmpty]} required = {consent.required} label={consent.name} component={FieldSherwood} />
+                                                    <Field name={`${consent.id}`} data-testid={consent.id+"_check"} size="s12" type="text" validate = {[fieldLevelNotEmpty]} required = {consent.required} label={consent.value} component={FieldSherwood} />
                                                 </div>
                                             </RowConsent>
                                 }

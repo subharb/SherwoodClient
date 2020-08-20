@@ -25,6 +25,7 @@ class FieldSherwood extends Component{
         const {input, label, meta, type, disabled, options, defaultOption, size, option, removeClass} = this.props;
         const sizeCurrent = size ? size : "s12";
         let errorClass = (meta.touched && meta.error) ? "invalid" : "";
+        console.log(label);
         const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":

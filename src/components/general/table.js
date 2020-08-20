@@ -27,10 +27,10 @@ class Table extends Component {
                         this.props.values.map((row, index) => {
                             return(
                                 <tr key={index}>
-                                    {row.map(value => {
-                                        if(typeof value === "boolean"){
-                                            const checked = value ? <input type="checkbox" class="filled-in" checked="checked" /> : <input type="checkbox" class="filled-in" />
-                                            return (<td>
+                                    {row.map((value, index) => {
+                                        if(typeof value === "boolean"){ 
+                                            const checked = value ? <input type="checkbox" className="filled-in" checked="checked" readOnly /> : <input type="checkbox" getByText="filled-in" readOnly />
+                                            return (<td key={index}>
                                                         <CheckboxContainer className="input-field">
                                                         <label>
                                                             {checked}
