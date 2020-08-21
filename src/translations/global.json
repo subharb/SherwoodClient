@@ -92,6 +92,7 @@
                 "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
                 "description" : ["Description", "Descripción"],
                 "add_field" : ["Add field", "añadir campo"], 
+                "required" : ["Required", "Obligatorio"],
                 "name_field" : ["Name of the field in your report", "Nombre del campo en los informes"], 
                 "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?"], 
                 "question_field" : ["Question that will be shown in the form", "La pregunta que aparecerá en el formulario"],
@@ -117,7 +118,8 @@
                 "other_consent" : ["Other consent", "Otros consentimientos"],
                 "personal_data" : ["Here are the personal data you are asking to the patients, please add an explanation of why each is necessary", "A continuación encontrará los datos personales que ha pedido en el paso anterior. Por favor, añada una explicación de por qué son necesarios."],
                 "is_required" : ["Is a required consent to participate in the investigation", "Es un consentimiento obligatorio para participar en la investigation"],
-                "required" : ["Required", "Obligatorio"]
+                "required" : ["Required", "Obligatorio"],
+                "name" : ["Name", "Nombre"]                
             },
             "summary" : {
                 "title" : ["Summary Investigation", "ResumenInvestigation"],
@@ -129,7 +131,9 @@
                     "title" : ["Success!", "Enhorabuena!"],
                     "description" : ["You have successfully created an investigation", "Has creado una investigación"],
                     "continue" : ["Continue", "Continuar"]
-                }
+                },
+                "survey" : ["Survey", "Formulario"],
+                "personal_data" : ["Personal Data", "Datos Personales"]
             },
             "save_and_send" : ["Save & send e-consents", "Guardar y enviar consentimientos"],
             "save" : ["Save", "Guardar"]

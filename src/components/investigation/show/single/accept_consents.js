@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Field, reduxForm } from 'redux-form';
 import FieldSherwood from '../../../general/FieldSherwood';
-import { fieldLevelNotEmpty } from '../../../../utils';
+import { fieldLevelNotEmpty, fieldLevelmarkedCheckbox } from '../../../../utils';
 import { toggleLoading } from '../../../../actions';
 
 
@@ -25,7 +25,7 @@ class AcceptConsents extends Component {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this); 
-        this.continueModal = this.continueModal(this);
+        this.continueModal = this.continueModal.bind(this);
         this.state = {success : false, loading:false, error:0}
     }
     saveConsents(data){
@@ -69,6 +69,13 @@ class AcceptConsents extends Component {
     continueModal(){
         console.log("Continue!");
         this.props.history.push("/investigation/show");
+    }
+    componentDidMount(){
+        let initData = {};
+        this.props.investigation.consents.map((consent, index) => {
+            initData[consent.id+"_check"] = false;
+        });
+        this.props.initialize(initData);
     }
     render() {
         console.log("Render Accept Consents", this.state.success);
@@ -120,13 +127,18 @@ class AcceptConsents extends Component {
                                             <RowConsent key={index} className="row">
                                                 <div className="col s10">{index+1}. {this.props.translate("consent.give_consent").replace("NAME", consent.name)} </div>
                                                 <div className="col s2">
-                                                    <Field name={consent.id+"_check"} data-testid={consent.id+"_check"} removeClass={true} type="checkbox" validate = {[fieldLevelNotEmpty]} required = {consent.required} label="" component={FieldSherwood} />
+                                                    <Field name={consent.id+"_check"} data-testid={consent.id+"_check"} 
+                                                            removeClass={true} type="checkbox" 
+                                                            validate = {consent.required ? [fieldLevelmarkedCheckbox] : []} 
+                                                            label="" component={FieldSherwood} />
                                                 </div> 
                                                 <div className="col s12">
                                                     <span>{this.props.translate("consent.consent_reason").replace("CONSENT", consent.text)}</span>
                                                 </div>
                                                 <div className="col s6">
-                                                    <Field name={`${consent.id}`} data-testid={consent.id+"_check"} size="s12" type="text" validate = {[fieldLevelNotEmpty]} required = {consent.required} label={consent.value} component={FieldSherwood} />
+                                                    <Field name={`${consent.id}`} data-testid={consent.id+"_check"} 
+                                                            size="s12" type="text" validate = {consent.required ? [fieldLevelNotEmpty] : []} 
+                                                             label={consent.name} component={FieldSherwood} />
                                                 </div>
                                             </RowConsent>
                                 }
@@ -135,7 +147,7 @@ class AcceptConsents extends Component {
                                             <RowConsent key={index} className="row">
                                                 <div className="col s10">{index+1}. {this.props.translate("consent.consent_reason").replace("CONSENT", consent.text)} </div>
                                                 <div className="col s2">
-                                                    <Field name={consent.id+"_check"} data-testid={consent.id+"_check"} removeClass={true} type="checkbox" validate = {[fieldLevelNotEmpty]} required = {consent.required} label="" component={FieldSherwood} />
+                                                    <Field name={consent.id+"_check"} data-testid={consent.id+"_check"} removeClass={true} type="checkbox" validate = {consent.required ? [fieldLevelmarkedCheckbox] : []} required = {consent.required} label="" component={FieldSherwood} />
                                                 </div>
                                             </RowConsent>
                                 }

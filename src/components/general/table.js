@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const CheckboxContainer = styled.div`
     margin:0rem;
@@ -11,7 +12,7 @@ class Table extends Component {
     render() {
         return (
             <div>
-                <table key="table-fields" className="striped">
+                <table key="table-fields" className="striped"> 
                     <thead>
                     <tr>
                         {
@@ -51,4 +52,10 @@ class Table extends Component {
         )
     }
 }
+
+Table.propTypes = {
+    header : PropTypes.array,
+    values: PropTypes.array
+}
+
 export default withLocalize(Table);

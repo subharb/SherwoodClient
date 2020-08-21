@@ -84,6 +84,11 @@ test("Testing Creating a survey", async() => {
 
     fireEvent.click(getByTestId("save-investigation"));
     expect(myMockFn.mock.calls.length).toBe(1);
+    console.log(myMockFn.mock.calls);
+    expect(myMockFn.mock.calls[0][0]["personalData"]).not.toBeNull();
+    expect(myMockFn.mock.calls[0][0]["fields"]).not.toBeNull();
+    expect(myMockFn.mock.calls[0][0]["fields"][0].is_personal_data).toBeUndefined();
+    expect(myMockFn.mock.calls[0][0]["personalData"][0].is_personal_data).toBeUndefined();
+    expect(myMockFn.mock.calls[0][0]["title"]).toEqual("My first investigation");
 
-    //debug();
 });

@@ -21,6 +21,13 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     },
+    "required":{
+        required : false,
+        type:"checkbox",
+        label:"investigation.create.survey.required",
+        shortLabel: "investigation.table.required",
+        validation : "notEmpty"
+    },
     "name" : {
         required : true,
         type:"text",
@@ -84,7 +91,7 @@ class CreateSurvey extends Component {
         if(props.investigation){
             fields = props.investigation.survey.fields;
         }
-        this.state = {fields : fields, addingField : false};
+        this.state = { fields : fields, personalData: [], addingField : false };
     }
     handleAddField(values){
         console.log("handleAddField", values);
@@ -95,10 +102,14 @@ class CreateSurvey extends Component {
         //No quiero guardar el field tal cual viene de redux form, tiene demasiada informacion
         let newField = { 
                         name : values.name, 
-                        is_personal_data:values.is_personal_data, 
                         question:values.question
                     }
-        tempState.fields.push(newField);
+        if(values.is_personal_data){
+            tempState.personalData.push(newField);
+        }
+        else{
+            tempState.fields.push(newField);
+        }
 
         this.setState(tempState);
     }
@@ -168,17 +179,17 @@ class CreateSurvey extends Component {
     storeData(values){
         let surveyInfo = {...values};
         surveyInfo.fields = this.state.fields;
+        surveyInfo.personalData = this.state.personalData;
         this.props.callBackData(surveyInfo)
     }
     componentDidMount(){
         if(this.props.investigation){
             console.log("Hay props");
             this.props.initialize(this.props.investigation);
-               
         }
     }
     render() {
-
+  
         return([
             <Modal key="modal" open={this.state.addingField} 
                 title={this.props.translate("investigation.create.survey.add_field")} 

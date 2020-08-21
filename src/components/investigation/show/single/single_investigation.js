@@ -23,7 +23,7 @@ class SingleInvestigation extends Component {
                     <p><Translate id="investigation.show.title" />: { this.props.investigation.title }</p>
                     <p><Translate id="investigation.show.date_created" />: { this.props.investigation.title }</p>
                     <p><Translate id="investigation.show.description" />: { this.props.investigation.description }</p>
-                    <Link to={`/investigation/edit/${this.props.uuid}`}><button className="waves-effect waves-light btn lime" ><i className="material-icons">edit</i></button></Link>
+                    <Link to={`/investigation/edit/${this.props.investigation.uuid}`}><button className="waves-effect waves-light btn lime" ><i className="material-icons">edit</i></button></Link>
                 </div>
             )
         }
@@ -44,7 +44,7 @@ class SingleInvestigation extends Component {
                     <p><Translate id="investigation.show.description" />: { this.props.investigation.description }</p>
                     <p><Translate id="investigation.show.data" />:</p>
                     TABLA CON DATOS
-                    <Link to={`/investigation/add/${this.props.uuid}`}><button data-testid="add-data" className="add-data btn-floating btn-large waves-effect waves-light red" ><i className="material-icons">add</i></button></Link>
+                    <Link to={`/investigation/add/${this.props.investigation.uuid}`}><button data-testid="add-data" className="add-data btn-floating btn-large waves-effect waves-light red" ><i className="material-icons">add</i></button></Link>
                     <p><Translate id="investigation.show.patient_consents" />:</p>
                     <Table header={headerTable} 
                             values={valuesTable} />

@@ -23,6 +23,14 @@ const FIELDS_FORM = {
         label:"investigation.create.consent.consent",
         shortLabel: "investigation.create.consent.consent",
         validation : "notEmpty"
+    },
+    "name" : {
+        required : true,
+        type:"text",
+        label:"investigation.create.consent.name",
+        shortLabel: "investigation.create.consent.name",
+        validation : "notEmpty",
+        is_personal_data:true
     }
 }
 
@@ -88,7 +96,7 @@ class AddConsents extends Component {
         }
         else{
             tempbObj = {value : value.consent, is_personal_data : false};
-            tempState.consents[this.currentFormModal.consent.callBackParam] = tempbObj; 
+            tempState.consents[value.name] = tempbObj; 
         }
         
         tempState.addingConsent = false;
@@ -103,8 +111,6 @@ class AddConsents extends Component {
     }
     addConsent(){
         this.currentFormModal = FIELDS_FORM;
-        const randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        this.currentFormModal.consent.callBackParam = randomString;
         this.setState({addingConsent : true});
 
     }
@@ -133,7 +139,7 @@ class AddConsents extends Component {
                                 <tr key={field.name}>
                                     <td>{field.name}</td>
                                     {this.state.consents.hasOwnProperty(field.name) ? 
-                                        <td>{this.state.consents[field.name].value} <EditConsent onClick={() => this.editConsent(idx)} className="material-icons">edit</EditConsent></td>
+                                        <td>{this.state.consents[field.name].value} <EditConsent onClick={() => this.addReasonPersonal(field.name)} className="material-icons">edit</EditConsent></td>
                                         : <td><button data-testid="add-personal-consent" className="add-personal-consent btn-floating btn-small waves-effect waves-light red" onClick={() => this.addReasonPersonal(field.name)} ><i className="material-icons">add</i></button></td>
                                     }   
                                     <td>{this.state.consents.hasOwnProperty(field.name) ? "Yes" : "-"}</td>

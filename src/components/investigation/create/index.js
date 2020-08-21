@@ -26,27 +26,31 @@ class NewInvestigation extends Component {
             patients = props.investigation.patients
         }
         //this.state = {step : 0, survey, consents, patients}
-        this.state = {step:2, 
+        this.state = {step:3, 
             survey: {
                 title : "My first investigation",
                 description: "My first description",
-                fields : [
-                    {   "is_personal_data": true,
-                        "name" : "name",
+                fields : [  
+                    {   "name" : "hemo",
                         "type" : "text",
-                        "question" :"¿cuál es su nombre?"
-                    },
-                    {   "is_personal_data": true,
-                        "name" : "surnames",
-                        "type" : "text",
-                        "question" : "¿cuáles son sus apellidos"
-                    },   
-                    {   "is_personal_data": false,
-                        "name" : "hemo",
-                        "type" : "text",
+                        "required" : true,
                         "question" : "Hemoglobina"
                     }
-                ]}
+            ]},
+            personalData : [
+                {   
+                "name" : "name",
+                "required" : true,
+                "type" : "text",
+                "question" :"¿cuál es su nombre?"
+            },
+            {   
+                "name" : "surnames",
+                "required" : true,
+                "type" : "text",
+                "question" : "¿cuáles son sus apellidos"
+            }, 
+            ]
             ,patients:[
                 {"email" : "david@sherwood.science", 
                    "keyPatInvEncr" : "U2FsdGVkX18UwefjYdNNYrbOXGfhaosgCltu1Rf7YeALN4SA57aQbejaIP2iczRDOPzzu+WJuJQIon1giKE7uQ==", "tempKey" :"ffu2wyexjxbw6n3sn3tngh"},
@@ -64,8 +68,9 @@ class NewInvestigation extends Component {
                 required: true,
                 is_personal_data: true
                 },
-                '1hgqrcsn1gv81fh52yd1z': { value: 'Store biological material', is_personal_data: false }
+                store_material: { value: 'Store biological material', is_personal_data: false }
             }
+            
         }
     }
     addData(data){
@@ -106,9 +111,7 @@ class NewInvestigation extends Component {
                 component = <NewSurvey investigation={ this.props.investigation ? this.props.investigation : null } callBackData={this.addData} />
                 break;
             case 1:
-                const filteredFields = this.state.survey.fields.filter(field => field.is_personal_data === true);
-                console.log("filteredFields", filteredFields);
-                component = <AddConsents consents={ this.state.consents}  personalFields={filteredFields} callBackData={this.addData} />
+                component = <AddConsents consents={ this.state.consents}  personalFields={this.state.personalData} callBackData={this.addData} />
                 break;
             case 2:
                 component = <AddPatients patients={ this.state.patients }  callBackData={this.addData} />

@@ -9,7 +9,7 @@ import PreviewConsents from '../../consent/preview';
 import styled from 'styled-components';
 import { toggleLoading } from '../../../actions';
 import SuccessComponent from '../../../components/general/success_component';
-
+import Table from '../../../components/general/table';
 
 const SpanField = styled.span`
     font-weight:bold;
@@ -104,32 +104,15 @@ class Summary extends Component {
                     <p><SpanField><Translate id="investigation.create.summary.review_consents" ></Translate>:</SpanField> <button className="waves-effect waves-light btn lime" onClick={this.showConsents}>Ver consents</button></p>
                     <p><SpanField><Translate id="investigation.create.survey.name" ></Translate>:</SpanField> {this.props.investigation.survey.title}</p>
                     <p><SpanField><Translate id="investigation.create.survey.description" ></Translate>:</SpanField> {this.props.investigation.survey.description}</p>
-                    <table id="survey-info" key="table-fields" className="striped">
-                        <thead>
-                        <tr>
-                            {Object.keys(this.props.investigation.survey.fields[0]).map(key => {
-                                console.log(key);
-                                return (
-                                    <th key={key}>{this.props.translate("investigation.table."+key)}</th>
-                                )
-                            })}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            this.props.investigation.survey.fields.map(field => {
-                                return(
-                                    <tr key={field.name}>
-                                        <td>{field.is_personal_data ? this.props.translate("general.yes") : this.props.translate("general.no")}</td>
-                                        <td>{field.name}</td>
-                                        <td>{field.type}</td>
-                                        <td>{field.question}</td>
-                                    </tr>)
-                            })
-                        }
-                        </tbody>
-                    </table> 
-                    <Translate id="investigation.create.summary.patients" ></Translate>
+                    <Translate id="investigation.create.summary.personal_data" ></Translate>
+                    <Table header={Object.keys(this.props.investigation.personalData[0])} values={this.props.investigation.personalData.map(field =>{
+                        return Object.values(field)
+                    })}/>
+                    <SpanField><Translate id="investigation.create.summary.survey" ></Translate></SpanField>
+                    <Table header={Object.keys(this.props.investigation.survey.fields[0])} values={this.props.investigation.survey.fields.map(field =>{
+                        return Object.values(field)
+                    })}/>
+                    <SpanField><Translate id="investigation.create.summary.patients" ></Translate></SpanField>
                     <table id="survey-info" key="table-emails" className="striped">
                         <thead>
                         <tr>

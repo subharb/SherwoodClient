@@ -9,7 +9,7 @@ import { createStore, combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 
 const reasonPersonalData = ["Identification purposes", "Identification purposes"];
-const OTHER_CONSENT = ["Store biological material"];
+const OTHER_CONSENT = [{"value" : "Store biological material", "name" : "store_bio"}];
 const PERSONAL_FIELDS =  
 [
     {   "is_personal_data": true,
@@ -70,13 +70,16 @@ test("Testing Adding/Removing Consents", async() => {
         fireEvent.click(getByTestId("add-consent"));
         //Meto un consentimiento en el form
         fireEvent.change(getByLabelText("investigation.create.consent.consent"), {
-            target: { value: OTHER_CONSENT[j] }
+            target: { value: OTHER_CONSENT[j].value }
+        });
+        fireEvent.change(getByLabelText("investigation.create.consent.name"), {
+            target: { value: OTHER_CONSENT[j].name }
         });
         //Añado el campo
         fireEvent.click(getByTestId("submit-form"));
         await waitForDomChange();
         //Compruebo que se ha añadido a la web
-        getByText(new RegExp(OTHER_CONSENT[j], "i"));
+        getByText(new RegExp(OTHER_CONSENT[j].value, "i"));
     }
     fireEvent.click(getByTestId("save-consents")); 
     expect(myMockFn.mock.calls.length).toBe(1);

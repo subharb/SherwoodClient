@@ -70,6 +70,14 @@ export function fieldLevelNotEmpty(value){
 export function notEmpty(value){
     return Boolean(value && value !== "");
 }
+//Wrapper para que funcione en la validación por campo
+export function fieldLevelmarkedCheckbox(value){
+    return markedCheckbox(value) ? undefined : "investigation.errors.error_not_empty"
+}
+export function markedCheckbox(value){
+    console.log(value === true);
+    return value === true;
+}
 
 export async function generateKey(){
     const genObj = await crypto.subtle.generateKey(
@@ -125,3 +133,11 @@ export async function decryptData(ciphertext, key){
     return originalText;
 }
 
+export const templateField = {
+    required : true,
+    type:"text",
+    label:"investigation.create.consent.reason",
+    shortLabel: "investigation.create.consent.reason",
+    validation : "notEmpty",
+    is_personal_data:true
+}

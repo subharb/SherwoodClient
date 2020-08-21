@@ -10,6 +10,7 @@ import CreateInvestigation from '../investigation/create';
 import withLoggedUser from '../withLoggedUser';
 import GridInvestigations from '../investigation/show/all';
 import SingleInvestigation from '../investigation/show/single';
+import SurveyData from '../investigation/survey';
 
 class Dashboard extends Component{
    componentDidMount(){
@@ -38,6 +39,8 @@ class Dashboard extends Component{
             case "draft":
             case "live":
                 return <GridInvestigations filter={this.props.match.params.action} />
+            case "add":
+                return <SurveyData uuidInvestigation={this.props.match.params.uuid} />
             default:
                 return "RESUMEN"
         }
