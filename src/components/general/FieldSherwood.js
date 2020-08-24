@@ -9,16 +9,20 @@ class FieldSherwood extends Component{
 
         this.state = {options : []}
     }
-    componentDidUpdate(){
-        let selects = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(selects, {});
-    }
+    // componentDidUpdate(){
+    //     let selects = document.querySelectorAll('select');
+    //     var instances = M.FormSelect.init(selects, {});
+    // }
     async componentDidMount(){
         if(typeof this.props.optionsUrl !== "undefined"){
             const request = await axios.get(this.props.optionsUrl);
             if(request.status === 200){
                 this.setState({options : request.data});
             }
+        }
+        if(this.props.type === "select"){
+            let selects = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(selects, {});
         }
     }
     render(){
@@ -36,7 +40,8 @@ class FieldSherwood extends Component{
                 }
                 else{
                     optionsArray = options.map(option => {
-                        return <option key={option.value} value={option.value}>{this.props.translate(option.text)}</option>
+                        const optionText = this.props.translate(option.text).indexOf("Missing translationId:") !== -1 ?  option.text : this.props.translate(option.text);
+                        return <option key={option.value} value={option.value}>{optionText}</option>
                     })
                 }
                 return (

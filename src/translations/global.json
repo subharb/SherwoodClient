@@ -101,7 +101,8 @@
                 "type_number" : ["Number", "Número"],
                 "type_date" : ["Date", "fecha"], 
                 "choose" : ["Choose your option", "Elija una opción"],
-                "personal_info" : ["Is it a personal data", "¿Es un dato personal?"]
+                "personal_info" : ["Is it a personal data", "¿Es un dato personal?"],
+                "choose_patient" : ["Choose a patient", "Elija un paciente"]
             },
             "add_patients" : {
                 "title" : ["Add patients", "Añadir pacientes"],

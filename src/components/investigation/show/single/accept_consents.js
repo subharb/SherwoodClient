@@ -52,7 +52,7 @@ class AcceptConsents extends Component {
         });
         console.log(putObject);
         
-        const request = await axios.put(process.env.REACT_APP_API_URL+'/patient/consents/'+this.props.uuidInvestigation, {consents:values})
+        const request = await axios.put(process.env.REACT_APP_API_URL+'/patient/consents/'+this.props.uuidInvestigation, {consents:putObject})
         .catch(err => console.log('Catch', err)); 
     
         //Guardamos el token si la request fue exitosa
