@@ -19,7 +19,10 @@
         "show_investigations" : ["Show investigations", "Mostrar investigaciones"],
         "draft_investigations" : ["Draft investigations", "Investigaciones Draft"],
         "live_investigations" : ["Live investigations", "Investigaciones Live"],
-        "ongoing" : ["Show ongoing investigations", "Mostrar investigaciones corriente"]
+        "ongoing" : ["Show ongoing investigations", "Mostrar investigaciones corriente"],
+        "summary" : {
+            "title" : ["Summary", "Resumen"]
+        }
     },
     "login":{
         "email":["Email", "Email"],

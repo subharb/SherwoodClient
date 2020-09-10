@@ -99,7 +99,8 @@ class AddPatients extends Component {
                     }
                     </tbody>
                 </table>,
-                <button data-testid="save-patients" onClick={this.savePatients} type="submit" key="save-patients" id="save-patients" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
+                <button data-testid="save-patients" onClick={this.savePatients} type="submit" key="save-patients" id="save-patients" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>,
+                <button data-testid="cancel" onClick={this.props.stepBack} className="waves-effect waves-light btn red lighten-1 right">Back</button>
                 ]);
         }
     }

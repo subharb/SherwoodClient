@@ -105,7 +105,7 @@ class Summary extends Component {
                     <p><SpanField><Translate id="investigation.create.survey.name" ></Translate>:</SpanField> {this.props.investigation.survey.title}</p>
                     <p><SpanField><Translate id="investigation.create.survey.description" ></Translate>:</SpanField> {this.props.investigation.survey.description}</p>
                     <Translate id="investigation.create.summary.personal_data" ></Translate>
-                    <Table header={Object.keys(this.props.investigation.personalData[0])} values={this.props.investigation.personalData.map(field =>{
+                    <Table header={Object.keys(this.props.investigation.survey.personalData[0])} values={this.props.investigation.survey.personalData.map(field =>{
                         return Object.values(field)
                     })}/>
                     <SpanField><Translate id="investigation.create.summary.survey" ></Translate></SpanField>
@@ -132,7 +132,8 @@ class Summary extends Component {
                     </table>
                 </div>
                 <button data-testid="publish-investigation" onClick={()=>this.send(true)} type="button" key="publish-investigation" id="publish-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save_and_send")}<i className="material-icons right">send</i></button>
-                <button data-testid="save-for-later-investigation" onClick={()=>this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" className="waves-effect waves-light btn lime right">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
+                <button data-testid="save-for-later-investigation" onClick={()=>this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" className="waves-effect waves-light btn lime left">{this.props.translate("investigation.create.save")}<i className="material-icons left">send</i></button>
+                <button data-testid="cancel" onClick={this.props.stepBack} className="waves-effect waves-light btn red lighten-1 right">Back</button>
             </div>
             ]
         );

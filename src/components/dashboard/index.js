@@ -11,6 +11,7 @@ import withLoggedUser from '../withLoggedUser';
 import GridInvestigations from '../investigation/show/all';
 import SingleInvestigation from '../investigation/show/single';
 import SurveyData from '../investigation/survey';
+import Summary from './summary';
 
 class Dashboard extends Component{
    componentDidMount(){
@@ -42,21 +43,16 @@ class Dashboard extends Component{
             case "add":
                 return <SurveyData uuidInvestigation={this.props.match.params.uuid} />
             default:
-                return "RESUMEN"
+                return <Summary />
         }
     }
     render(){
         return ([
             <LoadingScreen key="loading_screen" />,
             <Header />,
-            <div key="container" className="container">
+            <div key="container" className="">
                 <div className="row">
-                    <Translate id="dashboard.greetings" />
-                </div>
-                <div className="row">
-                    <div className="col s3">
                         <Toolbar  /> 
-                    </div>
                     <div className="col s8 card">
                     { this.renderMainContent() }
                     </div>

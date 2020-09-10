@@ -12,7 +12,7 @@ const testData = [
     },
     {
         is_personal_data: true,
-        name : "surnames",
+        name : "surnames", 
         type : "text",
         question: "¿Apellidos?"
     },
@@ -71,7 +71,7 @@ test("Testing Creating a survey", async() => {
             else{
                 fireEvent.change(getByTestId(key), { 
                     target: { value: field.value }
-                });
+                }); 
             }
             // fireEvent.change(getByLabelText(field.label, { exact: false }), {
             //     target: { value: field.value }
@@ -80,12 +80,14 @@ test("Testing Creating a survey", async() => {
         //Añado el campo
         fireEvent.click(getByTestId("submit-form"));
         await waitForDomChange();
+        console.log(testField.question);
+        getByText(testField.question)
     }
 
     fireEvent.click(getByTestId("save-investigation"));
     expect(myMockFn.mock.calls.length).toBe(1);
     console.log(myMockFn.mock.calls);
-    expect(myMockFn.mock.calls[0][0]["personalData"]).not.toBeNull();
+    expect(myMockFn.mock.calls[0][0]["personalData"]).not.toBeUndefined();
     expect(myMockFn.mock.calls[0][0]["fields"]).not.toBeNull();
     expect(myMockFn.mock.calls[0][0]["fields"][0].is_personal_data).toBeUndefined();
     expect(myMockFn.mock.calls[0][0]["personalData"][0].is_personal_data).toBeUndefined();

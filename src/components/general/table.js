@@ -16,9 +16,9 @@ class Table extends Component {
                     <thead>
                     <tr>
                         {
-                            this.props.header.map(label => {
+                            this.props.header.map((label, index) => {
                                 const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
-                                return(<th >{ labelString }</th>)
+                                return(<th key={index}>{ labelString }</th>)
                             })
                         }
                     </tr>
@@ -40,7 +40,7 @@ class Table extends Component {
                                                         </CheckboxContainer>
                                                     </td>)
                                         }
-                                        return <td>{value}</td>
+                                        return <td key={index}>{value}</td>
                                     })}
                                 </tr>
                             )

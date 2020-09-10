@@ -13,6 +13,7 @@ import Home from './components/home';
 import Login from './components/dashboard/login';
 import RegisterUser from './components/register';
 import Dashboard from './components/dashboard';
+import { ThemeProvider }  from 'styled-components';
 import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
 
@@ -25,26 +26,30 @@ axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
 
 ReactDom.render(
     <Provider store={store}>
-        <LocalizeProvider initialize={{
-            languages: [
-            { name: "English", code: "en" },
-            { name: "Spanish", code: "es" }
-            ],
-            translation: globalTranslations,
-            options: {
-            defaultLanguage: "en",
-                renderToStaticMarkup: renderToStaticMarkup
-            }
-        }}>
-            <BrowserRouter>
-                <Switch>
-                <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
-                <Route exact path="/:type(patient|researcher)/register/:uuidPatient?" children={(props) => <RegisterUser {...props} /> } />
-                <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
-                <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
-                <Route exact path="/" children={(props) => <Home {...props} />} />
-                </Switch>
-            </BrowserRouter>
-        </LocalizeProvider>
+        <ThemeProvider theme={{colorSherwood:"#26a69a", headerBackground:"#059688"}}>
+            <LocalizeProvider initialize={{
+                languages: [
+                { name: "English", code: "en" },
+                { name: "Spanish", code: "es" }
+                ],
+                translation: globalTranslations,
+                options: {
+                defaultLanguage: "en",
+                    renderToStaticMarkup: renderToStaticMarkup
+                }
+            }}>
+                <BrowserRouter>
+                    <Switch>
+                        
+                            <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
+                            <Route exact path="/:type(patient|researcher)/register/:uuidPatient?" children={(props) => <RegisterUser {...props} /> } />
+                            <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
+                            <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
+                            <Route exact path="/" children={(props) => <Home {...props} />} />
+                        
+                    </Switch>
+                </BrowserRouter>
+            </LocalizeProvider>
+        </ThemeProvider>
     </Provider>, document.getElementById('root')
 );

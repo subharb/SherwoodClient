@@ -8,6 +8,7 @@ import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { toggleLoading } from '../../../actions';
 import {DeleteHolder, EditConsent} from "../../general/mini_components";
+import Table from '../../general/table';
 
 const FIELDS_FORM = {
     "required":{
@@ -122,34 +123,15 @@ class AddConsents extends Component {
     renderPersonalDataReason(){
         console.log(this.props.personalFields);
         if(this.props.personalFields.length > 0){
-            return([
-                <p key="parag"><Translate id="investigation.create.consent.personal_data"/></p>,
-                <table key="table-fields" className="striped">
-                    <thead>
-                    <tr>
-                        <th ><Translate id="investigation.create.consent.field"></Translate></th>
-                        <th ><Translate id="investigation.create.consent.reason"></Translate></th>
-                        <th ><Translate id="investigation.create.consent.required"></Translate></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        this.props.personalFields.map((field, idx) => {
-                            return(
-                                <tr key={field.name}>
-                                    <td>{field.name}</td>
-                                    {this.state.consents.hasOwnProperty(field.name) ? 
-                                        <td>{this.state.consents[field.name].value} <EditConsent onClick={() => this.addReasonPersonal(field.name)} className="material-icons">edit</EditConsent></td>
-                                        : <td><button data-testid="add-personal-consent" className="add-personal-consent btn-floating btn-small waves-effect waves-light red" onClick={() => this.addReasonPersonal(field.name)} ><i className="material-icons">add</i></button></td>
-                                    }   
-                                    <td>{this.state.consents.hasOwnProperty(field.name) ? "Yes" : "-"}</td>
-                                </tr>
-                            )
-                        })
-                    }
-                    </tbody>
-                </table>
-            ]);
+            return <Table header={["investigation.create.consent.field", "investigation.create.consent.reason", "investigation.create.consent.required"]} 
+                    values={this.props.personalFields.map((field, idx) => {
+                        return [field.name, this.state.consents.hasOwnProperty(field.name) ? 
+                            <div>{this.state.consents[field.name].value}<EditConsent onClick={() => this.addReasonPersonal(field.name)} className="material-icons">edit</EditConsent></div> : 
+                            <button data-testid="add-personal-consent" className="add-personal-consent btn-floating btn-small waves-effect waves-light red" onClick={() => this.addReasonPersonal(field.name)} ><i className="material-icons">add</i></button>,
+                            field.required
+                        ]
+                        
+                    })}/>
         }
     }
     renderConsents(){
@@ -210,6 +192,7 @@ class AddConsents extends Component {
                 </p>
                 {this.renderConsents()}    
                 <button data-testid="save-consents" disabled={disableButton} onClick={this.saveConsents} type="submit" key="save-consents" id="save-consents" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>          
+                <button data-testid="cancel" onClick={this.props.stepBack} className="waves-effect waves-light btn red lighten-1 right">Back</button>
             </div>
         ])
     }

@@ -1,4 +1,5 @@
 
+Parece confuso primero meter campos personales y luego añadir los consentimientos de ese dato personal. Además la "obligatoriedad" la tengo en ambios, una como campo y luego como consentimiento. Quizás haya que separar en "datos medicos" y "consentimientos y datos personales" porque al final todo datos personal debe ir acompañado de un consentimiento y los datos perosnales los tiene que rellenar el paciente una vez por investigacion mientras que los medicos los rellena el investigador cada vez
 ### Preview de Live Investigation
 ### Introducir datos de una investigacion
 

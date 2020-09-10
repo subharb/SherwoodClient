@@ -16,69 +16,72 @@ class NewInvestigation extends Component {
         super(props);
         
         this.addData = this.addData.bind(this);
-        let survey = {};
-        let consents = {};
-        let patients = [];
+        this.stepBack = this.stepBack.bind(this);
+        
+        let investigation = { survey : {}, patients : [], consents : []};
 
         if(props.investigation){
-            survey = props.investigation.survey;
-            consents = props.investigation.consents;
-            patients = props.investigation.patients
+            investigation = props.investigation;
+
         }
-        //this.state = {step : 0, survey, consents, patients}
-        this.state = {step:3, 
-            survey: {
-                title : "My first investigation",
-                description: "My first description",
-                fields : [  
-                    {   "name" : "hemo",
-                        "type" : "text",
-                        "required" : true,
-                        "question" : "Hemoglobina"
-                    }
-            ]},
-            personalData : [
-                {   
-                "name" : "name",
-                "required" : true,
-                "type" : "text",
-                "question" :"¿cuál es su nombre?"
-            },
-            {   
-                "name" : "surnames",
-                "required" : true,
-                "type" : "text",
-                "question" : "¿cuáles son sus apellidos"
-            }, 
-            ]
-            ,patients:[
-                {"email" : "david@sherwood.science", 
-                   "keyPatInvEncr" : "U2FsdGVkX18UwefjYdNNYrbOXGfhaosgCltu1Rf7YeALN4SA57aQbejaIP2iczRDOPzzu+WJuJQIon1giKE7uQ==", "tempKey" :"ffu2wyexjxbw6n3sn3tngh"},
-                {"email" : "Pedro.rodriguez@hotmail.com",
-                    "keyPatInvEncr" : "U2FsdGVkX1/h++4ISsIqAUMsgn6LByXuSlYe5XZLv/IDxPZVK2Sa404sfjyEz5RSubMxp3a5P2YDd5RtK2p/lA==", "tempKey" : "2h1n2cg3inci9irlqugur"}
-            ], 
-            consents: {
-                name: {
-                value: 'Identification purposes',
-                required: true,
-                is_personal_data: true
-                },
-                surnames: {
-                value: 'Identification purposes',
-                required: true,
-                is_personal_data: true
-                },
-                store_material: { value: 'Store biological material', is_personal_data: false }
-            }
-            
-        }
+        this.state = {step : 0, investigation}
+        // this.state = {step:1, 
+        //     investigation : {
+        //         title : "My first investigation",
+        //         description: "My first description",
+        //         survey: {
+        //             fields : [  
+        //                 {   "name" : "hemo",
+        //                     "type" : "text",
+        //                     "required" : true,
+        //                     "question" : "Hemoglobina"
+        //                 }
+        //             ],
+        //             personalData : [
+        //                 {   
+        //                 "name" : "name",
+        //                 "required" : true,
+        //                 "type" : "text",
+        //                 "question" :"¿cuál es su nombre?"
+        //             },
+        //             {   
+        //                 "name" : "surnames",
+        //                 "required" : true,
+        //                 "type" : "text",
+        //                 "question" : "¿cuáles son sus apellidos"
+        //             }, 
+        //             ]}
+        //         ,patients:[
+        //             {"email" : "david@sherwood.science", 
+        //                 "keyPatInvEncr" : "U2FsdGVkX18UwefjYdNNYrbOXGfhaosgCltu1Rf7YeALN4SA57aQbejaIP2iczRDOPzzu+WJuJQIon1giKE7uQ==", "tempKey" :"ffu2wyexjxbw6n3sn3tngh"},
+        //             {"email" : "Pedro.rodriguez@hotmail.com",
+        //                 "keyPatInvEncr" : "U2FsdGVkX1/h++4ISsIqAUMsgn6LByXuSlYe5XZLv/IDxPZVK2Sa404sfjyEz5RSubMxp3a5P2YDd5RtK2p/lA==", "tempKey" : "2h1n2cg3inci9irlqugur"}
+        //         ], 
+        //         consents: {
+        //             name: {
+        //             value: 'Identification purposes',
+        //             required: true,
+        //             is_personal_data: true
+        //             },
+        //             surnames: {
+        //             value: 'Identification purposes',
+        //             required: true,
+        //             is_personal_data: true
+        //             },
+        //             store_material: { value: 'Store biological material', is_personal_data: false }
+        //         }
+        //     } 
+        // }
     }
     addData(data){
         console.log("New Data!", JSON.stringify(data));
         let tempState = {...this.state};
         switch(this.state.step){
             case 0:
-                tempState.survey = data;
+                tempState.investigation.title = data.title;
+                tempState.investigation.description = data.description;
+                tempState.investigation.survey.fields = data.fields;
+                tempState.investigation.survey.personalData = data.personalData;
                 break;
             case 1:
                 tempState.consents = data;
@@ -96,6 +99,15 @@ class NewInvestigation extends Component {
 
         this.setState(tempState);
     }
+    stepBack(){
+        
+        let tempState = this.state;
+        if(tempState.step > 0){
+            tempState.step--;
+        }
+    
+        this.setState(tempState);
+    }
     componentDidMount(){
         if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
             this.props.fetchInvestigation(this.props.uuid);
@@ -108,16 +120,20 @@ class NewInvestigation extends Component {
         }
         switch(this.state.step){
             case 0:
-                component = <NewSurvey investigation={ this.props.investigation ? this.props.investigation : null } callBackData={this.addData} />
+                component = <NewSurvey investigation={ this.props.investigation ? this.props.investigation : this.state.investigation } callBackData={this.addData} 
+                                />
                 break;
             case 1:
-                component = <AddConsents consents={ this.state.consents}  personalFields={this.state.personalData} callBackData={this.addData} />
+                component = <AddConsents consents={ this.state.investigation.consents }  personalFields={this.state.investigation.survey.personalData} callBackData={this.addData} 
+                                stepBack = {this.stepBack}/>
                 break;
             case 2:
-                component = <AddPatients patients={ this.state.patients }  callBackData={this.addData} />
+                component = <AddPatients patients={ this.state.investigation.hasOwnProperty("patients") ? this.state.investigation.patients : false }  callBackData={this.addData} 
+                                stepBack = {this.stepBack}/>
                 break;
             case 3:
-                component = <Summary investigation={ this.state } />
+                component = <Summary investigation={ this.state.investigation }
+                                stepBack = {this.stepBack} />
                 break;
             default:
                 component = "Something went wrong";

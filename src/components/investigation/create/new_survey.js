@@ -12,6 +12,7 @@ import Modal from '../../general/modal';
 import { toggleLoading } from '../../../actions';
 import {DeleteHolder} from "../../general/mini_components";
 import FieldSherwood from '../../general/FieldSherwood';
+import Table from '../../general/table';
 
 const FIELDS_FORM = {
     "is_personal_data":{
@@ -88,7 +89,7 @@ class CreateSurvey extends Component {
         //this.saveSurvey = this.saveSurvey.bind(this);
         let fields = []
         //Si se pasa por parametro una investigacion, la meto en el estado
-        if(props.investigation){
+        if(props.investigation.survey.fields){
             fields = props.investigation.survey.fields;
         }
         this.state = { fields : fields, personalData: [], addingField : false };
@@ -101,8 +102,10 @@ class CreateSurvey extends Component {
         tempState.addingField = false;
         //No quiero guardar el field tal cual viene de redux form, tiene demasiada informacion
         let newField = { 
+                        required:values.required,
                         name : values.name, 
-                        question:values.question
+                        type:values.type,
+                        question:values.question,
                     }
         if(values.is_personal_data){
             tempState.personalData.push(newField);
@@ -140,40 +143,39 @@ class CreateSurvey extends Component {
         }
         this.setState(tempState);
     }
-
+    renderPersonalFields(){
+        if(this.state.personalData.length === 0){
+            return <Translate id="investigation.create.survey.no_fields" />
+        }
+        else{
+            const tempForm = {...FIELDS_FORM};
+            delete tempForm.is_personal_data;
+            const arrayHeader = Object.values(tempForm).map(value => value.shortLabel);
+            //return this.state.personalData.map(element => <div key={element.name}>{element.question}</div>);
+            return [<h5>Personal Fields</h5>,<Table key="added_fields" header={arrayHeader} 
+                    values = {this.state.personalData.map(field => {let arrayFields = Object.values(field);
+                    arrayFields.push(<DeleteHolder onClick={() => this.deleteField(field)}><i className="material-icons">delete</i></DeleteHolder>)
+                    return arrayFields;
+                })} />
+            ]
+        }
+    }
     renderAddedFields(){
         if(this.state.fields.length === 0){
             return <Translate id="investigation.create.survey.no_fields" />
         }
         else{
-            return [<table key="table-fields" className="striped">
-                        <thead>
-                        <tr>
-                            {Object.values(FIELDS_FORM).map(value => {
-                                return (
-                                    <th key={value.shortLabel}>{this.props.translate(value.shortLabel)}</th>
-                                )
-                            })}
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {
-                            this.state.fields.map(field => {
-                                return(
-                                    <tr key={field.name}>
-                                        <td>{field.is_personal_data ? this.props.translate("general.yes") : this.props.translate("general.no")}</td>
-                                        <td>{field.name}</td>
-                                        <td>{field.type}</td>
-                                        <td>{field.question}</td>
-                                        <td><DeleteHolder onClick={() => this.deleteField(field)}><i className="material-icons">delete</i></DeleteHolder></td>
-                                    </tr>)
-                            })
-                        }
-                        </tbody>
-                    </table>,
-                    <button data-testid="save-investigation" type="submit" key="save-investigation" id="save-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save")}<i className="material-icons right">send</i></button>
-            ]
+            //Filtro si es un campo personal y añado el de borrar
+            const tempForm = {...FIELDS_FORM};
+            delete tempForm.is_personal_data;
+            const arrayHeader = Object.values(tempForm).map(value => value.shortLabel);
+            arrayHeader.push("delete");
+            return [<h5>Fields</h5>,
+                    <Table key="added_fields" header={arrayHeader} 
+            values = {this.state.fields.map(field => {let arrayFields = Object.values(field);
+                    arrayFields.push(<DeleteHolder onClick={() => this.deleteField(field)}><i className="material-icons">delete</i></DeleteHolder>)
+                    return arrayFields;
+                })} />]
         }
     }
     storeData(values){
@@ -212,6 +214,16 @@ class CreateSurvey extends Component {
                     <div>
                         { this.renderAddedFields() }
                     </div>
+                    <div>
+                        { this.renderPersonalFields() }
+                    </div>
+                    {(this.state.personalData.length > 0 || this.state.fields.length > 0) &&
+                        <button data-testid="save-investigation" type="submit" key="save-investigation" 
+                                id="save-investigation" className="waves-effect waves-light btn">
+                                {this.props.translate("investigation.create.save")}<i className="material-icons right">send</i>
+                        </button>
+                    }
+                    
                 </div>
             </form>
             ]
