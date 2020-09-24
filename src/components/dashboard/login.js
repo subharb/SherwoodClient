@@ -86,7 +86,7 @@ class Login extends Component {
             <Header key="header" />,
             <Container key="container" >            
                 <div className="row">
-                    <div className="col s6 m5 l3 offset-s3 offset-m4 offset-l5"> 
+                    <div className="col s10 m5 l3 offset-s1 offset-m4 offset-l5"> 
                     <div className="card white darken-1">
                         <div className="card-content">
                             <span className="card-title">Login</span>

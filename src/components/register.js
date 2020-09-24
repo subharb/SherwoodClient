@@ -62,8 +62,8 @@ const forms = {
                 "text" : "code"
             },
             optionsUrl: process.env.REACT_APP_API_URL+"/countries",
-            label:"register.common.personal_info.surnames",
-            shortLabel: "register.common.personal_info.surnames",
+            label:"register.common.personal_info.country",
+            shortLabel: "register.common.personal_info.country",
             validation : "notEmpty"
         }
     },
