@@ -35,7 +35,8 @@ ReactDom.render(
                 translation: globalTranslations,
                 options: {
                 defaultLanguage: "en",
-                    renderToStaticMarkup: renderToStaticMarkup
+                renderInnerHtml: true,
+                renderToStaticMarkup: renderToStaticMarkup
                 }
             }}>
                 <BrowserRouter>
