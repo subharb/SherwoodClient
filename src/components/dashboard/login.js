@@ -105,7 +105,9 @@ class Login extends Component {
                                         <Field disabled={this.state.loading} key="password" type="password" name="password" required={true}  component={FieldSherwood} label="login.password"/>
                                         </div>
                                     </div>
-                                    
+                                    {this.state.error && 
+                                        <div>Login Error</div>
+                                    }
                                     <button disabled={this.state.loading} className="waves-effect waves-light btn">Login</button>
                                 </form>
                             </div>
