@@ -76,7 +76,7 @@ const FIELDS_INVESTIGATION = {
 /**
  * Component that renders the fields created and stores them in the server
  */
-class CreateSurvey extends Component {
+class BasicInfo extends Component {
     
     constructor(props){
         super(props);
@@ -231,7 +231,7 @@ class CreateSurvey extends Component {
         
     }
 }
-CreateSurvey.propTypes = {
+BasicInfo.propTypes = {
     callBackData: PropTypes.func
 }; 
 function validate(values){
@@ -250,4 +250,4 @@ export default withLocalize(reduxForm({
     // a unique name for the form
     validate,
     form: 'newInvestigation'
-  })(connect(null, { toggleLoading })(CreateSurvey)))
+  })(connect(null, { toggleLoading })(BasicInfo)))

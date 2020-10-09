@@ -107,6 +107,13 @@
                 "personal_info" : ["Is it a personal data", "¿Es un dato personal?"],
                 "choose_patient" : ["Choose a patient", "Elija un paciente"]
             },
+            "section" : {
+                "title" : ["Sections", ""],
+                "intro" : ["A section is a subsection of your survey, each section holds a different inputs of your survey. Each section can be filled once or several time during the investigation.", ""],
+                "no_sections" : ["You haven't added any sections yet"],
+                "new_section" : ["New section"],
+                "add_field" : ["Add field", "añadir campo"]
+            },
             "add_patients" : {
                 "title" : ["Add patients", "Añadir pacientes"],
                 "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],

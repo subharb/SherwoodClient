@@ -17,6 +17,8 @@ import { ThemeProvider }  from 'styled-components';
 import M from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
 
+import Section from './components/investigation/create/sections';
+
 const store = createStore(reducers, {}, applyMiddleware(thunk));
 document.addEventListener('DOMContentLoaded', function() {
     M.AutoInit();
@@ -46,6 +48,7 @@ ReactDom.render(
                             <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
                             <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
                             <Route exact path="/" children={(props) => <Home {...props} />} />
+                            <Route exact path="/test" children={(props) => <Section {...props} />} />
                         
                     </Switch>
                 </BrowserRouter>

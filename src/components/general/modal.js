@@ -64,7 +64,7 @@ export default class Modal extends Component{
             return (
                 <div ref={this.modal}  id="modal1" className="modal">
                     <ModalContent className="modal-content">
-                        <h4>{this.props.title}</h4>
+                        <h5 className="teal-text lighten-1">{this.props.title}</h5>
                         {this.props.component}
                         {this.props.callBackForm &&
                             <button data-testid="cancel" onClick={this.props.callBackForm} className="waves-effect waves-light btn">Continue</button>

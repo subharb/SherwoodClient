@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import NewSurvey  from './new_survey';
+import BasicInfo  from './basic_info';
 import AddPatients from './add_patients';
 import Summary from './summary';
 import { fetchInvestigation } from '../../../actions';
@@ -120,7 +120,7 @@ class NewInvestigation extends Component {
         }
         switch(this.state.step){
             case 0:
-                component = <NewSurvey investigation={ this.props.investigation ? this.props.investigation : this.state.investigation } callBackData={this.addData} 
+                component = <BasicInfo investigation={ this.props.investigation ? this.props.investigation : this.state.investigation } callBackData={this.addData} 
                                 />
                 break;
             case 1:
