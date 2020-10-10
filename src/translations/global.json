@@ -112,7 +112,8 @@
                 "intro" : ["A section is a subsection of your survey, each section holds a different inputs of your survey. Each section can be filled once or several time during the investigation.", ""],
                 "no_sections" : ["You haven't added any sections yet"],
                 "new_section" : ["New section"],
-                "add_field" : ["Add field", "añadir campo"]
+                "add_field" : ["Add field", "añadir campo"],
+                "section" : ["Section", "Sección"]
             },
             "add_patients" : {
                 "title" : ["Add patients", "Añadir pacientes"],

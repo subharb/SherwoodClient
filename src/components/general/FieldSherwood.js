@@ -60,13 +60,15 @@ class FieldSherwood extends Component{
             case "checkbox":
                 console.log("Value checkbox: "+input.name+" "+input.value);
                 const classNameError = (meta.touched && meta.error) ? "error text" : "";
-                const className = removeClass ?  `col ${sizeCurrent}` : `input-field col ${sizeCurrent}`
+                const className = removeClass ?  `col ${sizeCurrent}` : `col ${sizeCurrent}`
                 return (
                     <div className={className}>
-                        <label>
-                            <input className={classNameError} data-testid={input.name} {...input} type="checkbox"/>
-                            <span className={classNameError}>{labelString}</span>
-                        </label>
+                        <p style={{textAlign:"left"}}>
+                            <label>
+                                <input className={classNameError} data-testid={input.name} {...input} type="checkbox"/>
+                                <span className={classNameError}>{labelString}</span>
+                            </label>
+                        </p>
                     </div>
                 )
             case "hidden":

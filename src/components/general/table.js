@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import {DeleteHolder} from "./mini_components";
 
 const CheckboxContainer = styled.div`
     margin:0rem;
@@ -40,8 +41,21 @@ class Table extends Component {
                                                         </CheckboxContainer>
                                                     </td>)
                                         }
+                                        else if(Array.isArray(value)){ 
+                                            return (
+                                            <td key={index}>
+                                                { value.length } values
+                                            </td>)
+                                        }
                                         return <td key={index}>{value}</td>
                                     })}
+                                    { this.props.hasOwnProperty("deleteCallBack") && 
+                                        <td key={index}>
+                                            <DeleteHolder onClick={() => this.props.deleteCallBack(index)}>
+                                                <i className="material-icons">delete</i>
+                                            </DeleteHolder>
+                                        </td>
+                                    }
                                 </tr>
                             )
                         })
