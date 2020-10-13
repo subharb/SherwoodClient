@@ -7,6 +7,8 @@ import AddPatients from './add_patients';
 import Summary from './summary';
 import { fetchInvestigation } from '../../../actions';
 import AddConsents from './consent';
+import Sections from './sections';
+import Breadcrumb from '../../general/breadcrumb';
 
 const Container = styled.div`
     padding:1rem;
@@ -18,7 +20,14 @@ class NewInvestigation extends Component {
         this.addData = this.addData.bind(this);
         this.stepBack = this.stepBack.bind(this);
         
-        let investigation = { survey : {}, patients : [], consents : []};
+        let investigation = {
+            basic_info : { title : "investigation.create.steps.basic_info"},
+            sections : { title : "investigation.create.steps.sections"},
+            pis : { title : "investigation.create.steps.patient_sheet"},
+            consent : { title : "investigation.create.steps.consents"},
+            summary : { title : "investigation.create.steps.summary"}
+        }
+        
 
         if(props.investigation){
             investigation = props.investigation;
@@ -78,10 +87,10 @@ class NewInvestigation extends Component {
         let tempState = {...this.state};
         switch(this.state.step){
             case 0:
-                tempState.investigation.title = data.title;
-                tempState.investigation.description = data.description;
-                tempState.investigation.survey.fields = data.fields;
-                tempState.investigation.survey.personalData = data.personalData;
+                tempState.basic_info.title = data.title;
+                tempState.basic_info.description = data.description;
+                tempState.basic_info.survey.fields = data.fields;
+                tempState.basic_info.survey.personalData = data.personalData;
                 break;
             case 1:
                 tempState.consents = data;
@@ -108,6 +117,14 @@ class NewInvestigation extends Component {
     
         this.setState(tempState);
     }
+    goToStep(step){
+        let tempState = this.state;
+        if(step > 0 && step < Object.values(tempState.investigation).length){
+            tempState.step = step;
+        }
+    
+        this.setState(tempState);
+    }
     componentDidMount(){
         if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
             this.props.fetchInvestigation(this.props.uuid);
@@ -124,7 +141,11 @@ class NewInvestigation extends Component {
                                 />
                 break;
             case 1:
-                component = <AddConsents consents={ this.state.investigation.consents }  personalFields={this.state.investigation.survey.personalData} callBackData={this.addData} 
+                component = <Sections callBackData={this.addData} 
+                                stepBack = {this.stepBack}/>
+                break;
+            case 1:
+                component = <AddConsents consents={ this.state.investigation.consents }  personalFields={this.state.investigation.basic_info.personalData} callBackData={this.addData} 
                                 stepBack = {this.stepBack}/>
                 break;
             case 2:
@@ -139,11 +160,12 @@ class NewInvestigation extends Component {
                 component = "Something went wrong";
                 break;
         }
-        return(
+        return([
+            <Breadcrumb callBack={this.goToStep} selected={this.state.step} stages={Object.values(this.state.investigation).map(stage => { return stage.title})} /> ,
             <Container>
                 {component}
             </Container>
-        );
+        ]);
         
     }
 }

@@ -89,6 +89,13 @@
     },
     "investigation" : {
         "create" : {
+            "steps" : {
+                "basic_info" : ["Basic Info", "Información básica"],
+                "sections" : ["Create Survey", "Crear formulario"],
+                "patient_sheet" : ["Patient Sheet Information", "Documento de aceptación de paciente"],
+                "consents" : ["Consent forms", "Formularios de consentimiento"],
+                "summary" : ["Summary", "Resumen"]
+            },
             "survey" : {
                 "title" : ["Create Investigation", "Crear Investigation"],
                 "name" : ["Investigation's name", "Nombre de la investigación"],
@@ -102,6 +109,8 @@
                 "no_fields" : ["No fields added yet", "No se han añadido campos aún"], 
                 "type_text" : ["Text", "texto"],
                 "type_number" : ["Number", "Número"],
+                "checkbox" : ["Checkbox", "Checkbox"],
+                "dropdown" : ["Dropdown", "Despegable"],
                 "type_date" : ["Date", "fecha"], 
                 "choose" : ["Choose your option", "Elija una opción"],
                 "personal_info" : ["Is it a personal data", "¿Es un dato personal?"],

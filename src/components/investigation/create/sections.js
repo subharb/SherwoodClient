@@ -47,8 +47,10 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
         options:[{"text" : "investigation.create.survey.type_text", "value" : "text"},
-                {"text": "investigation.create.survey.type_number", "value" : "number"}, 
-                {"text": "investigation.create.survey.type_date", "value" : "date"}]
+                {"text": "investigation.create.survey.type_number", "value" : "number"},
+                {"text": "investigation.create.survey.checkbox", "value" : "checkbox"}, 
+                {"text": "investigation.create.survey.type_date", "value" : "date"},
+                {"text": "investigation.create.survey.dropdown", "value" : "dropdown"}]
                                         
     },
     "question" : {
@@ -207,6 +209,9 @@ class Sections extends Component{
                     <AddElementButton type="button" data-testid="add-sections" hide={this.state.addingSection} className="add-section btn-floating btn-large waves-effect waves-light red" onClick={this.addSection} ><i className="material-icons">add</i></AddElementButton>    
                     { this.renderNewSectionForm() }
                     { this.renderSections() }
+                    <div className="row" style={{paddingTop:"20px"}}>
+                        <button disabled={this.state.sections.length === 0} className="btn waves-effect waves-light" type="button" onClick={this.props.callBackData}>Submit</button>
+                    </div>
                 </div>
             ]
         )
