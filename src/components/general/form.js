@@ -33,7 +33,7 @@ class Form extends Component {
         console.log("Fields", fields);
         return (
             <div>
-                <button type="button" className="btn-floating btn-small waves-effect waves-light red" onClick={() => fields.push("")}>Add Option</button>
+                Options: <button type="button" className="btn-floating btn-small waves-effect waves-light red" onClick={() => fields.push("")}><i className="material-icons">add</i></button>
                 {touched && error && <span>{error}</span>}
                 <div className="container">
                     {fields.map((hobby, index) =>
@@ -57,7 +57,7 @@ class Form extends Component {
     // }
     render() {
         return(
-            <form data-testid="form" className="form" onSubmit={this.props.handleSubmit(values => this.callBackForm(values))}  >
+            <form data-testid="form" className="form" onSubmit={this.props.handleSubmit(values => {alert(JSON.stringify(values));this.callBackForm(values)})}  >
                 {Object.keys(this.props.fields).map(key => {
                     console.log(this.props.typeValue);
                     return (
@@ -111,6 +111,7 @@ Form.propTypes = {
 // Decorate with redux-form
 Form = reduxForm({
     form: 'form'  // a unique identifier for this form
+    validate,
   })(Form)
   
   // Decorate with connect to read form values
