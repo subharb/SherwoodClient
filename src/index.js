@@ -59,15 +59,25 @@ const FIELDS_FORM = {
                 {"text": "investigation.create.survey.type_number", "value" : "number"},
                 {"text": "investigation.create.survey.checkbox", "value" : "checkbox"}, 
                 {"text": "investigation.create.survey.type_date", "value" : "date"},
-                {"text": "investigation.create.survey.dropdown", "value" : "dropdown"}],
-        activationValue : "dropdown",
-        activatedField:{
-            required : true,
-            type:"options",
-            validation : "notEmpty",
-            label : "investigation.create.survey.choose",
-            shortLabel: "investigation.table.type"
-        }
+                {"text": "investigation.create.survey.dropdown", "value" : "dropdown"},
+                {"text": "investigation.create.survey.multioption", "value" : "multioption"}
+        ],
+        activationValues : ["dropdown", "multioption"],
+        activatedFields:[
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.survey.choose",
+                shortLabel: "investigation.table.type"
+            },
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.survey.choose",
+                shortLabel: "investigation.table.type"
+            }]
                                         
     },
     "question" : {

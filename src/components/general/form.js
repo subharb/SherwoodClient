@@ -65,8 +65,8 @@ class Form extends Component {
                         <Field name={key} {...this.props.fields[key]} type={this.props.fields[key].type} label={this.props.fields[key].label} component={FieldSherwood} />
                         {
                             //Un field que habilita la apareción de otro field
-                            (this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValue") && this.props.valuesForm.hasOwnProperty(key) && this.props.valuesForm[key] === this.props.fields[key].activationValue)) &&
-                            <FieldArray name="options" {...this.props.fields[key].activatedField} component={this.renderOptions} />
+                            (this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValues") && this.props.valuesForm.hasOwnProperty(key) && this.props.fields[key].activationValues.includes(this.props.valuesForm[key]))) &&
+                            <FieldArray name="options" {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]} component={this.renderOptions} />
                         }
                        
                     </div>);
@@ -110,14 +110,14 @@ Form.propTypes = {
 
 // Decorate with redux-form
 Form = reduxForm({
-    form: 'form'  // a unique identifier for this form
     validate,
+    form: 'form'  // a unique identifier for this form
   })(Form)
   
   // Decorate with connect to read form values
   const selector = formValueSelector('form') // <-- same as form name
   //Filtro los campos que activan otros campos
-  //const activatingFields = this.props.fields.filter(filter => filter.hasOwnProperty("activationValue"));
+  //const activatingFields = this.props.fields.filter(filter => filter.hasOwnProperty("activationValues"));
   Form = connect(
     state => {
       // can select values individually

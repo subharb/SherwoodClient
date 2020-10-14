@@ -110,6 +110,7 @@
                 "type_text" : ["Text", "texto"],
                 "type_number" : ["Number", "Número"],
                 "checkbox" : ["Checkbox", "Checkbox"],
+                "multioption" : ["Multioption", "Multiopción"],
                 "dropdown" : ["Dropdown", "Despegable"],
                 "type_date" : ["Date", "fecha"], 
                 "choose" : ["Choose your option", "Elija una opción"],
