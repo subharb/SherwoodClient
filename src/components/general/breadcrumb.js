@@ -25,11 +25,11 @@ export default class Breadcrumb extends Component {
     render() {
         return (
             <nav>
-                <div className="nav-wrapper">
+                <div className="nav-wrapper teal lighten-3">
                 <BreadCrumbContainer className="col s12">
                     { 
                         this.props.stages.map((stage, index) => {
-                            return <BreadButton key={index} selected={index === this.props.selected} onClick={() => this.props.callBack(index)} className="breadcrumb"><Translate id={`breadcrumb.${stage}`}/></BreadButton>                            
+                            return <BreadButton key={index} selected={index === this.props.selected} onClick={() => this.props.callBack(index)} className="breadcrumb " ><Translate id={`breadcrumb.${stage}`}/></BreadButton>                            
                         })
                     }
                 </BreadCrumbContainer>

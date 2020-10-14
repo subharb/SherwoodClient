@@ -89,6 +89,13 @@
     },
     "investigation" : {
         "create" : {
+            "steps" : {
+                "basic_info" : ["Basic Info", "Información básica"],
+                "sections" : ["Create Survey", "Crear formulario"],
+                "patient_sheet" : ["Patient Sheet Information", "Documento de aceptación de paciente"],
+                "consents" : ["Consent forms", "Formularios de consentimiento"],
+                "summary" : ["Summary", "Resumen"]
+            },
             "survey" : {
                 "title" : ["Create Investigation", "Crear Investigation"],
                 "name" : ["Investigation's name", "Nombre de la investigación"],
@@ -102,10 +109,21 @@
                 "no_fields" : ["No fields added yet", "No se han añadido campos aún"], 
                 "type_text" : ["Text", "texto"],
                 "type_number" : ["Number", "Número"],
+                "checkbox" : ["Checkbox", "Checkbox"],
+                "multioption" : ["Multioption", "Multiopción"],
+                "dropdown" : ["Dropdown", "Despegable"],
                 "type_date" : ["Date", "fecha"], 
                 "choose" : ["Choose your option", "Elija una opción"],
                 "personal_info" : ["Is it a personal data", "¿Es un dato personal?"],
                 "choose_patient" : ["Choose a patient", "Elija un paciente"]
+            },
+            "section" : {
+                "title" : ["Sections", ""],
+                "intro" : ["A section is a subsection of your survey, each section holds a different inputs of your survey. Each section can be filled once or several time during the investigation.", ""],
+                "no_sections" : ["You haven't added any sections yet"],
+                "new_section" : ["New section"],
+                "add_field" : ["Add field", "añadir campo"],
+                "section" : ["Section", "Sección"]
             },
             "add_patients" : {
                 "title" : ["Add patients", "Añadir pacientes"],

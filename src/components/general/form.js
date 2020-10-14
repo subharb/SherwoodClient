@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
-import { Field, reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
@@ -8,6 +9,7 @@ import PropTypes from 'prop-types';
  * Component that renders a form with the values passed by props
  * 
  * @param {Object} fields - Fields to be rendered
+ * @param Boolean creating - If we are creating a form
  * 
  */
 class Form extends Component {
@@ -27,13 +29,46 @@ class Form extends Component {
         });
         this.props.initialize(initData)
     }
+    renderOptions({ fields, meta: { touched, error } }){
+        console.log("Fields", fields);
+        return (
+            <div>
+                Options: <button type="button" className="btn-floating btn-small waves-effect waves-light red" onClick={() => fields.push("")}><i className="material-icons">add</i></button>
+                {touched && error && <span>{error}</span>}
+                <div className="container">
+                    {fields.map((hobby, index) =>
+                            <Field
+                                name={hobby}
+                                type="text"
+                                component={FieldSherwood}
+                                label={`Option #${index + 1}`}/>
+                        
+                    )}
+                </div>
+            </div>);
+    }
+    // //Para Mostrar más opciones si estoy creando formularios, por ehjemplo para añadir las opciones de checkbox, select y multiopción
+    // callOnChange(event, newValue, previousValue, name, fields){
+    //     console.log("Callback On change!", newValue);
+    //     if(name === "type" && newValue === "dropdown"){
+    //         //Mostramos las opciones(nombre, valor) del checkbox
+            
+    //     }
+    // }
     render() {
         return(
-            <form data-testid="form" className="form" onSubmit={this.props.handleSubmit(values => this.callBackForm(values))}  >
+            <form data-testid="form" className="form" onSubmit={this.props.handleSubmit(values => {alert(JSON.stringify(values));this.callBackForm(values)})}  >
                 {Object.keys(this.props.fields).map(key => {
+                    console.log(this.props.typeValue);
                     return (
                     <div className="row" key={key}>
                         <Field name={key} {...this.props.fields[key]} type={this.props.fields[key].type} label={this.props.fields[key].label} component={FieldSherwood} />
+                        {
+                            //Un field que habilita la apareción de otro field
+                            (this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValues") && this.props.valuesForm.hasOwnProperty(key) && this.props.fields[key].activationValues.includes(this.props.valuesForm[key]))) &&
+                            <FieldArray name="options" {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]} component={this.renderOptions} />
+                        }
+                       
                     </div>);
                 })}
                 <button data-testid="submit-form" type="submit" className="waves-effect waves-light btn">
@@ -67,8 +102,31 @@ function validate(values, props){
     //console.log(errors);
     return errors;
 }
-export default withLocalize(reduxForm({
-    // a unique name for the form
+Form.propTypes = {
+    fields : PropTypes.object,
+    creating: PropTypes.bool
+}
+
+
+// Decorate with redux-form
+Form = reduxForm({
     validate,
-    form: 'form'
-  })(Form))
+    form: 'form'  // a unique identifier for this form
+  })(Form)
+  
+  // Decorate with connect to read form values
+  const selector = formValueSelector('form') // <-- same as form name
+  //Filtro los campos que activan otros campos
+  //const activatingFields = this.props.fields.filter(filter => filter.hasOwnProperty("activationValues"));
+  Form = connect(
+    state => {
+      // can select values individually
+      const values = state.form.hasOwnProperty("form") ? state.form.form.values : {};      
+      return {
+        valuesForm :  values
+      }
+    }
+  )(Form)
+
+
+export default withLocalize(Form);
