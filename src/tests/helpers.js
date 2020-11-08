@@ -19,6 +19,7 @@ export const renderWithRedux = (
     };
   };
 
+
 export const FIELDS = {
     "is_personal_data":{
         required : false,

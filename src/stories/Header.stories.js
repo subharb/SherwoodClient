@@ -1,18 +1,22 @@
 import React from 'react';
 
-import { Header } from './Header';
+import Header from '../components/general/header';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 export default {
-  title: 'Example/Header',
+  title: 'Header',
   component: Header,
+  decorators: [story => <BrowserRouter>{story()}</BrowserRouter>],
 };
 
 const Template = (args) => <Header {...args} />;
 
 export const LoggedIn = Template.bind({});
 LoggedIn.args = {
-  user: {},
+    isLoggedIn: true,
 };
 
 export const LoggedOut = Template.bind({});
-LoggedOut.args = {};
+LoggedOut.args = {
+    isLoggedIn : false
+};

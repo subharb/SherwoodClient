@@ -155,9 +155,7 @@ class Sections extends Component{
         }
         else{
             return null;
-        }
-
-        
+        }        
     }
     renderNewSectionForm(){
         if(this.state.addingSection){
@@ -167,9 +165,10 @@ class Sections extends Component{
                         <h6 className="teal-text lighten-1">
                             <Translate id="investigation.create.section.new_section" />
                         </h6>
-                        <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))} className="row text-center">
+                        <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))} className="row">
                             <Field type="text" name="name" label="name" component={FieldSherwood} />
                             <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
+                            <Field type="select" name="field_type" label="Field" component={FieldSherwood} />
                             
                             <div style={{paddingTop:"40px"}}>
                                 Add field: 
@@ -180,6 +179,7 @@ class Sections extends Component{
                             { this.renderFields() }
                             <div style={{paddingTop:"40px"}}>
                                 <button disabled={this.state.fields.length === 0} className="btn waves-effect waves-light" type="submit">Submit</button>
+                                <button className="btn waves-effect waves-light red lighten-1 ml-6" type="submit">Cancel</button>
                             </div>
                         </form>
                     </div>
@@ -214,8 +214,7 @@ class Sections extends Component{
         return (
             [<Modal key="modal" open={this.state.addingField} title={<Translate id="investigation.create.section.add_field" />}
                     component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} />} 
-                closeCallBack={this.closeModal} 
-                    closeCallBack={this.closeModal} />,
+                    closeCallBack={this.closeModal}  />,
                 <div key="container" >
                     <h5 className="teal-text lighten-1">Step 3 > Create Sections</h5>
                     <blockquote>

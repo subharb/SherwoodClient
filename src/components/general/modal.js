@@ -70,7 +70,7 @@ export default class Modal extends Component{
                             <button data-testid="cancel" onClick={this.props.callBackForm} className="waves-effect waves-light btn">Continue</button>
                         } 
                         {this.props.closeCallBack &&
-                            <CloseButton data-testid="cancel" onClick={this.props.closeCallBack} className="waves-effect waves-light btn red lighten-1">Cancel</CloseButton>
+                            <CloseButton data-testid="cancel" onClick={this.props.closeCallBack} className="waves-effect waves-light btn red lighten-1 push-s5">Cancel</CloseButton>
                         }                        
                     </ModalContent>
                 </div> 
@@ -80,7 +80,6 @@ export default class Modal extends Component{
             return(
                 <div ref={this.modal}  id="modal1" className="modal">
                     <div className="modal-content">
-                        
                     </div>
                 </div> 
             );

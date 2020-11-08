@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import BasicInfo  from './basic_info';
+import BasicInfo  from './basic_info2';
+import PISGenerator  from './PIS_generator';
 import AddPatients from './add_patients';
 import Summary from './summary';
 import { fetchInvestigation } from '../../../actions';
@@ -33,7 +34,7 @@ class NewInvestigation extends Component {
             investigation = props.investigation;
 
         }
-        this.state = {step : 0, investigation}
+        this.state = {step : 1, investigation}
         // this.state = {step:1, 
         //     investigation : {
         //         title : "My first investigation",
@@ -141,10 +142,14 @@ class NewInvestigation extends Component {
                                 />
                 break;
             case 1:
+                component = <PISGenerator callBackData={this.addData} 
+                                stepBack = {this.stepBack}/>
+                break;
+            case 2:
                 component = <Sections callBackData={this.addData} 
                                 stepBack = {this.stepBack}/>
                 break;
-            case 1:
+            case 2:
                 component = <AddConsents consents={ this.state.investigation.consents }  personalFields={this.state.investigation.basic_info.personalData} callBackData={this.addData} 
                                 stepBack = {this.stepBack}/>
                 break;
@@ -160,12 +165,14 @@ class NewInvestigation extends Component {
                 component = "Something went wrong";
                 break;
         }
-        return([
-            <Breadcrumb callBack={this.goToStep} selected={this.state.step} stages={Object.values(this.state.investigation).map(stage => { return stage.title})} /> ,
-            <Container>
-                {component}
-            </Container>
-        ]);
+        return(
+            <div className="card">
+                <Breadcrumb callBack={this.goToStep} selected={this.state.step} stages={Object.values(this.state.investigation).map(stage => { return stage.title})} /> 
+                <Container>
+                    {component}
+                </Container>
+            </div>
+        );
         
     }
 }

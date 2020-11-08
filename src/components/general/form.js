@@ -5,6 +5,8 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
+import { DeleteHolder } from '../../components/general/mini_components';
+
  /**
  * Component that renders a form with the values passed by props
  * 
@@ -29,47 +31,73 @@ class Form extends Component {
         });
         this.props.initialize(initData)
     }
-    renderOptions({ fields, meta: { touched, error } }){
-        console.log("Fields", fields);
+    renderOptions(value){
+        console.log("Fields", value.fields);
         return (
-            <div>
-                Options: <button type="button" className="btn-floating btn-small waves-effect waves-light red" onClick={() => fields.push("")}><i className="material-icons">add</i></button>
-                {touched && error && <span>{error}</span>}
+            <div className="input-field">
+                <Translate id={value.label} /> <button type="button" className="btn-floating btn-small waves-effect waves-light red" onClick={() => value.fields.push("")}><i className="material-icons">add</i></button>
+                
                 <div className="container">
-                    {fields.map((hobby, index) =>
+                    {value.fields.map((hobby, index) =>
+                        <div className="row">
                             <Field
+                                size = "s6"
                                 name={hobby}
                                 type="text"
                                 component={FieldSherwood}
                                 label={`Option #${index + 1}`}/>
-                        
+                            <DeleteHolder onClick={() => value.fields.remove(index)}>
+                                <i className="material-icons">delete</i>
+                            </DeleteHolder>
+                        </div>
                     )}
                 </div>
             </div>);
     }
-    // //Para Mostrar más opciones si estoy creando formularios, por ehjemplo para añadir las opciones de checkbox, select y multiopción
-    // callOnChange(event, newValue, previousValue, name, fields){
-    //     console.log("Callback On change!", newValue);
-    //     if(name === "type" && newValue === "dropdown"){
-    //         //Mostramos las opciones(nombre, valor) del checkbox
-            
-    //     }
-    // }
+    renderExtraFields(key){
+        //Un field que habilita la apararición de otro field
+        if(this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValues") && this.props.valuesForm.hasOwnProperty(key) && this.props.fields[key].activationValues.includes(this.props.valuesForm[key]))){
+            const extraField = {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]}; 
+            if(this.props.fields[key].type === "options"){
+                return (
+                    <div className="row">
+                        <FieldArray name="options" {...extraField} component={this.renderOptions} />
+                    </div>
+                )
+            }
+            else{
+                return(
+                    <div className="s6">
+                        <Field name={key} {...extraField} type={extraField.type} label={extraField.label} component={FieldSherwood} />
+                    </div>
+                ) 
+            }
+        }
+    }
     render() {
         return(
             <form data-testid="form" className="form" onSubmit={this.props.handleSubmit(values => {alert(JSON.stringify(values));this.callBackForm(values)})}  >
                 {Object.keys(this.props.fields).map(key => {
                     console.log(this.props.typeValue);
-                    return (
-                    <div className="row" key={key}>
-                        <Field name={key} {...this.props.fields[key]} type={this.props.fields[key].type} label={this.props.fields[key].label} component={FieldSherwood} />
-                        {
-                            //Un field que habilita la apareción de otro field
-                            (this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValues") && this.props.valuesForm.hasOwnProperty(key) && this.props.fields[key].activationValues.includes(this.props.valuesForm[key]))) &&
-                            <FieldArray name="options" {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]} component={this.renderOptions} />
-                        }
-                       
-                    </div>);
+                    if(this.props.fields[key].type !== "options"){
+                        return (
+                            <div className="row" key={key}>
+                                <Field name={key} {...this.props.fields[key]} 
+                                    type={this.props.fields[key].type} label={this.props.fields[key].label} 
+                                    component={FieldSherwood} />
+                                {
+                                    this.renderExtraFields(key)
+                                }
+                            </div>);
+                    }
+                    else{
+                        //Si es de tipo options, muestro un boton para añadir opciones
+                        return (
+                            <div className="row" key={key}>
+                                <FieldArray name={key} label={this.props.fields[key].label} {...this.props.fields[key]}  component={this.renderOptions} />
+                            </div>);
+                    }
+                    
                 })}
                 <button data-testid="submit-form" type="submit" className="waves-effect waves-light btn">
                     {this.props.translate("investigation.create.save")}

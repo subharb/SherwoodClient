@@ -19,6 +19,7 @@ import 'materialize-css/dist/css/materialize.min.css';
 import Form from './components/general/form';
 import Section from './components/investigation/create/sections';
 
+
 const store = createStore(reducers, {}, applyMiddleware(thunk));
 document.addEventListener('DOMContentLoaded', function() {
     M.AutoInit();
@@ -106,14 +107,13 @@ ReactDom.render(
             }}>
                 <BrowserRouter>
                     <Switch>
-                        
-                            <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
-                            <Route exact path="/:type(patient|researcher)/register/:uuidPatient?" children={(props) => <RegisterUser {...props} /> } />
-                            <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
-                            <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
-                            <Route exact path="/" children={(props) => <Home {...props} />} />
-                            <Route exact path="/test" children={(props) => <Section {...props} />} />
-                            <Route exact path="/test2" children={(props) => <Form fields={FIELDS_FORM} creating={true} {...props} />} />
+                        <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
+                        <Route exact path="/:type(patient|researcher)/register/:uuidPatient?" children={(props) => <RegisterUser {...props} /> } />
+                        <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
+                        <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
+                        <Route exact path="/" children={(props) => <Home {...props} />} />
+                        <Route exact path="/test" children={(props) => <Section {...props} />} />
+                        <Route exact path="/test2" children={(props) => <Form fields={FIELDS_FORM} creating={true} {...props} />} />
                         
                     </Switch>
                 </BrowserRouter>

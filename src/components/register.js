@@ -7,7 +7,7 @@ import { Translate } from 'react-localize-redux';
 import Modal from './general/modal';
 import Header from './general/header';
 import Form from '../components/general/form';
-import { generateKey, encriptData, decryptData } from '../utils';
+import { generateKey, encriptData, decryptData, isUserLoggedIn } from '../utils';
 import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
 import { toggleLoading } from '../actions';
@@ -243,7 +243,7 @@ class Register extends Component {
                                 <SuccessText><Translate id={`register.${this.props.match.params.type}.success_text`} /></SuccessText>
                                 </SuccessContainer>} 
                     callBackForm={this.continue}/>,
-            <Header key="header"/>,
+            <Header isLoggedIn={isUserLoggedIn} key="header"/>,
             <div className="container" key="container">
                 <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections} />    
                 <p><Translate id={`register.${this.props.match.params.type}.${currentSection}.explanation`} /></p>

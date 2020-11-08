@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import pathLogo from '../../logo-sherwood.png';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const HeaderContainer = styled.div`
     background:${props => props.theme.headerBackground}
@@ -25,17 +26,19 @@ export default class Header extends Component {
                         </LogoHolder>
                         <Link to="/" >Sherwood</Link>
                     </LogoContainer>
-                    {!localStorage.getItem("jwt") && 
+                    {!this.props.isLoggedIn && 
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         <li><Link to="/researcher/login">Login Researcher</Link></li>
                         <li><Link to="/patient/login">Login Patient</Link></li>
                         <li><Link to="/researcher/register">Register Researcher</Link></li>
                     </ul>
                     }
-                    
-                    
                 </HeaderContainer>
             </nav>
         )
     }
+}
+
+Header.propTypes = {
+    isLoggedIn : PropTypes.bool
 }

@@ -75,6 +75,15 @@ class FieldSherwood extends Component{
                 return(
                     <input data-testid={input.name} key={input.name} value={input.value} type="hidden" {...input} />
                 );
+            case "textarea":
+                return(
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
+                            <label for="textarea2">{label}</label>
+                        </div>
+                    </div>
+                )
             default:     
                 const isActive = input.value !== "" ? "active" : "";
                 return(

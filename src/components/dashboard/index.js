@@ -53,7 +53,7 @@ class Dashboard extends Component{
             <div key="container" className="">
                 <div className="row">
                         <Toolbar  /> 
-                    <div className="col s8 card">
+                    <div className="col s8">
                     { this.renderMainContent() }
                     </div>
                 </div>

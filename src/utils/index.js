@@ -133,6 +133,9 @@ export async function decryptData(ciphertext, key){
     return originalText;
 }
 
+export const isUserLoggedIn = () => localStorage.getItem("jwt");
+
+
 export const templateField = {
     required : true,
     type:"text",
