@@ -114,7 +114,6 @@ ReactDom.render(
                         <Route exact path="/" children={(props) => <Home {...props} />} />
                         <Route exact path="/test" children={(props) => <Section {...props} />} />
                         <Route exact path="/test2" children={(props) => <Form fields={FIELDS_FORM} creating={true} {...props} />} />
-                        
                     </Switch>
                 </BrowserRouter>
             </LocalizeProvider>
