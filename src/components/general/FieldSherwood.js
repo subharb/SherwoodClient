@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import M from 'materialize-css';
 import { withLocalize } from 'react-localize-redux';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import { Field } from 'redux-form';
 
 class FieldSherwood extends Component{
     constructor(props){
@@ -63,12 +65,10 @@ class FieldSherwood extends Component{
                 const className = removeClass ?  `col ${sizeCurrent}` : `col ${sizeCurrent}`
                 return (
                     <div className={className}>
-                        <p style={{textAlign:"left"}}>
-                            <label>
-                                <input className={classNameError} data-testid={input.name} {...input} type="checkbox"/>
-                                <span className={classNameError}>{labelString}</span>
-                            </label>
-                        </p>
+                        <label>
+                            <input className={classNameError} data-testid={input.name} {...input} type="checkbox"/>
+                            <span className={classNameError}>{labelString}</span>
+                        </label>
                     </div>
                 )
             case "hidden":
@@ -99,5 +99,16 @@ class FieldSherwood extends Component{
     }
 }
 
-
+FieldSherwood.propTypes = {
+    input : PropTypes.object.isRequired,
+    label : PropTypes.string.isRequired,
+    meta : PropTypes.object.isRequired,
+    type : PropTypes.string.isRequired,
+    disabled : PropTypes.bool,
+    options : PropTypes.array,
+    defaultOption : PropTypes.object,
+    size : PropTypes.string,
+    option : PropTypes.object,
+    removeClass : PropTypes.string
+}
 export default withLocalize(FieldSherwood);

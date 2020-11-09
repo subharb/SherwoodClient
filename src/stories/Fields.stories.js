@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import Sections from '../components/investigation/create/sections'
 import Form from '../components/general/form';
+import Field from '../components/general/FieldSherwood';
 import { LocalizeProvider } from "react-localize-redux";
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "../translations/global.json";
@@ -12,42 +13,44 @@ import thunk from 'redux-thunk';
 const store = createStore(reducers, {}, applyMiddleware(thunk));
 
 const FIELDS_FORM = {
-    "is_personal_data":{
+    "checkbox":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.personal_info",
+        label:"Checkbox",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     },
-    "required":{
-        required : false,
-        type:"checkbox",
-        label:"investigation.create.survey.required",
-        shortLabel: "investigation.table.required",
-        validation : "notEmpty"
-    },
-    "name" : {
+    "text" : {
         required : true,
         type:"text",
-        label:"investigation.create.survey.name_field",
+        label:"Textfield",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
-    "type" : {
+    "select" : {
         required : true,
         type:"select",
         validation : "notEmpty",
-        label : "investigation.create.survey.choose",
+        label : "Simple Select",
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
-        options:[{"text" : "investigation.create.survey.type_text", "value" : "text"},
-                {"text": "investigation.create.survey.type_number", "value" : "number"},
-                {"text": "investigation.create.survey.checkbox", "value" : "checkbox"}, 
-                {"text": "investigation.create.survey.type_date", "value" : "date"},
-                {"text": "investigation.create.survey.dropdown", "value" : "dropdown"},
-                {"text": "investigation.create.survey.multioption", "value" : "multioption"}
+        options:[{"text" : "Option 1", "value" : "text"},
+                {"text": "Option 2", "value" : "number"},
+                {"text": "Option 3", "value" : "checkbox"},
+        ]                             
+    },
+    "select-activate" : {
+        required : true,
+        type:"select",
+        validation : "notEmpty",
+        label : "Select With activation field Option 2, 3",
+        shortLabel: "investigation.table.type",
+        defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
+        options:[{"text" : "Option 1", "value" : "text"},
+                {"text": "Option 2", "value" : "number"},
+                {"text": "Option 3", "value" : "checkbox"},
         ],
-        activationValues : ["dropdown", "multioption"],
+        activationValues : ["checkbox", "number"],
         activatedFields:[
             {
                 required : true,
@@ -64,21 +67,13 @@ const FIELDS_FORM = {
                 shortLabel: "investigation.table.type"
             }]
                                         
-    },
-    "question" : {
-        required : false,
-        type:"text",
-        label : "investigation.create.survey.question_field",
-        shortLabel: "investigation.table.question",
-        validation : "textMin6", 
-        size : "s6"
     }
 }
 
 
 
 export default {
-  title: 'Sections',
+  title: 'Fields',
   component: Form,
   decorators: [story => 
                 <Provider store={store}>
@@ -98,7 +93,7 @@ export default {
                 </Provider>],
 };
 
-const Template = (args) => <Sections {...args} />;
+const Template = (args) => <Form {...args} />;
 
 export const Basic = Template.bind({});
 Basic.args = {

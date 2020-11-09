@@ -58,7 +58,7 @@ class Form extends Component {
         //Un field que habilita la apararición de otro field
         if(this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValues") && this.props.valuesForm.hasOwnProperty(key) && this.props.fields[key].activationValues.includes(this.props.valuesForm[key]))){
             const extraField = {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]}; 
-            if(this.props.fields[key].type === "options"){
+            if(extraField.type === "options"){
                 return (
                     <div className="row">
                         <FieldArray name="options" {...extraField} component={this.renderOptions} />
@@ -118,11 +118,11 @@ function validate(values, props){
         //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
         const fieldValueCompare = props.fields[key].validationField ? values[props.fields[key].validationField] : props.fields[key].validationValue ? props.translate(props.fields[key].validationValue) : null;
         const validation = validateField({  
-                                            value : values[key], 
-                                            validation:props.fields[key].validation, 
-                                            required:props.fields[key].required
-                                        },
-                                        fieldValueCompare);
+                                value : values[key], 
+                                validation:props.fields[key].validation, 
+                                required:props.fields[key].required
+                            },
+                            fieldValueCompare);
         if(!validation.result){
             errors[key] = validation.messageCode;
         }

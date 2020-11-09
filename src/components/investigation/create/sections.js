@@ -168,7 +168,6 @@ class Sections extends Component{
                         <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))} className="row">
                             <Field type="text" name="name" label="name" component={FieldSherwood} />
                             <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
-                            <Field type="select" name="field_type" label="Field" component={FieldSherwood} />
                             
                             <div style={{paddingTop:"40px"}}>
                                 Add field: 
