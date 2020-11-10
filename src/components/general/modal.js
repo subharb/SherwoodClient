@@ -5,13 +5,9 @@ import "materialize-css/dist/css/materialize.min.css";
 import PropTypes from 'prop-types'; 
 
 const ModalContent = styled.div`
-    text-align:center;
+    
 `;
-const CloseButton = styled.button`
-    position: absolute;
-    bottom: 1.3rem;
-    right: 1rem;
-`;
+
 export default class Modal extends Component{
     constructor(props){
         super(props);
@@ -66,12 +62,7 @@ export default class Modal extends Component{
                     <ModalContent className="modal-content">
                         <h5 className="teal-text lighten-1">{this.props.title}</h5>
                         {this.props.component}
-                        {this.props.callBackForm &&
-                            <button data-testid="cancel" onClick={this.props.callBackForm} className="waves-effect waves-light btn">Continue</button>
-                        } 
-                        {this.props.closeCallBack &&
-                            <CloseButton data-testid="cancel" onClick={this.props.closeCallBack} className="waves-effect waves-light btn red lighten-1 push-s5">Cancel</CloseButton>
-                        }                        
+                                              
                     </ModalContent>
                 </div> 
             );
