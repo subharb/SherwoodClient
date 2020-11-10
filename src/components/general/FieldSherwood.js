@@ -3,7 +3,6 @@ import M from 'materialize-css';
 import { withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Field } from 'redux-form';
 
 class FieldSherwood extends Component{
     constructor(props){
@@ -24,7 +23,7 @@ class FieldSherwood extends Component{
         }
         if(this.props.type === "select"){
             let selects = document.querySelectorAll('select');
-            var instances = M.FormSelect.init(selects, {});
+            M.FormSelect.init(selects, {});
         }
     }
     render(){
