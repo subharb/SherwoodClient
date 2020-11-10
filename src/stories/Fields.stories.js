@@ -1,8 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import Sections from '../components/investigation/create/sections'
 import Form from '../components/general/form';
-import Field from '../components/general/FieldSherwood';
 import { LocalizeProvider } from "react-localize-redux";
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "../translations/global.json";
