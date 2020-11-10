@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Translate, withLocalize } from 'react-localize-redux';
+import { withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {DeleteHolder} from "./mini_components";
@@ -49,6 +49,13 @@ class Table extends Component {
                                         }
                                         return <td key={index}>{value}</td>
                                     })}
+                                    { this.props.hasOwnProperty("editCallBack") && 
+                                        <td key={index}>
+                                            <DeleteHolder onClick={() => this.props.editCallBack(index)}>
+                                                <i className="material-icons">edit</i>
+                                            </DeleteHolder>
+                                        </td>
+                                    }
                                     { this.props.hasOwnProperty("deleteCallBack") && 
                                         <td key={index}>
                                             <DeleteHolder onClick={() => this.props.deleteCallBack(index)}>
