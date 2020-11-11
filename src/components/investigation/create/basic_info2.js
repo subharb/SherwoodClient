@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Form from '../../general/form';
 import { Translate, withLocalize } from 'react-localize-redux';
-
+import PropTypes from 'prop-types';
 
 const FIELDS_INVESTIGATION = {
     "name":{
@@ -96,15 +96,19 @@ const FIELDS_INVESTIGATION = {
 }
 
 export default class BasicInfo2 extends Component {
-    saveInfo(values){
-        console.log("Basic Info Filled!", values);
-    }
     render() {
         return (
             <div>
                 <h1><Translate id="investigation.create.survey.title" /></h1>
-                <Form fields={FIELDS_INVESTIGATION} callBackForm={this.saveInfo} />
+                <Form initialData={this.props.initialData} 
+                    fields={FIELDS_INVESTIGATION} 
+                    callBackForm={(values) => this.props.callBackBasicInfo(values)} />
             </div>
         )
     }
+}
+
+BasicInfo2.propTypes = {
+    callBackBasicInfo : PropTypes.func.isRequired
+
 }
