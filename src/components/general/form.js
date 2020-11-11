@@ -31,12 +31,18 @@ class Form extends Component {
         //Busco el campo DefaultValue para inicializar el form con esos valores
         let initData = {};
         Object.keys(this.props.fields).forEach(key => {
-            if(this.props.fields[key].hasOwnProperty("defaultValue")){
-                initData[key] = this.props.fields[key].defaultValue;
+            if(this.props.initialData){
+                initData[key] = this.props.initialData[key];
             }
-            else if(this.props.fields[key].type === "checkbox"){
-                initData[key] = false;
+            else{
+                if(this.props.fields[key].hasOwnProperty("defaultValue")){
+                    initData[key] = this.props.fields[key].defaultValue;
+                }
+                else if(this.props.fields[key].type === "checkbox"){
+                    initData[key] = false;
+                }
             }
+            
         });
         this.props.initialize(initData)
     }
