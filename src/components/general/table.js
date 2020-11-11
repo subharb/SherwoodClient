@@ -26,9 +26,9 @@ class Table extends Component {
                     </thead>
                     <tbody>
                     {
-                        this.props.values.map((row, index) => {
+                        this.props.values.map((row, indexRow) => {
                             return(
-                                <tr key={index}>
+                                <tr key={`row-${indexRow}`}>
                                     {row.map((value, index) => {
                                         if(typeof value === "boolean"){ 
                                             const checked = value ? <input type="checkbox" className="filled-in" checked="checked" disabled="disabled" /> : <input type="checkbox" getByText="filled-in" disabled="disabled" />
@@ -50,15 +50,15 @@ class Table extends Component {
                                         return <td key={index}>{value}</td>
                                     })}
                                     { this.props.hasOwnProperty("editCallBack") && 
-                                        <td key={index}>
-                                            <DeleteHolder onClick={() => this.props.editCallBack(index)}>
+                                        <td key={`edit-${indexRow}`}>
+                                            <DeleteHolder onClick={() => this.props.editCallBack(indexRow)}>
                                                 <i className="material-icons">edit</i>
                                             </DeleteHolder>
                                         </td>
                                     }
                                     { this.props.hasOwnProperty("deleteCallBack") && 
-                                        <td key={index}>
-                                            <DeleteHolder onClick={() => this.props.deleteCallBack(index)}>
+                                        <td key={`delete-${indexRow}`}>
+                                            <DeleteHolder onClick={() => this.props.deleteCallBack(indexRow)}>
                                                 <i className="material-icons">delete</i>
                                             </DeleteHolder>
                                         </td>
