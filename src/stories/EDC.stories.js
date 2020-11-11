@@ -30,8 +30,18 @@ Edit.args = {
                             is_personal_data:true, 
                             name : "name", 
                             question : "¿cual es tu nombre?", 
-                            type:"text"}]
-    }], addingSection:false, editingIndexSection:false},
+                            type:"text"}
+                        ]
+        },
+        {
+            name:"analitica", repeats : false, 
+                    fields : [{required : true, 
+                                is_personal_data:true, 
+                                name : "name", 
+                                question : "Hemoglonbina", 
+                                type:"number"}
+                            ]
+            }], addingSection:false, editingIndexSection:false},
     callBackData : (values) => {console.log("Callback EDC", values);alert(values)}
 };
 

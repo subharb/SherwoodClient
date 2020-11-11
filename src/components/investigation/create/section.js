@@ -166,6 +166,7 @@ class Section extends Component{
     }
     render(){
         const title = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> :  <Translate id="investigation.create.section.new_section" />
+        const saveText = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> : <Translate id="investigation.create.section.add_section" />
         return (
             [<Modal key="modal" open={this.state.addingField} title={<Translate id="investigation.create.section.add_field" />}
             component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} />} 

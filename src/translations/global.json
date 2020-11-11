@@ -158,6 +158,7 @@
                 "no_sections" : ["You haven't added any sections yet"],
                 "new_section" : ["New section"],
                 "edit_section" : ["Edit section"],
+                "edd_section" : ["Add section"],
                 "add_field" : ["Add field", "añadir campo"],
                 "section" : ["Section", "Sección"]
             },
