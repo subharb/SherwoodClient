@@ -45,8 +45,12 @@ export default class EDC extends Component{
         //this.state = {sections: [{"name" : "Analítica" , "repeats" : true, fields : [{"is_personal_data" : true, "required" : true, "name" : "leucocitos" , "type" : "select", "question": "Valor leucocitos"}]}], fields : [], addingSection:false, addingField : false};
     }
     renderSections(){
+        const AddButton = <AddElementButton disabled={this.state.addingSection || Number.isInteger(this.state.editingIndexSection)} type="button" data-testid="add-sections" hide={this.state.addingSection} className="add-section btn-floating btn-small waves-effect waves-light red" onClick={this.addSection} ><i className="material-icons">add</i></AddElementButton>
         if(this.state.sections.length === 0){
-            return <Translate id="investigation.create.section.no_sections" />
+            return [
+                AddButton,
+                <Translate id="investigation.create.section.no_sections" />
+            ]
         }
         else{
             let arrayHeader = Object.values(SECTION_FORM).map(value => value.shortLabel);
@@ -56,13 +60,21 @@ export default class EDC extends Component{
                     <Table key="added_fields" header={arrayHeader} 
                         values = {this.state.sections.map(section => {let arrayFields = Object.values(section);
                                 return arrayFields;
-                    })} deleteCallBack={(index) => this.deleteElement(index, "sections")} editCallBack={(index) => this.editSection(index, "sections")}/>
+                    })} deleteCallBack={(index) => this.deleteSection(index, "sections")} editCallBack={(index) => this.editSection(index, "sections")}/>
+                    {AddButton}
                 </div>)
         }
     }
     addSection(){
         let tempState = {...this.state};
         tempState.addingSection = true;
+        this.setState(tempState);
+    }
+    deleteSection(index){
+        let tempState = {...this.state};
+        tempState.addingSection = false;
+        tempState.editingIndexSection = false;
+        tempState.sections.splice(index, 1);
         this.setState(tempState);
     }
     editSection(index, element){
@@ -77,7 +89,13 @@ export default class EDC extends Component{
         let tempState = {...this.state};
         tempState.addingSection = false;
         tempState.editingIndexSection = false;
-        tempState.sections.push(section);
+        if(Number.isInteger(this.state.editingIndexSection)){
+            tempState.sections[this.state.editingIndexSection] = section;
+        }
+        else{
+            tempState.sections.push(section);
+        }
+        
         this.setState(tempState);
 
     }
@@ -105,18 +123,8 @@ export default class EDC extends Component{
             return null;
         }
     }
-
-    handleNewSection(values){
-        console.log("Got a section!", values);
-        let tempState = {...this.state};
-        let newSection = values;
-        tempState.sections.push(newSection);
-        tempState.addingSection = false;
-        this.setState(tempState);
-        this.props.reset();
-    }
     submitData(){
-        this.props.callBackData({...this.state.sections});
+        this.props.callBackData([...this.state.sections]);
     }
     render(){
         
@@ -130,9 +138,8 @@ export default class EDC extends Component{
                 <h6 className="teal-text lighten-1">
                     <Translate id="investigation.create.section.title" />
                 </h6>
-                <AddElementButton type="button" data-testid="add-sections" hide={this.state.addingSection} className="add-section btn-floating btn-large waves-effect waves-light red" onClick={this.addSection} ><i className="material-icons">add</i></AddElementButton>    
-                { this.renderNewSectionForm() }
                 { this.renderSections() }
+                { this.renderNewSectionForm() }
                 <div className="row" style={{paddingTop:"20px"}}>
                     <button disabled={this.state.sections.length === 0} className="btn waves-effect waves-light" type="button" 
                         onClick={this.submitData}>Submit</button>
