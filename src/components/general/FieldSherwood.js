@@ -4,6 +4,7 @@ import { withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
+
 class FieldSherwood extends Component{
     constructor(props){
         super(props);
@@ -22,8 +23,9 @@ class FieldSherwood extends Component{
             }
         }
         if(this.props.type === "select"){
-            let selects = document.querySelectorAll('select');
+            let selects = document.querySelectorAll('select[name="'+this.props.input.name+'"]');
             M.FormSelect.init(selects, {});
+            
         }
     }
     render(){
@@ -42,7 +44,7 @@ class FieldSherwood extends Component{
                 else{
                     optionsArray = options.map(option => {
                         const optionText = this.props.translate(option.text).indexOf("Missing translationId:") !== -1 ?  option.text : this.props.translate(option.text);
-                        return <option key={option.value} value={option.value}>{optionText}</option>
+                        return <option selected={option.value === input.value} key={option.value} value={option.value}>{optionText}</option>
                     })
                 }
                 return (
@@ -54,7 +56,7 @@ class FieldSherwood extends Component{
                             }
                         </select>
                         <label aria-label={labelString}>{labelString}</label>
-                        <span className="error text">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
+                        <span className="error red-text text-darken-1">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
                     </div>
                     
                 );
@@ -91,7 +93,7 @@ class FieldSherwood extends Component{
                             className={`validate ${errorClass}`} key={input.name} id={input.name} 
                             name={input.name} type={type} disabled={disabled} />
                         <label className={isActive} key={`label_${input.name}`} htmlFor={input.name}>{labelString}</label>
-                        <span className="error text">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
+                        <span className="error red-text text-darken-1">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
                     </div>
                 );
         }
