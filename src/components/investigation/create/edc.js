@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 import { Translate } from 'react-localize-redux';
 import styled from "styled-components";
-import Modal from '../../general/modal';
-import FieldSherwood from '../../general/FieldSherwood';
-import { reduxForm, Field } from 'redux-form';
 import PropTypes from 'prop-types';
-import { validateField } from '../../../utils';
 import Table from '../../general/table';
 import Section from './section';
 
@@ -34,7 +30,7 @@ const SECTION_FORM = {
     }
 }
 
-class Sections extends Component{
+export default class EDC extends Component{
     constructor(props){
         super(props);
 
@@ -42,8 +38,8 @@ class Sections extends Component{
         this.renderNewSectionForm = this.renderNewSectionForm.bind(this);
         this.renderSections = this.renderSections.bind(this);
         this.closeNewSection = this.closeNewSection.bind(this);
-        
-        
+        this.submitData = this.submitData.bind(this);
+        this.callBackNewSection = this.callBackNewSection.bind(this);
         
         this.state = props.initialState ? props.initialState : {sections: [], addingSection:false, editingIndexSection:false};
         //this.state = {sections: [{"name" : "Analítica" , "repeats" : true, fields : [{"is_personal_data" : true, "required" : true, "name" : "leucocitos" , "type" : "select", "question": "Valor leucocitos"}]}], fields : [], addingSection:false, addingField : false};
@@ -76,8 +72,14 @@ class Sections extends Component{
         tempState.editingIndexSection = index;
         this.setState(tempState);
     }
-    addNewSection(section){
-        alert(section);
+    callBackNewSection(section){
+        console.log("New section!", section);
+        let tempState = {...this.state};
+        tempState.addingSection = false;
+        tempState.editingIndexSection = false;
+        tempState.sections.push(section);
+        this.setState(tempState);
+
     }
     closeNewSection(){
         console.log("closeNewSection");
@@ -88,7 +90,7 @@ class Sections extends Component{
     }
     renderNewSectionForm(){
         const staticParams = {
-            addNewSection:this.addNewSection,
+            callBackNewSection:this.callBackNewSection,
             closeNewSection:this.closeNewSection
         }
         if(this.state.addingSection){
@@ -113,6 +115,9 @@ class Sections extends Component{
         this.setState(tempState);
         this.props.reset();
     }
+    submitData(){
+        this.props.callBackData({...this.state.sections});
+    }
     render(){
         
         return (
@@ -129,7 +134,8 @@ class Sections extends Component{
                 { this.renderNewSectionForm() }
                 { this.renderSections() }
                 <div className="row" style={{paddingTop:"20px"}}>
-                    <button disabled={this.state.sections.length === 0} className="btn waves-effect waves-light" type="button" onClick={this.props.callBackData}>Submit</button>
+                    <button disabled={this.state.sections.length === 0} className="btn waves-effect waves-light" type="button" 
+                        onClick={this.submitData}>Submit</button>
                 </div>
             </div>
             
@@ -139,28 +145,9 @@ class Sections extends Component{
 }
 
 
-function validate(values){
-    console.log("Validate");
-    //console.log(values);
-    const errors = {};
-    
-    Object.keys(SECTION_FORM).forEach(key => {
-        console.log(key);
-        const validation = validateField({value : values[key], validation:SECTION_FORM[key].validation, required:SECTION_FORM[key].required})
-        if(!validation.result){
-            errors[key] = validation.messageCode;
-        }
-    })
-    
-    return errors;
-}
-
-Section.propTypes = {
+EDC.propTypes = {
     initialState: PropTypes.object,
     callBackData: PropTypes.func.isRequired
 };
-export default reduxForm({
-    validate : validate,
-    form : 'edc'
-})(Sections)
+
 
