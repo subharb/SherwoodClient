@@ -116,9 +116,9 @@ class Section extends Component{
         }
         else{
             let newValues = Object.assign({}, values);
-            newValues.fields = Object.assign({}, this.state.fields);
+            newValues.fields = [...this.state.fields];
             console.log("handleNewSection:"+JSON.stringify(values));
-            this.props.addNewSection(values);
+            this.props.callBackNewSection(newValues);
         }
         
     }
