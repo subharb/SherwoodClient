@@ -19,7 +19,7 @@ const Template = (args) => <Sections {...args} />;
 
 export const Basic = Template.bind({});
 Basic.args = {
-
+    callBackData : (values) => alert(JSON.stringify(values))
 };
 
 export const Edit = Template.bind({});
@@ -31,7 +31,8 @@ Edit.args = {
                             name : "name", 
                             question : "¿cual es tu nombre?", 
                             type:"text"}]
-    }], addingSection:false, editingIndexSection:false}
+    }], addingSection:false, editingIndexSection:false},
+    callBackData : (values) => {console.log("Callback EDC", values);alert(values)}
 };
 
 
