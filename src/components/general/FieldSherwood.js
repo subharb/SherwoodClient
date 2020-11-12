@@ -3,7 +3,35 @@ import M from 'materialize-css';
 import { withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import styled, {css} from 'styled-components';
+import { FormControl, Select, InputLabel, MenuItem, TextField, FormControlLabel, Checkbox } from '@material-ui/core';
 
+const sharedStyle = css`
+    & label {
+        position: relative;
+        padding-right: 25px;
+        &+div{
+        margin-top: 0;
+        &:before {
+            bottom: 5px;
+        }
+        &:after {
+            bottom: 5px;
+        }
+        svg {
+            top: 0;
+        }
+        }
+    }
+`
+
+const FormControlSherwood = styled(FormControl)`
+    ${sharedStyle}
+`;
+
+const TextFieldSherwood = styled(TextField)`
+    ${sharedStyle}
+`;
 
 class FieldSherwood extends Component{
     constructor(props){
@@ -22,16 +50,16 @@ class FieldSherwood extends Component{
                 this.setState({options : request.data});
             }
         }
-        if(this.props.type === "select"){
-            let selects = document.querySelectorAll('select[name="'+this.props.input.name+'"]');
-            M.FormSelect.init(selects, {});
+        // if(this.props.type === "select"){
+        //     let selects = document.querySelectorAll('select[name="'+this.props.input.name+'"]');
+        //     M.FormSelect.init(selects, {});
             
-        }
+        // }
     }
     render(){
-        const {input, label, meta, type, disabled, options, defaultOption, size, option, removeClass} = this.props;
+        const {input, label, meta, type, options, size, option, removeClass} = this.props;
         const sizeCurrent = size ? size : "s12";
-        let errorClass = (meta.touched && meta.error) ? "invalid" : "";
+        let errorMessage = (meta.touched && meta.error);
         const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
@@ -44,58 +72,49 @@ class FieldSherwood extends Component{
                 else{
                     optionsArray = options.map(option => {
                         const optionText = this.props.translate(option.text).indexOf("Missing translationId:") !== -1 ?  option.text : this.props.translate(option.text);
-                        return <option selected={option.value === input.value} key={option.value} value={option.value}>{optionText}</option>
+                    return <MenuItem value={option.value}>{optionText}</MenuItem>
+                        
                     })
                 }
-                return (
-                    <div className={`input-field col ${sizeCurrent}`}>
-                        <select data-testid={input.name} {...input} aria-labelledby={labelString} >
-                            <option value={defaultOption.value} disabled>{this.props.translate(defaultOption.text)}</option>
-                            {
-                                optionsArray
-                            }
-                        </select>
-                        <label aria-label={labelString}>{labelString}</label>
-                        <span className="error red-text text-darken-1">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
-                    </div>
+                return(
+                    <FormControlSherwood >
+                        <InputLabel id={input.name}>{labelString}</InputLabel>
+                        <Select
+                            labelId={input.name}
+                            {...input}
+                            >
+                            {optionsArray}
+                        </Select>
+                    </FormControlSherwood>
                     
-                );
+                )
             case "checkbox":
                 console.log("Value checkbox: "+input.name+" "+input.value);
                 const classNameError = (meta.touched && meta.error) ? "error text" : "";
                 const className = removeClass ?  `col ${sizeCurrent}` : `col ${sizeCurrent}`
-                return (
-                    <div className={className}>
-                        <label>
-                            <input className={classNameError} data-testid={input.name} {...input} type="checkbox"/>
-                            <span className={classNameError}>{labelString}</span>
-                        </label>
-                    </div>
-                )
+                return(
+                    <FormControlLabel
+                        control={<Checkbox checked={input.value} {...input} />}
+                        label={labelString}
+                    />
+                );
             case "hidden":
                 return(
                     <input data-testid={input.name} key={input.name} value={input.value} type="hidden" {...input} />
                 );
             case "textarea":
                 return(
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
-                            <label for="textarea2">{label}</label>
-                        </div>
+                    <div class="input-field col s12">
+                        <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
+                        <label for="textarea2">{label}</label>
                     </div>
                 )
             default:     
-                const isActive = input.value !== "" ? "active" : "";
                 return(
-                    <div  className={`input-field col ${sizeCurrent}`}>
-                        <input data-testid={input.name} {...input}  
-                            className={`validate ${errorClass}`} key={input.name} id={input.name} 
-                            name={input.name} type={type} disabled={disabled} />
-                        <label className={isActive} key={`label_${input.name}`} htmlFor={input.name}>{labelString}</label>
-                        <span className="error red-text text-darken-1">{(meta.touched && meta.error) && this.props.translate(meta.error)}</span>
-                    </div>
-                );
+                    <TextFieldSherwood {...input}  
+                        label={labelString} error={errorMessage} 
+                        helperText={errorMessage} />
+                )
         }
     }
 }

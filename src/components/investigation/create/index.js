@@ -8,7 +8,7 @@ import AddPatients from './add_patients';
 import Summary from './summary';
 import { fetchInvestigation } from '../../../actions';
 import AddConsents from './consent';
-import Sections from './sections';
+
 import Breadcrumb from '../../general/breadcrumb';
 
 const Container = styled.div`
@@ -143,10 +143,6 @@ class NewInvestigation extends Component {
                 break;
             case 1:
                 component = <PISGenerator callBackData={this.addData} 
-                                stepBack = {this.stepBack}/>
-                break;
-            case 2:
-                component = <Sections callBackData={this.addData} 
                                 stepBack = {this.stepBack}/>
                 break;
             case 2:

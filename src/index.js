@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { Provider } from 'react-redux';
+import ProviderSherwood from './providerSherwood';
 import axios from 'axios';
 import { LocalizeProvider } from "react-localize-redux";
 import globalTranslations from "./translations/global.json";
@@ -15,9 +15,7 @@ import RegisterUser from './components/register';
 import Dashboard from './components/dashboard';
 import { ThemeProvider }  from 'styled-components';
 import M from 'materialize-css';
-import 'materialize-css/dist/css/materialize.min.css';
-import Form from './components/general/form';
-import Section from './components/investigation/create/sections';
+
 
 
 const store = createStore(reducers, {}, applyMiddleware(thunk));
@@ -92,19 +90,7 @@ const FIELDS_FORM = {
 }
 
 ReactDom.render(
-    <Provider store={store}>
-        <ThemeProvider theme={{colorSherwood:"#26a69a", headerBackground:"#059688"}}>
-            <LocalizeProvider initialize={{
-                languages: [
-                { name: "English", code: "en" },
-                { name: "Spanish", code: "es" }
-                ],
-                translation: globalTranslations,
-                options: {
-                defaultLanguage: "en",
-                    renderToStaticMarkup: renderToStaticMarkup
-                }
-            }}>
+    <ProviderSherwood>
                 <BrowserRouter>
                     <Switch>
                         <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
@@ -112,11 +98,7 @@ ReactDom.render(
                         <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
                         <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
                         <Route exact path="/" children={(props) => <Home {...props} />} />
-                        <Route exact path="/test" children={(props) => <Section {...props} />} />
-                        <Route exact path="/test2" children={(props) => <Form fields={FIELDS_FORM} creating={true} {...props} />} />
                     </Switch>
                 </BrowserRouter>
-            </LocalizeProvider>
-        </ThemeProvider>
-    </Provider>, document.getElementById('root')
+    </ProviderSherwood>, document.getElementById('root')
 );

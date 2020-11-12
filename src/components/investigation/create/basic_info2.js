@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Form from '../../general/form';
-import { Translate, withLocalize } from 'react-localize-redux';
+import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 
 const FIELDS_INVESTIGATION = {
