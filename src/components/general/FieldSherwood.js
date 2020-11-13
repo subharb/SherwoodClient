@@ -59,7 +59,8 @@ class FieldSherwood extends Component{
     render(){
         const {input, label, meta, type, options, size, option, removeClass} = this.props;
         const sizeCurrent = size ? size : "s12";
-        let errorState = (meta.touched && meta.error) ? true : false;
+        const errorState = (meta.touched && meta.error) ? true : false;
+        const errorString = meta.error ? this.props.translate(meta.error) : "";
         const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
@@ -82,7 +83,7 @@ class FieldSherwood extends Component{
                         <Select  
                             labelId={input.name}
                             {...input} error={errorState} 
-                            helperText={this.props.translate(meta.error)}
+                            helperText={errorString}
                             >
                             {optionsArray}
                         </Select>
@@ -114,7 +115,7 @@ class FieldSherwood extends Component{
                 return(
                     <TextFieldSherwood {...input}  
                         label={labelString} error={errorState} 
-                        helperText={this.props.translate(meta.error)} />
+                        helperText={errorString} />
                 )
         }
     }
