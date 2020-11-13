@@ -147,7 +147,7 @@ class Form extends Component {
                     // }
                     
                 })}
-                <ButtonContinue data-testid="submit-form" type="submit" className="">
+                <ButtonContinue type="submit"  data-testid="submit-form" className="">
                     {this.props.translate("investigation.create.save")}
                 </ButtonContinue>
                 {this.props.closeCallBack &&

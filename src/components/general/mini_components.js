@@ -28,6 +28,7 @@ export const ButtonContinue = (props) =>{
             variant="contained"
             color="primary"
             size="small"
+            {...props}
             endIcon={<Icon>send</Icon>}
         >
             {props.children}
