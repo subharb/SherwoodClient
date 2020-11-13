@@ -20,6 +20,7 @@ import { validateField } from '../../utils';
  */
 const Container = styled.div`
     justify-content:center;
+    background-color: ${props => props.theme.buttonContinue.background};
 `;
 
 const FIELDS = {

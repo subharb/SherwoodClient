@@ -5,7 +5,7 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
-import { DeleteHolder } from '../../components/general/mini_components';
+import { DeleteHolder, ButtonCancel, ButtonContinue } from '../../components/general/mini_components';
 
 
  /**
@@ -147,13 +147,13 @@ class Form extends Component {
                     // }
                     
                 })}
-                <button data-testid="submit-form" type="submit" className="waves-effect waves-light btn">
+                <ButtonContinue type="submit"  data-testid="submit-form" className="">
                     {this.props.translate("investigation.create.save")}
-                </button>
+                </ButtonContinue>
                 {this.props.closeCallBack &&
-                    <button data-testid="cancel" onClick={this.props.closeCallBack} 
-                        className="waves-effect waves-light btn red lighten-1 push-s5">Cancel
-                    </button>
+                    <ButtonCancel data-testid="cancel" onClick={this.props.closeCallBack} 
+                        className="">Cancel
+                    </ButtonCancel>
                 }  
                 
             </form>

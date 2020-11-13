@@ -2,7 +2,7 @@ import React, { useState, useEffect, Component }  from 'react'
 import axios from 'axios';
 import Header from '../general/header';
 import M from 'materialize-css';
-import 'materialize-css/dist/css/materialize.min.css';
+
 import { Translate } from 'react-localize-redux';
 import Toolbar from './toolbar';
 import LoadingScreen from '../general/loading_screen';

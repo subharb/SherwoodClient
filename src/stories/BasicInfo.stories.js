@@ -1,5 +1,4 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import BasicInfo from '../components/investigation/create/basic_info2'
 import Form from '../components/general/form';
 import ProviderSherwood from '../providerSherwood';

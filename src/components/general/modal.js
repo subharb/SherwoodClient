@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import M from 'materialize-css';
-import "materialize-css/dist/css/materialize.min.css";
+
 import PropTypes from 'prop-types'; 
 
 const ModalContent = styled.div`
