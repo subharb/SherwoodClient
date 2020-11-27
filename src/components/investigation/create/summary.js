@@ -5,11 +5,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from '../../general/modal';
-import PreviewConsents from '../../consent/preview';
+import Table from '../../general/table';
 import styled from 'styled-components';
 import { toggleLoading } from '../../../actions';
 import SuccessComponent from '../../../components/general/success_component';
-import { ButtonEdit } from '../../general/mini_components';
+import { ButtonEdit, ButtonSave } from '../../general/mini_components';
 
 const SpanField = styled.span`
     font-weight:bold;
@@ -109,6 +109,9 @@ class Summary extends Component {
                     }
                     </div>
                     <SpanField><Translate id="investigation.create.steps.edc" ></Translate><ButtonEdit onClick={() => alert("Volver a edc")}/></SpanField>
+                    <Table header={Object.keys(this.props.initialData.edc.sections[0])} values={this.props.initialData.edc.sections.map(section =>{
+                        return Object.values(section)
+                    })}/> 
                     {/* <Table header={Object.keys(this.props.investigation.survey.personalData[0])} values={this.props.investigation.edc.personalData.map(field =>{
                         return Object.values(field)
                     })}/> */}
@@ -135,8 +138,8 @@ class Summary extends Component {
                         </tbody>
                     </table> */}
                 </div>
-                <button data-testid="publish-investigation" onClick={()=>this.send(true)} type="button" key="publish-investigation" id="publish-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save_and_send")}<i className="material-icons right">send</i></button>
-                <button data-testid="save-for-later-investigation" onClick={()=>this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" className="waves-effect waves-light btn lime left">{this.props.translate("investigation.create.save")}<i className="material-icons left">send</i></button>
+                <ButtonSave data-testid="publish-investigation" onClick={()=>this.send(true)} type="button" key="publish-investigation" id="publish-investigation" >{this.props.translate("investigation.create.save_and_publish")}</ButtonSave>
+                <ButtonSave data-testid="save-for-later-investigation" onClick={()=>this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" >{this.props.translate("investigation.create.save")}</ButtonSave>
                 <button data-testid="cancel" onClick={this.props.stepBack} className="waves-effect waves-light btn red lighten-1 right">Back</button>
             </div>
             ]

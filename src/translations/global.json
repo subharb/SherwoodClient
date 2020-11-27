@@ -202,7 +202,7 @@
             },
             "continue" : ["Continue", "Continuar"],
             "back" : ["Back", "Atrás"],
-            "save_and_send" : ["Save & send e-consents", "Guardar y enviar consentimientos"],
+            "save_and_publish" : ["Save & publish", "Guardar y publicar"],
             "save" : ["Save", "Guardar"]
         },
         "show" : {
