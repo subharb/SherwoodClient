@@ -18,21 +18,21 @@ const FIELDS_FORM = {
     "is_personal_data":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.personal_info",
+        label:"investigation.create.edc.personal_info",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     },
     "required":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.required",
+        label:"investigation.create.edc.required",
         shortLabel: "investigation.table.required",
         validation : "notEmpty"
     },
     "name" : {
         required : true,
         type:"text",
-        label:"investigation.create.survey.name_field",
+        label:"investigation.create.edc.name_field",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
@@ -40,18 +40,18 @@ const FIELDS_FORM = {
         required : true,
         type:"select",
         validation : "notEmpty",
-        label : "investigation.create.survey.choose",
+        label : "investigation.create.edc.choose",
         shortLabel: "investigation.table.type",
-        defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
-        options:[{"text" : "investigation.create.survey.type_text", "value" : "text"},
-                {"text": "investigation.create.survey.type_number", "value" : "number"}, 
-                {"text": "investigation.create.survey.type_date", "value" : "date"}]
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+        options:[{"text" : "investigation.create.edc.type_text", "value" : "text"},
+                {"text": "investigation.create.edc.type_number", "value" : "number"}, 
+                {"text": "investigation.create.edc.type_date", "value" : "date"}]
                                         
     },
     "question" : {
         required : false,
         type:"text",
-        label : "investigation.create.survey.question_field",
+        label : "investigation.create.edc.question_field",
         shortLabel: "investigation.table.question",
         validation : "textMin6", 
         size : "s6"
@@ -62,14 +62,14 @@ const FIELDS_INVESTIGATION = {
     "title":{
         required : false,
         type:"text",
-        label:"investigation.create.survey.name",
+        label:"investigation.create.edc.name",
         validation : "notEmpty",
         value: "TEST"
     },
     "description" : {
         required : true,
         type:"text",
-        label:"investigation.create.survey.description",
+        label:"investigation.create.edc.description",
         validation : "textMin2"
     }
 }
@@ -89,8 +89,8 @@ class BasicInfo extends Component {
         //this.saveSurvey = this.saveSurvey.bind(this);
         let fields = []
         //Si se pasa por parametro una investigacion, la meto en el estado
-        if(props.investigation.survey.fields){
-            fields = props.investigation.survey.fields;
+        if(props.investigation.edc.fields){
+            fields = props.investigation.edc.fields;
         }
         this.state = { fields : fields, personalData: [], addingField : false };
     }
@@ -145,7 +145,7 @@ class BasicInfo extends Component {
     }
     renderPersonalFields(){
         if(this.state.personalData.length === 0){
-            return <Translate id="investigation.create.survey.no_fields" />
+            return <Translate id="investigation.create.edc.no_fields" />
         }
         else{
             const tempForm = {...FIELDS_FORM};
@@ -162,7 +162,7 @@ class BasicInfo extends Component {
     }
     renderAddedFields(){
         if(this.state.fields.length === 0){
-            return <Translate id="investigation.create.survey.no_fields" />
+            return <Translate id="investigation.create.edc.no_fields" />
         }
         else{
             //Filtro si es un campo personal y añado el de borrar
@@ -194,18 +194,18 @@ class BasicInfo extends Component {
   
         return([
             <Modal key="modal" open={this.state.addingField} 
-                title={this.props.translate("investigation.create.survey.add_field")} 
+                title={this.props.translate("investigation.create.edc.add_field")} 
                 component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} />} 
                 closeCallBack={this.closeModal}
             />,
             <form key="form" className="form" onSubmit={this.props.handleSubmit(values => this.storeData(values))}  >
                 <div key="content" className="row">
                     <div className="col-12">
-                        <h4><Translate id="investigation.create.survey.title" /></h4>
-                        <p><Translate id="investigation.create.survey.explanation" /></p>
+                        <h4><Translate id="investigation.create.edc.title" /></h4>
+                        <p><Translate id="investigation.create.edc.explanation" /></p>
                         <Field name="title" {...FIELDS_INVESTIGATION["title"]} component={FieldSherwood} />
                         <Field name="description"  {...FIELDS_INVESTIGATION["description"]} component={FieldSherwood} />
-                        <Translate id="investigation.create.survey.add_field" />
+                        <Translate id="investigation.create.edc.add_field" />
                         <button data-testid="add-field" type="button"
                                 className="add-field btn-floating btn-large waves-effect waves-light red" 
                                 onClick={this.addField}><i className="material-icons">add</i>

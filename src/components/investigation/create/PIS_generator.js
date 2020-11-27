@@ -22,7 +22,7 @@ const FIELDS_PIS= {
         type:"select",
         label: "investigation.create.pis.participants_age",
         validation : "notEmpty",
-        defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
         options : [
                 {"text" : "investigation.create.pis.ages.adult", "value" : "18+"},
                 {"text" : "investigation.create.pis.ages.children11-16", "value" : "11-16"},

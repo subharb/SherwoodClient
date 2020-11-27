@@ -24,16 +24,16 @@ export const FIELDS = {
     "is_personal_data":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.personal_info",
-        shortLabel: "investigation.create.survey.personal_info",
+        label:"investigation.create.edc.personal_info",
+        shortLabel: "investigation.create.edc.personal_info",
         validation : "notEmpty",
         value : true
     },
     "name" : {
         required : true,
         type:"text",
-        label:"investigation.create.survey.name_field",
-        shortLabel: "investigation.create.survey.name_field",
+        label:"investigation.create.edc.name_field",
+        shortLabel: "investigation.create.edc.name_field",
         validation : "textMin2",
         value: "edad"
     },
@@ -41,8 +41,8 @@ export const FIELDS = {
         required : true,
         type:"select",
         validation : "notEmpty",
-        label : "investigation.create.survey.choose",
-        shortLabel: "investigation.create.survey.choose",
+        label : "investigation.create.edc.choose",
+        shortLabel: "investigation.create.edc.choose",
         defaultOption:{"text" : "investigation.create.choose", "value" : ""},
         options:[{"text" : "investigation.create.type_text", "value" : "text"},
                 {"text": "investigation.create.type_number", "value" : "number"}, 
@@ -53,7 +53,7 @@ export const FIELDS = {
     "question" : {
         required : false,
         type:"text",
-        label : "investigation.create.survey.question_field",
+        label : "investigation.create.edc.question_field",
         shortLabel: "investigation.table.question",
         validation : "textMin6", 
         size : "s6",

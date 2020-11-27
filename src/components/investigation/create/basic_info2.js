@@ -7,35 +7,35 @@ const FIELDS_INVESTIGATION = {
     "name":{
         required : true,
         type:"text",
-        label:"investigation.create.survey.name",
+        label:"investigation.create.edc.name",
         validation : "textMin2",
         value: ""
     },
     "acronym":{
         required : true,
         type:"text",
-        label:"investigation.create.survey.acronym",
+        label:"investigation.create.edc.acronym",
         validation : "notEmpty",
         value: ""
     },
     "type":{
         required : true,
         type:"select",
-        label:"investigation.create.survey.type",
+        label:"investigation.create.edc.type",
         validation : "notEmpty",
-        defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
         options : [
-                {"text" : "investigation.create.survey.type_study.audit", "value" : "audit"},
-                {"text" : "investigation.create.survey.type_study.clinical_research_study", "value" : "clin_res"},
-                {"text" : "investigation.create.survey.type_study.medical_device", "value" : "med_dev"},
-                {"text" : "investigation.create.survey.type_study.clinical_trial", "value" : "clin_trial"}
+                {"text" : "investigation.create.edc.type_study.audit", "value" : "audit"},
+                {"text" : "investigation.create.edc.type_study.clinical_research_study", "value" : "clin_res"},
+                {"text" : "investigation.create.edc.type_study.medical_device", "value" : "med_dev"},
+                {"text" : "investigation.create.edc.type_study.clinical_trial", "value" : "clin_trial"}
             ],
         value: ""
     },
     "researcher":{
         required : true,
         type:"text",
-        label:"investigation.create.survey.principal_researcher",
+        label:"investigation.create.edc.principal_researcher",
         validation : "textMin2",
         value: ""
     },
@@ -43,41 +43,41 @@ const FIELDS_INVESTIGATION = {
         required : true,
         type:"options",
         element:"text",//El tipo de cada una de las opciones
-        label:"investigation.create.survey.other_researchers",
+        label:"investigation.create.edc.other_researchers",
         validation : "textMin2",
         value: ""
     },
     "institution":{
         required : true,
         type:"text",
-        label:"investigation.create.survey.institution",
+        label:"investigation.create.edc.institution",
         validation : "textMin2",
         value: ""
     },
     "contact":{
         required : true,
         type:"text",
-        label:"investigation.create.survey.contact",
+        label:"investigation.create.edc.contact",
         validation : "textMin2",
         value: ""
     },
     "ethics_body":{
         required : true,
         type:"text",
-        label:"investigation.create.survey.ethics_body",
+        label:"investigation.create.edc.ethics_body",
         validation : "textMin2",
         value: ""
     },
     "reference_number_state":{
         required : true,
         type:"select",
-        label:"investigation.create.survey.reference_number_state",
+        label:"investigation.create.edc.reference_number_state",
         validation : "notEmpty",
-        defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
         options : [
-                {"text" : "investigation.create.survey.reference_number_state_type.not_applicable", "value" : 0},
-                {"text" : "investigation.create.survey.reference_number_state_type.pending", "value" : 1},
-                {"text" : "investigation.create.survey.reference_number_state_type.approved", "value" : 2},
+                {"text" : "investigation.create.edc.reference_number_state_type.not_applicable", "value" : 0},
+                {"text" : "investigation.create.edc.reference_number_state_type.pending", "value" : 1},
+                {"text" : "investigation.create.edc.reference_number_state_type.approved", "value" : 2},
             ],
         value: "",
         activationValues : ["2"],
@@ -86,7 +86,7 @@ const FIELDS_INVESTIGATION = {
                 required : true,
                 name : "reference_number",
                 type:"text",
-                label:"investigation.create.survey.reference_number",
+                label:"investigation.create.edc.reference_number",
                 validation : "textMin2",
                 value: ""
             }
@@ -98,11 +98,14 @@ const FIELDS_INVESTIGATION = {
 export default class BasicInfo2 extends Component {
     render() {
         return (
-            <div>
-                <h1><Translate id="investigation.create.survey.title" /></h1>
-                <Form initialData={this.props.initialData} 
-                    fields={FIELDS_INVESTIGATION} 
-                    callBackForm={(values) => this.props.callBackBasicInfo(values)} />
+            <div className="container">
+                <div className="row">
+                    <h3><Translate id="investigation.create.edc.title" /></h3>
+                </div>
+                    <Form initialData={this.props.initialData} 
+                        fields={FIELDS_INVESTIGATION} submitText = "investigation.create.continue"
+                        cancelText = "investigation.create.back"
+                        callBackForm={(values) => this.props.callBackBasicInfo(values)} />
             </div>
         )
     }

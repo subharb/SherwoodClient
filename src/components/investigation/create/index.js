@@ -10,6 +10,7 @@ import { fetchInvestigation } from '../../../actions';
 import AddConsents from './consent';
 
 import Breadcrumb from '../../general/breadcrumb';
+import EDC from './edc';
 
 const Container = styled.div`
     padding:1rem;
@@ -21,20 +22,22 @@ class NewInvestigation extends Component {
         this.addData = this.addData.bind(this);
         this.stepBack = this.stepBack.bind(this);
         
-        let investigation = {
-            basic_info : { title : "investigation.create.steps.basic_info"},
-            sections : { title : "investigation.create.steps.sections"},
-            pis : { title : "investigation.create.steps.patient_sheet"},
-            consent : { title : "investigation.create.steps.consents"},
-            summary : { title : "investigation.create.steps.summary"}
+        this.steps = {
+            basic_info : "investigation.create.steps.basic_info",
+            edc : "investigation.create.steps.edc",
+            // pis : "investigation.create.steps.patient_sheet",
+            // consent : "investigation.create.steps.consents",
+            summary : "investigation.create.steps.summary"
+        }
+
+        if(this.props.initialData){
+            this.state = {...this.props.initialData};
+            this.state.step = this.props.step;
+        }
+        else{
+            this.state = {step : 0, investigation:{}}
         }
         
-
-        if(props.investigation){
-            investigation = props.investigation;
-
-        }
-        this.state = {step : 1, investigation}
         // this.state = {step:1, 
         //     investigation : {
         //         title : "My first investigation",
@@ -88,10 +91,7 @@ class NewInvestigation extends Component {
         let tempState = {...this.state};
         switch(this.state.step){
             case 0:
-                tempState.basic_info.title = data.title;
-                tempState.basic_info.description = data.description;
-                tempState.basic_info.survey.fields = data.fields;
-                tempState.basic_info.survey.personalData = data.personalData;
+                tempState.investigation.basic_info = {...data};
                 break;
             case 1:
                 tempState.consents = data;
@@ -132,28 +132,32 @@ class NewInvestigation extends Component {
         }
     }
     render() {
+        console.log("Initial data:", this.props.initialData);
         let component = null;
         if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
             return "CARGANDO";
         }
         switch(this.state.step){
             case 0:
-                component = <BasicInfo investigation={ this.props.investigation ? this.props.investigation : this.state.investigation } callBackData={this.addData} 
-                                />
+                component = <BasicInfo initialData={ this.props.initialData ? this.props.initialData.investigation.basic_info : this.state.investigation.basic_info } 
+                                callBackBasicInfo={this.addData} />
                 break;
-            case 1:
-                component = <PISGenerator callBackData={this.addData} 
-                                stepBack = {this.stepBack}/>
+            // case 1:
+            //     component = <PISGenerator callBackData={this.addData} 
+            //                     stepBack = {this.stepBack}/>
+            //     break;
+            // case 2:
+            //     component = <AddConsents consents={ this.state.investigation.consents }  personalFields={this.state.investigation.basic_info.personalData} callBackData={this.addData} 
+            //                     stepBack = {this.stepBack}/>
+            //     break;
+            case 1: 
+                component = <EDC initialData={this.props.initialData.investigation.edc} />
                 break;
+            // case 2:
+            //     component = <AddPatients patients={ this.state.investigation.hasOwnProperty("patients") ? this.state.investigation.patients : false }  callBackData={this.addData} 
+            //                     stepBack = {this.stepBack}/>
+            //    break;
             case 2:
-                component = <AddConsents consents={ this.state.investigation.consents }  personalFields={this.state.investigation.basic_info.personalData} callBackData={this.addData} 
-                                stepBack = {this.stepBack}/>
-                break;
-            case 2:
-                component = <AddPatients patients={ this.state.investigation.hasOwnProperty("patients") ? this.state.investigation.patients : false }  callBackData={this.addData} 
-                                stepBack = {this.stepBack}/>
-                break;
-            case 3:
                 component = <Summary investigation={ this.state.investigation }
                                 stepBack = {this.stepBack} />
                 break;
@@ -163,7 +167,7 @@ class NewInvestigation extends Component {
         }
         return(
             <div className="card">
-                <Breadcrumb callBack={this.goToStep} selected={this.state.step} stages={Object.values(this.state.investigation).map(stage => { return stage.title})} /> 
+                <Breadcrumb callBack={this.goToStep} selected={this.state.step} stages={Object.values(this.steps)} /> 
                 <Container>
                     {component}
                 </Container>

@@ -56,9 +56,9 @@ class SurveyData extends Component {
                 type:"select",
                 required : true,
                 validation : "notEmpty",
-                label : "investigation.create.survey.choose_patient",
+                label : "investigation.create.edc.choose_patient",
                 options:patientOptions,
-                defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
+                defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
             }
             this.state.survey.survey.fields.forEach(element => {
                 let field = {...templateField }

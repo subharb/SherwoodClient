@@ -2,9 +2,6 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import ProviderSherwood from './providerSherwood';
 import axios from 'axios';
-import { LocalizeProvider } from "react-localize-redux";
-import globalTranslations from "./translations/global.json";
-import { renderToStaticMarkup } from "react-dom/server";
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -15,7 +12,7 @@ import RegisterUser from './components/register';
 import Dashboard from './components/dashboard';
 import { ThemeProvider }  from 'styled-components';
 import M from 'materialize-css';
-
+import 'fontsource-roboto';
 
 
 const store = createStore(reducers, {}, applyMiddleware(thunk));
@@ -29,21 +26,21 @@ const FIELDS_FORM = {
     "is_personal_data":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.personal_info",
+        label:"investigation.create.edc.personal_info",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     },
     "required":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.required",
+        label:"investigation.create.edc.required",
         shortLabel: "investigation.table.required",
         validation : "notEmpty"
     },
     "name" : {
         required : true,
         type:"text",
-        label:"investigation.create.survey.name_field",
+        label:"investigation.create.edc.name_field",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
@@ -51,15 +48,15 @@ const FIELDS_FORM = {
         required : true,
         type:"select",
         validation : "notEmpty",
-        label : "investigation.create.survey.choose",
+        label : "investigation.create.edc.choose",
         shortLabel: "investigation.table.type",
-        defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
-        options:[{"text" : "investigation.create.survey.type_text", "value" : "text"},
-                {"text": "investigation.create.survey.type_number", "value" : "number"},
-                {"text": "investigation.create.survey.checkbox", "value" : "checkbox"}, 
-                {"text": "investigation.create.survey.type_date", "value" : "date"},
-                {"text": "investigation.create.survey.dropdown", "value" : "dropdown"},
-                {"text": "investigation.create.survey.multioption", "value" : "multioption"}
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+        options:[{"text" : "investigation.create.edc.type_text", "value" : "text"},
+                {"text": "investigation.create.edc.type_number", "value" : "number"},
+                {"text": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
+                {"text": "investigation.create.edc.type_date", "value" : "date"},
+                {"text": "investigation.create.edc.dropdown", "value" : "dropdown"},
+                {"text": "investigation.create.edc.multioption", "value" : "multioption"}
         ],
         activationValues : ["dropdown", "multioption"],
         activatedFields:[
@@ -67,14 +64,14 @@ const FIELDS_FORM = {
                 required : true,
                 type:"options",
                 validation : "notEmpty",
-                label : "investigation.create.survey.choose",
+                label : "investigation.create.edc.choose",
                 shortLabel: "investigation.table.type"
             },
             {
                 required : true,
                 type:"options",
                 validation : "notEmpty",
-                label : "investigation.create.survey.choose",
+                label : "investigation.create.edc.choose",
                 shortLabel: "investigation.table.type"
             }]
                                         
@@ -82,7 +79,7 @@ const FIELDS_FORM = {
     "question" : {
         required : false,
         type:"text",
-        label : "investigation.create.survey.question_field",
+        label : "investigation.create.edc.question_field",
         shortLabel: "investigation.table.question",
         validation : "textMin6", 
         size : "s6"
@@ -91,14 +88,12 @@ const FIELDS_FORM = {
 
 ReactDom.render(
     <ProviderSherwood>
-                <BrowserRouter>
-                    <Switch>
-                        <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
-                        <Route exact path="/:type(patient|researcher)/register/:uuidPatient?" children={(props) => <RegisterUser {...props} /> } />
-                        <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
-                        <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
-                        <Route exact path="/" children={(props) => <Home {...props} />} />
-                    </Switch>
-                </BrowserRouter>
+            <Switch>
+                <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
+                <Route exact path="/:type(patient|researcher)/register/:uuidPatient?" children={(props) => <RegisterUser {...props} /> } />
+                <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
+                <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
+                <Route exact path="/" children={(props) => <Home {...props} />} />
+            </Switch>
     </ProviderSherwood>, document.getElementById('root')
 );

@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, SaveIcon, Icon } from '@material-ui/core';
+import { Button, Icon, IconButton } from '@material-ui/core';
 
 export const DeleteHolder = styled.div`
-    display: flex;
+    display: inline-block;
     color:#E16580;
     cursor:pointer;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const EditConsent = styled.i`
@@ -14,34 +16,82 @@ export const EditConsent = styled.i`
     cursor:pointer;
 `;
 
-export const ButtonCancel = styled.button`
-    background-color:${props => props.theme.buttonCancel.background};
+export const BasicButtonStyles = styled(Button)`
+    ${props => !props.show} {
+        display: none!important;
+    }
+`
+export const ButtonEdit = (props) =>{
+    return <DeleteHolder {...props}>
+        <i className="material-icons">edit</i>
+    </DeleteHolder>
+}
+
+export const ButtonDelete = (props) =>{
+    return <DeleteHolder {...props}>
+        <i className="material-icons">delete</i>
+    </DeleteHolder>
+}
+
+
+export const ButtonCancelStyles = styled(BasicButtonStyles)`
+    background-color:${props => props.theme.buttonCancel.background}!important;
     color:${props => props.theme.buttonCancel.color};
 `;
-export const ButtonContinueStyles = styled(Button)`
+export const ButtonContinueStyles = styled(BasicButtonStyles)`
     background-color:${props => props.theme.buttonContinue.background}!important;
     color:${props => props.theme.buttonContinue.color};
 `;
-
+export const ButtonIcon = styled(IconButton)`
+    background-color:${props => props.theme.buttonContinue.background}!important;
+    color:${props => props.theme.buttonContinue.color}!important;
+`
 export const ButtonContinue = (props) =>{
         return <ButtonContinueStyles
             variant="contained"
             color="primary"
             size="small"
-            {...props}
             endIcon={<Icon>send</Icon>}
+            {...props}
         >
             {props.children}
         </ButtonContinueStyles>
 }
 
-export const ButtonSave = (props) =>{
-    return <ButtonContinueStyles
+export const ButtonCancel = (props) =>{
+    return <ButtonCancelStyles
         variant="contained"
         color="primary"
         size="small"
-        startIcon={<SaveIcon />}
+        endIcon={<Icon>clear</Icon>}
+        {...props}
+    >
+        {props.children}
+    </ButtonCancelStyles>
+}
+
+export const ButtonSave = (props) =>{
+    return <ButtonContinueStyles 
+        variant="contained"
+        color="primary" 
+        size="small"
+        startIcon={<Icon>save</Icon>}
+        {...props}
          >
             {props.children}
     </ButtonContinueStyles>
+}
+
+export const ButtonAdd = (props) =>{
+    return <ButtonIcon aria-label="add element" {...props}>
+            {props.children}<Icon>add</Icon>
+        </ButtonIcon>
+    // return <ButtonContinueStyles
+    //     variant="contained"
+    //     color="primary"
+    //     size="small"
+    //     startIcon={<SaveIcon />}
+    //      >
+    //         {props.children}
+    // </ButtonContinueStyles>
 }

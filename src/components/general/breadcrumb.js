@@ -23,19 +23,37 @@ const BreadButton = styled.button`
 
 export default class Breadcrumb extends Component {
     render() {
-        return (
-            <nav>
-                <div className="nav-wrapper teal lighten-3">
-                <BreadCrumbContainer className="col s12">
+        return(
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
                     { 
                         this.props.stages.map((stage, index) => {
-                            return <BreadButton key={index} selected={index === this.props.selected} onClick={() => this.props.callBack(index)} className="breadcrumb " ><Translate id={stage}/></BreadButton>                            
+                            if(index === this.props.selected){
+                                return <li className="breadcrumb-item active" aria-current="page"><Translate id={stage}/></li>
+                            }
+                            else{
+                                return <li className="breadcrumb-item"><a href="#"><Translate id={stage}/></a></li>
+                            }
+
+                            
                         })
                     }
-                </BreadCrumbContainer>
-                </div>
-            </nav>
-        );
+                </ol>
+                </nav>  
+        )
+        // return (
+        //     <nav>
+        //         <div className="nav-wrapper teal lighten-3">
+        //         <BreadCrumbContainer className="col s12">
+        //             { 
+        //                 this.props.stages.map((stage, index) => {
+        //                     return <BreadButton key={index} selected={index === this.props.selected} onClick={() => this.props.callBack(index)} className="breadcrumb " ><Translate id={stage}/></BreadButton>                            
+        //                 })
+        //             }
+        //         </BreadCrumbContainer>
+        //         </div>
+        //     </nav>
+        // );
     }
 }
 Breadcrumb.propTypes = {

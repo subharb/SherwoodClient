@@ -9,7 +9,7 @@ import PreviewConsents from '../../consent/preview';
 import styled from 'styled-components';
 import { toggleLoading } from '../../../actions';
 import SuccessComponent from '../../../components/general/success_component';
-import Table from '../../../components/general/table';
+import { ButtonEdit } from '../../general/mini_components';
 
 const SpanField = styled.span`
     font-weight:bold;
@@ -18,7 +18,6 @@ const SpanField = styled.span`
 const ResultContainer = styled.div`
     background-color:red;
 `;
-
 
 class Summary extends Component {
     constructor(props){
@@ -37,10 +36,10 @@ class Summary extends Component {
     modalComponent(){
         let component;
         switch(this.state.result){
-            case 0:
-                const filteredFields2 = [];//Object.values(this.props.investigation.consents).filter(consent => consent.is_personal_data);
-                component = <PreviewConsents title={this.props.translate("investigation.create.survey.add_field")} consents={this.props.investigation.consents}  personalFields={filteredFields2} />
-                break;
+            // case 0:
+            //     const filteredFields2 = [];//Object.values(this.props.investigation.consents).filter(consent => consent.is_personal_data);
+            //     component = <PreviewConsents title={this.props.translate("investigation.create.edc.add_field")} consents={this.props.investigation.consents}  personalFields={filteredFields2} />
+            //     break;
             case 1:
                 component = "error!";
                 break;
@@ -101,19 +100,24 @@ class Summary extends Component {
                 <div className="col-12">
                     <h4><Translate id="investigation.create.summary.title" /></h4>
                     <p><Translate id="investigation.create.summary.explanation" /></p>
-                    <p><SpanField><Translate id="investigation.create.summary.review_consents" ></Translate>:</SpanField> <button className="waves-effect waves-light btn lime" onClick={this.showConsents}>Ver consents</button></p>
-                    <p><SpanField><Translate id="investigation.create.survey.name" ></Translate>:</SpanField> {this.props.investigation.survey.title}</p>
-                    <p><SpanField><Translate id="investigation.create.survey.description" ></Translate>:</SpanField> {this.props.investigation.survey.description}</p>
-                    <Translate id="investigation.create.summary.personal_data" ></Translate>
-                    <Table header={Object.keys(this.props.investigation.survey.personalData[0])} values={this.props.investigation.survey.personalData.map(field =>{
+                    <SpanField><Translate id="investigation.create.steps.basic_info" ></Translate><ButtonEdit onClick={() => alert("Volver a basic_info")}/></SpanField>
+                    <div>
+                    {
+                        Object.keys(this.props.initialData.basic_info).map(key =>{
+                            return key+":"+this.props.initialData.basic_info[key]+" ";
+                        })
+                    }
+                    </div>
+                    <SpanField><Translate id="investigation.create.steps.edc" ></Translate><ButtonEdit onClick={() => alert("Volver a edc")}/></SpanField>
+                    {/* <Table header={Object.keys(this.props.investigation.survey.personalData[0])} values={this.props.investigation.edc.personalData.map(field =>{
+                        return Object.values(field)
+                    })}/> */}
+                    {/* <SpanField><Translate id="investigation.create.summary.survey" ></Translate></SpanField>
+                    <Table header={Object.keys(this.props.initialData.edc.fields[0])} values={this.props.investigation.edc.fields.map(field =>{
                         return Object.values(field)
                     })}/>
-                    <SpanField><Translate id="investigation.create.summary.survey" ></Translate></SpanField>
-                    <Table header={Object.keys(this.props.investigation.survey.fields[0])} values={this.props.investigation.survey.fields.map(field =>{
-                        return Object.values(field)
-                    })}/>
-                    <SpanField><Translate id="investigation.create.summary.patients" ></Translate></SpanField>
-                    <table id="survey-info" key="table-emails" className="striped">
+                    <SpanField><Translate id="investigation.create.summary.patients" ></Translate></SpanField> */}
+                    {/* <table id="survey-info" key="table-emails" className="striped">
                         <thead>
                         <tr>
                             <th key="email"><Translate id="investigation.create.summary.email" ></Translate></th>   
@@ -121,7 +125,7 @@ class Summary extends Component {
                         </thead>
                         <tbody>
                         {
-                            this.props.investigation.patients.map(patient => {
+                            this.props.initialData.patients.map(patient => {
                                 return(
                                     <tr key={patient.email}>
                                         <td>{patient.email}</td>
@@ -129,7 +133,7 @@ class Summary extends Component {
                             })
                         }
                         </tbody>
-                    </table>
+                    </table> */}
                 </div>
                 <button data-testid="publish-investigation" onClick={()=>this.send(true)} type="button" key="publish-investigation" id="publish-investigation" className="waves-effect waves-light btn">{this.props.translate("investigation.create.save_and_send")}<i className="material-icons right">send</i></button>
                 <button data-testid="save-for-later-investigation" onClick={()=>this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" className="waves-effect waves-light btn lime left">{this.props.translate("investigation.create.save")}<i className="material-icons left">send</i></button>

@@ -179,7 +179,7 @@ class AddConsents extends Component {
         }, true);
         return ([
             <Modal key="modal" open={this.state.addingConsent} 
-                title={this.props.translate("investigation.create.survey.add_field")} 
+                title={this.props.translate("investigation.create.edc.add_field")} 
                 component={<Form fields={this.currentFormModal} callBackForm={this.handleConsent} />} 
                 closeCallBack={this.closeModal}
             />,

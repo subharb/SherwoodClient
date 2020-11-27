@@ -7,6 +7,7 @@ import reducers from './reducers';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { ThemeProvider }  from 'styled-components';
+import { BrowserRouter } from 'react-router-dom';
 
 const store = createStore(reducers, {}, applyMiddleware(thunk));
 
@@ -32,21 +33,23 @@ export default class ProviderSherwood extends Component {
     render() {
         return (
             <Provider store={store}>
-                <ThemeProvider theme={theme}>
-                    <LocalizeProvider initialize={{
-                        languages: [
-                        { name: "English", code: "en" },
-                        { name: "Spanish", code: "es" }
-                        ],
-                        translation: globalTranslations,
-                        options: {
-                        defaultLanguage: "en",
-                            renderToStaticMarkup: renderToStaticMarkup
-                        }
-                    }}>
-                        {this.props.children}
-                    </LocalizeProvider>
-                </ThemeProvider>
+                <BrowserRouter>
+                    <ThemeProvider theme={theme}>
+                        <LocalizeProvider initialize={{
+                            languages: [
+                            { name: "English", code: "en" },
+                            { name: "Spanish", code: "es" }
+                            ],
+                            translation: globalTranslations,
+                            options: {
+                            defaultLanguage: "en",
+                                renderToStaticMarkup: renderToStaticMarkup
+                            }
+                        }}>
+                            {this.props.children}
+                        </LocalizeProvider>
+                    </ThemeProvider>
+                </BrowserRouter>
             </Provider>
         )
     }

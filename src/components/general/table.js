@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import {DeleteHolder} from "./mini_components";
+import { ButtonEdit, ButtonDelete } from "./mini_components";
+import { Checkbox } from '@material-ui/core';
+import { Translate } from 'react-localize-redux';
 
 const CheckboxContainer = styled.div`
     margin:0rem;
@@ -13,14 +15,24 @@ class Table extends Component {
     render() {
         return (
             <div>
-                <table key="table-fields" className="striped"> 
+                <table key="table-fields" className="table"> 
                     <thead>
                     <tr>
                         {
                             this.props.header.map((label, index) => {
                                 const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
-                                return(<th key={index}>{ labelString }</th>)
+                                return(<th key={index} scope="col">{ labelString }</th>)
                             })
+                        }
+                        { this.props.hasOwnProperty("editCallBack") && 
+                            <th key="edit" scope="col">
+                                <Translate id="general.edit" />
+                            </th>
+                        }
+                        { this.props.hasOwnProperty("deleteCallBack") && 
+                            <th key="delete" scope="col">
+                            <Translate id="general.delete" />
+                        </th>
                         }
                     </tr>
                     </thead>
@@ -31,14 +43,8 @@ class Table extends Component {
                                 <tr key={`row-${indexRow}`}>
                                     {row.map((value, index) => {
                                         if(typeof value === "boolean"){ 
-                                            const checked = value ? <input type="checkbox" className="filled-in" checked="checked" disabled="disabled" /> : <input type="checkbox" getByText="filled-in" disabled="disabled" />
                                             return (<td key={index}>
-                                                        <CheckboxContainer className="input-field">
-                                                        <label>
-                                                            {checked}
-                                                            <span></span>
-                                                        </label>
-                                                        </CheckboxContainer>
+                                                        <Checkbox checked={value}  />
                                                     </td>)
                                         }
                                         else if(Array.isArray(value)){ 
@@ -51,16 +57,12 @@ class Table extends Component {
                                     })}
                                     { this.props.hasOwnProperty("editCallBack") && 
                                         <td key={`edit-${indexRow}`}>
-                                            <DeleteHolder onClick={() => this.props.editCallBack(indexRow)}>
-                                                <i className="material-icons">edit</i>
-                                            </DeleteHolder>
+                                            <ButtonEdit onClick={() => this.props.editCallBack(indexRow)} />
                                         </td>
                                     }
                                     { this.props.hasOwnProperty("deleteCallBack") && 
                                         <td key={`delete-${indexRow}`}>
-                                            <DeleteHolder onClick={() => this.props.deleteCallBack(indexRow)}>
-                                                <i className="material-icons">delete</i>
-                                            </DeleteHolder>
+                                            <ButtonDelete onClick={() => this.props.deleteCallBack(indexRow)} />
                                         </td>
                                     }
                                 </tr>

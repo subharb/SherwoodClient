@@ -32,6 +32,6 @@ Edit.args = {
                             question : "¿cual es tu nombre?", 
                             type:"text"}]},
     addingField: false,
-    addNewSection : (values) => alert(JSON.stringify(values))
+    callBackNewSection : (values) => alert(JSON.stringify(values))
 };
 

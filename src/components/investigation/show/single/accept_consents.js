@@ -83,7 +83,7 @@ class AcceptConsents extends Component {
         const templateField = {
             required : false,
             type:"text",
-            label:"investigation.create.survey.personal_info",
+            label:"investigation.create.edc.personal_info",
             shortLabel: "investigation.table.is_personal_data",
             validation : "notEmpty"}
         for(let i = 0; i < this.props.investigation.consents.length; i++){

@@ -5,7 +5,7 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
-import { DeleteHolder, ButtonCancel, ButtonContinue } from '../../components/general/mini_components';
+import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
 
 
  /**
@@ -60,12 +60,9 @@ class Form extends Component {
         console.log("Fields", value.fields);
         if(!this.state.showOptions.hasOwnProperty(value.fields.name) || (this.state.showOptions[value.fields.name] === true)){
             return (
-                <div className="input-field">
+                <div className="">
                     <Translate id={value.label} />
-                    <button type="button" className="btn-floating btn-small waves-effect waves-light red" 
-                        onClick={() => value.fields.push("")}>
-                            <i className="material-icons">add</i>
-                    </button>
+                    <ButtonAdd type="button" onClick={() => value.fields.push("")} />
                     
                     <div className="container">
                         {value.fields.map((hobby, index) =>
@@ -81,8 +78,6 @@ class Form extends Component {
                                 </DeleteHolder>
                             </div>
                         )}
-                        
-                        
                     </div>
                 </div>);
         }
@@ -104,7 +99,7 @@ class Form extends Component {
             const extraField = {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]}; 
             if(extraField.type === "options"){
                 return (
-                    <div className="row">
+                    <div className="container">
                         <FieldArray name={`${key}-options`} {...extraField} key={key} component={this.renderOptions} />
                     </div>
                 )
@@ -120,43 +115,47 @@ class Form extends Component {
     }
     render() {
         return(
-            <form data-testid="form" className="form" onSubmit={this.props.handleSubmit(values => {this.callBackForm(values)})}  >
-                {Object.keys(this.props.fields).map(key => {
-                    console.log(this.props.typeValue);
-                    if(this.props.fields[key].type !== "options"){
-                        return (
-                            <div className="row" key={key}>
-                                <Field name={key} {...this.props.fields[key]} 
-                                    type={this.props.fields[key].type} label={this.props.fields[key].label} 
-                                    component={FieldSherwood} />
-                                {
-                                    this.renderExtraFields(key)
-                                }
-                            </div>);
-                    }
-                    // else if(!this.state.showOptions.hasOwnProperty(this.props.fields[key]) && (this.state.showOptions[this.props.fields[key]] === true)){
-                    //     //Si es de tipo options, muestro un boton para añadir opciones
-                    //     return ([
-                    //         <div className="row" key={key}>
-                    //             <FieldArray name={key} label={this.props.fields[key].label} {...this.props.fields[key]}  component={this.renderOptions} />
-                    //         </div>,
-                    //         <button data-testid="submit-form" type="button" className="waves-effect waves-light btn">
-                    //             {this.props.translate("investigation.create.save")}
-                    //         </button>   
-                    //     ]);
-                    // }
-                    
-                })}
-                <ButtonContinue type="submit"  data-testid="submit-form" className="">
-                    {this.props.translate("investigation.create.save")}
-                </ButtonContinue>
-                {this.props.closeCallBack &&
-                    <ButtonCancel data-testid="cancel" onClick={this.props.closeCallBack} 
-                        className="">Cancel
-                    </ButtonCancel>
-                }  
-                
-            </form>
+            <div className="container">
+                <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.callBackForm(values)})}  >
+                    {Object.keys(this.props.fields).map(key => {
+                        console.log(this.props.typeValue);
+                        if(this.props.fields[key].type !== "options"){
+                            return (
+                                <div className="row" key={key}>
+                                    <Field name={key} {...this.props.fields[key]} 
+                                        type={this.props.fields[key].type} label={this.props.fields[key].label} 
+                                        component={FieldSherwood} />
+                                    {
+                                        this.renderExtraFields(key)
+                                    }
+                                </div>);
+                        }
+                        // else if(!this.state.showOptions.hasOwnProperty(this.props.fields[key]) && (this.state.showOptions[this.props.fields[key]] === true)){
+                        //     //Si es de tipo options, muestro un boton para añadir opciones
+                        //     return ([
+                        //         <div className="row" key={key}>
+                        //             <FieldArray name={key} label={this.props.fields[key].label} {...this.props.fields[key]}  component={this.renderOptions} />
+                        //         </div>,
+                        //         <button data-testid="submit-form" type="button" className="waves-effect waves-light btn">
+                        //             {this.props.translate("investigation.create.save")}
+                        //         </button>   
+                        //     ]);
+                        // }
+                        
+                    })}
+                    <div style={{paddingTop:"1rem"}}>
+                        <ButtonContinue type="submit"  data-testid="submit-form" className="">
+                            { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}
+                        </ButtonContinue>
+                        {this.props.closeCallBack &&
+                            <ButtonCancel data-testid="cancel" onClick={this.props.closeCallBack} 
+                                className="">{ this.props.cancelText ?  this.props.translate(this.props.cancelText) : this.props.translate("general.cancel")}
+                            </ButtonCancel>
+                        } 
+                    </div>
+                </form>
+            </div>
+            
         ) 
     }
 }

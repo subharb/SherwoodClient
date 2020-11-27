@@ -3,7 +3,9 @@
     "general" : {
         "yes" : ["Yes", "No"], 
         "no" : ["No", "No"], 
-        "delete" : ["Delete", "Borrar"]
+        "delete" : ["Delete", "Borrar"],
+        "cancel" : ["Cancel", "Cancelar"],
+        "edit" : ["Edit", "Editar"]
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],
@@ -91,19 +93,23 @@
         "create" : {
             "steps" : {
                 "basic_info" : ["Basic Info", "Información básica"],
+                "edc" : ["EDC", "EDC"],
                 "sections" : ["Create Survey", "Crear formulario"],
                 "patient_sheet" : ["Patient Sheet Information", "Documento de aceptación de paciente"],
                 "consents" : ["Consent forms", "Formularios de consentimiento"],
                 "summary" : ["Summary", "Resumen"]
             },
-            "survey" : {
+            "edc" : {
                 "title" : ["Create Investigation", "Crear Investigation"],
                 "name" : ["Study's name", "Nombre de la investigación"],
+                "section_name" : ["Name", "Nombre"],
                 "acronym" : ["Study short name/acronym", "Nombre corto"],
                 "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
                 "description" : ["Description", "Descripción"],
                 "add_field" : ["Add field", "añadir campo"], 
                 "required" : ["Required", "Obligatorio"],
+                "repeats" : ["Repeats", "Repite"],
+                "number_fields" : ["# fields", "Nº Campos"],
                 "name_field" : ["Name of the field in your report", "Nombre del campo en los informes"], 
                 "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?"], 
                 "question_field" : ["Question that will be shown in the form", "La pregunta que aparecerá en el formulario"],
@@ -182,7 +188,7 @@
             },
             "summary" : {
                 "title" : ["Summary Investigation", "ResumenInvestigation"],
-                "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
+                "explanation" : ["Check all the sections before saving the investigation", "Revise las secciones antes de guardar"],
                 "patients" : ["Patients", "Pacientes"],
                 "email" : ["email", "email"],
                 "review_consents" : ["Review consent", "Revisar el consentimiento"],
@@ -194,6 +200,8 @@
                 "survey" : ["Survey", "Formulario"],
                 "personal_data" : ["Personal Data", "Datos Personales"]
             },
+            "continue" : ["Continue", "Continuar"],
+            "back" : ["Back", "Atrás"],
             "save_and_send" : ["Save & send e-consents", "Guardar y enviar consentimientos"],
             "save" : ["Save", "Guardar"]
         },

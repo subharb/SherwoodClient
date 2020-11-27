@@ -45,8 +45,8 @@ class SingleInvestigation extends Component {
                     <p><Translate id="investigation.show.data" />:</p>
                     TABLA CON DATOS
                     <Link to={`/investigation/add/${this.props.investigation.uuid}`}><button data-testid="add-data" className="add-data btn-floating btn-large waves-effect waves-light red" ><i className="material-icons">add</i></button></Link>
-                    {this.props.investigation.survey.records.length > 0 && 
-                        <Table header={this.props.investigation.survey.fields.map(field =>  field.name)} values={this.props.investigation.survey.records.map(record => Object.values(record.fields))} />
+                    {this.props.investigation.edc.records.length > 0 && 
+                        <Table header={this.props.investigation.edc.fields.map(field =>  field.name)} values={this.props.investigation.edc.records.map(record => Object.values(record.fields))} />
                     }
                     
                     <p><Translate id="investigation.show.patient_consents" />:</p>

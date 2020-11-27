@@ -4,28 +4,25 @@ import styled from "styled-components";
 import PropTypes from 'prop-types';
 import Table from '../../general/table';
 import Section from './section';
-
+import { ButtonContinue, ButtonAdd } from '../../general/mini_components'; 
 
 /**
  * An EDC is a collection of sections
  */
-const AddElementButton = styled.button`
-    display:${props => props.hide ? "none" : "auto" };
-`; 
 
 const SECTION_FORM = {
     "name" : {
         required : true,
         type:"text",
-        label:"investigation.create.sections.section",
-        shortLabel: "investigation.table.name",
+        label:"investigation.create.edc.section_name",
+        shortLabel: "investigation.create.edc.section_name",
         validation : "textMin2"
     },
     "repeats":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.required",
-        shortLabel: "investigation.table.required",
+        label:"investigation.create.edc.repeats",
+        shortLabel: "investigation.create.edc.repeats",
         validation : "notEmpty"
     }
 }
@@ -41,11 +38,13 @@ export default class EDC extends Component{
         this.submitData = this.submitData.bind(this);
         this.callBackNewSection = this.callBackNewSection.bind(this);
         
-        this.state = props.initialState ? props.initialState : {sections: [], addingSection:false, editingIndexSection:false};
-        //this.state = {sections: [{"name" : "Analítica" , "repeats" : true, fields : [{"is_personal_data" : true, "required" : true, "name" : "leucocitos" , "type" : "select", "question": "Valor leucocitos"}]}], fields : [], addingSection:false, addingField : false};
+        const initialState = {sections: [], addingSection:false, editingIndexSection:false}
+        this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
     }
     renderSections(){
-        const AddButton = <AddElementButton disabled={this.state.addingSection || Number.isInteger(this.state.editingIndexSection)} type="button" data-testid="add-sections" hide={this.state.addingSection} className="add-section btn-floating btn-small waves-effect waves-light red" onClick={this.addSection} ><i className="material-icons">add</i></AddElementButton>
+        const AddButton= <ButtonAdd disabled={this.state.addingSection || Number.isInteger(this.state.editingIndexSection)} 
+                            type="button" data-testid="add-sections" show={!this.state.addingSection}  
+                            onClick={this.addSection}></ButtonAdd>
         if(this.state.sections.length === 0){
             return [
                 AddButton,
@@ -54,7 +53,7 @@ export default class EDC extends Component{
         }
         else{
             let arrayHeader = Object.values(SECTION_FORM).map(value => value.shortLabel);
-            arrayHeader.push("fields");
+            arrayHeader.push("investigation.create.edc.number_fields");
             return(
                 <div>
                     <Table key="added_fields" header={arrayHeader} 
@@ -141,8 +140,9 @@ export default class EDC extends Component{
                 { this.renderSections() }
                 { this.renderNewSectionForm() }
                 <div className="row" style={{paddingTop:"20px"}}>
-                    <button disabled={this.state.sections.length === 0} className="btn waves-effect waves-light" type="button" 
-                        onClick={this.submitData}>Submit</button>
+                    <ButtonContinue disabled={this.state.sections.length === 0} type="button" 
+                        onClick={this.submitData}><Translate id="investigation.create.continue" />
+                    </ButtonContinue>
                 </div>
             </div>
             
@@ -153,7 +153,7 @@ export default class EDC extends Component{
 
 
 EDC.propTypes = {
-    initialState: PropTypes.object,
+    initialData: PropTypes.object,
     callBackData: PropTypes.func.isRequired
 };
 

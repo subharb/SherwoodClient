@@ -7,27 +7,28 @@ import Table from '../../general/table';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { reduxForm, Field } from 'redux-form';
+import { ButtonAdd, ButtonSave, ButtonCancel  } from '../../general/mini_components';
 import PropTypes from 'prop-types';
 
 const FIELDS_FORM = {
     "is_personal_data":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.personal_info",
+        label:"investigation.create.edc.personal_info",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     },
     "required":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.required",
+        label:"investigation.create.edc.required",
         shortLabel: "investigation.table.required",
         validation : "notEmpty"
     },
     "name" : {
         required : true,
         type:"text",
-        label:"investigation.create.survey.name_field",
+        label:"investigation.create.edc.name_field",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
@@ -35,15 +36,15 @@ const FIELDS_FORM = {
         required : true,
         type:"select",
         validation : "notEmpty",
-        label : "investigation.create.survey.choose",
+        label : "investigation.create.edc.choose",
         shortLabel: "investigation.table.type",
-        defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
-        options:[{"text" : "investigation.create.survey.type_text", "value" : "text"},
-                {"text": "investigation.create.survey.type_number", "value" : "number"},
-                {"text": "investigation.create.survey.checkbox", "value" : "checkbox"}, 
-                {"text": "investigation.create.survey.type_date", "value" : "date"},
-                {"text": "investigation.create.survey.dropdown", "value" : "dropdown"},
-                {"text": "investigation.create.survey.multioption", "value" : "multioption"}
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+        options:[{"text" : "investigation.create.edc.type_text", "value" : "text"},
+                {"text": "investigation.create.edc.type_number", "value" : "number"},
+                {"text": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
+                {"text": "investigation.create.edc.type_date", "value" : "date"},
+                {"text": "investigation.create.edc.dropdown", "value" : "dropdown"},
+                {"text": "investigation.create.edc.multioption", "value" : "multioption"}
         ],
         activationValues : ["dropdown", "multioption"],
         activatedFields:[
@@ -51,14 +52,14 @@ const FIELDS_FORM = {
                 required : true,
                 type:"options",
                 validation : "notEmpty",
-                label : "investigation.create.survey.choose",
+                label : "investigation.create.edc.choose",
                 shortLabel: "investigation.table.type"
             },
             {
                 required : true,
                 type:"options",
                 validation : "notEmpty",
-                label : "investigation.create.survey.choose",
+                label : "investigation.create.edc.choose",
                 shortLabel: "investigation.table.type"
             }]
                                         
@@ -66,7 +67,7 @@ const FIELDS_FORM = {
     "question" : {
         required : false,
         type:"text",
-        label : "investigation.create.survey.question_field",
+        label : "investigation.create.edc.question_field",
         shortLabel: "investigation.table.question",
         validation : "textMin6", 
         size : "s6"
@@ -84,15 +85,12 @@ const SECTION_FORM = {
     "repeats":{
         required : false,
         type:"checkbox",
-        label:"investigation.create.survey.required",
+        label:"investigation.create.edc.required",
         shortLabel: "investigation.table.required",
         validation : "notEmpty"
     }
 }
 
-const AddElementButton = styled.button`
-    display:${props => props.hide ? "none" : "auto" };
-`; 
 
 /**
  * A section of a EDC, each section contain several inputs and can be repeated during time or not.
@@ -107,7 +105,9 @@ class Section extends Component{
         this.closeModal = this.closeModal.bind(this);
         this.deleteElement = this.deleteElement.bind(this);
         this.handleNewSection = this.handleNewSection.bind(this); 
-        this.state = props.initialData ? {...props.initialData} : { addingField: false, fields : [] }
+
+        const initialState = { addingField: false, fields : [] }
+        this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
     }
     handleNewSection(values){
         console.log("handleNewSection: "+JSON.stringify(values));
@@ -171,30 +171,32 @@ class Section extends Component{
             [<Modal key="modal" open={this.state.addingField} title={<Translate id="investigation.create.section.add_field" />}
             component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} />} 
               />,
-            <div className="container">
-                <div className="card-panel">
-                    <h6 className="teal-text lighten-1">
+            <div className="card">
+                <div className="card-body">
+                    <h6 className="">
                         {
                             title
                         }
                         
                     </h6>
-                    <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))} className="row">
+                    <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
                         <Field type="text" name="name" label="name" component={FieldSherwood} />
-                        <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
+                        <div>
+                            <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
+                        </div>
+                        
                         
                         <div style={{paddingTop:"40px"}}>
                             Add field: 
-                            <AddElementButton type="button" data-testid="add-field" onClick={this.toogleField}
-                                hide={this.state.addingField} className="add-section btn-floating btn-small waves-effect waves-light red" >
-                                <i className="material-icons">add</i>
-                            </AddElementButton>  
+                            <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
+                                show={!this.state.addingField}>
+                            </ButtonAdd>  
                         </div>  
                         { this.renderFields() }
                         <div style={{paddingTop:"40px"}}>
-                            <button disabled={this.state.fields.length === 0} className="btn waves-effect waves-light" type="submit">Add Section</button>
-                            <button onClick={this.props.closeNewSection} className="btn waves-effect waves-light red lighten-1 ml-6" 
-                                type="button">Cancel</button>
+                            <ButtonSave disabled={this.state.fields.length === 0} type="submit">Add Section</ButtonSave>
+                            <ButtonCancel onClick={this.props.closeNewSection} style={{marginLeft:'1rem'}}
+                                type="button">Cancel</ButtonCancel>
                         </div>
                     </form>
                 </div>
