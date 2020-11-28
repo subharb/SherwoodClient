@@ -105,7 +105,7 @@ export default class BasicInfo2 extends Component {
                     <Form initialData={this.props.initialData} 
                         fields={FIELDS_INVESTIGATION} submitText = "investigation.create.continue"
                         cancelText = "investigation.create.back"
-                        callBackForm={(values) => this.props.callBackBasicInfo(values)} />
+                        callBackForm={(values) => this.props.callBackData(values)} />
             </div>
         )
     }

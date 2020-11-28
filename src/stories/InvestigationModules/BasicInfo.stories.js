@@ -18,13 +18,13 @@ const Template = (args) => <BasicInfo {...args} />;
 
 export const Basic = Template.bind({});
 Basic.args = {
-    callBackBasicInfo : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+    callBackData : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)}
 };
 
 export const Edit = Template.bind({});
 Edit.args = {
     initialData : basic_info1(),
-    callBackBasicInfo : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+    callBackData : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)}
 };
 
  

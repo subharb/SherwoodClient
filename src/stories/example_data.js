@@ -33,7 +33,7 @@ export const basic_info1 = () => {
 
 export const summary_info1 = () => {
     return {
-        "basic_info": basic_info1(),
-        "edc" : edc_data1()
+        "basic_info": basic_info1(), 
+        "survey" : edc_data1()
     }
 }

@@ -16,6 +16,7 @@ const Template = (args) => <Summary {...args} />;
 export const Edit = Template.bind({});
 Edit.args = {
     initialData : summary_info1(),
+    stepBack : () => alert("Hit StepBack"),
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 

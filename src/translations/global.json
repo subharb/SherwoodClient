@@ -5,7 +5,8 @@
         "no" : ["No", "No"], 
         "delete" : ["Delete", "Borrar"],
         "cancel" : ["Cancel", "Cancelar"],
-        "edit" : ["Edit", "Editar"]
+        "edit" : ["Edit", "Editar"],
+        "back" : ["Back", "Atrás"]
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],
@@ -200,8 +201,7 @@
                 "survey" : ["Survey", "Formulario"],
                 "personal_data" : ["Personal Data", "Datos Personales"]
             },
-            "continue" : ["Continue", "Continuar"],
-            "back" : ["Back", "Atrás"],
+            "continue" : ["Continue", "Continuar"],            
             "save_and_publish" : ["Save & publish", "Guardar y publicar"],
             "save" : ["Save", "Guardar"]
         },

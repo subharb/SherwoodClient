@@ -9,7 +9,7 @@ import Table from '../../general/table';
 import styled from 'styled-components';
 import { toggleLoading } from '../../../actions';
 import SuccessComponent from '../../../components/general/success_component';
-import { ButtonEdit, ButtonSave } from '../../general/mini_components';
+import { ButtonEdit, ButtonSave, ButtonBack } from '../../general/mini_components';
 
 const SpanField = styled.span`
     font-weight:bold;
@@ -17,6 +17,11 @@ const SpanField = styled.span`
 
 const ResultContainer = styled.div`
     background-color:red;
+`;
+
+const BasicInfo = styled.div`
+    font-style: italic;
+    color:slategrey;
 `;
 
 class Summary extends Component {
@@ -58,11 +63,12 @@ class Summary extends Component {
     }
     async send(consents){
         this.props.toggleLoading();
-        let investigationInfo = {...this.props.investigation };
-        investigationInfo.sendConsents = consents;
+        let investigationInfo = {...this.props.initialData.basic_info };
+        investigationInfo.survey = {...this.props.initialData.survey};
+        
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
 
-        const request = await axios.post(process.env.REACT_APP_API_URL+'/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
         
         let error = 0;
@@ -80,9 +86,16 @@ class Summary extends Component {
         
         
     }
+
     continueModal(){
         console.log("Continue!");
         this.props.history.push("/investigation/show");
+    }
+    renderBasicInfo(){
+        return Object.keys(this.props.initialData.basic_info).map(key =>{
+                return key+":"+this.props.initialData.basic_info[key]+", ";
+            })
+        
     }
     render() {
         return([
@@ -92,24 +105,22 @@ class Summary extends Component {
             />,
             <Modal key="modal2" open={this.state.showResult}  
                 component={<SuccessComponent title="investigation.create.summary.success.title" 
-                                            description="investigation.create.summary.success.description" 
-                                            successButtonText = "investigation.create.summary.success.continue"
-                                            callBackContinue ={this.continueModal} />} 
+                                description="investigation.create.summary.success.description" 
+                                successButtonText = "investigation.create.summary.success.continue"
+                                callBackContinue ={this.continueModal} />} 
             />,
             <div key="content" className="row">
                 <div className="col-12">
                     <h4><Translate id="investigation.create.summary.title" /></h4>
                     <p><Translate id="investigation.create.summary.explanation" /></p>
-                    <SpanField><Translate id="investigation.create.steps.basic_info" ></Translate><ButtonEdit onClick={() => alert("Volver a basic_info")}/></SpanField>
-                    <div>
+                    <SpanField><Translate id="investigation.create.steps.basic_info" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(0)}/></SpanField>
+                    <BasicInfo >
                     {
-                        Object.keys(this.props.initialData.basic_info).map(key =>{
-                            return key+":"+this.props.initialData.basic_info[key]+" ";
-                        })
+                        this.renderBasicInfo()
                     }
-                    </div>
-                    <SpanField><Translate id="investigation.create.steps.edc" ></Translate><ButtonEdit onClick={() => alert("Volver a edc")}/></SpanField>
-                    <Table header={Object.keys(this.props.initialData.edc.sections[0])} values={this.props.initialData.edc.sections.map(section =>{
+                    </BasicInfo>
+                    <SpanField><Translate id="investigation.create.steps.edc" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(1) }/></SpanField>
+                    <Table header={Object.keys(this.props.initialData.survey.sections[0])} values={this.props.initialData.survey.sections.map(section =>{
                         return Object.values(section)
                     })}/> 
                     {/* <Table header={Object.keys(this.props.investigation.survey.personalData[0])} values={this.props.investigation.edc.personalData.map(field =>{
@@ -138,9 +149,9 @@ class Summary extends Component {
                         </tbody>
                     </table> */}
                 </div>
+                <ButtonBack data-testid="cancel" onClick={this.props.stepBack} >{this.props.translate("general.back")}</ButtonBack>
                 <ButtonSave data-testid="publish-investigation" onClick={()=>this.send(true)} type="button" key="publish-investigation" id="publish-investigation" >{this.props.translate("investigation.create.save_and_publish")}</ButtonSave>
                 <ButtonSave data-testid="save-for-later-investigation" onClick={()=>this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" >{this.props.translate("investigation.create.save")}</ButtonSave>
-                <button data-testid="cancel" onClick={this.props.stepBack} className="waves-effect waves-light btn red lighten-1 right">Back</button>
             </div>
             ]
         );
@@ -148,7 +159,8 @@ class Summary extends Component {
 }
 
 Summary.propTypes = {
-    investigation : PropTypes.object
+    investigation : PropTypes.object,
+    stepBack : PropTypes.func
 }
 
 export default withRouter(withLocalize((connect(null, { toggleLoading })(Summary))));

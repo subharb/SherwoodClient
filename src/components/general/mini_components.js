@@ -21,18 +21,11 @@ export const BasicButtonStyles = styled(Button)`
         display: none!important;
     }
 `
-export const ButtonEdit = (props) =>{
-    return <DeleteHolder {...props}>
-        <i className="material-icons">edit</i>
-    </DeleteHolder>
-}
 
-export const ButtonDelete = (props) =>{
-    return <DeleteHolder {...props}>
-        <i className="material-icons">delete</i>
-    </DeleteHolder>
-}
-
+export const ButtonOtherStyles = styled(BasicButtonStyles)`
+    background-color:${props => props.theme.buttonOther.background}!important;
+    color:${props => props.theme.buttonOther.color};
+`;
 
 export const ButtonCancelStyles = styled(BasicButtonStyles)`
     background-color:${props => props.theme.buttonCancel.background}!important;
@@ -46,6 +39,32 @@ export const ButtonIcon = styled(IconButton)`
     background-color:${props => props.theme.buttonContinue.background}!important;
     color:${props => props.theme.buttonContinue.color}!important;
 `
+
+
+export const ButtonEdit = (props) =>{
+    return <DeleteHolder {...props}>
+        <i className="material-icons">edit</i>
+    </DeleteHolder>
+}
+
+export const ButtonDelete = (props) =>{
+    return <DeleteHolder {...props}>
+        <i className="material-icons">delete</i>
+    </DeleteHolder>
+}
+
+export const ButtonBack = (props) =>{
+    return <ButtonOtherStyles 
+        variant="contained"
+        color="primary"
+        size="small"
+        startIcon={<Icon>arrow_back_ios</Icon>}
+        {...props}
+    >
+        {props.children}
+    </ButtonOtherStyles>
+}
+
 export const ButtonContinue = (props) =>{
         return <ButtonContinueStyles
             variant="contained"
@@ -69,6 +88,7 @@ export const ButtonCancel = (props) =>{
         {props.children}
     </ButtonCancelStyles>
 }
+
 
 export const ButtonSave = (props) =>{
     return <ButtonContinueStyles 

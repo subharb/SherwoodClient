@@ -123,7 +123,7 @@ export default class EDC extends Component{
         }
     }
     submitData(){
-        this.props.callBackData([...this.state.sections]);
+        this.props.callBackData({sections : this.state.sections});
     }
     render(){
         

@@ -20,6 +20,10 @@ const theme = {
         background : "#e53e3e",
         color : "#FFF"
     },
+    buttonOther: {
+        background : "goldenrod",
+        color : "#FFF"
+    },
     error : {
         color : "#e53e3e",
     },

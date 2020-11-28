@@ -21,6 +21,7 @@ class NewInvestigation extends Component {
         
         this.addData = this.addData.bind(this);
         this.stepBack = this.stepBack.bind(this);
+        this.goToStep = this.goToStep.bind(this);
         
         this.steps = {
             basic_info : "investigation.create.steps.basic_info",
@@ -94,10 +95,7 @@ class NewInvestigation extends Component {
                 tempState.investigation.basic_info = {...data};
                 break;
             case 1:
-                tempState.consents = data;
-                break;
-            case 2:
-                tempState.patients = data;
+                tempState.investigation.survey = data;
                 break;
             case 3:
                 console.log("Send Information!");
@@ -120,7 +118,7 @@ class NewInvestigation extends Component {
     }
     goToStep(step){
         let tempState = this.state;
-        if(step > 0 && step < Object.values(tempState.investigation).length){
+        if(step >= 0 && step < Object.values(tempState.investigation).length){
             tempState.step = step;
         }
     
@@ -140,7 +138,7 @@ class NewInvestigation extends Component {
         switch(this.state.step){
             case 0:
                 component = <BasicInfo initialData={ this.props.initialData ? this.props.initialData.investigation.basic_info : this.state.investigation.basic_info } 
-                                callBackBasicInfo={this.addData} />
+                                callBackData={this.addData} />
                 break;
             // case 1:
             //     component = <PISGenerator callBackData={this.addData} 
@@ -151,15 +149,14 @@ class NewInvestigation extends Component {
             //                     stepBack = {this.stepBack}/>
             //     break;
             case 1: 
-                component = <EDC initialData={this.props.initialData.investigation.edc} />
+                component = <EDC initialData={this.props.initialData.investigation.survey} callBackData={this.addData} />
                 break;
             // case 2:
             //     component = <AddPatients patients={ this.state.investigation.hasOwnProperty("patients") ? this.state.investigation.patients : false }  callBackData={this.addData} 
             //                     stepBack = {this.stepBack}/>
             //    break;
             case 2:
-                component = <Summary investigation={ this.state.investigation }
-                                stepBack = {this.stepBack} />
+                component = <Summary initialData={ this.state.investigation } stepBack = {this.stepBack} callBackToStep = {this.goToStep}  />
                 break;
             default:
                 component = "Something went wrong";
