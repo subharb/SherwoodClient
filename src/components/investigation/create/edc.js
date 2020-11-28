@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PropTypes from 'prop-types';
 import Table from '../../general/table';
 import Section from './section';
-import { ButtonContinue, ButtonAdd } from '../../general/mini_components'; 
+import { ButtonContinue, ButtonAdd, ButtonBack } from '../../general/mini_components'; 
 
 /**
  * An EDC is a collection of sections
@@ -140,6 +140,10 @@ export default class EDC extends Component{
                 { this.renderSections() }
                 { this.renderNewSectionForm() }
                 <div className="row" style={{paddingTop:"20px"}}>
+                    {
+                        this.props.callBackStepBack && 
+                        <ButtonBack data-testid="cancel" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
+                    }
                     <ButtonContinue disabled={this.state.sections.length === 0} type="button" 
                         onClick={this.submitData}><Translate id="investigation.create.continue" />
                     </ButtonContinue>

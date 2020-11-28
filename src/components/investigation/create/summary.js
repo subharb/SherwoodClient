@@ -149,7 +149,7 @@ class Summary extends Component {
                         </tbody>
                     </table> */}
                 </div>
-                <ButtonBack data-testid="cancel" onClick={this.props.stepBack} >{this.props.translate("general.back")}</ButtonBack>
+                <ButtonBack data-testid="cancel" onClick={this.props.callBackStepBack} >{this.props.translate("general.back")}</ButtonBack>
                 <ButtonSave data-testid="publish-investigation" onClick={()=>this.send(true)} type="button" key="publish-investigation" id="publish-investigation" >{this.props.translate("investigation.create.save_and_publish")}</ButtonSave>
                 <ButtonSave data-testid="save-for-later-investigation" onClick={()=>this.send(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" >{this.props.translate("investigation.create.save")}</ButtonSave>
             </div>

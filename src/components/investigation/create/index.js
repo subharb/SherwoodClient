@@ -149,14 +149,14 @@ class NewInvestigation extends Component {
             //                     stepBack = {this.stepBack}/>
             //     break;
             case 1: 
-                component = <EDC initialData={this.props.initialData.investigation.survey} callBackData={this.addData} />
+                component = <EDC initialData={this.props.initialData.investigation.survey} callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
             // case 2:
             //     component = <AddPatients patients={ this.state.investigation.hasOwnProperty("patients") ? this.state.investigation.patients : false }  callBackData={this.addData} 
             //                     stepBack = {this.stepBack}/>
             //    break;
             case 2:
-                component = <Summary initialData={ this.state.investigation } stepBack = {this.stepBack} callBackToStep = {this.goToStep}  />
+                component = <Summary initialData={ this.state.investigation } callBackStepBack = {this.stepBack} callBackToStep = {this.goToStep}  />
                 break;
             default:
                 component = "Something went wrong";
