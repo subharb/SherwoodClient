@@ -170,7 +170,6 @@ class NewInvestigation extends Component {
                 </Container>
             </div>
         );
-        
     }
 }
 

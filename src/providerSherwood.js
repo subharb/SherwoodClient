@@ -29,6 +29,10 @@ const theme = {
     },
     edit : {
         color : "#81e6d9",
+    },
+    primary : {
+        background : "#35887D",
+        color : "#FFF"
     }
 
 }

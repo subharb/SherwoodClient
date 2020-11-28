@@ -5,9 +5,22 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const HeaderContainer = styled.div`
-    background:${props => props.theme.headerBackground}
+    background:${props => props.theme.primary.background};
+    color:${props => props.theme.primary.color};
 `;
 
+const LinkHeader = styled(Link)`
+    color:${props => props.theme.primary.color};
+`;
+
+const ListLinks = styled.ul`
+    display:flex;
+`
+
+const ListItem = styled.li`
+    list-style-type: none;
+    margin-left: 1rem;
+`;
 const LogoContainer = styled.div`
     display:flex!important;
 `;
@@ -19,19 +32,19 @@ export default class Header extends Component {
     render() {
         return (
             <nav>
-                <HeaderContainer className="nav-wrapper">
-                    <LogoContainer className="left brand-logo">
+                <HeaderContainer className="">
+                    <LogoContainer className="">
                         <LogoHolder>
                             <img  className="left " src={pathLogo} alt="Sherwood" height="40"/>
                         </LogoHolder>
-                        <Link to="/" >Sherwood</Link>
+                        <LinkHeader to="/" >Sherwood</LinkHeader>
                     </LogoContainer>
                     {!this.props.isLoggedIn && 
-                    <ul id="nav-mobile" className="right hide-on-med-and-down">
-                        <li><Link to="/researcher/login">Login Researcher</Link></li>
-                        <li><Link to="/patient/login">Login Patient</Link></li>
-                        <li><Link to="/researcher/register">Register Researcher</Link></li>
-                    </ul>
+                    <ListLinks id="nav-mobile" className="">
+                        <ListItem><LinkHeader to="/researcher/login">Login Researcher</LinkHeader></ListItem>
+                        <ListItem><LinkHeader to="/patient/login">Login Patient</LinkHeader></ListItem>
+                        <ListItem><LinkHeader to="/researcher/register">Register Researcher</LinkHeader></ListItem>
+                    </ListLinks>
                     }
                 </HeaderContainer>
             </nav>

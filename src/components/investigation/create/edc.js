@@ -142,7 +142,7 @@ export default class EDC extends Component{
                 <div className="row" style={{paddingTop:"20px"}}>
                     {
                         this.props.callBackStepBack && 
-                        <ButtonBack data-testid="cancel" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
+                        <ButtonBack spaceRight={true}  data-testid="cancel" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
                     }
                     <ButtonContinue disabled={this.state.sections.length === 0} type="button" 
                         onClick={this.submitData}><Translate id="investigation.create.continue" />
