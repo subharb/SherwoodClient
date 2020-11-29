@@ -1,25 +1,50 @@
 export const edc_data1 = () => {
     return {
-        sections : [{
-            name:"Personal Data", repeats : false, 
-                    fields : [{required : true, 
+        sections : [
+            {
+                name:"Personal Data", repeats : false, 
+                fields : [
+                            {
+                                required : true, 
                                 is_personal_data:true, 
                                 name : "name", 
-                                question : "¿cual es tu nombre?", 
-                                type:"text"}
-                            ]
-        },
-        {
-            name:"analitica", repeats : false, 
-                    fields : [
-                        {
-                            required : true, 
-                            is_personal_data:true, 
-                            name : "name", 
-                            question : "Hemoglonbina", 
-                            type:"number"}
+                                question : "What is your name?", 
+                                type:"text",
+                                typeValueCypress:"Text"
+                            },
+                            {
+                                required : true, 
+                                is_personal_data:true, 
+                                name : "surnames", 
+                                question : "What are your surnames?", 
+                                type:"text",
+                                typeValueCypress:"Text"
+                            },
+                            {
+                                required : true, 
+                                is_personal_data:true, 
+                                name : "address", 
+                                question : "What is your address?", 
+                                type:"text",
+                                typeValueCypress:"Text"
+                            }
                         ]
-            }], addingSection:false, editingIndexSection:false}
+            },
+            {
+                name:"analitica", 
+                repeats : false, 
+                fields : [
+                    {
+                        required : true, 
+                        is_personal_data:true, 
+                        name : "hemoglobina", 
+                        question : "Hemoglobina", 
+                        type:"number",
+                        typeValueCypress:"Number"
+                    
+                    }
+                    ]
+                }], addingSection:false, editingIndexSection:false}
 }
 
 export const basic_info1 = () => {
@@ -35,5 +60,5 @@ export const summary_info1 = () => {
     return {
         "basic_info": basic_info1(), 
         "survey" : edc_data1()
-    }
+    }   
 }

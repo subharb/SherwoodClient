@@ -169,7 +169,7 @@ class Section extends Component{
         const saveText = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> : <Translate id="investigation.create.section.add_section" />
         return (
             [<Modal key="modal" open={this.state.addingField} title={<Translate id="investigation.create.section.add_field" />}
-            component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} />} 
+            component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />} 
               />,
             <div className="card">
                 <div className="card-body">
@@ -194,8 +194,8 @@ class Section extends Component{
                         </div>  
                         { this.renderFields() }
                         <div style={{paddingTop:"40px"}}>
-                            <ButtonSave disabled={this.state.fields.length === 0} type="submit">Add Section</ButtonSave>
-                            <ButtonCancel onClick={this.props.closeNewSection} style={{marginLeft:'1rem'}}
+                            <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
+                            <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
                                 type="button">Cancel</ButtonCancel>
                         </div>
                     </form>

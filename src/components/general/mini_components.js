@@ -75,6 +75,7 @@ export const ButtonContinue = (props) =>{
             size="small"
             endIcon={<Icon>send</Icon>}
             {...props}
+            data-testid={props['data-testid'] ? props['data-testid'] : "continue"}
         >
             {props.children}
         </ButtonContinueStyles>

@@ -114,6 +114,7 @@ class Form extends Component {
         }
     }
     render() {
+        const dataTestId = this.props.dataTestid ? "data-testid='"+this.props.dataTestid+"'": "";
         return(
             <div className="container">
                 <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.callBackForm(values)})}  >
@@ -144,12 +145,12 @@ class Form extends Component {
                         
                     })}
                     <div style={{paddingTop:"1rem"}}>
-                        <ButtonContinue type="submit"  data-testid="submit-form" className="">
+                        <ButtonContinue type="submit" data-testid={this.props.dataTestid} >
                             { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}
                         </ButtonContinue>
                         {this.props.closeCallBack &&
-                            <ButtonCancel data-testid="cancel" onClick={this.props.closeCallBack} 
-                                className="">{ this.props.cancelText ?  this.props.translate(this.props.cancelText) : this.props.translate("general.cancel")}
+                            <ButtonCancel data-testid="cancel" onClick={this.props.closeCallBack}>
+                                { this.props.cancelText ?  this.props.translate(this.props.cancelText) : this.props.translate("general.cancel")}
                             </ButtonCancel>
                         } 
                     </div>

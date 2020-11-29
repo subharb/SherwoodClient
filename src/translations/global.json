@@ -138,7 +138,7 @@
                 "choose_patient" : ["Choose a patient", "Elija un paciente"],
                 "type" : ["Type study", "Tipo de estudio"],
                 "type_study" : {
-                    "audit" : ["Clinical Trial", "Ensayo clínico"],
+                    "audit" : ["Audit", "Auditoría"],
                     "clinical_trial" : ["Clinical Trial", "Ensayo clínico"],
                     "medical_device" : ["Medical Device", "Aparato Médico"],
                     "clinical_research_study" : ["Clinical Research Study", "Investigación Clínica"]
