@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import M from 'materialize-css';
-
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Translate } from 'react-localize-redux';
@@ -36,10 +36,10 @@ class Toolbar extends Component {
         this.setState({selected:index});
     }
     render() {
-        if(localStorage.getItem("type") === "researcher"){
+        if(this.props.typeUser === "researcher"){
             return (
                 <div className="col s3">
-                    <Container>
+                    <Container className="card">
                         <ul className="collapsible">
                             <li>
                                 <div className="collapsible-header"><Icon selected = {this.state.selected === 0} className="material-icons">biotech</Icon><CustomLink selected = {this.state.selected === 0} onClick={ () => this.selected(0)} to="/investigation/create"><Translate id="dashboard.create_investigation" /></CustomLink></div>
@@ -60,9 +60,9 @@ class Toolbar extends Component {
                 </div>
             )
         }
-        else if(localStorage.getItem("type") === "patient"){
+        else if(this.props.typeUser  === "patient"){
             return (
-                <Container>
+                <Container className="card">
                     <ul className="collapsible">
                         <li>
                             <div className="collapsible-header"><i className="material-icons">biotech</i><Translate id="dashboard.investigation" /></div>
@@ -82,6 +82,10 @@ class Toolbar extends Component {
             )
         }
     }
+}
+
+Toolbar.propTypes = {
+    typeUser : PropTypes.string
 }
 
 export default withRouter(Toolbar);

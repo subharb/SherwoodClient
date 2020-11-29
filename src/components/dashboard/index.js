@@ -52,7 +52,7 @@ class Dashboard extends Component{
             <Header />,
             <div key="container" className="">
                 <div className="row">
-                        <Toolbar  /> 
+                        <Toolbar typeUser={localStorage.getItem("type")} /> 
                     <div className="col s8">
                     { this.renderMainContent() }
                     </div>
