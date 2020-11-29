@@ -1,15 +1,11 @@
 import React from 'react';
-import BreadCrumb from '../../components/general/breadcrumb';
-import ProviderSherwood from '../../providerSherwood';
+import Login from '../../../components/dashboard/login';
+import ProviderSherwood from '../../../providerSherwood';
 
 
 export default {
-    title: 'Basic Elements/BreadCrumb/BreadCrumb',
-  component: BreadCrumb,
-  argTypes: {
-    selected: { control: 'number' },
-    stages: { control: 'array' }
-  },
+    title: 'Basic Elements/General/Login',
+  component: Login,
   parameters: { actions: { argTypesRegex: '^callBack.*' } },
   decorators: [story => 
                 <ProviderSherwood>
@@ -19,7 +15,7 @@ export default {
 
 const testStages = ["investigation.create.steps.basic_info", "investigation.create.steps.sections", "investigation.create.steps.patient_sheet" ];
 
-const Template = (args) => <BreadCrumb {...args} />;
+const Template = (args) => <Login {...args} />;
 
 export const Basic = Template.bind({});
 Basic.args = {
