@@ -11,14 +11,14 @@ class AllInvestigations extends Component {
         this.state = {investigations : null}
     }
     async componentDidMount(){  
-        const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem('type')+'/investigation/all')
+        const request = await axios.get(process.env.REACT_APP_API_URL+'/'+this.props.typeUser+'/investigation/all')
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(request.status === 200){
             //redirec a /login
             this.setState({investigations:request.data})
         }
         else if(request.status === 401){
-            this.props.history.push(localStorage.getItem('type')+"/login");
+            this.props.history.push(this.props.typeUser+"/login");
         } 
     }
     render() {
@@ -45,8 +45,8 @@ class AllInvestigations extends Component {
         if(filteredInvestigations.length === 0){
             return (
                 <div>
-                    <Translate id={`investigation.show.all.${localStorage.getItem('type')}.no_investigations`} />
-                    {localStorage.getItem('type') === "researcher" && 
+                    <Translate id={`investigation.show.all.${this.props.typeUser}.no_investigations`} />
+                    {this.props.typeUser === "researcher" && 
                     [
                         <Translate id="investigation.show.all.add_first_investigation" />,
                         <Link to="/investigation/create" className="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></Link>
@@ -77,7 +77,8 @@ class AllInvestigations extends Component {
     }
 }
 AllInvestigations.propTypes = {
-    
+    initialData: PropTypes.object,
+    typeUser: PropTypes.string
 }; 
 
 export default withLocalize(AllInvestigations);
