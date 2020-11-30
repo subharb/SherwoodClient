@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import CardInvestigation from './card_investigation'
 import { Link } from 'react-router-dom';
 import { Translate, withLocalize } from 'react-localize-redux';
 
@@ -11,11 +12,11 @@ class AllInvestigations extends Component {
         this.state = {investigations : null}
     }
     async componentDidMount(){  
-        const request = await axios.get(process.env.REACT_APP_API_URL+'/'+this.props.typeUser+'/investigation/all')
+        const request = await axios.get(process.env.REACT_APP_API_URL+'/'+this.props.typeUser+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(request.status === 200){
             //redirec a /login
-            this.setState({investigations:request.data})
+            this.setState({investigations:request.data.investigations})
         }
         else if(request.status === 401){
             this.props.history.push(this.props.typeUser+"/login");
@@ -43,7 +44,7 @@ class AllInvestigations extends Component {
         });
 
         if(filteredInvestigations.length === 0){
-            return (
+            return (                
                 <div>
                     <Translate id={`investigation.show.all.${this.props.typeUser}.no_investigations`} />
                     {this.props.typeUser === "researcher" && 
@@ -58,27 +59,29 @@ class AllInvestigations extends Component {
             
         }
         else{
-            return filteredInvestigations.map(inves => {
-                return(
-                    <div class="col s12 m6">
-                        <div class="card blue-grey darken-1">
-                            <div class="card-content white-text">
-                                <span class="card-title">{inves.title}</span>
-                                <p>{inves.description}</p>
-                                </div>
-                                <div class="card-action">
-                                <Link to={`/investigation/show/${inves.uuid}`}><Translate id="investigation.show.view_investigation" /></Link>
-                            </div>
-                        </div>
-                    </div>
-                );
-            });
+            return (
+                <div className="row">
+                {
+                    filteredInvestigations.map(inves => {
+                        return(
+                            
+                                <CardInvestigation title={inves.name} 
+                                    description={inves.description}
+                                    status={inves.status}
+                                    textUrl={<Translate id="investigation.show.view_investigation" />}
+                                    url={`/investigation/show/${inves.uuid}`}/>
+                            
+                        );
+                    })
+                }
+                </div>)
         }
     }
 }
 AllInvestigations.propTypes = {
     initialData: PropTypes.object,
-    typeUser: PropTypes.string
+    typeUser: PropTypes.string,
+    filter: PropTypes.number
 }; 
 
 export default withLocalize(AllInvestigations);

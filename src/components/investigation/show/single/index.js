@@ -6,6 +6,7 @@ import { fetchInvestigation, toggleLoading } from '../../../../actions';
 import AcceptConsents from './accept_consents';
 import SingleInvestigationResearcher from './single_investigation';
 
+
 class SingleInvestigation extends Component {
     async componentDidMount(){  
         if(this.props.investigation === null){
@@ -19,13 +20,13 @@ class SingleInvestigation extends Component {
             return "CARGANDO";
         }
         else{
-            if(localStorage.getItem('type') === "researcher"){
+            if(this.props.typeUser === "researcher"){
                 return (
-                    <SingleInvestigationResearcher investigation = { this.props.investigation} />
+                    <SingleInvestigationResearcher investigation = { this.props.initialData} />
                 )
             }
             else if(localStorage.getItem('type') === "patient"){
-                return <AcceptConsents investigation={this.props.investigation} uuidInvestigation={this.props.uuid} />
+                return <AcceptConsents investigation={this.props.initialData} uuidInvestigation={this.props.uuid} />
             }
         }
     }
@@ -48,4 +49,9 @@ function mapStateToProps(state, ownProps){
     }
     
 }
+SingleInvestigation.propTypes = {
+    typeUser: PropTypes.string,
+    initialData: PropTypes.object
+}
+
 export default withLocalize(connect(mapStateToProps, { fetchInvestigation, toggleLoading })(SingleInvestigation))

@@ -13,7 +13,9 @@ const ButtonHolder = styled.div`
 const RowConsent = styled.div`
     margin-bottom:0rem;
 `;
-
+/**
+ * Componente que muestra las invstigationes del usuario actual, tanto si es paciente, pending o ongoing, como si es researcher, draft o live
+ */
 class SingleInvestigation extends Component {
     
     render() {
