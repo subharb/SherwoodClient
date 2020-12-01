@@ -64,7 +64,7 @@ const FIELDS_FORM = {
             }]
                                         
     },
-    "question" : {
+    "label" : {
         required : false,
         type:"text",
         label : "investigation.create.edc.question_field",

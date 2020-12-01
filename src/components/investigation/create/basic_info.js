@@ -48,7 +48,7 @@ const FIELDS_FORM = {
                 {"text": "investigation.create.edc.type_date", "value" : "date"}]
                                         
     },
-    "question" : {
+    "label" : {
         required : false,
         type:"text",
         label : "investigation.create.edc.question_field",

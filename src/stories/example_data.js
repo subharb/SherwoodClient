@@ -1,5 +1,6 @@
 export const edc_data1 = () => {
     return {
+        records:[],
         sections : [
             {
                 name:"Personal Data", repeats : false, 
@@ -8,7 +9,7 @@ export const edc_data1 = () => {
                                 required : true, 
                                 is_personal_data:true, 
                                 name : "name", 
-                                question : "What is your name?", 
+                                label : "What is your name?", 
                                 type:"text",
                                 typeValueCypress:"Text"
                             },
@@ -16,7 +17,7 @@ export const edc_data1 = () => {
                                 required : true, 
                                 is_personal_data:true, 
                                 name : "surnames", 
-                                question : "What are your surnames?", 
+                                label : "What are your surnames?", 
                                 type:"text",
                                 typeValueCypress:"Text"
                             },
@@ -24,7 +25,7 @@ export const edc_data1 = () => {
                                 required : true, 
                                 is_personal_data:true, 
                                 name : "address", 
-                                question : "What is your address?", 
+                                label : "What is your address?", 
                                 type:"text",
                                 typeValueCypress:"Text"
                             }
@@ -38,7 +39,7 @@ export const edc_data1 = () => {
                         required : true, 
                         is_personal_data:true, 
                         name : "hemoglobina", 
-                        question : "Hemoglobina", 
+                        label : "Hemoglobina", 
                         type:"number",
                         typeValueCypress:"Number"
                     
@@ -61,4 +62,11 @@ export const summary_info1 = () => {
         "basic_info": basic_info1(), 
         "survey" : edc_data1()
     }   
+}
+
+//La forma en la que se envían los datos desde el servidor
+export const investigation_server = () => {
+    let returnData = {...basic_info1()};
+    returnData.survey = edc_data1();
+    return returnData;
 }

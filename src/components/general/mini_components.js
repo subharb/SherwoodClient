@@ -20,9 +20,10 @@ export const BasicButtonStyles = styled(Button)`
     ${props => !props.show} {
         display: none!important;
     }
-    ${props => props.spaceRight} {
+    ${({ spaceRight }) => spaceRight && `
         margin-right:1rem;
-    }
+    `}
+    
 `
 
 export const ButtonOtherStyles = styled(BasicButtonStyles)`
@@ -104,6 +105,29 @@ export const ButtonSave = (props) =>{
          >
             {props.children}
     </ButtonContinueStyles>
+}
+
+export const ButtonCheck = (props) =>{
+    return <ButtonContinueStyles 
+        variant="contained"
+        color="primary" 
+        size="small"
+        startIcon={<Icon>check_circle_outline</Icon>}
+        {...props}
+         >
+            {props.children}
+    </ButtonContinueStyles>
+}
+export const ButtonEmptyCheck = (props) =>{
+    return <BasicButtonStyles 
+        variant="contained"
+        color="primary" 
+        size="small"
+        startIcon={<Icon>panorama_fish_eye</Icon>}
+        {...props}
+         >
+            {props.children}
+    </BasicButtonStyles>
 }
 
 export const ButtonAdd = (props) =>{

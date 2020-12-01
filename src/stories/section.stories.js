@@ -29,7 +29,7 @@ Edit.args = {
                 fields : [{required : true, 
                             is_personal_data:true, 
                             name : "name", 
-                            question : "¿cual es tu nombre?", 
+                            label : "¿cual es tu nombre?", 
                             type:"text"}]},
     addingField: false,
     callBackNewSection : (values) => alert(JSON.stringify(values))

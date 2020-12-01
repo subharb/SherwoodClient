@@ -3,7 +3,8 @@ import { withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
-import { FormControl, Select, InputLabel, MenuItem, TextField, FormControlLabel, Checkbox } from '@material-ui/core';
+import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
+import { FormControl, Select, InputLabel, MenuItem, TextField, FormControlLabel, Checkbox, Button, ButtonGroup } from '@material-ui/core';
 
 const sharedStyle = css`
     & label {
@@ -37,6 +38,8 @@ class FieldSherwood extends Component{
         super(props);
 
         this.state = {options : []}
+
+        this.multiOptionSelected = this.multiOptionSelected.bind(this);
     }
     // componentDidUpdate(){
     //     let selects = document.querySelectorAll('select');
@@ -54,6 +57,21 @@ class FieldSherwood extends Component{
         //     M.FormSelect.init(selects, {});
             
         // }
+    }
+    multiOptionSelected(value){
+        let tempValue = [value];
+        if(this.props.input.value !== ""){
+            let index = this.props.input.value.indexOf(value);
+            if (index !== -1){
+                tempValue = [...this.props.input.value];
+                tempValue.splice(index, 1);
+            } 
+            else{
+                tempValue = this.props.input.value.concat([value]);
+            }
+        }
+        this.props.input.onChange(tempValue);
+        
     }
     render(){
         const {input, label, meta, type, options, size, option, removeClass} = this.props;
@@ -89,6 +107,27 @@ class FieldSherwood extends Component{
                     </FormControlSherwood>
                     
                 )
+            case "multioption" : 
+                    const optionButtons = options.map(option => {
+                        if(input.value.includes(option.value)){
+                            return <ButtonCheck spaceRight={false} onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
+                        }
+                        return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonEmptyCheck>
+                    });
+                    console.log("optionButtons",input.value);
+                    return ([
+                        <div className="container">
+                            <div className="row">
+                                <InputLabel id={input.name}>{labelString}</InputLabel>
+                            </div>
+                            <div className="row">
+                                <InputLabel shrink={true}>Choose the options that apply</InputLabel>
+                            </div>
+                            <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                {optionButtons}
+                            </ButtonGroup>
+                        </div>
+                    ])
             case "checkbox":
                 console.log("Value checkbox: "+input.name+" "+input.value);
                 const classNameError = (meta.touched && meta.error) ? "error text" : "";
@@ -110,7 +149,8 @@ class FieldSherwood extends Component{
                         <label for="textarea2">{label}</label>
                     </div>
                 )
-            default:     
+            default:    
+                    console.log("TextFieldSherwood",input.value);
                 return(
                     <TextFieldSherwood {...input}  
                         label={labelString} error={errorState} 

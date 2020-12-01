@@ -57,7 +57,19 @@ const FIELDS_FORM = {
                 shortLabel: "investigation.table.type"
             }]
                                         
-    }
+    },
+    "multioption" : {
+        required : true,
+        type:"multioption",
+        validation : "notEmpty",
+        label : "Multioption",
+        shortLabel: "investigation.table.type",
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+        options:[{"text" : "Option 1", "value" : "text"},
+                {"text": "Option 2", "value" : "number"},
+                {"text": "Option 3", "value" : "checkbox"},
+        ]                             
+    },
 }
 
 
@@ -76,6 +88,13 @@ const Template = (args) => <Form {...args} />;
 export const Basic = Template.bind({});
 Basic.args = {
     fields:FIELDS_FORM, 
+    creating : true
+};
+
+export const Answering = Template.bind({});
+Answering.args = {
+    fields:FIELDS_FORM, 
+    answeringMode: true,
     creating : true
 };
 
