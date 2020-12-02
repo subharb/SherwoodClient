@@ -4,7 +4,15 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
-import { FormControl, Select, InputLabel, MenuItem, TextField, FormControlLabel, Checkbox, Button, ButtonGroup } from '@material-ui/core';
+import { FormControl, Select, InputLabel, MenuItem, TextField, 
+        FormControlLabel, Checkbox, ButtonGroup } from '@material-ui/core';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+    KeyboardTimePicker
+    } from '@material-ui/pickers';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
 
 const sharedStyle = css`
     & label {
@@ -37,7 +45,7 @@ class FieldSherwood extends Component{
     constructor(props){
         super(props);
 
-        this.state = {options : []}
+        this.state = {options : [], date : new Date()}
 
         this.multiOptionSelected = this.multiOptionSelected.bind(this);
     }
@@ -72,6 +80,9 @@ class FieldSherwood extends Component{
         }
         this.props.input.onChange(tempValue);
         
+    }
+    handleDateChange(value){
+        this.props.input.onChange(value);
     }
     render(){
         const {input, label, meta, type, options, size, option, removeClass} = this.props;
@@ -138,6 +149,39 @@ class FieldSherwood extends Component{
                         label={labelString}
                     />
                 );
+            case "date":
+                return (
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                            margin="normal"
+                            id={input.name}
+                            label={label}
+                            format="MM/dd/yyyy"
+                            value={input.value === "" ? new Date() : input.value}
+                            onChange={this.handleDateChange}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                            }}
+                        />
+                    </MuiPickersUtilsProvider>
+                    
+                );
+            case "time":
+                return (
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardTimePicker
+                            margin="normal"
+                            id="time-picker"
+                            label="Time picker"
+                            value={input.value === "" ? new Date() : input.value}
+                            onChange={this.handleDateChange}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change time',
+                            }}
+                        />
+                    </MuiPickersUtilsProvider>
+                    
+                )
             case "hidden":
                 return(
                     <input data-testid={input.name} key={input.name} value={input.value} type="hidden" {...input} />

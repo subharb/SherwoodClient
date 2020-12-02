@@ -50,7 +50,7 @@ export const FIELDS = {
         value:"text"
                                         
     },
-    "question" : {
+    "label" : {
         required : false,
         type:"text",
         label : "investigation.create.edc.question_field",

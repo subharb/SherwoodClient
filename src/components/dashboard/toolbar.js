@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import M from 'materialize-css';
+
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -30,7 +30,7 @@ class Toolbar extends Component {
     }
     componentDidMount(){
         var elems = document.querySelectorAll('.collapsible');
-        var instances = M.Collapsible.init(elems, {});
+        //var instances = M.Collapsible.init(elems, {});
     }
     selected(index){
         this.setState({selected:index});

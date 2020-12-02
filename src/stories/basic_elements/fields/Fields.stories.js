@@ -70,6 +70,20 @@ const FIELDS_FORM = {
                 {"text": "Option 3", "value" : "checkbox"},
         ]                             
     },
+    "date" : {
+        required : true,
+        type:"date",
+        label:"Date",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
+    "time" : {
+        required : true,
+        type:"time",
+        label:"Time",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
 }
 
 

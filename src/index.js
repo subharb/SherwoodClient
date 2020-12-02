@@ -12,7 +12,7 @@ import RegisterUser from './components/register';
 import Dashboard from './components/dashboard';
 import { ThemeProvider }  from 'styled-components';
 import M from 'materialize-css';
-import 'fontsource-roboto';
+
 
 
 const store = createStore(reducers, {}, applyMiddleware(thunk));

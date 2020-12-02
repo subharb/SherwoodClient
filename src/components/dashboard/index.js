@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Component }  from 'react'
 import axios from 'axios';
 import Header from '../general/header';
-import M from 'materialize-css';
+
 
 import { Translate } from 'react-localize-redux';
 import Toolbar from './toolbar';
@@ -15,10 +15,7 @@ import Summary from './summary';
 
 class Dashboard extends Component{
    componentDidMount(){
-        document.addEventListener('DOMContentLoaded', function() {
-            let elems = document.querySelectorAll('.sidenav');
-            M.Sidenav.init(elems, {isFixed:true});
-        });
+        
    }
     renderMainContent(){
         console.log(this.props.match.params.action);
