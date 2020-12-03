@@ -50,6 +50,15 @@ export const edc_data1 = () => {
                         type:"number",
                         typeValueCypress:"Number"
                     
+                    },
+                    {
+                        required : true, 
+                        encrypted:true, 
+                        name : "comments", 
+                        label : "Otros comentarios", 
+                        type:"textarea",
+                        typeValueCypress:"Number"
+                    
                     }
                 ]
             }

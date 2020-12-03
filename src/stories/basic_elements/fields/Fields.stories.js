@@ -91,6 +91,14 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
+    "textarea" : {
+        required : false,
+        type:"textarea",
+        label:"Long field for text area",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
+    
 }
 
 

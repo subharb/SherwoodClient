@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
 import { FormControl, Select, InputLabel, MenuItem, TextField, 
-        FormControlLabel, Checkbox, ButtonGroup, IconButton, Icon } from '@material-ui/core';
+        FormControlLabel, Checkbox, ButtonGroup, IconButton, Icon, TextareaAutosize } from '@material-ui/core';
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -200,7 +200,16 @@ class FieldSherwood extends Component{
                         </IconButton>
                     )
                 }
-                return arrayButtons;
+                return (
+                    <div className="container">
+                        <div className="row">
+                            <InputLabel id={input.name}>{labelString}</InputLabel>
+                        </div>
+                        <div className="row">
+                            {arrayButtons}
+                        </div>
+                    </div>
+                    );
                 
             case "hidden":
                 return(
@@ -208,10 +217,7 @@ class FieldSherwood extends Component{
                 );
             case "textarea":
                 return(
-                    <div class="input-field col s12">
-                        <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
-                        <label for="textarea2">{label}</label>
-                    </div>
+                    <TextareaAutosize aria-label="empty textarea" placeholder="Empty" {...input}  />
                 )
             default:    
                     console.log("TextFieldSherwood",input.value);
