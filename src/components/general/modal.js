@@ -58,7 +58,7 @@ export default class Modal extends Component{
         console.log("Modal render");
         if(this.props.open){
             return (
-                <div ref={this.modal}  id="modal1" className="modal" tabindex="-1">
+                <div ref={this.modal}  id="modal1" className="modal" tabIndex="-1">
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-body">
