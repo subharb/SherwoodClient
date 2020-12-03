@@ -3,49 +3,57 @@ export const edc_data1 = () => {
         records:[],
         sections : [
             {
-                name:"Personal Data", repeats : false, 
-                fields : [
-                            {
-                                required : true, 
-                                is_personal_data:true, 
-                                name : "name", 
-                                label : "What is your name?", 
-                                type:"text",
-                                typeValueCypress:"Text"
-                            },
-                            {
-                                required : true, 
-                                is_personal_data:true, 
-                                name : "surnames", 
-                                label : "What are your surnames?", 
-                                type:"text",
-                                typeValueCypress:"Text"
-                            },
-                            {
-                                required : true, 
-                                is_personal_data:true, 
-                                name : "address", 
-                                label : "What is your address?", 
-                                type:"text",
-                                typeValueCypress:"Text"
-                            }
-                        ]
-            },
-            {
                 name:"analitica", 
                 repeats : false, 
                 fields : [
                     {
                         required : true, 
-                        is_personal_data:true, 
+                        encrypted:true, 
                         name : "hemoglobina", 
                         label : "Hemoglobina", 
                         type:"number",
                         typeValueCypress:"Number"
                     
+                    },
+                    {
+                        required : true, 
+                        encrypted:true, 
+                        name : "leuco", 
+                        label : "Leucocitos", 
+                        type:"number",
+                        typeValueCypress:"Number"
+                    
+                    },
+                    {
+                        required : true, 
+                        encrypted:true, 
+                        name : "gluco", 
+                        label : "Glucose(mg/dl)", 
+                        type:"number",
+                        typeValueCypress:"Number"
+                    
+                    },
+                    {
+                        required : true, 
+                        encrypted:true, 
+                        name : "cholesterol", 
+                        label : "Cholesterol(mg/dl)", 
+                        type:"number",
+                        typeValueCypress:"Number"
+                    
+                    },
+                    {
+                        required : true, 
+                        encrypted:true, 
+                        name : "red_blood", 
+                        label : "Red blood cells(mg/dl)", 
+                        type:"number",
+                        typeValueCypress:"Number"
+                    
                     }
-                    ]
-                }], addingSection:false, editingIndexSection:false}
+                ]
+            }
+        ], addingSection:false, editingIndexSection:false}
 }
 
 export const basic_info1 = () => {
@@ -57,9 +65,18 @@ export const basic_info1 = () => {
     }    
 }
 
+export const personal_data1 = () => {
+    return {
+        "name":true,
+        "surname":true,
+        "phone" : true,
+        "email" : true
+    }    
+}
 export const summary_info1 = () => {
     return {
         "basic_info": basic_info1(), 
+        "personal_data" : personal_data1(),
         "survey" : edc_data1()
     }   
 }
