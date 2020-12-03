@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
 
 const FIELDS_FORM = {
-    "is_personal_data":{
+    "encrypted":{
         required : false,
         type:"checkbox",
         label:"investigation.create.edc.personal_info",

@@ -11,7 +11,7 @@ import { ButtonAdd, ButtonSave, ButtonCancel  } from '../../general/mini_compone
 import PropTypes from 'prop-types';
 
 const FIELDS_FORM = {
-    "is_personal_data":{
+    "encrypted":{
         required : false,
         type:"checkbox",
         label:"investigation.create.edc.personal_info",

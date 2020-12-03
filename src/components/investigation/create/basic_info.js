@@ -15,7 +15,7 @@ import FieldSherwood from '../../general/FieldSherwood';
 import Table from '../../general/table';
 
 const FIELDS_FORM = {
-    "is_personal_data":{
+    "encrypted":{
         required : false,
         type:"checkbox",
         label:"investigation.create.edc.personal_info",
@@ -107,7 +107,7 @@ class BasicInfo extends Component {
                         type:values.type,
                         question:values.question,
                     }
-        if(values.is_personal_data){
+        if(values.encrypted){
             tempState.personalData.push(newField);
         }
         else{

@@ -28,7 +28,7 @@ export const InvestigationConsents = {
     "survey": {
         "fields": [
             {
-                "is_personal_data": {
+                "encrypted": {
                     "value": true,
                     "label": "investigation.create.edc.personal_info",
                     "shortLabel": "investigation.table.is_personal_data"
@@ -50,7 +50,7 @@ export const InvestigationConsents = {
                 }
             },
             {
-                "is_personal_data": {
+                "encrypted": {
                     "value": true,
                     "label": "investigation.create.edc.personal_info",
                     "shortLabel": "investigation.table.is_personal_data"
@@ -72,7 +72,7 @@ export const InvestigationConsents = {
                 }
             },
             {
-                "is_personal_data": {
+                "encrypted": {
                     "value": false,
                     "label": "investigation.create.edc.personal_info",
                     "shortLabel": "investigation.table.is_personal_data"

@@ -31,7 +31,7 @@ const FIELDS_FORM = {
         label:"investigation.create.consent.name",
         shortLabel: "investigation.create.consent.name",
         validation : "notEmpty",
-        is_personal_data:true
+        encrypted:true
     }
 }
 
@@ -50,7 +50,7 @@ const PERSONAL_FORM = {
         label:"investigation.create.consent.reason",
         shortLabel: "investigation.create.consent.reason",
         validation : "notEmpty",
-        is_personal_data:true
+        encrypted:true
     }
 }
 
