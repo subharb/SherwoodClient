@@ -20,8 +20,9 @@ export const BasicButtonStyles = styled(Button)`
     ${props => !props.show} {
         display: none!important;
     }
+
     ${({ spaceRight }) => spaceRight && `
-        margin-right:1rem;
+        margin-right:1rem!important;
     `}
     
 `
