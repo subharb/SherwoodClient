@@ -27,7 +27,7 @@ export const Edit = Template.bind({});
 Edit.args = {
     initialData:{name:"Personal Data", repeats : false, 
                 fields : [{required : true, 
-                            is_personal_data:true, 
+                            encrypted:true, 
                             name : "name", 
                             label : "¿cual es tu nombre?", 
                             type:"text"}]},
