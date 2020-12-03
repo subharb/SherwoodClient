@@ -6,10 +6,10 @@ import BasicInfo  from './basic_info2';
 import PersonalData from './personal_data';
 import Summary from './summary';
 import { fetchInvestigation } from '../../../actions';
-import AddConsents from './consent';
-
+import axios from 'axios';
 import Breadcrumb from '../../general/breadcrumb';
 import EDC from './edc';
+import { toggleLoading } from '../../../actions';
 
 const Container = styled.div`
     padding:1rem;
@@ -21,7 +21,8 @@ class NewInvestigation extends Component {
         this.addData = this.addData.bind(this);
         this.stepBack = this.stepBack.bind(this);
         this.goToStep = this.goToStep.bind(this);
-        
+        this.saveData = this.saveData.bind(this);
+
         this.steps = {
             basic_info : "investigation.create.steps.basic_info",
             personal_data:"investigation.create.steps.personal_data",
@@ -34,58 +35,37 @@ class NewInvestigation extends Component {
         if(this.props.initialData){
             this.state = {...this.props.initialData};
             this.state.step = this.props.step;
+            this.state.resultSave = this.props.resultSave;
         }
         else{
-            this.state = {step : 0, investigation:{}}
+            this.state = {step : 0, investigation:{}, resultSave:0}
         }
+    
+    }
+    async saveData(publish){
+        this.props.toggleLoading();
+        let investigationInfo = {...this.state.investigation};
+        investigationInfo.publish = publish ? 1 : 0;
+    
+        console.log("Enviamos: "+JSON.stringify(investigationInfo));
+
+        const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            .catch(err => {console.log('Catch', err); return err;}); 
         
-        // this.state = {step:1, 
-        //     investigation : {
-        //         title : "My first investigation",
-        //         description: "My first description",
-        //         survey: {
-        //             fields : [  
-        //                 {   "name" : "hemo",
-        //                     "type" : "text",
-        //                     "required" : true,
-        //                     "question" : "Hemoglobina"
-        //                 }
-        //             ],
-        //             personalData : [
-        //                 {   
-        //                 "name" : "name",
-        //                 "required" : true,
-        //                 "type" : "text",
-        //                 "question" :"¿cuál es su nombre?"
-        //             },
-        //             {   
-        //                 "name" : "surnames",
-        //                 "required" : true,
-        //                 "type" : "text",
-        //                 "question" : "¿cuáles son sus apellidos"
-        //             }, 
-        //             ]}
-        //         ,patients:[
-        //             {"email" : "david@sherwood.science", 
-        //                 "keyPatInvEncr" : "U2FsdGVkX18UwefjYdNNYrbOXGfhaosgCltu1Rf7YeALN4SA57aQbejaIP2iczRDOPzzu+WJuJQIon1giKE7uQ==", "tempKey" :"ffu2wyexjxbw6n3sn3tngh"},
-        //             {"email" : "Pedro.rodriguez@hotmail.com",
-        //                 "keyPatInvEncr" : "U2FsdGVkX1/h++4ISsIqAUMsgn6LByXuSlYe5XZLv/IDxPZVK2Sa404sfjyEz5RSubMxp3a5P2YDd5RtK2p/lA==", "tempKey" : "2h1n2cg3inci9irlqugur"}
-        //         ], 
-        //         consents: {
-        //             name: {
-        //             value: 'Identification purposes',
-        //             required: true,
-        //             is_personal_data: true
-        //             },
-        //             surnames: {
-        //             value: 'Identification purposes',
-        //             required: true,
-        //             is_personal_data: true
-        //             },
-        //             store_material: { value: 'Store biological material', is_personal_data: false }
-        //         }
-        //     } 
-        // }
+        let tempState = {...this.state};
+        if(request.status === 200){
+            console.log("Success!");
+            tempState.resultSave = 1;
+        }
+        else if(request.status === 401){
+            localStorage.removeItem("jwt");
+            tempState.resultSave = 2;
+            this.setState(tempState);
+        }
+        this.setState(tempState);
+        this.props.toggleLoading();
+        
+        
     }
     addData(data){
         console.log("New Data!", JSON.stringify(data));
@@ -127,6 +107,7 @@ class NewInvestigation extends Component {
     
         this.setState(tempState);
     }
+    
     componentDidMount(){
         if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
             this.props.fetchInvestigation(this.props.uuid);
@@ -162,7 +143,9 @@ class NewInvestigation extends Component {
             //                     stepBack = {this.stepBack}/>
             //    break;
             case 3:
-                component = <Summary initialData={ this.state.investigation } callBackStepBack = {this.stepBack} callBackToStep = {this.goToStep}  />
+                component = <Summary initialData={ this.state.investigation } callBackStepBack = {this.stepBack} 
+                                callBackToStep = {this.goToStep} resultSave={ this.state.resultSave }
+                                callBackSave={this.saveData} />
                 break;
             default:
                 component = "Something went wrong";
@@ -198,4 +181,4 @@ function mapStateToProps(state, ownProps){
     
 }
 
-export default connect(mapStateToProps, { fetchInvestigation})(NewInvestigation)
+export default connect(mapStateToProps, { toggleLoading, fetchInvestigation})(NewInvestigation)
