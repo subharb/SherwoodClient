@@ -61,7 +61,21 @@ export const edc_data1 = () => {
                     
                     }
                 ]
-            }
+            },
+            {
+                name:"Quality of life", 
+                repeats : true, 
+                fields : [
+                    {
+                        required : true, 
+                        encrypted:true, 
+                        name : "quality", 
+                        label : "What is your quality of life at the moment?", 
+                        type:"evaluate",
+                        typeValueCypress:"Number"
+                    
+                    },
+                ]}
         ], addingSection:false, editingIndexSection:false}
 }
 

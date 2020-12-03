@@ -219,7 +219,14 @@
             "save_and_publish" : ["Save & publish", "Guardar y publicar"],
             "save" : ["Save", "Guardar"]
         },
+        "fill" : {
+            "personal_data" : {
+                "title" : ["Personal Data", "Datos Personales"],
+                "description" : ["Fill the personal information of the patient", "Rellene los datos personales del paciente"]
+            }
+        },
         "show" : {
+            
             "view_investigation" : ["View Investigation", "Ver investigación"],
             "title" : ["Title", "Título"],
             "date_created" : ["Date create", "Fecha de creación"],

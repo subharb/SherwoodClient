@@ -136,6 +136,65 @@ export async function decryptData(ciphertext, key){
 export const isUserLoggedIn = () => localStorage.getItem("jwt");
 
 
+export const PERSONAL_DATA_FIELDS = {
+    "name" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.name",
+        shortLabel:"investigation.create.personal_data.fields.name",
+        validation : "textMin2"
+    },
+    "surname" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.surname",
+        shortLabel:"investigation.create.personal_data.fields.surname",
+        validation : "textMin2"
+    },
+    "birthdate" : {
+        required : false,
+        type:"date",
+        label:"investigation.create.personal_data.fields.surname",
+        shortLabel:"investigation.create.personal_data.fields.surname",
+        validation : "textMin2"
+    },
+    "address" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.address",
+        shortLabel:"investigation.create.personal_data.fields.address",
+        validation : "textMin2"
+    },
+    "health_id" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.health_id",
+        shortLabel:"investigation.create.personal_data.fields.health_id",
+        validation : "textMin2"
+    },
+    "national_id" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.national_id",
+        shortLabel:"investigation.create.personal_data.fields.national_id",
+        validation : "textMin2"
+    },
+    "email" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.email",
+        shortLabel:"investigation.create.personal_data.fields.email",
+        validation : "textMin2"
+    },
+    "phone" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.phone",
+        shortLabel:"investigation.create.personal_data.fields.phone",
+        validation : "textMin2"
+    }
+}
+
 export const templateField = {
     required : true,
     type:"text",
