@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
 import { FormControl, Select, InputLabel, MenuItem, TextField, 
-        FormControlLabel, Checkbox, ButtonGroup } from '@material-ui/core';
+        FormControlLabel, Checkbox, ButtonGroup, IconButton, Icon } from '@material-ui/core';
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -83,6 +83,7 @@ class FieldSherwood extends Component{
         this.props.input.onChange(tempValue);
         
     }
+    
     handleDateChange(value){
         this.props.input.onChange(value);
     }
@@ -173,8 +174,8 @@ class FieldSherwood extends Component{
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardTimePicker
                             margin="normal"
-                            id="time-picker"
-                            label="Time picker"
+                            id={input.name}
+                            label={labelString}
                             value={input.value === "" ? new Date() : input.value}
                             onChange={this.handleDateChange}
                             KeyboardButtonProps={{
@@ -184,6 +185,23 @@ class FieldSherwood extends Component{
                     </MuiPickersUtilsProvider>
                     
                 )
+            case "evaluate":
+                let arrayButtons = [];
+                for(let i= 0;i < 10; i++){
+                    const value = i+1;
+                    let iconString = "panorama_fish_eye";
+                    if(input.value ===  value){
+                        iconString = "fiber_manual_record";
+                    }
+                    arrayButtons.push(
+                        <IconButton onClick={()=>this.props.input.onChange(value)}>
+                            {value}.
+                            <Icon>{iconString}</Icon>
+                        </IconButton>
+                    )
+                }
+                return arrayButtons;
+                
             case "hidden":
                 return(
                     <input data-testid={input.name} key={input.name} value={input.value} type="hidden" {...input} />
