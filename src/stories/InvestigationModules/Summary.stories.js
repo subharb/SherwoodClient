@@ -5,6 +5,9 @@ import { summary_info1 } from '../example_data';
 export default {
     title: 'Investigation/Modules/Summary',
     component: Summary,
+    argTypes: {
+        resultSave: { control: "number"}
+    },
     decorators: [story => 
                 <ProviderSherwood>
                         {story()}
@@ -16,8 +19,9 @@ const Template = (args) => <Summary {...args} />;
 export const Edit = Template.bind({});
 Edit.args = {
     initialData : summary_info1(),
+    resultSave : 0,
     stepBack : () => alert("Hit StepBack"),
-    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+    callBackSave : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
 
