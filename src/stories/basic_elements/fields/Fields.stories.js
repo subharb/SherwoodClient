@@ -11,14 +11,14 @@ const FIELDS_FORM = {
         validation : "notEmpty"
     },
     "text" : {
-        required : true,
+        required : false,
         type:"text",
         label:"Textfield",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
     "select" : {
-        required : true,
+        required : false,
         type:"select",
         validation : "notEmpty",
         label : "Simple Select",
@@ -30,7 +30,7 @@ const FIELDS_FORM = {
         ]                             
     },
     "select-activate" : {
-        required : true,
+        required : false,
         type:"select",
         validation : "notEmpty",
         label : "Select With activation field Option 2, 3",
@@ -59,7 +59,7 @@ const FIELDS_FORM = {
                                         
     },
     "multioption" : {
-        required : true,
+        required : false,
         type:"multioption",
         validation : "notEmpty",
         label : "Multioption",
@@ -71,14 +71,14 @@ const FIELDS_FORM = {
         ]                             
     },
     "date" : {
-        required : true,
+        required : false,
         type:"date",
         label:"Date",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
     "time" : {
-        required : true,
+        required : false,
         type:"time",
         label:"Time",
         shortLabel: "investigation.table.name",
@@ -102,13 +102,15 @@ const Template = (args) => <Form {...args} />;
 export const Basic = Template.bind({});
 Basic.args = {
     fields:FIELDS_FORM, 
-    creating : true
+    creating : true,
+    callBackForm : (values) => console.log("Result",JSON.stringify(values))
 };
 
 export const Answering = Template.bind({});
 Answering.args = {
     fields:FIELDS_FORM, 
     answeringMode: true,
-    creating : true
+    creating : true,
+    callBackForm : (values) => console.log("Result",JSON.stringify(values))
 };
 

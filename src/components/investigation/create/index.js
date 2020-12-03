@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import BasicInfo  from './basic_info2';
-import PISGenerator  from './PIS_generator';
-import AddPatients from './add_patients';
+import PersonalData from './personal_data';
 import Summary from './summary';
 import { fetchInvestigation } from '../../../actions';
 import AddConsents from './consent';
@@ -25,6 +24,7 @@ class NewInvestigation extends Component {
         
         this.steps = {
             basic_info : "investigation.create.steps.basic_info",
+            personal_data:"investigation.create.steps.personal_data",
             edc : "investigation.create.steps.edc",
             // pis : "investigation.create.steps.patient_sheet",
             // consent : "investigation.create.steps.consents",
@@ -95,6 +95,9 @@ class NewInvestigation extends Component {
                 tempState.investigation.basic_info = {...data};
                 break;
             case 1:
+                tempState.investigation.personal_data = data;
+                break;
+            case 2:
                 tempState.investigation.survey = data;
                 break;
             case 3:
@@ -149,13 +152,16 @@ class NewInvestigation extends Component {
             //                     stepBack = {this.stepBack}/>
             //     break;
             case 1: 
+                component = <PersonalData initialData={this.props.initialData ? this.props.initialData.investigation.personal_data : this.state.investigation.personal_data } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
+                break;
+            case 2: 
                 component = <EDC initialData={this.props.initialData ? this.props.initialData.investigation.survey : this.state.investigation.survey } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
             // case 2:
             //     component = <AddPatients patients={ this.state.investigation.hasOwnProperty("patients") ? this.state.investigation.patients : false }  callBackData={this.addData} 
             //                     stepBack = {this.stepBack}/>
             //    break;
-            case 2:
+            case 3:
                 component = <Summary initialData={ this.state.investigation } callBackStepBack = {this.stepBack} callBackToStep = {this.goToStep}  />
                 break;
             default:

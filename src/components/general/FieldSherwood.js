@@ -48,6 +48,8 @@ class FieldSherwood extends Component{
         this.state = {options : [], date : new Date()}
 
         this.multiOptionSelected = this.multiOptionSelected.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+        
     }
     // componentDidUpdate(){
     //     let selects = document.querySelectorAll('select');

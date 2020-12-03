@@ -110,7 +110,6 @@ export const ButtonSave = (props) =>{
 export const ButtonCheck = (props) =>{
     return <ButtonContinueStyles 
         variant="contained"
-        color="white" 
         size="small"
         startIcon={<Icon>check_circle_outline</Icon>}
         {...props}

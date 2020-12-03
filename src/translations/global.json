@@ -95,11 +95,25 @@
             "steps" : {
                 "basic_info" : ["Basic Info", "Información básica"],
                 "edc" : ["EDC", "EDC"],
+                "personal_data" : ["Personal Data", "Datos Personales"],
                 "sections" : ["Create Survey", "Crear formulario"],
                 "patient_sheet" : ["Patient Sheet Information", "Documento de aceptación de paciente"],
                 "consents" : ["Consent forms", "Formularios de consentimiento"],
                 "summary" : ["Summary", "Resumen"]
             },
+            "personal_data" : {
+                "title" : ["Personal Data", "Datos Personales"],
+                "intro" : ["Please select the personal data you are planning to include in your investigation" ,"Seleccione los datos personales que desea incluir en su investigación"],
+                "fields" : {
+                    "name" : ["Name", "Nombre"],
+                    "surname" : ["Surname", "Apellidos"],
+                    "address" : ["Address", "Dirección"],
+                    "health_id" : ["Health ID", "Nº Seguridad social"],
+                    "national_id" : ["National ID", "DNI"],
+                    "email" : ["Email", "Email"],
+                    "phone" : ["Phone", "Nº Teléfono"]
+                }
+            }, 
             "edc" : {
                 "title" : ["Create Investigation", "Crear Investigation"],
                 "name" : ["Study's name", "Nombre de la investigación"],
