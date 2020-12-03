@@ -57,7 +57,10 @@ const PERSONAL_DATA_FIELDS = {
 export default function PersonalData(props) {
     function callBackData(values){
         console.log("CallbackData!", values);
-        props.callBackData(values);
+        let tempValues = Object.keys(values).filter(key => {
+            return values[key] === true;
+        });
+        props.callBackData(tempValues);
     }
     return (
         <div className="container">
