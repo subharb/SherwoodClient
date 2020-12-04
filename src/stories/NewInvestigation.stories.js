@@ -4,7 +4,7 @@ import ProviderSherwood from '../providerSherwood';
 import { summary_info1 } from './example_data';
 
 export default {
-  title: 'Pages/New Investigation',
+  title: 'Pages/Create Investigation',
   component: NewInvestigation,
   argTypes: {
     step: { control: 'number' }

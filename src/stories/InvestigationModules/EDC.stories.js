@@ -5,7 +5,7 @@ import ProviderSherwood from '../../providerSherwood';
 import { edc_data1 } from '../example_data';
 
 export default {
-    title: 'Investigation/Modules/EDC',
+    title: 'Investigation/Create/EDC',
     component: Form,
     decorators: [story => 
                 <ProviderSherwood>

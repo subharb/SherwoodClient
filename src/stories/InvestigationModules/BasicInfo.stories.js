@@ -5,7 +5,7 @@ import ProviderSherwood from '../../providerSherwood';
 import { basic_info1 } from '../example_data';
 
 export default {
-  title: 'Investigation/Modules/Basic Info',
+  title: 'Investigation/Create/Basic Info',
   component: Form,
   parameters: { actions: { argTypesRegex: '^callBack.*' } },
   decorators: [story => 
