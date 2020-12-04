@@ -20,7 +20,7 @@ export default function PersonalDataForm(props) {
             <div className="row">
                 <span><Translate id="investigation.fill.personal_data.description" /></span>
             </div>
-            <Form fields={form} callBackForm={(data) =>savePersonalData(data)}/>
+            <Form fields={form} callBackForm={(data) =>props.callBackForm(data)}/>
         </div>
     )
 }
