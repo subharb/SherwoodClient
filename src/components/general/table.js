@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { ButtonEdit, ButtonDelete, ButtonAdd } from "./mini_components";
+import { ButtonEdit, ButtonDelete, ButtonAdd, ButtonView } from "./mini_components";
 import { Checkbox } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
 
@@ -39,6 +39,11 @@ class Table extends Component {
                             <Translate id="general.add" />
                         </th>
                         }
+                        { this.props.hasOwnProperty("viewCallBack") && 
+                            <th key="view" scope="col">
+                            <Translate id="general.view" />
+                        </th>
+                        }
                     </tr>
                     </thead>
                     <tbody>
@@ -72,7 +77,12 @@ class Table extends Component {
                                     }
                                     { this.props.hasOwnProperty("addCallBack") && 
                                         <td key={`add-${indexRow}`}>
-                                            <ButtonAdd small onClick={() => this.props.addCallBack(indexRow)} />
+                                            <ButtonAdd data-testid="add-element" onClick={() => this.props.addCallBack(indexRow)} />
+                                        </td>
+                                    }
+                                    { this.props.hasOwnProperty("viewCallBack") && 
+                                        <td key={`add-${indexRow}`}>
+                                            <ButtonView data-testid="add-element" onClick={() => this.props.viewCallBack(indexRow)} />
                                         </td>
                                     }
                                 </tr>

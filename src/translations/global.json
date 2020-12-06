@@ -7,7 +7,8 @@
         "cancel" : ["Cancel", "Cancelar"],
         "edit" : ["Edit", "Editar"],
         "back" : ["Back", "Atrás"],
-        "add" : ["Add", "Añadir"]
+        "add" : ["Add", "Añadir"],
+        "view" : ["View", "Ver"]
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],

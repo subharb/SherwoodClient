@@ -6,7 +6,7 @@ import { templateField } from '../../../utils';
 import SuccessComponent from '../../general/success_component';
 import Modal from '../../general/modal';
 import { ButtonContinue } from '../../general/mini_components';
-import { Field, reduxForm } from 'redux-form'
+import { Field, reduxForm, FormSection } from 'redux-form'
 import FieldSherwood from '../../general/FieldSherwood';
 import { Translate } from 'react-localize-redux';
 
@@ -60,6 +60,7 @@ class SurveyForm extends Component {
                                     <h5>{section.name}</h5>
                                 </div>,
                                 <div className="row">
+                                    <FormSection name={section._id}>
                                     {
                                         section.fields.map(field => {
                                             return(
@@ -75,7 +76,7 @@ class SurveyForm extends Component {
                                             )
                                         })
                                     }
-                                    
+                                    </FormSection>
                                 </div>
                             ]
                             )

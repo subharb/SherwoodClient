@@ -143,3 +143,17 @@ export const ButtonAdd = (props) =>{
     //         {props.children}
     // </ButtonContinueStyles>
 }
+
+export const ButtonView = (props) =>{
+    return <ButtonIcon aria-label="add element" {...props}>
+            {props.children}<Icon>visibility</Icon>
+        </ButtonIcon>
+    // return <ButtonContinueStyles
+    //     variant="contained"
+    //     color="primary"
+    //     size="small"
+    //     startIcon={<SaveIcon />}
+    //      >
+    //         {props.children}
+    // </ButtonContinueStyles>
+}

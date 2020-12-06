@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PersonalDataForm from './personal_data';
 import SurveyForm from './survey_form';
-import { ButtonAdd } from '../../general/mini_components';
+import { ButtonAdd, ButtonBack } from '../../general/mini_components';
 import Table from '../../general/table';
 import Axios from 'axios';
 
@@ -20,13 +20,16 @@ export default function AddDataInvestigation(props) {
                 });
             })
             return <Table header={props.initialData.survey.personalFields} 
-                        values={valuesPatientData} editCallBack={(index) => alert("Edit:"+index)}
+                        values={valuesPatientData} viewCallBack={(index) => showPatient(index)}
                         addCallBack={(index) => {selectPatient(index)}} />
         }
         
     }
+    function showPatient(index){
+        setPatientIndex(index);
+        setShowForm(3);
+    }
     function selectPatient(index){
-        alert("Patient:"+index);
         setPatientIndex(index);
         setShowForm(2);
     }
@@ -47,8 +50,22 @@ export default function AddDataInvestigation(props) {
         }
         setShowForm(0);
     }
-    function saveRecord(values){
+    async function saveRecord(values){
         console.log(values);
+
+        const recordArray = Object.keys(values).map(keySection => {
+            return {
+                id_section:keySection,
+                answers:{...values[keySection]}
+            }
+        })
+        const postObj = {submission : recordArray}
+        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.initialData.uuid+"/record/"+patientsData[patientIndex].id, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                .catch(err => {console.log('Catch', err); return err;}); 
+        if(response.request.status === 200){
+            
+        }
+        setShowForm(0);
     }
     function getNamePatient(){
         let patientName = "";
@@ -69,6 +86,8 @@ export default function AddDataInvestigation(props) {
                 return <PersonalDataForm fields={ props.initialData.survey.personalFields} initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
             case 2: 
                 return <SurveyForm initialData={ props.initialData.survey } patientName={getNamePatient()} callBackForm={(values) => saveRecord(values) }/>
+            case 3: 
+                return 
             default:
                 return null;
         }
@@ -82,7 +101,7 @@ export default function AddDataInvestigation(props) {
         <div className="container">
             {
                 showForm !== 0 && 
-                <button onClick={() => setShowForm(0)}>Back</button>
+                <ButtonBack onClick={() => setShowForm(0)} >Back</ButtonBack>
             }
             <div className="row">
                 <h5>{props.initialData.name}</h5>
