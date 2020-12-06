@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PersonalDataForm from './personal_data';
 import SurveyForm from './survey_form';
 import { ButtonAdd } from '../../general/mini_components';
@@ -8,15 +8,13 @@ import Axios from 'axios';
 export default function AddDataInvestigation(props) {
     const [showForm, setShowForm] = useState(0);
     const [patientIndex, setPatientIndex] = useState(null);
-    function toogleForm(){
-        setShowForm(!showForm);
-    }
+    const [patientsData, setPatientsData] = useState([]);
     function renderPatientsTable(){
-        if(props.initialData.patientsPersonalData.length === 0){
+        if(patientsData.length === 0){
             return "You dont have any patients enrolled yet"
         }
         else{
-            const valuesPatientData = props.initialData.patientsPersonalData.map(patient => {
+            const valuesPatientData = patientsData.map(patient => {
                 return props.initialData.survey.personalFields.map(personalField => {
                     return patient.personalData[personalField];
                 });
@@ -35,13 +33,19 @@ export default function AddDataInvestigation(props) {
     async function savePatient(personalData){
         //Hay que encriptar los valores del objecto y enviarlo
         console.log(personalData);
-        setShowForm(0);
+        
         const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.initialData.uuid+"/patient", personalData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .catch(err => {console.log('Catch', err); return err;}); 
 
         if(response.request.status === 200){
-            
+            //Actualizo los pacientes
+            const response = await Axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.initialData.uuid+"/patient", { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                .catch(err => {console.log('Catch', err); return err;}); 
+            if(response.request.status === 200){
+                setPatientsData(response.data.patients);
+            }
         }
+        setShowForm(0);
     }
     function saveRecord(values){
         console.log(values);
@@ -49,12 +53,12 @@ export default function AddDataInvestigation(props) {
     function getNamePatient(){
         let patientName = "";
         if(props.initialData.survey.personalFields.includes("name")){
-            patientName = props.initialData.patientsPersonalData[patientIndex].personalData["name"]
+            patientName = patientsData[patientIndex].personalData["name"]
         }
         if(props.initialData.survey.personalFields.includes("surname")){
-            patientName += " "+props.initialData.patientsPersonalData[patientIndex].personalData["surname"]
+            patientName += " "+patientsData[patientIndex].personalData["surname"]
         }
-        patientName += " - "+props.initialData.patientsPersonalData[patientIndex].id;
+        patientName += " - "+patientsData[patientIndex].id;
         return patientName;
     }
     function renderForm(){
@@ -69,6 +73,11 @@ export default function AddDataInvestigation(props) {
                 return null;
         }
     }
+    useEffect(() => {
+        if(props.initialData.patientsPersonalData.length !== patientsData.length){
+            setPatientsData(props.initialData.patientsPersonalData);
+        }
+      }, []);
     return (
         <div className="container">
             {
