@@ -3,4 +3,4 @@
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
 }
-localStorage.setItem("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiN2Q4NDA1NjktNjA5Mi00ZGI5LWI0NDgtZjlhMWYxNzVmZTRmIiwiaWF0IjoxNjA3MDAwMDM3LCJleHAiOjE2MDcwMDM2Mzd9.OZbwPW2PDFMaKMXcorcyWLO7waUHeiH764eIVkzBbZo")
+localStorage.setItem("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjRkYzE4YTYtNWFlNC00ZmExLTk4MjUtYjQxNjc0NDViOGM3IiwiaWF0IjoxNjA3MjYxMjczLCJleHAiOjE2MDcyNjQ4NzN9.zK98bAwQjU-VNnxLkD-fvvj_gq8NhEIqwFcVtHNXGHE")

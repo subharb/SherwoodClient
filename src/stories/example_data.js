@@ -86,12 +86,17 @@ export const basic_info1 = () => {
         "name":"COVID Nose ",
         "acronym":"CN","type":"audit","researcher":"Pedro Rodriguez",
         "institution":"Oxford University","contact":"test@email.com",
-        "ethics_body":"12345","reference_number_state":"1"
+        "ethics_body":"12345","reference_number_state":"1",
+        "uuid" : "ff4b1de5-9163-4eb1-85fc-59d19f2741dd"
     }    
 }
 
 export const personal_data1 = () => {
     return ["name", "surname", "phone", "email"];
+}
+
+export const patient_data1 = () => {
+    return {"name" : "Peter", "surname" : "Petrelli", "phone" : "+34 123 1234", "email" : "peter@sherwood.science"}
 }
 export const summary_info1 = () => {
     return {
@@ -143,5 +148,13 @@ export const investigation_server = () => {
     returnData.survey = edc_data1();
     returnData.survey.personalFields = personal_data1();
     returnData.patientsPersonalData = patients_personal_data();
+    return returnData;
+}
+
+export const investigation_server_no_patitents = () => {
+    let returnData = {...basic_info1()};
+    returnData.survey = edc_data1();
+    returnData.survey.personalFields = personal_data1();
+    returnData.patientsPersonalData = [];
     return returnData;
 }

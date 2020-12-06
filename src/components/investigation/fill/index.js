@@ -3,6 +3,7 @@ import PersonalDataForm from './personal_data';
 import SurveyForm from './survey_form';
 import { ButtonAdd } from '../../general/mini_components';
 import Table from '../../general/table';
+import Axios from 'axios';
 
 export default function AddDataInvestigation(props) {
     const [showForm, setShowForm] = useState(0);
@@ -31,8 +32,16 @@ export default function AddDataInvestigation(props) {
         setPatientIndex(index);
         setShowForm(2);
     }
-    function savePatient(personalData){
+    async function savePatient(personalData){
         //Hay que encriptar los valores del objecto y enviarlo
+        console.log(personalData);
+        setShowForm(0);
+        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.initialData.uuid+"/patient", personalData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .catch(err => {console.log('Catch', err); return err;}); 
+
+        if(response.request.status === 200){
+            
+        }
     }
     function saveRecord(values){
         console.log(values);
@@ -53,7 +62,7 @@ export default function AddDataInvestigation(props) {
             case 0:
                 return renderPatientsTable();
             case 1:
-                return <PersonalDataForm fields={ props.initialData.survey.personalFields} callBackForm={(personalData) => savePatient(personalData)}/>
+                return <PersonalDataForm fields={ props.initialData.survey.personalFields} initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
             case 2: 
                 return <SurveyForm initialData={ props.initialData.survey } patientName={getNamePatient()} callBackForm={(values) => saveRecord(values) }/>
             default:
@@ -72,14 +81,12 @@ export default function AddDataInvestigation(props) {
             {
                 showForm === 0 && 
                 <div className="row">
-                    Add new patient<ButtonAdd onClick={() => setShowForm(1)} />
+                    Add new patient<ButtonAdd data-testid="add-patient" onClick={() => setShowForm(1)} />
                 </div>
             }
             {
                 renderForm()
             }
         </div>
-    
-        
     )
 }
