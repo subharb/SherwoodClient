@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { ButtonEdit, ButtonDelete } from "./mini_components";
+import { ButtonEdit, ButtonDelete, ButtonAdd } from "./mini_components";
 import { Checkbox } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
 
@@ -34,6 +34,11 @@ class Table extends Component {
                             <Translate id="general.delete" />
                         </th>
                         }
+                        { this.props.hasOwnProperty("addCallBack") && 
+                            <th key="delete" scope="col">
+                            <Translate id="general.add" />
+                        </th>
+                        }
                     </tr>
                     </thead>
                     <tbody>
@@ -63,6 +68,11 @@ class Table extends Component {
                                     { this.props.hasOwnProperty("deleteCallBack") && 
                                         <td key={`delete-${indexRow}`}>
                                             <ButtonDelete onClick={() => this.props.deleteCallBack(indexRow)} />
+                                        </td>
+                                    }
+                                    { this.props.hasOwnProperty("addCallBack") && 
+                                        <td key={`add-${indexRow}`}>
+                                            <ButtonAdd small onClick={() => this.props.addCallBack(indexRow)} />
                                         </td>
                                     }
                                 </tr>

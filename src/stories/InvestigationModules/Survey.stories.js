@@ -10,7 +10,8 @@ export default {
     argTypes: {
         initialData: {
             control: "object"
-        }
+        },
+        patientName:{control : "string"}
 },
   decorators: [story => 
                 <ProviderSherwood>
@@ -23,6 +24,7 @@ const Template = (args) => <Survey {...args} />;
 export const Basic = Template.bind({});
 Basic.args = {
     initialData : edc_data1(),
+    patientName : "Peter Petrelli",
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
 

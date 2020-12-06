@@ -3,7 +3,8 @@ export const edc_data1 = () => {
         records:[],
         sections : [
             {
-                name:"analitica", 
+                name:"analitica",
+                "_id": "5fccaedb8583362dd3d50246",
                 repeats : false, 
                 fields : [
                     {
@@ -64,7 +65,8 @@ export const edc_data1 = () => {
             },
             {
                 name:"Quality of life", 
-                repeats : true, 
+                "_id": "5fccaedb8583362dd3d50246",
+                repeats : false, 
                 fields : [
                     {
                         required : true, 
@@ -89,12 +91,7 @@ export const basic_info1 = () => {
 }
 
 export const personal_data1 = () => {
-    return {
-        "name":true,
-        "surname":true,
-        "phone" : true,
-        "email" : true
-    }    
+    return ["name", "surname", "phone", "email"];
 }
 export const summary_info1 = () => {
     return {
@@ -104,9 +101,47 @@ export const summary_info1 = () => {
     }   
 }
 
+export const patients_personal_data = () => {
+    return [
+        {
+            "id": "5fccaee78583362dd3d50248",
+            "personalData": {
+                "name": "John",
+                "surname": "Hopkins",
+                "email": "patient@sherwood.science",
+                "phone": "+34 545454"
+            }
+        },
+        {
+            
+            "id": "5fccaee78583362dd3d50248",
+            "personalData": {
+                "name" : "Donald",
+                "surname" : "Trump",
+                "email" : "trump@sherwood.science",
+                "phone" : "+34 545454"
+            }
+            
+        },
+        {
+            
+            "id": "5fccaee78583362dd3d50248",
+            "personalData": {
+                "name" : "Peter",
+                "surname" : "Petrelli",
+                "email" : "petrelli@sherwood.science",
+                "phone" : "+34 545454"
+            }
+            
+        },
+    ]
+}
+
 //La forma en la que se envían los datos desde el servidor
 export const investigation_server = () => {
     let returnData = {...basic_info1()};
     returnData.survey = edc_data1();
+    returnData.survey.personalFields = personal_data1();
+    returnData.patientsPersonalData = patients_personal_data();
     return returnData;
 }

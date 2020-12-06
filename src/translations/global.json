@@ -6,7 +6,8 @@
         "delete" : ["Delete", "Borrar"],
         "cancel" : ["Cancel", "Cancelar"],
         "edit" : ["Edit", "Editar"],
-        "back" : ["Back", "Atrás"]
+        "back" : ["Back", "Atrás"],
+        "add" : ["Add", "Añadir"]
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],
@@ -223,6 +224,9 @@
             "personal_data" : {
                 "title" : ["Personal Data", "Datos Personales"],
                 "description" : ["Fill the personal information of the patient", "Rellene los datos personales del paciente"]
+            },
+            "survey" : {
+                "patient_name" : ["Patient's Name", "Nombre del Paciente"]
             }
         },
         "show" : {
