@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Table from '../../general/table';
 import axios from 'axios';
+import ShowRecordsSection from './show_records_section';
 import { ButtonAdd, ButtonBack } from '../../general/mini_components';
 import SurveyForm from './survey_form';
+import { findSubmissionsFromSection } from '../../../utils';
 
 export default function PatientRecords(props) {
     const [sectionSelected, setSectionSelected] = useState(null);
@@ -70,28 +72,14 @@ export default function PatientRecords(props) {
         //     }
         // }
 
-        let submissionsNonLongitudinal = [];
-        for(let i = 0; i < patientRecords.length; i++){
-            const patientRecord = patientRecords[i];
-            for(let j = 0; j < patientRecord.submission.length;j++){
-                const submission = patientRecord.submission[j];
-                if(submission.id_section === "5fccaedb8583362dd3d50247"){
-                    submissionsNonLongitudinal.push(submission);
-                    
-                }
-            }
-        }
         
-        // return Object.values(sectionSubmissions).map(section => {
-        //     return(
-        //         <div className="row">
-        //             { section.name }
-        //             {
-        //                 Object
-        //             }
-        //         </div>
-        //     )
-        // });
+        
+        return Object.values(sections).map(section => {
+            const submissionsSection = findSubmissionsFromSection(patientRecords, section._id);
+            return(
+                <ShowRecordsSection submissions={submissionsSection} section={section} />
+            )
+        });
     }
     async function sendRecord(values){
 
