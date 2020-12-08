@@ -253,3 +253,22 @@ export const investigation_server_no_patitents = () => {
     returnData.patientsPersonalData = [];
     return returnData;
 }
+
+const sectionNonLongitudinalID = "5fccaedb8583362dd3d50247";
+const sectionLongitudinalID = "5fccaedb8583362dd3d50246";
+
+export const sectionNonLongitudinal = edc_data1().sections.filter(section => {
+    return sectionNonLongitudinalID === section._id
+})
+
+export const sectionLongitudinal = edc_data1().sections.filter(section => {
+    return sectionLongitudinalID === section._id
+})
+
+export const submissionsNonLongitudinal = records_patient1().records.submission.filter(submission => {
+    return submission.id_section === sectionNonLongitudinalID
+})
+
+export const submissionsLongitudinal = records_patient1().records.submission.filter(submission => {
+    return submission.id_section === sectionLongitudinalID
+})

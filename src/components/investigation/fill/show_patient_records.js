@@ -53,33 +53,45 @@ export default function PatientRecords(props) {
     }
     function renderRecordsSection(records, sections){
         //Busco por cada section, los submmision de esa sección
-        let sectionSubmissions = {};
-        for(let s = 0; s < sections.length; s++){
-            const sectionID = sections[s]._id;
-            sectionSubmissions[sectionID] = {...sections[s]}
-            sectionSubmissions[sectionID]["submission"] = [];
-            for(let i = 0; i < patientRecords.length; i++){
-                const patientRecord = patientRecords[i];
-                for(let j = 0; j < patientRecord.submission.length;j++){
-                    const submission = patientRecord.submission[j];
-                    if(submission.id_section === sectionID){
-                        sectionSubmissions[sectionID].submission.push(submission);
+        // let sectionSubmissions = {};
+        // for(let s = 0; s < sections.length; s++){
+        //     const sectionID = sections[s]._id;
+        //     sectionSubmissions[sectionID] = {...sections[s]}
+        //     sectionSubmissions[sectionID]["submission"] = [];
+        //     for(let i = 0; i < patientRecords.length; i++){
+        //         const patientRecord = patientRecords[i];
+        //         for(let j = 0; j < patientRecord.submission.length;j++){
+        //             const submission = patientRecord.submission[j];
+        //             if(submission.id_section === sectionID){
+        //                 sectionSubmissions[sectionID].submission.push(submission);
                         
-                    }
+        //             }
+        //         }
+        //     }
+        // }
+
+        let submissionsNonLongitudinal = [];
+        for(let i = 0; i < patientRecords.length; i++){
+            const patientRecord = patientRecords[i];
+            for(let j = 0; j < patientRecord.submission.length;j++){
+                const submission = patientRecord.submission[j];
+                if(submission.id_section === "5fccaedb8583362dd3d50247"){
+                    submissionsNonLongitudinal.push(submission);
+                    
                 }
             }
         }
         
-        return Object.values(sectionSubmissions).map(section => {
-            return(
-                <div className="row">
-                    { section.name }
-                    {
-                        Object
-                    }
-                </div>
-            )
-        });
+        // return Object.values(sectionSubmissions).map(section => {
+        //     return(
+        //         <div className="row">
+        //             { section.name }
+        //             {
+        //                 Object
+        //             }
+        //         </div>
+        //     )
+        // });
     }
     async function sendRecord(values){
 

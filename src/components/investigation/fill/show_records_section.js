@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function ShowRecordsSection(props) {
     return (
@@ -7,3 +8,9 @@ export default function ShowRecordsSection(props) {
         </div>
     )
 }
+
+ShowRecordsSection.propTypes = {
+    initialData: PropTypes.object,
+    sections: PropTypes.object,
+    submissions: PropTypes.object
+};
