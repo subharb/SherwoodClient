@@ -70,6 +70,18 @@ export const ButtonBack = (props) =>{
     </ButtonOtherStyles>
 }
 
+export const ButtonForward = (props) =>{
+    return <ButtonContinueStyles 
+        variant="contained"
+        color="primary"
+        size="small"
+        startIcon={<Icon>arrow_forward_ios</Icon>}
+        {...props}
+    >
+        {props.children}
+    </ButtonContinueStyles>
+}
+
 export const ButtonContinue = (props) =>{
         return <ButtonContinueStyles
             variant="contained"
