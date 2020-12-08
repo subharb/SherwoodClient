@@ -19,7 +19,7 @@ export const edc_data1 = () => {
                     {
                         required : true, 
                         encrypted:true, 
-                        name : "leuco", 
+                        name : "leucocitos", 
                         label : "Leucocitos", 
                         type:"number",
                         typeValueCypress:"Number"
@@ -96,7 +96,7 @@ export const records_patient1 = () =>{
                     {
                         "id_section": "5fccaedb8583362dd3d50247",
                         "answers": {
-                            "evaluation": 13
+                            "quality": 3
                         }
                     }
                 ],

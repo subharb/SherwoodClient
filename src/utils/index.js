@@ -203,3 +203,18 @@ export const templateField = {
     validation : "notEmpty",
     is_personal_data:true
 }
+
+export function findSubmissionsFromSection(records, sectionID){
+    let submissionsSection = [];
+    for(let i = 0; i < records.length; i++){
+        const patientRecord = records[i];
+        for(let j = 0; j < patientRecord.submission.length;j++){
+            const submission = patientRecord.submission[j];
+            if(submission.id_section === sectionID){
+                submissionsSection.push(submission);
+                
+            }
+        }
+    }
+    return submissionsSection;
+}
