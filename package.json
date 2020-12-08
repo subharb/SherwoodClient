@@ -21,6 +21,7 @@
     "redux": "^4.0.5",
     "redux-form": "^8.3.5",
     "redux-thunk": "^2.3.0",
+    "storybook": "^6.1.10",
     "styled-components": "^5.1.0"
   },
   "scripts": {

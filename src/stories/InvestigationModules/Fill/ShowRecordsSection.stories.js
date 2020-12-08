@@ -1,8 +1,8 @@
 import React from 'react';
-import ShowRecordsSection from '../../components/investigation/fill/show_records_section';
-import ProviderSherwood from '../../providerSherwood';
-import { edc_data1, records_patient1} from '../example_data';
-import { findSubmissionsFromSection } from '../../utils';
+import ShowRecordsSection from '../../../components/investigation/fill/show_records_section';
+import ProviderSherwood from '../../../providerSherwood';
+import { edc_data1, records_patient1} from '../../example_data';
+import { findSubmissionsFromSection } from '../../../utils';
 
 export default {
     title: 'Investigation/Fill/ShowRecordsSection',

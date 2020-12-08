@@ -1,7 +1,7 @@
 import React from 'react';
-import Summary from '../../components/investigation/create/summary'
-import ProviderSherwood from '../../providerSherwood';
-import { summary_info1 } from '../example_data';
+import Summary from '../../../components/investigation/create/summary'
+import ProviderSherwood from '../../../providerSherwood';
+import { summary_info1 } from '../../example_data';
 export default {
     title: 'Investigation/Create/Summary',
     component: Summary,

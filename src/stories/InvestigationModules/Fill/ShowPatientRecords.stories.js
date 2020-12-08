@@ -1,7 +1,7 @@
 import React from 'react';
-import ShowPatientRecords from '../../components/investigation/fill/show_patient_records';
-import ProviderSherwood from '../../providerSherwood';
-import { records_patient1, edc_data1 } from '../example_data';
+import ShowPatientRecords from '../../../components/investigation/fill/show_patient_records';
+import ProviderSherwood from '../../../providerSherwood';
+import { records_patient1, edc_data1 } from '../../example_data';
 
 export default {
     title: 'Investigation/Fill/ShowPatientRecords',

@@ -1,8 +1,8 @@
 import React from 'react';
-import Sections from '../../components/investigation/create/edc'
-import Form from '../../components/general/form';
-import ProviderSherwood from '../../providerSherwood';
-import { edc_data1 } from '../example_data';
+import Sections from '../../../components/investigation/create/edc'
+import Form from '../../../components/general/form';
+import ProviderSherwood from '../../../providerSherwood';
+import { edc_data1 } from '../../example_data';
 
 export default {
     title: 'Investigation/Create/EDC',

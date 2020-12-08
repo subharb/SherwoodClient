@@ -1,10 +1,10 @@
 import React from 'react';
-import PersonalData from '../../components/investigation/create/personal_data'
-import ProviderSherwood from '../../providerSherwood';
-import { personal_data1 } from '../example_data';
+import PersonalData from '../../../components/investigation/create/personal_data'
+import ProviderSherwood from '../../../providerSherwood';
+import { personal_data1 } from '../../example_data';
 
 export default {
-  title: 'Investigation/Modules/Personal Data',
+  title: 'Investigation/Create/Choose Personal Data',
   component: PersonalData,
   parameters: { actions: { argTypesRegex: '^callBack.*' } },
   decorators: [story =>  
