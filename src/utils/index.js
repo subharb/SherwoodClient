@@ -154,8 +154,8 @@ export const PERSONAL_DATA_FIELDS = {
     "birthdate" : {
         required : false,
         type:"date",
-        label:"investigation.create.personal_data.fields.surname",
-        shortLabel:"investigation.create.personal_data.fields.surname",
+        label:"investigation.create.personal_data.fields.birthdate",
+        shortLabel:"investigation.create.personal_data.fields.birthdate",
         validation : "textMin2"
     },
     "address" : {

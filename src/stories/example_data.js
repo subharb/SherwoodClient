@@ -5,7 +5,7 @@ export const edc_data1 = () => {
             {
                 name:"analitica",
                 "_id": "5fccaedb8583362dd3d50246",
-                repeats : false, 
+                repeats : true, 
                 fields : [
                     {
                         required : true, 
@@ -82,121 +82,99 @@ export const edc_data1 = () => {
 }
 
 export const records_patient1 = () =>{
-    return [
-        {
-            "submission": [
-                {
-                    "id_section": "5fccaedb8583362dd3d50246",
-                    "answers": {
-                        "hemoglobina": 132,
-                        "leucocitos": 112
+    return {
+        records : [
+            {
+                "submission": [
+                    {
+                        "id_section": "5fccaedb8583362dd3d50246",
+                        "answers": {
+                            "hemoglobina": 132,
+                            "leucocitos": 112
+                        }
+                    },
+                    {
+                        "id_section": "5fccaedb8583362dd3d50247",
+                        "answers": {
+                            "evaluation": 13
+                        }
                     }
-                },
-                {
-                    "id_section": "5fccaedb8583362dd3d50247",
-                    "answers": {
-                        "evaluation": 13
+                ],
+                "_id": "5fccaf388583362dd3d50249",
+                "id_patient": "5fccaee78583362dd3d50248",
+                "created_At": "2020-12-06T10:15:20.311Z",
+                "updated_At": "2020-12-06T10:15:20.311Z"
+            },
+            {
+                "submission": [
+                    {
+                        "id_section": "5fccaedb8583362dd3d50246",
+                        "answers": {
+                            "hemoglobina": 132,
+                            "leucocitos": 112
+                        }
                     }
-                }
-            ],
-            "_id": "5fccaf388583362dd3d50249",
-            "id_patient": "5fccaee78583362dd3d50248",
-            "created_At": "2020-12-06T10:15:20.311Z",
-            "updated_At": "2020-12-06T10:15:20.311Z"
-        },
-        {
-            "submission": [
-                {
-                    "id_section": "5fccaedb8583362dd3d50246",
-                    "answers": {
-                        "hemoglobina": 132,
-                        "leucocitos": 112
+                ],
+                "_id": "5fcd0ed717ca0461e2fa47db",
+                "id_patient": "5fccaee78583362dd3d50248",
+                "created_At": "2020-12-06T17:03:19.093Z",
+                "updated_At": "2020-12-06T17:03:19.093Z"
+            },
+            {
+                "submission": [
+                    {
+                        "id_section": "5fccaedb8583362dd3d50246",
+                        "answers": {
+                            "hemoglobina": "11",
+                            "leuco": "22",
+                            "gluco": "333",
+                            "cholesterol": "111",
+                            "red_blood": "111",
+                            "comments": "aaaa"
+                        }
                     }
-                },
-                {
-                    "id_section": "5fccaedb8583362dd3d50247",
-                    "answers": {
-                        "evaluation": 13
+                ],
+                "_id": "5fcd0f5417ca0461e2fa47dc",
+                "id_patient": "5fccaee78583362dd3d50248",
+                "created_At": "2020-12-06T17:05:24.401Z",
+                "updated_At": "2020-12-06T17:05:24.401Z"
+            },
+            {
+                "submission": [
+                    {
+                        "id_section": "5fccaedb8583362dd3d50246",
+                        "answers": {
+                            "hemoglobina": "11",
+                            "leuco": "22",
+                            "gluco": "333"
+                        }
                     }
-                }
-            ],
-            "_id": "5fcd0ed717ca0461e2fa47db",
-            "id_patient": "5fccaee78583362dd3d50248",
-            "created_At": "2020-12-06T17:03:19.093Z",
-            "updated_At": "2020-12-06T17:03:19.093Z"
-        },
-        {
-            "submission": [
-                {
-                    "id_section": "5fccaedb8583362dd3d50246",
-                    "answers": {
-                        "hemoglobina": "11",
-                        "leuco": "22",
-                        "gluco": "333",
-                        "cholesterol": "111",
-                        "red_blood": "111",
-                        "comments": "aaaa"
+                ],
+                "_id": "5fcd0fa017ca0461e2fa47dd",
+                "id_patient": "5fccaee78583362dd3d50248",
+                "created_At": "2020-12-06T17:06:40.376Z",
+                "updated_At": "2020-12-06T17:06:40.376Z"
+            },
+            {
+                "submission": [
+                    {
+                        "id_section": "5fccaedb8583362dd3d50246",
+                        "answers": {
+                            "hemoglobina": "22",
+                            "leuco": "22",
+                            "gluco": "22",
+                            "cholesterol": "22",
+                            "red_blood": "22"
+                        }
                     }
-                },
-                {
-                    "id_section": "5fccaedb8583362dd3d50247",
-                    "answers": {
-                        "quality": 9
-                    }
-                }
-            ],
-            "_id": "5fcd0f5417ca0461e2fa47dc",
-            "id_patient": "5fccaee78583362dd3d50248",
-            "created_At": "2020-12-06T17:05:24.401Z",
-            "updated_At": "2020-12-06T17:05:24.401Z"
-        },
-        {
-            "submission": [
-                {
-                    "id_section": "5fccaedb8583362dd3d50246",
-                    "answers": {
-                        "hemoglobina": "11",
-                        "leuco": "22",
-                        "gluco": "333"
-                    }
-                },
-                {
-                    "id_section": "5fccaedb8583362dd3d50247",
-                    "answers": {
-                        "quality": 5
-                    }
-                }
-            ],
-            "_id": "5fcd0fa017ca0461e2fa47dd",
-            "id_patient": "5fccaee78583362dd3d50248",
-            "created_At": "2020-12-06T17:06:40.376Z",
-            "updated_At": "2020-12-06T17:06:40.376Z"
-        },
-        {
-            "submission": [
-                {
-                    "id_section": "5fccaedb8583362dd3d50246",
-                    "answers": {
-                        "hemoglobina": "22",
-                        "leuco": "22",
-                        "gluco": "22",
-                        "cholesterol": "22",
-                        "red_blood": "22"
-                    }
-                },
-                {
-                    "id_section": "5fccaedb8583362dd3d50247",
-                    "answers": {
-                        "quality": 3
-                    }
-                }
-            ],
-            "_id": "5fcd106817ca0461e2fa47de",
-            "id_patient": "5fccaee78583362dd3d50248",
-            "created_At": "2020-12-06T17:10:00.644Z",
-            "updated_At": "2020-12-06T17:10:00.644Z"
-        }
-    ]
+                ],
+                "_id": "5fcd106817ca0461e2fa47de",
+                "id_patient": "5fccaee78583362dd3d50248",
+                "created_At": "2020-12-06T17:10:00.644Z",
+                "updated_At": "2020-12-06T17:10:00.644Z"
+            }
+        ]
+    }
 }
 export const basic_info1 = () => {
     return {

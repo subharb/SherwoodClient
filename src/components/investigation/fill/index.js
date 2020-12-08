@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PersonalDataForm from './personal_data';
 import SurveyForm from './survey_form';
+import ShowRecordsPatient from './show_records_patient';
 import { ButtonAdd, ButtonBack } from '../../general/mini_components';
 import Table from '../../general/table';
 import Axios from 'axios';
@@ -87,7 +88,7 @@ export default function AddDataInvestigation(props) {
             case 2: 
                 return <SurveyForm initialData={ props.initialData.survey } patientName={getNamePatient()} callBackForm={(values) => saveRecord(values) }/>
             case 3: 
-                return 
+                return <ShowRecordsPatient /> 
             default:
                 return null;
         }

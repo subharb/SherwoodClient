@@ -113,7 +113,8 @@
                     "health_id" : ["Health ID", "Nº Seguridad social"],
                     "national_id" : ["National ID", "DNI"],
                     "email" : ["Email", "Email"],
-                    "phone" : ["Phone", "Nº Teléfono"]
+                    "phone" : ["Phone", "Nº Teléfono"],
+                    "birthdate" : ["Date of birth", "Fecha de nacimiento"]
                 }
             }, 
             "edc" : {
