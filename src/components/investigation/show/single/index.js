@@ -6,6 +6,7 @@ import { fetchInvestigation, toggleLoading } from '../../../../actions';
 import AcceptConsents from './accept_consents';
 import CreateInvestigation from '../../create/index';
 import AddDataInvestigation from '../../fill/index';
+import { FIELDS_BASIC_INFO } from '../../../../utils';
 
 
 class SingleInvestigation extends Component {
@@ -23,8 +24,21 @@ class SingleInvestigation extends Component {
         else{
             if(this.props.typeUser === "researcher"){
                 if(this.props.investigation.status === 0){
+                    //Parseo la información de la investigación para cada una de las secciones
+                    let tempInvestigation = {
+                                            "basic_info": {},
+                                            "personal_data":{}, 
+                                            "survey" : this.props.investigation.survey
+                                        }
+                    Object.keys(FIELDS_BASIC_INFO).forEach(keyBasicInfo => {
+                        tempInvestigation["basic_info"][keyBasicInfo] =  this.props.investigation[keyBasicInfo]; 
+                    })
+                    this.props.investigation.survey.personalFields.forEach(pField => {
+                        tempInvestigation["personal_data"][pField] = true
+                    });
+
                     return (
-                        <CreateInvestigation initialData = {{investigation: this.props.investigation}} />
+                        <CreateInvestigation initialData = {{investigation: tempInvestigation}} />
                     )
                 }
                 else if(this.props.investigation.status === 1){
