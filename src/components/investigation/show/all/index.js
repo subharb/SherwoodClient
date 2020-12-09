@@ -6,27 +6,10 @@ import { Link } from 'react-router-dom';
 import { Translate, withLocalize } from 'react-localize-redux';
 
 class AllInvestigations extends Component {
-    constructor(props){
-        super(props);
-
-        this.state = {investigations : null}
-    }
-    async componentDidMount(){  
-        const request = await axios.get(process.env.REACT_APP_API_URL+'/'+this.props.typeUser+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
-                .catch(err => {console.log('Catch', err); return err;}); 
-        if(request.status === 200){
-            //redirec a /login
-            this.setState({investigations:request.data.investigations})
-        }
-        else if(request.status === 401){
-            this.props.history.push(this.props.typeUser+"/login");
-        } 
-    }
+  
+    
     render() {
-        if(this.state.investigations === null){
-            return "CARGANDO...";
-        }
-        const filteredInvestigations = this.state.investigations.filter(inv => { 
+        const filteredInvestigations = this.props.investigations.filter(inv => { 
             if(this.props.filter === "pending"){
                 return inv.status === 2
             }

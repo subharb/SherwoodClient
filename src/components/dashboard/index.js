@@ -8,22 +8,44 @@ import withLoggedUser from '../withLoggedUser';
 import GridInvestigations from '../investigation/show/all';
 import SingleInvestigation from '../investigation/show/single';
 import Summary from './summary';
-
+/**
+ * Main component where all the interactions occur
+ */
 class Dashboard extends Component{
-   componentDidMount(){
-        
-   }
+    constructor(props){
+        super(props);
+
+        this.state = {investigations:null}
+    }
+
+    async componentDidMount(){  
+        const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+                .catch(err => {console.log('Catch', err); return err;}); 
+        if(request.status === 200){
+            //redirec a /login
+            this.setState({investigations:request.data.investigations})
+        }
+        else if(request.status === 401){
+            this.props.history.push(this.props.typeUser+"/login");
+        } 
+    }
     renderMainContent(){
-        console.log(this.props.match.params.action);
-        switch(this.props.match.params.action){
+        console.log(this.props.action);
+        if(this.state.investigations === null){
+            return "CARGANDO";
+        }
+        switch(this.props.action){
             case "create":
                 return <CreateInvestigation />
             case "show":
-                if(typeof this.props.match.params.uuid === "undefined"){
-                    return <GridInvestigations />
+                if(typeof this.props.uuid === "undefined"){
+                    return <GridInvestigations typeUser={localStorage.getItem("type")} investigations={this.state.investigations} />
                 }
                 else{
-                    return <SingleInvestigation uuid={this.props.match.params.uuid} />
+                    const currentInvestigationArray = this.state.investigations.filter(investigation => {
+                        return investigation.uuid === this.props.uuid
+                    })
+                    return <SingleInvestigation typeUser={localStorage.getItem("type")} investigation={currentInvestigationArray[0]} />
                 }
                 
             case "edit":
@@ -53,6 +75,7 @@ class Dashboard extends Component{
             </div>
         ]
         )
+        
     }
 }
 

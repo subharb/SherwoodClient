@@ -71,7 +71,7 @@ export default function PatientRecords(props) {
     async function sendRecord(values){
 
         const postObj = {submission : values[Object.keys(values)[0]]}
-        const response = await axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patientID, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.id, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
             

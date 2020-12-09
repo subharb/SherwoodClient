@@ -7,7 +7,18 @@ export default {
   title: 'Dashboard',
   component: Dashboard,
   argTypes: {
-    step: { control: 'number' }
+    action:{
+        control: {
+        type: 'select',
+        options: [
+            'create', 
+            'show',
+            'draft',
+            'live'
+        ]
+        }
+    },
+    uuid : {control:"string"}
   },
   decorators: [story => 
                 <ProviderSherwood>
@@ -17,17 +28,18 @@ export default {
 
 const Template = (args) => <Dashboard {...args} />;
 
-export const Basic = Template.bind({});
-Basic.args = {
-    
-    initialData : investigation_server_no_patitents(),
-    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+export const Home = Template.bind({});
+Home.args = {
+    action:null
 };
 
-export const Edit = Template.bind({});
-Edit.args = {
-    initialData : investigation_server(),
-    patientInfo : patient_data1(),
-    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+export const ShowAllInvestigations = Template.bind({});
+ShowAllInvestigations.args = {
+    action:"show"
 };
 
+export const ShowInvestigation = Template.bind({});
+ShowInvestigation.args = {
+    action:"show",
+    uuid: "ff4b1de5-9163-4eb1-85fc-59d19f2741dd"
+};
