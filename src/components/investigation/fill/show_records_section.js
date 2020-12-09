@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ButtonBack, ButtonForward } from '../../general/mini_components';
 
+/**
+ * Component that shows all the records/submissions of a section of a patient
+ */
 export default function ShowRecordsSection(props) {
     let [indexSubmission, setIndexSubmission ] = useState(0);
 
@@ -53,7 +56,6 @@ export default function ShowRecordsSection(props) {
 }
 
 ShowRecordsSection.propTypes = {
-    initialData: PropTypes.object,
     section: PropTypes.object,
     submissions: PropTypes.array
 };

@@ -50,7 +50,6 @@ class SurveyForm extends Component {
     render() {
         return (
             <div className="container">
-                <Translate id="investigation.fill.survey.patient_name" />: {this.props.patientName}
                 <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.props.callBackForm(values)})}  >
                     {
                         this.props.initialData.sections.map(section => {

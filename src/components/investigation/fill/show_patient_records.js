@@ -5,26 +5,33 @@ import ShowRecordsSection from './show_records_section';
 import { ButtonAdd, ButtonBack } from '../../general/mini_components';
 import SurveyForm from './survey_form';
 import { findSubmissionsFromSection } from '../../../utils';
+import { Translate } from 'react-localize-redux';
+import PropTypes from 'prop-types';
 
+/**
+ * Component in charge of showing records of a given patient
+ */
 export default function PatientRecords(props) {
     const [sectionSelected, setSectionSelected] = useState(null);
-    const [patientRecords, setPatientRecords] = useState([]);
+    const [patientRecords, setPatientRecords] = useState(props.initialData ? props.initialData : []);
+    const [showError, setShowError] = useState(0);
     function addRegistry(sectionID){
-        
         setSectionSelected(sectionID);
     }
     useEffect(async () => {
-        if(props.initialData){
-            setPatientRecords(props.initialData.records);
-        }
-        else{
-            const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patientID, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        if(patientRecords.length === 0){
+            console.log("CARGANDO");
+            const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
             if(response.request.status === 200){
+                
                 setPatientRecords(response.data.records);
             }
+            else{
+                
+                setShowError(1);
+            }
         }
-       
       }, []);
     function numberRecordsSection(section){
         let nRegistros = 0
@@ -53,29 +60,9 @@ export default function PatientRecords(props) {
             [section.name, registers, addButton]
         )
     }
-    function renderRecordsSection(records, sections){
-        //Busco por cada section, los submmision de esa sección
-        // let sectionSubmissions = {};
-        // for(let s = 0; s < sections.length; s++){
-        //     const sectionID = sections[s]._id;
-        //     sectionSubmissions[sectionID] = {...sections[s]}
-        //     sectionSubmissions[sectionID]["submission"] = [];
-        //     for(let i = 0; i < patientRecords.length; i++){
-        //         const patientRecord = patientRecords[i];
-        //         for(let j = 0; j < patientRecord.submission.length;j++){
-        //             const submission = patientRecord.submission[j];
-        //             if(submission.id_section === sectionID){
-        //                 sectionSubmissions[sectionID].submission.push(submission);
-                        
-        //             }
-        //         }
-        //     }
-        // }
-
-        
-        
+    function renderRecordsSection(records, sections){    
         return Object.values(sections).map(section => {
-            const submissionsSection = findSubmissionsFromSection(patientRecords, section._id);
+            const submissionsSection = findSubmissionsFromSection(patientRecords.records, section._id);
             return(
                 <ShowRecordsSection submissions={submissionsSection} section={section} />
             )
@@ -93,29 +80,34 @@ export default function PatientRecords(props) {
     }
     
     function renderCore(){
-        if(!props.mode || props.mode === "table"){
-            if(!sectionSelected){
-                return(
-                    <Table header={headerTable} values={valuesTable} />
-                )
+        if(showError === 0){
+            if(!props.mode || props.mode === "table"){
+                if(!sectionSelected){
+                    return(
+                        <Table header={headerTable} values={valuesTable} />
+                    )
+                }
+                else{
+                    const section = props.survey.sections.filter((section) => {
+                        return (section._id === sectionSelected)
+                      })
+                    
+                    return <SurveyForm initialData={ {sections : section }} 
+                                callBackForm={(values) => sendRecord(values)}/>
+                }
             }
             else{
-                const section = props.edc.sections.filter((section) => {
-                    return (section._id === sectionSelected)
-                  })
+                return renderRecordsSection(patientRecords, props.survey.sections);
                 
-                return <SurveyForm initialData={ {sections : section }} 
-                            callBackForm={(values) => sendRecord(values)}/>
             }
         }
         else{
-            return renderRecordsSection(patientRecords, props.edc.sections);
-            
+            return "HA HABIDO UN ERROR"
         }
         
     }
     const headerTable = ["name", "records", "add record"];
-    const valuesTable = props.edc.sections.map(section => {
+    const valuesTable = props.survey.sections.map(section => {
             const nRecords = numberRecordsSection(section);
             return( 
                 renderSection(section, nRecords)
@@ -128,7 +120,8 @@ export default function PatientRecords(props) {
                 <ButtonBack onClick={() => setSectionSelected(null)} >Back</ButtonBack>
             }
             <div className="row">
-                PatientRecords - {props.edc.sections[0].name}
+                PatientRecords - 
+                <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.personalData.name} ${props.patient.personalData.surname}`} - {props.patient.id}
                 
             </div>
             <div className="container">
@@ -140,3 +133,17 @@ export default function PatientRecords(props) {
     )
 }
 
+PatientRecords.propTypes = {
+    /**
+     Información del paciente para precargar
+    */
+    initialData: PropTypes.object,
+    /**
+     Personal infomation of the Patient
+    */
+    patient: PropTypes.object,
+    /**
+     Submissions of the patient
+    */
+    submissions: PropTypes.array
+};

@@ -5,6 +5,7 @@ import { withLocalize } from 'react-localize-redux';
 import { fetchInvestigation, toggleLoading } from '../../../../actions';
 import AcceptConsents from './accept_consents';
 import CreateInvestigation from '../../create/index';
+import FillInvestigation from '../../fill/index';
 import AddDataInvestigation from '../../fill/index';
 import { FIELDS_BASIC_INFO } from '../../../../utils';
 
@@ -38,7 +39,7 @@ class SingleInvestigation extends Component {
                     });
 
                     return (
-                        <CreateInvestigation initialData = {{investigation: tempInvestigation}} />
+                        <FillInvestigation initialData = {this.props.investigation} />
                     )
                 }
                 else if(this.props.investigation.status === 1){

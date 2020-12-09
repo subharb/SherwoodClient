@@ -1,7 +1,7 @@
 import React from 'react';
 import SingleInvestigation from '../../components/investigation/show/single/index';
 import ProviderSherwood from '../../providerSherwood';
-import { investigation_server_no_patitents } from '../example_data';
+import { investigation_server, investigation_server_no_patitents } from '../example_data';
 
 export default {
     title: 'Investigation/Modules/SingleInvestigation',
@@ -39,10 +39,12 @@ Draft.args = {
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
 
+let investigationLive = {...investigation_server()};
+investigationDraft.status = 1;
 
 export const Live = Template.bind({});
 Live.args = {
-    investigation : investigation_server_no_patitents(),
+    investigation : investigationLive,
     typeUser:"researcher",
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };

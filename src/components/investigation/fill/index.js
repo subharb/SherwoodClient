@@ -6,10 +6,14 @@ import { ButtonAdd, ButtonBack } from '../../general/mini_components';
 import Table from '../../general/table';
 import Axios from 'axios';
 
+/**
+ * 
+ * Component to add data to an investigation. First you add patients and then you add info of each patient.
+ */
 export default function AddDataInvestigation(props) {
     const [showForm, setShowForm] = useState(0);
     const [patientIndex, setPatientIndex] = useState(null);
-    const [patientsData, setPatientsData] = useState([]);
+    const [patientsData, setPatientsData] = useState(props.initialData.patientsPersonalData ? props.initialData.patientsPersonalData : []);
     function renderPatientsTable(){
         if(patientsData.length === 0){
             return "You dont have any patients enrolled yet"
@@ -88,15 +92,13 @@ export default function AddDataInvestigation(props) {
             case 2: 
                 return <SurveyForm initialData={ props.initialData.survey } patientName={getNamePatient()} callBackForm={(values) => saveRecord(values) }/>
             case 3: 
-                return <ShowPatientRecords initialData={ props.initialData.records } /> 
+                return <ShowPatientRecords initialData={ props.initialData.records } uuidInvestigation={props.initialData.uuid} survey={props.initialData.survey} patient={patientsData[patientIndex]}/> 
             default:
                 return null;
         }
     }
-    useEffect(() => {
-        if(props.initialData.patientsPersonalData.length !== patientsData.length){
-            setPatientsData(props.initialData.patientsPersonalData);
-        }
+    useEffect(async () => {
+        
       }, []);
     return (
         <div className="container">
