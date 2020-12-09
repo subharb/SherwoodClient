@@ -1,11 +1,11 @@
 import React from 'react';
-import NewInvestigation from '../components/investigation/create/index'
+import Dashboard from '../components/dashboard/index'
 import ProviderSherwood from '../providerSherwood';
-import { summary_info1 } from './example_data';
+import { investigation_server, investigation_server_no_patitents, patient_data1 } from './example_data';
 
 export default {
-  title: 'Pages/Create Investigation',
-  component: NewInvestigation,
+  title: 'Dashboard',
+  component: Dashboard,
   argTypes: {
     step: { control: 'number' }
   },
@@ -15,23 +15,19 @@ export default {
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <NewInvestigation {...args} />;
+const Template = (args) => <Dashboard {...args} />;
 
 export const Basic = Template.bind({});
 Basic.args = {
+    
+    initialData : investigation_server_no_patitents(),
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
 export const Edit = Template.bind({});
 Edit.args = {
-    
-    initialState : {
-        "investigation": summary_info1(),
-        "addingSection": false,
-        "editingIndexSection": false,
-        step : 0,
-    },
+    initialData : investigation_server(),
+    patientInfo : patient_data1(),
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
-
 

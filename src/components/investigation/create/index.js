@@ -32,15 +32,11 @@ class NewInvestigation extends Component {
             summary : "investigation.create.steps.summary"
         }
 
-        if(this.props.initialData){
-            this.state = {...this.props.initialData};
-            this.state.step = this.props.step;
-            this.state.resultSave = this.props.resultSave;
+        this.state = {step : 0, investigation:{}, resultSave:0}
+
+        if(this.props.initialState){
+            this.state = {...this.props.initialState};
         }
-        else{
-            this.state = {step : 0, investigation:{}, resultSave:0}
-        }
-    
     }
     async saveData(publish){
         this.props.toggleLoading();
@@ -163,22 +159,11 @@ class NewInvestigation extends Component {
 }
 
 NewInvestigation.propTypes = {
-    uuid: PropTypes.string
+    uuid: PropTypes.string,
+    initialState:PropTypes.object
 }
 
 
-function mapStateToProps(state, ownProps){
-    if(state.investigations.hasOwnProperty(ownProps.uuid)){
-        return{
-            investigation : state.investigations[ownProps.uuid]
-        }
-    }
-    else{
-        return{
-            investigation : null
-        }
-    }
-    
-}
 
-export default connect(mapStateToProps, { toggleLoading, fetchInvestigation})(NewInvestigation)
+
+export default connect(null, { toggleLoading, fetchInvestigation})(NewInvestigation)

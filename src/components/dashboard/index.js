@@ -1,9 +1,6 @@
 import React, { useState, useEffect, Component }  from 'react'
 import axios from 'axios';
 import Header from '../general/header';
-
-
-import { Translate } from 'react-localize-redux';
 import Toolbar from './toolbar';
 import LoadingScreen from '../general/loading_screen';
 import CreateInvestigation from '../investigation/create';
@@ -35,7 +32,7 @@ class Dashboard extends Component{
             case "ongoing":
             case "draft":
             case "live":
-                return <GridInvestigations filter={this.props.match.params.action} />
+                return <GridInvestigations filter={this.props.match.params.action} typeUser={localStorage.getItem("type")} />
             default:
                 return <Summary />
         }
@@ -44,11 +41,13 @@ class Dashboard extends Component{
         return ([
             <LoadingScreen key="loading_screen" />,
             <Header />,
-            <div key="container" className="">
+            <div key="container" className="container">
                 <div className="row">
+                    <div className="col-3">
                         <Toolbar typeUser={localStorage.getItem("type")} /> 
-                    <div className="col s8">
-                    { this.renderMainContent() }
+                    </div>
+                    <div className="col-9">
+                        { this.renderMainContent() }
                     </div>
                 </div>
             </div>

@@ -38,7 +38,6 @@ class Toolbar extends Component {
     render() {
         if(this.props.typeUser === "researcher"){
             return (
-                <div className="col s3">
                     <Container className="card">
                         <ul className="collapsible">
                             <li>
@@ -55,7 +54,7 @@ class Toolbar extends Component {
                             </li>
                         </ul>
                     </Container>
-                </div>
+            
             )
         }
         else if(this.props.typeUser  === "patient"){

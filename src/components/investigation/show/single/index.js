@@ -4,13 +4,14 @@ import PropTypes from 'prop-types';
 import { withLocalize } from 'react-localize-redux';
 import { fetchInvestigation, toggleLoading } from '../../../../actions';
 import AcceptConsents from './accept_consents';
-import SingleInvestigationResearcher from './single_investigation';
+import CreateInvestigation from '../../create/index';
+import AddDataInvestigation from '../../fill/index';
 
 
 class SingleInvestigation extends Component {
     async componentDidMount(){  
         if(this.props.investigation === null){
-            this.props.fetchInvestigation(this.props.uuid);
+            //this.props.fetchInvestigation(this.props.uuid); 
         }               
     }
 
@@ -21,37 +22,29 @@ class SingleInvestigation extends Component {
         }
         else{
             if(this.props.typeUser === "researcher"){
-                return (
-                    <SingleInvestigationResearcher investigation = { this.props.initialData} />
-                )
+                if(this.props.investigation.status === 0){
+                    return (
+                        <CreateInvestigation initialData = {{investigation: this.props.investigation}} />
+                    )
+                }
+                else if(this.props.investigation.status === 1){
+                    return (
+                        <AddDataInvestigation initialData = { this.props.investigation} />
+                    )
+                }
+                
             }
-            else if(localStorage.getItem('type') === "patient"){
-                return <AcceptConsents investigation={this.props.initialData} uuidInvestigation={this.props.uuid} />
+            else if(this.props.typeUser === "patient"){
+                return <AcceptConsents investigation={this.props.investigation} uuidInvestigation={this.props.uuid} />
             }
         }
     }
 }
-SingleInvestigation.propTypes = {
-    uuid: PropTypes.string
-}; 
 
-
-function mapStateToProps(state, ownProps){
-    if(state.investigations.hasOwnProperty(ownProps.uuid)){
-        return{
-            investigation : state.investigations[ownProps.uuid]
-        }
-    }
-    else{
-        return{
-            investigation : null
-        }
-    }
-    
-}
 SingleInvestigation.propTypes = {
     typeUser: PropTypes.string,
-    initialData: PropTypes.object
+    investigation: PropTypes.object,
+    uuid: PropTypes.string
 }
 
-export default withLocalize(connect(mapStateToProps, { fetchInvestigation, toggleLoading })(SingleInvestigation))
+export default withLocalize(SingleInvestigation)
