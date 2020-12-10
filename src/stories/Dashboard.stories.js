@@ -33,13 +33,24 @@ Home.args = {
     action:null
 };
 
+export const CreateInvestigation = Template.bind({});
+CreateInvestigation.args = {
+    action:"create"
+};
+
 export const ShowAllInvestigations = Template.bind({});
 ShowAllInvestigations.args = {
     action:"show"
 };
 
-export const ShowInvestigation = Template.bind({});
-ShowInvestigation.args = {
+export const ShowInvestigationLive = Template.bind({});
+ShowInvestigationLive.args = {
     action:"show",
     uuid: "ff4b1de5-9163-4eb1-85fc-59d19f2741dd"
+};
+
+export const ShowInvestigationDraft = Template.bind({});
+ShowInvestigationDraft.args = {
+    action:"show",
+    uuid: "5658bf1c-7b50-4850-b0b6-2450ca4b9b05"
 };

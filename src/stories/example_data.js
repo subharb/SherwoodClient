@@ -187,7 +187,12 @@ export const basic_info1 = () => {
 }
 
 export const personal_data1 = () => {
-    return ["name", "surname", "phone", "email"];
+    return {
+        "name" : true,
+        "surname" : true,
+        "email" : true,
+        "phone" : true
+    };
 }
 
 export const patient_data1 = () => {
