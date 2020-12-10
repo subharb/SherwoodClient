@@ -49,12 +49,12 @@ class Dashboard extends Component{
                 }
                 
             case "edit":
-                return <CreateInvestigation uuid={this.props.match.params.uuid} />
+                return <CreateInvestigation uuid={this.props.uuid} />
             case "pending":
             case "ongoing":
             case "draft":
             case "live":
-                return <GridInvestigations filter={this.props.match.params.action} typeUser={localStorage.getItem("type")} />
+                return <GridInvestigations filter={this.props.action} typeUser={localStorage.getItem("type")} />
             default:
                 return <Summary />
         }

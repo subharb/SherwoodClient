@@ -17,8 +17,8 @@ export default {
 
 const Template = (args) => <NewInvestigation {...args} />;
 
-export const Basic = Template.bind({});
-Basic.args = {
+export const New = Template.bind({});
+New.args = {
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
