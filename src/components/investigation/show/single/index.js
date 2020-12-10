@@ -6,7 +6,7 @@ import { fetchInvestigation, toggleLoading } from '../../../../actions';
 import AcceptConsents from './accept_consents';
 import CreateInvestigation from '../../create/index';
 import FillInvestigation from '../../fill/index';
-import AddDataInvestigation from '../../fill/index';
+import EditInvestigation from '../../create/index';
 import { FIELDS_BASIC_INFO } from '../../../../utils';
 
 
@@ -39,12 +39,12 @@ class SingleInvestigation extends Component {
                     });
 
                     return (
-                        <FillInvestigation initialData = {this.props.investigation} />
+                        <EditInvestigation initialData = {{investigation:tempInvestigation}} />
                     )
                 }
                 else if(this.props.investigation.status === 1){
                     return (
-                        <AddDataInvestigation initialData = { this.props.investigation} />
+                        <FillInvestigation initialData = { this.props.investigation} />
                     )
                 }
                 

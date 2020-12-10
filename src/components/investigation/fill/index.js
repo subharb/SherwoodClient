@@ -97,9 +97,6 @@ export default function AddDataInvestigation(props) {
                 return null;
         }
     }
-    useEffect(async () => {
-        
-      }, []);
     return (
         <div className="container">
             {
