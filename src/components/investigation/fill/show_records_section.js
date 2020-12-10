@@ -50,7 +50,17 @@ export default function ShowRecordsSection(props) {
         )
     }
     else{
-        return "Index not available"
+        return(
+            <div className="container">
+                <div className="row">
+                    Section:{ props.section.name }
+                </div>
+                <div className="row">
+                    No records available
+                </div>
+            </div>
+        )
+        
     }
     
 }

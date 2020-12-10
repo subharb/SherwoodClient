@@ -54,9 +54,9 @@ class Dashboard extends Component{
             case "ongoing":
             case "draft":
             case "live":
-                return <GridInvestigations filter={this.props.action} typeUser={localStorage.getItem("type")} />
+                return <GridInvestigations filter={this.props.action} typeUser={localStorage.getItem("type")} investigations={this.state.investigations} />
             default:
-                return <Summary />
+                return <GridInvestigations  typeUser={localStorage.getItem("type")} investigations={this.state.investigations} />
         }
     }
     render(){

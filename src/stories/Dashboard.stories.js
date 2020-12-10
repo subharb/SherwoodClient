@@ -46,7 +46,7 @@ ShowAllInvestigations.args = {
 export const ShowInvestigationLive = Template.bind({});
 ShowInvestigationLive.args = {
     action:"show",
-    uuid: "ff4b1de5-9163-4eb1-85fc-59d19f2741dd"
+    uuid: "96b17ef9-5a8e-4db8-b8a6-c17080ae13ba"
 };
 
 export const ShowInvestigationDraft = Template.bind({});

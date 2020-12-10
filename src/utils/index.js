@@ -296,6 +296,20 @@ export const templateField = {
     is_personal_data:true
 }
 
+export function numberRecordsSection(section, records){
+    let nRegistros = 0
+    for(let i = 0; i < records.length; i++){
+        const patientRecord = records[i];
+        for(let j = 0; j < patientRecord.submission.length;j++){
+            const submission = patientRecord.submission[j];
+            if(submission.id_section === section._id){
+                nRegistros++;
+            }
+        }
+    }
+    return nRegistros;
+}
+
 export function findSubmissionsFromSection(records, sectionID){
     let submissionsSection = [];
     for(let i = 0; i < records.length; i++){

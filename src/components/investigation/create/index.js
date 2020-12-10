@@ -32,11 +32,9 @@ class NewInvestigation extends Component {
             summary : "investigation.create.steps.summary"
         }
 
-        this.state = {step : 0, investigation:{}, resultSave:0}
+        const initialState = {step : 0, investigation:{}, resultSave:0}
 
-        if(this.props.initialState){
-            this.state = {...this.props.initialState};
-        }
+        this.state = {...this.props.initialState, ...initialState};
     }
     async saveData(publish){
         this.props.toggleLoading();

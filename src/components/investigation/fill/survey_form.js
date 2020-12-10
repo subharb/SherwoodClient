@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import { validateField } from '../../../utils/index';
+import { validateField, numberRecordsSection } from '../../../utils/index';
 import { templateField } from '../../../utils';
 import SuccessComponent from '../../general/success_component';
 import Modal from '../../general/modal';
@@ -11,24 +11,23 @@ import FieldSherwood from '../../general/FieldSherwood';
 import { Translate } from 'react-localize-redux';
 
 /**
- * SurveyForm se encarga de mostrar los formularios de cada sección, los valida y si son correctos avisa
+ * SurveySections se encarga de mostrar los formularios de cada sección. Si es longitudinal, verifica que no se haya enviado ya datos. Valida la info y si son correctos avisa
  * a survey/index de que todo es correcto
  */
-class SurveyForm extends Component {
+class SurveySections extends Component {
     constructor(props){
         super(props);
 
-        this.state = { success : false, survey: null}
+        this.state = { success : false, survey: null, records:null}
 
         this.continueModal = this.continueModal.bind(this);
         this.saveSurvey = this.saveSurvey.bind(this);
     }
     async componentDidMount(){
-        //Traigo las preguntas del survey
-        const response = await axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation+'/survey')
-                            .catch(err => {console.log('Catch', err); return err;}); 
+        const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+this.props.uuidInvestigation+"/record/"+this.props.patient.id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
-            this.setState({survey : response.data });
+            this.setState({records:response.data.records});
         }
     }
     async saveSurvey(values){
@@ -36,7 +35,7 @@ class SurveyForm extends Component {
         let postObj = {uuidPatient:values.uuidPatient};
         delete values.uuidPatient;
         postObj.record = values;
-        const response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation+'/survey', postObj)
+        const response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation+'/survey', postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .catch(err => {console.log('Catch', err); return err;}); 
 
         if(response.request.status === 200){
@@ -48,49 +47,56 @@ class SurveyForm extends Component {
         this.props.history.push("/investigation/show/"+this.props.uuidInvestigation);
     }
     render() {
-        return (
-            <div className="container">
-                <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.props.callBackForm(values)})}  >
-                    {
-                        this.props.initialData.sections.map(section => {
-                            console.log(section.name);
-                            return ([
-                                <div className="row" style={{paddingTop:'1rem'}}>
-                                    <h5>{section.name}</h5>
-                                </div>,
-                                <div className="row">
-                                    <FormSection name={section._id}>
-                                    {
-                                        section.fields.map(field => {
-                                            return(
-                                                <div style={{marginRight:'1rem'}}>
-                                                    <Field
-                                                        size = "s6"
-                                                        name={field.name}
-                                                        type={field.type}
-                                                        required={field.required}
-                                                        component={FieldSherwood}
-                                                        label={field.label}/>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                    </FormSection>
-                                </div>
-                            ]
-                            )
-                        })
-                    }
-                    <div className="row" style={{paddingTop:'1rem'}}>
-                        <ButtonContinue type="submit" data-testid={this.props.dataTestid} >
-                            <Translate id="investigation.create.save" />
-                        </ButtonContinue>
-                    </div>
-                </form>
-            </div>
-        )
-    }
-            
+        if(this.state.records === null){
+            return "CARGANDO"
+        }
+        else{
+            const filteredSections = this.props.initialData.sections.filter(section => {
+                return section.repeats || (!section.repeats && numberRecordsSection(section, this.state.records) === 0)
+            });
+            return (
+                <div className="container">
+                    <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.props.callBackForm(values)})}  >
+                        {
+                            filteredSections.map(section => {
+                                console.log(section.name);
+                                return ([
+                                    <div className="row" style={{paddingTop:'1rem'}}>
+                                        <h5>{section.name}</h5>
+                                    </div>,
+                                    <div className="row">
+                                        <FormSection name={section._id}>
+                                        {
+                                            section.fields.map(field => {
+                                                return(
+                                                    <div style={{marginRight:'1rem'}}>
+                                                        <Field
+                                                            size = "s6"
+                                                            name={field.name}
+                                                            type={field.type}
+                                                            required={field.required}
+                                                            component={FieldSherwood}
+                                                            label={field.label}/>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                        </FormSection>
+                                    </div>
+                                ]
+                                )
+                            })
+                        }
+                        <div className="row" style={{paddingTop:'1rem'}}>
+                            <ButtonContinue type="submit" data-testid={this.props.dataTestid} >
+                                <Translate id="investigation.create.save" />
+                            </ButtonContinue>
+                        </div>
+                    </form>
+                </div>
+            )
+        }
+    }        
 }
 
 function validate(values, props){
@@ -116,9 +122,9 @@ function validate(values, props){
     return errors;
 }
 
-SurveyForm = reduxForm({
+SurveySections = reduxForm({
     validate,
     form: 'form'  // a unique identifier for this form               
-  })(SurveyForm)
+  })(SurveySections)
 
-export default withRouter(SurveyForm);
+export default withRouter(SurveySections);

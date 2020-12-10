@@ -10,6 +10,7 @@ class AllInvestigations extends Component {
     
     render() {
         const filteredInvestigations = this.props.investigations.filter(inv => { 
+            
             if(this.props.filter === "pending"){
                 return inv.status === 2
             }

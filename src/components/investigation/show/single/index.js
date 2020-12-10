@@ -39,7 +39,7 @@ class SingleInvestigation extends Component {
                     });
 
                     return (
-                        <EditInvestigation initialData = {{investigation:tempInvestigation}} />
+                        <EditInvestigation initialState = {{investigation:tempInvestigation}} />
                     )
                 }
                 else if(this.props.investigation.status === 1){

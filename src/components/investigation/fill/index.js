@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PersonalDataForm from './personal_data';
-import SurveyForm from './survey_form';
+import SurveySections from './survey_form';
 import ShowPatientRecords from './show_patient_records';
 import { ButtonAdd, ButtonBack } from '../../general/mini_components';
 import Table from '../../general/table';
@@ -90,9 +90,13 @@ export default function AddDataInvestigation(props) {
             case 1:
                 return <PersonalDataForm fields={ props.initialData.survey.personalFields} initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
             case 2: 
-                return <SurveyForm initialData={ props.initialData.survey } patientName={getNamePatient()} callBackForm={(values) => saveRecord(values) }/>
+                return <SurveySections initialData={ props.initialData.survey } 
+                            uuidInvestigation={props.initialData.uuid}  patient={patientsData[patientIndex]}
+                            callBackForm={(values) => saveRecord(values) }/>
             case 3: 
-                return <ShowPatientRecords initialData={ props.initialData.records } uuidInvestigation={props.initialData.uuid} survey={props.initialData.survey} patient={patientsData[patientIndex]}/> 
+                return <ShowPatientRecords mode="elements" initialData={ props.initialData.records } 
+                            uuidInvestigation={props.initialData.uuid} survey={props.initialData.survey} 
+                            patient={patientsData[patientIndex]}/> 
             default:
                 return null;
         }

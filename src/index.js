@@ -91,8 +91,8 @@ ReactDom.render(
             <Switch>
                 <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
                 <Route exact path="/:type(patient|researcher)/register/:uuidPatient?" children={(props) => <RegisterUser {...props} /> } />
-                <Route exact path="/dashboard" children={(props) => <Dashboard {...props} /> } />
-                <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard {...props} /> } />
+                <Route exact path="/dashboard" children={(props) => <Dashboard /> } />
+                <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard action={props.match.params.action} uuid={props.match.params.uuid} /> } />
                 <Route exact path="/" children={(props) => <Home {...props} />} />
             </Switch>
     </ProviderSherwood>, document.getElementById('root')
