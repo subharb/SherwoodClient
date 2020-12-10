@@ -224,7 +224,7 @@ export const FIELDS_BASIC_INFO = {
             ],
         value: ""
     },
-    "researcher":{
+    "principal_researcher":{
         required : true,
         type:"text",
         label:"investigation.create.edc.principal_researcher",

@@ -42,9 +42,16 @@ class NewInvestigation extends Component {
         investigationInfo.publish = publish ? 1 : 0;
     
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
-
-        const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        let request;
+        if(this.props.hasOwnProperty("uuidInvestigation")){
+            request = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            .catch(err => {console.log('Catch', err); return err;});
+        }
+        else{
+            request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
+        }
+        
         
         let tempState = {...this.state};
         if(request.status === 200){
@@ -100,12 +107,6 @@ class NewInvestigation extends Component {
         }
     
         this.setState(tempState);
-    }
-    
-    componentDidMount(){
-        if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
-            this.props.fetchInvestigation(this.props.uuid);
-        }
     }
     render() {
         console.log("Initial data:", this.props.initialState);
