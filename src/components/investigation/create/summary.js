@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import SuccessComponent from '../../../components/general/success_component';
 import { ButtonEdit, ButtonSave, ButtonBack } from '../../general/mini_components';
 
-const SpanField = styled.span`
+const TitleSection = styled.span`
     font-weight:bold;
 `;
 
@@ -19,7 +19,7 @@ const ResultContainer = styled.div`
     background-color:red;
 `;
 
-const BasicInfo = styled.div`
+const InfoSection = styled.div`
     font-style: italic;
     color:slategrey;
 `;
@@ -70,6 +70,12 @@ class Summary extends Component {
             })
         
     }
+    renderPersonalData(){
+        const arrayPersonalFields = this.props.initialData.personal_data.map(personalField => {
+            return this.props.translate(`investigation.create.personal_data.fields.${personalField}`);
+        })
+        return arrayPersonalFields.join(",");
+    }
     render() {
         return([
             <Modal key="modal2" open={this.props.resultSave === 1}  
@@ -82,13 +88,25 @@ class Summary extends Component {
                 <div className="col-12">
                     <h4><Translate id="investigation.create.summary.title" /></h4>
                     <p><Translate id="investigation.create.summary.explanation" /></p>
-                    <SpanField><Translate id="investigation.create.steps.basic_info" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(0)}/></SpanField>
-                    <BasicInfo >
+                    <TitleSection>
+                        <Translate id="investigation.create.steps.basic_info" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(0)}/>
+                    </TitleSection>
+                    <InfoSection >
                     {
                         this.renderBasicInfo()
                     }
-                    </BasicInfo>
-                    <SpanField><Translate id="investigation.create.steps.edc" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(1) }/></SpanField>
+                    </InfoSection>
+                    <TitleSection>
+                        <Translate id="investigation.create.steps.personal_data" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(2) }/>
+                    </TitleSection>
+                    <InfoSection >
+                    {
+                        this.renderPersonalData()
+                    }
+                    </InfoSection>
+                    <TitleSection>
+                        <Translate id="investigation.create.steps.edc" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(1) }/>
+                    </TitleSection>
                     <Table header={Object.keys(this.props.initialData.survey.sections[0])} values={this.props.initialData.survey.sections.map(section =>{
                         return Object.values(section)
                     })}/> 
