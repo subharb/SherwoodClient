@@ -18,21 +18,22 @@ export default function PatientRecords(props) {
     function addRegistry(sectionID){
         setSectionSelected(sectionID);
     }
-    useEffect(async () => {
-        if(patientRecords.length === 0){
-            console.log("CARGANDO");
-            const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-            .catch(err => {console.log('Catch', err); return err;}); 
-            if(response.request.status === 200){
-                
-                setPatientRecords(response.data.records);
+    useEffect(() => {
+        (async () => {
+            if(patientRecords.length === 0){
+                console.log("CARGANDO");
+                const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                .catch(err => {console.log('Catch', err); return err;}); 
+                if(response.request.status === 200){
+                    
+                    setPatientRecords(response.data.records);
+                }
+                else{
+                    
+                    setShowError(1);
+                }
             }
-            else{
-                
-                setShowError(1);
-            }
-        }
-      }, []);
+    })()}, []);
     function numberRecordsSection(section){
         let nRegistros = 0
         for(let i = 0; i < patientRecords.length; i++){
