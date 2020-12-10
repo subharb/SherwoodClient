@@ -110,14 +110,14 @@ class NewInvestigation extends Component {
         }
     }
     render() {
-        console.log("Initial data:", this.props.initialData);
+        console.log("Initial data:", this.props.initialState);
         let component = null;
         if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
             return "CARGANDO";
         }
         switch(this.state.step){
             case 0:
-                component = <BasicInfo initialData={ this.props.initialData ? this.props.initialData.investigation.basic_info : this.state.investigation.basic_info } 
+                component = <BasicInfo initialData={ this.props.initialState ? this.props.initialState.investigation.basic_info : this.state.investigation.basic_info } 
                                 callBackData={this.addData} />
                 break;
             // case 1:
@@ -129,15 +129,11 @@ class NewInvestigation extends Component {
             //                     stepBack = {this.stepBack}/>
             //     break;
             case 1: 
-                component = <PersonalData initialData={this.props.initialData ? this.props.initialData.investigation.personal_data : this.state.investigation.personal_data } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
+                component = <PersonalData initialData={this.props.initialState ? this.props.initialState.investigation.personal_data : this.state.investigation.personal_data } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
             case 2: 
-                component = <EDC initialData={this.props.initialData ? this.props.initialData.investigation.survey : this.state.investigation.survey } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
+                component = <EDC initialData={this.props.initialState ? this.props.initialState.investigation.survey : this.state.investigation.survey } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
-            // case 2:
-            //     component = <AddPatients patients={ this.state.investigation.hasOwnProperty("patients") ? this.state.investigation.patients : false }  callBackData={this.addData} 
-            //                     stepBack = {this.stepBack}/>
-            //    break;
             case 3:
                 component = <Summary initialData={ this.state.investigation } callBackStepBack = {this.stepBack} 
                                 callBackToStep = {this.goToStep} resultSave={ this.state.resultSave }
@@ -162,8 +158,5 @@ NewInvestigation.propTypes = {
     uuid: PropTypes.string,
     initialState:PropTypes.object
 }
-
-
-
 
 export default connect(null, { toggleLoading, fetchInvestigation})(NewInvestigation)
