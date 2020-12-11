@@ -58,7 +58,7 @@ export default class Header extends Component {
                             <Link class="navbar-item" to="/patient/register">
                                 Register
                             </Link>
-                            <Link class="navbar-item" to="/patiend/login">
+                            <Link class="navbar-item" to="/patient/login">
                                 Login
                             </Link>
                         </div>

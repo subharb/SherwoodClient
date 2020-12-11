@@ -115,7 +115,8 @@ class Register extends Component {
     constructor(props){
         super(props);
         this.iv = null;
-        this.sections = props.match.params.type === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_generation"];
+        this.sections = props.typeUser === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_generation"];
+
         this.state = {selected:0, info : {}, key : null, success : false, errorMessage : null}
 
         this.generateKey = this.generateKey.bind(this);
@@ -175,11 +176,11 @@ class Register extends Component {
             console.log(JSON.stringify(tempState.info));
             let response = null
             
-            if(this.props.match.params.type === "researcher"){
+            if(this.props.typeUser === "researcher"){
                 response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/register', tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
-            else if(this.props.match.params.type === "patient" && typeof this.props.match.params.uuidPatient !== undefined){
+            else if(this.props.typeUser === "patient" && typeof this.props.match.params.uuidPatient !== undefined){
                 response = await axios.put(process.env.REACT_APP_API_URL+'/patient/register/'+this.props.match.params.uuidPatient, tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
@@ -218,7 +219,7 @@ class Register extends Component {
     continue(){
         console.log("Success!");
         this.setState({success : false});
-        this.props.history.push("/"+this.props.match.params.type+"/login");
+        this.props.history.push("/"+this.props.typeUser+"/login");
     }  
     render() {
         console.log("Register!");
@@ -240,19 +241,18 @@ class Register extends Component {
             <Modal key="modal" open={this.state.success} title={<Translate id="register.common.success_title" />}
                     component={<SuccessContainer>
                                 <ImageSuccess src={successImage} width="200" alt="Success!" />
-                                <SuccessText><Translate id={`register.${this.props.match.params.type}.success_text`} /></SuccessText>
+                                <SuccessText><Translate id={`register.${this.props.typeUser}.success_text`} /></SuccessText>
                                 </SuccessContainer>} 
                     callBackForm={this.continue}/>,
-            <Header isLoggedIn={isUserLoggedIn} key="header"/>,
             <div className="container" key="container">
-                <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections} />    
-                <p><Translate id={`register.${this.props.match.params.type}.${currentSection}.explanation`} /></p>
+                <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return "breadcrumb."+section})} />    
+                <p><Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} /></p>
                 <div className="row">
                     <div className="col s5 offset-s4">
                         <div className="row">
                             { content }
                             {this.state.errorMessage && 
-                                <SpanError><Translate id={`register.${this.props.match.params.type}.error.${this.state.errorMessage}`} /></SpanError>
+                                <SpanError><Translate id={`register.${this.props.typeUser}.error.${this.state.errorMessage}`} /></SpanError>
                             }
                         </div>
                     </div>
@@ -263,7 +263,7 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-    
+    typeUser:PropTypes.string
 }
 
 export default withRouter(connect(null, { toggleLoading })(Register))
