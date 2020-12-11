@@ -35,7 +35,7 @@ export default function PatientRecords(props) {
                 console.log("CARGANDO");
                 fetchRecords()
             }
-    })()});
+    })()}, []);
     
     
     function renderSection(section, nRecords){
