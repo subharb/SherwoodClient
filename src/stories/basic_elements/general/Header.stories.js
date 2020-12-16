@@ -7,8 +7,8 @@ export default {
     title: 'Basic Elements/General/Header',
     component: Header,
     argTypes: {
-        selected: { control: 'number' },
-        stages: { control: 'array' }
+        isLoggedIn: { control: 'boolean' },
+        currentUrl:{control:'string'}
     },
     parameters: { actions: { argTypesRegex: '^callBack.*' } },
     decorators: [story => 
@@ -17,12 +17,17 @@ export default {
                 </ProviderSherwood>],
 };
 
-const testStages = ["investigation.create.steps.basic_info", "investigation.create.steps.sections", "investigation.create.steps.patient_sheet" ];
-
 const Template = (args) => <Header {...args} />;
 
-export const Basic = Template.bind({});
-Basic.args = {
-    stages : testStages,
+export const Logout = Template.bind({});
+Logout.args = {
+    isLoggedIn:false,
+    callBack : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+};
+
+export const LogResearcher = Template.bind({});
+LogResearcher.args = {
+    isLoggedIn:true,
+    currentUrl:"create", 
     callBack : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };

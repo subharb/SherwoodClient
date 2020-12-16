@@ -62,7 +62,7 @@ class Dashboard extends Component{
     render(){
         return ([
             <LoadingScreen key="loading_screen" />,
-            <Header />,
+            <Header currentUrl={this.props.location.pathname}/>,
             <div key="container" className="container">
                 <div className="row">
                     <div className="col-3">
