@@ -1,84 +1,110 @@
 export const edc_data1 = () => {
     return {
         records:[],
-        sections : [
+        surveys : [
             {
-                name:"analitica",
-                "_id": "5fccaedb8583362dd3d50246",
-                repeats : true, 
-                fields : [
+                name: "Clinical data", 
+                sections : [
                     {
-                        required : true, 
-                        encrypted:true, 
-                        name : "hemoglobina", 
-                        label : "Hemoglobina", 
-                        type:"number",
-                        typeValueCypress:"Number"
-                    
+                        name:"analitica",
+                        "_id": "5fccaedb8583362dd3d50246",
+                        repeats : true, 
+                        fields : [
+                            {
+                                required : true, 
+                                encrypted:true, 
+                                name : "hemoglobina", 
+                                label : "Hemoglobina", 
+                                type:"number",
+                                typeValueCypress:"Number"
+                            
+                            },
+                            {
+                                required : true, 
+                                encrypted:true, 
+                                name : "leucocitos", 
+                                label : "Leucocitos", 
+                                type:"number",
+                                typeValueCypress:"Number"
+                            
+                            },
+                            {
+                                required : true, 
+                                encrypted:true, 
+                                name : "gluco", 
+                                label : "Glucose(mg/dl)", 
+                                type:"number",
+                                typeValueCypress:"Number"
+                            
+                            },
+                            {
+                                required : true, 
+                                encrypted:true, 
+                                name : "cholesterol", 
+                                label : "Cholesterol(mg/dl)", 
+                                type:"number",
+                                typeValueCypress:"Number"
+                            
+                            },
+                            {
+                                required : true, 
+                                encrypted:true, 
+                                name : "red_blood", 
+                                label : "Red blood cells(mg/dl)", 
+                                type:"number",
+                                typeValueCypress:"Number"
+                            
+                            },
+                            {
+                                required : true, 
+                                encrypted:true, 
+                                name : "comments", 
+                                label : "Otros comentarios", 
+                                type:"textarea",
+                                typeValueCypress:"Textarea"
+                            
+                            }
+                        ]
                     },
                     {
-                        required : true, 
-                        encrypted:true, 
-                        name : "leucocitos", 
-                        label : "Leucocitos", 
-                        type:"number",
-                        typeValueCypress:"Number"
-                    
-                    },
-                    {
-                        required : true, 
-                        encrypted:true, 
-                        name : "gluco", 
-                        label : "Glucose(mg/dl)", 
-                        type:"number",
-                        typeValueCypress:"Number"
-                    
-                    },
-                    {
-                        required : true, 
-                        encrypted:true, 
-                        name : "cholesterol", 
-                        label : "Cholesterol(mg/dl)", 
-                        type:"number",
-                        typeValueCypress:"Number"
-                    
-                    },
-                    {
-                        required : true, 
-                        encrypted:true, 
-                        name : "red_blood", 
-                        label : "Red blood cells(mg/dl)", 
-                        type:"number",
-                        typeValueCypress:"Number"
-                    
-                    },
-                    {
-                        required : true, 
-                        encrypted:true, 
-                        name : "comments", 
-                        label : "Otros comentarios", 
-                        type:"textarea",
-                        typeValueCypress:"Textarea"
-                    
-                    }
+                        name:"Quality of life", 
+                        "_id": "5fccaedb8583362dd3d50247",
+                        repeats : false, 
+                        fields : [
+                            {
+                                required : true, 
+                                encrypted:true, 
+                                name : "quality", 
+                                label : "What is your quality of life at the moment?", 
+                                type:"evaluate",
+                                typeValueCypress:"Number"
+                            
+                            },
+                        ]}
                 ]
             },
             {
-                name:"Quality of life", 
-                "_id": "5fccaedb8583362dd3d50247",
-                repeats : false, 
-                fields : [
+                name:"Demographic",
+                sections:[
                     {
-                        required : true, 
-                        encrypted:true, 
-                        name : "quality", 
-                        label : "What is your quality of life at the moment?", 
-                        type:"evaluate",
-                        typeValueCypress:"Number"
-                    
-                    },
-                ]}
-        ], addingSection:false, editingIndexSection:false}
+                        name:"Etnicity",
+                        repeats : false, 
+                        fields : [
+                            {
+                                required : true, 
+                                encrypted:true, 
+                                name : "etnicity", 
+                                label : "Etnicity", 
+                                type:"text",
+                                typeValueCypress:"Text"
+                            
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+        , addingSection:false, editingIndexSection:false}
 }
 
 export const records_patient1 = () =>{
@@ -179,7 +205,7 @@ export const records_patient1 = () =>{
 export const basic_info1 = () => {
     return {
         "name":"COVID Nose ",
-        "acronym":"CN","type":"audit","researcher":"Pedro Rodriguez",
+        "acronym":"CN","type":"audit","principal_researcher":"Pedro Rodriguez",
         "institution":"Oxford University","contact":"test@email.com",
         "ethics_body":"12345","reference_number_state":"1",
         "uuid" : "ff4b1de5-9163-4eb1-85fc-59d19f2741dd"

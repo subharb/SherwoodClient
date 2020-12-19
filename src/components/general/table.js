@@ -60,7 +60,7 @@ class Table extends Component {
                                         else if(Array.isArray(value)){ 
                                             return (
                                             <td key={index}>
-                                                { value.length } values
+                                                #{ value.length }
                                             </td>)
                                         }
                                         return <td key={index}>{value}</td>

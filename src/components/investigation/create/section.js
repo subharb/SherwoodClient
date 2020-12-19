@@ -165,10 +165,10 @@ class Section extends Component{
         }
     }
     render(){
-        const title = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> :  <Translate id="investigation.create.section.new_section" />
-        const saveText = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> : <Translate id="investigation.create.section.add_section" />
+        const title = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
+        const saveText = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
         return (
-            [<Modal key="modal" open={this.state.addingField} title={<Translate id="investigation.create.section.add_field" />}
+            [<Modal key="modal" open={this.state.addingField} title={<Translate id="investigation.create.edc.add_field" />}
             component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />} 
               />,
             <div className="card">
@@ -184,7 +184,7 @@ class Section extends Component{
                         <div>
                             <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
                         </div>
-                        
+                    
                         
                         <div style={{paddingTop:"40px"}}>
                             Add field: 
@@ -198,7 +198,7 @@ class Section extends Component{
                             <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
                                 type="button">Cancel</ButtonCancel>
                         </div>
-                    </form>
+                    </form>   
                 </div>
             </div>]
         )
@@ -218,9 +218,6 @@ function validate(values){
             errors[key] = validation.messageCode;
         }
     });
-
-
-    
     return errors;
 }
 
@@ -232,5 +229,5 @@ Section.propTypes = {
 
 export default reduxForm({
     validate : validate,
-    form : 'edc'
+    form : 'section'
 })(Section)
