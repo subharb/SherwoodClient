@@ -3,5 +3,5 @@
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
 }
-localStorage.setItem("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZjRkYzE4YTYtNWFlNC00ZmExLTk4MjUtYjQxNjc0NDViOGM3IiwiaWF0IjoxNjA3NjIwNTU2LCJleHAiOjE2MTAyMTI1NTZ9.idI3r878UcsJq5zG2pbzmcHQZm4fnqnUYXMF9fPogOQ");
+localStorage.setItem("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOTFhYjRiYjctNGM1MS00MDQ0LTlhMmMtOTM1ZGJmYTdkMzY0IiwiaWF0IjoxNjA4NDEzODMzLCJleHAiOjE2MTEwMDU4MzN9.z-ZANbkIoUlGexzY6r_jYexaAvHjfb--9PP3lRo0EWg");
 localStorage.setItem("type", "researcher");

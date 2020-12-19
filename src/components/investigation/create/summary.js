@@ -97,7 +97,7 @@ class Summary extends Component {
                     }
                     </InfoSection>
                     <TitleSection>
-                        <Translate id="investigation.create.steps.personal_data" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(2) }/>
+                        <Translate id="investigation.create.steps.personal_data" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(1) }/>
                     </TitleSection>
                     <InfoSection >
                     {
@@ -105,10 +105,10 @@ class Summary extends Component {
                     }
                     </InfoSection>
                     <TitleSection>
-                        <Translate id="investigation.create.steps.edc" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(1) }/>
+                        <Translate id="investigation.create.steps.edc" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(2) }/>
                     </TitleSection>
-                    <Table header={Object.keys(this.props.initialData.survey.sections[0])} values={this.props.initialData.survey.sections.map(section =>{
-                        return Object.values(section)
+                    <Table header={["Data Collections", "Number sections"]} values={this.props.initialData.surveys.map(survey =>{
+                        return [survey.name, survey.sections];
                     })}/> 
                 </div>
                 <ButtonBack data-testid="cancel" spaceRight={true} onClick={this.props.callBackStepBack} >{this.props.translate("general.back")}</ButtonBack>

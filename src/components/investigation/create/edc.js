@@ -39,7 +39,7 @@ export default class EDC extends Component{
         this.callBackNewDataCollection = this.callBackNewDataCollection.bind(this);
         
         const initialState = {surveys: [], addingDataCollection:false, editingIndexDataCollection:false}
-        this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
+        this.state = props.initialData.surveys ? Object.assign({}, initialState, props.initialData) : initialState;
     }
     renderDataCollections(){
         const AddButton= <ButtonAdd disabled={this.state.addingDataCollection || Number.isInteger(this.state.editingIndexDataCollection)} 
@@ -56,8 +56,8 @@ export default class EDC extends Component{
             return(
                 <div>
                     <Table key="added_fields" header={arrayHeader} 
-                        values = {this.state.surveys.map(section => {let arrayFields = Object.values(section);
-                                return arrayFields;
+                        values = {this.state.surveys.map(survey => {
+                            return [survey.name, survey.sections];
                     })} deleteCallBack={(index) => this.deleteDataCollection(index, "data_collections")} editCallBack={(index) => this.editDataCollection(index, "data_collections")}/>
                     {AddButton}
                 </div>)
@@ -122,7 +122,7 @@ export default class EDC extends Component{
         }
     }
     submitData(){
-        this.props.callBackData({data_collections : this.state.surveys});
+        this.props.callBackData({surveys : this.state.surveys});
     }
     render(){
         

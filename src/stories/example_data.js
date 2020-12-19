@@ -1,8 +1,8 @@
 export const edc_data1 = () => {
     return {
-        records:[],
         surveys : [
-            {
+            {   
+                records:[],
                 name: "Clinical data", 
                 sections : [
                     {
@@ -84,6 +84,7 @@ export const edc_data1 = () => {
                 ]
             },
             {
+                records:[],
                 name:"Demographic",
                 sections:[
                     {
@@ -223,7 +224,7 @@ export const summary_info1 = () => {
     return {
         "basic_info": basic_info1(), 
         "personal_data" : personal_data1(),
-        "survey" : edc_data1()
+        "surveys" : edc_data1().surveys
     }   
 }
 
@@ -266,8 +267,8 @@ export const patients_personal_data = () => {
 //La forma en la que se envían los datos desde el servidor
 export const investigation_server = () => {
     let returnData = {...basic_info1()};
-    returnData.survey = edc_data1();
-    returnData.survey.personalFields = personal_data1();
+    returnData.surveys = edc_data1().surveys;
+    returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = patients_personal_data();
     returnData.status = 1;
     return returnData;
@@ -275,8 +276,8 @@ export const investigation_server = () => {
 
 export const investigation_server_no_patitents = () => {
     let returnData = {...basic_info1()};
-    returnData.survey = edc_data1();
-    returnData.survey.personalFields = personal_data1();
+    returnData.surveys = edc_data1().surveys;
+    returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = [];
     returnData.status = 1; 
     return returnData;
