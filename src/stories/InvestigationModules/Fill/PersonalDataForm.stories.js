@@ -1,5 +1,5 @@
 import React from 'react';
-import PersonalDataForm from '../../../components/investigation/fill/personal_data'
+import PersonalDataForm from '../../../components/investigation/show/fill/personal_data'
 import ProviderSherwood from '../../../providerSherwood';
 import { personal_data1, patient_data1 } from '../../example_data';
 

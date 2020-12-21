@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ButtonBack, ButtonForward } from '../../general/mini_components';
+import { ButtonBack, ButtonForward } from '../../../general/mini_components';
 
 /**
- * Component that shows all the records/submissions of a section of a patient
+ * Component that shows all the records/submissions of a section of a patient in a survey
  */
 export default function ShowRecordsSection(props) {
     let [indexSubmission, setIndexSubmission ] = useState(0);
@@ -59,10 +59,8 @@ export default function ShowRecordsSection(props) {
                     No records available
                 </div>
             </div>
-        )
-        
+        )   
     }
-    
 }
 
 ShowRecordsSection.propTypes = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import ShowRecordsSection from '../../../components/investigation/fill/show_records_section';
+import ShowRecordsSection from '../../../components/investigation/show/fill/show_records_section';
 import ProviderSherwood from '../../../providerSherwood';
 import { edc_data1, records_patient1} from '../../example_data';
 import { findSubmissionsFromSection } from '../../../utils';
@@ -38,11 +38,11 @@ export default {
 const sectionNonLongitudinalID = "5fccaedb8583362dd3d50247";
 const sectionLongitudinalID = "5fccaedb8583362dd3d50246";
 
-const sectionNonLongitudinal = edc_data1().sections.filter(section => {
+const sectionNonLongitudinal = edc_data1().surveys.sections.filter(section => {
     return sectionNonLongitudinalID === section._id
 })
 
- const sectionLongitudinal = edc_data1().sections.filter(section => {
+ const sectionLongitudinal = edc_data1().surveys.sections.filter(section => {
     return sectionLongitudinalID === section._id
 }) 
 

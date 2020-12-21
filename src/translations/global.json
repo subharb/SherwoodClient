@@ -233,7 +233,8 @@
                 "description" : ["Fill the personal information of the patient", "Rellene los datos personales del paciente"]
             },
             "survey" : {
-                "patient_name" : ["Patient's Name", "Nombre del Paciente"]
+                "patient_name" : ["Patient's Name", "Nombre del Paciente"],
+                "title" : ["Data Collections", "Collecciones de datos"]
             }
         },
         "show" : {

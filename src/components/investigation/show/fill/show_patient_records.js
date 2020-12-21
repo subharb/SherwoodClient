@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import Table from '../../general/table';
+import Table from '../../../general/table';
 import axios from 'axios';
 import ShowRecordsSection from './show_records_section';
-import { ButtonAdd, ButtonBack } from '../../general/mini_components';
+import { ButtonAdd, ButtonBack } from '../../../general/mini_components';
 import SurveySections from './survey_form';
-import { findSubmissionsFromSection, numberRecordsSection } from '../../../utils';
+import { findSubmissionsFromSection, numberRecordsSection } from '../../../../utils';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 
 /**
- * Component in charge of showing records of a given patient
+ * Component in charge of showing records of a given patient in a survey
  */
 export default function PatientRecords(props) {
     const [sectionSelected, setSectionSelected] = useState(null);
@@ -19,13 +19,12 @@ export default function PatientRecords(props) {
         setSectionSelected(sectionID);
     }
     async function fetchRecords(){
-        const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.id+"/survey/"+props.survey._id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
-            setPatientRecords(response.data.records);
+            setPatientRecords(response.data.surveys[0].records);
         }
         else{
-            
             setShowError(1);
         }
     }
@@ -95,7 +94,6 @@ export default function PatientRecords(props) {
             }
             else{
                 return renderRecordsSection(patientRecords, props.survey.sections);
-                
             }
         }
         else{
@@ -135,7 +133,7 @@ PatientRecords.propTypes = {
     /**
      UUID de la investigación
     */
-    uuidInvestigation:PropTypes.string,
+    idSurvey:PropTypes.string,
     /**
      Personal information of the Patient
     */

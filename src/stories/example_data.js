@@ -2,88 +2,60 @@ export const edc_data1 = () => {
     return {
         surveys : [
             {   
-                records:[],
-                name: "Clinical data", 
-                sections : [
-                    {
-                        name:"analitica",
-                        "_id": "5fccaedb8583362dd3d50246",
-                        repeats : true, 
-                        fields : [
-                            {
-                                required : true, 
-                                encrypted:true, 
-                                name : "hemoglobina", 
-                                label : "Hemoglobina", 
-                                type:"number",
-                                typeValueCypress:"Number"
-                            
-                            },
-                            {
-                                required : true, 
-                                encrypted:true, 
-                                name : "leucocitos", 
-                                label : "Leucocitos", 
-                                type:"number",
-                                typeValueCypress:"Number"
-                            
-                            },
-                            {
-                                required : true, 
-                                encrypted:true, 
-                                name : "gluco", 
-                                label : "Glucose(mg/dl)", 
-                                type:"number",
-                                typeValueCypress:"Number"
-                            
-                            },
-                            {
-                                required : true, 
-                                encrypted:true, 
-                                name : "cholesterol", 
-                                label : "Cholesterol(mg/dl)", 
-                                type:"number",
-                                typeValueCypress:"Number"
-                            
-                            },
-                            {
-                                required : true, 
-                                encrypted:true, 
-                                name : "red_blood", 
-                                label : "Red blood cells(mg/dl)", 
-                                type:"number",
-                                typeValueCypress:"Number"
-                            
-                            },
-                            {
-                                required : true, 
-                                encrypted:true, 
-                                name : "comments", 
-                                label : "Otros comentarios", 
-                                type:"textarea",
-                                typeValueCypress:"Textarea"
-                            
-                            }
-                        ]
-                    },
-                    {
-                        name:"Quality of life", 
-                        "_id": "5fccaedb8583362dd3d50247",
-                        repeats : false, 
-                        fields : [
-                            {
-                                required : true, 
-                                encrypted:true, 
-                                name : "quality", 
-                                label : "What is your quality of life at the moment?", 
-                                type:"evaluate",
-                                typeValueCypress:"Number"
-                            
-                            },
-                        ]}
-                ]
-            },
+                "_id": "5fdc9fbccfec957a73cb34f5",
+                "name" : "Satisfaction",
+                    "sections": [
+                        {
+                            "fields": [
+                                {
+                                    "required": true,
+                                    "is_personal_data": true,
+                                    "name": "evalutation",
+                                    "label": "What is your level of satisfaction?",
+                                    "type": "text",
+                                    "typeValueCypress": "Text"
+                                },
+                                {
+                                    "required": true,
+                                    "is_personal_data": true,
+                                    "name": "surnames",
+                                    "label": "What are your surnames?",
+                                    "type": "text",
+                                    "typeValueCypress": "Text"
+                                },
+                                {
+                                    "required": true,
+                                    "is_personal_data": true,
+                                    "name": "address",
+                                    "label": "What is your address?",
+                                    "type": "text",
+                                    "typeValueCypress": "Text"
+                                }
+                            ],
+                            "_id": "5fdc9fbccfec957a73cb34f6",
+                            "name": "satisfaction",
+                            "repeats": false
+                        },
+                        {
+                            "fields": [
+                                {
+                                    "required": true,
+                                    "is_personal_data": true,
+                                    "name": "hemoglobina",
+                                    "label": "Hemoglobina",
+                                    "type": "number",
+                                    "typeValueCypress": "Number"
+                                }
+                            ],
+                            "_id": "5fdc9fbccfec957a73cb34f7",
+                            "name": "analitica",
+                            "repeats": false
+                        }
+                    ],
+                    records:[]
+                },
             {
+                "_id": "5fdc9fbccfec957a73cb34f6",
                 records:[],
                 name:"Demographic",
                 sections:[
@@ -209,7 +181,7 @@ export const basic_info1 = () => {
         "acronym":"CN","type":"audit","principal_researcher":"Pedro Rodriguez",
         "institution":"Oxford University","contact":"test@email.com",
         "ethics_body":"12345","reference_number_state":"1",
-        "uuid" : "ff4b1de5-9163-4eb1-85fc-59d19f2741dd"
+        "uuid" : "238b181e-28fd-47a1-bae6-a973c08c8684"
     }    
 }
 
@@ -231,7 +203,7 @@ export const summary_info1 = () => {
 export const patients_personal_data = () => {
     return [
         {
-            "id": "5fccaee78583362dd3d50248",
+            "id": "5fdcd77b98125b1f1f0e627d",
             "personalData": {
                 "name": "John",
                 "surname": "Hopkins",

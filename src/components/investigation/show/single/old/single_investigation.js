@@ -4,7 +4,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Table from '../../../general/table';
+import Table from '../../../../general/table';
 import PendingConsents from './accept_consents';
 
 const ButtonHolder = styled.div`

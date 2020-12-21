@@ -53,9 +53,10 @@ class Table extends Component {
                                 <tr key={`row-${indexRow}`}>
                                     {row.map((value, index) => {
                                         if(typeof value === "boolean"){ 
-                                            return (<td key={index}>
-                                                        <Checkbox checked={value}  />
-                                                    </td>)
+                                            return (
+                                                <td key={index}>
+                                                    <Checkbox checked={value}  />
+                                                </td>)
                                         }
                                         else if(Array.isArray(value)){ 
                                             return (
