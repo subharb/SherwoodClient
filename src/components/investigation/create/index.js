@@ -131,7 +131,7 @@ class NewInvestigation extends Component {
                 component = <PersonalData initialData={this.props.initialState ? this.props.initialState.investigation.personal_data : this.state.investigation.personal_data } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
             case 2: 
-                component = <EDC initialData={this.props.initialState ? {surveys : this.props.initialState.investigation.surveys} : {surveys : this.state.investigation.surveys }} callBackStepBack = {this.stepBack}  callBackData={this.addData} />
+                component = <EDC initialData={this.props.initialState ? {surveys : this.props.initialState.investigation.surveys} : this.state.investigation.surveys ? {surveys : this.state.investigation.surveys } : {surveys : [] }} callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
             case 3:
                 component = <Summary initialData={ this.state.investigation } callBackStepBack = {this.stepBack} 

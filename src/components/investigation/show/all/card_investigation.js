@@ -22,7 +22,7 @@ export default function CardInvestigation(props) {
     }
     return (
         <CardContainer>
-            <div class="card" style={{width: '18rem'}}>
+            <div class="card investigation" style={{width: '18rem'}}>
             <div class="card-body">
                 
                 <h5 class="card-title">{ renderStatus(props.status)}{props.title}</h5>

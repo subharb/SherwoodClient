@@ -156,13 +156,13 @@ class DataCollection extends Component{
                 <h6 className="teal-text lighten-1">
                     <Translate id="investigation.create.edc.data_collections.title" />
                 </h6>
-                <TextField label="name" value={this.state.name} variant="outlined" onChange={this.changeName}/>
+                <TextField label="name" name="name_data_collection" value={this.state.name} variant="outlined" onChange={this.changeName}/>
                     
                 { this.renderSections() }
                 { this.renderNewSectionForm() }
             
                 <div className="row" style={{paddingTop:"20px"}}>
-                    <ButtonSave id="data_collection" disabled={this.state.name.length === 0 || this.state.sections.length === 0} 
+                    <ButtonSave id="data_collection" data-testid="save_data_collection" disabled={this.state.name.length === 0 || this.state.sections.length === 0} 
                         type="button" onClick={() => this.props.callBackData({name:this.state.name, sections : this.state.sections})}>
                             <Translate id="investigation.create.edc.data_collections.save" />
                     </ButtonSave>

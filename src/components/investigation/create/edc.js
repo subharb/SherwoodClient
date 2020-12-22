@@ -39,11 +39,11 @@ export default class EDC extends Component{
         this.callBackNewDataCollection = this.callBackNewDataCollection.bind(this);
         
         const initialState = {surveys: [], addingDataCollection:false, editingIndexDataCollection:false}
-        this.state = props.initialData.surveys ? Object.assign({}, initialState, props.initialData) : initialState;
+        this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
     }
     renderDataCollections(){
         const AddButton= <ButtonAdd disabled={this.state.addingDataCollection || Number.isInteger(this.state.editingIndexDataCollection)} 
-                            type="button" data-testid="add-data_collections" show={!this.state.addingDataCollection}  
+                            type="button" data-testid="add_data_collections" show={!this.state.addingDataCollection}  
                             onClick={this.toggleAddDataCollection}></ButtonAdd>
         if(this.state.surveys.length === 0){
             return [
@@ -144,7 +144,7 @@ export default class EDC extends Component{
                             this.props.callBackStepBack && 
                             <ButtonBack spaceRight={true} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
                         }
-                        <ButtonContinue disabled={this.state.surveys.length === 0} 
+                        <ButtonContinue data-testid="save_surveys" disabled={this.state.surveys.length === 0} 
                             type="button" onClick={this.submitData}>
                                 <Translate id="investigation.create.continue" />
                         </ButtonContinue>

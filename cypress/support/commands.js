@@ -23,3 +23,101 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('loginResearcher', () => {
+    cy.get('input[name="email"]')
+        .type('dshaikhurbina@gmail.com')
+        .should('have.value', 'dshaikhurbina@gmail.com');
+
+    cy.get('input[name="password"]')
+        .type('Cabezadesherwood2')
+        .should('have.value', 'Cabezadesherwood2');
+
+    cy.get('button[data-testid="continue"]')
+        .click();
+});
+Cypress.Commands.add('createEDC', (surveys) => {
+    surveys.forEach(survey => {
+    cy.get('button[data-testid="add_data_collections"]')
+    .click();
+
+    cy.get('input[name="name_data_collection"]')
+    .type(survey.name)
+    .should('have.value', survey.name);
+    
+    survey.sections.forEach(section => {
+        cy.get('button[data-testid="add-sections"]')
+            .click();
+        cy.get('input[name="name"]')
+            .type(section.name)
+            .should('have.value', section.name);
+        section.fields.forEach(field => {
+            cy.get('button[data-testid="add-field"]')
+            .click();
+            cy.get('#modal1').within(() => {
+                if(field.required){
+                    cy.contains('Required').click();
+                }
+                if(field.is_personal_data){
+                    cy.contains('Is it a personal data').click();
+                }
+                cy.get('input[name="name"]')
+                    .type(field.name)
+                    .should('have.value', field.name);
+                cy.get('input[name="label"]')
+                    .type(field.label)
+                    .should('have.value', field.label);
+            }); 
+            cy.get('[aria-labelledby^="type"]')
+                    .click();
+            cy.contains(field.typeValueCypress).click(); 
+    
+            cy.get('button[data-testid="save-field"]')
+                .click();
+        });
+        cy.get('button[data-testid="add-section"]')
+            .click();
+    });
+    cy.get('button[data-testid="save_data_collection"]')
+    .click();
+    })
+    cy.get('button[data-testid="save_surveys"]')
+        .click();
+});
+
+Cypress.Commands.add('createBasicInfo', (basicInfo) => {    
+    cy.get('input[name="name"]')
+            .type('COVID Nose')
+            .should('have.value', 'COVID Nose');
+
+    cy.get('input[name="acronym"]')
+        .type('CN')
+        .should('have.value', 'CN');
+    
+    cy.get('[aria-labelledby^="type"]')
+        .click()
+        cy.contains("Clinical Trial").click();
+        
+    cy.get('input[name="principal_researcher"]')
+        .type('Pedro Rodríguez')
+        .should('have.value', 'Pedro Rodríguez');
+
+    cy.get('input[name="institution"]')
+        .type('Oxford University')
+        .should('have.value', 'Oxford University');
+    
+    cy.get('input[name="contact"]')
+        .type('testing@test.email')
+        .should('have.value', 'testing@test.email');
+    
+    cy.get('input[name="ethics_body"]')
+        .type('123456')
+        .should('have.value', '123456');
+
+    cy.get('[aria-labelledby^="reference_number_state"]')
+        .click()
+    cy.contains("Approved").click();
+
+    cy.get('button[data-testid="continue"]')
+        .click();
+})

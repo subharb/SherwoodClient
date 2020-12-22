@@ -3,31 +3,23 @@ export const edc_data1 = () => {
         surveys : [
             {   
                 "_id": "5fdc9fbccfec957a73cb34f5",
-                "name" : "Satisfaction",
+                "name" : "Demographic Questionaire",
                     "sections": [
                         {
                             "fields": [
                                 {
                                     "required": true,
-                                    "is_personal_data": true,
-                                    "name": "evalutation",
-                                    "label": "What is your level of satisfaction?",
+                                    "is_personal_data": false,
+                                    "name": "sex",
+                                    "label": "Sex at birth",
                                     "type": "text",
                                     "typeValueCypress": "Text"
                                 },
                                 {
                                     "required": true,
-                                    "is_personal_data": true,
-                                    "name": "surnames",
-                                    "label": "What are your surnames?",
-                                    "type": "text",
-                                    "typeValueCypress": "Text"
-                                },
-                                {
-                                    "required": true,
-                                    "is_personal_data": true,
-                                    "name": "address",
-                                    "label": "What is your address?",
+                                    "is_personal_data": false,
+                                    "name": "etnic",
+                                    "label": "Etnic Origin",
                                     "type": "text",
                                     "typeValueCypress": "Text"
                                 }
@@ -40,15 +32,15 @@ export const edc_data1 = () => {
                             "fields": [
                                 {
                                     "required": true,
-                                    "is_personal_data": true,
-                                    "name": "hemoglobina",
-                                    "label": "Hemoglobina",
-                                    "type": "number",
-                                    "typeValueCypress": "Number"
+                                    "is_personal_data": false,
+                                    "name": "ilnesses",
+                                    "label": "Previous Ilnesess",
+                                    "type": "text",
+                                    "typeValueCypress": "Text"
                                 }
                             ],
                             "_id": "5fdc9fbccfec957a73cb34f7",
-                            "name": "analitica",
+                            "name": "Past medical history",
                             "repeats": false
                         }
                     ],
@@ -57,17 +49,17 @@ export const edc_data1 = () => {
             {
                 "_id": "5fdc9fbccfec957a73cb34f6",
                 records:[],
-                name:"Demographic",
+                name:"Quality of life Questionaire",
                 sections:[
                     {
-                        name:"Etnicity",
+                        name:"Evaluation",
                         repeats : false, 
                         fields : [
                             {
                                 required : true, 
                                 encrypted:true, 
-                                name : "etnicity", 
-                                label : "Etnicity", 
+                                name : "evaluation", 
+                                label : "How you you grade your current quality of life?", 
                                 type:"text",
                                 typeValueCypress:"Text"
                             
@@ -186,7 +178,7 @@ export const basic_info1 = () => {
 }
 
 export const personal_data1 = () => {
-    return ["name", "surname", "email"]
+    return ["email", "phone", "name", "surname"]
 }
 
 export const patient_data1 = () => {

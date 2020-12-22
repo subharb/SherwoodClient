@@ -1,19 +1,19 @@
 import React from 'react';
-import Sections from '../../../components/investigation/create/edc'
+import EDC from '../../../components/investigation/create/edc'
 import Form from '../../../components/general/form';
 import ProviderSherwood from '../../../providerSherwood';
 import { edc_data1 } from '../../example_data';
 
 export default {
     title: 'Investigation/Create/EDC',
-    component: Form,
+    component: EDC,
     decorators: [story => 
                 <ProviderSherwood>
                         {story()}
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <Sections {...args} />;
+const Template = (args) => <EDC {...args} />;
 
 export const Basic = Template.bind({});
 Basic.args = {
