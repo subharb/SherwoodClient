@@ -78,7 +78,7 @@ export const records_patient1 = () =>{
             {
                 "submission": [
                     {
-                        "id_section": "5fe20fb779160a2fc27c11d8",
+                        "id_section": "5fdc9fbccfec957a73cb34f6",
                         "nameCypress" : "satisfaction",
                         "answers": {
                             "sex": "Male",
@@ -95,7 +95,7 @@ export const records_patient1 = () =>{
             {
                 "submission": [
                     {
-                        "id_section": "5fe20fb779160a2fc27c11d9",
+                        "id_section": "5fdc9fbccfec957a73cb34f7",
                         "nameCypress" : "Past medical history",
                         "answers": {
                             "ilnesses": "Cancer"
@@ -118,7 +118,7 @@ export const records_patient2 = () =>{
             {
                 "submission": [
                     {
-                        "id_section": "5fe20fb779160a2fc27c11d8",
+                        "id_section": "5fdc9fbccfec957a73cb34f6",
                         "nameCypress" : "satisfaction",
                         "answers": {
                             "sex": "Female",
@@ -128,7 +128,7 @@ export const records_patient2 = () =>{
                 ],
                 "_id": "5fe20fb779160a2fc27c11d7",
                 "nameCypress" : "Demographic Questionaire",
-                "id_patient": "5fe218b524b4213823c82e8d",
+                "id_patient": "5fe218c024b4213823c82e8e",
                 "created_At": "2020-12-06T10:15:20.311Z",
                 "updated_At": "2020-12-06T10:15:20.311Z"
             },
@@ -144,7 +144,7 @@ export const records_patient2 = () =>{
                 ],
                 "_id": "5fe20fb779160a2fc27c11d7",
                 "nameCypress" : "Demographic Questionaire",
-                "id_patient": "5fe218b524b4213823c82e8d",
+                "id_patient": "5fe218c024b4213823c82e8e",
                 "created_At": "2020-12-06T17:03:19.093Z",
                 "updated_At": "2020-12-06T17:03:19.093Z"
             }
@@ -179,7 +179,7 @@ export const summary_info1 = () => {
 export const patients_personal_data = () => {
     return [
         {
-            "id": "5fdcd77b98125b1f1f0e627d",
+            "id": "5fe218b524b4213823c82e8d",
             "personalData": {
                 "name": "John",
                 "surname": "Hopkins",
@@ -189,7 +189,7 @@ export const patients_personal_data = () => {
         },
         {
             
-            "id": "5fccaee78583362dd3d50248",
+            "id": "5fe218c024b4213823c82e8e",
             "personalData": {
                 "name" : "Donald",
                 "surname" : "Trump",

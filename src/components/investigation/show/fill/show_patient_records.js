@@ -52,7 +52,9 @@ export default function PatientRecords(props) {
     }
     function renderRecordsSection(records, sections){    
         return Object.values(sections).map(section => {
-            const submissionsSection = findSubmissionsFromSection(records, section._id);
+            const currentPatientRecords = records.filter(submission => submission.id_patient === props.patient.id);
+            const submissionsSection = findSubmissionsFromSection(currentPatientRecords, section._id);
+
             return(
                 <ShowRecordsSection submissions={submissionsSection} section={section} />
             )
@@ -138,10 +140,6 @@ PatientRecords.propTypes = {
      Personal information of the Patient
     */
     patient: PropTypes.object,
-    /**
-     Submissions of the patient
-    */
-    submissions: PropTypes.array,
     /**
      Mostrar datos en modo tabla o modo elementos
     */

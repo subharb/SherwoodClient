@@ -119,7 +119,8 @@ export default function ShowInvestigation(props) {
                 //             uuidInvestigation={props.investigation.uuid} survey={props.investigation.surveys} 
                 //             patient={patientsData[patientIndex]}/> 
             case 4:
-                return <ShowAllRecordsSurvey />
+                return <ShowAllRecordsSurvey survey={props.investigation.surveys[surveyIndex]} 
+                            patients={patientsData} records={props.investigation.surveys[surveyIndex].records}/>
             default:
                 return null;
         }
