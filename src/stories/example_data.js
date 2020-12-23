@@ -78,91 +78,75 @@ export const records_patient1 = () =>{
             {
                 "submission": [
                     {
-                        "id_section": "5fccaedb8583362dd3d50246",
+                        "id_section": "5fe20fb779160a2fc27c11d8",
+                        "nameCypress" : "satisfaction",
                         "answers": {
-                            "hemoglobina": 132,
-                            "leucocitos": 112
-                        }
-                    },
-                    {
-                        "id_section": "5fccaedb8583362dd3d50247",
-                        "answers": {
-                            "quality": 3
+                            "sex": "Male",
+                            "etnic": "Hispanic"
                         }
                     }
                 ],
-                "_id": "5fccaf388583362dd3d50249",
-                "id_patient": "5fccaee78583362dd3d50248",
+                "_id": "5fe20fb779160a2fc27c11d7",
+                "nameCypress" : "Demographic Questionaire",
+                "id_patient": "5fe218b524b4213823c82e8d",
                 "created_At": "2020-12-06T10:15:20.311Z",
                 "updated_At": "2020-12-06T10:15:20.311Z"
             },
             {
                 "submission": [
                     {
-                        "id_section": "5fccaedb8583362dd3d50246",
+                        "id_section": "5fe20fb779160a2fc27c11d9",
+                        "nameCypress" : "Past medical history",
                         "answers": {
-                            "hemoglobina": 132,
-                            "leucocitos": 112
+                            "ilnesses": "Cancer"
                         }
                     }
                 ],
-                "_id": "5fcd0ed717ca0461e2fa47db",
-                "id_patient": "5fccaee78583362dd3d50248",
+                "_id": "5fe20fb779160a2fc27c11d7",
+                "nameCypress" : "Demographic Questionaire",
+                "id_patient": "5fe218b524b4213823c82e8d",
                 "created_At": "2020-12-06T17:03:19.093Z",
                 "updated_At": "2020-12-06T17:03:19.093Z"
+            }
+        ]
+    }
+}
+
+export const records_patient2 = () =>{
+    return {
+        records : [
+            {
+                "submission": [
+                    {
+                        "id_section": "5fe20fb779160a2fc27c11d8",
+                        "nameCypress" : "satisfaction",
+                        "answers": {
+                            "sex": "Female",
+                            "etnic": "Arab"
+                        }
+                    }
+                ],
+                "_id": "5fe20fb779160a2fc27c11d7",
+                "nameCypress" : "Demographic Questionaire",
+                "id_patient": "5fe218b524b4213823c82e8d",
+                "created_At": "2020-12-06T10:15:20.311Z",
+                "updated_At": "2020-12-06T10:15:20.311Z"
             },
             {
                 "submission": [
                     {
-                        "id_section": "5fccaedb8583362dd3d50246",
+                        "id_section": "5fe20fb779160a2fc27c11d9",
+                        "nameCypress" : "Past medical history",
                         "answers": {
-                            "hemoglobina": "11",
-                            "leuco": "22",
-                            "gluco": "333",
-                            "cholesterol": "111",
-                            "red_blood": "111",
-                            "comments": "aaaa"
+                            "ilnesses": "Prostate Cancer"
                         }
                     }
                 ],
-                "_id": "5fcd0f5417ca0461e2fa47dc",
-                "id_patient": "5fccaee78583362dd3d50248",
-                "created_At": "2020-12-06T17:05:24.401Z",
-                "updated_At": "2020-12-06T17:05:24.401Z"
-            },
-            {
-                "submission": [
-                    {
-                        "id_section": "5fccaedb8583362dd3d50246",
-                        "answers": {
-                            "hemoglobina": "11",
-                            "leuco": "22",
-                            "gluco": "333"
-                        }
-                    }
-                ],
-                "_id": "5fcd0fa017ca0461e2fa47dd",
-                "id_patient": "5fccaee78583362dd3d50248",
-                "created_At": "2020-12-06T17:06:40.376Z",
-                "updated_At": "2020-12-06T17:06:40.376Z"
-            },
-            {
-                "submission": [
-                    {
-                        "id_section": "5fccaedb8583362dd3d50246",
-                        "answers": {
-                            "hemoglobina": "22",
-                            "leuco": "22",
-                            "gluco": "22",
-                            "cholesterol": "22",
-                            "red_blood": "22"
-                        }
-                    }
-                ],
-                "_id": "5fcd106817ca0461e2fa47de",
-                "id_patient": "5fccaee78583362dd3d50248",
-                "created_At": "2020-12-06T17:10:00.644Z",
-                "updated_At": "2020-12-06T17:10:00.644Z"
+                "_id": "5fe20fb779160a2fc27c11d7",
+                "nameCypress" : "Demographic Questionaire",
+                "id_patient": "5fe218b524b4213823c82e8d",
+                "created_At": "2020-12-06T17:03:19.093Z",
+                "updated_At": "2020-12-06T17:03:19.093Z"
             }
         ]
     }

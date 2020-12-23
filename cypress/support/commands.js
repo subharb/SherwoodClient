@@ -53,7 +53,7 @@ Cypress.Commands.add('createEDC', (surveys) => {
             .should('have.value', section.name);
         section.fields.forEach(field => {
             cy.get('button[data-testid="add-field"]')
-            .click();
+                .click();
             cy.get('#modal1').within(() => {
                 if(field.required){
                     cy.contains('Required').click();
@@ -120,4 +120,38 @@ Cypress.Commands.add('createBasicInfo', (basicInfo) => {
 
     cy.get('button[data-testid="continue"]')
         .click();
-})
+});
+
+Cypress.Commands.add('fillPatient', (patient) => { 
+    patient.records.forEach(record => {
+        console.log(record.nameCypress);
+        cy.get('table').then(($body) => {
+            if($body.text().includes(record.nameCypress)){
+                cy.contains('td', record.nameCypress)  // gives you the cell 
+                    .parent()                              // gives you the row
+                    .within($tr => {                       // filters just that row
+                        cy.get('button')                         // finds the buttons cell of that row
+                        .click()
+                    })
+            }
+        })
+    
+        record.submission.forEach(submission => {
+            cy.contains('td', submission.nameCypress)  // gives you the cell 
+                .parent()                              // gives you the row
+                .within($tr => {                       // filters just that row
+                    cy.get('button')                         // finds the buttons cell of that row
+                    .click()
+                })
+            Object.keys(submission.answers).forEach(key => {
+                cy.get('input[name="'+key+'"]')
+                .type(submission.answers[key])
+                .should('have.value', submission.answers[key]);
+            })
+            cy.get('button[data-testid="continue"]').first()
+                .click();
+        });
+    });
+    cy.get('button[data-testid="back"]').first()
+        .click();
+});   

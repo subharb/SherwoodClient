@@ -29,8 +29,9 @@ export default function ShowSurveys(props) {
     function callBackSection(values){
         console.log(callBackSection);
         let dataObj = {};
-        dataObj[props.surveys[indexSurvey].sections[indexSection].id] = values;
+        dataObj[props.surveys[indexSurvey].sections[indexSection]._id] = values;
         props.saveRecord(dataObj, props.surveys[indexSurvey]._id);
+        setAction(2);
     }
     function sectionSelected(indexSection){
         setIndexSection(indexSection);
@@ -123,7 +124,7 @@ export default function ShowSurveys(props) {
                 //             uuidInvestigation={props.investigation.uuid}  patient={patientsData[patientIndex]}
                 //             callBackForm={(values) => saveRecord(values) }/>
                 break;
-            //Sección seleccionada
+            //Rellenar Sección seleccionada
             case 3:
                 return <Form fields={props.surveys[indexSurvey].sections[indexSection].fields} 
                     callBackForm = {(values) => callBackSection(values)}/>
@@ -150,9 +151,9 @@ export default function ShowSurveys(props) {
                     renderHeader()
                 }
             </div>
-            {
-                renderCore()
-            }
+                {
+                    renderCore()
+                }
         </div>
     )
     

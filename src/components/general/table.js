@@ -83,7 +83,7 @@ class Table extends Component {
                                     }
                                     { this.props.hasOwnProperty("viewCallBack") && 
                                         <td key={`add-${indexRow}`}>
-                                            <ButtonView data-testid="add-element" onClick={() => this.props.viewCallBack(indexRow)} />
+                                            <ButtonView data-testid="view-element" onClick={() => this.props.viewCallBack(indexRow)} />
                                         </td>
                                     }
                                 </tr>

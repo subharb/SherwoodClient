@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PersonalDataForm from '../fill/personal_data';
 import SurveySections from '../fill/survey_form';
-import ShowPatientRecords from '../fill/show_patient_records';
+import ShowAllRecordsSurvey from '../../show/single/show_all_records_survey';
 import { ButtonAdd, ButtonBack } from '../../../general/mini_components';
 import Table from '../../../general/table';
 import Axios from 'axios';
@@ -57,12 +57,12 @@ export default function ShowInvestigation(props) {
         //Hay que encriptar los valores del objecto y enviarlo
         console.log(personalData);
         
-        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuid+"/patient", personalData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.investigation.uuid+"/patient", personalData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .catch(err => {console.log('Catch', err); return err;}); 
 
         if(response.request.status === 200){
             //Actualizo los pacientes
-            const response = await Axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuid+"/patient", { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            const response = await Axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.investigation.uuid+"/patient", { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
             if(response.request.status === 200){
                 setPatientsData(response.data.patients);
@@ -80,12 +80,12 @@ export default function ShowInvestigation(props) {
             }
         })
         const postObj = {submission : recordArray}
-        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuid+"/record/"+patientsData[patientIndex].id+"/survey/"+idSurvey, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.investigation.uuid+"/record/"+patientsData[patientIndex].id+"/survey/"+idSurvey, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
             
         }
-        setShowForm(0);
+        //setShowForm(0);
     }
     // function getNamePatient(){
     //     let patientName = "";
@@ -118,6 +118,8 @@ export default function ShowInvestigation(props) {
                 // return <ShowPatientRecords mode="elements" initialData={ props.investigation.records } 
                 //             uuidInvestigation={props.investigation.uuid} survey={props.investigation.surveys} 
                 //             patient={patientsData[patientIndex]}/> 
+            case 4:
+                return <ShowAllRecordsSurvey />
             default:
                 return null;
         }
@@ -126,7 +128,7 @@ export default function ShowInvestigation(props) {
         <div className="container">
             {
                 showForm !== 0 && 
-                <ButtonBack onClick={() => setShowForm(0)} >Back</ButtonBack>
+                <ButtonBack data-testid="back" onClick={() => setShowForm(0)} >Back</ButtonBack>
             }
             <div className="row">
                 <h5>{props.investigation.name}</h5>
