@@ -25,7 +25,7 @@ export const edc_data1 = () => {
                                 }
                             ],
                             "_id": "5fdc9fbccfec957a73cb34f6",
-                            "name": "satisfaction",
+                            "name": "Demographics",
                             "repeats": false
                         },
                         {
@@ -79,7 +79,7 @@ export const records_patient1 = () =>{
                 "submission": [
                     {
                         "id_section": "5fdc9fbccfec957a73cb34f6",
-                        "nameCypress" : "satisfaction",
+                        "nameCypress" : "Demographics",
                         "answers": {
                             "sex": "Male",
                             "etnic": "Hispanic"
@@ -119,7 +119,7 @@ export const records_patient2 = () =>{
                 "submission": [
                     {
                         "id_section": "5fdc9fbccfec957a73cb34f6",
-                        "nameCypress" : "satisfaction",
+                        "nameCypress" : "Demographics",
                         "answers": {
                             "sex": "Female",
                             "etnic": "Arab"
