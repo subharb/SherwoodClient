@@ -3,19 +3,19 @@ import { Translate } from 'react-localize-redux';
 import styled from "styled-components";
 import PropTypes from 'prop-types';
 import Table from '../../general/table';
-import Section from './section';
-import { ButtonContinue, ButtonAdd, ButtonBack } from '../../general/mini_components'; 
+import DataCollection from './data_collection';
+import { ButtonContinue, ButtonAdd, ButtonBack } from '../../general/mini_components';  
 
 /**
- * An EDC is a collection of sections
+ * An EDC is a collection of data_collections
  */
 
 const SECTION_FORM = {
     "name" : {
         required : true,
         type:"text",
-        label:"investigation.create.edc.section_name",
-        shortLabel: "investigation.create.edc.section_name",
+        label:"investigation.create.edc.data_collections.title",
+        shortLabel: "investigation.create.edc.data_collections.title",
         validation : "textMin2"
     },
     "repeats":{
@@ -31,90 +31,89 @@ export default class EDC extends Component{
     constructor(props){
         super(props);
 
-        this.addSection = this.addSection.bind(this);
-        this.renderNewSectionForm = this.renderNewSectionForm.bind(this);
-        this.renderSections = this.renderSections.bind(this);
-        this.closeNewSection = this.closeNewSection.bind(this);
+        this.toggleAddDataCollection = this.toggleAddDataCollection.bind(this);
+        this.renderNewDataCollectionForm = this.renderNewDataCollectionForm.bind(this);
+        this.renderDataCollections = this.renderDataCollections.bind(this);
+        this.closeNewDataCollection = this.closeNewDataCollection.bind(this);
         this.submitData = this.submitData.bind(this);
-        this.callBackNewSection = this.callBackNewSection.bind(this);
+        this.callBackNewDataCollection = this.callBackNewDataCollection.bind(this);
         
-        const initialState = {sections: [], addingSection:false, editingIndexSection:false}
+        const initialState = {surveys: [], addingDataCollection:false, editingIndexDataCollection:false}
         this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
     }
-    renderSections(){
-        const AddButton= <ButtonAdd disabled={this.state.addingSection || Number.isInteger(this.state.editingIndexSection)} 
-                            type="button" data-testid="add-sections" show={!this.state.addingSection}  
-                            onClick={this.addSection}></ButtonAdd>
-        if(this.state.sections.length === 0){
+    renderDataCollections(){
+        const AddButton= <ButtonAdd disabled={this.state.addingDataCollection || Number.isInteger(this.state.editingIndexDataCollection)} 
+                            type="button" data-testid="add_data_collections" show={!this.state.addingDataCollection}  
+                            onClick={this.toggleAddDataCollection}></ButtonAdd>
+        if(this.state.surveys.length === 0){
             return [
                 AddButton,
-                <Translate id="investigation.create.section.no_sections" />
+                <Translate id="investigation.create.edc.data_collections.none" />
             ]
         }
         else{
-            let arrayHeader = Object.values(SECTION_FORM).map(value => value.shortLabel);
-            arrayHeader.push("investigation.create.edc.number_fields");
+            let arrayHeader =["investigation.create.edc.data_collections.title", "investigation.create.edc.data_collections.number_sections"]
             return(
                 <div>
                     <Table key="added_fields" header={arrayHeader} 
-                        values = {this.state.sections.map(section => {let arrayFields = Object.values(section);
-                                return arrayFields;
-                    })} deleteCallBack={(index) => this.deleteSection(index, "sections")} editCallBack={(index) => this.editSection(index, "sections")}/>
+                        values = {this.state.surveys.map(survey => {
+                            return [survey.name, survey.sections];
+                    })} deleteCallBack={(index) => this.deleteDataCollection(index, "data_collections")} editCallBack={(index) => this.editDataCollection(index, "data_collections")}/>
                     {AddButton}
                 </div>)
         }
     }
-    addSection(){
+    toggleAddDataCollection(){
         let tempState = {...this.state};
-        tempState.addingSection = true;
+        tempState.addingDataCollection = !tempState.addingDataCollection;
         this.setState(tempState);
     }
-    deleteSection(index){
+    deleteDataCollection(index){
         let tempState = {...this.state};
-        tempState.addingSection = false;
-        tempState.editingIndexSection = false;
-        tempState.sections.splice(index, 1);
+        tempState.addingDataCollection = false;
+        tempState.editingIndexDataCollection = false;
+        tempState.surveys.splice(index, 1);
         this.setState(tempState);
     }
-    editSection(index, element){
-        console.log("Edit Section", index);
+    editDataCollection(index, element){
+        console.log("Edit DataCollection", index);
         let tempState = {...this.state};
-        tempState.addingSection = false;
-        tempState.editingIndexSection = index;
+        tempState.addingDataCollection = true;
+        tempState.editingIndexDataCollection = index;
         this.setState(tempState);
     }
-    callBackNewSection(section){
-        console.log("New section!", section);
+    callBackNewDataCollection(dataCollection){
+        console.log("New section!", dataCollection);
         let tempState = {...this.state};
-        tempState.addingSection = false;
-        tempState.editingIndexSection = false;
-        if(Number.isInteger(this.state.editingIndexSection)){
-            tempState.sections[this.state.editingIndexSection] = section;
+        tempState.addingDataCollection = false;
+        tempState.editingIndexDataCollection = false;
+        if(Number.isInteger(this.state.editingIndexDataCollection)){
+            tempState.surveys[this.state.editingIndexDataCollection] = dataCollection;
         }
         else{
-            tempState.sections.push(section);
+            tempState.surveys.push(dataCollection);
         }
         
         this.setState(tempState);
 
     }
-    closeNewSection(){
-        console.log("closeNewSection");
+    closeNewDataCollection(){
+        console.log("closeNewDataCollection");
         let tempState = {...this.state};
-        tempState.addingSection = false;
-        tempState.editingIndexSection = false;
+        tempState.addingDataCollection = false;
+        tempState.editingIndexDataCollection = false;
         this.setState(tempState);
     }
-    renderNewSectionForm(){
+    renderNewDataCollectionForm(){
         const staticParams = {
-            callBackNewSection:this.callBackNewSection,
-            closeNewSection:this.closeNewSection
+            callBackNewDataCollection:this.callBackNewDataCollection,
+            closeNewDataCollection:this.closeNewDataCollection
         }
-        if(this.state.addingSection){
-            return (<Section {...staticParams} />);
+        if(this.state.addingDataCollection){
+            return (<DataCollection {...staticParams} />);
         }
-        else if(Number.isInteger(this.state.editingIndexSection)){
-            return (<Section initialData={this.state.sections[this.state.editingIndexSection]} 
+        else if(Number.isInteger(this.state.editingIndexDataCollection)){
+            return (<DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} 
                         {...staticParams}
                     />);
         }
@@ -123,35 +122,38 @@ export default class EDC extends Component{
         }
     }
     submitData(){
-        this.props.callBackData({sections : this.state.sections});
+        this.props.callBackData({surveys : this.state.surveys});
     }
     render(){
         
-        return (
-      
-            <div key="container" >
-                <h5 className="teal-text lighten-1">Step 3 > Create Sections</h5>
-                <blockquote>
-                    <Translate id="investigation.create.section.intro" />
-                </blockquote>
-                <h6 className="teal-text lighten-1">
-                    <Translate id="investigation.create.section.title" />
-                </h6>
-                { this.renderSections() }
-                { this.renderNewSectionForm() }
-                <div className="row" style={{paddingTop:"20px"}}>
-                    {
-                        this.props.callBackStepBack && 
-                        <ButtonBack spaceRight={true} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
-                    }
-                    <ButtonContinue disabled={this.state.sections.length === 0} 
-                        type="button" onClick={this.submitData}>
-                            <Translate id="investigation.create.continue" />
-                    </ButtonContinue>
-                </div>
-            </div>
+        if(this.state.addingDataCollection){
+            return <DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} callBackData={this.callBackNewDataCollection} callBackStepBack={() => {this.toggleAddDataCollection()}}/>
+        }
+        else{
+            return (
             
-        )
+                <div key="container" >
+                    <h5 className="teal-text lighten-1"><Translate id="investigation.create.edc.title"/></h5>
+                    <blockquote>
+                        <Translate id="investigation.create.edc.intro" />
+                    </blockquote>
+                   
+                    { this.renderDataCollections() }
+                    <div className="row" style={{paddingTop:"20px"}}>
+                        {
+                            this.props.callBackStepBack && 
+                            <ButtonBack spaceRight={true} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
+                        }
+                        <ButtonContinue data-testid="save_surveys" disabled={this.state.surveys.length === 0} 
+                            type="button" onClick={this.submitData}>
+                                <Translate id="investigation.create.continue" />
+                        </ButtonContinue>
+                    </div>
+                </div>
+                
+            )
+        }
+        
     }
     
 }

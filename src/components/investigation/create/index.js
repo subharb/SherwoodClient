@@ -42,23 +42,23 @@ class NewInvestigation extends Component {
         investigationInfo.publish = publish ? 1 : 0;
     
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
-        let request;
+        let response;
         if(this.props.hasOwnProperty("uuidInvestigation")){
-            request = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            response = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;});
         }
         else{
-            request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;}); 
         }
         
         
         let tempState = {...this.state};
-        if(request.status === 200){
+        if(response.request.status === 200){
             console.log("Success!");
             tempState.resultSave = 1;
         }
-        else if(request.status === 401){
+        else if(response.request.status === 401){
             localStorage.removeItem("jwt");
             tempState.resultSave = 2;
             this.setState(tempState);
@@ -79,7 +79,7 @@ class NewInvestigation extends Component {
                 tempState.investigation.personal_data = data;
                 break;
             case 2:
-                tempState.investigation.survey = data;
+                tempState.investigation.surveys = data.surveys;
                 break;
             case 3:
                 console.log("Send Information!");
@@ -131,7 +131,7 @@ class NewInvestigation extends Component {
                 component = <PersonalData initialData={this.props.initialState ? this.props.initialState.investigation.personal_data : this.state.investigation.personal_data } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
             case 2: 
-                component = <EDC initialData={this.props.initialState ? this.props.initialState.investigation.survey : this.state.investigation.survey } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
+                component = <EDC initialData={this.props.initialState ? {surveys : this.props.initialState.investigation.surveys} : this.state.investigation.surveys ? {surveys : this.state.investigation.surveys } : {surveys : [] }} callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
             case 3:
                 component = <Summary initialData={ this.state.investigation } callBackStepBack = {this.stepBack} 

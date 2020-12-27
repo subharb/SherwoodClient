@@ -98,7 +98,7 @@
                 "basic_info" : ["Basic Info", "Información básica"],
                 "edc" : ["EDC", "EDC"],
                 "personal_data" : ["Personal Data", "Datos Personales"],
-                "sections" : ["Create Survey", "Crear formulario"],
+                "sections" : ["Create Surveys", "Crear formulario"],
                 "patient_sheet" : ["Patient Sheet Information", "Documento de aceptación de paciente"],
                 "consents" : ["Consent forms", "Formularios de consentimiento"],
                 "summary" : ["Summary", "Resumen"]
@@ -118,12 +118,27 @@
                 }
             }, 
             "edc" : {
-                "title" : ["Create Investigation", "Crear Investigation"],
+                "title" : ["EDC Design", ""],
+                "intro" : ["The Electronic Data Capture (EDC) design tool will allow you to create the necessary data collection forms and questionnaires to populate your database. Please follow our smart assistant who will take you through the process.", ""],
+                "no_sections" : ["You haven't added any sections yet"],
+                "data_collections" : {
+                    "title" : ["Data Collection", "Colleción de datos"],
+                    "intro" : ["Each data collection can have several sections" , "Ca"], 
+                    "new" : ["New data collection"],
+                    "name" : ["Data Collection name", "Nombre de la collección de datos"],
+                    "none" : ["You have no data collections", "No has creado ninguna collección de datos"],
+                    "number_sections" : ["Number sections", "Número de secciones"],
+                    "save" : ["Save Data Collection" , "Guardar Data Collection"]
+                },
+                "section" : {
+                    "name" : ["Section", "Sección"],
+                    "new" : ["New section"],
+                    "edit_section" : ["Edit section"],
+                    "section_name" : ["Name", "Nombre"],
+                    "add_section" : ["Add section"],
+                    "none" : ["You have no sections", "No has creado ninguna sección"]
+                },
                 "name" : ["Study's name", "Nombre de la investigación"],
-                "section_name" : ["Name", "Nombre"],
-                "acronym" : ["Study short name/acronym", "Nombre corto"],
-                "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
-                "description" : ["Description", "Descripción"],
                 "add_field" : ["Add field", "añadir campo"], 
                 "required" : ["Required", "Obligatorio"],
                 "repeats" : ["Repeats", "Repite"],
@@ -176,16 +191,6 @@
                 },    
                 "introduction" : ["Invitation paragraph", "Párrafo introductorio"]                
             },
-            "section" : {
-                "title" : ["Sections", ""],
-                "intro" : ["A section is a subsection of your survey, each section holds a different inputs of your survey. Each section can be filled once or several time during the investigation.", ""],
-                "no_sections" : ["You haven't added any sections yet"],
-                "new_section" : ["New section"],
-                "edit_section" : ["Edit section"],
-                "edd_section" : ["Add section"],
-                "add_field" : ["Add field", "añadir campo"],
-                "section" : ["Section", "Sección"]
-            },
             "add_patients" : {
                 "title" : ["Add patients", "Añadir pacientes"],
                 "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
@@ -228,7 +233,8 @@
                 "description" : ["Fill the personal information of the patient", "Rellene los datos personales del paciente"]
             },
             "survey" : {
-                "patient_name" : ["Patient's Name", "Nombre del Paciente"]
+                "patient_name" : ["Patient's Name", "Nombre del Paciente"],
+                "title" : ["Data Collections", "Collecciones de datos"]
             }
         },
         "show" : {

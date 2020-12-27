@@ -1,7 +1,7 @@
 import React from 'react'
 import {Translate} from 'react-localize-redux';
-import { PERSONAL_DATA_FIELDS } from '../../../utils';
-import Form from '../../general/form';
+import { PERSONAL_DATA_FIELDS } from '../../../../utils';
+import Form from '../../../general/form';
 
 export default function PersonalDataForm(props) {
     let form = {}

@@ -53,14 +53,15 @@ class Table extends Component {
                                 <tr key={`row-${indexRow}`}>
                                     {row.map((value, index) => {
                                         if(typeof value === "boolean"){ 
-                                            return (<td key={index}>
-                                                        <Checkbox checked={value}  />
-                                                    </td>)
+                                            return (
+                                                <td key={index}>
+                                                    <Checkbox checked={value}  />
+                                                </td>)
                                         }
                                         else if(Array.isArray(value)){ 
                                             return (
                                             <td key={index}>
-                                                { value.length } values
+                                                #{ value.length }
                                             </td>)
                                         }
                                         return <td key={index}>{value}</td>
@@ -82,7 +83,7 @@ class Table extends Component {
                                     }
                                     { this.props.hasOwnProperty("viewCallBack") && 
                                         <td key={`add-${indexRow}`}>
-                                            <ButtonView data-testid="add-element" onClick={() => this.props.viewCallBack(indexRow)} />
+                                            <ButtonView data-testid="view-element" onClick={() => this.props.viewCallBack(indexRow)} />
                                         </td>
                                     }
                                 </tr>

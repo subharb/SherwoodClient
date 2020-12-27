@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import { validateField, numberRecordsSection } from '../../../utils/index';
-import { templateField } from '../../../utils';
-import SuccessComponent from '../../general/success_component';
-import Modal from '../../general/modal';
-import { ButtonContinue } from '../../general/mini_components';
+import { validateField, numberRecordsSection } from '../../../../utils/index';
+import { templateField } from '../../../../utils';
+import SuccessComponent from '../../../general/success_component';
+import Modal from '../../../general/modal';
+import { ButtonContinue } from '../../../general/mini_components';
 import { Field, reduxForm, FormSection } from 'redux-form'
-import FieldSherwood from '../../general/FieldSherwood';
+import FieldSherwood from '../../../general/FieldSherwood';
 import { Translate } from 'react-localize-redux';
 
 /**
@@ -51,7 +51,7 @@ class SurveySections extends Component {
             return "CARGANDO"
         }
         else{
-            const filteredSections = this.props.initialData.sections.filter(section => {
+            const filteredSections = this.props.sections.filter(section => {
                 return section.repeats || (!section.repeats && numberRecordsSection(section, this.state.records) === 0)
             });
             return (
@@ -101,7 +101,7 @@ class SurveySections extends Component {
 
 function validate(values, props){
     const errors = {};
-    props.initialData.sections.forEach(section => {
+    props.sections.forEach(section => {
         Object.keys(section.fields).forEach(key => {
             const field = {...section.fields[key]}
             console.log(key+" : "+field.validation+" "+values[key]);

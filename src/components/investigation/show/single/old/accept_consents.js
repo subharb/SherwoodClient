@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import Modal from '../../../general/modal';
-import SuccessComponent from '../../../general/success_component';
+import Modal from '../../../../general/modal';
+import SuccessComponent from '../../../../general/success_component';
 import { Translate, withLocalize } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Field, reduxForm } from 'redux-form';
-import FieldSherwood from '../../../general/FieldSherwood';
-import { fieldLevelNotEmpty, fieldLevelmarkedCheckbox } from '../../../../utils';
-import { toggleLoading } from '../../../../actions';
+import FieldSherwood from '../../../../general/FieldSherwood';
+import { fieldLevelNotEmpty, fieldLevelmarkedCheckbox } from '../../../../../utils';
+import { toggleLoading } from '../../../../../actions';
 
 
 const ButtonHolder = styled.div`
