@@ -3,7 +3,8 @@ import { personal_data1, edc_data1, basic_info1 } from '../../src/stories/exampl
 describe('Testing create an investigation', () => {
     it('Introduces info on each field', () => {
         //cy.visit('http://localhost:6006/iframe.html?id=pages-new-investigation--basic&viewMode=story')
-        cy.visit('http://localhost:3000/investigation/create');
+        //cy.visit('http://localhost:3000/investigation/create');
+        cy.visit('https://dashboard.sherwood.science/');
 
         
         cy.loginResearcher();

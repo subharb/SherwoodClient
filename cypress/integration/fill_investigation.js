@@ -2,7 +2,8 @@ import { patients_personal_data, edc_data1, records_patient1, records_patient2 }
 
 describe('Testing create an investigation', () => {
     it('Introduces info on each field', () => {
-        cy.visit('http://localhost:3000/dashboard')
+        //cy.visit('http://localhost:3000/dashboard')
+        cy.visit('https://dashboard.sherwood.science/');
 
         cy.loginResearcher();
 
@@ -12,17 +13,17 @@ describe('Testing create an investigation', () => {
         cy.get('.investigation').first().find('.btn').click();
         
 
-        // patients_personal_data().forEach(patient =>{
-        //     cy.get('button[data-testid="add-patient"]')
-        //     .click();
-        //     Object.keys(patient.personalData).forEach(key =>{
-        //         cy.get('input[name="'+key+'"]')
-        //         .type(patient.personalData[key])
-        //         .should('have.value', patient.personalData[key]);
-        //     });
-        //     cy.get('button[data-testid="continue"]')
-        //         .click();
-        // })             
+        patients_personal_data().forEach(patient =>{
+            cy.get('button[data-testid="add-patient"]')
+            .click();
+            Object.keys(patient.personalData).forEach(key =>{
+                cy.get('input[name="'+key+'"]')
+                .type(patient.personalData[key])
+                .should('have.value', patient.personalData[key]);
+            });
+            cy.get('button[data-testid="continue"]')
+                .click();
+        })             
         cy.get('button[data-testid="add-element"]').first()
             .click();
         
