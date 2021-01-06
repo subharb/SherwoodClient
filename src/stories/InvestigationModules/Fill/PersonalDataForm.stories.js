@@ -28,7 +28,9 @@ export const Edit = Template.bind({});
 Edit.args = {
     fields : personal_data1(),
     initialData:patient_data1(),
-    callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)}
+    callBackForm : (values) => {
+        console.log("Callback BasicInfo", JSON.stringify(values));
+    }
 };
 
  
