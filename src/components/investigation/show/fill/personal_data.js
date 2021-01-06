@@ -10,7 +10,7 @@ export default function PersonalDataForm(props) {
         
         form[value] = {...PERSONAL_DATA_FIELDS[value]}; 
     }
-
+    //Se generan las claves del paciente, tanto para el researcher como para el posterior acceso del paciente
     async function encryptPersonalData(data){
         if(!localStorage.getItem("password")){
             console.error("No password stored!");
@@ -20,20 +20,22 @@ export default function PersonalDataForm(props) {
         const payload = jwt.decode(localStorage.getItem("jwt"));
         const rawKeyResearcher = await decryptData(payload.keyResearcher, password);
 
-        console.log("encryptPersonalData", data);
         let encryptedData = {};
+        //Generación de claves de paciente para researcher y paciente
         const rawPatientKeyResearcher = await generateKey();
-        
+        const rawPatientKeyInvestigation = await generateKey();
         for (const key of Object.keys(data)) {
-            
             encryptedData[key] = await encriptData(data[key], rawPatientKeyResearcher);
-            
-            
-            
         }
+        //Encriptamos la clave con la clave del researcher y una por defecto para el paciente
         const patientKeyEncrResearcher = await encriptData(rawPatientKeyResearcher, rawKeyResearcher);
-        encryptedData["keyPatRes"] = patientKeyEncrResearcher;
-        props.callBackForm(encryptedData);
+        const patientKeyEncrInvestigation = await encriptData(rawPatientKeyInvestigation, process.env.DEFAULT_PATIENT_PASSWORD);
+
+        props.callBackForm({
+            "keyPatInv" : patientKeyEncrInvestigation,
+            "keyPatResearcher" : patientKeyEncrResearcher,
+            "personalData" : encryptedData
+        });
         // //TEST
         // for (const key of Object.keys(encryptedData)) {
         //     console.log("Decripted "+key+" "+await decryptData(encryptedData[key], rawKeyResearcher));
