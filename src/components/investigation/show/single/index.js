@@ -6,6 +6,7 @@ import { ButtonAdd, ButtonBack } from '../../../general/mini_components';
 import Table from '../../../general/table';
 import Axios from 'axios';
 import ShowSurveys from '../fill/show_surveys_patient';
+import { decryptData } from '../../../../utils';
 
 /**
  * 
@@ -16,16 +17,24 @@ export default function ShowInvestigation(props) {
     const [patientIndex, setPatientIndex] = useState(null);
     const [surveyIndex, setSurveyIndex] = useState(null);
     const [patientsData, setPatientsData] = useState(props.investigation.patientsPersonalData ? props.investigation.patientsPersonalData : []);
-    function renderPatientsTable(){
+    async function renderPatientsTable(){
         if(patientsData.length === 0){
             return "You dont have any patients enrolled yet"
         }
-        else{
-            const valuesPatientData = patientsData.map(patient => {
-                return props.investigation.personalFields.map(personalField => {
-                    return patient.personalData[personalField];
-                });
-            })
+        else{            
+            //const rawKeyResearcher = localStorage.getItem("rawKeyResearcher");
+            const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
+            let valuesPatientData = [];
+            for(const patient of patientsData){
+                let encryptedFields = [];
+                for(const personalField of props.investigation.personalFields){
+                    const encryptedField = patient.personalData[personalField];
+                    const decryptedField = await decryptData(encryptedField, rawKeyResearcher);
+                    encryptedFields.push(decryptedField); 
+                }
+                valuesPatientData.push(encryptedFields);
+            }
+            
             return <Table header={props.investigation.personalFields} 
                         values={valuesPatientData} viewCallBack={(index) => showPatient(index)}
                         addCallBack={(index) => {selectPatient(index)}} />
@@ -53,11 +62,11 @@ export default function ShowInvestigation(props) {
         setPatientIndex(index);
         setShowForm(2);
     }
-    async function savePatient(personalData){
+    async function savePatient(patientData){
         //Hay que encriptar los valores del objecto y enviarlo
-        console.log(personalData);
+        console.log(patientData);
         
-        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.investigation.uuid+"/patient", personalData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.investigation.uuid+"/patient", patientData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .catch(err => {console.log('Catch', err); return err;}); 
 
         if(response.request.status === 200){

@@ -157,7 +157,7 @@ export const basic_info1 = () => {
         "acronym":"CN","type":"audit","principal_researcher":"Pedro Rodriguez",
         "institution":"Oxford University","contact":"test@email.com",
         "ethics_body":"12345","reference_number_state":"1",
-        "uuid" : "238b181e-28fd-47a1-bae6-a973c08c8684"
+        "uuid" : "ce0430a6-e333-4c90-9b48-7fc9bbecc38d"
     }    
 }
 
@@ -166,7 +166,10 @@ export const personal_data1 = () => {
 }
 
 export const patient_data1 = () => {
-    return {"name" : "Peter", "surname" : "Petrelli", "phone" : "+34 123 1234", "email" : "peter@sherwood.science"}
+    return {"name" : "U2FsdGVkX1/549BkU0hFEEe6ybHCAQQIvDp3hBvXtzThHXRa3Q001yNHplsrPNc9", 
+            "surname" : "U2FsdGVkX19gyeNwfNSi23TYseiCWwqe0C0A4mwfEVc=", 
+            "phone" : "U2FsdGVkX1/ru9t1lEG5Iho/EUWfsRYQ1JTNOmoyzjU=", 
+            "email" : "U2FsdGVkX19PGWrZ4ggVKCG0tLybQRp7dmfkgQlD864zXxLcDNcBvE3B2DKjE/Ot"}
 }
 export const summary_info1 = () => {
     return {
@@ -181,10 +184,10 @@ export const patients_personal_data = () => {
         {
             "id": "5fe218b524b4213823c82e8d",
             "personalData": {
-                "name": "John",
-                "surname": "Hopkins",
-                "email": "patient@sherwood.science",
-                "phone": "+34 545454"
+                "name" : "U2FsdGVkX1+KDOBCYusKwV2psyZEI1qWaO7CSe2uOo8=", 
+                "surname" : "U2FsdGVkX19gyeNwfNSi23TYseiCWwqe0C0A4mwfEVc=", 
+                "phone" : "U2FsdGVkX1/ru9t1lEG5Iho/EUWfsRYQ1JTNOmoyzjU=", 
+                "email" : "U2FsdGVkX19PGWrZ4ggVKCG0tLybQRp7dmfkgQlD864zXxLcDNcBvE3B2DKjE/Ot"
             }
         },
         {
@@ -199,7 +202,6 @@ export const patients_personal_data = () => {
             
         },
         {
-            
             "id": "5fccaee78583362dd3d50248",
             "personalData": {
                 "name" : "Peter",

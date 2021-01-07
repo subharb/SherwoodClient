@@ -36,10 +36,10 @@ export default function PersonalDataForm(props) {
             "keyPatResearcher" : patientKeyEncrResearcher,
             "personalData" : encryptedData
         });
-        // //TEST
-        // for (const key of Object.keys(encryptedData)) {
-        //     console.log("Decripted "+key+" "+await decryptData(encryptedData[key], rawKeyResearcher));
-        // }
+        //TEST
+        for (const key of Object.keys(encryptedData)) {
+            console.log("Decripted "+key+" "+await decryptData(encryptedData[key], rawKeyResearcher));
+        }
     }
 
     return (
