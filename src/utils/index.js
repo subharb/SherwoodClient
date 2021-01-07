@@ -116,14 +116,14 @@ export async function importKey(key){
     return keyObj;
 }
 
-export async function encriptData(data, key){
+export function encriptData(data, key){
     var KeyObj = CryptoJS.AES.encrypt(data, key);
     var ciphertext = KeyObj.toString();
     console.log(KeyObj);
     return ciphertext;
 }
 
-export async function decryptData(ciphertext, key){
+export function decryptData(ciphertext, key){
 
     var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
     var originalText = bytes.toString(CryptoJS.enc.Utf8);

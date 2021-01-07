@@ -18,31 +18,29 @@ export default function ShowInvestigation(props) {
     const [surveyIndex, setSurveyIndex] = useState(null);
     const [patientsData, setPatientsData] = useState(props.investigation.patientsPersonalData ? props.investigation.patientsPersonalData : []);
     const [decryptedPatientData, setDecryptedPatientData] = useState([]);
-    async function decriptPatientData() {
+    
+    useEffect(() => {  
         if(patientsData.length !== 0 && patientsData.length !== decryptedPatientData.length){
             const rawKeyResearcher = localStorage.getItem("rawKeyResearcher");
             //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
-    
+            let tempDecryptedData = []
             for(const patient of patientsData){
                 let encryptedFields = [];
-                const keyPatientResearcher = await decryptData(patient.keyPatResearcher, rawKeyResearcher);
+                const keyPatientResearcher = decryptData(patient.keyPatResearcher, rawKeyResearcher);
                 for(const personalField of props.investigation.personalFields){
                     const encryptedField = patient.personalData[personalField];
                     if(!encryptedField){
                         console.error("No coinciden campos!");
                         return "error!";
                     }
-                    const decryptedField = await decryptData(encryptedField, keyPatientResearcher);
+                    const decryptedField = decryptData(encryptedField, keyPatientResearcher);
                     encryptedFields.push(decryptedField); 
                 }
-                decryptedPatientData.push(encryptedFields);
+                tempDecryptedData.push(encryptedFields);
             }
-            setDecryptedPatientData(decryptedPatientData);
+            setDecryptedPatientData(tempDecryptedData);
         }
-    }
-    useEffect(() => {
-        decriptPatientData();
-     })
+    })
 
     function renderPatientsTable(){
         if(patientsData.length === 0){

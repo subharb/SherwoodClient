@@ -24,11 +24,11 @@ export default function PersonalDataForm(props) {
         const rawPatientKeyResearcher = await generateKey();
         const rawPatientKeyInvestigation = await generateKey();
         for (const key of Object.keys(data)) {
-            encryptedData[key] = await encriptData(data[key], rawPatientKeyResearcher);
+            encryptedData[key] =  encriptData(data[key], rawPatientKeyResearcher);
         }
         //Encriptamos la clave con la clave del researcher y una por defecto para el paciente
-        const patientKeyEncrResearcher = await encriptData(rawPatientKeyResearcher, rawKeyResearcher);
-        const patientKeyEncrInvestigation = await encriptData(rawPatientKeyInvestigation, process.env.DEFAULT_PATIENT_PASSWORD);
+        const patientKeyEncrResearcher =  encriptData(rawPatientKeyResearcher, rawKeyResearcher);
+        const patientKeyEncrInvestigation =  encriptData(rawPatientKeyInvestigation, process.env.DEFAULT_PATIENT_PASSWORD);
 
         props.callBackForm({
             "keyPatInv" : patientKeyEncrInvestigation,
@@ -37,7 +37,7 @@ export default function PersonalDataForm(props) {
         });
         //TEST
         for (const key of Object.keys(encryptedData)) {
-            const decriptedValue = await decryptData(encryptedData[key], rawPatientKeyResearcher);
+            const decriptedValue =  decryptData(encryptedData[key], rawPatientKeyResearcher);
             console.log("Decripted "+key+" "+decriptedValue);
         }
     }
