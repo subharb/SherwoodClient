@@ -16,9 +16,8 @@ export default function PersonalDataForm(props) {
             console.error("No password stored!");
             return "error";
         }
-        const password = localStorage.getItem("password");
-        const payload = jwt.decode(localStorage.getItem("jwt"));
-        const rawKeyResearcher = await decryptData(payload.keyResearcher, password);
+    
+        const rawKeyResearcher = localStorage.getItem("rawKeyResearcher"); //await decryptData(payload.keyResearcher, password);
 
         let encryptedData = {};
         //Generación de claves de paciente para researcher y paciente
@@ -38,7 +37,8 @@ export default function PersonalDataForm(props) {
         });
         //TEST
         for (const key of Object.keys(encryptedData)) {
-            console.log("Decripted "+key+" "+await decryptData(encryptedData[key], rawKeyResearcher));
+            const decriptedValue = await decryptData(encryptedData[key], rawPatientKeyResearcher);
+            console.log("Decripted "+key+" "+decriptedValue);
         }
     }
 

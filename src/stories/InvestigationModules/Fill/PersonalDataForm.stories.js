@@ -20,7 +20,7 @@ const Template = (args) => <PersonalDataForm {...args} />;
 
 export const Basic = Template.bind({});
 Basic.args = {
-    fields : ["name", "surname", "address"],
+    fields : personal_data1(),
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)}
 };
 

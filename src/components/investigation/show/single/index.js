@@ -17,26 +17,40 @@ export default function ShowInvestigation(props) {
     const [patientIndex, setPatientIndex] = useState(null);
     const [surveyIndex, setSurveyIndex] = useState(null);
     const [patientsData, setPatientsData] = useState(props.investigation.patientsPersonalData ? props.investigation.patientsPersonalData : []);
-    async function renderPatientsTable(){
-        if(patientsData.length === 0){
-            return "You dont have any patients enrolled yet"
-        }
-        else{            
-            //const rawKeyResearcher = localStorage.getItem("rawKeyResearcher");
-            const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
-            let valuesPatientData = [];
+    const [decryptedPatientData, setDecryptedPatientData] = useState([]);
+    async function decriptPatientData() {
+        if(patientsData.length !== 0 && patientsData.length !== decryptedPatientData.length){
+            const rawKeyResearcher = localStorage.getItem("rawKeyResearcher");
+            //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
+    
             for(const patient of patientsData){
                 let encryptedFields = [];
+                const keyPatientResearcher = await decryptData(patient.keyPatResearcher, rawKeyResearcher);
                 for(const personalField of props.investigation.personalFields){
                     const encryptedField = patient.personalData[personalField];
-                    const decryptedField = await decryptData(encryptedField, rawKeyResearcher);
+                    if(!encryptedField){
+                        console.error("No coinciden campos!");
+                        return "error!";
+                    }
+                    const decryptedField = await decryptData(encryptedField, keyPatientResearcher);
                     encryptedFields.push(decryptedField); 
                 }
-                valuesPatientData.push(encryptedFields);
+                decryptedPatientData.push(encryptedFields);
             }
-            
+            setDecryptedPatientData(decryptedPatientData);
+        }
+    }
+    useEffect(() => {
+        decriptPatientData();
+     })
+
+    function renderPatientsTable(){
+        if(patientsData.length === 0){
+            return <div>You dont have any patients enrolled yet</div>
+        }
+        else{            
             return <Table header={props.investigation.personalFields} 
-                        values={valuesPatientData} viewCallBack={(index) => showPatient(index)}
+                        values={decryptedPatientData} viewCallBack={(index) => showPatient(index)}
                         addCallBack={(index) => {selectPatient(index)}} />
         }
     }
@@ -96,17 +110,6 @@ export default function ShowInvestigation(props) {
         }
         //setShowForm(0);
     }
-    // function getNamePatient(){
-    //     let patientName = "";
-    //     if(props.investigation.personalFields.includes("name")){
-    //         patientName = patientsData[patientIndex].personalData["name"]
-    //     }
-    //     if(props.investigation.personalFields.includes("surname")){
-    //         patientName += " "+patientsData[patientIndex].personalData["surname"]
-    //     }
-    //     patientName += " - "+patientsData[patientIndex].id;
-    //     return patientName;
-    // }
     function renderForm(){
         switch(showForm){
             case 0:
@@ -115,7 +118,8 @@ export default function ShowInvestigation(props) {
                     renderSurveysTable()
                 ]
             case 1:
-                return <PersonalDataForm fields={ props.investigation.personalFields} initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
+                return <PersonalDataForm fields={ props.investigation.personalFields} 
+                            initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
             case 2: 
             //Add Data
                 return <ShowSurveys mode="add" patient={patientsData[patientIndex]} saveRecord={saveRecord}
