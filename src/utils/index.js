@@ -133,6 +133,160 @@ export async function decryptData(ciphertext, key){
     return originalText;
 }
 
+export const isUserLoggedIn = () => localStorage.getItem("jwt");
+
+
+export const PERSONAL_DATA_FIELDS = {
+    "name" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.name",
+        shortLabel:"investigation.create.personal_data.fields.name",
+        validation : "textMin2"
+    },
+    "surname" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.surname",
+        shortLabel:"investigation.create.personal_data.fields.surname",
+        validation : "textMin2"
+    },
+    "birthdate" : {
+        required : false,
+        type:"date",
+        label:"investigation.create.personal_data.fields.birthdate",
+        shortLabel:"investigation.create.personal_data.fields.birthdate",
+        validation : "textMin2"
+    },
+    "address" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.address",
+        shortLabel:"investigation.create.personal_data.fields.address",
+        validation : "textMin2"
+    },
+    "health_id" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.health_id",
+        shortLabel:"investigation.create.personal_data.fields.health_id",
+        validation : "textMin2"
+    },
+    "national_id" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.national_id",
+        shortLabel:"investigation.create.personal_data.fields.national_id",
+        validation : "textMin2"
+    },
+    "email" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.email",
+        shortLabel:"investigation.create.personal_data.fields.email",
+        validation : "textMin2"
+    },
+    "phone" : {
+        required : false,
+        type:"text",
+        label:"investigation.create.personal_data.fields.phone",
+        shortLabel:"investigation.create.personal_data.fields.phone",
+        validation : "textMin2"
+    }
+}
+
+export const FIELDS_BASIC_INFO = {
+    "name":{
+        required : true,
+        type:"text",
+        label:"investigation.create.edc.name",
+        validation : "textMin2",
+        value: ""
+    },
+    "acronym":{
+        required : true,
+        type:"text",
+        label:"investigation.create.edc.acronym",
+        validation : "notEmpty",
+        value: ""
+    },
+    "type":{
+        required : true,
+        type:"select",
+        label:"investigation.create.edc.type",
+        validation : "notEmpty",
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+        options : [
+                {"text" : "investigation.create.edc.type_study.audit", "value" : "audit"},
+                {"text" : "investigation.create.edc.type_study.clinical_research_study", "value" : "clin_res"},
+                {"text" : "investigation.create.edc.type_study.medical_device", "value" : "med_dev"},
+                {"text" : "investigation.create.edc.type_study.clinical_trial", "value" : "clin_trial"}
+            ],
+        value: ""
+    },
+    "principal_researcher":{
+        required : true,
+        type:"text",
+        label:"investigation.create.edc.principal_researcher",
+        validation : "textMin2",
+        value: ""
+    },
+    "other_researcher":{
+        required : true,
+        type:"options",
+        element:"text",//El tipo de cada una de las opciones
+        label:"investigation.create.edc.other_researchers",
+        validation : "textMin2",
+        value: ""
+    },
+    "institution":{
+        required : true,
+        type:"text",
+        label:"investigation.create.edc.institution",
+        validation : "textMin2",
+        value: ""
+    },
+    "contact":{
+        required : true,
+        type:"text",
+        label:"investigation.create.edc.contact",
+        validation : "textMin2",
+        value: ""
+    },
+    "ethics_body":{
+        required : true,
+        type:"text",
+        label:"investigation.create.edc.ethics_body",
+        validation : "textMin2",
+        value: ""
+    },
+    "reference_number_state":{
+        required : true,
+        type:"select",
+        label:"investigation.create.edc.reference_number_state",
+        validation : "notEmpty",
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+        options : [
+                {"text" : "investigation.create.edc.reference_number_state_type.not_applicable", "value" : 0},
+                {"text" : "investigation.create.edc.reference_number_state_type.pending", "value" : 1},
+                {"text" : "investigation.create.edc.reference_number_state_type.approved", "value" : 2},
+            ],
+        value: "",
+        activationValues : ["2"],
+        activatedFields:[
+            {
+                required : true,
+                name : "reference_number",
+                type:"text",
+                label:"investigation.create.edc.reference_number",
+                validation : "textMin2",
+                value: ""
+            }
+        ]
+    },
+    
+}
+
 export const templateField = {
     required : true,
     type:"text",
@@ -140,4 +294,33 @@ export const templateField = {
     shortLabel: "investigation.create.consent.reason",
     validation : "notEmpty",
     is_personal_data:true
+}
+
+export function numberRecordsSection(section, records){
+    let nRegistros = 0
+    for(let i = 0; i < records.length; i++){
+        const patientRecord = records[i];
+        for(let j = 0; j < patientRecord.submission.length;j++){
+            const submission = patientRecord.submission[j];
+            if(submission.id_section === section._id){
+                nRegistros++;
+            }
+        }
+    }
+    return nRegistros;
+}
+
+export function findSubmissionsFromSection(records, sectionID){
+    let submissionsSection = [];
+    for(let i = 0; i < records.length; i++){
+        const patientRecord = records[i];
+        for(let j = 0; j < patientRecord.submission.length;j++){
+            const submission = patientRecord.submission[j];
+            if(submission.id_section === sectionID){
+                submissionsSection.push(submission);
+                
+            }
+        }
+    }
+    return submissionsSection;
 }

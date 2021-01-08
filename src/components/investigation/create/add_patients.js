@@ -107,7 +107,7 @@ class AddPatients extends Component {
     render() {
         return ([
             <Modal key="modal" open={this.state.addingPatient} 
-                title={this.props.translate("investigation.create.survey.add_field")} 
+                title={this.props.translate("investigation.create.edc.add_field")} 
                 component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} />} 
                 closeCallBack={this.closeModal}
                 />,

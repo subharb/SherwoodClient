@@ -1,17 +1,13 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 import M from 'materialize-css';
-import "materialize-css/dist/css/materialize.min.css";
+
 import PropTypes from 'prop-types'; 
 
 const ModalContent = styled.div`
-    text-align:center;
+    
 `;
-const CloseButton = styled.button`
-    position: absolute;
-    bottom: 1.3rem;
-    right: 1rem;
-`;
+
 export default class Modal extends Component{
     constructor(props){
         super(props);
@@ -62,17 +58,15 @@ export default class Modal extends Component{
         console.log("Modal render");
         if(this.props.open){
             return (
-                <div ref={this.modal}  id="modal1" className="modal">
-                    <ModalContent className="modal-content">
-                        <h4>{this.props.title}</h4>
-                        {this.props.component}
-                        {this.props.callBackForm &&
-                            <button data-testid="cancel" onClick={this.props.callBackForm} className="waves-effect waves-light btn">Continue</button>
-                        } 
-                        {this.props.closeCallBack &&
-                            <CloseButton data-testid="cancel" onClick={this.props.closeCallBack} className="waves-effect waves-light btn red lighten-1">Cancel</CloseButton>
-                        }                        
-                    </ModalContent>
+                <div ref={this.modal}  id="modal1" className="modal" tabIndex="-1">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                <h5 className="">{this.props.title}</h5>
+                                {this.props.component}
+                            </div>
+                        </div>
+                    </div>
                 </div> 
             );
         }
@@ -80,7 +74,6 @@ export default class Modal extends Component{
             return(
                 <div ref={this.modal}  id="modal1" className="modal">
                     <div className="modal-content">
-                        
                     </div>
                 </div> 
             );

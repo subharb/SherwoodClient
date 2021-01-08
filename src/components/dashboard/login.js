@@ -9,6 +9,7 @@ import FieldSherwood  from '../general/FieldSherwood';
 import Header from '../general/header';
 import LoadingScreen from '../general/loading_screen';
 import { validateField } from '../../utils';
+import { ButtonContinue } from '../../components/general/mini_components';
 
 /**
  * Component for login researchers
@@ -20,6 +21,7 @@ import { validateField } from '../../utils';
  */
 const Container = styled.div`
     justify-content:center;
+    background-color: ${props => props.theme.buttonContinue.background};
 `;
 
 const FIELDS = {
@@ -84,31 +86,31 @@ class Login extends Component {
         return ([
             <LoadingScreen />,
             <Header key="header" />,
-            <Container key="container" >            
+            <Container className="container" key="container" >            
                 <div className="row">
-                    <div className="col s10 m5 l3 offset-s1 offset-m4 offset-l5"> 
+                    <div className="col-s12 col-lg6 mx-auto"> 
                     <div className="card white darken-1">
-                        <div className="card-content">
-                            <span className="card-title">Login</span>
-                            <div className="row">
+                        <div className="card-body">
+                            <span className="card-title mx-auto">Login</span>
+                            <div className="row mx-auto">
                                 <form onSubmit={this.props.handleSubmit(values => this.handleLogin(values))} className="col s12 text-center">
                                     {this.state.loading &&
                                         <span>Cargando...</span>
                                     }
                                     <div className="row">
-                                        <div className="input-field col s12">
+                                        <div className=" col-s12">
                                             <Field disabled={this.state.loading} key="email" type="text" name="email" required={true}  component={FieldSherwood} label="login.email"/>
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="input-field col s12">
+                                        <div className=" col-s12">
                                         <Field disabled={this.state.loading} key="password" type="password" name="password" required={true}  component={FieldSherwood} label="login.password"/>
                                         </div>
                                     </div>
                                     {this.state.error && 
                                         <div>Login Error</div>
                                     }
-                                    <button disabled={this.state.loading} className="waves-effect waves-light btn">Login</button>
+                                    <ButtonContinue type="submit" disabled={this.state.loading}>Login</ButtonContinue>
                                 </form>
                             </div>
                         </div>

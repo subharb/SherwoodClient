@@ -7,27 +7,34 @@ export default ChildComponent => {
     class withLoggedUser extends React.Component {
         async componentDidMount(){
             //Compruebo que hay un jwt
+            const redirectUrl = localStorage.getItem('type') === null ?  "/researcher/login" :  "/"+localStorage.getItem('type')+"/login";
             if(localStorage.getItem("jwt") !==""){
                 console.log(localStorage.getItem('jwt'));
-                const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/validate')
+                const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
                 .catch(err => {console.log('Catch', err); return err;}); 
             
                 //Guardamos el token si la request fue exitosa
                 if(request.status !== 200){
                     //redirect a /login
-                    this.props.history.push("/"+localStorage.getItem('type')+"/login");
+                    this.props.history.push(redirectUrl);
                 }
             }
             else{
-                this.props.history.push("/"+localStorage.getItem('type')+"/login");
+                this.props.history.push(redirectUrl);
             }
         }
   
   
-      render() {
+    render() {
         // ... y renderiza el componente envuelto con los datos frescos!
         // Toma nota de que pasamos cualquier prop adicional
-        return <ChildComponent {...this.props} />;
+        if(localStorage.getItem("type") === "researcher" || localStorage.getItem("type") === "patient"){
+            return <ChildComponent {...this.props} />;
+        }
+        else{
+            return "Not logged in";
+        }
+        
       }
     }
     return withRouter(withLoggedUser);

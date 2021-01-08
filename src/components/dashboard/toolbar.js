@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import M from 'materialize-css';
-import 'materialize-css/dist/css/materialize.min.css';
+
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Translate } from 'react-localize-redux';
@@ -30,24 +30,21 @@ class Toolbar extends Component {
     }
     componentDidMount(){
         var elems = document.querySelectorAll('.collapsible');
-        var instances = M.Collapsible.init(elems, {});
+        //var instances = M.Collapsible.init(elems, {});
     }
     selected(index){
         this.setState({selected:index});
     }
     render() {
-        if(localStorage.getItem("type") === "researcher"){
+        if(this.props.typeUser === "researcher"){
             return (
-                <div className="col s3">
-                    <Container>
+                    <Container className="card">
                         <ul className="collapsible">
                             <li>
                                 <div className="collapsible-header"><Icon selected = {this.state.selected === 0} className="material-icons">biotech</Icon><CustomLink selected = {this.state.selected === 0} onClick={ () => this.selected(0)} to="/investigation/create"><Translate id="dashboard.create_investigation" /></CustomLink></div>
-                                
                             </li>
                             <li>
                                 <div className="collapsible-header"><Icon selected = {this.state.selected === 1} className="material-icons">file_copy</Icon><CustomLink selected = {this.state.selected === 1} onClick={() => this.selected(1)} to="/investigation/draft"><Translate id="dashboard.draft_investigations" /></CustomLink></div>
-                                
                             </li>
                             <li>
                                 <div className="collapsible-header"><Icon selected = {this.state.selected === 2} className="material-icons">whatshot</Icon><CustomLink selected = {this.state.selected === 2} onClick={() => this.selected(2)} to="/investigation/live"><Translate id="dashboard.live_investigations" /></CustomLink></div>
@@ -57,12 +54,12 @@ class Toolbar extends Component {
                             </li>
                         </ul>
                     </Container>
-                </div>
+            
             )
         }
-        else if(localStorage.getItem("type") === "patient"){
+        else if(this.props.typeUser  === "patient"){
             return (
-                <Container>
+                <Container className="card">
                     <ul className="collapsible">
                         <li>
                             <div className="collapsible-header"><i className="material-icons">biotech</i><Translate id="dashboard.investigation" /></div>
@@ -82,6 +79,10 @@ class Toolbar extends Component {
             )
         }
     }
+}
+
+Toolbar.propTypes = {
+    typeUser : PropTypes.string
 }
 
 export default withRouter(Toolbar);

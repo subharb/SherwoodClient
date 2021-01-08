@@ -3,7 +3,12 @@
     "general" : {
         "yes" : ["Yes", "No"], 
         "no" : ["No", "No"], 
-        "delete" : ["Delete", "Borrar"]
+        "delete" : ["Delete", "Borrar"],
+        "cancel" : ["Cancel", "Cancelar"],
+        "edit" : ["Edit", "Editar"],
+        "back" : ["Back", "Atrás"],
+        "add" : ["Add", "Añadir"],
+        "view" : ["View", "Ver"]
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],
@@ -50,16 +55,16 @@
         },
         "researcher" : {
             "personal_info" : {
-                "explanation" : ["Welcome to Sherwood Science, the first Privacy by design tool for researchers. Let me guide you through the register process. </br>We will need few personal details start. This information is useful for statistical purposes and address you personally."]
+                "explanation" : ["Few details to address you appropiately"]
             },
             "contact_info" : {
-                "explanation" : ["We use a double factor login, to ensure security measures in your account. This information will not be shared with anyone, any communication regarding Sherwood will be done within the platform."]
+                "explanation" : ["We will use these information for you to access safely you information"]
             },
             "password" : {
-                "explanation" : ["Choose a password that is at least 6 characters long, that is easy to remember since this password will be used to encrypt information within Sherwood."]
+                "explanation" : ["Choose a password that is at least 6 characters long"]
             },
             "key_generation" : {
-                "explanation" : ["Here's your Personal Key to Sherwood. Please store it in a safe place. Think of it as a PUK number, in case you loose your password(from the previous step) you will be able to regain access using this key. Please confirm that you have stored it securely by introducing the text 'CONFIRM' in the input below."],
+                "explanation" : ["Once you have saved in a secure place your key please write the text 'CONFIRM', in the box below", "Una vez haya guardado el la clave en un lugar seguro, por favor introduzca el texto en la caja"],
                 "key" : ["Key", "Clave"],
                 "email_error" : ["This email is already in use", "Este email ya se ha usado"]
             },
@@ -89,23 +94,102 @@
     },
     "investigation" : {
         "create" : {
-            "survey" : {
-                "title" : ["Create Investigation", "Crear Investigation"],
-                "name" : ["Investigation's name", "Nombre de la investigación"],
-                "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
-                "description" : ["Description", "Descripción"],
+            "steps" : {
+                "basic_info" : ["Basic Info", "Información básica"],
+                "edc" : ["EDC", "EDC"],
+                "personal_data" : ["Personal Data", "Datos Personales"],
+                "sections" : ["Create Surveys", "Crear formulario"],
+                "patient_sheet" : ["Patient Sheet Information", "Documento de aceptación de paciente"],
+                "consents" : ["Consent forms", "Formularios de consentimiento"],
+                "summary" : ["Summary", "Resumen"]
+            },
+            "personal_data" : {
+                "title" : ["Personal Data", "Datos Personales"],
+                "intro" : ["Please select the personal data you are planning to include in your investigation" ,"Seleccione los datos personales que desea incluir en su investigación"],
+                "fields" : {
+                    "name" : ["Name", "Nombre"],
+                    "surname" : ["Surname", "Apellidos"],
+                    "address" : ["Address", "Dirección"],
+                    "health_id" : ["Health ID", "Nº Seguridad social"],
+                    "national_id" : ["National ID", "DNI"],
+                    "email" : ["Email", "Email"],
+                    "phone" : ["Phone", "Nº Teléfono"],
+                    "birthdate" : ["Date of birth", "Fecha de nacimiento"]
+                }
+            }, 
+            "edc" : {
+                "title" : ["EDC Design", ""],
+                "intro" : ["The Electronic Data Capture (EDC) design tool will allow you to create the necessary data collection forms and questionnaires to populate your database. Please follow our smart assistant who will take you through the process.", ""],
+                "no_sections" : ["You haven't added any sections yet"],
+                "data_collections" : {
+                    "title" : ["Data Collection", "Colleción de datos"],
+                    "intro" : ["Each data collection can have several sections" , "Ca"], 
+                    "new" : ["New data collection"],
+                    "name" : ["Data Collection name", "Nombre de la collección de datos"],
+                    "none" : ["You have no data collections", "No has creado ninguna collección de datos"],
+                    "number_sections" : ["Number sections", "Número de secciones"],
+                    "save" : ["Save Data Collection" , "Guardar Data Collection"]
+                },
+                "section" : {
+                    "name" : ["Section", "Sección"],
+                    "new" : ["New section"],
+                    "edit_section" : ["Edit section"],
+                    "section_name" : ["Name", "Nombre"],
+                    "add_section" : ["Add section"],
+                    "none" : ["You have no sections", "No has creado ninguna sección"]
+                },
+                "name" : ["Study's name", "Nombre de la investigación"],
                 "add_field" : ["Add field", "añadir campo"], 
                 "required" : ["Required", "Obligatorio"],
+                "repeats" : ["Repeats", "Repite"],
+                "number_fields" : ["# fields", "Nº Campos"],
                 "name_field" : ["Name of the field in your report", "Nombre del campo en los informes"], 
                 "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?"], 
                 "question_field" : ["Question that will be shown in the form", "La pregunta que aparecerá en el formulario"],
+                "other_researchers" : ["Add other researchers", "Añadir otros investigadores"],
+                "institution" : ["Institution", "Organización"],
+                "contact" : ["Contact details", "Datos de contacto"],
+                "principal_researcher" : ["Principal researcher", "Investigador principal"],
+                "ethics_body" : ["Ethics Committee Body", "Comité ético"],
+                "reference_number" : ["Reference number", "Nº referencia"],
+                "reference_number_state" : ["Study State", "Estado estudio"],
+                "reference_number_state_type" : {
+                    "not_applicable" : ["Not aplicable", "No aplicable"],
+                    "pending" : ["Pending", "Pendiente"],
+                    "approved" : ["Approved", "Aprobado"]
+                },
                 "no_fields" : ["No fields added yet", "No se han añadido campos aún"], 
                 "type_text" : ["Text", "texto"],
                 "type_number" : ["Number", "Número"],
+                "checkbox" : ["Checkbox", "Checkbox"],
+                "multioption" : ["Multioption", "Multiopción"],
+                "dropdown" : ["Dropdown", "Despegable"],
                 "type_date" : ["Date", "fecha"], 
                 "choose" : ["Choose your option", "Elija una opción"],
                 "personal_info" : ["Is it a personal data", "¿Es un dato personal?"],
-                "choose_patient" : ["Choose a patient", "Elija un paciente"]
+                "choose_patient" : ["Choose a patient", "Elija un paciente"],
+                "type" : ["Type study", "Tipo de estudio"],
+                "type_study" : {
+                    "audit" : ["Audit", "Auditoría"],
+                    "clinical_trial" : ["Clinical Trial", "Ensayo clínico"],
+                    "medical_device" : ["Medical Device", "Aparato Médico"],
+                    "clinical_research_study" : ["Clinical Research Study", "Investigación Clínica"]
+                }
+            },
+            "pis" : {
+                "title" : ["PIS generator", "Generador PIS"],
+                "intro" : ["The information provided to participants is crucial for a number of reasons:  It explains to individuals everything that will happen to them, should they consent to participate; it allows them to weigh up the risks and benefits of taking part; and it ensures that the information provided to them is fully documented from a legal perspective.  All of the above should be achieved in as concise a way as possible, without compromising clarity.</br>Our smart PIS generator will guide you to design study information sheets. Please contact our team at <a href='mailto:support@sherwood.science'>support@sherwood.science</a> for more information.",
+                            "texto intro"],
+                "pis_version" : ["PIS version(e.g. 1.0)", "PIS version(e.g. 1.0)"],
+                "date" : ["PIS Date", "Fecha PIS"],
+                "participants_age" : ["Participant's age", "Edad de los participantes"],
+                "ages" : {
+                    "adult" : ["Adult participants", "Adultos"],
+                    "children11-16" : ["Children 11-16", "Niños 11-16"],
+                    "children5-10" : ["Children 5-10", "Niños 5-10"],
+                    "children<5" : ["Children <5", "Niños <5"]
+                },    
+                "introduction" : ["Invitation paragraph", "Párrafo introductorio"]                
             },
             "add_patients" : {
                 "title" : ["Add patients", "Añadir pacientes"],
@@ -127,7 +211,7 @@
             },
             "summary" : {
                 "title" : ["Summary Investigation", "ResumenInvestigation"],
-                "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
+                "explanation" : ["Check all the sections before saving the investigation", "Revise las secciones antes de guardar"],
                 "patients" : ["Patients", "Pacientes"],
                 "email" : ["email", "email"],
                 "review_consents" : ["Review consent", "Revisar el consentimiento"],
@@ -139,10 +223,22 @@
                 "survey" : ["Survey", "Formulario"],
                 "personal_data" : ["Personal Data", "Datos Personales"]
             },
-            "save_and_send" : ["Save & send e-consents", "Guardar y enviar consentimientos"],
+            "continue" : ["Continue", "Continuar"],            
+            "save_and_publish" : ["Save & publish", "Guardar y publicar"],
             "save" : ["Save", "Guardar"]
         },
+        "fill" : {
+            "personal_data" : {
+                "title" : ["Personal Data", "Datos Personales"],
+                "description" : ["Fill the personal information of the patient", "Rellene los datos personales del paciente"]
+            },
+            "survey" : {
+                "patient_name" : ["Patient's Name", "Nombre del Paciente"],
+                "title" : ["Data Collections", "Collecciones de datos"]
+            }
+        },
         "show" : {
+            
             "view_investigation" : ["View Investigation", "Ver investigación"],
             "title" : ["Title", "Título"],
             "date_created" : ["Date create", "Fecha de creación"],
@@ -172,6 +268,7 @@
         "table" : {
             "is_personal_data" : ["personal data", "dato personal"],
             "name" : ["name field", "nombre campo"], 
+            "required" : ["Required", "Obligatorio"],
             "type" : ["type", "tipo"], 
             "question" : ["question", "pregunta"]
         },    

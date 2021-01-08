@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import NewSurvey  from './new_survey';
-import AddPatients from './add_patients';
+import BasicInfo  from './basic_info2';
+import PersonalData from './personal_data';
 import Summary from './summary';
 import { fetchInvestigation } from '../../../actions';
-import AddConsents from './consent';
+import axios from 'axios';
+import Breadcrumb from '../../general/breadcrumb';
+import EDC from './edc';
+import { toggleLoading } from '../../../actions';
 
 const Container = styled.div`
     padding:1rem;
@@ -17,77 +20,66 @@ class NewInvestigation extends Component {
         
         this.addData = this.addData.bind(this);
         this.stepBack = this.stepBack.bind(this);
-        
-        let investigation = { survey : {}, patients : [], consents : []};
+        this.goToStep = this.goToStep.bind(this);
+        this.saveData = this.saveData.bind(this);
 
-        if(props.investigation){
-            investigation = props.investigation;
-
+        this.steps = {
+            basic_info : "investigation.create.steps.basic_info",
+            personal_data:"investigation.create.steps.personal_data",
+            edc : "investigation.create.steps.edc",
+            // pis : "investigation.create.steps.patient_sheet",
+            // consent : "investigation.create.steps.consents",
+            summary : "investigation.create.steps.summary"
         }
-        this.state = {step : 0, investigation}
-        // this.state = {step:1, 
-        //     investigation : {
-        //         title : "My first investigation",
-        //         description: "My first description",
-        //         survey: {
-        //             fields : [  
-        //                 {   "name" : "hemo",
-        //                     "type" : "text",
-        //                     "required" : true,
-        //                     "question" : "Hemoglobina"
-        //                 }
-        //             ],
-        //             personalData : [
-        //                 {   
-        //                 "name" : "name",
-        //                 "required" : true,
-        //                 "type" : "text",
-        //                 "question" :"¿cuál es su nombre?"
-        //             },
-        //             {   
-        //                 "name" : "surnames",
-        //                 "required" : true,
-        //                 "type" : "text",
-        //                 "question" : "¿cuáles son sus apellidos"
-        //             }, 
-        //             ]}
-        //         ,patients:[
-        //             {"email" : "david@sherwood.science", 
-        //                 "keyPatInvEncr" : "U2FsdGVkX18UwefjYdNNYrbOXGfhaosgCltu1Rf7YeALN4SA57aQbejaIP2iczRDOPzzu+WJuJQIon1giKE7uQ==", "tempKey" :"ffu2wyexjxbw6n3sn3tngh"},
-        //             {"email" : "Pedro.rodriguez@hotmail.com",
-        //                 "keyPatInvEncr" : "U2FsdGVkX1/h++4ISsIqAUMsgn6LByXuSlYe5XZLv/IDxPZVK2Sa404sfjyEz5RSubMxp3a5P2YDd5RtK2p/lA==", "tempKey" : "2h1n2cg3inci9irlqugur"}
-        //         ], 
-        //         consents: {
-        //             name: {
-        //             value: 'Identification purposes',
-        //             required: true,
-        //             is_personal_data: true
-        //             },
-        //             surnames: {
-        //             value: 'Identification purposes',
-        //             required: true,
-        //             is_personal_data: true
-        //             },
-        //             store_material: { value: 'Store biological material', is_personal_data: false }
-        //         }
-        //     } 
-        // }
+
+        const initialState = {step : 0, investigation:{}, resultSave:0}
+
+        this.state = {...this.props.initialState, ...initialState};
+    }
+    async saveData(publish){
+        this.props.toggleLoading();
+        let investigationInfo = {...this.state.investigation};
+        investigationInfo.publish = publish ? 1 : 0;
+    
+        console.log("Enviamos: "+JSON.stringify(investigationInfo));
+        let response;
+        if(this.props.hasOwnProperty("uuidInvestigation")){
+            response = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            .catch(err => {console.log('Catch', err); return err;});
+        }
+        else{
+            response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            .catch(err => {console.log('Catch', err); return err;}); 
+        }
+        
+        
+        let tempState = {...this.state};
+        if(response.request.status === 200){
+            console.log("Success!");
+            tempState.resultSave = 1;
+        }
+        else if(response.request.status === 401){
+            localStorage.removeItem("jwt");
+            tempState.resultSave = 2;
+            this.setState(tempState);
+        }
+        this.setState(tempState);
+        this.props.toggleLoading();
+        
+        
     }
     addData(data){
         console.log("New Data!", JSON.stringify(data));
         let tempState = {...this.state};
         switch(this.state.step){
             case 0:
-                tempState.investigation.title = data.title;
-                tempState.investigation.description = data.description;
-                tempState.investigation.survey.fields = data.fields;
-                tempState.investigation.survey.personalData = data.personalData;
+                tempState.investigation.basic_info = {...data};
                 break;
             case 1:
-                tempState.consents = data;
+                tempState.investigation.personal_data = data;
                 break;
             case 2:
-                tempState.patients = data;
+                tempState.investigation.surveys = data.surveys;
                 break;
             case 3:
                 console.log("Send Information!");
@@ -108,63 +100,62 @@ class NewInvestigation extends Component {
     
         this.setState(tempState);
     }
-    componentDidMount(){
-        if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
-            this.props.fetchInvestigation(this.props.uuid);
+    goToStep(step){
+        let tempState = this.state;
+        if(step >= 0 && step < Object.values(tempState.investigation).length){
+            tempState.step = step;
         }
+    
+        this.setState(tempState);
     }
     render() {
+        console.log("Initial data:", this.props.initialState);
         let component = null;
         if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
             return "CARGANDO";
         }
         switch(this.state.step){
             case 0:
-                component = <NewSurvey investigation={ this.props.investigation ? this.props.investigation : this.state.investigation } callBackData={this.addData} 
-                                />
+                component = <BasicInfo initialData={ this.props.initialState ? this.props.initialState.investigation.basic_info : this.state.investigation.basic_info } 
+                                callBackData={this.addData} />
                 break;
-            case 1:
-                component = <AddConsents consents={ this.state.investigation.consents }  personalFields={this.state.investigation.survey.personalData} callBackData={this.addData} 
-                                stepBack = {this.stepBack}/>
+            // case 1:
+            //     component = <PISGenerator callBackData={this.addData} 
+            //                     stepBack = {this.stepBack}/>
+            //     break;
+            // case 2:
+            //     component = <AddConsents consents={ this.state.investigation.consents }  personalFields={this.state.investigation.basic_info.personalData} callBackData={this.addData} 
+            //                     stepBack = {this.stepBack}/>
+            //     break;
+            case 1: 
+                component = <PersonalData initialData={this.props.initialState ? this.props.initialState.investigation.personal_data : this.state.investigation.personal_data } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
-            case 2:
-                component = <AddPatients patients={ this.state.investigation.hasOwnProperty("patients") ? this.state.investigation.patients : false }  callBackData={this.addData} 
-                                stepBack = {this.stepBack}/>
+            case 2: 
+                component = <EDC initialData={this.props.initialState ? {surveys : this.props.initialState.investigation.surveys} : this.state.investigation.surveys ? {surveys : this.state.investigation.surveys } : {surveys : [] }} callBackStepBack = {this.stepBack}  callBackData={this.addData} />
                 break;
             case 3:
-                component = <Summary investigation={ this.state.investigation }
-                                stepBack = {this.stepBack} />
+                component = <Summary initialData={ this.state.investigation } callBackStepBack = {this.stepBack} 
+                                callBackToStep = {this.goToStep} resultSave={ this.state.resultSave }
+                                callBackSave={this.saveData} />
                 break;
             default:
                 component = "Something went wrong";
                 break;
         }
         return(
-            <Container>
-                {component}
-            </Container>
+            <div className="card">
+                <Breadcrumb callBack={this.goToStep} selected={this.state.step} stages={Object.values(this.steps)} /> 
+                <Container>
+                    {component}
+                </Container>
+            </div>
         );
-        
     }
 }
 
 NewInvestigation.propTypes = {
-    uuid: PropTypes.string
+    uuid: PropTypes.string,
+    initialState:PropTypes.object
 }
 
-
-function mapStateToProps(state, ownProps){
-    if(state.investigations.hasOwnProperty(ownProps.uuid)){
-        return{
-            investigation : state.investigations[ownProps.uuid]
-        }
-    }
-    else{
-        return{
-            investigation : null
-        }
-    }
-    
-}
-
-export default connect(mapStateToProps, { fetchInvestigation})(NewInvestigation)
+export default connect(null, { toggleLoading, fetchInvestigation})(NewInvestigation)

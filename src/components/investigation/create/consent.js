@@ -31,7 +31,7 @@ const FIELDS_FORM = {
         label:"investigation.create.consent.name",
         shortLabel: "investigation.create.consent.name",
         validation : "notEmpty",
-        is_personal_data:true
+        encrypted:true
     }
 }
 
@@ -50,7 +50,7 @@ const PERSONAL_FORM = {
         label:"investigation.create.consent.reason",
         shortLabel: "investigation.create.consent.reason",
         validation : "notEmpty",
-        is_personal_data:true
+        encrypted:true
     }
 }
 
@@ -179,7 +179,7 @@ class AddConsents extends Component {
         }, true);
         return ([
             <Modal key="modal" open={this.state.addingConsent} 
-                title={this.props.translate("investigation.create.survey.add_field")} 
+                title={this.props.translate("investigation.create.edc.add_field")} 
                 component={<Form fields={this.currentFormModal} callBackForm={this.handleConsent} />} 
                 closeCallBack={this.closeModal}
             />,

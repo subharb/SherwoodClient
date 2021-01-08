@@ -38,65 +38,65 @@ test("Testing Data appears in summary", async() => {
         fields : [
             {   "is_personal_data":{
                     value:true,
-                    label:"investigation.create.survey.personal_info",
+                    label:"investigation.create.edc.personal_info",
                     shortLabel: "investigation.table.is_personal_data",
                 },
                 "name" : {
                     value : "name",
-                    label:"investigation.create.survey.name_field",
+                    label:"investigation.create.edc.name_field",
                     shortLabel: "investigation.table.name",
                 },
                 "type" : {
                     value:"text",
-                    label : "investigation.create.survey.choose",
+                    label : "investigation.create.edc.choose",
                     shortLabel: "investigation.table.type"                                                
                 },
                 "question" : {
                     value : "¿cuál es su nombre?",
-                    label : "investigation.create.survey.question_field",
+                    label : "investigation.create.edc.question_field",
                     shortLabel: "investigation.table.question",
                 }
             },
             {   "is_personal_data":{
                     value:true,
-                    label:"investigation.create.survey.personal_info",
+                    label:"investigation.create.edc.personal_info",
                     shortLabel: "investigation.table.is_personal_data",
                     
                 },
                 "name" : {
                     value : "surnames",
-                    label:"investigation.create.survey.name_field",
+                    label:"investigation.create.edc.name_field",
                     shortLabel: "investigation.table.name",
                 },
                 "type" : {
                     value:"text",
-                    label : "investigation.create.survey.choose",
+                    label : "investigation.create.edc.choose",
                     shortLabel: "investigation.table.type"                                                
                 },
                 "question" : {
                     value : "¿cuáles son sus apellidos",
-                    label : "investigation.create.survey.question_field",
+                    label : "investigation.create.edc.question_field",
                     shortLabel: "investigation.table.question",
                 }
             },
             {   "is_personal_data":{
                     value:false,
-                    label:"investigation.create.survey.personal_info",
+                    label:"investigation.create.edc.personal_info",
                     shortLabel: "investigation.table.is_personal_data",
                 },
                 "name" : {
                     value : "hemo",
-                    label:"investigation.create.survey.name_field",
+                    label:"investigation.create.edc.name_field",
                     shortLabel: "investigation.table.name",
                 },
                 "type" : {
                     value:"text",
-                    label : "investigation.create.survey.choose",
+                    label : "investigation.create.edc.choose",
                     shortLabel: "investigation.table.type"                                                
                 },
                 "question" : {
                     value : "Hemoglobina",
-                    label : "investigation.create.survey.question_field",
+                    label : "investigation.create.edc.question_field",
                     shortLabel: "investigation.table.question",
                 }
             }

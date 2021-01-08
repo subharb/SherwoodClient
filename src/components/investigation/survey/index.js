@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import Form from '../general/form';
-import { templateField } from '../../utils';
-import SuccessComponent from '../../components/general/success_component';
-import Modal from '../../components/general/modal';
+import Form from '../../general/form';
+import { templateField } from '../../../utils';
+import SuccessComponent from '../../general/success_component';
+import Modal from '../../general/modal';
+import SurveyData from './survey_form';
 
-class SurveyData extends Component {
+class Survey extends Component {
     constructor(props){
         super(props);
 
@@ -48,24 +49,24 @@ class SurveyData extends Component {
             )
         }
         else{
-            let formSurvey = {}
-            const patientOptions = this.state.survey.patients.map(element => {
-                return {text : element.name+" "+element.surnames, value:element.uuid}
-            });
-            formSurvey["uuidPatient"] = {
-                type:"select",
-                required : true,
-                validation : "notEmpty",
-                label : "investigation.create.survey.choose_patient",
-                options:patientOptions,
-                defaultOption:{"text" : "investigation.create.survey.choose", "value" : ""},
-            }
-            this.state.survey.survey.fields.forEach(element => {
-                let field = {...templateField }
-                field.label = element.question;
-                field.required = element.required;
-                formSurvey[element.name] = field;
-            });
+            // let formSurvey = {}
+            // const patientOptions = this.state.survey.patients.map(element => {
+            //     return {text : element.name+" "+element.surnames, value:element.uuid}
+            // });
+            // formSurvey["uuidPatient"] = {
+            //     type:"select",
+            //     required : true,
+            //     validation : "notEmpty",
+            //     label : "investigation.create.edc.choose_patient",
+            //     options:patientOptions,
+            //     defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+            // }
+            // this.state.survey.survey.fields.forEach(element => {
+            //     let field = {...templateField }
+            //     field.label = element.question;
+            //     field.required = element.required;
+            //     formSurvey[element.name] = field;
+            // });
             
             
             return ([
@@ -84,4 +85,4 @@ class SurveyData extends Component {
         
     }
 }
-export default withRouter(SurveyData);
+export default withRouter(Survey);
