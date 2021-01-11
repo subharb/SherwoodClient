@@ -3,7 +3,7 @@ import AllInvestigations from '../../components/investigation/show/all'
 import ProviderSherwood from '../../providerSherwood';
 import { summary_info1 } from '../example_data';
 export default {
-    title: 'Investigation/Modules/All Investigations',
+    title: 'Pages/All Investigations',
     component: AllInvestigations,
     argTypes: {
         typeUser: {

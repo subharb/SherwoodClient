@@ -24,36 +24,10 @@ const jss = create({
 });
 
 function App() {
-  const theme = useSelector((state) => state.themeReducer);
+  
 
   return (
-    <React.Fragment>
-      <Helmet
-        titleTemplate="%s | Material App"
-        defaultTitle="Material App - React Admin & Dashboard Template"
-      />
-      <StylesProvider jss={jss}>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <MuiThemeProvider theme={createTheme(theme.currentTheme)}>
-            <ThemeProvider theme={createTheme(theme.currentTheme)}>
-                <LocalizeProvider initialize={{
-                    languages: [
-                    { name: "English", code: "en" },
-                    { name: "Spanish", code: "es" }
-                    ],
-                    translation: globalTranslations,
-                    options: {
-                    defaultLanguage: "en",
-                        renderToStaticMarkup: renderToStaticMarkup
-                    }
-                            }}>
-                        <Routes />
-                </LocalizeProvider>
-            </ThemeProvider>
-          </MuiThemeProvider>
-        </MuiPickersUtilsProvider>
-      </StylesProvider>
-    </React.Fragment>
+    <Routes />
   );
 }
 

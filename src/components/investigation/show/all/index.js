@@ -1,37 +1,46 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import CardInvestigation from './card_investigation'
 import { Link } from 'react-router-dom';
 import { Translate, withLocalize } from 'react-localize-redux';
+import Loader from '../../../Loader';
+import { useInvestigations } from '../../../../hooks';
 
-class AllInvestigations extends Component {
-  
+function AllInvestigations(props){
+    const [investigations, submitting, errors] = useInvestigations();
     
-    render() {
-        const filteredInvestigations = this.props.investigations.filter(inv => { 
-            
-            if(this.props.filter === "pending"){
+    
+    if(submitting){
+        return <Loader />
+    }
+    else if(errors){
+        return "SE ha producido un error"
+    }
+    else{
+        const filteredInvestigations = investigations.filter(inv => { 
+        
+            if(props.filter === "pending"){
                 return inv.status === 2
             }
-            if(this.props.filter === "ongoing"){
+            if(props.filter === "ongoing"){
                 return inv.status === 3
             }
             //Filtros de researcher
-            if(this.props.filter === "draft"){
+            if(props.filter === "draft"){
                 return inv.status === 0
             }
-            if(this.props.filter === "live"){
+            if(props.filter === "live"){
                 return inv.status === 1
             }
             else return true
         });
-
+    
         if(filteredInvestigations.length === 0){
             return (                
                 <div>
-                    <Translate id={`investigation.show.all.${this.props.typeUser}.no_investigations`} />
-                    {this.props.typeUser === "researcher" && 
+                    <Translate id={`investigation.show.all.${props.typeUser}.no_investigations`} />
+                    {props.typeUser === "researcher" && 
                     [
                         <Translate id="investigation.show.all.add_first_investigation" />,
                         <Link to="/investigation/create" className="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></Link>
@@ -48,12 +57,11 @@ class AllInvestigations extends Component {
                 {
                     filteredInvestigations.map(inves => {
                         return(
-                            
-                                <CardInvestigation title={inves.name} 
-                                    description={inves.description}
-                                    status={inves.status}
-                                    textUrl={<Translate id="investigation.show.view_investigation" />}
-                                    url={`/investigation/show/${inves.uuid}`}/>
+                            <CardInvestigation title={inves.name} 
+                                description={inves.description}
+                                status={inves.status}
+                                textUrl={<Translate id="investigation.show.view_investigation" />}
+                                url={`/investigation/show/${inves.uuid}`}/>
                             
                         );
                     })
@@ -61,6 +69,8 @@ class AllInvestigations extends Component {
                 </div>)
         }
     }
+    
+    
 }
 AllInvestigations.propTypes = {
     initialData: PropTypes.object,

@@ -75,6 +75,10 @@ const Profile = async(() => import("../pages/pages/Profile"));
 const Settings = async(() => import("../pages/pages/Settings"));
 const Tasks = async(() => import("../pages/pages/Tasks"));
 const Projects = async(() => import("../pages/pages/Projects"));
+const Investigations = async(() => import("../components/investigation/show/all"));
+const DraftInvestigations = async(() => import("../components/investigation/show/all"));
+const LiveInvestigations = async(() => import("../components/investigation/show/all"));
+
 const Calendar = async(() => import("../pages/pages/Calendar"));
 const Chat = async(() => import("../pages/pages/Chat"));
 
@@ -111,6 +115,26 @@ const Landing = async(() => import("../pages/presentation/Landing"));
 
 // Protected routes
 const ProtectedPage = async(() => import("../pages/protected/ProtectedPage"));
+
+const investigationsRoutes = {
+    id: "Investigations",
+    path: "/investigations/all",
+    icon: <Briefcase />,
+    badge: "8",
+    component: Investigations,
+    children: [
+        {
+            path: "/investigations/draft",
+            name: "Draft",
+            component: () => <Investigations filter={0} />,
+        },
+        {
+            path: "/investigations/live",
+            name: "Live",
+            component: Investigations,
+          },
+    ],
+  };
 
 const dashboardsRoutes = {
   id: "Dashboard",
@@ -176,6 +200,7 @@ const pagesRoutes = {
   ],
   component: null,
 };
+
 
 const projectsRoutes = {
   id: "Projects",
@@ -544,6 +569,7 @@ const protectedPageRoutes = {
 export const dashboardLayoutRoutes = [
   dashboardsRoutes,
   pagesRoutes,
+  investigationsRoutes,
   projectsRoutes,
   orderRoutes,
   invoiceRoutes,
@@ -572,6 +598,7 @@ export const protectedRoutes = [protectedPageRoutes];
 export const sidebarRoutes = [
   dashboardsRoutes,
   pagesRoutes,
+  investigationsRoutes,
   projectsRoutes,
   orderRoutes,
   invoiceRoutes,

@@ -6,59 +6,67 @@ import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { ThemeProvider }  from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
+import createTheme from "./theme";
+import Routes from "./routes/Routes";
+import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
+import DateFnsUtils from "@date-io/date-fns";
+import { ThemeProvider } from "styled-components/macro";
+import { create } from "jss";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import {
+  StylesProvider,
+  ThemeProvider as MuiThemeProvider,
+  jssPreset,
+} from "@material-ui/core/styles";
+import App from './App';
+import store from "./redux/store/index";
 
-const store = createStore(reducers, {}, applyMiddleware(thunk));
+const jss = create({
+    ...jssPreset(),
+    insertionPoint: document.getElementById("jss-insertion-point"),
+});
 
-const theme = {
-    buttonContinue : {
-        background : "#48bb78",
-        color : "#FFF"
-    },
-    buttonCancel: {
-        background : "#e53e3e",
-        color : "#FFF"
-    },
-    buttonOther: {
-        background : "goldenrod",
-        color : "#FFF"
-    },
-    error : {
-        color : "#e53e3e",
-    },
-    edit : {
-        color : "#81e6d9",
-    },
-    primary : {
-        background : "#35887D",
-        color : "#FFF"
-    }
-
+function OtherProviders(props){
+    const theme = useSelector((state) => state.themeReducer);
+    return (
+        <StylesProvider jss={jss}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <MuiThemeProvider theme={createTheme(theme.currentTheme)}>
+                <ThemeProvider theme={createTheme(theme.currentTheme)}>
+                    <LocalizeProvider initialize={{
+                        languages: [
+                        { name: "English", code: "en" },
+                        { name: "Spanish", code: "es" }
+                        ],
+                        translation: globalTranslations,
+                        options: {
+                        defaultLanguage: "en",
+                            renderToStaticMarkup: renderToStaticMarkup
+                        }
+                    }}>
+                        { props.children }
+                    </LocalizeProvider>
+                </ThemeProvider>
+            </MuiThemeProvider>
+            </MuiPickersUtilsProvider>
+        </StylesProvider>
+    );
 }
 
-export default class ProviderSherwood extends Component {
-    render() {
-        return (
-            <Provider store={store}>
-                <BrowserRouter>
-                    <ThemeProvider theme={theme}>
-                        <LocalizeProvider initialize={{
-                            languages: [
-                            { name: "English", code: "en" },
-                            { name: "Spanish", code: "es" }
-                            ],
-                            translation: globalTranslations,
-                            options: {
-                            defaultLanguage: "en",
-                                renderToStaticMarkup: renderToStaticMarkup
-                            }
-                        }}>
-                            {this.props.children}
-                        </LocalizeProvider>
-                    </ThemeProvider>
-                </BrowserRouter>
-            </Provider>
-        )
-    }
+
+export default function ProviderSherwood(props){
+    return (
+        <Provider store={store}>
+            <Helmet
+                titleTemplate="%s | Material App"
+                defaultTitle="Material App - React Admin & Dashboard Template"
+            />
+            <OtherProviders>
+                { props.children }
+            </OtherProviders>
+        </Provider>
+    )
+    
 }
