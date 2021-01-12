@@ -20,7 +20,7 @@ import {
   ThemeProvider as MuiThemeProvider,
   jssPreset,
 } from "@material-ui/core/styles";
-import App from './App';
+
 import store from "./redux/store/index";
 
 const jss = create({
@@ -33,8 +33,8 @@ function OtherProviders(props){
     return (
         <StylesProvider jss={jss}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <MuiThemeProvider theme={createTheme(theme.currentTheme)}>
-                <ThemeProvider theme={createTheme(theme.currentTheme)}>
+            <MuiThemeProvider theme={createTheme("GREEN")}>
+                <ThemeProvider theme={createTheme("GREEN")}>
                     <LocalizeProvider initialize={{
                         languages: [
                         { name: "English", code: "en" },
@@ -60,8 +60,8 @@ export default function ProviderSherwood(props){
     return (
         <Provider store={store}>
             <Helmet
-                titleTemplate="%s | Material App"
-                defaultTitle="Material App - React Admin & Dashboard Template"
+                titleTemplate="%s | Sherwood"
+                defaultTitle="Sherwood - Researcher platform"
             />
             <OtherProviders>
                 { props.children }

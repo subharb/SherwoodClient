@@ -24,7 +24,6 @@ const jss = create({
 });
 
 function App() {
-  
 
   return (
     <Routes />
