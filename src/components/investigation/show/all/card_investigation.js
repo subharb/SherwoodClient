@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import { NavLink } from "react-router-dom";
-
+import { useHistory } from "react-router-dom";
 import Helmet from "react-helmet";
 
 import {
@@ -21,7 +21,7 @@ import {
 
 import { AvatarGroup as MuiAvatarGroup } from "@material-ui/lab";
 
-import { red, green, orange } from "@material-ui/core/colors";
+import { red, green, orange, yellow } from "@material-ui/core/colors";
 
 import { spacing } from "@material-ui/system";
 
@@ -54,35 +54,54 @@ const AvatarGroup = styled(MuiAvatarGroup)`
   margin-left: ${(props) => props.theme.spacing(2)}px;
 `;
 
-export default function CardInvestigation({ image, title, description, chip }) {
-  return (
-    <Card mb={6}>
-      {image ? <CardMedia image={image} title="Contemplative Reptile" /> : null}
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {title}
-        </Typography>
+export default function CardInvestigation({ image, title, description, status, url }) {
+    const history = useHistory();
+    const chip = () => {
+        switch(status){
+            case 0:
+                return <Chip label="Draft" rgbcolor={yellow[500]} />
+            case 1:
+                return <Chip label="Live" rgbcolor={green[500]} />
+            case 2:
+                return <Chip label="Pending" rgbcolor={orange[500]} />
+            case 3:
+                return <Chip label="On going" rgbcolor={green[500]} />
+            default:
+                return <Chip label="Draft" rgbcolor={yellow[500]} />
+        }
+        
+    }
+    return (
+        <Card mb={6}>
+        {image ? <CardMedia image={image} title="Contemplative Reptile" /> : null}
+        <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+            {title}
+            </Typography>
 
-        {chip}
+            {chip()}
 
-        <Typography mb={4} component="p">
-          {description}
-        </Typography>
+            <Typography mb={4} component="p">
+            {description}
+            </Typography>
 
-        <AvatarGroup max={3}>
-          <Avatar alt="Avatar" src="/static/img/avatars/avatar-1.jpg" />
-          <Avatar alt="Avatar" src="/static/img/avatars/avatar-2.jpg" />
-          <Avatar alt="Avatar" src="/static/img/avatars/avatar-3.jpg" />
-        </AvatarGroup>
-      </CardContent>
-      <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions>
-    </Card>
-  );
+            {/* <AvatarGroup max={3}>
+                <Avatar alt="Avatar" src="/static/img/avatars/avatar-1.jpg" />
+                <Avatar alt="Avatar" src="/static/img/avatars/avatar-2.jpg" />
+                <Avatar alt="Avatar" src="/static/img/avatars/avatar-3.jpg" />
+            </AvatarGroup> */}
+        </CardContent>
+        <CardActions>
+            <Button size="small" color="primary">
+            Share
+            </Button>
+            <NavLink to={url}>
+                <Button size="small" color="primary">
+                Open
+                </Button>
+            </NavLink>
+            
+        </CardActions>
+        </Card>
+    );
 }

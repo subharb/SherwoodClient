@@ -76,6 +76,7 @@ const Settings = async(() => import("../pages/pages/Settings"));
 const Tasks = async(() => import("../pages/pages/Tasks"));
 const Projects = async(() => import("../pages/pages/Projects"));
 const Investigations = async(() => import("../components/investigation/show/all"));
+const Investigation = async(() => import("../components/investigation"));
 const DraftInvestigations = async(() => import("../components/investigation/show/all"));
 const LiveInvestigations = async(() => import("../components/investigation/show/all"));
 
@@ -126,13 +127,18 @@ const investigationsRoutes = {
         {
             path: "/investigations/draft",
             name: "Draft",
-            component: () => <Investigations filter={0} />,
+            component: () => <Investigations filter="draft" />,
         },
         {
             path: "/investigations/live",
             name: "Live",
-            component: Investigations,
-          },
+            component: () => <Investigations filter="live" /> ,
+        },
+        {
+            path: "/investigation/show/:uuid",
+            name: "Live",
+            component: () => <Investigation  /> ,
+        },
     ],
   };
 

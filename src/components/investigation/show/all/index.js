@@ -5,20 +5,23 @@ import CardInvestigation from './card_investigation'
 import { Link } from 'react-router-dom';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Loader from '../../../Loader';
-import { useInvestigations } from '../../../../hooks';
+import { useFechData } from '../../../../hooks';
+import {useQuery} from 'react-query';
 
 function AllInvestigations(props){
-    const [investigations, submitting, errors] = useInvestigations();
+    const { isLoading, error, data } = useFechData('fetchInvestigations', () =>
+        axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+    )
     
     
-    if(submitting){
+    if(isLoading){
         return <Loader />
     }
-    else if(errors){
+    else if(error){
         return "SE ha producido un error"
     }
     else{
-        const filteredInvestigations = investigations.filter(inv => { 
+        const filteredInvestigations = data.filter(inv => { 
         
             if(props.filter === "pending"){
                 return inv.status === 2
@@ -49,7 +52,6 @@ function AllInvestigations(props){
                     
                 </div>
             );
-            
         }
         else{
             return (
@@ -57,20 +59,17 @@ function AllInvestigations(props){
                 {
                     filteredInvestigations.map(inves => {
                         return(
-                            <CardInvestigation title={inves.name} 
+                            <CardInvestigation title={inves.name} key={inves.uuid}
                                 description={inves.description}
                                 status={inves.status}
                                 textUrl={<Translate id="investigation.show.view_investigation" />}
                                 url={`/investigation/show/${inves.uuid}`}/>
-                            
                         );
                     })
                 }
                 </div>)
         }
     }
-    
-    
 }
 AllInvestigations.propTypes = {
     initialData: PropTypes.object,
