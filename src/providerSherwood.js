@@ -20,7 +20,13 @@ import {
   ThemeProvider as MuiThemeProvider,
   jssPreset,
 } from "@material-ui/core/styles";
-
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    QueryClient,
+    QueryClientProvider,
+  } from 'react-query'
 import store from "./redux/store/index";
 
 const jss = create({
@@ -28,30 +34,37 @@ const jss = create({
     insertionPoint: document.getElementById("jss-insertion-point"),
 });
 
+ // Create a client
+ const queryClient = new QueryClient()
+
 function OtherProviders(props){
     const theme = useSelector((state) => state.themeReducer);
     return (
-        <StylesProvider jss={jss}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <MuiThemeProvider theme={createTheme("GREEN")}>
-                <ThemeProvider theme={createTheme("GREEN")}>
-                    <LocalizeProvider initialize={{
-                        languages: [
-                        { name: "English", code: "en" },
-                        { name: "Spanish", code: "es" }
-                        ],
-                        translation: globalTranslations,
-                        options: {
-                        defaultLanguage: "en",
-                            renderToStaticMarkup: renderToStaticMarkup
-                        }
-                    }}>
-                        { props.children }
-                    </LocalizeProvider>
-                </ThemeProvider>
-            </MuiThemeProvider>
-            </MuiPickersUtilsProvider>
-        </StylesProvider>
+        <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+            <StylesProvider jss={jss}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiThemeProvider theme={createTheme("GREEN")}>
+                    <ThemeProvider theme={createTheme("GREEN")}>
+                        <LocalizeProvider initialize={{
+                            languages: [
+                            { name: "English", code: "en" },
+                            { name: "Spanish", code: "es" }
+                            ],
+                            translation: globalTranslations,
+                            options: {
+                            defaultLanguage: "en",
+                                renderToStaticMarkup: renderToStaticMarkup
+                            }
+                        }}>
+                            { props.children }
+                        </LocalizeProvider>
+                    </ThemeProvider>
+                </MuiThemeProvider>
+                </MuiPickersUtilsProvider>
+            </StylesProvider>
+        </BrowserRouter>
+        </QueryClientProvider>
     );
 }
 

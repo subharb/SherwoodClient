@@ -52,7 +52,7 @@ const childRoutes = (Layout, routes) =>
   });
 
 const Routes = () => (
-  <Router>
+  
     <Switch>
       {childRoutes(DashboardLayout, dashboardLayoutRoutes)}
       {childRoutes(DashboardLayout, protectedRoutes)}
@@ -66,7 +66,7 @@ const Routes = () => (
         )}
       />
     </Switch>
-  </Router>
+  
 );
 
 export default Routes;

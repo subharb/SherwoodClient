@@ -36,11 +36,26 @@ export default {
 
 const Template = (args) => <AllInvestigations {...args} />;
 
-export const Edit = Template.bind({});
-Edit.args = {
+export const All = Template.bind({});
+All.args = {
     initialData : summary_info1(),
     typeUser: "researcher",
-    filter : "all",
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+};
+
+export const Draft = Template.bind({});
+Draft.args = {
+    initialData : summary_info1(),
+    typeUser: "researcher",
+    filter:"draft",
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+};
+
+export const Live = Template.bind({});
+Live.args = {
+    initialData : summary_info1(),
+    typeUser: "researcher",
+    filter:"live",
     stepBack : () => alert("Hit StepBack"),
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };

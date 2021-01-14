@@ -7,15 +7,16 @@ export default {
   title: 'Pages/Show Investigation',
   component: FillInvestigation,
   argTypes: {
-    step: { control: 'number' }
+    uuid: { control: 'string' },
   },
   decorators: [story => 
-                <ProviderSherwood>
+                <ProviderSherwood>    
                         {story()}
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <FillInvestigation {...args} />;
+const Template = (args) => <FillInvestigation {...args} />
+                            
 
 export const NoPatients = Template.bind({});
 NoPatients.args = {

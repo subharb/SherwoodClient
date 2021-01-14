@@ -4,14 +4,16 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
 import Footer from "../components/Footer";
 import Settings from "../components/Settings";
-
+import { useInvestigations } from '../hooks';
 import { spacing } from "@material-ui/system";
+
 import {
   Hidden,
   CssBaseline,
   Paper as MuiPaper,
   withWidth,
 } from "@material-ui/core";
+import Loader from '../components/Loader';
 
 import { isWidthUp } from "@material-ui/core/withWidth";
 
@@ -69,42 +71,42 @@ const MainContent = styled(Paper)`
 `;
 
 const Dashboard = ({ children, routes, width }) => {
-  const [mobileOpen, setMobileOpen] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  return (
-    <Root>
-      <CssBaseline />
-      <GlobalStyle />
-      <Drawer>
-        <Hidden mdUp implementation="js">
-          <Sidebar
-            routes={routes}
-            PaperProps={{ style: { width: drawerWidth } }}
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-          />
-        </Hidden>
-        <Hidden smDown implementation="css">
-          <Sidebar
-            routes={routes}
-            PaperProps={{ style: { width: drawerWidth } }}
-          />
-        </Hidden>
-      </Drawer>
-      <AppContent>
-        <Header onDrawerToggle={handleDrawerToggle} />
-        <MainContent p={isWidthUp("lg", width) ? 12 : 5}>
-          {children}
-        </MainContent>
-        <Footer />
-      </AppContent>
-      <Settings />
-    </Root>
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+    
+    return (
+        <Root>
+            <CssBaseline />
+            <GlobalStyle />
+            <Drawer>
+                <Hidden mdUp implementation="js">
+                <Sidebar
+                    routes={routes}
+                    PaperProps={{ style: { width: drawerWidth } }}
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                />
+                </Hidden>
+                <Hidden smDown implementation="css">
+                <Sidebar
+                    routes={routes}
+                    PaperProps={{ style: { width: drawerWidth } }}
+                />
+                </Hidden>
+            </Drawer>
+            <AppContent>
+                <Header onDrawerToggle={handleDrawerToggle} />
+                <MainContent p={isWidthUp("lg", width) ? 12 : 5}>
+                {children}
+                </MainContent>
+                <Footer />
+            </AppContent>
+            <Settings />
+        </Root> 
   );
 };
 

@@ -5,14 +5,11 @@ import CardInvestigation from './card_investigation'
 import { Link } from 'react-router-dom';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Loader from '../../../Loader';
-import { useFechData } from '../../../../hooks';
+import { useInvestigations } from '../../../../hooks';
 import {useQuery} from 'react-query';
 
 function AllInvestigations(props){
-    const { isLoading, error, data } = useFechData('fetchInvestigations', () =>
-        axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
-    )
-    
+    const {investigations, isLoading, error } = useInvestigations();
     
     if(isLoading){
         return <Loader />
@@ -21,7 +18,7 @@ function AllInvestigations(props){
         return "SE ha producido un error"
     }
     else{
-        const filteredInvestigations = data.filter(inv => { 
+        const filteredInvestigations = investigations.filter(inv => { 
         
             if(props.filter === "pending"){
                 return inv.status === 2
