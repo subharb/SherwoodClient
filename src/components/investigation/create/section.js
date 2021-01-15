@@ -8,7 +8,15 @@ import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { reduxForm, Field } from 'redux-form';
 import { ButtonAdd, ButtonSave, ButtonCancel  } from '../../general/mini_components';
+import { Dialog,
+        Typography,
+        DialogTitle, 
+        DialogContent,
+        DialogContentText,
+        Button, TextField,DialogActions, Card, CardContent
+    } from "@material-ui/core";
 import PropTypes from 'prop-types';
+import { EnhancedTable } from '../../general/EnhancedTable';
 
 const FIELDS_FORM = {
     "encrypted":{
@@ -147,12 +155,28 @@ class Section extends Component{
     }
     renderFields(){
         if(this.state.fields.length > 0){
-            const arrayHeader = Object.values(FIELDS_FORM).map(value => value.shortLabel);
-            return <Table key="added_fields" header={arrayHeader} 
-                values = {this.state.fields.map(field => {let arrayFields = Object.values(field);
-                        
-                        return arrayFields;
-                    })} deleteCallBack={(index) => this.deleteElement(index, "fields") }/>
+            const arrayHeader = Object.keys(FIELDS_FORM).map(key => {
+                const value = FIELDS_FORM[key];
+                return { id: key, alignment: "right", label: <Translate id={value.shortLabel} /> }
+            });
+            const rows = this.state.fields.map(aField => {
+                let tempSection = {}
+                for(const keyField of Object.keys(FIELDS_FORM)){
+                    const field = FIELDS_FORM[keyField];
+                    if(field.type === "checkbox"){
+                        tempSection[keyField] = aField[keyField] === true
+                    }
+                    else{
+                        tempSection[keyField] = aField[keyField]
+                    }
+                }
+                return tempSection;
+            })
+            return <EnhancedTable titleTable={<Translate id="investigation.create.edc.fields" />}  
+                        headCells={arrayHeader}
+                        rows={rows}
+                        actions={{"delete" : (index) => this.deleteElement(index, "fields") }} 
+                    />
         }
         else{
             return null;
@@ -168,39 +192,57 @@ class Section extends Component{
         const title = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
         const saveText = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
         return (
-            [<Modal key="modal" open={this.state.addingField} title={<Translate id="investigation.create.edc.add_field" />}
-            component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />} 
-              />,
-            <div className="card">
-                <div className="card-body">
-                    <h6 className="">
-                        {
-                            title
-                        }
+            [
+                <Dialog
+                    open={this.state.addingField}
+                    onClose={this.closeModal}
+                    aria-labelledby="form-dialog-title">
+
+                    <DialogTitle id="form-dialog-title"><Translate id="investigation.create.edc.add_field" /></DialogTitle>
+                    <DialogContent>
+                        <Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />
+                    </DialogContent>
+                    {/* <DialogActions>
+                        <Button onClick={this.closeModal} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={() => this.handleAddField} color="primary">
+                            Save
+                        </Button>
+                    </DialogActions> */}
+                </Dialog>,
+                <Card>
+                    <CardContent>
                         
-                    </h6>
-                    <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
-                        <Field type="text" name="name" label="name" component={FieldSherwood} />
-                        <div>
-                            <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
-                        </div>
-                    
-                        
-                        <div style={{paddingTop:"40px"}}>
-                            Add field: 
-                            <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
-                                show={!this.state.addingField}>
-                            </ButtonAdd>  
-                        </div>  
-                        { this.renderFields() }
-                        <div style={{paddingTop:"40px"}}>
-                            <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
-                            <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
-                                type="button">Cancel</ButtonCancel>
-                        </div>
-                    </form>   
-                </div>
-            </div>]
+                    <div className="card-body">
+                        <h3 className="">
+                            {
+                                title
+                            }
+                            
+                        </h3>
+                        <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
+                            <Field type="text" name="name" label="name" component={FieldSherwood} />
+                            <div>
+                                <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
+                            </div>
+                            <div style={{paddingTop:"40px"}}>
+                                Add field: 
+                                <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
+                                    show={!this.state.addingField}>
+                                </ButtonAdd>  
+                            </div>  
+                            { this.renderFields() }
+                            <div style={{paddingTop:"40px"}}>
+                                <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
+                                <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
+                                    type="button">Cancel</ButtonCancel>
+                            </div>
+                        </form>   
+                    </div>
+                </CardContent>
+            </Card>
+                        ]
         )
     }   
     

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Table from '../../general/table';
 import DataCollection from './data_collection';
 import { ButtonContinue, ButtonAdd, ButtonBack } from '../../general/mini_components';  
+import { EnhancedTable } from '../../general/EnhancedTable';
 
 /**
  * An EDC is a collection of data_collections
@@ -52,13 +53,18 @@ export default class EDC extends Component{
             ]
         }
         else{
-            let arrayHeader =["investigation.create.edc.data_collections.title", "investigation.create.edc.data_collections.number_sections"]
+            const headCells =[{ id:"title", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
+                                {id:"number_sections", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
+                            ]
+         
+            const rows = this.state.surveys.map(survey => {
+                return { title : survey.name, number_sections : survey.sections.length};
+            })
+                    
             return(
                 <div>
-                    <Table key="added_fields" header={arrayHeader} 
-                        values = {this.state.surveys.map(survey => {
-                            return [survey.name, survey.sections];
-                    })} deleteCallBack={(index) => this.deleteDataCollection(index, "data_collections")} editCallBack={(index) => this.editDataCollection(index, "data_collections")}/>
+                    <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
+                            actions = {{"delete" : (index) => this.deleteDataCollection(index)}} />
                     {AddButton}
                 </div>)
         }

@@ -35,6 +35,7 @@ Add as AddIcon,
 Archive as ArchiveIcon,
 FilterList as FilterListIcon,
 RemoveRedEye as RemoveRedEyeIcon,
+Delete as DeleteIcon
 } from "@material-ui/icons";
 
 import { spacing } from "@material-ui/system";
@@ -331,7 +332,12 @@ return (
                     </TableCell>
                     {
                         headCells.map(headCell =>{
-                            return <TableCell align="right">{row[headCell.id]}</TableCell>
+                            let value = row[headCell.id];
+                            if(typeof row[headCell.id] === "boolean"){ 
+                                value = <Checkbox checked={row[headCell.id]}  />
+                            }
+                            return <TableCell align="right">{value}</TableCell>
+                            
                         })
                     }         
                     {
@@ -340,13 +346,25 @@ return (
                             <Box mr={2}>
                                 {
                                     props.actions.hasOwnProperty("add") &&
-                                    <IconButton aria-label="delete" onClick={() => props.actions.add(index)}>
+                                    <IconButton aria-label="add" onClick={() => props.actions.add(index)}>
                                         <AddIcon />
                                     </IconButton>
                                 }
                                 {
                                     props.actions.hasOwnProperty("view") &&
-                                    <IconButton aria-label="delete" onClick={() => props.actions.view(index)}>
+                                    <IconButton aria-label="view" onClick={() => props.actions.view(index)}>
+                                        <RemoveRedEyeIcon />
+                                    </IconButton>
+                                }
+                                {
+                                    props.actions.hasOwnProperty("delete") &&
+                                    <IconButton aria-label="delete" onClick={() => props.actions.delete(index)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                }
+                                {
+                                    props.actions.hasOwnProperty("edit") &&
+                                    <IconButton aria-label="edit" onClick={() => props.actions.edit(index)}>
                                         <RemoveRedEyeIcon />
                                     </IconButton>
                                 }

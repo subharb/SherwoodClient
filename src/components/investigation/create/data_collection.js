@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Translate } from 'react-localize-redux';
-import styled from "styled-components";
 import PropTypes from 'prop-types';
 import { validateField } from '../../../utils';
 import Table from '../../general/table';
@@ -8,7 +7,8 @@ import Section from './section';
 import { ButtonSave, ButtonAdd, ButtonBack, ButtonContinue } from '../../general/mini_components'; 
 import FieldSherwood from '../../general/FieldSherwood';
 import { reduxForm, Field, submit, FormSection } from 'redux-form';
-import { TextField } from '@material-ui/core';
+import { TextField, Paper, Container, Card, CardContent } from '@material-ui/core';
+import { EnhancedTable } from '../../general/EnhancedTable';
 /**
  * An EDC is a collection of sections
  */
@@ -17,8 +17,8 @@ const SECTION_FORM = {
     "name" : {
         required : true,
         type:"text",
-        label:"investigation.create.edc.section_name",
-        shortLabel: "investigation.create.edc.section_name",
+        label:"investigation.create.edc.section.section_name",
+        shortLabel: "investigation.create.edc.section.section_name",
         validation : "textMin2"
     },
     "repeats":{
@@ -60,16 +60,34 @@ class DataCollection extends Component{
             ]
         }
         else{
-            let arrayHeader = Object.values(SECTION_FORM).map(value => value.shortLabel);
-            arrayHeader.push("investigation.create.edc.number_fields");
+            let arrayHeader = Object.keys(SECTION_FORM).map(key => {
+                const value = SECTION_FORM[key]; 
+                return { id: key, alignment: "right", label: <Translate id={value.shortLabel} /> }
+            });
+            arrayHeader.push({ id: "number_fields", alignment: "right", label: <Translate id="investigation.create.edc.number_fields" />});
+
             return(
-                <div>
-                    <Table key="added_fields" header={arrayHeader} 
-                        values = {this.state.sections.map(section => {let arrayFields = Object.values(section);
-                                return arrayFields;
-                    })} deleteCallBack={(index) => this.deleteSection(index, "sections")} editCallBack={(index) => this.editSection(index, "sections")}/>
+                <Container>
+                    <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
+                        headCells={arrayHeader}
+                        rows={this.state.sections.map(section => {
+                            let tempSection = {}
+                            for(const keyField of Object.keys(SECTION_FORM)){
+                                const field = SECTION_FORM[keyField];
+                                if(field.type === "checkbox"){
+                                    tempSection[keyField] = section[keyField] === true
+                                }
+                                else{
+                                    tempSection[keyField] = section[keyField]
+                                }
+                                
+                            }
+                            return tempSection;
+                        })}
+                        actions={{"delete" : (index) => this.deleteSection(index, "sections"), "edit" : (index) => this.editSection(index, "sections")}} 
+                    />
                     {AddButton}
-                </div>)
+                </Container>)
         }
     }
     addSection(){
@@ -144,7 +162,8 @@ class DataCollection extends Component{
     render(){
         
         return (
-                <div key="container" >
+                <Container key="container" >
+                    
                     {
                         this.props.callBackData && 
                         <ButtonBack onClick={this.props.callBackStepBack} />
@@ -153,9 +172,10 @@ class DataCollection extends Component{
                 <blockquote>
                     <Translate id="investigation.create.edc.data_collections.intro" />
                 </blockquote>
-                <h6 className="teal-text lighten-1">
+         
+                <h2 className="teal-text lighten-1">
                     <Translate id="investigation.create.edc.data_collections.title" />
-                </h6>
+                </h2>
                 <TextField label="name" name="name_data_collection" value={this.state.name} variant="outlined" onChange={this.changeName}/>
                     
                 { this.renderSections() }
@@ -167,7 +187,7 @@ class DataCollection extends Component{
                             <Translate id="investigation.create.edc.data_collections.save" />
                     </ButtonSave>
                 </div>
-            </div>
+            </Container>
         )
     }
     

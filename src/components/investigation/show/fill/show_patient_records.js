@@ -90,7 +90,8 @@ export default function PatientRecords(props) {
                         ) 
                     })
                     return(
-                        <EnhancedTable titleTable="" rows={rows} headCells={headCells} actions = {{"add" : (index) => addRegistry(index)}} />
+                        <EnhancedTable titleTable="" rows={rows} headCells={headCells} 
+                            actions = {{"add" : (index) => addRegistry(index)}} />
                     )
                 }
                 // else{
