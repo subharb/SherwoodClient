@@ -10,6 +10,9 @@ import axios from 'axios';
 import Breadcrumb from '../../general/breadcrumb';
 import EDC from './edc';
 import { toggleLoading } from '../../../actions';
+import { Card, CardContent, Typography, Grid } from '@material-ui/core';
+import { Translate } from 'react-localize-redux';
+import Helmet from "react-helmet";
 
 const Container = styled.div`
     padding:1rem;
@@ -143,12 +146,33 @@ class NewInvestigation extends Component {
                 break;
         }
         return(
-            <div className="card">
-                <Breadcrumb callBack={this.goToStep} selected={this.state.step} stages={Object.values(this.steps)} /> 
-                <Container>
-                    {component}
-                </Container>
-            </div>
+            <React.Fragment>
+                <Helmet title={<Translate id="dashboard.create_investigation" />} />
+                <Grid container spacing={3}>
+                    <Grid item  xs={12}>
+                        <Typography variant="h3" gutterBottom display="inline">
+                            <Translate id="dashboard.create_investigation" />
+                        </Typography>
+                    </Grid>
+                    <Grid item  xs={12}>
+                        <Breadcrumb callBack={this.goToStep} selected={this.state.step} stages={Object.values(this.steps)} /> 
+                    </Grid>
+                    <Grid item  xs={12}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h4" gutterBottom display="inline">
+                                    <Translate id={`investigation.create.${Object.keys(this.steps)[this.state.step]}.title`} />
+                                </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                    <Translate id={`investigation.create.${Object.keys(this.steps)[this.state.step]}.intro`} />
+                                </Typography>
+                                {component}
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
+                
+            </React.Fragment>
         );
     }
 }

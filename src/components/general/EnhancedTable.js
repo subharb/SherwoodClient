@@ -162,14 +162,16 @@ const createSortHandler = (property) => (event) => {
 return (
     <TableHead>
     <TableRow>
-        <TableCell padding="checkbox">
-        <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all" }}
-        />
-        </TableCell>
+        {!props.noSelectable &&
+            <TableCell padding="checkbox">
+                <Checkbox
+                    indeterminate={numSelected > 0 && numSelected < rowCount}
+                    checked={rowCount > 0 && numSelected === rowCount}
+                    onChange={onSelectAllClick}
+                    inputProps={{ "aria-label": "select all" }}
+                />
+            </TableCell>
+        }
         {headCells.map((headCell) => (
         <TableCell
             key={headCell.id}
@@ -237,7 +239,7 @@ export function EnhancedTable(props) {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const {rows, headCells, actions, titleTable} = props;
+    const {rows, headCells, actions, titleTable, noSelectable} = props;
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
@@ -291,7 +293,10 @@ const emptyRows =
 return (
     <div>
     <Paper>
-        <EnhancedTableToolbar title={titleTable} numSelected={selected.length} />
+        {
+            !props.noHeader &&
+            <EnhancedTableToolbar title={titleTable} numSelected={selected.length} />
+        }
         <TableContainer>
         <Table
             aria-labelledby="tableTitle"
@@ -307,6 +312,7 @@ return (
                 rowCount={rows.length}
                 headCells={headCells}
                 actions={actions}
+                noSelectable={noSelectable}
             />
             <TableBody>
             {stableSort(rows, getComparator(order, orderBy))
@@ -324,20 +330,24 @@ return (
                     key={`${index}`}
                     selected={isItemSelected}
                     >
-                    <TableCell padding="checkbox">
-                        <Checkbox
-                            checked={isItemSelected}
-                            inputProps={{ "aria-labelledby": labelId }}
-                            onClick={(event) => handleClick(event, row.id)}
-                        />
-                    </TableCell>
+                    {
+                        !noSelectable &&
+                        <TableCell padding="checkbox">
+                            <Checkbox
+                                checked={isItemSelected}
+                                inputProps={{ "aria-labelledby": labelId }}
+                                onClick={(event) => handleClick(event, row.id)}
+                            />
+                        </TableCell>
+                    }
+                    
                     {
                         headCells.map(headCell =>{
                             let value = row[headCell.id];
                             if(typeof row[headCell.id] === "boolean"){ 
                                 value = <Checkbox checked={row[headCell.id]}  />
                             }
-                            return <TableCell align="right">{value}</TableCell>
+                            return <TableCell align={headCell.align}>{value}</TableCell>
                             
                         })
                     }         

@@ -103,6 +103,10 @@
                 "consents" : ["Consent forms", "Formularios de consentimiento"],
                 "summary" : ["Summary", "Resumen"]
             },
+            "basic_info" : {
+                "title" : ["Basic Info", "Información básica"],
+                "intro" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco" ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"]
+            },
             "personal_data" : {
                 "title" : ["Personal Data", "Datos Personales"],
                 "intro" : ["Please select the personal data you are planning to include in your investigation" ,"Seleccione los datos personales que desea incluir en su investigación"],
@@ -213,6 +217,7 @@
             },
             "summary" : {
                 "title" : ["Summary Investigation", "ResumenInvestigation"],
+                "intro" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco" ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"],
                 "explanation" : ["Check all the sections before saving the investigation", "Revise las secciones antes de guardar"],
                 "patients" : ["Patients", "Pacientes"],
                 "email" : ["email", "email"],

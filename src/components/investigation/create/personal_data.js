@@ -36,42 +36,29 @@ class PersonalData extends Component{
         this.props.callBackData(tempValues);
     }
     render(){
-        return(
-            <div className="container">
-                <div className="row">
-                    <h3><Translate id="investigation.create.personal_data.title" /></h3>
-                </div>
-                <div className="row">
-                    <p>
-                        <Translate id="investigation.create.personal_data.intro" />
-                    </p>
-                </div>
-                <div>
-                <form data-testid="form" onSubmit={this.props.handleSubmit(values => {this.callBackData(values)})}  >
+        return(    
+            <form data-testid="form" onSubmit={this.props.handleSubmit(values => {this.callBackData(values)})}  >
+                {
+                    Object.keys(PERSONAL_DATA_CHECKBOXES).map(key =>{
+                        return(
+                            <div className="row" key={key}>
+                                <Field name={key} {...PERSONAL_DATA_CHECKBOXES[key]} 
+                                    type={PERSONAL_DATA_CHECKBOXES[key].type} label={PERSONAL_DATA_CHECKBOXES[key].label}
+                                    component={FieldSherwood} />
+                            </div>
+                            );
+                    })
+                }
+                <div className="row" style={{paddingTop:"20px"}}>
                     {
-                        Object.keys(PERSONAL_DATA_CHECKBOXES).map(key =>{
-                            return(
-                                <div className="row" key={key}>
-                                    <Field name={key} {...PERSONAL_DATA_CHECKBOXES[key]} 
-                                        type={PERSONAL_DATA_CHECKBOXES[key].type} label={PERSONAL_DATA_CHECKBOXES[key].label}
-                                        component={FieldSherwood} />
-                                </div>
-                                );
-                        })
+                        this.props.callBackStepBack && 
+                        <ButtonBack spaceRight={true} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
                     }
-                    <div className="row" style={{paddingTop:"20px"}}>
-                        {
-                            this.props.callBackStepBack && 
-                            <ButtonBack spaceRight={true} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
-                        }
-                        <ButtonContinue type="submit">
-                                <Translate id="investigation.create.continue" />
-                        </ButtonContinue>
-                    </div>
-                </form>
-                   
+                    <ButtonContinue type="submit">
+                            <Translate id="investigation.create.continue" />
+                    </ButtonContinue>
                 </div>
-        </div>
+            </form>
         )
         
     }

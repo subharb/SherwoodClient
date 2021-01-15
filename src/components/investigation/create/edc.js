@@ -137,13 +137,7 @@ export default class EDC extends Component{
         }
         else{
             return (
-            
-                <div key="container" >
-                    <h5 className="teal-text lighten-1"><Translate id="investigation.create.edc.title"/></h5>
-                    <blockquote>
-                        <Translate id="investigation.create.edc.intro" />
-                    </blockquote>
-                   
+                <React.Fragment>
                     { this.renderDataCollections() }
                     <div className="row" style={{paddingTop:"20px"}}>
                         {
@@ -155,8 +149,7 @@ export default class EDC extends Component{
                                 <Translate id="investigation.create.continue" />
                         </ButtonContinue>
                     </div>
-                </div>
-                
+                </React.Fragment>
             )
         }
         
