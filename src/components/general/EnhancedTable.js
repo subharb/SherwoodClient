@@ -35,6 +35,7 @@ Add as AddIcon,
 Archive as ArchiveIcon,
 FilterList as FilterListIcon,
 RemoveRedEye as RemoveRedEyeIcon,
+Edit as EditIcon,
 Delete as DeleteIcon
 } from "@material-ui/icons";
 
@@ -365,7 +366,7 @@ return (
                                 {
                                     props.actions.hasOwnProperty("edit") &&
                                     <IconButton aria-label="edit" onClick={() => props.actions.edit(index)}>
-                                        <RemoveRedEyeIcon />
+                                        <EditIcon />
                                     </IconButton>
                                 }
                             </Box>

@@ -222,7 +222,7 @@ class Section extends Component{
                             
                         </h3>
                         <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
-                            <Field type="text" name="name" label="name" component={FieldSherwood} />
+                            <Field type="text" name="name" label="name" required={true} component={FieldSherwood} />
                             <div>
                                 <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
                             </div>
