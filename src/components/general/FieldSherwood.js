@@ -15,22 +15,22 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 
 const sharedStyle = css`
-    & label {
-        position: relative;
-        padding-right: 25px;
-        &+div{
-        margin-top: 0;
-        &:before {
-            bottom: 5px;
-        }
-        &:after {
-            bottom: 5px;
-        }
-        svg {
-            top: 0;
-        }
-        }
-    }
+    // & label {
+    //     position: relative;
+    //     padding-right: 25px;
+    //     &+div{
+    //     margin-top: 0;
+    //     &:before {
+    //         bottom: 5px;
+    //     }
+    //     &:after {
+    //         bottom: 5px;
+    //     }
+    //     svg {
+    //         top: 0;
+    //     }
+    //     }
+    // }
 `
 
 const FormControlSherwood = styled(FormControl)`

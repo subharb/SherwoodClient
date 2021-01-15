@@ -20,7 +20,8 @@ const Template = (args) => <FillInvestigation {...args} />
 
 export const NoPatients = Template.bind({});
 NoPatients.args = {
-    investigation : investigation_server_no_patitents(),
+    initialData : { investigation : investigation_server_no_patitents()},
+    uuid : "ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
@@ -29,8 +30,13 @@ investigationWithRecords.surveys[0].records = [...records_patient1().records, ..
 
 export const WithPatients = Template.bind({});
 WithPatients.args = {
-    investigation : investigationWithRecords,
-    patientInfo : patient_data1(),
+    initialData : { investigation : investigationWithRecords},
+    uuid : "ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
+export const RemoteData = Template.bind({});
+RemoteData.args = {
+    uuid : "ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+};

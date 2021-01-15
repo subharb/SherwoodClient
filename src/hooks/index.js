@@ -53,3 +53,20 @@ export function useInvestigations(props) {
 
     return value
 }
+
+export function useInvestigation(uuid, initialData) {
+    const { data, isLoading, error } = useQuery('investigations', () =>
+        axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/'+uuid, { headers: {"Authorization" : localStorage.getItem("jwt")}}),
+        {
+            initialData: initialData ? {data: initialData} : initialData,
+        }
+    )
+
+    const value = React.useMemo(() => {
+       return({
+           isLoading, error, investigation : data ? data.data.investigation : data, status : data ? data.status : data
+        }) 
+    }, [data, isLoading, error]);
+
+    return value
+}

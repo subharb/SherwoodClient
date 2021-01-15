@@ -171,6 +171,16 @@ export const patient_data1 = () => {
             "phone" : "U2FsdGVkX1/ru9t1lEG5Iho/EUWfsRYQ1JTNOmoyzjU=", 
             "email" : "U2FsdGVkX19PGWrZ4ggVKCG0tLybQRp7dmfkgQlD864zXxLcDNcBvE3B2DKjE/Ot"}
 }
+export const patient_data_decrypted1 = () => {
+    return {
+        "id": "5fccaee78583362dd3d50248",
+        "name": "John",
+        "surname": "Hopkins",
+        "email": "patient@sherwood.science",
+        "phone": "+34 545454"
+    }
+}
+
 export const summary_info1 = () => {
     return {
         "basic_info": basic_info1(), 
@@ -184,7 +194,7 @@ export const patients_personal_data = () => {
         {
             "id": "5fe218b524b4213823c82e8d",
             "keyPatInv":"U2FsdGVkX1+07NL4AUPG3yImEoRbslQP55u2EpKFZHtF1Ork/gArz2UWFdD2qzLVt6jWFQN0QRaFh/U5Z8rJhg==",
-            "keyPatResearcher":"U2FsdGVkX1+Is8xYbsoraL9zkpMchEVy7LAR63EB5jOxA5Y/rwLcXEKKzzzxcXF0VFLWndazqetThikNFOwn9Q==",
+            "keyPatientResearcher":"U2FsdGVkX1+Is8xYbsoraL9zkpMchEVy7LAR63EB5jOxA5Y/rwLcXEKKzzzxcXF0VFLWndazqetThikNFOwn9Q==",
             "personalData":{
                 "email":"U2FsdGVkX18JWuhek4AgMTMCkrWZWOQbSJRqyeC0RB2DkX1FFephUBvEib0/ZjwG",
                 "phone":"U2FsdGVkX18JmEbvvSQtJFIAnuvuYp2b3pvD5XShscY=",
@@ -196,7 +206,7 @@ export const patients_personal_data = () => {
             
             "id": "5fe218c024b4213823c82e8e",
             "keyPatInv": "U2FsdGVkX19eZ1fehZD6sJn0C/rtKVMx2zTSt3WV8cZLVIoKzelAU1h5SCRCGTQTZXJMxGyV1tzd2HATakUVsA==",
-            "keyPatResearcher": "U2FsdGVkX1/KVSrNmXP5ri8WQXTeVounCqz9O9wXUoUqCSKLTxR/rNLw0LIlPKz7B7vI3zchzt6XbLhcN40U/g==",
+            "keyPatientResearcher": "U2FsdGVkX1/KVSrNmXP5ri8WQXTeVounCqz9O9wXUoUqCSKLTxR/rNLw0LIlPKz7B7vI3zchzt6XbLhcN40U/g==",
             "personalData": {
                 "email": "U2FsdGVkX1/6h/bqcYAH+5gYGIOG5D12rT0WhlAxkn5sK0mDLi5A2+WhJeTTeryA",
                 "phone": "U2FsdGVkX1+2RzhJr/EqHHpUAY59pdVd04tFhDUjITM=",
@@ -208,7 +218,7 @@ export const patients_personal_data = () => {
         {
             "id": "5fccaee78583362dd3d50248",
             "keyPatInv": "U2FsdGVkX1/mPlvgZCwnYhxCWYW0j0UfCEGOmvh3mxU3OyFZtnZNudXiqNWijIydHNKrvtaZ2hTc5lwaw6NN3w==",
-            "keyPatResearcher": "U2FsdGVkX18gBKWMD7TYccFDAK7J1o/BM9EcbWUvZ30wBRq+6TIIk/yknU/ezyJMOgAGkfjNESj7ZgkuASNsIA==",
+            "keyPatientResearcher": "U2FsdGVkX18gBKWMD7TYccFDAK7J1o/BM9EcbWUvZ30wBRq+6TIIk/yknU/ezyJMOgAGkfjNESj7ZgkuASNsIA==",
             "personalData": {
                 "email": "U2FsdGVkX1/M175udN7Bp5uI6hI/HCNrglC4RrvQoQpBQgLw7QFZrjnKv0UO66Ce",
                 "phone": "U2FsdGVkX1/Ob4rrFmVAxynGaJFxvwADsAvyBjADnWk=",

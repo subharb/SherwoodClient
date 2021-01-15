@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import Table from '../../../general/table';
+import { EnhancedTable } from '../../../general/EnhancedTable';
 import { Translate } from 'react-localize-redux';
 import ShowRecordsSection from './show_records_section';
 import ShowPatientRecords from './show_patient_records';
@@ -10,9 +11,9 @@ import PatientRecords from './show_patient_records';
 import Form from '../../../general/form';
 
 /**
- * 
  * Componente que muestra los surveys de una investigación. Con botones para añadir información o visualizar
  */
+
 export default function ShowSurveys(props) {
     const [action, setAction] = useState(0);
     const [indexSurvey, setIndexSurvey] = useState(null);
@@ -83,16 +84,19 @@ export default function ShowSurveys(props) {
                 if(props.mode === "add"){
                     component = (
                         <div className="row">
-                            <Table header={["name"]} values={props.surveys.map(survey => {return [survey.name]})}
-                                addCallBack={(indexSurvey) => addRecordSurvey(indexSurvey)} 
-                             />
+                            <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  rows={props.surveys.map(survey => {return {name : survey.name}})}
+                                headCells={[{ id: "name", alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.name`} /> }]}
+                                actions={{"add" : (indexSurvey) => addRecordSurvey(indexSurvey)}}
+                            />
                         </div>)
                 }
                 else{
                     component = (
                         <div className="row">
-                            <Table header={["name"]} values={props.surveys.map(survey => {return [survey.name]})}
-                                viewCallBack={(indexSurvey) => viewSurvey(indexSurvey)} />
+                            <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  rows={props.surveys.map(survey => {return {name : survey.name}})}
+                                headCells={[{ id: "name", alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.name`} /> }]}
+                                actions={{"view" : (indexSurvey) => viewSurvey(indexSurvey)}}
+                            />
                         </div>)
                 }
                 break;
@@ -101,28 +105,18 @@ export default function ShowSurveys(props) {
                 component = (<ShowPatientRecords mode="elements" 
                                 patient={props.patient} survey={props.surveys[indexSurvey]} 
                                 uuidInvestigation={props.uuidInvestigation} />)
-                // component = (
-                //     Object.values(props.surveys[indexSurvey].sections).map(section => {
-                //         const submissionsSection = findSubmissionsFromSection(props.records, section._id);
-                //         return(
-                //             <ShowRecordsSection submissions={submissionsSection} section={section} />
-                //         )
-                //     })
-                // )
                 break;
             //Editar Survey
             case 2:
                 //Muestro para elegir la sección
                 return(
                     <div className="row">
-                        <Table header={["name"]} values={props.surveys[indexSurvey].sections.map(section => {return [section.name]})}
-                            addCallBack={(indexSection) => sectionSelected(indexSection)} 
+                        <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.sections" />} rows={props.surveys[indexSurvey].sections.map(section => {return {name : section.name}})}
+                                headCells={[{ id: "name", alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.name`} /> }]}
+                                actions={{"view" : (indexSurvey) => sectionSelected(indexSurvey)}}
                             />
                     </div>
                 );
-                // return <PatientRecords initialData={ props.investigation.surveys } 
-                //             uuidInvestigation={props.investigation.uuid}  patient={patientsData[patientIndex]}
-                //             callBackForm={(values) => saveRecord(values) }/>
                 break;
             //Rellenar Sección seleccionada
             case 3:
@@ -143,7 +137,7 @@ export default function ShowSurveys(props) {
                 <Translate id="investigation.fill.survey.patient_name"/>:
             
                 {
-                    props.patient.personalData.name+" "+props.patient.personalData.surname
+                    props.patient.name+" "+props.patient.surname
                 }
             </div>
             <div className="row">

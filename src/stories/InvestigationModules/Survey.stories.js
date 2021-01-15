@@ -4,7 +4,7 @@ import ProviderSherwood from '../../providerSherwood';
 import { edc_data1 } from '../example_data';
 
 export default {
-    title: 'Investigation/Fill/SurveyForm',
+    title: 'Investigation/Fill/SurveyForm - BORRAR',
     component: Survey, 
     parameters: { actions: { argTypesRegex: '^callBack.*' } },
     argTypes: {
@@ -24,8 +24,8 @@ const Template = (args) => <Survey {...args} />;
 export const Basic = Template.bind({});
 Basic.args = {
     sections : edc_data1().surveys[0].sections,
-    patientName : "Peter Petrelli",
-    uuidInvestigation:"96b17ef9-5a8e-4db8-b8a6-c17080ae13ba",
+    patientId:"5fdcd77b98125b1f1f0e627d",
+    uuidInvestigation:"ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
 

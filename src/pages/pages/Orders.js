@@ -74,37 +74,7 @@ const rows = [
     "$32,00",
     0,
     "Visa"
-  ),
-  createData("000254", "Backpack", "2020-01-04", "$130,00", 0, "PayPal"),
-  createData(
-    "000255",
-    "Pocket Speaker",
-    "2020-01-04",
-    "$80,00",
-    2,
-    "Mastercard"
-  ),
-  createData("000256", "Glass Teapot", "2020-01-08", "$45,00", 0, "Visa"),
-  createData(
-    "000257",
-    "Unbreakable Water Bottle",
-    "2020-01-09",
-    "$40,00",
-    0,
-    "PayPal"
-  ),
-  createData("000258", "Spoon Saver", "2020-01-14", "$15,00", 0, "Mastercard"),
-  createData("000259", "Hip Flash", "2020-01-16", "$25,00", 1, "Visa"),
-  createData("000260", "Woven Slippers", "2020-01-22", "$20,00", 0, "PayPal"),
-  createData("000261", "Womens Watch", "2020-01-22", "$65,00", 2, "Visa"),
-  createData(
-    "000262",
-    "Over-Ear Headphones",
-    "2020-01-23",
-    "$210,00",
-    0,
-    "Mastercard"
-  ),
+  )
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -361,7 +331,7 @@ function EnhancedTable() {
                           <IconButton aria-label="delete">
                             <ArchiveIcon />
                           </IconButton>
-                          <IconButton aria-label="details">
+                          <IconButton aria-label="details" onClick={() => alert(index)}>
                             <RemoveRedEyeIcon />
                           </IconButton>
                         </Box>

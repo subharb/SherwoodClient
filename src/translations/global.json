@@ -128,7 +128,8 @@
                     "name" : ["Data Collection name", "Nombre de la collección de datos"],
                     "none" : ["You have no data collections", "No has creado ninguna collección de datos"],
                     "number_sections" : ["Number sections", "Número de secciones"],
-                    "save" : ["Save Data Collection" , "Guardar Data Collection"]
+                    "save" : ["Save Data Collection" , "Guardar Data Collection"],
+                    "sections" : ["Sections", "Secciones"]
                 },
                 "section" : {
                     "name" : ["Section", "Sección"],
@@ -234,8 +235,11 @@
             },
             "survey" : {
                 "patient_name" : ["Patient's Name", "Nombre del Paciente"],
-                "title" : ["Data Collections", "Collecciones de datos"]
-            }
+                "title" : ["Data Collections", "Collecciones de datos"],
+                "add_data" : ["Add Data", "Añadir datos"],
+                "view_data" : ["Visualize Data", "Ver datos"]
+            },
+            "records" : ["Records", "Registros"]
         },
         "show" : {
             

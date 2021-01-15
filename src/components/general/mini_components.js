@@ -1,6 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button, Icon, IconButton } from '@material-ui/core';
+import {
+    Add as AddIcon,
+    RemoveRedEye as RemoveRedEyeIcon,
+    Delete as DeleteIcon,
+    CloudUpload as CloudUploadIcon,
+    KeyboardVoice as KeyboardVoiceIcon,
+    Navigation as NavigationIcon,
+    Save as SaveIcon,
+  } from "@material-ui/icons";
+  import {
+    CardContent,
+    Grid,
+    Link,
+    Breadcrumbs as MuiBreadcrumbs,
+    Button as MuiButton,
+    Card as MuiCard,
+    Divider as MuiDivider,
+    Fab as MuiFab,
+    IconButton as MuiIconButton,
+    Typography,
+  } from "@material-ui/core";  
+
+import { spacing } from "@material-ui/system";
+export const Divider = styled(MuiDivider)(spacing);
+
+const Fab = styled(MuiFab)(spacing);
 
 export const DeleteHolder = styled.div`
     display: inline-block;
@@ -143,9 +169,9 @@ export const ButtonEmptyCheck = (props) =>{
 }
 
 export const ButtonAdd = (props) =>{
-    return <ButtonIcon aria-label="add element" {...props}>
-            {props.children}<Icon>add</Icon>
-        </ButtonIcon>
+    return  <Fab mx={2} size="small" color="secondary" aria-label="Add" {...props} >
+                <AddIcon />
+            </Fab>
     // return <ButtonContinueStyles
     //     variant="contained"
     //     color="primary"
@@ -157,9 +183,9 @@ export const ButtonAdd = (props) =>{
 }
 
 export const ButtonView = (props) =>{
-    return <ButtonIcon aria-label="add element" {...props}>
-            {props.children}<Icon>visibility</Icon>
-        </ButtonIcon>
+    return  <Fab mx={2} size="small" color="secondary" aria-label="View" {...props} >
+                <RemoveRedEyeIcon />
+            </Fab>
     // return <ButtonContinueStyles
     //     variant="contained"
     //     color="primary"
