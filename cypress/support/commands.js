@@ -54,7 +54,7 @@ Cypress.Commands.add('createEDC', (surveys) => {
         section.fields.forEach(field => {
             cy.get('button[data-testid="add-field"]')
                 .click();
-            cy.get('#modal1').within(() => {
+            cy.get('.MuiDialog-paper').within(() => {
                 if(field.required){
                     cy.contains('Required').click();
                 }

@@ -70,3 +70,50 @@ export function useInvestigation(uuid, initialData) {
 
     return value
 }
+
+export function useSherwoodUser(){
+    const history = useHistory();
+    const [isLoading, setIsLoading] = useState(true);
+    const [isAuth, setIsAuth] = useState(true);
+
+    useEffect(() => {
+        async function fetchUser(){
+            const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+                .catch(err => {
+                    console.log('Catch', err); 
+                    return { status : 401};
+                }); 
+            
+            return request.status === 200
+            
+            
+        
+        }
+        async function checkUser(){
+            
+            console.log("JWT", localStorage.getItem("jwt"));
+            
+            if(localStorage.getItem("jwt") !==""){
+                const isAuth = await fetchUser();
+                setIsLoading(false);
+                if(isAuth){
+                    setIsAuth(true);
+                    
+                    return; 
+                }    
+            }
+            
+            setIsAuth(false);
+            
+        }
+        checkUser();
+    }, [history])
+    
+    if(!isAuth){
+        const redirectUrl = "/auth/sign-in";//localStorage.getItem('type') === null ?  "/auth/sign-in" :  "/"+localStorage.getItem('type')+"/login";
+        history.push(redirectUrl);
+    }
+    
+
+    return {isLoading, isAuth}
+}

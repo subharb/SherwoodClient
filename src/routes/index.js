@@ -155,7 +155,12 @@ const dashboardsRoutes = {
       component: Default,
     },
     {
-        path: "/create/investigation",
+        path: "/",
+        name: "CreateInvestigation",
+        component: CreateInvestigation,
+    },
+    {
+        path: "/investigation/create",
         name: "CreateInvestigation",
         component: CreateInvestigation,
     },
@@ -489,14 +494,14 @@ const mapsRoutes = {
   component: null,
 };
 
-const landingRoutes = {
-  id: "Landing Page",
-  path: "/",
-  header: "Docs",
-  icon: <Monitor />,
-  component: Landing,
-  children: null,
-};
+// const landingRoutes = {
+//   id: "Landing Page",
+//   path: "/",
+//   header: "Docs",
+//   icon: <Monitor />,
+//   component: Landing,
+//   children: null,
+// };
 
 const documentationRoutes = {
   id: "Documentation",
@@ -595,7 +600,7 @@ export const dashboardLayoutRoutes = [
 export const authLayoutRoutes = [authRoutes];
 
 // Routes using the Presentation layout
-export const presentationLayoutRoutes = [landingRoutes];
+//export const presentationLayoutRoutes = [landingRoutes];
 
 // Routes that are protected
 export const protectedRoutes = [protectedPageRoutes];

@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
 import Footer from "../components/Footer";
 import Settings from "../components/Settings";
-import { useInvestigations } from '../hooks';
+import { useSherwoodUser } from '../hooks';
 import { spacing } from "@material-ui/system";
 
 import {
@@ -72,11 +72,14 @@ const MainContent = styled(Paper)`
 
 const Dashboard = ({ children, routes, width }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
+    const {isLoading, isAuth} = useSherwoodUser();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-    
+    if(isLoading){
+        return <Loader />
+    }
     return (
         <Root>
             <CssBaseline />

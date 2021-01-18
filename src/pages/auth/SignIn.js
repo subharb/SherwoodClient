@@ -150,25 +150,26 @@ function SignIn() {
                 my={2}
                 />
                 <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Remember me"
                 />
                 <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                disabled={isSubmitting}
+                    type="submit"
+                    fullWidth
+                    data-testid="continue"
+                    variant="contained"
+                    color="primary"
+                    disabled={isSubmitting}
                 >
                 Sign in
                 </Button>
                 <Button
-                component={Link}
-                to="/auth/reset-password"
-                fullWidth
-                color="primary"
-                >
-                Forgot password
+                    component={Link}
+                    to="/auth/reset-password"
+                    fullWidth
+                    color="primary"
+                    >
+                    Forgot password
                 </Button>
             </form>
             )}

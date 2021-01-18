@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import BasicInfo  from './basic_info2';
@@ -12,41 +12,26 @@ import EDC from './edc';
 import { Card, CardContent, Typography, Grid } from '@material-ui/core';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
+import Loader from '../../../components/Loader';
 
 const Container = styled.div`
     padding:1rem;
 `;
-class NewInvestigation extends Component {
-    constructor(props){
-        super(props);
-        
-        this.addData = this.addData.bind(this);
-        this.stepBack = this.stepBack.bind(this);
-        this.goToStep = this.goToStep.bind(this);
-        this.saveData = this.saveData.bind(this);
-
-        this.steps = {
-            basic_info : "investigation.create.steps.basic_info",
-            personal_data:"investigation.create.steps.personal_data",
-            edc : "investigation.create.steps.edc",
-            // pis : "investigation.create.steps.patient_sheet",
-            // consent : "investigation.create.steps.consents",
-            summary : "investigation.create.steps.summary"
-        }
-
-        const initialState = {step : 0, investigation:{}, resultSave:0}
-
-        this.state = {...this.props.initialState, ...initialState};
-    }
-    async saveData(publish){
-        this.props.toggleLoading();
-        let investigationInfo = {...this.state.investigation};
+export function NewInvestigation(props){
+    const [step, setStep] = useState(props.initialState && props.initialState.step ? props.initialState.step : 0);
+    const [investigation, setInvestigation] = useState(props.initialState && props.initialState.investigation ? props.initialState.investigation : {});
+    const [resultSave, setResultSave] = useState(props.initialState && props.initialState.resultSave ? props.initialState.resultSave : 0);
+    const [isLoading, setIsLoading] = useState(props.initialState && props.initialState.isLoading ? props.initialState.isLoading : false);
+   
+    async function saveData(publish){
+        setIsLoading(true);
+        let investigationInfo = {...investigation};
         investigationInfo.publish = publish ? 1 : 0;
     
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
         let response;
-        if(this.props.hasOwnProperty("uuidInvestigation")){
-            response = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        if(props.hasOwnProperty("uuidInvestigation")){
+            response = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.uuidInvestigation, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .catch(err => {console.log('Catch', err); return err;});
         }
         else{
@@ -55,33 +40,32 @@ class NewInvestigation extends Component {
         }
         
         
-        let tempState = {...this.state};
+        
         if(response.request.status === 200){
             console.log("Success!");
-            tempState.resultSave = 1;
+            setResultSave(1);
         }
         else if(response.request.status === 401){
             localStorage.removeItem("jwt");
-            tempState.resultSave = 2;
-            this.setState(tempState);
+            setResultSave(2);
+    
         }
-        this.setState(tempState);
-        this.props.toggleLoading();
-        
-        
+        setIsLoading(false);
     }
-    addData(data){
+    function addData(data){
         console.log("New Data!", JSON.stringify(data));
-        let tempState = {...this.state};
-        switch(this.state.step){
+        
+        let tempInvestigation = {...investigation};
+        switch(step){
             case 0:
-                tempState.investigation.basic_info = {...data};
+                tempInvestigation.basic_info = {...data};
+                setInvestigation()
                 break;
             case 1:
-                tempState.investigation.personal_data = data;
+                tempInvestigation.personal_data = data;
                 break;
             case 2:
-                tempState.investigation.surveys = data.surveys;
+                tempInvestigation.surveys = data.surveys;
                 break;
             case 3:
                 console.log("Send Information!");
@@ -89,91 +73,87 @@ class NewInvestigation extends Component {
             default:
                 return "Something went wrong";
         }
-        tempState.step++;
-
-        this.setState(tempState);
+        setInvestigation(tempInvestigation);
+        setStep(s => s++);
     }
-    stepBack(){
+    function stepBack(){
+        if(step > 0){
+            setStep(s => s--);
+        }
+    }
+    function goToStep(aStep){
         
-        let tempState = this.state;
-        if(tempState.step > 0){
-            tempState.step--;
+        if(aStep >= 0 && aStep < Object.values(investigation).length){
+            setStep(aStep);
         }
-    
-        this.setState(tempState);
     }
-    goToStep(step){
-        let tempState = this.state;
-        if(step >= 0 && step < Object.values(tempState.investigation).length){
-            tempState.step = step;
-        }
     
-        this.setState(tempState);
+    console.log("Initial data:", props.initialState);
+    let component = null;
+    if(typeof props.uuid !== "undefined" && !props.investigation){
+        return "CARGANDO";
     }
-    render() {
-        console.log("Initial data:", this.props.initialState);
-        let component = null;
-        if(typeof this.props.uuid !== "undefined" && !this.props.investigation){
-            return "CARGANDO";
-        }
-        switch(this.state.step){
-            case 0:
-                component = <BasicInfo initialData={ this.props.initialState ? this.props.initialState.investigation.basic_info : this.state.investigation.basic_info } 
-                                callBackData={this.addData} />
-                break;
-            // case 1:
-            //     component = <PISGenerator callBackData={this.addData} 
-            //                     stepBack = {this.stepBack}/>
-            //     break;
-            // case 2:
-            //     component = <AddConsents consents={ this.state.investigation.consents }  personalFields={this.state.investigation.basic_info.personalData} callBackData={this.addData} 
-            //                     stepBack = {this.stepBack}/>
-            //     break;
-            case 1: 
-                component = <PersonalData initialData={this.props.initialState ? this.props.initialState.investigation.personal_data : this.state.investigation.personal_data } callBackStepBack = {this.stepBack}  callBackData={this.addData} />
-                break;
-            case 2: 
-                component = <EDC initialData={this.props.initialState ? {surveys : this.props.initialState.investigation.surveys} : this.state.investigation.surveys ? {surveys : this.state.investigation.surveys } : {surveys : [] }} callBackStepBack = {this.stepBack}  callBackData={this.addData} />
-                break;
-            case 3:
-                component = <Summary initialData={ this.state.investigation } callBackStepBack = {this.stepBack} 
-                                callBackToStep = {this.goToStep} resultSave={ this.state.resultSave }
-                                callBackSave={this.saveData} />
-                break;
-            default:
-                component = "Something went wrong";
-                break;
-        }
-        return(
-            <React.Fragment>
-                <Helmet title={this.props.translate("dashboard.create_investigation")} />
-                <Grid container spacing={3}>
-                    <Grid item  xs={12}>
-                        <Typography variant="h3" gutterBottom display="inline">
-                            <Translate id="dashboard.create_investigation" />
-                        </Typography>
-                    </Grid>
-                    <Grid item  xs={12}>
-                        <Breadcrumb callBack={this.goToStep} selected={this.state.step} stages={Object.values(this.steps)} /> 
-                    </Grid>
-                    <Grid item  xs={12}>
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h4" gutterBottom display="inline">
-                                    <Translate id={`investigation.create.${Object.keys(this.steps)[this.state.step]}.title`} />
-                                </Typography>
-                                <Typography variant="body2" gutterBottom>
-                                    <Translate id={`investigation.create.${Object.keys(this.steps)[this.state.step]}.intro`} />
-                                </Typography>
-                                {component}
-                            </CardContent>
-                        </Card>
-                    </Grid>
+    switch(step){
+        case 0:
+            component = <BasicInfo initialData={ props.initialState ? props.initialState.investigation.basic_info : investigation.basic_info } 
+                            callBackData={addData} />
+            break;
+        // case 1:
+        //     component = <PISGenerator callBackData={addData} 
+        //                     stepBack = {stepBack}/>
+        //     break;
+        // case 2:
+        //     component = <AddConsents consents={ investigation.consents }  personalFields={investigation.basic_info.personalData} callBackData={addData} 
+        //                     stepBack = {stepBack}/>
+        //     break;
+        case 1: 
+            component = <PersonalData initialData={props.initialState ? props.initialState.investigation.personal_data : investigation.personal_data } callBackStepBack = {stepBack}  callBackData={addData} />
+            break;
+        case 2: 
+            component = <EDC initialData={props.initialState ? {surveys : props.initialState.investigation.surveys} : investigation.surveys ? {surveys : investigation.surveys } : {surveys : [] }} callBackStepBack = {stepBack}  callBackData={addData} />
+            break;
+        case 3:
+            component = <Summary initialData={ investigation } callBackStepBack = {stepBack} 
+                            callBackToStep = {goToStep} resultSave={ resultSave }
+                            callBackSave={saveData} />
+            break;
+        default:
+            component = "Something went wrong";
+            break;
+    }
+    if(isLoading){
+        return <Loader />
+    }
+    return(
+        <React.Fragment>
+            <Helmet title={props.translate("dashboard.create_investigation")} />
+            <Grid container spacing={3}>
+                <Grid item  xs={12}>
+                    <Typography variant="h3" gutterBottom display="inline">
+                        <Translate id="dashboard.create_investigation" />
+                    </Typography>
                 </Grid>
-                
-            </React.Fragment>
-        );
-    }
+                <Grid item  xs={12}>
+                    <Breadcrumb callBack={goToStep} selected={step} stages={Object.values(this.steps)} /> 
+                </Grid>
+                <Grid item  xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Typography variant="h4" gutterBottom display="inline">
+                                <Translate id={`investigation.create.${Object.keys(this.steps)[step]}.title`} />
+                            </Typography>
+                            <Typography variant="body2" gutterBottom>
+                                <Translate id={`investigation.create.${Object.keys(this.steps)[step]}.intro`} />
+                            </Typography>
+                            {component}
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+            
+        </React.Fragment>
+    );
+    
 }
 
 NewInvestigation.propTypes = {
