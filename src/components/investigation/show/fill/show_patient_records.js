@@ -7,6 +7,7 @@ import { findSubmissionsFromSection, numberRecordsSection } from '../../../../ut
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../../general/EnhancedTable';
+import { Card, CardContent, Typography, Grid } from '@material-ui/core';
 
 /**
  * Component in charge of showing records of a given patient in a survey
@@ -114,20 +115,24 @@ export default function PatientRecords(props) {
     }
     
     return (
-        <div className="container">
+        <Grid container direction="column" spacing={0}>
             {
                 sectionSelected !== null && 
-                <ButtonBack onClick={() => setSectionSelected(null)} >Back</ButtonBack>
+                <Grid item>
+                    <ButtonBack onClick={() => setSectionSelected(null)} >Back</ButtonBack>
+                </Grid>
             }
-            <div className="row">
-                PatientRecords - <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.name} ${props.patient.surname}`} - {props.patient.id}
-            </div>
-            <div className="container">
-               {
-                   renderCore()
-               }
-            </div>
-        </div>
+            <Grid item>
+                <Typography variant="subtitle1">
+                    <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.name} ${props.patient.surname}`} - {props.patient.id}
+                </Typography>
+            </Grid>
+            <Grid item>
+                {
+                    renderCore()
+                }
+            </Grid>
+        </Grid>
     )
 }
 

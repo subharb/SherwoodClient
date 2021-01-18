@@ -5,13 +5,12 @@ import PropTypes from 'prop-types';
 import BasicInfo  from './basic_info2';
 import PersonalData from './personal_data';
 import Summary from './summary';
-import { fetchInvestigation } from '../../../actions';
 import axios from 'axios';
 import Breadcrumb from '../../general/breadcrumb';
 import EDC from './edc';
-import { toggleLoading } from '../../../actions';
+
 import { Card, CardContent, Typography, Grid } from '@material-ui/core';
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 
 const Container = styled.div`
@@ -147,7 +146,7 @@ class NewInvestigation extends Component {
         }
         return(
             <React.Fragment>
-                <Helmet title={<Translate id="dashboard.create_investigation" />} />
+                <Helmet title={this.props.translate("dashboard.create_investigation")} />
                 <Grid container spacing={3}>
                     <Grid item  xs={12}>
                         <Typography variant="h3" gutterBottom display="inline">
@@ -182,4 +181,4 @@ NewInvestigation.propTypes = {
     initialState:PropTypes.object
 }
 
-export default connect(null, { toggleLoading, fetchInvestigation})(NewInvestigation)
+export default withLocalize(NewInvestigation)

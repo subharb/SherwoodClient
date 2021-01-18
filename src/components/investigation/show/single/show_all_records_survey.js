@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import PatientRecords from '../fill/show_patient_records';
 import PropTypes from 'prop-types';
-
+import { Button, Typography, Grid } from '@material-ui/core';
+import {
+    ArrowBackIos as ArrowBackIosIcon,
+    ArrowForwardIos as ArrowForwardIosIcon,
+  } from "@material-ui/icons";
+import styled from 'styled-components';
 /**
  * 
  * Component that shows all records of a given survey. 
  * It allows to navigate visualiazing each patient and its sections at a time.
  */
+
+const NavButton = styled(Button)`
+    background-color:black;
+    color:white;
+`;
+const TypoLineHeight = styled(Typography)`
+    line-height:2rem;
+    padding-left:1rem;
+`;
 export default function ShowAllRecordsSurvey(props) {
     let [currentPatient, setCurrentPatient] = useState(0);
     let [dictPatients, setDictPatients] = useState({});
@@ -31,23 +45,31 @@ export default function ShowAllRecordsSurvey(props) {
         return "No records"
     }
     return (
-        <div className="container">
-            <div className="row">
-                ShowAllRecordsSurvey {props.surveyName}
-            </div>
-            <div className="container">
-                {Object.values(dictPatients).length} Pacientes
-                <div className="row">
-                    {currentPatient} Current Patient
-                </div>
-                <div className="row">
-                    <button disabled={currentPatient === 0} onClick={() => setCurrentPatient(currentPatient-1)}>Prev</button>
-                    <button disabled={currentPatient === Object.values(dictPatients).length -1} onClick={() =>setCurrentPatient(currentPatient+1)}>Next</button>
-                </div>
+        <Grid container direction="column" spacing={3}>
+            <Grid item>
+                <Grid container >
+                    <Grid item>
+                        <NavButton variant="contained" disabled={currentPatient === 0}
+                            onClick={() => setCurrentPatient(currentPatient-1)}>
+                            <ArrowBackIosIcon />
+                        </NavButton>
+                        <NavButton variant="contained" disabled={currentPatient === Object.values(dictPatients).length -1} 
+                            onClick={() =>setCurrentPatient(currentPatient+1)}>
+                            <ArrowForwardIosIcon />
+                        </NavButton>
+                    </Grid>
+                    <Grid item >
+                        <TypoLineHeight variant="body2" gutterBottom component="div">
+                            {currentPatient + 1} of {Object.values(dictPatients).length} Patients
+                        </TypoLineHeight>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item>
                 <PatientRecords initialData={props.records} 
                     mode="elements" survey={props.survey} patient={Object.values(dictPatients)[currentPatient].patient} />
-            </div>
-        </div>
+            </Grid>
+        </Grid>
         
     )
 }
