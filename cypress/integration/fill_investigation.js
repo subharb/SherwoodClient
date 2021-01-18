@@ -1,30 +1,28 @@
-import { patients_personal_data, edc_data1, records_patient1, records_patient2 } from '../../src/stories/example_data';
+import { patients_personal_data_decrypted, edc_data1, records_patient1, records_patient2 } from '../../src/stories/example_data';
 
 describe('Testing create an investigation', () => {
     it('Introduces info on each field', () => {
-        //cy.visit('http://localhost:3000/dashboard')
-        cy.visit('https://dashboard.sherwood.science/');
+        cy.visit('http://localhost:3000/investigations/live');
+        //cy.visit('https://dashboard.sherwood.science/');
 
         cy.loginResearcher();
 
-        cy.contains('Live investigations').click();
-
-        cy.wait(2000);
-        cy.get('.investigation').first().find('.btn').click();
+     
+        cy.get('.investigation').first().find('button[data-testid="open"]').click();
         
 
-        patients_personal_data().forEach(patient =>{
+        patients_personal_data_decrypted().forEach(patient =>{
             cy.get('button[data-testid="add-patient"]')
             .click();
-            Object.keys(patient.personalData).forEach(key =>{
+            Object.keys(patient).forEach(key =>{
                 cy.get('input[name="'+key+'"]')
-                .type(patient.personalData[key])
-                .should('have.value', patient.personalData[key]);
+                .type(patient[key])
+                .should('have.value', patient[key]);
             });
             cy.get('button[data-testid="continue"]')
                 .click();
         })             
-        cy.get('button[data-testid="add-element"]').first()
+        cy.get('button[data-testid="add-element"]').eq(2)
             .click();
         
         cy.fillPatient(records_patient1())

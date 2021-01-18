@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import { validateField } from '../../../utils';
 import styled from "styled-components";
 import FieldSherwood from '../../general/FieldSherwood';
@@ -193,56 +193,44 @@ class Section extends Component{
         const saveText = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
         return (
             [
-                <Dialog
+                <Modal
                     open={this.state.addingField}
-                    onClose={this.closeModal}
-                    aria-labelledby="form-dialog-title">
-
-                    <DialogTitle id="form-dialog-title"><Translate id="investigation.create.edc.add_field" /></DialogTitle>
-                    <DialogContent>
+                    closeModal={this.closeModal}
+                    title={this.props.translate("investigation.create.edc.add_field")}>
                         <Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />
-                    </DialogContent>
-                    {/* <DialogActions>
-                        <Button onClick={this.closeModal} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={() => this.handleAddField} color="primary">
-                            Save
-                        </Button>
-                    </DialogActions> */}
-                </Dialog>,
+                </Modal>
+                ,
                 <Card>
                     <CardContent>
-                        
-                    <div className="card-body">
-                        <h3 className="">
-                            {
-                                title
-                            }
-                            
-                        </h3>
-                        <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
-                            <Field type="text" name="name" label="name" required={true} component={FieldSherwood} />
-                            <div>
-                                <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
-                            </div>
-                            <div style={{paddingTop:"40px"}}>
-                                Add field: 
-                                <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
-                                    show={!this.state.addingField}>
-                                </ButtonAdd>  
-                            </div>  
-                            { this.renderFields() }
-                            <div style={{paddingTop:"40px"}}>
-                                <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
-                                <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
-                                    type="button">Cancel</ButtonCancel>
-                            </div>
-                        </form>   
-                    </div>
-                </CardContent>
-            </Card>
-                        ]
+                        <div className="card-body">
+                            <h3 className="">
+                                {
+                                    title
+                                }
+                                
+                            </h3>
+                            <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
+                                <Field type="text" name="name" label="name" required={true} component={FieldSherwood} />
+                                <div>
+                                    <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
+                                </div>
+                                <div style={{paddingTop:"40px"}}>
+                                    Add field: 
+                                    <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
+                                        show={!this.state.addingField}>
+                                    </ButtonAdd>  
+                                </div>  
+                                { this.renderFields() }
+                                <div style={{paddingTop:"40px"}}>
+                                    <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
+                                    <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
+                                        type="button">Cancel</ButtonCancel>
+                                </div>
+                            </form>   
+                        </div>
+                    </CardContent>
+                </Card>
+            ]
         )
     }   
     
@@ -269,7 +257,7 @@ Section.propTypes = {
     closeNewSection: PropTypes.func.isRequired
 };
 
-export default reduxForm({
+export default withLocalize(reduxForm({
     validate : validate,
     form : 'section'
-})(Section)
+})(Section))

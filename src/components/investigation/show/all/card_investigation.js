@@ -72,7 +72,7 @@ export default function CardInvestigation({ image, title, description, status, u
         
     }
     return (
-        <Card mb={6}>
+        <Card className="investigation" mb={6}>
         {image ? <CardMedia image={image} title="Contemplative Reptile" /> : null}
         <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
@@ -93,10 +93,10 @@ export default function CardInvestigation({ image, title, description, status, u
         </CardContent>
         <CardActions>
             <Button size="small" color="primary">
-            Share
+                Share
             </Button>
             <NavLink to={url}>
-                <Button size="small" color="primary">
+                <Button data-testid="open" size="small" color="primary">
                 Open
                 </Button>
             </NavLink>

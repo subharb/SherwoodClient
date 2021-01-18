@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from 'react-query'
 
 export function useFechData(name, request){
@@ -73,9 +73,11 @@ export function useInvestigation(uuid, initialData) {
 
 export function useSherwoodUser(){
     const history = useHistory();
+    let location = useLocation();
+    const initialLocation = location.pathname;
     const [isLoading, setIsLoading] = useState(true);
     const [isAuth, setIsAuth] = useState(true);
-
+    
     useEffect(() => {
         async function fetchUser(){
             const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -85,9 +87,6 @@ export function useSherwoodUser(){
                 }); 
             
             return request.status === 200
-            
-            
-        
         }
         async function checkUser(){
             
@@ -98,7 +97,7 @@ export function useSherwoodUser(){
                 setIsLoading(false);
                 if(isAuth){
                     setIsAuth(true);
-                    
+                    //history.push(initialLocation);
                     return; 
                 }    
             }
@@ -106,7 +105,9 @@ export function useSherwoodUser(){
             setIsAuth(false);
             
         }
+        
         checkUser();
+        
     }, [history])
     
     if(!isAuth){

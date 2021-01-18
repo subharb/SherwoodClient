@@ -11,7 +11,7 @@ export function signIn(credentials, typeUser) {
                 localStorage.setItem("jwt", response.data.jwt);
                 localStorage.setItem("type", typeUser);
                 const payload = jwt.decode(localStorage.getItem("jwt"));
-                const rawKeyResearcher = decryptData(payload.keyResearcher, credentials.password);
+                const rawKeyResearcher = decryptData(payload.keyResearcher, localStorage.getItem("password"));
                 localStorage.setItem("rawKeyResearcher", rawKeyResearcher);
         
                 axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');

@@ -153,7 +153,7 @@ export const records_patient2 = () =>{
 }
 export const basic_info1 = () => {
     return {
-        "name":"COVID Nose ",
+        "name":"COVID Nose By Tester", 
         "acronym":"CN","type":"audit","principal_researcher":"Pedro Rodriguez",
         "institution":"Oxford University","contact":"test@email.com",
         "ethics_body":"12345","reference_number_state":"1",
@@ -189,7 +189,30 @@ export const summary_info1 = () => {
     }   
 }
 
-export const patients_personal_data = () => {
+export const patients_personal_data_decrypted = () => {
+    return [
+        {
+            "email":"john@hopkins.com",
+            "phone":"+1 727 1728 9191",
+            "name":"John",
+            "surname":"Hopkins"
+        },
+        {
+            "email":"peter@gmail.com",
+            "phone":"+49 127 1728 9191",
+            "name":"Peter",
+            "surname":"Petrelli"
+        },
+        {
+            "email":"donnie@gmail.com",
+            "phone":"+1 1997 1728 9191",
+            "name":"Donald",
+            "surname":"Trump"
+        }
+    ];
+}
+
+export const patients_personal_data_encripted = () => {
     return [
         {
             "id": "5fe218b524b4213823c82e8d",
@@ -234,7 +257,7 @@ export const investigation_server = () => {
     let returnData = {...basic_info1()};
     returnData.surveys = edc_data1().surveys;
     returnData.personalFields = personal_data1();
-    returnData.patientsPersonalData = patients_personal_data();
+    returnData.patientsPersonalData = patients_personal_data_encripted();
     returnData.status = 1;
     return returnData;
 }

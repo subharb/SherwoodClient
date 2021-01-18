@@ -23,6 +23,14 @@ export function NewInvestigation(props){
     const [resultSave, setResultSave] = useState(props.initialState && props.initialState.resultSave ? props.initialState.resultSave : 0);
     const [isLoading, setIsLoading] = useState(props.initialState && props.initialState.isLoading ? props.initialState.isLoading : false);
    
+    const steps = {
+        basic_info : "investigation.create.steps.basic_info",
+        personal_data:"investigation.create.steps.personal_data",
+        edc : "investigation.create.steps.edc",
+        // pis : "investigation.create.steps.patient_sheet",
+        // consent : "investigation.create.steps.consents",
+        summary : "investigation.create.steps.summary"
+    }
     async function saveData(publish){
         setIsLoading(true);
         let investigationInfo = {...investigation};
@@ -74,7 +82,7 @@ export function NewInvestigation(props){
                 return "Something went wrong";
         }
         setInvestigation(tempInvestigation);
-        setStep(s => s++);
+        setStep(s => s + 1);
     }
     function stepBack(){
         if(step > 0){
@@ -134,16 +142,16 @@ export function NewInvestigation(props){
                     </Typography>
                 </Grid>
                 <Grid item  xs={12}>
-                    <Breadcrumb callBack={goToStep} selected={step} stages={Object.values(this.steps)} /> 
+                    <Breadcrumb callBack={goToStep} selected={step} stages={Object.values(steps)} /> 
                 </Grid>
                 <Grid item  xs={12}>
                     <Card>
                         <CardContent>
                             <Typography variant="h4" gutterBottom display="inline">
-                                <Translate id={`investigation.create.${Object.keys(this.steps)[step]}.title`} />
+                                <Translate id={`investigation.create.${Object.keys(steps)[step]}.title`} />
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                <Translate id={`investigation.create.${Object.keys(this.steps)[step]}.intro`} />
+                                <Translate id={`investigation.create.${Object.keys(steps)[step]}.intro`} />
                             </Typography>
                             {component}
                         </CardContent>

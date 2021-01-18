@@ -28,7 +28,8 @@ export default function PersonalDataForm(props) {
         }
         //Encriptamos la clave con la clave del researcher y una por defecto para el paciente
         const patientKeyEncrResearcher =  encriptData(rawPatientKeyResearcher, rawKeyResearcher);
-        const patientKeyEncrInvestigation =  encriptData(rawPatientKeyInvestigation, process.env.DEFAULT_PATIENT_PASSWORD);
+        console.log(process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD);
+        const patientKeyEncrInvestigation =  encriptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD);
 
         props.callBackForm({
             "keyPatInv" : patientKeyEncrInvestigation,

@@ -137,7 +137,7 @@ const investigationsRoutes = {
         {
             path: "/investigation/show/:uuid",
             name: "Live",
-            component: () => <Investigation  uuid="ebe64225-023b-4ce9-9d21-37d1c2a26ebf"/> ,
+            component: () => <Investigation /> ,
         },
     ],
   };

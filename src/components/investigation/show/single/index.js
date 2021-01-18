@@ -30,7 +30,10 @@ export default function ShowInvestigation(props) {
     useEffect(() => {
         async function fetchInvestigation(){
             const response = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/'+props.uuid, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-                .catch(err => console.error('Catch', err)); 
+                .catch(err => {
+                    console.error('Catch', err); 
+                    return {status : 401};
+            }); 
             //Guardamos el token si la request fue exitosa
             if(response.request.status === 200){
                 setInvestigation(response.data.investigation);
@@ -125,10 +128,10 @@ export default function ShowInvestigation(props) {
         //Hay que encriptar los valores del objecto y enviarlo
         console.log(patientData);
         
-        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+investigation.uuid+"/patient", patientData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .catch(err => {console.log('Catch', err); return err;}); 
+        const request = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+investigation.uuid+"/patient", patientData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            .catch(err => {console.log('Catch', err); return {status : 401};}); 
 
-        if(response.request.status === 200){
+        if(request.status === 200){
             //Actualizo los pacientes
             const response = await Axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+investigation.uuid+"/patient", { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 

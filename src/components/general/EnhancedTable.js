@@ -357,25 +357,25 @@ return (
                             <Box mr={2}>
                                 {
                                     props.actions.hasOwnProperty("add") &&
-                                    <IconButton aria-label="add" onClick={() => props.actions.add(index)}>
+                                    <IconButton data-testid="add-element" aria-label="add" onClick={() => props.actions.add(index)}>
                                         <AddIcon />
                                     </IconButton>
                                 }
                                 {
                                     props.actions.hasOwnProperty("view") &&
-                                    <IconButton aria-label="view" onClick={() => props.actions.view(index)}>
+                                    <IconButton data-testid="view-element" aria-label="view" onClick={() => props.actions.view(index)}>
                                         <RemoveRedEyeIcon />
                                     </IconButton>
                                 }
                                 {
                                     props.actions.hasOwnProperty("delete") &&
-                                    <IconButton aria-label="delete" onClick={() => props.actions.delete(index)}>
+                                    <IconButton data-testid="delete-element" aria-label="delete" onClick={() => props.actions.delete(index)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 }
                                 {
                                     props.actions.hasOwnProperty("edit") &&
-                                    <IconButton aria-label="edit" onClick={() => props.actions.edit(index)}>
+                                    <IconButton data-testid="edit-element" aria-label="edit" onClick={() => props.actions.edit(index)}>
                                         <EditIcon />
                                     </IconButton>
                                 }

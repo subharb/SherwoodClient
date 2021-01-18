@@ -34,8 +34,8 @@ function UserDropdown() {
   };
 
   const handleSignOut = async () => {
-    await dispatch(signOut());
-    history.push("/auth/sign-in");
+      localStorage.removeItem("jwt");
+      history.push("/auth/sign-in");
   };
 
   return (

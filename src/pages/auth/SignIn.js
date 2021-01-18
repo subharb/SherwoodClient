@@ -97,9 +97,10 @@ function SignIn() {
                 password: Yup.string().max(255).required("Password is required"),
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-            try {                
+            try {               
+                localStorage.setItem("password", values.password); 
                 await signIn({ email: values.email, password: CryptoJS.SHA256(values.password).toString(CryptoJS.enc.Base64) }, "researcher")
-                history.push("/");
+                history.goBack();
             } catch (error) {
                 const message = error.message || "Something went wrong";
 

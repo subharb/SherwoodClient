@@ -82,12 +82,12 @@ class Summary extends Component {
     }
     render() {
         return([
-            <Modal key="modal2" open={this.props.resultSave === 1}  
-                component={<SuccessComponent title="investigation.create.summary.success.title" 
+            <Modal key="modal2" open={this.props.resultSave === 1}  >
+                <SuccessComponent title="investigation.create.summary.success.title" 
                                 description="investigation.create.summary.success.description" 
                                 successButtonText = "investigation.create.summary.success.continue"
-                                callBackContinue ={this.continueModal} />} 
-            />,
+                                callBackContinue ={this.continueModal} />
+            </Modal>,
             <React.Fragment>
                 <Typography variant="h6" gutterBottom display="inline">
                     <Translate id="investigation.create.steps.basic_info" ></Translate>
