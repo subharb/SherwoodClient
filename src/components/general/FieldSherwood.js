@@ -4,8 +4,10 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
-import { FormControl, Select, InputLabel, MenuItem, TextField, 
-        FormControlLabel, Checkbox, ButtonGroup, IconButton, Icon, TextareaAutosize } from '@material-ui/core';
+import { Select, InputLabel, MenuItem, TextField, 
+        FormControlLabel, Checkbox, ButtonGroup, IconButton, 
+        Icon, TextareaAutosize, FormControl as MuiFormControl, } from '@material-ui/core';
+import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -13,6 +15,11 @@ import {
     } from '@material-ui/pickers';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
+const FormControlSpacing = styled(MuiFormControl)(spacing);
+
+const FormControl = styled(FormControlSpacing)`
+    min-width: 148px!important;
+`;
 
 const sharedStyle = css`
     // & label {
@@ -33,9 +40,6 @@ const sharedStyle = css`
     // }
 `
 
-const FormControlSherwood = styled(FormControl)`
-    ${sharedStyle}
-`;
 
 const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
@@ -109,7 +113,7 @@ class FieldSherwood extends Component{
                     })
                 }
                 return(
-                    <FormControlSherwood >
+                    <FormControl m={2}>
                         <InputLabel id={input.name}>{labelString}</InputLabel>
                         <Select  
                             labelId={input.name}
@@ -118,7 +122,7 @@ class FieldSherwood extends Component{
                             >
                             {optionsArray}
                         </Select>
-                    </FormControlSherwood>
+                    </FormControl>
                     
                 )
             case "multioption" : 
