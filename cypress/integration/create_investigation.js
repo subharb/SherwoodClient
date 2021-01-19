@@ -13,7 +13,7 @@ describe('Testing create an investigation', () => {
 
 
         //Introducimos datos de BASIC INFO
-        cy.createBasicInfo(basic_info1());
+        cy.createBasicInfo(basic_info1);
 
         personal_data1().forEach(pField => {
             cy.contains(pField, {matchCase: false}).click();    

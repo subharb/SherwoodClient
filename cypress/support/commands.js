@@ -24,6 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import { basic_info1 } from "../../src/stories/example_data";
+
 Cypress.Commands.add('loginResearcher', () => {
     cy.get('input[name="email"]')
         .type('dshaikhurbina@gmail.com')
@@ -85,38 +87,55 @@ Cypress.Commands.add('createEDC', (surveys) => {
         .click();
 });
 
-Cypress.Commands.add('createBasicInfo', (basicInfo) => {    
-    cy.get('input[name="name"]')
-            .type('COVID Nose')
-            .should('have.value', 'COVID Nose');
-
-    cy.get('input[name="acronym"]')
-        .type('CN')
-        .should('have.value', 'CN');
+Cypress.Commands.add('createBasicInfo', (basicInfo) => {  
+      Object.keys(basicInfo).forEach(key => {
+            const field = basicInfo[key];
+            if(field.type === "textarea"){
+                cy.get('.ql-editor')//Solo vale si solo hay un editor
+                .type(field.value);
+            }
+            else if(field.type === "select"){
+                cy.get('[aria-labelledby^="'+key+'"]') 
+                    .click()
+                cy.contains(field.textValue).click();
+            }
+            else{
+                cy.get('input[name="'+key+'"]')
+                    .type(field.value)
+                    .should('have.value', field.value);
+            }
+      })
     
-    cy.get('[aria-labelledby^="type"]')
-        .click()
-        cy.contains("Clinical Trial").click();
+
+    // cy.get('input[name="acronym"]')
+    //     .type('CN')
+    //     .should('have.value', 'CN');
+    // cy.get('.ql-editor')
+    //     .type('Estudio sobre el impacto en la anosmia en pacientes de COVID19');
+    
+    // cy.get('[aria-labelledby^="type"]')
+    //     .click()
+    //     cy.contains("Clinical Trial").click();
         
-    cy.get('input[name="principal_researcher"]')
-        .type('Pedro Rodríguez')
-        .should('have.value', 'Pedro Rodríguez');
+    // cy.get('input[name="principal_researcher"]')
+    //     .type('Pedro Rodríguez')
+    //     .should('have.value', 'Pedro Rodríguez');
 
-    cy.get('input[name="institution"]')
-        .type('Oxford University')
-        .should('have.value', 'Oxford University');
+    // cy.get('input[name="institution"]')
+    //     .type('Oxford University')
+    //     .should('have.value', 'Oxford University');
     
-    cy.get('input[name="contact"]')
-        .type('testing@test.email')
-        .should('have.value', 'testing@test.email');
+    // cy.get('input[name="contact"]')
+    //     .type('testing@test.email')
+    //     .should('have.value', 'testing@test.email');
     
-    cy.get('input[name="ethics_body"]')
-        .type('123456')
-        .should('have.value', '123456');
+    // cy.get('input[name="ethics_body"]')
+    //     .type('123456')
+    //     .should('have.value', '123456');
 
-    cy.get('[aria-labelledby^="reference_number_state"]')
-        .click()
-    cy.contains("Approved").click();
+    // cy.get('[aria-labelledby^="reference_number_state"]')
+    //     .click()
+    // cy.contains("Approved").click();
 
     cy.get('button[data-testid="continue"]')
         .click();

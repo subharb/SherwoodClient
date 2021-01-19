@@ -22,11 +22,15 @@ const FormControlSpacing = styled(MuiFormControl)(spacing);
 
 const FormControl = styled(FormControlSpacing)`
     min-width: 148px!important;
-    margin-top:1rem!important;
+    xmargin-top:1rem!important;
 `;
 const QuillWrapper = styled.div`
   .ql-editor {
     min-height: 200px;
+    ${props => props.error && css`
+        border:1px solid red;
+    `
+    }
   }
 `;
 const sharedStyle = css`
@@ -121,7 +125,7 @@ class FieldSherwood extends Component{
                     })
                 }
                 return(
-                    <FormControl mt={3}>
+                    <FormControl mt={2}>
                         <InputLabel id={input.name}>{labelString}</InputLabel>
                         <Select  
                             labelId={input.name}
@@ -229,11 +233,11 @@ class FieldSherwood extends Component{
                 );
             case "textarea":
                 return(
-                    <Box mt={3} mb={3}>
+                    <Box mt={3} mb={3} >
                         <Typography variant="body2" gutterBottom>
                             {labelString}: 
                         </Typography>
-                        <QuillWrapper>
+                        <QuillWrapper className={input.name} error={errorState}>
                             <ReactQuill
                                 {...input}
                                 onChange={(newValue, delta, source) => {
@@ -251,7 +255,7 @@ class FieldSherwood extends Component{
             default:    
                     console.log("TextFieldSherwood",input.value);
                 return(
-                    <Box mt={3}>
+                    <Box mt={1}>
                         <TextFieldSherwood {...input}  
                             label={labelString} error={errorState} 
                             helperText={errorString} />

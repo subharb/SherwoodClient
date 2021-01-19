@@ -51,7 +51,7 @@ class Summary extends Component {
                 component = "error!";
                 break;
             case 2:
-                component = <ResultContainer title="Suecess!">Success!</ResultContainer>
+                component = <ResultContainer title="Success!">Success!</ResultContainer>
                 break;
             default:
                 component = "Unexpected";
@@ -70,7 +70,8 @@ class Summary extends Component {
     }
     renderBasicInfo(){
         return Object.keys(this.props.initialData.basic_info).map(key =>{
-                return key+":"+this.props.initialData.basic_info[key]+", ";
+                const tagsFree = typeof this.props.initialData.basic_info[key] === "string" ? this.props.initialData.basic_info[key].replace(/<[^>]+>/g, '') : "<blank>";
+                return this.props.translate("investigation.create.edc."+key)+": "+tagsFree+", ";
             })
         
     }

@@ -151,15 +151,30 @@ export const records_patient2 = () =>{
         ]
     }
 }
-export const basic_info1 = () => {
-    return {
-        "name":"COVID Nose By Tester", 
-        "acronym":"CN","type":"audit","principal_researcher":"Pedro Rodriguez",
-        "institution":"Oxford University","contact":"test@email.com",
-        "ethics_body":"12345","reference_number_state":"1",
-        "description":"Estudio sobre el impacto en la anosmia en pacientes de COVID19",
-        "uuid" : "ce0430a6-e333-4c90-9b48-7fc9bbecc38d"
-    }    
+export const basic_info1 = {
+        "name": {
+            "value" : "COVID Nose By Tester",
+            "type" : "text"
+        }, 
+        "acronym":{
+            "value" : "CN", 
+            "type" : "text"
+        },
+        "type":{"value" : "audit", "type" : "select", "textValue" : "Clinical Trial"},
+        "principal_researcher":{"value" : "Pedro Rodriguez", "type" : "text"},
+        "institution":{"value" : "Oxford University", "type" : "text"},
+        "contact":{"value" : "test@email.com", "type" : "text"},
+        "ethics_body":{ "value" : "12345", "type" : "text"},
+        "reference_number_state":{ "value" : "1","type" : "select", "textValue" : "Approved"},
+        "description":{ "value" : "Estudio sobre el impacto en la anosmia en pacientes de COVID19", "type" : "textarea"}
+}
+
+export const basic_info1_raw = () => {
+    let tempBasicInfo = {}
+    Object.keys(basic_info1).map(key => {
+        tempBasicInfo[key] = basic_info1[key].value
+    });
+    return tempBasicInfo;
 }
 
 export const personal_data1 = () => {
@@ -184,7 +199,7 @@ export const patient_data_decrypted1 = () => {
 
 export const summary_info1 = () => {
     return {
-        "basic_info": basic_info1(), 
+        "basic_info":  basic_info1_raw(),
         "personal_data" : personal_data1(),
         "surveys" : edc_data1().surveys
     }   
