@@ -21,7 +21,6 @@ export default function Modal(props){
             open={props.open}
             onClose={props.closeModal}
             aria-labelledby="form-dialog-title">
-
             <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
             <DialogContent>
                 {props.children}

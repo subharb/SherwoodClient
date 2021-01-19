@@ -268,6 +268,22 @@ export const patients_personal_data_encripted = () => {
     ]
 }
 
+export const researchers_to_share = [
+    {
+        "email" : "pedro@sherwood.science",
+        "permission" : "1"
+    },
+    {
+        "email" : "guille@sherwood.science",
+        "permission" : "2"
+    },
+    {
+        "email" : "sheryl@facebook.com",
+        "permission" : "0"
+    }
+]
+
+
 //La forma en la que se envían los datos desde el servidor
 export const investigation_server = () => {
     let returnData = {...basic_info1()};

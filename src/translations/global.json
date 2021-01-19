@@ -24,6 +24,7 @@
         "show_investigations" : ["Show investigations", "Mostrar investigaciones"],
         "draft_investigations" : ["Draft investigations", "Investigaciones Draft"],
         "live_investigations" : ["Live investigations", "Investigaciones Live"],
+        "share_investigation" : ["Share Investigation" , "Compartir Investigación"],
         "ongoing" : ["Show ongoing investigations", "Mostrar investigaciones corriente"],
         "summary" : {
             "title" : ["Summary", "Resumen"]
@@ -249,8 +250,23 @@
             },
             "records" : ["Records", "Registros"]
         },
+        "share" : {
+            "title" : ["Share Investigation", "Compartir Investigación"],
+            "add_researcher" : ["Add Researcher", "Añadir Investigador"],
+            "researchers" : ["Researchers", "Investigadores"],
+            "form" : {
+                "email" : ["Email", "Email"],
+                "permission" :  ["Permission", "Permisos"]
+            },
+            "share" : ["Share", "Compartir"],
+            "permissions" : {
+                "read_no_personal_data" : ["Read Only Medical Data", "Solo lectura datos médicos"],
+                "read_personal_data" : ["Read Medical and personal Data", "Lectura de datos personales y médicos"],
+                "create_personal_data" : ["Add Medical and personal data", "Añadir datos médicos y personales"]
+            },
+            "no_researchers_added" : ["You haven`t added researchers yet!", "No has añadido ningún investigador!"]
+        },
         "show" : {
-            
             "view_investigation" : ["View Investigation", "Ver investigación"],
             "title" : ["Title", "Título"],
             "date_created" : ["Date create", "Fecha de creación"],

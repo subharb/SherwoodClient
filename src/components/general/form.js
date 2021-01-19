@@ -145,7 +145,7 @@ class Form extends Component {
                         
                     })}
                     <div style={{paddingTop:"1rem"}}>
-                        <ButtonContinue type="submit" data-testid={this.props.dataTestid} >
+                        <ButtonContinue type="submit" data-testid={this.props.dataTestid} spaceRight={true} >
                             { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}
                         </ButtonContinue>
                         {this.props.closeCallBack &&

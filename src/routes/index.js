@@ -77,6 +77,8 @@ const Tasks = async(() => import("../pages/pages/Tasks"));
 const Projects = async(() => import("../pages/pages/Projects"));
 const Investigations = async(() => import("../components/investigation/show/all"));
 const Investigation = async(() => import("../components/investigation"));
+const ShareInvestigation = async(() => import("../components/investigation/share"));
+
 const DraftInvestigations = async(() => import("../components/investigation/show/all"));
 const LiveInvestigations = async(() => import("../components/investigation/show/all"));
 
@@ -133,12 +135,7 @@ const investigationsRoutes = {
             path: "/investigations/live",
             name: "Live",
             component: () => <Investigations filter="live" /> ,
-        },
-        {
-            path: "/investigation/show/:uuid",
-            name: "Live",
-            component: () => <Investigation /> ,
-        },
+        }
     ],
   };
 
@@ -188,6 +185,16 @@ const dashboardsNotSideBarRoutes = {
             path: "/profile",
             name: "CreateInvestigation",
             component: Profile,
+        },
+        {
+            path: "/investigation/show/:uuid",
+            name: "Live",
+            component: () => <Investigation /> ,
+        },
+        {
+            path: "/investigation/share/:uuid",
+            name: "Live",
+            component: () => <ShareInvestigation /> ,
         },
     ]}
 const pagesRoutes = {
