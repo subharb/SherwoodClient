@@ -7,15 +7,17 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import Loader from '../../../Loader';
 import { useInvestigations } from '../../../../hooks';
 import {useQuery} from 'react-query';
+import { useHistory } from "react-router-dom";
 
 function AllInvestigations(props){
     const {investigations, isLoading, error } = useInvestigations();
-    
+    const history  = useHistory();
+
     if(isLoading){
         return <Loader />
     }
     else if(error){
-        return "SE ha producido un error"
+        return "Se ha producido un error"
     }
     else{
         const filteredInvestigations = investigations.filter(inv => { 

@@ -177,7 +177,19 @@ const dashboardsRoutes = {
   ],
   component: null,
 };
-
+const dashboardsNotSideBarRoutes = {
+    id: "Dashboard",
+    path: "/dashboard",
+    header: "Pages",
+    icon: <Sliders />,
+    containsHome: true,
+    children: [
+        {
+            path: "/profile",
+            name: "CreateInvestigation",
+            component: Profile,
+        },
+    ]}
 const pagesRoutes = {
   id: "Pages",
   path: "/pages",
@@ -582,6 +594,7 @@ export const dashboardLayoutRoutes = [
   pagesRoutes,
   investigationsRoutes,
   projectsRoutes,
+  dashboardsNotSideBarRoutes
 //   orderRoutes,
 //   invoiceRoutes,
 //   tasksRoutes,

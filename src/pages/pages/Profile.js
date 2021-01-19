@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { withTheme } from "styled-components/macro";
 import { NavLink } from "react-router-dom";
-
+import { getData } from '../../utils';
 import Helmet from "react-helmet";
 
 import "../../vendor/roundedBarCharts";
@@ -120,18 +120,18 @@ function Details() {
         <Spacer mb={4} />
 
         <Centered>
-          <Avatar alt="Lucy Lavender" src="/static/img/avatars/avatar-1.jpg" />
+          {/* <Avatar alt="Lucy Lavender" src="/static/img/avatars/avatar-1.jpg" /> */}
           <Typography variant="body2" component="div" gutterBottom>
-            <Box fontWeight="fontWeightMedium">Lucy Lavender</Box>
-            <Box fontWeight="fontWeightRegular">Lead Developer</Box>
+            <Box fontWeight="fontWeightMedium">{getData("name")+" "+getData("surnames")}</Box>
+            {/* <Box fontWeight="fontWeightRegular">Lead Developer</Box> */}
           </Typography>
 
-          <Button mr={2} variant="contained" size="small">
+          {/* <Button mr={2} variant="contained" size="small">
             Follow
           </Button>
           <Button mr={2} variant="contained" color="primary" size="small">
             Message
-          </Button>
+          </Button> */}
         </Centered>
       </CardContent>
     </Card>
@@ -539,16 +539,6 @@ function Profile() {
       <Typography variant="h3" gutterBottom display="inline">
         Profile
       </Typography>
-
-      <Breadcrumbs aria-label="Breadcrumb" mt={2}>
-        <Link component={NavLink} exact to="/">
-          Dashboard
-        </Link>
-        <Link component={NavLink} exact to="/">
-          Pages
-        </Link>
-        <Typography>Profile</Typography>
-      </Breadcrumbs>
 
       <Divider my={6} />
 

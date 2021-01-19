@@ -6,7 +6,7 @@ import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
-        Icon, TextareaAutosize, FormControl as MuiFormControl, } from '@material-ui/core';
+        Icon, Box, FormControl as MuiFormControl, Typography } from '@material-ui/core';
 import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
@@ -14,13 +14,21 @@ import {
     KeyboardTimePicker
     } from '@material-ui/pickers';
 import 'date-fns';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
 const FormControl = styled(FormControlSpacing)`
     min-width: 148px!important;
+    margin-top:1rem!important;
 `;
-
+const QuillWrapper = styled.div`
+  .ql-editor {
+    min-height: 200px;
+  }
+`;
 const sharedStyle = css`
     // & label {
     //     position: relative;
@@ -113,7 +121,7 @@ class FieldSherwood extends Component{
                     })
                 }
                 return(
-                    <FormControl m={2}>
+                    <FormControl mt={3}>
                         <InputLabel id={input.name}>{labelString}</InputLabel>
                         <Select  
                             labelId={input.name}
@@ -221,14 +229,33 @@ class FieldSherwood extends Component{
                 );
             case "textarea":
                 return(
-                    <TextareaAutosize aria-label="empty textarea" placeholder="Empty" {...input}  />
+                    <Box mt={3} mb={3}>
+                        <Typography variant="body2" gutterBottom>
+                            {labelString}: 
+                        </Typography>
+                        <QuillWrapper>
+                            <ReactQuill
+                                {...input}
+                                onChange={(newValue, delta, source) => {
+                                    if (source === 'user') {
+                                    input.onChange(newValue);
+                                    }
+                                }}
+                                onBlur={(range, source, quill) => {
+                                    input.onBlur(quill.getHTML());
+                                }}
+                            />
+                        </QuillWrapper>
+                    </Box>
                 )
             default:    
                     console.log("TextFieldSherwood",input.value);
                 return(
-                    <TextFieldSherwood {...input}  
-                        label={labelString} error={errorState} 
-                        helperText={errorString} />
+                    <Box mt={3}>
+                        <TextFieldSherwood {...input}  
+                            label={labelString} error={errorState} 
+                            helperText={errorString} />
+                    </Box>
                 )
         }
     }

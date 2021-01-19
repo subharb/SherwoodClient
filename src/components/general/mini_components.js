@@ -4,11 +4,13 @@ import { Button, Icon, IconButton } from '@material-ui/core';
 import {
     Add as AddIcon,
     RemoveRedEye as RemoveRedEyeIcon,
-    Delete as DeleteIcon,
-    CloudUpload as CloudUploadIcon,
-    KeyboardVoice as KeyboardVoiceIcon,
-    Navigation as NavigationIcon,
+    PanoramaFishEye as PanoramaFishEyeIcon,
+    CheckCircleOutline as CheckCircleOutlineIcon,
     Save as SaveIcon,
+    Clear as ClearIcon,
+    Send as SendIcon,
+    ArrowForwardIos as ArrowForwardIosIcon,
+    ArrowBackIos as ArrowBackIosIcon
   } from "@material-ui/icons";
   import {
     CardContent,
@@ -89,7 +91,7 @@ export const ButtonBack = (props) =>{
         variant="contained"
         color="primary"
         size="small"
-        startIcon={<Icon>arrow_back_ios</Icon>}
+        startIcon={<ArrowBackIosIcon />}
         {...props}
     >
         {props.children}
@@ -101,7 +103,7 @@ export const ButtonForward = (props) =>{
         variant="contained"
         color="primary"
         size="small"
-        startIcon={<Icon>arrow_forward_ios</Icon>}
+        startIcon={<ArrowForwardIosIcon />}
         {...props}
     >
         {props.children}
@@ -113,7 +115,7 @@ export const ButtonContinue = (props) =>{
             variant="contained"
             color="primary"
             size="small"
-            endIcon={<Icon>send</Icon>}
+            endIcon={<SendIcon />}
             {...props}
             data-testid={props['data-testid'] ? props['data-testid'] : "continue"}
         >
@@ -126,7 +128,7 @@ export const ButtonCancel = (props) =>{
         variant="contained"
         color="primary"
         size="small"
-        endIcon={<Icon>clear</Icon>}
+        endIcon={<ClearIcon />}
         {...props}
     >
         {props.children}
@@ -139,7 +141,7 @@ export const ButtonSave = (props) =>{
         variant="contained"
         color="primary" 
         size="small"
-        startIcon={<Icon>save</Icon>}
+        startIcon={<SaveIcon />}
         {...props}
          >
             {props.children}
@@ -150,7 +152,7 @@ export const ButtonCheck = (props) =>{
     return <ButtonContinueStyles 
         variant="contained"
         size="small"
-        startIcon={<Icon>check_circle_outline</Icon>}
+        startIcon={<CheckCircleOutlineIcon />}
         {...props}
          >
             {props.children}
@@ -161,7 +163,7 @@ export const ButtonEmptyCheck = (props) =>{
         variant="contained"
         color="primary" 
         size="small"
-        startIcon={<Icon>panorama_fish_eye</Icon>}
+        startIcon={<PanoramaFishEyeIcon />}
         {...props}
          >
             {props.children}

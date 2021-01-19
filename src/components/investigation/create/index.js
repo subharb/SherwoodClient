@@ -86,7 +86,7 @@ export function NewInvestigation(props){
     }
     function stepBack(){
         if(step > 0){
-            setStep(s => s--);
+            setStep(s => s - 1);
         }
     }
     function goToStep(aStep){

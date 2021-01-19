@@ -224,6 +224,13 @@ export const FIELDS_BASIC_INFO = {
             ],
         value: ""
     },
+    "description":{
+        required : true,
+        type:"textarea",
+        label:"investigation.create.edc.description",
+        validation : "textMin2",
+        value: ""
+    },
     "principal_researcher":{
         required : true,
         type:"text",
@@ -323,4 +330,12 @@ export function findSubmissionsFromSection(records, sectionID){
         }
     }
     return submissionsSection;
+}
+
+export function saveData(key, value){
+    localStorage.setItem(key, value); 
+}
+
+export function getData(key){
+    return localStorage.getItem(key); 
 }

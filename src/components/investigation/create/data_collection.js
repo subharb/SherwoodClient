@@ -62,7 +62,7 @@ class DataCollection extends Component{
         else{
             let arrayHeader = Object.keys(SECTION_FORM).map(key => {
                 const value = SECTION_FORM[key]; 
-                return { id: key, alignment: "right", label: <Translate id={value.shortLabel} /> }
+                return { id: key, alignment: "left", label: <Translate id={value.shortLabel} /> }
             });
             arrayHeader.push({ id: "number_fields", alignment: "right", label: <Translate id="investigation.create.edc.number_fields" />});
 

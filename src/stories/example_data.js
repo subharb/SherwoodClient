@@ -157,6 +157,7 @@ export const basic_info1 = () => {
         "acronym":"CN","type":"audit","principal_researcher":"Pedro Rodriguez",
         "institution":"Oxford University","contact":"test@email.com",
         "ethics_body":"12345","reference_number_state":"1",
+        "description":"Estudio sobre el impacto en la anosmia en pacientes de COVID19",
         "uuid" : "ce0430a6-e333-4c90-9b48-7fc9bbecc38d"
     }    
 }

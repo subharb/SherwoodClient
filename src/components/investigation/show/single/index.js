@@ -25,21 +25,22 @@ export default function ShowInvestigation(props) {
     const [patientsData, setPatientsData] = useState([]);
     const [decryptedPatientData, setDecryptedPatientData] = useState([]);
     const [investigation, setInvestigation] = useState(props.initialData ? props.initialData.investigation : false);
-    const { history } = useHistory();
+    const history  = useHistory();
 
+    
     useEffect(() => {
         async function fetchInvestigation(){
-            const response = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/'+props.uuid, { headers: {"Authorization" : localStorage.getItem("jwt")}})
+            const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/'+props.uuid, { headers: {"Authorization" : localStorage.getItem("jwt")}})
                 .catch(err => {
                     console.error('Catch', err); 
                     return {status : 401};
             }); 
             //Guardamos el token si la request fue exitosa
-            if(response.request.status === 200){
-                setInvestigation(response.data.investigation);
+            if(request.status === 200){
+                setInvestigation(request.data.investigation);
             }
-            else if(response.status === 401){
-                history.push("auth/sign-in");
+            else if(request.status === 401){
+                history.push("/auth/sign-in");
             }
         }
         if((patientsData.length === 0) && investigation){

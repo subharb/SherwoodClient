@@ -1,19 +1,23 @@
 import axios from "../utils/axios";
-import { decryptData } from '../utils';
+import { decryptData, saveData } from '../utils';
 import jwt from 'jsonwebtoken';
+import CryptoJS from 'crypto-js';
 
 export function signIn(credentials, typeUser) {
   return new Promise((resolve, reject) => {
+    saveData("password", credentials.password); 
+    credentials.password = CryptoJS.SHA256(credentials.password).toString(CryptoJS.enc.Base64) 
     axios.post(process.env.REACT_APP_API_URL+'/'+typeUser+'/login', credentials)
         .then((response) => {
             if(response.status === 200){
                 console.log("TOKEN: "+response.data.jwt);
-                localStorage.setItem("jwt", response.data.jwt);
-                localStorage.setItem("type", typeUser);
+                saveData("jwt", response.data.jwt);
+                saveData("type", typeUser);
                 const payload = jwt.decode(localStorage.getItem("jwt"));
                 const rawKeyResearcher = decryptData(payload.keyResearcher, localStorage.getItem("password"));
-                localStorage.setItem("rawKeyResearcher", rawKeyResearcher);
-        
+                saveData("rawKeyResearcher", rawKeyResearcher);
+                saveData("name", payload.name);
+                saveData("surnames", payload.surnames);
                 axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
                 resolve(response.data);
             }

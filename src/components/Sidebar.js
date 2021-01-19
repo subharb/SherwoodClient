@@ -5,9 +5,9 @@ import { NavLink, withRouter } from "react-router-dom";
 import { darken } from "polished";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "../vendor/perfect-scrollbar.css";
-
+import pathLogo from '../logo-sherwood.png';
 import { spacing } from "@material-ui/system";
-
+import { getData } from '../utils';
 import {
   Badge,
   Box as MuiBox,
@@ -30,6 +30,9 @@ import { sidebarRoutes as routes } from "../routes/index";
 
 import { ReactComponent as Logo } from "../vendor/logo.svg";
 
+const LinkNoDecoration = styled(NavLink)`
+    text-decoration:none;
+`;
 const Box = styled(MuiBox)(spacing);
 
 const Drawer = styled(MuiDrawer)`
@@ -326,9 +329,9 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>
-        <BrandIcon />{" "}
+        <img src={pathLogo} alt="Sherwood Science" height="32" /> {"  "}
         <Box ml={1}>
-          Material App <BrandChip label="PRO" />
+            Sherwood
         </Box>
       </Brand>
       <Scrollbar>
@@ -386,29 +389,29 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
         </List>
       </Scrollbar>
       <SidebarFooter>
-        <Grid container spacing={2}>
-          <Grid item>
-            <SidebarFooterBadge
-              overlap="circle"
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Lucy Lavender"
-                src="/static/img/avatars/avatar-1.jpg"
-              />
-            </SidebarFooterBadge>
-          </Grid>
-          <Grid item>
-            <SidebarFooterText variant="body2">Lucy Lavender</SidebarFooterText>
-            <SidebarFooterSubText variant="caption">
-              UX Designer
-            </SidebarFooterSubText>
-          </Grid>
-        </Grid>
+            <Grid container component={LinkNoDecoration} to="/profile" spacing={2}>
+                <Grid item>
+                    <SidebarFooterBadge
+                    overlap="circle"
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                    }}
+                    variant="dot"
+                    >
+                    <Avatar
+                        alt="Lucy Lavender"
+                        src="/static/img/avatars/avatar-1.jpg"
+                    />
+                    </SidebarFooterBadge>
+                </Grid>
+                <Grid item>
+                    <SidebarFooterText variant="body2">{getData("name")+" "+getData("surnames")}</SidebarFooterText>
+                    <SidebarFooterSubText variant="caption">
+                        UX Designer
+                    </SidebarFooterSubText>
+                </Grid>
+            </Grid>
       </SidebarFooter>
     </Drawer>
   );

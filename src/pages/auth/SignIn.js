@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { signIn } from "../../services/authService";
 import Loader from '../../components/Loader';
-import CryptoJS from 'crypto-js';
+
 import {
   Avatar,
   Checkbox,
@@ -98,8 +98,7 @@ function SignIn() {
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             try {               
-                localStorage.setItem("password", values.password); 
-                await signIn({ email: values.email, password: CryptoJS.SHA256(values.password).toString(CryptoJS.enc.Base64) }, "researcher")
+                await signIn({ email: values.email, password: values.password}, "researcher")
                 history.goBack();
             } catch (error) {
                 const message = error.message || "Something went wrong";

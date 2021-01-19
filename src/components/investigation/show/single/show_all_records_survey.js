@@ -49,11 +49,11 @@ export default function ShowAllRecordsSurvey(props) {
             <Grid item>
                 <Grid container >
                     <Grid item>
-                        <NavButton variant="contained" disabled={currentPatient === 0}
+                        <NavButton data-testid="prev" variant="contained" disabled={currentPatient === 0}
                             onClick={() => setCurrentPatient(currentPatient-1)}>
                             <ArrowBackIosIcon />
                         </NavButton>
-                        <NavButton variant="contained" disabled={currentPatient === Object.values(dictPatients).length -1} 
+                        <NavButton data-testid="next" variant="contained" disabled={currentPatient === Object.values(dictPatients).length -1} 
                             onClick={() =>setCurrentPatient(currentPatient+1)}>
                             <ArrowForwardIosIcon />
                         </NavButton>

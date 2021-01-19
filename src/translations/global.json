@@ -143,11 +143,13 @@
                     "add_section" : ["Add section"],
                     "none" : ["You have no sections", "No has creado ninguna sección"]
                 },
+                "acronym" : ["Acronym", "Acrónimo"],
                 "name" : ["Study's name", "Nombre de la investigación"],
                 "add_field" : ["Add field", "añadir campo"], 
                 "required" : ["Required", "Obligatorio"],
                 "repeats" : ["Repeats", "Repite"],
                 "fields" : ["Fields", "Campos"],
+                "description" : ["Description", "Descripción"],
                 "number_fields" : ["# fields", "Nº Campos"],
                 "name_field" : ["Name of the field in your report", "Nombre del campo en los informes"], 
                 "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?"], 
