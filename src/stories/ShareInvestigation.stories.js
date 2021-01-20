@@ -1,6 +1,6 @@
 import React from 'react';
 import ShareInvestigation from '../components/investigation/share'
-import { researchers_to_share } from './example_data';
+import { researchers_to_share, sharedResearchers, investigation_server } from './example_data';
 import ProviderSherwood from '../providerSherwood';
 
 export default {
@@ -19,16 +19,25 @@ export default {
 };
 
 const Template = (args) => <ShareInvestigation {...args} />;
+const uuidInvestigation = "00287041-3df4-438f-b60a-e1d85dbe25b9";
 
 export const Basic = Template.bind({});
 Basic.args = {
-    uuid : "68a8b4d4-3e09-471a-812d-9354d60edd9c",
+    uuid : uuidInvestigation,
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
 export const Data = Template.bind({});
 Data.args = {
-    uuid : "68a8b4d4-3e09-471a-812d-9354d60edd9c",
-    initialState : {researchers_to_share},
+    uuid : uuidInvestigation,
+    initialState : {newResearchers : researchers_to_share},
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
+
+export const PreviousResearchers = Template.bind({});
+PreviousResearchers.args = {
+    uuid : uuidInvestigation,
+    initialState : {investigation : investigation_server()},
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+};
+

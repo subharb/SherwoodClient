@@ -254,15 +254,36 @@
             "title" : ["Share Investigation", "Compartir Investigación"],
             "add_researcher" : ["Add Researcher", "Añadir Investigador"],
             "researchers" : ["Researchers", "Investigadores"],
+            "new_researchers" : ["New Researchers", "Nuevos Investigadores"],
             "form" : {
                 "email" : ["Email", "Email"],
                 "permission" :  ["Permission", "Permisos"]
+            },
+            "researcher" : {
+                "name" : ["name", "nombre"],
+                "status" : ["status", "status"],
+                "permission" : ["Permission", "Permisos"]
+            },
+            "not_shared" : ["This investigation is currently not shared with any other researcher", "Esta investigación no se está compartiendo actualmente con ningún otro investigador"],
+            "confirm_dialog" : {
+                "title" : ["Please confirm", "Por favor confirme"],
+                "description" : ["An email will be sent to the following email addresses with instructions on how to create an account on Sherwood if they didn't have one. Once they have accepted to participate on the investigation they will be able to access the investigation data and perform the actions you have given them access to. You can deny access in any given moment. Do you wish to proceed?",
+                                "Enviaremos un email a los siguientes destinatarios con instrucciones sobre como crear una cuenta en Sherwood sino tuviera una ya creada. Una vez hayan aceptado participar en la investigación, tendrán acceso a los datos de la investigación y realizar las acciones que se les está dando permiso. Puede revocar el acceso investigador en cualquier momento. ¿Desea continuar?"]
+            },
+            "error" : {
+                "title" : ["Error", "Error"],
+                "description" : ["An error ocurred, please try again later", "Ha habido un error, por favor inténtelo más tarde"]
             },
             "share" : ["Share", "Compartir"],
             "permissions" : {
                 "read_no_personal_data" : ["Read Only Medical Data", "Solo lectura datos médicos"],
                 "read_personal_data" : ["Read Medical and personal Data", "Lectura de datos personales y médicos"],
                 "create_personal_data" : ["Add Medical and personal data", "Añadir datos médicos y personales"]
+            },
+            "status" : {
+                "pending" : ["Pending", "Pendiente"],
+                "accepted" : ["Accepted", "Aceptada"],
+                "denied" : ["Denied", "Rechazada"]
             },
             "no_researchers_added" : ["You haven`t added researchers yet!", "No has añadido ningún investigador!"]
         },

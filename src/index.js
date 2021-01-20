@@ -7,7 +7,6 @@ import App from "./App";
 //import "./mocks";
 import ProviderSherwood from './providerSherwood';
 
-
 ReactDOM.render(
     <ProviderSherwood>
         <App />

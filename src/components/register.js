@@ -7,7 +7,7 @@ import { Translate } from 'react-localize-redux';
 import Modal from './general/modal';
 import Header from './general/header';
 import Form from '../components/general/form';
-import { generateKey, encriptData, decryptData, isUserLoggedIn } from '../utils';
+import { generateKey, encryptData, decryptData, isUserLoggedIn } from '../utils';
 import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
 import { toggleLoading } from '../actions';
@@ -171,7 +171,7 @@ class Register extends Component {
             delete tempState.info.repeat_password;
             const hashPassword = CryptoJS.SHA256(tempState.info.password).toString(CryptoJS.enc.Base64)
             //Hay que guardar tb el this.iv
-            tempState.info.keyEncrypted = await encriptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
+            tempState.info.keyEncrypted = await encryptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
             tempState.info.password = hashPassword;
             console.log(JSON.stringify(tempState.info));
             let response = null
@@ -239,11 +239,13 @@ class Register extends Component {
 
         return ([
             <Modal key="modal" open={this.state.success} title={<Translate id="register.common.success_title" />}
-                    component={<SuccessContainer>
-                                <ImageSuccess src={successImage} width="200" alt="Success!" />
-                                <SuccessText><Translate id={`register.${this.props.typeUser}.success_text`} /></SuccessText>
-                                </SuccessContainer>} 
-                    callBackForm={this.continue}/>,
+                callBackForm={this.continue}>
+                <SuccessContainer>
+                    <ImageSuccess src={successImage} width="200" alt="Success!" />
+                    <SuccessText><Translate id={`register.${this.props.typeUser}.success_text`} /></SuccessText>
+                </SuccessContainer>
+            </Modal>
+            ,
             <div className="container" key="container">
                 <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return "breadcrumb."+section})} />    
                 <p><Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} /></p>

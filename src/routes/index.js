@@ -20,15 +20,22 @@ import {
   Users,
 } from "react-feather";
 
+import Profile from "../pages/pages/Profile";
+import  SignIn from "../pages/auth/SignIn";
+import SignUp from "../pages/auth/SignUp";
+import ResetPassword from "../pages/auth/ResetPassword";
+import Page404 from "../pages/auth/Page404";
+import Page500 from "../pages/auth/Page500";
+
 // // Guards
 // const AuthGuard = async(() => import("../components/AuthGuard"));
 
 // Auth components
-const SignIn = async(() => import("../pages/auth/SignIn"));
-const SignUp = async(() => import("../pages/auth/SignUp"));
-const ResetPassword = async(() => import("../pages/auth/ResetPassword"));
-const Page404 = async(() => import("../pages/auth/Page404"));
-const Page500 = async(() => import("../pages/auth/Page500"));
+// const SignIn = async(() => import("../pages/auth/SignIn"));
+// const SignUp = async(() => import("../pages/auth/SignUp"));
+// const ResetPassword = async(() => import("../pages/auth/ResetPassword"));
+// const Page404 = async(() => import("../pages/auth/Page404"));
+// const Page500 = async(() => import("../pages/auth/Page500"));
 
 // // Components components
 // const Alerts = async(() => import("../pages/components/Alerts"));
@@ -47,10 +54,14 @@ const Page500 = async(() => import("../pages/auth/Page500"));
 // const Tooltips = async(() => import("../pages/components/Tooltips"));
 
 // Dashboards components
-const Default = async(() => import("../pages/dashboards/Default"));
-const Analytics = async(() => import("../pages/dashboards/Analytics"));
-const SaaS = async(() => import("../pages/dashboards/SaaS"));
-const CreateInvestigation = async(() => import("../components/investigation/create"));
+import Default from "../pages/dashboards/Default";
+import  Analytics from "../pages/dashboards/Analytics";
+import SaaS from "../pages/dashboards/SaaS";
+import CreateInvestigation from "../components/investigation/create";
+
+import Investigations from "../components/investigation/show/all";
+import Investigation  from "../components/investigation";
+import ShareInvestigation from "../components/investigation/share";
 
 // // Forms components
 // const Pickers = async(() => import("../pages/forms/Pickers"));
@@ -66,13 +77,14 @@ const CreateInvestigation = async(() => import("../components/investigation/crea
 // const FeatherIcons = async(() => import("../pages/icons/FeatherIcons"));
 
 // // Pages components
-const Blank = async(() => import("../pages/pages/Blank"));
+//const Blank = async(() => import("../pages/pages/Blank"));
 // const InvoiceDetails = async(() => import("../pages/pages/InvoiceDetails"));
 // const InvoiceList = async(() => import("../pages/pages/InvoiceList"));
 // const Orders = async(() => import("../pages/pages/Orders"));
-const Pricing = async(() => import("../pages/pages/Pricing"));
-const Profile = async(() => import("../pages/pages/Profile"));
-const Settings = async(() => import("../pages/pages/Settings"));
+//const Pricing = async(() => import("../pages/pages/Pricing"));
+//const Profile = async(() => import("../pages/pages/Profile"));
+
+//const Settings = async(() => import("../pages/pages/Settings"));
 // const Tasks = async(() => import("../pages/pages/Tasks"));
 // const Projects = async(() => import("../pages/pages/Projects"));
 // const Investigations = async(() => import("../components/investigation/show/all"));
@@ -83,7 +95,7 @@ const Settings = async(() => import("../pages/pages/Settings"));
 // const LiveInvestigations = async(() => import("../components/investigation/show/all"));
 
 // const Calendar = async(() => import("../pages/pages/Calendar"));
-const Chat = async(() => import("../pages/pages/Chat"));
+//const Chat = async(() => import("../pages/pages/Chat"));
 
 // // Tables components
 // const SimpleTable = async(() => import("../pages/tables/SimpleTable"));
@@ -119,9 +131,9 @@ const Chat = async(() => import("../pages/pages/Chat"));
 // // Protected routes
 // const ProtectedPage = async(() => import("../pages/protected/ProtectedPage"));
 
-const Investigations = async(() => import("../components/investigation/show/all"));
-const Investigation = async(() => import("../components/investigation"));
-const ShareInvestigation = async(() => import("../components/investigation/share"));
+// const Investigations = async(() => import("../components/investigation/show/all"));
+// const Investigation = async(() => import("../components/investigation"));
+// const ShareInvestigation = async(() => import("../components/investigation/share"));
 
 
 const investigationsRoutes = {
@@ -202,39 +214,39 @@ const dashboardsNotSideBarRoutes = {
             component: () => <ShareInvestigation /> ,
         },
     ]}
-const pagesRoutes = {
-  id: "Pages",
-  path: "/pages",
-  icon: <Layout />,
-  children: [
-    {
-      path: "/pages/profile",
-      name: "Profile",
-      component: Profile,
-    },
-    {
-      path: "/pages/settings",
-      name: "Settings",
-      component: Settings,
-    },
-    {
-      path: "/pages/pricing",
-      name: "Pricing",
-      component: Pricing,
-    },
-    {
-      path: "/pages/chat",
-      name: "Chat",
-      component: Chat,
-    },
-    {
-      path: "/pages/blank",
-      name: "Blank Page",
-      component: Blank,
-    },
-  ],
-  component: null,
-};
+// const pagesRoutes = {
+//   id: "Pages",
+//   path: "/pages",
+//   icon: <Layout />,
+//   children: [
+//     {
+//       path: "/pages/profile",
+//       name: "Profile",
+//       component: Profile,
+//     },
+//     {
+//       path: "/pages/settings",
+//       name: "Settings",
+//       component: Settings,
+//     },
+//     {
+//       path: "/pages/pricing",
+//       name: "Pricing",
+//       component: Pricing,
+//     },
+//     {
+//       path: "/pages/chat",
+//       name: "Chat",
+//       component: Chat,
+//     },
+//     {
+//       path: "/pages/blank",
+//       name: "Blank Page",
+//       component: Blank,
+//     },
+//   ],
+//   component: null,
+// };
 
 
 // const projectsRoutes = {
@@ -603,7 +615,7 @@ const authRoutes = {
 // Routes using the Dashboard layout
 export const dashboardLayoutRoutes = [
   dashboardsRoutes,
-  pagesRoutes,
+  //pagesRoutes,
   investigationsRoutes,
   //projectsRoutes,
   dashboardsNotSideBarRoutes
@@ -633,7 +645,7 @@ export const authLayoutRoutes = [authRoutes];
 // Routes visible in the sidebar
 export const sidebarRoutes = [
   dashboardsRoutes,
-  pagesRoutes,
+  //pagesRoutes,
   investigationsRoutes,
   //projectsRoutes,
 //   orderRoutes,

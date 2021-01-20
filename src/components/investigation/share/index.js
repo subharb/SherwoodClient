@@ -3,14 +3,15 @@ import { Card, CardContent,
         Typography, Grid, Box, Chip } from '@material-ui/core';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
-import { useInvestigation } from '../../../hooks';
+import { decryptData, encryptData } from '../../../utils';
 import Loader from '../../Loader';
 import { ButtonAdd, ButtonContinue } from '../../general/mini_components';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { EnhancedTable } from "../../general/EnhancedTable";
 import styled from 'styled-components';
-import { yellow, green, blue } from "@material-ui/core/colors";
+import { yellow, green, blue, red } from "@material-ui/core/colors";
+import axios from '../../../utils/axios';
 
 const RESEARCHER_FORM = {
     "email":{
@@ -42,7 +43,7 @@ const ColourChip = styled(Chip)`
 `;
 
 const PermissionChip = withLocalize((props) => {
-    switch(props.value){
+    switch(props.value.toString()){
         case "0":
             return <ColourChip size="small" label={props.translate("investigation.share.permissions.read_no_personal_data")} rgbcolor={blue[500]} />
         case "1": 
@@ -53,16 +54,64 @@ const PermissionChip = withLocalize((props) => {
     
 })
 
+const StatusChip = withLocalize((props) => {
+    switch(props.value.toString()){
+        case "0":
+            return <ColourChip size="small" label={props.translate("investigation.share.status.pending")} rgbcolor={yellow[500]} />
+        case "1": 
+            return <ColourChip size="small" label={props.translate("investigation.share.status.denied")} rgbcolor={red[500]} />
+        default:
+            return <ColourChip size="small" label={props.translate("investigation.share.status.accepted")} rgbcolor={green[500]} />
+    }
+    
+})
+
 function ShareInvestigation(props) {
-    const { isLoading, error, investigation } = useInvestigation(props.uuid);
+    const [isLoadingInvestigation, setIsLoadingInvestigation ] = useState(true);
+    const [investigation, setInvestigation] = useState(props.initialState && props.initialState.investigation ? props.initialState.investigation : null);
+    const [error, setError] = useState(null);
     const [ addingResearcher, setAddingResearcher ] = useState(false);
-    const [ researchers, setResearchers ] = useState(props.initialState ? props.initialState.researchers_to_share : []);
+    const [ newResearchers, setNewResearchers ] = useState(props.initialState && props.initialState.newResearchers ? props.initialState.newResearchers : []);
+    const [showSendModal, setShowSendModal] = useState(false);
+    const [ sharedResearchers, setSharedResearchers] = useState(props.initialState && props.initialState.investigation ? props.initialState.investigation.sharedResearchers : []);
+    const [isLoadingShare, setIsLoadingShare] = useState(false);
+    const [errorShare, setErrorShare] = useState(false);
 
     function shareInvestigation(){
-        
+        setShowSendModal(true)
     }
-    function renderResearchers(){
-        if(researchers.length === 0){
+    function cancelShare(){
+        setShowSendModal(false);
+    }
+    async function sendInvitations(){
+        setIsLoadingShare(true);
+        try{
+            //Encripto las claves de los pacientes con una clave temporal para que más tarde sea desenciptada por el researcher
+            let listPatients = investigation.patientsPersonalData.map(patientData => {
+                const rawKeyResearcher = localStorage.getItem("rawKeyResearcher");
+                const rawPatientKeyInvestigation = decryptData(patientData.keyPatientResearcher, rawKeyResearcher);
+                const keyTempResearcher = encryptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD);
+                return {patientCollectionID : patientData.id, keyPatResearcher:keyTempResearcher}
+            });
+            const postObject = {listResearchers:newResearchers, listPatients : listPatients};
+            const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.uuid+'/share', postObject, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            
+            if(request.status === 200){
+                console.log("Great");
+                setSharedResearchers(request.data.sharedResearchers);
+            }
+            else{
+                setErrorShare(true);
+            }
+        }
+        catch(error){
+            console.log(error);
+            setErrorShare(true);
+        }
+        setIsLoadingShare(false);
+    }
+    function renderNewResearchers(){
+        if(newResearchers.length === 0){
             return(
                 <Box mt={3}>
                     <Typography variant="body2" component="div" gutterBottom>
@@ -73,61 +122,136 @@ function ShareInvestigation(props) {
         }
         else{
             return (
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <EnhancedTable titleTable={<Translate id="investigation.share.researchers" />}  noSelectable
-                                headCells={Object.keys(RESEARCHER_FORM).map(key => {
-                                    return { id: key, alignment: "right", label: <Translate id={`investigation.share.form.${key}`} />}
-                                })}
-                                rows={researchers.map(researcher => {
-                                    let tempSection = {}
-                                    for(const keyField of Object.keys(RESEARCHER_FORM)){
-                                        const field = RESEARCHER_FORM[keyField];
-                                        if(field.type === "select"){
-                                            tempSection[keyField] = <PermissionChip value={researcher[keyField]} />
+                <React.Fragment>
+                    <Modal key
+                        open={showSendModal}
+                        closeModal={cancelShare}
+                        confirmAction={sendInvitations}
+                        title={props.translate("investigation.share.confirm_dialog.title")}>
+                            <Typography variant="body2" gutterBottom>
+                                <Translate id="investigation.share.confirm_dialog.description" />
+                            </Typography>
+                    </Modal>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <EnhancedTable titleTable={<Translate id="investigation.share.new_researchers" />}  noSelectable
+                                    headCells={Object.keys(RESEARCHER_FORM).map(key => {
+                                        return { id: key, alignment: "right", label: <Translate id={`investigation.share.form.${key}`} />}
+                                    })}
+                                    rows={newResearchers.map(researcher => {
+                                        let tempSection = {}
+                                        for(const keyField of Object.keys(RESEARCHER_FORM)){
+                                            const field = RESEARCHER_FORM[keyField];
+                                            if(field.type === "select"){
+                                                tempSection[keyField] = <PermissionChip value={researcher[keyField]} />
+                                            }
+                                            else{
+                                                tempSection[keyField] = researcher[keyField];
+                                            }
                                         }
-                                        else{
-                                            tempSection[keyField] = researcher[keyField];
-                                        }
-                                    }
-                                    return tempSection;
-                                })}
-                                actions={{"delete" : (index) => removeResearcher(index)}} 
-                            />
+                                        return tempSection;
+                                    })}
+                                    actions={{"delete" : (index) => removeResearcher(index)}} 
+                                />
+                        </Grid>
+                        <Grid item xs={12} >
+                            <ButtonContinue onClick={shareInvestigation} data-testid="submit" spaceright={1} >
+                                <Translate id="investigation.share.share" />
+                            </ButtonContinue>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} >
-                        <ButtonContinue onClick={shareInvestigation} data-testid="submit" spaceright={1} >
-                            <Translate id="investigation.share.share" />
-                        </ButtonContinue>
-                    </Grid>
-                </Grid>
+                </React.Fragment>
             )
         }
     }
     function removeResearcher(index){
-        setResearchers(r => {
+        setNewResearchers(r => {
             r.splice(index, 1); 
             return r;
         });
     }
     function addResearcher(researcher){
         setAddingResearcher(false);
-        setResearchers(array => [...array, researcher]);
+        setNewResearchers(array => [...array, researcher]);
     }
-    if(isLoading){
+    function renderPrevResearchers(){
+        let content = null;
+        if(sharedResearchers.length === 0){
+            content = <Typography variant="body2" gutterBottom display="inline">
+                        <Translate id="investigation.share.not_shared" />
+                    </Typography>
+        }
+        else{
+            const columnsTable = ["name", "status", "permission"];
+            const arrayHeader = columnsTable.map(col => {
+                return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
+            }) 
+            content = "LALA";
+            content = <EnhancedTable titleTable={<Translate id="investigation.share.researchers" />}  
+                        headCells={arrayHeader}
+                        rows={sharedResearchers.map(researcher => {
+                            const name = researcher.name ? researcher.name+" "+researcher.surnames : researcher.email;
+
+                            let row = {
+                                    name : name, 
+                                    permission : <PermissionChip value={researcher.permission} />, 
+                                    status : <StatusChip value={researcher.status}/>
+                                }
+                            
+                            return row;
+                        })}
+                        actions={{"delete" : (index) => deleteResearcher(index), "edit" : (index) => editResearcher(index)}} 
+        />
+        }
+        return (
+            <Grid item  xs={12}>
+                {content}
+            </Grid>
+        )
+    }
+    function deleteResearcher(index){
+
+    }
+    function editResearcher(index){
+
+    }
+    useEffect(() => {
+        async function fetchInvestigation(uuid){
+            setIsLoadingInvestigation(true);
+            const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/'+uuid, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            if(request.status === 200){
+                setSharedResearchers(request.data.investigation.sharedResearchers);
+                setInvestigation(request.data.investigation);
+            }
+            setIsLoadingInvestigation(false);
+        }
+        if(investigation === null){
+            fetchInvestigation(props.uuid);
+        }
+        else{
+            setIsLoadingInvestigation(false);
+        }
+        
+    }, [])
+
+    if(isLoadingInvestigation || isLoadingShare){
         return <Loader />
     }
-    else if(error){
-        return "Error";
+    else if(error || errorShare){
+        return (
+            <Typography variant="body2" gutterBottom>
+                <Translate id="investigation.share.error.description" />
+            </Typography>
+        );
     }
     return (
         <React.Fragment>
+            <Helmet title={props.translate("investigation.share.title")} />
             <Modal key="modal" open={addingResearcher} 
                 title={props.translate("investigation.share.add_researcher")}>
                     <Form fields={RESEARCHER_FORM} callBackForm={addResearcher} 
                         closeCallBack={() => setAddingResearcher(false)}/>
             </Modal>
-            <Helmet title={props.translate("investigation.share.title")} />
             <Grid container spacing={3}>
                 <Grid item  xs={12}>
                     <Typography variant="h3" gutterBottom display="inline">
@@ -140,6 +264,9 @@ function ShareInvestigation(props) {
                             { investigation.name }
                         </Typography>
                     </Grid>
+                    {
+                        renderPrevResearchers()
+                    }
                     <Grid item xs={12} >
                         <Typography variant="body2" component="div" gutterBottom>
                             <Translate id="investigation.share.add_researcher" />
@@ -149,7 +276,7 @@ function ShareInvestigation(props) {
                         </Typography>
                     </Grid>
                     {
-                        renderResearchers()
+                        renderNewResearchers()
                     }
 
                 </Grid>

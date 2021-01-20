@@ -283,23 +283,48 @@ export const researchers_to_share = [
     }
 ]
 
+const sharedResearchers =  [
+    {
+        "email": "pedro@sherwood.science",
+        "permission": 1,
+        "name": null,
+        "surnames": null,
+        "status" : 0
+    },
+    {
+        "email": "guille@sherwood.science",
+        "permission": 2,
+        "name": "Guillermo Suarez-Tangil",
+        "surnames": null,
+        "status" : 1
+    },
+    {
+        "email": "sheryl@facebook.com",
+        "permission": 0,
+        "name": null,
+        "surnames": null,
+        "status" : 2
+    }
+]
 
 //La forma en la que se envían los datos desde el servidor
 export const investigation_server = () => {
-    let returnData = {...basic_info1()};
+    let returnData = {...basic_info1_raw()};
     returnData.surveys = edc_data1().surveys;
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = patients_personal_data_encripted();
     returnData.status = 1;
+    returnData.sharedResearchers = sharedResearchers;
     return returnData;
 }
 
 export const investigation_server_no_patitents = () => {
-    let returnData = {...basic_info1()};
+    let returnData = {...basic_info1_raw()};
     returnData.surveys = edc_data1().surveys;
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = [];
     returnData.status = 1; 
+    returnData.sharedResearchers = sharedResearchers;
     return returnData;
 }
 

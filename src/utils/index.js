@@ -116,7 +116,7 @@ export async function importKey(key){
     return keyObj;
 }
 
-export function encriptData(data, key){
+export function encryptData(data, key){
     var KeyObj = CryptoJS.AES.encrypt(data, key);
     var ciphertext = KeyObj.toString();
     console.log(KeyObj);
@@ -335,6 +335,7 @@ export function findSubmissionsFromSection(records, sectionID){
 export function saveData(key, value){
     localStorage.setItem(key, value); 
 }
+
 
 export function getData(key){
     return localStorage.getItem(key); 

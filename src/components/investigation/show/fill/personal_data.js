@@ -1,6 +1,6 @@
 import React from 'react'
 import {Translate} from 'react-localize-redux';
-import { PERSONAL_DATA_FIELDS, encriptData, decryptData, generateKey } from '../../../../utils';
+import { PERSONAL_DATA_FIELDS, encryptData, decryptData, generateKey } from '../../../../utils';
 import Form from '../../../general/form';
 import jwt from 'jsonwebtoken';
 export default function PersonalDataForm(props) {
@@ -24,12 +24,12 @@ export default function PersonalDataForm(props) {
         const rawPatientKeyResearcher = await generateKey();
         const rawPatientKeyInvestigation = await generateKey();
         for (const key of Object.keys(data)) {
-            encryptedData[key] =  encriptData(data[key], rawPatientKeyResearcher);
+            encryptedData[key] =  encryptData(data[key], rawPatientKeyResearcher);
         }
         //Encriptamos la clave con la clave del researcher y una por defecto para el paciente
-        const patientKeyEncrResearcher =  encriptData(rawPatientKeyResearcher, rawKeyResearcher);
+        const patientKeyEncrResearcher =  encryptData(rawPatientKeyResearcher, rawKeyResearcher);
         console.log(process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD);
-        const patientKeyEncrInvestigation =  encriptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD);
+        const patientKeyEncrInvestigation =  encryptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD);
 
         props.callBackForm({
             "keyPatInv" : patientKeyEncrInvestigation,

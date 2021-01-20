@@ -25,14 +25,19 @@ export default function Modal(props){
             <DialogContent>
                 {props.children}
             </DialogContent>
-            {/* <DialogActions>
-                <Button onClick={this.closeModal} color="primary">
-                    Cancel
+            
+            {
+                props.confirmAction &&
+            <DialogActions>
+                {props.closeModal &&
+                    <Button onClick={props.closeModal} color="primary">
+                        Cancel
+                    </Button>
+                }
+                <Button onClick={props.confirmAction} color="primary">
+                    Continue
                 </Button>
-                <Button onClick={() => this.handleAddField} color="primary">
-                    Save
-                </Button>
-            </DialogActions> */}
+            </DialogActions> }
         </Dialog>
     )
 }
