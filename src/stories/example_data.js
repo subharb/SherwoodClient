@@ -328,3 +328,51 @@ export const investigation_server_no_patitents = () => {
     return returnData;
 }
 
+export const investigationsShowAll =[
+        {
+            "name": "COVID Nose By Tester",
+            "uuid": "00287041-3df4-438f-b60a-e1d85dbe25b9",
+            "acronym": "CN",
+            "type": "clin_trial",
+            "institution": "Oxford University",
+            "principal_researcher": "Pedro Rodriguez",
+            "contact": "test@email.com",
+            "reference_number_state": "2",
+            "ethics_body": "12345",
+            "description": "<p>Estudio sobre el impacto en la anosmia en pacientes de COVID19</p>",
+            
+            "shareStatus": 2,
+            
+            "status": 1,
+            "personalFields": [
+                "surname",
+                "name",
+                "phone",
+                "email"
+            ],
+            "createdAt": "2021-01-20T12:14:06.000Z",
+            "updatedAt": "2021-01-20T12:14:06.000Z"
+        },
+        {
+            "name": "Ictus on smoking partners",
+            "uuid": "00287041-3df4-438f-b60a-e1d85dbe25b9",
+            "acronym": "CN",
+            "type": "clin_trial",
+            "institution": "Oxford University",
+            "principal_researcher": "Pedro Rodriguez",
+            "contact": "test@email.com",
+            "reference_number_state": "2",
+            "ethics_body": "12345",
+            "description": "<p>Estudio sobre el impacto en la anosmia en pacientes de COVID19</p>",
+            "shareStatus": 0,
+            "status": 1,
+            "personalFields": [
+                "surname",
+                "name",
+                "phone",
+                "email"
+            ],
+            "createdAt": "2021-01-20T12:14:06.000Z",
+            "updatedAt": "2021-01-20T12:14:06.000Z"
+        }
+    ]

@@ -37,19 +37,43 @@ export function useFechData(name, request){
     return [data, isLoading, error];
 }
 
-export function useInvestigations(props) {
-    const { data, isLoading, error } = useQuery('investigations', () =>
-        axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
-    ) //useFechData('fetchInvestigations', () =>
-        //     axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
-        // )
+export function useInvestigations(initInvestigations) {
+    const [isLoading, setLoading ] = useState(true);
+    const [investigations, setInvestigations] = useState(initInvestigations);
+    const [error, setError] = useState(false);
     
-
+    useEffect(() => {
+        async function fetchInvestigations(){
+            setLoading(true);
+            try{
+                const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}});
+                if(request.status === 200){
+                    setInvestigations(request.data.investigations)
+                }
+                else{
+                    setError(true);
+                }
+            }
+            catch(error){
+                console.error(error);
+                setError(true);
+            }
+            
+            setLoading(false);
+        }
+        if(!investigations){
+            fetchInvestigations();
+        }
+        else{
+            setLoading(false);
+        }
+        
+    }, [])
     const value = React.useMemo(() => {
        return({
-           isLoading, error, investigations : data ? data.data.investigations : data, status : data ? data.status : data
+           isLoading, error, investigations : investigations
         }) 
-    }, [data, isLoading, error]);
+    }, [investigations, isLoading, error]);
 
     return value
 }

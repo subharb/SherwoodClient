@@ -54,7 +54,7 @@ const AvatarGroup = styled(MuiAvatarGroup)`
   margin-left: ${(props) => props.theme.spacing(2)}px;
 `;
 
-export default function CardInvestigation({ image, title, description, status, url }) {
+export default function CardInvestigation({ image, title, description, status, url, shareStatus }) {
     const history = useHistory();
     const chip = () => {
         switch(status){
@@ -62,14 +62,51 @@ export default function CardInvestigation({ image, title, description, status, u
                 return <Chip label="Draft" rgbcolor={yellow[500]} />
             case 1:
                 return <Chip label="Live" rgbcolor={green[500]} />
-            case 2:
-                return <Chip label="Pending" rgbcolor={orange[500]} />
-            case 3:
-                return <Chip label="On going" rgbcolor={green[500]} />
             default:
                 return <Chip label="Draft" rgbcolor={yellow[500]} />
         }
         
+    }
+    const chipStatus = () => {
+        switch(shareStatus){
+            case 0:
+                return <Chip label="Pending" rgbcolor={orange[500]} />
+            case 1:
+                return <Chip label="Denied" rgbcolor={red[500]} />
+            default:
+                return <Chip label="Accepted" rgbcolor={green[500]} />
+        }
+        
+    }
+    function renderCardActions(){
+        if(shareStatus === 0){
+            return(
+                <CardActions>
+                    <Button size="small" color="primary">
+                        Deny
+                    </Button>
+                    <Button data-testid="open" size="small" color="primary">
+                        Accept
+                    </Button>
+                </CardActions>
+                
+            )
+        }
+        else{
+            return(
+                <CardActions>
+                    <Button size="small" color="primary">
+                        Share
+                    </Button>
+                    <NavLink to={url}>
+                        <Button data-testid="open" size="small" color="primary">
+                        Open
+                        </Button>
+                    </NavLink>
+                </CardActions>
+                
+            )
+        }
     }
     return (
         <Card className="investigation" mb={6}>
@@ -80,9 +117,9 @@ export default function CardInvestigation({ image, title, description, status, u
             </Typography>
 
             {chip()}
-
-            <Typography mb={4} component="p">
-            {description}
+            {chipStatus()}
+            <Typography mb={4} component="p" dangerouslySetInnerHTML={{__html:description}}>
+                
             </Typography>
 
             {/* <AvatarGroup max={3}>
@@ -91,17 +128,9 @@ export default function CardInvestigation({ image, title, description, status, u
                 <Avatar alt="Avatar" src="/static/img/avatars/avatar-3.jpg" />
             </AvatarGroup> */}
         </CardContent>
-        <CardActions>
-            <Button size="small" color="primary">
-                Share
-            </Button>
-            <NavLink to={url}>
-                <Button data-testid="open" size="small" color="primary">
-                Open
-                </Button>
-            </NavLink>
-            
-        </CardActions>
+        {
+            renderCardActions()
+        }
         </Card>
     );
 }

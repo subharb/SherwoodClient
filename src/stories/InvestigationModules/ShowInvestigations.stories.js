@@ -1,7 +1,7 @@
 import React from 'react';
 import AllInvestigations from '../../components/investigation/show/all'
 import ProviderSherwood from '../../providerSherwood';
-import { summary_info1 } from '../example_data';
+import { summary_info1, investigationsShowAll } from '../example_data';
 export default {
     title: 'Pages/All Investigations',
     component: AllInvestigations,
@@ -38,14 +38,14 @@ const Template = (args) => <AllInvestigations {...args} />;
 
 export const All = Template.bind({});
 All.args = {
-    initialData : summary_info1(),
+    initialState : summary_info1(),
     typeUser: "researcher",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
 export const Draft = Template.bind({});
 Draft.args = {
-    initialData : summary_info1(),
+    initialState : summary_info1(),
     typeUser: "researcher",
     filter:"draft",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
@@ -53,9 +53,18 @@ Draft.args = {
 
 export const Live = Template.bind({});
 Live.args = {
-    initialData : summary_info1(),
+    initialState : summary_info1(),
     typeUser: "researcher",
     filter:"live",
+    stepBack : () => alert("Hit StepBack"),
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+};
+
+export const Pending = Template.bind({});
+Pending.args = {
+    initialState : {investigations:investigationsShowAll},
+    typeUser: "researcher",
+    filter:"pending",
     stepBack : () => alert("Hit StepBack"),
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };

@@ -10,7 +10,7 @@ import {useQuery} from 'react-query';
 import { useHistory } from "react-router-dom";
 
 function AllInvestigations(props){
-    const {investigations, isLoading, error } = useInvestigations();
+    const {investigations, isLoading, error } = useInvestigations(props.initialState && props.initialState.investigations ? props.initialState.investigations : null);
     const history  = useHistory();
 
     if(isLoading){
@@ -22,18 +22,21 @@ function AllInvestigations(props){
     else{
         const filteredInvestigations = investigations.filter(inv => { 
         
-            if(props.filter === "pending"){
-                return inv.status === 2
-            }
-            if(props.filter === "ongoing"){
-                return inv.status === 3
-            }
+            // if(props.filter === "pending"){
+            //     return inv.shareStatus === 0
+            // }
+            // if(props.filter === "ongoing"){
+            //     return inv.status === 3
+            // }
             //Filtros de researcher
             if(props.filter === "draft"){
                 return inv.status === 0
             }
             if(props.filter === "live"){
                 return inv.status === 1
+            }
+            if(props.filter === "pending"){
+                return inv.shareStatus === 0
             }
             else return true
         });
@@ -61,6 +64,7 @@ function AllInvestigations(props){
                             <CardInvestigation title={inves.name} key={inves.uuid}
                                 description={inves.description}
                                 status={inves.status}
+                                shareStatus={inves.shareStatus}
                                 textUrl={<Translate id="investigation.show.view_investigation" />}
                                 url={`/investigation/show/${inves.uuid}`}/>
                         );
