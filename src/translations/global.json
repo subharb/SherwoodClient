@@ -260,7 +260,7 @@
                 "permission" :  ["Permission", "Permisos"]
             },
             "researcher" : {
-                "name" : ["name", "nombre"],
+                "name" : ["name/email", "nombre"],
                 "status" : ["status", "status"],
                 "permission" : ["Permission", "Permisos"]
             },

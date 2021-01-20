@@ -294,8 +294,8 @@ const sharedResearchers =  [
     {
         "email": "guille@sherwood.science",
         "permission": 2,
-        "name": "Guillermo Suarez-Tangil",
-        "surnames": null,
+        "name": "Guillermo",
+        "surnames": "Suarez-Tangil",
         "status" : 1
     },
     {

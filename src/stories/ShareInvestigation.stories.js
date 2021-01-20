@@ -27,6 +27,16 @@ Basic.args = {
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
+let investigationNoResearchers = investigation_server();
+investigationNoResearchers.sharedResearchers = [];
+
+export const NoResearchers = Template.bind({});
+NoResearchers.args = {
+    uuid : uuidInvestigation,
+    initialState : {investigation : investigationNoResearchers},
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+};
+
 export const Data = Template.bind({});
 Data.args = {
     uuid : uuidInvestigation,

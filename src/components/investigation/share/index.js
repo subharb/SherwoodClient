@@ -113,11 +113,7 @@ function ShareInvestigation(props) {
     function renderNewResearchers(){
         if(newResearchers.length === 0){
             return(
-                <Box mt={3}>
-                    <Typography variant="body2" component="div" gutterBottom>
-                        <Translate id="investigation.share.no_researchers_added" />
-                    </Typography>
-                </Box>
+                null
             ) 
         }
         else{
@@ -165,10 +161,9 @@ function ShareInvestigation(props) {
         }
     }
     function removeResearcher(index){
-        setNewResearchers(r => {
-            r.splice(index, 1); 
-            return r;
-        });
+        const copyResearchers = [...newResearchers];
+        copyResearchers.splice(index, 1); 
+        setNewResearchers(copyResearchers);
     }
     function addResearcher(researcher){
         setAddingResearcher(false);
@@ -177,9 +172,11 @@ function ShareInvestigation(props) {
     function renderPrevResearchers(){
         let content = null;
         if(sharedResearchers.length === 0){
-            content = <Typography variant="body2" gutterBottom display="inline">
-                        <Translate id="investigation.share.not_shared" />
-                    </Typography>
+            content = <Box mt={3}>
+                            <Typography variant="body2" component="div" gutterBottom>
+                                <Translate id="investigation.share.no_researchers_added" />
+                            </Typography>
+                        </Box>
         }
         else{
             const columnsTable = ["name", "status", "permission"];
