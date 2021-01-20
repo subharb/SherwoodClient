@@ -52,7 +52,7 @@ class PersonalData extends Component{
                 <div className="row" style={{paddingTop:"20px"}}>
                     {
                         this.props.callBackStepBack && 
-                        <ButtonBack spaceRight={true} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
+                        <ButtonBack spaceright={1} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
                     }
                     <ButtonContinue type="submit">
                             <Translate id="investigation.create.continue" />

@@ -140,7 +140,7 @@ class FieldSherwood extends Component{
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value.includes(option.value)){
-                            return <ButtonCheck spaceRight={false} onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
+                            return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
                         }
                         return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonEmptyCheck>
                     });

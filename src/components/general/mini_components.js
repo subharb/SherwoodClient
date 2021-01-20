@@ -46,7 +46,7 @@ export const BasicButtonStyles = styled(Button)`
         display: none!important;
     }
 
-    ${({ spaceRight }) => spaceRight && `
+    ${({ spaceright }) => spaceright && `
         margin-right:1rem!important;
     `}
     

@@ -126,8 +126,8 @@ class Summary extends Component {
                         return {data_collection : survey.name, n_sections : survey.sections.length };
                     })}
                 />
-                <ButtonBack data-testid="cancel" spaceRight={true} onClick={this.props.callBackStepBack} >{this.props.translate("general.back")}</ButtonBack>
-                <ButtonSave data-testid="publish-investigation" spaceRight onClick={()=>this.props.callBackSave(true)} type="button" key="publish-investigation" id="publish-investigation" >{this.props.translate("investigation.create.save_and_publish")}</ButtonSave>
+                <ButtonBack data-testid="cancel" spaceright={1} onClick={this.props.callBackStepBack} >{this.props.translate("general.back")}</ButtonBack>
+                <ButtonSave data-testid="publish-investigation" spaceright onClick={()=>this.props.callBackSave(true)} type="button" key="publish-investigation" id="publish-investigation" >{this.props.translate("investigation.create.save_and_publish")}</ButtonSave>
                 <ButtonSave data-testid="save-for-later-investigation" onClick={()=>this.props.callBackSave(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" >{this.props.translate("investigation.create.save")}</ButtonSave>
             </React.Fragment>
             ]

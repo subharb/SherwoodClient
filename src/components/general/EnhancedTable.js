@@ -347,7 +347,7 @@ return (
                             if(typeof row[headCell.id] === "boolean"){ 
                                 value = <Checkbox checked={row[headCell.id]}  />
                             }
-                            return <TableCell align={headCell.alignment}>{value}</TableCell>
+                            return <TableCell key={headCell.id} align={headCell.alignment}>{value}</TableCell>
                             
                         })
                     }         

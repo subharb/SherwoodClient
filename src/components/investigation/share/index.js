@@ -58,6 +58,9 @@ function ShareInvestigation(props) {
     const [ addingResearcher, setAddingResearcher ] = useState(false);
     const [ researchers, setResearchers ] = useState(props.initialState ? props.initialState.researchers_to_share : []);
 
+    function shareInvestigation(){
+        
+    }
     function renderResearchers(){
         if(researchers.length === 0){
             return(
@@ -93,7 +96,7 @@ function ShareInvestigation(props) {
                             />
                     </Grid>
                     <Grid item xs={12} >
-                        <ButtonContinue type="submit" data-testid="submit" spaceRight={true} >
+                        <ButtonContinue onClick={shareInvestigation} data-testid="submit" spaceright={1} >
                             <Translate id="investigation.share.share" />
                         </ButtonContinue>
                     </Grid>
