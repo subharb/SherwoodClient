@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/macro";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
@@ -55,7 +55,7 @@ const AvatarGroup = styled(MuiAvatarGroup)`
   margin-left: ${(props) => props.theme.spacing(2)}px;
 `;
 
-export default function CardInvestigation({ image, title, description, status, url, shareStatus, hostResearcher }) {
+export default function CardInvestigation({ image, title, description, status, url, shareStatus, hostResearcher, answerRequest, index }) {
     const history = useHistory();
     const chip = () => {
         switch(status){
@@ -79,17 +79,15 @@ export default function CardInvestigation({ image, title, description, status, u
         }
         
     }
-    function answerRequest(value){
-
-    }
+    
     function renderCardActions(){
         if(shareStatus === 0){
             return(
                 <CardActions>
-                    <Button size="small" color="primary" onClick={() => answerRequest(0)}>
+                    <Button size="small" color="primary" onClick={() =>answerRequest(index, 1)}>
                         Deny
                     </Button>
-                    <Button data-testid="open" size="small" color="primary" onClick={() => answerRequest(1)}>
+                    <Button data-testid="open" size="small" color="primary" onClick={() => answerRequest(index, 2)}>
                         Accept
                     </Button>
                 </CardActions>

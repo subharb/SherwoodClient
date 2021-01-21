@@ -69,4 +69,12 @@ Pending.args = {
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
+export const PendingRemote = Template.bind({});
+PendingRemote.args = {
+    typeUser: "researcher",
+    filter:"pending",
+    stepBack : () => alert("Hit StepBack"),
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+};
+
 
