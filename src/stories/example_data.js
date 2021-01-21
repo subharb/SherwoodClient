@@ -342,7 +342,10 @@ export const investigationsShowAll =[
             "description": "<p>Estudio sobre el impacto en la anosmia en pacientes de COVID19</p>",
             
             "shareStatus": 2,
-            
+            "hostResearcher" : {
+                "name" : "Pedro",
+                "surnames" : "Rodríguez"
+            },
             "status": 1,
             "personalFields": [
                 "surname",
@@ -366,6 +369,10 @@ export const investigationsShowAll =[
             "description": "<p>Estudio sobre el impacto en la anosmia en pacientes de COVID19</p>",
             "shareStatus": 0,
             "status": 1,
+            "hostResearcher" : {
+                "name" : "Pedro",
+                "surnames" : "Rodríguez"
+            },
             "personalFields": [
                 "surname",
                 "name",

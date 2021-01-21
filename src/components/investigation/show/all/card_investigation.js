@@ -48,13 +48,14 @@ const Chip = styled(MuiChip)`
   background-color: ${(props) => props.rgbcolor};
   color: ${(props) => props.theme.palette.common.white};
   margin-bottom: ${(props) => props.theme.spacing(4)}px;
+  margin-right:1rem;
 `;
 
 const AvatarGroup = styled(MuiAvatarGroup)`
   margin-left: ${(props) => props.theme.spacing(2)}px;
 `;
 
-export default function CardInvestigation({ image, title, description, status, url, shareStatus }) {
+export default function CardInvestigation({ image, title, description, status, url, shareStatus, hostResearcher }) {
     const history = useHistory();
     const chip = () => {
         switch(status){
@@ -78,14 +79,17 @@ export default function CardInvestigation({ image, title, description, status, u
         }
         
     }
+    function answerRequest(value){
+
+    }
     function renderCardActions(){
         if(shareStatus === 0){
             return(
                 <CardActions>
-                    <Button size="small" color="primary">
+                    <Button size="small" color="primary" onClick={() => answerRequest(0)}>
                         Deny
                     </Button>
-                    <Button data-testid="open" size="small" color="primary">
+                    <Button data-testid="open" size="small" color="primary" onClick={() => answerRequest(1)}>
                         Accept
                     </Button>
                 </CardActions>
@@ -112,16 +116,28 @@ export default function CardInvestigation({ image, title, description, status, u
         <Card className="investigation" mb={6}>
         {image ? <CardMedia image={image} title="Contemplative Reptile" /> : null}
         <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-            {title}
-            </Typography>
-
-            {chip()}
-            {chipStatus()}
-            <Typography mb={4} component="p" dangerouslySetInnerHTML={{__html:description}}>
-                
-            </Typography>
-
+            <Grid container>
+                <Grid item xs={12}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                    {title}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    {chip()}
+                    {chipStatus()}
+                </Grid>
+                {
+                shareStatus === 0 && 
+                    <Grid item xs={12}>
+                        <Typography variant="caption">
+                            Shared with you by: {hostResearcher.name} {hostResearcher.surnames}
+                        </Typography>
+                    </Grid>
+                }
+                <Grid item xs={12}>
+                    <Typography mb={4} component="p" dangerouslySetInnerHTML={{__html:description}} />
+                </Grid>
+            </Grid>            
             {/* <AvatarGroup max={3}>
                 <Avatar alt="Avatar" src="/static/img/avatars/avatar-1.jpg" />
                 <Avatar alt="Avatar" src="/static/img/avatars/avatar-2.jpg" />

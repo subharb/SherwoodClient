@@ -65,6 +65,7 @@ function AllInvestigations(props){
                                 description={inves.description}
                                 status={inves.status}
                                 shareStatus={inves.shareStatus}
+                                hostResearcher={inves.hostResearcher}
                                 textUrl={<Translate id="investigation.show.view_investigation" />}
                                 url={`/investigation/show/${inves.uuid}`}/>
                         );
