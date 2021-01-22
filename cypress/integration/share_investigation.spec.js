@@ -2,21 +2,23 @@ import { loginResearcherA, loginResearcherB, records_patient1, records_patient2 
 
 describe('Testing sharing an investigation', () => {
     it('Introduces info on each field', () => {
-        //cy.visit('http://localhost:3000/investigations/live');
+        cy.visit('http://localhost:3000/investigations/live');
         //cy.visit('https://dashboard.sherwood.science/');
 
-        //cy.loginResearcher(loginResearcherA);
+        cy.loginResearcher(loginResearcherA);
 
-        //cy.shareWithResearchers();
+        cy.shareWithResearchers();
 
-        //Accept investigation
-        //cy.logOut();
+        // Accept investigation
+        cy.logOut();
 
-        // cy.visit('http://localhost:3000/investigations/pending');
-        // cy.loginResearcher(loginResearcherB);
+        cy.visit('http://localhost:3000/investigations/pending');
+        cy.loginResearcher(loginResearcherB);
         
-        // cy.get('.investigation').first().find('button[data-testid="accept"]').click();
-        
+        cy.intercept('/researcher/investigation/*/answer').as('acceptInvestigation');
+        cy.get('.investigation').first().find('button[data-testid="accept"]').click();
+        cy.wait('@acceptInvestigation');
+
         //Introduce datos de pacientes
         cy.visit('http://localhost:3000/investigations/live');
         cy.loginResearcher(loginResearcherB);

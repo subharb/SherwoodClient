@@ -18,6 +18,23 @@ export function answerRequest(uuidInvestigation, value) {
   });
 }
 
+export function updateListKeyPatientResearcher(listPatients){
+    const putObject = { listPatients : listPatients};
+    return new Promise((resolve, reject) => {
+    
+        axios.put(process.env.REACT_APP_API_URL+'/researcher/updatekeys/patients', putObject, { headers: {"Authorization" : localStorage.getItem("jwt")}})
+            .then((response) => {
+                if(response.status === 200){
+                    resolve(response.data);
+                }
+                else{
+                    reject(response.data);
+                }
+            })
+            .catch(err => {console.log('Catch', err); reject(err);}); 
+      });
+}
+
 export function fetchInvestigations() {
     return new Promise((resolve, reject) => {
       

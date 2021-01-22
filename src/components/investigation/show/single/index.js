@@ -6,12 +6,12 @@ import { ButtonAdd, ButtonBack, Divider } from '../../../general/mini_components
 import Table from '../../../general/table';
 import Axios from 'axios';
 import ShowSurveys from '../fill/show_surveys_patient';
-import { decryptData } from '../../../../utils';
-import { useInvestigation } from '../../../../hooks';
+import { decryptData, encryptData } from '../../../../utils';
+import { updateListKeyPatientResearcher } from '../../../../services/sherwoodService';
 import Loader from '../../../Loader';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
-import { DataGrid } from "@material-ui/data-grid";
+import { Grid } from "@material-ui/core";
 import { EnhancedTable } from '../../../general/EnhancedTable';
 import { Translate } from 'react-localize-redux';
 /**
@@ -55,24 +55,37 @@ export default function ShowInvestigation(props) {
         if(patientsData.length !== 0 && patientsData.length !== decryptedPatientData.length){
             
             //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
-            let tempDecryptedData = []
+            let tempDecryptedData = [];
+            let listPatientUpdateKeyResearcher = [];
             for(const patient of patientsData){
-                //Si es 0, es que está encriptado con la clave temporal
+                
                 const rawKeyResearcher = patient.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
                 let encryptedFields = {};
-                const keyPatientResearcher = decryptData(patient.keyPatientResearcher, rawKeyResearcher);
+                const keyPatient = decryptData(patient.keyPatientResearcher, rawKeyResearcher);
+                //Si es 0, es que está encriptado con la clave temporal
+                if(patient.encryptedKeyUsed === 0){
+                    const newKeyPatientResearcher = encryptData(keyPatient, rawKeyResearcher);
+                    const keyPatResearcher = {
+                        patientCollectionID : patient.id,
+                        keyPatientResearcher : newKeyPatientResearcher
+                    }
+                    listPatientUpdateKeyResearcher.push(keyPatResearcher);
+                }
                 for(const personalField of investigation.personalFields){
                     const encryptedField = patient.personalData[personalField];
                     if(!encryptedField){
                         console.error("No coinciden campos!");
                         return "error!";
                     }
-                    const decryptedField = decryptData(encryptedField, keyPatientResearcher);
+                    const decryptedField = decryptData(encryptedField, keyPatient);
                     encryptedFields[personalField] = decryptedField; 
 
                 }
                 encryptedFields["id"] = patient.id; 
                 tempDecryptedData.push(encryptedFields);
+            }
+            if(listPatientUpdateKeyResearcher.length > 1){
+                updateListKeyPatientResearcher(listPatientUpdateKeyResearcher);
             }
             setDecryptedPatientData(tempDecryptedData);
         }
@@ -195,23 +208,27 @@ export default function ShowInvestigation(props) {
     }
 
     return (
-        <div className="container">
+        <Grid container >
             {
                 showForm !== 0 && 
-                <ButtonBack data-testid="back" onClick={() => setShowForm(0)} >Back</ButtonBack>
+                <Grid item xs={12}>
+                    <ButtonBack data-testid="back" onClick={() => setShowForm(0)} >Back</ButtonBack>
+                </Grid>
             }
-            <div className="row">
+            <Grid item xs={12}>
                 <h5>{investigation.name}</h5>
-            </div>
+            </Grid>
             {
                 showForm === 0 && 
-                <div className="row">
+                <Grid item xs={12}>
                     Add new patient<ButtonAdd data-testid="add-patient" onClick={() => setShowForm(1)} />
-                </div>
+                </Grid>
             }
+            <Grid item xs={12}>
             {
                 renderForm()
             }
-        </div>
+            </Grid>
+        </Grid>
     )
 }

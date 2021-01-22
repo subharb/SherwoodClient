@@ -24,7 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import { basic_info1 } from "../../src/stories/example_data";
+import { researchers_to_share } from "../../src/stories/example_data";
 
 Cypress.Commands.add('loginResearcher', (credentials) => {
     cy.get('input[name="email"]')

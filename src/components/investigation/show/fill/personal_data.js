@@ -33,7 +33,7 @@ export default function PersonalDataForm(props) {
 
         props.callBackForm({
             "keyPatInv" : patientKeyEncrInvestigation,
-            "keyPatResearcher" : patientKeyEncrResearcher,
+            "keyPatientResearcher" : patientKeyEncrResearcher,
             "personalData" : encryptedData
         });
         //TEST

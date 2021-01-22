@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, 
         Typography, Grid, Box, Chip } from '@material-ui/core';
+import { Alert } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import { decryptData, encryptData } from '../../../utils';
@@ -86,7 +87,7 @@ function ShareInvestigation(props) {
         setShowSendModal(false);
     }
     async function sendInvitations(){
-        showSendModal(false);
+        setShowSendModal(false);
         setIsLoadingShare(true);
         try{
             //Encripto las claves de los pacientes con una clave temporal para que más tarde sea desenciptada por el researcher
@@ -242,9 +243,9 @@ function ShareInvestigation(props) {
     }
     else if(error || errorShare){
         return (
-            <Typography variant="body2" gutterBottom>
+            <Alert mb={4} severity="error">
                 <Translate id="investigation.share.error.description" />
-            </Typography>
+            </Alert>
         );
     }
     return (
