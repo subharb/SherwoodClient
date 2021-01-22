@@ -61,7 +61,7 @@ import CreateInvestigation from "../components/investigation/create";
 
 import Investigations from "../components/investigation/show/all";
 import Investigation  from "../components/investigation";
-import ShareInvestigation from "../components/investigation/share";
+import ShareInvestigationRouter from "../components/investigation/share/wrapper";
 
 // // Forms components
 // const Pickers = async(() => import("../pages/forms/Pickers"));
@@ -152,6 +152,11 @@ const investigationsRoutes = {
             path: "/investigations/live",
             name: "Live",
             component: () => <Investigations filter="live" /> ,
+        },
+        {
+            path: "/investigations/pending",
+            name: "Live",
+            component: () => <Investigations filter="pending" /> ,
         }
     ],
   };
@@ -211,7 +216,7 @@ const dashboardsNotSideBarRoutes = {
         {
             path: "/investigation/share/:uuid",
             name: "Live",
-            component: () => <ShareInvestigation /> ,
+            component: () => <ShareInvestigationRouter /> ,
         },
     ]}
 // const pagesRoutes = {

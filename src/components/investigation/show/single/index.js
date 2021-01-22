@@ -53,10 +53,12 @@ export default function ShowInvestigation(props) {
     
     useEffect(() => {  
         if(patientsData.length !== 0 && patientsData.length !== decryptedPatientData.length){
-            const rawKeyResearcher = localStorage.getItem("rawKeyResearcher");
+            
             //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
             let tempDecryptedData = []
             for(const patient of patientsData){
+                //Si es 0, es que está encriptado con la clave temporal
+                const rawKeyResearcher = patient.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
                 let encryptedFields = {};
                 const keyPatientResearcher = decryptData(patient.keyPatientResearcher, rawKeyResearcher);
                 for(const personalField of investigation.personalFields){

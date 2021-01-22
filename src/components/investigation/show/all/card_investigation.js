@@ -55,7 +55,7 @@ const AvatarGroup = styled(MuiAvatarGroup)`
   margin-left: ${(props) => props.theme.spacing(2)}px;
 `;
 
-export default function CardInvestigation({ image, title, description, status, url, shareStatus, hostResearcher, answerRequest, index }) {
+export default function CardInvestigation({ image, title, description, status, shareStatus, uuid, hostResearcher, answerRequest, index }) {
     const history = useHistory();
     const chip = () => {
         switch(status){
@@ -69,13 +69,11 @@ export default function CardInvestigation({ image, title, description, status, u
         
     }
     const chipStatus = () => {
-        switch(shareStatus){
-            case 0:
-                return <Chip label="Pending" rgbcolor={orange[500]} />
-            case 1:
-                return <Chip label="Denied" rgbcolor={red[500]} />
-            default:
-                return <Chip label="Accepted" rgbcolor={green[500]} />
+        if(shareStatus === 0){
+            return <Chip label="Pending" rgbcolor={orange[500]} />
+        }
+        else{
+            return null;
         }
         
     }
@@ -84,10 +82,10 @@ export default function CardInvestigation({ image, title, description, status, u
         if(shareStatus === 0){
             return(
                 <CardActions>
-                    <Button size="small" color="primary" onClick={() =>answerRequest(index, 1)}>
+                    <Button data-testid="deny" size="small" color="primary" onClick={() =>answerRequest(index, 1)}>
                         Deny
                     </Button>
-                    <Button data-testid="open" size="small" color="primary" onClick={() => answerRequest(index, 2)}>
+                    <Button data-testid="accept" size="small" color="secondary" onClick={() => answerRequest(index, 2)}>
                         Accept
                     </Button>
                 </CardActions>
@@ -97,11 +95,13 @@ export default function CardInvestigation({ image, title, description, status, u
         else{
             return(
                 <CardActions>
-                    <Button size="small" color="primary">
-                        Share
-                    </Button>
-                    <NavLink to={url}>
-                        <Button data-testid="open" size="small" color="primary">
+                    <NavLink to={`/investigation/share/${uuid}`} >
+                        <Button data-testid="share" size="small" color="primary">
+                            Share
+                        </Button>
+                    </NavLink>
+                    <NavLink to={`/investigation/show/${uuid}`}>
+                        <Button data-testid="open" size="small" color="secondary">
                         Open
                         </Button>
                     </NavLink>

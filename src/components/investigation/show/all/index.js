@@ -24,6 +24,8 @@ function AllInvestigations(props){
             const response = await answerRequestRemote(investigations[index].uuid, value);
             if(response.status === 200){
                 setAnswer(true);
+                history.push("/investigation/show/"+investigations[index].uuid);
+                //Sería interesante redirigir a la nueva investigación
             }
             else{
                 setError(true);
@@ -34,7 +36,6 @@ function AllInvestigations(props){
             setError(true);
             setIsLoading(false);
         }
-
     }
     useEffect(() => {
         async function fetchInvestigations(){
@@ -115,13 +116,14 @@ function AllInvestigations(props){
                             <Grid item xs={12}>
                                 <CardInvestigation title={inves.name} key={inves.uuid}
                                     index={index}
+                                    uuid={inves.uuid}
                                     description={inves.description}
                                     status={inves.status}
                                     answerRequest={inves.shareStatus === 0 ? answerRequest : null}
                                     shareStatus={inves.shareStatus}
                                     hostResearcher={inves.hostResearcher}
                                     textUrl={<Translate id="investigation.show.view_investigation" />}
-                                    url={`/investigation/show/${inves.uuid}`}/>
+                                    />
                             </Grid>
                         );
                     })

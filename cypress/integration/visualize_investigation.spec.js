@@ -1,10 +1,10 @@
-import { patients_personal_data, edc_data1, records_patient1, records_patient2 } from '../../src/stories/example_data';
+import { patients_personal_data, edc_data1, loginResearcherA, records_patient1, records_patient2 } from '../../src/stories/example_data';
 
 describe('Testing create an investigation', () => {
     it('Introduces info on each field', () => {
         cy.visit('http://localhost:3000/investigations/live');
 
-        cy.loginResearcher();
+        cy.loginResearcher(loginResearcherA);
 
     
 

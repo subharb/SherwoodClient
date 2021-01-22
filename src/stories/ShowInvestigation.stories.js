@@ -37,6 +37,6 @@ WithPatients.args = {
 
 export const RemoteData = Template.bind({});
 RemoteData.args = {
-    uuid : "ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
+    uuid : "58713404-eac7-43f9-a7bc-b977633cf758",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };

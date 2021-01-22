@@ -40,7 +40,7 @@ function UserDropdown() {
 
   return (
     <React.Fragment>
-      <Tooltip title="Account">
+      <Tooltip data-testid="account" title="Account">
         <IconButton
           aria-owns={Boolean(anchorMenu) ? "menu-appbar" : undefined}
           aria-haspopup="true"
@@ -57,7 +57,7 @@ function UserDropdown() {
         onClose={closeMenu}
       >
         <MenuItem onClick={closeMenu}>Profile</MenuItem>
-        <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
+        <MenuItem data-testid="log_out" onClick={handleSignOut}>Sign out</MenuItem>
       </Menu>
     </React.Fragment>
   );

@@ -239,7 +239,8 @@ export const patients_personal_data_encripted = () => {
                 "phone":"U2FsdGVkX18JmEbvvSQtJFIAnuvuYp2b3pvD5XShscY=",
                 "name":"U2FsdGVkX1/RETEMpFHDNWzLo6WgJ9JRBzmR3PMZtnt0qWe0rR1KBSJIrvDHUKmj",
                 "surname":"U2FsdGVkX18PJ+XuhkWZGfUXtRO99CBmmlYkYD/+t+k="
-            }
+            },
+            "encryptedKeyUsed" : 1
         },
         {
             
@@ -251,8 +252,8 @@ export const patients_personal_data_encripted = () => {
                 "phone": "U2FsdGVkX1+2RzhJr/EqHHpUAY59pdVd04tFhDUjITM=",
                 "name": "U2FsdGVkX19AG8ZaX1DrxDK6Qt9kHxg3JLgKgWh8bPI=",
                 "surname": "U2FsdGVkX1+ZjiX9v8rg3R3S98fPUaSgTtcpW7Ul1Fg="
-            }
-            
+            },
+            "encryptedKeyUsed" : 1
         },
         {
             "id": "5fccaee78583362dd3d50248",
@@ -263,25 +264,39 @@ export const patients_personal_data_encripted = () => {
                 "phone": "U2FsdGVkX1/Ob4rrFmVAxynGaJFxvwADsAvyBjADnWk=",
                 "name": "U2FsdGVkX1+mWpHIcy7u9KXHLND/1NDziIwoCqI72b0=",
                 "surname": "U2FsdGVkX1/Zz6rs03SB3UkHfweYxQlAXxAjzh/oiKE="
-            }
+            },
+            "encryptedKeyUsed" : 1
         },
     ]
 }
 
 export const researchers_to_share = [
     {
-        "email" : "pedro@sherwood.science",
-        "permission" : "1"
+        "email" : "rodriguezcruzpm@gmail.com",
+        "permission" : "1",
+        "permissionTextValue" : "Read Medical and personal data"
     },
     {
-        "email" : "guille@sherwood.science",
-        "permission" : "2"
+        "email" : "guillermo.suarez.tangil@gmail.com",
+        "permission" : "2",
+        "permissionTextValue" : "Add Medical and personal data"
     },
     {
-        "email" : "sheryl@facebook.com",
-        "permission" : "0"
+        "email" : "david@sherwood.science",
+        "permission" : "0",
+        "permissionTextValue" : "Read Only Medical data"
     }
 ]
+
+export const loginResearcherA = {
+    email : "dshaikhurbina@gmail.com",
+    password: "Cabezadesherwood2"
+}
+
+export const loginResearcherB = {
+    email : "rodriguezcruzpm@gmail.com",
+    password: "Cabezadesherwood2"
+}
 
 const sharedResearchers =  [
     {

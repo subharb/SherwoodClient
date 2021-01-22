@@ -26,14 +26,14 @@
 
 import { basic_info1 } from "../../src/stories/example_data";
 
-Cypress.Commands.add('loginResearcher', () => {
+Cypress.Commands.add('loginResearcher', (credentials) => {
     cy.get('input[name="email"]')
-        .type('dshaikhurbina@gmail.com')
-        .should('have.value', 'dshaikhurbina@gmail.com');
+        .type(credentials.email)
+        .should('have.value', credentials.email);
 
     cy.get('input[name="password"]')
-        .type('Cabezadesherwood2')
-        .should('have.value', 'Cabezadesherwood2');
+        .type(credentials.password)
+        .should('have.value', credentials.password);
 
     cy.get('button[data-testid="continue"]')
         .click();
@@ -174,3 +174,35 @@ Cypress.Commands.add('fillPatient', (patient) => {
     cy.get('button[data-testid="back"]').first()
         .click();
 });   
+Cypress.Commands.add('shareWithResearchers', () => { 
+    cy.wait(2000);
+    cy.get('.investigation').first().find('button[data-testid="share"]').click();
+    cy.wait(2000);
+    researchers_to_share.forEach(researcher =>{
+        cy.get('button[data-testid="add_researcher"]')
+            .click();
+        
+            cy.get('input[name="email"]')
+                .type(researcher["email"])
+                .should('have.value', researcher["email"]);
+            cy.get('[aria-labelledby^="permission"]') 
+                .click()
+            cy.contains(researcher.permissionTextValue).click();
+        
+        cy.get('button[data-testid="continue"]')
+            .click();
+    });
+
+    
+    cy.get('button[data-testid="submit"]')
+            .click();
+    
+    cy.get('button[data-testid="continue"]')
+        .click();
+});
+Cypress.Commands.add('logOut', () => { 
+    cy.get('button[data-testid="account"]')
+        .click();
+    cy.get('li[data-testid="log_out"]')
+        .click();
+});

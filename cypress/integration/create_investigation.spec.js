@@ -1,4 +1,4 @@
-import { personal_data1, edc_data1, basic_info1 } from '../../src/stories/example_data';
+import { personal_data1, edc_data1, basic_info1, loginResearcherA } from '../../src/stories/example_data';
 
 describe('Testing create an investigation', () => {
     it('Introduces info on each field', () => {
@@ -7,7 +7,7 @@ describe('Testing create an investigation', () => {
         //cy.visit('https://dashboard.sherwood.science/');
 
         
-        cy.loginResearcher();
+        cy.loginResearcher(loginResearcherA);
 
         cy.contains('Create investigation').click();
 

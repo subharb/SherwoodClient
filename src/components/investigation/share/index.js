@@ -12,6 +12,7 @@ import { EnhancedTable } from "../../general/EnhancedTable";
 import styled from 'styled-components';
 import { yellow, green, blue, red } from "@material-ui/core/colors";
 import axios from '../../../utils/axios';
+import { useHistory } from "react-router-dom";
 
 const RESEARCHER_FORM = {
     "email":{
@@ -76,6 +77,7 @@ function ShareInvestigation(props) {
     const [ sharedResearchers, setSharedResearchers] = useState(props.initialState && props.initialState.investigation ? props.initialState.investigation.sharedResearchers : []);
     const [isLoadingShare, setIsLoadingShare] = useState(false);
     const [errorShare, setErrorShare] = useState(false);
+    const history = useHistory();
 
     function shareInvestigation(){
         setShowSendModal(true)
@@ -84,6 +86,7 @@ function ShareInvestigation(props) {
         setShowSendModal(false);
     }
     async function sendInvitations(){
+        showSendModal(false);
         setIsLoadingShare(true);
         try{
             //Encripto las claves de los pacientes con una clave temporal para que más tarde sea desenciptada por el researcher
@@ -183,7 +186,7 @@ function ShareInvestigation(props) {
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
-            content = "LALA";
+    
             content = <EnhancedTable titleTable={<Translate id="investigation.share.researchers" />}  
                         headCells={arrayHeader}
                         rows={sharedResearchers.map(researcher => {
@@ -219,6 +222,9 @@ function ShareInvestigation(props) {
             if(request.status === 200){
                 setSharedResearchers(request.data.investigation.sharedResearchers);
                 setInvestigation(request.data.investigation);
+            }
+            else if(request.status === 401){
+                history.push("/auth/sign-in");
             }
             setIsLoadingInvestigation(false);
         }

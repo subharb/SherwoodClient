@@ -1,11 +1,11 @@
-import { patients_personal_data_decrypted, edc_data1, records_patient1, records_patient2 } from '../../src/stories/example_data';
+import { patients_personal_data_decrypted, loginResearcherA, records_patient1, records_patient2 } from '../../src/stories/example_data';
 
 describe('Testing create an investigation', () => {
     it('Introduces info on each field', () => {
         cy.visit('http://localhost:3000/investigations/live');
         //cy.visit('https://dashboard.sherwood.science/');
 
-        cy.loginResearcher();
+        cy.loginResearcher(loginResearcherA);
 
      
         cy.get('.investigation').first().find('button[data-testid="open"]').click();

@@ -276,8 +276,8 @@
             },
             "share" : ["Share", "Compartir"],
             "permissions" : {
-                "read_no_personal_data" : ["Read Only Medical Data", "Solo lectura datos médicos"],
-                "read_personal_data" : ["Read Medical and personal Data", "Lectura de datos personales y médicos"],
+                "read_no_personal_data" : ["Read Only Medical data", "Solo lectura datos médicos"],
+                "read_personal_data" : ["Read Medical and personal data", "Lectura de datos personales y médicos"],
                 "create_personal_data" : ["Add Medical and personal data", "Añadir datos médicos y personales"]
             },
             "status" : {
