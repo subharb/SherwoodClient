@@ -99,6 +99,7 @@
     "eslint-config-prettier": "6.15.0",
     "eslint-plugin-prettier": "3.3.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
+    "miragejs": "^0.1.41",
     "msw": "^0.20.5",
     "prettier": "2.2.1",
     "prop-types": "15.7.2",

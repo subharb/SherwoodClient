@@ -30,17 +30,19 @@ export default function PersonalDataForm(props) {
         const patientKeyEncrResearcher =  encryptData(rawPatientKeyResearcher, rawKeyResearcher);
         console.log(process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD);
         const patientKeyEncrInvestigation =  encryptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD);
+        const defaultResearcher = encryptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD);
 
         props.callBackForm({
             "keyPatInv" : patientKeyEncrInvestigation,
             "keyPatientResearcher" : patientKeyEncrResearcher,
+            "keyDefaultResearcher" : defaultResearcher,
             "personalData" : encryptedData
         });
-        //TEST
-        for (const key of Object.keys(encryptedData)) {
-            const decriptedValue =  decryptData(encryptedData[key], rawPatientKeyResearcher);
-            console.log("Decripted "+key+" "+decriptedValue);
-        }
+        // //TEST
+        // for (const key of Object.keys(encryptedData)) {
+        //     const decriptedValue =  decryptData(encryptedData[key], rawPatientKeyResearcher);
+        //     console.log("Decripted "+key+" "+decriptedValue);
+        // }
     }
 
     return (

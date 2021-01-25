@@ -90,12 +90,12 @@ function ShareInvestigation(props) {
         setShowSendModal(false);
         setIsLoadingShare(true);
         try{
-            //Encripto las claves de los pacientes con una clave temporal para que más tarde sea desenciptada por el researcher
+            //Encripto las claves de los pacientes con una clave temporal para que más tarde sea desencriptada por el researcher
             let listPatients = investigation.patientsPersonalData.map(patientData => {
                 const rawKeyResearcher = localStorage.getItem("rawKeyResearcher");
                 const rawPatientKeyInvestigation = decryptData(patientData.keyPatientResearcher, rawKeyResearcher);
                 const keyTempResearcher = encryptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD);
-                return {patientCollectionID : patientData.id, keyPatResearcher:keyTempResearcher}
+                return {patientCollectionID : patientData.id, keyPatientResearcher:keyTempResearcher}
             });
             const postObject = {listResearchers:newResearchers, listPatients : listPatients};
             const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.uuid+'/share', postObject, { headers: {"Authorization" : localStorage.getItem("jwt")} })

@@ -64,7 +64,7 @@ export default function ShowInvestigation(props) {
                 const keyPatient = decryptData(patient.keyPatientResearcher, rawKeyResearcher);
                 //Si es 0, es que está encriptado con la clave temporal
                 if(patient.encryptedKeyUsed === 0){
-                    const newKeyPatientResearcher = encryptData(keyPatient, rawKeyResearcher);
+                    const newKeyPatientResearcher = encryptData(keyPatient, localStorage.getItem("rawKeyResearcher"));
                     const keyPatResearcher = {
                         patientCollectionID : patient.id,
                         keyPatientResearcher : newKeyPatientResearcher
@@ -141,7 +141,7 @@ export default function ShowInvestigation(props) {
         setShowForm(2);
     }
     async function savePatient(patientData){
-        //Hay que encriptar los valores del objecto y enviarlo
+        
         console.log(patientData);
         
         const request = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+investigation.uuid+"/patient", patientData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
