@@ -5,7 +5,7 @@ import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import { Translate } from 'react-localize-redux';
 import Modal from './general/modal';
-import Header from './general/header';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import Form from '../components/general/form';
 import { generateKey, encryptData, decryptData, isUserLoggedIn } from '../utils';
 import Breadcrumb from './general/breadcrumb';
@@ -35,6 +35,10 @@ const ImageSuccess = styled.img`
     display: block;
     margin: 0 auto;
 `;
+
+const PaperPadding = styled(Paper)`
+    padding:1rem;
+`
     
 const forms = {
     "personal_info" : {
@@ -200,6 +204,9 @@ class Register extends Component {
                 else if(response.request.status === 402){
                     tempState.errorMessage = "account_registered";
                 }
+                else{
+                    tempState.errorMessage = "account_registered";
+                }
             }
             this.props.toggleLoading();
         }
@@ -246,20 +253,25 @@ class Register extends Component {
                 </SuccessContainer>
             </Modal>
             ,
-            <div className="container" key="container">
-                <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return "breadcrumb."+section})} />    
-                <p><Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} /></p>
-                <div className="row">
-                    <div className="col s5 offset-s4">
-                        <div className="row">
-                            { content }
-                            {this.state.errorMessage && 
-                                <SpanError><Translate id={`register.${this.props.typeUser}.error.${this.state.errorMessage}`} /></SpanError>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return "breadcrumb."+section})} />    
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="textPrimary">
+                        <Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} />
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} padding={1}>
+                    <PaperPadding>
+                        { content }
+                        {
+                            this.state.errorMessage && 
+                            <SpanError><Translate id={`register.${this.props.typeUser}.error.${this.state.errorMessage}`} /></SpanError>
+                        }
+                    </PaperPadding>
+                </Grid>
+            </Grid>
         ])
     }
 }

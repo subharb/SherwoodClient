@@ -329,14 +329,32 @@ export const researchers_to_share = [
     }
 ]
 
-export const loginResearcherA = {
+export const researcherA_data = {
+    name : "David",
+    surnames: "Shaikh Urbina",
     email : "dshaikhurbina@gmail.com",
-    password: "Cabezadesherwood2"
+    password: "Cabezadesherwood2",
+    phone: "+34647727132",
+    country:"es"
+}
+
+export const researcherB_data = {
+    name : "Pedro",
+    surnames: "Rodriguez",
+    email : "rodriguezcruzpm@gmail.com",
+    password: "Ciencia2!",
+    phone: "+44 772 08689060",
+    country:"es"
+}
+
+export const loginResearcherA = {
+    email : researcherA_data.email,
+    password: researcherA_data.password
 }
 
 export const loginResearcherB = {
-    email : "rodriguezcruzpm@gmail.com",
-    password: "Cabezadesherwood2"
+    email : researcherB_data.email,
+    password: researcherB_data.password
 }
 
 const sharedResearchers =  [

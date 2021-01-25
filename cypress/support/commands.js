@@ -206,3 +206,45 @@ Cypress.Commands.add('logOut', () => {
     cy.get('li[data-testid="log_out"]')
         .click();
 });
+
+Cypress.Commands.add('registerResearcher', (researcher) => { 
+    cy.get('input[name="name"]')
+            .type(researcher["name"])
+            .should('have.value', researcher["name"]);
+    cy.get('input[name="surnames"]')
+        .type(researcher["surnames"])
+        .should('have.value', researcher["surnames"]);
+    cy.get('[aria-labelledby^="country"]') 
+        .click()
+    cy.contains("españa").click();
+
+    cy.get('button[data-testid="continue"]')
+    .click();
+
+    cy.get('input[name="email"]')
+        .type(researcher["email"])
+        .should('have.value', researcher["email"]);
+    cy.get('input[name="phone"]')
+        .type(researcher["phone"])
+        .should('have.value', researcher["phone"]);
+    
+    cy.get('button[data-testid="continue"]')
+        .click();
+
+    cy.get('input[name="password"]')
+        .type(researcher["password"])
+        .should('have.value', researcher["password"]);
+    cy.get('input[name="repeat_password"]')
+        .type(researcher["password"])
+        .should('have.value', researcher["password"]);
+
+    cy.get('button[data-testid="continue"]')
+        .click();
+
+    cy.get('input[name="confirm"]')
+        .type("CONFIRM")
+        .should('have.value', "CONFIRM");
+
+    cy.get('button[data-testid="continue"]')
+            .click();
+});

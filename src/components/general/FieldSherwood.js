@@ -252,6 +252,14 @@ class FieldSherwood extends Component{
                         </QuillWrapper>
                     </Box>
                 )
+            case "password":
+                return(
+                    <Box mt={1}>
+                        <TextFieldSherwood {...input}  type="password"
+                            label={labelString} error={errorState} 
+                            helperText={errorString} />
+                    </Box>
+                )    
             default:    
                     console.log("TextFieldSherwood",input.value);
                 return(
