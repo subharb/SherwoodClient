@@ -12,20 +12,7 @@ describe('Testing create an investigation', () => {
         cy.contains('Create investigation').click();
 
 
-        //Introducimos datos de BASIC INFO
-        cy.createBasicInfo(basic_info1);
-
-        personal_data1().forEach(pField => {
-            cy.contains(pField, {matchCase: false}).click();    
-        });
-           
-        cy.get('button[data-testid="continue"]')
-            .click();
-
-        cy.createEDC(edc_data1().surveys);
-        
-        cy.get('button[data-testid="publish-investigation"]')
-        .click();    
+        cy.createInvestigation(basic_info1, personal_data1(),edc_data1() )   
 
         
         //Introducimos datos de Sección de datos personales

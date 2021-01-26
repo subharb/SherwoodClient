@@ -42,7 +42,11 @@ export default function ShowAllRecordsSurvey(props) {
         setDictPatients(dictPatients);
     }, []);
     if(Object.values(dictPatients).length === 0){
-        return "No records"
+        return(
+            <Typography variant="subtitle1" color="textPrimary">
+                No records
+            </Typography>
+        ) 
     }
     return (
         <Grid container direction="column" spacing={3}>

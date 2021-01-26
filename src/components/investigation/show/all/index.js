@@ -9,7 +9,8 @@ import { useInvestigations } from '../../../../hooks';
 import {useQuery} from 'react-query';
 import { useHistory } from "react-router-dom";
 import { Alert } from "@material-ui/lab";
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
+import { ButtonAdd } from "../../../general/mini_components";
 
 function AllInvestigations(props){
     const [investigations, setInvestigations] = useState(props.initialState && props.initialState.investigations ? props.initialState.investigations : null); 
@@ -95,16 +96,26 @@ function AllInvestigations(props){
         });
     
         if(filteredInvestigations.length === 0){
-            return (                
-                <div>
-                    <Translate id={`investigation.show.all.${props.typeUser}.no_investigations`} />
-                    {(props.typeUser === "researcher" && props.filter !== "pending") && 
+            return (       
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Typography variant="subtitle1" color="textPrimary">
+                            <Translate id={`investigation.show.all.researcher.no_investigations`} />
+                        </Typography>
+                    </Grid>
+                    {(props.filter !== "pending") && 
                     [
-                        <Translate id="investigation.show.all.add_first_investigation" />,
-                        <Link to="/investigation/create" className="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">add</i></Link>
+                        <Grid item xs={12}>
+                            <Typography variant="subtitle1" color="textPrimary">
+                                <Translate id="investigation.show.all.researcher.add_first_investigation" />
+                                <Link to="/investigation/create" className="btn-floating btn-large waves-effect waves-light red">
+                                    <ButtonAdd type="button" />
+                                </Link>
+                            </Typography>
+                        </Grid>
                     ]
                     }
-                </div>
+                </Grid>         
             );
         }
         else{

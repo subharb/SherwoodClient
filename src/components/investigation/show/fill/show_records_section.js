@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ButtonBack, ButtonForward } from '../../../general/mini_components';
-import { Card, CardContent, Typography, Grid } from '@material-ui/core';
+import { Card, Paper, Typography, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
  */
 
+
+const CardPadding = styled(Card)`
+    padding:1rem;
+    margin-bottom:1rem;
+`;
 const GridPadded = styled(Grid)`
     padding:0rem 0rem 2rem 1rem;
 `;
@@ -24,7 +29,7 @@ export default function ShowRecordsSection(props) {
                         const value = submission.answers[field.name] ?  submission.answers[field.name] : "no disponible";
                         return (
                             <Grid item>
-                                <Typography variant="subtitle1">
+                                <Typography variant="body2" gutterBottom>
                                     {field.label}: {value}
                                 </Typography>
                             </Grid>
@@ -36,47 +41,50 @@ export default function ShowRecordsSection(props) {
     }
     if(indexSubmission < props.submissions.length){
         return (
-        
-            <Grid container direction="column" spacing={3}>
-                <Grid item>
-                    <Typography variant="h6" gutterBottom>
-                        Section: { props.section.name }
-                    </Typography>
-                </Grid>
-                {
-                    renderSubmission(0)
-                }
-                {
-                    props.submissions.length > 1 &&
-                    <Grid container direction="column" spacing={3}> container direction="column" spacing={3}>
-                        <Grid item>
-                            {
-                                `${indexSubmission+1} / ${props.submissions.length}`
-                            }
-                        </Grid>
-                        <Grid item>
-                            <ButtonBack disabled={indexSubmission === 0} onClick={() => setIndexSubmission(indexSubmission-1)}></ButtonBack>
-                            <ButtonForward disabled={indexSubmission === props.submissions.length -1} onClick={() => setIndexSubmission(indexSubmission+1)}></ButtonForward>
-                        </Grid>
+            <CardPadding >
+                <Grid container direction="column" spacing={3}>
+                    <Grid item>
+                        <Typography variant="subtitle1" color="textPrimary">
+                            Section: { props.section.name }
+                        </Typography>
                     </Grid>
-                }
-            </Grid>  
+                    {
+                        renderSubmission()
+                    }
+                    {
+                        props.submissions.length > 1 &&
+                        <Grid container direction="column" spacing={3}> container direction="column" spacing={3}>
+                            <Grid item>
+                                {
+                                    `${indexSubmission+1} / ${props.submissions.length}`
+                                }
+                            </Grid>
+                            <Grid item>
+                                <ButtonBack disabled={indexSubmission === 0} onClick={() => setIndexSubmission(indexSubmission-1)}></ButtonBack>
+                                <ButtonForward disabled={indexSubmission === props.submissions.length -1} onClick={() => setIndexSubmission(indexSubmission+1)}></ButtonForward>
+                            </Grid>
+                        </Grid>
+                    }
+                </Grid> 
+            </CardPadding> 
         )
     }
     else{
         return(
-            <Grid container direction="column" >
-                <Grid item>
-                    <Typography variant="h6" gutterBottom>
-                        Section:{ props.section.name }
-                    </Typography>
+            <CardPadding >
+                <Grid container direction="column" >
+                    <Grid item>
+                        <Typography variant="subtitle1" color="textPrimary">
+                            Section:{ props.section.name }
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="body2" gutterBottom>
+                            No records available
+                        </Typography>
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    <Typography variant="subtitle1">
-                        No records available
-                    </Typography>
-                </Grid>
-            </Grid>
+            </CardPadding>
         )   
     }
 }

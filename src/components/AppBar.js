@@ -88,19 +88,9 @@ const AppBarComponent = ({ onDrawerToggle }) => (
               </IconButton>
             </Grid>
           </Hidden>
-          <Grid item>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <Input placeholder="Search topics" />
-            </Search>
-          </Grid>
           <Grid item xs />
           <Grid item>
-            <MessagesDropdown />
-            <NotificationsDropdown />
-            <LanguagesDropdown />
+            <NotificationsDropdown items={3} />
             <UserDropdown />
           </Grid>
         </Grid>

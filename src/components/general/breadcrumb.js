@@ -25,13 +25,15 @@ export default function Breadcrumb(props){
                         props.stages.map((stage, index) => {
                             if(index === props.selected){
                                 return(
-                                    <Typography color="primary"><Translate id={stage}/></Typography>
+                                    <Typography color="primary">
+                                        {stage}
+                                    </Typography>
                                 )
                             }
                             else{
                                 return(
                                     <Link color="textPrimary" onClick={props.callBack}>
-                                        <Translate id={stage}/>
+                                        {stage}
                                     </Link>
                                 )
                             }

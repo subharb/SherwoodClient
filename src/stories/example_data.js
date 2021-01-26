@@ -47,19 +47,29 @@ export const edc_data1 = () => {
                     records:[]
                 },
             {
-                "_id": "5fdc9fbccfec957a73cb34f6",
+                "_id": "5fdc9fbccfec957a73cbf6",
                 records:[],
-                name:"Quality of life Questionaire",
+                name:"Analitica",
                 sections:[
                     {
-                        name:"Evaluation",
-                        repeats : false, 
+                        name:"Blood Samples",
+                        repeats : true, 
+                        "_id": "5fccaedb8583362dd3d50246",
                         fields : [
                             {
                                 required : true, 
                                 encrypted:true, 
-                                name : "evaluation", 
-                                label : "How you you grade your current quality of life?", 
+                                name : "red_cells", 
+                                label : "Amount red cells?", 
+                                type:"text",
+                                typeValueCypress:"Text"
+                            
+                            },
+                            {
+                                required : true, 
+                                encrypted:true, 
+                                name : "leucocitos", 
+                                label : "Amount white cells?", 
                                 type:"text",
                                 typeValueCypress:"Text"
                             
@@ -95,10 +105,11 @@ export const records_patient1 = () =>{
             {
                 "submission": [
                     {
-                        "id_section": "5fdc9fbccfec957a73cb34f7",
+                        "id_section": "5fccaedb8583362dd3d50246",
                         "nameCypress" : "Past medical history",
                         "answers": {
-                            "ilnesses": "Cancer"
+                            "red_cells": "300",
+                            "leucocitos" : "123"
                         }
                     }
                 ],
@@ -231,42 +242,38 @@ export const patients_personal_data_decrypted = () => {
 export const patients_personal_data_encripted = () => {
     return [
         {
-            "id": "5fe218b524b4213823c82e8d",
-            "keyPatInv":"U2FsdGVkX1+07NL4AUPG3yImEoRbslQP55u2EpKFZHtF1Ork/gArz2UWFdD2qzLVt6jWFQN0QRaFh/U5Z8rJhg==",
-            "keyPatientResearcher":"U2FsdGVkX1+Is8xYbsoraL9zkpMchEVy7LAR63EB5jOxA5Y/rwLcXEKKzzzxcXF0VFLWndazqetThikNFOwn9Q==",
-            "personalData":{
-                "email":"U2FsdGVkX18JWuhek4AgMTMCkrWZWOQbSJRqyeC0RB2DkX1FFephUBvEib0/ZjwG",
-                "phone":"U2FsdGVkX18JmEbvvSQtJFIAnuvuYp2b3pvD5XShscY=",
-                "name":"U2FsdGVkX1/RETEMpFHDNWzLo6WgJ9JRBzmR3PMZtnt0qWe0rR1KBSJIrvDHUKmj",
-                "surname":"U2FsdGVkX18PJ+XuhkWZGfUXtRO99CBmmlYkYD/+t+k="
+            "id": "600ee2ae568a01203903fed0",
+            "personalData": {
+                "email": "U2FsdGVkX19zE7xj4DCi1bB45gS5FJnO2RBQsVqs+bwFirN9kHWFEzIsUw/MYVK2",
+                "phone": "U2FsdGVkX19qKHvDsN1gAFnIw0VyldrJTUlWBi+5GidrnzzDpLr05pwU0g0drN4C",
+                "name": "U2FsdGVkX19ocopLUsihONR1ibWmg1KLzIPZYBdTPK0=",
+                "surname": "U2FsdGVkX18OqSgO0WqJfayknGhRHvGuMrATqxsuyj4="
             },
-            "encryptedKeyUsed" : 1
+            "keyPatientResearcher": "U2FsdGVkX19bms94TYB8K3ED74teGSI9VKdSNllX+k1wXgj3282Whikz56NoiB/VzBUx6xRr83ak/3z3q3EofQ==",
+            "encryptedKeyUsed": 1
         },
         {
-            
-            "id": "5fe218c024b4213823c82e8e",
-            "keyPatInv": "U2FsdGVkX19eZ1fehZD6sJn0C/rtKVMx2zTSt3WV8cZLVIoKzelAU1h5SCRCGTQTZXJMxGyV1tzd2HATakUVsA==",
-            "keyPatientResearcher": "U2FsdGVkX1/KVSrNmXP5ri8WQXTeVounCqz9O9wXUoUqCSKLTxR/rNLw0LIlPKz7B7vI3zchzt6XbLhcN40U/g==",
+            "id": "600ee2b3568a01203903fed1",
             "personalData": {
-                "email": "U2FsdGVkX1/6h/bqcYAH+5gYGIOG5D12rT0WhlAxkn5sK0mDLi5A2+WhJeTTeryA",
-                "phone": "U2FsdGVkX1+2RzhJr/EqHHpUAY59pdVd04tFhDUjITM=",
-                "name": "U2FsdGVkX19AG8ZaX1DrxDK6Qt9kHxg3JLgKgWh8bPI=",
-                "surname": "U2FsdGVkX1+ZjiX9v8rg3R3S98fPUaSgTtcpW7Ul1Fg="
+                "email": "U2FsdGVkX18oEcJlLeVnXCF2XmZ5S1QnVIrEtxLK0S8=",
+                "phone": "U2FsdGVkX1/QO3Zy5XPYsv9Y9Abbhbyouj0iga+qXxR3qyLvI//on712v1DRC+/b",
+                "name": "U2FsdGVkX19WMH5g0VXvEjV753phzJqBMU89xvD3vbg=",
+                "surname": "U2FsdGVkX18EKaRdlLD/A5Ya3y07ks4z5fRRoOFs3tQ="
             },
-            "encryptedKeyUsed" : 1
+            "keyPatientResearcher": "U2FsdGVkX1/hB9FtUtWs+fE0oOfIm+H0ESwDIqZXoQ3HUrXzVmh35Nk1b8V0Eluyxal/CGCG86+42FsGZARsDA==",
+            "encryptedKeyUsed": 1
         },
         {
-            "id": "5fccaee78583362dd3d50248",
-            "keyPatInv": "U2FsdGVkX1/mPlvgZCwnYhxCWYW0j0UfCEGOmvh3mxU3OyFZtnZNudXiqNWijIydHNKrvtaZ2hTc5lwaw6NN3w==",
-            "keyPatientResearcher": "U2FsdGVkX18gBKWMD7TYccFDAK7J1o/BM9EcbWUvZ30wBRq+6TIIk/yknU/ezyJMOgAGkfjNESj7ZgkuASNsIA==",
+            "id": "600ee2b7568a01203903fed2",
             "personalData": {
-                "email": "U2FsdGVkX1/M175udN7Bp5uI6hI/HCNrglC4RrvQoQpBQgLw7QFZrjnKv0UO66Ce",
-                "phone": "U2FsdGVkX1/Ob4rrFmVAxynGaJFxvwADsAvyBjADnWk=",
-                "name": "U2FsdGVkX1+mWpHIcy7u9KXHLND/1NDziIwoCqI72b0=",
-                "surname": "U2FsdGVkX1/Zz6rs03SB3UkHfweYxQlAXxAjzh/oiKE="
+                "email": "U2FsdGVkX19RwwxsO3K9xgktHiXSPiiBJv6FAc5j2NeVprvgAgpWUU5ZXxrqszEw",
+                "phone": "U2FsdGVkX18ZpiKmUlK8eFbcxVEAgMW0B4/SSDv4F2Ow7IzvRn2BmrNQ5LeDcTZf",
+                "name": "U2FsdGVkX1/aonpnW/tOS+EGGs+RPurCbVVgUvIogAQ=",
+                "surname": "U2FsdGVkX1/jx9DHxoj7Vcrb7Tz8qE/AgtNjuSCGS+U="
             },
-            "encryptedKeyUsed" : 1
-        },
+            "keyPatientResearcher": "U2FsdGVkX1+zrUoIPQnRIZ4J3yBNc4Wve+v4rzddE5VddZQJTFrnQVn+F4PoDLBi3J6PGDPxD1EO6Q9WAeSVxQ==",
+            "encryptedKeyUsed": 1
+        }
     ]
 }
 
@@ -314,18 +321,18 @@ export const patient_personal_data_default_key =
 export const researchers_to_share = [
     {
         "email" : "rodriguezcruzpm@gmail.com",
-        "permission" : "1",
+        "permission" : "2",
         "permissionTextValue" : "Add Medical and personal data"
     },
     {
         "email" : "guillermo.suarez.tangil@gmail.com",
-        "permission" : "2",
-        "permissionTextValue" : "Read Medical and personal data"
+        "permission" : "0",
+        "permissionTextValue" : "Read Only Medical data"
     },
     {
         "email" : "david@sherwood.science",
-        "permission" : "0",
-        "permissionTextValue" : "Read Only Medical data"
+        "permission" : "1",
+        "permissionTextValue" : "Read Medical and personal data"
     }
 ]
 
@@ -342,8 +349,17 @@ export const researcherB_data = {
     name : "Pedro",
     surnames: "Rodriguez",
     email : "rodriguezcruzpm@gmail.com",
-    password: "Ciencia2!",
+    password: "Cabezadesherwood2",
     phone: "+44 772 08689060",
+    country:"es"
+}
+
+export const researcherC_data = {
+    name : "Guillermo",
+    surnames: "Suarez-Tangil",
+    email : "guillermo.suarez.tangil@gmail.com",
+    password: "Ciencia2!",
+    phone: "+24 772 08689060",
     country:"es"
 }
 
@@ -355,6 +371,11 @@ export const loginResearcherA = {
 export const loginResearcherB = {
     email : researcherB_data.email,
     password: researcherB_data.password
+}
+
+export const loginResearcherC = {
+    email : researcherC_data.email,
+    password: researcherC_data.password
 }
 
 const sharedResearchers =  [
@@ -388,6 +409,7 @@ export const investigation_server = () => {
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = patients_personal_data_encripted();
     returnData.status = 1;
+    returnData.shareStatus = 2; 
     returnData.sharedResearchers = sharedResearchers;
     return returnData;
 }
@@ -397,6 +419,17 @@ export const investigation_server_no_patitents = () => {
     returnData.surveys = edc_data1().surveys;
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = [];
+    returnData.status = 1;
+    returnData.shareStatus = 2; 
+    returnData.sharedResearchers = sharedResearchers;
+    return returnData;
+}
+export const investigation_server_read_access = () => {
+    let returnData = {...basic_info1_raw()};
+    returnData.surveys = edc_data1().surveys;
+    returnData.personalFields = personal_data1();
+    returnData.patientsPersonalData = [];
+    returnData.shareStatus = 0;
     returnData.status = 1; 
     returnData.sharedResearchers = sharedResearchers;
     return returnData;

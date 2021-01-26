@@ -3,6 +3,8 @@ import {Translate} from 'react-localize-redux';
 import { PERSONAL_DATA_FIELDS, encryptData, decryptData, generateKey } from '../../../../utils';
 import Form from '../../../general/form';
 import jwt from 'jsonwebtoken';
+import { Grid, Typography } from '@material-ui/core';
+
 export default function PersonalDataForm(props) {
     let form = {}
     for(let i = 0; i < props.fields.length; i++){
@@ -46,14 +48,20 @@ export default function PersonalDataForm(props) {
     }
 
     return (
-        <div className="container">
-            <div className="row">
-                <h5><Translate id="investigation.fill.personal_data.title" /></h5>
-            </div>
-            <div className="row">
-                <span><Translate id="investigation.fill.personal_data.description" /></span>
-            </div>
-            <Form fields={form} initialData={props.initialData} callBackForm={(data) => encryptPersonalData(data)}/>
-        </div>
+        <Grid container spacing={1}>
+            <Grid item xs={12}>
+                <Typography variant="subtitle1" color="textPrimary">
+                    <Translate id="investigation.fill.personal_data.title" />
+                </Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography variant="body2" color="textPrimary">
+                    <Translate id="investigation.fill.personal_data.description" />
+                </Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Form fields={form} initialData={props.initialData} callBackForm={(data) => encryptPersonalData(data)}/>
+            </Grid>
+        </Grid>
     )
 }

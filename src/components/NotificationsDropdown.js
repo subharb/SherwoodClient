@@ -65,7 +65,7 @@ function Notification({ title, description, Icon }) {
   );
 }
 
-function NotificationsDropdown() {
+function NotificationsDropdown(props) {
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
 
@@ -81,7 +81,7 @@ function NotificationsDropdown() {
     <React.Fragment>
       <Tooltip title="Notifications">
         <IconButton color="inherit" ref={ref} onClick={handleOpen}>
-          <Indicator badgeContent={7}>
+          <Indicator badgeContent={props.items}>
             <Bell />
           </Indicator>
         </IconButton>

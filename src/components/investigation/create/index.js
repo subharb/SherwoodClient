@@ -142,7 +142,7 @@ export function NewInvestigation(props){
                     </Typography>
                 </Grid>
                 <Grid item  xs={12}>
-                    <Breadcrumb callBack={goToStep} selected={step} stages={Object.values(steps)} /> 
+                    <Breadcrumb callBack={goToStep} selected={step} stages={Object.values(steps).map(step => props.translate(step))} /> 
                 </Grid>
                 <Grid item  xs={12}>
                     <Card>

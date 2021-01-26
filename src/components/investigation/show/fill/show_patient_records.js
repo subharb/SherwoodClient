@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Table from '../../../general/table';
+import { Alert } from "@material-ui/lab";
 import axios from 'axios';
 import ShowRecordsSection from './show_records_section';
 import { ButtonAdd, ButtonBack } from '../../../general/mini_components';
@@ -95,22 +95,17 @@ export default function PatientRecords(props) {
                             actions = {{"add" : (index) => addRegistry(index)}} />
                     )
                 }
-                // else{
-                //     const section = props.survey.sections.filter((section) => {
-                //         return (section._id === sectionSelected)
-                //       })
-                    
-                //     return <SurveySections initialData={ {sections : section }} 
-                //                 uuidInvestigation={props.uuidInvestigation}
-                //                 callBackForm={(values) => sendRecord(values)}/>
-                // }
             }
             else{
                 return renderRecordsSection(patientRecords, props.survey.sections);
             }
         }
         else{
-            return "HA HABIDO UN ERROR"
+            return (
+                <Alert mb={4} severity="error">
+                    <Translate id="investigation.share.error.description" />
+                </Alert>
+            );
         }
     }
     
@@ -122,11 +117,15 @@ export default function PatientRecords(props) {
                     <ButtonBack onClick={() => setSectionSelected(null)} >Back</ButtonBack>
                 </Grid>
             }
-            <Grid item>
-                <Typography variant="subtitle1">
-                    <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.name} ${props.patient.surname}`} - {props.patient.id}
-                </Typography>
-            </Grid>
+            {
+                props.singlePatient &&
+                <Grid item>
+                    <Typography variant="subtitle1">
+                        <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.name} ${props.patient.surname}`} - {props.patient.id}
+                    </Typography>
+                </Grid>
+            }
+            
             <Grid item>
                 {
                     renderCore()

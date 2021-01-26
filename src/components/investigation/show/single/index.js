@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PersonalDataForm from '../fill/personal_data';
-import SurveySections from '../fill/survey_form';
+import { Alert } from "@material-ui/lab";
 import ShowAllRecordsSurvey from '../../show/single/show_all_records_survey';
 import { ButtonAdd, ButtonBack, Divider } from '../../../general/mini_components';
 import Table from '../../../general/table';
@@ -11,7 +11,7 @@ import { updateListKeyPatientResearcher } from '../../../../services/sherwoodSer
 import Loader from '../../../Loader';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { EnhancedTable } from '../../../general/EnhancedTable';
 import { Translate } from 'react-localize-redux';
 /**
@@ -25,6 +25,7 @@ export default function ShowInvestigation(props) {
     const [patientsData, setPatientsData] = useState([]);
     const [decryptedPatientData, setDecryptedPatientData] = useState([]);
     const [investigation, setInvestigation] = useState(props.initialData ? props.initialData.investigation : false);
+    const [errorEncryption, setErrorEncryption ] = useState(false);
     const history  = useHistory();
 
     
@@ -52,70 +53,86 @@ export default function ShowInvestigation(props) {
     }, [investigation]);
     
     useEffect(() => {  
-        if(patientsData.length !== 0 && patientsData.length !== decryptedPatientData.length){
+        try{
+            if(patientsData.length !== 0 && patientsData.length !== decryptedPatientData.length){
             
-            //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
-            let tempDecryptedData = [];
-            let listPatientUpdateKeyResearcher = [];
-            for(const patient of patientsData){
-                
-                const rawKeyResearcher = patient.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
-                let encryptedFields = {};
-                const keyPatient = decryptData(patient.keyPatientResearcher, rawKeyResearcher);
-                //Si es 0, es que está encriptado con la clave temporal
-                if(patient.encryptedKeyUsed === 0){
-                    const newKeyPatientResearcher = encryptData(keyPatient, localStorage.getItem("rawKeyResearcher"));
-                    const keyPatResearcher = {
-                        patientCollectionID : patient.id,
-                        keyPatientResearcher : newKeyPatientResearcher
+                //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
+                let tempDecryptedData = [];
+                let listPatientUpdateKeyResearcher = [];
+                for(const patient of patientsData){
+                    
+                    const rawKeyResearcher = patient.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
+                    let encryptedFields = {};
+                    const keyPatient = decryptData(patient.keyPatientResearcher, rawKeyResearcher);
+                    
+                    //Si es 0, es que está encriptado con la clave temporal
+                    if(patient.encryptedKeyUsed === 0){
+                        const newKeyPatientResearcher = encryptData(keyPatient, localStorage.getItem("rawKeyResearcher"));
+                        const keyPatResearcher = {
+                            patientCollectionID : patient.id,
+                            keyPatientResearcher : newKeyPatientResearcher
+                        }
+                        listPatientUpdateKeyResearcher.push(keyPatResearcher);
                     }
-                    listPatientUpdateKeyResearcher.push(keyPatResearcher);
-                }
-                for(const personalField of investigation.personalFields){
-                    const encryptedField = patient.personalData[personalField];
-                    if(!encryptedField){
-                        console.error("No coinciden campos!");
-                        return "error!";
+                    for(const personalField of investigation.personalFields){
+                        const encryptedField = patient.personalData[personalField];
+                        if(!encryptedField){
+                            console.error("No coinciden campos!");
+                            return "error!";
+                        }
+                        const decryptedField = decryptData(encryptedField, keyPatient);
+                        encryptedFields[personalField] = decryptedField; 
+    
                     }
-                    const decryptedField = decryptData(encryptedField, keyPatient);
-                    encryptedFields[personalField] = decryptedField; 
-
+                    encryptedFields["id"] = patient.id; 
+                    tempDecryptedData.push(encryptedFields);
                 }
-                encryptedFields["id"] = patient.id; 
-                tempDecryptedData.push(encryptedFields);
+                if(listPatientUpdateKeyResearcher.length > 1){
+                    updateListKeyPatientResearcher(listPatientUpdateKeyResearcher);
+                }
+                setDecryptedPatientData(tempDecryptedData);
             }
-            if(listPatientUpdateKeyResearcher.length > 1){
-                updateListKeyPatientResearcher(listPatientUpdateKeyResearcher);
-            }
-            setDecryptedPatientData(tempDecryptedData);
         }
+        catch(error){
+            setErrorEncryption(true);
+            return;
+        }
+        
     }, [patientsData])
 
     function renderPatientsTable(){
-        if(patientsData.length === 0){
-            return <div>You dont have any patients enrolled yet</div>
-        }
-        else{      
-            const rows = decryptedPatientData.map(patientData => {
-                let tempRow = {};
-                for(const pField of investigation.personalFields){
-                    tempRow[pField] = patientData[pField]
-                }
-                return(
-                    tempRow
+        if(investigation.shareStatus === 2){
+            if(patientsData.length === 0){
+                return (<Typography variant="subtitle1" color="textPrimary">
+                            You dont have any patients enrolled yet
+                        </Typography>)
+            }
+            else{      
+                const rows = decryptedPatientData.map(patientData => {
+                    let tempRow = {};
+                    for(const pField of investigation.personalFields){
+                        tempRow[pField] = patientData[pField]
+                    }
+                    return(
+                        tempRow
+                    )
+                });
+                const headCells = investigation.personalFields.map(pField => {
+                    return { id: pField, alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.${pField}`} /> }
+                }) 
+                return (
+                    <EnhancedTable titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
+                        actions={{"view":(index => showPatient(index))}}
+                        />
                 )
-            });
-            const headCells = investigation.personalFields.map(pField => {
-                return { id: pField, alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.${pField}`} /> }
-            }) 
+    
+            }
+        }
+        else{
             return (
-                <EnhancedTable titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
-                    actions={{"view":(index => showPatient(index)), "add": (index) => selectPatient(index)}}
-                    />
-            )
-        //   <Table header={investigation.personalFields} 
-        //                 values={decryptedPatientData} viewCallBack={(index) => showPatient(index)}
-        //                 addCallBack={(index) => {selectPatient(index)}} />
+            <Typography variant="subtitle1" color="textPrimary">
+                You don't have permission to add new patients
+            </Typography>)
         }
     }
     function renderSurveysTable(){
@@ -174,6 +191,20 @@ export default function ShowInvestigation(props) {
         }
         //setShowForm(0);
     }
+    function renderAddPatients(){
+        if(investigation.shareStatus === 2 && showForm === 0){
+            return(
+                <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="textPrimary">
+                        Add new patient<ButtonAdd data-testid="add-patient" onClick={() => setShowForm(1)} />
+                    </Typography>
+                </Grid>
+            )
+        }
+        else if(investigation.shareStatus !== 2 ){
+
+        }
+    }
     function renderForm(){
         switch(showForm){
             case 0:
@@ -206,23 +237,30 @@ export default function ShowInvestigation(props) {
     if(investigation === false){
         return <Loader />
     }
-
+    else if(errorEncryption){
+        console.error("Clave incorrecta");
+        return (
+            <Alert mb={4} severity="error">
+                <Translate id="investigation.share.error.description" />
+            </Alert>
+        );
+    }
     return (
-        <Grid container >
+        <Grid container spacing={1} >
+            
+            <Grid item xs={12}>
+                <Typography variant="h6" gutterBottom display="inline">
+                    {investigation.name}
+                </Typography>
+            </Grid>
             {
                 showForm !== 0 && 
                 <Grid item xs={12}>
                     <ButtonBack data-testid="back" onClick={() => setShowForm(0)} >Back</ButtonBack>
                 </Grid>
             }
-            <Grid item xs={12}>
-                <h5>{investigation.name}</h5>
-            </Grid>
             {
-                showForm === 0 && 
-                <Grid item xs={12}>
-                    Add new patient<ButtonAdd data-testid="add-patient" onClick={() => setShowForm(1)} />
-                </Grid>
+                renderAddPatients()
             }
             <Grid item xs={12}>
             {

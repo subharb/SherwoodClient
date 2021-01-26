@@ -10,7 +10,6 @@ describe('Testing create an investigation', () => {
      
         cy.get('.investigation').first().find('button[data-testid="open"]').click();
         
-
         patients_personal_data_decrypted().forEach(patient =>{
             cy.get('button[data-testid="add-patient"]')
             .click();
@@ -30,5 +29,7 @@ describe('Testing create an investigation', () => {
         cy.get('button[data-testid="add-element"]').eq(1)
             .click();
         cy.fillPatient(records_patient2())
+
     })
+
 })

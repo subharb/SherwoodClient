@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from './general/modal';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import Form from '../components/general/form';
@@ -255,7 +255,7 @@ class Register extends Component {
             ,
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return "breadcrumb."+section})} />    
+                    <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return this.props.translate("breadcrumb."+section)})} />    
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="subtitle1" color="textPrimary">
@@ -280,4 +280,4 @@ Register.propTypes = {
     typeUser:PropTypes.string
 }
 
-export default withRouter(connect(null, { toggleLoading })(Register))
+export default withLocalize(withRouter(connect(null, { toggleLoading })(Register)))

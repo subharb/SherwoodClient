@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import Table from '../../../general/table';
+import Breadcrumb from '../../../general/breadcrumb';
 import { EnhancedTable } from '../../../general/EnhancedTable';
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import ShowRecordsSection from './show_records_section';
 import ShowPatientRecords from './show_patient_records';
 import PropTypes from 'prop-types';
@@ -9,12 +9,13 @@ import { findSubmissionsFromSection } from '../../../../utils';
 import { ButtonBack } from '../../../general/mini_components';
 import PatientRecords from './show_patient_records';
 import Form from '../../../general/form';
+import { Grid, Typography } from '@material-ui/core';
 
 /**
  * Componente que muestra los surveys de una investigación. Con botones para añadir información o visualizar
  */
 
-export default function ShowSurveys(props) {
+function ShowSurveys(props) {
     const [action, setAction] = useState(0);
     const [indexSurvey, setIndexSurvey] = useState(null);
     const [indexSection, setIndexSection] = useState(null);
@@ -69,10 +70,25 @@ export default function ShowSurveys(props) {
         
     // }
     function renderHeader(){
-        return(
-            <h6>Data Collections {indexSurvey !== null ? "> "+props.surveys[indexSurvey].name+" > Sections" : ""}
-                {indexSection !== null ? "> "+props.surveys[indexSurvey].sections[indexSection].name : ""} </h6>
-        )
+        if(indexSurvey !== null){
+            let stages = [ props.translate("investigation.fill.survey.title")];
+            if(indexSurvey !== null){
+                stages.push(props.surveys[indexSurvey].name);
+                stages.push( props.translate("investigation.create.edc.data_collections.sections"));
+            }
+            if(indexSection !== null){
+                stages.push(props.surveys[indexSurvey].sections[indexSection].name);
+            }
+            return(
+                <Typography variant="body2" color="textPrimary">
+                    <Breadcrumb callBack={{}} selected={stages.length-1} stages={stages} />  
+                    
+                </Typography>
+            )
+        }
+        else{
+            return null;
+        }
     }
     function renderCore(){
     
@@ -132,23 +148,26 @@ export default function ShowSurveys(props) {
         ])
     }
     return (
-        <div className="container">
-             <div className="row">
-                <Translate id="investigation.fill.survey.patient_name"/>:
-            
-                {
-                    props.patient.name+" "+props.patient.surname
-                }
-            </div>
-            <div className="row">
+        <Grid container spacing={1}>
+            <Grid item xs={12}>
+                <Typography variant="subtitle1" color="textPrimary">
+                    <Translate id="investigation.fill.survey.patient_name"/>: 
+                    {
+                        props.patient.name+" "+props.patient.surname
+                    }
+                </Typography>  
+            </Grid>
+            <Grid item xs={12}>
                 {
                     renderHeader()
                 }
-            </div>
+            </Grid>
+            <Grid item xs={12}>
                 {
                     renderCore()
                 }
-        </div>
+            </Grid>
+        </Grid>
     )
     
 }
@@ -157,3 +176,5 @@ ShowSurveys.propTypes = {
     submissions: PropTypes.array,
     mode : PropTypes.string
 };
+
+export default withLocalize(ShowSurveys)
