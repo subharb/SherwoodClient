@@ -178,11 +178,11 @@ const dashboardsNotSideBarRoutes = {
     children: [
         {
             path: "/profile",
-            name: "CreateInvestigation",
+            name: "Profile",
             component: Profile,
         },
         {
-            path: "investigation/create",
+            path: "/investigation/create",
             name: "CreateInvestigation",
             component: CreateInvestigation,
         },
