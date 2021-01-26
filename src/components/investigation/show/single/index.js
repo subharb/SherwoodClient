@@ -60,30 +60,33 @@ export default function ShowInvestigation(props) {
                 let tempDecryptedData = [];
                 let listPatientUpdateKeyResearcher = [];
                 for(const patient of patientsData){
-                    
-                    const rawKeyResearcher = patient.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
                     let encryptedFields = {};
-                    const keyPatient = decryptData(patient.keyPatientResearcher, rawKeyResearcher);
+                    if(investigation.permissions !== 0){
+                        const rawKeyResearcher = patient.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
+                        
+                        const keyPatient = decryptData(patient.keyPatientResearcher, rawKeyResearcher);
+                        
+                        //Si es 0, es que está encriptado con la clave temporal
+                        if(patient.encryptedKeyUsed === 0){
+                            const newKeyPatientResearcher = encryptData(keyPatient, localStorage.getItem("rawKeyResearcher"));
+                            const keyPatResearcher = {
+                                patientCollectionID : patient.id,
+                                keyPatientResearcher : newKeyPatientResearcher
+                            }
+                            listPatientUpdateKeyResearcher.push(keyPatResearcher);
+                        }
+                        for(const personalField of investigation.personalFields){
+                            const encryptedField = patient.personalData[personalField];
+                            if(!encryptedField){
+                                console.error("No coinciden campos!");
+                                return "error!";
+                            }
+                            const decryptedField = decryptData(encryptedField, keyPatient);
+                            encryptedFields[personalField] = decryptedField; 
+        
+                        }
+                    }
                     
-                    //Si es 0, es que está encriptado con la clave temporal
-                    if(patient.encryptedKeyUsed === 0){
-                        const newKeyPatientResearcher = encryptData(keyPatient, localStorage.getItem("rawKeyResearcher"));
-                        const keyPatResearcher = {
-                            patientCollectionID : patient.id,
-                            keyPatientResearcher : newKeyPatientResearcher
-                        }
-                        listPatientUpdateKeyResearcher.push(keyPatResearcher);
-                    }
-                    for(const personalField of investigation.personalFields){
-                        const encryptedField = patient.personalData[personalField];
-                        if(!encryptedField){
-                            console.error("No coinciden campos!");
-                            return "error!";
-                        }
-                        const decryptedField = decryptData(encryptedField, keyPatient);
-                        encryptedFields[personalField] = decryptedField; 
-    
-                    }
                     encryptedFields["id"] = patient.id; 
                     tempDecryptedData.push(encryptedFields);
                 }

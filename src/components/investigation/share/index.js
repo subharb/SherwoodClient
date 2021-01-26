@@ -188,7 +188,7 @@ function ShareInvestigation(props) {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
     
-            content = <EnhancedTable titleTable={<Translate id="investigation.share.researchers" />}  
+            content = <EnhancedTable titleTable={<Translate id="investigation.share.current_researchers" />}  
                         headCells={arrayHeader}
                         rows={sharedResearchers.map(researcher => {
                             const name = researcher.name ? researcher.name+" "+researcher.surnames : researcher.email;

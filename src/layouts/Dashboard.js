@@ -108,7 +108,7 @@ const Dashboard = ({ children, routes, width }) => {
                 </MainContent>
                 <Footer />
             </AppContent>
-            <Settings />
+            
         </Root> 
   );
 };

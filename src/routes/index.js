@@ -155,46 +155,19 @@ const investigationsRoutes = {
         },
         {
             path: "/investigations/pending",
-            name: "Live",
+            name: "Pending",
             component: () => <Investigations filter="pending" /> ,
         }
     ],
   };
 
 const dashboardsRoutes = {
-  id: "Dashboard",
-  path: "/dashboard",
+  id: "Create Investigation",
+  path: "/",
   header: "Pages",
   icon: <Sliders />,
-  containsHome: true,
-  children: [
-    {
-      path: "/dashboard/default",
-      name: "Default",
-      component: Default,
-    },
-    {
-        path: "/",
-        name: "CreateInvestigation",
-        component: CreateInvestigation,
-    },
-    {
-        path: "/investigation/create",
-        name: "CreateInvestigation",
-        component: CreateInvestigation,
-    },
-    {
-      path: "/dashboard/analytics",
-      name: "Analytics",
-      component: Analytics,
-    },
-    {
-      path: "/dashboard/saas",
-      name: "SaaS",
-      component: SaaS,
-    },
-  ],
-  component: null,
+  component:CreateInvestigation,
+  children: null,
 };
 const dashboardsNotSideBarRoutes = {
     id: "Dashboard",
@@ -207,6 +180,11 @@ const dashboardsNotSideBarRoutes = {
             path: "/profile",
             name: "CreateInvestigation",
             component: Profile,
+        },
+        {
+            path: "investigation/create",
+            name: "CreateInvestigation",
+            component: CreateInvestigation,
         },
         {
             path: "/investigation/show/:uuid",

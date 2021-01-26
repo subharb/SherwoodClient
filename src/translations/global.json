@@ -121,6 +121,7 @@
                     "national_id" : ["National ID", "DNI"],
                     "email" : ["Email", "Email"],
                     "phone" : ["Phone", "Nº Teléfono"],
+                    "id" : ["ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento"]
                 }
             }, 
@@ -256,6 +257,7 @@
             "title" : ["Share Investigation", "Compartir Investigación"],
             "add_researcher" : ["Add Researcher", "Añadir Investigador"],
             "researchers" : ["Researchers", "Investigadores"],
+            "current_researchers" : ["Currently shared researchers", "Investigadores compartido"],
             "new_researchers" : ["New Researchers", "Nuevos Investigadores"],
             "form" : {
                 "email" : ["Email", "Email"],
