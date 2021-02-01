@@ -237,56 +237,54 @@ function ShareInvestigation(props) {
         
     }, [])
 
-    return "LALA";
-    
-    // if(isLoadingInvestigation || isLoadingShare){
-    //     return <Loader />
-    // }
-    // else if(error || errorShare){
-    //     return (
-    //         <Alert mb={4} severity="error">
-    //             <Translate id="investigation.share.error.description" />
-    //         </Alert>
-    //     );
-    // }
-    // return (
-    //     <React.Fragment>
-    //         <Helmet title={props.translate("investigation.share.title")} />
-    //         <Modal key="modal" open={addingResearcher} 
-    //             title={props.translate("investigation.share.add_researcher")}>
-    //                 <Form fields={RESEARCHER_FORM} callBackForm={addResearcher} 
-    //                     closeCallBack={() => setAddingResearcher(false)}/>
-    //         </Modal>
-    //         <Grid container spacing={3}>
-    //             <Grid item  xs={12}>
-    //                 <Typography variant="h3" gutterBottom display="inline">
-    //                     <Translate id="investigation.share.title" />
-    //                 </Typography>
-    //             </Grid>
-    //             <Grid item container xs={12} spacing={3}>
-    //                 <Grid item xs={12} >
-    //                     <Typography gutterBottom variant="h5" component="h2">
-    //                         { investigation.name }
-    //                     </Typography>
-    //                 </Grid>
-    //                 {
-    //                     renderPrevResearchers()
-    //                 }
-    //                 <Grid item xs={12} >
-    //                     <Typography variant="body2" component="div" gutterBottom>
-    //                         <Translate id="investigation.share.add_researcher" />
-    //                         <ButtonAdd disabled={addingResearcher} 
-    //                             type="button" data-testid="add_researcher" 
-    //                             onClick={() => setAddingResearcher(true)}></ButtonAdd>
-    //                     </Typography>
-    //                 </Grid>
-    //                 {
-    //                     renderNewResearchers()
-    //                 }
+    if(isLoadingInvestigation || isLoadingShare){
+        return <Loader />
+    }
+    else if(error || errorShare){
+        return (
+            <Alert mb={4} severity="error">
+                <Translate id="investigation.share.error.description" />
+            </Alert>
+        );
+    }
+    return (
+        <React.Fragment>
+            <Helmet title={props.translate("investigation.share.title")} />
+            <Modal key="modal" open={addingResearcher} 
+                title={props.translate("investigation.share.add_researcher")}>
+                    <Form fields={RESEARCHER_FORM} callBackForm={addResearcher} 
+                        closeCallBack={() => setAddingResearcher(false)}/>
+            </Modal>
+            <Grid container spacing={3}>
+                <Grid item  xs={12}>
+                    <Typography variant="h3" gutterBottom display="inline">
+                        <Translate id="investigation.share.title" />
+                    </Typography>
+                </Grid>
+                <Grid item container xs={12} spacing={3}>
+                    <Grid item xs={12} >
+                        <Typography gutterBottom variant="h5" component="h2">
+                            { investigation.name }
+                        </Typography>
+                    </Grid>
+                    {
+                        renderPrevResearchers()
+                    }
+                    <Grid item xs={12} >
+                        <Typography variant="body2" component="div" gutterBottom>
+                            <Translate id="investigation.share.add_researcher" />
+                            <ButtonAdd disabled={addingResearcher} 
+                                type="button" data-testid="add_researcher" 
+                                onClick={() => setAddingResearcher(true)}></ButtonAdd>
+                        </Typography>
+                    </Grid>
+                    {
+                        renderNewResearchers()
+                    }
 
-    //             </Grid>
-    //         </Grid>
-    //     </React.Fragment>
-    // )
+                </Grid>
+            </Grid>
+        </React.Fragment>
+    )
 }
 export default withLocalize(ShareInvestigation);

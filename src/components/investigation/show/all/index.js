@@ -63,6 +63,7 @@ function AllInvestigations(props){
             setIsLoading(false);
         }
     }, [answer])
+    
     if(isLoading){
         return <Loader />
     }
