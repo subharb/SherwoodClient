@@ -193,8 +193,8 @@ const dashboardsNotSideBarRoutes = {
         },
         {
             path: "/investigation/share/:uuid",
-            name: "Live",
-            component: () => <ShareInvestigationRouter /> ,
+            name: "Share",
+            component: () => ShareInvestigationRouter ,
         },
     ]}
 // const pagesRoutes = {

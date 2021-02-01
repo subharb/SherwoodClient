@@ -14,6 +14,7 @@ export default {
         edc: {
             control: "object"
         },
+        level : {control : "number"},
         display:{ control: {
             type: 'select',
             options: [
@@ -47,6 +48,8 @@ Add.args = {
     mode:"add",
     records:records_patient1().records,
     surveys:edc_data1().surveys,
+    level : 0,
+    updateLevel : (level) => alert("updateLevel "+level),
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
 export const View = Template.bind({});
@@ -56,6 +59,8 @@ View.args = {
     patient:patient_data_decrypted1(),
     surveys:edc_data1().surveys,
     display:"elements",
+    level : 0,
+    updateLevel : (level) => alert("updateLevel "+level),
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
 

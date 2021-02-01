@@ -106,7 +106,7 @@ export const records_patient1 = () =>{
                 "submission": [
                     {
                         "id_section": "5fccaedb8583362dd3d50246",
-                        "nameCypress" : "Past medical history",
+                        "nameCypress" : "Blood Samples",
                         "answers": {
                             "red_cells": "300",
                             "leucocitos" : "123"
@@ -114,7 +114,7 @@ export const records_patient1 = () =>{
                     }
                 ],
                 "_id": "5fe20fb779160a2fc27c11d7",
-                "nameCypress" : "Demographic Questionaire",
+                "nameCypress" : "Analitica",
                 "id_patient": "5fe218b524b4213823c82e8d",
                 "created_At": "2020-12-06T17:03:19.093Z",
                 "updated_At": "2020-12-06T17:03:19.093Z"

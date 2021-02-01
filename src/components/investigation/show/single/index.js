@@ -20,6 +20,7 @@ import { Translate } from 'react-localize-redux';
  */
 export default function ShowInvestigation(props) {
     const [showForm, setShowForm] = useState(0);
+    const [level, setLevel] = useState(0);
     const [patientIndex, setPatientIndex] = useState(null);
     const [surveyIndex, setSurveyIndex] = useState(null);
     const [patientsData, setPatientsData] = useState([]);
@@ -125,10 +126,9 @@ export default function ShowInvestigation(props) {
                 }) 
                 return (
                     <EnhancedTable titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
-                        actions={{"view":(index => showPatient(index))}}
+                        actions={{"view":(index => showPatient(index)), "add" : (index) => selectPatient(index)}}
                         />
                 )
-    
             }
         }
         else{
@@ -150,6 +150,7 @@ export default function ShowInvestigation(props) {
     }
     function showSurvey(index){
         setShowForm(4);
+        setLevel(0);
         setSurveyIndex(index);
     }
     function showPatient(index){
@@ -221,20 +222,28 @@ export default function ShowInvestigation(props) {
                             initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
             case 2: 
             //Add Data
-                return <ShowSurveys mode="add" patient={decryptedPatientData[patientIndex]} saveRecord={saveRecord}
+                return <ShowSurveys level={level} updateLevel={(level) => setLevel(level)} mode="add" 
+                            patient={decryptedPatientData[patientIndex]} saveRecord={saveRecord}
                             surveys={investigation.surveys} />
             case 3: 
             //View Data
-                return <ShowSurveys mode="view" patient={decryptedPatientData[patientIndex]} 
+                return <ShowSurveys level={level} updateLevel={(level) => setLevel(level)} mode="view" 
+                            patient={decryptedPatientData[patientIndex]} 
                             surveys={investigation.surveys} uuidInvestigation={investigation.uuid}/>
-                // return <ShowPatientRecords mode="elements" initialData={ investigation.records } 
-                //             uuidInvestigation={investigation.uuid} survey={investigation.surveys} 
-                //             patient={patientsData[patientIndex]}/> 
+
             case 4:
-                return <ShowAllRecordsSurvey survey={investigation.surveys[surveyIndex]} 
+                return <ShowAllRecordsSurvey level={level} updateLevel={(level) => setLevel(level)} survey={investigation.surveys[surveyIndex]} 
                             patients={decryptedPatientData} records={investigation.surveys[surveyIndex].records}/>
             default:
                 return null;
+        }
+    }
+    function goBack(){
+        if(level === 0){
+            setShowForm(0);
+        }
+        else{
+            setLevel(c => c -1);
         }
     }
     if(investigation === false){
@@ -259,7 +268,7 @@ export default function ShowInvestigation(props) {
             {
                 showForm !== 0 && 
                 <Grid item xs={12}>
-                    <ButtonBack data-testid="back" onClick={() => setShowForm(0)} >Back</ButtonBack>
+                    <ButtonBack data-testid="back" onClick={goBack} >Back</ButtonBack>
                 </Grid>
             }
             {

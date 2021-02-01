@@ -169,7 +169,11 @@ Cypress.Commands.add('fillPatient', (patient) => {
             })
             cy.get('button[data-testid="continue"]').first()
                 .click();
+            cy.get('button[data-testid="back"]').first()
+                .click();
         });
+ 
+        
     });
     cy.get('button[data-testid="back"]').first()
         .click();

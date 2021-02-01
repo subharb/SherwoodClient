@@ -53,7 +53,7 @@ export default function ShowRecordsSection(props) {
                     }
                     {
                         props.submissions.length > 1 &&
-                        <Grid container direction="column" spacing={3}> container direction="column" spacing={3}>
+                        <Grid container direction="column" spacing={3}>
                             <Grid item>
                                 {
                                     `${indexSubmission+1} / ${props.submissions.length}`
