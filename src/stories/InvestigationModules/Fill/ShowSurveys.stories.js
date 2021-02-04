@@ -1,7 +1,7 @@
 import React from 'react';
 import ShowSurveysPatient from '../../../components/investigation/show/fill/show_surveys_patient';
 import ProviderSherwood from '../../../providerSherwood';
-import { records_patient1, edc_data1 } from '../../example_data';
+import { records_patient1, edc_data1, patient_data_decrypted1 } from '../../example_data';
 
 export default {
     title: 'Investigation/Fill/ShowSurveysPatient',
@@ -14,6 +14,7 @@ export default {
         edc: {
             control: "object"
         },
+        level : {control : "number"},
         display:{ control: {
             type: 'select',
             options: [
@@ -40,38 +41,26 @@ export default {
 
 const Template = (args) => <ShowSurveysPatient {...args} />;
 
-export const Table = Template.bind({});
-Table.args = {
+export const Add = Template.bind({});
+Add.args = {
     uuidInvestigation:"ff4b1de5-9163-4eb1-85fc-59d19f2741dd",
-    patient:{
-        "id": "5fccaee78583362dd3d50248",
-        "personalData": {
-            "name": "John",
-            "surname": "Hopkins",
-            "email": "patient@sherwood.science",
-            "phone": "+34 545454"
-        }
-    },
+    patient:patient_data_decrypted1(),
     mode:"add",
     records:records_patient1().records,
     surveys:edc_data1().surveys,
+    level : 0,
+    updateLevel : (level) => alert("updateLevel "+level),
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
-export const Submissions = Template.bind({});
-Submissions.args = {
+export const View = Template.bind({});
+View.args = {
     initialData : records_patient1(),
     uuidInvestigation:"ff4b1de5-9163-4eb1-85fc-59d19f2741dd",
-    patient:{
-        "id": "5fccaee78583362dd3d50248",
-        "personalData": {
-            "name": "John",
-            "surname": "Hopkins",
-            "email": "patient@sherwood.science",
-            "phone": "+34 545454"
-        }
-    },
-    surveys:edc_data1(),
+    patient:patient_data_decrypted1(),
+    surveys:edc_data1().surveys,
     display:"elements",
+    level : 0,
+    updateLevel : (level) => alert("updateLevel "+level),
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
 

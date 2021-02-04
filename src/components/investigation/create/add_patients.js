@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 //NO HACE FALTA; USO FORM
 import { reduxForm } from 'redux-form';
 import { Translate, withLocalize } from 'react-localize-redux';
-import { generateKey, encriptData } from '../../../utils';
+import { generateKey, encryptData } from '../../../utils';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { toggleLoading } from '../../../actions';
@@ -59,7 +59,7 @@ class AddPatients extends Component {
         const patientRawKey = await generateKey();
         
         const tempKey = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        const keyPatInvEncr = await encriptData(patientRawKey, tempKey);
+        const keyPatInvEncr = await encryptData(patientRawKey, tempKey);
         let tempState = {...this.state};
         tempState.patients.push({
             email:value.email,

@@ -10,6 +10,10 @@ import { Field, reduxForm, FormSection } from 'redux-form'
 import FieldSherwood from '../../../general/FieldSherwood';
 import { Translate } from 'react-localize-redux';
 
+/***
+ * 
+ * Posible componente en desuso ELIMINAR
+ */
 /**
  * SurveySections se encarga de mostrar los formularios de cada sección. Si es longitudinal, verifica que no se haya enviado ya datos. Valida la info y si son correctos avisa
  * a survey/index de que todo es correcto
@@ -24,7 +28,7 @@ class SurveySections extends Component {
         this.saveSurvey = this.saveSurvey.bind(this);
     }
     async componentDidMount(){
-        const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+this.props.uuidInvestigation+"/record/"+this.props.patient.id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+this.props.uuidInvestigation+"/record/"+this.props.patientId, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
             this.setState({records:response.data.records});

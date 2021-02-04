@@ -4,7 +4,7 @@ import ProviderSherwood from '../../../providerSherwood';
 import { records_patient1, edc_data1, records_patient2, patients_personal_data } from '../../example_data';
 
 export default {
-    title: 'Investigation/Fill/ShowPatientRecords',
+    title: 'Investigation/Fill/ShowPatientRecords - BORRAR',
     component: ShowPatientRecords, 
     parameters: { actions: { argTypesRegex: '^callBack.*' } },
     argTypes: {
@@ -37,12 +37,10 @@ Table.args = {
     uuidInvestigation:"ff4b1de5-9163-4eb1-85fc-59d19f2741dd",
     patient:{
         "id": "5fccaee78583362dd3d50248",
-        "personalData": {
-            "name": "John",
-            "surname": "Hopkins",
-            "email": "patient@sherwood.science",
-            "phone": "+34 545454"
-        }
+        "name": "John",
+        "surname": "Hopkins",
+        "email": "patient@sherwood.science",
+        "phone": "+34 545454"
     },
     initialData:records_patient1().records,
     survey:edc_data1().surveys[0],

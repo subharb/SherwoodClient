@@ -36,6 +36,8 @@ export const Draft = Template.bind({});
 Draft.args = {
     investigation : investigationDraft,
     typeUser:"researcher",
+    initialData : { investigation : investigation_server_no_patitents()},
+    uuid : "ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
 
@@ -46,6 +48,8 @@ export const Live = Template.bind({});
 Live.args = {
     investigation : investigationLive,
     typeUser:"researcher",
+    initialData : { investigation : investigation_server_no_patitents()},
+    uuid : "ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
  

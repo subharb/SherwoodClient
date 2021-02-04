@@ -1,7 +1,17 @@
 
 //import '@storybook/addon-console
+// import makeServer from "../src/server";
+// makeServer();
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
 }
-localStorage.setItem("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiOTFhYjRiYjctNGM1MS00MDQ0LTlhMmMtOTM1ZGJmYTdkMzY0IiwiaWF0IjoxNjA4NTc5NTE5LCJleHAiOjE2MTExNzE1MTl9.MwxF_t0vRX4u5Tol6OFwWZ3L7ub9XSZ9DmrpfLgubH4");
+
+//Usuario David
+localStorage.setItem("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYmI1MmRkZjMtZmI1My00OGQ2LWI0ZmQtODE4NDU1M2Q1NmEwIiwia2V5UmVzZWFyY2hlciI6IlUyRnNkR1ZrWDErdlJBUGQ2RU9wT1RZNTNJOExMZnM5aXlYMG1HaDFYZXNuNnJ3VVM0VW5UUXZxVHlXUXZ1MFZlWUxIVVNjVVV0TTIySzgrNHpKcVpRPT0iLCJuYW1lIjoiRGF2aWQiLCJzdXJuYW1lcyI6IlNoYWlraCBVcmJpbmEiLCJpYXQiOjE2MTEzMjAyMDUsImV4cCI6MTYxMzkxMjIwNX0.BHde9ZBaLcz3O8-i3q0iaKPALV4G-JKAKzGhOTxMMDY");
+localStorage.setItem("rawKeyResearcher", "A7I9PUw2BKCizumnSmp73xN2gIKIVDDDetv7YkWrdTI");
+//Usuario Pedro 
+//localStorage.setItem("jwt", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiZTk1MGNjMDItMjhiYS00ZGQ2LWFiNWItMDk4ZDg2ODY3OWQyIiwia2V5UmVzZWFyY2hlciI6IlUyRnNkR1ZrWDErdlJBUGQ2RU9wT1RZNTNJOExMZnM5aXlYMG1HaDFYZXNuNnJ3VVM0VW5UUXZxVHlXUXZ1MFZlWUxIVVNjVVV0TTIySzgrNHpKcVpRPT0iLCJuYW1lIjoiUGVkcm8iLCJzdXJuYW1lcyI6IlJvZHJpZ3VleiIsImlhdCI6MTYxMTIyNDc4MCwiZXhwIjoxNjEzODE2NzgwfQ.1qhVAPkq5UkzXdk-0eC-kn_TgyIab8QgwfzNnmuDyTY");
+//localStorage.setItem("rawKeyResearcher", "94JUm43R21OeYYiHa-AO37KgHVRQMBYnmx07OAEvJUc");
+
 localStorage.setItem("type", "researcher");
+localStorage.setItem("password", "Cabezadesherwood2");

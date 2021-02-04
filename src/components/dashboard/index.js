@@ -7,7 +7,7 @@ import CreateInvestigation from '../investigation/create';
 import withLoggedUser from '../withLoggedUser';
 import GridInvestigations from '../investigation/show/all';
 import SingleInvestigation from '../investigation/show/single';
-import Summary from './summary';
+
 /**
  * Main component where all the interactions occur
  */

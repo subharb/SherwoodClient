@@ -24,5 +24,6 @@ const Template = (args) => <BreadCrumb {...args} />;
 export const Basic = Template.bind({});
 Basic.args = {
     stages : testStages,
+    selected:1,
     callBack : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };

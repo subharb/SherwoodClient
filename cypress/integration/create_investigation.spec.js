@@ -1,31 +1,18 @@
-import { personal_data1, edc_data1, basic_info1 } from '../../src/stories/example_data';
+import { personal_data1, edc_data1, basic_info1, loginResearcherA } from '../../src/stories/example_data';
 
 describe('Testing create an investigation', () => {
     it('Introduces info on each field', () => {
         //cy.visit('http://localhost:6006/iframe.html?id=pages-new-investigation--basic&viewMode=story')
-        //cy.visit('http://localhost:3000/investigation/create');
-        cy.visit('https://dashboard.sherwood.science/');
+        cy.visit('http://localhost:3000/investigation/create');
+        //cy.visit('https://dashboard.sherwood.science/');
 
         
-        cy.loginResearcher();
+        cy.loginResearcher(loginResearcherA);
 
         cy.contains('Create investigation').click();
 
 
-        //Introducimos datos de BASIC INFO
-        cy.createBasicInfo(basic_info1());
-
-        personal_data1().forEach(pField => {
-            cy.contains(pField, {matchCase: false}).click();    
-        });
-           
-        cy.get('button[data-testid="continue"]')
-            .click();
-
-        cy.createEDC(edc_data1().surveys);
-        
-        cy.get('button[data-testid="publish-investigation"]')
-        .click();    
+        cy.createInvestigation(basic_info1, personal_data1(),edc_data1() )   
 
         
         //Introducimos datos de Sección de datos personales

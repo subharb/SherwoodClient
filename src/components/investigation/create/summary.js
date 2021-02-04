@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
 
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Typography, IconButton } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from '../../general/modal';
 import Table from '../../general/table';
 import styled from 'styled-components';
+import {
+    Edit as EditIcon,
+} from "@material-ui/icons";
 
 import SuccessComponent from '../../../components/general/success_component';
 import { ButtonEdit, ButtonSave, ButtonBack } from '../../general/mini_components';
+import { EnhancedTable } from '../../general/EnhancedTable';
 
 const TitleSection = styled.span`
     font-weight:bold;
@@ -47,7 +51,7 @@ class Summary extends Component {
                 component = "error!";
                 break;
             case 2:
-                component = <ResultContainer title="Suecess!">Success!</ResultContainer>
+                component = <ResultContainer title="Success!">Success!</ResultContainer>
                 break;
             default:
                 component = "Unexpected";
@@ -66,7 +70,8 @@ class Summary extends Component {
     }
     renderBasicInfo(){
         return Object.keys(this.props.initialData.basic_info).map(key =>{
-                return key+":"+this.props.initialData.basic_info[key]+", ";
+                const tagsFree = typeof this.props.initialData.basic_info[key] === "string" ? this.props.initialData.basic_info[key].replace(/<[^>]+>/g, '') : "<blank>";
+                return this.props.translate("investigation.create.edc."+key)+": "+tagsFree+", ";
             })
         
     }
@@ -78,43 +83,53 @@ class Summary extends Component {
     }
     render() {
         return([
-            <Modal key="modal2" open={this.props.resultSave === 1}  
-                component={<SuccessComponent title="investigation.create.summary.success.title" 
+            <Modal key="modal2" open={this.props.resultSave === 1}  >
+                <SuccessComponent title="investigation.create.summary.success.title" 
                                 description="investigation.create.summary.success.description" 
                                 successButtonText = "investigation.create.summary.success.continue"
-                                callBackContinue ={this.continueModal} />} 
-            />,
-            <div key="content" className="row">
-                <div className="col-12">
-                    <h4><Translate id="investigation.create.summary.title" /></h4>
-                    <p><Translate id="investigation.create.summary.explanation" /></p>
-                    <TitleSection>
-                        <Translate id="investigation.create.steps.basic_info" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(0)}/>
-                    </TitleSection>
-                    <InfoSection >
-                    {
-                        this.renderBasicInfo()
-                    }
-                    </InfoSection>
-                    <TitleSection>
-                        <Translate id="investigation.create.steps.personal_data" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(1) }/>
-                    </TitleSection>
-                    <InfoSection >
-                    {
-                        this.renderPersonalData()
-                    }
-                    </InfoSection>
-                    <TitleSection>
-                        <Translate id="investigation.create.steps.edc" ></Translate><ButtonEdit onClick={() => this.props.callBackToStep(2) }/>
-                    </TitleSection>
-                    <Table header={["Data Collections", "Number sections"]} values={this.props.initialData.surveys.map(survey =>{
-                        return [survey.name, survey.sections];
-                    })}/> 
-                </div>
-                <ButtonBack data-testid="cancel" spaceRight={true} onClick={this.props.callBackStepBack} >{this.props.translate("general.back")}</ButtonBack>
-                <ButtonSave data-testid="publish-investigation" spaceRight onClick={()=>this.props.callBackSave(true)} type="button" key="publish-investigation" id="publish-investigation" >{this.props.translate("investigation.create.save_and_publish")}</ButtonSave>
+                                callBackContinue ={this.continueModal} />
+            </Modal>,
+            <React.Fragment>
+                <Typography variant="h6" gutterBottom display="inline">
+                    <Translate id="investigation.create.steps.basic_info" ></Translate>
+                    <IconButton aria-label="edit" onClick={() => this.props.callBackToStep(0)} >
+                        <EditIcon />
+                    </IconButton>    
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                {
+                    this.renderBasicInfo()
+                }
+                </Typography>
+                <Typography variant="h6" gutterBottom display="inline">
+                    <Translate id="investigation.create.steps.personal_data" ></Translate>
+                    <IconButton aria-label="edit" onClick={() => this.props.callBackToStep(1)} >
+                        <EditIcon />
+                    </IconButton>  
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                {
+                    this.renderPersonalData()
+                }
+                </Typography>
+                <Typography variant="h6" gutterBottom display="inline">
+                    <Translate id="investigation.create.steps.edc" ></Translate>
+                    <IconButton aria-label="edit" onClick={() => this.props.callBackToStep(2)} >
+                        <EditIcon />
+                    </IconButton> 
+                </Typography>
+                <EnhancedTable noHeader={true}  noSelectable= {true}titleTable=""  
+                    headCells={[{ id: "data_collection", alignment: "left", label: "Data Collections" }, 
+                                { id: "n_sections", alignment: "left", label: "Number sections" },
+                    ]}
+                    rows={this.props.initialData.surveys.map(survey =>{
+                        return {data_collection : survey.name, n_sections : survey.sections.length };
+                    })}
+                />
+                <ButtonBack data-testid="cancel" spaceright={1} onClick={this.props.callBackStepBack} >{this.props.translate("general.back")}</ButtonBack>
+                <ButtonSave data-testid="publish-investigation" spaceright onClick={()=>this.props.callBackSave(true)} type="button" key="publish-investigation" id="publish-investigation" >{this.props.translate("investigation.create.save_and_publish")}</ButtonSave>
                 <ButtonSave data-testid="save-for-later-investigation" onClick={()=>this.props.callBackSave(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" >{this.props.translate("investigation.create.save")}</ButtonSave>
-            </div>
+            </React.Fragment>
             ]
         );
     }

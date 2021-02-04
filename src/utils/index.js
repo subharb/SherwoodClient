@@ -116,14 +116,14 @@ export async function importKey(key){
     return keyObj;
 }
 
-export async function encriptData(data, key){
+export function encryptData(data, key){
     var KeyObj = CryptoJS.AES.encrypt(data, key);
     var ciphertext = KeyObj.toString();
     console.log(KeyObj);
     return ciphertext;
 }
 
-export async function decryptData(ciphertext, key){
+export function decryptData(ciphertext, key){
 
     var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
     var originalText = bytes.toString(CryptoJS.enc.Utf8);
@@ -222,6 +222,13 @@ export const FIELDS_BASIC_INFO = {
                 {"text" : "investigation.create.edc.type_study.medical_device", "value" : "med_dev"},
                 {"text" : "investigation.create.edc.type_study.clinical_trial", "value" : "clin_trial"}
             ],
+        value: ""
+    },
+    "description":{
+        required : true,
+        type:"textarea",
+        label:"investigation.create.edc.description",
+        validation : "textMin2",
         value: ""
     },
     "principal_researcher":{
@@ -323,4 +330,13 @@ export function findSubmissionsFromSection(records, sectionID){
         }
     }
     return submissionsSection;
+}
+
+export function saveData(key, value){
+    localStorage.setItem(key, value); 
+}
+
+
+export function getData(key){
+    return localStorage.getItem(key); 
 }

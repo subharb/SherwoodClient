@@ -24,6 +24,7 @@
         "show_investigations" : ["Show investigations", "Mostrar investigaciones"],
         "draft_investigations" : ["Draft investigations", "Investigaciones Draft"],
         "live_investigations" : ["Live investigations", "Investigaciones Live"],
+        "share_investigation" : ["Share Investigation" , "Compartir Investigación"],
         "ongoing" : ["Show ongoing investigations", "Mostrar investigaciones corriente"],
         "summary" : {
             "title" : ["Summary", "Resumen"]
@@ -41,7 +42,7 @@
             },
             "personal_info" : {
                 "name" : ["Name", "Nombre"],
-                "surnames" : ["Surname", "Apellidos"],
+                "surnames" : ["Surnames", "Apellidos"],
                 "country" : ["Country", "País"]
             },
             "contact_info" : {
@@ -58,7 +59,7 @@
                 "explanation" : ["Few details to address you appropiately"]
             },
             "contact_info" : {
-                "explanation" : ["We will use these information for you to access safely you information"]
+                "explanation" : ["We will use this information for contact reasons"]
             },
             "password" : {
                 "explanation" : ["Choose a password that is at least 6 characters long"]
@@ -68,8 +69,11 @@
                 "key" : ["Key", "Clave"],
                 "email_error" : ["This email is already in use", "Este email ya se ha usado"]
             },
+            "go_to_sign_in" : ["Go to sign in", "Ir a sign in"],
+            "success_text" : ["Congratulations! Now head to sign in and start using Sherwood."],
             "error" : {
-                "account_registered" : ["This account has already been activated", "Esta cuenta ya ha sido activada"]
+                "account_registered" : ["This email has already been used", "Este email ya ha sido utilizado"],
+                "general" : ["An error ocurred, please try again later"]
             }
         },
         "patient" : {
@@ -103,17 +107,22 @@
                 "consents" : ["Consent forms", "Formularios de consentimiento"],
                 "summary" : ["Summary", "Resumen"]
             },
+            "basic_info" : {
+                "title" : ["Basic Info", "Información básica"],
+                "intro" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco" ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"]
+            },
             "personal_data" : {
                 "title" : ["Personal Data", "Datos Personales"],
                 "intro" : ["Please select the personal data you are planning to include in your investigation" ,"Seleccione los datos personales que desea incluir en su investigación"],
                 "fields" : {
                     "name" : ["Name", "Nombre"],
-                    "surname" : ["Surname", "Apellidos"],
+                    "surname" : ["Surnames", "Apellidos"],
                     "address" : ["Address", "Dirección"],
                     "health_id" : ["Health ID", "Nº Seguridad social"],
                     "national_id" : ["National ID", "DNI"],
                     "email" : ["Email", "Email"],
                     "phone" : ["Phone", "Nº Teléfono"],
+                    "id" : ["ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento"]
                 }
             }, 
@@ -122,13 +131,14 @@
                 "intro" : ["The Electronic Data Capture (EDC) design tool will allow you to create the necessary data collection forms and questionnaires to populate your database. Please follow our smart assistant who will take you through the process.", ""],
                 "no_sections" : ["You haven't added any sections yet"],
                 "data_collections" : {
-                    "title" : ["Data Collection", "Colleción de datos"],
+                    "title" : ["Data Collections", "Collecciones de datos"],
                     "intro" : ["Each data collection can have several sections" , "Ca"], 
-                    "new" : ["New data collection"],
-                    "name" : ["Data Collection name", "Nombre de la collección de datos"],
+                    "new" : ["New data collection", "Nueva colección de datos"],
+                    "name" : ["Name", "Nombre"],
                     "none" : ["You have no data collections", "No has creado ninguna collección de datos"],
                     "number_sections" : ["Number sections", "Número de secciones"],
-                    "save" : ["Save Data Collection" , "Guardar Data Collection"]
+                    "save" : ["Save Data Collection" , "Guardar Data Collection"],
+                    "sections" : ["Sections", "Secciones"]
                 },
                 "section" : {
                     "name" : ["Section", "Sección"],
@@ -138,10 +148,13 @@
                     "add_section" : ["Add section"],
                     "none" : ["You have no sections", "No has creado ninguna sección"]
                 },
+                "acronym" : ["Acronym", "Acrónimo"],
                 "name" : ["Study's name", "Nombre de la investigación"],
                 "add_field" : ["Add field", "añadir campo"], 
                 "required" : ["Required", "Obligatorio"],
                 "repeats" : ["Repeats", "Repite"],
+                "fields" : ["Fields", "Campos"],
+                "description" : ["Description", "Descripción"],
                 "number_fields" : ["# fields", "Nº Campos"],
                 "name_field" : ["Name of the field in your report", "Nombre del campo en los informes"], 
                 "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?"], 
@@ -211,6 +224,7 @@
             },
             "summary" : {
                 "title" : ["Summary Investigation", "ResumenInvestigation"],
+                "intro" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco" ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"],
                 "explanation" : ["Check all the sections before saving the investigation", "Revise las secciones antes de guardar"],
                 "patients" : ["Patients", "Pacientes"],
                 "email" : ["email", "email"],
@@ -234,11 +248,51 @@
             },
             "survey" : {
                 "patient_name" : ["Patient's Name", "Nombre del Paciente"],
-                "title" : ["Data Collections", "Collecciones de datos"]
-            }
+                "title" : ["Data Collections", "Collecciones de datos"],
+                "add_data" : ["Add Data", "Añadir datos"],
+                "view_data" : ["Visualize Data", "Ver datos"]
+            },
+            "records" : ["Records", "Registros"]
+        },
+        "share" : {
+            "title" : ["Share Investigation", "Compartir Investigación"],
+            "add_researcher" : ["Add Researcher", "Añadir Investigador"],
+            "researchers" : ["Researchers", "Investigadores"],
+            "current_researchers" : ["Currently shared researchers", "Investigadores compartido"],
+            "new_researchers" : ["New Researchers", "Nuevos Investigadores"],
+            "form" : {
+                "email" : ["Email", "Email"],
+                "permission" :  ["Permission", "Permisos"]
+            },
+            "researcher" : {
+                "name" : ["name/email", "nombre"],
+                "status" : ["status", "status"],
+                "permission" : ["Permission", "Permisos"]
+            },
+            "not_shared" : ["This investigation is currently not shared with any other researcher", "Esta investigación no se está compartiendo actualmente con ningún otro investigador"],
+            "confirm_dialog" : {
+                "title" : ["Please confirm", "Por favor confirme"],
+                "description" : ["An email will be sent to the following email addresses with instructions on how to create an account on Sherwood if they didn't have one. Once they have accepted to participate on the investigation they will be able to access the investigation data and perform the actions you have given them access to. You can deny access in any given moment. Do you wish to proceed?",
+                                "Enviaremos un email a los siguientes destinatarios con instrucciones sobre como crear una cuenta en Sherwood sino tuviera una ya creada. Una vez hayan aceptado participar en la investigación, tendrán acceso a los datos de la investigación y realizar las acciones que se les está dando permiso. Puede revocar el acceso investigador en cualquier momento. ¿Desea continuar?"]
+            },
+            "error" : {
+                "title" : ["Error", "Error"],
+                "description" : ["An error ocurred, please try again later", "Ha habido un error, por favor inténtelo más tarde"]
+            },
+            "share" : ["Share", "Compartir"],
+            "permissions" : {
+                "read_no_personal_data" : ["Read Only Medical data", "Solo lectura datos médicos"],
+                "read_personal_data" : ["Read Medical and personal data", "Lectura de datos personales y médicos"],
+                "create_personal_data" : ["Add Medical and personal data", "Añadir datos médicos y personales"]
+            },
+            "status" : {
+                "pending" : ["Pending", "Pendiente"],
+                "accepted" : ["Accepted", "Aceptada"],
+                "denied" : ["Denied", "Rechazada"]
+            },
+            "no_researchers_added" : ["You haven`t added researchers yet!", "No has añadido ningún investigador!"]
         },
         "show" : {
-            
             "view_investigation" : ["View Investigation", "Ver investigación"],
             "title" : ["Title", "Título"],
             "date_created" : ["Date create", "Fecha de creación"],

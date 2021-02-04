@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
+import { SIGN_IN_ROUTE } from '../routes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from './general/modal';
-import Header from './general/header';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import Form from '../components/general/form';
-import { generateKey, encriptData, decryptData, isUserLoggedIn } from '../utils';
+import { generateKey, encryptData, decryptData, isUserLoggedIn } from '../utils';
 import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
 import { toggleLoading } from '../actions';
 import successImage from '../img/7893-confetti-cannons.gif';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 const SpanError = styled.span`
     color:red;
 `;
 const ParaKey = styled.p`
-
 `;
 
 const SuccessContainer = styled.div`
@@ -35,6 +35,10 @@ const ImageSuccess = styled.img`
     display: block;
     margin: 0 auto;
 `;
+
+const PaperPadding = styled(Paper)`
+    padding:1rem;
+`
     
 const forms = {
     "personal_info" : {
@@ -171,7 +175,7 @@ class Register extends Component {
             delete tempState.info.repeat_password;
             const hashPassword = CryptoJS.SHA256(tempState.info.password).toString(CryptoJS.enc.Base64)
             //Hay que guardar tb el this.iv
-            tempState.info.keyEncrypted = await encriptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
+            tempState.info.keyEncrypted = await encryptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
             tempState.info.password = hashPassword;
             console.log(JSON.stringify(tempState.info));
             let response = null
@@ -200,6 +204,9 @@ class Register extends Component {
                 else if(response.request.status === 402){
                     tempState.errorMessage = "account_registered";
                 }
+                else{
+                    tempState.errorMessage = "account_registered";
+                }
             }
             this.props.toggleLoading();
         }
@@ -219,7 +226,7 @@ class Register extends Component {
     continue(){
         console.log("Success!");
         this.setState({success : false});
-        this.props.history.push("/"+this.props.typeUser+"/login");
+        this.props.history.push(SIGN_IN_ROUTE);
     }  
     render() {
         console.log("Register!");
@@ -239,25 +246,34 @@ class Register extends Component {
 
         return ([
             <Modal key="modal" open={this.state.success} title={<Translate id="register.common.success_title" />}
-                    component={<SuccessContainer>
-                                <ImageSuccess src={successImage} width="200" alt="Success!" />
-                                <SuccessText><Translate id={`register.${this.props.typeUser}.success_text`} /></SuccessText>
-                                </SuccessContainer>} 
-                    callBackForm={this.continue}/>,
-            <div className="container" key="container">
-                <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return "breadcrumb."+section})} />    
-                <p><Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} /></p>
-                <div className="row">
-                    <div className="col s5 offset-s4">
-                        <div className="row">
-                            { content }
-                            {this.state.errorMessage && 
-                                <SpanError><Translate id={`register.${this.props.typeUser}.error.${this.state.errorMessage}`} /></SpanError>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
+                confirmAction={this.continue}>
+                <SuccessContainer>
+                    <ImageSuccess src={successImage} width="200" alt="Success!" />
+                    <Typography variant="body2" gutterBottom>
+                        <Translate id={`register.${this.props.typeUser}.success_text`} />
+                    </Typography>
+                </SuccessContainer>
+            </Modal>
+            ,
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return this.props.translate("breadcrumb."+section)})} />    
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="textPrimary">
+                        <Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} />
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} padding={1}>
+                    <PaperPadding>
+                        { content }
+                        {
+                            this.state.errorMessage && 
+                            <SpanError><Translate id={`register.${this.props.typeUser}.error.${this.state.errorMessage}`} /></SpanError>
+                        }
+                    </PaperPadding>
+                </Grid>
+            </Grid>
         ])
     }
 }
@@ -266,4 +282,4 @@ Register.propTypes = {
     typeUser:PropTypes.string
 }
 
-export default withRouter(connect(null, { toggleLoading })(Register))
+export default withLocalize(withRouter(connect(null, { toggleLoading })(Register)))

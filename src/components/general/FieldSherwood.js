@@ -4,38 +4,54 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
-import { FormControl, Select, InputLabel, MenuItem, TextField, 
-        FormControlLabel, Checkbox, ButtonGroup, IconButton, Icon, TextareaAutosize } from '@material-ui/core';
+import { Select, InputLabel, MenuItem, TextField, 
+        FormControlLabel, Checkbox, ButtonGroup, IconButton, 
+        Icon, Box, FormControl as MuiFormControl, Typography } from '@material-ui/core';
+import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
     KeyboardTimePicker
     } from '@material-ui/pickers';
 import 'date-fns';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
+const FormControlSpacing = styled(MuiFormControl)(spacing);
 
-const sharedStyle = css`
-    & label {
-        position: relative;
-        padding-right: 25px;
-        &+div{
-        margin-top: 0;
-        &:before {
-            bottom: 5px;
-        }
-        &:after {
-            bottom: 5px;
-        }
-        svg {
-            top: 0;
-        }
-        }
+const FormControl = styled(FormControlSpacing)`
+    min-width: 148px!important;
+    xmargin-top:1rem!important;
+`;
+const QuillWrapper = styled.div`
+  .ql-editor {
+    min-height: 200px;
+    ${props => props.error && css`
+        border:1px solid red;
+    `
     }
+  }
+`;
+const sharedStyle = css`
+    // & label {
+    //     position: relative;
+    //     padding-right: 25px;
+    //     &+div{
+    //     margin-top: 0;
+    //     &:before {
+    //         bottom: 5px;
+    //     }
+    //     &:after {
+    //         bottom: 5px;
+    //     }
+    //     svg {
+    //         top: 0;
+    //     }
+    //     }
+    // }
 `
 
-const FormControlSherwood = styled(FormControl)`
-    ${sharedStyle}
-`;
 
 const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
@@ -109,7 +125,7 @@ class FieldSherwood extends Component{
                     })
                 }
                 return(
-                    <FormControlSherwood >
+                    <FormControl mt={2}>
                         <InputLabel id={input.name}>{labelString}</InputLabel>
                         <Select  
                             labelId={input.name}
@@ -118,13 +134,13 @@ class FieldSherwood extends Component{
                             >
                             {optionsArray}
                         </Select>
-                    </FormControlSherwood>
+                    </FormControl>
                     
                 )
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value.includes(option.value)){
-                            return <ButtonCheck spaceRight={false} onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
+                            return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
                         }
                         return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonEmptyCheck>
                     });
@@ -217,14 +233,41 @@ class FieldSherwood extends Component{
                 );
             case "textarea":
                 return(
-                    <TextareaAutosize aria-label="empty textarea" placeholder="Empty" {...input}  />
+                    <Box mt={3} mb={3} >
+                        <Typography variant="body2" gutterBottom>
+                            {labelString}: 
+                        </Typography>
+                        <QuillWrapper className={input.name} error={errorState}>
+                            <ReactQuill
+                                {...input}
+                                onChange={(newValue, delta, source) => {
+                                    if (source === 'user') {
+                                    input.onChange(newValue);
+                                    }
+                                }}
+                                onBlur={(range, source, quill) => {
+                                    input.onBlur(quill.getHTML());
+                                }}
+                            />
+                        </QuillWrapper>
+                    </Box>
                 )
+            case "password":
+                return(
+                    <Box mt={1}>
+                        <TextFieldSherwood {...input}  type="password"
+                            label={labelString} error={errorState} 
+                            helperText={errorString} />
+                    </Box>
+                )    
             default:    
                     console.log("TextFieldSherwood",input.value);
                 return(
-                    <TextFieldSherwood {...input}  
-                        label={labelString} error={errorState} 
-                        helperText={errorString} />
+                    <Box mt={1}>
+                        <TextFieldSherwood {...input}  
+                            label={labelString} error={errorState} 
+                            helperText={errorString} />
+                    </Box>
                 )
         }
     }

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Table from '../../../general/table';
+import { Alert } from "@material-ui/lab";
 import axios from 'axios';
 import ShowRecordsSection from './show_records_section';
 import { ButtonAdd, ButtonBack } from '../../../general/mini_components';
-import SurveySections from './survey_form';
 import { findSubmissionsFromSection, numberRecordsSection } from '../../../../utils';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
+import { EnhancedTable } from '../../../general/EnhancedTable';
+import { Card, CardContent, Typography, Grid } from '@material-ui/core';
 
 /**
  * Component in charge of showing records of a given patient in a survey
@@ -15,8 +16,8 @@ export default function PatientRecords(props) {
     const [sectionSelected, setSectionSelected] = useState(null);
     const [patientRecords, setPatientRecords] = useState(props.initialData ? props.initialData : []);
     const [showError, setShowError] = useState(0);
-    function addRegistry(sectionID){
-        setSectionSelected(sectionID);
+    function addRegistry(indexSection){
+        setSectionSelected(indexSection);
     }
     async function fetchRecords(){
         const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.id+"/survey/"+props.survey._id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -47,7 +48,7 @@ export default function PatientRecords(props) {
             }
         }
         return(
-            [section.name, registers, addButton]
+            { name : section.name, register : registers}
         )
     }
     function renderRecordsSection(records, sections){    
@@ -80,18 +81,19 @@ export default function PatientRecords(props) {
         if(showError === 0){
             if(!props.mode || props.mode === "table"){
                 if(!sectionSelected){
+                    const headCells = [{ id: "name", alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.name`} /> }, 
+                                         { id: "records", alignment: "right", label: <Translate id={`investigation.fill.records`} /> } 
+                                        ];
+                    const rows = props.survey.sections.map(section => {
+                        const nRecords = numberRecordsSection(section, patientRecords);
+                        return( 
+                            renderSection(section, nRecords)
+                        ) 
+                    })
                     return(
-                        <Table header={headerTable} values={valuesTable} />
+                        <EnhancedTable titleTable="" rows={rows} headCells={headCells} 
+                            actions = {{"add" : (index) => addRegistry(index)}} />
                     )
-                }
-                else{
-                    const section = props.survey.sections.filter((section) => {
-                        return (section._id === sectionSelected)
-                      })
-                    
-                    return <SurveySections initialData={ {sections : section }} 
-                                uuidInvestigation={props.uuidInvestigation}
-                                callBackForm={(values) => sendRecord(values)}/>
                 }
             }
             else{
@@ -99,31 +101,37 @@ export default function PatientRecords(props) {
             }
         }
         else{
-            return "HA HABIDO UN ERROR"
+            return (
+                <Alert mb={4} severity="error">
+                    <Translate id="investigation.share.error.description" />
+                </Alert>
+            );
         }
     }
-    const headerTable = ["name", "records", "add record"];
-    const valuesTable = props.survey.sections.map(section => {
-            const nRecords = numberRecordsSection(section, patientRecords);
-            return( 
-                renderSection(section, nRecords)
-            ) 
-        })
+    
     return (
-        <div className="container">
+        <Grid container direction="column" spacing={0}>
             {
                 sectionSelected !== null && 
-                <ButtonBack onClick={() => setSectionSelected(null)} >Back</ButtonBack>
+                <Grid item>
+                    <ButtonBack onClick={() => setSectionSelected(null)} >Back</ButtonBack>
+                </Grid>
             }
-            <div className="row">
-                PatientRecords - <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.personalData.name} ${props.patient.personalData.surname}`} - {props.patient.id}
-            </div>
-            <div className="container">
-               {
-                   renderCore()
-               }
-            </div>
-        </div>
+            {
+                props.singlePatient &&
+                <Grid item>
+                    <Typography variant="subtitle1">
+                        <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.name} ${props.patient.surname}`} - {props.patient.id}
+                    </Typography>
+                </Grid>
+            }
+            
+            <Grid item>
+                {
+                    renderCore()
+                }
+            </Grid>
+        </Grid>
     )
 }
 

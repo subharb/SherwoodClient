@@ -1,15 +1,15 @@
-import { patients_personal_data, edc_data1, records_patient1, records_patient2 } from '../../src/stories/example_data';
+import { patients_personal_data, edc_data1, loginResearcherA, records_patient1, records_patient2 } from '../../src/stories/example_data';
 
 describe('Testing create an investigation', () => {
     it('Introduces info on each field', () => {
-        cy.visit('http://localhost:3000/dashboard')
+        cy.visit('http://localhost:3000/investigations/live');
 
-        cy.loginResearcher();
+        cy.loginResearcher(loginResearcherA);
 
-        cy.contains('Live investigations').click();
+    
 
         cy.wait(2000);
-        cy.get('.investigation').first().find('.btn').click();
+        cy.get('.investigation').first().find('button[data-testid="open"]').click();
         
 
         // patients_personal_data().forEach(patient =>{
@@ -29,7 +29,7 @@ describe('Testing create an investigation', () => {
                     cy.get('button')                         // finds the buttons cell of that row
                     .click()
                 })
-        cy.contains('Next').click();
-        cy.contains('Prev').click();
+        cy.get('button[data-testid="next"]').click();
+        cy.get('button[data-testid="prev"]').click();
     })
 })

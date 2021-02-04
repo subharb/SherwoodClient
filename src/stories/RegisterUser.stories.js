@@ -1,5 +1,5 @@
 import React from 'react';
-import Register from '../components/register'
+import Register from '../pages/auth/SignUp'
 import ProviderSherwood from '../providerSherwood';
 import { summary_info1 } from './example_data';
 
@@ -15,6 +15,7 @@ export default {
         ],
       },
     },
+    
   },
   decorators: [story => 
                 <ProviderSherwood>

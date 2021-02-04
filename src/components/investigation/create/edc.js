@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Translate } from 'react-localize-redux';
-import styled from "styled-components";
+import { Grid, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Table from '../../general/table';
 import DataCollection from './data_collection';
 import { ButtonContinue, ButtonAdd, ButtonBack } from '../../general/mini_components';  
+import { EnhancedTable } from '../../general/EnhancedTable';
 
 /**
  * An EDC is a collection of data_collections
@@ -46,21 +47,37 @@ export default class EDC extends Component{
                             type="button" data-testid="add_data_collections" show={!this.state.addingDataCollection}  
                             onClick={this.toggleAddDataCollection}></ButtonAdd>
         if(this.state.surveys.length === 0){
-            return [
-                AddButton,
-                <Translate id="investigation.create.edc.data_collections.none" />
-            ]
+            return (<Grid item xs={12}>
+                { AddButton }
+                <Typography variant="body2" gutterBottom component="span">
+                    <Translate id="investigation.create.edc.data_collections.none" />
+                </Typography>
+                
+            </Grid>)
         }
         else{
-            let arrayHeader =["investigation.create.edc.data_collections.title", "investigation.create.edc.data_collections.number_sections"]
-            return(
-                <div>
-                    <Table key="added_fields" header={arrayHeader} 
-                        values = {this.state.surveys.map(survey => {
-                            return [survey.name, survey.sections];
-                    })} deleteCallBack={(index) => this.deleteDataCollection(index, "data_collections")} editCallBack={(index) => this.editDataCollection(index, "data_collections")}/>
+            const headCells =[{ id:"title", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
+                                {id:"number_sections", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
+                            ]
+         
+            const rows = this.state.surveys.map(survey => {
+                return { title : survey.name, number_sections : survey.sections.length};
+            })
+                    
+            return([
+                <Grid item xs={12}>
+                    <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
+                            actions = {{"delete" : (index) => this.deleteDataCollection(index)}} />
+                
+                </Grid>,
+                <Grid item xs={12}>
                     {AddButton}
-                </div>)
+                    <Typography variant="body2" gutterBottom component="span">
+                        <Translate id="investigation.create.edc.data_collections.new" />
+                    </Typography> 
+                </Grid>
+            ]
+                )
         }
     }
     toggleAddDataCollection(){
@@ -131,26 +148,21 @@ export default class EDC extends Component{
         }
         else{
             return (
-            
-                <div key="container" >
-                    <h5 className="teal-text lighten-1"><Translate id="investigation.create.edc.title"/></h5>
-                    <blockquote>
-                        <Translate id="investigation.create.edc.intro" />
-                    </blockquote>
-                   
-                    { this.renderDataCollections() }
-                    <div className="row" style={{paddingTop:"20px"}}>
+                <Grid container spacing={3}>
+                    
+                        { this.renderDataCollections() }
+                    
+                    <Grid item xs={12}>
                         {
                             this.props.callBackStepBack && 
-                            <ButtonBack spaceRight={true} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
+                            <ButtonBack spaceright={1} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
                         }
                         <ButtonContinue data-testid="save_surveys" disabled={this.state.surveys.length === 0} 
                             type="button" onClick={this.submitData}>
                                 <Translate id="investigation.create.continue" />
                         </ButtonContinue>
-                    </div>
-                </div>
-                
+                    </Grid>
+                </Grid>
             )
         }
         

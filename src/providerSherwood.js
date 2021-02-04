@@ -6,43 +6,57 @@ import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { ThemeProvider }  from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
+import createTheme from "./theme";
+import Routes from "./routes/Routes";
+import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
+import DateFnsUtils from "@date-io/date-fns";
+import { ThemeProvider } from "styled-components/macro";
+import { create } from "jss";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import {
+  StylesProvider,
+  ThemeProvider as MuiThemeProvider,
+  jssPreset,
+} from "@material-ui/core/styles";
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+    QueryClient,
+    QueryClientProvider,
+  } from 'react-query'
+import store from "./redux/store/index";
+import axios from 'axios';
 
-const store = createStore(reducers, {}, applyMiddleware(thunk));
+const jss = create({
+    ...jssPreset(),
+    insertionPoint: document.getElementById("jss-insertion-point"),
+});
 
-const theme = {
-    buttonContinue : {
-        background : "#48bb78",
-        color : "#FFF"
-    },
-    buttonCancel: {
-        background : "#e53e3e",
-        color : "#FFF"
-    },
-    buttonOther: {
-        background : "goldenrod",
-        color : "#FFF"
-    },
-    error : {
-        color : "#e53e3e",
-    },
-    edit : {
-        color : "#81e6d9",
-    },
-    primary : {
-        background : "#35887D",
-        color : "#FFF"
-    }
+axios.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  }, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  });
 
-}
+ // Create a client
+ const queryClient = new QueryClient()
 
-export default class ProviderSherwood extends Component {
-    render() {
-        return (
-            <Provider store={store}>
-                <BrowserRouter>
-                    <ThemeProvider theme={theme}>
+function OtherProviders(props){
+    const theme = useSelector((state) => state.themeReducer);
+    return (
+        <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+            <StylesProvider jss={jss}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiThemeProvider theme={createTheme("GREEN")}>
+                    <ThemeProvider theme={createTheme("GREEN")}>
                         <LocalizeProvider initialize={{
                             languages: [
                             { name: "English", code: "en" },
@@ -54,11 +68,29 @@ export default class ProviderSherwood extends Component {
                                 renderToStaticMarkup: renderToStaticMarkup
                             }
                         }}>
-                            {this.props.children}
+                            { props.children }
                         </LocalizeProvider>
                     </ThemeProvider>
-                </BrowserRouter>
-            </Provider>
-        )
-    }
+                </MuiThemeProvider>
+                </MuiPickersUtilsProvider>
+            </StylesProvider>
+        </BrowserRouter>
+        </QueryClientProvider>
+    );
+}
+
+
+export default function ProviderSherwood(props){
+    return (
+        <Provider store={store}>
+            <Helmet
+                titleTemplate="%s | Sherwood"
+                defaultTitle="Sherwood - Researcher platform"
+            />
+            <OtherProviders>
+                { props.children }
+            </OtherProviders>
+        </Provider>
+    )
+    
 }

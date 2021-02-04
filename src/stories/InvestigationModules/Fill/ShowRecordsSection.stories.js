@@ -35,26 +35,26 @@ export default {
 };
 
 
-const sectionNonLongitudinalID = "5fccaedb8583362dd3d50247";
+const sectionNonLongitudinalID = "5fdc9fbccfec957a73cb34f6";
 const sectionLongitudinalID = "5fccaedb8583362dd3d50246";
 
-const sectionNonLongitudinal = edc_data1().surveys.sections.filter(section => {
+const sectionNonLongitudinal = edc_data1().surveys[0].sections.find(section => {
     return sectionNonLongitudinalID === section._id
 })
-
- const sectionLongitudinal = edc_data1().surveys.sections.filter(section => {
+ 
+ const sectionLongitudinal = edc_data1().surveys[1].sections.find(section => {
     return sectionLongitudinalID === section._id
 }) 
-
+ 
 const submissionsNonLongitudinal = findSubmissionsFromSection(records_patient1().records, sectionNonLongitudinalID);
 
 const submissionsLongitudinal = findSubmissionsFromSection(records_patient1().records, sectionLongitudinalID);
-
+ 
 const Template = (args) => <ShowRecordsSection {...args} />;
 
 export const NonLongitudinal = Template.bind({});
 NonLongitudinal.args = {
-    section :sectionNonLongitudinal[0],
+    section :sectionNonLongitudinal,
     submissions:submissionsNonLongitudinal,
     indexSubmission:0,
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
@@ -62,7 +62,7 @@ NonLongitudinal.args = {
 
 export const Longitudinal = Template.bind({});
 Longitudinal.args = {
-    section :sectionLongitudinal[0],
+    section :sectionLongitudinal,
     submissions:submissionsLongitudinal,
     indexSubmission:0,
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}

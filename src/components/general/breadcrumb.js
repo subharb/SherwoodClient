@@ -1,60 +1,50 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { Translate } from 'react-localize-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Typography from '@material-ui/core/Typography';
+import { Link } from '@material-ui/core';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
-const BreadCrumbContainer = styled.div`
-    display: flex;
-    justify-content: center;
-`;
-const BreadButton = styled.button`
-    &:last-child {
-        color: rgba(255,255,255,0.7);
-    }
-    &:focus {
-        background: none;
-    }
-    background: none;
-    border: none;
-    line-height: unset;
-    color:${props => props.selected ? 'rgba(255,255,255,1.0)!important;' : 'rgba(255,255,255,0.7);'};
-    cursor:${props => props.selected ? 'initial' : 'pointer'};
-`;
+const useStyles = makeStyles((theme) => ({
+    root: {
+      '& > * + *': {
+        marginTop: theme.spacing(2),
+      },
+    },
+  }));
 
-export default class Breadcrumb extends Component {
-    render() {
-        return(
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    { 
-                        this.props.stages.map((stage, index) => {
-                            if(index === this.props.selected){
-                                return <li className="breadcrumb-item active" aria-current="page"><Translate id={stage}/></li>
+export default function Breadcrumb(props){
+    
+        const classes = useStyles();
+        return (
+            <div className={classes.root}>
+              <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+                    {
+                        props.stages.map((stage, index) => {
+                            if(index === props.selected){
+                                return(
+                                    <Typography color="primary">
+                                        {stage}
+                                    </Typography>
+                                )
                             }
                             else{
-                                return <li className="breadcrumb-item"><a href="#"><Translate id={stage}/></a></li>
+                                return(
+                                    <Link color="textPrimary" onClick={props.callBack}>
+                                        {stage}
+                                    </Link>
+                                )
                             }
-
                             
                         })
                     }
-                </ol>
-                </nav>  
-        )
-        // return (
-        //     <nav>
-        //         <div className="nav-wrapper teal lighten-3">
-        //         <BreadCrumbContainer className="col s12">
-        //             { 
-        //                 this.props.stages.map((stage, index) => {
-        //                     return <BreadButton key={index} selected={index === this.props.selected} onClick={() => this.props.callBack(index)} className="breadcrumb " ><Translate id={stage}/></BreadButton>                            
-        //                 })
-        //             }
-        //         </BreadCrumbContainer>
-        //         </div>
-        //     </nav>
-        // );
-    }
+              </Breadcrumbs>
+            </div>
+          );
+
+    
 }
 Breadcrumb.propTypes = {
     stages: PropTypes.array,
