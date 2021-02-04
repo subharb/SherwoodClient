@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SIGN_IN_ROUTE } from '../routes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CryptoJS from 'crypto-js';
@@ -12,13 +13,12 @@ import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
 import { toggleLoading } from '../actions';
 import successImage from '../img/7893-confetti-cannons.gif';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 const SpanError = styled.span`
     color:red;
 `;
 const ParaKey = styled.p`
-
 `;
 
 const SuccessContainer = styled.div`
@@ -226,7 +226,7 @@ class Register extends Component {
     continue(){
         console.log("Success!");
         this.setState({success : false});
-        this.props.history.push("/"+this.props.typeUser+"/login");
+        this.props.history.push(SIGN_IN_ROUTE);
     }  
     render() {
         console.log("Register!");
@@ -246,10 +246,12 @@ class Register extends Component {
 
         return ([
             <Modal key="modal" open={this.state.success} title={<Translate id="register.common.success_title" />}
-                callBackForm={this.continue}>
+                confirmAction={this.continue}>
                 <SuccessContainer>
                     <ImageSuccess src={successImage} width="200" alt="Success!" />
-                    <SuccessText><Translate id={`register.${this.props.typeUser}.success_text`} /></SuccessText>
+                    <Typography variant="body2" gutterBottom>
+                        <Translate id={`register.${this.props.typeUser}.success_text`} />
+                    </Typography>
                 </SuccessContainer>
             </Modal>
             ,

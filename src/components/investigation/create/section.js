@@ -8,7 +8,7 @@ import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { reduxForm, Field } from 'redux-form';
 import { ButtonAdd, ButtonSave, ButtonCancel  } from '../../general/mini_components';
-import { Dialog,
+import { Grid,
         Typography,
         DialogTitle, 
         DialogContent,
@@ -192,45 +192,50 @@ class Section extends Component{
         const title = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
         const saveText = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
         return (
-            [
-                <Modal
-                    open={this.state.addingField}
-                    closeModal={this.closeModal}
-                    title={this.props.translate("investigation.create.edc.add_field")}>
-                        <Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />
-                </Modal>
-                ,
-                <Card>
-                    <CardContent>
-                        <div className="card-body">
-                            <h3 className="">
-                                {
-                                    title
-                                }
-                                
-                            </h3>
-                            <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
-                                <Field type="text" name="name" label="name" required={true} component={FieldSherwood} />
-                                <div>
-                                    <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
-                                </div>
-                                <div style={{paddingTop:"40px"}}>
-                                    Add field: 
-                                    <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
-                                        show={!this.state.addingField}>
-                                    </ButtonAdd>  
-                                </div>  
-                                { this.renderFields() }
-                                <div style={{paddingTop:"40px"}}>
-                                    <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
-                                    <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
-                                        type="button">Cancel</ButtonCancel>
-                                </div>
-                            </form>   
-                        </div>
-                    </CardContent>
-                </Card>
-            ]
+            <Grid container>
+                <Grid item xs={12}>
+                    <Modal
+                        open={this.state.addingField}
+                        closeModal={this.closeModal}
+                        title={this.props.translate("investigation.create.edc.add_field")}>
+                            <Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />
+                    </Modal>
+                </Grid>
+                <Grid item container xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Grid item xs={12}>
+                                <Typography variant="subtitle1" color="textPrimary">
+                                    {
+                                        title
+                                    }
+                                    
+                                </Typography>
+                                <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
+                                    <Field type="text" name="name" label="name" required={true} component={FieldSherwood} />
+                                    <div>
+                                        <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
+                                    </div>
+                                    <div style={{paddingTop:"40px"}}>
+                                        <Typography variant="body2" color="textPrimary" component="span"> 
+                                            <Translate id="investigation.create.edc.add_field" />
+                                        </Typography>
+                                        <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
+                                            show={!this.state.addingField}>
+                                        </ButtonAdd>  
+                                    </div>  
+                                    { this.renderFields() }
+                                    <div style={{paddingTop:"40px"}}>
+                                        <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
+                                        <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
+                                            type="button">Cancel</ButtonCancel>
+                                    </div>
+                                </form>   
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
         )
     }   
     

@@ -27,6 +27,8 @@ import ResetPassword from "../pages/auth/ResetPassword";
 import Page404 from "../pages/auth/Page404";
 import Page500 from "../pages/auth/Page500";
 
+
+
 // // Guards
 // const AuthGuard = async(() => import("../components/AuthGuard"));
 
@@ -135,26 +137,37 @@ import ShareInvestigationRouter from "../components/investigation/share/wrapper"
 // const Investigation = async(() => import("../components/investigation"));
 // const ShareInvestigation = async(() => import("../components/investigation/share"));
 
+export const SIGN_IN_ROUTE = "/auth/sign-in";
+export const SIGN_UP_ROUTE = "/auth/sign-up";
+export const SHARE_INVESTIGATION_ROUTE = "/investigation/share/:uuid";
+export const SHOW_INVESTIGATION_ROUTE = "/investigation/show/:uuid";
+export const CREATE_INVESTIGATION_ROUTE = "/investigation/create";
+export const PROFILE_ROUTE = "/profile";
+export const PENDING_INVESTIGATIONS_ROUTE = "/investigations/pending";
+export const LIVE_INVESTIGATIONS_ROUTE = "/investigations/live";
+export const DRAFT_INVESTIGATIONS_ROUTE = "/investigations/draft";
+export const ALL_INVESTIGATIONS_ROUTE = "/investigations/all";
+
 
 const investigationsRoutes = {
     id: "Investigations",
-    path: "/investigations/all",
+    path: ALL_INVESTIGATIONS_ROUTE,
     icon: <Briefcase />,
     badge: "8",
     component: Investigations,
     children: [
         {
-            path: "/investigations/draft",
+            path: DRAFT_INVESTIGATIONS_ROUTE,
             name: "Draft",
             component: () => <Investigations filter="draft" />,
         },
         {
-            path: "/investigations/live",
+            path: LIVE_INVESTIGATIONS_ROUTE,
             name: "Live",
             component: () => <Investigations filter="live" /> ,
         },
         {
-            path: "/investigations/pending",
+            path: PENDING_INVESTIGATIONS_ROUTE,
             name: "Pending",
             component: () => <Investigations filter="pending" /> ,
         }
@@ -177,22 +190,22 @@ const dashboardsNotSideBarRoutes = {
     containsHome: true,
     children: [
         {
-            path: "/profile",
+            path: PROFILE_ROUTE,
             name: "Profile",
             component: Profile,
         },
         {
-            path: "/investigation/create",
+            path: CREATE_INVESTIGATION_ROUTE,
             name: "CreateInvestigation",
             component: CreateInvestigation,
         },
         {
-            path: "/investigation/show/:uuid",
+            path: SHOW_INVESTIGATION_ROUTE,
             name: "Live",
             component: () => <Investigation /> ,
         },
         {
-            path: "/investigation/share/:uuid",
+            path: SHARE_INVESTIGATION_ROUTE,
             name: "Share",
             component: ShareInvestigationRouter ,
         },
@@ -291,12 +304,12 @@ const authRoutes = {
   icon: <Users />,
   children: [
     {
-      path: "/auth/sign-in",
+      path: SIGN_IN_ROUTE,
       name: "Sign In",
       component: SignIn,
     },
     {
-      path: "/auth/sign-up",
+      path: SIGN_UP_ROUTE,
       name: "Sign Up",
       component: SignUp,
     },

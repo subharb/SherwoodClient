@@ -153,9 +153,11 @@ export function NewInvestigation(props){
                             <Typography variant="body2" gutterBottom>
                                 <Translate id={`investigation.create.${Object.keys(steps)[step]}.intro`} />
                             </Typography>
-                            {component}
                         </CardContent>
-                    </Card>
+                    </Card> 
+                </Grid>
+                <Grid item  xs={12}>
+                    {component}
                 </Grid>
             </Grid>
             

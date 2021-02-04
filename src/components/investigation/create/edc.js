@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Translate } from 'react-localize-redux';
-import styled from "styled-components";
+import { Grid, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Table from '../../general/table';
 import DataCollection from './data_collection';
@@ -47,10 +47,13 @@ export default class EDC extends Component{
                             type="button" data-testid="add_data_collections" show={!this.state.addingDataCollection}  
                             onClick={this.toggleAddDataCollection}></ButtonAdd>
         if(this.state.surveys.length === 0){
-            return [
-                AddButton,
-                <Translate id="investigation.create.edc.data_collections.none" />
-            ]
+            return (<Grid item xs={12}>
+                { AddButton }
+                <Typography variant="body2" gutterBottom component="span">
+                    <Translate id="investigation.create.edc.data_collections.none" />
+                </Typography>
+                
+            </Grid>)
         }
         else{
             const headCells =[{ id:"title", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
@@ -61,12 +64,20 @@ export default class EDC extends Component{
                 return { title : survey.name, number_sections : survey.sections.length};
             })
                     
-            return(
-                <div>
+            return([
+                <Grid item xs={12}>
                     <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
                             actions = {{"delete" : (index) => this.deleteDataCollection(index)}} />
+                
+                </Grid>,
+                <Grid item xs={12}>
                     {AddButton}
-                </div>)
+                    <Typography variant="body2" gutterBottom component="span">
+                        <Translate id="investigation.create.edc.data_collections.new" />
+                    </Typography> 
+                </Grid>
+            ]
+                )
         }
     }
     toggleAddDataCollection(){
@@ -137,9 +148,11 @@ export default class EDC extends Component{
         }
         else{
             return (
-                <React.Fragment>
-                    { this.renderDataCollections() }
-                    <div className="row" style={{paddingTop:"20px"}}>
+                <Grid container spacing={3}>
+                    
+                        { this.renderDataCollections() }
+                    
+                    <Grid item xs={12}>
                         {
                             this.props.callBackStepBack && 
                             <ButtonBack spaceright={1} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
@@ -148,8 +161,8 @@ export default class EDC extends Component{
                             type="button" onClick={this.submitData}>
                                 <Translate id="investigation.create.continue" />
                         </ButtonContinue>
-                    </div>
-                </React.Fragment>
+                    </Grid>
+                </Grid>
             )
         }
         

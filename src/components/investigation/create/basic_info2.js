@@ -3,20 +3,19 @@ import Form from '../../general/form';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { FIELDS_BASIC_INFO } from '../../../utils';
-import { Grid } from '@material-ui/core';
+import { Grid, Card, CardContent } from '@material-ui/core';
 
 export default class BasicInfo2 extends Component {
     render() {
         return (
-            <Grid container>
-                <Grid lg={6}>
-                <Form initialData={this.props.initialData} 
-                    fields={FIELDS_BASIC_INFO} submitText = "investigation.create.continue"
-                    cancelText = "investigation.create.back"
-                    callBackForm={(values) => this.props.callBackData(values)} />
-                </Grid>
-            </Grid>
-                
+                <Card>
+                    <CardContent>
+                        <Form initialData={this.props.initialData} 
+                            fields={FIELDS_BASIC_INFO} submitText = "investigation.create.continue"
+                            cancelText = "investigation.create.back"
+                            callBackForm={(values) => this.props.callBackData(values)} />                
+                    </CardContent>
+                </Card>
         )
     }
 }

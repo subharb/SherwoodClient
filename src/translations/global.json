@@ -69,6 +69,7 @@
                 "key" : ["Key", "Clave"],
                 "email_error" : ["This email is already in use", "Este email ya se ha usado"]
             },
+            "go_to_sign_in" : ["Go to sign in", "Ir a sign in"],
             "success_text" : ["Congratulations! Now head to sign in and start using Sherwood."],
             "error" : {
                 "account_registered" : ["This email has already been used", "Este email ya ha sido utilizado"],
@@ -130,9 +131,9 @@
                 "intro" : ["The Electronic Data Capture (EDC) design tool will allow you to create the necessary data collection forms and questionnaires to populate your database. Please follow our smart assistant who will take you through the process.", ""],
                 "no_sections" : ["You haven't added any sections yet"],
                 "data_collections" : {
-                    "title" : ["Data Collection", "Colleción de datos"],
+                    "title" : ["Data Collections", "Collecciones de datos"],
                     "intro" : ["Each data collection can have several sections" , "Ca"], 
-                    "new" : ["New data collection"],
+                    "new" : ["New data collection", "Nueva colección de datos"],
                     "name" : ["Name", "Nombre"],
                     "none" : ["You have no data collections", "No has creado ninguna collección de datos"],
                     "number_sections" : ["Number sections", "Número de secciones"],
