@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { Alert } from "@material-ui/lab";
+import { SIGN_IN_ROUTE } from '../../../routes';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import BasicInfo  from './basic_info2';
@@ -8,7 +9,8 @@ import Summary from './summary';
 import axios from 'axios';
 import Breadcrumb from '../../general/breadcrumb';
 import EDC from './edc';
-
+import { Link } from '@material-ui/core';
+import { encryptData, generateKey } from '../../../utils';
 import { Card, CardContent, Typography, Grid } from '@material-ui/core';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
@@ -22,7 +24,8 @@ export function NewInvestigation(props){
     const [investigation, setInvestigation] = useState(props.initialState && props.initialState.investigation ? props.initialState.investigation : {});
     const [resultSave, setResultSave] = useState(props.initialState && props.initialState.resultSave ? props.initialState.resultSave : 0);
     const [isLoading, setIsLoading] = useState(props.initialState && props.initialState.isLoading ? props.initialState.isLoading : false);
-   
+    const [errorEncryption, setErrorEncryption] = useState(props.initialState && props.initialState.error ? props.initialState.error : false);
+
     const steps = {
         basic_info : "investigation.create.steps.basic_info",
         personal_data:"investigation.create.steps.personal_data",
@@ -35,16 +38,19 @@ export function NewInvestigation(props){
         setIsLoading(true);
         let investigationInfo = {...investigation};
         investigationInfo.publish = publish ? 1 : 0;
+
+        const rawKeyResearcherInvestigation = await generateKey();
+        investigationInfo.keyResearcherInvestigation = encryptData(rawKeyResearcherInvestigation, localStorage.getItem("rawKeyResearcher"));
     
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
         let response;
         if(props.hasOwnProperty("uuidInvestigation")){
             response = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.uuidInvestigation, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
-            .catch(err => {console.log('Catch', err); return err;});
+                .catch(err => {console.log('Catch', err); return err;});
         }
         else{
             response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
-            .catch(err => {console.log('Catch', err); return err;}); 
+                .catch(err => {console.log('Catch', err); return err;}); 
         }
         
         
@@ -53,10 +59,9 @@ export function NewInvestigation(props){
             console.log("Success!");
             setResultSave(1);
         }
-        else if(response.request.status === 401){
+        else{
             localStorage.removeItem("jwt");
             setResultSave(2);
-    
         }
         setIsLoading(false);
     }
@@ -95,11 +100,38 @@ export function NewInvestigation(props){
             setStep(aStep);
         }
     }
+    useEffect(() => {
+        if(!localStorage.getItem("password")){
+            console.error("No password stored!");
+            setErrorEncryption(true)
+        }
+    }, [])
     
     console.log("Initial data:", props.initialState);
     let component = null;
-    if(typeof props.uuid !== "undefined" && !props.investigation){
-        return "CARGANDO";
+    if(isLoading || (typeof props.uuid !== "undefined" && !props.investigation)){
+        return <Loader />
+    }
+    else if(resultSave === 2){
+        return (
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Alert mb={4} severity="error">
+                        <Translate id="error.not_login" />
+                    </Alert>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="body2" gutterBottom>
+                        <Link to={SIGN_IN_ROUTE}>Continue to sign in</Link>
+                    </Typography>
+                </Grid>
+            </Grid>            
+        )
+    }
+    else if(errorEncryption){
+        return (<Alert mb={4} severity="error">
+                <Translate id="investigation.share.error.description" />
+            </Alert>)
     }
     switch(step){
         case 0:
@@ -129,9 +161,7 @@ export function NewInvestigation(props){
             component = "Something went wrong";
             break;
     }
-    if(isLoading){
-        return <Loader />
-    }
+    
     return(
         <React.Fragment>
             <Helmet title={props.translate("dashboard.create_investigation")} />

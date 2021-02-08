@@ -5,8 +5,7 @@ import CardInvestigation from './card_investigation'
 import { Link } from 'react-router-dom';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Loader from '../../../Loader';
-import { useInvestigations } from '../../../../hooks';
-import {useQuery} from 'react-query';
+import { decryptData, encryptData } from '../../../../utils';
 import { useHistory } from "react-router-dom";
 import { Alert } from "@material-ui/lab";
 import { Grid, Typography } from '@material-ui/core';
@@ -22,10 +21,19 @@ function AllInvestigations(props){
     async function answerRequest(index, value){
         try{
             setIsLoading(true);
-            const response = await answerRequestRemote(investigations[index].uuid, value);
+            //Desencriptamos la clave de la investigacion
+            const investigation = investigations[index];
+            const keyRawInvestigation = decryptData(investigation.keyResearcherInvestigation , process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD);
+            const keyInvestigationResearcher = encryptData(keyRawInvestigation, localStorage.getItem("rawKeyResearcher"));
+            const testkeyRawInvestigation = decryptData(keyInvestigationResearcher, localStorage.getItem("rawKeyResearcher"));
+            console.log(testkeyRawInvestigation);
+            
+            const response = await answerRequestRemote(investigations[index].uuid, value, keyInvestigationResearcher);
             if(response.status === 200){
                 setAnswer(true);
-                history.push("/investigation/show/"+investigations[index].uuid);
+                if(value === 2){
+                    history.push("/investigation/show/"+investigations[index].uuid);
+                }
                 //Sería interesante redirigir a la nueva investigación
             }
             else{

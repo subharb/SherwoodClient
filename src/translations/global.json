@@ -16,6 +16,9 @@
         "personal_info" : ["Personal Info", "Datos personales"],
         "contact_info" : ["Contact Info", "Datos de contacto"]
     },
+    "error" : {
+        "not_login" : ["You need to sign in to access this resource", "Para acceder a este recurso necesita hacer login"]
+    },
     "dashboard":{
         "greetings" : ["Welcome", "Bienvenido"],
         "investigation" : ["Investigation", "Investigación"],

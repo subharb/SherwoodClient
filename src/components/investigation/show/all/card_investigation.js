@@ -102,7 +102,7 @@ export default function CardInvestigation({ image, title, description, status, s
                     </NavLink>
                     <NavLink to={`/investigation/show/${uuid}`}>
                         <Button data-testid="open" size="small" color="secondary">
-                        Open
+                            Open
                         </Button>
                     </NavLink>
                 </CardActions>

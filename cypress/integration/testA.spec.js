@@ -1,6 +1,6 @@
 import { researcherA_data, loginResearcherA, loginResearcherB, loginResearcherC,
     researcherB_data, basic_info1, personal_data1, edc_data1, researcherC_data,
-    patients_personal_data_decrypted, records_patient1, records_patient2 } from '../../src/stories/example_data';
+    patients_personal_data_decrypted, records_patient1, records_patient2, researcherD_data, loginResearcherD } from '../../src/stories/example_data';
 
 describe('Testing create an investigation', () => {
     it('Register a Researcher', () => {
@@ -10,6 +10,13 @@ describe('Testing create an investigation', () => {
         cy.registerResearcher(researcherA_data);
 
     })
+    it('Register Researcher B', () => {
+        cy.visit('http://localhost:3000/auth/sign-up');
+        //cy.visit('https://dashboard.sherwood.science/');
+
+        cy.registerResearcher(researcherB_data);
+
+    });
     it('Researcher Logs in', () => {
         
         //cy.visit('https://dashboard.sherwood.science/');
@@ -19,6 +26,7 @@ describe('Testing create an investigation', () => {
         cy.loginResearcher(loginResearcherA);
 
     });
+    
     it('Researcher Creates an Investigation', () => {
 
         cy.visit('http://localhost:3000/investigation/create');
@@ -74,14 +82,8 @@ describe('Testing create an investigation', () => {
  
 
     })
-    it('Register Researcher B', () => {
-        cy.visit('http://localhost:3000/auth/sign-up');
-        //cy.visit('https://dashboard.sherwood.science/');
-
-        cy.registerResearcher(researcherB_data);
-
-    });
-    it('Researcher A shares with Researcher B and C', () => {
+    
+    it('Researcher A shares with Researcher B, C and D', () => {
         cy.visit('http://localhost:3000/investigations/live');
         //cy.visit('https://dashboard.sherwood.science/');
 
@@ -118,10 +120,26 @@ describe('Testing create an investigation', () => {
         cy.visit('http://localhost:3000/investigations/pending');
         cy.loginResearcher(loginResearcherC);
         
-        cy.intercept('POST', '**/researcher/investigation/**/answer').as('acceptInvestigation');
+        cy.intercept('PUT', '**/researcher/investigation/**/answer').as('answerInvestigation');
         cy.get('.investigation').first().find('button[data-testid="accept"]').click();
         cy.wait('@acceptInvestigation');
 
     });
-    
+
+    it('Register Researcher D', () => {
+        cy.visit('http://localhost:3000/auth/sign-up');
+        //cy.visit('https://dashboard.sherwood.science/');
+
+        cy.registerResearcher(researcherD_data);
+
+    });
+     it('Researcher D DENIES Investigation', () => {
+        cy.visit('http://localhost:3000/investigations/pending');
+        cy.loginResearcher(loginResearcherD);
+        
+        cy.intercept('PUT', '**/researcher/investigation/**/answer').as('answerInvestigation');
+        cy.get('.investigation').first().find('button[data-testid="deny"]').click();
+        cy.wait('@answerInvestigation');
+
+    });
 })

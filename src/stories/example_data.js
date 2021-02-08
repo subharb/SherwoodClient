@@ -363,6 +363,15 @@ export const researcherC_data = {
     country:"es"
 }
 
+export const researcherD_data = {
+    name : "David",
+    surnames: "sherwood",
+    email : "david@sherwood.science",
+    password: "Ciencia2!",
+    phone: "+24 772 08689060",
+    country:"es"
+}
+
 export const loginResearcherA = {
     email : researcherA_data.email,
     password: researcherA_data.password
@@ -376,6 +385,11 @@ export const loginResearcherB = {
 export const loginResearcherC = {
     email : researcherC_data.email,
     password: researcherC_data.password
+}
+
+export const loginResearcherD = {
+    email : researcherD_data.email,
+    password: researcherD_data.password
 }
 
 const sharedResearchers =  [
@@ -409,6 +423,7 @@ export const investigation_server = () => {
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = patients_personal_data_encripted();
     returnData.status = 1;
+    returnData.keyResearcherInvestigation = "U2FsdGVkX19dc/oAgeGDtnFwJOQlN2+6QmHS2aY1Kf/gHjA7K9n+KPNM+3qOADTCM9Gy6LUimq8LsJf5IzX2lw==";
     returnData.shareStatus = 2; 
     returnData.sharedResearchers = sharedResearchers;
     return returnData;
@@ -420,6 +435,8 @@ export const investigation_server_no_patitents = () => {
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = [];
     returnData.status = 1;
+    returnData.keyResearcherInvestigation = "U2FsdGVkX19dc/oAgeGDtnFwJOQlN2+6QmHS2aY1Kf/gHjA7K9n+KPNM+3qOADTCM9Gy6LUimq8LsJf5IzX2lw==";
+    returnData.encryptedKeyUsed =1;
     returnData.shareStatus = 2; 
     returnData.sharedResearchers = sharedResearchers;
     return returnData;
@@ -430,10 +447,70 @@ export const investigation_server_read_access = () => {
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = [];
     returnData.shareStatus = 0;
+    returnData.encryptedKeyUsed =1;
+    returnData.keyResearcherInvestigation = "U2FsdGVkX19dc/oAgeGDtnFwJOQlN2+6QmHS2aY1Kf/gHjA7K9n+KPNM+3qOADTCM9Gy6LUimq8LsJf5IzX2lw==";
     returnData.status = 1; 
     returnData.sharedResearchers = sharedResearchers;
     return returnData;
 }
+
+
+export const pendingInvestigations =[
+    {
+        "name": "COVID Nose By Tester",
+        "uuid": "2f16a47c-ce00-4953-b58f-6f89eae2b257",
+        "acronym": "CN",
+        "type": "clin_trial",
+        "institution": "Oxford University",
+        "principal_researcher": "Pedro Rodriguez",
+        "contact": "test@email.com",
+        "reference_number_state": "2",
+        "ethics_body": "12345",
+        "description": "<p>Estudio sobre el impacto en la anosmia en pacientes de COVID19</p>",
+        "encryptedKeyUsed" : 0,
+        "keyResearcherInvestigation": "U2FsdGVkX1+5tj4/o7sGg3FaEgkgvjWBeI452pNU8Js+U8+i9xw3PmEyGZ2FpqQ0QvOYhBNwZytom+iyhUK5Og==",
+        "shareStatus": 2,
+        "hostResearcher" : {
+            "name" : "Pedro",
+            "surnames" : "Rodríguez"
+        },
+        "status": 1,
+        "personalFields": [
+            "surname",
+            "name",
+            "phone",
+            "email"
+        ],
+        "createdAt": "2021-01-20T12:14:06.000Z",
+        "updatedAt": "2021-01-20T12:14:06.000Z"
+    },
+    {
+        "name": "Ictus on smoking partners",
+        "uuid": "00287041-3df4-438f-b60a-e1d85dbe25b9",
+        "acronym": "CN",
+        "type": "clin_trial",
+        "institution": "Oxford University",
+        "principal_researcher": "Pedro Rodriguez",
+        "contact": "test@email.com",
+        "reference_number_state": "2",
+        "ethics_body": "12345",
+        "description": "<p>Estudio sobre el impacto en la anosmia en pacientes de COVID19</p>",
+        "shareStatus": 0,
+        "status": 1,
+        "hostResearcher" : {
+            "name" : "Pedro",
+            "surnames" : "Rodríguez"
+        },
+        "personalFields": [
+            "surname",
+            "name",
+            "phone",
+            "email"
+        ],
+        "createdAt": "2021-01-20T12:14:06.000Z",
+        "updatedAt": "2021-01-20T12:14:06.000Z"
+    }
+]
 
 export const investigationsShowAll =[
         {
@@ -447,7 +524,7 @@ export const investigationsShowAll =[
             "reference_number_state": "2",
             "ethics_body": "12345",
             "description": "<p>Estudio sobre el impacto en la anosmia en pacientes de COVID19</p>",
-            
+            "keyResearcherInvestigation": "U2FsdGVkX19dc/oAgeGDtnFwJOQlN2+6QmHS2aY1Kf/gHjA7K9n+KPNM+3qOADTCM9Gy6LUimq8LsJf5IzX2lw==",
             "shareStatus": 2,
             "hostResearcher" : {
                 "name" : "Pedro",

@@ -7,7 +7,8 @@ export default {
   title: 'Pages/Create Investigation',
   component: NewInvestigation,
   argTypes: {
-    step: { control: 'number' }
+    step: { control: 'number' },
+    error: { control: 'boolean' }
   },
   decorators: [story => 
                 <ProviderSherwood>
@@ -17,18 +18,18 @@ export default {
 
 const Template = (args) => <NewInvestigation {...args} />;
 
-export const New = Template.bind({});
-New.args = {
+export const Pristine = Template.bind({});
+Pristine.args = {
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
-export const Edit = Template.bind({});
-Edit.args = {
-    
+export const WithData = Template.bind({});
+WithData.args = {
     initialState : {
         "investigation": summary_info1(),
         "addingSection": false,
         "editingIndexSection": false,
+        "error" : false,
         step : 0,
     },
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
