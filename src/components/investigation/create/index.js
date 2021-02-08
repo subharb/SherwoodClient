@@ -40,7 +40,7 @@ export function NewInvestigation(props){
         investigationInfo.publish = publish ? 1 : 0;
 
         const rawKeyResearcherInvestigation = await generateKey();
-        investigationInfo.keyResearcherInvestigation = encryptData(rawKeyResearcherInvestigation, localStorage.getItem("password"));
+        investigationInfo.keyResearcherInvestigation = encryptData(rawKeyResearcherInvestigation, localStorage.getItem("rawKeyResearcher"));
     
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
         let response;

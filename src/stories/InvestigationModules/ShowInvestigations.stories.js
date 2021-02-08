@@ -1,7 +1,7 @@
 import React from 'react';
 import AllInvestigations from '../../components/investigation/show/all'
 import ProviderSherwood from '../../providerSherwood';
-import { summary_info1, investigationsShowAll } from '../example_data';
+import { summary_info1, investigationsShowAll, pendingInvestigations } from '../example_data';
 export default {
     title: 'Pages/All Investigations',
     component: AllInvestigations,
@@ -60,9 +60,10 @@ Live.args = {
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
+
 export const Pending = Template.bind({});
 Pending.args = {
-    initialState : {investigations:investigationsShowAll},
+    initialState : {investigations:pendingInvestigations},
     typeUser: "researcher",
     filter:"pending",
     stepBack : () => alert("Hit StepBack"),

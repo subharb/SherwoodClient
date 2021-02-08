@@ -18,26 +18,24 @@ export default function PersonalDataForm(props) {
             console.error("No password stored!");
             return "error";
         }
-    
+        
         const rawKeyResearcher = localStorage.getItem("rawKeyResearcher"); //await decryptData(payload.keyResearcher, password);
+        const rawKeyInvestigation = decryptData(props.keyResearcherInvestigation, rawKeyResearcher);
 
         let encryptedData = {};
-        //Generación de claves de paciente para researcher y paciente
-        const rawPatientKeyResearcher = await generateKey();
-        const rawPatientKeyInvestigation = await generateKey();
+       
+        
         for (const key of Object.keys(data)) {
-            encryptedData[key] =  encryptData(data[key], rawPatientKeyResearcher);
+            encryptedData[key] =  encryptData(data[key], rawKeyInvestigation);
         }
-        //Encriptamos la clave con la clave del researcher y una por defecto para el paciente
-        const patientKeyEncrResearcher =  encryptData(rawPatientKeyResearcher, rawKeyResearcher);
-        console.log(process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD);
-        const patientKeyEncrInvestigation =  encryptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD);
-        const defaultResearcher = encryptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD);
+        
+        
+        //Generación de claves de paciente de Sherwood
+        const rawKeyPatient = process.env.REACT_APP_DEFAULT_PATIENT_PASSWORD;// o la clave que se imprime
+        const patientKeyEncrInvestigation = encryptData(rawKeyInvestigation, rawKeyPatient);
 
         props.callBackForm({
             "keyPatInv" : patientKeyEncrInvestigation,
-            "keyPatientResearcher" : patientKeyEncrResearcher,
-            "keyDefaultResearcher" : defaultResearcher,
             "personalData" : encryptedData
         });
         // //TEST
@@ -48,6 +46,7 @@ export default function PersonalDataForm(props) {
     }
 
     return (
+
         <Grid container spacing={1}>
             <Grid item xs={12}>
                 <Typography variant="subtitle1" color="textPrimary">

@@ -4,7 +4,7 @@ import { Card, CardContent,
 import { Alert } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
-import { decryptData, encryptData } from '../../../utils';
+import { decryptData, encryptData, generateKey } from '../../../utils';
 import Loader from '../../Loader';
 import { ButtonAdd, ButtonContinue } from '../../general/mini_components';
 import Modal from '../../general/modal';
@@ -90,14 +90,18 @@ function ShareInvestigation(props) {
         setShowSendModal(false);
         setIsLoadingShare(true);
         try{
-            //Encripto las claves de los pacientes con una clave temporal para que más tarde sea desencriptada por el researcher
-            let listPatients = investigation.patientsPersonalData.map(patientData => {
-                const rawKeyResearcher = localStorage.getItem("rawKeyResearcher");
-                const rawPatientKeyInvestigation = decryptData(patientData.keyPatientResearcher, rawKeyResearcher);
-                const keyTempResearcher = encryptData(rawPatientKeyInvestigation, process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD);
-                return {patientCollectionID : patientData.id, keyPatientResearcher:keyTempResearcher}
-            });
-            const postObject = {listResearchers:newResearchers, listPatients : listPatients};
+            // const keyInvestigation = await generateKey();
+            // const testRawKeyInvestigation = encryptData(keyInvestigation, localStorage.getItem("rawKeyResearcher"));
+            // console.log(testRawKeyInvestigation);
+
+            const rawKeyInvestigation = decryptData(investigation.keyResearcherInvestigation, localStorage.getItem("rawKeyResearcher"));
+            const researchersWithKeys = newResearchers.map(researcher => {
+                researcher.keyResearcherInvestigation = encryptData(rawKeyInvestigation, process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD);
+                console.log(decryptData(researcher.keyResearcherInvestigation, process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD));
+                return researcher;
+            })
+     
+            const postObject = {listResearchers:researchersWithKeys};
             const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.uuid+'/share', postObject, { headers: {"Authorization" : localStorage.getItem("jwt")} })
             
             if(request.status === 200){

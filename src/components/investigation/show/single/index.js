@@ -7,7 +7,7 @@ import Table from '../../../general/table';
 import Axios from 'axios';
 import ShowSurveys from '../fill/show_surveys_patient';
 import { decryptData, encryptData } from '../../../../utils';
-import { updateListKeyPatientResearcher } from '../../../../services/sherwoodService';
+
 import Loader from '../../../Loader';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
@@ -29,7 +29,6 @@ export default function ShowInvestigation(props) {
     const [errorEncryption, setErrorEncryption ] = useState(false);
     const history  = useHistory();
 
-    
     useEffect(() => {
         async function fetchInvestigation(){
             const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/'+props.uuid, { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -56,43 +55,28 @@ export default function ShowInvestigation(props) {
     useEffect(() => {  
         try{
             if(patientsData.length !== 0 && patientsData.length !== decryptedPatientData.length){
-            
                 //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
                 let tempDecryptedData = [];
-                let listPatientUpdateKeyResearcher = [];
                 for(const patient of patientsData){
                     let encryptedFields = {};
                     if(investigation.permissions !== 0){
-                        const rawKeyResearcher = patient.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
+                        const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
                         
-                        const keyPatient = decryptData(patient.keyPatientResearcher, rawKeyResearcher);
+                        const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
                         
-                        //Si es 0, es que está encriptado con la clave temporal
-                        if(patient.encryptedKeyUsed === 0){
-                            const newKeyPatientResearcher = encryptData(keyPatient, localStorage.getItem("rawKeyResearcher"));
-                            const keyPatResearcher = {
-                                patientCollectionID : patient.id,
-                                keyPatientResearcher : newKeyPatientResearcher
-                            }
-                            listPatientUpdateKeyResearcher.push(keyPatResearcher);
-                        }
                         for(const personalField of investigation.personalFields){
                             const encryptedField = patient.personalData[personalField];
                             if(!encryptedField){
                                 console.error("No coinciden campos!");
                                 return "error!";
                             }
-                            const decryptedField = decryptData(encryptedField, keyPatient);
+                            const decryptedField = decryptData(encryptedField, keyInvestigation);
                             encryptedFields[personalField] = decryptedField; 
-        
                         }
                     }
                     
                     encryptedFields["id"] = patient.id; 
                     tempDecryptedData.push(encryptedFields);
-                }
-                if(listPatientUpdateKeyResearcher.length > 1){
-                    updateListKeyPatientResearcher(listPatientUpdateKeyResearcher);
                 }
                 setDecryptedPatientData(tempDecryptedData);
             }
@@ -218,7 +202,7 @@ export default function ShowInvestigation(props) {
                     renderSurveysTable()
                 ]
             case 1:
-                return <PersonalDataForm fields={ investigation.personalFields} 
+                return <PersonalDataForm fields={ investigation.personalFields} keyResearcherInvestigation={investigation.keyResearcherInvestigation}
                             initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
             case 2: 
             //Add Data
