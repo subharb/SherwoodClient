@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from 'react-query'
+import { SIGN_IN_ROUTE } from '../routes';
 
 export function useFechData(name, request){
     const [data, setData] = useState([]);
@@ -23,7 +24,13 @@ export function useFechData(name, request){
                 setError({
                     code : 401
                 })
-                history.push("/auth/sign-in");
+                this.props.history.push({
+                    pathname: SIGN_IN_ROUTE,
+                    state: { 
+                        from: this.props.location.pathname
+                    }
+                })
+                
             } 
             else{
                 setError({
@@ -131,9 +138,13 @@ export function useSherwoodUser(){
         
     }, [history])
     
-    if(!isAuth){
-        const redirectUrl = "/auth/sign-in";//localStorage.getItem('type') === null ?  "/auth/sign-in" :  "/"+localStorage.getItem('type')+"/login";
-        history.push(redirectUrl);
+    if(!isAuth){        
+        history.push({
+            pathname: SIGN_IN_ROUTE,
+            state: { 
+                from: history.location.pathname
+            }
+        })
     }
     
 

@@ -226,7 +226,13 @@ class Register extends Component {
     continue(){
         console.log("Success!");
         this.setState({success : false});
-        this.props.history.push(SIGN_IN_ROUTE);
+        //this.props.history.push(SIGN_IN_ROUTE);
+        this.props.history.push({
+            pathname: SIGN_IN_ROUTE,
+            state: { 
+                from: this.props.location.pathname
+            }
+        })
     }  
     render() {
         console.log("Register!");

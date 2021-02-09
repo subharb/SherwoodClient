@@ -7,7 +7,7 @@ import Table from '../../../general/table';
 import Axios from 'axios';
 import ShowSurveys from '../fill/show_surveys_patient';
 import { decryptData, encryptData } from '../../../../utils';
-
+import { SIGN_IN_ROUTE } from '../../../../routes';
 import Loader from '../../../Loader';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
@@ -41,7 +41,13 @@ export default function ShowInvestigation(props) {
                 setInvestigation(request.data.investigation);
             }
             else if(request.status === 401){
-                history.push("/auth/sign-in");
+                history.push({
+                    pathname: SIGN_IN_ROUTE,
+                    state: { 
+                        from: history.location.pathname
+                    }
+                })
+                
             }
         }
         if((patientsData.length === 0) && investigation){

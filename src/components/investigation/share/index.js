@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { SIGN_IN_ROUTE } from '../../../routes';
 import { Card, CardContent, 
         Typography, Grid, Box, Chip } from '@material-ui/core';
 import { Alert } from "@material-ui/lab";
@@ -228,7 +229,13 @@ function ShareInvestigation(props) {
                 setInvestigation(request.data.investigation);
             }
             else if(request.status === 401){
-                history.push("/auth/sign-in");
+                this.props.history.push({
+                    pathname: SIGN_IN_ROUTE,
+                    state: { 
+                        from: this.props.location.pathname
+                    }
+                })
+                
             }
             setIsLoadingInvestigation(false);
         }
