@@ -3,12 +3,16 @@ import { researcherA_data, loginResearcherA, loginResearcherB, loginResearcherC,
     patients_personal_data_decrypted, records_patient1, records_patient2, researcherD_data, loginResearcherD } from '../../src/stories/example_data';
 
 describe('Testing create an investigation', () => {
-    it('Register a Researcher', () => {
+    it('Register Researcher A and Login', () => {
         cy.visit('http://localhost:3000/auth/sign-up');
         //cy.visit('https://dashboard.sherwood.science/');
 
         cy.registerResearcher(researcherA_data);
 
+        cy.get('button[data-testid="continue-modal"]')
+            .click();
+        cy.loginResearcher(loginResearcherA);
+        
     })
     it('Register Researcher B', () => {
         cy.visit('http://localhost:3000/auth/sign-up');
@@ -122,7 +126,7 @@ describe('Testing create an investigation', () => {
         
         cy.intercept('PUT', '**/researcher/investigation/**/answer').as('answerInvestigation');
         cy.get('.investigation').first().find('button[data-testid="accept"]').click();
-        cy.wait('@acceptInvestigation');
+        cy.wait('@answerInvestigation');
 
     });
 

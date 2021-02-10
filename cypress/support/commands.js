@@ -35,8 +35,11 @@ Cypress.Commands.add('loginResearcher', (credentials) => {
         .type(credentials.password)
         .should('have.value', credentials.password);
 
+    cy.intercept('POST', '**/researcher/login').as('loginResearcher');
     cy.get('button[data-testid="continue"]')
         .click();
+    cy.wait('@loginResearcher');
+
 });
 Cypress.Commands.add('createEDC', (surveys) => {
     surveys.forEach(survey => {
@@ -202,7 +205,7 @@ Cypress.Commands.add('shareWithResearchers', () => {
             .click();
     
     cy.intercept('POST','**/researcher/investigation/**/share').as('shareInvestigation');
-    cy.get('button[data-testid="continue"]')
+    cy.get('button[data-testid="continue-modal"]')
         .click();
     cy.wait('@shareInvestigation');
     
@@ -275,7 +278,7 @@ Cypress.Commands.add('createInvestigation', (basic_info, personal_data, edc_data
 });
 
 Cypress.Commands.add('acceptInvestigation', () => {
-    cy.intercept('POST', '**/researcher/investigation/**/answer').as('acceptInvestigation');
+    cy.intercept('PUT', '**/researcher/investigation/**/answer').as('answerInvestigation');
     cy.get('.investigation').first().find('button[data-testid="accept"]').click();
-    cy.wait('@acceptInvestigation');
+    cy.wait('@answerInvestigation');
 });
