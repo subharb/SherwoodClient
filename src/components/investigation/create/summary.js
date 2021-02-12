@@ -7,6 +7,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from '../../general/modal';
 import Table from '../../general/table';
 import styled from 'styled-components';
+import { ALL_INVESTIGATIONS_ROUTE } from '../../../routes';
 import {
     Edit as EditIcon,
 } from "@material-ui/icons";
@@ -66,7 +67,7 @@ class Summary extends Component {
     
     continueModal(){
         console.log("Continue!");
-        this.props.history.push("/investigation/show");
+        this.props.history.push(ALL_INVESTIGATIONS_ROUTE);
     }
     renderBasicInfo(){
         return Object.keys(this.props.initialData.basic_info).map(key =>{

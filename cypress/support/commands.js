@@ -254,9 +254,10 @@ Cypress.Commands.add('registerResearcher', (researcher) => {
     cy.get('input[name="confirm"]')
         .type("CONFIRM")
         .should('have.value', "CONFIRM");
-
+    cy.intercept('POST', '**/researcher/register').as('registerResearcher');
     cy.get('button[data-testid="continue"]')
             .click();
+    cy.wait('@registerResearcher');
 });
 
 Cypress.Commands.add('createInvestigation', (basic_info, personal_data, edc_data) => { 
@@ -273,8 +274,14 @@ Cypress.Commands.add('createInvestigation', (basic_info, personal_data, edc_data
 
     cy.createEDC(edc_data.surveys);
 
+    
+    cy.intercept('POST', '**/researcher/investigation').as('saveInvestigation');
     cy.get('button[data-testid="publish-investigation"]')
-    .click(); 
+        .click(); 
+    cy.wait('@saveInvestigation');
+    cy.get('button[data-testid="continue"]')
+        .click(); 
+    
 });
 
 Cypress.Commands.add('acceptInvestigation', () => {

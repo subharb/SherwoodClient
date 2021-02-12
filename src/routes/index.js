@@ -157,6 +157,11 @@ const investigationsRoutes = {
     component: Investigations,
     children: [
         {
+            path: ALL_INVESTIGATIONS_ROUTE,
+            name: "All",
+            component: () => <Investigations filter="all" />,
+        },
+        {
             path: DRAFT_INVESTIGATIONS_ROUTE,
             name: "Draft",
             component: () => <Investigations filter="draft" />,
