@@ -1,34 +1,37 @@
 
 import React from 'react'
+import { useRouter } from '../../hooks';
 import { Button, Grid, Typography, Box, Link } from '@material-ui/core';
 import { useHistory } from 'react-router-dom'
-import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE } from '../../routes';
-import { ButtonGrey } from '../../components/general/mini_components';
+import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
+        HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
+import { ButtonGrey, BoxBckgr } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
-import styled from 'styled-components';
 
-const BoxBckgr = styled(Box)`
-    background-color:#49CEBF; 
-    height:100vh;
-`
+
 
 export default function HomeSchedule(props) {
-    const history = useHistory();
-    if(history.location.pathname === MY_SCHEDULE_ROUTE){
+    const { pathname }= useRouter(props.initialState ? props.initialState.pathname : false);
+    if(pathname === MY_SCHEDULE_ROUTE){
         return(
             <BoxBckgr color="text.primary">
                 <Grid container spacing={3}>
                     <Grid item xs={12} style={{textAlign:"center"}}>
-                        <img src={photo_holder} alt="profile_picture" with="100%" />
+                        <Typography variant="h4" gutterBottom display="inline">
+                            {props.name} {props.surnames}
+                        </Typography>
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
-                        <Link href={MY_SCHEDULE_ROUTE}>
+                        <img src={calendar_image} alt="profile_picture" with="100%" />
+                    </Grid>
+                    <Grid item xs={12} style={{textAlign:"center"}}>
+                        <Link href={HOSPITAL_WARD_ROUTE}>
                             <ButtonGrey >Hospital Ward</ButtonGrey>
                         </Link>
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
-                        <Link href={SEARCH_PATIENT_ROUTE}>
+                        <Link href={OUTPATIENTS_ROUTE}>
                             <ButtonGrey >Outpatients</ButtonGrey>
                         </Link>
                     </Grid>

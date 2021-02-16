@@ -99,6 +99,11 @@ export function useInvestigation(uuid) {
     return value
 }
 
+export function useRouter(initValue){
+    const history = useHistory();
+    return initValue ? { pathname : initValue }: {pathname: history.location.pathname}
+}
+
 export function useSherwoodUser(){
     const history = useHistory();
     let location = useLocation();

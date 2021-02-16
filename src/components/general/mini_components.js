@@ -19,10 +19,17 @@ import {
     Divider as MuiDivider,
     Fab as MuiFab,
     IconButton as MuiIconButton,
-    Typography,
+    Typography, Box
   } from "@material-ui/core";  
 
 import { spacing } from "@material-ui/system";
+
+
+export const BoxBckgr = styled(Box)`
+    background-color:#49CEBF; 
+    height:100vh;
+`
+
 export const Divider = styled(MuiDivider)(spacing);
 
 const Fab = styled(MuiFab)(spacing);

@@ -65,7 +65,7 @@ import Investigations from "../components/investigation/show/all";
 import Investigation  from "../components/investigation";
 import ShareInvestigationRouter from "../components/investigation/share/wrapper";
 
-import HomeHospital from "../pages/hospital/HomeSchedule";
+import HomeSchedule from "../pages/hospital/HomeSchedule";
 import ListPatients from "../pages/hospital/ListPatients";
 // // Forms components
 // const Pickers = async(() => import("../pages/forms/Pickers"));
@@ -157,6 +157,7 @@ export const HOSPITAL_WARD_ROUTE = "/hospital-ward";
 export const OUTPATIENTS_ROUTE = "/outpatients";
 
 
+
 const hospitalRoutes = {
     id: "Hospital",
     path: HOSPITAL_HOME_ROUTE,
@@ -167,27 +168,27 @@ const hospitalRoutes = {
         {
             path: HOSPITAL_HOME_ROUTE,
             name: "Home",
-            component: () => <HomeHospital />
+            component: HomeSchedule
         },
         {
             path: ROOT_ROUTE,
             name: "Home",
-            component: () => <HomeHospital />
+            component: HomeSchedule
         },
         {
             path: MY_SCHEDULE_ROUTE,
             name: "My Schedule",
-            component: () => <HomeHospital />
+            component: HomeSchedule
         },
         {
             path: HOSPITAL_WARD_ROUTE,
             name: "Hospital Ward",
-            component: () => <ListPatients type="ward" />
+            component: <ListPatients/>
         },
         {
             path: OUTPATIENTS_ROUTE,
             name: "Outpatients",
-            component: () => <ListPatients type="outpatients" />
+            component: <ListPatients/>
         },
         // {
         //     path: DRAFT_INVESTIGATIONS_ROUTE,
