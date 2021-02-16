@@ -51,7 +51,22 @@ export const BasicButtonStyles = styled(Button)`
     `}
     
 `
-
+const GreyButtonStyles = styled(Button)`
+    &&&{
+        background: #E5E5E5;
+        border: 3px solid #0F8678;
+        box-sizing: border-box;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 8px;
+        text-align: center;
+        font-weight: bold;
+        color: rgba(39, 44, 42, 0.97);
+        width:80%;
+        @media (min-width: 768px) {
+            width:20rem;
+        }
+    }
+`;
 export const ButtonOtherStyles = styled(BasicButtonStyles)`
     background-color:${props => props.theme.buttonOther.background}!important;
     color:${props => props.theme.buttonOther.color};
@@ -70,7 +85,12 @@ export const ButtonIcon = styled(IconButton)`
     color:${props => props.theme.buttonContinue.color}!important;
 `
 
-
+export const ButtonGrey = (props) => {
+    return(
+        <GreyButtonStyles {...props}>
+            {props.children}
+        </GreyButtonStyles>)
+}
 export const ButtonEdit = (props) =>{
     return <DeleteHolder {...props}>
         <i className="material-icons">edit</i>

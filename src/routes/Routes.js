@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import {
   dashboardLayoutRoutes,
   authLayoutRoutes,
+  hospitalLayoutRoutes
 } from "./index";
 
 import DashboardLayout from "../layouts/Dashboard";
@@ -49,21 +50,41 @@ const childRoutes = (Layout, routes) =>
     ) : null;
   });
 
-const Routes = () => (
-  
-    <Switch>
-      {childRoutes(DashboardLayout, dashboardLayoutRoutes)}
-      {childRoutes(AuthLayout, authLayoutRoutes)}
+let Routes;
+if(process.env.REACT_APP_PRODUCT === "HOSPITAL"){
+    Routes = () => (
+        <Switch>
+            {childRoutes(DashboardLayout, hospitalLayoutRoutes)}
+            {childRoutes(AuthLayout, authLayoutRoutes)} 
+        
+        <Route
+            render={() => (
+            <AuthLayout>
+                <Page404 />
+            </AuthLayout>
+            )}
+        />
+        </Switch>
     
-      <Route
-        render={() => (
-          <AuthLayout>
-            <Page404 />
-          </AuthLayout>
-        )}
-      />
-    </Switch>
+    );
+}
+else{
+    Routes = () => (
   
-);
+        <Switch>
+        {childRoutes(DashboardLayout, dashboardLayoutRoutes)}
+        {childRoutes(AuthLayout, authLayoutRoutes)}
+        
+        <Route
+            render={() => (
+            <AuthLayout>
+                <Page404 />
+            </AuthLayout>
+            )}
+        />
+        </Switch>
+    
+    );
+}
 
 export default Routes;

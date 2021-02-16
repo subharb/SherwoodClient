@@ -65,6 +65,8 @@ import Investigations from "../components/investigation/show/all";
 import Investigation  from "../components/investigation";
 import ShareInvestigationRouter from "../components/investigation/share/wrapper";
 
+import HomeHospital from "../pages/hospital/HomeSchedule";
+import ListPatients from "../pages/hospital/ListPatients";
 // // Forms components
 // const Pickers = async(() => import("../pages/forms/Pickers"));
 // const SelectionCtrls = async(() => import("../pages/forms/SelectionControls"));
@@ -137,6 +139,7 @@ import ShareInvestigationRouter from "../components/investigation/share/wrapper"
 // const Investigation = async(() => import("../components/investigation"));
 // const ShareInvestigation = async(() => import("../components/investigation/share"));
 
+export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
 export const SIGN_UP_ROUTE = "/auth/sign-up";
 export const SHARE_INVESTIGATION_ROUTE = "/investigation/share/:uuid";
@@ -147,7 +150,62 @@ export const PENDING_INVESTIGATIONS_ROUTE = "/investigations/pending";
 export const LIVE_INVESTIGATIONS_ROUTE = "/investigations/live";
 export const DRAFT_INVESTIGATIONS_ROUTE = "/investigations/draft";
 export const ALL_INVESTIGATIONS_ROUTE = "/investigations/all";
+export const HOSPITAL_HOME_ROUTE = "/hospital";
+export const MY_SCHEDULE_ROUTE = "/my-schedule";
+export const SEARCH_PATIENT_ROUTE = "/search-patient";
+export const HOSPITAL_WARD_ROUTE = "/hospital-ward";
+export const OUTPATIENTS_ROUTE = "/outpatients";
 
+
+const hospitalRoutes = {
+    id: "Hospital",
+    path: HOSPITAL_HOME_ROUTE,
+    icon: <Briefcase />,
+    badge: "8",
+    component: null,
+    children: [
+        {
+            path: HOSPITAL_HOME_ROUTE,
+            name: "Home",
+            component: () => <HomeHospital />
+        },
+        {
+            path: ROOT_ROUTE,
+            name: "Home",
+            component: () => <HomeHospital />
+        },
+        {
+            path: MY_SCHEDULE_ROUTE,
+            name: "My Schedule",
+            component: () => <HomeHospital />
+        },
+        {
+            path: HOSPITAL_WARD_ROUTE,
+            name: "Hospital Ward",
+            component: () => <ListPatients type="ward" />
+        },
+        {
+            path: OUTPATIENTS_ROUTE,
+            name: "Outpatients",
+            component: () => <ListPatients type="outpatients" />
+        },
+        // {
+        //     path: DRAFT_INVESTIGATIONS_ROUTE,
+        //     name: "Draft",
+        //     component: () => <Investigations filter="draft" />,
+        // },
+        // {
+        //     path: LIVE_INVESTIGATIONS_ROUTE,
+        //     name: "Live",
+        //     component: () => <Investigations filter="live" /> ,
+        // },
+        // {
+        //     path: PENDING_INVESTIGATIONS_ROUTE,
+        //     name: "Pending",
+        //     component: () => <Investigations filter="pending" /> ,
+        // }
+    ],
+  };
 
 const investigationsRoutes = {
     id: "Investigations",
@@ -633,6 +691,24 @@ export const dashboardLayoutRoutes = [
 //   documentationRoutes,
 //   changelogRoutes,
 ];
+
+export const hospitalLayoutRoutes = [
+    
+    //pagesRoutes,
+    hospitalRoutes
+  //   orderRoutes,
+  //   invoiceRoutes,
+  //   tasksRoutes,
+  //   calendarRoutes,
+  //   componentsRoutes,
+  //   chartRoutes,
+  //   formsRoutes,
+  //   tablesRoutes,
+  //   iconsRoutes,
+  //   mapsRoutes,
+  //   documentationRoutes,
+  //   changelogRoutes,
+  ];
 
 // Routes using the Auth layout
 export const authLayoutRoutes = [authRoutes];
