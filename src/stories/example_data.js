@@ -567,3 +567,95 @@ export const investigationsShowAll =[
             "updatedAt": "2021-01-20T12:14:06.000Z"
         }
     ]
+export const listPatientsHospitalWard = [
+    {
+        id:1,
+        bedNumber:"1",
+        floor:"1º Planta",
+        dateIn:"21/02/2021",
+        dateOut:null,
+        
+        patient:{
+            name:"Peter",
+            surnames:"Petrelli",
+            dateOfBirth:"31/07/1976",
+            gender:"male",
+        }
+    },
+    {
+        id:1,
+        bedNumber:"2",
+        floor:"1º Planta",
+        dateIn:null,
+        dateOut:null
+    },
+    {
+        id:1,
+        bedNumber:"3",
+        floor:"1º Planta",
+        dateIn:"21/02/2021",
+        dateOut:null,
+        
+        patient:{
+            name:"John",
+            surnames:"Travolta",
+            dateOfBirth:"31/07/1944",
+            gender:"male",
+        }
+    },
+    {
+        id:1,
+        bedNumber:"3a",
+        floor:"1º Planta",
+        dateIn:"11/02/2021",
+        dateOut:null,
+        
+        patient:{
+            name:"Margaret",
+            surnames:"Thatcher",
+            dateOfBirth:"11/02/1946",
+            gender:"female",
+        }
+    },
+    {
+        id:1,
+        bedNumber:"1",
+        floor:"1º Planta",
+        dateIn:"21/02/2021",
+        dateOut:null,
+        
+        patient:{
+            name:"Peter",
+            surnames:"Petrelli",
+            dateOfBirth:"31/07/1976",
+            gender:"male",
+        }
+    },
+    {
+        id:1,
+        bedNumber:"1",
+        floor:"1º Planta",
+        dateIn:"21/02/2021",
+        dateOut:null,
+        patient:{
+            name:"Peter",
+            surnames:"Petrelli",
+            dateOfBirth:"31/07/1976",
+            gender:"male",
+        }
+    },
+    {
+        id:1,
+        bedNumber:"1",
+        floor:"1º Planta",
+        dateIn:"21/02/2021",
+        dateOut:null,
+        patient:{
+            name:"Peter",
+            surnames:"Petrelli",
+            dateOfBirth:"31/07/1976",
+            gender:"male",
+        }
+    }
+
+]

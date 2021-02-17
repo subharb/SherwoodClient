@@ -1,6 +1,7 @@
 import React from 'react';
 import { HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
 import ListPatients from '../../pages/hospital/ListPatients'
+import { listPatientsHospitalWard } from "../example_data";
 import ProviderSherwood from '../../providerSherwood';
 
 export default {
@@ -8,8 +9,7 @@ export default {
   component: ListPatients,
   argTypes: {
     name: { control: 'string' },
-    surnames: { control: 'string' },
-
+    surnames: { control: 'string' }
   },
   decorators: [story => 
                 <ProviderSherwood>
@@ -23,7 +23,8 @@ export const HospitalWard = Template.bind({});
 HospitalWard.args = {
     initialState:{pathname:OUTPATIENTS_ROUTE},
     name:"Pedro",
-    surnames:"Rodríguez"
+    surnames:"Rodríguez",
+    listPatients:listPatientsHospitalWard
 };
 
 export const Outpatients = Template.bind({});
