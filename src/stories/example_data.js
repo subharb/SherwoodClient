@@ -570,7 +570,7 @@ export const investigationsShowAll =[
 export const listPatientsHospitalWard = [
     {
         id:1,
-        bedNumber:"1",
+        number:"1",
         floor:"1º Planta",
         dateIn:"21/02/2021",
         dateOut:null,
@@ -584,14 +584,14 @@ export const listPatientsHospitalWard = [
     },
     {
         id:1,
-        bedNumber:"2",
+        number:"2",
         floor:"1º Planta",
         dateIn:null,
         dateOut:null
     },
     {
         id:1,
-        bedNumber:"3",
+        number:"3",
         floor:"1º Planta",
         dateIn:"21/02/2021",
         dateOut:null,
@@ -605,7 +605,7 @@ export const listPatientsHospitalWard = [
     },
     {
         id:1,
-        bedNumber:"3a",
+        number:"3a",
         floor:"1º Planta",
         dateIn:"11/02/2021",
         dateOut:null,
@@ -619,7 +619,7 @@ export const listPatientsHospitalWard = [
     },
     {
         id:1,
-        bedNumber:"1",
+        number:"1",
         floor:"1º Planta",
         dateIn:"21/02/2021",
         dateOut:null,
@@ -633,7 +633,7 @@ export const listPatientsHospitalWard = [
     },
     {
         id:1,
-        bedNumber:"1",
+        number:"1",
         floor:"1º Planta",
         dateIn:"21/02/2021",
         dateOut:null,
@@ -646,7 +646,7 @@ export const listPatientsHospitalWard = [
     },
     {
         id:1,
-        bedNumber:"1",
+        number:"1",
         floor:"1º Planta",
         dateIn:"21/02/2021",
         dateOut:null,

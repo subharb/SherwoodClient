@@ -2,6 +2,7 @@ import React from 'react'
 import { BoxBckgr } from '../../components/general/mini_components';
 import { useRouter } from '../../hooks';
 import { Button, Grid, Typography, Box, Link } from '@material-ui/core';
+import PatientButton from '../../components/general/PatientButton';
 import PropTypes from 'prop-types';
 
 function ListPatients(props) {
@@ -20,19 +21,21 @@ function ListPatients(props) {
                         Hospital Ward
                     </Typography>
                 </Grid>
-                <Grid item xs={12} container>
+                <Grid item xs={12} container spacing={3}>
                     {props.listPatients.map(item => {
                         if(item.dateIn === null){
                             return(
-                                <Grid item xs={2}>
-                                    FREE
+                                <Grid item>
+                                    <PatientButton type="ward" />
                                 </Grid>
                             )
                         }
                         else{
+                            
                             return(
-                                <Grid item xs={2}>
-                                    {item.patient.name}
+                                <Grid item>
+                                    <PatientButton name={item.patient.name} surnames={item.patient.surnames}
+                                    type="ward" age="23 years" gender={item.patient.gender} number={item.number}/>
                                 </Grid>
                             )
                         }

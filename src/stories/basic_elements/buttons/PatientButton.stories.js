@@ -12,7 +12,7 @@ export default {
     surnames : { control: 'string' },
     age : { control: 'string' },
     gender : { control: 'string' },
-    days :  { control: 'string' },
+    stay :  { control: 'string' },
     number : { control: 'string' }
   },
   decorators: [story => 
@@ -31,7 +31,13 @@ Primary.args = {
     surnames: "Petrelli",
     age : "30 years",
     gender : "male",
-    days: "30 days",
+    stay: "30 days",
     number:"1a",
+    onClick: () => {console.log("You clicked!")} 
+};
+
+export const Free = Template.bind({});
+Free.args = {
+    type:'ward',
     onClick: () => {console.log("You clicked!")} 
 };
