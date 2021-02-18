@@ -1,19 +1,25 @@
 
 import React, { useState } from 'react'
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Paper } from '@material-ui/core';
 import styled from 'styled-components';
 import { BoxBckgr, IconPatient, ButtonAdd, ButtonGrey } from '../../components/general/mini_components';
 import Modal from '../../components/general/modal';
-import { yearsFromDate, daysFromDate } from '../../utils'
+import { yearsFromDate, daysFromDate } from '../../utils';
+import FillDataCollection from './FillDataCollection';
 
 
 export default function Patient(props) {
     const [showDataCollections, setShowDataCollections] = useState(false);
+    const [dataCollectionSelected, setDataCollectionSelected] = useState(null);
     let years = yearsFromDate(props.dateOfBirth);
     let stay = daysFromDate(props.dateIn);
     
-    function fillDataCollection(id){
-        console.log("Ir a "+id);
+    function fillDataCollection(dataCollection){
+        setShowDataCollections(false);
+        setDataCollectionSelected(dataCollection);
+    }
+    function callBackDataCollection(){
+        console.log("Patient Data saved!");
     }
     return (
         
@@ -24,7 +30,7 @@ export default function Patient(props) {
                     props.dataCollections.map(dataCollection => {
                         return(
                             <Grid item xs={12} style={{textAlign:"center"}}>
-                                <ButtonGrey onClick={() => fillDataCollection(dataCollection.id)}>{dataCollection.name}</ButtonGrey>
+                                <ButtonGrey onClick={() => fillDataCollection(dataCollection)}>{dataCollection.name}</ButtonGrey>
                             </Grid>
                         )
                     })
@@ -51,7 +57,7 @@ export default function Patient(props) {
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="body2" gutterBottom>
-                                ID: {props.id}
+                                ID: {props.patientID}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
@@ -70,6 +76,13 @@ export default function Patient(props) {
                             <ButtonAdd onClick={() => setShowDataCollections(!showDataCollections)} />
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                        {
+                            dataCollectionSelected !== null &&
+                            <FillDataCollection key={dataCollectionSelected._id} dataCollection={dataCollectionSelected}
+                                patientId={props.patientId} investigation={props.investigation} callBackDataCollection={callBackDataCollection}/>
+                        }
                 </Grid>
             </Grid>
         </BoxBckgr>

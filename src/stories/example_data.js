@@ -2,7 +2,7 @@ export const edc_data1 = () => {
     return {
         surveys : [
             {   
-                "_id": "5fdc9fbccfec957a73cb34f5",
+                "_id": "60239afe562f88134f30a267",
                 "name" : "Demographic Questionaire",
                     "sections": [
                         {
@@ -24,7 +24,7 @@ export const edc_data1 = () => {
                                     "typeValueCypress": "Text"
                                 }
                             ],
-                            "_id": "5fdc9fbccfec957a73cb34f6",
+                            "_id": "60239afe562f88134f30a268",
                             "name": "Demographics",
                             "repeats": false
                         },
@@ -419,6 +419,7 @@ const sharedResearchers =  [
 //La forma en la que se envían los datos desde el servidor
 export const investigation_server = () => {
     let returnData = {...basic_info1_raw()};
+    returnData.uuid = "a1a4c07c-fb23-474e-a5d7-a3ed9b129306";
     returnData.surveys = edc_data1().surveys;
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = patients_personal_data_encripted();
@@ -569,7 +570,7 @@ export const investigationsShowAll =[
     ]
 export const listPatientsHospitalWard = [
     {
-        id:1,
+        id:"60239b05562f88134f30a26c",
         number:"1",
         floor:"1º Planta",
         dateIn:"2021/02/01",
@@ -583,14 +584,14 @@ export const listPatientsHospitalWard = [
         }
     },
     {
-        id:1,
+        id:null,
         number:"2",
         floor:"1º Planta",
         dateIn:null,
         dateOut:null
     },
     {
-        id:1,
+        id:"60239b05562f88134f30a26c",
         number:"3",
         floor:"1º Planta",
         dateIn:"21/02/2021",

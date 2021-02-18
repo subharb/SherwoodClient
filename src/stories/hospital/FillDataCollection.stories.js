@@ -1,15 +1,16 @@
 import React from 'react';
 import { HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
-import Patient from '../../pages/hospital/Patient'
+import FillDataCollection from '../../pages/hospital/FillDataCollection'
 import { listPatientsHospitalWard, edc_data1, investigation_server } from "../example_data";
 import ProviderSherwood from '../../providerSherwood';
 
 export default {
-  title: 'Hospital/Patient',
-  component: Patient,
+  title: 'Hospital/Fill Patient',
+  component: FillDataCollection,
   argTypes: {
     name: { control: 'string' },
-    surnames: { control: 'string' }
+    surnames: { control: 'string' },
+    loading: { control: 'boolean'}
   },
   decorators: [story => 
                 <ProviderSherwood>
@@ -17,17 +18,13 @@ export default {
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <Patient {...args} />; 
+const Template = (args) => <FillDataCollection {...args} />; 
 const testPatient = listPatientsHospitalWard[0];
 export const Basic = Template.bind({});
 Basic.args = {
-    name:testPatient.patient.name,
-    surnames:testPatient.patient.surnames,
-    gender:testPatient.patient.gender,
-    dateOfBirth:testPatient.patient.dateOfBirth,
-    dateIn: testPatient.dateIn,
-    number:testPatient.number,
+    
     patientId:testPatient.id,
+    initialState : {loading:false, error:false, saved:true},
     investigation: investigation_server(),
-    dataCollections:edc_data1().surveys
+    dataCollection:edc_data1().surveys[0]
 };

@@ -193,6 +193,10 @@ export const ButtonCheck = (props) =>{
             {props.children}
     </ButtonContinueStyles>
 }
+
+export const CheckCircleOutlineSvg = (props) => {
+    return <CheckCircleOutlineIcon {...props} />
+}
 export const ButtonEmptyCheck = (props) =>{
     return <BasicButtonStyles 
         variant="contained"
