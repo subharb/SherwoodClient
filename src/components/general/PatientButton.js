@@ -1,7 +1,6 @@
 import { Grid, Typography } from '@material-ui/core';
 import React from 'react'
-import icon_male from "../../img/icon_male.svg";
-import icon_female from "../../img/icon_female.svg";
+import { IconPatient } from './mini_components'
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -45,14 +44,7 @@ export default function PatientButton(props) {
                         </Typography>
                     </Grid>
                     <Grid xs={12} style={{textAlign:"center"}}>
-                        {
-                            props.gender === "male" &&
-                            <img src={icon_male} alt="male" />
-                        }
-                        {
-                            props.gender === "female" &&
-                            <img src={icon_female} alt="female" />
-                        }
+                        <IconPatient gender={props.gender} />
                     </Grid>
                 </Grid>
                 <Grid item xs={8} >

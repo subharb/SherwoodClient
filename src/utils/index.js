@@ -332,6 +332,16 @@ export function findSubmissionsFromSection(records, sectionID){
     return submissionsSection;
 }
 
+export function yearsFromDate(fromDateString){
+    let fromDate = new Date(fromDateString); 
+    return new Date().getFullYear() - fromDate.getFullYear();
+}
+export function daysFromDate(fromDateString){
+    let fromDate = new Date(fromDateString); 
+    let temp = Math.abs(new Date() - fromDate);
+    return Math.floor((temp)/(1000 * 60 * 60 * 24));
+}
+
 export function saveData(key, value){
     localStorage.setItem(key, value); 
 }

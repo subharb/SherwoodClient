@@ -572,13 +572,13 @@ export const listPatientsHospitalWard = [
         id:1,
         number:"1",
         floor:"1º Planta",
-        dateIn:"21/02/2021",
+        dateIn:"2021/02/01",
         dateOut:null,
         
         patient:{
             name:"Peter",
             surnames:"Petrelli",
-            dateOfBirth:"31/07/1976",
+            dateOfBirth:"1976/07/31",
             gender:"male",
         }
     },

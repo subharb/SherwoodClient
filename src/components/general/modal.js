@@ -17,7 +17,13 @@ const ModalContent = styled.div`
 export default function Modal(props){
 
     return(
-        <Dialog
+        <Dialog style={{backgroundColor:"transparent"}}
+            PaperProps={{
+                style: {
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                },
+            }}
             open={props.open}
             onClose={props.closeModal}
             aria-labelledby="form-dialog-title">
@@ -28,16 +34,17 @@ export default function Modal(props){
             
             {
                 props.confirmAction &&
-            <DialogActions>
-                {props.closeModal &&
-                    <Button onClick={props.closeModal} data-testid="cancel-modal" color="primary">
-                        Cancel
+                <DialogActions>
+                    {props.closeModal &&
+                        <Button onClick={props.closeModal} data-testid="cancel-modal" color="primary">
+                            Cancel
+                        </Button>
+                    }
+                    <Button onClick={props.confirmAction} data-testid="continue-modal" color="primary">
+                        Continue
                     </Button>
-                }
-                <Button onClick={props.confirmAction} data-testid="continue-modal" color="primary">
-                    Continue
-                </Button>
-            </DialogActions> }
+                </DialogActions> 
+            }
         </Dialog>
     )
 }

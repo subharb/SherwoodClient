@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import icon_male from "../../img/icons/icon_male.svg";
+import icon_female from "../../img/icons/icon_female.svg";
 import {
     Add as AddIcon,
     RemoveRedEye as RemoveRedEyeIcon,
@@ -58,6 +60,15 @@ export const BasicButtonStyles = styled(Button)`
     `}
     
 `
+
+export const IconPatient = (props) =>{
+    if(props.gender === "male"){
+        return <img src={icon_male} alt="male" />
+    }
+    else if(props.gender === "female"){
+        return <img src={icon_female} alt="female" />
+    }
+}
 const GreyButtonStyles = styled(Button)`
     &&&{
         background: #E5E5E5;

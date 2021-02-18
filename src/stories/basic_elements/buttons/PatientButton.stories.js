@@ -7,13 +7,29 @@ export default {
   title: 'Basic Elements/Buttons/Patient',
   component: PatientButton,
   argTypes: {
-    type: { control: 'string' },
-    name : { control: 'string' },
-    surnames : { control: 'string' },
-    age : { control: 'string' },
-    gender : { control: 'string' },
-    stay :  { control: 'string' },
-    number : { control: 'string' }
+    type: {
+        control: {
+        type: 'select',
+        options: [
+            'ward', 
+            'oupatients'
+        ]
+        }
+    },
+    name : { control: 'text' },
+    surnames : { control: 'text' },
+    age : { control: 'text' },
+    gender : {
+        control: {
+        type: 'select',
+        options: [
+            'male', 
+            'female'
+        ]
+        }
+    },
+    stay :  { control: 'text' },
+    number : { control: 'text' }
   },
   decorators: [story => 
     <ProviderSherwood>
