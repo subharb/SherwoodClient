@@ -10,10 +10,6 @@ import { Dialog,
 } from "@material-ui/core";
 import PropTypes from 'prop-types'; 
 
-const ModalContent = styled.div`
-    
-`;
-
 export default function Modal(props){
 
     return(

@@ -19,11 +19,11 @@ export default function Patient(props) {
         
         <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
             <Modal open={showDataCollections} closeModal={() => setShowDataCollections(false)}>
-                <Grid container spacing={3}  justify="center">
+                <Grid container spacing={3} >
                 {
                     props.dataCollections.map(dataCollection => {
                         return(
-                            <Grid item>
+                            <Grid item xs={12} style={{textAlign:"center"}}>
                                 <ButtonGrey onClick={() => fillDataCollection(dataCollection.id)}>{dataCollection.name}</ButtonGrey>
                             </Grid>
                         )
@@ -65,7 +65,7 @@ export default function Patient(props) {
                             </Typography>
                         </Grid>
                     </Grid>
-                    <Grid item container xs={5}>
+                    <Grid item container xs={5}  justify="center" alignItems="center">
                         <Grid item xs={4}>
                             <ButtonAdd onClick={() => setShowDataCollections(!showDataCollections)} />
                         </Grid>
