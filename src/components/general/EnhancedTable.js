@@ -257,6 +257,7 @@ export function EnhancedTable(props) {
     };
 
 const handleClick = (event, id) => {
+    console.log("Pincho en la tabla");
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -329,6 +330,7 @@ return (
                     tabIndex={-1}
                     key={`${index}`}
                     selected={isItemSelected}
+                    onClick={props.selectRow ? () => props.selectRow(index) : null}
                     >
                     {
                         !noSelectable &&

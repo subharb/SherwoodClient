@@ -141,10 +141,6 @@ PatientRecords.propTypes = {
     */
     initialData: PropTypes.object,
     /**
-     UUID de la investigación
-    */
-    idSurvey:PropTypes.string,
-    /**
      Personal information of the Patient
     */
     patient: PropTypes.object,

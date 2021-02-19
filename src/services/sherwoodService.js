@@ -32,8 +32,56 @@ export function fetchInvestigations() {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-  }
+}
 
+export function fetchRecordsPatientFromSurvey(uuidInvestigation, patientId, dataCollectionID) {
+    return new Promise((resolve, reject) => {
+      
+        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/record/"+patientId+"/survey/"+dataCollectionID, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
+
+export function fetchRecordsPatientAllSurveys(uuidInvestigation, patientId) {
+    return new Promise((resolve, reject) => {
+      
+        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/record/"+patientId, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
+export function postRecordPatient(postObj, uuidInvestigation, patientId, dataCollectionID) {
+    return new Promise((resolve, reject) => {
+        
+        axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/record/"+patientId+"/survey/"+dataCollectionID, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+  }
 export function resetPassword(credentials) {
   return new Promise((resolve, reject) => {
     axios

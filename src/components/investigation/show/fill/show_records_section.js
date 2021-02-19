@@ -44,9 +44,13 @@ export default function ShowRecordsSection(props) {
             <CardPadding >
                 <Grid container direction="column" spacing={3}>
                     <Grid item>
-                        <Typography variant="subtitle1" color="textPrimary">
-                            Section: { props.section.name }
-                        </Typography>
+                        {
+                            !props.noTitle &&
+                            <Typography variant="subtitle1" color="textPrimary">
+                                Section: { props.section.name }
+                            </Typography>
+                        }
+                        
                     </Grid>
                     {
                         renderSubmission()

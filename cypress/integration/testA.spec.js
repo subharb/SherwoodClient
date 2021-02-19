@@ -2,14 +2,14 @@ import { researcherA_data, loginResearcherA, loginResearcherB, loginResearcherC,
     researcherB_data, basic_info1, personal_data1, edc_data1, researcherC_data,
     patients_personal_data_decrypted, records_patient1, records_patient2, researcherD_data, loginResearcherD } from '../../src/stories/example_data';
 
-const URL_BASE = 'https://dashboard.sherwood.science';
+const URL_BASE = 'http://localhost:3000';//https://dashboard.sherwood.science';
 
 describe('Testing create an investigation', () => {
     context('iphone-5 resolution', () => {
         beforeEach(() => {
           // run these tests as if in a mobile browser
           // and ensure our responsive UI is correct
-          cy.viewport('iphone-5')
+          //cy.viewport('iphone-5')
         })
         it('Register Researcher A and Login', () => {
             cy.visit(URL_BASE+'/auth/sign-up');
