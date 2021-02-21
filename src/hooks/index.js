@@ -1,9 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory, useLocation } from "react-router-dom";
+import { decryptData, encryptData } from '../utils';
 import { useQuery } from 'react-query'
 import { SIGN_IN_ROUTE } from '../routes';
 
+export function usePatientsData(investigation, patientsData){
+    const [decryptedPatientData, setDecryptedPatientData] = useState([]);
+    const [errorEncryption, setErrorEncryption ] = useState(false);
+    
+    useEffect(() => {  
+        try{
+            if(patientsData.length !== 0 && patientsData.length !== decryptedPatientData.length){
+                //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
+                let tempDecryptedData = [];
+                for(const patient of patientsData){
+                    let encryptedFields = {};
+                    if(investigation.permissions !== 0){
+                        const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
+                        
+                        const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
+                        
+                        for(const personalField of investigation.personalFields){
+                            const encryptedField = patient.personalData[personalField];
+                            if(!encryptedField){
+                                console.error("No coinciden campos!");
+                                return "error!";
+                            }
+                            const decryptedField = decryptData(encryptedField, keyInvestigation);
+                            encryptedFields[personalField] = decryptedField; 
+                        }
+                    }
+                    
+                    encryptedFields["id"] = patient.id; 
+                    tempDecryptedData.push(encryptedFields);
+                }
+                setDecryptedPatientData(tempDecryptedData);
+            }
+        }
+        catch(error){
+            setErrorEncryption(true);
+            return;
+        }
+        
+    }, [patientsData])
+
+    return {decryptedPatientData:decryptedPatientData, errorEncryption:errorEncryption}
+}
 export function useFechData(name, request){
     const [data, setData] = useState([]);
     const [error, setError] = useState(false);

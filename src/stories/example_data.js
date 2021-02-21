@@ -252,37 +252,31 @@ export const patients_personal_data_decrypted = () => {
 export const patients_personal_data_encripted = () => {
     return [
         {
-            "id": "600ee2ae568a01203903fed0",
+            "id": "602fe2cbb5eb350f91235331",
             "personalData": {
-                "email": "U2FsdGVkX19zE7xj4DCi1bB45gS5FJnO2RBQsVqs+bwFirN9kHWFEzIsUw/MYVK2",
-                "phone": "U2FsdGVkX19qKHvDsN1gAFnIw0VyldrJTUlWBi+5GidrnzzDpLr05pwU0g0drN4C",
-                "name": "U2FsdGVkX19ocopLUsihONR1ibWmg1KLzIPZYBdTPK0=",
-                "surname": "U2FsdGVkX18OqSgO0WqJfayknGhRHvGuMrATqxsuyj4="
-            },
-            "keyPatientResearcher": "U2FsdGVkX19bms94TYB8K3ED74teGSI9VKdSNllX+k1wXgj3282Whikz56NoiB/VzBUx6xRr83ak/3z3q3EofQ==",
-            "encryptedKeyUsed": 1
+                "email": "U2FsdGVkX1+Jb7NpmOAZ9RXlrV8gXslBU61Po2TPjq7ixUW0b70AKVRkknCfnYDa",
+                "phone": "U2FsdGVkX1/GYYZn+jJT/Eiemvy6mBk/MCN5OE0ojwLPXQtPmOe7KD2CcvbCpxgC",
+                "name": "U2FsdGVkX1/BKdHoBBZknsKAFAhuBYV6mk8IKlsj9EE=",
+                "surname": "U2FsdGVkX1+a0dkpLsUi6XnVgqmsyGhHL84s5vndED4="
+            }
         },
         {
-            "id": "600ee2b3568a01203903fed1",
+            "id": "602fe2cfb5eb350f91235332",
             "personalData": {
-                "email": "U2FsdGVkX18oEcJlLeVnXCF2XmZ5S1QnVIrEtxLK0S8=",
-                "phone": "U2FsdGVkX1/QO3Zy5XPYsv9Y9Abbhbyouj0iga+qXxR3qyLvI//on712v1DRC+/b",
-                "name": "U2FsdGVkX19WMH5g0VXvEjV753phzJqBMU89xvD3vbg=",
-                "surname": "U2FsdGVkX18EKaRdlLD/A5Ya3y07ks4z5fRRoOFs3tQ="
-            },
-            "keyPatientResearcher": "U2FsdGVkX1/hB9FtUtWs+fE0oOfIm+H0ESwDIqZXoQ3HUrXzVmh35Nk1b8V0Eluyxal/CGCG86+42FsGZARsDA==",
-            "encryptedKeyUsed": 1
+                "email": "U2FsdGVkX19PTnTAVoXZ1im84wMstg0H8ZWrBXHKMt4=",
+                "phone": "U2FsdGVkX18NOjoNBzz/SQvat0iIHe8bDdW30fNYw0Gi+BbsT91Q6OEdyeDrSi59",
+                "name": "U2FsdGVkX18CA38F8JDLeL5FIjQXIsssFATVeb6X0sI=",
+                "surname": "U2FsdGVkX199eYrKBqWiB4rpkmQKGBy/DcMcfMLjEm8="
+            }
         },
         {
-            "id": "600ee2b7568a01203903fed2",
+            "id": "602fe2d3b5eb350f91235333",
             "personalData": {
-                "email": "U2FsdGVkX19RwwxsO3K9xgktHiXSPiiBJv6FAc5j2NeVprvgAgpWUU5ZXxrqszEw",
-                "phone": "U2FsdGVkX18ZpiKmUlK8eFbcxVEAgMW0B4/SSDv4F2Ow7IzvRn2BmrNQ5LeDcTZf",
-                "name": "U2FsdGVkX1/aonpnW/tOS+EGGs+RPurCbVVgUvIogAQ=",
-                "surname": "U2FsdGVkX1/jx9DHxoj7Vcrb7Tz8qE/AgtNjuSCGS+U="
-            },
-            "keyPatientResearcher": "U2FsdGVkX1+zrUoIPQnRIZ4J3yBNc4Wve+v4rzddE5VddZQJTFrnQVn+F4PoDLBi3J6PGDPxD1EO6Q9WAeSVxQ==",
-            "encryptedKeyUsed": 1
+                "email": "U2FsdGVkX1+jgY2lE8pSRp2fPCyutQqKaLy5WPnZzxPQeZBhdPI4oJiYLkZZkzVO",
+                "phone": "U2FsdGVkX19V/3fOdh1tUqpEWvrxWklRe4pGzUejLpbdzWQ1MkwXgqsxUPKSJNS7",
+                "name": "U2FsdGVkX1+esWAHKhaAs+0H542jirn6Sud3nuOu3R0=",
+                "surname": "U2FsdGVkX19/Fnwu9oMOj0AJhfDXoITmLCUNxunOB8k="
+            }
         }
     ]
 }
@@ -434,7 +428,7 @@ export const investigation_server = () => {
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = patients_personal_data_encripted();
     returnData.status = 1;
-    returnData.keyResearcherInvestigation = "U2FsdGVkX19dc/oAgeGDtnFwJOQlN2+6QmHS2aY1Kf/gHjA7K9n+KPNM+3qOADTCM9Gy6LUimq8LsJf5IzX2lw==";
+    returnData.keyResearcherInvestigation = "U2FsdGVkX1/X9MXMxZEYFl7ohoqrSlKVsfi10QOVlX7wzz37GqGJN8K0sHqAx2w5fjcvHmVBTq0ZwIzMYNL4Bw==";
     returnData.shareStatus = 2; 
     returnData.sharedResearchers = sharedResearchers;
     return returnData;
@@ -446,7 +440,7 @@ export const investigation_server_no_patitents = () => {
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = [];
     returnData.status = 1;
-    returnData.keyResearcherInvestigation = "U2FsdGVkX19dc/oAgeGDtnFwJOQlN2+6QmHS2aY1Kf/gHjA7K9n+KPNM+3qOADTCM9Gy6LUimq8LsJf5IzX2lw==";
+    returnData.keyResearcherInvestigation = "U2FsdGVkX1/X9MXMxZEYFl7ohoqrSlKVsfi10QOVlX7wzz37GqGJN8K0sHqAx2w5fjcvHmVBTq0ZwIzMYNL4Bw==";
     returnData.encryptedKeyUsed =1;
     returnData.shareStatus = 2; 
     returnData.sharedResearchers = sharedResearchers;

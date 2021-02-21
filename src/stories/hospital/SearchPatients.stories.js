@@ -21,5 +21,6 @@ const Template = (args) => <SearchPatients {...args} />;
 
 export const Basic = Template.bind({});
 Basic.args = {
-    personalFields : personal_data1()
+    personalFields : personal_data1(),
+    investigation:investigation_server()
 };

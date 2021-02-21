@@ -3,7 +3,7 @@ import PersonalDataForm from '../fill/personal_data';
 import { Alert } from "@material-ui/lab";
 import ShowAllRecordsSurvey from '../../show/single/show_all_records_survey';
 import { ButtonAdd, ButtonBack, Divider } from '../../../general/mini_components';
-import Table from '../../../general/table';
+import { usePatientsData } from '../../../../hooks';
 import Axios from 'axios';
 import ShowSurveys from '../fill/show_surveys_patient';
 import { decryptData, encryptData } from '../../../../utils';
@@ -24,9 +24,10 @@ export default function ShowInvestigation(props) {
     const [patientIndex, setPatientIndex] = useState(null);
     const [surveyIndex, setSurveyIndex] = useState(null);
     const [patientsData, setPatientsData] = useState([]);
-    const [decryptedPatientData, setDecryptedPatientData] = useState([]);
-    const [investigation, setInvestigation] = useState(props.initialData ? props.initialData.investigation : false);
-    const [errorEncryption, setErrorEncryption ] = useState(false);
+    const investigationProp = props.initialData ? props.initialData.investigation : false
+    const { decryptedPatientData, errorEncryption} = usePatientsData(investigationProp, patientsData);
+    const [investigation, setInvestigation] = useState(investigationProp);
+    
     const history  = useHistory();
 
     useEffect(() => {
@@ -47,7 +48,6 @@ export default function ShowInvestigation(props) {
                         from: history.location.pathname
                     }
                 })
-                
             }
         }
         if((patientsData.length === 0) && investigation){
@@ -58,41 +58,6 @@ export default function ShowInvestigation(props) {
         }
     }, [investigation]);
     
-    useEffect(() => {  
-        try{
-            if(patientsData.length !== 0 && patientsData.length !== decryptedPatientData.length){
-                //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
-                let tempDecryptedData = [];
-                for(const patient of patientsData){
-                    let encryptedFields = {};
-                    if(investigation.permissions !== 0){
-                        const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
-                        
-                        const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
-                        
-                        for(const personalField of investigation.personalFields){
-                            const encryptedField = patient.personalData[personalField];
-                            if(!encryptedField){
-                                console.error("No coinciden campos!");
-                                return "error!";
-                            }
-                            const decryptedField = decryptData(encryptedField, keyInvestigation);
-                            encryptedFields[personalField] = decryptedField; 
-                        }
-                    }
-                    
-                    encryptedFields["id"] = patient.id; 
-                    tempDecryptedData.push(encryptedFields);
-                }
-                setDecryptedPatientData(tempDecryptedData);
-            }
-        }
-        catch(error){
-            setErrorEncryption(true);
-            return;
-        }
-        
-    }, [patientsData])
 
     function renderPatientsTable(){
         if(investigation.shareStatus === 2){
