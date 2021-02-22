@@ -56,9 +56,9 @@ import Page500 from "../pages/auth/Page500";
 // const Tooltips = async(() => import("../pages/components/Tooltips"));
 
 // Dashboards components
-import Default from "../pages/dashboards/Default";
-import  Analytics from "../pages/dashboards/Analytics";
-import SaaS from "../pages/dashboards/SaaS";
+// import Default from "../pages/dashboards/Default";
+// import  Analytics from "../pages/dashboards/Analytics";
+// import SaaS from "../pages/dashboards/SaaS";
 import CreateInvestigation from "../components/investigation/create";
 
 import Investigations from "../components/investigation/show/all";
@@ -67,6 +67,8 @@ import ShareInvestigationRouter from "../components/investigation/share/wrapper"
 
 import HomeSchedule from "../pages/hospital/HomeSchedule";
 import ListPatients from "../pages/hospital/ListPatients";
+import Patient from "../pages/hospital/Patient";
+import SearchPatients from "../pages/hospital/SearchPatients";
 // // Forms components
 // const Pickers = async(() => import("../pages/forms/Pickers"));
 // const SelectionCtrls = async(() => import("../pages/forms/SelectionControls"));
@@ -155,6 +157,7 @@ export const MY_SCHEDULE_ROUTE = "/my-schedule";
 export const SEARCH_PATIENT_ROUTE = "/search-patient";
 export const HOSPITAL_WARD_ROUTE = "/hospital-ward";
 export const OUTPATIENTS_ROUTE = "/outpatients";
+export const HOSPITAL_PATIENT = "/patient/:idPatient";
 
 
 
@@ -183,12 +186,22 @@ const hospitalRoutes = {
         {
             path: HOSPITAL_WARD_ROUTE,
             name: "Hospital Ward",
-            component: <ListPatients/>
+            component: ListPatients
         },
         {
             path: OUTPATIENTS_ROUTE,
             name: "Outpatients",
-            component: <ListPatients/>
+            component:ListPatients
+        },
+        {
+            path: SEARCH_PATIENT_ROUTE,
+            name: "Search Patient",
+            component: SearchPatients
+        },
+        {
+            path: HOSPITAL_PATIENT,
+            name: "Patient",
+            component: Patient
         },
         // {
         //     path: DRAFT_INVESTIGATIONS_ROUTE,

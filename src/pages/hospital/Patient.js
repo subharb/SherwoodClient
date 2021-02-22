@@ -6,6 +6,7 @@ import { postRecordPatient, fetchRecordsPatientAllSurveys } from '../../services
 import Loader from '../../components/Loader';
 import { BoxBckgr, IconPatient, ButtonAdd, ButtonGrey, CheckCircleOutlineSvg } from '../../components/general/mini_components';
 import Modal from '../../components/general/modal';
+import { useParams } from 'react-router-dom';
 import { yearsFromDate, daysFromDate } from '../../utils';
 import FillDataCollection from './FillDataCollection';
 import ShowRecordsSection from '../../components/investigation/show/fill/show_records_section'
@@ -22,6 +23,9 @@ export default function Patient(props) {
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
     const [dataCollectionSelected, setDataCollectionSelected] = useState(null);
     const [newRecords, setNewRecords] = useState(0);
+    let { idPatient } = useParams();
+
+
     let years = yearsFromDate(props.dateOfBirth);
     let stay = daysFromDate(props.dateIn);
     
@@ -60,17 +64,6 @@ export default function Patient(props) {
             setError(true);
         }
         
-    }
-    function renderMedicalNote(){
-        if(indexMedicalNote !== null){
-            
-            
-        }
-        else{
-            return null;    
-        }
-        
-            
     }
     function renderCore(){
         if(dataCollectionSelected !== null){

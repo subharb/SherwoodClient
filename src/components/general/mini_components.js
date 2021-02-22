@@ -68,6 +68,7 @@ export const IconPatient = (props) =>{
     else if(props.gender === "female"){
         return <img src={icon_female} alt="female" />
     }
+    return null;
 }
 const GreyButtonStyles = styled(Button)`
     &&&{

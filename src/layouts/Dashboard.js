@@ -3,7 +3,8 @@ import styled, { createGlobalStyle } from "styled-components/macro";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
 import Footer from "../components/Footer";
-import Settings from "../components/Settings";
+import { Alert } from "@material-ui/lab";
+import { Translate } from 'react-localize-redux';
 import { useSherwoodUser } from '../hooks';
 import { spacing } from "@material-ui/system";
 
@@ -72,13 +73,20 @@ const MainContent = styled(Paper)`
 
 const Dashboard = ({ children, routes, width }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const {isLoading, isAuth} = useSherwoodUser();
+    const {isLoading, error} = useSherwoodUser();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
     if(isLoading){
         return <Loader />
+    }
+    else if(error){
+        return(
+            <Alert mb={4} severity="error">
+                <Translate id="investigation.share.error.description" />
+            </Alert>
+        ) 
     }
     return (
         <Root>

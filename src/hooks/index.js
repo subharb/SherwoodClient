@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory, useLocation } from "react-router-dom";
+import { fetchUser } from "../services/authService";
 import { decryptData, encryptData } from '../utils';
 import { useQuery } from 'react-query'
 import { SIGN_IN_ROUTE } from '../routes';
@@ -144,7 +145,10 @@ export function useInvestigation(uuid) {
 
 export function useRouter(initValue){
     const history = useHistory();
-    return initValue ? { pathname : initValue }: {pathname: history.location.pathname}
+    return {
+        pathname : initValue ? initValue : history.location.pathname,
+
+    }
 }
 
 export function useSherwoodUser(){
@@ -153,33 +157,35 @@ export function useSherwoodUser(){
     const initialLocation = location.pathname;
     const [isLoading, setIsLoading] = useState(true);
     const [isAuth, setIsAuth] = useState(true);
+    const [error, setError] = useState(false);
     
     useEffect(() => {
-        async function fetchUser(){
-            const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
-                .catch(err => {
-                    console.log('Catch', err); 
-                    return { status : 401};
-                }); 
-            
-            return request.status === 200
-        }
+     
         async function checkUser(){
+            try{
+                console.log("JWT", localStorage.getItem("jwt"));
             
-            console.log("JWT", localStorage.getItem("jwt"));
-            
-            if(localStorage.getItem("jwt") !==""){
-                const isAuth = await fetchUser();
+                if(localStorage.getItem("jwt") !==""){
+                    const isAuth = await fetchUser();
+                    
+                    if(isAuth){
+                        setIsAuth(true);
+                    }   
+                    else{
+                        setIsAuth(false);
+                    } 
+                }
+                else{
+                    setIsAuth(false);
+                }
                 setIsLoading(false);
-                if(isAuth){
-                    setIsAuth(true);
-                    //history.push(initialLocation);
-                    return; 
-                }    
             }
-            
-            setIsAuth(false);
-            
+            catch(error){
+                console.log(error);
+                setIsLoading(false);
+                setIsAuth(false);
+                setError(true);
+            }
         }
         
         checkUser();
@@ -196,5 +202,5 @@ export function useSherwoodUser(){
     }
     
 
-    return {isLoading, isAuth}
+    return {isLoading, isAuth, error}
 }

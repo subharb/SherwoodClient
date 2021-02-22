@@ -3,6 +3,16 @@ import { decryptData, saveData } from '../utils';
 import jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
 
+export function fetchUser(){
+    return new Promise((resolve, reject) => {
+        axios.get(process.env.REACT_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+            .then((response) => {
+                resolve(response.status === 200);
+            })
+            .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
 export function signIn(credentials, typeUser) {
   return new Promise((resolve, reject) => {
     saveData("password", credentials.password); 
