@@ -144,7 +144,7 @@ export const PERSONAL_DATA_FIELDS = {
         shortLabel:"investigation.create.personal_data.fields.name",
         validation : "textMin2"
     },
-    "surname" : {
+    "surnames" : {
         required : false,
         type:"text",
         label:"investigation.create.personal_data.fields.surname",

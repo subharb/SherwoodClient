@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux';
 import { Grid, Typography, Paper } from '@material-ui/core';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { postRecordPatient, fetchRecordsPatientAllSurveys } from '../../services/sherwoodService';
@@ -12,17 +13,20 @@ import FillDataCollection from './FillDataCollection';
 import ShowRecordsSection from '../../components/investigation/show/fill/show_records_section'
 import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
+import { usePatientsData } from '../../hooks';
 
 
-export default function Patient(props) {
+function Patient(props) {
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
-    const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false)
+    const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
+    const [patient, setPatient] = useState(null);
     const [surveyRecords, setSurveyRecords] = useState([]);
     const [showDataCollections, setShowDataCollections] = useState(false);
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
     const [dataCollectionSelected, setDataCollectionSelected] = useState(null);
     const [newRecords, setNewRecords] = useState(0);
+    
     let { idPatient } = useParams();
 
 
@@ -44,22 +48,24 @@ export default function Patient(props) {
             setLoading(true);
             const postObj = {submission : [
                 {
-                    id_section:props.dataCollection.sections[0]._id,
+                    id_section:dataCollectionSelected.sections[0]._id,
                     answers:data
                 }
                 ]
             }
-            const response = await postRecordPatient(postObj, props.investigation.uuid, props.patientId, dataCollectionSelected._id);
+            const response = await postRecordPatient(postObj, props.investigations[0].uuid, idPatient, dataCollectionSelected._id);
             setLoading(false);
             setSaved(true);
             setNewRecords(c => c +1);
             setTimeout(() => {
+                setDataCollectionSelected(null);
                 setSaved(false)
               }, 1000);
               
             
         }
         catch(error){
+            console.log(error);
             setLoading(false);
             setError(true);
         }
@@ -73,7 +79,7 @@ export default function Patient(props) {
             )
         }
         else if(indexMedicalNote !== null){
-            const dataCollection = props.dataCollections.find(dataCol => {
+            const dataCollection = props.investigations[0].surveys.find(dataCol => {
                 if(dataCol._id === surveyRecords[indexMedicalNote].surveyID){
                     return dataCol;
                 }
@@ -109,8 +115,8 @@ export default function Patient(props) {
                 <EnhancedTable noHeader noSelectable selectRow={(index) => selectRecord(index)} 
                 rows={surveyRecords.map(record => {
                     const dateCreated = new Date(record.record.created_At);
-                    return({researcher : record.researcher.name+" "+ record.researcher.surnames, date : dateCreated.toISOString().split('T')[0]})
-                })} headCells={[{ id: "researcher", alignment: "right", label: "Researcher"}, 
+                    return({researcher : record.researcher.name+" "+ record.researcher.surnames, surveyName : record.surveyName, date : dateCreated.toISOString().split('T')[0]})
+                })} headCells={[{ id: "researcher", alignment: "right", label: "Researcher"}, { id: "surveyName", alignment: "right", label: "DataCollection"},
                                 { id: "date", alignment: "right", label: "Date"}]} />
             )
         }
@@ -119,12 +125,13 @@ export default function Patient(props) {
         async function fetchRecordsPatient(){
             try{
                 setLoading(true);
-                const response = await fetchRecordsPatientAllSurveys(props.investigation.uuid, props.patientId);
+                const response = await fetchRecordsPatientAllSurveys(props.investigations[0].uuid, idPatient);
                 //Ordeno los records cronologicamente
                 let records = [];
                 for(const survey of response.surveys){
                     for(const record of survey.records){
                         record.surveyID = survey.id;
+                        record.surveyName = survey.surveyName;
                         records.push(record);
                     }
                     
@@ -143,9 +150,21 @@ export default function Patient(props) {
                 setError(true);
             }
         }
-        fetchRecordsPatient()
-    }, [newRecords])
+        if(props.investigations.length !== 0){
+            fetchRecordsPatient()
+        }
+    }, [newRecords, props.investigations])
     
+    useEffect(() => {
+        
+        //Find current patient
+        if(props.investigations.length !== 0){
+            const tempPatient = props.investigations[0].patientsPersonalData.find(patient =>{
+                return(patient.id === idPatient);
+            });
+            setPatient(tempPatient);
+        }
+    }, [props.investigations])
     if(error){
         return(
             <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
@@ -155,14 +174,13 @@ export default function Patient(props) {
             </BoxBckgr>
         )
     }
+    else if(props.investigations.length === 0 || !patient){
+        return <Loader />
+    }
     return (
         
         <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
             <Modal open={showDataCollections || loading || saved} closeModal={() => setShowDataCollections(false)}>
-                 {
-                    loading &&
-                    <Loader />
-                }
                 {
                     saved &&
                     <CheckCircleOutlineSvg style={{ color: "green",fontSize: 80 }}/>
@@ -170,7 +188,7 @@ export default function Patient(props) {
                 { showDataCollections && 
                     <Grid container spacing={3} >
                     {
-                        props.dataCollections.map(dataCollection => {
+                        props.investigations[0].surveys.map(dataCollection => {
                             return(
                                 <Grid item xs={12} style={{textAlign:"center"}}>
                                     <ButtonGrey onClick={() => fillDataCollection(dataCollection)}>{dataCollection.name}</ButtonGrey>
@@ -196,12 +214,12 @@ export default function Patient(props) {
                     <Grid item container xs={4}>
                         <Grid item xs={12}>
                             <Typography variant="body2" gutterBottom>
-                                {props.name} {props.surnames}
+                                {patient.personalData.name} {patient.personalData.surnames}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="body2" gutterBottom>
-                                ID: {props.patientID}
+                                ID: {patient.id}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
@@ -230,3 +248,10 @@ export default function Patient(props) {
         </BoxBckgr>
     )
 }
+
+const mapStateToProps = (state) =>{
+    return {
+        investigations : state.investigations
+    }
+}
+export default connect(mapStateToProps, null)(Patient)

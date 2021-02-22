@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled, { createGlobalStyle } from "styled-components/macro";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
@@ -7,7 +8,8 @@ import { Alert } from "@material-ui/lab";
 import { Translate } from 'react-localize-redux';
 import { useSherwoodUser } from '../hooks';
 import { spacing } from "@material-ui/system";
-
+import { connect } from 'react-redux';
+import { fetchInvestigations } from '../redux/actions/investigationsActions';
 import {
   Hidden,
   CssBaseline,
@@ -74,10 +76,20 @@ const MainContent = styled(Paper)`
 const Dashboard = ({ children, routes, width }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const {isLoading, error} = useSherwoodUser();
+    const dispatch = useDispatch();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    useEffect(() => {
+        async function fetchRemoteInvestigations(){
+            await dispatch(
+                fetchInvestigations()
+              );
+        }
+        
+          fetchRemoteInvestigations()
+    }, [])
     if(isLoading){
         return <Loader />
     }
@@ -121,4 +133,9 @@ const Dashboard = ({ children, routes, width }) => {
   );
 };
 
-export default withWidth()(Dashboard);
+const mapDispatchToProps = dispatch => {
+    return {    
+        fetchInvestigations : () => dispatch(fetchInvestigations())
+    }
+}
+export default withWidth()(connect(null, mapDispatchToProps)(Dashboard));

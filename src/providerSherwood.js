@@ -3,7 +3,7 @@ import { LocalizeProvider } from "react-localize-redux";
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "./translations/global.json";
 import { createStore, applyMiddleware } from 'redux';
-import reducers from './reducers';
+import reducers from './redux/reducers';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';

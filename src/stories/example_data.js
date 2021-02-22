@@ -199,7 +199,7 @@ export const basic_info1_raw = () => {
 }
 
 export const personal_data1 = () => {
-    return ["email", "phone", "name", "surname"]
+    return ["email", "phone", "name", "surnames", "birthdate"]
 }
 
 export const patient_data1 = () => {
@@ -507,10 +507,11 @@ export const pendingInvestigations =[
             "surnames" : "Rodríguez"
         },
         "personalFields": [
-            "surname",
+            "surnames",
             "name",
             "phone",
-            "email"
+            "email",
+            "birthdate"
         ],
         "createdAt": "2021-01-20T12:14:06.000Z",
         "updatedAt": "2021-01-20T12:14:06.000Z"
