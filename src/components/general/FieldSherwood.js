@@ -174,7 +174,7 @@ class FieldSherwood extends Component{
                         <KeyboardDatePicker
                             margin="normal"
                             id={input.name}
-                            label={label}
+                            label={labelString}
                             format="MM/dd/yyyy"
                             value={input.value === "" ? new Date() : input.value}
                             onChange={this.handleDateChange}
