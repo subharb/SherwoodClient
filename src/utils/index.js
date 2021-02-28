@@ -49,6 +49,10 @@ export function validateField(field, fieldCompare){
                 response.result = Boolean(field.value === fieldCompare);
                 response.messageCode =  pathErroTranslation+"error_not_same"
                 break;
+            case "pastDate":
+                response.result = (Date.parse(field.value)-Date.parse(new Date())<0)
+                response.messageCode =  pathErroTranslation+"error_past_date"
+                break;
             default:
                 console.log("Validación no definida");
                 response.result = false;
@@ -138,61 +142,73 @@ export const isUserLoggedIn = () => localStorage.getItem("jwt");
 
 export const PERSONAL_DATA_FIELDS = {
     "name" : {
-        required : false,
+        required : true,
+        name: "name",
         type:"text",
         label:"investigation.create.personal_data.fields.name",
         shortLabel:"investigation.create.personal_data.fields.name",
         validation : "textMin2"
     },
     "surnames" : {
-        required : false,
+        required : true,
+        name: "surnames",
         type:"text",
         label:"investigation.create.personal_data.fields.surname",
         shortLabel:"investigation.create.personal_data.fields.surname",
         validation : "textMin2"
     },
     "birthdate" : {
-        required : false,
+        name: "birthdate",
+        required : true,
         type:"date",
         label:"investigation.create.personal_data.fields.birthdate",
         shortLabel:"investigation.create.personal_data.fields.birthdate",
-        validation : "textMin2"
+        validation : "pastDate"
     },
     "address" : {
-        required : false,
+        name: "address",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.address",
         shortLabel:"investigation.create.personal_data.fields.address",
         validation : "textMin2"
     },
     "health_id" : {
-        required : false,
+        name: "health_id",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.health_id",
         shortLabel:"investigation.create.personal_data.fields.health_id",
         validation : "textMin2"
     },
     "national_id" : {
-        required : false,
+        name: "national_id",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.national_id",
         shortLabel:"investigation.create.personal_data.fields.national_id",
         validation : "textMin2"
     },
     "email" : {
-        required : false,
+        name: "email",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.email",
         shortLabel:"investigation.create.personal_data.fields.email",
         validation : "textMin2"
     },
     "phone" : {
-        required : false,
+        name: "phone",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.phone",
         shortLabel:"investigation.create.personal_data.fields.phone",
         validation : "textMin2"
     }
+}
+
+export const PERSONAL_DATA_TYPES = {
+
 }
 
 export const FIELDS_BASIC_INFO = {
