@@ -10,7 +10,7 @@ export default function PersonalDataForm(props) {
     for(let i = 0; i < props.fields.length; i++){
         const value = props.fields[i];
         
-        form[value] = {...PERSONAL_DATA_FIELDS[value]}; 
+        form[value.name] = {...PERSONAL_DATA_FIELDS[value.name]}; 
     }
     //Se generan las claves del paciente, tanto para el researcher como para el posterior acceso del paciente
     async function encryptPersonalData(data){
@@ -26,7 +26,11 @@ export default function PersonalDataForm(props) {
        
         
         for (const key of Object.keys(data)) {
-            encryptedData[key] =  encryptData(data[key], rawKeyInvestigation);
+            let value = data[key];
+            if(typeof value.getMonth === 'function'){
+                value = value.getTime().toString();
+            }
+            encryptedData[key] =  encryptData(value, rawKeyInvestigation);
         }
         
         
