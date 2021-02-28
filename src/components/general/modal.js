@@ -14,12 +14,13 @@ export default function Modal(props){
 
     return(
         <Dialog style={{backgroundColor:"transparent"}}
-            PaperProps={{
-                style: {
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-                },
-            }}
+            PaperProps={props.isTransparent &&
+                {
+                    style: {
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    },
+                }}
             open={props.open}
             onClose={props.closeModal}
             aria-labelledby="form-dialog-title">
@@ -47,6 +48,7 @@ export default function Modal(props){
 
 Modal.propTypes = {
     open: PropTypes.bool.isRequired,
+    isTransparent:PropTypes.bool,
     title: PropTypes.oneOfType([
         PropTypes.string.isRequired,
         PropTypes.object.isRequired
