@@ -2,14 +2,14 @@ export const edc_data1 = () => {
     return {
         surveys : [
             {   
-                "_id": "602fe2c2b5eb350f9123532c",
+                "uuid": "602fe2c2b5eb350f9123532c",
                 "name" : "Demographic Questionaire",
                     "sections": [
                         {
                             "fields": [
                                 {
                                     "required": true,
-                                    "is_personal_data": false,
+                                    "encrypted": false,
                                     "name": "sex",
                                     "label": "Sex at birth",
                                     "type": "text",
@@ -17,14 +17,14 @@ export const edc_data1 = () => {
                                 },
                                 {
                                     "required": true,
-                                    "is_personal_data": false,
+                                    "encrypted": false,
                                     "name": "etnic",
                                     "label": "Etnic Origin",
                                     "type": "text",
                                     "typeValueCypress": "Text"
                                 }
                             ],
-                            "_id": "60239afe562f88134f30a268",
+                            "uuid": "60239afe562f88134f30a268",
                             "name": "Demographics",
                             "repeats": false
                         },
@@ -32,14 +32,14 @@ export const edc_data1 = () => {
                             "fields": [
                                 {
                                     "required": true,
-                                    "is_personal_data": false,
+                                    "encrypted": false,
                                     "name": "ilnesses",
                                     "label": "Previous Ilnesess",
                                     "type": "text",
                                     "typeValueCypress": "Text"
                                 }
                             ],
-                            "_id": "5fdc9fbccfec957a73cb34f7",
+                            "uuid": "5fdc9fbccfec957a73cb34f7",
                             "name": "Past medical history",
                             "repeats": false
                         }
@@ -47,14 +47,14 @@ export const edc_data1 = () => {
                     records:[]
                 },
             {
-                "_id": "5fdc9fbccfec957a73cbf6",
+                "uuid": "5fdc9fbccfec957a73cbf6",
                 records:[],
                 name:"Analitica",
                 sections:[
                     {
                         name:"Blood Samples",
                         repeats : true, 
-                        "_id": "5fccaedb8583362dd3d50246",
+                        "uuid": "5fccaedb8583362dd3d50246",
                         fields : [
                             {
                                 required : true, 
@@ -88,7 +88,7 @@ export const records_patient1 = () =>{
             {
                 "submission": [
                     {
-                        "id_section": "5fdc9fbccfec957a73cb34f6",
+                        "uuid_section": "5fdc9fbccfec957a73cb34f6",
                         "nameCypress" : "Demographics",
                         "answers": {
                             "sex": "Male",
@@ -96,7 +96,7 @@ export const records_patient1 = () =>{
                         }
                     }
                 ],
-                "_id": "5fe20fb779160a2fc27c11d7",
+                "uuid": "5fe20fb779160a2fc27c11d7",
                 "nameCypress" : "Demographic Questionaire",
                 "id_patient": "5fe218b524b4213823c82e8d",
                 "created_At": "2020-12-06T10:15:20.311Z",
@@ -105,7 +105,7 @@ export const records_patient1 = () =>{
             {
                 "submission": [
                     {
-                        "id_section": "5fccaedb8583362dd3d50246",
+                        "uuid_section": "5fccaedb8583362dd3d50246",
                         "nameCypress" : "Blood Samples",
                         "answers": {
                             "red_cells": "300",
@@ -113,7 +113,7 @@ export const records_patient1 = () =>{
                         }
                     }
                 ],
-                "_id": "5fe20fb779160a2fc27c11d7",
+                "uuid": "5fe20fb779160a2fc27c11d7",
                 "nameCypress" : "Analitica",
                 "id_patient": "5fe218b524b4213823c82e8d",
                 "created_At": "2020-12-06T17:03:19.093Z",
@@ -139,7 +139,7 @@ export const records_patient2 = () =>{
             {
                 "submission": [
                     {
-                        "id_section": "5fdc9fbccfec957a73cb34f6",
+                        "uuid_section": "5fdc9fbccfec957a73cb34f6",
                         "nameCypress" : "Demographics",
                         "answers": {
                             "sex": "Female",
@@ -147,7 +147,7 @@ export const records_patient2 = () =>{
                         }
                     }
                 ],
-                "_id": "5fe20fb779160a2fc27c11d7",
+                "uuid": "5fe20fb779160a2fc27c11d7",
                 "nameCypress" : "Demographic Questionaire",
                 "id_patient": "5fe218c024b4213823c82e8e",
                 "created_At": "2020-12-06T10:15:20.311Z",
@@ -156,14 +156,14 @@ export const records_patient2 = () =>{
             {
                 "submission": [
                     {
-                        "id_section": "5fe20fb779160a2fc27c11d9",
+                        "uuid_section": "5fe20fb779160a2fc27c11d9",
                         "nameCypress" : "Past medical history",
                         "answers": {
                             "ilnesses": "Prostate Cancer"
                         }
                     }
                 ],
-                "_id": "5fe20fb779160a2fc27c11d7",
+                "uuid": "5fe20fb779160a2fc27c11d7",
                 "nameCypress" : "Demographic Questionaire",
                 "id_patient": "5fe218c024b4213823c82e8e",
                 "created_At": "2020-12-06T17:03:19.093Z",
@@ -232,19 +232,19 @@ export const patients_personal_data_decrypted = () => {
             "email":"john@hopkins.com",
             "phone":"+1 727 1728 9191",
             "name":"John",
-            "surname":"Hopkins"
+            "surnames":"Hopkins"
         },
         {
             "email":"peter@gmail.com",
             "phone":"+49 127 1728 9191",
             "name":"Peter",
-            "surname":"Petrelli"
+            "surnames":"Petrelli"
         },
         {
             "email":"donnie@gmail.com",
             "phone":"+1 1997 1728 9191",
             "name":"Donald",
-            "surname":"Trump"
+            "surnames":"Trump"
         }
     ];
 }

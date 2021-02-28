@@ -180,7 +180,7 @@ function Patient(props) {
     return (
         
         <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
-            <Modal open={showDataCollections || loading || saved} closeModal={() => setShowDataCollections(false)}>
+            <Modal isTransparent={true} open={showDataCollections || loading || saved} closeModal={() => setShowDataCollections(false)}>
                 {
                     saved &&
                     <CheckCircleOutlineSvg style={{ color: "green",fontSize: 80 }}/>

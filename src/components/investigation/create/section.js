@@ -126,6 +126,7 @@ class Section extends Component{
             let newValues = Object.assign({}, values);
             newValues.fields = [...this.state.fields];
             console.log("handleNewSection:"+JSON.stringify(values));
+            newValues.repeats = values.hasOwnProperty("repeats") ? values.repeats : false;
             this.props.callBackNewSection(newValues);
         }
         

@@ -119,7 +119,7 @@
                 "intro" : ["Please select the personal data you are planning to include in your investigation" ,"Seleccione los datos personales que desea incluir en su investigación"],
                 "fields" : {
                     "name" : ["Name", "Nombre"],
-                    "surname" : ["Surnames", "Apellidos"],
+                    "surnames" : ["Surnames", "Apellidos"],
                     "address" : ["Address", "Dirección"],
                     "health_id" : ["Health ID", "Nº Seguridad social"],
                     "national_id" : ["National ID", "DNI"],
