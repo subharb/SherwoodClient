@@ -11,47 +11,47 @@ describe('Testing create an investigation', () => {
           // and ensure our responsive UI is correct
           //cy.viewport('iphone-5')
         })
-        // it('Register Researcher A and Login', () => {
-        //     cy.visit(URL_BASE+'/auth/sign-up');
-        //     //cy.visit('https://dashboard.sherwood.science/');
+        it('Register Researcher A and Login', () => {
+            cy.visit(URL_BASE+'/auth/sign-up');
+            //cy.visit('https://dashboard.sherwood.science/');
 
-        //     cy.registerResearcher(researcherA_data);
+            cy.registerResearcher(researcherA_data);
 
-        //     cy.get('button[data-testid="continue-modal"]')
-        //         .click();
-        //     cy.loginResearcher(loginResearcherA);
+            cy.get('button[data-testid="continue-modal"]')
+                .click();
+            cy.loginResearcher(loginResearcherA);
             
-        // })
-        // it('Register Researcher B', () => {
-        //     cy.visit(URL_BASE+'/auth/sign-up');
-        //     //cy.visit('https://dashboard.sherwood.science/');
+        })
+        it('Register Researcher B', () => {
+            cy.visit(URL_BASE+'/auth/sign-up');
+            //cy.visit('https://dashboard.sherwood.science/');
 
-        //     cy.registerResearcher(researcherB_data);
-        //     cy.get('button[data-testid="continue-modal"]')
-        //         .click();
+            cy.registerResearcher(researcherB_data);
+            cy.get('button[data-testid="continue-modal"]')
+                .click();
 
-        // });
-        // it('Researcher Logs in', () => {
+        });
+        it('Researcher Logs in', () => {
             
-        //     //cy.visit('https://dashboard.sherwood.science/');
+            //cy.visit('https://dashboard.sherwood.science/');
 
-        //     cy.visit(URL_BASE+'/investigations/live');
-        //     //cy.visit('https://dashboard.sherwood.science/');
-        //     cy.loginResearcher(loginResearcherA);
+            cy.visit(URL_BASE+'/investigations/live');
+            //cy.visit('https://dashboard.sherwood.science/');
+            cy.loginResearcher(loginResearcherA);
 
-        // });
+        });
         
-        // it('Researcher Creates an Investigation', () => {
+        it('Researcher Creates an Investigation', () => {
 
-        //     cy.visit(URL_BASE+'/investigation/create');
-        //     cy.loginResearcher(loginResearcherA);
+            cy.visit(URL_BASE+'/investigation/create');
+            cy.loginResearcher(loginResearcherA);
             
-        //     cy.contains('Create investigation').click();
+            cy.contains('Create investigation').click();
 
 
-        //     cy.createInvestigation(basic_info1, personal_data1(),edc_data1() )  
+            cy.createInvestigation(basic_info1, personal_data1(),edc_data1() )  
 
-        // })
+        })
         it('Researcher Adds patients', () => {
             
             cy.visit(URL_BASE+'/investigations/live');

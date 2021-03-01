@@ -266,7 +266,7 @@ Cypress.Commands.add('createInvestigation', (basic_info, personal_data, edc_data
     cy.createBasicInfo(basic_info);
 
     personal_data.forEach(pField => {
-        cy.get('input[name="'+pField+'"]').click();
+        cy.get('input[name="'+pField.name+'"]').click();
         //cy.contains(pField, {matchCase: false}).click();    
     });
     
