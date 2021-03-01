@@ -26,11 +26,14 @@ export default function ShowRecordsSection(props) {
             <GridPadded container direction="column" spacing={3}>
                 {
                     props.section.fields.map(field => {
-                        const value = submission.answers[field.name] ?  submission.answers[field.name] : "no disponible";
+                        const valueRecord = submission.surveyRecords.find(record => {
+                            return field.id === record.surveyField.id
+                        })
+                        
                         return (
                             <Grid item>
                                 <Typography variant="body2" gutterBottom>
-                                    {field.label}: {value}
+                                    {field.label}: {valueRecord.value}
                                 </Typography>
                             </Grid>
                         )
@@ -38,6 +41,9 @@ export default function ShowRecordsSection(props) {
                 }
             </GridPadded>
         );
+    }
+    if(!props.submissions){
+        return "ERROR";
     }
     if(indexSubmission < props.submissions.length){
         return (

@@ -333,19 +333,27 @@ export function numberRecordsSection(section, records){
     return nRegistros;
 }
 
-export function findSubmissionsFromSection(records, sectionID){
-    let submissionsSection = [];
-    for(let i = 0; i < records.length; i++){
-        const patientRecord = records[i];
-        for(let j = 0; j < patientRecord.submission.length;j++){
-            const submission = patientRecord.submission[j];
-            if(submission.id_section === sectionID){
-                submissionsSection.push(submission);
-                
+export function filterRecordsFromSubmissions(submissions, sectionUUID){
+    let filteredSubmissions = [];
+    for(let i = 0; i < submissions.length; i++){
+        let filteredRecords = [];
+        const submission = submissions[i];
+        for(let j = 0; j < submission.surveyRecords.length; j++){
+            const patientRecord = submission.surveyRecords[j];
+            if(patientRecord.surveySection.uuid === sectionUUID){ 
+                filteredRecords.push(patientRecord); 
             }
+        } 
+        filteredSubmissions.push({
+            id:submission.id,
+            createdAt:submission.createdAt,
+            updatedAt:submission.updatedAt,
+            surveyRecords:filteredRecords
         }
+            
+        ); 
     }
-    return submissionsSection;
+    return filteredSubmissions;
 }
 
 export function yearsFromDate(fromDateString){
@@ -365,4 +373,36 @@ export function saveData(key, value){
 
 export function getData(key){
     return localStorage.getItem(key); 
+}
+
+export function decryptPatientData(patientsData, investigation){
+    let tempDecryptedData = [];
+    if(patientsData.length !== 0){
+        //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
+        
+        for(const patient of patientsData){
+            let encryptedFields = {};
+            if(investigation.permissions !== 0){
+                const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
+                
+                const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
+                
+                for(const personalField of investigation.personalFields){
+                    const encryptedField = patient.personalData.find(pData =>{
+                        return pData.name === personalField.name;
+                    });
+                    if(!encryptedField){
+                        console.error("No coinciden campos!");
+                        return "error!";
+                    }
+                    const decryptedField = decryptData(encryptedField.value, keyInvestigation);
+                    encryptedFields[personalField.name] = decryptedField; 
+                }
+            }
+            
+            encryptedFields["uuid"] = patient.uuid; 
+            tempDecryptedData.push(encryptedFields);
+        }
+    }
+    return tempDecryptedData;
 }

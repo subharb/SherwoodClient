@@ -20,10 +20,15 @@ export default function PatientRecords(props) {
         setSectionSelected(indexSection);
     }
     async function fetchRecords(){
-        const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.id+"/survey/"+props.survey._id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.uuid+"/survey/"+props.survey.uuid, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
-            setPatientRecords(response.data.surveys[0].records);
+            //Busco el survey actual
+            const currentSurvey = response.data.surveys.find(aSurvey => {
+                return aSurvey.uuid === props.survey.uuid
+            })
+            
+            setPatientRecords(currentSurvey.submissions);
         }
         else{
             setShowError(1);
@@ -40,7 +45,7 @@ export default function PatientRecords(props) {
     
     function renderSection(section, nRecords){
         let registers = "No hay registros";
-        let addButton = <ButtonAdd onClick={() => addRegistry(section._id)} />;
+        let addButton = <ButtonAdd onClick={() => addRegistry(section.uuid)} />;
         if(nRecords !== 0){
             registers = "Hay "+nRecords+" registros";
             if(!section.repeats){
@@ -53,8 +58,8 @@ export default function PatientRecords(props) {
     }
     function renderRecordsSection(records, sections){    
         return Object.values(sections).map(section => {
-            const currentPatientRecords = records.filter(submission => submission.id_patient === props.patient.id);
-            const submissionsSection = findSubmissionsFromSection(currentPatientRecords, section._id);
+            const currentPatientRecords = records.filter(submission => submission.uuid_patient === props.patient.uuid);
+            const submissionsSection = findSubmissionsFromSection(currentPatientRecords, section.uuid);
 
             return(
                 <ShowRecordsSection submissions={submissionsSection} section={section} />
@@ -64,12 +69,12 @@ export default function PatientRecords(props) {
     async function sendRecord(values){
         const recordArray = Object.keys(values).map(keySection => {
             return {
-                id_section:keySection,
+                uuid_section:keySection,
                 answers:{...values[keySection]}
             }
         })
         const postObj = {submission : recordArray}
-        const response = await axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.id, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.uuid, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
             fetchRecords();
@@ -121,7 +126,7 @@ export default function PatientRecords(props) {
                 props.singlePatient &&
                 <Grid item>
                     <Typography variant="subtitle1">
-                        <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.name} ${props.patient.surname}`} - {props.patient.id}
+                        <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.name} ${props.patient.surname}`} - {props.patient.uuid}
                     </Typography>
                 </Grid>
             }

@@ -1,78 +1,89 @@
 export const edc_data1 = () => {
     return {
-        surveys : [
-            {   
-                "uuid": "602fe2c2b5eb350f9123532c",
-                "name" : "Demographic Questionaire",
-                    "sections": [
-                        {
-                            "fields": [
-                                {
-                                    "required": true,
-                                    "encrypted": false,
-                                    "name": "sex",
-                                    "label": "Sex at birth",
-                                    "type": "text",
-                                    "typeValueCypress": "Text"
-                                },
-                                {
-                                    "required": true,
-                                    "encrypted": false,
-                                    "name": "etnic",
-                                    "label": "Etnic Origin",
-                                    "type": "text",
-                                    "typeValueCypress": "Text"
-                                }
-                            ],
-                            "uuid": "60239afe562f88134f30a268",
-                            "name": "Demographics",
-                            "repeats": false
-                        },
-                        {
-                            "fields": [
-                                {
-                                    "required": true,
-                                    "encrypted": false,
-                                    "name": "ilnesses",
-                                    "label": "Previous Ilnesess",
-                                    "type": "text",
-                                    "typeValueCypress": "Text"
-                                }
-                            ],
-                            "uuid": "5fdc9fbccfec957a73cb34f7",
-                            "name": "Past medical history",
-                            "repeats": false
-                        }
-                    ],
-                    records:[]
-                },
+        "surveys": [
             {
-                "uuid": "5fdc9fbccfec957a73cbf6",
-                records:[],
-                name:"Analitica",
-                sections:[
+                "id": 11,
+                "uuid": "67a5b78f-226b-45ef-8a43-72772127ba73",
+                "name": "Demographic Questionaire",
+                "isActive": true,
+                "sections": [
                     {
-                        name:"Blood Samples",
-                        repeats : true, 
-                        "uuid": "5fccaedb8583362dd3d50246",
-                        fields : [
+                        "id": 15,
+                        "uuid": "ef30d3f6-1436-47cd-ad5a-22321de4d3a7",
+                        "name": "Demographics",
+                        "repeats": false,
+                        "isActive": true,
+                        "fields": [
                             {
-                                required : true, 
-                                encrypted:true, 
-                                name : "red_cells", 
-                                label : "Amount red cells?", 
-                                type:"text",
-                                typeValueCypress:"Text"
-                            
+                                "id": 28,
+                                "type": "text",
+                                "name": "sex",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Sex at birth",
+                                "isActive": true
                             },
                             {
-                                required : true, 
-                                encrypted:true, 
-                                name : "leucocitos", 
-                                label : "Amount white cells?", 
-                                type:"text",
-                                typeValueCypress:"Text"
-                            
+                                "id": 29,
+                                "type": "text",
+                                "name": "etnic",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Etnic Origin",
+                                "isActive": true
+                            }
+                        ]
+                    },
+                    {
+                        "id": 16,
+                        "uuid": "5777fe63-73d0-42f4-9a8e-3559130e5187",
+                        "name": "Past medical history",
+                        "repeats": false,
+                        "isActive": true,
+                        "fields": [
+                            {
+                                "id": 30,
+                                "type": "text",
+                                "name": "ilnesses",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Previous Ilnesess",
+                                "isActive": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 12,
+                "uuid": "7c16a1a9-56a9-40a3-848c-67b5a7923d26",
+                "name": "Analitica",
+                "isActive": true,
+                "sections": [
+                    {
+                        "id": 17,
+                        "uuid": "21cc0d3a-0149-442d-bd24-c8eaa050223f",
+                        "name": "Blood Samples",
+                        "repeats": true,
+                        "isActive": true,
+                        "fields": [
+                            {
+                                "id": 31,
+                                "type": "text",
+                                "name": "red_cells",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Amount red cells?",
+                                "isActive": true
+                            },
+                            {
+                                "id": 32,
+                                "type": "text",
+                                "name": "leucocitos",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Amount white cells?",
+                                "isActive": true
                             }
                         ]
                     }
@@ -84,40 +95,140 @@ export const edc_data1 = () => {
 
 export const records_patient1 = () =>{
     return {
-        records : [
+        submissions : [
             {
-                "submission": [
+                "surveyRecords": [
                     {
-                        "uuid_section": "5fdc9fbccfec957a73cb34f6",
-                        "nameCypress" : "Demographics",
-                        "answers": {
-                            "sex": "Male",
-                            "etnic": "Hispanic"
+                        "id": 4,
+                        "value": "male",
+                        "surveySection": {
+                            "id": 15,
+                            "uuid": "ef30d3f6-1436-47cd-ad5a-22321de4d3a7",
+                            "name": "Demographics",
+                            "repeats": false,
+                            "isActive": true
+                        },
+                        "surveyField": {
+                            "id": 28,
+                            "type": "text",
+                            "name": "sex",
+                            "encrypted": false,
+                            "required": true,
+                            "label": "Sex at birth",
+                            "isActive": true
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "value": "arabix",
+                        "surveySection": {
+                            "id": 15,
+                            "uuid": "ef30d3f6-1436-47cd-ad5a-22321de4d3a7",
+                            "name": "Demographics",
+                            "repeats": false,
+                            "isActive": true
+                        },
+                        "surveyField": {
+                            "id": 29,
+                            "type": "text",
+                            "name": "etnic",
+                            "encrypted": false,
+                            "required": true,
+                            "label": "Etnic Origin",
+                            "isActive": true
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "value": 122,
+                        "surveySection": {
+                            "id": 16,
+                            "uuid": "21cc0d3a-0149-442d-bd24-c8eaa050223f",
+                            "name": "Blood Samples",
+                            "repeats": true,
+                            "isActive": true
+                        },
+                        "surveyField": {
+                            "id": 31,
+                            "type": "text",
+                            "name": "red_cells",
+                            "encrypted": false,
+                            "required": true,
+                            "label": "Amount red cells?",
+                            "isActive": true
+                    }
+                    },
+                    {
+                        "id": 6,
+                        "value": 122,
+                        "surveySection": {
+                            "id": 16,
+                            "uuid": "21cc0d3a-0149-442d-bd24-c8eaa050223f",
+                            "name": "Blood Samples",
+                            "repeats": true,
+                            "isActive": true
+                        },
+                        "surveyField": {
+                            "id": 32,
+                            "type": "text",
+                            "name": "leucocitos",
+                            "encrypted": false,
+                            "required": true,
+                            "label": "Amount white cells?",
+                            "isActive": true
                         }
                     }
                 ],
-                "uuid": "5fe20fb779160a2fc27c11d7",
-                "nameCypress" : "Demographic Questionaire",
-                "id_patient": "5fe218b524b4213823c82e8d",
-                "created_At": "2020-12-06T10:15:20.311Z",
-                "updated_At": "2020-12-06T10:15:20.311Z"
+                "id": 4,
+                "createdAt": "2021-03-01T08:43:06.663Z",
+                "updatedAt": "2021-03-01T08:43:06.663Z",
             },
-            {
-                "submission": [
+            {   
+                "surveyRecords" : [
                     {
-                        "uuid_section": "5fccaedb8583362dd3d50246",
-                        "nameCypress" : "Blood Samples",
-                        "answers": {
-                            "red_cells": "300",
-                            "leucocitos" : "123"
+                        "id": 6,
+                        "value": 111,
+                        "surveySection": {
+                            "id": 16,
+                            "uuid": "21cc0d3a-0149-442d-bd24-c8eaa050223f",
+                            "name": "Blood Samples",
+                            "repeats": true,
+                            "isActive": true
+                        },
+                        "surveyField": {
+                            "id": 31,
+                            "type": "text",
+                            "name": "red_cells",
+                            "encrypted": false,
+                            "required": true,
+                            "label": "Amount red cells?",
+                            "isActive": true
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "value": 99,
+                        "surveySection": {
+                            "id": 16,
+                            "uuid": "21cc0d3a-0149-442d-bd24-c8eaa050223f",
+                            "name": "Blood Samples",
+                            "repeats": true,
+                            "isActive": true
+                        },
+                        "surveyField": {
+                            "id": 32,
+                            "type": "text",
+                            "name": "leucocitos",
+                            "encrypted": false,
+                            "required": true,
+                            "label": "Amount white cells?",
+                            "isActive": true
                         }
                     }
                 ],
-                "uuid": "5fe20fb779160a2fc27c11d7",
-                "nameCypress" : "Analitica",
-                "id_patient": "5fe218b524b4213823c82e8d",
-                "created_At": "2020-12-06T17:03:19.093Z",
-                "updated_At": "2020-12-06T17:03:19.093Z"
+                "id": 5,
+                "createdAt": "2021-03-01T08:43:06.663Z",
+                "updatedAt": "2021-03-01T08:43:06.663Z",
             }
         ]
     }

@@ -1,12 +1,12 @@
 import React from 'react';
-import ShowRecordsSection from '../../../components/investigation/show/fill/show_records_section';
+import ShowRecordsPatient from '../../../components/investigation/show/fill/show_records_section';
 import ProviderSherwood from '../../../providerSherwood';
-import { edc_data1, records_patient1} from '../../example_data';
-import { findSubmissionsFromSection } from '../../../utils';
+import { records_patient1, edc_data1, patient_data_decrypted1 } from '../../example_data';
+import { filterRecordsFromSubmissions } from '../../../utils';
 
 export default {
-    title: 'Investigation/Fill/ShowRecordsSection',
-    component: ShowRecordsSection, 
+    title: 'Investigation/Fill/ShowRecordsPatientSection',
+    component: ShowRecordsPatient, 
     parameters: { actions: { argTypesRegex: '^callBack.*' } },
     argTypes: {
         initialData: {
@@ -15,14 +15,20 @@ export default {
         edc: {
             control: "object"
         },
-        indexSubmission: {
-            control: "number"
-        },
-        mode:{ control: {
+        level : {control : "number"},
+        display:{ control: {
             type: 'select',
             options: [
               'table', 
-              'elements'
+              'submissions'
+            ],
+          },
+        },
+        display:{ control: {
+            type: 'select',
+            options: [
+              'view', 
+              'add'
             ],
           },
         },
@@ -34,23 +40,23 @@ export default {
                 </ProviderSherwood>],
 };
 
+const Template = (args) => <ShowRecordsPatient {...args} />;
 
-const sectionNonLongitudinalID = "5fdc9fbccfec957a73cb34f6";
-const sectionLongitudinalID = "5fccaedb8583362dd3d50246";
+const sectionNonLongitudinalUUID = "ef30d3f6-1436-47cd-ad5a-22321de4d3a7";
+const sectionLongitudinalUUID = "21cc0d3a-0149-442d-bd24-c8eaa050223f";
 
 const sectionNonLongitudinal = edc_data1().surveys[0].sections.find(section => {
-    return sectionNonLongitudinalID === section._id
+    return sectionNonLongitudinalUUID === section.uuid
 })
  
  const sectionLongitudinal = edc_data1().surveys[1].sections.find(section => {
-    return sectionLongitudinalID === section._id
+    return sectionLongitudinalUUID === section.uuid
 }) 
- 
-const submissionsNonLongitudinal = findSubmissionsFromSection(records_patient1().records, sectionNonLongitudinalID);
 
-const submissionsLongitudinal = findSubmissionsFromSection(records_patient1().records, sectionLongitudinalID);
+const submissionsNonLongitudinal = filterRecordsFromSubmissions(records_patient1().submissions, sectionNonLongitudinalUUID);
+
+const submissionsLongitudinal = filterRecordsFromSubmissions(records_patient1().submissions, sectionLongitudinalUUID);
  
-const Template = (args) => <ShowRecordsSection {...args} />;
 
 export const NonLongitudinal = Template.bind({});
 NonLongitudinal.args = {
@@ -59,7 +65,6 @@ NonLongitudinal.args = {
     indexSubmission:0,
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
-
 export const Longitudinal = Template.bind({});
 Longitudinal.args = {
     section :sectionLongitudinal,
@@ -67,4 +72,26 @@ Longitudinal.args = {
     indexSubmission:0,
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
+
+
+
+
+// const Template = (args) => <ShowRecordsSection {...args} />;
+
+// export const NonLongitudinal = Template.bind({});
+// NonLongitudinal.args = {
+//     section :sectionNonLongitudinal,
+//     submissions:submissionsNonLongitudinal,
+//     indexSubmission:0,
+//     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+// };
+
+// export const Longitudinal = Template.bind({});
+// Longitudinal.args = {
+//     section :sectionLongitudinal,
+//     submissions:submissionsLongitudinal,
+//     indexSubmission:0,
+//     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+// };
+
  
