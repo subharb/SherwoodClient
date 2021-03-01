@@ -3,7 +3,7 @@ import { Alert } from "@material-ui/lab";
 import axios from 'axios';
 import ShowRecordsSection from './show_records_section';
 import { ButtonAdd, ButtonBack } from '../../../general/mini_components';
-import { findSubmissionsFromSection, numberRecordsSection } from '../../../../utils';
+import { filterRecordsFromSubmissions, numberRecordsSection } from '../../../../utils';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../../general/EnhancedTable';
@@ -59,7 +59,7 @@ export default function PatientRecords(props) {
     function renderRecordsSection(records, sections){    
         return Object.values(sections).map(section => {
             const currentPatientRecords = records.filter(submission => submission.uuid_patient === props.patient.uuid);
-            const submissionsSection = findSubmissionsFromSection(currentPatientRecords, section.uuid);
+            const submissionsSection = filterRecordsFromSubmissions(currentPatientRecords, section.uuid);
 
             return(
                 <ShowRecordsSection submissions={submissionsSection} section={section} />

@@ -310,7 +310,43 @@ export const basic_info1_raw = () => {
 }
 
 export const personal_data1 = () => {
-    return ["email", "phone", "name", "surnames", "birthdate"]
+    return [
+        {
+            "name": "email",
+            "required": true,
+            "type": "text",
+            "label": "investigation.create.personal_data.fields.email",
+            "encrypted": true
+        },
+        {
+            "name": "phone",
+            "required": true,
+            "type": "text",
+            "label": "investigation.create.personal_data.fields.phone",
+            "encrypted": true
+        },
+        {
+            "name": "name",
+            "required": true,
+            "type": "text",
+            "label": "investigation.create.personal_data.fields.name",
+            "encrypted": true
+        },
+        {
+            "name": "surnames",
+            "required": true,
+            "type": "text",
+            "label": "investigation.create.personal_data.fields.surname",
+            "encrypted": true
+        },
+        {
+            "name": "birthdate",
+            "required": true,
+            "type": "date",
+            "label": "investigation.create.personal_data.fields.birthdate",
+            "encrypted": true
+        }
+    ]
 }
 
 export const patient_data1 = () => {
@@ -362,33 +398,52 @@ export const patients_personal_data_decrypted = () => {
 
 export const patients_personal_data_encripted = () => {
     return [
-        {
-            "id": "602fe2cbb5eb350f91235331",
-            "personalData": {
-                "email": "U2FsdGVkX1+Jb7NpmOAZ9RXlrV8gXslBU61Po2TPjq7ixUW0b70AKVRkknCfnYDa",
-                "phone": "U2FsdGVkX1/GYYZn+jJT/Eiemvy6mBk/MCN5OE0ojwLPXQtPmOe7KD2CcvbCpxgC",
-                "name": "U2FsdGVkX1/BKdHoBBZknsKAFAhuBYV6mk8IKlsj9EE=",
-                "surname": "U2FsdGVkX1+a0dkpLsUi6XnVgqmsyGhHL84s5vndED4="
-            }
-        },
-        {
-            "id": "602fe2cfb5eb350f91235332",
-            "personalData": {
-                "email": "U2FsdGVkX19PTnTAVoXZ1im84wMstg0H8ZWrBXHKMt4=",
-                "phone": "U2FsdGVkX18NOjoNBzz/SQvat0iIHe8bDdW30fNYw0Gi+BbsT91Q6OEdyeDrSi59",
-                "name": "U2FsdGVkX18CA38F8JDLeL5FIjQXIsssFATVeb6X0sI=",
-                "surname": "U2FsdGVkX199eYrKBqWiB4rpkmQKGBy/DcMcfMLjEm8="
-            }
-        },
-        {
-            "id": "602fe2d3b5eb350f91235333",
-            "personalData": {
-                "email": "U2FsdGVkX1+jgY2lE8pSRp2fPCyutQqKaLy5WPnZzxPQeZBhdPI4oJiYLkZZkzVO",
-                "phone": "U2FsdGVkX19V/3fOdh1tUqpEWvrxWklRe4pGzUejLpbdzWQ1MkwXgqsxUPKSJNS7",
-                "name": "U2FsdGVkX1+esWAHKhaAs+0H542jirn6Sud3nuOu3R0=",
-                "surname": "U2FsdGVkX19/Fnwu9oMOj0AJhfDXoITmLCUNxunOB8k="
-            }
+            {
+            "uuid": "3b5eb0ef-028b-4bcb-bc81-66f20e8a704e",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX1+KpDA5h5xDEu+8bjq6INncGnj9zZIXHcoqoZ87U504uTs3NobQnuxG",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX19yUMIkJwWRfvXsid06LB7x3Ao3r48QI/E=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX1/oSfPVVtZxARWBHxq3frJTbsvgszistOz+ZNe+75voUsxMdkgkt/Lc",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX1+/9yajVsm2tgmZRf9/SOioTXdfnY4Hwzg=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX1/4Zfmx2czwV2xZzgpslWIim5l8CsgLgXs=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
         }
+        
     ]
 }
 
@@ -539,7 +594,7 @@ export const investigation_server = () => {
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = patients_personal_data_encripted();
     returnData.status = 1;
-    returnData.keyResearcherInvestigation = "U2FsdGVkX1/X9MXMxZEYFl7ohoqrSlKVsfi10QOVlX7wzz37GqGJN8K0sHqAx2w5fjcvHmVBTq0ZwIzMYNL4Bw==";
+    returnData.keyResearcherInvestigation = "U2FsdGVkX1/fHwGVOHWYFIiQwwRIOnwIWkyrQrY0qL2XvbjkD7x9lob32xaj3njsHVDUBI7HByG9Usj0i6KUFA==";
     returnData.shareStatus = 2; 
     returnData.sharedResearchers = sharedResearchers;
     return returnData;
@@ -551,7 +606,7 @@ export const investigation_server_no_patitents = () => {
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = [];
     returnData.status = 1;
-    returnData.keyResearcherInvestigation = "U2FsdGVkX1/X9MXMxZEYFl7ohoqrSlKVsfi10QOVlX7wzz37GqGJN8K0sHqAx2w5fjcvHmVBTq0ZwIzMYNL4Bw==";
+    returnData.keyResearcherInvestigation = "U2FsdGVkX1/fHwGVOHWYFIiQwwRIOnwIWkyrQrY0qL2XvbjkD7x9lob32xaj3njsHVDUBI7HByG9Usj0i6KUFA==";
     returnData.encryptedKeyUsed =1;
     returnData.shareStatus = 2; 
     returnData.sharedResearchers = sharedResearchers;
@@ -564,7 +619,7 @@ export const investigation_server_read_access = () => {
     returnData.patientsPersonalData = [];
     returnData.shareStatus = 0;
     returnData.encryptedKeyUsed =1;
-    returnData.keyResearcherInvestigation = "U2FsdGVkX19dc/oAgeGDtnFwJOQlN2+6QmHS2aY1Kf/gHjA7K9n+KPNM+3qOADTCM9Gy6LUimq8LsJf5IzX2lw==";
+    returnData.keyResearcherInvestigation = "U2FsdGVkX1/fHwGVOHWYFIiQwwRIOnwIWkyrQrY0qL2XvbjkD7x9lob32xaj3njsHVDUBI7HByG9Usj0i6KUFA==";
     returnData.status = 1; 
     returnData.sharedResearchers = sharedResearchers;
     return returnData;

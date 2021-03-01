@@ -5,7 +5,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import ShowRecordsSection from './show_records_section';
 import ShowPatientRecords from './show_patient_records';
 import PropTypes from 'prop-types';
-import { findSubmissionsFromSection } from '../../../../utils';
+
 import { ButtonBack } from '../../../general/mini_components';
 import PatientRecords from './show_patient_records';
 import Form from '../../../general/form';
