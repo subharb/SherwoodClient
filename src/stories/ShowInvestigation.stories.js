@@ -50,8 +50,8 @@ WithPatients.args = {
 //     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 // };
 
-// export const RemoteData = Template.bind({});
-// RemoteData.args = {
-//     uuid : "58713404-eac7-43f9-a7bc-b977633cf758",
-//     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
-// };
+export const RemoteData = Template.bind({});
+RemoteData.args = {
+    uuid : "172df802-7e27-4aec-a136-fa9b4b6480ea",
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+};

@@ -285,7 +285,7 @@ export const records_patient2 = () =>{
 }
 export const basic_info1 = {
         "name": {
-            "value" : "COVID Nose By Tester",
+            "value" : "COVID Nose",
             "type" : "text"
         }, 
         "acronym":{

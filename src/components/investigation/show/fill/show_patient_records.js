@@ -12,9 +12,9 @@ import { Card, CardContent, Typography, Grid } from '@material-ui/core';
 /**
  * Component in charge of showing records of a given patient in a survey
  */
-export default function PatientRecords(props) {
+export default function ShowPatientRecords(props) {
     const [sectionSelected, setSectionSelected] = useState(null);
-    const [patientRecords, setPatientRecords] = useState(props.initialData ? props.initialData : []);
+    const [submissions, setSubmissions] = useState(props.initialData ? props.initialData : []);
     const [showError, setShowError] = useState(0);
     function addRegistry(indexSection){
         setSectionSelected(indexSection);
@@ -28,7 +28,7 @@ export default function PatientRecords(props) {
                 return aSurvey.uuid === props.survey.uuid
             })
             
-            setPatientRecords(currentSurvey.submissions);
+            setSubmissions(currentSurvey.submissions);
         }
         else{
             setShowError(1);
@@ -36,7 +36,7 @@ export default function PatientRecords(props) {
     }
     useEffect(() => {
         (async () => {
-            if(patientRecords.length === 0){
+            if(submissions.length === 0){
                 console.log("CARGANDO");
                 fetchRecords()
             }
@@ -56,10 +56,10 @@ export default function PatientRecords(props) {
             { name : section.name, register : registers}
         )
     }
-    function renderRecordsSection(records, sections){    
+    function renderSubmissionsSection(submissions, sections){    
         return Object.values(sections).map(section => {
-            const currentPatientRecords = records.filter(submission => submission.uuid_patient === props.patient.uuid);
-            const submissionsSection = filterRecordsFromSubmissions(currentPatientRecords, section.uuid);
+            
+            const submissionsSection = filterRecordsFromSubmissions(submissions, section.uuid);
 
             return(
                 <ShowRecordsSection submissions={submissionsSection} section={section} />
@@ -90,7 +90,7 @@ export default function PatientRecords(props) {
                                          { id: "records", alignment: "right", label: <Translate id={`investigation.fill.records`} /> } 
                                         ];
                     const rows = props.survey.sections.map(section => {
-                        const nRecords = numberRecordsSection(section, patientRecords);
+                        const nRecords = numberRecordsSection(section, submissions);
                         return( 
                             renderSection(section, nRecords)
                         ) 
@@ -102,7 +102,7 @@ export default function PatientRecords(props) {
                 }
             }
             else{
-                return renderRecordsSection(patientRecords, props.survey.sections);
+                return renderSubmissionsSection(submissions, props.survey.sections);
             }
         }
         else{
@@ -140,7 +140,7 @@ export default function PatientRecords(props) {
     )
 }
 
-PatientRecords.propTypes = {
+ShowPatientRecords.propTypes = {
     /**
      Información del paciente para precargar
     */

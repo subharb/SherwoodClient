@@ -7,7 +7,6 @@ import ShowPatientRecords from './show_patient_records';
 import PropTypes from 'prop-types';
 
 import { ButtonBack } from '../../../general/mini_components';
-import PatientRecords from './show_patient_records';
 import Form from '../../../general/form';
 import { Grid, Typography } from '@material-ui/core';
 
@@ -133,7 +132,7 @@ function ShowSurveys(props) {
                 <Typography variant="subtitle1" color="textPrimary">
                     <Translate id="investigation.fill.survey.patient_name"/>: 
                     {
-                        props.patient.name+" "+props.patient.surname
+                        props.patient.name+" "+props.patient.surnames
                     }
                 </Typography>  
             </Grid>

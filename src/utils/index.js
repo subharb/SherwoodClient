@@ -344,14 +344,17 @@ export function filterRecordsFromSubmissions(submissions, sectionUUID){
                 filteredRecords.push(patientRecord); 
             }
         } 
-        filteredSubmissions.push({
-            id:submission.id,
-            createdAt:submission.createdAt,
-            updatedAt:submission.updatedAt,
-            surveyRecords:filteredRecords
+        if(filteredRecords.length > 0){
+            filteredSubmissions.push({
+                id:submission.id,
+                createdAt:submission.createdAt,
+                updatedAt:submission.updatedAt,
+                surveyRecords:filteredRecords
+            }
+                
+            ); 
         }
-            
-        ); 
+        
     }
     return filteredSubmissions;
 }

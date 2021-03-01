@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { ButtonBack, ButtonForward } from '../../../general/mini_components';
 import { Card, Paper, Typography, Grid } from '@material-ui/core';
 import styled from 'styled-components';
+import { Alert } from "@material-ui/lab";
+import { Translate } from 'react-localize-redux';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
@@ -18,7 +20,7 @@ const GridPadded = styled(Grid)`
 `;
 export default function ShowRecordsSection(props) {
     let [indexSubmission, setIndexSubmission ] = useState(0);
-
+    let [error, setError] = useState(false);
     function renderSubmission(){
         const submission = props.submissions[indexSubmission];       
         
@@ -29,21 +31,30 @@ export default function ShowRecordsSection(props) {
                         const valueRecord = submission.surveyRecords.find(record => {
                             return field.id === record.surveyField.id
                         })
+                        if(valueRecord){
+                            setError(true);
+                        }
+                        else{
+                            return (
+                                <Grid item>
+                                    <Typography variant="body2" gutterBottom>
+                                        {field.label}: {valueRecord.value}
+                                    </Typography>
+                                </Grid>
+                            )
+                        }
                         
-                        return (
-                            <Grid item>
-                                <Typography variant="body2" gutterBottom>
-                                    {field.label}: {valueRecord.value}
-                                </Typography>
-                            </Grid>
-                        )
                     })
                 }
             </GridPadded>
         );
     }
-    if(!props.submissions){
-        return "ERROR";
+    if(!props.submissions || error){
+        return (
+            <Alert mb={4} severity="error">
+                <Translate id="investigation.share.error.description" />
+            </Alert>
+        );
     }
     if(indexSubmission < props.submissions.length){
         return (
