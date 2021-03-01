@@ -2,7 +2,7 @@ import { researcherA_data, loginResearcherA, loginResearcherB, loginResearcherC,
     researcherB_data, basic_info1, personal_data1, edc_data1, researcherC_data,
     patients_personal_data_decrypted, records_patient1, records_patient2, researcherD_data, loginResearcherD } from '../../src/stories/example_data';
 
-const URL_BASE = 'http://localhost:3000';//https://dashboard.sherwood.science';
+import { URL_BASE } from "../support";
 
 describe('Testing create an investigation', () => {
     context('iphone-5 resolution', () => {

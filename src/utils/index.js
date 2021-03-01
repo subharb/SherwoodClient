@@ -18,7 +18,12 @@ export function validateField(field, fieldCompare){
     if(field.required || (field.value !== "" && typeof field.value === 'string') ){
         const pathErroTranslation = "investigation.errors.";
         let re;
-        switch(field.validation){
+        //Si no hay validación, la inferimos
+        let validationSchema = field.validation;
+        if(!validationSchema){
+            validationSchema = field.type === "birthdate" ? "pastDate" : "notEmpty"
+        }
+        switch(validationSchema){
             case "validEmail" : 
                 re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 response.result = re.test(String(field.value).toLowerCase());

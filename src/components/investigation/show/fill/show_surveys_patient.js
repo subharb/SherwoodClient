@@ -30,8 +30,16 @@ function ShowSurveys(props) {
     function callBackSection(values){
         console.log(callBackSection);
         let dataObj = {};
-        dataObj[props.surveys[indexSurvey].sections[indexSection]._id] = values;
-        props.saveRecord(dataObj, props.surveys[indexSurvey]._id);
+        const dataFields = [];
+        Object.keys(values).map(key =>{
+            let tempObj = {};
+            tempObj["id_field"] = parseInt(key);
+            tempObj["value"] = values[key];
+            dataFields.push(tempObj);
+        })
+        dataObj[props.surveys[indexSurvey].sections[indexSection].uuid] = dataFields;
+
+        props.saveRecord(dataObj, props.surveys[indexSurvey].uuid);
         props.updateLevel(1);
     }
     function sectionSelected(indexSection){
@@ -114,7 +122,11 @@ function ShowSurveys(props) {
                 break;
             case 2:
                 if(props.mode === "add"){
-                    return <Form fields={props.surveys[indexSurvey].sections[indexSection].fields} 
+                    const arrayFields = props.surveys[indexSurvey].sections[indexSection].fields.map(field => {
+                        field["name"] = field.id;
+                        return field;
+                    });
+                    return <Form fields={arrayFields} 
                                 callBackForm = {(values) => callBackSection(values)}/>
                 }
             

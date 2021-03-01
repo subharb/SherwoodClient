@@ -31,7 +31,7 @@ export default function ShowRecordsSection(props) {
                         const valueRecord = submission.surveyRecords.find(record => {
                             return field.id === record.surveyField.id
                         })
-                        if(valueRecord){
+                        if(!valueRecord){
                             setError(true);
                         }
                         else{
@@ -56,7 +56,7 @@ export default function ShowRecordsSection(props) {
             </Alert>
         );
     }
-    if(indexSubmission < props.submissions.length){
+    else if(indexSubmission < props.submissions.length){
         return (
             <CardPadding >
                 <Grid container direction="column" spacing={3}>

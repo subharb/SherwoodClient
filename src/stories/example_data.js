@@ -21,7 +21,8 @@ export const edc_data1 = () => {
                                 "encrypted": false,
                                 "required": true,
                                 "label": "Sex at birth",
-                                "isActive": true
+                                "isActive": true,
+                                "typeValueCypress" : "Text"
                             },
                             {
                                 "id": 29,
@@ -30,7 +31,8 @@ export const edc_data1 = () => {
                                 "encrypted": false,
                                 "required": true,
                                 "label": "Etnic Origin",
-                                "isActive": true
+                                "isActive": true,
+                                "typeValueCypress" : "Text"
                             }
                         ]
                     },
@@ -48,7 +50,8 @@ export const edc_data1 = () => {
                                 "encrypted": false,
                                 "required": true,
                                 "label": "Previous Ilnesess",
-                                "isActive": true
+                                "isActive": true,
+                                "typeValueCypress" : "Text"
                             }
                         ]
                     }
@@ -74,7 +77,8 @@ export const edc_data1 = () => {
                                 "encrypted": false,
                                 "required": true,
                                 "label": "Amount red cells?",
-                                "isActive": true
+                                "isActive": true,
+                                "typeValueCypress" : "Text"
                             },
                             {
                                 "id": 32,
@@ -83,7 +87,8 @@ export const edc_data1 = () => {
                                 "encrypted": false,
                                 "required": true,
                                 "label": "Amount white cells?",
-                                "isActive": true
+                                "isActive": true,
+                                "typeValueCypress" : "Text"
                             }
                         ]
                     }
@@ -182,6 +187,7 @@ export const records_patient1 = () =>{
                 "id": 4,
                 "createdAt": "2021-03-01T08:43:06.663Z",
                 "updatedAt": "2021-03-01T08:43:06.663Z",
+                "nameCypress" : "Demographic Questionaire"
             },
             {   
                 "surveyRecords" : [
@@ -234,6 +240,88 @@ export const records_patient1 = () =>{
     }
 }
 
+export const records_patient2 = () =>{
+    return {
+        submissions : [
+            {
+                "surveyRecords": [
+                    {
+                        "id": 4,
+                        "value": "male",
+                        "surveySection": {
+                            "id": 15,
+                            "uuid": "ef30d3f6-1436-47cd-ad5a-22321de4d3a7",
+                            "name": "Demographics",
+                            "repeats": false,
+                            "isActive": true
+                        },
+                        "surveyField": {
+                            "id": 28,
+                            "type": "text",
+                            "name": "sex",
+                            "encrypted": false,
+                            "required": true,
+                            "label": "Sex at birth",
+                            "isActive": true
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "value": "arabix",
+                        "surveySection": {
+                            "id": 15,
+                            "uuid": "ef30d3f6-1436-47cd-ad5a-22321de4d3a7",
+                            "name": "Demographics",
+                            "repeats": false,
+                            "isActive": true
+                        },
+                        "surveyField": {
+                            "id": 29,
+                            "type": "text",
+                            "name": "etnic",
+                            "encrypted": false,
+                            "required": true,
+                            "label": "Etnic Origin",
+                            "isActive": true
+                        }
+                    },
+                ],
+                "id": 4,
+                "createdAt": "2021-03-01T08:43:06.663Z",
+                "updatedAt": "2021-03-01T08:43:06.663Z",
+                "nameCypress" : "Demographic Questionaire"
+            },
+            {   
+                "surveyRecords" : [
+                    {
+                        "id": 6,
+                        "value": "Lung cancer",
+                        "surveySection": {
+                            "id": 16,
+                            "uuid": "21cc0d3a-0149-442d-bd24-c8eaa050223f",
+                            "name": "Past medical history",
+                            "repeats": true,
+                            "isActive": true
+                        },
+                        "surveyField": {
+                            "id": 31,
+                            "type": "text",
+                            "name": "red_cells",
+                            "encrypted": false,
+                            "required": true,
+                            "label": "Amount red cells?",
+                            "isActive": true
+                        }
+                    }
+                ],
+                "id": 5,
+                "createdAt": "2021-03-01T08:43:06.663Z",
+                "updatedAt": "2021-03-01T08:43:06.663Z",
+            }
+        ]
+    }
+}
+
 export const data_collection_patient1 = () =>{
     return{
         "surveys": [
@@ -244,45 +332,6 @@ export const data_collection_patient1 = () =>{
     ]}
 }
 
-export const records_patient2 = () =>{
-    return {
-        records : [
-            {
-                "submission": [
-                    {
-                        "uuid_section": "5fdc9fbccfec957a73cb34f6",
-                        "nameCypress" : "Demographics",
-                        "answers": {
-                            "sex": "Female",
-                            "etnic": "Arab"
-                        }
-                    }
-                ],
-                "uuid": "5fe20fb779160a2fc27c11d7",
-                "nameCypress" : "Demographic Questionaire",
-                "id_patient": "5fe218c024b4213823c82e8e",
-                "created_At": "2020-12-06T10:15:20.311Z",
-                "updated_At": "2020-12-06T10:15:20.311Z"
-            },
-            {
-                "submission": [
-                    {
-                        "uuid_section": "5fe20fb779160a2fc27c11d9",
-                        "nameCypress" : "Past medical history",
-                        "answers": {
-                            "ilnesses": "Prostate Cancer"
-                        }
-                    }
-                ],
-                "uuid": "5fe20fb779160a2fc27c11d7",
-                "nameCypress" : "Demographic Questionaire",
-                "id_patient": "5fe218c024b4213823c82e8e",
-                "created_At": "2020-12-06T17:03:19.093Z",
-                "updated_At": "2020-12-06T17:03:19.093Z"
-            }
-        ]
-    }
-}
 export const basic_info1 = {
         "name": {
             "value" : "COVID Nose",
@@ -379,19 +428,22 @@ export const patients_personal_data_decrypted = () => {
             "email":"john@hopkins.com",
             "phone":"+1 727 1728 9191",
             "name":"John",
-            "surnames":"Hopkins"
+            "surnames":"Hopkins",
+            "birthdate" : "xx"
         },
         {
             "email":"peter@gmail.com",
             "phone":"+49 127 1728 9191",
             "name":"Peter",
-            "surnames":"Petrelli"
+            "surnames":"Petrelli",
+            "birthdate" : "xx"
         },
         {
             "email":"donnie@gmail.com",
             "phone":"+1 1997 1728 9191",
             "name":"Donald",
-            "surnames":"Trump"
+            "surnames":"Trump",
+            "birthdate" : "xx"
         }
     ];
 }

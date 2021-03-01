@@ -76,6 +76,7 @@ Cypress.Commands.add('createEDC', (surveys) => {
             cy.get('[aria-labelledby^="type"]')
                     .click();
             cy.contains(field.typeValueCypress).click(); 
+            //cy.contains(pField, {matchCase: false})
     
             cy.get('button[data-testid="save-field"]')
                 .click();
@@ -145,11 +146,11 @@ Cypress.Commands.add('createBasicInfo', (basicInfo) => {
 });
 
 Cypress.Commands.add('fillPatient', (patient) => { 
-    patient.records.forEach(record => {
-        console.log(record.nameCypress);
+    patient.submissions.forEach(submission => {
+        console.log(submission.nameCypress);
         cy.get('table').then(($body) => {
-            if($body.text().includes(record.nameCypress)){
-                cy.contains('td', record.nameCypress)  // gives you the cell 
+            if($body.text().includes(submission.nameCypress)){
+                cy.contains('td', submission.nameCypress)  // gives you the cell 
                     .parent()                              // gives you the row
                     .within($tr => {                       // filters just that row
                         cy.get('button')                         // finds the buttons cell of that row
@@ -157,29 +158,27 @@ Cypress.Commands.add('fillPatient', (patient) => {
                     })
             }
         })
-    
-        record.submission.forEach(submission => {
-            cy.contains('td', submission.nameCypress)  // gives you the cell 
+        cy.contains('td', submission.surveyRecords[0].surveySection.name)  // gives you the cell 
                 .parent()                              // gives you the row
                 .within($tr => {                       // filters just that row
                     cy.get('button')                         // finds the buttons cell of that row
                     .click()
                 })
-            Object.keys(submission.answers).forEach(key => {
-                cy.get('input[name="'+key+'"]')
-                .type(submission.answers[key])
-                .should('have.value', submission.answers[key]);
-            })
-            cy.get('button[data-testid="continue"]').first()
-                .click();
-            cy.get('button[data-testid="back"]').first()
-                .click();
+        let index = 0;
+        submission.surveyRecords.forEach(surveyRecord => {
+                //cy.contains(surveyRecord.surveyField.label, {force: true}).click().type(surveyRecord.value);
+                cy.get('input').eq(index)
+                    .type(surveyRecord.value)
+                    .should('have.value', surveyRecord.value);
+                index++;
         });
- 
-        
+        cy.get('button[data-testid="continue"]').first()
+                .click();
+        // cy.get('button[data-testid="back"]').first()
+        //     .click();
     });
-    cy.get('button[data-testid="back"]').first()
-        .click();
+    // cy.get('button[data-testid="back"]').first()
+    //     .click();
 });   
 Cypress.Commands.add('shareWithResearchers', () => { 
     cy.wait(2000);

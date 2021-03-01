@@ -148,12 +148,12 @@ export default function ShowInvestigation(props) {
 
         const recordArray = Object.keys(values).map(keySection => {
             return {
-                id_section:keySection,
-                answers:{...values[keySection]}
+                uuid_section:keySection,
+                answers:[...values[keySection]]
             }
         })
         const postObj = {submission : recordArray}
-        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+investigation.uuid+"/record/"+patientsData[patientIndex].id+"/survey/"+idSurvey, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await Axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+investigation.uuid+"/record/"+patientsData[patientIndex].uuid+"/survey/"+idSurvey, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
             
