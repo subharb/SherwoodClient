@@ -5,7 +5,11 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import ShowRecordsSection from './show_records_section';
 import ShowPatientRecords from './show_patient_records';
 import PropTypes from 'prop-types';
-
+import { fetchRecordsPatientFromSurvey } from '../../../../services/sherwoodService';
+import { filterRecordsFromSubmissions } from '../../../../utils';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import { ButtonBack } from '../../../general/mini_components';
 import Form from '../../../general/form';
 import { Grid, Typography } from '@material-ui/core';
@@ -18,14 +22,26 @@ function ShowSurveys(props) {
     
     const [indexSurvey, setIndexSurvey] = useState(null);
     const [indexSection, setIndexSection] = useState(null);
+    const [submissionsSurvey, setSubmissionsSurvey] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [showSnackbar, setShowSnackbar] = useState(false);
 
     function viewSurvey(index){
         props.updateLevel(1);
         setIndexSurvey(index);
     }
-    function addRecordSurvey(index){
+    async function addRecordSurvey(index){
         props.updateLevel(1);
-        setIndexSurvey(index)
+        setIndexSurvey(index);
+        setLoading(true);
+        try{
+            const response = await fetchRecordsPatientFromSurvey(props.uuidInvestigation, props.patient.uuid, props.surveys[index].uuid);
+            setSubmissionsSurvey(response.surveys[0].submissions);
+        }
+        catch(error){
+            console.log(error);
+        }
+        setLoading(false);
     }
     function callBackSection(values){
         console.log(callBackSection);
@@ -43,10 +59,20 @@ function ShowSurveys(props) {
         props.updateLevel(1);
     }
     function sectionSelected(indexSection){
+        if(!props.surveys[indexSurvey].sections[indexSection].repeats){
+            const filteredSubmissions = filterRecordsFromSubmissions(submissionsSurvey, props.surveys[indexSurvey].sections[indexSection].uuid);
+            if(filteredSubmissions.length > 0){
+                console.log("Sección ya relleneada");
+                setShowSnackbar(true);
+                return;
+            }
+        }
         setIndexSection(indexSection);
         props.updateLevel(2);
     }
-    
+    function handleCloseSnackbar(){
+        setShowSnackbar(false);
+    }
     function renderHeader(){
         if(indexSurvey !== null){
             let stages = [ props.translate("investigation.fill.survey.title")];
@@ -112,7 +138,8 @@ function ShowSurveys(props) {
                 else{
                     return(
                         <div className="row">
-                            <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.sections" />} rows={props.surveys[indexSurvey].sections.map(section => {return {name : section.name}})}
+                            <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.sections" />} 
+                                rows={props.surveys[indexSurvey].sections.map(section => {return {name : section.name}})}
                                     headCells={[{ id: "name", alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.name`} /> }]}
                                     actions={{"add" : (indexSurvey) => sectionSelected(indexSurvey)}}
                                 />
@@ -140,6 +167,24 @@ function ShowSurveys(props) {
     }
     return (
         <Grid container spacing={1}>
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+                }}
+                open={showSnackbar}
+                autoHideDuration={2000}
+                onClose={handleCloseSnackbar}
+                message={<Translate id="investigation.fill.section.already_filled" />}
+                action={
+                <React.Fragment>
+                    
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
+                    <CloseIcon fontSize="small" />
+                    </IconButton>
+                </React.Fragment>
+                }
+            />
             <Grid item xs={12}>
                 <Typography variant="subtitle1" color="textPrimary">
                     <Translate id="investigation.fill.survey.patient_name"/>: 
@@ -163,6 +208,7 @@ function ShowSurveys(props) {
     
 }
 ShowSurveys.propTypes = {
+    uuidInvestigation:PropTypes.string,
     surveys: PropTypes.object,
     submissions: PropTypes.array,
     mode : PropTypes.string

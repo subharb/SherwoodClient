@@ -7,6 +7,7 @@ import { filterRecordsFromSubmissions, numberRecordsSection } from '../../../../
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../../general/EnhancedTable';
+import { fetchRecordsPatientFromSurvey } from '../../../../services/sherwoodService';
 import { Card, CardContent, Typography, Grid } from '@material-ui/core';
 
 /**
@@ -19,26 +20,35 @@ export default function ShowPatientRecords(props) {
     function addRegistry(indexSection){
         setSectionSelected(indexSection);
     }
-    async function fetchRecords(){
-        const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.uuid+"/survey/"+props.survey.uuid, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-                .catch(err => {console.log('Catch', err); return err;}); 
-        if(response.request.status === 200){
-            //Busco el survey actual
-            const currentSurvey = response.data.surveys.find(aSurvey => {
-                return aSurvey.uuid === props.survey.uuid
-            })
+    // async function fetchRecords(){
+    //     const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.uuid+"/survey/"+props.survey.uuid, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+    //             .catch(err => {console.log('Catch', err); return err;}); 
+    //     if(response.request.status === 200){
+    //         //Busco el survey actual
+    //         const currentSurvey = response.data.surveys.find(aSurvey => {
+    //             return aSurvey.uuid === props.survey.uuid
+    //         })
             
-            setSubmissions(currentSurvey.submissions);
-        }
-        else{
-            setShowError(1);
-        }
-    }
+    //         setSubmissions(currentSurvey.submissions);
+    //     }
+    //     else{
+    //         setShowError(1);
+    //     }
+    // }
     useEffect(() => {
         (async () => {
             if(submissions.length === 0){
                 console.log("CARGANDO");
-                fetchRecords()
+                try{
+                    const response = await fetchRecordsPatientFromSurvey(props.uuidInvestigation, props.patient.uuid, props.survey.uuid);
+                    if(response.status === 200){                        
+                        setSubmissions(response.surveys[0].submissions);
+                    }
+                }
+                catch(error){
+                    setShowError(1);
+                }
+                
             }
     })()}, []);
     
@@ -66,21 +76,21 @@ export default function ShowPatientRecords(props) {
             )
         });
     }
-    async function sendRecord(values){
-        const recordArray = Object.keys(values).map(keySection => {
-            return {
-                uuid_section:keySection,
-                answers:{...values[keySection]}
-            }
-        })
-        const postObj = {submission : recordArray}
-        const response = await axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.uuid, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-                .catch(err => {console.log('Catch', err); return err;}); 
-        if(response.request.status === 200){
-            fetchRecords();
-        }
-        setSectionSelected(null);
-    }
+    // async function sendRecord(values){
+    //     const recordArray = Object.keys(values).map(keySection => {
+    //         return {
+    //             uuid_section:keySection,
+    //             answers:{...values[keySection]}
+    //         }
+    //     })
+    //     const postObj = {submission : recordArray}
+    //     const response = await axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.uuid, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+    //             .catch(err => {console.log('Catch', err); return err;}); 
+    //     if(response.request.status === 200){
+    //         fetchRecords();
+    //     }
+    //     setSectionSelected(null);
+    // }
     
     function renderCore(){
         if(showError === 0){

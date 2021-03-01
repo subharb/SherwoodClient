@@ -189,7 +189,7 @@ export default function ShowInvestigation(props) {
             //Add Data
                 return <ShowSurveys level={level} updateLevel={(level) => setLevel(level)} mode="add" 
                             patient={decryptedPatientData[patientIndex]} saveRecord={saveRecord}
-                            surveys={investigation.surveys} />
+                            surveys={investigation.surveys} uuidInvestigation={investigation.uuid}/>
             case 3: 
             //View Data
                 return <ShowSurveys level={level} updateLevel={(level) => setLevel(level)} mode="view" 

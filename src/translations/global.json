@@ -255,6 +255,9 @@
                 "add_data" : ["Add Data", "Añadir datos"],
                 "view_data" : ["Visualize Data", "Ver datos"]
             },
+            "section" : {
+                "already_filled" : ["This section has been filled", "Esta sección ya ha sido respondida"]
+            },
             "records" : ["Records", "Registros"]
         },
         "share" : {
