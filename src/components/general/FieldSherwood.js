@@ -176,11 +176,13 @@ class FieldSherwood extends Component{
                             id={input.name}
                             label={labelString}
                             format="MM/dd/yyyy"
-                            value={input.value === "" ? new Date() : input.value}
+                            value={input.value === "" ? "" : input.value}
                             onChange={this.handleDateChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
                             }}
+                            error={errorState} 
+                            helperText={errorString} 
                         />
                     </MuiPickersUtilsProvider>
                     
@@ -197,6 +199,8 @@ class FieldSherwood extends Component{
                             KeyboardButtonProps={{
                                 'aria-label': 'change time',
                             }}
+                            error={errorState} 
+                            helperText={errorString}
                         />
                     </MuiPickersUtilsProvider>
                     

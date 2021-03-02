@@ -9,29 +9,26 @@ import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { HOSPITAL_PATIENT } from '../../routes';
 import Loader from '../../components/Loader';
+import { decryptPatientData } from '../../utils';
 
 let personalFieldsForm = {};
 
 export default function SearchPatients(props) {
     const {investigations, isLoading, error} = useInvestigations(props.investigations ? props.investigations : null);
-    const { decryptedPatientData, errorEncryption} = usePatientsData(investigations ? investigations[0] : null, investigations ? investigations[0].patientsPersonalData : []);
+    const [decryptedPatientData, setDecryptedPatientData] = useState([]);//usePatientsData(investigations ? investigations[0] : null, investigations ? investigations[0].patientsPersonalData : []);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [showResults, setShowResults] = useState(false);
 
     const history = useHistory();
-    
 
     useEffect(() => {
         if(investigations){
             investigations[0].personalFields.forEach(personalField => {
-                personalFieldsForm[personalField] = {
-                    required : false,
-                    type:"text",
-                    label:"investigation.create.personal_data.fields."+personalField,
-                    shortLabel:"investigation.create.personal_data.fields."+personalField,
-                    validation : "notEmpty"
-                }
+                const copyField = {...personalField};
+                copyField.required = false;
+                personalFieldsForm[personalField.name] = copyField
             });
+            setDecryptedPatientData(decryptPatientData(investigations[0].patientsPersonalData, investigations[0]))
         }
     }, [investigations])
     function backToSearch(){
@@ -46,7 +43,7 @@ export default function SearchPatients(props) {
     }
     function searchPatientCallBack(values){
         console.log(values);
-        setShowResults(true);
+        setShowResults(true); 
         //Filtrar decryptedPatientData con values
         const filteredPatients = decryptedPatientData.filter(patient =>{
             let result = true;
@@ -74,12 +71,15 @@ export default function SearchPatients(props) {
         }
         else{
             if(filteredPatients.length === 0){
-                return (
+                return ([
                     <Box p={1}>
                         <Paper>
                             No patients meet the criteria
                         </Paper>
-                    </Box>
+                    </Box>,
+                    <Button onClick={backToSearch}>Close</Button>
+                ]
+                    
                 )
                 
             }

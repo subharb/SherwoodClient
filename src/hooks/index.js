@@ -23,7 +23,7 @@ export function usePatientsData(investigation, patientsData){
                         const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
                         
                         for(const personalField of investigation.personalFields){
-                            const encryptedField = patient.personalData[personalField];
+                            const encryptedField = patient.personalData[personalField.name];
                             if(!encryptedField){
                                 console.error("No coinciden campos!");
                                 return "error!";

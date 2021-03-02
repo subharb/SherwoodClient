@@ -46,6 +46,7 @@
             "personal_info" : {
                 "name" : ["Name", "Nombre"],
                 "surnames" : ["Surnames", "Apellidos"],
+                "surname" : ["Surname", "Apellido"],
                 "country" : ["Country", "País"]
             },
             "contact_info" : {
@@ -122,6 +123,7 @@
                 "fields" : {
                     "name" : ["Name", "Nombre"],
                     "surnames" : ["Surnames", "Apellidos"],
+                    "surname" : ["Surname", "Apellido"],
                     "address" : ["Address", "Dirección"],
                     "health_id" : ["Health ID", "Nº Seguridad social"],
                     "national_id" : ["National ID", "DNI"],
@@ -341,7 +343,8 @@
             "error_length6" : ["It has to be at least 6 characters long","Debe tener una longitud de al menos 6 caracteres"],
             "error_length2" : ["It has to be at least 2 characters long","Debe tener una longitud de al menos 2 caracteres"],
             "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío"],
-            "error_not_same" : ["Fields have to be the same", "El valor tiene que ser igual"]
+            "error_not_same" : ["Fields have to be the same", "El valor tiene que ser igual"],
+            "error_past_date" : ["You must choose a date in the past", "Debe seleccionar una fecha en el pasado"]
 
         }
     },

@@ -27,7 +27,7 @@ export default function ShowInvestigation(props) {
     const investigationProp = props.initialData ? props.initialData.investigation : false
     const [decryptedPatientData, setDecryptedPatientData ] = useState([]);
     const [investigation, setInvestigation] = useState(investigationProp);
-    
+    const [newPatient, setNewPatient] = useState(0);
     const history  = useHistory();
 
     useEffect(() => {
@@ -58,7 +58,7 @@ export default function ShowInvestigation(props) {
             fetchInvestigation();
         }
         
-    }, [investigation]);
+    }, [investigation, newPatient]);
     
 
     function renderPatientsTable(){
@@ -139,6 +139,7 @@ export default function ShowInvestigation(props) {
                 .catch(err => {console.log('Catch', err); return err;}); 
             if(response.request.status === 200){
                 setPatientsData(response.data.patients);
+                setDecryptedPatientData(decryptPatientData(response.data.patients, investigation));
             }
         }
         setShowForm(0);

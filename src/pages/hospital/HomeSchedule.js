@@ -1,8 +1,8 @@
 
 import React from 'react'
 import { useRouter } from '../../hooks';
-import { Button, Grid, Typography, Box, Link } from '@material-ui/core';
-import { useHistory } from 'react-router-dom'
+import { Button, Grid, Typography, Box } from '@material-ui/core';
+import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
         HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
 import { ButtonGrey, BoxBckgr } from '../../components/general/mini_components';
@@ -26,17 +26,17 @@ export default function HomeSchedule(props) {
                         <img src={calendar_image} alt="profile_picture" with="100%" />
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
-                        <Link href={HOSPITAL_WARD_ROUTE}>
+                        <Link to={HOSPITAL_WARD_ROUTE}>
                             <ButtonGrey >Hospital Ward</ButtonGrey>
                         </Link>
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
-                        <Link href={OUTPATIENTS_ROUTE}>
+                        <Link to={OUTPATIENTS_ROUTE}>
                             <ButtonGrey >Outpatients</ButtonGrey>
                         </Link>
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
-                        <Link href={SEARCH_PATIENT_ROUTE}>
+                        <Link to={SEARCH_PATIENT_ROUTE}>
                             <ButtonGrey >Consultations</ButtonGrey>
                         </Link>
                     </Grid>
@@ -75,12 +75,12 @@ export default function HomeSchedule(props) {
                     </Grid>
                     <Grid item container  spacing={3}>
                         <Grid item xs={12} style={{textAlign:"center"}}>
-                            <Link href={MY_SCHEDULE_ROUTE}>
+                            <Link to={MY_SCHEDULE_ROUTE}>
                                 <ButtonGrey >My Schedule</ButtonGrey>
                             </Link>
                         </Grid>
                         <Grid item xs={12} style={{textAlign:"center"}}>
-                            <Link href={SEARCH_PATIENT_ROUTE}>
+                            <Link to={SEARCH_PATIENT_ROUTE}>
                                 <ButtonGrey >Search Patient</ButtonGrey>
                             </Link>
                         </Grid>

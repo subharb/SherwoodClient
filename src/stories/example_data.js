@@ -341,8 +341,6 @@ export const basic_info1 = {
             "value" : "CN", 
             "type" : "text"
         },
-        "status" : 1,
-        "shareStatus" : 1,
         "type":{"value" : "audit", "type" : "select", "textValue" : "Clinical Trial"},
         "principal_researcher":{"value" : "Pedro Rodriguez", "type" : "text"},
         "institution":{"value" : "Oxford University", "type" : "text"},
@@ -361,39 +359,39 @@ export const basic_info1_raw = () => {
 }
 
 export const personal_data1 = () => {
-    return [
+    return  [
         {
             "name": "email",
-            "required": true,
             "type": "text",
+            "required": true,
             "label": "investigation.create.personal_data.fields.email",
             "encrypted": true
         },
         {
             "name": "phone",
-            "required": true,
             "type": "text",
+            "required": true,
             "label": "investigation.create.personal_data.fields.phone",
             "encrypted": true
         },
         {
             "name": "name",
-            "required": true,
             "type": "text",
+            "required": true,
             "label": "investigation.create.personal_data.fields.name",
             "encrypted": true
         },
         {
             "name": "surnames",
-            "required": true,
             "type": "text",
+            "required": true,
             "label": "investigation.create.personal_data.fields.surname",
             "encrypted": true
         },
         {
             "name": "birthdate",
-            "required": true,
             "type": "date",
+            "required": true,
             "label": "investigation.create.personal_data.fields.birthdate",
             "encrypted": true
         }
@@ -463,13 +461,13 @@ export const patients_personal_data_decrypted = () => {
 
 export const patients_personal_data_encripted = () => {
     return [
-            {
-            "uuid": "3b5eb0ef-028b-4bcb-bc81-66f20e8a704e",
+        {
+            "uuid": "801952ca-66da-4410-8583-3faa6f460e03",
             "personalData": [
                 {
                     "name": "email",
                     "required": true,
-                    "value": "U2FsdGVkX1+KpDA5h5xDEu+8bjq6INncGnj9zZIXHcoqoZ87U504uTs3NobQnuxG",
+                    "value": "U2FsdGVkX1+pbHGjn1me1m8V1iBnqVK3bNCF3ZoC/XzgyvXjbfDCSSF198uuXgpe",
                     "type": "text",
                     "label": "investigation.create.personal_data.fields.email",
                     "encrypted": true
@@ -477,7 +475,7 @@ export const patients_personal_data_encripted = () => {
                 {
                     "name": "phone",
                     "required": true,
-                    "value": "U2FsdGVkX19yUMIkJwWRfvXsid06LB7x3Ao3r48QI/E=",
+                    "value": "U2FsdGVkX18QybmdTZvGg6AzFX7SC02CUPYKiXgZX0i+sVm2VrEEVenL2pd4wuX6",
                     "type": "text",
                     "label": "investigation.create.personal_data.fields.phone",
                     "encrypted": true
@@ -485,7 +483,7 @@ export const patients_personal_data_encripted = () => {
                 {
                     "name": "name",
                     "required": true,
-                    "value": "U2FsdGVkX1/oSfPVVtZxARWBHxq3frJTbsvgszistOz+ZNe+75voUsxMdkgkt/Lc",
+                    "value": "U2FsdGVkX1/tscdtFMXNod0rqx4kCKAvh3T+QBDyT84=",
                     "type": "text",
                     "label": "investigation.create.personal_data.fields.name",
                     "encrypted": true
@@ -493,7 +491,7 @@ export const patients_personal_data_encripted = () => {
                 {
                     "name": "surnames",
                     "required": true,
-                    "value": "U2FsdGVkX1+/9yajVsm2tgmZRf9/SOioTXdfnY4Hwzg=",
+                    "value": "U2FsdGVkX18mAqlNzNtX9NRIHxM8K9r9iSYtUuWs7aM=",
                     "type": "text",
                     "label": "investigation.create.personal_data.fields.surname",
                     "encrypted": true
@@ -501,14 +499,553 @@ export const patients_personal_data_encripted = () => {
                 {
                     "name": "birthdate",
                     "required": true,
-                    "value": "U2FsdGVkX1/4Zfmx2czwV2xZzgpslWIim5l8CsgLgXs=",
+                    "value": "U2FsdGVkX1+F04TBpnsApjmsZ6PKe+/gOGy0VAvHh2w=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "e3ed69b5-d423-4dcf-9cfb-96c24f7a8df6",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX19gFetk0iAi/FWRfsBOMN+wg3gvYID+g6I=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX18gGlatoLGqCB59hzTEovZ0EQ+JcyFXEs+GKfZlZLm2N4Q8LnzCh/b8",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX1/wLZ1KO9GhRJ7PpcjTSF5d1DsGlbJKWeo=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX1+0S0i9OzaXdSTSSCWcS4B5KutqziIGv0g=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX19vnDPrg+LofrYmcekijXpDthbagJKmg8c=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "4e58bc59-2566-482c-9cfa-c3ae915c9d8f",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX1/UvlFnihZgkrvCUGeXUm5PYfbuZVWZ0Qo=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX1/I7w1i3hzu9BPYKvfThisC3PRtacxMWD/8jk/RZNWdSCJZ1a2+rPNM",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX184q+mR9ybfJ6uqprjJU3ug80OeG0dw+GM=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX1+h55QvtI4w7du8Aas1u9ItwVDC6haD7us=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX19AWhvCJfJyhhLkfUXP5KZx7lxaTtqFex8=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "eca2c07e-71d5-4bb6-9c24-48ee4ce4fb36",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX1+sIniXqNmX9xYcx+mYbXCjgslB4nVm+1M=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX1/VIys5XDGkq87xZeu4po6WY3ma18DeNDG5i7sv4GrFNHK5wa7BGiRT",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX1+zzOFMXyqxXp9dCsUDo851t5Ei8A5hQ4M=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX18PQuA3fgYoR8tLJMBp1VqJuchi4krPwqA=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX18huY5yy+a1NrymDiigyRsjhMWwD5pWwis=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "0ac15620-6087-4abc-8bd3-70ffafb1d1f1",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX19Wft2RuWiDVmoEqrydMLWKSxon8z0jOfJcZAJAawF1tF7eN5cfakx3",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX1/wWCcg4+EhjFpZgfboTOdtFL5P44Tv8OAuTGq34pVwtQMOGlQ//Mmq",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX19iE5NP6fIBdI6sBjiIoFT1KL17Dl6pKF4=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX198Yncw4Aqi/V74tzxA+Lo+n93EHaSnK58=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX18te4a+ZcHX7r5eoaeBFbrWcaGb2HE62LY=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "25fb657b-e1ad-4381-b77e-8ce9a273bc6a",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX1/fBR4f82fn51HApU7r2tkrUrY4RaiU2IsnmFm5MOF+HuWbMwKpOy0w",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX19vRhBU/AcjIh16Cmv65gLos8uUn3I4mR8=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX195JeY1Eg2EMbkBA361KFcicdaDE+Z95pqGKoKz2e7OJ1Z1g/NXhWPu",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX19BkYTY7JgJ2a5WGsARIqvkmfRwdn5m7O4=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX18YuWVf0vGGmY+D7N4PgJ0/hQtdtGyaXSU=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "7554bfa2-629c-4666-9eac-fe7122840082",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX1/jA4acFjlPg/eHR8IUDU7z2PwJf1Lxc90R0VUijo2YkNaLocyBwQwY",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX18g3X8FDlGqry6U+uzCO1WK95tMVu66rts=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX1/tITUb/7RBF6NqlyKgEi/pGslmUWZZXA4=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX1+Zl+MItefTOuItSJGBTQk0UPT3B0OswyU=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX1/bePwXQgzo0CCI+P4JcF2dHqyhUQhCU80=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "a079d1bc-bcec-438d-86be-581f2c6d957b",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX19w31hRr6ujGxw6oMaZ5o+nhrYgTtr/YGX2pSY4anrEJOZDL7HWgflS",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX19QF61qEgbR77v2naN1aAWf49WHhflWcQ8=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX18quUyYHmsZ1DatWFO/8iRpINaBKjGbofQ=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX18s6elerOX7QtjYriAYaqLljHjFNDrLhKA=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX18Gx/gJsiKop0T0hB7FcFElBE9soZ3mGWg=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "4c4e1eee-77f1-4cbe-89e7-3a90429a8f71",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX1/AXiRRdVajkLAMEJi/fQEsONJiNh/cgnPpvPKDpdw8WKDDx0EUlTu1",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX18rPNfuzHv8SJ4nePYYboectmBYC7BJqQo=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX18BJOZFFLvE6rfwuPadxyTh/CsHgn/rFGo=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX1/kuCwuBhWZwJkuqzPwSuoD/c0DHfJFpu0=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX189a9e3M/5mi2qS2QrrddCTijYiMfjPisA=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "f922c1f5-0906-4609-9792-7d97030a1da8",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX1+1c/UGKPOCMFUFGGRbwRK8WzWJY/DzP9RAT4Vakng/d2uJNhGolckj",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX19TX2aAeYVqTJtDHmiB+lnR7g7Y099OG50=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX1/6aRTn57ZrQIjnbkUa1USH9+/JrGXKxqc=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX19ml5vQU+5lXpKXAw9ySwZNgMM8u7zazMo=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX1/x5f2XBOrIMTlnYAco5NW3AMkgcENt7Js=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "47756992-00bf-4b83-a076-2f247433607f",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX1+aXYiaL0pfLBpl5tF9/ZbM8IWwfJwaELMmsgdngfcq7bAb6L76nbO1",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX18pfdgx5OjLYcN5PDlxpMXww1LjGn5sDCw=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX1/ymbbn19PPsWrVAMrNJS5uDTpt/aPXfek=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX19af8dXHB/6ZxTGgniig8kGre5DQBOWDXk=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX1/qYypjuFQe1dhLTsaj4FBO7J5uUEvlQCI=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "521ecc09-ee86-4777-b0a6-2c9451cd3a5e",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX1++fMu38m4S/jVI3Q+6T7RXLPTeM/XX+jU4J6L6gI/TbpsxR1qoaP5S",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX185TWW078ZY5JmoSDRABdlJwCLi31fzJJE=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX18p0jyZ9X/CnEf8IaAwYT8yQudMG7o3csc=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX18kG66Edm0qTnd5MYd7fwJkcY2rvozcKok=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX19eETs4qsaZIdRRtXZPJEq8KHn74Fz2E3g=",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "a83a8d32-412d-48fe-8bfb-92b53780e510",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "U2FsdGVkX18gJ5XQQARbazM/RQnrmMMsbWfWLqwPAkxQJOeiAxvX35rp6lnKSoQg",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "U2FsdGVkX1+SxUOLm7yrLFsXrU/rMOOg1OgvwE352Kg=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "U2FsdGVkX1+103yS1cnMx/sTyXGZYq+TWuiBRtI07y4=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "U2FsdGVkX1/4QeYE7ZzLW/UwYIkq6lyR84cIrMRYRBA=",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "U2FsdGVkX19WqHyvz6M7Htex7On7Vm/3tO3JRtw8k2U=",
                     "type": "date",
                     "label": "investigation.create.personal_data.fields.birthdate",
                     "encrypted": true
                 }
             ]
         }
-        
     ]
 }
 
@@ -659,7 +1196,7 @@ export const investigation_server = () => {
     returnData.personalFields = personal_data1();
     returnData.patientsPersonalData = patients_personal_data_encripted();
     returnData.status = 1;
-    returnData.keyResearcherInvestigation = "U2FsdGVkX1/fHwGVOHWYFIiQwwRIOnwIWkyrQrY0qL2XvbjkD7x9lob32xaj3njsHVDUBI7HByG9Usj0i6KUFA==";
+    returnData.keyResearcherInvestigation = "U2FsdGVkX19vZ9QYZqVXUKngvq3aqfwxApSwtLB5hKMbmDXJQUwwfdt7mQMR9Wu8TxfOjwo0X3A4H7S2/WYfpw==";
     returnData.shareStatus = 2; 
     returnData.sharedResearchers = sharedResearchers;
     return returnData;

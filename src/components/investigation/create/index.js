@@ -107,12 +107,12 @@ export function NewInvestigation(props){
         }
     }, [])
     useEffect(() => {
-        setInvestigation(props.initialState.investigation)
-    }, [props.initialState.investigation])
+        setInvestigation(props.investigation)
+    }, [props.investigation])
 
     useEffect(() => {
-        setIsLoading(props.initialState.isLoading)
-    }, [props.initialState.isLoading])
+        setIsLoading(props.isLoading)
+    }, [props.isLoading])
 
     console.log("Initial data:", props.initialState);
     let component = null;
