@@ -69,6 +69,7 @@ import HomeSchedule from "../pages/hospital/HomeSchedule";
 import ListPatients from "../pages/hospital/ListPatients";
 import Patient from "../pages/hospital/Patient";
 import SearchPatients from "../pages/hospital/SearchPatients";
+import AddPatient from "../pages/hospital/AddPatient";
 // // Forms components
 // const Pickers = async(() => import("../pages/forms/Pickers"));
 // const SelectionCtrls = async(() => import("../pages/forms/SelectionControls"));
@@ -156,9 +157,10 @@ export const ALL_INVESTIGATIONS_ROUTE = "/investigations/all";
 export const HOSPITAL_HOME_ROUTE = "/hospital";
 export const MY_SCHEDULE_ROUTE = "/my-schedule";
 export const SEARCH_PATIENT_ROUTE = "/search-patient";
+export const ADD_PATIENT_ROUTE = "/add-patient";
 export const HOSPITAL_WARD_ROUTE = "/hospital-ward";
 export const OUTPATIENTS_ROUTE = "/outpatients";
-export const HOSPITAL_PATIENT = "/patient/:idPatient";
+export const HOSPITAL_PATIENT = "/patient/:uuidPatient";
 
 
 
@@ -203,6 +205,11 @@ const hospitalRoutes = {
             path: HOSPITAL_PATIENT,
             name: "Patient",
             component: Patient
+        },
+        {
+            path: ADD_PATIENT_ROUTE,
+            name: "Add Patient",
+            component: AddPatient
         },
         // {
         //     path: DRAFT_INVESTIGATIONS_ROUTE,

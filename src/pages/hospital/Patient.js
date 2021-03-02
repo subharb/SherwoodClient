@@ -27,12 +27,8 @@ function Patient(props) {
     const [dataCollectionSelected, setDataCollectionSelected] = useState(null);
     const [newRecords, setNewRecords] = useState(0);
     
-    let { idPatient } = useParams();
+    let { uuidPatient } = useParams();
 
-
-    let years = yearsFromDate(props.dateOfBirth);
-    let stay = daysFromDate(props.dateIn);
-    
     function fillDataCollection(dataCollection){
         setShowDataCollections(false);
         setDataCollectionSelected(dataCollection);
@@ -45,15 +41,16 @@ function Patient(props) {
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
         try{
             console.log(data);
+            
             setLoading(true);
             const postObj = {submission : [
                 {
-                    id_section:dataCollectionSelected.sections[0]._id,
+                    uuid_section:dataCollectionSelected.sections[0].uuid,
                     answers:data
                 }
                 ]
             }
-            const response = await postRecordPatient(postObj, props.investigations[0].uuid, idPatient, dataCollectionSelected._id);
+            const response = await postRecordPatient(postObj, props.investigations[0].uuid, uuidPatient, dataCollectionSelected.uuid);
             setLoading(false);
             setSaved(true);
             setNewRecords(c => c +1);
@@ -74,38 +71,37 @@ function Patient(props) {
     function renderCore(){
         if(dataCollectionSelected !== null){
             return(
-                <FillDataCollection key={dataCollectionSelected._id} dataCollection={dataCollectionSelected}
+                <FillDataCollection key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected}
                 patientId={props.patientId} investigation={props.investigation} callBackDataCollection={(values) => saveRecord(values)}/>
             )
         }
         else if(indexMedicalNote !== null){
             const dataCollection = props.investigations[0].surveys.find(dataCol => {
-                if(dataCol._id === surveyRecords[indexMedicalNote].surveyID){
+                if(dataCol.uuid === surveyRecords[indexMedicalNote].surveyID){
                     return dataCol;
                 }
             })
-            const recordSelected = surveyRecords[indexMedicalNote].record;
-            const dateCreated = new Date(recordSelected.created_At)
+            const recordsSelected = surveyRecords[indexMedicalNote].surveyRecords;
+            const dateCreated = new Date(surveyRecords[indexMedicalNote].createdAt)
+            const sectionSubmission = dataCollection.sections.find(section => {
+                return section.uuid === surveyRecords[indexMedicalNote].surveyRecords[0].surveySection.uuid
+            })
             return (
-            <Grid container>
-                <Grid item xs={6}>
-                    <Typography variant="body2" gutterBottom>
-                        {surveyRecords[indexMedicalNote].researcher.name+" "+ surveyRecords[indexMedicalNote].researcher.surnames}
-                    </Typography>
-                </Grid>
-                <Grid xs={6}>
-                    <Typography variant="body2" gutterBottom>
-                        { dateCreated.toISOString().split('T')[0] }
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    {
-                        dataCollection.sections.map(section => {
-                            return <ShowRecordsSection noTitle submissions={surveyRecords[indexMedicalNote].record.submission} section={section} />
-                        })
-                    }
-                </Grid>
-            </Grid>)
+                <Grid container>
+                    <Grid item xs={6}>
+                        <Typography variant="body2" gutterBottom>
+                            {surveyRecords[indexMedicalNote].researcher.name+" "+ surveyRecords[indexMedicalNote].researcher.surnames}
+                        </Typography>
+                    </Grid>
+                    <Grid xs={6}>
+                        <Typography variant="body2" gutterBottom>
+                            { dateCreated.toISOString().split('T')[0] }
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <ShowRecordsSection noTitle submissions={[surveyRecords[indexMedicalNote]]} section={sectionSubmission} />
+                    </Grid>
+                </Grid>)
         }
         else if(surveyRecords.length === 0){
             return "No medical notes yet"
@@ -114,7 +110,7 @@ function Patient(props) {
             return(
                 <EnhancedTable noHeader noSelectable selectRow={(index) => selectRecord(index)} 
                 rows={surveyRecords.map(record => {
-                    const dateCreated = new Date(record.record.created_At);
+                    const dateCreated = new Date(record.createdAt);
                     return({researcher : record.researcher.name+" "+ record.researcher.surnames, surveyName : record.surveyName, date : dateCreated.toISOString().split('T')[0]})
                 })} headCells={[{ id: "researcher", alignment: "right", label: "Researcher"}, { id: "surveyName", alignment: "right", label: "DataCollection"},
                                 { id: "date", alignment: "right", label: "Date"}]} />
@@ -125,20 +121,20 @@ function Patient(props) {
         async function fetchRecordsPatient(){
             try{
                 setLoading(true);
-                const response = await fetchRecordsPatientAllSurveys(props.investigations[0].uuid, idPatient);
+                const response = await fetchRecordsPatientAllSurveys(props.investigations[0].uuid, uuidPatient);
                 //Ordeno los records cronologicamente
                 let records = [];
                 for(const survey of response.surveys){
-                    for(const record of survey.records){
-                        record.surveyID = survey.id;
+                    for(const record of survey.submissions){
+                        record.surveyID = survey.uuid;
                         record.surveyName = survey.surveyName;
                         records.push(record);
                     }
                     
                 }
                 records.sort((a, b) => {
-                    const aDate = new Date(a.record.created_At);
-                    const bDate = new Date(b.record.created_At);
+                    const aDate = new Date(a.record.createdAt);
+                    const bDate = new Date(b.record.createdAt);
                     return (aDate.getTime() > bDate.getTime())
                 });
                 setSurveyRecords(records);
@@ -160,7 +156,7 @@ function Patient(props) {
         //Find current patient
         if(props.investigations.length !== 0){
             const tempPatient = props.investigations[0].patientsPersonalData.find(patient =>{
-                return(patient.id === idPatient);
+                return(patient.uuid === uuidPatient);
             });
             setPatient(tempPatient);
         }
@@ -177,76 +173,82 @@ function Patient(props) {
     else if(props.investigations.length === 0 || !patient){
         return <Loader />
     }
-    return (
+    else{
+        let years = yearsFromDate(parseInt(patient.birthdate));
+        let stay = daysFromDate(props.dateIn);
+
+        return (
         
-        <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
-            <Modal isTransparent={true} open={showDataCollections || loading || saved} closeModal={() => setShowDataCollections(false)}>
-                {
-                    saved &&
-                    <CheckCircleOutlineSvg style={{ color: "green",fontSize: 80 }}/>
-                }
-                { showDataCollections && 
-                    <Grid container spacing={3} >
+            <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
+                <Modal isTransparent={true} open={showDataCollections || loading || saved} closeModal={() => setShowDataCollections(false)}>
                     {
-                        props.investigations[0].surveys.map(dataCollection => {
-                            return(
-                                <Grid item xs={12} style={{textAlign:"center"}}>
-                                    <ButtonGrey onClick={() => fillDataCollection(dataCollection)}>{dataCollection.name}</ButtonGrey>
-                                </Grid>
-                            )
-                        })
+                        saved &&
+                        <CheckCircleOutlineSvg style={{ color: "green",fontSize: 80 }}/>
                     }
+                    { showDataCollections && 
+                        <Grid container spacing={3} >
+                        {
+                            props.investigations[0].surveys.map(dataCollection => {
+                                return(
+                                    <Grid item xs={12} style={{textAlign:"center"}}>
+                                        <ButtonGrey onClick={() => fillDataCollection(dataCollection)}>{dataCollection.name}</ButtonGrey>
+                                    </Grid>
+                                )
+                            })
+                        }
+                        </Grid>
+                    }
+                </Modal>
+                <Grid container style={{backgroundColor:"white"}} spacing={3}>
+                    <Grid item container xs={12}>
+                        <Grid item container xs={3} >
+                            <Grid item xs={12}>
+                                <Typography variant="body2" gutterBottom>
+                                    {props.number}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <IconPatient gender={props.gender} />
+                            </Grid>
+                        </Grid>
+                        <Grid item container xs={4}>
+                            <Grid item xs={12}>
+                                <Typography variant="body2" gutterBottom>
+                                    {patient.name} {patient.surnames}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="body2" gutterBottom>
+                                    ID: {patient.uuid}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="body2" gutterBottom>
+                                    {years} years
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="body2" gutterBottom>
+                                    {stay} days
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                        <Grid item container xs={5}  justify="center" alignItems="center">
+                            <Grid item xs={4}>
+                                <ButtonAdd onClick={() => setShowDataCollections(!showDataCollections)} />
+                            </Grid>
+                        </Grid>
                     </Grid>
-                }
-            </Modal>
-            <Grid container style={{backgroundColor:"white"}} spacing={3}>
-                <Grid item container xs={12}>
-                    <Grid item container xs={3} >
-                        <Grid item xs={12}>
-                            <Typography variant="body2" gutterBottom>
-                                {props.number}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <IconPatient gender={props.gender} />
-                        </Grid>
-                    </Grid>
-                    <Grid item container xs={4}>
-                        <Grid item xs={12}>
-                            <Typography variant="body2" gutterBottom>
-                                {patient.personalData.name} {patient.personalData.surnames}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body2" gutterBottom>
-                                ID: {patient.id}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body2" gutterBottom>
-                                {years} years
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body2" gutterBottom>
-                                {stay} days
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                    <Grid item container xs={5}  justify="center" alignItems="center">
-                        <Grid item xs={4}>
-                            <ButtonAdd onClick={() => setShowDataCollections(!showDataCollections)} />
-                        </Grid>
+                    <Grid item xs={12}>
+                        {
+                            renderCore()
+                        }
                     </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    {
-                        renderCore()
-                    }
-                </Grid>
-            </Grid>
-        </BoxBckgr>
-    )
+            </BoxBckgr>
+        )
+    }
+    
 }
 
 const mapStateToProps = (state) =>{

@@ -83,6 +83,22 @@ export function fetchRecordsPatientAllSurveys(uuidInvestigation, patientUUID) {
     });
 }
 
+export function addPatient(uuidInvestigation, patientData){
+    return new Promise((resolve, reject) => {
+        axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patient", patientData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            .then((response) => {
+                if(response.status === 200){
+                    resolve(response.data);
+                }
+                else{
+                    reject(response.data);
+                }
+            })
+            .catch(err => {console.log('Catch', err); reject(err);}); 
+    })
+}
+
+
 export function postRecordPatient(postObj, uuidInvestigation, patientId, dataCollectionID) {
     return new Promise((resolve, reject) => {
         

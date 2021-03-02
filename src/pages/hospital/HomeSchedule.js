@@ -4,7 +4,7 @@ import { useRouter } from '../../hooks';
 import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
-        HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
+        HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE } from '../../routes';
 import { ButtonGrey, BoxBckgr } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
@@ -82,6 +82,11 @@ export default function HomeSchedule(props) {
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <Link to={SEARCH_PATIENT_ROUTE}>
                                 <ButtonGrey >Search Patient</ButtonGrey>
+                            </Link>
+                        </Grid>
+                        <Grid item xs={12} style={{textAlign:"center"}}>
+                            <Link to={ADD_PATIENT_ROUTE}>
+                                <ButtonGrey >Add Patient</ButtonGrey>
                             </Link>
                         </Grid>
                     </Grid>

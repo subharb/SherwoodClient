@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 import { Grid, Typography, Paper } from '@material-ui/core';
 import { BoxBckgr, IconPatient, ButtonAdd, CheckCircleOutlineSvg } from '../../components/general/mini_components';
 import { yearsFromDate, daysFromDate } from '../../utils';
-import Form from '../../components/general/form';
-
-
+import SectionForm from '../../components/general/SectionForm';
 
 
 export default function FillDataCollection(props) {
@@ -23,8 +21,8 @@ export default function FillDataCollection(props) {
                     </Grid>
                     <Grid item xs={12}>
                         <Paper elevation={3} style={{padding:"1rem"}} >
-                            <Form fields={props.dataCollection.sections[0].fields} 
-                                    callBackForm = {(values) => props.callBackDataCollection(values)}/>
+                            <SectionForm fields={props.dataCollection.sections[0].fields} 
+                                callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
                         </Paper>
                     </Grid>
                 </Grid>

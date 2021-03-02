@@ -37,7 +37,7 @@ export default function SearchPatients(props) {
     }
     function patientSelected(index){
         console.log(HOSPITAL_PATIENT);
-        const nextUrl = HOSPITAL_PATIENT.replace(":idPatient", filteredPatients[index].id)
+        const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", filteredPatients[index].uuid)
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
@@ -60,8 +60,8 @@ export default function SearchPatients(props) {
     function renderCore(){
         if(!showResults){
             return (
-                <Box p={1}>
-                    <Paper>
+                <Box>
+                    <Paper style={{padding:'1rem'}}>
                         <Form fields={personalFieldsForm} selectRow={(index) =>patientSelected(index)} 
                             callBackForm={searchPatientCallBack}/>
                     </Paper>
@@ -72,8 +72,8 @@ export default function SearchPatients(props) {
         else{
             if(filteredPatients.length === 0){
                 return ([
-                    <Box p={1}>
-                        <Paper>
+                    <Box >
+                        <Paper style={{padding:'1rem'}}>
                             No patients meet the criteria
                         </Paper>
                     </Box>,
@@ -85,12 +85,12 @@ export default function SearchPatients(props) {
             }
             else{
                 const headCells = investigations[0].personalFields.map(pField =>{
-                    return { id:pField, alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.${pField}`} /> }
+                    return { id:pField.name, alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.${pField.name}`} /> }
                 });
                 const rows = filteredPatients.map(patient => {
                     let tempData = {}
                     for(const pField of investigations[0].personalFields){
-                        tempData[pField] = patient[pField]
+                        tempData[pField.name] = patient[pField.name]
                     }
                     return tempData;
                 })  

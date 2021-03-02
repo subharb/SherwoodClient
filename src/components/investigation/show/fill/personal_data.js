@@ -63,7 +63,8 @@ export default function PersonalDataForm(props) {
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <Form fields={form} initialData={props.initialData} callBackForm={(data) => encryptPersonalData(data)}/>
+                <Form fields={form} initialData={props.initialData} 
+                    callBackForm={(data) => encryptPersonalData(data)}/>
             </Grid>
         </Grid>
     )
