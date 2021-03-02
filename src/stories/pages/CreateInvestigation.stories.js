@@ -1,7 +1,7 @@
 import React from 'react';
-import NewInvestigation from '../components/investigation/create/index'
-import ProviderSherwood from '../providerSherwood';
-import { summary_info1 } from './example_data';
+import NewInvestigation from '../../components/investigation/create/index'
+import ProviderSherwood from '../../providerSherwood';
+import { summary_info1 } from '../example_data';
 
 export default {
   title: 'Pages/Create Investigation',

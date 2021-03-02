@@ -1,11 +1,11 @@
 import React from 'react';
-import Register from '../pages/auth/SignUp'
-import ProviderSherwood from '../providerSherwood';
-import { summary_info1 } from './example_data';
+import SignIn from '../../pages/auth/SignIn'
+import ProviderSherwood from '../../providerSherwood';
+import { summary_info1 } from '../example_data';
 
 export default {
-  title: 'Pages/Register',
-  component: Register,
+  title: 'Pages/SignIn',
+  component: SignIn,
   argTypes: {
     typeUser:{ control: {
         type: 'select',
@@ -23,7 +23,7 @@ export default {
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <Register {...args} />;
+const Template = (args) => <SignIn {...args} />;
 
 export const Researcher = Template.bind({});
 Researcher.args = {

@@ -1,7 +1,7 @@
 import React from 'react';
-import FillInvestigation from '../components/investigation/show/single/index'
-import ProviderSherwood from '../providerSherwood';
-import { investigation_server, investigation_server_no_patitents, investigation_server_read_access, patient_personal_data_default_key, records_patient1, records_patient2 } from './example_data';
+import FillInvestigation from '../../components/investigation/show/single/index'
+import ProviderSherwood from '../../providerSherwood';
+import { investigation_server, investigation_server_no_patitents, investigation_server_read_access, patient_personal_data_default_key, records_patient1, records_patient2 } from '../example_data';
 
 export default {
   title: 'Pages/Show Investigation',

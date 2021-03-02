@@ -1,7 +1,7 @@
 import React from 'react';
-import ShareInvestigation from '../components/investigation/share'
-import { researchers_to_share, sharedResearchers, investigation_server } from './example_data';
-import ProviderSherwood from '../providerSherwood';
+import ShareInvestigation from '../../components/investigation/share'
+import { researchers_to_share, sharedResearchers, investigation_server } from '../example_data';
+import ProviderSherwood from '../../providerSherwood';
 
 export default {
     title: 'Pages/Share Investigation',
