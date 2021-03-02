@@ -146,6 +146,7 @@ export const SIGN_IN_ROUTE = "/auth/sign-in";
 export const SIGN_UP_ROUTE = "/auth/sign-up";
 export const SHARE_INVESTIGATION_ROUTE = "/investigation/share/:uuid";
 export const SHOW_INVESTIGATION_ROUTE = "/investigation/show/:uuid";
+export const EDIT_INVESTIGATION_ROUTE = "/investigation/edit/:uuid";
 export const CREATE_INVESTIGATION_ROUTE = "/investigation/create";
 export const PROFILE_ROUTE = "/profile";
 export const PENDING_INVESTIGATIONS_ROUTE = "/investigations/pending";
@@ -275,6 +276,11 @@ const dashboardsNotSideBarRoutes = {
             path: CREATE_INVESTIGATION_ROUTE,
             name: "CreateInvestigation",
             component: CreateInvestigation,
+        },
+        {
+            path: EDIT_INVESTIGATION_ROUTE,
+            name: "EditInvestigation",
+            component: () => <Investigation status={0} /> ,
         },
         {
             path: SHOW_INVESTIGATION_ROUTE,

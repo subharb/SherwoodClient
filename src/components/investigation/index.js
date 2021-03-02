@@ -1,5 +1,5 @@
 import React from 'react'
-import UpdateInvestigation from './create';
+import UpdateInvestigation from './create/edit';
 import FillInvestigation from './show/single';
 import { useParams
 } from "react-router-dom";

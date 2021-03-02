@@ -1,7 +1,7 @@
 import React from 'react';
 import AllInvestigations from '../../components/investigation/show/all'
 import ProviderSherwood from '../../providerSherwood';
-import { summary_info1, investigationsShowAll, pendingInvestigations } from '../example_data';
+import { summary_info1, investigationsShowAll, list_investigations } from '../example_data';
 export default {
     title: 'Pages/All Investigations',
     component: AllInvestigations,
@@ -38,14 +38,14 @@ const Template = (args) => <AllInvestigations {...args} />;
 
 export const All = Template.bind({});
 All.args = {
-    initialState : summary_info1(),
+    initialState : {investigations : list_investigations()},
     typeUser: "researcher",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
 export const Draft = Template.bind({});
 Draft.args = {
-    initialState : summary_info1(),
+    initialState : {investigations : list_investigations()},
     typeUser: "researcher",
     filter:"draft",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
@@ -53,7 +53,7 @@ Draft.args = {
 
 export const Live = Template.bind({});
 Live.args = {
-    initialState : summary_info1(),
+    initialState : {investigations : list_investigations()},
     typeUser: "researcher",
     filter:"live",
     stepBack : () => alert("Hit StepBack"),
@@ -63,7 +63,7 @@ Live.args = {
 
 export const Pending = Template.bind({});
 Pending.args = {
-    initialState : {investigations:pendingInvestigations},
+    initialState : {investigations : list_investigations()},
     typeUser: "researcher",
     filter:"pending",
     stepBack : () => alert("Hit StepBack"),

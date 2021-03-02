@@ -67,7 +67,7 @@ export default class EDC extends Component{
             return([
                 <Grid item xs={12}>
                     <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
-                            actions = {{"delete" : (index) => this.deleteDataCollection(index)}} />
+                            actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
                 
                 </Grid>,
                 <Grid item xs={12}>

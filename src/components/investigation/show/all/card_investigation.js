@@ -71,7 +71,7 @@ export default function CardInvestigation({ image, title, description, status, s
     const chipStatus = () => {
         if(shareStatus === 0){
             return <Chip label="Pending" rgbcolor={orange[500]} />
-        }
+        } 
         else{
             return null;
         }
@@ -93,21 +93,34 @@ export default function CardInvestigation({ image, title, description, status, s
             )
         }
         else{
-            return(
+            if(status === 0){
+                return(
                 <CardActions>
-                    <NavLink to={`/investigation/share/${uuid}`} >
-                        <Button data-testid="share" size="small" color="primary">
-                            Share
-                        </Button>
-                    </NavLink>
-                    <NavLink to={`/investigation/show/${uuid}`}>
-                        <Button data-testid="open" size="small" color="secondary">
-                            Open
-                        </Button>
-                    </NavLink>
+                    <NavLink to={`/investigation/create/${uuid}`}>
+                            <Button data-testid="open" size="small" color="secondary">
+                                Edit
+                            </Button>
+                        </NavLink>
                 </CardActions>
-                
-            )
+                )
+            }
+            else{
+                return(
+                    <CardActions>
+                        <NavLink to={`/investigation/share/${uuid}`} >
+                            <Button data-testid="share" size="small" color="primary">
+                                Share
+                            </Button>
+                        </NavLink>
+                            <NavLink to={`/investigation/show/${uuid}`}>
+                                <Button data-testid="open" size="small" color="secondary">
+                                    Open
+                                </Button>
+                            </NavLink>                    
+                    </CardActions> 
+                )
+            }
+            
         }
     }
     return (

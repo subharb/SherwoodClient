@@ -150,7 +150,7 @@
                     "new" : ["New section"],
                     "edit_section" : ["Edit section"],
                     "section_name" : ["Name", "Nombre"],
-                    "add_section" : ["Add section"],
+                    "add_section" : ["Save section"],
                     "none" : ["You have no sections", "No has creado ninguna sección"]
                 },
                 "acronym" : ["Acronym", "Acrónimo"],

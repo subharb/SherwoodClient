@@ -341,6 +341,8 @@ export const basic_info1 = {
             "value" : "CN", 
             "type" : "text"
         },
+        "status" : 1,
+        "shareStatus" : 1,
         "type":{"value" : "audit", "type" : "select", "textValue" : "Clinical Trial"},
         "principal_researcher":{"value" : "Pedro Rodriguez", "type" : "text"},
         "institution":{"value" : "Oxford University", "type" : "text"},
@@ -417,9 +419,20 @@ export const patient_data_decrypted1 = () => {
 export const summary_info1 = () => {
     return {
         "basic_info":  basic_info1_raw(),
+        "status" : 1,
         "personal_data" : personal_data1(),
         "surveys" : edc_data1().surveys
     }   
+}
+
+export const list_investigations = () => {
+    const inv1 = {...basic_info1_raw()}
+    const inv2 = {...basic_info1_raw()}
+    inv2.status = 0;
+    const inv3 = {...basic_info1_raw()}
+    inv3.shareStatus = 0;
+    inv3.hostResearcher = {name: "Peter", surnames:"Petrelli"}
+    return [inv1, inv2, inv3]
 }
 
 export const patients_personal_data_decrypted = () => {
