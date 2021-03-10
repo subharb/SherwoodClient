@@ -3,15 +3,16 @@ import {
     addPatient as addPatientService
 } from "../../services/sherwoodService";
 
-export function savePatientAction(uuid, patientData) {
+export function savePatientAction(investigation, patientData) {
   return async (dispatch) => {
     dispatch({ type: types.SAVE_PATIENT_LOADING });
 
-    return addPatientService(uuid, patientData)
+    return addPatientService(investigation.uuid, patientData)
       .then((response) => {
         dispatch({
           type: types.SAVE_PATIENT_SUCCESS,
-          investigations: response.investigations,
+          patient: {...response.patient},
+          investigation:investigation
         });
       })
       .catch((error) => {

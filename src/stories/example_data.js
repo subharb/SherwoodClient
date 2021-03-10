@@ -23,7 +23,8 @@ export const edc_data1 = () => {
                                 "required": true,
                                 "label": "Amount red cells?",
                                 "isActive": true,
-                                "options": []
+                                "options": [],
+                                "typeValueCypress" : "Text"
                             },
                             {
                                 "id": 6,
@@ -33,7 +34,8 @@ export const edc_data1 = () => {
                                 "required": true,
                                 "label": "Amount white cells?",
                                 "isActive": true,
-                                "options": []
+                                "options": [],
+                                "typeValueCypress" : "Text"
                             }
                         ]
                     }
@@ -61,7 +63,8 @@ export const edc_data1 = () => {
                                 "required": true,
                                 "label": "Sex at birth",
                                 "isActive": true,
-                                "options": []
+                                "options": [],
+                                "typeValueCypress" : "Text"
                             },
                             {
                                 "id": 2,
@@ -71,7 +74,8 @@ export const edc_data1 = () => {
                                 "required": true,
                                 "label": "History",
                                 "isActive": true,
-                                "options": []
+                                "options": [],
+                                "typeValueCypress" : "Text"
                             },
                             {
                                 "id": 3,
@@ -81,7 +85,8 @@ export const edc_data1 = () => {
                                 "required": true,
                                 "label": "Etnic Origin",
                                 "isActive": true,
-                                "options": []
+                                "options": [],
+                                "typeValueCypress" : "Text"
                             }
                         ]
                     },
@@ -100,7 +105,8 @@ export const edc_data1 = () => {
                                 "required": true,
                                 "label": "Previous Ilnesess",
                                 "isActive": true,
-                                "options": []
+                                "options": [],
+                                "typeValueCypress" : "Text"
                             }
                         ]
                     }

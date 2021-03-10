@@ -6,8 +6,12 @@ import { decryptPatientData } from '../../utils';
  * @param {boolean} state 
  */
 
- 
-export default function reducer(state = {}, action){
+ const initialState = {
+    data: null,
+    loading: false,
+    error: null
+}
+export default function reducer(state = initialState, action){
     console.log(action)
     let newState = { ...state};
     switch(action.type){
@@ -24,7 +28,18 @@ export default function reducer(state = {}, action){
                 
             }
             
-            newState = tempInvestigations;                            
+            newState.data = tempInvestigations;                            
+            return newState;
+        case types.SAVE_PATIENT_LOADING:
+            newState.loading = true;
+            newState.error = initialState.error;
+            return newState;
+        case types.SAVE_PATIENT_SUCCESS:
+            let tempDecryptedData = decryptPatientData([action.patient], action.investigation);
+            newState.data[action.investigation.uuid].push(tempDecryptedData[0]);
+
+            newState.loading = initialState.loading;
+            newState.error = initialState.error;
             return newState;
         default:
             return state;

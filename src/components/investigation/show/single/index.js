@@ -112,7 +112,7 @@ export function ShowInvestigation(props) {
     }
     async function savePatient(patientData){
         console.log(patientData);    
-        await savePatientAction(currentInvestigation.uuid, patientData);
+        await dispatch(savePatientAction(currentInvestigation, patientData));
 
         setShowForm(0);
     }
@@ -179,7 +179,7 @@ export function ShowInvestigation(props) {
             setLevel(c => c -1);
         }
     }
-    if(props.investigations.loading || !currentInvestigation || props.submissions.loading){
+    if(props.investigations.loading || !currentInvestigation || props.submissions.loading || props.patientsLoading){
         return <Loader />
     }
     return (
@@ -230,7 +230,8 @@ function mapStateToProps(state, ownProps){
     return{
         submissions:state.submissions,
         investigations:state.investigations,
-        patients:state.patients.hasOwnProperty(ownProps.uuid) ? state.patients[ownProps.uuid] : []
+        patientsLoading:state.patients.loading,
+        patients:state.patients.data && state.patients.data.hasOwnProperty(ownProps.uuid) ? state.patients.data[ownProps.uuid] : []
     }
 }
 
