@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import PatientRecords from '../fill/show_patient_records';
+import PatientRecords from './show_patient_records';
 import PropTypes from 'prop-types';
 import { Button, Typography, Grid } from '@material-ui/core';
 import {
@@ -26,20 +26,15 @@ export default function ShowAllRecordsSurvey(props) {
     let [dictPatients, setDictPatients] = useState({});
     useEffect(() => {
         //Agrupamos los records por paciente
-        let dictPatients = {}
-        props.records.forEach(record => {
-            const patient = props.patients.find(patient => {
-                return patient.id === record.id_patient
-            })
-            let tempPatient = {patient: patient, submission:record.submission}
-            if(dictPatients.hasOwnProperty(record.id_patient)){
-                dictPatients[record.id_patient].submission = dictPatients[record.id_patient].submission.concat(record.submission)
+        let dictPatientsSubmissions = {}
+        props.submissions.forEach(submission => {
+            if(!dictPatientsSubmissions.hasOwnProperty(submission.patient.uuid)){
+                dictPatientsSubmissions[submission.patient.uuid] = [];
             }
-            else{
-                dictPatients[record.id_patient] = tempPatient;
-            }
+            dictPatientsSubmissions[submission.patient.uuid].push(submission);
+
         });
-        setDictPatients(dictPatients);
+        setDictPatients(dictPatientsSubmissions);
     }, []);
     if(Object.values(dictPatients).length === 0){
         return(
@@ -48,6 +43,8 @@ export default function ShowAllRecordsSurvey(props) {
             </Typography>
         ) 
     }
+    const uuidPatient = Object.values(dictPatients)[currentPatient][0].patient.uuid;
+    const patientCurrent = props.patients.find(pat => pat.uuid === uuidPatient) ;
     return (
         <Grid container direction="column" spacing={3}>
             <Grid item>
@@ -70,8 +67,8 @@ export default function ShowAllRecordsSurvey(props) {
                 </Grid>
             </Grid>
             <Grid item>
-                <PatientRecords initialData={props.records} 
-                    mode="elements" survey={props.survey} patient={Object.values(dictPatients)[currentPatient].patient} />
+                <PatientRecords submissions={dictPatients[uuidPatient]} singlePatient
+                    mode="elements" survey={props.survey} patientPersonalData={patientCurrent.personalData} />
             </Grid>
         </Grid>
         
@@ -79,6 +76,6 @@ export default function ShowAllRecordsSurvey(props) {
 }
 
 ShowAllRecordsSurvey.propTypes = {
-    records: PropTypes.array,
+    submissions: PropTypes.array,
     survey: PropTypes.object
 };

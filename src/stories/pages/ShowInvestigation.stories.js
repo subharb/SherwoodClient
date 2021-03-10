@@ -1,11 +1,11 @@
 import React from 'react';
-import FillInvestigation from '../../components/investigation/show/single/index'
+import {ShowInvestigation} from '../../components/investigation/show/single/index'
 import ProviderSherwood from '../../providerSherwood';
-import { investigation_server, investigation_server_no_patitents, investigation_server_read_access, patient_personal_data_default_key, records_patient1, records_patient2 } from '../example_data';
+import { investigation_server, investigation_server_no_patitents, fake_submissions_reducer, patients_no_access_data, patients_personal_data_decrypted, investigation_server_read_access, patient_personal_data_default_key, records_patient1, records_patient2 } from '../example_data';
 
 export default {
   title: 'Pages/Show Investigation',
-  component: FillInvestigation,
+  component: ShowInvestigation,
   argTypes: {
     uuid: { control: 'string' },
   },
@@ -15,19 +15,21 @@ export default {
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <FillInvestigation {...args} />
+const Template = (args) => <ShowInvestigation {...args} />
                             
 
 export const NoPatients = Template.bind({});
 NoPatients.args = {
-    initialData : { investigation : investigation_server_no_patitents()},
+    investigation : investigation_server_no_patitents(),
+    patients:[],
     uuid : "ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
 export const SharedNoPersonalDataAccess = Template.bind({});
 SharedNoPersonalDataAccess.args = {
-    initialData : { investigation : investigation_server_read_access()},
+    investigation : investigation_server_read_access(),
+    patients:patients_no_access_data,
     uuid : "ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
@@ -37,7 +39,9 @@ SharedNoPersonalDataAccess.args = {
 
 export const WithPatients = Template.bind({});
 WithPatients.args = {
-    initialData : { investigation : investigation_server()},
+    investigation : investigation_server(),
+    patients:patients_personal_data_decrypted(),
+    submissions:fake_submissions_reducer,
     uuid : "ebe64225-023b-4ce9-9d21-37d1c2a26ebf",
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };

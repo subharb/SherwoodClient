@@ -1,6 +1,6 @@
 import { researcherA_data, loginResearcherA, loginResearcherB, loginResearcherC,
-    researcherB_data, basic_info1, personal_data1, edc_data1, researcherC_data,
-    patients_personal_data_decrypted, records_patient1, records_patient2, researcherD_data, loginResearcherD } from '../../src/stories/example_data';
+    researcherB_data, basic_info1, personal_data_investigation1, edc_data1, researcherC_data,
+    patients_personal_data_decryptedCypress, records_patient2, researcherD_data, loginResearcherD } from '../../src/stories/example_data';
 
 import { URL_BASE } from "../support";
 
@@ -49,7 +49,7 @@ describe('Testing create an investigation', () => {
             cy.contains('Create investigation').click();
 
 
-            cy.createInvestigation(basic_info1, personal_data1(),edc_data1() )  
+            cy.createInvestigation(basic_info1, personal_data_investigation1(),edc_data1() )  
 
         })
         it('Researcher Adds patients', () => {
@@ -62,7 +62,7 @@ describe('Testing create an investigation', () => {
         
             cy.get('.investigation').first().find('button[data-testid="open"]').click();
             
-            patients_personal_data_decrypted().forEach(patient =>{
+            patients_personal_data_decryptedCypress().forEach(patient =>{
                 cy.get('button[data-testid="add-patient"]')
                 .click();
                 Object.keys(patient).forEach(key =>{
@@ -87,11 +87,6 @@ describe('Testing create an investigation', () => {
             cy.get('button[data-testid="add-element"]').eq(2)
                 .click();
             
-            cy.fillPatient(records_patient1());
-
-            
-            cy.get('button[data-testid="add-element"]').eq(1)
-                .click();
             cy.fillPatient(records_patient2())
     
 
@@ -120,7 +115,7 @@ describe('Testing create an investigation', () => {
             cy.get('button[data-testid="add-element"]').eq(2)
                 .click();
             
-            cy.fillPatient(records_patient1())
+            cy.fillPatient(records_patient2())
         })
         it('Register Researcher C', () => {
             cy.visit(URL_BASE+'/auth/sign-up');

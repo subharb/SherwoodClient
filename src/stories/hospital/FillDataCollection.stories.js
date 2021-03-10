@@ -22,9 +22,9 @@ const Template = (args) => <FillDataCollection {...args} />;
 const testPatient = listPatientsHospitalWard[0];
 export const Basic = Template.bind({});
 Basic.args = {
-    
     patientId:testPatient.id,
     initialState : {loading:false, error:false, saved:true},
     investigation: investigation_server(),
-    dataCollection:edc_data1().surveys[0]
+    dataCollection:edc_data1().surveys[0],
+    callBackDataCollection : (values) => alert(JSON.stringify(values))
 };

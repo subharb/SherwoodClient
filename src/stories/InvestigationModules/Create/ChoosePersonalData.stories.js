@@ -1,7 +1,7 @@
 import React from 'react';
 import PersonalData from '../../../components/investigation/create/personal_data'
 import ProviderSherwood from '../../../providerSherwood';
-import { personal_data1 } from '../../example_data';
+import { selected_personal_data } from '../../example_data';
 
 export default {
   title: 'Investigation/Create/Choose Personal Data',
@@ -22,7 +22,7 @@ Basic.args = {
 
 export const Edit = Template.bind({});
 Edit.args = {
-    initialData : personal_data1(),
+    initialData : selected_personal_data,
     callBackData : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)}
 };
 

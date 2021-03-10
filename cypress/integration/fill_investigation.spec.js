@@ -1,4 +1,4 @@
-import { patients_personal_data_decrypted, loginResearcherA, records_patient1, records_patient2 } from '../../src/stories/example_data';
+import { patients_personal_data_decryptedCypress, loginResearcherA, records_patient1, records_patient2 } from '../../src/stories/example_data';
 import { URL_BASE } from "../support";
 
 describe('Testing create an investigation', () => {
@@ -12,7 +12,7 @@ describe('Testing create an investigation', () => {
     
     //     cy.get('.investigation').first().find('button[data-testid="open"]').click();
         
-    //     patients_personal_data_decrypted().forEach(patient =>{
+    //     patients_personal_data_decryptedCypress().forEach(patient =>{
     //         cy.get('button[data-testid="add-patient"]')
     //         .click();
     //         Object.keys(patient).forEach(key =>{

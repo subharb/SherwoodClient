@@ -15,7 +15,7 @@ import { Card, CardContent, Typography, Grid } from '@material-ui/core';
  */
 export default function ShowPatientRecords(props) {
     const [sectionSelected, setSectionSelected] = useState(null);
-    const [submissions, setSubmissions] = useState(props.initialData ? props.initialData : []);
+
     const [showError, setShowError] = useState(0);
     function addRegistry(indexSection){
         setSectionSelected(indexSection);
@@ -35,22 +35,22 @@ export default function ShowPatientRecords(props) {
     //         setShowError(1);
     //     }
     // }
-    useEffect(() => {
-        (async () => {
-            if(submissions.length === 0){
-                console.log("CARGANDO");
-                try{
-                    const response = await fetchRecordsPatientFromSurvey(props.uuidInvestigation, props.patient.uuid, props.survey.uuid);
-                    if(response.status === 200){                        
-                        setSubmissions(response.surveys[0].submissions);
-                    }
-                }
-                catch(error){
-                    setShowError(1);
-                }
+    // useEffect(() => {
+    //     (async () => {
+    //         if(submissions.length === 0){
+    //             console.log("CARGANDO");
+    //             try{
+    //                 const response = await fetchRecordsPatientFromSurvey(props.uuidInvestigation, props.patient.uuid, props.survey.uuid);
+    //                 if(response.status === 200){                        
+    //                     setSubmissions(response.surveys[0].submissions);
+    //                 }
+    //             }
+    //             catch(error){
+    //                 setShowError(1);
+    //             }
                 
-            }
-    })()}, []);
+    //         }
+    // })()}, []);
     
     
     function renderSection(section, nRecords){
@@ -66,10 +66,10 @@ export default function ShowPatientRecords(props) {
             { name : section.name, register : registers}
         )
     }
-    function renderSubmissionsSection(submissions, sections){    
-        return Object.values(sections).map(section => {
+    function renderSubmissionsSection(){    
+        return Object.values(props.survey.sections).map(section => {
             
-            const submissionsSection = filterRecordsFromSubmissions(submissions, section.uuid);
+            const submissionsSection = filterRecordsFromSubmissions(props.submissions, section.uuid);
 
             return(
                 <ShowRecordsSection submissions={submissionsSection} section={section} />
@@ -100,7 +100,7 @@ export default function ShowPatientRecords(props) {
                                          { id: "records", alignment: "right", label: <Translate id={`investigation.fill.records`} /> } 
                                         ];
                     const rows = props.survey.sections.map(section => {
-                        const nRecords = numberRecordsSection(section, submissions);
+                        const nRecords = numberRecordsSection(section, props.submissions);
                         return( 
                             renderSection(section, nRecords)
                         ) 
@@ -112,7 +112,7 @@ export default function ShowPatientRecords(props) {
                 }
             }
             else{
-                return renderSubmissionsSection(submissions, props.survey.sections);
+                return renderSubmissionsSection();
             }
         }
         else{
@@ -136,7 +136,7 @@ export default function ShowPatientRecords(props) {
                 props.singlePatient &&
                 <Grid item>
                     <Typography variant="subtitle1">
-                        <Translate id="investigation.fill.survey.patient_name" />: {`${props.patient.name} ${props.patient.surname}`} - {props.patient.uuid}
+                        <Translate id="investigation.fill.survey.patient_name" />: {`${props.patientPersonalData.name} ${props.patientPersonalData.surname}`} - {props.patientPersonalData.uuid}
                     </Typography>
                 </Grid>
             }
@@ -151,10 +151,7 @@ export default function ShowPatientRecords(props) {
 }
 
 ShowPatientRecords.propTypes = {
-    /**
-     Información del paciente para precargar
-    */
-    initialData: PropTypes.object,
+
     /**
      Personal information of the Patient
     */

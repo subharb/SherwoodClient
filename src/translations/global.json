@@ -129,7 +129,7 @@
                     "national_id" : ["National ID", "DNI"],
                     "email" : ["Email", "Email"],
                     "phone" : ["Phone", "Nº Teléfono"],
-                    "id" : ["ID", "ID"],
+                    "uuid" : ["ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento"]
                 }
             }, 
@@ -257,7 +257,8 @@
                 "patient_name" : ["Patient's Name", "Nombre del Paciente"],
                 "title" : ["Data Collections", "Collecciones de datos"],
                 "add_data" : ["Add Data", "Añadir datos"],
-                "view_data" : ["Visualize Data", "Ver datos"]
+                "view_data" : ["Visualize Data", "Ver datos"],
+                "no_records" : ["The data collection has no records", "Este data collectio no tiene registros"]
             },
             "section" : {
                 "already_filled" : ["This section has been filled", "Esta sección ya ha sido respondida"]

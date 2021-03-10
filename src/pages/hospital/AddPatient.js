@@ -1,12 +1,12 @@
 import { Box, Button, IconButton, Paper, Snackbar } from '@material-ui/core';
 import React, { useState } from 'react'
-import PersonalDataForm from '../../components/investigation/show/fill/personal_data';
+import PersonalDataForm from '../../components/investigation/show/single/personal_data';
 import { connect } from 'react-redux';
 import { addPatient } from '../../services/sherwoodService';
 import { CloseIcon } from '@material-ui/data-grid';
 import Loader from '../../components/Loader';
 
-function AddPatient(props) {
+export function AddPatient(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [showSnackbar, setShowSnackBar] = useState(false);

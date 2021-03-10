@@ -169,6 +169,7 @@ class FieldSherwood extends Component{
                     />
                 );
             case "date":
+                
                 return (
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardDatePicker
@@ -176,7 +177,7 @@ class FieldSherwood extends Component{
                             id={input.name}
                             label={labelString}
                             format="MM/dd/yyyy"
-                            value={input.value === "" ? "" : input.value}
+                            value={input.value === "" ? "" : new Date(input.value)}
                             onChange={this.handleDateChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',

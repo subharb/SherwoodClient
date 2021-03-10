@@ -7,12 +7,12 @@ import { decryptPatientData } from '../../utils';
  */
 
  
-export default function reducer(state = [], action){
+export default function reducer(state = {}, action){
     console.log(action)
     let newState = { ...state};
     switch(action.type){
-        case types.FETCH_INVESTIGATIONS_SUCCESS:
-            newState = action.investigations;                            
+        case types.FETCH_SUBMISSIONS_SUCCESS:
+            newState[action.payload.surveyUUID] = action.submissions;
             return newState;
         default:
             return state;

@@ -53,7 +53,7 @@ export function fetchInvestigation(uuid) {
 export function fetchRecordsPatientFromSurvey(uuidInvestigation, patientUUID, surveyUUID) {
     return new Promise((resolve, reject) => {
       
-        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/record/"+patientUUID+"/survey/"+surveyUUID, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submission/"+patientUUID+"/survey/"+surveyUUID, { headers: {"Authorization" : localStorage.getItem("jwt")} })
           .then((response) => {
               if(response.status === 200){
                   resolve(response.data);
@@ -70,7 +70,23 @@ export function fetchRecordsPatientFromSurvey(uuidInvestigation, patientUUID, su
 export function fetchRecordsPatientAllSurveys(uuidInvestigation, patientUUID) {
     return new Promise((resolve, reject) => {
       
-        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/record/"+patientUUID, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submission/"+patientUUID, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
+export function fetchSubmissionsAllPatientsFromSurveyService(uuidInvestigation, surveyUUID) {
+    return new Promise((resolve, reject) => {
+      
+        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/survey/"+surveyUUID+"/submission", { headers: {"Authorization" : localStorage.getItem("jwt")} })
           .then((response) => {
               if(response.status === 200){
                   resolve(response.data);
@@ -98,11 +114,10 @@ export function addPatient(uuidInvestigation, patientData){
     })
 }
 
-
-export function postRecordPatient(postObj, uuidInvestigation, patientId, dataCollectionID) {
+export function postRecordPatient(postObj, uuidInvestigation, patientId, surveyUUID) {
     return new Promise((resolve, reject) => {
         
-        axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/record/"+patientId+"/survey/"+dataCollectionID, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submission/"+patientId+"/survey/"+surveyUUID, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
           .then((response) => {
               if(response.status === 200){
                   resolve(response.data);

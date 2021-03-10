@@ -46,7 +46,7 @@ export default function HomeSchedule(props) {
     }
     else{
         return (
-            <BoxBckgr color="text.primary">
+            <BoxBckgr style={{padding:'1rem'}} color="text.primary">
                 <Grid container spacing={3}>
                     <Grid item  xs={12}>
                         <Typography variant="h3" gutterBottom display="inline">

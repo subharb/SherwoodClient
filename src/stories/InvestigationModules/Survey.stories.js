@@ -1,5 +1,5 @@
 import React from 'react';
-import Survey from '../../components/investigation/show/fill/survey_form';
+import Survey from '../../components/investigation/show/single/survey_form';
 import ProviderSherwood from '../../providerSherwood';
 import { edc_data1 } from '../example_data';
 

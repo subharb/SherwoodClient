@@ -2,9 +2,10 @@ import React from 'react'
 import Form from './form';
 
 export default function SectionForm(props) {
-    const arrayFields = props.fields.map(field => {
+    const dictFields = {};
+    props.fields.map(field => {
         field["name"] = field.id;
-        return field;
+        dictFields[field.id] = field;
     });
 
     function callBackForm(values){
@@ -17,6 +18,6 @@ export default function SectionForm(props) {
         })
         props.callBackSectionForm(dataFields);
     }
-    return <Form fields={arrayFields} 
+    return <Form fields={dictFields} 
                 callBackForm = {(values) => callBackForm(values)}/>
 }

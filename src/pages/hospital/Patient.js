@@ -10,7 +10,7 @@ import Modal from '../../components/general/modal';
 import { useParams } from 'react-router-dom';
 import { yearsFromDate, daysFromDate } from '../../utils';
 import FillDataCollection from './FillDataCollection';
-import ShowRecordsSection from '../../components/investigation/show/fill/show_records_section'
+import ShowRecordsSection from '../../components/investigation/show/single/show_records_section'
 import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { usePatientsData } from '../../hooks';

@@ -1,11 +1,11 @@
 import React from 'react';
-import ShowSurveysPatient from '../../../components/investigation/show/single/show_surveys_patient';
+import ShowAllRecordsSurvey from '../../../components/investigation/show/single/show_all_records_survey';
 import ProviderSherwood from '../../../providerSherwood';
-import { records_patient1, edc_data1, patient_data_decrypted1 } from '../../example_data';
+import { records_patient1, edc_data1, patient_data_decrypted1, submissions_survey, patients_personal_data } from '../../example_data';
 
 export default {
-    title: 'Investigation/Fill/ShowSurveysPatient',
-    component: ShowSurveysPatient, 
+    title: 'Investigation/Fill/Show all records survey',
+    component: ShowAllRecordsSurvey, 
     parameters: { actions: { argTypesRegex: '^callBack.*' } },
     argTypes: {
         initialData: {
@@ -39,19 +39,19 @@ export default {
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <ShowSurveysPatient {...args} />;
+const Template = (args) => <ShowAllRecordsSurvey {...args} />;
 
-export const Add = Template.bind({});
-Add.args = {
-    uuidInvestigation:"ff4b1de5-9163-4eb1-85fc-59d19f2741dd",
-    patient:patient_data_decrypted1(),
-    mode:"add",
-    records:records_patient1().records,
-    surveys:edc_data1().surveys,
-    level : 0,
-    updateLevel : (level) => alert("updateLevel "+level),
-    callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
+//Combinamos los records de los dos pacientes
+
+
+export const Basic = Template.bind({});
+Basic.args = {
+    survey:edc_data1().surveys[0],
+    // patients:patients_personal_data(),
+    submissions:submissions_survey.submissions,
+    callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)}
 };
+
 export const View = Template.bind({});
 View.args = {
     initialData : records_patient1(),
@@ -63,5 +63,11 @@ View.args = {
     updateLevel : (level) => alert("updateLevel "+level),
     callBackForm : (values) => {console.log("Callback BasicInfo", JSON.stringify(values));alert(values)} 
 };
+
+ 
+
+
+
+
 
  

@@ -2,93 +2,105 @@ export const edc_data1 = () => {
     return {
         "surveys": [
             {
-                "id": 11,
-                "uuid": "67a5b78f-226b-45ef-8a43-72772127ba73",
-                "name": "Demographic Questionaire",
-                "isActive": true,
-                "sections": [
-                    {
-                        "id": 15,
-                        "uuid": "ef30d3f6-1436-47cd-ad5a-22321de4d3a7",
-                        "name": "Demographics",
-                        "repeats": false,
-                        "isActive": true,
-                        "fields": [
-                            {
-                                "id": 28,
-                                "type": "text",
-                                "name": "sex",
-                                "encrypted": false,
-                                "required": true,
-                                "label": "Sex at birth",
-                                "isActive": true,
-                                "typeValueCypress" : "Text"
-                            },
-                            {
-                                "id": 29,
-                                "type": "text",
-                                "name": "etnic",
-                                "encrypted": false,
-                                "required": true,
-                                "label": "Etnic Origin",
-                                "isActive": true,
-                                "typeValueCypress" : "Text"
-                            }
-                        ]
-                    },
-                    {
-                        "id": 16,
-                        "uuid": "5777fe63-73d0-42f4-9a8e-3559130e5187",
-                        "name": "Past medical history",
-                        "repeats": false,
-                        "isActive": true,
-                        "fields": [
-                            {
-                                "id": 30,
-                                "type": "text",
-                                "name": "ilnesses",
-                                "encrypted": false,
-                                "required": true,
-                                "label": "Previous Ilnesess",
-                                "isActive": true,
-                                "typeValueCypress" : "Text"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "id": 12,
-                "uuid": "7c16a1a9-56a9-40a3-848c-67b5a7923d26",
+                "id": 2,
+                "uuid": "ac8b4a15-75d7-4f3f-9365-429395a4fc02",
                 "name": "Analitica",
                 "isActive": true,
+                "hasRecords": false,
                 "sections": [
                     {
-                        "id": 17,
-                        "uuid": "21cc0d3a-0149-442d-bd24-c8eaa050223f",
+                        "id": 3,
+                        "uuid": "50083f66-6610-4126-90c6-ffb6ee414f40",
                         "name": "Blood Samples",
-                        "repeats": true,
+                        "repeats": false,
                         "isActive": true,
                         "fields": [
                             {
-                                "id": 31,
+                                "id": 5,
                                 "type": "text",
                                 "name": "red_cells",
                                 "encrypted": false,
                                 "required": true,
                                 "label": "Amount red cells?",
                                 "isActive": true,
-                                "typeValueCypress" : "Text"
+                                "options": []
                             },
                             {
-                                "id": 32,
+                                "id": 6,
                                 "type": "text",
                                 "name": "leucocitos",
                                 "encrypted": false,
                                 "required": true,
                                 "label": "Amount white cells?",
                                 "isActive": true,
-                                "typeValueCypress" : "Text"
+                                "options": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 1,
+                "uuid": "3f8883b2-ce4a-47bf-ba66-e8273670fe82",
+                "name": "Demographic Questionaire",
+                "isActive": true,
+                "hasRecords": true,
+                "sections": [
+                    {
+                        "id": 1,
+                        "uuid": "eb803340-a957-4310-a223-97f85d4c2285",
+                        "name": "Demographics",
+                        "repeats": false,
+                        "isActive": true,
+                        "fields": [
+                            {
+                                "id": 1,
+                                "type": "text",
+                                "name": "sex",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Sex at birth",
+                                "isActive": true,
+                                "options": []
+                            },
+                            {
+                                "id": 2,
+                                "type": "text",
+                                "name": "history",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "History",
+                                "isActive": true,
+                                "options": []
+                            },
+                            {
+                                "id": 3,
+                                "type": "text",
+                                "name": "etnic",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Etnic Origin",
+                                "isActive": true,
+                                "options": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "uuid": "46bed8b0-28b2-440b-914f-c7e78a1d8b9f",
+                        "name": "Past medical history",
+                        "repeats": false,
+                        "isActive": true,
+                        "fields": [
+                            {
+                                "id": 4,
+                                "type": "text",
+                                "name": "ilnesses",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Previous Ilnesess",
+                                "isActive": true,
+                                "options": []
                             }
                         ]
                     }
@@ -104,7 +116,7 @@ export const records_patient1 = () =>{
             {
                 "surveyRecords": [
                     {
-                        "id": 4,
+                        "id": 28,
                         "value": "male",
                         "surveySection": {
                             "id": 15,
@@ -124,7 +136,7 @@ export const records_patient1 = () =>{
                         }
                     },
                     {
-                        "id": 5,
+                        "id": 29,
                         "value": "arabix",
                         "surveySection": {
                             "id": 15,
@@ -144,17 +156,17 @@ export const records_patient1 = () =>{
                         }
                     },
                     {
-                        "id": 6,
-                        "value": 122,
+                        "id": 30,
+                        "value": "Texto largo para una hsitoria clinica",
                         "surveySection": {
                             "id": 16,
-                            "uuid": "21cc0d3a-0149-442d-bd24-c8eaa050223f",
+                            "uuid": "ef30d3f6-1436-47cd-ad5a-22321de4d3a7",
                             "name": "Blood Samples",
                             "repeats": true,
                             "isActive": true
                         },
                         "surveyField": {
-                            "id": 31,
+                            "id": 30,
                             "type": "text",
                             "name": "red_cells",
                             "encrypted": false,
@@ -357,8 +369,9 @@ export const basic_info1_raw = () => {
     });
     return tempBasicInfo;
 }
+export const selected_personal_data = ["name", "surnames", "birthdate", "health_id"];
 
-export const personal_data1 = () => {
+export const personal_data_investigation1 = () => {
     return  [
         {
             "name": "email",
@@ -389,10 +402,10 @@ export const personal_data1 = () => {
             "encrypted": true
         },
         {
-            "name": "birthdate",
-            "type": "date",
+            "name": "health_id",
+            "type": "text",
             "required": true,
-            "label": "investigation.create.personal_data.fields.birthdate",
+            "label": "investigation.create.personal_data.fields.health_id",
             "encrypted": true
         }
     ]
@@ -408,9 +421,10 @@ export const patient_data_decrypted1 = () => {
     return {
         "id": "5fccaee78583362dd3d50248",
         "name": "John",
-        "surname": "Hopkins",
+        "surnames": "Hopkins",
         "email": "patient@sherwood.science",
-        "phone": "+34 545454"
+        "phone": "+34 545454",
+        "health_id" : "2211312F"
     }
 }
 
@@ -418,7 +432,7 @@ export const summary_info1 = () => {
     return {
         "basic_info":  basic_info1_raw(),
         "status" : 1,
-        "personal_data" : personal_data1(),
+        "personal_data" : personal_data_investigation1(),
         "surveys" : edc_data1().surveys
     }   
 }
@@ -432,31 +446,782 @@ export const list_investigations = () => {
     inv3.hostResearcher = {name: "Peter", surnames:"Petrelli"}
     return [inv1, inv2, inv3]
 }
+export const patients_no_access_data = [
+    {uuid : "uuuiii1"},
+    {uuid : "uuuiii2"},
+    {uuid : "uuuiii3"},
+    {uuid : "uuuiii4"},
+]
 
-export const patients_personal_data_decrypted = () => {
+export const personal_fields_no_access = [
+    {
+        "name": "uuid",
+        "type": "text",
+        "required": true,
+        "label": "investigation.create.personal_data.fields.uuid",
+        "encrypted": true
+    }
+]
+
+
+export const submissions_survey = {
+    "submissions": [
+        {
+            "id": 1,
+            "createdAt": "2021-03-09T20:21:15.630Z",
+            "updatedAt": "2021-03-09T20:21:15.630Z",
+            "researcher": {
+                "id": 1,
+                "name": "David",
+                "surnames": "Shaikh Urbina",
+                "email": "dshaikhurbina@gmail.com",
+                "phone": "+34647727132",
+                "keyEncrypted": "U2FsdGVkX18kn/wx2Gy4OsT7HXsX+jJ/7sxnS/2u1NQk9n+Scz3wUoxHdOhE3xnSLjBUgncIXzARXhYnzGToug==",
+                "createdAt": "2021-03-09T00:00:00.000Z",
+                "updatedAt": "2021-03-09T00:00:00.000Z",
+                "password": "bQLJWzDI7Fl8ip/Zhmp/EcEHHmf74U8IetRBcW0E7I8=",
+                "uuid": "65aa1e2a-9443-41d4-8373-e2c57a24574c"
+            },
+            "surveyRecords": [
+                {
+                    "id": 1,
+                    "value": "male",
+                    "surveySection": {
+                        "id": 1,
+                        "uuid": "eb803340-a957-4310-a223-97f85d4c2285",
+                        "name": "Demographics",
+                        "repeats": false,
+                        "isActive": true
+                    },
+                    "surveyField": {
+                        "id": 1,
+                        "type": "text",
+                        "name": "sex",
+                        "encrypted": false,
+                        "required": true,
+                        "label": "Sex at birth",
+                        "isActive": true
+                    }
+                },
+                {
+                    "id": 2,
+                    "value": "arabix",
+                    "surveySection": {
+                        "id": 1,
+                        "uuid": "eb803340-a957-4310-a223-97f85d4c2285",
+                        "name": "Demographics",
+                        "repeats": false,
+                        "isActive": true
+                    },
+                    "surveyField": {
+                        "id": 2,
+                        "type": "text",
+                        "name": "history",
+                        "encrypted": false,
+                        "required": true,
+                        "label": "History",
+                        "isActive": true
+                    }
+                }
+            ],
+            "patient": {
+                "id": 3,
+                "uuid": "801952ca-66da-4410-8583-3faa6f460e03",
+                "status": 0,
+                "investigationId": 1,
+                "patientId": 3,
+                "encryptedKeyUsed": 0,
+                "keyPatientInvestigation": "U2FsdGVkX18Uu/e0Iu4MD4qbn8cenIaSx/5cEo3wJI+vTZSl8olWAIJyICDU7D8DhRrW7NxpZkfit0/mAB8/+g=="
+            }
+        },
+        {
+            "id": 2,
+            "createdAt": "2021-03-09T20:21:21.565Z",
+            "updatedAt": "2021-03-09T20:21:21.565Z",
+            "researcher": {
+                "id": 1,
+                "name": "David",
+                "surnames": "Shaikh Urbina",
+                "email": "dshaikhurbina@gmail.com",
+                "phone": "+34647727132",
+                "keyEncrypted": "U2FsdGVkX18kn/wx2Gy4OsT7HXsX+jJ/7sxnS/2u1NQk9n+Scz3wUoxHdOhE3xnSLjBUgncIXzARXhYnzGToug==",
+                "createdAt": "2021-03-09T00:00:00.000Z",
+                "updatedAt": "2021-03-09T00:00:00.000Z",
+                "password": "bQLJWzDI7Fl8ip/Zhmp/EcEHHmf74U8IetRBcW0E7I8=",
+                "uuid": "65aa1e2a-9443-41d4-8373-e2c57a24574c"
+            },
+            "surveyRecords": [
+                {
+                    "id": 3,
+                    "value": "Lung cancer",
+                    "surveySection": {
+                        "id": 2,
+                        "uuid": "46bed8b0-28b2-440b-914f-c7e78a1d8b9f",
+                        "name": "Past medical history",
+                        "repeats": false,
+                        "isActive": true
+                    },
+                    "surveyField": {
+                        "id": 4,
+                        "type": "text",
+                        "name": "ilnesses",
+                        "encrypted": false,
+                        "required": true,
+                        "label": "Previous Ilnesess",
+                        "isActive": true
+                    }
+                }
+            ],
+            "patient": {
+                "id": 3,
+                "uuid": "801952ca-66da-4410-8583-3faa6f460e03",
+                "status": 0,
+                "investigationId": 1,
+                "patientId": 3,
+                "encryptedKeyUsed": 0,
+                "keyPatientInvestigation": "U2FsdGVkX18Uu/e0Iu4MD4qbn8cenIaSx/5cEo3wJI+vTZSl8olWAIJyICDU7D8DhRrW7NxpZkfit0/mAB8/+g=="
+            }
+        },
+        {
+            "id": 5,
+            "createdAt": "2021-03-09T20:24:03.635Z",
+            "updatedAt": "2021-03-09T20:24:03.635Z",
+            "researcher": {
+                "id": 1,
+                "name": "David",
+                "surnames": "Shaikh Urbina",
+                "email": "dshaikhurbina@gmail.com",
+                "phone": "+34647727132",
+                "keyEncrypted": "U2FsdGVkX18kn/wx2Gy4OsT7HXsX+jJ/7sxnS/2u1NQk9n+Scz3wUoxHdOhE3xnSLjBUgncIXzARXhYnzGToug==",
+                "createdAt": "2021-03-09T00:00:00.000Z",
+                "updatedAt": "2021-03-09T00:00:00.000Z",
+                "password": "bQLJWzDI7Fl8ip/Zhmp/EcEHHmf74U8IetRBcW0E7I8=",
+                "uuid": "65aa1e2a-9443-41d4-8373-e2c57a24574c"
+            },
+            "surveyRecords": [
+                {
+                    "id": 7,
+                    "value": "ictus",
+                    "surveySection": {
+                        "id": 2,
+                        "uuid": "46bed8b0-28b2-440b-914f-c7e78a1d8b9f",
+                        "name": "Past medical history",
+                        "repeats": false,
+                        "isActive": true
+                    },
+                    "surveyField": {
+                        "id": 4,
+                        "type": "text",
+                        "name": "ilnesses",
+                        "encrypted": false,
+                        "required": true,
+                        "label": "Previous Ilnesess",
+                        "isActive": true
+                    }
+                }
+            ],
+            "patient": {
+                "id": 2,
+                "uuid": "e3ed69b5-d423-4dcf-9cfb-96c24f7a8df6",
+                "status": 0,
+                "investigationId": 1,
+                "patientId": 2,
+                "encryptedKeyUsed": 0,
+                "keyPatientInvestigation": "U2FsdGVkX19Z5JevEs09vDRsI/HE8cDRIJVHMEPiJY/ySjlblZq5Vg24o5l9nuMsQZfccUnPbqhrf9toaGPR8Q=="
+            }
+        },
+        {
+            "id": 6,
+            "createdAt": "2021-03-09T20:24:40.257Z",
+            "updatedAt": "2021-03-09T20:24:40.257Z",
+            "researcher": {
+                "id": 1,
+                "name": "David",
+                "surnames": "Shaikh Urbina",
+                "email": "dshaikhurbina@gmail.com",
+                "phone": "+34647727132",
+                "keyEncrypted": "U2FsdGVkX18kn/wx2Gy4OsT7HXsX+jJ/7sxnS/2u1NQk9n+Scz3wUoxHdOhE3xnSLjBUgncIXzARXhYnzGToug==",
+                "createdAt": "2021-03-09T00:00:00.000Z",
+                "updatedAt": "2021-03-09T00:00:00.000Z",
+                "password": "bQLJWzDI7Fl8ip/Zhmp/EcEHHmf74U8IetRBcW0E7I8=",
+                "uuid": "65aa1e2a-9443-41d4-8373-e2c57a24574c"
+            },
+            "surveyRecords": [
+                {
+                    "id": 8,
+                    "value": "female",
+                    "surveySection": {
+                        "id": 1,
+                        "uuid": "eb803340-a957-4310-a223-97f85d4c2285",
+                        "name": "Demographics",
+                        "repeats": false,
+                        "isActive": true
+                    },
+                    "surveyField": {
+                        "id": 1,
+                        "type": "text",
+                        "name": "sex",
+                        "encrypted": false,
+                        "required": true,
+                        "label": "Sex at birth",
+                        "isActive": true
+                    }
+                },
+                {
+                    "id": 9,
+                    "value": "Something a bit large",
+                    "surveySection": {
+                        "id": 1,
+                        "uuid": "eb803340-a957-4310-a223-97f85d4c2285",
+                        "name": "Demographics",
+                        "repeats": false,
+                        "isActive": true
+                    },
+                    "surveyField": {
+                        "id": 2,
+                        "type": "text",
+                        "name": "history",
+                        "encrypted": false,
+                        "required": true,
+                        "label": "History",
+                        "isActive": true
+                    }
+                },
+                {
+                    "id": 10,
+                    "value": "hispanic",
+                    "surveySection": {
+                        "id": 1,
+                        "uuid": "eb803340-a957-4310-a223-97f85d4c2285",
+                        "name": "Demographics",
+                        "repeats": false,
+                        "isActive": true
+                    },
+                    "surveyField": {
+                        "id": 3,
+                        "type": "text",
+                        "name": "etnic",
+                        "encrypted": false,
+                        "required": true,
+                        "label": "Etnic Origin",
+                        "isActive": true
+                    }
+                }
+            ],
+            "patient": {
+                "id": 2,
+                "uuid": "e3ed69b5-d423-4dcf-9cfb-96c24f7a8df6",
+                "status": 0,
+                "investigationId": 1,
+                "patientId": 2,
+                "encryptedKeyUsed": 0,
+                "keyPatientInvestigation": "U2FsdGVkX19Z5JevEs09vDRsI/HE8cDRIJVHMEPiJY/ySjlblZq5Vg24o5l9nuMsQZfccUnPbqhrf9toaGPR8Q=="
+            }
+        }
+    ]
+}
+
+export const getInvestigation = {
+    "status": 200,
+    "investigation": {
+        "name": "COVID Nose",
+        "uuid": "c08a7e49-56a5-4881-87df-86404f0203c8",
+        "acronym": "CN",
+        "type": "clin_trial",
+        "institution": "Oxford University",
+        "principal_researcher": "Pedro Rodriguez",
+        "contact": "test@email.com",
+        "reference_number_state": "2",
+        "ethics_body": "12345",
+        "description": "<p>Estudio sobre el impacto en la anosmia en pacientes de COVID19</p>",
+        "surveys": [
+            {
+                "id": 2,
+                "uuid": "ac8b4a15-75d7-4f3f-9365-429395a4fc02",
+                "name": "Analitica",
+                "isActive": true,
+                "hasRecords": false,
+                "sections": [
+                    {
+                        "id": 3,
+                        "uuid": "50083f66-6610-4126-90c6-ffb6ee414f40",
+                        "name": "Blood Samples",
+                        "repeats": false,
+                        "isActive": true,
+                        "fields": [
+                            {
+                                "id": 5,
+                                "type": "text",
+                                "name": "red_cells",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Amount red cells?",
+                                "isActive": true,
+                                "options": []
+                            },
+                            {
+                                "id": 6,
+                                "type": "text",
+                                "name": "leucocitos",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Amount white cells?",
+                                "isActive": true,
+                                "options": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 1,
+                "uuid": "3f8883b2-ce4a-47bf-ba66-e8273670fe82",
+                "name": "Demographic Questionaire",
+                "isActive": true,
+                "hasRecords": true,
+                "sections": [
+                    {
+                        "id": 1,
+                        "uuid": "eb803340-a957-4310-a223-97f85d4c2285",
+                        "name": "Demographics",
+                        "repeats": false,
+                        "isActive": true,
+                        "fields": [
+                            {
+                                "id": 1,
+                                "type": "text",
+                                "name": "sex",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Sex at birth",
+                                "isActive": true,
+                                "options": []
+                            },
+                            {
+                                "id": 2,
+                                "type": "text",
+                                "name": "history",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "History",
+                                "isActive": true,
+                                "options": []
+                            },
+                            {
+                                "id": 3,
+                                "type": "text",
+                                "name": "etnic",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Etnic Origin",
+                                "isActive": true,
+                                "options": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "uuid": "46bed8b0-28b2-440b-914f-c7e78a1d8b9f",
+                        "name": "Past medical history",
+                        "repeats": false,
+                        "isActive": true,
+                        "fields": [
+                            {
+                                "id": 4,
+                                "type": "text",
+                                "name": "ilnesses",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Previous Ilnesess",
+                                "isActive": true,
+                                "options": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "keyResearcherInvestigation": "U2FsdGVkX19pLuazsChe0LPixYoxYI5lAaA2IzjPhzmxQzxLNEEoLpZRysvi8NYYcxx1zPyR8aqHNpcizFJx6w==",
+        "encryptedKeyUsed": 1,
+        "hostResearcher": {
+            "name": "David",
+            "surnames": "Shaikh Urbina"
+        },
+        "shareStatus": 2,
+        "personalFields": [
+            {
+                "name": "email",
+                "required": true,
+                "type": "text",
+                "label": "investigation.create.personal_data.fields.email",
+                "encrypted": true
+            },
+            {
+                "name": "phone",
+                "required": true,
+                "type": "text",
+                "label": "investigation.create.personal_data.fields.phone",
+                "encrypted": true
+            },
+            {
+                "name": "name",
+                "required": true,
+                "type": "text",
+                "label": "investigation.create.personal_data.fields.name",
+                "encrypted": true
+            },
+            {
+                "name": "surnames",
+                "required": true,
+                "type": "text",
+                "label": "investigation.create.personal_data.fields.surname",
+                "encrypted": true
+            },
+            {
+                "name": "health_id",
+                "required": true,
+                "type": "text",
+                "label": "investigation.create.personal_data.fields.health_id",
+                "encrypted": true
+            }
+        ],
+        "permissions": 3,
+        "patientsPersonalData": [
+            {
+                "uuid": "c4d1302d-1583-4f03-bd05-9b1bc0c0b5ec",
+                "personalData": [
+                    {
+                        "name": "email",
+                        "required": true,
+                        "value": "U2FsdGVkX19mfFDTBFBa5paQ0Aojcv8iXPQu5raTNalzMwAfCHB+xeS9xwuMfUy+",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.email",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "phone",
+                        "required": true,
+                        "value": "U2FsdGVkX19C2iY/QLNeEKLnWDG2fGCJD24NQqoMyECbrxr5GK6tmqwnIYr2Zbgo",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.phone",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "name",
+                        "required": true,
+                        "value": "U2FsdGVkX1+ZWBc6JQ/TsqUm5IiYCsUQUwte8vPEr1U=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.name",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "surnames",
+                        "required": true,
+                        "value": "U2FsdGVkX1/DBX7O0tHmIDIdhHAJtGIoIvJQOTkOSo4=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.surname",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "health_id",
+                        "required": true,
+                        "value": "U2FsdGVkX1+cvIapBYfhqOTbqjI+g8v955tinp3PuWU=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.health_id",
+                        "encrypted": true
+                    }
+                ]
+            },
+            {
+                "uuid": "7492d82c-1c88-40a2-8b2b-a92bbdbf5177",
+                "personalData": [
+                    {
+                        "name": "email",
+                        "required": true,
+                        "value": "U2FsdGVkX181gEbdL3BN/2GIK+JmSCWB9HH0KZ+Zpgg=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.email",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "phone",
+                        "required": true,
+                        "value": "U2FsdGVkX1/pi+IkFioOXLaLoDOoLbfhyiwRYSuFgugjQ7BDBMypWqWsgQX9x483",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.phone",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "name",
+                        "required": true,
+                        "value": "U2FsdGVkX1+BuBsIK47T79nDvZUkpz8SKpB3Hjyw1Hg=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.name",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "surnames",
+                        "required": true,
+                        "value": "U2FsdGVkX1/fGfKhwnnvBnDbjah/mPlNIUv6hz01iUM=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.surname",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "health_id",
+                        "required": true,
+                        "value": "U2FsdGVkX1+0LY/HJCD/C34y2ZGCmM9piJXzBbiF7Rw=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.health_id",
+                        "encrypted": true
+                    }
+                ]
+            },
+            {
+                "uuid": "cf7ee1fb-c0da-4929-84ee-60d082f0a0a8",
+                "personalData": [
+                    {
+                        "name": "email",
+                        "required": true,
+                        "value": "U2FsdGVkX18xrKMLoXEGJt9iiI6of8iAGkUch0j/2vJ4987CqgDvu3Tpm5w4WM7T",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.email",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "phone",
+                        "required": true,
+                        "value": "U2FsdGVkX1+XYDzHIoQydadboGBjORcgbmxaTAOYLMhMxvJftPTR+fR1gsZ+/3UM",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.phone",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "name",
+                        "required": true,
+                        "value": "U2FsdGVkX1+Lm9+1pmeZjK+tpkitrvnPHZ6hCZ5OL8s=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.name",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "surnames",
+                        "required": true,
+                        "value": "U2FsdGVkX1/PGGkhZ/v8tDrGJce55FIXezMEF5FUrII=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.surname",
+                        "encrypted": true
+                    },
+                    {
+                        "name": "health_id",
+                        "required": true,
+                        "value": "U2FsdGVkX1+F0GLtDFm0T8r4RxyCJWdFsWw4AuZQ6U0=",
+                        "type": "text",
+                        "label": "investigation.create.personal_data.fields.health_id",
+                        "encrypted": true
+                    }
+                ]
+            }
+        ],
+        "status": 1,
+        "createdAt": "2021-03-09T20:20:37.000Z",
+        "updatedAt": "2021-03-09T20:20:37.000Z",
+        "sharedResearchers": [
+            {
+                "email": "rodriguezcruzpm@gmail.com",
+                "permission": 2,
+                "name": "Pedro",
+                "surnames": "Rodriguez",
+                "status": 2
+            },
+            {
+                "email": "guillermo.suarez.tangil@gmail.com",
+                "permission": 0,
+                "name": "Guillermo",
+                "surnames": "Suarez-Tangil",
+                "status": 2
+            },
+            {
+                "email": "david@sherwood.science",
+                "permission": 1,
+                "name": "David",
+                "surnames": "sherwood",
+                "status": 1
+            }
+        ]
+    }
+}
+
+export const fake_submissions_reducer = {
+    "3f8883b2-ce4a-47bf-ba66-e8273670fe82" : //UUID Survey
+        submissions_survey.submissions
+    
+}
+
+export const patients_personal_data_decryptedCypress = () => {
     return [
         {
             "email":"john@hopkins.com",
             "phone":"+1 727 1728 9191",
             "name":"John",
             "surnames":"Hopkins",
-            "birthdate" : "xx"
+            "health_id" : "11222"
         },
         {
             "email":"peter@gmail.com",
             "phone":"+49 127 1728 9191",
             "name":"Peter",
             "surnames":"Petrelli",
-            "birthdate" : "xx"
+            "health_id" : "3333"
         },
         {
             "email":"donnie@gmail.com",
             "phone":"+1 1997 1728 9191",
             "name":"Donald",
             "surnames":"Trump",
-            "birthdate" : "xx"
+            "health_id" : "66666"
         }
     ];
+}
+
+export const patients_personal_data_decrypted = () => {
+    return [
+        {
+            "uuid": "801952ca-66da-4410-8583-3faa6f460e03",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "peter@petrelli.com",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "+34 7471771721",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "Peter",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "Petrelli Jimenez",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "1987-08-21",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "e3ed69b5-d423-4dcf-9cfb-96c24f7a8df6",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "donnie@gmail.com",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "+1 61791 91892983",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "Donald",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "Trump Cruz",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "1954-03-21",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        },
+        {
+            "uuid": "4e58bc59-2566-482c-9cfa-c3ae915c9d8f",
+            "personalData": [
+                {
+                    "name": "email",
+                    "required": true,
+                    "value": "jessie@hotmail.com",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.email",
+                    "encrypted": true
+                },
+                {
+                    "name": "phone",
+                    "required": true,
+                    "value": "+32 91 9192 9192",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.phone",
+                    "encrypted": true
+                },
+                {
+                    "name": "name",
+                    "required": true,
+                    "value": "Jessie",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.name",
+                    "encrypted": true
+                },
+                {
+                    "name": "surnames",
+                    "required": true,
+                    "value": "Jones",
+                    "type": "text",
+                    "label": "investigation.create.personal_data.fields.surname",
+                    "encrypted": true
+                },
+                {
+                    "name": "birthdate",
+                    "required": true,
+                    "value": "1976-01-31",
+                    "type": "date",
+                    "label": "investigation.create.personal_data.fields.birthdate",
+                    "encrypted": true
+                }
+            ]
+        }
+    ]
 }
 
 export const patients_personal_data_encripted = () => {
@@ -1193,7 +1958,7 @@ export const investigation_server = () => {
     let returnData = {...basic_info1_raw()};
     returnData.uuid = "933d2b2a-634e-471e-af14-9ab1e6f40eda";
     returnData.surveys = edc_data1().surveys;
-    returnData.personalFields = personal_data1();
+    returnData.personalFields = personal_data_investigation1();
     returnData.patientsPersonalData = patients_personal_data_encripted();
     returnData.status = 1;
     returnData.keyResearcherInvestigation = "U2FsdGVkX19vZ9QYZqVXUKngvq3aqfwxApSwtLB5hKMbmDXJQUwwfdt7mQMR9Wu8TxfOjwo0X3A4H7S2/WYfpw==";
@@ -1205,7 +1970,7 @@ export const investigation_server = () => {
 export const investigation_server_no_patitents = () => {
     let returnData = {...basic_info1_raw()};
     returnData.surveys = edc_data1().surveys;
-    returnData.personalFields = personal_data1();
+    returnData.personalFields = personal_data_investigation1();
     returnData.patientsPersonalData = [];
     returnData.status = 1;
     returnData.keyResearcherInvestigation = "U2FsdGVkX1/fHwGVOHWYFIiQwwRIOnwIWkyrQrY0qL2XvbjkD7x9lob32xaj3njsHVDUBI7HByG9Usj0i6KUFA==";
@@ -1217,8 +1982,8 @@ export const investigation_server_no_patitents = () => {
 export const investigation_server_read_access = () => {
     let returnData = {...basic_info1_raw()};
     returnData.surveys = edc_data1().surveys;
-    returnData.personalFields = personal_data1();
-    returnData.patientsPersonalData = [];
+    returnData.personalFields = personal_fields_no_access;
+    returnData.patientsPersonalData = patients_personal_data_decrypted();
     returnData.shareStatus = 0;
     returnData.encryptedKeyUsed =1;
     returnData.keyResearcherInvestigation = "U2FsdGVkX1/fHwGVOHWYFIiQwwRIOnwIWkyrQrY0qL2XvbjkD7x9lob32xaj3njsHVDUBI7HByG9Usj0i6KUFA==";

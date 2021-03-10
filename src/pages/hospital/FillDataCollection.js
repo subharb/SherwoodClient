@@ -3,7 +3,7 @@ import { Grid, Typography, Paper } from '@material-ui/core';
 import { BoxBckgr, IconPatient, ButtonAdd, CheckCircleOutlineSvg } from '../../components/general/mini_components';
 import { yearsFromDate, daysFromDate } from '../../utils';
 import SectionForm from '../../components/general/SectionForm';
-
+import PropTypes from 'prop-types';
 
 export default function FillDataCollection(props) {
     
@@ -30,3 +30,14 @@ export default function FillDataCollection(props) {
         </BoxBckgr>
     )
 }
+
+FillDataCollection.propTypes = {
+    /** DateOfBirth */
+    dateOfBirth: PropTypes.object.isRequired,
+    /** Date of entrance in hospital */
+    dateIn: PropTypes.object.isRequired,
+    /** Data Collection */
+    dataCollection: PropTypes.object.isRequired,
+    /** Callback function from parent */
+    callBackDataCollection: PropTypes.func.isRequired,
+  };

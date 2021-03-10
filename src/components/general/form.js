@@ -100,7 +100,7 @@ class Form extends Component {
             if(extraField.type === "options"){
                 return (
                     <div className="container">
-                        <FieldArray name={`${key}-options`} {...extraField} key={key} component={this.renderOptions} />
+                        <FieldArray name={`options`} {...extraField} key={key} component={this.renderOptions} />
                     </div>
                 )
             }

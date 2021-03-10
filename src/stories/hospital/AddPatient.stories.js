@@ -1,7 +1,7 @@
 import React from 'react';
 import { HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
-import AddPatient from '../../pages/hospital/AddPatient'
-import { personal_data1, investigation_server } from "../example_data";
+import { AddPatient } from '../../pages/hospital/AddPatient'
+import { personal_data_investigation1, investigation_server } from "../example_data";
 import ProviderSherwood from '../../providerSherwood';
 
 export default {

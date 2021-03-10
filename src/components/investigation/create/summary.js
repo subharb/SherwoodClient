@@ -78,7 +78,7 @@ class Summary extends Component {
     }
     renderPersonalData(){
         const arrayPersonalFields = this.props.initialData.personal_data.map(personalField => {
-            return this.props.translate(`investigation.create.personal_data.fields.${personalField}`);
+            return this.props.translate(`investigation.create.personal_data.fields.${personalField.name}`);
         })
         return arrayPersonalFields.join(",");
     }

@@ -31,18 +31,15 @@ export default function ShowRecordsSection(props) {
                         const valueRecord = submission.surveyRecords.find(record => {
                             return field.id === record.surveyField.id
                         })
-                        if(!valueRecord){
-                            setError(true);
-                        }
-                        else{
-                            return (
-                                <Grid item>
-                                    <Typography variant="body2" gutterBottom>
-                                        {field.label}: {valueRecord.value}
-                                    </Typography>
-                                </Grid>
-                            )
-                        }
+                        
+                        return (
+                            <Grid item>
+                                <Typography variant="body2" gutterBottom>
+                                    {field.label}: {valueRecord ? valueRecord.value : "-"}
+                                </Typography>
+                            </Grid>
+                        )
+                        
                         
                     })
                 }
@@ -76,9 +73,11 @@ export default function ShowRecordsSection(props) {
                         props.submissions.length > 1 &&
                         <Grid container direction="column" spacing={3}>
                             <Grid item>
+                                <Typography variant="body2" gutterBottom>
                                 {
                                     `${indexSubmission+1} / ${props.submissions.length}`
                                 }
+                                </Typography>
                             </Grid>
                             <Grid item>
                                 <ButtonBack disabled={indexSubmission === 0} onClick={() => setIndexSubmission(indexSubmission-1)}></ButtonBack>
