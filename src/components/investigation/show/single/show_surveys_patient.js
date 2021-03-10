@@ -25,10 +25,17 @@ function ShowSurveys(props) {
     const [submissionsSurvey, setSubmissionsSurvey] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showSnackbar, setShowSnackbar] = useState(false);
-
+    
     function viewSurvey(index){
-        props.updateLevel(1);
-        setIndexSurvey(index);
+        const submissionsSurvey = props.submissions[props.uuidInvestigation].find(sur=>sur.uuid === props.surveys[index].uuid);
+        if(submissionsSurvey){
+            props.updateLevel(1);
+            setIndexSurvey(index);
+        }
+        else{
+            setShowSnackbar(true);
+        }
+        
     }
     async function addRecordSurvey(index){
         props.updateLevel(1);
@@ -129,9 +136,10 @@ function ShowSurveys(props) {
             case 1:
                 if(props.mode === "view"){
                     //Muestro para elegir la sección
+                    const submissionsSurvey = props.submissions[props.uuidInvestigation].find(sur=>sur.uuid === props.surveys[indexSurvey].uuid);
                     return(
                         <ShowPatientRecords mode="elements" 
-                            patient={props.patient} survey={props.surveys[indexSurvey]} 
+                            patient={props.patient} survey={props.surveys[indexSurvey]} submissions={submissionsSurvey.submissions}
                             uuidInvestigation={props.uuidInvestigation} />
                     )
                 }

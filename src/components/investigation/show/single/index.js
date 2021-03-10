@@ -4,7 +4,7 @@ import { Alert } from "@material-ui/lab";
 import ShowAllRecordsSurvey from './show_all_records_survey';
 import { ButtonAdd, ButtonBack, Divider } from '../../../general/mini_components';
 import ShowSurveysPatient from './show_surveys_patient';
-import { saveSubmissionAction, fetchSubmissionsSurveyAction } from '../../../../redux/actions/submissionsActions';
+import { saveSubmissionAction, fetchSubmissionsInvestigationAction } from '../../../../redux/actions/submissionsActions';
 import { savePatientAction } from '../../../../redux/actions/patientsActions';
 import { useDispatch } from "react-redux";
 import Loader from '../../../Loader';
@@ -32,7 +32,7 @@ export function ShowInvestigation(props) {
     const history  = useHistory();    
 
     let surveySelected = surveyIndex !== null ? currentInvestigation.surveys[surveyIndex] : null;
-    let currentSubmissions = props.submissions.data && props.submissions.data.hasOwnProperty(surveySelected.uuid) && surveySelected ? props.submissions.data[surveySelected.uuid] : []
+    let currentSurveySubmissions = props.submissions.data && props.submissions.data.hasOwnProperty(props.uuid) && surveySelected ? props.submissions.data[props.uuid].find(sub=>sub.uuid === surveySelected.uuid).submissions : []
 
     useEffect(() => {
         if(props.investigations.data){
@@ -84,23 +84,27 @@ export function ShowInvestigation(props) {
                 />
         )
     }
-    async function showSurvey(index){
+    function showSurvey(index){
         if(currentInvestigation.surveys[index].hasRecords){
             setShowForm(4);
             setLevel(0);
             setSurveyIndex(index);
-            if(!props.submissions.hasOwnProperty(currentInvestigation.surveys[index].uuid)){
-                  await dispatch(fetchSubmissionsSurveyAction(props.uuid, currentInvestigation.surveys[index].uuid));
-            }
+            fetchSubmissionsInvestigation();
         }
         else{
             setShowSnackBar(true);
         }
         
     }
+    async function fetchSubmissionsInvestigation(){
+        if(!props.submissions.hasOwnProperty(props.uuid)){
+            await dispatch(fetchSubmissionsInvestigationAction(props.uuid));    
+        }
+    }
     function showPatient(index){
         setPatientIndex(index);
         setShowForm(3);
+        fetchSubmissionsInvestigation();
     }
     function selectPatient(index){
         setPatientIndex(index);
@@ -157,12 +161,12 @@ export function ShowInvestigation(props) {
             case 3: 
             //View Data
                 return <ShowSurveysPatient level={level} updateLevel={(level) => setLevel(level)} mode="view" 
-                            patient={props.patients[patientIndex]} 
+                            patient={props.patients[patientIndex]} submissions={props.submissions.data}
                             surveys={currentInvestigation.surveys} uuidInvestigation={currentInvestigation.uuid}/>
 
             case 4:
                 return <ShowAllRecordsSurvey level={level} updateLevel={(level) => setLevel(level)} survey={currentInvestigation.surveys[surveyIndex]} 
-                            patients={props.patients} submissions={currentSubmissions}/>
+                            patients={props.patients} submissions={currentSurveySubmissions}/>
             default:
                 return null;
         }

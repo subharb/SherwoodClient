@@ -20,7 +20,7 @@ export default function reducer(state = initialState, action){
         case types.FETCH_SUBMISSIONS_SUCCESS:
             let tempData = newState.data === initialState.data ? {} : newState.data;
             
-            tempData[action.meta.surveyUUID] = action.submissions;
+            tempData[action.meta.uuidInvestigation] = action.surveys;
             newState.data = tempData;
             newState.loading = initialState.loading;
             newState.error = initialState.error;
