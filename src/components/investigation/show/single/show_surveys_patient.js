@@ -27,7 +27,7 @@ function ShowSurveys(props) {
     const [showSnackbar, setShowSnackbar] = useState(false);
     
     function viewSurvey(index){
-        const submissionsSurvey = props.submissions[props.uuidInvestigation].find(sur=>sur.uuid === props.surveys[index].uuid);
+        const submissionsSurvey = props.submissions.find(sur=>sur.uuid === props.surveys[index].uuid); 
         if(submissionsSurvey){
             props.updateLevel(1);
             setIndexSurvey(index);
@@ -41,13 +41,6 @@ function ShowSurveys(props) {
         props.updateLevel(1);
         setIndexSurvey(index);
         setLoading(true);
-        try{
-            const response = await fetchRecordsPatientFromSurvey(props.uuidInvestigation, props.patient.uuid, props.surveys[index].uuid);
-            setSubmissionsSurvey(response.surveys[0].submissions);
-        }
-        catch(error){
-            console.log(error);
-        }
         setLoading(false);
     }
     function callBackSection(values){
@@ -63,11 +56,11 @@ function ShowSurveys(props) {
         dataObj[props.surveys[indexSurvey].sections[indexSection].uuid] = dataFields;
 
         props.saveRecord(dataObj, props.surveys[indexSurvey].uuid);
-        props.updateLevel(1);
     }
     function sectionSelected(indexSection){
         if(!props.surveys[indexSurvey].sections[indexSection].repeats){
-            const filteredSubmissions = filterRecordsFromSubmissions(submissionsSurvey, props.surveys[indexSurvey].sections[indexSection].uuid);
+            const submissionSurvey = props.submissions.find(sur=>sur.uuid ===  props.surveys[indexSurvey].uuid);
+            const filteredSubmissions = filterRecordsFromSubmissions(submissionSurvey, props.surveys[indexSurvey].sections[indexSection].uuid);
             if(filteredSubmissions.length > 0){
                 console.log("Sección ya relleneada");
                 setShowSnackbar(true);
@@ -136,7 +129,7 @@ function ShowSurveys(props) {
             case 1:
                 if(props.mode === "view"){
                     //Muestro para elegir la sección
-                    const submissionsSurvey = props.submissions[props.uuidInvestigation].find(sur=>sur.uuid === props.surveys[indexSurvey].uuid);
+                    const submissionsSurvey = props.submissions.find(sur=>sur.uuid === props.surveys[indexSurvey].uuid);
                     return(
                         <ShowPatientRecords mode="elements" 
                             patient={props.patient} survey={props.surveys[indexSurvey]} submissions={submissionsSurvey.submissions}

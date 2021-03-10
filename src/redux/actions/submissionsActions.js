@@ -5,7 +5,7 @@ import {
 
 export function saveSubmissionAction(postObj, uuidInvestigation, patientId, surveyUUID) {
   return async (dispatch) => {
-    dispatch({ type: types.SAVE_SUBMISSION_LOADING });
+    dispatch({ type: types.SUBMISSIONS_LOADING });
 
     return postRecordPatientService(postObj, uuidInvestigation, patientId, surveyUUID)
       .then((response) => {
@@ -23,7 +23,7 @@ export function saveSubmissionAction(postObj, uuidInvestigation, patientId, surv
 
 export function fetchSubmissionsInvestigationAction(uuidInvestigation, ) {
     return async (dispatch) => {
-      dispatch({ type: types.FETCH_SUBMISSIONS_LOADING });
+      dispatch({ type: types.SUBMISSIONS_LOADING });
   
       return fetchSubmissionsAllPatientsInvestigationService(uuidInvestigation)
         .then((response) => {

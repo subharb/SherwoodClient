@@ -68,8 +68,8 @@ export default function ShowPatientRecords(props) {
     }
     function renderSubmissionsSection(){    
         return Object.values(props.survey.sections).map(section => {
-            
-            const submissionsSection = filterRecordsFromSubmissions(props.submissions, section.uuid);
+            const patientSubmissions = props.submissions.filter(sub=>sub.patient.uuid === props.patient.uuid);
+            const submissionsSection = filterRecordsFromSubmissions(patientSubmissions, section.uuid);
 
             return(
                 <ShowRecordsSection submissions={submissionsSection} section={section} />

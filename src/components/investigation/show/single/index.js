@@ -96,6 +96,12 @@ export function ShowInvestigation(props) {
         }
         
     }
+    function initialState(){
+        setShowForm(0); 
+        setLevel(0);
+        setPatientIndex(null);
+        setSurveyIndex(null);
+    }
     async function fetchSubmissionsInvestigation(){
         if(!props.submissions.hasOwnProperty(props.uuid)){
             await dispatch(fetchSubmissionsInvestigationAction(props.uuid));    
@@ -109,15 +115,16 @@ export function ShowInvestigation(props) {
     function selectPatient(index){
         setPatientIndex(index);
         setShowForm(2);
+        fetchSubmissionsInvestigation();
     }
     async function savePatient(patientData){
         console.log(patientData);    
+        initialState();
         await dispatch(savePatientAction(currentInvestigation, patientData));
-
-        setShowForm(0);
     }
     async function saveRecord(values, surveyUUID){
         console.log(values);
+        initialState();
         const recordArray = Object.keys(values).map(keySection => {
             return {
                 uuid_section:keySection,
@@ -125,7 +132,7 @@ export function ShowInvestigation(props) {
             }
         })
         const postObj = {submission : recordArray}
-        await saveSubmissionAction(postObj, currentInvestigation.uuid, props.patients[patientIndex].uuid, surveyUUID)
+        await dispatch(saveSubmissionAction(postObj, currentInvestigation.uuid, props.patients[patientIndex].uuid, surveyUUID));
 
     }
     function renderAddPatients(){
@@ -155,13 +162,13 @@ export function ShowInvestigation(props) {
                             initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
             case 2: 
             //Add Data
-                return <ShowSurveysPatient level={level} updateLevel={(level) => setLevel(level)} mode="add" 
-                            patient={props.patients[patientIndex]} saveRecord={saveRecord}
+                return <ShowSurveysPatient key={props.patients[patientIndex].uuid} level={level} updateLevel={(level) => setLevel(level)} mode="add" 
+                            patient={props.patients[patientIndex]} saveRecord={saveRecord}  submissions={props.submissions.data[currentInvestigation.uuid] }
                             surveys={currentInvestigation.surveys} uuidInvestigation={currentInvestigation.uuid}/>
             case 3: 
             //View Data
-                return <ShowSurveysPatient level={level} updateLevel={(level) => setLevel(level)} mode="view" 
-                            patient={props.patients[patientIndex]} submissions={props.submissions.data}
+                return <ShowSurveysPatient key={props.patients[patientIndex].uuid} level={level} updateLevel={(level) => setLevel(level)} mode="view" 
+                            patient={props.patients[patientIndex]} submissions={props.submissions.data[currentInvestigation.uuid] }
                             surveys={currentInvestigation.surveys} uuidInvestigation={currentInvestigation.uuid}/>
 
             case 4:

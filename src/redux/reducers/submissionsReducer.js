@@ -25,8 +25,12 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading;
             newState.error = initialState.error;
             return newState;
-        case types.FETCH_SUBMISSIONS_LOADING:
+        case types.SUBMISSIONS_LOADING:
             newState.loading = true;
+            newState.error = initialState.error;
+            return newState;
+        case types.SAVE_SUBMISSION_SUCCESS:
+            newState.loading = initialState.loading;
             newState.error = initialState.error;
             return newState;
         default:
