@@ -1,6 +1,6 @@
 import React from 'react'
 import UpdateInvestigation from './create/edit';
-import FillInvestigation from './show/single';
+import ShowInvestigation from './show/single';
 import { useParams
 } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export default function Investigation(props) {
         return <UpdateInvestigation uuid={uuid} {...props} />
     }
     else{
-        return <FillInvestigation uuid={uuid} {...props} />
+        return <ShowInvestigation uuid={uuid} {...props} />
     }
 
 }

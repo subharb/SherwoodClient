@@ -6,13 +6,28 @@ import { decryptPatientData } from '../../utils';
  * @param {boolean} state 
  */
 
+ const initialState = {
+    data: null,
+    loading: false,
+    error: null
+}
+
  
-export default function reducer(state = {}, action){
+export default function reducer(state = initialState, action){
     console.log(action)
     let newState = { ...state};
     switch(action.type){
         case types.FETCH_SUBMISSIONS_SUCCESS:
-            newState[action.payload.surveyUUID] = action.submissions;
+            let tempData = newState.data === initialState.data ? {} : newState.data;
+            
+            tempData[action.meta.surveyUUID] = action.submissions;
+            newState.data = tempData;
+            newState.loading = initialState.loading;
+            newState.error = initialState.error;
+            return newState;
+        case types.FETCH_SUBMISSIONS_LOADING:
+            newState.loading = true;
+            newState.error = initialState.error;
             return newState;
         default:
             return state;

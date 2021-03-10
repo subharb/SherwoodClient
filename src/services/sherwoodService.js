@@ -86,7 +86,7 @@ export function fetchRecordsPatientAllSurveys(uuidInvestigation, patientUUID) {
 export function fetchSubmissionsAllPatientsFromSurveyService(uuidInvestigation, surveyUUID) {
     return new Promise((resolve, reject) => {
       
-        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/survey/"+surveyUUID+"/submission", { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/survey/"+surveyUUID+"/submissions", { headers: {"Authorization" : localStorage.getItem("jwt")} })
           .then((response) => {
               if(response.status === 200){
                   resolve(response.data);

@@ -136,7 +136,7 @@ export default function ShowPatientRecords(props) {
                 props.singlePatient &&
                 <Grid item>
                     <Typography variant="subtitle1">
-                        <Translate id="investigation.fill.survey.patient_name" />: {`${props.patientPersonalData.name} ${props.patientPersonalData.surname}`} - {props.patientPersonalData.uuid}
+                        <Translate id="investigation.fill.survey.patient_name" />: {`${props.patientPersonalData.name} ${props.patientPersonalData.surnames}`} - {props.patientPersonalData.uuid}
                     </Typography>
                 </Grid>
             }

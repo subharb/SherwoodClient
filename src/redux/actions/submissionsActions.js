@@ -23,17 +23,18 @@ export function saveSubmissionAction(postObj, uuidInvestigation, patientId, surv
 
 export function fetchSubmissionsSurveyAction(uuidInvestigation, surveyUUID) {
     return async (dispatch) => {
-      dispatch({ type: types.SAVE_SUBMISSION_LOADING });
+      dispatch({ type: types.FETCH_SUBMISSIONS_LOADING });
   
       return fetchSubmissionsAllPatientsFromSurveyService(uuidInvestigation, surveyUUID)
         .then((response) => {
           dispatch({
-            type: types.SAVE_SUBMISSION_SUCCESS,
-            investigations: response.investigations,
+            type: types.FETCH_SUBMISSIONS_SUCCESS,
+            submissions: response.submissions,
+            meta:{surveyUUID}
           });
         })
         .catch((error) => {
-          dispatch({ type: types.SAVE_SUBMISSION_ERROR });
+          dispatch({ type: types.FETCH_SUBMISSIONS_ERROR });
           throw error;
         });
     };

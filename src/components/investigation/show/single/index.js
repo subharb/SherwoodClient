@@ -6,7 +6,7 @@ import { ButtonAdd, ButtonBack, Divider } from '../../../general/mini_components
 import ShowSurveysPatient from './show_surveys_patient';
 import { saveSubmissionAction, fetchSubmissionsSurveyAction } from '../../../../redux/actions/submissionsActions';
 import { savePatientAction } from '../../../../redux/actions/patientsActions';
-
+import { useDispatch } from "react-redux";
 import Loader from '../../../Loader';
 import { useHistory } from "react-router-dom";
 import { Button, Grid, IconButton, Snackbar, Typography } from "@material-ui/core";
@@ -14,7 +14,7 @@ import { EnhancedTable } from '../../../general/EnhancedTable';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { CloseIcon } from '@material-ui/data-grid';
-import { connect } from 'formik';
+import { connect } from 'react-redux';
 /**
  * 
  * Component to add data to an investigation. First you add patients and then you add info of each patient.
@@ -25,9 +25,20 @@ export function ShowInvestigation(props) {
     const [level, setLevel] = useState(0);
     const [patientIndex, setPatientIndex] = useState(null);
     const [surveyIndex, setSurveyIndex] = useState(null);
+    const [currentInvestigation, setCurrentInvestigation] = useState(null);
     
     const [showSnackbar, setShowSnackBar] = useState(false);
+    const dispatch = useDispatch();
     const history  = useHistory();    
+
+    let surveySelected = surveyIndex !== null ? currentInvestigation.surveys[surveyIndex] : null;
+    let currentSubmissions = props.submissions.data && props.submissions.data.hasOwnProperty(surveySelected.uuid) && surveySelected ? props.submissions.data[surveySelected.uuid] : []
+
+    useEffect(() => {
+        if(props.investigations.data){
+            setCurrentInvestigation(props.investigations.data.find(inv => inv.uuid === props.uuid))
+        }
+    }, [props.investigations])
 
     function renderPatientsTable(){
         if(props.patients.length === 0){
@@ -38,7 +49,7 @@ export function ShowInvestigation(props) {
         else{      
             const rows = props.patients.map(patientData => {
                 let tempRow = {};
-                for(const pField of props.investigation.personalFields){
+                for(const pField of currentInvestigation.personalFields){
                     let value = patientData[pField.name];
                     if(pField.type === "date"){
                         value = new Date(parseInt(patientData[pField.name])).toLocaleDateString('es-ES', {
@@ -53,7 +64,7 @@ export function ShowInvestigation(props) {
                     tempRow
                 )
             });
-            const headCells = props.investigation.personalFields.map(pField => {
+            const headCells = currentInvestigation.personalFields.map(pField => {
                 return { id: pField.name, alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.${pField.name}`} /> }
             }) 
             return (
@@ -67,20 +78,20 @@ export function ShowInvestigation(props) {
         const headCells = [{ id: "name", alignment: "right", label: <Translate id="investigation.create.personal_data.fields.name" /> }]
         return(
             <EnhancedTable titleTable={<Translate id="investigation.fill.survey.title" />} 
-                rows={props.investigation.surveys.map(survey => {
+                rows={currentInvestigation.surveys.map(survey => {
                     return {name : survey.name}})} 
                 headCells={headCells} actions={{"view":(index) => showSurvey(index)}}
                 />
         )
     }
     async function showSurvey(index){
-        if(props.investigation.surveys[index].hasRecords){
-            if(!props.submissions.hasOwnProperty(props.investigation.surveys[index].uuid)){
-                const response = await fetchSubmissionsSurveyAction(props.uuid, props.investigation.surveys[index].uuid);
-            }
+        if(currentInvestigation.surveys[index].hasRecords){
             setShowForm(4);
             setLevel(0);
             setSurveyIndex(index);
+            if(!props.submissions.hasOwnProperty(currentInvestigation.surveys[index].uuid)){
+                  await dispatch(fetchSubmissionsSurveyAction(props.uuid, currentInvestigation.surveys[index].uuid));
+            }
         }
         else{
             setShowSnackBar(true);
@@ -97,7 +108,7 @@ export function ShowInvestigation(props) {
     }
     async function savePatient(patientData){
         console.log(patientData);    
-        await savePatientAction(props.investigation.uuid, patientData);
+        await savePatientAction(currentInvestigation.uuid, patientData);
 
         setShowForm(0);
     }
@@ -110,11 +121,11 @@ export function ShowInvestigation(props) {
             }
         })
         const postObj = {submission : recordArray}
-        const response = await saveSubmissionAction(postObj, props.investigation.uuid, props.patients[patientIndex].uuid, surveyUUID)
+        await saveSubmissionAction(postObj, currentInvestigation.uuid, props.patients[patientIndex].uuid, surveyUUID)
 
     }
     function renderAddPatients(){
-        if(props.investigation.shareStatus === 2 && showForm === 0){
+        if(currentInvestigation.shareStatus === 2 && showForm === 0){
             return(
                 <Grid item xs={12}>
                     <Typography variant="subtitle1" color="textPrimary">
@@ -123,7 +134,7 @@ export function ShowInvestigation(props) {
                 </Grid> 
             )
         }
-        else if(props.investigation.shareStatus !== 2 ){
+        else if(currentInvestigation.shareStatus !== 2 ){
             return null;
         }
     }
@@ -136,22 +147,22 @@ export function ShowInvestigation(props) {
                     renderSurveysTable()
                 ]
             case 1:
-                return <PersonalDataForm fields={ props.investigation.personalFields} keyResearcherInvestigation={props.investigation.keyResearcherInvestigation}
+                return <PersonalDataForm fields={ currentInvestigation.personalFields} keyResearcherInvestigation={currentInvestigation.keyResearcherInvestigation}
                             initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
             case 2: 
             //Add Data
                 return <ShowSurveysPatient level={level} updateLevel={(level) => setLevel(level)} mode="add" 
                             patient={props.patients[patientIndex]} saveRecord={saveRecord}
-                            surveys={props.investigation.surveys} uuidInvestigation={props.investigation.uuid}/>
+                            surveys={currentInvestigation.surveys} uuidInvestigation={currentInvestigation.uuid}/>
             case 3: 
             //View Data
                 return <ShowSurveysPatient level={level} updateLevel={(level) => setLevel(level)} mode="view" 
                             patient={props.patients[patientIndex]} 
-                            surveys={props.investigation.surveys} uuidInvestigation={props.investigation.uuid}/>
+                            surveys={currentInvestigation.surveys} uuidInvestigation={currentInvestigation.uuid}/>
 
             case 4:
-                return <ShowAllRecordsSurvey level={level} updateLevel={(level) => setLevel(level)} survey={props.investigation.surveys[surveyIndex]} 
-                            patients={props.patients} submissions={props.submissions[props.investigation.surveys[surveyIndex].uuid]}/>
+                return <ShowAllRecordsSurvey level={level} updateLevel={(level) => setLevel(level)} survey={currentInvestigation.surveys[surveyIndex]} 
+                            patients={props.patients} submissions={currentSubmissions}/>
             default:
                 return null;
         }
@@ -164,7 +175,7 @@ export function ShowInvestigation(props) {
             setLevel(c => c -1);
         }
     }
-    if(props.investigation === false){
+    if(props.investigations.loading || !currentInvestigation || props.submissions.loading){
         return <Loader />
     }
     return (
@@ -190,7 +201,7 @@ export function ShowInvestigation(props) {
             />
             <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom display="inline">
-                    {props.investigation.name}
+                    {currentInvestigation.name}
                 </Typography>
             </Grid>
             {
@@ -214,8 +225,8 @@ export function ShowInvestigation(props) {
 function mapStateToProps(state, ownProps){
     return{
         submissions:state.submissions,
-        investigation:state.investigations[ownProps.uuid],
-        patients:state.patients[ownProps.uuid]
+        investigations:state.investigations,
+        patients:state.patients.hasOwnProperty(ownProps.uuid) ? state.patients[ownProps.uuid] : []
     }
 }
 

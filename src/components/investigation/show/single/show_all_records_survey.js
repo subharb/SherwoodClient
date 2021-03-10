@@ -68,7 +68,7 @@ export default function ShowAllRecordsSurvey(props) {
             </Grid>
             <Grid item>
                 <PatientRecords submissions={dictPatients[uuidPatient]} singlePatient
-                    mode="elements" survey={props.survey} patientPersonalData={patientCurrent.personalData} />
+                    mode="elements" survey={props.survey} patientPersonalData={patientCurrent} />
             </Grid>
         </Grid>
         
