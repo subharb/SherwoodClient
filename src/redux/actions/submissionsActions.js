@@ -1,6 +1,6 @@
 import * as types from "../../constants";
 import {
-    postRecordPatient as postRecordPatientService, fetchSubmissionsAllPatientsInvestigationService
+    postRecordPatientService, fetchSubmissionsAllPatientsInvestigationService
 } from "../../services/sherwoodService";
 
 export function saveSubmissionAction(postObj, uuidInvestigation, patientId, surveyUUID) {
