@@ -17,7 +17,7 @@ export function AddPatient(props) {
     async function savePatient(patientData){
         try{
             setIsLoading(true);
-            const response = await addPatient(props.investigations[0].uuid, patientData);
+            const response = await addPatient(props.investigations.data[0].uuid, patientData);
             setIsLoading(false);
             setShowSnackBar(true);
         }
@@ -26,7 +26,7 @@ export function AddPatient(props) {
             setError(true);
         }
     }
-    if(props.investigations.length === 0 || isLoading){
+    if(props.investigations.loading || isLoading){
         return <Loader />
     }
     return (
@@ -52,7 +52,7 @@ export function AddPatient(props) {
                 }
             />
             <Paper style={{padding:'1rem'}}>
-                <PersonalDataForm fields={ props.investigations[0].personalFields} keyResearcherInvestigation={props.investigations[0].keyResearcherInvestigation}
+                <PersonalDataForm fields={ props.investigations.data[0].personalFields} keyResearcherInvestigation={props.investigations.data[0].keyResearcherInvestigation}
                     initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
             </Paper>
         </Box>
