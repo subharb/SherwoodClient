@@ -34,6 +34,22 @@ export function fetchInvestigations() {
     });
 }
 
+export function fetchProfileService() {
+    return new Promise((resolve, reject) => {
+      
+      axios.get(process.env.REACT_APP_API_URL+'/researcher/profile', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
 export function fetchInvestigation(uuid) {
     return new Promise((resolve, reject) => {
       

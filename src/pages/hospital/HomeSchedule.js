@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { useRouter } from '../../hooks';
 import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
@@ -8,11 +8,33 @@ import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE,
 import { ButtonGrey, BoxBckgr } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
+import Loader from '../../components/Loader';
+import {fetchProfileService} from '../../services/sherwoodService';
 
 
 
 export default function HomeSchedule(props) {
+    const [loading, setLoading] = useState(false);
+    const [profileInfo, setProfileInfo] = useState(null);
     const { pathname }= useRouter(props.initialState ? props.initialState.pathname : false);
+
+    useEffect(() => {
+        async function fetchProfile(){
+            try{
+                setLoading(true);
+                const response = await fetchProfileService();
+                if(response.status === 200){
+                    setProfileInfo(response.profileInfo)
+                }
+                setLoading(false);
+            }
+            catch(error){
+                console.log(error);
+
+            }
+        }
+        fetchProfile();
+    }, [])
     if(pathname === MY_SCHEDULE_ROUTE){
         return(
             <BoxBckgr color="text.primary">
@@ -45,8 +67,11 @@ export default function HomeSchedule(props) {
         )
     }
     else{
+        if(loading || !profileInfo){
+            return <Loader />
+        }
         return (
-            <BoxBckgr style={{padding:'1rem'}} color="text.primary">
+            <BoxBckgr style={{padding:'1rem', color:"white"}} color="text.primary">
                 <Grid container spacing={3}>
                     <Grid item  xs={12}>
                         <Typography variant="h3" gutterBottom display="inline">
@@ -56,17 +81,17 @@ export default function HomeSchedule(props) {
                     <Grid item xs={6}>
                         <Grid item xs={12}>
                             <Typography variant="body2" gutterBottom>
-                                {props.name} {props.surnames}
+                                {profileInfo.name} {profileInfo.surnames}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="body2" gutterBottom>
-                                {props.department}
+                                {profileInfo.department}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="body2" gutterBottom>
-                                {props.institution}
+                                {profileInfo.institution}
                             </Typography>
                         </Grid>
                     </Grid>
