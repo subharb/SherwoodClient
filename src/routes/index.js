@@ -19,14 +19,14 @@ import {
   Sliders,
   Users,
 } from "react-feather";
-
+import { LocalHospital as HospitalIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon } from "@material-ui/icons";
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
 import SignUp from "../pages/auth/SignUp";
 import ResetPassword from "../pages/auth/ResetPassword";
 import Page404 from "../pages/auth/Page404";
 import Page500 from "../pages/auth/Page500";
-
+import {Translate} from 'react-localize-redux';
 
 
 // // Guards
@@ -70,77 +70,7 @@ import ListPatients from "../pages/hospital/ListPatients";
 import Patient from "../pages/hospital/Patient";
 import SearchPatients from "../pages/hospital/SearchPatients";
 import AddPatient from "../pages/hospital/AddPatient";
-// // Forms components
-// const Pickers = async(() => import("../pages/forms/Pickers"));
-// const SelectionCtrls = async(() => import("../pages/forms/SelectionControls"));
-// const Selects = async(() => import("../pages/forms/Selects"));
-// const TextFields = async(() => import("../pages/forms/TextFields"));
-// const Dropzone = async(() => import("../pages/forms/Dropzone"));
-// const Editors = async(() => import("../pages/forms/Editors"));
-// const Formik = async(() => import("../pages/forms/Formik"));
 
-// // Icons components
-// const MaterialIcons = async(() => import("../pages/icons/MaterialIcons"));
-// const FeatherIcons = async(() => import("../pages/icons/FeatherIcons"));
-
-// // Pages components
-//const Blank = async(() => import("../pages/pages/Blank"));
-// const InvoiceDetails = async(() => import("../pages/pages/InvoiceDetails"));
-// const InvoiceList = async(() => import("../pages/pages/InvoiceList"));
-// const Orders = async(() => import("../pages/pages/Orders"));
-//const Pricing = async(() => import("../pages/pages/Pricing"));
-//const Profile = async(() => import("../pages/pages/Profile"));
-
-//const Settings = async(() => import("../pages/pages/Settings"));
-// const Tasks = async(() => import("../pages/pages/Tasks"));
-// const Projects = async(() => import("../pages/pages/Projects"));
-// const Investigations = async(() => import("../components/investigation/show/all"));
-// const Investigation = async(() => import("../components/investigation"));
-// const ShareInvestigation = async(() => import("../components/investigation/share"));
-
-// const DraftInvestigations = async(() => import("../components/investigation/show/all"));
-// const LiveInvestigations = async(() => import("../components/investigation/show/all"));
-
-// const Calendar = async(() => import("../pages/pages/Calendar"));
-//const Chat = async(() => import("../pages/pages/Chat"));
-
-// // Tables components
-// const SimpleTable = async(() => import("../pages/tables/SimpleTable"));
-// const AdvancedTable = async(() => import("../pages/tables/AdvancedTable"));
-// const DataGrid = async(() => import("../pages/tables/DataGrid"));
-
-// // Chart components
-// const Chartjs = async(() => import("../pages/charts/Chartjs"));
-
-// // Maps components
-// const GoogleMaps = async(() => import("../pages/maps/GoogleMaps"));
-// const VectorMaps = async(() => import("../pages/maps/VectorMaps"));
-
-// // Documentation
-// const Welcome = async(() => import("../pages/docs/Welcome"));
-// const GettingStarted = async(() => import("../pages/docs/GettingStarted"));
-// const EnvironmentVariables = async(() =>
-//   import("../pages/docs/EnvironmentVariables")
-// );
-// const Deployment = async(() => import("../pages/docs/Deployment"));
-// const Theming = async(() => import("../pages/docs/Theming"));
-// const StateManagement = async(() => import("../pages/docs/StateManagement"));
-// const APICalls = async(() => import("../pages/docs/APICalls"));
-// const ESLintAndPrettier = async(() =>
-//   import("../pages/docs/ESLintAndPrettier")
-// );
-// const Support = async(() => import("../pages/docs/Support"));
-// const Changelog = async(() => import("../pages/docs/Changelog"));
-
-// // Landing
-// const Landing = async(() => import("../pages/presentation/Landing"));
-
-// // Protected routes
-// const ProtectedPage = async(() => import("../pages/protected/ProtectedPage"));
-
-// const Investigations = async(() => import("../components/investigation/show/all"));
-// const Investigation = async(() => import("../components/investigation"));
-// const ShareInvestigation = async(() => import("../components/investigation/share"));
 
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
@@ -210,25 +140,78 @@ const hospitalRoutes = {
             path: ADD_PATIENT_ROUTE,
             name: "Add Patient",
             component: AddPatient
-        },
-        // {
-        //     path: DRAFT_INVESTIGATIONS_ROUTE,
-        //     name: "Draft",
-        //     component: () => <Investigations filter="draft" />,
-        // },
-        // {
-        //     path: LIVE_INVESTIGATIONS_ROUTE,
-        //     name: "Live",
-        //     component: () => <Investigations filter="live" /> ,
-        // },
-        // {
-        //     path: PENDING_INVESTIGATIONS_ROUTE,
-        //     name: "Pending",
-        //     component: () => <Investigations filter="pending" /> ,
-        // }
+        }
     ],
   };
 
+const dashboardHomeRoutes = {
+    id: <Translate id="pages.hospital.home" />,
+    path: HOSPITAL_HOME_ROUTE,
+    icon: <HospitalIcon />,
+    badge: "",
+    component: {
+        path: ROOT_ROUTE,
+        name: "Home",
+        component: HomeSchedule
+    },
+    children: null
+}
+
+const dashboardSearchPatientRoutes = {
+    id: <Translate id="pages.hospital.search-patient" />,
+    path: SEARCH_PATIENT_ROUTE,
+    icon: <SearchPatientIcon />,
+    badge: "",
+    component: {
+        path: SEARCH_PATIENT_ROUTE,
+        name: "Search Patient",
+        component: SearchPatients
+    },
+    children: null
+}
+
+const dashboardAddPatientRoutes = {
+    id: <Translate id="pages.hospital.add-patient" />,
+    path: ADD_PATIENT_ROUTE,
+    icon: <AddPatientIcon />,
+    badge: "",
+    component: {
+        path: ADD_PATIENT_ROUTE,
+        name: "Add Patient",
+        component: AddPatient
+    },
+    children: null
+}
+
+const dashboardHospitalRoutes = {
+    id: "Hospital",
+    path: HOSPITAL_HOME_ROUTE,
+    icon: <Briefcase />,
+    badge: "8",
+    component: null,
+    children: [
+        {
+            path: ROOT_ROUTE,
+            name: "Home",
+            component: HomeSchedule
+        },
+        {
+            path: HOSPITAL_WARD_ROUTE,
+            name: "Hospital Ward",
+            component: ListPatients
+        },
+        {
+            path: SEARCH_PATIENT_ROUTE,
+            name: "Search Patient",
+            component: SearchPatients
+        },
+        {
+            path: ADD_PATIENT_ROUTE,
+            name: "Add Patient",
+            component: AddPatient
+        }
+    ],
+}
 const investigationsRoutes = {
     id: "Investigations",
     path: ALL_INVESTIGATIONS_ROUTE,
@@ -749,20 +732,11 @@ export const authLayoutRoutes = [authRoutes];
 // Routes visible in the sidebar
 export const sidebarRoutes = [
   dashboardsRoutes,
-  //pagesRoutes,
   investigationsRoutes,
-  //projectsRoutes,
-//   orderRoutes,
-//   invoiceRoutes,
-//   tasksRoutes,
-//   calendarRoutes,
-//   authRoutes,
-//   componentsRoutes,
-//   chartRoutes,
-//   formsRoutes,
-//   tablesRoutes,
-//   iconsRoutes,
-//   mapsRoutes,
-//   documentationRoutes,
-//   changelogRoutes,
 ];
+
+export const sidebarRoutesHospital = [
+    dashboardHomeRoutes,
+    dashboardSearchPatientRoutes,
+    dashboardAddPatientRoutes,
+  ];

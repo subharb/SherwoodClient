@@ -208,11 +208,11 @@ function Patient(props) {
                                     {years} years
                                 </Typography>
                             </Grid>
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>
                                     {stay} days
                                 </Typography>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                         <Grid item container xs={5}  justify="center" alignItems="center">
                             <Grid item xs={4}>

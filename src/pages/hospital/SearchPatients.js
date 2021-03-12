@@ -9,7 +9,8 @@ import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { HOSPITAL_PATIENT } from '../../routes';
 import Loader from '../../components/Loader';
-import { decryptPatientData } from '../../utils';
+import { decryptPatientData } from '../../utils'; 
+import PatientsTable from '../../components/general/PatientsTable';
 
 let personalFieldsForm = {};
 
@@ -63,7 +64,7 @@ export default function SearchPatients(props) {
                 <Box>
                     <Paper style={{padding:'1rem'}}>
                         <Form fields={personalFieldsForm} selectRow={(index) =>patientSelected(index)} 
-                            callBackForm={searchPatientCallBack}/>
+                            submitText="investigation.search-patients.search" callBackForm={searchPatientCallBack}/>
                     </Paper>
                 </Box>
                 
@@ -84,23 +85,10 @@ export default function SearchPatients(props) {
                 
             }
             else{
-                const headCells = investigations[0].personalFields.map(pField =>{
-                    return { id:pField.name, alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.${pField.name}`} /> }
-                });
-                const rows = filteredPatients.map(patient => {
-                    let tempData = {}
-                    for(const pField of investigations[0].personalFields){
-                        tempData[pField.name] = patient[pField.name]
-                    }
-                    return tempData;
-                })  
-                return(
-                    [
-                        <EnhancedTable noHeader noSelectable headCells={headCells} 
-                            selectRow={patientSelected} rows={rows}/>,
-                        <Button onClick={backToSearch}>Close</Button>
-                    ]
-                )
+                
+                return <PatientsTable patients={filteredPatients} mobile 
+                        showPatientCallBack={index => patientSelected(index)} 
+                        personalFields={investigations[0].personalFields} />
             }
         }
                     

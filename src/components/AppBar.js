@@ -90,7 +90,7 @@ const AppBarComponent = ({ onDrawerToggle }) => (
           </Hidden>
           <Grid item xs />
           <Grid item>
-            <NotificationsDropdown items={3} />
+            {/* <NotificationsDropdown items={3} /> */}
             <UserDropdown />
           </Grid>
         </Grid>

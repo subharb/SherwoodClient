@@ -11,7 +11,8 @@ import {
     Clear as ClearIcon,
     Send as SendIcon,
     ArrowForwardIos as ArrowForwardIosIcon,
-    ArrowBackIos as ArrowBackIosIcon
+    ArrowBackIos as ArrowBackIosIcon,
+    LocalHospital as HospitalIcon
   } from "@material-ui/icons";
   import {
     Button, Icon, IconButton,

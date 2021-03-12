@@ -1,6 +1,7 @@
 
 import React, {useEffect, useState} from 'react'
 import { useRouter } from '../../hooks';
+import { connect } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
@@ -13,7 +14,7 @@ import {fetchProfileService} from '../../services/sherwoodService';
 
 
 
-export default function HomeSchedule(props) {
+function HomeSchedule(props) {
     const [loading, setLoading] = useState(false);
     const [profileInfo, setProfileInfo] = useState(null);
     const { pathname }= useRouter(props.initialState ? props.initialState.pathname : false);
@@ -79,21 +80,31 @@ export default function HomeSchedule(props) {
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
+                    <Grid item xs={12}>
+                            <Typography variant="body2" gutterBottom>
+                                {props.investigations.data[0].name}
+                            </Typography>
+                        </Grid>
                         <Grid item xs={12}>
                             <Typography variant="body2" gutterBottom>
                                 {profileInfo.name} {profileInfo.surnames}
                             </Typography>
                         </Grid>
+                        {profileInfo.department &&
+                            <Grid item xs={12}>
+                                <Typography variant="body2" gutterBottom>
+                                    {profileInfo.department.name}
+                                </Typography>
+                            </Grid>
+                        }
+                        {profileInfo.institution &&
                         <Grid item xs={12}>
                             <Typography variant="body2" gutterBottom>
-                                {profileInfo.department}
+                            {profileInfo.institution.name}
                             </Typography>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body2" gutterBottom>
-                                {profileInfo.institution}
-                            </Typography>
-                        </Grid>
+                        }
+                        
                     </Grid>
                     <Grid item xs={6}>
                         <img src={photo_holder} alt="profile_picture" with="100%" />
@@ -121,3 +132,11 @@ export default function HomeSchedule(props) {
     }
     
 }
+
+const mapStateToProps = (state) =>{
+    return {
+        investigations : state.investigations
+    }
+}
+
+export default connect(mapStateToProps, null)(HomeSchedule)

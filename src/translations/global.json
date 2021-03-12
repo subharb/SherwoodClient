@@ -19,6 +19,14 @@
     "error" : {
         "not_login" : ["You need to sign in to access this resource", "Para acceder a este recurso necesita hacer login"]
     },
+    "pages" : {
+        "research" : [],
+        "hospital" : {
+            "home" : ["Home", "Home"],
+            "search-patient" : ["Search Patient", "Buscar Paciente"],
+            "add-patient" : ["Add Patient", "Añadir paciente"]
+        }
+    },
     "dashboard":{
         "greetings" : ["Welcome", "Bienvenido"],
         "investigation" : ["Investigation", "Investigación"],
@@ -264,6 +272,9 @@
                 "already_filled" : ["This section has been filled", "Esta sección ya ha sido respondida"]
             },
             "records" : ["Records", "Registros"]
+        },
+        "search-patients":{
+            "search" : ["Search", "Buscar"]
         },
         "share" : {
             "title" : ["Share Investigation", "Compartir Investigación"],

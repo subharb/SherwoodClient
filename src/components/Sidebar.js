@@ -26,7 +26,9 @@ import { ExpandLess, ExpandMore } from "@material-ui/icons";
 
 import { green } from "@material-ui/core/colors";
 
+
 import { sidebarRoutes as routes } from "../routes/index";
+import { sidebarRoutesHospital as routesHospital } from "../routes/index";
 
 import { ReactComponent as Logo } from "../vendor/logo.svg";
 
@@ -325,7 +327,10 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
       Object.assign({}, openRoutes, { [index]: !openRoutes[index] })
     );
   };
-
+  let appRoutes = routes;
+  if(process.env.REACT_APP_PRODUCT === "HOSPITAL"){
+    appRoutes = routesHospital;
+  }
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>
@@ -337,7 +342,7 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
       <Scrollbar>
         <List disablePadding>
           <Items>
-            {routes.map((category, index) => (
+            {appRoutes.map((category, index) => (
               <React.Fragment key={index}>
                 {category.header ? (
                   <SidebarSection>{category.header}</SidebarSection>

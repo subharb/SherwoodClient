@@ -15,6 +15,8 @@ import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { CloseIcon } from '@material-ui/data-grid';
 import { connect } from 'react-redux';
+
+import PatientsTable from '../../../general/PatientsTable';
 /**
  * 
  * Component to add data to an investigation. First you add patients and then you add info of each patient.
@@ -47,31 +49,12 @@ export function ShowInvestigation(props) {
                     </Typography>)
         }
         else{      
-            const rows = props.patients.map(patientData => {
-                let tempRow = {};
-                for(const pField of currentInvestigation.personalFields){
-                    let value = patientData[pField.name];
-                    if(pField.type === "date"){
-                        value = new Date(parseInt(patientData[pField.name])).toLocaleDateString('es-ES', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit'
-                            }).replace(/\./g, '/');
-                    }
-                    tempRow[pField.name] = value;
-                }
-                return(
-                    tempRow
-                )
-            });
-            const headCells = currentInvestigation.personalFields.map(pField => {
-                return { id: pField.name, alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.${pField.name}`} /> }
-            }) 
-            return (
-                <EnhancedTable titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
-                    actions={{"view":(index => showPatient(index)), "add" : (index) => selectPatient(index)}}
-                    />
-            )
+            
+            return <PatientsTable patients={props.patients} 
+                        personalFields={currentInvestigation.personalFields} 
+                        addInfoPatientCallBack={(index) => selectPatient(index)}
+                        showPatientCallBack={index => showPatient(index)} 
+                        />
         }
     }
     function renderSurveysTable(){
