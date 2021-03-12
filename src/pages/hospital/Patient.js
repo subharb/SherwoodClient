@@ -26,14 +26,11 @@ function Patient(props) {
     const [showDataCollections, setShowDataCollections] = useState(false);
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
     const [dataCollectionSelected, setDataCollectionSelected] = useState(null);
-    const [newRecords, setNewRecords] = useState(0);
     const dispatch = useDispatch();
     let { uuidPatient } = useParams();
 
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
-    const patient = props.investigations.data ? props.investigations.data[0].patientsPersonalData.find(patient =>{
-        return(patient.uuid === uuidPatient);
-    }) : null;
+    const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.data[0].uuid].find(pat => pat.uuid === uuidPatient) : null
     
 
     function fillDataCollection(dataCollection){
@@ -116,7 +113,7 @@ function Patient(props) {
         if(props.investigations.data){
             fetchRecordsPatient()
         }
-    }, [newRecords, props.investigations])
+    }, [props.investigations])
     useEffect(() => {
         if(props.patientsSubmissions.data){
             let tempSubmissions = props.patientsSubmissions.data[uuidPatient].reduce((acc, val)=> {
@@ -151,11 +148,11 @@ function Patient(props) {
             </BoxBckgr>
         )
     }
-    else if(props.investigations.loading || props.patientsSubmissions.loading){
+    else if(props.investigations.loading || props.patientsSubmissions.loading || !props.patientsSubmissions.data){
         return <Loader />
     }
     else{
-        let years = yearsFromDate(parseInt(patient.personalData.birthdate));
+        let years = yearsFromDate(parseInt(patient.birthdate));
         let stay = daysFromDate(props.dateIn);
 
         return (
@@ -195,7 +192,7 @@ function Patient(props) {
                         <Grid item container xs={4}>
                             <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>
-                                    {patient.personalData.name} {patient.personalData.surnames}
+                                    {patient.name} {patient.surnames}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -235,7 +232,8 @@ function Patient(props) {
 const mapStateToProps = (state) =>{
     return {
         investigations : state.investigations,
-        patientsSubmissions:state.patientsSubmissions
+        patientsSubmissions:state.patientsSubmissions,
+        patients:state.patients
     }
 }
 export default connect(mapStateToProps, null)(Patient)
