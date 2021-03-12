@@ -53,7 +53,7 @@ function Patient(props) {
             }
             ]
         }
-        await dispatch(postSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid));
+        await dispatch(postSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
         setDataCollectionSelected(null);
         
     }

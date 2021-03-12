@@ -68,7 +68,7 @@ function HomeSchedule(props) {
         )
     }
     else{
-        if(loading || !profileInfo){
+        if(props.investigations.loading || !profileInfo){
             return <Loader />
         }
         return (

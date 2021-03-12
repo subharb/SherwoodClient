@@ -24,7 +24,7 @@ export function fetchSubmissionsPatientInvestigationAction(uuidInvestigation, uu
     };
 }
 
-export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, surveyUUID) {
+export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, surveyUUID, surveyName) {
     return async (dispatch) => {
       dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
   
@@ -33,7 +33,7 @@ export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPati
           dispatch({
             type: types.SAVE_SUBMISSIONS_PATIENT_SUCCESS,
             submission: response.submission,
-            meta:{uuidPatient, surveyUUID}
+            meta:{uuidPatient, surveyUUID, surveyName}
           });
         })
         .catch((error) => {

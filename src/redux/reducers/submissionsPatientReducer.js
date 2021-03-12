@@ -32,13 +32,19 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.SAVE_SUBMISSIONS_PATIENT_SUCCESS:
             tempData = newState.data === initialState.data ? {} : newState.data;
-            tempData[action.meta.uuidPatient] = tempData[action.meta.uuidPatient].map(sur=>{
-                if(sur.uuid === action.meta.surveyUUID){
-                    sur.submissions.push(action.submission)
+            const indexSurvey = tempData[action.meta.uuidPatient].indexOf(sur=>sur.uuid === action.meta.surveyUUID)
+            if(indexSurvey !== -1){
+                tempData[action.meta.uuidPatient][indexSurvey].push(action.submission)
+            }
+            else{
+                let survey = {
+                    surveyName : action.meta.surveyName,
+                    uuid : action.meta.surveyUUID,
+                    submissions:[action.submission]
                 }
-                return sur;
-            });
-        
+                tempData[action.meta.uuidPatient].push(survey);
+            }
+                    
             newState.loading = initialState.loading;
             newState.error = initialState.error;
             return newState;
