@@ -116,25 +116,29 @@ function Patient(props) {
     }, [props.investigations])
     useEffect(() => {
         if(props.patientsSubmissions.data){
-            let tempSubmissions = props.patientsSubmissions.data[uuidPatient].reduce((acc, val)=> {
-                val.submissions = val.submissions.map(sub=>{
-                    sub.surveyName = val.surveyName; 
-                    sub.surveyUUID = val.uuid; 
-                    return sub;
+            let tempSubmissions = []
+            if(props.patientsSubmissions.data.hasOwnProperty(uuidPatient)){
+                tempSubmissions = props.patientsSubmissions.data[uuidPatient].reduce((acc, val)=> {
+                    val.submissions = val.submissions.map(sub=>{
+                        sub.surveyName = val.surveyName; 
+                        sub.surveyUUID = val.uuid; 
+                        return sub;
+                    });
+    
+                    return acc.concat(val.submissions)
+                }, []);
+                tempSubmissions.sort((a, b) => {
+                    const aDate = new Date(a.createdAt);
+                    const bDate = new Date(b.createdAt);
+                    if(aDate.getTime() > bDate.getTime()){
+                        return -1
+                    }
+                    else{
+                        return 1;
+                    }
                 });
-
-                return acc.concat(val.submissions)
-            }, []);
-            tempSubmissions.sort((a, b) => {
-                const aDate = new Date(a.createdAt);
-                const bDate = new Date(b.createdAt);
-                if(aDate.getTime() > bDate.getTime()){
-                    return -1
-                }
-                else{
-                    return 1;
-                }
-            });
+            }
+            
             setSurveyRecords(tempSubmissions);
         }
         
