@@ -23,19 +23,24 @@ function Patient(props) {
     const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
     
     const [surveyRecords, setSurveyRecords] = useState([]);
-    const [showDataCollections, setShowDataCollections] = useState(false);
+    const [showOptions, setShowOptions] = useState(false);
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
-    const [dataCollectionSelected, setDataCollectionSelected] = useState(null);
+    const [indexDataCollection, setIndexDataCollection] = useState(-1);
+    const [indexSection, setIndexSection] = useState(-1);
     const dispatch = useDispatch();
     let { uuidPatient } = useParams();
 
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.data[0].uuid].find(pat => pat.uuid === uuidPatient) : null
+    const dataCollectionSelected = indexDataCollection !== -1 ? props.investigations.data[0].surveys[indexDataCollection] : null;
+    const sectionSelected = indexSection !== -1 ? props.investigations.data[0].surveys[indexDataCollection].sections[indexSection] : null;
     
-
-    function fillDataCollection(dataCollection){
-        setShowDataCollections(false);
-        setDataCollectionSelected(dataCollection);
+    function fillDataCollection(indexCollection){
+        setIndexDataCollection(indexCollection);
+    }
+    function sectionSelect(section){
+        setIndexSection(section);
+        setShowOptions(false);
     }
     function selectRecord(index){
         console.log("Row seleccionado ", surveyRecords[index]);
@@ -54,13 +59,14 @@ function Patient(props) {
             ]
         }
         await dispatch(postSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
-        setDataCollectionSelected(null);
+        setIndexDataCollection(-1);
+        setIndexSection(-1);
         
     }
     function renderCore(){
-        if(dataCollectionSelected !== null){
+        if(dataCollectionSelected !== null && sectionSelected !== null){
             return(
-                <FillDataCollection key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected}
+                <FillDataCollection key={indexDataCollection} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
                 patientId={props.patientId} investigation={props.investigation} callBackDataCollection={(values) => saveRecord(values)}/>
             )
         }
@@ -162,18 +168,29 @@ function Patient(props) {
         return (
         
             <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
-                <Modal isTransparent={true} open={showDataCollections || loading || saved} closeModal={() => setShowDataCollections(false)}>
+                <Modal isTransparent={true} open={showOptions || loading || saved} closeModal={() => setShowOptions(false)}>
                     {
                         saved &&
                         <CheckCircleOutlineSvg style={{ color: "green",fontSize: 80 }}/>
                     }
-                    { showDataCollections && 
+                    { showOptions && 
                         <Grid container spacing={3} >
                         {
-                            props.investigations.data[0].surveys.map(dataCollection => {
+                            (indexDataCollection === -1) && 
+                            props.investigations.data[0].surveys.map((dataCollection, index) => {
                                 return(
                                     <Grid item xs={12} style={{textAlign:"center"}}>
-                                        <ButtonGrey onClick={() => fillDataCollection(dataCollection)}>{dataCollection.name}</ButtonGrey>
+                                        <ButtonGrey onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGrey>
+                                    </Grid>
+                                )
+                            })
+                        }
+                        {
+                            (indexDataCollection !== -1 && indexSection === -1) && 
+                            props.investigations.data[0].surveys[indexDataCollection].sections.map((section, index) => {
+                                return(
+                                    <Grid item xs={12} style={{textAlign:"center"}}>
+                                        <ButtonGrey onClick={() => sectionSelect(index)}>{section.name}</ButtonGrey>
                                     </Grid>
                                 )
                             })
@@ -217,7 +234,7 @@ function Patient(props) {
                         </Grid>
                         <Grid item container xs={5}  justify="center" alignItems="center">
                             <Grid item xs={4}>
-                                <ButtonAdd onClick={() => setShowDataCollections(!showDataCollections)} />
+                                <ButtonAdd onClick={() => setShowOptions(!showOptions)} />
                             </Grid>
                         </Grid>
                     </Grid>

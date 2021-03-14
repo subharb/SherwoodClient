@@ -21,7 +21,7 @@ export default function FillDataCollection(props) {
                     </Grid>
                     <Grid item xs={12}>
                         <Paper elevation={3} style={{padding:"1rem"}} >
-                            <SectionForm fields={props.dataCollection.sections[0].fields} 
+                            <SectionForm fields={props.sectionSelected.fields} 
                                 callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
                         </Paper>
                     </Grid>
@@ -34,6 +34,7 @@ export default function FillDataCollection(props) {
 FillDataCollection.propTypes = {
     /** DateOfBirth */
     dateOfBirth: PropTypes.object.isRequired,
+    sectionSelected : PropTypes.number,
     /** Date of entrance in hospital */
     dateIn: PropTypes.object.isRequired,
     /** Data Collection */
