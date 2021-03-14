@@ -173,12 +173,12 @@ export const FIELDS_FORM = {
         label : "investigation.create.edc.choose",
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "investigation.create.edc.type_text", "value" : "text"},
-                {"text": "investigation.create.edc.type_number", "value" : "number"},
-                {"text": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
-                {"text": "investigation.create.edc.type_date", "value" : "date"},
-                {"text": "investigation.create.edc.dropdown", "value" : "dropdown"},
-                {"text": "investigation.create.edc.multioption", "value" : "multioption"}
+        options:[{"label" : "investigation.create.edc.type_text", "value" : "text"},
+                {"label": "investigation.create.edc.type_number", "value" : "number"},
+                {"label": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
+                {"label": "investigation.create.edc.type_date", "value" : "date"},
+                {"label": "investigation.create.edc.dropdown", "value" : "dropdown"},
+                {"label": "investigation.create.edc.multioption", "value" : "multioption"}
         ],
         activationValues : ["dropdown", "multioption"],
         activatedFields:[
@@ -301,10 +301,10 @@ export const FIELDS_BASIC_INFO = {
         validation : "notEmpty",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
         options : [
-                {"text" : "investigation.create.edc.type_study.audit", "value" : "audit"},
-                {"text" : "investigation.create.edc.type_study.clinical_research_study", "value" : "clin_res"},
-                {"text" : "investigation.create.edc.type_study.medical_device", "value" : "med_dev"},
-                {"text" : "investigation.create.edc.type_study.clinical_trial", "value" : "clin_trial"}
+                {"label" : "investigation.create.edc.type_study.audit", "value" : "audit"},
+                {"label" : "investigation.create.edc.type_study.clinical_research_study", "value" : "clin_res"},
+                {"label" : "investigation.create.edc.type_study.medical_device", "value" : "med_dev"},
+                {"label" : "investigation.create.edc.type_study.clinical_trial", "value" : "clin_trial"}
             ],
         value: ""
     },
@@ -358,9 +358,9 @@ export const FIELDS_BASIC_INFO = {
         validation : "notEmpty",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
         options : [
-                {"text" : "investigation.create.edc.reference_number_state_type.not_applicable", "value" : 0},
-                {"text" : "investigation.create.edc.reference_number_state_type.pending", "value" : 1},
-                {"text" : "investigation.create.edc.reference_number_state_type.approved", "value" : 2},
+                {"label" : "investigation.create.edc.reference_number_state_type.not_applicable", "value" : 0},
+                {"label" : "investigation.create.edc.reference_number_state_type.pending", "value" : 1},
+                {"label" : "investigation.create.edc.reference_number_state_type.approved", "value" : 2},
             ],
         value: "",
         activationValues : ["2"],
