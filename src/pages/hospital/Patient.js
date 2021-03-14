@@ -17,7 +17,7 @@ import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
-import { HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
+import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
 
 const WhiteTypography = styled(Typography)`
     color:white;
@@ -61,7 +61,7 @@ function Patient(props) {
         setShowOptions(false);
         setIndexDataCollection(-1);
         setIndexSection(-1);
-        
+
         history.push(nextUrl);
     }
     function selectRecord(index){
@@ -78,9 +78,13 @@ function Patient(props) {
         setIndexMedicalNote(null);
         console.log(data);
 
+        const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
+        console.log("Next url", nextUrl);
+        history.push(nextUrl);
+
         const postObj = {submission : [
             {
-                uuid_section:dataCollectionSelected.sections[indexSection].uuid,
+                uuid_section:sectionSelected.uuid,
                 answers:data
             }
             ]

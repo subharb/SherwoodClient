@@ -172,9 +172,10 @@ function validate(values, props){
         //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
         const fieldValueCompare = props.fields[key].validationField ? values[props.fields[key].validationField] : props.fields[key].validationValue ? props.translate(props.fields[key].validationValue) : null;
         const valueField = props.fields[key].type === "textarea" && typeof values[key] !== "undefined" ? values[key].replace(/<[^>]+>/g, '') : values[key];
+        const validationFunc = props.fields[key].validation ? props.fields[key].validation : "notEmpty";
         const validation = validateField({  
                                 value : valueField, 
-                                validation:props.fields[key].validation, 
+                                validation:validationFunc, 
                                 required:props.fields[key].required
                             },
                             fieldValueCompare);
