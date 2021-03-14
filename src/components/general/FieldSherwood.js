@@ -6,7 +6,7 @@ import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
-        Icon, Box, FormControl as MuiFormControl, Typography } from '@material-ui/core';
+        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText } from '@material-ui/core';
 import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
@@ -51,7 +51,9 @@ const sharedStyle = css`
     //     }
     // }
 `
-
+const RedFormHelperText = styled(FormHelperText)`
+  color:red;
+`
 
 const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
@@ -119,7 +121,7 @@ class FieldSherwood extends Component{
                 }
                 else{
                     optionsArray = options.map(option => {
-                        const optionText = this.props.translate(option.text).indexOf("Missing translationId:") !== -1 ?  option.text : this.props.translate(option.text);
+                        const optionText = this.props.translate(option.label).indexOf("Missing translationId:") !== -1 ?  option.label : this.props.translate(option.label);
                     return <MenuItem value={option.value}>{optionText}</MenuItem>
                         
                     })
@@ -162,22 +164,25 @@ class FieldSherwood extends Component{
                 console.log("Value checkbox: "+input.name+" "+input.value);
                 const classNameError = (meta.touched && meta.error) ? "error text" : "";
                 const className = removeClass ?  `col ${sizeCurrent}` : `col ${sizeCurrent}`
-                return(
+                const errorText = errorState ? <RedFormHelperText>This field is required</RedFormHelperText> : "";
+                return([
                     <FormControlLabel
                         control={<Checkbox checked={input.value} {...input} />}
                         label={labelString}
-                    />
-                );
+                    />,
+                    errorText
+                ]);
             case "date":
                 
                 return (
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils} id={input.name}>
                         <KeyboardDatePicker
                             margin="normal"
                             id={input.name}
                             label={labelString}
                             format="MM/dd/yyyy"
-                            value={input.value === "" ? "" : new Date(input.value)}
+                            defaultValue = {input.defaultValue}
+                            
                             onChange={this.handleDateChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',

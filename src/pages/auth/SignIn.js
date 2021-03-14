@@ -69,7 +69,7 @@ function SignIn() {
             ) : (
                 <React.Fragment>
                     <Typography component="h1" variant="h4" align="center" gutterBottom>
-                        Welcome to Sherwood! a
+                        Welcome to Sherwood!
                     </Typography>
                     <Typography component="h2" variant="body1" align="center">
                         Sign in to your account to continue or 

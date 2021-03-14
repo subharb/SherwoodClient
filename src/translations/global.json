@@ -10,6 +10,13 @@
         "add" : ["Add", "Añadir"],
         "view" : ["View", "Ver"]
     },
+    "hospital" : {
+        "data-collections" : ["Surveys", "Formularios"],
+        "sections" : ["Sections", "Secciones"],
+        "patient" : {
+            "no-records" : ["No medical records available", "No dispone de registros médicos"]
+        }
+    },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],
         "key_generation": ["Key Generation", "Generación de clave"],

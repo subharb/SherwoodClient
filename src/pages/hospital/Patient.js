@@ -15,7 +15,12 @@ import ShowRecordsSection from '../../components/investigation/show/single/show_
 import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components/macro";
 
+const WhiteTypography = styled(Typography)`
+    color:white;
+    font-size: 1rem;
+`
 
 function Patient(props) {
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
@@ -48,19 +53,20 @@ function Patient(props) {
     }
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
-        
+        setIndexDataCollection(-1);
+        setIndexSection(-1);
+        setIndexMedicalNote(null);
         console.log(data);
 
         const postObj = {submission : [
             {
-                uuid_section:dataCollectionSelected.sections[0].uuid,
+                uuid_section:dataCollectionSelected.sections[indexSection].uuid,
                 answers:data
             }
             ]
         }
         await dispatch(postSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
-        setIndexDataCollection(-1);
-        setIndexSection(-1);
+        
         
     }
     function renderCore(){
@@ -99,7 +105,7 @@ function Patient(props) {
                 </Grid>)
         }
         else if(surveyRecords.length === 0){
-            return "No medical notes yet"
+            return <Translate id="hospital.patient.no-records" />
         }
         else{
             return(
@@ -177,23 +183,39 @@ function Patient(props) {
                         <Grid container spacing={3} >
                         {
                             (indexDataCollection === -1) && 
-                            props.investigations.data[0].surveys.map((dataCollection, index) => {
-                                return(
-                                    <Grid item xs={12} style={{textAlign:"center"}}>
-                                        <ButtonGrey onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGrey>
-                                    </Grid>
-                                )
-                            })
+                            [
+                                <Grid item xs={6} style={{textAlign:"left"}}>
+                                    <WhiteTypography variant="body2" gutterBottom>
+                                        <Translate id="hospital.data-collections" />:
+                                    </WhiteTypography>
+                                </Grid>,
+                                props.investigations.data[0].surveys.map((dataCollection, index) => {
+                                    return(
+                                        <Grid item xs={12} style={{textAlign:"center"}}>
+                                            <ButtonGrey onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGrey>
+                                        </Grid>
+                                    )
+                                })
+                            ]
+                            
                         }
                         {
                             (indexDataCollection !== -1 && indexSection === -1) && 
-                            props.investigations.data[0].surveys[indexDataCollection].sections.map((section, index) => {
-                                return(
-                                    <Grid item xs={12} style={{textAlign:"center"}}>
-                                        <ButtonGrey onClick={() => sectionSelect(index)}>{section.name}</ButtonGrey>
-                                    </Grid>
-                                )
-                            })
+                            [
+                                <Grid item xs={6} style={{textAlign:"center"}}>
+                                    <WhiteTypography variant="body2" gutterBottom>
+                                        <Translate id="hospital.sections" />:
+                                    </WhiteTypography>
+                                </Grid>,
+                                props.investigations.data[0].surveys[indexDataCollection].sections.map((section, index) => {
+                                    return(
+                                        <Grid item xs={12} style={{textAlign:"center"}}>
+                                            <ButtonGrey onClick={() => sectionSelect(index)}>{section.name}</ButtonGrey>
+                                        </Grid>
+                                    )
+                                })
+                            ]
+                            
                         }
                         </Grid>
                     }

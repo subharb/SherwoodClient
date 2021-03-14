@@ -334,10 +334,11 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>
-        <img src={pathLogo} alt="Sherwood Science" height="32" /> {"  "}
         <Box ml={1}>
             Sherwood
         </Box>
+        <img src={pathLogo} alt="Sherwood Science" height="32" /> {"  "}
+        
       </Brand>
       <Scrollbar>
         <List disablePadding>

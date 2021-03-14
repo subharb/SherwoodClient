@@ -34,9 +34,30 @@ export default function ShowRecordsSection(props) {
                         
                         return (
                             <Grid item>
-                                <Typography variant="body2" gutterBottom>
-                                    {field.label}: {valueRecord ? valueRecord.value : "-"}
-                                </Typography>
+                                {
+                                    (field.type === "textarea") &&
+                                    [
+                                        <Typography variant="h6" color="textPrimary">
+                                            {field.name}:
+                                        </Typography>,
+                                        <Typography variant="body2" gutterBottom>
+                                            <div dangerouslySetInnerHTML={{__html: valueRecord ? valueRecord.value : "-"}}>
+                                            </div>    
+                                        </Typography>
+                                    ]
+                                }
+                                {
+                                    (field.type !== "textarea") &&
+                                    [
+                                        <Typography variant="h6" color="textPrimary">
+                                            {field.name}: 
+                                        </Typography>,
+                                        <Typography variant="body2" gutterBottom>
+                                            {valueRecord ? valueRecord.value : "-"}  
+                                        </Typography>
+                                    ]
+                                }
+                                
                             </Grid>
                         )
                         

@@ -3,14 +3,16 @@ import Form from './form';
 
 export default function SectionForm(props) {
     const dictFields = {};
-    props.fields.map(field => {
-        field["name"] = field.id;
-        dictFields[field.id] = field;
+    props.fields.forEach(field => {
+        let copyField = Object.assign({}, field);
+        copyField["name"] = field.id;
+        dictFields[field.id] = copyField;
     });
 
     function callBackForm(values){
+        let copyValues = Object.assign({}, values)
         const dataFields = [];
-        Object.keys(values).map(key =>{
+        Object.keys(values).forEach(key =>{
             let tempObj = {};
             tempObj["id_field"] = parseInt(key);
             tempObj["value"] = values[key];

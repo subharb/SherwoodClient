@@ -17,13 +17,13 @@ const Template = (args) => <EDC {...args} />;
 
 export const Basic = Template.bind({});
 Basic.args = {
-    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(JSON.stringify(values))}
 };
 
 export const Edit = Template.bind({});
 Edit.args = {
     initialData :edc_data1() ,
-    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
+    callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(JSON.stringify(values))}
 };
 
 
