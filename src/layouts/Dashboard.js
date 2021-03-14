@@ -73,7 +73,7 @@ const MainContent = styled(Paper)`
   }
 `;
 
-const Dashboard = ({ children, routes, width }) => {
+const Dashboard = ({ children, routes, width, investigations }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const {isLoading, error} = useSherwoodUser();
     const dispatch = useDispatch();
@@ -87,8 +87,10 @@ const Dashboard = ({ children, routes, width }) => {
                 fetchInvestigations()
               );
         }
-        
-          fetchRemoteInvestigations()
+        if(!investigations.data){
+            fetchRemoteInvestigations()
+        }
+          
     }, [])
     if(isLoading){
         return <Loader />
@@ -138,4 +140,10 @@ const mapDispatchToProps = dispatch => {
         fetchInvestigations : () => dispatch(fetchInvestigations())
     }
 }
-export default withWidth()(connect(null, mapDispatchToProps)(Dashboard));
+
+const mapStateToProps = (state) =>{
+    return {
+        investigations : state.investigations,
+    }
+}
+export default withWidth()(connect(mapStateToProps, mapDispatchToProps)(Dashboard));

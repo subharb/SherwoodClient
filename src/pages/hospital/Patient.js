@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
+
 import { connect } from 'react-redux';
 import { Grid, Typography, Paper } from '@material-ui/core';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
@@ -8,7 +9,7 @@ import { fetchSubmissionsPatientInvestigationAction } from '../../redux/actions/
 import Loader from '../../components/Loader';
 import { BoxBckgr, IconPatient, ButtonAdd, ButtonGrey, CheckCircleOutlineSvg } from '../../components/general/mini_components';
 import Modal from '../../components/general/modal';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { yearsFromDate, daysFromDate } from '../../utils';
 import FillDataCollection from './FillDataCollection';
 import ShowRecordsSection from '../../components/investigation/show/single/show_records_section'
@@ -16,6 +17,7 @@ import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
+import { HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
 
 const WhiteTypography = styled(Typography)`
     color:white;
@@ -27,29 +29,47 @@ function Patient(props) {
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
     const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
     
-    const [surveyRecords, setSurveyRecords] = useState([]);
+    const [surveyRecords, setSurveyRecords] = useState(null);
     const [showOptions, setShowOptions] = useState(false);
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
     const [indexDataCollection, setIndexDataCollection] = useState(-1);
     const [indexSection, setIndexSection] = useState(-1);
     const dispatch = useDispatch();
     let { uuidPatient } = useParams();
+    let { uuidSection } = useParams();
+    let { uuidDataCollection } = useParams();
+    const parameters = useParams();
+    let idMedicalNote  = parseInt(parameters["idMedicalNote"]);
+
+    const history = useHistory();
 
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.data[0].uuid].find(pat => pat.uuid === uuidPatient) : null
-    const dataCollectionSelected = indexDataCollection !== -1 ? props.investigations.data[0].surveys[indexDataCollection] : null;
-    const sectionSelected = indexSection !== -1 ? props.investigations.data[0].surveys[indexDataCollection].sections[indexSection] : null;
+    const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.data[0].surveys.find(sur => sur.uuid === uuidDataCollection) : null;
+    const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     function fillDataCollection(indexCollection){
         setIndexDataCollection(indexCollection);
     }
-    function sectionSelect(section){
-        setIndexSection(section);
+    function sectionSelect(indexSection){
+        
+        const dataCollection = props.investigations.data[0].surveys[indexDataCollection];
+        const sectionSelected = dataCollection.sections[indexSection];
+        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollection.uuid).replace(":uuidPatient", uuidPatient).replace(":uuidSection", sectionSelected.uuid);
+        console.log("Next url", nextUrl);
+
         setShowOptions(false);
+        setIndexDataCollection(-1);
+        setIndexSection(-1);
+        
+        history.push(nextUrl);
     }
     function selectRecord(index){
         console.log("Row seleccionado ", surveyRecords[index]);
-        setIndexMedicalNote(index);
+        
+        const nextUrl = HOSPITAL_PATIENT_MEDICAL_NOTE.replace(":uuidPatient", uuidPatient).replace(":idMedicalNote", surveyRecords[index].id);
+        console.log("Next url", nextUrl);
+        history.push(nextUrl);
     }
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
@@ -72,26 +92,30 @@ function Patient(props) {
     function renderCore(){
         if(dataCollectionSelected !== null && sectionSelected !== null){
             return(
-                <FillDataCollection key={indexDataCollection} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
+                <FillDataCollection key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
                 patientId={props.patientId} investigation={props.investigation} callBackDataCollection={(values) => saveRecord(values)}/>
             )
         }
-        else if(indexMedicalNote !== null){
+        else if(!isNaN(idMedicalNote)){
+            const medicalNoteSelected = surveyRecords.find(surRe => surRe.id === idMedicalNote);
+            if(!medicalNoteSelected){
+                throw new Error('Medical Note Missing!')
+            }
             const dataCollection = props.investigations.data[0].surveys.find(dataCol => {
-                if(dataCol.uuid === surveyRecords[indexMedicalNote].surveyUUID){
+                if(dataCol.uuid === medicalNoteSelected.surveyUUID){
                     return dataCol;
                 }
             })
-            const recordsSelected = surveyRecords[indexMedicalNote].surveyRecords;
-            const dateCreated = new Date(surveyRecords[indexMedicalNote].createdAt)
+            
+            const dateCreated = new Date(medicalNoteSelected.createdAt)
             const sectionSubmission = dataCollection.sections.find(section => {
-                return section.uuid === surveyRecords[indexMedicalNote].surveyRecords[0].surveySection.uuid
+                return section.uuid === medicalNoteSelected.surveyRecords[0].surveySection.uuid
             })
             return (
                 <Grid container>
                     <Grid item xs={6}>
                         <Typography variant="body2" gutterBottom>
-                            {surveyRecords[indexMedicalNote].researcher.name+" "+ surveyRecords[indexMedicalNote].researcher.surnames}
+                            {medicalNoteSelected.researcher.name+" "+ medicalNoteSelected.researcher.surnames}
                         </Typography>
                     </Grid>
                     <Grid xs={6}>
@@ -100,7 +124,7 @@ function Patient(props) {
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <ShowRecordsSection noTitle submissions={[surveyRecords[indexMedicalNote]]} section={sectionSubmission} />
+                        <ShowRecordsSection noTitle submissions={[medicalNoteSelected]} section={sectionSubmission} />
                     </Grid>
                 </Grid>)
         }
@@ -122,7 +146,7 @@ function Patient(props) {
         async function fetchRecordsPatient(){
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.data[0].uuid, uuidPatient));
         }
-        if(props.investigations.data){
+        if(props.investigations.data && !props.patientsSubmissions.data){
             fetchRecordsPatient()
         }
     }, [props.investigations])
@@ -164,7 +188,7 @@ function Patient(props) {
             </BoxBckgr>
         )
     }
-    else if(props.investigations.loading || props.patientsSubmissions.loading || !props.patientsSubmissions.data){
+    else if(props.investigations.loading || props.patientsSubmissions.loading || surveyRecords === null){
         return <Loader />
     }
     else{

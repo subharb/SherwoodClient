@@ -21,7 +21,7 @@ export default function FillDataCollection(props) {
                     </Grid>
                     <Grid item xs={12}>
                         <Paper elevation={3} style={{padding:"1rem"}} >
-                            <SectionForm fields={props.sectionSelected.fields} 
+                            <SectionForm key={props.sectionSelected.uuid} fields={props.sectionSelected.fields} 
                                 callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
                         </Paper>
                     </Grid>
