@@ -97,10 +97,10 @@ export default function SearchPatients(props) {
         return <Loader />
     }
     return (
-        <BoxBckgr color="text.primary" style={{padding:"1rem", color:"white"}}>
+        <BoxBckgr color="text.primary" style={{color:"white"}}>
             <Grid container spacing={3}>
                 <Grid item xs={12} style={{textAlign:"center"}}>
-                    <Typography variant="h4" gutterBottom display="inline">
+                    <Typography variant="h1" gutterBottom display="inline">
                         Search Patients
                     </Typography>
                 </Grid>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import icon_male from "../../img/icons/icon_male.svg";
+import { Link } from 'react-router-dom'
 import icon_female from "../../img/icons/icon_female.svg";
 import {
     Add as AddIcon,
@@ -78,6 +79,7 @@ const GreyButtonStyles = styled(Button)`
         box-sizing: border-box;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 8px;
+        text-decoration:none;
         text-align: center;
         font-weight: bold;
         color: rgba(39, 44, 42, 0.97);
@@ -103,6 +105,9 @@ export const ButtonContinueStyles = styled(BasicButtonStyles)`
 export const ButtonIcon = styled(IconButton)`
     background-color:${props => props.theme.buttonContinue.background}!important;
     color:${props => props.theme.buttonContinue.color}!important;
+`
+export const LinkPlain = styled(Link)`
+    text-decoration:none;
 `
 
 export const ButtonGrey = (props) => {

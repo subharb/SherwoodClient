@@ -145,7 +145,8 @@
                     "email" : ["Email", "Email"],
                     "phone" : ["Phone", "Nº Teléfono"],
                     "uuid" : ["ID", "ID"],
-                    "birthdate" : ["Date of birth", "Fecha de nacimiento"]
+                    "birthdate" : ["Date of birth", "Fecha de nacimiento"],
+                    "sex" : ["Sex", "Sexo"]
                 }
             }, 
             "edc" : {

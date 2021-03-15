@@ -413,9 +413,9 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
                 </Grid>
                 <Grid item>
                     <SidebarFooterText variant="body2">{getData("name")+" "+getData("surnames")}</SidebarFooterText>
-                    <SidebarFooterSubText variant="caption">
+                    {/* <SidebarFooterSubText variant="caption">
                         UX Designer
-                    </SidebarFooterSubText>
+                    </SidebarFooterSubText> */}
                 </Grid>
             </Grid>
       </SidebarFooter>

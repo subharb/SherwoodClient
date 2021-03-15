@@ -48,6 +48,7 @@ axios.interceptors.response.use(function (response) {
  // Create a client
  const queryClient = new QueryClient()
 
+const themeApp = process.env.REACT_APP_PRODUCT === "HOSPITAL" ? createTheme("HOSPITAL") : createTheme("GREEN");
 function OtherProviders(props){
     const theme = useSelector((state) => state.themeReducer);
     return (
@@ -55,8 +56,8 @@ function OtherProviders(props){
         <BrowserRouter>
             <StylesProvider jss={jss}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <MuiThemeProvider theme={createTheme("GREEN")}>
-                    <ThemeProvider theme={createTheme("GREEN")}>
+                <MuiThemeProvider theme={themeApp}>
+                    <ThemeProvider theme={themeApp}>
                         <LocalizeProvider initialize={{
                             languages: [
                             { name: "English", code: "en" },
