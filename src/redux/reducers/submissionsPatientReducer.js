@@ -20,8 +20,12 @@ export default function reducer(state = initialState, action){
     switch(action.type){
         case types.FETCH_SUBMISSIONS_PATIENT_SUCCESS:
             tempData = newState.data === initialState.data ? {} : newState.data;
+            let dictSurveys = {};
+            action.surveys.forEach(sur => {
+                dictSurveys[sur.uuid] = sur;
+            })
             
-            tempData[action.meta.uuidPatient] = action.surveys;
+            tempData[action.meta.uuidPatient] = dictSurveys;
             newState.data = tempData;
             newState.loading = initialState.loading;
             newState.error = initialState.error;
@@ -32,18 +36,33 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.SAVE_SUBMISSIONS_PATIENT_SUCCESS:
             tempData = newState.data === initialState.data ? {} : newState.data;
-            const indexSurvey = tempData[action.meta.uuidPatient].indexOf(sur=>sur.uuid === action.meta.surveyUUID)
-            if(indexSurvey !== -1){
-                tempData[action.meta.uuidPatient][indexSurvey].push(action.submission)
+            let tempDict = {};
+            if(tempData[action.meta.uuidPatient].hasOwnProperty(action.meta.surveyUUID)){
+                tempDict = tempData[action.meta.uuidPatient][action.meta.surveyUUID];
+                tempDict.submissions.push(action.submission);
             }
             else{
-                let survey = {
+                tempDict = {
                     surveyName : action.meta.surveyName,
                     uuid : action.meta.surveyUUID,
                     submissions:[action.submission]
                 }
-                tempData[action.meta.uuidPatient].push(survey);
             }
+            tempData[action.meta.uuidPatient][action.meta.surveyUUID] = tempDict;
+            // tempDict[action.meta.surveyUUID] = tempData[action.meta.uuidPatient].hasOwnProperty(action.meta.surveyUUID) ? tempData[action.meta.uuidPatient][action.meta.surveyUUID] : {};
+            // //const indexSurvey = tempData[action.meta.uuidPatient].indexOf(sur=>sur.uuid === action.meta.surveyUUID)
+            // tempDict[action.meta.surveyUUID].submissions.push(action.submission)
+            // // if(indexSurvey !== -1){
+            // //     tempData[action.meta.uuidPatient][indexSurvey]
+            // // }
+            // // else{
+            // //     let survey = {
+            // //         surveyName : action.meta.surveyName,
+            // //         uuid : action.meta.surveyUUID,
+            // //         submissions:[action.submission]
+            // //     }
+            // //     tempData[action.meta.uuidPatient].push(survey);
+            // // }
                     
             newState.loading = initialState.loading;
             newState.error = initialState.error;

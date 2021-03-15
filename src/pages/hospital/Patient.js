@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { connect } from 'react-redux';
-import { Grid, Typography, Paper } from '@material-ui/core';
+import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { postSubmissionPatientAction } from '../../redux/actions/submissionsPatientActions';
 import { fetchSubmissionsPatientInvestigationAction } from '../../redux/actions/submissionsPatientActions';
@@ -18,6 +18,7 @@ import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
+import { CloseIcon } from '@material-ui/data-grid';
 
 const WhiteTypography = styled(Typography)`
     color:white;
@@ -29,6 +30,7 @@ function Patient(props) {
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
     const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
     
+    const [showSnackbar, setShowSnackbar] = useState(false);
     const [surveyRecords, setSurveyRecords] = useState(null);
     const [showOptions, setShowOptions] = useState(false);
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
@@ -45,7 +47,7 @@ function Patient(props) {
 
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.data[0].uuid].find(pat => pat.uuid === uuidPatient) : null
-    const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.data[0].surveys.find(sur => sur.uuid === uuidDataCollection) : null;
+    const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.data[0].surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? props.investigations.data[0].surveys[indexDataCollection] : null;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     function fillDataCollection(indexCollection){
@@ -53,13 +55,13 @@ function Patient(props) {
     }
     function sectionSelect(indexSection){
         
-        const dataCollection = props.investigations.data[0].surveys[indexDataCollection];
-        const sectionSelected = dataCollection.sections[indexSection];
-        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollection.uuid).replace(":uuidPatient", uuidPatient).replace(":uuidSection", sectionSelected.uuid);
+        
+        const sectionSelected = dataCollectionSelected.sections[indexSection];
+        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid).replace(":uuidPatient", uuidPatient).replace(":uuidSection", sectionSelected.uuid);
         console.log("Next url", nextUrl);
 
         setShowOptions(false);
-        setIndexDataCollection(-1);
+        //setIndexDataCollection(-1);
         setIndexSection(-1);
 
         history.push(nextUrl);
@@ -73,14 +75,15 @@ function Patient(props) {
     }
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
-        setIndexDataCollection(-1);
+        setShowSnackbar(true);
         setIndexSection(-1);
+        setShowOptions(true);
         setIndexMedicalNote(null);
         console.log(data);
 
-        const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
-        console.log("Next url", nextUrl);
-        history.push(nextUrl);
+        // const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
+        // console.log("Next url", nextUrl);
+        // history.push(nextUrl);
 
         const postObj = {submission : [
             {
@@ -92,6 +95,46 @@ function Patient(props) {
         await dispatch(postSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
         
         
+    }
+    function renderOptions(){
+        if(!dataCollectionSelected){
+            return [
+                <Grid item xs={6} style={{textAlign:"left"}}>
+                    <WhiteTypography variant="body2" gutterBottom>
+                        <Translate id="hospital.data-collections" />:
+                    </WhiteTypography>
+                </Grid>,
+                props.investigations.data[0].surveys.map((dataCollection, index) => {
+                    return(
+                        <Grid item xs={12} style={{textAlign:"center"}}>
+                            <ButtonGrey onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGrey>
+                        </Grid>
+                    )
+                })
+            ]
+        }
+        else if(indexSection === -1){
+            
+            return [
+                <Grid item xs={6} style={{textAlign:"center"}}>
+                    <WhiteTypography variant="body2" gutterBottom>
+                        <Translate id="hospital.sections" />:
+                    </WhiteTypography>
+                </Grid>,
+                dataCollectionSelected.sections.map((section, index) => {
+                    // const isDisabled = false;
+                    // if(!section.repeats){
+                    //     const submissionSection = props.patientsSubmissions.data[uuidPatient].
+                    // }
+                    
+                    return(
+                        <Grid item xs={12} style={{textAlign:"center"}}>
+                            <ButtonGrey onClick={() => sectionSelect(index)}>{section.name}</ButtonGrey>
+                        </Grid>
+                    )
+                })
+            ]
+        }
     }
     function renderCore(){
         if(dataCollectionSelected !== null && sectionSelected !== null){
@@ -158,7 +201,7 @@ function Patient(props) {
         if(props.patientsSubmissions.data){
             let tempSubmissions = []
             if(props.patientsSubmissions.data.hasOwnProperty(uuidPatient)){
-                tempSubmissions = props.patientsSubmissions.data[uuidPatient].reduce((acc, val)=> {
+                tempSubmissions = Object.values(props.patientsSubmissions.data[uuidPatient]).reduce((acc, val)=> {
                     val.submissions = val.submissions.map(sub=>{
                         sub.surveyName = val.surveyName; 
                         sub.surveyUUID = val.uuid; 
@@ -202,6 +245,25 @@ function Patient(props) {
         return (
         
             <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
+                <Snackbar
+                    anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                    }}
+                    open={showSnackbar}
+                    autoHideDuration={2000}
+                    onClose={() => setShowSnackbar(false)}
+                    message={<Translate id="investigation.fill.new_record" />}
+                    action={
+                    <React.Fragment>
+                        <Button color="secondary" size="small" onClick={() => setShowSnackbar(false)}>
+                        </Button>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={() => setShowSnackbar(false)}>
+                        <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </React.Fragment>
+                    }
+                />
                 <Modal isTransparent={true} open={showOptions || loading || saved} closeModal={() => setShowOptions(false)}>
                     {
                         saved &&
@@ -210,40 +272,7 @@ function Patient(props) {
                     { showOptions && 
                         <Grid container spacing={3} >
                         {
-                            (indexDataCollection === -1) && 
-                            [
-                                <Grid item xs={6} style={{textAlign:"left"}}>
-                                    <WhiteTypography variant="body2" gutterBottom>
-                                        <Translate id="hospital.data-collections" />:
-                                    </WhiteTypography>
-                                </Grid>,
-                                props.investigations.data[0].surveys.map((dataCollection, index) => {
-                                    return(
-                                        <Grid item xs={12} style={{textAlign:"center"}}>
-                                            <ButtonGrey onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGrey>
-                                        </Grid>
-                                    )
-                                })
-                            ]
-                            
-                        }
-                        {
-                            (indexDataCollection !== -1 && indexSection === -1) && 
-                            [
-                                <Grid item xs={6} style={{textAlign:"center"}}>
-                                    <WhiteTypography variant="body2" gutterBottom>
-                                        <Translate id="hospital.sections" />:
-                                    </WhiteTypography>
-                                </Grid>,
-                                props.investigations.data[0].surveys[indexDataCollection].sections.map((section, index) => {
-                                    return(
-                                        <Grid item xs={12} style={{textAlign:"center"}}>
-                                            <ButtonGrey onClick={() => sectionSelect(index)}>{section.name}</ButtonGrey>
-                                        </Grid>
-                                    )
-                                })
-                            ]
-                            
+                            renderOptions()
                         }
                         </Grid>
                     }

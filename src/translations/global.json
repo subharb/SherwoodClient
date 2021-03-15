@@ -278,6 +278,7 @@
             "section" : {
                 "already_filled" : ["This section has been filled", "Esta sección ya ha sido respondida"]
             },
+            "new_record" : ["New record added", "Nuevo registro añadido"],
             "records" : ["Records", "Registros"]
         },
         "search-patients":{
