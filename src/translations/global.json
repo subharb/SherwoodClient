@@ -31,7 +31,10 @@
         "research" : [],
         "hospital" : {
             "home" : ["Home", "Home"],
-            "search-patient" : ["Search Patient", "Buscar Paciente"],
+            "search-patient" : {
+                "title" : ["Search Patient", "Buscar Paciente"],
+                "back-button" : ["Back to search", "Volver a buscar"]
+            },
             "add-patient" : ["Add Patient", "Añadir paciente"]
         }
     },

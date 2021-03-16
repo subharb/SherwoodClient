@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import icon_female from "../../img/icons/icon_female.svg";
 import {
     Add as AddIcon,
+    HighlightOff as CloseIcon,
     RemoveRedEye as RemoveRedEyeIcon,
     PanoramaFishEye as PanoramaFishEyeIcon,
     CheckCircleOutline as CheckCircleOutlineIcon,
@@ -238,6 +239,12 @@ export const ButtonAdd = (props) =>{
     //      >
     //         {props.children}
     // </ButtonContinueStyles>
+}
+
+export const CloseButton = (props) =>{
+    return  <Button mx={2} size="small" color="secondary" aria-label="View" {...props} >
+                <CloseIcon />
+            </Button>
 }
 
 export const ButtonView = (props) =>{

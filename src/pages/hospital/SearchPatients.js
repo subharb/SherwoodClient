@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
-import { BoxBckgr } from '../../components/general/mini_components';
+import { BoxBckgr, CloseButton } from '../../components/general/mini_components';
 import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
 import Form  from '../../components/general/form';
 import { usePatientsData, useInvestigations } from '../../hooks';
@@ -86,18 +86,19 @@ export default function SearchPatients(props) {
                         <Paper style={{padding:'1rem'}}>
                             No patients meet the criteria
                         </Paper>
-                    </Box>,
-                    <Button onClick={backToSearch}>Close</Button>
-                ]
-                    
-                )
+                    </Box>,    
+                    <Button onClick={backToSearch}><Translate id="pages.hospital.search-patients.back-button" /></Button>,
+                ])
                 
             }
             else{
                 
-                return <PatientsTable patients={filteredPatients} mobile 
+                return [
+                    <PatientsTable patients={filteredPatients} mobile 
                         showPatientCallBack={index => patientSelected(index)} 
-                        personalFields={investigations[0].personalFields} />
+                        personalFields={investigations[0].personalFields} />,
+                    <Button onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></Button>,
+                ]
             }
         }
                     
@@ -110,7 +111,7 @@ export default function SearchPatients(props) {
             <Grid container spacing={3}>
                 <Grid item xs={12} style={{textAlign:"center"}}>
                     <Typography variant="h1" gutterBottom display="inline">
-                        Search Patients
+                        <Translate id="pages.hospital.search-patient.title" />
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>

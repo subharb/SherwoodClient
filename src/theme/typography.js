@@ -64,7 +64,7 @@ const typography = {
     lineHeight: 1.25,
   },
   body1: {
-    fontSize: 13,
+    fontSize: 18,
   },
   button: {
     textTransform: "none",

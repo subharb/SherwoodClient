@@ -171,7 +171,7 @@ const dashboardHomeRoutes = {
 }
 
 const dashboardSearchPatientRoutes = {
-    id: <Translate id="pages.hospital.search-patient" />,
+    id: <Translate id="pages.hospital.search-patient.title" />,
     path: SEARCH_PATIENT_ROUTE,
     icon: <SearchPatientIcon />,
     badge: "",

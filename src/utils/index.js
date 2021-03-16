@@ -231,7 +231,10 @@ export const PERSONAL_DATA_FIELDS = {
         type:"date",
         label:"investigation.create.personal_data.fields.birthdate",
         shortLabel:"investigation.create.personal_data.fields.birthdate",
-        validation : "pastDate"
+        validation : "pastDate",
+        otherOptions:{
+            maxDate:"today"
+        }
     },
     "address" : {
         name: "address",
