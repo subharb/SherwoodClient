@@ -14,7 +14,8 @@
         "data-collections" : ["Surveys", "Formularios"],
         "sections" : ["Sections", "Secciones"],
         "patient" : {
-            "no-records" : ["No medical records available", "No dispone de registros médicos"]
+            "no-records" : ["No medical records available", "No dispone de registros médicos"],
+            "fill-in" : ["Fill in details", "Rellene el formulario"]
         }
     },
     "breadcrumb" : {

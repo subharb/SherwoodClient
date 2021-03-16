@@ -1,10 +1,12 @@
-import { Box, Button, IconButton, Paper, Snackbar } from '@material-ui/core';
+import { Box, Button, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
 import React, { useState } from 'react'
 import PersonalDataForm from '../../components/investigation/show/single/personal_data';
 import { connect } from 'react-redux';
 import { addPatient } from '../../services/sherwoodService';
 import { CloseIcon } from '@material-ui/data-grid';
 import Loader from '../../components/Loader';
+import { Translate } from 'react-localize-redux';
+import { BoxBckgr } from '../../components/general/mini_components';
 
 export function AddPatient(props) {
     const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +32,7 @@ export function AddPatient(props) {
         return <Loader />
     }
     return (
-        <Box>
+        <BoxBckgr color="text.primary" style={{color:"white"}}>
             <Snackbar
                 anchorOrigin={{
                 vertical: 'top',
@@ -51,11 +53,20 @@ export function AddPatient(props) {
                 </React.Fragment>
                 }
             />
-            <Paper style={{padding:'1rem'}}>
-                <PersonalDataForm fields={ props.investigations.data[0].personalFields} keyResearcherInvestigation={props.investigations.data[0].keyResearcherInvestigation}
-                    initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
-            </Paper>
-        </Box>
+            <Grid container spacing={3}>
+                <Grid item xs={12} style={{textAlign:"center"}}>
+                    <Typography variant="h1" gutterBottom display="inline">
+                        <Translate id="pages.hospital.add-patient" />
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper style={{padding:'1rem'}}>
+                        <PersonalDataForm fields={ props.investigations.data[0].personalFields} keyResearcherInvestigation={props.investigations.data[0].keyResearcherInvestigation}
+                            initialData={props.patientInfo} callBackForm={(personalData) => savePatient(personalData)}/>
+                    </Paper>
+                </Grid>
+            </Grid>
+        </BoxBckgr>
     )
 }
 

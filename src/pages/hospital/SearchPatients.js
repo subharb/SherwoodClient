@@ -50,9 +50,18 @@ export default function SearchPatients(props) {
             let result = true;
             for(const keyValue of Object.keys(values)){
                 const value = values[keyValue];
-                if(value !== "" && !patient[keyValue].toLowerCase().includes(value.toLowerCase())){
-                    result = false;
+                const pF = investigations[0].personalFields.find(pp => pp.name === keyValue);
+                if(pF.options.length > 0){
+                    if(value !== "" && patient[keyValue] !== value){
+                        result = false;
+                    }
                 }
+                else{
+                    if(value !== "" && !patient[keyValue].toLowerCase().includes(value.toLowerCase())){
+                        result = false;
+                    }
+                }
+                
             }
             return result;
         });

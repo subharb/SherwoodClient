@@ -139,17 +139,17 @@ const hospitalVariant = merge(defaultVariant, {
       },
     sidebar: {
       color: "#FFF",
-      background: green[700],
+      background: "#287B72",
       header: {
         color: "#FFF",
-        background: green[800],
+        background: "#287B72",
         brand: {
           color: "#FFFFFF",
         },
       },
       footer: {
         color: "#FFF",
-        background: green[800],
+        background: "#287B72",
         online: {
           background: "#FFF",
         },

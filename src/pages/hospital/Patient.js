@@ -7,7 +7,7 @@ import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { postSubmissionPatientAction } from '../../redux/actions/submissionsPatientActions';
 import { fetchSubmissionsPatientInvestigationAction } from '../../redux/actions/submissionsPatientActions';
 import Loader from '../../components/Loader';
-import { BoxBckgr, IconPatient, ButtonAdd, ButtonGrey, CheckCircleOutlineSvg } from '../../components/general/mini_components';
+import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg } from '../../components/general/mini_components';
 import Modal from '../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
 import { yearsFromDate, daysFromDate } from '../../utils';
@@ -107,7 +107,7 @@ function Patient(props) {
                 props.investigations.data[0].surveys.map((dataCollection, index) => {
                     return(
                         <Grid item xs={12} style={{textAlign:"center"}}>
-                            <ButtonGrey onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGrey>
+                            <ButtonGreyBorderGrey onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGreyBorderGrey>
                         </Grid>
                     )
                 })
@@ -120,7 +120,7 @@ function Patient(props) {
                     <WhiteTypography variant="body2" gutterBottom>
                         <Translate id="hospital.sections" />:
                     </WhiteTypography>
-                </Grid>,
+                </Grid>, 
                 dataCollectionSelected.sections.map((section, index) => {
                     // const isDisabled = false;
                     // if(!section.repeats){
@@ -129,7 +129,7 @@ function Patient(props) {
                     
                     return(
                         <Grid item xs={12} style={{textAlign:"center"}}>
-                            <ButtonGrey onClick={() => sectionSelect(index)}>{section.name}</ButtonGrey>
+                            <ButtonGreyBorderGrey onClick={() => sectionSelect(index)}>{section.name}</ButtonGreyBorderGrey>
                         </Grid>
                     )
                 })
@@ -244,7 +244,7 @@ function Patient(props) {
 
         return (
         
-            <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
+            <BoxBckgr color="text.primary">
                 <Snackbar
                     anchorOrigin={{
                     vertical: 'top',

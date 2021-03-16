@@ -272,6 +272,17 @@ export const PERSONAL_DATA_FIELDS = {
         label:"investigation.create.personal_data.fields.phone",
         shortLabel:"investigation.create.personal_data.fields.phone",
         validation : "textMin2"
+    },
+    "sex" : {
+        name: "sex",
+        required : true,
+        type:"select",
+        label:"investigation.create.personal_data.fields.sex",
+        shortLabel:"investigation.create.personal_data.fields.sex",
+        validation : "notEmpty",
+        options:[
+            {"value" : "Male", "label" : "Male"},{"value" : "female", "label" : "Female"}
+        ]
     }
 }
 
@@ -462,12 +473,12 @@ export function decryptPatientData(patientsData, investigation){
                     const encryptedField = patient.personalData.find(pData =>{
                         return pData.name === personalField.name;
                     });
-                    if(!encryptedField){
-                        console.error("No coinciden campos!");
-                        return "error!";
+                    let decryptedValue = ""
+                    if(encryptedField){
+                        decryptedValue = decryptData(encryptedField.value, keyInvestigation);
                     }
-                    const decryptedField = decryptData(encryptedField.value, keyInvestigation);
-                    encryptedFields[personalField.name] = decryptedField; 
+                    
+                    encryptedFields[personalField.name] = decryptedValue; 
                 }
             }
             

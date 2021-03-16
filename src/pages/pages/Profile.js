@@ -383,7 +383,7 @@ function Products() {
               </TableRow>
               <TableRow>
                 <TableCell component="th" scope="row">
-                  Material App
+                  Sherwood Hospital
                 </TableCell>
                 <TableCell>
                   <ProductsChip

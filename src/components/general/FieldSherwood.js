@@ -182,7 +182,7 @@ class FieldSherwood extends Component{
                             label={labelString}
                             format="MM/dd/yyyy"
                             defaultValue = {input.defaultValue}
-                            
+                            openTo="year"
                             onChange={this.handleDateChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',

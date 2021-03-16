@@ -89,6 +89,8 @@ const GreyButtonStyles = styled(Button)`
         }
     }
 `;
+
+
 export const ButtonOtherStyles = styled(BasicButtonStyles)`
     background-color:${props => props.theme.buttonOther.background}!important;
     color:${props => props.theme.buttonOther.color};
@@ -110,12 +112,20 @@ export const LinkPlain = styled(Link)`
     text-decoration:none;
 `
 
+
 export const ButtonGrey = (props) => {
     return(
         <GreyButtonStyles {...props}>
             {props.children}
         </GreyButtonStyles>)
 }
+
+export const ButtonGreyBorderGrey = styled(ButtonGrey)`
+    &&&{
+        background: #E5E5E5;
+        border: 3px solid #6F6C6D;
+`;
+
 export const ButtonEdit = (props) =>{
     return <DeleteHolder {...props}>
         <i className="material-icons">edit</i>
