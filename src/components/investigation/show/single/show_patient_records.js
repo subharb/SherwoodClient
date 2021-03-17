@@ -67,9 +67,9 @@ export default function ShowPatientRecords(props) {
         )
     }
     function renderSubmissionsSection(){    
-        return Object.values(props.survey.sections).map(section => {
-            const patientSubmissions = props.submissions.filter(sub=>sub.patient.uuid === props.patient.uuid);
-            const submissionsSection = filterRecordsFromSubmissions(patientSubmissions, section.uuid);
+        return Object.values(props.survey.sections).sort((a,b) => a.order - b.order).map(section => {
+           // const patientSubmissions = props.submissions.filter(sub=>sub.patient.uuid === props.patient.uuid);
+            const submissionsSection = filterRecordsFromSubmissions(props.submissions, section.uuid);
 
             return(
                 <ShowRecordsSection submissions={submissionsSection} section={section} />
@@ -151,11 +151,14 @@ export default function ShowPatientRecords(props) {
 }
 
 ShowPatientRecords.propTypes = {
-
     /**
-     Personal information of the Patient
+     Survey where the data was stored
     */
-    patient: PropTypes.object,
+    survey:PropTypes.object,
+    /**
+     All Submissions Patient
+    */
+     submissions: PropTypes.array,
     /**
      Mostrar datos en modo tabla o modo elementos
     */

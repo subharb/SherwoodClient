@@ -401,16 +401,15 @@ export const templateField = {
     is_personal_data:true
 }
 
-export function numberRecordsSection(section, records){
+export function numberRecordsSection(section, submissions){
     let nRegistros = 0
-    for(let i = 0; i < records.length; i++){
-        const patientRecord = records[i];
-        for(let j = 0; j < patientRecord.submission.length;j++){
-            const submission = patientRecord.submission[j];
-            if(submission.id_section === section._id){
+    for(let i = 0; i < submissions.length; i++){
+        const submission = submissions[i];
+        
+            if(submission.surveyRecords[0].surveySection.uuid === section.uuid){
                 nRegistros++;
             }
-        }
+        
     }
     return nRegistros;
 }
@@ -460,34 +459,39 @@ export function getData(key){
     return localStorage.getItem(key); 
 }
 
-export function decryptPatientData(patientsData, investigation){
+export function decryptPatientsData(patientsData, investigation){
     let tempDecryptedData = [];
     if(patientsData.length !== 0){
         //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
         
         for(const patient of patientsData){
-            let encryptedFields = {};
-            if(investigation.permissions !== 0){
-                const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
-                
-                const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
-                
-                for(const personalField of investigation.personalFields){
-                    const encryptedField = patient.personalData.find(pData =>{
-                        return pData.name === personalField.name;
-                    });
-                    let decryptedValue = ""
-                    if(encryptedField){
-                        decryptedValue = decryptData(encryptedField.value, keyInvestigation);
-                    }
-                    
-                    encryptedFields[personalField.name] = decryptedValue; 
-                }
-            }
-            
-            encryptedFields["uuid"] = patient.uuid; 
-            tempDecryptedData.push(encryptedFields);
+            patient.personalData = decryptSinglePatientData(patient.personalData, investigation);
+            tempDecryptedData.push(patient);
         }
     }
     return tempDecryptedData;
+}
+
+export function decryptSinglePatientData(patientPersonalData, investigation){
+
+    let encryptedFields = {};
+    if(investigation.permissions !== 0){
+        const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
+        
+        const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
+        
+        for(const personalField of investigation.personalFields){
+            const encryptedField = patientPersonalData.find(pData =>{
+                return pData.name === personalField.name;
+            });
+            let decryptedValue = ""
+            if(encryptedField){
+                decryptedValue = decryptData(encryptedField.value, keyInvestigation);
+            }
+            
+            encryptedFields[personalField.name] = decryptedValue; 
+        }
+    }
+    
+    return encryptedFields;
 }

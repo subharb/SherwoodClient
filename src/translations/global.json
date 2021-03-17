@@ -278,7 +278,9 @@
                 "title" : ["Data Collections", "Collecciones de datos"],
                 "add_data" : ["Add Data", "Añadir datos"],
                 "view_data" : ["Visualize Data", "Ver datos"],
-                "no_records" : ["The data collection has no records", "Este data collectio no tiene registros"]
+                "no_records" : ["The data collection has no records", "Este data collectio no tiene registros"],
+                "section-filled" : ["This section has already been filled", "Esta sección ya ha sido rellenada"]
+
             },
             "section" : {
                 "already_filled" : ["This section has been filled", "Esta sección ya ha sido respondida"]

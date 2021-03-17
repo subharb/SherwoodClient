@@ -9,7 +9,7 @@ import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { HOSPITAL_PATIENT } from '../../routes';
 import Loader from '../../components/Loader';
-import { decryptPatientData } from '../../utils'; 
+import { decryptPatientsData } from '../../utils'; 
 import PatientsTable from '../../components/general/PatientsTable';
 
 let personalFieldsForm = {};
@@ -29,7 +29,7 @@ export default function SearchPatients(props) {
                 copyField.required = false;
                 personalFieldsForm[personalField.name] = copyField
             });
-            setDecryptedPatientData(decryptPatientData(investigations[0].patientsPersonalData, investigations[0]))
+            setDecryptedPatientData(decryptPatientsData(investigations[0].patientsPersonalData, investigations[0]))
         }
     }, [investigations])
     function backToSearch(){
@@ -52,12 +52,12 @@ export default function SearchPatients(props) {
                 const value = values[keyValue];
                 const pF = investigations[0].personalFields.find(pp => pp.name === keyValue);
                 if(pF.options.length > 0){
-                    if(value !== "" && patient[keyValue] !== value){
+                    if(value !== "" && patient.personalData[keyValue] !== value){
                         result = false;
                     }
                 }
                 else{
-                    if(value !== "" && !patient[keyValue].toLowerCase().includes(value.toLowerCase())){
+                    if(value !== "" && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
                         result = false;
                     }
                 }
@@ -87,7 +87,7 @@ export default function SearchPatients(props) {
                             No patients meet the criteria
                         </Paper>
                     </Box>,    
-                    <Button onClick={backToSearch}><Translate id="pages.hospital.search-patients.back-button" /></Button>,
+                    <Button onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></Button>,
                 ])
                 
             }

@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { decryptPatientData } from '../../utils'; 
+import { decryptPatientsData } from '../../utils'; 
 /**
  * Reducer that saves all the investigations loaded
  * @constructor

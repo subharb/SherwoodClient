@@ -27,7 +27,7 @@ export default function ShowRecordsSection(props) {
         return(
             <GridPadded container direction="column" spacing={3}>
                 {
-                    props.section.fields.map(field => {
+                    props.section.fields.sort((a,b) => a.order - b.order).map(field => {
                         const valueRecord = submission.surveyRecords.find(record => {
                             return field.id === record.surveyField.id
                         })

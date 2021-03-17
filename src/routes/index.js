@@ -91,7 +91,8 @@ export const ADD_PATIENT_ROUTE = "/add-patient";
 export const HOSPITAL_WARD_ROUTE = "/hospital-ward";
 export const OUTPATIENTS_ROUTE = "/outpatients";
 export const HOSPITAL_PATIENT = "/patient/:uuidPatient";
-export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/survey/:uuidDataCollection/section/:uuidSection";
+export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection/section/:uuidSection";
+export const HOSPITAL_PATIENT_DATACOLLECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection";
 export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note/:idMedicalNote";
 
 
@@ -153,6 +154,12 @@ const hospitalRoutes = {
             name: "Patient Medidal Note",
             component: Patient
         },
+        {
+            path: HOSPITAL_PATIENT_DATACOLLECTION,
+            name: "Patient Data Collection",
+            component: Patient
+        },
+        
         
     ],
   };

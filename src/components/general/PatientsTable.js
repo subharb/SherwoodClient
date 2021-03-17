@@ -4,12 +4,12 @@ import { EnhancedTable } from './EnhancedTable';
 import PropTypes from 'prop-types';
 
 export default function PatientsTable(props) {
-    const rows = props.patients.map(patientData => {
+    const rows = props.patients.map(patient => {
         let tempRow = {};
         for(const pField of props.personalFields){
-            let value = patientData[pField.name];
+            let value = patient.personalData[pField.name];
             if(pField.type === "date"){
-                value = new Date(parseInt(patientData[pField.name])).toLocaleDateString('es-ES', {
+                value = new Date(parseInt(patient.personalData[pField.name])).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit'

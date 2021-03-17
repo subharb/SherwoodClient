@@ -127,8 +127,8 @@ class FieldSherwood extends Component{
                     })
                 }
                 return(
-                    <FormControl mt={2}>
-                        <InputLabel id={input.name}>{labelString}</InputLabel>
+                    <FormControl mt={2} style ={{width: '100%'}} >
+                        <InputLabel style ={{width: '100%'}}  id={input.name}>{labelString}</InputLabel>
                         <Select  
                             labelId={input.name}
                             {...input} error={errorState} 
@@ -184,7 +184,7 @@ class FieldSherwood extends Component{
                             value={input.value}
                             openTo="year"
                             onChange={this.handleDateChange}
-                            maxDate={otherOptions.maxDate === "today" ? new Date() : undefined}
+                            maxDate={otherOptions && otherOptions.maxDate === "today" ? new Date() : null}
                             emptyLabel="Date iof birth"
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
