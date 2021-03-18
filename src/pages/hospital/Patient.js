@@ -17,9 +17,10 @@ import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
-import { HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
+import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
 import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
+import icon_notes from "../../img/icons/history.svg";
 
 const WhiteTypography = styled(Typography)`
     color:white;
@@ -79,6 +80,11 @@ function Patient(props) {
             history.push(nextUrl);
         }
         
+    }
+    function backToRoot(){
+        const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
+        console.log("Next url", nextUrl);
+        history.push(nextUrl);
     }
     function selectDataCollection(index){
         console.log("Row seleccionado ", surveyRecords[index]);
@@ -310,12 +316,12 @@ function Patient(props) {
                 <Grid container style={{backgroundColor:"white"}} spacing={3}>
                     <Grid item container xs={12}>
                         <Grid item container xs={3} >
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>
                                     {props.number}
                                 </Typography>
-                            </Grid>
-                            <Grid item xs={12} style={{display: 'flex', justifyContent: 'center'}}>
+                            </Grid> */}
+                            <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                                 <IconPatient gender={patient.personalData.sex} />
                             </Grid>
                         </Grid>
@@ -343,9 +349,15 @@ function Patient(props) {
                         </Grid>
                         <Grid item container xs={5}  justify="center" alignItems="center">
                             <Grid item xs={4}>
+                                <Button onClick={() => backToRoot()} >
+                                    <img src={icon_notes} alt="Medical Notes"/>
+                                </Button>
+                            </Grid>
+                            <Grid item xs={4}>
                                 <ButtonAdd onClick={() => setShowOptions(!showOptions)} />
                             </Grid>
                         </Grid>
+                    
                     </Grid>
                     <Grid item xs={12}>
                         {

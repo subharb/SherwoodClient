@@ -110,11 +110,11 @@ function HomeSchedule(props) {
                         <img src={photo_holder} alt="profile_picture" with="100%" />
                     </Grid>
                     <Grid item container  spacing={3}>
-                        <Grid item xs={12} style={{textAlign:"center"}}>
+                        {/* <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={MY_SCHEDULE_ROUTE}>
                                 <ButtonGrey >My Schedule</ButtonGrey>
                             </LinkPlain>
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={SEARCH_PATIENT_ROUTE}>
                                 <ButtonGrey >Search Patient</ButtonGrey>
