@@ -2,16 +2,18 @@ import { Box, Button, Grid, IconButton, Paper, Snackbar, Typography } from '@mat
 import React, { useState } from 'react'
 import PersonalDataForm from '../../components/investigation/show/single/personal_data';
 import { connect } from 'react-redux';
-import { addPatient } from '../../services/sherwoodService';
+import { savePatientAction } from '../../redux/actions/patientsActions';
 import { CloseIcon } from '@material-ui/data-grid';
 import Loader from '../../components/Loader';
 import { Translate } from 'react-localize-redux';
 import { BoxBckgr } from '../../components/general/mini_components';
+import { useDispatch } from "react-redux";
 
 export function AddPatient(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [showSnackbar, setShowSnackBar] = useState(false);
+    const dispatch = useDispatch();
 
     function handleClose(){
         setShowSnackBar(false);
@@ -19,7 +21,7 @@ export function AddPatient(props) {
     async function savePatient(patientData){
         try{
             setIsLoading(true);
-            const response = await addPatient(props.investigations.data[0].uuid, patientData);
+            await dispatch( savePatientAction(props.investigations.data[0], patientData));
             setIsLoading(false);
             setShowSnackBar(true);
         }

@@ -60,7 +60,8 @@ function Patient(props) {
 
         let isDisabled = false;
         if(!sectionSelected.repeats){
-            isDisabled =  numberRecordsSection(sectionSelected, props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions) > 0;
+            const patientSubmissions = props.patientsSubmissions.data[uuidPatient].hasOwnProperty(dataCollectionSelected.uuid) ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions : [];
+            isDisabled =  numberRecordsSection(sectionSelected, patientSubmissions) > 0;
         }
         
         if(isDisabled){
@@ -159,7 +160,7 @@ function Patient(props) {
                 patientId={props.patientId} investigation={props.investigation} callBackDataCollection={(values) => saveRecord(values)}/>
             )
         }
-        else if(dataCollectionSelected !== null){
+        else if(dataCollectionSelected !== null && action === "show"){
             return <ShowPatientRecords survey={dataCollectionSelected} mode="elements"
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
@@ -201,9 +202,9 @@ function Patient(props) {
         else{
             return(
                 <EnhancedTable noHeader noSelectable selectRow={(index) => selectDataCollection(index)} 
-                rows={surveyRecords.map(record => {
+                rows={surveyRecords.map((record, index) => {
                     const dateCreated = new Date(record.createdAt);
-                    return({researcher : record.researcher, surveyName : record.surveyName, date : dateCreated.toISOString().slice(0, 16).replace('T', ' ')})
+                    return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreated.toISOString().slice(0, 16).replace('T', ' ')})
                 })} headCells={[{ id: "researcher", alignment: "right", label: "Researcher"}, { id: "surveyName", alignment: "right", label: "DataCollection"},
                                 { id: "date", alignment: "right", label: "Date"}]} />
             )
@@ -217,7 +218,7 @@ function Patient(props) {
         async function fetchRecordsPatient(){
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.data[0].uuid, uuidPatient));
         }
-        if(props.investigations.data && !props.patientsSubmissions.data){
+        if(props.investigations.data && (!props.patientsSubmissions.data || !props.patientsSubmissions.data.hasOwnProperty(uuidPatient))){
             fetchRecordsPatient()
         }
     }, [props.investigations])
@@ -269,7 +270,7 @@ function Patient(props) {
 
         return (
         
-            <BoxBckgr color="text.primary">
+            <React.Fragment>
                 <Snackbar
                     anchorOrigin={{
                     vertical: 'top',
@@ -348,7 +349,7 @@ function Patient(props) {
                         }
                     </Grid>
                 </Grid>
-            </BoxBckgr>
+            </React.Fragment>
         )
     }
     

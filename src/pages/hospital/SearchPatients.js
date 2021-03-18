@@ -36,9 +36,10 @@ export default function SearchPatients(props) {
         setFilteredPatients([]);
         setShowResults(false);
     }
-    function patientSelected(index){
+    function patientSelected(id){
         console.log(HOSPITAL_PATIENT);
-        const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", filteredPatients[index].uuid)
+        const selectedPatient = filteredPatients.find(pat => pat.id === id);
+        const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", selectedPatient.uuid)
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
@@ -95,7 +96,7 @@ export default function SearchPatients(props) {
                 
                 return [
                     <PatientsTable patients={filteredPatients} mobile 
-                        showPatientCallBack={index => patientSelected(index)} 
+                        showPatientCallBack={id => patientSelected(id)} 
                         personalFields={investigations[0].personalFields} />,
                     <Button onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></Button>,
                 ]
@@ -107,10 +108,10 @@ export default function SearchPatients(props) {
         return <Loader />
     }
     return (
-        <BoxBckgr color="text.primary" style={{color:"white"}}>
-            <Grid container spacing={3}>
+        <React.Fragment>
+            <Grid container spacing={3} >
                 <Grid item xs={12} style={{textAlign:"center"}}>
-                    <Typography variant="h1" gutterBottom display="inline">
+                    <Typography variant="h1" gutterBottom display="inline"  style={{color:"white"}}>
                         <Translate id="pages.hospital.search-patient.title" />
                     </Typography>
                 </Grid>
@@ -122,7 +123,7 @@ export default function SearchPatients(props) {
                                 
                 </Grid>         
             </Grid>
-        </BoxBckgr>
+        </React.Fragment>
     )
 }
 

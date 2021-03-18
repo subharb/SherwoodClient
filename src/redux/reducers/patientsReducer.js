@@ -35,8 +35,9 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error;
             return newState;
         case types.SAVE_PATIENT_SUCCESS:
-            let tempDecryptedData = decryptSinglePatientData(action.patient.personalData, action.investigation);
-            newState.data[action.investigation.uuid].push(tempDecryptedData[0]);
+            let newPatient = {...action.patient};
+            newPatient.personalData = decryptSinglePatientData(action.patient.personalData, action.investigation);
+            newState.data[action.investigation.uuid].push(newPatient);
 
             newState.loading = initialState.loading;
             newState.error = initialState.error;

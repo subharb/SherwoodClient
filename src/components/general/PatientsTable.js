@@ -15,8 +15,10 @@ export default function PatientsTable(props) {
                     day: '2-digit'
                     }).replace(/\./g, '/');
             }
+            
             tempRow[pField.name] = value;
         }
+        tempRow["id"] = patient.id;
         return(
             tempRow
         )
