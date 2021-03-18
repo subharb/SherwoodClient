@@ -106,13 +106,16 @@ export function NewInvestigation(props){
             setErrorEncryption(true)
         }
     }, [])
-    useEffect(() => {
-        setInvestigation(props.investigation)
-    }, [props.investigation])
 
     useEffect(() => {
-        setIsLoading(props.isLoading)
-    }, [props.isLoading])
+        if(props.initialState.hasOwnProperty("isLoading")){
+            setIsLoading(props.initialState.isLoading)
+        }
+        if(props.initialState.hasOwnProperty("investigation")){
+            setInvestigation(props.initialState.investigation)
+        }
+
+    }, [props.initialState ])
 
     console.log("Initial data:", props.initialState);
     let component = null;

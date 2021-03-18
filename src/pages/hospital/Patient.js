@@ -273,7 +273,7 @@ function Patient(props) {
         let stay = daysFromDate(props.dateIn);
 
         return (
-        
+            
             <React.Fragment>
                 <Snackbar
                     anchorOrigin={{
@@ -315,8 +315,8 @@ function Patient(props) {
                                     {props.number}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={12}>
-                                <IconPatient gender={props.gender} />
+                            <Grid item xs={12} style={{display: 'flex', justifyContent: 'center'}}>
+                                <IconPatient gender={patient.personalData.sex} />
                             </Grid>
                         </Grid>
                         <Grid item container xs={4}>

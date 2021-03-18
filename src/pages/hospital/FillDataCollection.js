@@ -11,7 +11,7 @@ export default function FillDataCollection(props) {
     let stay = daysFromDate(props.dateIn);
 
     return (
-        <BoxBckgr color="text.primary">
+        <React.Fragment>
             <Grid container  spacing={3}>
                 <Grid item container xs={12} spacing={3} style={{color:"white", padding:"1rem"}}>
                     <Grid item xs={12}>
@@ -27,7 +27,7 @@ export default function FillDataCollection(props) {
                     </Grid>
                 </Grid>
             </Grid>
-        </BoxBckgr>
+        </React.Fragment>
     )
 }
 

@@ -96,7 +96,7 @@ export default function CardInvestigation({ image, title, description, status, s
             if(status === 0){
                 return(
                 <CardActions>
-                    <NavLink to={`/investigation/create/${uuid}`}>
+                    <NavLink to={`/investigation/edit/${uuid}`}>
                             <Button data-testid="open" size="small" color="secondary">
                                 Edit
                             </Button>

@@ -24,7 +24,7 @@ export default function SearchPatients(props) {
 
     useEffect(() => {
         if(investigations){
-            investigations[0].personalFields.forEach(personalField => {
+            investigations[0].personalFields.sort((a,b) => a.order - b.order).forEach(personalField => {
                 const copyField = {...personalField};
                 copyField.required = false;
                 personalFieldsForm[personalField.name] = copyField
