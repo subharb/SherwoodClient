@@ -43,9 +43,9 @@ const FIELDS_FORM = {
         label : "investigation.create.edc.choose",
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "investigation.create.edc.type_text", "value" : "text"},
-                {"text": "investigation.create.edc.type_number", "value" : "number"}, 
-                {"text": "investigation.create.edc.type_date", "value" : "date"}]
+        options:[{"label" : "investigation.create.edc.type_text", "value" : "text"},
+                {"label": "investigation.create.edc.type_number", "value" : "number"}, 
+                {"label": "investigation.create.edc.type_date", "value" : "date"}]
                                         
     },
     "label" : {

@@ -68,7 +68,8 @@ function Patient(props) {
             setShowSnackbar({show:true, message : "investigation.fill.survey.section-filled"});
         }
         else{
-            const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid).replace(":uuidPatient", uuidPatient).replace(":uuidSection", sectionSelected.uuid);
+            const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", sectionSelected.uuid);
             console.log("Next url", nextUrl);
 
             setShowOptions(false);
@@ -214,6 +215,9 @@ function Patient(props) {
         setShowOptions(false);
         setIndexSection(-1);
     }
+    useEffect(() => {
+        setShowOptions(false);
+    }, [uuidDataCollection, uuidSection])
     useEffect(() => {
         async function fetchRecordsPatient(){
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.data[0].uuid, uuidPatient));
