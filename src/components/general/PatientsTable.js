@@ -24,7 +24,7 @@ export default function PatientsTable(props) {
         )
     });
     const headCells = props.personalFields.map(pField => {
-        return { id: pField.name, alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.${pField.name}`} /> }
+        return { id: pField.name, alignment: "right", label: <Translate id={`investigation.create.personal_data.short-fields.${pField.name}`} /> }
     }) 
     if(props.mobile){
         return (

@@ -108,10 +108,10 @@ export function NewInvestigation(props){
     }, [])
 
     useEffect(() => {
-        if(props.initialState.hasOwnProperty("isLoading")){
+        if(props.initialState && props.initialState.hasOwnProperty("isLoading")){
             setIsLoading(props.initialState.isLoading)
         }
-        if(props.initialState.hasOwnProperty("investigation")){
+        if(props.initialState && props.initialState.hasOwnProperty("investigation")){
             setInvestigation(props.initialState.investigation)
         }
 

@@ -143,9 +143,9 @@ function Patient(props) {
         else if(indexSection === -1){
             
             return [
-                <Grid item xs={6} style={{textAlign:"center"}}>
+                <Grid item xs={12} style={{textAlign:"center"}}>
                     <WhiteTypography variant="body2" gutterBottom>
-                        <Translate id="hospital.sections" />:
+                        { dataCollectionSelected.name }:
                     </WhiteTypography>
                 </Grid>, 
                 dataCollectionSelected.sections.sort((a,b) => a.order - b.order).map((section, index) => {
@@ -171,38 +171,6 @@ function Patient(props) {
             return <ShowPatientRecords survey={dataCollectionSelected} mode="elements"
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
-        // else if(!isNaN(idMedicalNote)){
-        //     const medicalNoteSelected = surveyRecords.find(surRe => surRe.id === idMedicalNote);
-        //     if(!medicalNoteSelected){
-        //         throw new Error('Medical Note Missing!')
-        //     }
-        //     const dataCollection = props.investigations.data[0].surveys.find(dataCol => {
-        //         if(dataCol.uuid === medicalNoteSelected.surveyUUID){
-        //             return dataCol;
-        //         }
-        //     })
-            
-        //     const dateCreated = new Date(medicalNoteSelected.createdAt)
-        //     const sectionSubmission = dataCollection.sections.find(section => {
-        //         return section.uuid === medicalNoteSelected.surveyRecords[0].surveySection.uuid
-        //     })
-        //     return (
-        //         <Grid container>
-        //             <Grid item xs={6}>
-        //                 <Typography variant="body2" gutterBottom>
-        //                     {medicalNoteSelected.researcher}
-        //                 </Typography>
-        //             </Grid>
-        //             <Grid xs={6}>
-        //                 <Typography variant="body2" gutterBottom>
-        //                     { dateCreated.toISOString().split('T')[0] }
-        //                 </Typography>
-        //             </Grid>
-        //             <Grid item xs={12}>
-        //                 <ShowRecordsSection noTitle submissions={[medicalNoteSelected]} section={sectionSubmission} />
-        //             </Grid>
-        //         </Grid>)
-        // }
         else if(surveyRecords.length === 0){
             return <Translate id="hospital.patient.no-records" />
         }
@@ -212,7 +180,7 @@ function Patient(props) {
                 rows={surveyRecords.map((record, index) => {
                     const dateCreated = new Date(record.createdAt);
                     return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreated.toISOString().slice(0, 16).replace('T', ' ')})
-                })} headCells={[{ id: "researcher", alignment: "right", label: "Researcher"}, { id: "surveyName", alignment: "right", label: "DataCollection"},
+                })} headCells={[{ id: "researcher", alignment: "right", label: <Translate id="hospital.doctor" />}, { id: "surveyName", alignment: "right", label: <Translate id="hospital.data-collection" />},
                                 { id: "date", alignment: "right", label: "Date"}]} />
             )
         }
@@ -313,8 +281,8 @@ function Patient(props) {
                         </Grid>
                     }
                 </Modal>
-                <Grid container style={{backgroundColor:"white"}} spacing={3}>
-                    <Grid item container xs={12}>
+                <Grid container spacing={3}>
+                    <Grid item container style={{backgroundColor:"white"}}  xs={12}>
                         <Grid item container xs={3} >
                             {/* <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>

@@ -124,7 +124,7 @@ export const ButtonGrey = (props) => {
 export const ButtonGreyBorderGrey = styled(ButtonGrey)`
     &&&{
         background: #E5E5E5;
-        border: 3px solid #6F6C6D;
+        border: 5px solid #6F6C6D;
 `;
 
 export const ButtonEdit = (props) =>{

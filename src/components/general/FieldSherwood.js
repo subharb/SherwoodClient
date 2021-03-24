@@ -77,7 +77,8 @@ class FieldSherwood extends Component{
         if(typeof this.props.optionsUrl !== "undefined"){
             const request = await axios.get(this.props.optionsUrl);
             if(request.status === 200){
-                this.setState({options : request.data});
+                let options = request.data.map(opt => {return {"label" : opt.code, "value":opt.id}});
+                this.setState({options : options});
             }
         }
         // if(this.props.type === "select"){
@@ -109,14 +110,14 @@ class FieldSherwood extends Component{
         const {input, label, meta, type, options, size, option, removeClass, otherOptions} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
-        const errorString = meta.error ? this.props.translate(meta.error) : "";
+        const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
         const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
                 let optionsArray = [];
                 if(typeof this.props.optionsUrl !== "undefined"){
                     optionsArray = this.state.options.map(anOption => {
-                        return <option key={anOption[option.value]} value={anOption[option.value]}>{anOption[option.text]}</option>
+                        return <MenuItem value={anOption.value}>{anOption.label}</MenuItem>
                     })
                 }
                 else{

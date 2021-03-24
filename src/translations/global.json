@@ -11,6 +11,8 @@
         "view" : ["View", "Ver"]
     },
     "hospital" : {
+        "doctor" : ["Doctor", "Médico"],
+        "data-collection" : ["Form", "Formulario"],
         "data-collections" : ["Surveys", "Formularios"],
         "sections" : ["Sections", "Secciones"],
         "patient" : {
@@ -33,7 +35,8 @@
             "home" : ["Home", "Home"],
             "search-patient" : {
                 "title" : ["Search Patient", "Buscar Paciente"],
-                "back-button" : ["Back to search", "Volver a buscar"]
+                "back-button" : ["Back to search", "Volver a buscar"],
+                "note" : ["Hit search without data to find all patients", "Pulsa buscar con parámetros vacíos para encontrar a todos los pacientes"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente"]
         }
@@ -150,6 +153,19 @@
                     "phone" : ["Phone", "Nº Teléfono"],
                     "uuid" : ["ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento"],
+                    "sex" : ["Sex", "Sexo"]
+                },
+                "short-fields" : {
+                    "name" : ["Name", "Nombre"],
+                    "surnames" : ["Surnames", "Apellidos"],
+                    "surname" : ["Surname", "Apellido"],
+                    "address" : ["Address", "Dirección"],
+                    "health_id" : ["Health ID", "Nº SS"],
+                    "national_id" : ["ID Card", "DNI"],
+                    "email" : ["Email", "Email"],
+                    "phone" : ["Phone", "Nº Teléfono"],
+                    "uuid" : ["ID", "ID"],
+                    "birthdate" : ["DOB", "Fecha de nac."],
                     "sex" : ["Sex", "Sexo"]
                 }
             }, 
@@ -368,7 +384,7 @@
             "error_phone" : ["Phone not valid", "Teléfono no válido"],
             "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres"],
             "error_length6" : ["It has to be at least 6 characters long","Debe tener una longitud de al menos 6 caracteres"],
-            "error_length2" : ["It has to be at least 2 characters long","Debe tener una longitud de al menos 2 caracteres"],
+            "error_length2" : ["This field can't be empty","Este campo no se puede dejar vacío"],
             "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío"],
             "error_not_same" : ["Fields have to be the same", "El valor tiene que ser igual"],
             "error_past_date" : ["You must choose a date in the past", "Debe seleccionar una fecha en el pasado"]

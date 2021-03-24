@@ -8,6 +8,7 @@ import Loader from '../../components/Loader';
 import { Translate } from 'react-localize-redux';
 import { BoxBckgr } from '../../components/general/mini_components';
 import { useDispatch } from "react-redux";
+import { PersonAddSharp } from '@material-ui/icons';
 
 export function AddPatient(props) {
     const [isLoading, setIsLoading] = useState(false);
@@ -56,8 +57,9 @@ export function AddPatient(props) {
                 }
             />
             <Grid container spacing={3}>
-                <Grid item xs={12} style={{textAlign:"center"}}>
-                    <Typography variant="h1" gutterBottom display="inline">
+                <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
+                    <PersonAddSharp style={{fontSize:"2.5rem"}} />
+                    <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
                         <Translate id="pages.hospital.add-patient" />
                     </Typography>
                 </Grid>

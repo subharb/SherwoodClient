@@ -115,7 +115,7 @@ const hospitalVariant = merge(defaultVariant, {
     name: "HOSPITAL",
     palette: {
       primary: {
-        main: green[800],
+        main: "#49CEBF",
         contrastText: "#FFF",
       },
       secondary: {
@@ -128,7 +128,7 @@ const hospitalVariant = merge(defaultVariant, {
       },
     },
     header: {
-        color: grey[500],
+        color: "#0F8678",
         background: "#49CEBF",
         search: {
           color: grey[800],

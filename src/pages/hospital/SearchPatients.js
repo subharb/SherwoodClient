@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
-import { BoxBckgr, CloseButton } from '../../components/general/mini_components';
+import { Search as SearchPatientIcon } from "@material-ui/icons";
 import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
 import Form  from '../../components/general/form';
 import { usePatientsData, useInvestigations } from '../../hooks';
@@ -73,8 +73,10 @@ export default function SearchPatients(props) {
             return (
                 <Box>
                     <Paper style={{padding:'1rem'}}>
+                        <Translate id="pages.hospital.search-patient.note" />
                         <Form fields={personalFieldsForm} selectRow={(index) =>patientSelected(index)} 
                             submitText="investigation.search-patients.search" callBackForm={searchPatientCallBack}/>
+                        
                     </Paper>
                 </Box>
                 
@@ -109,9 +111,10 @@ export default function SearchPatients(props) {
     }
     return (
         <React.Fragment>
-            <Grid container spacing={3} >
-                <Grid item xs={12} style={{textAlign:"center"}}>
-                    <Typography variant="h1" gutterBottom display="inline"  style={{color:"white"}}>
+            <Grid container spacing={6} >
+                <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
+                    <SearchPatientIcon style={{fontSize:"2.5rem"}} />
+                    <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
                         <Translate id="pages.hospital.search-patient.title" />
                     </Typography>
                 </Grid>

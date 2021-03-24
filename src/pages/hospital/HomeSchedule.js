@@ -72,7 +72,7 @@ function HomeSchedule(props) {
             return <Loader />
         }
         return (
-            <BoxBckgr style={{ color:"white"}} color="text.primary">
+            <BoxBckgr style={{ color:"white", padding:"1rem"}} color="text.primary">
                 <Grid container spacing={3}>
                     <Grid item  xs={12} style={{textAlign:"center"}}>
                         <Typography variant="h1" gutterBottom display="inline" >
@@ -106,7 +106,7 @@ function HomeSchedule(props) {
                         }
                         
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
                         <img src={photo_holder} alt="profile_picture" with="100%" />
                     </Grid>
                     <Grid item container  spacing={3}>
