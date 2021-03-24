@@ -68,7 +68,7 @@ class Form extends Component {
                         {value.fields.map((hobby, index) =>
                             <div className="row">
                                 <Field
-                                    size = "s6"
+                                    size = "s12"
                                     name={hobby}
                                     type="text"
                                     component={FieldSherwood}
@@ -100,7 +100,7 @@ class Form extends Component {
             if(extraField.type === "options"){
                 return (
                     <div className="container">
-                        <FieldArray name={`${key}-options`} {...extraField} key={key} component={this.renderOptions} />
+                        <FieldArray name={`options`} {...extraField} key={key} component={this.renderOptions} />
                     </div>
                 )
             }
@@ -171,9 +171,11 @@ function validate(values, props){
         console.log(key+" : "+props.fields[key].validation+" "+values[key]);
         //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
         const fieldValueCompare = props.fields[key].validationField ? values[props.fields[key].validationField] : props.fields[key].validationValue ? props.translate(props.fields[key].validationValue) : null;
+        const valueField = props.fields[key].type === "textarea" && typeof values[key] !== "undefined" ? values[key].replace(/<[^>]+>/g, '') : values[key];
+        const validationFunc = props.fields[key].validation ? props.fields[key].validation : "notEmpty";
         const validation = validateField({  
-                                value : values[key], 
-                                validation:props.fields[key].validation, 
+                                value : valueField, 
+                                validation:validationFunc, 
                                 required:props.fields[key].required
                             },
                             fieldValueCompare);

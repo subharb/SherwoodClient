@@ -1,4 +1,4 @@
-import { personal_data1, edc_data1, basic_info1, loginResearcherA } from '../../src/stories/example_data';
+import { personal_data_investigation1, edc_data1, basic_info1, loginResearcherA } from '../../src/stories/example_data';
 
 describe('Testing create an investigation', () => {
     it('Introduces info on each field', () => {
@@ -12,7 +12,7 @@ describe('Testing create an investigation', () => {
         cy.contains('Create investigation').click();
 
 
-        cy.createInvestigation(basic_info1, personal_data1(),edc_data1() )   
+        cy.createInvestigation(basic_info1, personal_data_investigation1(),edc_data1() )   
 
         
         //Introducimos datos de Sección de datos personales

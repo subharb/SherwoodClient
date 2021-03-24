@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { SIGN_IN_ROUTE, SIGN_UP_ROUTE, CREATE_INVESTIGATION_ROUTE } from '../../routes';
+import { SIGN_IN_ROUTE, SIGN_UP_ROUTE, ROOT_ROUTE } from '../../routes';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
@@ -102,7 +102,7 @@ function SignIn() {
                 await signIn({ email: values.email, password: values.password}, "researcher");
                 const previousRoute = history.location.state && history.location.state.from;
                 if(typeof previousRoute === "undefined" || previousRoute === SIGN_UP_ROUTE || previousRoute == SIGN_IN_ROUTE){
-                    history.push(CREATE_INVESTIGATION_ROUTE)
+                    history.push(ROOT_ROUTE)
                 }
                 else{
                     history.goBack();

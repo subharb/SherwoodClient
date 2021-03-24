@@ -31,9 +31,9 @@ const RESEARCHER_FORM = {
         shortLabel: "investigation.share.form.permission",
         validation : "notEmpty",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
-        options:[{"text" : "investigation.share.permissions.read_no_personal_data", "value" : "0"},
-                {"text": "investigation.share.permissions.read_personal_data", "value" : "1"}, 
-                {"text": "investigation.share.permissions.create_personal_data", "value" : "2"}]
+        options:[{"label" : "investigation.share.permissions.read_no_personal_data", "value" : "0"},
+                {"label": "investigation.share.permissions.read_personal_data", "value" : "1"}, 
+                {"label": "investigation.share.permissions.create_personal_data", "value" : "2"}]
     },
 }
 

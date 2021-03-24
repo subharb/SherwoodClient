@@ -26,7 +26,9 @@ import { ExpandLess, ExpandMore } from "@material-ui/icons";
 
 import { green } from "@material-ui/core/colors";
 
+
 import { sidebarRoutes as routes } from "../routes/index";
+import { sidebarRoutesHospital as routesHospital } from "../routes/index";
 
 import { ReactComponent as Logo } from "../vendor/logo.svg";
 
@@ -325,19 +327,23 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
       Object.assign({}, openRoutes, { [index]: !openRoutes[index] })
     );
   };
-
+  let appRoutes = routes;
+  if(process.env.REACT_APP_PRODUCT === "HOSPITAL"){
+    appRoutes = routesHospital;
+  }
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>
-        <img src={pathLogo} alt="Sherwood Science" height="32" /> {"  "}
         <Box ml={1}>
             Sherwood
         </Box>
+        <img src={pathLogo} alt="Sherwood Science" height="32" /> {"  "}
+        
       </Brand>
       <Scrollbar>
         <List disablePadding>
           <Items>
-            {routes.map((category, index) => (
+            {appRoutes.map((category, index) => (
               <React.Fragment key={index}>
                 {category.header ? (
                   <SidebarSection>{category.header}</SidebarSection>
@@ -407,9 +413,9 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
                 </Grid>
                 <Grid item>
                     <SidebarFooterText variant="body2">{getData("name")+" "+getData("surnames")}</SidebarFooterText>
-                    <SidebarFooterSubText variant="caption">
+                    {/* <SidebarFooterSubText variant="caption">
                         UX Designer
-                    </SidebarFooterSubText>
+                    </SidebarFooterSubText> */}
                 </Grid>
             </Grid>
       </SidebarFooter>

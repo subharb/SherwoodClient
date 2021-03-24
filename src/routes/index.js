@@ -19,14 +19,14 @@ import {
   Sliders,
   Users,
 } from "react-feather";
-
+import { Home as HomeIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon } from "@material-ui/icons";
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
 import SignUp from "../pages/auth/SignUp";
 import ResetPassword from "../pages/auth/ResetPassword";
 import Page404 from "../pages/auth/Page404";
 import Page500 from "../pages/auth/Page500";
-
+import {Translate} from 'react-localize-redux';
 
 
 // // Guards
@@ -56,99 +56,182 @@ import Page500 from "../pages/auth/Page500";
 // const Tooltips = async(() => import("../pages/components/Tooltips"));
 
 // Dashboards components
-import Default from "../pages/dashboards/Default";
-import  Analytics from "../pages/dashboards/Analytics";
-import SaaS from "../pages/dashboards/SaaS";
+// import Default from "../pages/dashboards/Default";
+// import  Analytics from "../pages/dashboards/Analytics";
+// import SaaS from "../pages/dashboards/SaaS";
 import CreateInvestigation from "../components/investigation/create";
 
 import Investigations from "../components/investigation/show/all";
 import Investigation  from "../components/investigation";
 import ShareInvestigationRouter from "../components/investigation/share/wrapper";
 
-// // Forms components
-// const Pickers = async(() => import("../pages/forms/Pickers"));
-// const SelectionCtrls = async(() => import("../pages/forms/SelectionControls"));
-// const Selects = async(() => import("../pages/forms/Selects"));
-// const TextFields = async(() => import("../pages/forms/TextFields"));
-// const Dropzone = async(() => import("../pages/forms/Dropzone"));
-// const Editors = async(() => import("../pages/forms/Editors"));
-// const Formik = async(() => import("../pages/forms/Formik"));
+import HomeSchedule from "../pages/hospital/HomeSchedule";
+import ListPatients from "../pages/hospital/ListPatients";
+import Patient from "../pages/hospital/Patient";
+import SearchPatients from "../pages/hospital/SearchPatients";
+import AddPatient from "../pages/hospital/AddPatient";
 
-// // Icons components
-// const MaterialIcons = async(() => import("../pages/icons/MaterialIcons"));
-// const FeatherIcons = async(() => import("../pages/icons/FeatherIcons"));
 
-// // Pages components
-//const Blank = async(() => import("../pages/pages/Blank"));
-// const InvoiceDetails = async(() => import("../pages/pages/InvoiceDetails"));
-// const InvoiceList = async(() => import("../pages/pages/InvoiceList"));
-// const Orders = async(() => import("../pages/pages/Orders"));
-//const Pricing = async(() => import("../pages/pages/Pricing"));
-//const Profile = async(() => import("../pages/pages/Profile"));
-
-//const Settings = async(() => import("../pages/pages/Settings"));
-// const Tasks = async(() => import("../pages/pages/Tasks"));
-// const Projects = async(() => import("../pages/pages/Projects"));
-// const Investigations = async(() => import("../components/investigation/show/all"));
-// const Investigation = async(() => import("../components/investigation"));
-// const ShareInvestigation = async(() => import("../components/investigation/share"));
-
-// const DraftInvestigations = async(() => import("../components/investigation/show/all"));
-// const LiveInvestigations = async(() => import("../components/investigation/show/all"));
-
-// const Calendar = async(() => import("../pages/pages/Calendar"));
-//const Chat = async(() => import("../pages/pages/Chat"));
-
-// // Tables components
-// const SimpleTable = async(() => import("../pages/tables/SimpleTable"));
-// const AdvancedTable = async(() => import("../pages/tables/AdvancedTable"));
-// const DataGrid = async(() => import("../pages/tables/DataGrid"));
-
-// // Chart components
-// const Chartjs = async(() => import("../pages/charts/Chartjs"));
-
-// // Maps components
-// const GoogleMaps = async(() => import("../pages/maps/GoogleMaps"));
-// const VectorMaps = async(() => import("../pages/maps/VectorMaps"));
-
-// // Documentation
-// const Welcome = async(() => import("../pages/docs/Welcome"));
-// const GettingStarted = async(() => import("../pages/docs/GettingStarted"));
-// const EnvironmentVariables = async(() =>
-//   import("../pages/docs/EnvironmentVariables")
-// );
-// const Deployment = async(() => import("../pages/docs/Deployment"));
-// const Theming = async(() => import("../pages/docs/Theming"));
-// const StateManagement = async(() => import("../pages/docs/StateManagement"));
-// const APICalls = async(() => import("../pages/docs/APICalls"));
-// const ESLintAndPrettier = async(() =>
-//   import("../pages/docs/ESLintAndPrettier")
-// );
-// const Support = async(() => import("../pages/docs/Support"));
-// const Changelog = async(() => import("../pages/docs/Changelog"));
-
-// // Landing
-// const Landing = async(() => import("../pages/presentation/Landing"));
-
-// // Protected routes
-// const ProtectedPage = async(() => import("../pages/protected/ProtectedPage"));
-
-// const Investigations = async(() => import("../components/investigation/show/all"));
-// const Investigation = async(() => import("../components/investigation"));
-// const ShareInvestigation = async(() => import("../components/investigation/share"));
-
+export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
 export const SIGN_UP_ROUTE = "/auth/sign-up";
 export const SHARE_INVESTIGATION_ROUTE = "/investigation/share/:uuid";
 export const SHOW_INVESTIGATION_ROUTE = "/investigation/show/:uuid";
+export const EDIT_INVESTIGATION_ROUTE = "/investigation/edit/:uuid";
 export const CREATE_INVESTIGATION_ROUTE = "/investigation/create";
 export const PROFILE_ROUTE = "/profile";
 export const PENDING_INVESTIGATIONS_ROUTE = "/investigations/pending";
 export const LIVE_INVESTIGATIONS_ROUTE = "/investigations/live";
 export const DRAFT_INVESTIGATIONS_ROUTE = "/investigations/draft";
 export const ALL_INVESTIGATIONS_ROUTE = "/investigations/all";
+export const HOSPITAL_HOME_ROUTE = "/hospital";
+export const MY_SCHEDULE_ROUTE = "/my-schedule";
+export const SEARCH_PATIENT_ROUTE = "/search-patient";
+export const ADD_PATIENT_ROUTE = "/add-patient";
+export const HOSPITAL_WARD_ROUTE = "/hospital-ward";
+export const OUTPATIENTS_ROUTE = "/outpatients";
+export const HOSPITAL_PATIENT = "/patient/:uuidPatient";
+export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection/section/:uuidSection";
+export const HOSPITAL_PATIENT_DATACOLLECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection";
+export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note/:idMedicalNote";
 
 
+
+const hospitalRoutes = {
+    id: "Hospital",
+    path: HOSPITAL_HOME_ROUTE,
+    icon: <Briefcase />,
+    badge: "8",
+    component: null,
+    children: [
+        {
+            path: HOSPITAL_HOME_ROUTE,
+            name: "Home",
+            component: HomeSchedule
+        },
+        {
+            path: ROOT_ROUTE,
+            name: "Home",
+            component: HomeSchedule
+        },
+        {
+            path: MY_SCHEDULE_ROUTE,
+            name: "My Schedule",
+            component: HomeSchedule
+        },
+        {
+            path: HOSPITAL_WARD_ROUTE,
+            name: "Hospital Ward",
+            component: ListPatients
+        },
+        {
+            path: OUTPATIENTS_ROUTE,
+            name: "Outpatients",
+            component:ListPatients
+        },
+        {
+            path: SEARCH_PATIENT_ROUTE,
+            name: "Search Patient",
+            component: SearchPatients
+        },
+        {
+            path: HOSPITAL_PATIENT,
+            name: "Patient",
+            component: Patient
+        },
+        {
+            path: ADD_PATIENT_ROUTE,
+            name: "Add Patient",
+            component: AddPatient
+        },
+        {
+            path: HOSPITAL_PATIENT_SECTION,
+            name: "Patient Section",
+            component: Patient
+        },
+        {
+            path: HOSPITAL_PATIENT_MEDICAL_NOTE,
+            name: "Patient Medidal Note",
+            component: Patient
+        },
+        {
+            path: HOSPITAL_PATIENT_DATACOLLECTION,
+            name: "Patient Data Collection",
+            component: Patient
+        },
+        
+        
+    ],
+  };
+
+const dashboardHomeRoutes = {
+    id: <Translate id="pages.hospital.home" />,
+    path: HOSPITAL_HOME_ROUTE,
+    icon: <HomeIcon />,
+    badge: "",
+    component: {
+        path: ROOT_ROUTE,
+        name: "Home",
+        component: HomeSchedule
+    },
+    children: null
+}
+
+const dashboardSearchPatientRoutes = {
+    id: <Translate id="pages.hospital.search-patient.title" />,
+    path: SEARCH_PATIENT_ROUTE,
+    icon: <SearchPatientIcon />,
+    badge: "",
+    component: {
+        path: SEARCH_PATIENT_ROUTE,
+        name: "Search Patient",
+        component: SearchPatients
+    },
+    children: null
+}
+
+const dashboardAddPatientRoutes = {
+    id: <Translate id="pages.hospital.add-patient" />,
+    path: ADD_PATIENT_ROUTE,
+    icon: <AddPatientIcon />,
+    badge: "",
+    component: {
+        path: ADD_PATIENT_ROUTE,
+        name: "Add Patient",
+        component: AddPatient
+    },
+    children: null
+}
+
+const dashboardHospitalRoutes = {
+    id: "Hospital",
+    path: HOSPITAL_HOME_ROUTE,
+    icon: <Briefcase />,
+    badge: "8",
+    component: null,
+    children: [
+        {
+            path: ROOT_ROUTE,
+            name: "Home",
+            component: HomeSchedule
+        },
+        {
+            path: HOSPITAL_WARD_ROUTE,
+            name: "Hospital Ward",
+            component: ListPatients
+        },
+        {
+            path: SEARCH_PATIENT_ROUTE,
+            name: "Search Patient",
+            component: SearchPatients
+        },
+        {
+            path: ADD_PATIENT_ROUTE,
+            name: "Add Patient",
+            component: AddPatient
+        }
+    ],
+}
 const investigationsRoutes = {
     id: "Investigations",
     path: ALL_INVESTIGATIONS_ROUTE,
@@ -203,6 +286,11 @@ const dashboardsNotSideBarRoutes = {
             path: CREATE_INVESTIGATION_ROUTE,
             name: "CreateInvestigation",
             component: CreateInvestigation,
+        },
+        {
+            path: EDIT_INVESTIGATION_ROUTE,
+            name: "EditInvestigation",
+            component: () => <Investigation status={0} /> ,
         },
         {
             path: SHOW_INVESTIGATION_ROUTE,
@@ -634,6 +722,24 @@ export const dashboardLayoutRoutes = [
 //   changelogRoutes,
 ];
 
+export const hospitalLayoutRoutes = [
+    
+    //pagesRoutes,
+    hospitalRoutes
+  //   orderRoutes,
+  //   invoiceRoutes,
+  //   tasksRoutes,
+  //   calendarRoutes,
+  //   componentsRoutes,
+  //   chartRoutes,
+  //   formsRoutes,
+  //   tablesRoutes,
+  //   iconsRoutes,
+  //   mapsRoutes,
+  //   documentationRoutes,
+  //   changelogRoutes,
+  ];
+
 // Routes using the Auth layout
 export const authLayoutRoutes = [authRoutes];
 
@@ -646,20 +752,11 @@ export const authLayoutRoutes = [authRoutes];
 // Routes visible in the sidebar
 export const sidebarRoutes = [
   dashboardsRoutes,
-  //pagesRoutes,
   investigationsRoutes,
-  //projectsRoutes,
-//   orderRoutes,
-//   invoiceRoutes,
-//   tasksRoutes,
-//   calendarRoutes,
-//   authRoutes,
-//   componentsRoutes,
-//   chartRoutes,
-//   formsRoutes,
-//   tablesRoutes,
-//   iconsRoutes,
-//   mapsRoutes,
-//   documentationRoutes,
-//   changelogRoutes,
 ];
+
+export const sidebarRoutesHospital = [
+    dashboardHomeRoutes,
+    dashboardSearchPatientRoutes,
+    dashboardAddPatientRoutes,
+  ];

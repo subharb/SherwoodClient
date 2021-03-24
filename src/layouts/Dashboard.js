@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled, { createGlobalStyle } from "styled-components/macro";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
 import Footer from "../components/Footer";
-import Settings from "../components/Settings";
+import { Alert } from "@material-ui/lab";
+import { Translate } from 'react-localize-redux';
 import { useSherwoodUser } from '../hooks';
 import { spacing } from "@material-ui/system";
-
+import { connect } from 'react-redux';
+import { fetchInvestigations } from '../redux/actions/investigationsActions';
 import {
   Hidden,
   CssBaseline,
@@ -53,6 +56,7 @@ const AppContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  width:100%;
 `;
 
 const Paper = styled(MuiPaper)(spacing);
@@ -70,15 +74,34 @@ const MainContent = styled(Paper)`
   }
 `;
 
-const Dashboard = ({ children, routes, width }) => {
+const Dashboard = ({ children, routes, width, investigations }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const {isLoading, isAuth} = useSherwoodUser();
+    const {isLoading, error} = useSherwoodUser();
+    const dispatch = useDispatch();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    useEffect(() => {
+        async function fetchRemoteInvestigations(){
+            await dispatch(
+                fetchInvestigations()
+              );
+        }
+        if(!investigations.data){
+            fetchRemoteInvestigations()
+        }
+          
+    }, [])
     if(isLoading){
         return <Loader />
+    }
+    else if(error){
+        return(
+            <Alert mb={4} severity="error">
+                <Translate id="investigation.share.error.description" />
+            </Alert>
+        ) 
     }
     return (
         <Root>
@@ -103,7 +126,7 @@ const Dashboard = ({ children, routes, width }) => {
             </Drawer>
             <AppContent>
                 <Header onDrawerToggle={handleDrawerToggle} />
-                <MainContent p={isWidthUp("lg", width) ? 12 : 5}>
+                <MainContent p={isWidthUp("lg", width) ? 12 : 0}>
                 {children}
                 </MainContent>
                 <Footer />
@@ -113,4 +136,15 @@ const Dashboard = ({ children, routes, width }) => {
   );
 };
 
-export default withWidth()(Dashboard);
+const mapDispatchToProps = dispatch => {
+    return {    
+        fetchInvestigations : () => dispatch(fetchInvestigations())
+    }
+}
+
+const mapStateToProps = (state) =>{
+    return {
+        investigations : state.investigations,
+    }
+}
+export default withWidth()(connect(mapStateToProps, mapDispatchToProps)(Dashboard));

@@ -251,12 +251,12 @@ class Register extends Component {
         }
 
         return ([
-            <Modal key="modal" open={this.state.success} title={<Translate id="register.common.success_title" />}
+            <Modal key="modal" open={this.state.success} title={<Translate id="register.researcher.success.title" />}
                 confirmAction={this.continue}>
                 <SuccessContainer>
                     <ImageSuccess src={successImage} width="200" alt="Success!" />
                     <Typography variant="body2" gutterBottom>
-                        <Translate id={`register.${this.props.typeUser}.success_text`} />
+                        <Translate id={`register.researcher.success.description`} />
                     </Typography>
                 </SuccessContainer>
             </Modal>

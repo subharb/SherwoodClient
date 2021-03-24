@@ -10,6 +10,16 @@
         "add" : ["Add", "Añadir"],
         "view" : ["View", "Ver"]
     },
+    "hospital" : {
+        "doctor" : ["Doctor", "Médico"],
+        "data-collection" : ["Form", "Formulario"],
+        "data-collections" : ["Surveys", "Formularios"],
+        "sections" : ["Sections", "Secciones"],
+        "patient" : {
+            "no-records" : ["No medical records available", "No dispone de registros médicos"],
+            "fill-in" : ["Fill in details", "Rellene el formulario"]
+        }
+    },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],
         "key_generation": ["Key Generation", "Generación de clave"],
@@ -18,6 +28,18 @@
     },
     "error" : {
         "not_login" : ["You need to sign in to access this resource", "Para acceder a este recurso necesita hacer login"]
+    },
+    "pages" : {
+        "research" : [],
+        "hospital" : {
+            "home" : ["Home", "Home"],
+            "search-patient" : {
+                "title" : ["Search Patient", "Buscar Paciente"],
+                "back-button" : ["Back to search", "Volver a buscar"],
+                "note" : ["Hit search without data to find all patients", "Pulsa buscar con parámetros vacíos para encontrar a todos los pacientes"]
+            },
+            "add-patient" : ["Add Patient", "Añadir paciente"]
+        }
     },
     "dashboard":{
         "greetings" : ["Welcome", "Bienvenido"],
@@ -46,6 +68,7 @@
             "personal_info" : {
                 "name" : ["Name", "Nombre"],
                 "surnames" : ["Surnames", "Apellidos"],
+                "surname" : ["Surname", "Apellido"],
                 "country" : ["Country", "País"]
             },
             "contact_info" : {
@@ -54,8 +77,7 @@
             },
             "key_generation" : {
                 "confirm" : ["CONFIRM", "CONFIRMAR"]
-            },
-            "success_title" : ["Success!", "Enhorabuena!"]
+            }
         },
         "researcher" : {
             "personal_info" : {
@@ -73,7 +95,10 @@
                 "email_error" : ["This email is already in use", "Este email ya se ha usado"]
             },
             "go_to_sign_in" : ["Go to sign in", "Ir a sign in"],
-            "success_text" : ["Congratulations! Now head to sign in and start using Sherwood."],
+            "success" : {
+                "title" : ["Congratulations!", "¡Enhorabuena!"],
+                "description" : ["Congratulations! Now head to sign in and start using Sherwood."]
+            },     
             "error" : {
                 "account_registered" : ["This email has already been used", "Este email ya ha sido utilizado"],
                 "general" : ["An error ocurred, please try again later"]
@@ -119,14 +144,29 @@
                 "intro" : ["Please select the personal data you are planning to include in your investigation" ,"Seleccione los datos personales que desea incluir en su investigación"],
                 "fields" : {
                     "name" : ["Name", "Nombre"],
-                    "surname" : ["Surnames", "Apellidos"],
+                    "surnames" : ["Surnames", "Apellidos"],
+                    "surname" : ["Surname", "Apellido"],
                     "address" : ["Address", "Dirección"],
                     "health_id" : ["Health ID", "Nº Seguridad social"],
                     "national_id" : ["National ID", "DNI"],
                     "email" : ["Email", "Email"],
                     "phone" : ["Phone", "Nº Teléfono"],
-                    "id" : ["ID", "ID"],
-                    "birthdate" : ["Date of birth", "Fecha de nacimiento"]
+                    "uuid" : ["ID", "ID"],
+                    "birthdate" : ["Date of birth", "Fecha de nacimiento"],
+                    "sex" : ["Sex", "Sexo"]
+                },
+                "short-fields" : {
+                    "name" : ["Name", "Nombre"],
+                    "surnames" : ["Surnames", "Apellidos"],
+                    "surname" : ["Surname", "Apellido"],
+                    "address" : ["Address", "Dirección"],
+                    "health_id" : ["Health ID", "Nº SS"],
+                    "national_id" : ["ID Card", "DNI"],
+                    "email" : ["Email", "Email"],
+                    "phone" : ["Phone", "Nº Teléfono"],
+                    "uuid" : ["ID", "ID"],
+                    "birthdate" : ["DOB", "Fecha de nac."],
+                    "sex" : ["Sex", "Sexo"]
                 }
             }, 
             "edc" : {
@@ -148,7 +188,7 @@
                     "new" : ["New section"],
                     "edit_section" : ["Edit section"],
                     "section_name" : ["Name", "Nombre"],
-                    "add_section" : ["Add section"],
+                    "add_section" : ["Save section"],
                     "none" : ["You have no sections", "No has creado ninguna sección"]
                 },
                 "acronym" : ["Acronym", "Acrónimo"],
@@ -253,9 +293,19 @@
                 "patient_name" : ["Patient's Name", "Nombre del Paciente"],
                 "title" : ["Data Collections", "Collecciones de datos"],
                 "add_data" : ["Add Data", "Añadir datos"],
-                "view_data" : ["Visualize Data", "Ver datos"]
+                "view_data" : ["Visualize Data", "Ver datos"],
+                "no_records" : ["The data collection has no records", "Este data collectio no tiene registros"],
+                "section-filled" : ["This section has already been filled", "Esta sección ya ha sido rellenada"]
+
             },
+            "section" : {
+                "already_filled" : ["This section has been filled", "Esta sección ya ha sido respondida"]
+            },
+            "new_record" : ["New record added", "Nuevo registro añadido"],
             "records" : ["Records", "Registros"]
+        },
+        "search-patients":{
+            "search" : ["Search", "Buscar"]
         },
         "share" : {
             "title" : ["Share Investigation", "Compartir Investigación"],
@@ -334,9 +384,10 @@
             "error_phone" : ["Phone not valid", "Teléfono no válido"],
             "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres"],
             "error_length6" : ["It has to be at least 6 characters long","Debe tener una longitud de al menos 6 caracteres"],
-            "error_length2" : ["It has to be at least 2 characters long","Debe tener una longitud de al menos 2 caracteres"],
+            "error_length2" : ["This field can't be empty","Este campo no se puede dejar vacío"],
             "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío"],
-            "error_not_same" : ["Fields have to be the same", "El valor tiene que ser igual"]
+            "error_not_same" : ["Fields have to be the same", "El valor tiene que ser igual"],
+            "error_past_date" : ["You must choose a date in the past", "Debe seleccionar una fecha en el pasado"]
 
         }
     },

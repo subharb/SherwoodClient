@@ -1,5 +1,5 @@
 import React from 'react';
-import ShowPatientRecords from '../../../components/investigation/show/fill/show_patient_records';
+import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
 import ProviderSherwood from '../../../providerSherwood';
 import { records_patient1, edc_data1, records_patient2, patients_personal_data } from '../../example_data';
 

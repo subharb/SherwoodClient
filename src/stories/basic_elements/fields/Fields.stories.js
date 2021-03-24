@@ -24,9 +24,9 @@ const FIELDS_FORM = {
         label : "Simple Select",
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "Option 1", "value" : "text"},
-                {"text": "Option 2", "value" : "number"},
-                {"text": "Option 3", "value" : "checkbox"},
+        options:[{"label" : "Option 1", "value" : "text"},
+                {"label": "Option 2", "value" : "number"},
+                {"label": "Option 3", "value" : "checkbox"},
         ]                             
     },
     "select-activate" : {
@@ -36,9 +36,9 @@ const FIELDS_FORM = {
         label : "Select With activation field Option 2, 3",
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "Option 1", "value" : "text"},
-                {"text": "Option 2", "value" : "number"},
-                {"text": "Option 3", "value" : "checkbox"},
+        options:[{"label" : "Option 1", "value" : "text"},
+                {"label": "Option 2", "value" : "number"},
+                {"label": "Option 3", "value" : "checkbox"},
         ],
         activationValues : ["checkbox", "number"],
         activatedFields:[
@@ -65,9 +65,9 @@ const FIELDS_FORM = {
         label : "Multioption",
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "Option 1", "value" : "text"},
-                {"text": "Option 2", "value" : "number"},
-                {"text": "Option 3", "value" : "checkbox"},
+        options:[{"label" : "Option 1", "value" : "text"},
+                {"label": "Option 2", "value" : "number"},
+                {"label": "Option 3", "value" : "checkbox"},
         ]                             
     },
     "date" : {

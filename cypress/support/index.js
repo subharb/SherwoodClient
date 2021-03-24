@@ -16,5 +16,13 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
+export const URL_BASE = 'http://localhost:3000';//https://dashboard.sherwood.science';
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+    // returning false here prevents Cypress from
+    // failing the test
+    return false
+  })
+  
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

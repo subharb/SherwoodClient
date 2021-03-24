@@ -30,10 +30,13 @@ class PersonalData extends Component{
         this.props.initialize(this.initData)
     }
     callBackData(values){
-        console.log("CallbackData!", values);
-        let tempValues = Object.keys(values).filter(key => {
-            return values[key] === true;
-        });
+        console.log("CallbackData!!", values);
+        let tempValues = []; 
+        for(const key of Object.keys(values)){
+            if(values[key] === true){
+                tempValues.push(PERSONAL_DATA_FIELDS[key]);
+            }
+        }
         this.props.callBackData(tempValues);
     }
     render(){
@@ -71,22 +74,25 @@ class PersonalData extends Component{
 }
 
 function validate(values, props){
-    const errors = {};
-    Object.keys(PERSONAL_DATA_CHECKBOXES).forEach(key => {
-        console.log(key+" : "+PERSONAL_DATA_CHECKBOXES[key].validation+" "+values[key]);
-        //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
-        const fieldValueCompare = PERSONAL_DATA_CHECKBOXES[key].validationField ? values[PERSONAL_DATA_CHECKBOXES[key].validationField] : PERSONAL_DATA_CHECKBOXES[key].validationValue ? props.translate(PERSONAL_DATA_CHECKBOXES[key].validationValue) : null;
-        const validation = validateField({  
-                                value : values[key], 
-                                validation:PERSONAL_DATA_CHECKBOXES[key].validation, 
-                                required:PERSONAL_DATA_CHECKBOXES[key].required
-                            },
-                            fieldValueCompare);
-        if(!validation.result){
-            errors[key] = validation.messageCode;
-        }
-    });
-    //console.log(errors);
+    let errors = {};
+    if(Object.keys(values).length === 0){
+        errors["keys"] = "select at least one value";
+    }
+    // Object.keys(PERSONAL_DATA_CHECKBOXES).forEach(key => {
+    //     console.log(key+" : "+PERSONAL_DATA_CHECKBOXES[key].validation+" "+values[key]);
+    //     //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
+    //     const fieldValueCompare = PERSONAL_DATA_CHECKBOXES[key].validationField ? values[PERSONAL_DATA_CHECKBOXES[key].validationField] : PERSONAL_DATA_CHECKBOXES[key].validationValue ? props.translate(PERSONAL_DATA_CHECKBOXES[key].validationValue) : null;
+    //     const validation = validateField({  
+    //                             value : values[key], 
+    //                             validation:PERSONAL_DATA_CHECKBOXES[key].validation, 
+    //                             required:PERSONAL_DATA_CHECKBOXES[key].required
+    //                         },
+    //                         fieldValueCompare);
+    //     if(!validation.result){
+    //         errors[key] = validation.messageCode;
+    //     }
+    // });
+    // //console.log(errors);
     return errors;
 }
 export default reduxForm({

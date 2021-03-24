@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
-import { validateField } from '../../../utils';
+import { validateField, FIELDS_FORM } from '../../../utils';
 import styled from "styled-components";
 import FieldSherwood from '../../general/FieldSherwood';
 import Table from '../../general/table';
@@ -17,70 +17,6 @@ import { Grid,
     } from "@material-ui/core";
 import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../general/EnhancedTable';
-
-const FIELDS_FORM = {
-    "encrypted":{
-        required : false,
-        type:"checkbox",
-        label:"investigation.create.edc.personal_info",
-        shortLabel: "investigation.table.is_personal_data",
-        validation : "notEmpty"
-    },
-    "required":{
-        required : false,
-        type:"checkbox",
-        label:"investigation.create.edc.required",
-        shortLabel: "investigation.table.required",
-        validation : "notEmpty"
-    },
-    "name" : {
-        required : true,
-        type:"text",
-        label:"investigation.create.edc.name_field",
-        shortLabel: "investigation.table.name",
-        validation : "textMin2"
-    },
-    "type" : {
-        required : true,
-        type:"select",
-        validation : "notEmpty",
-        label : "investigation.create.edc.choose",
-        shortLabel: "investigation.table.type",
-        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "investigation.create.edc.type_text", "value" : "text"},
-                {"text": "investigation.create.edc.type_number", "value" : "number"},
-                {"text": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
-                {"text": "investigation.create.edc.type_date", "value" : "date"},
-                {"text": "investigation.create.edc.dropdown", "value" : "dropdown"},
-                {"text": "investigation.create.edc.multioption", "value" : "multioption"}
-        ],
-        activationValues : ["dropdown", "multioption"],
-        activatedFields:[
-            {
-                required : true,
-                type:"options",
-                validation : "notEmpty",
-                label : "investigation.create.edc.choose",
-                shortLabel: "investigation.table.type"
-            },
-            {
-                required : true,
-                type:"options",
-                validation : "notEmpty",
-                label : "investigation.create.edc.choose",
-                shortLabel: "investigation.table.type"
-            }]
-                                        
-    },
-    "label" : {
-        required : false,
-        type:"text",
-        label : "investigation.create.edc.question_field",
-        shortLabel: "investigation.table.question",
-        validation : "textMin6", 
-        size : "s6"
-    }
-}
 
 const SECTION_FORM = {
     "name" : {
@@ -126,6 +62,7 @@ class Section extends Component{
             let newValues = Object.assign({}, values);
             newValues.fields = [...this.state.fields];
             console.log("handleNewSection:"+JSON.stringify(values));
+            newValues.repeats = values.hasOwnProperty("repeats") ? values.repeats : false;
             this.props.callBackNewSection(newValues);
         }
         
@@ -189,8 +126,8 @@ class Section extends Component{
         }
     }
     render(){
-        const title = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
-        const saveText = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
+        const title = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
+        const saveText = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
         return (
             <Grid container>
                 <Grid item xs={12}>

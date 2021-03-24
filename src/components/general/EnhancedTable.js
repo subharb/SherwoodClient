@@ -257,6 +257,7 @@ export function EnhancedTable(props) {
     };
 
 const handleClick = (event, id) => {
+    console.log("Pincho en la tabla"+id, event );
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -291,14 +292,14 @@ const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
 return (
-    <div>
+    <div >
     <Paper>
         {
             !props.noHeader &&
             <EnhancedTableToolbar title={titleTable} numSelected={selected.length} />
         }
         <TableContainer>
-        <Table
+        <Table style={{minWidth: "600px"}}
             aria-labelledby="tableTitle"
             size={"medium"}
             aria-label="enhanced table"
@@ -329,6 +330,7 @@ return (
                     tabIndex={-1}
                     key={`${index}`}
                     selected={isItemSelected}
+                    onClick={props.selectRow ? () => props.selectRow( row.id) : null}
                     >
                     {
                         !noSelectable &&

@@ -6,7 +6,7 @@ import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
-        Icon, Box, FormControl as MuiFormControl, Typography } from '@material-ui/core';
+        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText } from '@material-ui/core';
 import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
@@ -51,7 +51,9 @@ const sharedStyle = css`
     //     }
     // }
 `
-
+const RedFormHelperText = styled(FormHelperText)`
+  color:red;
+`
 
 const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
@@ -75,7 +77,8 @@ class FieldSherwood extends Component{
         if(typeof this.props.optionsUrl !== "undefined"){
             const request = await axios.get(this.props.optionsUrl);
             if(request.status === 200){
-                this.setState({options : request.data});
+                let options = request.data.map(opt => {return {"label" : opt.code, "value":opt.id}});
+                this.setState({options : options});
             }
         }
         // if(this.props.type === "select"){
@@ -104,29 +107,29 @@ class FieldSherwood extends Component{
         this.props.input.onChange(value);
     }
     render(){
-        const {input, label, meta, type, options, size, option, removeClass} = this.props;
+        const {input, label, meta, type, options, size, option, removeClass, otherOptions} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
-        const errorString = meta.error ? this.props.translate(meta.error) : "";
+        const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
         const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
                 let optionsArray = [];
                 if(typeof this.props.optionsUrl !== "undefined"){
                     optionsArray = this.state.options.map(anOption => {
-                        return <option key={anOption[option.value]} value={anOption[option.value]}>{anOption[option.text]}</option>
+                        return <MenuItem value={anOption.value}>{anOption.label}</MenuItem>
                     })
                 }
                 else{
                     optionsArray = options.map(option => {
-                        const optionText = this.props.translate(option.text).indexOf("Missing translationId:") !== -1 ?  option.text : this.props.translate(option.text);
+                        const optionText = this.props.translate(option.label).indexOf("Missing translationId:") !== -1 ?  option.label : this.props.translate(option.label);
                     return <MenuItem value={option.value}>{optionText}</MenuItem>
                         
                     })
                 }
                 return(
-                    <FormControl mt={2}>
-                        <InputLabel id={input.name}>{labelString}</InputLabel>
+                    <FormControl mt={2} style ={{width: '100%'}} >
+                        <InputLabel style ={{width: '100%'}}  id={input.name}>{labelString}</InputLabel>
                         <Select  
                             labelId={input.name}
                             {...input} error={errorState} 
@@ -162,25 +165,33 @@ class FieldSherwood extends Component{
                 console.log("Value checkbox: "+input.name+" "+input.value);
                 const classNameError = (meta.touched && meta.error) ? "error text" : "";
                 const className = removeClass ?  `col ${sizeCurrent}` : `col ${sizeCurrent}`
-                return(
+                const errorText = errorState ? <RedFormHelperText>This field is required</RedFormHelperText> : "";
+                return([
                     <FormControlLabel
                         control={<Checkbox checked={input.value} {...input} />}
                         label={labelString}
-                    />
-                );
+                    />,
+                    errorText
+                ]);
             case "date":
+                
                 return (
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils} id={input.name}>
                         <KeyboardDatePicker
                             margin="normal"
                             id={input.name}
-                            label={label}
+                            label={input.value ? "" : labelString}
                             format="MM/dd/yyyy"
-                            value={input.value === "" ? new Date() : input.value}
+                            value={input.value}
+                            openTo="year"
                             onChange={this.handleDateChange}
+                            maxDate={otherOptions && otherOptions.maxDate === "today" ? new Date() : null}
+                            emptyLabel="Date iof birth"
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
                             }}
+                            error={errorState} 
+                            helperText={errorString} 
                         />
                     </MuiPickersUtilsProvider>
                     
@@ -197,6 +208,8 @@ class FieldSherwood extends Component{
                             KeyboardButtonProps={{
                                 'aria-label': 'change time',
                             }}
+                            error={errorState} 
+                            helperText={errorString}
                         />
                     </MuiPickersUtilsProvider>
                     

@@ -56,7 +56,7 @@ function UserDropdown() {
         open={Boolean(anchorMenu)}
         onClose={closeMenu}
       >
-        <MenuItem onClick={closeMenu}>Profile</MenuItem>
+        {/* <MenuItem onClick={closeMenu}>Profile</MenuItem> */}
         <MenuItem data-testid="log_out" onClick={handleSignOut}>Sign out</MenuItem>
       </Menu>
     </React.Fragment>

@@ -18,7 +18,12 @@ export function validateField(field, fieldCompare){
     if(field.required || (field.value !== "" && typeof field.value === 'string') ){
         const pathErroTranslation = "investigation.errors.";
         let re;
-        switch(field.validation){
+        //Si no hay validación, la inferimos
+        let validationSchema = field.validation;
+        if(!validationSchema){
+            validationSchema = field.type === "birthdate" ? "pastDate" : "notEmpty"
+        }
+        switch(validationSchema){
             case "validEmail" : 
                 re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 response.result = re.test(String(field.value).toLowerCase());
@@ -48,6 +53,10 @@ export function validateField(field, fieldCompare){
             case "equalTo":
                 response.result = Boolean(field.value === fieldCompare);
                 response.messageCode =  pathErroTranslation+"error_not_same"
+                break;
+            case "pastDate":
+                response.result = (Date.parse(field.value)-Date.parse(new Date())<0)
+                response.messageCode =  pathErroTranslation+"error_past_date"
                 break;
             default:
                 console.log("Validación no definida");
@@ -135,64 +144,153 @@ export function decryptData(ciphertext, key){
 
 export const isUserLoggedIn = () => localStorage.getItem("jwt");
 
+export const FIELDS_FORM = {
+    "encrypted":{
+        required : false,
+        type:"checkbox",
+        label:"investigation.create.edc.personal_info",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty"
+    },
+    "required":{
+        required : false,
+        type:"checkbox",
+        label:"investigation.create.edc.required",
+        shortLabel: "investigation.table.required",
+        validation : "notEmpty"
+    },
+    "name" : {
+        required : true,
+        type:"text",
+        label:"investigation.create.edc.name_field",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
+    "type" : {
+        required : true,
+        type:"select",
+        validation : "notEmpty",
+        label : "investigation.create.edc.choose",
+        shortLabel: "investigation.table.type",
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+        options:[{"label" : "investigation.create.edc.type_text", "value" : "text"},
+                {"label": "investigation.create.edc.type_number", "value" : "number"},
+                {"label": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
+                {"label": "investigation.create.edc.type_date", "value" : "date"},
+                {"label": "investigation.create.edc.dropdown", "value" : "dropdown"},
+                {"label": "investigation.create.edc.multioption", "value" : "multioption"}
+        ],
+        activationValues : ["dropdown", "multioption"],
+        activatedFields:[
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            },
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            }]
+                                        
+    },
+    "label" : {
+        required : false,
+        type:"text",
+        label : "investigation.create.edc.question_field",
+        shortLabel: "investigation.table.question",
+        validation : "textMin6", 
+        size : "s6"
+    }
+}
 
 export const PERSONAL_DATA_FIELDS = {
     "name" : {
-        required : false,
+        required : true,
+        name: "name",
         type:"text",
         label:"investigation.create.personal_data.fields.name",
         shortLabel:"investigation.create.personal_data.fields.name",
         validation : "textMin2"
     },
-    "surname" : {
-        required : false,
+    "surnames" : {
+        required : true,
+        name: "surnames",
         type:"text",
         label:"investigation.create.personal_data.fields.surname",
         shortLabel:"investigation.create.personal_data.fields.surname",
         validation : "textMin2"
     },
     "birthdate" : {
-        required : false,
+        name: "birthdate",
+        required : true,
         type:"date",
         label:"investigation.create.personal_data.fields.birthdate",
         shortLabel:"investigation.create.personal_data.fields.birthdate",
-        validation : "textMin2"
+        validation : "pastDate",
+        otherOptions:{
+            maxDate:"today"
+        }
     },
     "address" : {
-        required : false,
+        name: "address",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.address",
         shortLabel:"investigation.create.personal_data.fields.address",
         validation : "textMin2"
     },
     "health_id" : {
-        required : false,
+        name: "health_id",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.health_id",
         shortLabel:"investigation.create.personal_data.fields.health_id",
         validation : "textMin2"
     },
     "national_id" : {
-        required : false,
+        name: "national_id",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.national_id",
         shortLabel:"investigation.create.personal_data.fields.national_id",
         validation : "textMin2"
     },
     "email" : {
-        required : false,
+        name: "email",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.email",
         shortLabel:"investigation.create.personal_data.fields.email",
         validation : "textMin2"
     },
     "phone" : {
-        required : false,
+        name: "phone",
+        required : true,
         type:"text",
         label:"investigation.create.personal_data.fields.phone",
         shortLabel:"investigation.create.personal_data.fields.phone",
         validation : "textMin2"
+    },
+    "sex" : {
+        name: "sex",
+        required : true,
+        type:"select",
+        label:"investigation.create.personal_data.fields.sex",
+        shortLabel:"investigation.create.personal_data.fields.sex",
+        validation : "notEmpty",
+        options:[
+            {"value" : "Male", "label" : "Male"},{"value" : "female", "label" : "Female"}
+        ]
     }
+}
+
+export const PERSONAL_DATA_TYPES = {
+
 }
 
 export const FIELDS_BASIC_INFO = {
@@ -217,10 +315,10 @@ export const FIELDS_BASIC_INFO = {
         validation : "notEmpty",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
         options : [
-                {"text" : "investigation.create.edc.type_study.audit", "value" : "audit"},
-                {"text" : "investigation.create.edc.type_study.clinical_research_study", "value" : "clin_res"},
-                {"text" : "investigation.create.edc.type_study.medical_device", "value" : "med_dev"},
-                {"text" : "investigation.create.edc.type_study.clinical_trial", "value" : "clin_trial"}
+                {"label" : "investigation.create.edc.type_study.audit", "value" : "audit"},
+                {"label" : "investigation.create.edc.type_study.clinical_research_study", "value" : "clin_res"},
+                {"label" : "investigation.create.edc.type_study.medical_device", "value" : "med_dev"},
+                {"label" : "investigation.create.edc.type_study.clinical_trial", "value" : "clin_trial"}
             ],
         value: ""
     },
@@ -274,9 +372,9 @@ export const FIELDS_BASIC_INFO = {
         validation : "notEmpty",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
         options : [
-                {"text" : "investigation.create.edc.reference_number_state_type.not_applicable", "value" : 0},
-                {"text" : "investigation.create.edc.reference_number_state_type.pending", "value" : 1},
-                {"text" : "investigation.create.edc.reference_number_state_type.approved", "value" : 2},
+                {"label" : "investigation.create.edc.reference_number_state_type.not_applicable", "value" : 0},
+                {"label" : "investigation.create.edc.reference_number_state_type.pending", "value" : 1},
+                {"label" : "investigation.create.edc.reference_number_state_type.approved", "value" : 2},
             ],
         value: "",
         activationValues : ["2"],
@@ -303,33 +401,53 @@ export const templateField = {
     is_personal_data:true
 }
 
-export function numberRecordsSection(section, records){
+export function numberRecordsSection(section, submissions){
     let nRegistros = 0
-    for(let i = 0; i < records.length; i++){
-        const patientRecord = records[i];
-        for(let j = 0; j < patientRecord.submission.length;j++){
-            const submission = patientRecord.submission[j];
-            if(submission.id_section === section._id){
+    for(let i = 0; i < submissions.length; i++){
+        const submission = submissions[i];
+        
+            if(submission.surveyRecords[0].surveySection.uuid === section.uuid){
                 nRegistros++;
             }
-        }
+        
     }
     return nRegistros;
 }
 
-export function findSubmissionsFromSection(records, sectionID){
-    let submissionsSection = [];
-    for(let i = 0; i < records.length; i++){
-        const patientRecord = records[i];
-        for(let j = 0; j < patientRecord.submission.length;j++){
-            const submission = patientRecord.submission[j];
-            if(submission.id_section === sectionID){
-                submissionsSection.push(submission);
-                
+export function filterRecordsFromSubmissions(submissions, sectionUUID){
+    let filteredSubmissions = [];
+    for(let i = 0; i < submissions.length; i++){
+        let filteredRecords = [];
+        const submission = submissions[i];
+        for(let j = 0; j < submission.surveyRecords.length; j++){
+            const patientRecord = submission.surveyRecords[j];
+            if(patientRecord.surveySection.uuid === sectionUUID){ 
+                filteredRecords.push(patientRecord); 
             }
+        } 
+        if(filteredRecords.length > 0){
+            filteredSubmissions.push({
+                id:submission.id,
+                createdAt:submission.createdAt,
+                updatedAt:submission.updatedAt,
+                surveyRecords:filteredRecords
+            }
+                
+            ); 
         }
+        
     }
-    return submissionsSection;
+    return filteredSubmissions;
+}
+
+export function yearsFromDate(fromDateString){
+    let fromDate = new Date(fromDateString); 
+    return new Date().getFullYear() - fromDate.getFullYear();
+}
+export function daysFromDate(fromDateString){
+    let fromDate = new Date(fromDateString); 
+    let temp = Math.abs(new Date() - fromDate);
+    return Math.floor((temp)/(1000 * 60 * 60 * 24));
 }
 
 export function saveData(key, value){
@@ -339,4 +457,41 @@ export function saveData(key, value){
 
 export function getData(key){
     return localStorage.getItem(key); 
+}
+
+export function decryptPatientsData(patientsData, investigation){
+    let tempDecryptedData = [];
+    if(patientsData.length !== 0){
+        //const rawKeyResearcher = await decryptData("U2FsdGVkX1+vRAPd6EOpOTY53I8LLfs9iyX0mGh1Xesn6rwUS4UnTQvqTyWQvu0VeYLHUScUUtM22K8+4zJqZQ==", "Cabezadesherwood2")
+        
+        for(const patient of patientsData){
+            patient.personalData = decryptSinglePatientData(patient.personalData, investigation);
+            tempDecryptedData.push(patient);
+        }
+    }
+    return tempDecryptedData;
+}
+
+export function decryptSinglePatientData(patientPersonalData, investigation){
+
+    let encryptedFields = {};
+    if(investigation.permissions !== 0){
+        const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
+        
+        const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
+        
+        for(const personalField of investigation.personalFields){
+            const encryptedField = patientPersonalData.find(pData =>{
+                return pData.name === personalField.name;
+            });
+            let decryptedValue = ""
+            if(encryptedField){
+                decryptedValue = decryptData(encryptedField.value, keyInvestigation);
+            }
+            
+            encryptedFields[personalField.name] = decryptedValue; 
+        }
+    }
+    
+    return encryptedFields;
 }

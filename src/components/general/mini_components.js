@@ -1,7 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import icon_male from "../../img/icons/icon_male.svg";
+import { Link } from 'react-router-dom'
+import icon_female from "../../img/icons/icon_female.svg";
 import {
     Add as AddIcon,
+    HighlightOff as CloseIcon,
     RemoveRedEye as RemoveRedEyeIcon,
     PanoramaFishEye as PanoramaFishEyeIcon,
     CheckCircleOutline as CheckCircleOutlineIcon,
@@ -9,7 +13,8 @@ import {
     Clear as ClearIcon,
     Send as SendIcon,
     ArrowForwardIos as ArrowForwardIosIcon,
-    ArrowBackIos as ArrowBackIosIcon
+    ArrowBackIos as ArrowBackIosIcon,
+    LocalHospital as HospitalIcon
   } from "@material-ui/icons";
   import {
     Button, Icon, IconButton,
@@ -19,10 +24,17 @@ import {
     Divider as MuiDivider,
     Fab as MuiFab,
     IconButton as MuiIconButton,
-    Typography,
+    Typography, Box
   } from "@material-ui/core";  
 
 import { spacing } from "@material-ui/system";
+
+
+export const BoxBckgr = styled(Box)`
+    background-color:#49CEBF; 
+    height:100vh;
+`
+
 export const Divider = styled(MuiDivider)(spacing);
 
 const Fab = styled(MuiFab)(spacing);
@@ -52,6 +64,34 @@ export const BasicButtonStyles = styled(Button)`
     
 `
 
+export const IconPatient = (props) =>{
+    if(props.gender.toLowerCase() === "male"){
+        return <img src={icon_male} alt="male" width="40"/>
+    }
+    else if(props.gender.toLowerCase() === "female"){
+        return <img src={icon_female} alt="female" width="40" />
+    }
+    return null;
+}
+const GreyButtonStyles = styled(Button)`
+    &&&{
+        background: #E5E5E5;
+        border: 3px solid #0F8678;
+        box-sizing: border-box;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 8px;
+        text-decoration:none;
+        text-align: center;
+        font-weight: bold;
+        color: rgba(39, 44, 42, 0.97);
+        width:80%;
+        @media (min-width: 768px) {
+            width:20rem;
+        }
+    }
+`;
+
+
 export const ButtonOtherStyles = styled(BasicButtonStyles)`
     background-color:${props => props.theme.buttonOther.background}!important;
     color:${props => props.theme.buttonOther.color};
@@ -69,7 +109,23 @@ export const ButtonIcon = styled(IconButton)`
     background-color:${props => props.theme.buttonContinue.background}!important;
     color:${props => props.theme.buttonContinue.color}!important;
 `
+export const LinkPlain = styled(Link)`
+    text-decoration:none;
+`
 
+
+export const ButtonGrey = (props) => {
+    return(
+        <GreyButtonStyles {...props}>
+            {props.children}
+        </GreyButtonStyles>)
+}
+
+export const ButtonGreyBorderGrey = styled(ButtonGrey)`
+    &&&{
+        background: #E5E5E5;
+        border: 5px solid #6F6C6D;
+`;
 
 export const ButtonEdit = (props) =>{
     return <DeleteHolder {...props}>
@@ -155,6 +211,10 @@ export const ButtonCheck = (props) =>{
             {props.children}
     </ButtonContinueStyles>
 }
+
+export const CheckCircleOutlineSvg = (props) => {
+    return <CheckCircleOutlineIcon {...props} />
+}
 export const ButtonEmptyCheck = (props) =>{
     return <BasicButtonStyles 
         variant="contained"
@@ -179,6 +239,12 @@ export const ButtonAdd = (props) =>{
     //      >
     //         {props.children}
     // </ButtonContinueStyles>
+}
+
+export const CloseButton = (props) =>{
+    return  <Button mx={2} size="small" color="secondary" aria-label="View" {...props} >
+                <CloseIcon />
+            </Button>
 }
 
 export const ButtonView = (props) =>{

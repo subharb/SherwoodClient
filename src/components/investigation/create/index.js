@@ -106,10 +106,20 @@ export function NewInvestigation(props){
             setErrorEncryption(true)
         }
     }, [])
-    
+
+    useEffect(() => {
+        if(props.initialState && props.initialState.hasOwnProperty("isLoading")){
+            setIsLoading(props.initialState.isLoading)
+        }
+        if(props.initialState && props.initialState.hasOwnProperty("investigation")){
+            setInvestigation(props.initialState.investigation)
+        }
+
+    }, [props.initialState ])
+
     console.log("Initial data:", props.initialState);
     let component = null;
-    if(isLoading || (typeof props.uuid !== "undefined" && !props.investigation)){
+    if(isLoading || (typeof props.uuid !== "undefined" && !investigation)){
         return <Loader />
     }
     else if(resultSave === 2){
@@ -135,7 +145,7 @@ export function NewInvestigation(props){
     }
     switch(step){
         case 0:
-            component = <BasicInfo initialData={ props.initialState ? props.initialState.investigation.basic_info : investigation.basic_info } 
+            component = <BasicInfo initialData={ props.initialState ? props.initialState.investigation : investigation } 
                             callBackData={addData} />
             break;
         // case 1:
