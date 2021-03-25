@@ -45,8 +45,8 @@ function Patient(props) {
     let { action } = useParams();
     
     const parameters = useParams();
-    const idSubmission = parseInt(parameters["idSubmission"]);
-    let idMedicalNote  = parseInt(parameters["idMedicalNote"]);
+    const idSubmission = parameters["idSubmission"] ? parseInt(parameters["idSubmission"]) : parameters["idSubmission"];
+    
 
     const history = useHistory();
 
@@ -81,7 +81,8 @@ function Patient(props) {
         }
         else{
             const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
-                .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", sectionSelected.uuid);
+                .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", sectionSelected.uuid)
+                .replace(":idSubmission", "");
             console.log("Next url", nextUrl);
 
             setShowOptions(false);
