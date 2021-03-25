@@ -127,15 +127,20 @@ class FieldSherwood extends Component{
                         
                     })
                 }
+                const labelId = `${input.name}_label`;
                 return(
-                    <FormControl mt={2} style ={{width: '100%'}} >
-                        <InputLabel style ={{width: '100%'}}  id={input.name}>{labelString}</InputLabel>
-                        <Select  
-                            labelId={input.name}
-                            {...input} error={errorState} 
-                            helperText={errorString}
-                            >
-                            {optionsArray}
+                    <FormControl mt={2} variant="outlined" >
+                        <InputLabel id={labelId}>{labelString}</InputLabel>
+                        <Select
+                        labelId={labelId}
+                        id={input.name}
+                        
+                        
+                        label={labelString}
+                        {...input} 
+                        >
+                    
+                        { optionsArray }
                         </Select>
                     </FormControl>
                     
@@ -180,6 +185,8 @@ class FieldSherwood extends Component{
                         <KeyboardDatePicker
                             margin="normal"
                             id={input.name}
+                            inputVariant="outlined"
+                            size="small"
                             label={input.value ? "" : labelString}
                             format="MM/dd/yyyy"
                             value={input.value}
@@ -201,6 +208,8 @@ class FieldSherwood extends Component{
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardTimePicker
                             margin="normal"
+                            size="small"
+                            inputVariant="outlined"
                             id={input.name}
                             label={labelString}
                             value={input.value === "" ? new Date() : input.value}
@@ -277,8 +286,8 @@ class FieldSherwood extends Component{
                     console.log("TextFieldSherwood",input.value);
                 return(
                     <Box mt={1}>
-                        <TextFieldSherwood {...input}  
-                            label={labelString} error={errorState} 
+                        <TextFieldSherwood {...input} variant="outlined"
+                            label={labelString} error={errorState} size="small"
                             helperText={errorString} />
                     </Box>
                 )

@@ -11,6 +11,7 @@ import { HOSPITAL_PATIENT } from '../../routes';
 import Loader from '../../components/Loader';
 import { decryptPatientsData } from '../../utils'; 
 import PatientsTable from '../../components/general/PatientsTable';
+import { Alert } from '@material-ui/lab';
 
 let personalFieldsForm = {};
 
@@ -104,7 +105,6 @@ export default function SearchPatients(props) {
                 ]
             }
         }
-                    
     }
     if(isLoading){
         return <Loader />
@@ -118,12 +118,11 @@ export default function SearchPatients(props) {
                         <Translate id="pages.hospital.search-patient.title" />
                     </Typography>
                 </Grid>
+                
                 <Grid item xs={12}>
-                    
                         {
                         renderCore()
                         }     
-                                
                 </Grid>         
             </Grid>
         </React.Fragment>
