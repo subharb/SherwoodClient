@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../../general/EnhancedTable';
 import { fetchRecordsPatientFromSurvey } from '../../../../services/sherwoodService';
 import { Card, CardContent, Typography, Grid } from '@material-ui/core';
+import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 
 /**
  * Component in charge of showing records of a given patient in a survey
@@ -20,39 +21,8 @@ export default function ShowPatientRecords(props) {
     function addRegistry(indexSection){
         setSectionSelected(indexSection);
     }
-    // async function fetchRecords(){
-    //     const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.uuid+"/survey/"+props.survey.uuid, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-    //             .catch(err => {console.log('Catch', err); return err;}); 
-    //     if(response.request.status === 200){
-    //         //Busco el survey actual
-    //         const currentSurvey = response.data.surveys.find(aSurvey => {
-    //             return aSurvey.uuid === props.survey.uuid
-    //         })
-            
-    //         setSubmissions(currentSurvey.submissions);
-    //     }
-    //     else{
-    //         setShowError(1);
-    //     }
-    // }
-    // useEffect(() => {
-    //     (async () => {
-    //         if(submissions.length === 0){
-    //             console.log("CARGANDO");
-    //             try{
-    //                 const response = await fetchRecordsPatientFromSurvey(props.uuidInvestigation, props.patient.uuid, props.survey.uuid);
-    //                 if(response.status === 200){                        
-    //                     setSubmissions(response.surveys[0].submissions);
-    //                 }
-    //             }
-    //             catch(error){
-    //                 setShowError(1);
-    //             }
-                
-    //         }
-    // })()}, []);
-    
-    
+
+ 
     function renderSection(section, nRecords){
         let registers = "No hay registros";
         let addButton = <ButtonAdd onClick={() => addRegistry(section.uuid)} />;
@@ -72,25 +42,10 @@ export default function ShowPatientRecords(props) {
             const submissionsSection = filterRecordsFromSubmissions(props.submissions, section.uuid);
 
             return(
-                <ShowRecordsSection submissions={submissionsSection} section={section} />
+                <ShowRecordsSection callBackEditSubmission={(uuidSubmission, uuidSection) =>props.callBackEditSubmission(uuidSubmission, uuidSection)} submissions={submissionsSection} section={section} />
             )
         });
     }
-    // async function sendRecord(values){
-    //     const recordArray = Object.keys(values).map(keySection => {
-    //         return {
-    //             uuid_section:keySection,
-    //             answers:{...values[keySection]}
-    //         }
-    //     })
-    //     const postObj = {submission : recordArray}
-    //     const response = await axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+props.uuidInvestigation+"/record/"+props.patient.uuid, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-    //             .catch(err => {console.log('Catch', err); return err;}); 
-    //     if(response.request.status === 200){
-    //         fetchRecords();
-    //     }
-    //     setSectionSelected(null);
-    // }
     
     function renderCore(){
         if(showError === 0){

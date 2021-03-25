@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ButtonBack, ButtonForward } from '../../../general/mini_components';
+import { ButtonBack, ButtonEdit, ButtonForward } from '../../../general/mini_components';
 import { Card, Paper, Typography, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import { Alert } from "@material-ui/lab";
 import { Translate } from 'react-localize-redux';
+import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
@@ -18,9 +19,18 @@ const CardPadding = styled(Card)`
 const GridPadded = styled(Grid)`
     padding:0rem 0rem 2rem 1rem;
 `;
+const HeaderSection = styled.div`
+    display:flex;
+
+`;
 export default function ShowRecordsSection(props) {
     let [indexSubmission, setIndexSubmission ] = useState(0);
     let [error, setError] = useState(false);
+
+    function editSection(indexSubmission, uuidSection){
+        const uuidSubmission = props.submissions[indexSubmission].id;
+        props.callBackEditSubmission(uuidSubmission, uuidSection);
+    }
     function renderSubmission(){
         const submission = props.submissions[indexSubmission];       
         
@@ -81,9 +91,12 @@ export default function ShowRecordsSection(props) {
                     <Grid item>
                         {
                             !props.noTitle &&
-                            <Typography variant="subtitle1" color="textPrimary">
-                                Section: { props.section.name }
-                            </Typography>
+                            <HeaderSection>
+                                <Typography variant="subtitle1" color="textPrimary">
+                                    Section: { props.section.name }
+                                </Typography>
+                                <ButtonEdit onClick={() => editSection(indexSubmission, props.section.uuid)} />
+                            </HeaderSection>
                         }
                         
                     </Grid>

@@ -12,6 +12,7 @@ import {
     Save as SaveIcon,
     Clear as ClearIcon,
     Send as SendIcon,
+    Edit as EditIcon,
     ArrowForwardIos as ArrowForwardIosIcon,
     ArrowBackIos as ArrowBackIosIcon,
     LocalHospital as HospitalIcon
@@ -129,7 +130,7 @@ export const ButtonGreyBorderGrey = styled(ButtonGrey)`
 
 export const ButtonEdit = (props) =>{
     return <DeleteHolder {...props}>
-        <i className="material-icons">edit</i>
+        <EditIcon />
     </DeleteHolder>
 }
 

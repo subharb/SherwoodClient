@@ -43,7 +43,9 @@ function Patient(props) {
     let { uuidSection } = useParams();
     let { uuidDataCollection } = useParams();
     let { action } = useParams();
+    
     const parameters = useParams();
+    const idSubmission = parseInt(parameters["idSubmission"]);
     let idMedicalNote  = parseInt(parameters["idMedicalNote"]);
 
     const history = useHistory();
@@ -55,6 +57,15 @@ function Patient(props) {
     
     function fillDataCollection(indexCollection){
         setIndexDataCollection(indexCollection);
+    }
+    function callBackEditSubmission(idSubmission, uuidSection){
+        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "edit").replace(":uuidSection", uuidSection)
+                .replace(":idSubmission", idSubmission);
+        setShowOptions(false);
+        //setIndexDataCollection(-1);
+        setIndexSection(-1);
+        history.push(nextUrl);
     }
     function sectionSelect(indexSection){
         const sectionSelected = dataCollectionSelected.sections[indexSection];
@@ -161,14 +172,15 @@ function Patient(props) {
         }
     }
     function renderCore(){
-        if(dataCollectionSelected !== null && sectionSelected !== null){
+        if(dataCollectionSelected !== null && sectionSelected !== null && (action === "fill" || action === "edit")){
+            const submission = action === "edit" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission) : null
             return(
-                <FillDataCollection key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
+                <FillDataCollection initData = {submission[0]} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
                 patientId={props.patientId} investigation={props.investigation} callBackDataCollection={(values) => saveRecord(values)}/>
             )
         }
         else if(dataCollectionSelected !== null && action === "show"){
-            return <ShowPatientRecords survey={dataCollectionSelected} mode="elements"
+            return <ShowPatientRecords survey={dataCollectionSelected} mode="elements" callBackEditSubmission={callBackEditSubmission}
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
         else if(surveyRecords.length === 0){

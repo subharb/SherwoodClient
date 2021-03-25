@@ -6,6 +6,7 @@
         "delete" : ["Delete", "Borrar"],
         "cancel" : ["Cancel", "Cancelar"],
         "edit" : ["Edit", "Editar"],
+        "update" : ["Update", "Actualizar"],
         "back" : ["Back", "Atrás"],
         "add" : ["Add", "Añadir"],
         "view" : ["View", "Ver"]
