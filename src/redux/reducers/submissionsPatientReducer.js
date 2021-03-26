@@ -9,7 +9,8 @@ import { decryptPatientsData } from '../../utils';
  const initialState = {
     data: null,
     loading: false,
-    error: null
+    error: null,
+    nUpdatedRegisters : 0
 }
 
  
@@ -59,10 +60,11 @@ export default function reducer(state = initialState, action){
             tempData[action.meta.uuidPatient][action.meta.surveyUUID] = tempDict;                   
             newState.loading = initialState.loading;
             newState.error = initialState.error;
+            
+            newState.nUpdatedRegisters++ 
+            
             return newState;
-        
 
-        return newState;
         case types.SAVE_SUBMISSIONS_PATIENT_ERROR:
             newState.loading = initialState.loading;
             newState.error = true;

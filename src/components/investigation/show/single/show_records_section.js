@@ -85,6 +85,7 @@ export default function ShowRecordsSection(props) {
         );
     }
     else if(indexSubmission < props.submissions.length){
+        const dateCreated = new Date(props.submissions[indexSubmission].createdAt);
         return (
             <CardPadding >
                 <Grid container direction="column" spacing={3}>
@@ -95,7 +96,11 @@ export default function ShowRecordsSection(props) {
                                 <Typography variant="subtitle1" color="textPrimary">
                                     Section: { props.section.name }
                                 </Typography>
-                                <ButtonEdit onClick={() => editSection(indexSubmission, props.section.uuid)} />
+                                {
+                                    (dateCreated.getTime() + 86400000 > new Date().getTime()) && 
+                                    <ButtonEdit onClick={() => editSection(indexSubmission, props.section.uuid)} />
+                                }
+                                
                             </HeaderSection>
                         }
                         

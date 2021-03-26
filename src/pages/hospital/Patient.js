@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { connect } from 'react-redux';
 import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
@@ -21,6 +21,7 @@ import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION,
 import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
 import icon_notes from "../../img/icons/history.svg";
+import { useUpdateEffect } from '../../hooks';
 
 const WhiteTypography = styled(Typography)`
     color:white;
@@ -48,6 +49,8 @@ function Patient(props) {
     const idSubmission = parameters["idSubmission"] ? parseInt(parameters["idSubmission"]) : parameters["idSubmission"];
     
     const history = useHistory();
+
+    const isInitialMount = useRef(true);
 
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.data[0].uuid].find(pat => pat.uuid === uuidPatient) : null
@@ -210,6 +213,17 @@ function Patient(props) {
             fetchRecordsPatient()
         }
     }, [props.investigations])
+    useUpdateEffect(() => {
+        
+        if(action === "update"){
+            setShowSnackbar({show:true, severity:"success", message : "hospital.patient.updated-record"});
+        }
+        if(action === "fill"){
+            setShowSnackbar({show:true, severity:"success", message : "hospital.patient.new-record"});
+        }
+        
+    }, [props.patientsSubmissions.nUpdatedRegisters]);
+    
     useEffect(() => {
         if(props.patientsSubmissions.data){
             let tempSubmissions = []
@@ -242,8 +256,7 @@ function Patient(props) {
     }, [props.patientsSubmissions])
 
     useEffect(() => {
-        if(props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] && props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid]
-            && props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.length > 0 ){
+        
             if(props.patientsSubmissions.error){
                 if(action === "update"){
                     setShowSnackbar({show:true, severity:"error", message : "hospital.patient.no-update"});
@@ -252,16 +265,6 @@ function Patient(props) {
                     setShowSnackbar({show:true, severity:"error", message : "register.researcher.error"});
                 }
             }
-            else{
-                if(action === "update"){
-                    setShowSnackbar({show:true, severity:"success", message : "hospital.patient.updated-record"});
-                }
-                if(action === "fill"){
-                    setShowSnackbar({show:true, severity:"success", message : "hospital.patient.new-record"});
-                }
-            }
-        }
-        
     }, [props.patientsSubmissions.loading]);    
 
     if(error){

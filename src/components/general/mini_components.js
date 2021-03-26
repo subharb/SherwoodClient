@@ -48,12 +48,6 @@ export const DeleteHolder = styled.div`
     justify-content: center;
 `;
 
-export const EditConsent = styled.i`
-    display: inline;
-    color:#E16580;
-    cursor:pointer;
-`;
-
 export const BasicButtonStyles = styled(Button)`
     ${props => !props.show} {
         display: none!important;
@@ -129,9 +123,10 @@ export const ButtonGreyBorderGrey = styled(ButtonGrey)`
 `;
 
 export const ButtonEdit = (props) =>{
-    return <DeleteHolder {...props}>
-        <EditIcon />
-    </DeleteHolder>
+    return(
+        <Button {...props}>
+            <EditIcon />
+        </Button>)
 }
 
 export const ButtonDelete = (props) =>{

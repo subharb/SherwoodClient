@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchUser } from "../services/authService";
@@ -204,3 +204,21 @@ export function useSherwoodUser(){
 
     return {isLoading, isAuth, error}
 }
+
+/**
+ * A custom useEffect hook that only triggers on updates, not on initial mount
+ * Idea stolen from: https://stackoverflow.com/a/55075818/1526448
+ * @param {Function} effect
+ * @param {Array<any>} dependencies
+ */
+ export function useUpdateEffect(effect, dependencies = []) {
+    const isInitialMount = useRef(true);
+  
+    useEffect(() => {
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+      } else {
+        effect();
+      }
+    }, dependencies);
+  }

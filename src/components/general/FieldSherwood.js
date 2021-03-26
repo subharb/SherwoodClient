@@ -129,7 +129,7 @@ class FieldSherwood extends Component{
                 }
                 const labelId = `${input.name}_label`;
                 return(
-                    <FormControl mt={2} variant="outlined" >
+                    <FormControl mt={2} variant="outlined" style={{width:"100%"}} >
                         <InputLabel id={labelId}>{labelString}</InputLabel>
                         <Select
                         labelId={labelId}
