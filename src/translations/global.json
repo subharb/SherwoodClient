@@ -18,7 +18,10 @@
         "sections" : ["Sections", "Secciones"],
         "patient" : {
             "no-records" : ["No medical records available", "No dispone de registros médicos"],
-            "fill-in" : ["Fill in details", "Rellene el formulario"]
+            "fill-in" : ["Fill in details", "Rellene el formulario"],
+            "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar" ],
+            "new-record" : ["Record saved!", "Registro Guardado"],
+            "updated-record" : ["Record updated!", "Registro Actualizado"]
         }
     },
     "breadcrumb" : {
@@ -295,7 +298,7 @@
                 "title" : ["Data Collections", "Collecciones de datos"],
                 "add_data" : ["Add Data", "Añadir datos"],
                 "view_data" : ["Visualize Data", "Ver datos"],
-                "no_records" : ["The data collection has no records", "Este data collectio no tiene registros"],
+                "no_records" : ["The data collection has no records", "Este data collection no tiene registros"],
                 "section-filled" : ["This section has already been filled", "Esta sección ya ha sido rellenada"]
 
             },
