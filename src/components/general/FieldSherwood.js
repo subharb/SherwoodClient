@@ -179,21 +179,22 @@ class FieldSherwood extends Component{
                     errorText
                 ]);
             case "date":
-                
+                const value = input.value ? typeof input.value.getMonth === 'function' ? input.value : new Date(parseInt(input.value)) : "";
                 return (
-                    <MuiPickersUtilsProvider utils={DateFnsUtils} id={input.name}>
+                    <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
                         <KeyboardDatePicker
                             margin="normal"
                             id={input.name}
                             inputVariant="outlined"
                             size="small"
                             label={input.value ? "" : labelString}
-                            format="MM/dd/yyyy"
-                            value={input.value}
+                            format="dd/MM/yyyy"
+                            value={value}
+                            defaultValue={value} 
                             openTo="year"
                             onChange={this.handleDateChange}
                             maxDate={otherOptions && otherOptions.maxDate === "today" ? new Date() : null}
-                            emptyLabel="Date iof birth"
+                            emptyLabel={labelString}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
                             }}
