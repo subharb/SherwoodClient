@@ -48,43 +48,40 @@ export default function PersonalDataForm(props) {
         //     console.log("Decripted "+key+" "+decriptedValue);
         // }
     }
-    if(process.env.REACT_APP_PRODUCT === "HOSPITAL"){
-        return (
-
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <Typography variant="body2" color="textPrimary">
-                        <Translate id="hospital.patient.fill-in" />
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Form fields={form} initialData={props.initialData} 
-                        callBackForm={(data) => encryptPersonalData(data)}/>
-                </Grid>
-            </Grid>
-        )
+    function renderHeader(){
+        if(props.hospital){
+            return(
+                <Typography variant="body2" color="textPrimary">
+                    <Translate id="hospital.patient.fill-in" />
+                </Typography>
+            )
+        }
+        else{
+            return(
+                <React.Fragment>
+                    <Grid item xs={12}>
+                        <Typography variant="subtitle1" color="textPrimary">
+                            <Translate id="investigation.fill.personal_data.title" />
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="body2" color="textPrimary">
+                            <Translate id="investigation.fill.personal_data.description" />
+                        </Typography>
+                    </Grid>
+                </React.Fragment>
+            )
+        }
     }
-    else{
-        return (
-
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <Typography variant="subtitle1" color="textPrimary">
-                        <Translate id="investigation.fill.personal_data.title" />
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography variant="body2" color="textPrimary">
-                        <Translate id="investigation.fill.personal_data.description" />
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Form fields={form} initialData={props.initialData} 
-                        callBackForm={(data) => encryptPersonalData(data)}/>
-                </Grid>
+    return (
+        <Grid container spacing={1}>
+            <Grid item xs={12}>
+                {renderHeader()}
             </Grid>
-        )
-    }
-
-    
+            <Grid item xs={12}>
+                <Form fields={form} initialData={props.initialData} submitText={props.submitText}
+                    callBackForm={(data) => encryptPersonalData(data)}/>
+            </Grid>
+        </Grid>
+    )    
 }

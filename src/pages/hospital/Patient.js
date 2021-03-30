@@ -16,7 +16,7 @@ import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
-import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, 
+import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
         HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
 import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
@@ -198,6 +198,12 @@ function Patient(props) {
             )
         }
     }
+    function editPersonalData(){
+        console.log("Edit personal data");
+        const nextUrl = HOSPITAL_PATIENT_EDIT_PERSONAL_DATA.replace(":uuidPatient", uuidPatient);
+        console.log("Next url", nextUrl);
+        history.push(nextUrl);
+    }
     function closeModal(){
         setShowOptions(false);
         setIndexSection(-1);
@@ -323,7 +329,8 @@ function Patient(props) {
                                     {props.number}
                                 </Typography>
                             </Grid> */}
-                            <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                            <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}
+                                onClick={props.investigations.data[0].permissions === 3 ? editPersonalData : null} >
                                 <IconPatient gender={patient.personalData.sex} />
                             </Grid>
                         </Grid>

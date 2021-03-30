@@ -42,7 +42,8 @@
                 "back-button" : ["Back to search", "Volver a buscar"],
                 "note" : ["Hit search without data to find all patients", "Pulsa buscar con parámetros vacíos para encontrar a todos los pacientes"]
             },
-            "add-patient" : ["Add Patient", "Añadir paciente"]
+            "add-patient" : ["Add Patient", "Añadir paciente"],
+            "edit-patient" : ["Update Patient", "Actualizar datos paciente"]
         }
     },
     "dashboard":{
