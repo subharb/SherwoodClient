@@ -179,7 +179,7 @@ class FieldSherwood extends Component{
                     errorText
                 ]);
             case "date":
-                const value = input.value ? typeof input.value.getMonth === 'function' ? input.value : new Date(parseInt(input.value)) : "";
+                const value = input.value ? input.value : "";
                 return (
                     <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
                         <KeyboardDatePicker

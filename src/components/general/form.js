@@ -51,7 +51,7 @@ class Form extends Component {
             }
             
         });
-        this.props.initialize(initData);
+        this.props.initialize(initData)
     }
     showOptions(key){
         let tempState = this.state;
@@ -202,7 +202,6 @@ Form.propTypes = {
 // Decorate with redux-form
 Form = reduxForm({
     validate,
-    enableReinitialize: true,
     form: 'form'  // a unique identifier for this form               
   })(Form)
   

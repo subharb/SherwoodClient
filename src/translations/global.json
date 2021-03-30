@@ -21,7 +21,9 @@
             "fill-in" : ["Fill in details", "Rellene el formulario"],
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar" ],
             "new-record" : ["Record saved!", "Registro Guardado"],
-            "updated-record" : ["Record updated!", "Registro Actualizado"]
+            "updated-record" : ["Record updated!", "Registro Actualizado"],
+            "updated-patient" : ["Patient updated!", "Paciente Actualizado"],
+            "new-patient" : ["Patient Saved!", "Paciente añadido"]
         }
     },
     "breadcrumb" : {
