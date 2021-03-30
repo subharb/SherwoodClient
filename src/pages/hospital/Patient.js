@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { connect } from 'react-redux';
 import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
-import { postSubmissionPatientAction } from '../../redux/actions/submissionsPatientActions';
+import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../../redux/actions/submissionsPatientActions';
 import { fetchSubmissionsPatientInvestigationAction } from '../../redux/actions/submissionsPatientActions';
 import Loader from '../../components/Loader';
 import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg } from '../../components/general/mini_components';
@@ -12,20 +12,21 @@ import Modal from '../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
 import { yearsFromDate, daysFromDate, numberRecordsSection } from '../../utils';
 import FillDataCollection from './FillDataCollection';
-import ShowRecordsSection from '../../components/investigation/show/single/show_records_section'
 import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
-import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
+import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, 
+        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
 import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
 import icon_notes from "../../img/icons/history.svg";
+import { useUpdateEffect } from '../../hooks';
 
 const WhiteTypography = styled(Typography)`
     color:white;
     font-size: 1rem;
-`
+`;
 
 function Patient(props) {
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
@@ -43,10 +44,13 @@ function Patient(props) {
     let { uuidSection } = useParams();
     let { uuidDataCollection } = useParams();
     let { action } = useParams();
+    
     const parameters = useParams();
-    let idMedicalNote  = parseInt(parameters["idMedicalNote"]);
-
+    const idSubmission = parameters["idSubmission"] ? parseInt(parameters["idSubmission"]) : parameters["idSubmission"];
+    
     const history = useHistory();
+
+    const isInitialMount = useRef(true);
 
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.data[0].uuid].find(pat => pat.uuid === uuidPatient) : null
@@ -55,6 +59,15 @@ function Patient(props) {
     
     function fillDataCollection(indexCollection){
         setIndexDataCollection(indexCollection);
+    }
+    function callBackEditSubmission(idSubmission, uuidSection){
+        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "update").replace(":uuidSection", uuidSection)
+                .replace(":idSubmission", idSubmission);
+        setShowOptions(false);
+        //setIndexDataCollection(-1);
+        setIndexSection(-1);
+        history.push(nextUrl);
     }
     function sectionSelect(indexSection){
         const sectionSelected = dataCollectionSelected.sections[indexSection];
@@ -66,11 +79,12 @@ function Patient(props) {
         }
         
         if(isDisabled){
-            setShowSnackbar({show:true, message : "investigation.fill.survey.section-filled"});
+            setShowSnackbar({show:true, severity: "warning", message : "investigation.fill.survey.section-filled"});
         }
         else{
             const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
-                .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", sectionSelected.uuid);
+                .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", sectionSelected.uuid)
+                .replace(":idSubmission", "");
             console.log("Next url", nextUrl);
 
             setShowOptions(false);
@@ -102,15 +116,6 @@ function Patient(props) {
     }
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
-        setShowSnackbar({show:true, message : "investigation.fill.new_record"});
-        setIndexSection(-1);
-        setShowOptions(true);
-        setIndexMedicalNote(null);
-        console.log(data);
-
-        // const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
-        // console.log("Next url", nextUrl);
-        // history.push(nextUrl);
 
         const postObj = {submission : [
             {
@@ -119,9 +124,16 @@ function Patient(props) {
             }
             ]
         }
-        await dispatch(postSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
-        
-        
+        if(action === "update"){
+            await dispatch(updateSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
+        }
+        else{
+            setIndexSection(-1);
+            setShowOptions(true);
+            setIndexMedicalNote(null);
+            console.log(data);
+            await dispatch(postSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
+        }
     }
     function renderOptions(){
         if(!dataCollectionSelected){
@@ -161,14 +173,15 @@ function Patient(props) {
         }
     }
     function renderCore(){
-        if(dataCollectionSelected !== null && sectionSelected !== null){
+        if(dataCollectionSelected !== null && sectionSelected !== null && (action === "fill" || action === "update")){
+            const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
             return(
-                <FillDataCollection key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
+                <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
                 patientId={props.patientId} investigation={props.investigation} callBackDataCollection={(values) => saveRecord(values)}/>
             )
         }
         else if(dataCollectionSelected !== null && action === "show"){
-            return <ShowPatientRecords survey={dataCollectionSelected} mode="elements"
+            return <ShowPatientRecords survey={dataCollectionSelected} mode="elements" callBackEditSubmission={callBackEditSubmission}
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
         else if(surveyRecords.length === 0){
@@ -200,6 +213,17 @@ function Patient(props) {
             fetchRecordsPatient()
         }
     }, [props.investigations])
+    useUpdateEffect(() => {
+        
+        if(action === "update"){
+            setShowSnackbar({show:true, severity:"success", message : "hospital.patient.updated-record"});
+        }
+        if(action === "fill"){
+            setShowSnackbar({show:true, severity:"success", message : "hospital.patient.new-record"});
+        }
+        
+    }, [props.patientsSubmissions.nUpdatedRegisters]);
+    
     useEffect(() => {
         if(props.patientsSubmissions.data){
             let tempSubmissions = []
@@ -230,6 +254,19 @@ function Patient(props) {
         }
         
     }, [props.patientsSubmissions])
+
+    useEffect(() => {
+        
+            if(props.patientsSubmissions.error){
+                if(action === "update"){
+                    setShowSnackbar({show:true, severity:"error", message : "hospital.patient.no-update"});
+                }
+                if(action === "fill"){
+                    setShowSnackbar({show:true, severity:"error", message : "register.researcher.error"});
+                }
+            }
+    }, [props.patientsSubmissions.loading]);    
+
     if(error){
         return(
             <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
@@ -256,18 +293,15 @@ function Patient(props) {
                     }}
                     open={showSnackbar.show}
                     autoHideDuration={2000}
-                    onClose={() => setShowSnackbar({show:false})}
-                    message={<Translate id={showSnackbar.message} />}
-                    action={
-                    <React.Fragment>
-                        <Button color="secondary" size="small" onClick={() => setShowSnackbar({show:false})}>
-                        </Button>
-                        <IconButton size="small" aria-label="close" color="inherit" onClick={() => setShowSnackbar({show:false})}>
-                        <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                    }
-                />
+                    onClose={() => setShowSnackbar({show:false})}>
+                        {
+                            showSnackbar.message && 
+                            <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
+                                <Translate id={showSnackbar.message} />
+                            </Alert>
+                        }
+                        
+                </Snackbar>
                 <Modal isTransparent={true} open={showOptions || loading || saved} closeModal={closeModal}>
                     {
                         saved &&

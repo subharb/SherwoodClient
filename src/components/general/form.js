@@ -25,7 +25,14 @@ class Form extends Component {
         this.state = {showOptions:{}}
     }
     callBackForm(values){
-        return this.props.callBackForm(values);
+        //Filtro los que sean undefined
+        let tempValues = {}
+        Object.keys(values).forEach(key => {
+            if(typeof values[key] !== "undefined"){
+                tempValues[key] = values[key]
+            }
+        })
+        return this.props.callBackForm(tempValues);
     }
     componentDidMount(){
         //Busco el campo DefaultValue para inicializar el form con esos valores

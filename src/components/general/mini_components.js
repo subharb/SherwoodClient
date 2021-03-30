@@ -12,6 +12,7 @@ import {
     Save as SaveIcon,
     Clear as ClearIcon,
     Send as SendIcon,
+    Edit as EditIcon,
     ArrowForwardIos as ArrowForwardIosIcon,
     ArrowBackIos as ArrowBackIosIcon,
     LocalHospital as HospitalIcon
@@ -45,12 +46,6 @@ export const DeleteHolder = styled.div`
     cursor:pointer;
     align-items: center;
     justify-content: center;
-`;
-
-export const EditConsent = styled.i`
-    display: inline;
-    color:#E16580;
-    cursor:pointer;
 `;
 
 export const BasicButtonStyles = styled(Button)`
@@ -128,9 +123,10 @@ export const ButtonGreyBorderGrey = styled(ButtonGrey)`
 `;
 
 export const ButtonEdit = (props) =>{
-    return <DeleteHolder {...props}>
-        <i className="material-icons">edit</i>
-    </DeleteHolder>
+    return(
+        <Button {...props}>
+            <EditIcon />
+        </Button>)
 }
 
 export const ButtonDelete = (props) =>{

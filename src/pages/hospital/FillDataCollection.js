@@ -9,7 +9,7 @@ export default function FillDataCollection(props) {
     
     let years = yearsFromDate(props.dateOfBirth);
     let stay = daysFromDate(props.dateIn);
-
+    
     return (
         <React.Fragment>
             <Grid container  spacing={3}>
@@ -21,7 +21,8 @@ export default function FillDataCollection(props) {
                     </Grid>
                     <Grid item xs={12}>
                         <Paper elevation={3} style={{padding:"1rem"}} >
-                            <SectionForm key={props.sectionSelected.uuid} fields={props.sectionSelected.fields.sort((a,b) => a.order - b.order)} 
+                            <SectionForm initData={props.initData} key={props.sectionSelected.uuid} 
+                                fields={props.sectionSelected.fields.sort((a,b) => a.order - b.order)} 
                                 callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
                         </Paper>
                     </Grid>
