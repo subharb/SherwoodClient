@@ -62,7 +62,7 @@ const TextFieldSherwood = styled(TextField)`
 class FieldSherwood extends Component{
     constructor(props){
         super(props);
-
+        this.typeMargin = "dense";//dense, none;
         this.state = {options : [], date : new Date()}
 
         this.multiOptionSelected = this.multiOptionSelected.bind(this);
@@ -129,7 +129,7 @@ class FieldSherwood extends Component{
                 }
                 const labelId = `${input.name}_label`;
                 return(
-                    <FormControl mt={2} variant="outlined" style={{width:"100%"}} >
+                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"100%"}} >
                         <InputLabel id={labelId}>{labelString}</InputLabel>
                         <Select
                         labelId={labelId}
@@ -183,7 +183,7 @@ class FieldSherwood extends Component{
                 return (
                     <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
                         <KeyboardDatePicker
-                            margin="normal"
+                            margin={this.typeMargin}
                             id={input.name}
                             inputVariant="outlined"
                             size="small"
@@ -208,7 +208,7 @@ class FieldSherwood extends Component{
                 return (
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardTimePicker
-                            margin="normal"
+                            margin={this.typeMargin}
                             size="small"
                             inputVariant="outlined"
                             id={input.name}
@@ -286,11 +286,9 @@ class FieldSherwood extends Component{
             default:    
                     console.log("TextFieldSherwood",input.value);
                 return(
-                    <Box mt={1}>
-                        <TextFieldSherwood {...input} variant="outlined"
+                        <TextFieldSherwood {...input} variant="outlined" margin={this.typeMargin}
                             label={labelString} error={errorState} size="small"
                             helperText={errorString} />
-                    </Box>
                 )
         }
     }
