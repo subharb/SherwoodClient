@@ -440,8 +440,7 @@ export function filterRecordsFromSubmissions(submissions, sectionUUID){
     return filteredSubmissions;
 }
 
-export function yearsFromDate(fromDateString){
-    let fromDate = new Date(fromDateString); 
+export function yearsFromDate(fromDate){
     return new Date().getFullYear() - fromDate.getFullYear();
 }
 export function daysFromDate(fromDateString){

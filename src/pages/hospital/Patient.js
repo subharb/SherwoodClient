@@ -38,6 +38,7 @@ function Patient(props) {
     const [showOptions, setShowOptions] = useState(false);
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
     const [indexDataCollection, setIndexDataCollection] = useState(-1);
+    const [savedDataCollection, setSavedDataCollection] = useState(false);
     const [indexSection, setIndexSection] = useState(-1);
     const dispatch = useDispatch();
     let { uuidPatient } = useParams();
@@ -70,6 +71,7 @@ function Patient(props) {
         history.push(nextUrl);
     }
     function sectionSelect(indexSection){
+        setSavedDataCollection(false);
         const sectionSelected = dataCollectionSelected.sections[indexSection];
 
         let isDisabled = false;
@@ -131,6 +133,7 @@ function Patient(props) {
             setIndexSection(-1);
             setShowOptions(true);
             setIndexMedicalNote(null);
+            setSavedDataCollection(true);
             console.log(data);
             await dispatch(postSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
         }
@@ -175,10 +178,20 @@ function Patient(props) {
     function renderCore(){
         if(dataCollectionSelected !== null && sectionSelected !== null && (action === "fill" || action === "update")){
             const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
-            return(
-                <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
-                patientId={props.patientId} investigation={props.investigation} callBackDataCollection={(values) => saveRecord(values)}/>
-            )
+            if(savedDataCollection){
+                return(
+                    <Alert severity={showSnackbar.severity}>
+                        <Translate id="hospital.patient.new-record" />
+                    </Alert>
+                )
+            }
+            else{
+                return(
+                    <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
+                    patientId={props.patientId} investigation={props.investigation} callBackDataCollection={(values) => saveRecord(values)}/>
+                )
+            }
+            
         }
         else if(dataCollectionSelected !== null && action === "show"){
             return <ShowPatientRecords survey={dataCollectionSelected} mode="elements" callBackEditSubmission={callBackEditSubmission}
@@ -286,7 +299,7 @@ function Patient(props) {
         return <Loader />
     }
     else{
-        let years = yearsFromDate(parseInt(patient.personalData.birthdate));
+        let years = yearsFromDate(patient.personalData.birthdate);
         let stay = daysFromDate(props.dateIn);
 
         return (

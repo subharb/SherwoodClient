@@ -12,6 +12,7 @@ import Loader from '../../components/Loader';
 import { decryptPatientsData } from '../../utils'; 
 import PatientsTable from '../../components/general/PatientsTable';
 import { Alert } from '@material-ui/lab';
+import { ButtonBack } from '../../components/general/mini_components';
 
 let personalFieldsForm = {};
 
@@ -86,23 +87,28 @@ export default function SearchPatients(props) {
         else{
             if(filteredPatients.length === 0){
                 return ([
-                    <Box >
+                    <Box mb={2}>
                         <Paper style={{padding:'1rem'}}>
                             No patients meet the criteria
                         </Paper>
                     </Box>,    
-                    <Button onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></Button>,
+                    <ButtonBack mt={2} onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>,
                 ])
                 
             }
             else{
                 
-                return [
-                    <PatientsTable patients={filteredPatients} mobile 
-                        showPatientCallBack={id => patientSelected(id)} 
-                        personalFields={investigations[0].personalFields} />,
-                    <Button onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></Button>,
-                ]
+                return(
+                    <Grid container spacing={2}>
+                        <Grid item>
+                            <PatientsTable patients={filteredPatients} mobile 
+                                showPatientCallBack={id => patientSelected(id)} 
+                                personalFields={investigations[0].personalFields} />
+                        </Grid>
+                        <Grid item>
+                            <ButtonBack onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>
+                        </Grid>
+                    </Grid>)
             }
         }
     }

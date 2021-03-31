@@ -1,15 +1,11 @@
 import React, { useState } from 'react'
 import { Grid, Typography, Paper } from '@material-ui/core';
 import { BoxBckgr, IconPatient, ButtonAdd, CheckCircleOutlineSvg } from '../../components/general/mini_components';
-import { yearsFromDate, daysFromDate } from '../../utils';
 import SectionForm from '../../components/general/SectionForm';
 import PropTypes from 'prop-types';
 
 export default function FillDataCollection(props) {
-    
-    let years = yearsFromDate(props.dateOfBirth);
-    let stay = daysFromDate(props.dateIn);
-    
+        
     return (
         <React.Fragment>
             <Grid container  spacing={3}>
