@@ -440,8 +440,7 @@ export function filterRecordsFromSubmissions(submissions, sectionUUID){
     return filteredSubmissions;
 }
 
-export function yearsFromDate(fromDateString){
-    let fromDate = new Date(fromDateString); 
+export function yearsFromDate(fromDate){
     return new Date().getFullYear() - fromDate.getFullYear();
 }
 export function daysFromDate(fromDateString){
@@ -487,6 +486,10 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
             let decryptedValue = ""
             if(encryptedField){
                 decryptedValue = decryptData(encryptedField.value, keyInvestigation);
+                if(encryptedField.type === "date"){
+                    decryptedValue = new Date(parseInt(decryptedValue));
+                }
+                
             }
             
             encryptedFields[personalField.name] = decryptedValue; 

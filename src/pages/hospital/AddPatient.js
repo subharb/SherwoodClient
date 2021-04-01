@@ -62,7 +62,7 @@ export function AddPatientComponent(props) {
                 open={showSnackbar}
                 autoHideDuration={2000}
                 onClose={handleClose}
-                message="Patient Added"
+                message={props.patient ? <Translate id="hospital.patient.updated-patient" /> : <Translate id="hospital.patient.new-patient" />}
                 action={
                 <React.Fragment>
                     <Button color="secondary" size="small" onClick={handleClose}>

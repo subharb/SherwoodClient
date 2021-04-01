@@ -29,8 +29,9 @@ export function updatePatientAction(investigation, uuidPatient, patientData) {
       return updatePersonalDataPatientService(investigation.uuid, uuidPatient, patientData)
         .then((response) => {
           dispatch({
-            type: types.SAVE_PATIENT_SUCCESS,
+            type: types.UPDATE_PATIENT_SUCCESS,
             patient: {...response.patient},
+            uuidPatient:uuidPatient,
             investigation:investigation
           });
         })

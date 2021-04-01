@@ -9,7 +9,7 @@ export default function PatientsTable(props) {
         for(const pField of props.personalFields){
             let value = patient.personalData[pField.name];
             if(pField.type === "date"){
-                value = new Date(parseInt(patient.personalData[pField.name])).toLocaleDateString('es-ES', {
+                value = new Date(patient.personalData[pField.name]).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit'

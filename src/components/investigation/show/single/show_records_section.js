@@ -93,8 +93,8 @@ export default function ShowRecordsSection(props) {
                         {
                             !props.noTitle &&
                             <HeaderSection>
-                                <Typography variant="subtitle1" color="textPrimary">
-                                    Section: { props.section.name }
+                                <Typography variant="subtitle1" color="textPrimary" style={{ fontWeight: 600 }}>
+                                    { props.section.name }
                                 </Typography>
                                 {
                                     (dateCreated.getTime() + 86400000 > new Date().getTime()) && 
