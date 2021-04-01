@@ -64,6 +64,7 @@
     "start-hospital": "REACT_APP_PRODUCT=HOSPITAL react-scripts start --no-cache --hospital",
     "build": "react-scripts build",
     "build:beta:hospital": "env-cmd -f .env.beta-hospital react-scripts build",
+    "build:hospital": "env-cmd -f .env.beta-hospital react-scripts build",
     "test": "react-scripts test --env=jsdom-sixteen",
     "eject": "react-scripts eject",
     "cypress": "node_modules/.bin/cypress open",
