@@ -18,6 +18,9 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
+import { Autocomplete } from '@material-ui/lab';
+import * as ECT from '@whoicd/icd11ect';
+import '@whoicd/icd11ect/style.css';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -64,7 +67,7 @@ class FieldSherwood extends Component{
     constructor(props){
         super(props);
         this.typeMargin = "dense";//dense, none;
-        this.state = {options : [], date : new Date()}
+        this.state = {options : [], date : new Date(), loading:false}
 
         this.multiOptionSelected = this.multiOptionSelected.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -81,6 +84,56 @@ class FieldSherwood extends Component{
                 let options = request.data.map(opt => {return {"label" : opt.code, "value":opt.id}});
                 this.setState({options : options});
             }
+        }
+        if(this.props.type === "ict"){
+            const mySettings = {
+                apiServerUrl: "https://id.who.int",   
+                apiSecured: true,
+                icdMinorVersion: "2020-09" ,
+                icdLinearization: "mms",
+                language: "es",
+                sourceApp: "Test App",
+                wordsAvailable: true,
+                chaptersAvailable: true,
+                flexisearchAvailable: true,
+                height: "500px"
+            };
+            const myCallbacks = {
+                searchStartedFunction: () => {
+                    //this callback is called when searching is started.
+                    console.log("Search started!");
+                },
+                searchEndedFunction: () => {
+                    //this callback is called when search ends.
+                    console.log("Search ended!");
+                },
+                selectedEntityFunction: (selectedEntity) => {
+                //This callback is called when the user makes a selection
+                //This is the best way to get what the user has chosen and use it in 
+                //your application
+                    console.log('selected uri: '+ selectedEntity.uri);
+                    console.log('selected code: '+ selectedEntity.code);
+                    console.log('selected bestMatchText: '+ selectedEntity.bestMatchText);
+                    this.props.input.onChange(selectedEntity.code);
+                },
+                getNewTokenFunction: async () => {
+                    // if the embedded coding tool is working with the cloud hosted ICD-API, you need to set apiSecured=true
+                    // In this case embedded coding tool calls this function when it needs a new token.
+                    // In this case you backend web application should provide updated tokens 
+                    
+                    return "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE2MTczNzIwOTUsImV4cCI6MTYxNzM3NTY5NSwiaXNzIjoiaHR0cHM6Ly9pY2RhY2Nlc3NtYW5hZ2VtZW50Lndoby5pbnQiLCJhdWQiOlsiaHR0cHM6Ly9pY2RhY2Nlc3NtYW5hZ2VtZW50Lndoby5pbnQvcmVzb3VyY2VzIiwiaWNkYXBpIl0sImNsaWVudF9pZCI6ImYzNjEzZTM1LWQ4OGEtNDliNy04YTg2LTZmNWY4YzcyNjlmOF8wNDk4NDI0Yy03ZWQ3LTQ0MGEtYjVhNC0wMGQ2ZDUzNmJiYjEiLCJzY29wZSI6WyJpY2RhcGlfYWNjZXNzIl19.rMIN-7kyam8gnTGwP6TM60PyQQZHGjLWe_enI3oCrAAnvBB2WAhHZdaz5vCqclAbM3g0pJpUR2rnhbun2UDgVAzWJZSzZ3bBYRNJ_22v9yNm2DcjnnexL1fr-D0N5ndKhXPBqtsEVxiWk1KNtteCtvdoJHvgLIM1QOSt5n_2HE_4QoMpbWD0LCCb7LxPW0S-Sw7TcPX5Dqoc34rn6Ubytg8C6J32KkilFR9Ry7LHDkBs2yQ84EeTABTDNf2LLWd_LGDsqY_ps7k65aYepPWSt9UA1eiIZDirx34Q1xo9dVAh2V3_jTNKhF1-K-3wDkIdB7QANWTT-WomFSt9dYVzPw";
+                    // const url = 'http://myhost.com/mybackendscript' // we assume this backend script returns a JSON {'token': '...'} 
+                    // try {
+                    //     const response = await fetch(url);
+                    //     const result = await response.json();
+                    //     const token = result.token;
+                    //     return token; // the function return is required 
+                    // } catch (e) {
+                    //     console.log("Error during the request");
+                    // }
+                }
+            };
+            ECT.Handler.configure(mySettings, myCallbacks);
         }
         // if(this.props.type === "select"){
         //     let selects = document.querySelectorAll('select[name="'+this.props.input.name+'"]');
@@ -103,7 +156,16 @@ class FieldSherwood extends Component{
         this.props.input.onChange(tempValue);
         
     }
-    
+    autoCompleteChanged(value){
+        console.log("Este es el value "+value);
+        if(value.length > 4){
+            let tempState = {...this.state};
+            tempState.loading = true;
+            this.setState(tempState);
+
+        }
+        
+    }
     handleDateChange(value){
         this.props.input.onChange(value);
     }
@@ -283,7 +345,28 @@ class FieldSherwood extends Component{
                             label={labelString} error={errorState} 
                             helperText={errorString} />
                     </Box>
-                )    
+                )  
+            case "autocomplete":
+                return(
+                    <Autocomplete
+                        id={input.name}
+                        options={this.state.options}
+                        onInputChange={(event, newValue) => {
+                            this.autoCompleteChanged(newValue);
+                          }}
+                        getOptionLabel={(option) => option.title}
+                        style={{ width: 300 }}
+                        renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
+               />
+                )
+            case "ict" : 
+                return([
+                    <input type="text" class="ctw-input" autocomplete="off" data-ctw-ino="1" />, 
+                    <div class="ctw-window" data-ctw-ino="1"></div>
+                ]
+                      
+                    
+                );
             default:    
                     console.log("TextFieldSherwood",input.value);
                 return(
