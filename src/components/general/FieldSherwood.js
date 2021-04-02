@@ -108,7 +108,7 @@ class FieldSherwood extends Component{
         this.props.input.onChange(value);
     }
     render(){
-        const {input, label, meta, type, options, size, option, removeClass, otherOptions} = this.props;
+        const {input, label, meta, type, options, size, option, removeClass, validation} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -194,7 +194,7 @@ class FieldSherwood extends Component{
                             defaultValue={value} 
                             openTo="year"
                             onChange={this.handleDateChange}
-                            maxDate={otherOptions && otherOptions.maxDate === "today" ? new Date() : null}
+                            maxDate={validation === "pastDate" ? new Date() : undefined}
                             emptyLabel={labelString}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
