@@ -29,11 +29,7 @@ export default function FillDataCollection(props) {
 }
 
 FillDataCollection.propTypes = {
-    /** DateOfBirth */
-    dateOfBirth: PropTypes.object.isRequired,
-    sectionSelected : PropTypes.number,
-    /** Date of entrance in hospital */
-    dateIn: PropTypes.object.isRequired,
+    sectionSelected : PropTypes.object,
     /** Data Collection */
     dataCollection: PropTypes.object.isRequired,
     /** Callback function from parent */

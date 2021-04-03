@@ -92,7 +92,7 @@ class FieldSherwood extends Component{
                 apiSecured: true,
                 icdMinorVersion: "2020-09" ,
                 icdLinearization: "mms",
-                language: this.props.translate("lang"),
+                language: "es",//this.props.translate("lang"),
                 sourceApp: "Sherwood",
                 wordsAvailable: true,
                 chaptersAvailable: true,

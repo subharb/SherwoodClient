@@ -11,6 +11,7 @@
 # production
 /build
 /build-hospital
+/build-beta-hospital
 
 # misc
 .DS_Store
