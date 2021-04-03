@@ -21,6 +21,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 import * as ECT from '@whoicd/icd11ect';
 import '@whoicd/icd11ect/style.css';
+import { getTokenWho } from '../../services/sherwoodService';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -121,7 +122,10 @@ class FieldSherwood extends Component{
                     // In this case embedded coding tool calls this function when it needs a new token.
                     // In this case you backend web application should provide updated tokens 
                     
-                    return "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE2MTczNzIwOTUsImV4cCI6MTYxNzM3NTY5NSwiaXNzIjoiaHR0cHM6Ly9pY2RhY2Nlc3NtYW5hZ2VtZW50Lndoby5pbnQiLCJhdWQiOlsiaHR0cHM6Ly9pY2RhY2Nlc3NtYW5hZ2VtZW50Lndoby5pbnQvcmVzb3VyY2VzIiwiaWNkYXBpIl0sImNsaWVudF9pZCI6ImYzNjEzZTM1LWQ4OGEtNDliNy04YTg2LTZmNWY4YzcyNjlmOF8wNDk4NDI0Yy03ZWQ3LTQ0MGEtYjVhNC0wMGQ2ZDUzNmJiYjEiLCJzY29wZSI6WyJpY2RhcGlfYWNjZXNzIl19.rMIN-7kyam8gnTGwP6TM60PyQQZHGjLWe_enI3oCrAAnvBB2WAhHZdaz5vCqclAbM3g0pJpUR2rnhbun2UDgVAzWJZSzZ3bBYRNJ_22v9yNm2DcjnnexL1fr-D0N5ndKhXPBqtsEVxiWk1KNtteCtvdoJHvgLIM1QOSt5n_2HE_4QoMpbWD0LCCb7LxPW0S-Sw7TcPX5Dqoc34rn6Ubytg8C6J32KkilFR9Ry7LHDkBs2yQ84EeTABTDNf2LLWd_LGDsqY_ps7k65aYepPWSt9UA1eiIZDirx34Q1xo9dVAh2V3_jTNKhF1-K-3wDkIdB7QANWTT-WomFSt9dYVzPw";
+                    const response = await getTokenWho(this.props.translate("lang"));
+                    if(response.status === 200){
+                        return response.token;
+                    }
                     // const url = 'http://myhost.com/mybackendscript' // we assume this backend script returns a JSON {'token': '...'} 
                     // try {
                     //     const response = await fetch(url);
