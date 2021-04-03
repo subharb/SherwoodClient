@@ -92,8 +92,8 @@ class FieldSherwood extends Component{
                 apiSecured: true,
                 icdMinorVersion: "2020-09" ,
                 icdLinearization: "mms",
-                language: "es",
-                sourceApp: "Test App",
+                language: this.props.translate("lang"),
+                sourceApp: "Sherwood",
                 wordsAvailable: true,
                 chaptersAvailable: true,
                 flexisearchAvailable: true,
@@ -365,11 +365,9 @@ class FieldSherwood extends Component{
                 )
             case "ict" : 
                 return([
-                    <input type="text" class="ctw-input" autocomplete="off" data-ctw-ino="1" />, 
-                    <div class="ctw-window" data-ctw-ino="1"></div>
+                    <input type="text" className="ctw-input" autoComplete="off" data-ctw-ino="1" />, 
+                    <div className="ctw-window" data-ctw-ino="1"></div>
                 ]
-                      
-                    
                 );
             default:    
                     console.log("TextFieldSherwood",input.value);
