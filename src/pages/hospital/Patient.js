@@ -22,6 +22,8 @@ import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
 import icon_notes from "../../img/icons/history.svg";
 import { useUpdateEffect } from '../../hooks';
+import FieldSherwood from '../../components/general/FieldSherwood';
+import Form from '../../components/general/form';
 
 const WhiteTypography = styled(Typography)`
     color:white;

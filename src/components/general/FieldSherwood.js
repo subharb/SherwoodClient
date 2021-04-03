@@ -365,8 +365,8 @@ class FieldSherwood extends Component{
                 )
             case "ict" : 
                 return([
-                    <input type="text" className="ctw-input" autoComplete="off" data-ctw-ino="1" />, 
-                    <div className="ctw-window" data-ctw-ino="1"></div>
+                    <input key="ict-input" type="text" className="ctw-input" autoComplete="off" data-ctw-ino="1" />, 
+                    <div key="ict-container" className="ctw-window" data-ctw-ino="1"></div>
                 ]
                 );
             default:    
