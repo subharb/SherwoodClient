@@ -19,9 +19,8 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
-import * as ECT from '@whoicd/icd11ect';
-import '@whoicd/icd11ect/style.css';
-import { getTokenWho } from '../../services/sherwoodService';
+
+import ICTSelector from './ICTSelector';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -72,12 +71,9 @@ class FieldSherwood extends Component{
 
         this.multiOptionSelected = this.multiOptionSelected.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
-        
+        this.resetDiagnose = this.resetDiagnose.bind(this);
     }
-    // componentDidUpdate(){
-    //     let selects = document.querySelectorAll('select');
-    //     var instances = M.FormSelect.init(selects, {});
-    // }
+
     async componentDidMount(){
         if(typeof this.props.optionsUrl !== "undefined"){
             const request = await axios.get(this.props.optionsUrl);
@@ -86,64 +82,7 @@ class FieldSherwood extends Component{
                 this.setState({options : options});
             }
         }
-        if(this.props.type === "ict"){
-            const mySettings = {
-                apiServerUrl: "https://id.who.int",   
-                apiSecured: true,
-                icdMinorVersion: "2020-09" ,
-                icdLinearization: "mms",
-                language: "es",//this.props.translate("lang"),
-                sourceApp: "Sherwood",
-                wordsAvailable: true,
-                chaptersAvailable: true,
-                flexisearchAvailable: true,
-                height: "500px"
-            };
-            const myCallbacks = {
-                searchStartedFunction: () => {
-                    //this callback is called when searching is started.
-                    console.log("Search started!");
-                },
-                searchEndedFunction: () => {
-                    //this callback is called when search ends.
-                    console.log("Search ended!");
-                },
-                selectedEntityFunction: (selectedEntity) => {
-                //This callback is called when the user makes a selection
-                //This is the best way to get what the user has chosen and use it in 
-                //your application
-                    console.log('selected uri: '+ selectedEntity.uri);
-                    console.log('selected code: '+ selectedEntity.code);
-                    console.log('selected bestMatchText: '+ selectedEntity.bestMatchText);
-                    this.props.input.onChange(selectedEntity.code);
-                },
-                getNewTokenFunction: async () => {
-                    // if the embedded coding tool is working with the cloud hosted ICD-API, you need to set apiSecured=true
-                    // In this case embedded coding tool calls this function when it needs a new token.
-                    // In this case you backend web application should provide updated tokens 
-                    
-                    const response = await getTokenWho(this.props.translate("lang"));
-                    if(response.status === 200){
-                        return response.token;
-                    }
-                    // const url = 'http://myhost.com/mybackendscript' // we assume this backend script returns a JSON {'token': '...'} 
-                    // try {
-                    //     const response = await fetch(url);
-                    //     const result = await response.json();
-                    //     const token = result.token;
-                    //     return token; // the function return is required 
-                    // } catch (e) {
-                    //     console.log("Error during the request");
-                    // }
-                }
-            };
-            ECT.Handler.configure(mySettings, myCallbacks);
-        }
-        // if(this.props.type === "select"){
-        //     let selects = document.querySelectorAll('select[name="'+this.props.input.name+'"]');
-        //     M.FormSelect.init(selects, {});
-            
-        // }
+
     }
     multiOptionSelected(value){
         let tempValue = [value];
@@ -169,6 +108,12 @@ class FieldSherwood extends Component{
 
         }
         
+    }
+    diagnoseSelected(code){
+        this.props.input.onChange(code);
+    }
+    resetDiagnose(){
+        this.props.input.onChange(undefined);
     }
     handleDateChange(value){
         this.props.input.onChange(value);
@@ -364,10 +309,10 @@ class FieldSherwood extends Component{
                />
                 )
             case "ict" : 
-                return([
-                    <input key="ict-input" type="text" className="ctw-input" autoComplete="off" data-ctw-ino="1" />, 
-                    <div key="ict-container" className="ctw-window" data-ctw-ino="1"></div>
-                ]
+                return(
+                    <ICTSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
+                        helperText={errorString} resetDiagnose={this.resetDiagnose}
+                        size="small" diagnoseSelected={(code) => this.diagnoseSelected(code)} />
                 );
             default:    
                     console.log("TextFieldSherwood",input.value);
