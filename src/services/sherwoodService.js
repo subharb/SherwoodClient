@@ -145,6 +145,21 @@ export function updatePersonalDataPatientService(uuidInvestigation, uuidPatient,
     })
 }
 
+export function getTokenWho(lang){
+    return new Promise((resolve, reject) => {
+        axios.get(process.env.REACT_APP_API_URL+"/hospital/token/who/"+lang, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            .then((response) => {
+                if(response.status === 200){
+                    resolve(response.data);
+                }
+                else{
+                    reject(response.data);
+                }
+            })
+            .catch(err => {console.log('Catch', err); reject(err);}); 
+    })
+}
+
 export function postRecordPatientService(postObj, uuidInvestigation, patientId, surveyUUID) {
     return new Promise((resolve, reject) => {
         

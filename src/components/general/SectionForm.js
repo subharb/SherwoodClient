@@ -29,6 +29,7 @@ export default function SectionForm(props) {
         })
         props.callBackSectionForm(dataFields);
     }
+
     return <Form fields={dictFields} initialData={initialData} submitText={Object.keys(initialData).length > 0 ? "general.update" : null}
-                callBackForm = {(values) => callBackForm(values)}/>
+            callBackForm = {(values) => callBackForm(values)}/>
 }

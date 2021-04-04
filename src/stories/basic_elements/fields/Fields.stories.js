@@ -3,6 +3,20 @@ import Form from '../../../components/general/form';
 import ProviderSherwood from '../../../providerSherwood';
 
 const FIELDS_FORM = {
+    "autocomplete":{
+        required : false,
+        type:"autocomplete",
+        label:"Autocomplete",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty"
+    },
+    "ict":{
+        required : false,
+        type:"ict",
+        label:"Autocomplete",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty"
+    },
     "checkbox":{
         required : false,
         type:"checkbox",

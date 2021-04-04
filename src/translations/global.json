@@ -1,4 +1,5 @@
-{
+{   
+    "lang" : ["en", "es"],
     "home" : ["Welcome", "Bienvenido"],
     "general" : {
         "yes" : ["Yes", "No"], 

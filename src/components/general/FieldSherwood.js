@@ -18,6 +18,9 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
+import { Autocomplete } from '@material-ui/lab';
+
+import ICTSelector from './ICTSelector';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -64,16 +67,13 @@ class FieldSherwood extends Component{
     constructor(props){
         super(props);
         this.typeMargin = "dense";//dense, none;
-        this.state = {options : [], date : new Date()}
+        this.state = {options : [], date : new Date(), loading:false}
 
         this.multiOptionSelected = this.multiOptionSelected.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
-        
+        this.resetDiagnose = this.resetDiagnose.bind(this);
     }
-    // componentDidUpdate(){
-    //     let selects = document.querySelectorAll('select');
-    //     var instances = M.FormSelect.init(selects, {});
-    // }
+
     async componentDidMount(){
         if(typeof this.props.optionsUrl !== "undefined"){
             const request = await axios.get(this.props.optionsUrl);
@@ -82,11 +82,7 @@ class FieldSherwood extends Component{
                 this.setState({options : options});
             }
         }
-        // if(this.props.type === "select"){
-        //     let selects = document.querySelectorAll('select[name="'+this.props.input.name+'"]');
-        //     M.FormSelect.init(selects, {});
-            
-        // }
+
     }
     multiOptionSelected(value){
         let tempValue = [value];
@@ -103,7 +99,22 @@ class FieldSherwood extends Component{
         this.props.input.onChange(tempValue);
         
     }
-    
+    autoCompleteChanged(value){
+        console.log("Este es el value "+value);
+        if(value.length > 4){
+            let tempState = {...this.state};
+            tempState.loading = true;
+            this.setState(tempState);
+
+        }
+        
+    }
+    diagnoseSelected(code){
+        this.props.input.onChange(code);
+    }
+    resetDiagnose(){
+        this.props.input.onChange(undefined);
+    }
     handleDateChange(value){
         this.props.input.onChange(value);
     }
@@ -283,7 +294,26 @@ class FieldSherwood extends Component{
                             label={labelString} error={errorState} 
                             helperText={errorString} />
                     </Box>
-                )    
+                )  
+            case "autocomplete":
+                return(
+                    <Autocomplete
+                        id={input.name}
+                        options={this.state.options}
+                        onInputChange={(event, newValue) => {
+                            this.autoCompleteChanged(newValue);
+                          }}
+                        getOptionLabel={(option) => option.title}
+                        style={{ width: 300 }}
+                        renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
+               />
+                )
+            case "ict" : 
+                return(
+                    <ICTSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
+                        helperText={errorString} resetDiagnose={this.resetDiagnose}
+                        size="small" diagnoseSelected={(code) => this.diagnoseSelected(code)} />
+                );
             default:    
                     console.log("TextFieldSherwood",input.value);
                 return(
