@@ -21,6 +21,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 
 import ICTSelector from './ICTSelector';
+import DrugSelector from './DrugSelector';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -114,6 +115,12 @@ class FieldSherwood extends Component{
     }
     resetDiagnose(){
         this.props.input.onChange(undefined);
+    }
+    drugSelected(drug){
+        this.props.input.onChange([drug.name]);
+    }
+    drugStartDate(date){
+        this.props.change('net', "newValue");
     }
     handleDateChange(value){
         this.props.input.onChange(value);
@@ -313,6 +320,14 @@ class FieldSherwood extends Component{
                     <ICTSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
                         helperText={errorString} resetDiagnose={this.resetDiagnose}
                         size="small" diagnoseSelected={(code) => this.diagnoseSelected(code)} />
+                );
+            case "test" : return null;
+            case "drug" : 
+                return(
+                    <DrugSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
+                        helperText={errorString}  errorState={errorState} 
+                        resetDiagnose={this.resetDiagnose} 
+                        size="small" drugSelected={(code) => this.drugSelected(code)} />
                 );
             default:    
                     console.log("TextFieldSherwood",input.value);

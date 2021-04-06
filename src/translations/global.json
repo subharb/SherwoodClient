@@ -10,7 +10,9 @@
         "update" : ["Update", "Actualizar"],
         "back" : ["Back", "Atrás"],
         "add" : ["Add", "Añadir"],
-        "view" : ["View", "Ver"]
+        "view" : ["View", "Ver"],
+        "startDate" : ["Start Date", "Fecha Inicio"],
+        "endDate" : ["End Date", "Fecha fin"]
     },
     "hospital" : {
         "doctor" : ["Doctor", "Médico"],

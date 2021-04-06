@@ -10,6 +10,44 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     },
+    "test":{
+        required : false,
+        type:"test",
+        label:"Autocomplete",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty"
+    },
+    "drug":{
+        required : false,
+        type:"drug",
+        label:"Drug Selector",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty",
+        "slaves" : [{
+            "required": true,
+            "encrypted": false,
+            "name": "drug-code",
+            "label": "Start Drug",
+            "type": "text",
+            "validation" : "notEmpty",
+        },
+        {
+            "required": true,
+            "encrypted": false,
+            "name": "drug-start",
+            "label": "Start Drug",
+            "type": "date",
+            "validation" : "notEmpty",
+        },
+        {
+            "required": true,
+            "encrypted": false,
+            "name": "drug-finish",
+            "label": "Finish Drug",
+            "type": "date",
+            "validation" : "notEmpty",
+        }]
+    },
     "ict":{
         required : false,
         type:"ict",
