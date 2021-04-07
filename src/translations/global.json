@@ -29,7 +29,9 @@
             "updated-patient" : ["Patient updated!", "Paciente Actualizado"],
             "new-patient" : ["Patient Saved!", "Paciente añadido"]
         },
-        "posology" : {
+        "treatment-name" : ["Name", "Nombre"],
+        "posology" : ["Posology", "Posología"],
+        "posology-types" : {
             "4h" : ["4 hours", "4 horas"],
             "6h" : ["6 hours", "6 horas"],
             "8h" : ["8 hours", "8 horas"],

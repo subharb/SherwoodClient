@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from '../../components/general/form';
 import ProviderSherwood from '../../providerSherwood';
+import { MultipleTreatmentSelector } from '../../components/general/TreatmentSelector';
 
 const FIELD_TREATMENT = {
     "drug":{
@@ -40,13 +41,13 @@ const FIELD_TREATMENT = {
             "label": "Posology",
             "type": "select",
             options:[
-                {"label" : "hospital.posology.4h", "value" : "4h"},
-                {"label": "hospital.posology.6h", "value" : "6h"},
-                {"label": "hospital.posology.8h", "value" : "8h"},
-                {"label": "hospital.posology.12h", "value" : "12h"},
-                {"label": "hospital.posology.24h", "value" : "24h"},
-                {"label": "hospital.posology.48h", "value" : "48h"},
-                {"label": "hospital.posology.week", "value" : "7d"}
+                {"label" : "hospital.posology-types.4h", "value" : "4h"},
+                {"label": "hospital.posology-types.6h", "value" : "6h"},
+                {"label": "hospital.posology-types.8h", "value" : "8h"},
+                {"label": "hospital.posology-types.12h", "value" : "12h"},
+                {"label": "hospital.posology-types.24h", "value" : "24h"},
+                {"label": "hospital.posology-types.48h", "value" : "48h"},
+                {"label": "hospital.posology-types.week", "value" : "7d"}
             ],
             "validation" : "notEmpty",
         }]
@@ -73,12 +74,37 @@ export default {
         </ProviderSherwood>],
 };
 
-const Template = (args) => <Form {...args} />;
 
-export const Treatment = Template.bind({});
-Treatment.args = {
-    fields:FIELD_TREATMENT, 
-    callBackForm : (values) => console.log("Result",JSON.stringify(values))
+const Template = (args) => <MultipleTreatmentSelector {...args}  />
+
+export const TreatmentEmpty = Template.bind({});
+TreatmentEmpty.args = {
+    label:"Treatment", 
+    variant:"outlined",
+    margin:"small",
+    helperText:"ERror" , 
+    errorState:false,
+    slaves:FIELD_TREATMENT["drug"]["slaves"],
+    resetDiagnose:() => {console.log("aaa")}, 
+    size:"small",
+    drugSelected:(values) => {console.log("Result",JSON.stringify(values))}
+};
+
+export const TreatmentWithData = Template.bind({});
+TreatmentWithData.args = {
+    label:"Treatment", 
+    variant:"outlined",
+    margin:"small",
+    helperText:"ERror" , 
+    errorState:false,
+    slaves:FIELD_TREATMENT["drug"]["slaves"],
+    resetDiagnose:() => {console.log("aaa")}, 
+    size:"small",
+    initialState:{isAddingDrug:false, listTreatments:[{drug: {name:"paracetamol"}, 
+        posology:{  label: "hospital.posology-types.6h",
+                    value: "6h"}, 
+        startDate:"1111", endDate:"111"}]},
+    drugSelected:(values) => {console.log("Result",JSON.stringify(values))}
 };
 
 export const ICT = Template.bind({});

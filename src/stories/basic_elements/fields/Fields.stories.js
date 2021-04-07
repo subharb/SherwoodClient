@@ -54,13 +54,13 @@ const FIELDS_FORM = {
             "label": "Posology",
             "type": "select",
             options:[
-                {"label" : "hospital.posology.4h", "value" : "4h"},
-                {"label": "hospital.posology.6h", "value" : "6h"},
-                {"label": "hospital.posology.8h", "value" : "8h"},
-                {"label": "hospital.posology.12h", "value" : "12h"},
-                {"label": "hospital.posology.24h", "value" : "24h"},
-                {"label": "hospital.posology.48h", "value" : "48h"},
-                {"label": "hospital.posology.week", "value" : "7d"}
+                {"label" : "hospital.posology-types.4h", "value" : "4h"},
+                {"label": "hospital.posology-types.6h", "value" : "6h"},
+                {"label": "hospital.posology-types.8h", "value" : "8h"},
+                {"label": "hospital.posology-types.12h", "value" : "12h"},
+                {"label": "hospital.posology-types.24h", "value" : "24h"},
+                {"label": "hospital.posology-types.48h", "value" : "48h"},
+                {"label": "hospital.posology-types.week", "value" : "7d"}
             ],
             "validation" : "notEmpty",
         }]

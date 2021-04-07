@@ -359,25 +359,25 @@ return (
                             <Box mr={2}>
                                 {
                                     props.actions.hasOwnProperty("add") &&
-                                    <IconButton data-testid="add-element" aria-label="add" onClick={() => props.actions.add(index)}>
+                                    <IconButton data-testid="add-element" aria-label="add" onClick={() => props.actions.add( row.id)}>
                                         <AddIcon />
                                     </IconButton>
                                 }
                                 {
                                     props.actions.hasOwnProperty("view") &&
-                                    <IconButton data-testid="view-element" aria-label="view" onClick={() => props.actions.view(index)}>
+                                    <IconButton data-testid="view-element" aria-label="view" onClick={() => props.actions.view( row.id)}>
                                         <RemoveRedEyeIcon />
                                     </IconButton>
                                 }
                                 {
                                     props.actions.hasOwnProperty("delete") &&
-                                    <IconButton data-testid="delete-element" aria-label="delete" onClick={() => props.actions.delete(index)}>
+                                    <IconButton data-testid="delete-element" aria-label="delete" onClick={() => props.actions.delete(row.id)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 }
                                 {
                                     props.actions.hasOwnProperty("edit") &&
-                                    <IconButton data-testid="edit-element" aria-label="edit" onClick={() => props.actions.edit(index)}>
+                                    <IconButton data-testid="edit-element" aria-label="edit" onClick={() => props.actions.edit( row.id)}>
                                         <EditIcon />
                                     </IconButton>
                                 }

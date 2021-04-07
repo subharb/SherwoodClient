@@ -52,7 +52,6 @@ function SingleTreatmentSelector(props){
         console.log(drug);
         setDrug(drug);
         setErrorDrug(false);
-        props.drugSelected(drug);
     }
     function saveDrug(){
         let valid = true;
@@ -69,7 +68,7 @@ function SingleTreatmentSelector(props){
             valid = false;
         }
         if(valid){
-            props.drugSelected({
+            props.treatmentSelected({
                 drug,posology,startDate
             });
         }
