@@ -172,6 +172,18 @@ export const ButtonContinue = (props) =>{
         </ButtonContinueStyles>
 }
 
+export const ButtonAccept = (props) =>{
+    return <ButtonContinueStyles
+        variant="contained"
+        color="primary"
+        size="small"
+        {...props}
+        data-testid={props['data-testid'] ? props['data-testid'] : "continue"}
+    >
+        {props.children}
+    </ButtonContinueStyles>
+}
+
 export const ButtonCancel = (props) =>{
     return <ButtonCancelStyles
         variant="contained"

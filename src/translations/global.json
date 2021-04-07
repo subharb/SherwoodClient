@@ -12,7 +12,8 @@
         "add" : ["Add", "Añadir"],
         "view" : ["View", "Ver"],
         "startDate" : ["Start Date", "Fecha Inicio"],
-        "endDate" : ["End Date", "Fecha fin"]
+        "endDate" : ["End Date", "Fecha fin"],
+        "accept" : ["Accept", "Aceptar"]
     },
     "hospital" : {
         "doctor" : ["Doctor", "Médico"],
@@ -27,7 +28,17 @@
             "updated-record" : ["Record updated!", "Registro Actualizado"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado"],
             "new-patient" : ["Patient Saved!", "Paciente añadido"]
-        }
+        },
+        "posology" : {
+            "4h" : ["4 hours", "4 horas"],
+            "6h" : ["6 hours", "6 horas"],
+            "8h" : ["8 hours", "8 horas"],
+            "12h" : ["12 hours", "12 horas"],
+            "24h" : ["24 hours", "24 horas"],
+            "48h" : ["48 hours", "48 horas"],
+            "week" : ["1 week", "1 semana"]
+        },
+        "add-drug" : ["Add drug", "Añadir tratamiento"]
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],

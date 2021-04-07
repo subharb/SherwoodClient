@@ -21,7 +21,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 
 import ICTSelector from './ICTSelector';
-import DrugSelector from './DrugSelector';
+import { MultipleTreatmentSelector } from './TreatmentSelector';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -324,8 +324,8 @@ class FieldSherwood extends Component{
             case "test" : return null;
             case "drug" : 
                 return(
-                    <DrugSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
-                        helperText={errorString}  errorState={errorState} 
+                    <MultipleTreatmentSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
+                        helperText={errorString}  errorState={errorState} slaves={this.props.slaves}
                         resetDiagnose={this.resetDiagnose} 
                         size="small" drugSelected={(code) => this.drugSelected(code)} />
                 );
