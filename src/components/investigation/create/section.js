@@ -65,7 +65,6 @@ class Section extends Component{
             newValues.repeats = values.hasOwnProperty("repeats") ? values.repeats : false;
             this.props.callBackNewSection(newValues);
         }
-        
     }
     deleteElement(index, element){
         console.log("Delete Field", index);
@@ -146,7 +145,6 @@ class Section extends Component{
                                     {
                                         title
                                     }
-                                    
                                 </Typography>
                                 <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
                                     <Field type="text" name="name" label="name" required={true} component={FieldSherwood} />

@@ -60,8 +60,8 @@ export default class EDC extends Component{
                                 {id:"number_sections", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
                             ]
          
-            const rows = this.state.surveys.map(survey => {
-                return { title : survey.name, number_sections : survey.sections.length};
+            const rows = this.state.surveys.map((survey, index) => {
+                return { id :index, title : survey.name, number_sections : survey.sections.length};
             })
                     
             return([

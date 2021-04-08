@@ -74,7 +74,7 @@ class DataCollection extends Component{
                     <Grid item xs={12}>
                         <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
                             headCells={arrayHeader}
-                            rows={this.state.sections.map(section => {
+                            rows={this.state.sections.map((section, index) => {
                                 let tempSection = {}
                                 for(const keyField of Object.keys(SECTION_FORM)){
                                     const field = SECTION_FORM[keyField];
@@ -86,6 +86,7 @@ class DataCollection extends Component{
                                     }
                                     
                                 }
+                                tempSection["id"] = index;
                                 return tempSection;
                             })}
                             actions={{"delete" : (index) => this.deleteSection(index, "sections"), "edit" : (index) => this.editSection(index, "sections")}} 

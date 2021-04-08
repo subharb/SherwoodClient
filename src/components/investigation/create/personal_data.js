@@ -22,7 +22,7 @@ class PersonalData extends Component{
         this.initData = {}
         if(this.props.initialData){
             this.props.initialData.forEach(pField => {
-                this.initData[pField] = true;
+                this.initData[pField.name] = true;
             })
         }
     }
