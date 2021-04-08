@@ -40,7 +40,7 @@
             "48h" : ["48 hours", "48 horas"],
             "week" : ["1 week", "1 semana"]
         },
-        "add-drug" : ["Add drug", "Añadir tratamiento"]
+        "add-treatment" : ["Add treatment", "Añadir tratamiento"]
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],

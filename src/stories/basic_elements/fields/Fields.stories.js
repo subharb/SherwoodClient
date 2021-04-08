@@ -17,13 +17,14 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     },
-    "drug":{
+    "treatment":{
         required : true,
-        type:"drug",
-        label:"Drug Selector",
+        type:"treatment",
+        label:"Treatment Selector",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty",
         "slaves" : [{
+            "id" : 10,
             "required": true,
             "encrypted": false,
             "name": "drug-code",
@@ -32,6 +33,7 @@ const FIELDS_FORM = {
             "validation" : "notEmpty",
         },
         {
+            "id" : 11,
             "required": true,
             "encrypted": false,
             "name": "drug-start",
@@ -40,6 +42,7 @@ const FIELDS_FORM = {
             "validation" : "notEmpty",
         },
         {
+            "id" : 12,
             "required": true,
             "encrypted": false,
             "name": "drug-finish",
@@ -48,6 +51,7 @@ const FIELDS_FORM = {
             "validation" : "notEmpty",
         },
         {
+            "id" : 13,
             "required": true,
             "encrypted": false,
             "name": "drug-posology",

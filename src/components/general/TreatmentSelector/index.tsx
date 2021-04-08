@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SingleTreatmentSelector from './SingleTreatmentSelector';
 import { ButtonAdd } from '../mini_components';
 import { Translate } from 'react-localize-redux';
 import { Typography } from '@material-ui/core';
 import { EnhancedTable } from '../EnhancedTable';
+import { useUpdateEffect } from '../../../hooks';
 
 interface Treatment{
     id?:number,
@@ -24,7 +25,7 @@ interface Props{
         isAddingDrug:boolean,
         listTreatments:Treatment[]
     },
-    treatmentSelected: (treatment:Treatment) => void
+    treatmentSelected: (treatments:Treatment[]) => void
 }
 
 export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
@@ -39,6 +40,9 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
     function deleteTreatment(id:number){
         setListTreatment(listTreatments.filter((item, index) => index !== id));
     }
+    useUpdateEffect(() =>{
+        props.treatmentSelected(listTreatments);
+    }, [listTreatments]);
     if(!isAddingDrug){
         // listTreatment
         let tableTreatments = null;
@@ -61,10 +65,10 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
         return(
             <React.Fragment>
                 {tableTreatments}
-                <div style={{display:'flex'}}>
+                <div style={{display:'flex',alignItems: "center",justifyContent: "left"}}>
                     <ButtonAdd onClick={() =>{setIsAddingDrug(true)}} />
-                    <Typography variant="body2" gutterBottom>
-                        <Translate id="hospital.add-drug" />
+                    <Typography variant="body2" component="span" >
+                        <Translate id="hospital.add-treatment" />
                     </Typography>
                 </div>
             </React.Fragment>

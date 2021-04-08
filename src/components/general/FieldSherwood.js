@@ -19,7 +19,7 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
-
+import { change, registerField } from "redux-form";
 import ICTSelector from './ICTSelector';
 import { MultipleTreatmentSelector } from './TreatmentSelector';
 
@@ -116,8 +116,8 @@ class FieldSherwood extends Component{
     resetDiagnose(){
         this.props.input.onChange(undefined);
     }
-    drugSelected(drug){
-        this.props.input.onChange([drug.name]);
+    treatmentSelected(treatments){
+        this.props.input.onChange(treatments);
     }
     drugStartDate(date){
         this.props.change('net', "newValue");
@@ -321,13 +321,12 @@ class FieldSherwood extends Component{
                         helperText={errorString} resetDiagnose={this.resetDiagnose}
                         size="small" diagnoseSelected={(code) => this.diagnoseSelected(code)} />
                 );
-            case "test" : return null;
-            case "drug" : 
+            case "treatment" : 
                 return(
                     <MultipleTreatmentSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
                         helperText={errorString}  errorState={errorState} slaves={this.props.slaves}
                         resetDiagnose={this.resetDiagnose} 
-                        size="small" drugSelected={(code) => this.drugSelected(code)} />
+                        size="small" treatmentSelected={(code) => this.treatmentSelected(code)} />
                 );
             default:    
                     console.log("TextFieldSherwood",input.value);

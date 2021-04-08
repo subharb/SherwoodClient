@@ -94,6 +94,7 @@ function SingleTreatmentSelector(props){
                 <Autocomplete
                     id={props.name}
                     loading = {loading}
+                    noOptionsText="start typing"
                     options={drugOptions}
                     onInputChange={(event, value, reason) => {
                         if(reason === "clear"){
@@ -116,6 +117,7 @@ function SingleTreatmentSelector(props){
             <Grid item xs={12}>
                 <Autocomplete
                     id="posology"
+                    
                     options={selectPosology.options}
                     getOptionLabel={(option) => props.translate(option.label)}
                     style={{ width: 300 }}
