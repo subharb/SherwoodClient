@@ -110,8 +110,8 @@ class FieldSherwood extends Component{
         }
         
     }
-    diagnoseSelected(code){
-        this.props.input.onChange(code);
+    diagnosesSelected(listDiagnoses){
+        this.props.input.onChange(listDiagnoses);
     }
     resetDiagnose(){
         this.props.input.onChange(undefined);
@@ -319,7 +319,7 @@ class FieldSherwood extends Component{
                 return(
                     <MultipleICTSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
                         helperText={errorString} resetDiagnose={this.resetDiagnose}
-                        size="small" diagnoseSelected={(code) => this.diagnoseSelected(code)} />
+                        size="small" diagnosesSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                 );
             case "treatment" : 
                 return(

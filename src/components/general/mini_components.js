@@ -11,6 +11,7 @@ import {
     CheckCircleOutline as CheckCircleOutlineIcon,
     Save as SaveIcon,
     Clear as ClearIcon,
+    Delete as DeleteIcon,
     Send as SendIcon,
     Edit as EditIcon,
     AddCircle as PlusIcon,
@@ -138,9 +139,11 @@ export const ButtonPlus = (props) =>{
 }
 
 export const ButtonDelete = (props) =>{
-    return <DeleteHolder {...props}>
-        <i className="material-icons">delete</i>
-    </DeleteHolder>
+    return(
+        <DeleteHolder {...props}>
+            <DeleteIcon />
+        </DeleteHolder>
+    )
 }
 
 export const ButtonBack = (props) =>{

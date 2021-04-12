@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import React from 'react'
-import { SLAVES_TREATMENT, TREATMENT_TYPE } from '../../constants';
+import { DIAGNOSIS_TYPE, SLAVES_DIAGNOSIS, SLAVES_TREATMENT, TREATMENT_TYPE } from '../../constants';
 import Form from './form';
 
 export default function SectionForm(props) {
@@ -26,25 +26,30 @@ export default function SectionForm(props) {
             let tempObj = {};
             const idField = parseInt(key.replace(preString, ""));
             const field = props.fields.find(aField => aField.id === idField);
-            if(field.type === TREATMENT_TYPE){
-                values[key].forEach(treatment => {
-                    SLAVES_TREATMENT.forEach(name =>{
+            if(field.type === TREATMENT_TYPE || field.type === DIAGNOSIS_TYPE ){
+                const slavesArray = field.type === TREATMENT_TYPE ? SLAVES_TREATMENT : SLAVES_DIAGNOSIS;
+                values[key].forEach(element => {
+
+                    slavesArray.forEach(name =>{
                         const slaveField = field.slaves.find(aSlave => aSlave.name === name);
                         let slaveObj = {};
                         slaveObj["id_Field"] = slaveField.id;
                         let valueSlave = null;
                         switch(name){
                             case "drug-code":
-                                valueSlave = treatment.drug.id;
+                                valueSlave = element.drug.id;
                                 break;
                             case "drug-start":
-                                valueSlave = treatment.startDate;
+                                valueSlave = element.startDate;
                                 break;
                             case "drug-finish":
-                                valueSlave = treatment.endDate;
+                                valueSlave = element.endDate;
                                 break;
                             case "drug-posology":
-                                valueSlave = treatment.posology.value;
+                                valueSlave = element.posology.value;
+                                break;
+                            case "ict-code":
+                                valueSlave = element.code;
                                 break;
                             default:
                         }
@@ -52,7 +57,7 @@ export default function SectionForm(props) {
                         dataFields.push(slaveObj);
                     });
                     tempObj["id_Field"] = idField;
-                    tempObj["value"] = treatment.drug.name;
+                    tempObj["value"] = field.type === TREATMENT_TYPE ? element.drug.name : element.name;
                 });
             }
             else{

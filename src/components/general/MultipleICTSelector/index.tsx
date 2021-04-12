@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ICTSelector from './ICTSelector';
-import { ButtonPlus } from '../mini_components';
+import { ButtonDelete, ButtonPlus } from '../mini_components';
 import { Grid, Typography } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
 import { useUpdateEffect } from '../../../hooks';
@@ -24,19 +24,20 @@ interface Props{
 
 export const MultipleICTSelector:React.FC<Props> = (props) => {
     const [listDiagnosis, setListDiagnosis] = useState<Diagnosis[]>(props.initialState ? props.initialState.listDiagnosis : []);
-    const [addingDiagnosis, setAddingDiagnosis] = useState(true);
+    const [addingDiagnosis, setAddingDiagnosis] = useState(false);
     
     function renderDiagnosis(){
         if(listDiagnosis.length > 0 ){
             return(
             <Grid container spacing={3}>
                 {
-                    listDiagnosis.map(diagnosis => {
+                    listDiagnosis.map((diagnosis, index) => {
                         return(
-                            <Grid item xs={12}>
+                            <Grid item xs={12} style={{display:'flex'}}>
                                 <Typography variant="body2" color="textPrimary">
                                     { diagnosis.name }
                                 </Typography>
+                                <ButtonDelete onClick={() => removeDiagnosis(index)} />
                             </Grid>
                         )
                     })
@@ -45,6 +46,9 @@ export const MultipleICTSelector:React.FC<Props> = (props) => {
             );
             
         }
+    }
+    function removeDiagnosis(id:number){
+        setListDiagnosis(listDiagnosis.filter((item, index) => index !== id));
     }
     function diagnosisSelected(diagnose:Diagnosis){
         console.log(diagnose);
@@ -60,10 +64,10 @@ export const MultipleICTSelector:React.FC<Props> = (props) => {
     return (
         <React.Fragment>
             {
-                (listDiagnosis.length > 0 && !addingDiagnosis) &&
+                (!addingDiagnosis) &&
                 <React.Fragment>
                     <ButtonPlus onClick={addDiagnose} />
-                    <Typography variant="body2" color="textPrimary" component="span"><Translate id="hospital.add-diagnosis" /></Typography>
+                    <Typography variant="body2" component="span"><Translate id="hospital.add-diagnosis" /></Typography>
                 </React.Fragment>
             }
             {

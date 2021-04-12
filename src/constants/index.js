@@ -49,7 +49,6 @@ export const SAVE_SUBMISSIONS_PATIENT_ERROR = "SAVE_SUBMISSIONS_PATIENT_ERROR";
 export const UPDATE_SUBMISSIONS_PATIENT_SUCCESS = "UPDATE_SUBMISSIONS_PATIENT_SUCCESS";
 
 export const TREATMENT_TYPE = "treatment"
+export const DIAGNOSIS_TYPE = "ict"
 export const SLAVES_TREATMENT = ["drug-code", "drug-start", "drug-finish", "drug-posology"];
-
-
-
+export const SLAVES_DIAGNOSIS = ["ict-code"];
