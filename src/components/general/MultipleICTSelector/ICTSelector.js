@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as ECT from '@whoicd/icd11ect';
 import '@whoicd/icd11ect/style.css';
-import { getTokenWho } from '../../services/sherwoodService';
+import { getTokenWho } from '../../../services/sherwoodService';
 import PropTypes from 'prop-types';
 import { withLocalize } from 'react-localize-redux';
 import { TextField } from '@material-ui/core';
@@ -11,7 +11,7 @@ function ICTSelector(props){
     const [diagnose, setDiagnose] = useState("");
 
     function resetField(){
-        props.resetDiagnose();
+        //props.resetDiagnose();
         setDiagnose("");
     }
     useEffect(() => {
@@ -23,7 +23,7 @@ function ICTSelector(props){
             icdLinearization: "mms",
             language: props.translate("lang"),
             sourceApp: "Sherwood",
-            wordsAvailable: true,
+            wordsAvailable: false,
             chaptersAvailable: true,
             flexisearchAvailable: true,
             autoBind:false,
@@ -46,8 +46,11 @@ function ICTSelector(props){
                 console.log('selected code: '+ selectedEntity.code);
                 console.log('selected bestMatchText: '+ selectedEntity.bestMatchText);
                 ECT.Handler.clear("1");
-                setDiagnose(selectedEntity.title);
-                props.diagnoseSelected(selectedEntity.code);
+                setDiagnose("");
+                props.diagnosisSelected({
+                    name:selectedEntity.title,
+                    code : selectedEntity.code
+                });
             },
             getNewTokenFunction: async () => {
                 // if the embedded coding tool is working with the cloud hosted ICD-API, you need to set apiSecured=true

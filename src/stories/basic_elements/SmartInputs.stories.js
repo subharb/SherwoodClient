@@ -1,7 +1,8 @@
 import React from 'react';
 import Form from '../../components/general/form';
 import ProviderSherwood from '../../providerSherwood';
-import { MultipleTreatmentSelector } from '../../components/general/TreatmentSelector';
+import { MultipleTreatmentSelector } from '../../components/general/MultipleTreatmentSelector';
+import { MultipleICTSelector } from '../../components/general/MultipleICTSelector';
 
 const FIELD_TREATMENT = {
     "drug":{
@@ -61,7 +62,15 @@ const FIELD_ICT = {
         type:"ict",
         label:"Autocomplete",
         shortLabel: "investigation.table.is_personal_data",
-        validation : "notEmpty"
+        validation : "notEmpty",
+        slaves : [{
+            "required": true,
+            "encrypted": false,
+            "name": "ict-code",
+            "label": "Code Diagnosis",
+            "type": "text",
+            "validation" : "notEmpty",
+        }]
     }
 }
 
@@ -76,6 +85,7 @@ export default {
 
 
 const Template = (args) => <MultipleTreatmentSelector {...args}  />
+const TemplateICT = (args) => <MultipleICTSelector {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
 TreatmentEmpty.args = {
@@ -107,9 +117,20 @@ TreatmentWithData.args = {
     drugSelected:(values) => {console.log("Result",JSON.stringify(values))}
 };
 
-export const ICT = Template.bind({});
+
+export const ICT = TemplateICT.bind({});
 ICT.args = {
-    fields:FIELD_ICT, 
-    callBackForm : (values) => console.log("Result",JSON.stringify(values))
+    ...FIELD_ICT["ict"], 
+    diagnosesSelected : (list)=>alert(JSON.stringify(list))
+};
+
+export const ICTWithData = TemplateICT.bind({});
+ICTWithData.args = {
+    ...FIELD_ICT["ict"], 
+    initialState:{
+        addingDiagnosis : true, 
+        listDiagnosis : [{name:"Paludism", code : "2233"}]
+    },
+    diagnosesSelected : (list)=>alert(JSON.stringify(list))
 };
 

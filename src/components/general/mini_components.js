@@ -13,6 +13,7 @@ import {
     Clear as ClearIcon,
     Send as SendIcon,
     Edit as EditIcon,
+    AddCircle as PlusIcon,
     ArrowForwardIos as ArrowForwardIosIcon,
     ArrowBackIos as ArrowBackIosIcon,
     LocalHospital as HospitalIcon
@@ -126,6 +127,13 @@ export const ButtonEdit = (props) =>{
     return(
         <Button {...props}>
             <EditIcon />
+        </Button>)
+}
+
+export const ButtonPlus = (props) =>{
+    return(
+        <Button {...props}>
+            <PlusIcon />
         </Button>)
 }
 

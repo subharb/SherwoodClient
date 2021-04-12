@@ -72,7 +72,7 @@ const FIELDS_FORM = {
     "ict":{
         required : false,
         type:"ict",
-        label:"Autocomplete",
+        label:"ICT Selector",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     },

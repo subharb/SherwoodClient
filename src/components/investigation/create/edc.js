@@ -144,7 +144,8 @@ export default class EDC extends Component{
     render(){
         
         if(this.state.addingDataCollection){
-            return <DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} callBackData={this.callBackNewDataCollection} callBackStepBack={() => {this.toggleAddDataCollection()}}/>
+            return <DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} 
+                    callBackData={this.callBackNewDataCollection} callBackStepBack={() => {this.toggleAddDataCollection()}}/>
         }
         else{
             return (

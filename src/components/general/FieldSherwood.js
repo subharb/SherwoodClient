@@ -20,8 +20,8 @@ import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 import { change, registerField } from "redux-form";
-import ICTSelector from './ICTSelector';
-import { MultipleTreatmentSelector } from './TreatmentSelector';
+import { MultipleICTSelector } from './MultipleICTSelector';
+import { MultipleTreatmentSelector } from './MultipleTreatmentSelector';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -317,7 +317,7 @@ class FieldSherwood extends Component{
                 )
             case "ict" : 
                 return(
-                    <ICTSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
+                    <MultipleICTSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
                         helperText={errorString} resetDiagnose={this.resetDiagnose}
                         size="small" diagnoseSelected={(code) => this.diagnoseSelected(code)} />
                 );
