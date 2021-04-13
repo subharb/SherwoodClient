@@ -23,7 +23,7 @@ function ICTSelector(props){
             icdLinearization: "mms",
             language: props.translate("lang"),
             sourceApp: "Sherwood",
-            wordsAvailable: true,
+            wordsAvailable: false,
             chaptersAvailable: true,
             flexisearchAvailable: true,
             autoBind:false,
