@@ -79,26 +79,29 @@ function HomeSchedule(props) {
                             Welcome!
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Grid item xs={12}>
+                    <Grid item xs={6} style={{display:"flex", flexDirection: "row-reverse"}}>
+                        <Grid item xs={6} style={{display: 'flex',justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
                             <Typography variant="body2" gutterBottom>
                                 {props.investigations.data[0].name}
                             </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
                             <Typography variant="body2" gutterBottom>
                                 {profileInfo.name} {profileInfo.surnames}
                             </Typography>
-                        </Grid>
-                        {profileInfo.department &&
-                            <Grid item xs={12}>
+                            {
+                                profileInfo.department &&
                                 <Typography variant="body2" gutterBottom>
                                     {profileInfo.department.name}
                                 </Typography>
-                            </Grid>
-                        }
+                            }
+                            {
+                                profileInfo.institution &&
+                                <Typography variant="body2" gutterBottom>
+                                    {profileInfo.institution.name}
+                                </Typography>
+                            }
+                        </Grid>                        
                         {profileInfo.institution &&
-                        <Grid item xs={12}>
+                        <Grid item xs={6}>
                             <Typography variant="body2" gutterBottom>
                             {profileInfo.institution.name}
                             </Typography>
@@ -106,7 +109,7 @@ function HomeSchedule(props) {
                         }
                         
                     </Grid>
-                    <Grid item xs={6} style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+                    <Grid item xs={6} style={{display:"flex", justifyContent:"left", alignItems:"center"}}>
                         <img src={photo_holder} alt="profile_picture" with="100%" />
                     </Grid>
                     <Grid item container  spacing={3}>
