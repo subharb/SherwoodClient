@@ -31,14 +31,14 @@ export default function ShowRecordsSection(props) {
         const uuidSubmission = props.submissions[indexSubmission].id;
         props.callBackEditSubmission(uuidSubmission, uuidSection);
     }
-    function renderValue(value){
-        if(!value){
+    function renderValue(valueRecord){
+        if(!valueRecord || !valueRecord.value){
             return "-";
         }
-        else if(Array.isArray(value)){
+        else if(Array.isArray(valueRecord.value)){
             return(
             <div style={{paddingLeft:"20px"}}>
-                {value.map(smartField => {
+                {valueRecord.value.map(smartField => {
                     return(
                         <Typography variant="body2" gutterBottom>
                             {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.treatment}
@@ -51,7 +51,7 @@ export default function ShowRecordsSection(props) {
         else{
             return(
                 <Typography variant="body2" gutterBottom>
-                    { value }
+                    { valueRecord.value }
                 </Typography>
             );
         }
@@ -89,7 +89,7 @@ export default function ShowRecordsSection(props) {
                                         <Typography variant="h6" color="textPrimary">
                                             {field.name}: 
                                         </Typography>,
-                                        renderValue(valueRecord.value)
+                                        renderValue(valueRecord)
                                         
                                     ]
                                 }

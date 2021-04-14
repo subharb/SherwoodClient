@@ -25,48 +25,12 @@ export default function SectionForm(props) {
         Object.keys(values).forEach(key =>{
             let tempObj = {};
             const idField = parseInt(key.replace(preString, ""));
-            const field = props.fields.find(aField => aField.id === idField);
-            // if(field.type === TREATMENT_TYPE || field.type === DIAGNOSIS_TYPE ){
-            //     const slavesArray = field.type === TREATMENT_TYPE ? SLAVES_TREATMENT : SLAVES_DIAGNOSIS;
-            //     values[key].forEach(element => {
+            
+            tempObj["id_field"] = idField;
 
-            //         slavesArray.forEach(name =>{
-            //             const slaveField = field.slaves.find(aSlave => aSlave.name === name);
-            //             let slaveObj = {};
-            //             slaveObj["id_Field"] = slaveField.id;
-            //             let valueSlave = null;
-            //             switch(name){
-            //                 case "drug-code":
-            //                     valueSlave = element.drug.id;
-            //                     break;
-            //                 case "drug-start":
-            //                     valueSlave = element.startDate;
-            //                     break;
-            //                 case "drug-finish":
-            //                     valueSlave = element.endDate;
-            //                     break;
-            //                 case "drug-posology":
-            //                     valueSlave = element.posology.value;
-            //                     break;
-            //                 case "ict-code":
-            //                     valueSlave = element.code;
-            //                     break;
-            //                 default:
-            //             }
-            //             slaveObj["value"] = valueSlave;
-            //             dataFields.push(slaveObj);
-            //         });
-            //         tempObj["id_field"] = idField;
-            //         tempObj["value"] = field.type === TREATMENT_TYPE ? element.drug.name : element.name;
-            //         dataFields.push(tempObj);
-            //     });
-            // }
-            // else{
-                tempObj["id_field"] = idField;
-
-                tempObj["value"] = values[key];
-                dataFields.push(tempObj);
-            //}
+            tempObj["value"] = values[key];
+            dataFields.push(tempObj);
+            
             
         })
         props.callBackSectionForm(dataFields);

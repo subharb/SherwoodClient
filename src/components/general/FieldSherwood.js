@@ -314,13 +314,13 @@ class FieldSherwood extends Component{
                 )
             case "ict" : 
                 return(
-                    <MultipleICTSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
+                    <MultipleICTSelector label={labelString} {...input} initialState={{listDiagnosis: input.value}} variant="outlined" margin={this.typeMargin} 
                         helperText={errorString} resetDiagnose={this.resetDiagnose}
                         size="small" diagnosesSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                 );
             case "treatment" : 
                 return(
-                    <MultipleTreatmentSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
+                    <MultipleTreatmentSelector label={labelString} {...input} initialState={{listTreatments: input.value}} variant="outlined" margin={this.typeMargin} 
                         helperText={errorString}  errorState={errorState} slaves={this.props.slaves}
                         resetDiagnose={this.resetDiagnose} 
                         size="small" treatmentSelected={(code) => this.treatmentSelected(code)} />

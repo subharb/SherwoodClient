@@ -42,6 +42,9 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
         setListTreatment(listTreatments.filter((item, index) => index !== id));
     }
     useUpdateEffect(() =>{
+        setListTreatment(props.initialState.listTreatments);
+    }, [props.initialState]);
+    useUpdateEffect(() =>{
         props.treatmentSelected(listTreatments);
     }, [listTreatments]);
     if(!isAddingDrug){

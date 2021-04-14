@@ -59,6 +59,10 @@ export const MultipleICTSelector:React.FC<Props> = (props) => {
         setAddingDiagnosis(true);
     }
     useUpdateEffect(() =>{
+        setListDiagnosis(props.initialState.listDiagnosis);
+    }, [props.initialState]);
+    
+    useUpdateEffect(() =>{
         props.diagnosesSelected(listDiagnosis);
     }, [listDiagnosis]);
     return (
