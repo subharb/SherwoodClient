@@ -36,12 +36,24 @@ export default function ShowRecordsSection(props) {
             return "-";
         }
         else if(Array.isArray(value)){
-            return value.map(smartField => {
-                return smartField.hasOwnProperty("ict") ? smartField.ict : smartField.treatment
-            })
+            return(
+            <div style={{paddingLeft:"20px"}}>
+                {value.map(smartField => {
+                    return(
+                        <Typography variant="body2" gutterBottom>
+                            {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.treatment}
+                        </Typography>
+                    )
+                    
+                })}
+            </div>)
         }
         else{
-            return value;
+            return(
+                <Typography variant="body2" gutterBottom>
+                    { value }
+                </Typography>
+            );
         }
     }
    
@@ -77,9 +89,8 @@ export default function ShowRecordsSection(props) {
                                         <Typography variant="h6" color="textPrimary">
                                             {field.name}: 
                                         </Typography>,
-                                        <Typography variant="body2" gutterBottom>
-                                            {renderValue(valueRecord.value)}
-                                        </Typography>
+                                        renderValue(valueRecord.value)
+                                        
                                     ]
                                 }
                                 
