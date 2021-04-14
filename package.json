@@ -68,8 +68,8 @@
   "scripts": {
     "start": "react-scripts start --no-cache",
     "start-hospital": "REACT_APP_PRODUCT=HOSPITAL react-scripts start --no-cache --hospital",
-    "build": "env-cmd -f .env.production.local react-scripts build",
-    "build:beta": "env-cmd -f .env.beta-research react-scripts build",
+    "build:research": "env-cmd -f .env.production.local react-scripts build",
+    "build:beta:research": "env-cmd -f .env.beta-research react-scripts build",
     "build:beta:hospital": "env-cmd -f .env.beta-hospital react-scripts build && rsync -a build/ build-beta-hospital/",
     "build:hospital": "env-cmd -f .env.hospital react-scripts build && rsync -a build/ build-hospital/",
     "test": "react-scripts test --env=jsdom-sixteen",
