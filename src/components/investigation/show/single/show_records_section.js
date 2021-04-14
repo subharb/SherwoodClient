@@ -31,6 +31,21 @@ export default function ShowRecordsSection(props) {
         const uuidSubmission = props.submissions[indexSubmission].id;
         props.callBackEditSubmission(uuidSubmission, uuidSection);
     }
+    function renderValue(value){
+        if(!value){
+            return "-";
+        }
+        else if(Array.isArray(value)){
+            return value.map(smartField => {
+                return smartField.hasOwnProperty("ict") ? smartField.ict : smartField.treatment
+            })
+        }
+        else{
+            return value;
+        }
+    }
+   
+    
     function renderSubmission(){
         const submission = props.submissions[indexSubmission];       
         
@@ -63,7 +78,7 @@ export default function ShowRecordsSection(props) {
                                             {field.name}: 
                                         </Typography>,
                                         <Typography variant="body2" gutterBottom>
-                                            {valueRecord ? valueRecord.value : "-"}  
+                                            {renderValue(valueRecord.value)}
                                         </Typography>
                                     ]
                                 }

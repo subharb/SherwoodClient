@@ -69,7 +69,7 @@ function SingleTreatmentSelector(props){
         }
         if(valid){
             props.treatmentSelected({
-                drug,posology,startDate
+                treatment:drug.name,"drug-code" : drug.code, "treatment-posology": posology.value,"treatment-start" : startDate
             });
         }
     }
@@ -87,7 +87,7 @@ function SingleTreatmentSelector(props){
     }
     const startDateLabel = props.translate("general.startDate")
     const endDateLabel = props.translate("general.endDate");
-    const selectPosology = props.slaves.find(slave => slave.name === "drug-posology");
+    const selectPosology = props.slaves.find(slave => slave.name === "treatment-posology");
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>

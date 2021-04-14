@@ -48,8 +48,8 @@ function ICTSelector(props){
                 ECT.Handler.clear("1");
                 setDiagnose("");
                 props.diagnosisSelected({
-                    name:selectedEntity.title,
-                    code : selectedEntity.code
+                    ict:selectedEntity.title,
+                    "ict-code" : selectedEntity.code
                 });
             },
             getNewTokenFunction: async () => {

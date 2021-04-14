@@ -8,11 +8,12 @@ import { useUpdateEffect } from '../../../hooks';
 
 interface Treatment{
     id?:number,
-    drug:{
-        name:string,
-        cis:string,
-        id:number
-    }, posology:{label:string, value:string}, startDate:number, endDate:number
+    treatment : string,
+    "drug-code": string,
+    "treatment-posology": string,
+    "treatment-start":Date,
+    "treatment-finish":Date
+   
 }
 
 interface Props{
@@ -52,8 +53,8 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
 
                 return {
                     id : index,
-                    name : treat.drug.name,
-                    posology : treat.posology.value
+                    name : treat.treatment,
+                    posology : treat['treatment-posology']
                 }
             })
             

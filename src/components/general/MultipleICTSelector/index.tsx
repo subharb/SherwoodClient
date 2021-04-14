@@ -6,8 +6,8 @@ import { Translate } from 'react-localize-redux';
 import { useUpdateEffect } from '../../../hooks';
 
 interface Diagnosis{
-    name : string,
-    code: string
+    ict : string,
+    "ict-code": string
 }
 interface Props{
     name : string,
@@ -35,7 +35,7 @@ export const MultipleICTSelector:React.FC<Props> = (props) => {
                         return(
                             <Grid item xs={12} style={{display:'flex'}}>
                                 <Typography variant="body2" color="textPrimary">
-                                    { diagnosis.name }
+                                    { diagnosis.ict }
                                 </Typography>
                                 <ButtonDelete onClick={() => removeDiagnosis(index)} />
                             </Grid>
