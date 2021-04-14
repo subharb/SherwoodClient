@@ -148,17 +148,14 @@ class FieldSherwood extends Component{
                 }
                 const labelId = `${input.name}_label`;
                 return(
-                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"100%"}} >
+                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} >
                         <InputLabel id={labelId}>{labelString}</InputLabel>
                         <Select
                         labelId={labelId}
                         id={input.name}
-                        
-                        
                         label={labelString}
                         {...input} 
                         >
-                    
                         { optionsArray }
                         </Select>
                     </FormControl>
@@ -205,7 +202,7 @@ class FieldSherwood extends Component{
                             margin={this.typeMargin}
                             id={input.name}
                             inputVariant="outlined"
-                            size="small"
+                            style={{width: "235px"}}
                             label={input.value ? "" : labelString}
                             format="dd/MM/yyyy"
                             value={value}
