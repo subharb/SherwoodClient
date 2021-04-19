@@ -1143,6 +1143,35 @@ export const patients_personal_data_decryptedCypress = () => {
     ];
 }
 
+export const patient_hospital_personal_data_decryptedCypress = () => {
+    return [
+        {
+            "birthdate":"01/01/1974",
+            "phone":"+1 727 1728 9191",
+            "name":"John",
+            "surnames":"Hopkins",
+            "national_id" : "11222",
+            "sex" : "male"
+        },
+        {
+            "birthdate":"01/01/1974",
+            "phone":"+1 727 1728 9191",
+            "name":"Peter",
+            "surnames":"Petrelli",
+            "national_id" : "010101",
+            "sex" : "male"
+        },
+        {
+            "birthdate":"01/01/1974",
+            "phone":"+1 727 1728 9191",
+            "name":"Donald",
+            "surnames":"Trump",
+            "national_id" : "3333",
+            "sex" : "female"
+        },
+    ];
+}
+
 export const patients_personal_data_decrypted = () => {
     return [
         {
@@ -1968,6 +1997,15 @@ export const researcherD_data = {
     country:"es"
 }
 
+export const researcherPedro_data = {
+    name : "Pedro",
+    surnames: "Rodriguez",
+    email : "pedro.cruz@ucl.ac.uk",
+    password: "Roquetas2001?",
+    phone: "+24 772 08689060",
+    country:"es"
+}
+
 export const loginResearcherA = {
     email : researcherA_data.email,
     password: researcherA_data.password
@@ -1987,6 +2025,12 @@ export const loginResearcherD = {
     email : researcherD_data.email,
     password: researcherD_data.password
 }
+
+export const loginResearcherPedro = {
+    email : researcherPedro_data.email,
+    password: researcherPedro_data.password
+}
+
 
 const sharedResearchers =  [
     {

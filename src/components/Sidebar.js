@@ -261,7 +261,7 @@ const SidebarCategory = ({
   return (
     <Category {...rest}>
       {icon}
-      <CategoryText>{name}</CategoryText>
+      <CategoryText data-testid={name.props.id}>{name}</CategoryText>
       {isCollapsable ? (
         isOpen ? (
           <CategoryIconMore />
@@ -281,6 +281,7 @@ const SidebarLink = ({ name, to, badge, icon }) => {
       dense
       component={NavLink}
       exact
+      data-testid={name}
       to={to}
       activeClassName="active"
     >
@@ -335,7 +336,7 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>
         <Box ml={1}>
-            Sherwood
+            Sherwood 
         </Box>
         <img src={pathLogo} alt="Sherwood Science" height="32" /> {"  "}
         

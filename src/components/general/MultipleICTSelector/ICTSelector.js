@@ -21,7 +21,7 @@ function ICTSelector(props){
             apiSecured: true,
             icdMinorVersion: "2020-09" ,
             icdLinearization: "mms",
-            language: props.translate("lang"),
+            language: "fr",
             sourceApp: "Sherwood",
             wordsAvailable: false,
             chaptersAvailable: true,

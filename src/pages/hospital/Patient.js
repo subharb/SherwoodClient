@@ -150,7 +150,7 @@ function Patient(props) {
                 props.investigations.data[0].surveys.sort((a,b) => a.order - b.order).map((dataCollection, index) => {
                     return(
                         <Grid item xs={12} style={{textAlign:"center"}}>
-                            <ButtonGreyBorderGrey onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGreyBorderGrey>
+                            <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGreyBorderGrey>
                         </Grid>
                     )
                 })
@@ -169,7 +169,7 @@ function Patient(props) {
                     
                     return(
                         <Grid item xs={12} style={{textAlign:"center"}}>
-                            <ButtonGreyBorderGrey onClick={() => sectionSelect(index)}>{section.name}</ButtonGreyBorderGrey>
+                            <ButtonGreyBorderGrey data-testid={section.name} onClick={() => sectionSelect(index)}>{section.name}</ButtonGreyBorderGrey>
                         </Grid>
                     )
                 })
@@ -372,12 +372,12 @@ function Patient(props) {
                         </Grid>
                         <Grid item container xs={5}  justify="center" alignItems="center">
                             <Grid item xs={4}>
-                                <Button onClick={() => backToRoot()} >
+                                <Button data-testid="medical-notes" onClick={() => backToRoot()} >
                                     <img src={icon_notes} alt="Medical Notes"/>
                                 </Button>
                             </Grid>
                             <Grid item xs={4}>
-                                <ButtonAdd onClick={() => setShowOptions(!showOptions)} />
+                                <ButtonAdd data-testid="add-record" onClick={() => setShowOptions(!showOptions)} />
                             </Grid>
                         </Grid>
                     

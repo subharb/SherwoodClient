@@ -49,7 +49,7 @@ export default function SearchPatients(props) {
         console.log(values);
         setShowResults(true); 
         //Filtrar decryptedPatientData con values
-        const filteredPatients = decryptedPatientData.filter(patient =>{
+        const filteredPatients = decryptedPatientData.sort((a,b) => b.id - a.id).filter(patient =>{
             let result = true;
             for(const keyValue of Object.keys(values)){
                 const value = values[keyValue];

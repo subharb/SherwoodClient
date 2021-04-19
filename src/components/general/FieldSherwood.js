@@ -199,14 +199,16 @@ class FieldSherwood extends Component{
                 return (
                     <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
                         <KeyboardDatePicker
+                            disableToolbar
                             margin={this.typeMargin}
                             id={input.name}
                             inputVariant="outlined"
                             style={{width: "235px"}}
-                            label={input.value ? "" : labelString}
+                            //label={input.value ? "" : labelString}
+                            label={labelString}
                             format="dd/MM/yyyy"
-                            value={value}
-                            defaultValue={value} 
+                            // value={value}
+                            // defaultValue={value} 
                             openTo="year"
                             onChange={this.handleDateChange}
                             maxDate={validation === "pastDate" ? new Date() : undefined}
