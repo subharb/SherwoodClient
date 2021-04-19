@@ -50,17 +50,17 @@ function HomeSchedule(props) {
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
                         <LinkPlain to={HOSPITAL_WARD_ROUTE}>
-                            <ButtonGrey >Hospital Ward</ButtonGrey>
+                            <ButtonGrey data-testid="hospital-ward" >Hospital Ward</ButtonGrey>
                         </LinkPlain>
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
                         <LinkPlain to={OUTPATIENTS_ROUTE}>
-                            <ButtonGrey >Outpatients</ButtonGrey>
+                            <ButtonGrey data-testid="outpatients" >Outpatients</ButtonGrey>
                         </LinkPlain>
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
                         <LinkPlain to={SEARCH_PATIENT_ROUTE}>
-                            <ButtonGrey >Consultations</ButtonGrey>
+                            <ButtonGrey data-testid="consultations" >Consultations</ButtonGrey>
                         </LinkPlain>
                     </Grid>
                 </Grid>
@@ -120,12 +120,12 @@ function HomeSchedule(props) {
                         </Grid> */}
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={SEARCH_PATIENT_ROUTE}>
-                                <ButtonGrey >Search Patient</ButtonGrey>
+                                <ButtonGrey data-testid="search-patient" >Search Patient</ButtonGrey>
                             </LinkPlain>
                         </Grid>
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={ADD_PATIENT_ROUTE}>
-                                <ButtonGrey >Add Patient</ButtonGrey>
+                                <ButtonGrey data-testid="add-patient" >Add Patient</ButtonGrey>
                             </LinkPlain>
                         </Grid>
                     </Grid>
