@@ -76,7 +76,6 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
                     </Typography>
                 </div>
             </React.Fragment>
-            
         );
     }
     return (

@@ -14,7 +14,7 @@ const FIELD_TREATMENT = {
         "slaves" : [{
             "required": true,
             "encrypted": false,
-            "name": "drug-code",
+            "name": "treatment-code",
             "label": "Start Drug",
             "type": "text",
             "validation" : "notEmpty",
@@ -22,7 +22,7 @@ const FIELD_TREATMENT = {
         {
             "required": true,
             "encrypted": false,
-            "name": "drug-start",
+            "name": "treatment-start",
             "label": "Start Drug",
             "type": "date",
             "validation" : "notEmpty",
@@ -30,7 +30,7 @@ const FIELD_TREATMENT = {
         {
             "required": true,
             "encrypted": false,
-            "name": "drug-finish",
+            "name": "treatment-finish",
             "label": "Finish Drug",
             "type": "date",
             "validation" : "notEmpty",
@@ -38,7 +38,7 @@ const FIELD_TREATMENT = {
         {
             "required": true,
             "encrypted": false,
-            "name": "drug-posology",
+            "name": "treatment-posology",
             "label": "Posology",
             "type": "select",
             options:[

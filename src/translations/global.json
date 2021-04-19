@@ -31,6 +31,7 @@
         },
         "treatment-name" : ["Name", "Nombre"],
         "posology" : ["Posology", "Posología"],
+        "current" : ["Current", "Actualidad"],
         "posology-types" : {
             "4h" : ["4 hours", "4 horas"],
             "6h" : ["6 hours", "6 horas"],

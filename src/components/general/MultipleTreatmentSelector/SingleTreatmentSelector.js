@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
+import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { Alert, Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, AutocompleteInputChangeReason } from '@material-ui/lab';
 import { searchDrugService } from '../../../services/sherwoodService';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
@@ -18,11 +18,12 @@ import { ButtonAccept, ButtonCancel } from '../mini_components';
 
 function SingleTreatmentSelector(props){
     const [searchDrug, setSearchDrug] = useState("");
-    const [startDate, setStartDate] = useState(null);
+    const [finishDate, setFinishDate] = useState(null);
+    const [isCurrent, setIsCurrent] = useState(true);
     const [posology, setPosology] = useState(null);
     const [errorPosology, setErrorPosology] = useState(false);
     const [errorDrug, setErrorDrug] = useState(false);
-    const [errorStartDate, setErrorStartDate] = useState(false);
+    const [errorFinishDate, setErrorFinishDate] = useState(false);
     const [loading, setLoading] = useState(false);
     const [drug, setDrug] = useState(null);
     const [drugOptions, setDrugOptions] = useState([]);
@@ -63,13 +64,14 @@ function SingleTreatmentSelector(props){
             setErrorPosology(true);
             valid = false;
         }
-        if(!startDate){
-            setErrorStartDate(true);
+        if(!finishDate && !isCurrent){
+            setErrorFinishDate(true);
             valid = false;
         }
         if(valid){
+            const startDate = new Date();
             props.treatmentSelected({
-                treatment:drug.name,"drug-code" : drug.code, "treatment-posology": posology.value,"treatment-start" : startDate
+                treatment:drug.name,"drug-code" : drug.code, "treatment-posology": posology.value,"treatment-start" : startDate, "treatment-finish" : finishDate, 
             });
         }
     }
@@ -80,14 +82,18 @@ function SingleTreatmentSelector(props){
         setPosology(posology);
         setErrorPosology(false);
     }
+    function onChangeIsCurrent(e){
+        console.log(e.target.checked);
+        setIsCurrent(e.target.checked);
+    }
     if(error){
         return <Alert severity="error">
             <Translate id="investigation.share.error.description" />
         </Alert>
     }
-    const startDateLabel = props.translate("general.startDate")
-    const endDateLabel = props.translate("general.endDate");
+    const finishDateLabel = props.translate("general.endDate");
     const selectPosology = props.slaves.find(slave => slave.name === "treatment-posology");
+    const isCurrentLabel = props.translate("hospital.current");
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -134,27 +140,33 @@ function SingleTreatmentSelector(props){
                     />
             </Grid>
             <Grid item xs={12}>
-                <MuiPickersUtilsProvider key="start-date" utils={DateFnsUtils} id="start-date">
+                <FormControlLabel
+                        control={<Checkbox checked={isCurrent} onChange={onChangeIsCurrent} />}
+                        label={isCurrentLabel}
+                    />
+                <MuiPickersUtilsProvider key="end-date" utils={DateFnsUtils} id="end-date">
                     <KeyboardDatePicker
                         margin={props.typeMargin}
-                        id="start-date"
+                        id="end-date"
                         inputVariant="outlined"
                         size="small"
-                        label={startDate ? "" : startDateLabel}
+                        label={finishDate ? "" : finishDateLabel}
                         format="dd/MM/yyyy"
-                        value={startDate}
-                        defaultValue={startDate} 
+                        value={finishDate}
+                        disabled={isCurrent}
+                        defaultValue={finishDate} 
                         openTo="year"
+                        maxDate={new Date()}
                         onChange={(date, value) => {
-                            setStartDate(value);
-                            setErrorStartDate(false);
+                            setFinishDate(value);
+                            setErrorFinishDate(false);
                         }}
                         
-                        emptyLabel={startDateLabel}
+                        emptyLabel={finishDateLabel}
                         KeyboardButtonProps={{
                             'aria-label': 'change date',
                         }}
-                        error={errorStartDate} 
+                        error={errorFinishDate} 
                         // helperText={errorString} 
                     />
                 </MuiPickersUtilsProvider>
