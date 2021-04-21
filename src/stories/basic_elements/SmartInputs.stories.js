@@ -107,19 +107,13 @@ TreatmentEmpty.args = {
 
 export const TreatmentWithData = Template.bind({});
 TreatmentWithData.args = {
-    label:"Treatment", 
-    variant:"outlined",
-    margin:"small",
-    helperText:"ERror" , 
-    errorState:false,
-    slaves:FIELD_TREATMENT["drug"]["slaves"],
-    resetDiagnose:() => {console.log("aaa")}, 
-    size:"small",
-    initialState:{isAddingDrug:false, listTreatments:[{drug: {name:"paracetamol"}, 
-        posology:{  label: "hospital.posology-types.6h",
-                    value: "6h"}, 
-        startDate:"1111", endDate:"111"}]},
-    drugSelected:(values) => {console.log("Result",JSON.stringify(values))}
+    fields:FIELD_TREATMENT, 
+    initialData:{drug:[{treatment:"paracetamol", 
+                        "treatment-posology": "6h", 
+                        startDate:"1111", endDate:"111"}
+                    ]
+                },
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 
 

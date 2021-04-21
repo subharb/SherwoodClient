@@ -3,7 +3,7 @@ import ICTSelector from './ICTSelector';
 import { ButtonDelete, ButtonPlus } from '../mini_components';
 import { Grid, Typography } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
-import { useUpdateEffect } from '../../../hooks';
+import { useSelectSmartField, useUpdateEffect } from '../../../hooks';
 
 interface Diagnosis{
     ict : string,
@@ -19,10 +19,11 @@ interface Props{
         addingDiagnosis:boolean,
         listDiagnosis:Diagnosis[]
     },
-    diagnosesSelected: (treatments:Diagnosis[]) => void
+    diagnosesSelected: (treatments:Diagnosis[] | boolean) => void
 }
 
 export const MultipleICTSelector:React.FC<Props> = (props) => {
+    const [addDiagnosis, renderSelect, setAddSmartField ] = useSelectSmartField(props.initialState, props.label, props.errorState);
     const [listDiagnosis, setListDiagnosis] = useState<Diagnosis[]>(props.initialState ? props.initialState.listDiagnosis : []);
     const [addingDiagnosis, setAddingDiagnosis] = useState(false);
     
@@ -65,6 +66,15 @@ export const MultipleICTSelector:React.FC<Props> = (props) => {
     useUpdateEffect(() =>{
         props.diagnosesSelected(listDiagnosis);
     }, [listDiagnosis]);
+    useUpdateEffect(() =>{
+        if(!addDiagnosis){
+            props.diagnosesSelected(false);
+        }
+    }, [addDiagnosis]);
+    if(!addDiagnosis){
+        return renderSelect();
+        
+    }
     return (
         <React.Fragment>
             {

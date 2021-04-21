@@ -153,12 +153,16 @@ export function useRouter(initValue){
     }
 }
 
-export function useSelectSmartField(initialState, label, errorState){
+export function useSelectSmartField(initialState, label, errorState, setAddingSmartField){
     const [addSmartField, setAddSmartField] = useState(initialState ? initialState.addSmartField : null);
 
     function selectChanged(event){
         console.log(event);
         setAddSmartField(event.target.value);
+    }
+    function resetState(){
+        setAddSmartField(null);
+        setAddingSmartField(true);
     }
     function renderSelect(){
         const optionsArray = [<MenuItem value={true}><Translate id="general.yes" /></MenuItem>, <MenuItem value={false}><Translate id="general.no" /></MenuItem>]
@@ -178,7 +182,7 @@ export function useSelectSmartField(initialState, label, errorState){
             </FormControl>
         )
     }
-    return [addSmartField, renderSelect, setAddSmartField]
+    return [addSmartField, renderSelect, resetState]
 }
 
 export function useSherwoodUser(){

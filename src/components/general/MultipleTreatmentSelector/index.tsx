@@ -31,9 +31,10 @@ interface Props{
 }
 
 export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
-    const [addTreatment, renderSelect, setAddSmartField ] = useSelectSmartField(props.initialState, props.label, props.errorState);
+    
     const [listTreatments, setListTreatment] = useState<Treatment[]>(props.initialState ? props.initialState.listTreatments : []);
     const [isAddingDrug, setIsAddingDrug] = useState<boolean>(props.initialState ? props.initialState.isAddingDrug : true);
+    const [addTreatment, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.errorState, setIsAddingDrug);
 
     function treatmentSelected(treatment:Treatment){
         console.log(treatment);
@@ -43,10 +44,7 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
     function deleteTreatment(id:number){
         setListTreatment(listTreatments.filter((item, index) => index !== id));
     }
-    function resetState(){
-        setAddSmartField(null);
-        setIsAddingDrug(true);
-    }
+    
     function cancelTreatment(){
         
         if(listTreatments.length === 0){
@@ -57,7 +55,10 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
         }
     }
     useUpdateEffect(() =>{
-        setListTreatment(props.initialState.listTreatments);
+        if(props.initialState && props.initialState.listTreatments){
+            setListTreatment(props.initialState.listTreatments);
+            setIsAddingDrug(false);
+        }        
     }, [props.initialState]);
     useUpdateEffect(() =>{
         props.treatmentSelected(listTreatments);
@@ -71,7 +72,7 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
         }
     }, [addTreatment]);
 
-    if(!addTreatment){
+    if(!addTreatment && listTreatments.length === 0){
         return renderSelect();
         
     }
