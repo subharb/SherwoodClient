@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
-import ICTSelector from './ICTSelector';
+import ICTSelectorOMS from './ICTSelectorOMS';
 import { ButtonDelete, ButtonPlus } from '../mini_components';
 import { Grid, Typography } from '@material-ui/core';
-import { Translate } from 'react-localize-redux';
 import { useSelectSmartField, useUpdateEffect } from '../../../hooks';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
+import { ICTSelectorFR } from './ICTSelectorFR';
+import { EnhancedTable } from '../EnhancedTable';
 
-interface Diagnosis{
+export interface Diagnosis{
     ict : string,
     "ict-code": string
 }
-interface Props{
+interface Props extends LocalizeContextProps {
     name : string,
     label : string,
     typeMargin : string,
@@ -22,29 +24,35 @@ interface Props{
     diagnosesSelected: (treatments:Diagnosis[] | boolean) => void
 }
 
-export const MultipleICTSelector:React.FC<Props> = (props) => {
-    const [addDiagnosis, renderSelect, setAddSmartField ] = useSelectSmartField(props.initialState, props.label, props.errorState);
-    const [listDiagnosis, setListDiagnosis] = useState<Diagnosis[]>(props.initialState ? props.initialState.listDiagnosis : []);
-    const [addingDiagnosis, setAddingDiagnosis] = useState(false);
+
+const MultipleICTSelector:React.FC<Props> = (props) => {
     
+    const [listDiagnosis, setListDiagnosis] = useState<Diagnosis[]>(props.initialState ? props.initialState.listDiagnosis : []);
+    const [addingDiagnosis, setAddingDiagnosis] = useState(true);
+    const [addDiagnosis, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.errorState, setAddingDiagnosis);
+
+    function cancel(){
+        if(listDiagnosis.length === 0){
+            resetState();
+        }
+        else{
+            setAddingDiagnosis(false);
+        }
+    }
     function renderDiagnosis(){
-        if(listDiagnosis.length > 0 ){
-            return(
-            <Grid container spacing={3}>
-                {
-                    listDiagnosis.map((diagnosis, index) => {
-                        return(
-                            <Grid item xs={12} style={{display:'flex'}}>
-                                <Typography variant="body2" color="textPrimary">
-                                    { diagnosis.ict }
-                                </Typography>
-                                <ButtonDelete onClick={() => removeDiagnosis(index)} />
-                            </Grid>
-                        )
-                    })
+        if(listDiagnosis.length > 0 && !addingDiagnosis){
+            const headCells = [{ id: "name", alignment: "left", label: <Translate id="hospital.diagnostic" /> }]
+            const rows = listDiagnosis.map((diag, index) => {
+
+                return {
+                    id : index,
+                    name : diag.ict
                 }
-            </Grid>
-            );
+            })
+            
+            return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
+                actions={{"delete" : (index:number) => removeDiagnosis(index)}}
+            />
             
         }
     }
@@ -59,8 +67,28 @@ export const MultipleICTSelector:React.FC<Props> = (props) => {
     function addDiagnose(){
         setAddingDiagnosis(true);
     }
+    function renderSelector(){
+        if(addingDiagnosis){
+            if(props.activeLanguage.code === "en"){
+                return <ICTSelectorFR label={props.label} variant="outlined" margin={props.typeMargin} 
+                    cancel={cancel}
+                    size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
+            }
+            else{
+                return <ICTSelectorOMS label={props.label}  variant="outlined" margin={props.typeMargin} 
+                    cancel={cancel}
+                    size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
+            }
+        }
+            
+        
+    }
     useUpdateEffect(() =>{
-        setListDiagnosis(props.initialState.listDiagnosis);
+        if(props.initialState && props.initialState.listDiagnosis.length >0 ){
+            setListDiagnosis(props.initialState.listDiagnosis);
+            setAddingDiagnosis(false);
+        }
+        
     }, [props.initialState]);
     
     useUpdateEffect(() =>{
@@ -71,9 +99,8 @@ export const MultipleICTSelector:React.FC<Props> = (props) => {
             props.diagnosesSelected(false);
         }
     }, [addDiagnosis]);
-    if(!addDiagnosis){
+    if(!addDiagnosis && listDiagnosis.length === 0){
         return renderSelect();
-        
     }
     return (
         <React.Fragment>
@@ -85,9 +112,7 @@ export const MultipleICTSelector:React.FC<Props> = (props) => {
                 </React.Fragment>
             }
             {
-                addingDiagnosis &&
-                <ICTSelector label={props.label}  variant="outlined" margin={props.typeMargin} 
-                    size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
+                renderSelector()
             }
             
             {
@@ -96,3 +121,4 @@ export const MultipleICTSelector:React.FC<Props> = (props) => {
         </React.Fragment>
     )
 }
+export default withLocalize(MultipleICTSelector);

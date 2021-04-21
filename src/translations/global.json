@@ -41,6 +41,7 @@
             "48h" : ["48 hours", "48 horas"],
             "week" : ["1 week", "1 semana"]
         },
+        "diagnostic" : ["Diagnostic", "Diagnostico"],
         "add-treatment" : ["Add treatment", "Añadir tratamiento"],
         "add-diagnosis" : ["Add Diagnosis", "Añdir Diagnóstico"]
     },

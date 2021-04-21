@@ -85,7 +85,7 @@ export default {
 
 
 const Template = (args) => <Form {...args}  />
-const TemplateICT = (args) => <MultipleICTSelector {...args}  />
+const TemplateICT = (args) => <Form {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
 TreatmentEmpty.args = {
@@ -119,17 +119,14 @@ TreatmentWithData.args = {
 
 export const ICT = TemplateICT.bind({});
 ICT.args = {
-    ...FIELD_ICT["ict"], 
-    diagnosesSelected : (list)=>alert(JSON.stringify(list))
+    fields : FIELD_ICT, 
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 
 export const ICTWithData = TemplateICT.bind({});
 ICTWithData.args = {
-    ...FIELD_ICT["ict"], 
-    initialState:{
-        addingDiagnosis : true, 
-        listDiagnosis : [{name:"Paludism", code : "2233"}]
-    },
-    diagnosesSelected : (list)=>alert(JSON.stringify(list))
+    fields : FIELD_ICT, 
+    initialData : {ict : [{ict:"Paludism", "ict-code" : "2233"}]},
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 
