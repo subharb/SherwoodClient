@@ -4,6 +4,7 @@ import { Grid, TextField } from '@material-ui/core';
 import { ButtonCancel } from '../mini_components';
 import { Diagnosis } from './index';
 import { Autocomplete } from '@material-ui/lab';
+import { Translate } from 'react-localize-redux';
 
 interface Props{
     value:Diagnosis[] | false;
@@ -83,6 +84,9 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
                 renderInput={(params) => <TextField {...params} value={searchDiagnosis} 
                     error={props.error} label={props.label} variant="outlined" />}
             />
+            <Grid item xs={12}>
+                <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
+            </Grid>
         </React.Fragment>
     )
 }

@@ -25,7 +25,7 @@ function ICTSelectorOMS(props){
             apiSecured: true,
             icdMinorVersion: "2020-09" ,
             icdLinearization: "mms",
-            language: "en",
+            language: props.language,
             sourceApp: "Sherwood",
             wordsAvailable: false,
             chaptersAvailable: true,

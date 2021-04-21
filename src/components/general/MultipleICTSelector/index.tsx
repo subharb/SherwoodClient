@@ -69,13 +69,13 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     }
     function renderSelector(){
         if(addingDiagnosis){
-            if(props.activeLanguage.code === "en"){
-                return <ICTSelectorFR label={props.label} variant="outlined" margin={props.typeMargin} 
-                    cancel={cancel}
+            if(["ean", "es", "ar"].indexOf(props.activeLanguage.code) !== -1 ){
+                return <ICTSelectorOMS label={props.label}  variant="outlined" margin={props.typeMargin} 
+                    cancel={cancel} language={props.activeLanguage.code}
                     size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
             }
             else{
-                return <ICTSelectorOMS label={props.label}  variant="outlined" margin={props.typeMargin} 
+                return <ICTSelectorFR label={props.label} variant="outlined" margin={props.typeMargin} 
                     cancel={cancel}
                     size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
             }
@@ -93,6 +93,9 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     
     useUpdateEffect(() =>{
         props.diagnosesSelected(listDiagnosis);
+        if(listDiagnosis.length === 0){
+            resetState()
+        }
     }, [listDiagnosis]);
     useUpdateEffect(() =>{
         if(!addDiagnosis){
