@@ -179,11 +179,11 @@ function validate(values, props){
         const field = props.fields[fieldKey];
         dictFields[fieldKey] = field
         
-        if(field.hasOwnProperty("slaves")){
-            for(const slave of field.slaves){
-                dictFields[slave.name] = slave;
-            }
-        }
+        // if(field.hasOwnProperty("slaves")){
+        //     for(const slave of field.slaves){
+        //         dictFields[slave.name] = slave;
+        //     }
+        // }
         
     }
   

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SingleTreatmentSelector from './SingleTreatmentSelector';
 import { ButtonAdd } from '../mini_components';
 import { Translate } from 'react-localize-redux';
-import { Typography } from '@material-ui/core';
+import { FormControl, InputLabel, Select, Typography, MenuItem } from '@material-ui/core';
 import { EnhancedTable } from '../EnhancedTable';
 import { useUpdateEffect } from '../../../hooks';
 
@@ -24,14 +24,16 @@ interface Props{
     errorState: boolean,
     initialState:{
         isAddingDrug:boolean,
+        addTreatment: boolean | null,
         listTreatments:Treatment[]
     },
     treatmentSelected: (treatments:Treatment[]) => void
 }
 
 export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
+    const [addTreatment, setAddTreatment] = useState<boolean | null>(props.initialState ? props.initialState.addTreatment : null);
     const [listTreatments, setListTreatment] = useState<Treatment[]>(props.initialState ? props.initialState.listTreatments : []);
-    const [isAddingDrug, setIsAddingDrug] = useState<boolean>(props.initialState ? props.initialState.isAddingDrug : false);
+    const [isAddingDrug, setIsAddingDrug] = useState<boolean>(props.initialState ? props.initialState.isAddingDrug : true);
 
     function treatmentSelected(treatment:Treatment){
         console.log(treatment);
@@ -41,13 +43,40 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
     function deleteTreatment(id:number){
         setListTreatment(listTreatments.filter((item, index) => index !== id));
     }
+    function selectChanged(event:React.ChangeEvent<HTMLInputElement>){
+        console.log(event);
+        setAddTreatment(event.target.value === "Y");
+    }
+    function cancelTreatment(){
+        setIsAddingDrug(false);
+    }
     useUpdateEffect(() =>{
         setListTreatment(props.initialState.listTreatments);
     }, [props.initialState]);
     useUpdateEffect(() =>{
         props.treatmentSelected(listTreatments);
     }, [listTreatments]);
-    if(!isAddingDrug){
+
+    if(!addTreatment){
+        const optionsArray = [<MenuItem value="Y"><Translate id="general.yes" /></MenuItem>, <MenuItem value="N"><Translate id="general.no" /></MenuItem>]
+        
+        return(
+            <FormControl variant="outlined" style={{width:"235px"}} error={props.errorState}>
+                <InputLabel id="show_treatment">{props.label}</InputLabel>
+                <Select
+                labelId="show_treatment"
+                id="show_treatment"
+                label={props.label}
+                value={addTreatment}
+                onChange={(event) => selectChanged(event)}
+                >
+                { optionsArray }
+                </Select>
+            </FormControl>
+        )
+        
+    }
+    else if(!isAddingDrug){
         // listTreatment
         let tableTreatments = null;
         if(listTreatments.length > 0){
@@ -78,9 +107,11 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
             </React.Fragment>
         );
     }
+    
     return (
         <div>
             <SingleTreatmentSelector name={props.name} label={props.label} slaves={props.slaves}
+                cancelTreatment={cancelTreatment}
                 typeMargin={props.typeMargin} treatmentSelected={(treatment:Treatment) => treatmentSelected(treatment)} />
         </div>
     )

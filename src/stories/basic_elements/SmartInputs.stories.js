@@ -7,7 +7,7 @@ import { MultipleICTSelector } from '../../components/general/MultipleICTSelecto
 const FIELD_TREATMENT = {
     "drug":{
         required : true,
-        type:"drug",
+        type:"treatment",
         label:"Drug Selector",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty",
@@ -84,21 +84,26 @@ export default {
 };
 
 
-const Template = (args) => <MultipleTreatmentSelector {...args}  />
+const Template = (args) => <Form {...args}  />
 const TemplateICT = (args) => <MultipleICTSelector {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
 TreatmentEmpty.args = {
-    label:"Treatment", 
-    variant:"outlined",
-    margin:"small",
-    helperText:"ERror" , 
-    errorState:false,
-    slaves:FIELD_TREATMENT["drug"]["slaves"],
-    resetDiagnose:() => {console.log("aaa")}, 
-    size:"small",
-    drugSelected:(values) => {console.log("Result",JSON.stringify(values))}
-};
+    fields:FIELD_TREATMENT, 
+    creating : true,
+    callBackForm : (values) => console.log("Result",JSON.stringify(values))}
+// TreatmentEmpty.args = {
+//     label:"Treatment", 
+//     variant:"outlined",
+//     margin:"small",
+//     helperText:"Error" , 
+//     addTreatment: null,
+//     errorState:false,
+//     slaves:FIELD_TREATMENT["drug"]["slaves"],
+//     resetDiagnose:() => {console.log("aaa")}, 
+//     size:"small",
+//     treatmentSelected : (values) => {console.log("Result",JSON.stringify(values))}
+// };
 
 export const TreatmentWithData = Template.bind({});
 TreatmentWithData.args = {

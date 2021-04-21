@@ -148,7 +148,7 @@ class FieldSherwood extends Component{
                 }
                 const labelId = `${input.name}_label`;
                 return(
-                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} >
+                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} error={errorState} >
                         <InputLabel id={labelId}>{labelString}</InputLabel>
                         <Select
                         labelId={labelId}
@@ -316,13 +316,14 @@ class FieldSherwood extends Component{
                 )
             case "ict" : 
                 return(
-                    <MultipleICTSelector label={labelString} {...input} initialState={{listDiagnosis: input.value}} variant="outlined" margin={this.typeMargin} 
+                    <MultipleICTSelector label={labelString} {...input} initialState={Array.isArray(input.value)  ? {listDiagnosis: input.value} : null} variant="outlined" margin={this.typeMargin} 
                         helperText={errorString} resetDiagnose={this.resetDiagnose}
                         size="small" diagnosesSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                 );
             case "treatment" : 
                 return(
-                    <MultipleTreatmentSelector label={labelString} {...input} initialState={{listTreatments: input.value}} variant="outlined" margin={this.typeMargin} 
+                    <MultipleTreatmentSelector label={labelString} {...input} initialState={Array.isArray(input.value) ? {listTreatments: input.value} : null} 
+                        variant="outlined" margin={this.typeMargin} 
                         helperText={errorString}  errorState={errorState} slaves={this.props.slaves}
                         resetDiagnose={this.resetDiagnose} 
                         size="small" treatmentSelected={(code) => this.treatmentSelected(code)} />

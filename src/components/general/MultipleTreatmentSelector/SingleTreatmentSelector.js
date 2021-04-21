@@ -76,7 +76,7 @@ function SingleTreatmentSelector(props){
         }
     }
     function cancel(){
-
+        props.cancelTreatment()
     }
     function posologySelected(posology){
         setPosology(posology);
@@ -156,7 +156,7 @@ function SingleTreatmentSelector(props){
                         disabled={isCurrent}
                         defaultValue={finishDate} 
                         openTo="year"
-                        maxDate={new Date()}
+                        minDate={new Date()}
                         onChange={(date, value) => {
                             setFinishDate(value);
                             setErrorFinishDate(false);
@@ -172,7 +172,7 @@ function SingleTreatmentSelector(props){
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item xs={12}>
-                <ButtonAccept onClick={saveDrug}><Translate id="general.accept" /></ButtonAccept>
+                <ButtonAccept onClick={saveDrug}><Translate id="general.add" /></ButtonAccept>
                 <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
             </Grid>
             
