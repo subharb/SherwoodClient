@@ -144,6 +144,8 @@ function SingleTreatmentSelector(props){
                         control={<Checkbox checked={isCurrent} onChange={onChangeIsCurrent} />}
                         label={isCurrentLabel}
                     />
+            </Grid>
+             <Grid item xs={12}>
                 <MuiPickersUtilsProvider key="end-date" utils={DateFnsUtils} id="end-date">
                     <KeyboardDatePicker
                         margin={props.typeMargin}

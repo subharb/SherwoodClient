@@ -58,6 +58,10 @@ export function validateField(field, fieldCompare){
                 response.result = (Date.parse(field.value)-Date.parse(new Date())<0)
                 response.messageCode =  pathErroTranslation+"error_past_date"
                 break;
+            case "arrayOrFalse":
+                response.result = Array.isArray(field.value) || (field.value === false)
+                response.messageCode =  pathErroTranslation+"error_notarrayorfalse"
+                break;
             default:
                 console.log("Validación no definida");
                 response.result = false;

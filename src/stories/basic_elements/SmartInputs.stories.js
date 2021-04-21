@@ -10,7 +10,7 @@ const FIELD_TREATMENT = {
         type:"treatment",
         label:"Drug Selector",
         shortLabel: "investigation.table.is_personal_data",
-        validation : "notEmpty",
+        validation : "arrayOrFalse",
         "slaves" : [{
             "required": true,
             "encrypted": false,
