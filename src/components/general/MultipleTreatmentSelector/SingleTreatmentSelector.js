@@ -21,8 +21,10 @@ function SingleTreatmentSelector(props){
     const [finishDate, setFinishDate] = useState(null);
     const [isCurrent, setIsCurrent] = useState(true);
     const [posology, setPosology] = useState(null);
+    const [dose, setDose] = useState(null);
     const [errorPosology, setErrorPosology] = useState(false);
     const [errorDrug, setErrorDrug] = useState(false);
+    const [errorDose, setErrorDose] = useState(false);
     const [errorFinishDate, setErrorFinishDate] = useState(false);
     const [loading, setLoading] = useState(false);
     const [drug, setDrug] = useState(null);
@@ -64,6 +66,10 @@ function SingleTreatmentSelector(props){
             setErrorPosology(true);
             valid = false;
         }
+        if(!dose){
+            setErrorDose(true);
+            valid = false;
+        }
         if(!finishDate && !isCurrent){
             setErrorFinishDate(true);
             valid = false;
@@ -71,7 +77,10 @@ function SingleTreatmentSelector(props){
         if(valid){
             const startDate = new Date();
             props.treatmentSelected({
-                treatment:drug.name,"drug-code" : drug.code, "treatment-posology": posology.value,"treatment-start" : startDate, "treatment-finish" : finishDate, 
+                treatment:drug.name,"drug-code" : drug.code, 
+                "treatment-posology": posology.value, 
+                "treatment-dose": dose.value, 
+                "treatment-start" : startDate, "treatment-finish" : finishDate, 
             });
         }
     }
@@ -81,6 +90,10 @@ function SingleTreatmentSelector(props){
     function posologySelected(posology){
         setPosology(posology);
         setErrorPosology(false);
+    }
+    function doseSelected(dose){
+        setDose(dose);
+        setErrorDose(false);
     }
     function onChangeIsCurrent(e){
         console.log(e.target.checked);
@@ -93,6 +106,7 @@ function SingleTreatmentSelector(props){
     }
     const finishDateLabel = props.translate("general.endDate");
     const selectPosology = props.slaves.find(slave => slave.name === "treatment-posology");
+    const selectDose = props.slaves.find(slave => slave.name === "treatment-dose");
     const isCurrentLabel = props.translate("hospital.current");
     return (
         <Grid container spacing={2}>
@@ -137,6 +151,26 @@ function SingleTreatmentSelector(props){
                     renderInput={(params) => <TextField {...params} 
                         label={selectPosology.label} variant="outlined" helperText="If no options match, write your own" 
                         error={errorPosology} />}
+                    />
+            </Grid>
+            <Grid item xs={12}>
+                <Autocomplete
+                    id="dose"
+                    
+                    options={selectDose.options}
+                    getOptionLabel={(option) => props.translate(option.label)}
+                    style={{ width: 300 }}
+                    onInputChange={(event, value, reason) => {
+                        doseSelected(value);
+                    }}
+                    onChange={(event, value, reason, details) => {
+                        doseSelected(value);
+                    }}
+                    freeSolo
+                    renderInput={(params) => <TextField {...params} 
+                        label={selectDose.label} variant="outlined" 
+                        helperText="If no options match, write your own" 
+                        error={errorDose} />}
                     />
             </Grid>
             <Grid item xs={12}>

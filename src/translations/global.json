@@ -32,7 +32,7 @@
         "treatment-name" : ["Name", "Nombre"],
         "posology" : ["Posology", "Posología"],
         "current" : ["Current", "Actualidad"],
-        "posology-types" : {
+        "posology-options" : {
             "4h" : ["4 hours", "4 horas"],
             "6h" : ["6 hours", "6 horas"],
             "8h" : ["8 hours", "8 horas"],
@@ -40,6 +40,12 @@
             "24h" : ["24 hours", "24 horas"],
             "48h" : ["48 hours", "48 horas"],
             "week" : ["1 week", "1 semana"]
+        },
+        "dose-options" : {
+            "1" : ["One pill", "Una pastilla"],
+            "3/4" : ["3/4 of a pill", "3/4 de pastilla"],
+            "1/2" : ["half a pill", "Media pastilla"],
+            "1/4" : ["1/4 of a pill", "1/4 de pastilla"]
         },
         "diagnostic" : ["Diagnostic", "Diagnostico"],
         "add-treatment" : ["Add treatment", "Añadir tratamiento"],

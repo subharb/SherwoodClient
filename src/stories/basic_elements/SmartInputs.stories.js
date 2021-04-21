@@ -42,13 +42,27 @@ const FIELD_TREATMENT = {
             "label": "Posology",
             "type": "select",
             options:[
-                {"label" : "hospital.posology-types.4h", "value" : "4h"},
-                {"label": "hospital.posology-types.6h", "value" : "6h"},
-                {"label": "hospital.posology-types.8h", "value" : "8h"},
-                {"label": "hospital.posology-types.12h", "value" : "12h"},
-                {"label": "hospital.posology-types.24h", "value" : "24h"},
-                {"label": "hospital.posology-types.48h", "value" : "48h"},
-                {"label": "hospital.posology-types.week", "value" : "7d"}
+                {"label" : "hospital.posology-options.4h", "value" : "4h"},
+                {"label": "hospital.posology-options.6h", "value" : "6h"},
+                {"label": "hospital.posology-options.8h", "value" : "8h"},
+                {"label": "hospital.posology-options.12h", "value" : "12h"},
+                {"label": "hospital.posology-options.24h", "value" : "24h"},
+                {"label": "hospital.posology-options.48h", "value" : "48h"},
+                {"label": "hospital.posology-options.week", "value" : "7d"}
+            ],
+            "validation" : "notEmpty",
+        },
+        {
+            "required": true,
+            "encrypted": false,
+            "name": "treatment-dose",
+            "label": "Dose",
+            "type": "select",
+            options:[
+                {"label" : "hospital.dose-options.1", "value" : "1"},
+                {"label": "hospital.dose-options.3/4", "value" : "3/4"},
+                {"label": "hospital.dose-options.1/2", "value" : "1/2"},
+                {"label": "hospital.dose-options.1/4", "value" : "1/4"},
             ],
             "validation" : "notEmpty",
         }]
