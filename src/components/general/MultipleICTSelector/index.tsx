@@ -75,9 +75,9 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
                     size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
             }
             else{
-                return <ICTSelectorFR label={props.label} variant="outlined" margin={props.typeMargin} 
-                    cancel={cancel}
-                    size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
+                return <ICTSelectorFR label={props.label} variant="outlined" 
+                    cancel={cancel} size="small" error={props.errorState} 
+                    diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
             }
         }
             

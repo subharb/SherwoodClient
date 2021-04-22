@@ -7,24 +7,31 @@ import { Autocomplete } from '@material-ui/lab';
 import { Translate } from 'react-localize-redux';
 
 interface Props{
-    value:Diagnosis[] | false;
+    //value:Diagnosis[] | false;
     error:boolean,
     label:string,
-    diagnosisSelected: (diag:Diagnosis) => void
-    cancel: () => void;
+    //margin:string,
+    variant:"standard" | "filled" | "outlined" | undefined,
+    size:string,
+    diagnosisSelected: (diag:Diagnosis) => void,
+    cancel: () => void
 }
 
+interface DiagnosisPost{
+    name:string,
+    code:string
+}
 export const ICTSelectorFR:React.FC<Props> = (props) => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [diagnosticsOptions, setDiagnosticsOptions] = useState<Diagnosis[]>([]);
+    const [diagnosticsOptions, setDiagnosticsOptions] = useState<DiagnosisPost[]>([]);
     const [searchDiagnosis, setSearchDiagnosis] = useState("");
     const [error, setError] = useState(false);
     const [diagnose, setDiagnose] = useState(null);
 
-    function resetField(){
-        //props.resetDiagnose();
-        setDiagnose("");
-    }
+    // function resetField(){
+    //     //props.resetDiagnose();
+    //     setDiagnose(null);
+    // }
     function cancel(){
         props.cancel();
     }
@@ -53,7 +60,7 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
         }
     }, [searchDiagnosis]);
 
-    const value = diagnose !== "" ? diagnose : props.value;
+    //const value = diagnose !== "" ? diagnose : props.value;
     return (
         <React.Fragment>
             <Autocomplete
@@ -79,10 +86,10 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
                     }
                 }}
             
-                getOptionLabel={(option:Diagnosis) => option.name}
+                getOptionLabel={(option:DiagnosisPost) => option.name}
                 style={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} value={searchDiagnosis} 
-                    error={props.error} label={props.label} variant="outlined" />}
+                    error={props.error} label={props.label} variant={props.variant} />}
             />
             <Grid item xs={12}>
                 <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
