@@ -55,8 +55,8 @@ function Patient(props) {
     const isInitialMount = useRef(true);
 
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
-    const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.data[0].uuid].find(pat => pat.uuid === uuidPatient) : null
-    const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.data[0].surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? props.investigations.data[0].surveys[indexDataCollection] : null;
+    const patient = props.investigations.currentInvestigation && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
+    const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? props.investigations.currentInvestigation.surveys[indexDataCollection] : null;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     function fillDataCollection(indexCollection){
@@ -128,7 +128,7 @@ function Patient(props) {
             ]
         }
         if(action === "update"){
-            await dispatch(updateSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
+            await dispatch(updateSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
         }
         else{
             setIndexSection(-1);
@@ -136,7 +136,7 @@ function Patient(props) {
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
             console.log(data);
-            await dispatch(postSubmissionPatientAction(postObj, props.investigations.data[0].uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
+            await dispatch(postSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
         }
     }
     function renderOptions(){
@@ -147,7 +147,7 @@ function Patient(props) {
                         <Translate id="hospital.data-collections" />:
                     </WhiteTypography>
                 </Grid>,
-                props.investigations.data[0].surveys.sort((a,b) => a.order - b.order).map((dataCollection, index) => {
+                props.investigations.currentInvestigation.surveys.sort((a,b) => a.order - b.order).map((dataCollection, index) => {
                     return(
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGreyBorderGrey>
@@ -227,7 +227,7 @@ function Patient(props) {
     }, [uuidDataCollection, uuidSection])
     useEffect(() => {
         async function fetchRecordsPatient(){
-            await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.data[0].uuid, uuidPatient));
+            await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.currentInvestigation.uuid, uuidPatient));
         }
         if(props.investigations.data && (!props.patientsSubmissions.data || !props.patientsSubmissions.data.hasOwnProperty(uuidPatient))){
             fetchRecordsPatient()
@@ -344,7 +344,7 @@ function Patient(props) {
                                 </Typography>
                             </Grid> */}
                             <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}
-                                onClick={props.investigations.data[0].permissions === 3 ? editPersonalData : null} >
+                                onClick={props.investigations.currentInvestigation.permissions === 3 ? editPersonalData : null} >
                                 <IconPatient gender={patient.personalData.sex} />
                             </Grid>
                         </Grid>

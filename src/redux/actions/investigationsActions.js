@@ -20,3 +20,12 @@ export function fetchInvestigations() {
       });
   };
 }
+
+export function selectInvestigation(idInvestigation) {
+    return async (dispatch) => {
+        dispatch({ 
+            type: types.SELECT_INVESTIGATION,
+            selectedInvestigation :  idInvestigation
+        });
+  }
+}
