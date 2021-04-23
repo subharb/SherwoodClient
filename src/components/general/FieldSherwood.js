@@ -22,6 +22,7 @@ import { Autocomplete } from '@material-ui/lab';
 import { change, registerField } from "redux-form";
 import MultipleICTSelector from './MultipleICTSelector';
 import { MultipleTreatmentSelector } from './MultipleTreatmentSelector';
+import SelectField from './SelectField';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -60,7 +61,7 @@ const RedFormHelperText = styled(FormHelperText)`
   color:red;
 `
 
-const TextFieldSherwood = styled(TextField)`
+export const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
 `;
 
@@ -125,42 +126,18 @@ class FieldSherwood extends Component{
     handleDateChange(value){
         this.props.input.onChange(value);
     }
+    
     render(){
-        const {input, label, meta, type, options, size, option, removeClass, validation} = this.props;
+        const {input, label, meta, type, options, size, option, removeClass, validation, activationValues, activatedFields} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
-        const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
+        const labelString = label.hasOwnProperty("url") ? <a href={label.url} >{this.props.translate(label.label)}</a> : this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
-                let optionsArray = [];
-                if(typeof this.props.optionsUrl !== "undefined"){
-                    optionsArray = this.state.options.map(anOption => {
-                        return <MenuItem value={anOption.value}>{anOption.label}</MenuItem>
-                    })
-                }
-                else{
-                    optionsArray = options.map(option => {
-                        const optionText = this.props.translate(option.label).indexOf("Missing translationId:") !== -1 ?  option.label : this.props.translate(option.label);
-                    return <MenuItem value={option.value}>{optionText}</MenuItem>
-                        
-                    })
-                }
-                const labelId = `${input.name}_label`;
-                return(
-                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} error={errorState} >
-                        <InputLabel id={labelId}>{labelString}</InputLabel>
-                        <Select
-                        labelId={labelId}
-                        id={input.name}
-                        label={labelString}
-                        {...input} 
-                        >
-                        { optionsArray }
-                        </Select>
-                    </FormControl>
-                    
-                )
+                return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
+                    activationValues={activationValues}/>
+
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value.includes(option.value)){

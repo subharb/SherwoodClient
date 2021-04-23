@@ -107,7 +107,7 @@ class Form extends Component {
             if(extraField.type === "options"){
                 return (
                     <div className="container">
-                        <FieldArray name={`options`} {...extraField} key={key} component={this.renderOptions} />
+                        <FieldArray name={key} {...extraField} key={key} component={this.renderOptions} />
                     </div>
                 )
             }
@@ -133,23 +133,11 @@ class Form extends Component {
                                     <Field name={key} {...this.props.fields[key]} 
                                         type={this.props.fields[key].type} label={this.props.fields[key].label} callBackMultiOptionSelected={(name, value) => this.props.change(name, value)}
                                         component={FieldSherwood} />
-                                    {
+                                    {/* {
                                         this.renderExtraFields(key)
-                                    }
+                                    } */}
                                 </div>);
                         }
-                        // else if(!this.state.showOptions.hasOwnProperty(this.props.fields[key]) && (this.state.showOptions[this.props.fields[key]] === true)){
-                        //     //Si es de tipo options, muestro un boton para añadir opciones
-                        //     return ([
-                        //         <div className="row" key={key}>
-                        //             <FieldArray name={key} label={this.props.fields[key].label} {...this.props.fields[key]}  component={this.renderOptions} />
-                        //         </div>,
-                        //         <button data-testid="submit-form" type="button" className="waves-effect waves-light btn">
-                        //             {this.props.translate("investigation.create.save")}
-                        //         </button>   
-                        //     ]);
-                        // }
-                        
                     })}
                     <div style={{paddingTop:"1rem"}}>
                         <ButtonContinue type="submit" data-testid={this.props.dataTestid} spaceright={1} >

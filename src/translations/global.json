@@ -109,7 +109,8 @@
             },
             "key_generation" : {
                 "confirm" : ["CONFIRM", "CONFIRMAR"]
-            }
+            },
+            "accept-policy" : ["I accept the policy of Sherwood Science", "Acepto la política de privacidad de Sherwood Science"]
         },
         "researcher" : {
             "personal_info" : {

@@ -30,20 +30,20 @@ const Wrapper = styled(Paper)`
   }
 `;
 
-function SignUp() {
+function SignUp(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
   return (
         <Grid container spacing={1}>
-            <Grid item>
+            <Grid item xs={12}>
                 <Typography variant="h3" gutterBottom display="inline">
                     Sign up!
                 </Typography>
             </Grid>
             <Grid item>
                 <Helmet title="Sign Up" />
-                <Register typeUser="researcher" />
+                <Register typeUser="researcher" {...props} />
             </Grid>
         </Grid>
             

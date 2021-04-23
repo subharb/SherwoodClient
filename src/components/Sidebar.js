@@ -261,7 +261,7 @@ const SidebarCategory = ({
   return (
     <Category {...rest}>
       {icon}
-      <CategoryText data-testid={name.props.id}>{name}</CategoryText>
+      <CategoryText data-testid={name}>{name}</CategoryText>
       {isCollapsable ? (
         isOpen ? (
           <CategoryIconMore />
