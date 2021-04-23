@@ -135,8 +135,37 @@ class FieldSherwood extends Component{
         const labelString = label.hasOwnProperty("url") ? <a href={label.url} >{this.props.translate(label.label)}</a> : this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
-                return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
-                    activationValues={activationValues}/>
+                let optionsArray = [];
+                if(typeof this.props.optionsUrl !== "undefined"){
+                    optionsArray = this.state.options.map(anOption => {
+                        return <MenuItem value={anOption.value}>{anOption.label}</MenuItem>
+                    })
+                }
+                else{
+                    optionsArray = options.map(option => {
+                        const optionText = this.props.translate(option.label).indexOf("Missing translationId:") !== -1 ?  option.label : this.props.translate(option.label);
+                    return <MenuItem value={option.value}>{optionText}</MenuItem>
+                        
+                    })
+                }
+                const labelId = `${input.name}_label`;
+                return(
+                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} error={errorState} >
+                        <InputLabel id={labelId}>{labelString}</InputLabel>
+                        <Select
+                        labelId={labelId}
+                        id={input.name}
+                        label={labelString}
+                        {...input} 
+                        >
+                        { optionsArray }
+                        </Select>
+                    </FormControl>
+                    
+                )
+            // case "select":
+            //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
+            //         activationValues={activationValues}/>
 
             case "multioption" : 
                     const optionButtons = options.map(option => {
