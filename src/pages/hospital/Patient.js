@@ -195,7 +195,7 @@ function Patient(props) {
             
         }
         else if(dataCollectionSelected !== null && action === "show"){
-            return <ShowPatientRecords survey={dataCollectionSelected} mode="elements" callBackEditSubmission={callBackEditSubmission}
+            return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} mode="elements" callBackEditSubmission={callBackEditSubmission}
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
         else if(surveyRecords.length === 0){

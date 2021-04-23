@@ -24,33 +24,33 @@ const SelectField:React.FC<Props> = ({input, labelString, activatedFields, optio
     const [newOptions, setNewOptions ] = useState<string[]>([""]);
     const [errorOptions, setErrorOption ] = useState<boolean[]>([]);
 
-    function changeNewOption(index, event){
-        const tempNewOptions = [...newOptions];
-        tempNewOptions[index] = event.target.value;
-        setNewOptions(tempNewOptions);
-    }
+    // function changeNewOption(index, event){
+    //     const tempNewOptions = [...newOptions];
+    //     tempNewOptions[index] = event.target.value;
+    //     setNewOptions(tempNewOptions);
+    // }
     function addOption(){
         //Revisamos que los anterioes están rellenos y añado un string vacio a "newOptions"
     }
     function renderExtraFields(activationValues:string[] | undefined, activatedFields:Input[] | undefined, value:string){
-        if(activationValues && activationValues.indexOf(value) !== -1){
+        // if(activationValues && activationValues.indexOf(value) !== -1){
 
-            const htmlOptions = newOptions.map((option, index) => {
-                return(<Grid item xs={12}>
-                            <TextFieldSherwood label={`Option ${index+1}`} onChange={(event) => changeNewOption(index, event)}variant="outlined" value={option}
-                                error={errorOptions[index]} size="small"
-                            />
-                        </Grid>);
-            });
-            return(
-                <React.Fragment>
-                    <Grid item xs={12}>
-                        <button onClick={addOption}>Add option</button>
-                    </Grid>
-                    { htmlOptions }    
-                </React.Fragment>
-            )
-        }
+        //     const htmlOptions = newOptions.map((option, index) => {
+        //         return(<Grid item xs={12}>
+        //                     <TextFieldSherwood label={`Option ${index+1}`} onChange={(event) => changeNewOption(index, event)}variant="outlined" value={option}
+        //                         error={errorOptions[index]} size="small"
+        //                     />
+        //                 </Grid>);
+        //     });
+        //     return(
+        //         <React.Fragment>
+        //             <Grid item xs={12}>
+        //                 <button onClick={addOption}>Add option</button>
+        //             </Grid>
+        //             { htmlOptions }    
+        //         </React.Fragment>
+        //     )
+        // }
     }
     let optionsArray = [];
     if(typeof optionsUrl !== "undefined"){
