@@ -133,9 +133,9 @@ class Form extends Component {
                                     <Field name={key} {...this.props.fields[key]} 
                                         type={this.props.fields[key].type} label={this.props.fields[key].label} callBackMultiOptionSelected={(name, value) => this.props.change(name, value)}
                                         component={FieldSherwood} />
-                                    {/* {
+                                    {
                                         this.renderExtraFields(key)
-                                    } */}
+                                    }
                                 </div>);
                         }
                     })}

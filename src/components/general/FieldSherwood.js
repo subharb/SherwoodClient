@@ -210,11 +210,11 @@ class FieldSherwood extends Component{
                             id={input.name}
                             inputVariant="outlined"
                             style={{width: "235px"}}
-                            //label={input.value ? "" : labelString}
-                            label={labelString}
+                            label={input.value ? "" : labelString}
+                            //label={labelString}
                             format="dd/MM/yyyy"
-                            // value={value}
-                            // defaultValue={value} 
+                            value={value}
+                            defaultValue={value} 
                             openTo="year"
                             onChange={this.handleDateChange}
                             maxDate={validation === "pastDate" ? new Date() : undefined}
