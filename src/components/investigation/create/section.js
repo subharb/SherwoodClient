@@ -74,6 +74,9 @@ class Section extends Component{
     }
     handleAddField(values){
         console.log("Nuevo field!", values);
+        if(values.hasOwnProperty("type_options")){
+            values["options"] = values.type_options;
+        }
         let tempState = {...this.state};
         tempState.fields.push(values);
         this.setState(tempState);

@@ -101,13 +101,13 @@ class Form extends Component {
         }
     }
     renderExtraFields(key){
-        //Un field que habilita la apararición de otro field
+        //Un field que habilita la aparición de otro field
         if(this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValues") && this.props.valuesForm.hasOwnProperty(key) && this.props.fields[key].activationValues.includes(this.props.valuesForm[key]))){
             const extraField = {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]}; 
             if(extraField.type === "options"){
                 return (
                     <div className="container">
-                        <FieldArray name={key} {...extraField} key={key} component={this.renderOptions} />
+                        <FieldArray name={`${key}_options`} {...extraField} key={key} component={this.renderOptions} />
                     </div>
                 )
             }

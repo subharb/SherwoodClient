@@ -126,7 +126,9 @@ class FieldSherwood extends Component{
     handleDateChange(value){
         this.props.input.onChange(value);
     }
-    
+    selectChange(value){
+        this.props.input.onChange(value);
+    }
     render(){
         const {input, label, meta, type, options, size, option, removeClass, validation, activationValues, activatedFields} = this.props;
         const sizeCurrent = size ? size : "s12";
@@ -165,7 +167,7 @@ class FieldSherwood extends Component{
                 )
             // case "select":
             //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
-            //         activationValues={activationValues}/>
+            //         activationValues={activationValues} onChange={(value) => this.selectChange(value)}/>
 
             case "multioption" : 
                     const optionButtons = options.map(option => {

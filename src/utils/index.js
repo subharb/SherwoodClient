@@ -181,6 +181,7 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.type_number", "value" : "number"},
                 {"label": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
                 {"label": "investigation.create.edc.type_date", "value" : "date"},
+                {"label": "investigation.create.edc.textarea", "value" : "textarea"},
                 {"label": "investigation.create.edc.dropdown", "value" : "dropdown"},
                 {"label": "investigation.create.edc.multioption", "value" : "multioption"},
                 {"label": "investigation.create.edc.diagnosis", "value" : "ict"},
