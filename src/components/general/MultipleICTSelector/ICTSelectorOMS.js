@@ -84,7 +84,7 @@ function ICTSelectorOMS(props){
     const value = diagnose !== "" ? diagnose : props.value;
     return ([
         <div>
-            <TextField key="ict-input" {...props} value = {value} onFocus={resetField}
+            <TextField key="ict-input" {...props} label={props.translate("hospital.select-diagnostic")} value = {value} onFocus={resetField}
                 inputProps={{className : "ctw-input", "data-ctw-ino" : "1"}}   />
             <div key="ict-container" className="ctw-window" data-ctw-ino="1"></div>
             <Grid item xs={12}>

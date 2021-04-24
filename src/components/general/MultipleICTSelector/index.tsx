@@ -4,7 +4,7 @@ import { ButtonDelete, ButtonPlus } from '../mini_components';
 import { Grid, Typography } from '@material-ui/core';
 import { useSelectSmartField, useUpdateEffect } from '../../../hooks';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { ICTSelectorFR } from './ICTSelectorFR';
+import ICTSelectorFR from './ICTSelectorFR';
 import { EnhancedTable } from '../EnhancedTable';
 
 export interface Diagnosis{

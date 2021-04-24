@@ -4,9 +4,9 @@ import { Grid, TextField } from '@material-ui/core';
 import { ButtonCancel } from '../mini_components';
 import { Diagnosis } from './index';
 import { Autocomplete } from '@material-ui/lab';
-import { Translate } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 
-interface Props{
+interface Props extends LocalizeContextProps{
     //value:Diagnosis[] | false;
     error:boolean,
     label:string,
@@ -89,7 +89,7 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
                 getOptionLabel={(option:DiagnosisPost) => option.name}
                 style={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} value={searchDiagnosis} 
-                    error={props.error} label={props.label} variant={props.variant} />}
+                    error={props.error} label={props.translate("hospital.select-diagnostic")} variant={props.variant} />}
             />
             <Grid item xs={12}>
                 <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
@@ -97,3 +97,4 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
         </React.Fragment>
     )
 }
+export default withLocalize(ICTSelectorFR)

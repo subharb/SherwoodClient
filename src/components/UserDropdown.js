@@ -35,6 +35,7 @@ function UserDropdown() {
 
   const handleSignOut = async () => {
       localStorage.removeItem("jwt");
+      localStorage.removeItem("indexHospital");
       history.push("/auth/sign-in");
   };
 

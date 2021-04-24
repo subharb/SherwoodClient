@@ -120,9 +120,6 @@ class FieldSherwood extends Component{
     treatmentSelected(treatments){
         this.props.input.onChange(treatments);
     }
-    drugStartDate(date){
-        this.props.change('net', "newValue");
-    }
     handleDateChange(value){
         this.props.input.onChange(value);
     }

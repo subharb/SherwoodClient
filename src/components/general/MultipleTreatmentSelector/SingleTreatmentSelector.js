@@ -131,7 +131,8 @@ function SingleTreatmentSelector(props){
                 
                     getOptionLabel={(option) => option.name}
                     style={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} value={searchDrug} error={errorDrug} label={props.label} variant="outlined" />}
+                    renderInput={(params) => <TextField {...params} value={searchDrug} error={errorDrug} 
+                            label={props.translate("hospital.select-treatment")} variant="outlined" />}
                 />
             </Grid>
             <Grid item xs={12}>

@@ -48,6 +48,9 @@
             "1/4" : ["1/4 of a pill", "1/4 de pastilla"]
         },
         "diagnostic" : ["Diagnostic", "Diagnostico"],
+        "select-diagnostic" : ["Select diagnostic", "Seleccione diagnostico"],
+        "treatment" : ["Treatment", "Tratamiento"],
+        "select-treatment" : ["Select treatment", "Seleccione tratamiento"],
         "add-treatment" : ["Add treatment", "Añadir tratamiento"],
         "add-diagnosis" : ["Add Diagnosis", "Añdir Diagnóstico"]
     },

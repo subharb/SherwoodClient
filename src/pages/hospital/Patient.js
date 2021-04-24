@@ -55,7 +55,7 @@ function Patient(props) {
     const isInitialMount = useRef(true);
 
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
-    const patient = props.investigations.currentInvestigation && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
+    const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? props.investigations.currentInvestigation.surveys[indexDataCollection] : null;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
@@ -344,7 +344,7 @@ function Patient(props) {
                                 </Typography>
                             </Grid> */}
                             <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}
-                                onClick={props.investigations.currentInvestigation.permissions === 3 ? editPersonalData : null} >
+                                onClick={props.investigations.currentInvestigation.permissions >= 3 ? editPersonalData : null} >
                                 <IconPatient gender={patient.personalData.sex} />
                             </Grid>
                         </Grid>

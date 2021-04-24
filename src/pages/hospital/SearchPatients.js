@@ -119,7 +119,9 @@ function SearchPatients(props) {
             }
         }
     }
-    
+    if(!props.investigations.data){
+        return <Loader />
+    }
     return (
         <React.Fragment>
             <Grid container spacing={6} >

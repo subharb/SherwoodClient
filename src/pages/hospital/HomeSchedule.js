@@ -40,6 +40,7 @@ function HomeSchedule(props) {
 
     async function selectHospital(index){
         await dispatch(selectInvestigation(index));
+        localStorage.setItem("indexHospital", index);
     }
     function renderCore(){
         if(!props.investigations.currentInvestigation){
