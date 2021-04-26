@@ -19,11 +19,13 @@ let personalFieldsForm = {};
 function SearchPatients(props) {
     
     //const [decryptedPatientData, setDecryptedPatientData] = useState([]);//usePatientsData(investigations ? investigations[0] : null, investigations ? investigations[0].patientsPersonalData : []);
+    
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [showResults, setShowResults] = useState(false);
 
     const history = useHistory();
 
+    const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     // useEffect(() => {
     //     if(props.investigations.currentInvestigation){
     //         props.investigations.currentInvestigation.personalFields.sort((a,b) => a.order - b.order).forEach(personalField => {
@@ -49,7 +51,7 @@ function SearchPatients(props) {
         console.log(values);
         setShowResults(true); 
         //Filtrar decryptedPatientData con values
-        const filteredPatients = props.investigations.currentInvestigation.patientsPersonalData.sort((a,b) => b.id - a.id).filter(patient =>{
+        const filteredPatients = patients.sort((a,b) => b.id - a.id).filter(patient =>{
             let result = true;
             for(const keyValue of Object.keys(values)){
                 const value = values[keyValue];
@@ -119,7 +121,7 @@ function SearchPatients(props) {
             }
         }
     }
-    if(!props.investigations.data){
+    if(!props.patients.data){
         return <Loader />
     }
     return (
@@ -144,7 +146,8 @@ function SearchPatients(props) {
 
 const mapStateToProps = (state) =>{
     return {
-        investigations : state.investigations
+        patients : state.patients,
+        investigations:state.investigations
     }
 }
 
