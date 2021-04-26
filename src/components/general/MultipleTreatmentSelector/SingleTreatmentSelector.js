@@ -107,7 +107,7 @@ function SingleTreatmentSelector(props){
     const finishDateLabel = props.translate("general.endDate");
     const selectPosology = props.slaves.find(slave => slave.name === "treatment-posology");
     const selectDose = props.slaves.find(slave => slave.name === "treatment-dose");
-    const isCurrentLabel = props.translate("hospital.current");
+    const isCurrentLabel = props.translate("hospital.chronic");
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
