@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { searchDiagnosticService, searchDrugComponentService } from '../../../services/sherwoodService';
 import { Grid, TextField } from '@material-ui/core';
 import { ButtonCancel } from '../mini_components';
-import { Diagnosis } from './index';
+import { Allergy, Background, Smartfield } from './index';
 import { Autocomplete } from '@material-ui/lab';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
+
+
 
 interface Props extends LocalizeContextProps{
     //value:Diagnosis[] | false;
@@ -13,7 +15,7 @@ interface Props extends LocalizeContextProps{
     //margin:string,
     variant:"standard" | "filled" | "outlined" | undefined,
     size:string,
-    diagnosisSelected: (diag:Diagnosis) => void,
+    elementSelected: (element:Smartfield) => void,
     cancel: () => void
 }
 
@@ -28,10 +30,6 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
     const [error, setError] = useState(false);
     const [diagnose, setDiagnose] = useState(null);
 
-    // function resetField(){
-    //     //props.resetDiagnose();
-    //     setDiagnose(null);
-    // }
     function cancel(){
         props.cancel();
     }
@@ -88,10 +86,27 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
                 }}
                 onChange={(event, value, reason, details) => {
                     if(value){
-                        props.diagnosisSelected({
-                            ict:value.name,
-                            "ict-code" : value.code
-                        });
+                        let tempValue:Smartfield;
+                        if(props.type === "ict"){
+                            tempValue = {
+                                "ict" : value.name,
+                                "ict-code" : value.code
+                            }
+                        }
+                        else if(props.type === "background"){
+                            tempValue = {
+                                "background" : value.name,
+                                "background-code" : value.code
+                            }
+                        }
+                        else{ 
+                            tempValue = {
+                                "allergy" : value.name,
+                                "allergy-code" : value.code
+                            }
+                        }
+                       
+                        props.elementSelected(tempValue);
                     }
                 }}
             

@@ -41,7 +41,7 @@ export default function ShowRecordsSection(props) {
                 {valueRecord.value.map(smartField => {
                     return(
                         <Typography variant="body2" gutterBottom>
-                            {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.treatment}
+                            {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.hasOwnProperty("treatment") ? smartField.treatment : smartField.hasOwnProperty("background") ? smartField.background : smartField.allergy}
                         </Typography>
                     )
                     

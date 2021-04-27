@@ -7,6 +7,18 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import ICTSelectorFR from './ICTSelectorFR';
 import { EnhancedTable } from '../EnhancedTable';
 
+export interface Allergy{
+    allergy : string,
+    "allergy-code" : string
+}
+
+
+export interface Background{
+    background : string,
+    "background-code" : string
+}
+export type Smartfield = Diagnosis | Background | Allergy;
+
 export interface Diagnosis{
     ict : string,
     "ict-code": string
@@ -22,13 +34,13 @@ interface Props extends LocalizeContextProps {
         addingDiagnosis:boolean,
         listDiagnosis:Diagnosis[]
     },
-    diagnosesSelected: (treatments:Diagnosis[] | boolean) => void
+    diagnosesSelected: (treatments:Smartfield[] | boolean) => void
 }
 
 
 const MultipleICTSelector:React.FC<Props> = (props) => {
     
-    const [listDiagnosis, setListDiagnosis] = useState<Diagnosis[]>(props.initialState ? props.initialState.listDiagnosis : []);
+    const [listDiagnosis, setListDiagnosis] = useState<Smartfield[]>(props.initialState ? props.initialState.listDiagnosis : []);
     const [addingDiagnosis, setAddingDiagnosis] = useState(true);
     const [addDiagnosis, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.errorState, setAddingDiagnosis);
 
@@ -43,11 +55,24 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     function renderDiagnosis(){
         if(listDiagnosis.length > 0 && !addingDiagnosis){
             const headCells = [{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
-            const rows = listDiagnosis.map((diag, index) => {
-
+            const rows = listDiagnosis.map((element, index) => {
+                let value;
+                if(props.type === "ict"){
+                    const diag = element as Diagnosis;
+                    value = diag["ict"];
+                }
+                if(props.type === "allergy"){
+                    const allergy = element as Allergy;
+                    value = allergy["allergy"];
+                }
+                if(props.type === "background"){
+                    const back = element as Background;
+                    value = back["background"];
+                }
+                
                 return {
                     id : index,
-                    name : diag.ict
+                    name : value
                 }
             })
             
@@ -60,7 +85,7 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     function removeDiagnosis(id:number){
         setListDiagnosis(listDiagnosis.filter((item, index) => index !== id));
     }
-    function diagnosisSelected(diagnose:Diagnosis){
+    function elementSelected(diagnose:Smartfield){
         console.log(diagnose);
         setListDiagnosis(oldArray => [...oldArray, diagnose]);
         setAddingDiagnosis(false);
@@ -74,13 +99,13 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
                 if(["ean", "es", "ar"].indexOf(props.activeLanguage.code) !== -1 ){
                     return <ICTSelectorOMS type={props.type}  variant="outlined" margin={props.typeMargin} 
                         cancel={cancel} language={props.activeLanguage.code}
-                        size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
+                        size="small" diagnosisSelected={(diag:Smartfield) => elementSelected(diag)} />
                 }
             }
             
             return <ICTSelectorFR type={props.type} variant="outlined" 
                     cancel={cancel} size="small" error={props.errorState} 
-                    diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
+                    elementSelected={(diag:Smartfield) => elementSelected(diag)} />
         }
             
         
