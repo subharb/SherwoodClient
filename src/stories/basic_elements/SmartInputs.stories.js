@@ -88,6 +88,42 @@ const FIELD_ICT = {
     }
 }
 
+const FIELD_ALLERGY = {
+    "allergy":{
+        required : false,
+        type:"allergy",
+        label:"Drug Allergy",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty",
+        slaves : [{
+            "required": true,
+            "encrypted": false,
+            "name": "allergy-code",
+            "label": "Code Diagnosis",
+            "type": "allergy-code",
+            "validation" : "notEmpty",
+        }]
+    }
+}
+
+const FIELD_BACKGROUND = {
+    "background":{
+        required : false,
+        type:"background",
+        label:"Antecedentes",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty",
+        slaves : [{
+            "required": true,
+            "encrypted": false,
+            "name": "allergy-code",
+            "label": "Code Diagnosis",
+            "type": "background-code",
+            "validation" : "notEmpty",
+        }]
+    }
+}
+
 export default {
     title: 'Basic Elements/Fields/Smart Fields',
     component: Form,
@@ -100,6 +136,8 @@ export default {
 
 const Template = (args) => <Form {...args}  />
 const TemplateICT = (args) => <Form {...args}  />
+const TemplateAllergy = (args) => <Form {...args}  />
+const TemplateBackground = (args) => <Form {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
 TreatmentEmpty.args = {
@@ -141,6 +179,18 @@ export const ICTWithData = TemplateICT.bind({});
 ICTWithData.args = {
     fields : FIELD_ICT, 
     initialData : {ict : [{ict:"Paludism", "ict-code" : "2233"}]},
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
+};
+
+export const Background = TemplateBackground.bind({});
+Background.args = {
+    fields : FIELD_BACKGROUND, 
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
+};
+
+export const Allergy = TemplateAllergy.bind({});
+Allergy.args = {
+    fields : FIELD_ALLERGY, 
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 

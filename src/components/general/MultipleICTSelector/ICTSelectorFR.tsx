@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { searchDiagnosticService } from '../../../services/sherwoodService';
+import { searchDiagnosticService, searchDrugComponentService } from '../../../services/sherwoodService';
 import { Grid, TextField } from '@material-ui/core';
 import { ButtonCancel } from '../mini_components';
 import { Diagnosis } from './index';
@@ -9,7 +9,7 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 interface Props extends LocalizeContextProps{
     //value:Diagnosis[] | false;
     error:boolean,
-    label:string,
+    type:string,
     //margin:string,
     variant:"standard" | "filled" | "outlined" | undefined,
     size:string,
@@ -42,9 +42,19 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
         async function searchDiagnosticRemote(){
             try{
                 setLoading(true);
-                const response = await searchDiagnosticService(searchDiagnosis);
+                let response;
+                let elements = []
+                if(props.type === "ict" || props.type === "background" ){
+                    response = await searchDiagnosticService(searchDiagnosis);
+                    elements = response.diagnostics;
+                }
+                else{
+                    response = await searchDrugComponentService(searchDiagnosis);
+                    elements = response.drugComposition;
+                }
+                
                 if(response.status === 200){
-                    setDiagnosticsOptions(response.diagnostics)
+                    setDiagnosticsOptions(elements);
                 }
                 setLoading(false);
             }
@@ -60,7 +70,6 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
         }
     }, [searchDiagnosis]);
 
-    //const value = diagnose !== "" ? diagnose : props.value;
     return (
         <React.Fragment>
             <Autocomplete
@@ -89,7 +98,7 @@ export const ICTSelectorFR:React.FC<Props> = (props) => {
                 getOptionLabel={(option:DiagnosisPost) => option.name}
                 style={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} value={searchDiagnosis} 
-                    error={props.error} label={props.translate("hospital.select-diagnostic")} variant={props.variant} />}
+                    error={props.error} label={props.translate(`hospital.select-${props.type}`)} variant={props.variant} />}
             />
             <Grid item xs={12}>
                 <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>

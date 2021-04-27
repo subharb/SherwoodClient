@@ -318,10 +318,12 @@ class FieldSherwood extends Component{
                         style={{ width: 300 }}
                         renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
                />
-                )
+                );
+            case "allergy":
+            case "background":
             case "ict" : 
                 return(
-                    <MultipleICTSelector label={labelString} {...input} initialState={Array.isArray(input.value)  ? {listDiagnosis: input.value} : null} variant="outlined" margin={this.typeMargin} 
+                    <MultipleICTSelector label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listDiagnosis: input.value} : null} variant="outlined" margin={this.typeMargin} 
                         helperText={errorString} resetDiagnose={this.resetDiagnose}
                         size="small" diagnosesSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                 );

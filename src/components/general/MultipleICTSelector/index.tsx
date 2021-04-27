@@ -16,6 +16,7 @@ interface Props extends LocalizeContextProps {
     label : string,
     typeMargin : string,
     slaves : object[],
+    type:string,
     errorState: boolean,
     initialState:{
         addingDiagnosis:boolean,
@@ -41,7 +42,7 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     }
     function renderDiagnosis(){
         if(listDiagnosis.length > 0 && !addingDiagnosis){
-            const headCells = [{ id: "name", alignment: "left", label: <Translate id="hospital.diagnostic" /> }]
+            const headCells = [{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
             const rows = listDiagnosis.map((diag, index) => {
 
                 return {
@@ -69,16 +70,17 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     }
     function renderSelector(){
         if(addingDiagnosis){
-            if(["ean", "es", "ar"].indexOf(props.activeLanguage.code) !== -1 ){
-                return <ICTSelectorOMS label={props.label}  variant="outlined" margin={props.typeMargin} 
-                    cancel={cancel} language={props.activeLanguage.code}
-                    size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
+            if(props.type !== "allergy"){
+                if(["ean", "es", "ar"].indexOf(props.activeLanguage.code) !== -1 ){
+                    return <ICTSelectorOMS type={props.type}  variant="outlined" margin={props.typeMargin} 
+                        cancel={cancel} language={props.activeLanguage.code}
+                        size="small" diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
+                }
             }
-            else{
-                return <ICTSelectorFR label={props.label} variant="outlined" 
+            
+            return <ICTSelectorFR type={props.type} variant="outlined" 
                     cancel={cancel} size="small" error={props.errorState} 
                     diagnosisSelected={(diag:Diagnosis) => diagnosisSelected(diag)} />
-            }
         }
             
         
@@ -105,13 +107,14 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     if(!addDiagnosis && listDiagnosis.length === 0){
         return renderSelect();
     }
+
     return (
         <React.Fragment>
             {
                 (!addingDiagnosis) &&
                 <React.Fragment>
                     <ButtonPlus onClick={addDiagnose} />
-                    <Typography variant="body2" component="span"><Translate id="hospital.add-diagnosis" /></Typography>
+                    <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
                 </React.Fragment>
             }
             {
