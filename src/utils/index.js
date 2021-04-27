@@ -185,7 +185,9 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.dropdown", "value" : "select"},
                 {"label": "investigation.create.edc.multioption", "value" : "multioption"},
                 {"label": "investigation.create.edc.diagnosis", "value" : "ict"},
-                {"label": "investigation.create.edc.treatment", "value" : "treatment"}
+                {"label": "investigation.create.edc.treatment", "value" : "treatment"},
+                {"label": "investigation.create.edc.allergy", "value" : "allergy"},
+                {"label": "investigation.create.edc.background", "value" : "background"}
         ],
         activationValues : ["dropdown", "multioption"],
         activatedFields:[
