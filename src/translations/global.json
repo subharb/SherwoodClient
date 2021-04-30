@@ -13,6 +13,7 @@
         "view" : ["View", "Ver"],
         "startDate" : ["Start Date", "Fecha Inicio"],
         "endDate" : ["End Date", "Fecha fin"],
+        "date" : ["Date", "Fecha"],
         "accept" : ["Accept", "Aceptar"]
     },
     "hospital" : {
@@ -31,7 +32,7 @@
         },
         "treatment-name" : ["Name", "Nombre"],
         "posology" : ["Posology", "Posología"],
-        "chronic" : ["Chronic", "Crónico"],
+        "chronic" : ["Long-term use", "Crónico"],
         "posology-options" : {
             "4h" : ["4 hours", "4 horas"],
             "6h" : ["6 hours", "6 horas"],
@@ -42,10 +43,10 @@
             "week" : ["1 week", "1 semana"]
         },
         "dose-options" : {
-            "1" : ["One pill", "Una pastilla"],
-            "3/4" : ["3/4 of a pill", "3/4 de pastilla"],
-            "1/2" : ["half a pill", "Media pastilla"],
-            "1/4" : ["1/4 of a pill", "1/4 de pastilla"]
+            "1" : ["One tablet", "Una pastilla"],
+            "3/4" : ["3/4 of a tablet", "3/4 de pastilla"],
+            "1/2" : ["half a tablet", "Media pastilla"],
+            "1/4" : ["1/4 of a tablet", "1/4 de pastilla"]
         },
         "ict" : ["Diagnostic", "Diagnostico"],
         "treatment" : ["Treatment", "Tratamiento"],
@@ -55,13 +56,15 @@
         "treatment-plural" : ["Treatments", "Tratamientos"],
         "allergy-plural" : ["Allergies", "Alergías"],
         "background-plural" : ["Past Medical History", "Antecedentes"],
-        "select-ict" : ["Select diagnostic", "Seleccione diagnostico"],
-        "select-treatment" : ["Select treatment", "Seleccione tratamiento"],
-        "select-background" : ["Select Background", "Seleccione Antecedente"],
-        "select-allergy" : ["Select Allergy", "Seleccione Allergy"],
+        "select-ict" : ["Enter diagnostic", "Seleccione diagnostico"],
+        "select-treatment" : ["Drug name", "Nombre medicamento"],
+        "select-background" : ["Enter Background", "Seleccione Antecedente"],
+        "select-allergy" : ["Enter Allergy", "Seleccione Allergy"],
         "add-ict" : ["Add Diagnosis", "Añdir Diagnóstico"],
+        "add-treatment" : ["Add Treatment", "Añadir Tratamiento"],
         "add-background" : ["Add Background", "Añdir Antecedente"],
-        "add-allergy" : ["Add Allergy", "Añdir Alergía"]
+        "add-allergy" : ["Add Allergy", "Añdir Alergía"],
+        "background-date" : ["Enter date", "Introduzca la fecha"]
         
     },
     "breadcrumb" : {

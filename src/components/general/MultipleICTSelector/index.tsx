@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import ICTSelectorOMS from './ICTSelectorOMS';
 import { ButtonDelete, ButtonPlus } from '../mini_components';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, PropTypes, Typography } from '@material-ui/core';
 import { useSelectSmartField, useUpdateEffect } from '../../../hooks';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import ICTSelectorFR from './ICTSelectorFR';
+import BackgroundSelector from './ICTSelectorFR';
 import { EnhancedTable } from '../EnhancedTable';
+import { ICTSelectorGeneral } from './ICTSelectorGeneral';
 
 export interface Allergy{
     allergy : string,
@@ -15,7 +16,8 @@ export interface Allergy{
 
 export interface Background{
     background : string,
-    "background-code" : string
+    "background-code" : string,
+    "background-date" : string
 }
 export type Smartfield = Diagnosis | Background | Allergy;
 
@@ -26,7 +28,7 @@ export interface Diagnosis{
 interface Props extends LocalizeContextProps {
     name : string,
     label : string,
-    typeMargin : string,
+    typeMargin : PropTypes.Margin | undefined,
     slaves : object[],
     type:string,
     errorState: boolean,
@@ -96,19 +98,15 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     function renderSelector(){
         if(addingDiagnosis){
             if(props.type !== "allergy"){
-                if(["ean", "es", "ar"].indexOf(props.activeLanguage.code) !== -1 ){
-                    return <ICTSelectorOMS type={props.type}  variant="outlined" margin={props.typeMargin} 
-                        cancel={cancel} language={props.activeLanguage.code}
-                        size="small" diagnosisSelected={(diag:Smartfield) => elementSelected(diag)} />
-                }
+                return <ICTSelectorGeneral type={props.type}  variant="outlined" typeMargin={props.typeMargin} 
+                    cancel={cancel} language={props.activeLanguage.code} error={props.errorState} 
+                    size="small" elementSelected={(diag:Smartfield) => elementSelected(diag)} />
             }
             
-            return <ICTSelectorFR type={props.type} variant="outlined" 
-                    cancel={cancel} size="small" error={props.errorState} 
+            return <BackgroundSelector type={props.type} variant="outlined" typeMargin={props.typeMargin} 
+                    cancel={cancel} size="small" error={props.errorState} language={props.activeLanguage.code} 
                     elementSelected={(diag:Smartfield) => elementSelected(diag)} />
         }
-            
-        
     }
     useUpdateEffect(() =>{
         if(props.initialState && props.initialState.listDiagnosis.length >0 ){

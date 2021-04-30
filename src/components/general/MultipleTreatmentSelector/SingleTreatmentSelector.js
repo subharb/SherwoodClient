@@ -105,6 +105,7 @@ function SingleTreatmentSelector(props){
         </Alert>
     }
     const finishDateLabel = props.translate("general.endDate");
+    const emptyLabel = props.translate("hospital.background-date").toString();
     const selectPosology = props.slaves.find(slave => slave.name === "treatment-posology");
     const selectDose = props.slaves.find(slave => slave.name === "treatment-dose");
     const isCurrentLabel = props.translate("hospital.chronic");
@@ -188,18 +189,18 @@ function SingleTreatmentSelector(props){
                         inputVariant="outlined"
                         size="small"
                         label={finishDate ? "" : finishDateLabel}
-                        format="dd/MM/yyyy"
+                        format="MM/dd/yyyy"
                         value={finishDate}
                         disabled={isCurrent}
                         defaultValue={finishDate} 
                         openTo="year"
-                        minDate={new Date()}
+                        minDate={new Date() }
                         onChange={(date, value) => {
                             setFinishDate(value);
                             setErrorFinishDate(false);
                         }}
                         
-                        emptyLabel={finishDateLabel}
+                        emptyLabel={emptyLabel}
                         KeyboardButtonProps={{
                             'aria-label': 'change date',
                         }}
