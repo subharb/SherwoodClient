@@ -45,6 +45,14 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
             background["background-date"] = date;
             props.elementSelected(diagnose);
         }
+        else{
+            if(!diagnose){
+                setError(true);
+            }
+            if(!date){
+                setErrorDate(true);
+            }
+        }
     }
     useEffect(() => {
         async function searchDiagnosticRemote(){
@@ -126,11 +134,11 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                 getOptionLabel={(option:DiagnosisPost) => option.name}
                 style={{ width: 400 }}
                 renderInput={(params) => <TextField {...params} value={searchDiagnosis} fullWidth={true}
-                    error={props.error} label={props.translate(`hospital.select-${props.type}`)} variant={props.variant} />}
+                    error={props.error || error} label={props.translate(`hospital.select-${props.type}`)} variant={props.variant} />}
             />
             {
                 props.type === "background" &&
-                <Grid container>
+                
                     <Grid item xs={12}>
                     <MuiPickersUtilsProvider key="end-date" utils={DateFnsUtils} >
                         <KeyboardDatePicker
@@ -159,12 +167,14 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>
-                <Grid item xs={12}>
-                    <ButtonAccept onClick={addBackground}><Translate id="general.add" /></ButtonAccept>
-                </Grid>
-            </Grid>
+                
+            
             }
             <Grid item xs={12}>
+            {
+                props.type === "background" &&
+                <ButtonAccept onClick={addBackground}><Translate id="general.add" /></ButtonAccept>
+            }
                 <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
             </Grid>
         </React.Fragment>
