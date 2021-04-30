@@ -37,6 +37,10 @@ export function NewInvestigation(props){
     async function saveData(publish){
         setIsLoading(true);
         let investigationInfo = {...investigation};
+        
+        investigationInfo = {...investigationInfo, ...investigation.basic_info};
+        delete investigationInfo.basic_info;
+        
         investigationInfo.status = publish ? 1 : 0;
 
         const rawKeyResearcherInvestigation = await generateKey();
@@ -73,7 +77,6 @@ export function NewInvestigation(props){
         switch(step){
             case 0:
                 tempInvestigation.basic_info = {...data};
-                setInvestigation()
                 break;
             case 1:
                 tempInvestigation.personal_data = data;
