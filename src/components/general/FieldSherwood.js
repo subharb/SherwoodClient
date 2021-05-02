@@ -320,6 +320,7 @@ class FieldSherwood extends Component{
                />
                 );
             case "allergy":
+            case "family-background":
             case "background":
             case "ict" : 
                 return(

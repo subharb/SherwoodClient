@@ -60,7 +60,7 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                 setLoading(true);
                 let response;
                 let elements = []
-                if(props.type === "ict" || props.type === "background" ){
+                if(["ict", "background", "family-background"].includes(props.type)){
                     response = await searchDiagnosticService(searchDiagnosis);
                     elements = response.diagnostics;
                 }
@@ -118,6 +118,12 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                                 "background" : value.name,
                                 "background-code" : value.code,
                                 "background-date" : ""
+                            }
+                        }
+                        else if(props.type === "family-background"){
+                            tempValue = {
+                                "family-background" : value.name,
+                                "family-background-code" : value.code
                             }
                         }
                         else{ 

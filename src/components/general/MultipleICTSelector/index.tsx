@@ -19,7 +19,15 @@ export interface Background{
     "background-code" : string,
     "background-date" : string
 }
-export type Smartfield = Diagnosis | Background | Allergy;
+
+export interface FamilyBackground{
+    "family-background" : string,
+    "family-background-code" : string
+}
+
+
+
+export type Smartfield = Diagnosis | Background | FamilyBackground | Allergy;
 
 export interface Diagnosis{
     ict : string,
@@ -57,25 +65,45 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     function renderDiagnosis(){
         if(listDiagnosis.length > 0 && !addingDiagnosis){
             const headCells = [{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
+            if(props.type === "background"){
+                headCells.push({ id: "date", alignment: "left", label: <Translate id={`hospital.general.date`} /> })  
+            }
             const rows = listDiagnosis.map((element, index) => {
-                let value;
+                let valueDict = {};
+                
                 if(props.type === "ict"){
                     const diag = element as Diagnosis;
-                    value = diag["ict"];
+                    valueDict = {
+                        id : index,
+                        name : diag["ict"]
+                    }
                 }
                 if(props.type === "allergy"){
                     const allergy = element as Allergy;
-                    value = allergy["allergy"];
+                    valueDict = {
+                        id : index,
+                        name : allergy["allergy"]
+                    }
+                    
                 }
                 if(props.type === "background"){
                     const back = element as Background;
-                    value = back["background"];
+                    valueDict = {
+                        id : index,
+                        name :  back["background"],
+                        date : back["background-date"],
+                    }
+                }
+                if(props.type === "family-background"){
+                    const backf = element as FamilyBackground;
+                    valueDict = {
+                        id : index,
+                        name :  backf["family-background"]
+                    }
+                    
                 }
                 
-                return {
-                    id : index,
-                    name : value
-                }
+                return valueDict
             })
             
             return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 

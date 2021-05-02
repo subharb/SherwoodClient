@@ -1,8 +1,6 @@
 import React from 'react';
 import Form from '../../components/general/form';
 import ProviderSherwood from '../../providerSherwood';
-import { MultipleTreatmentSelector } from '../../components/general/MultipleTreatmentSelector';
-import { MultipleICTSelector } from '../../components/general/MultipleICTSelector';
 
 const FIELD_TREATMENT = {
     "drug":{
@@ -124,6 +122,24 @@ const FIELD_BACKGROUND = {
     }
 }
 
+const FIELD_FAMILY_BACKGROUND = {
+    "family-background":{
+        required : false,
+        type:"family-background",
+        label:"Antecedentes",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty",
+        slaves : [{
+            "required": true,
+            "encrypted": false,
+            "name": "allergy-code",
+            "label": "Code Diagnosis",
+            "type": "family-background-code",
+            "validation" : "notEmpty",
+        }]
+    }
+}
+
 export default {
     title: 'Basic Elements/Fields/Smart Fields',
     component: Form,
@@ -138,6 +154,7 @@ const Template = (args) => <Form {...args}  />
 const TemplateICT = (args) => <Form {...args}  />
 const TemplateAllergy = (args) => <Form {...args}  />
 const TemplateBackground = (args) => <Form {...args}  />
+const TemplateFamilyBackground = (args) => <Form {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
 TreatmentEmpty.args = {
@@ -185,6 +202,12 @@ ICTWithData.args = {
 export const Background = TemplateBackground.bind({});
 Background.args = {
     fields : FIELD_BACKGROUND, 
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
+};
+
+export const FamilyBackground = TemplateFamilyBackground.bind({});
+FamilyBackground.args = {
+    fields : FIELD_FAMILY_BACKGROUND, 
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 
