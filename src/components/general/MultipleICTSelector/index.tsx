@@ -66,7 +66,7 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
         if(listDiagnosis.length > 0 && !addingDiagnosis){
             const headCells = [{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
             if(props.type === "background"){
-                headCells.push({ id: "date", alignment: "left", label: <Translate id={`hospital.general.date`} /> })  
+                headCells.push({ id: "date", alignment: "left", label: <Translate id={`general.date`} /> })  
             }
             const rows = listDiagnosis.map((element, index) => {
                 let valueDict = {};
