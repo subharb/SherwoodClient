@@ -16,7 +16,7 @@ import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
 export function AddPatient(props) {
     let { uuidPatient } = useParams();
 
-    const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.data[0].uuid].find(pat => pat.uuid === uuidPatient) : null
+    const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     return <AddPatientComponent investigations={props.investigations} patient={patient} />
 }   
 
@@ -35,10 +35,10 @@ export function AddPatientComponent(props) {
         try{
             setIsLoading(true);
             if(props.patient){
-                await dispatch( updatePatientAction(props.investigations.data[0], props.patient.uuid, patientData));
+                await dispatch( updatePatientAction(props.investigations.currentInvestigation, props.patient.uuid, patientData));
             }
             else{
-                await dispatch( savePatientAction(props.investigations.data[0], patientData));
+                await dispatch( savePatientAction(props.investigations.currentInvestigation, patientData));
             }
             
             setIsLoading(false);
@@ -91,8 +91,8 @@ export function AddPatientComponent(props) {
                 </Grid>
                 <Grid item xs={12}>
                     <Paper style={{padding:'1rem'}}>
-                        <PersonalDataForm fields={ props.investigations.data[0].personalFields} hospital={true}
-                            keyResearcherInvestigation={props.investigations.data[0].keyResearcherInvestigation}
+                        <PersonalDataForm fields={ props.investigations.currentInvestigation.personalFields} hospital={true}
+                            keyResearcherInvestigation={props.investigations.currentInvestigation.keyResearcherInvestigation}
                             submitText={props.patient ? "general.update" : null}
                             initialData={props.patient ? props.patient.personalData : null} callBackForm={(personalData) => saveUpdatePatient(personalData)}/>
                     </Paper>

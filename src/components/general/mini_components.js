@@ -11,8 +11,10 @@ import {
     CheckCircleOutline as CheckCircleOutlineIcon,
     Save as SaveIcon,
     Clear as ClearIcon,
+    Delete as DeleteIcon,
     Send as SendIcon,
     Edit as EditIcon,
+    AddCircle as PlusIcon,
     ArrowForwardIos as ArrowForwardIosIcon,
     ArrowBackIos as ArrowBackIosIcon,
     LocalHospital as HospitalIcon
@@ -129,10 +131,19 @@ export const ButtonEdit = (props) =>{
         </Button>)
 }
 
+export const ButtonPlus = (props) =>{
+    return(
+        <Button {...props}>
+            <PlusIcon />
+        </Button>)
+}
+
 export const ButtonDelete = (props) =>{
-    return <DeleteHolder {...props}>
-        <i className="material-icons">delete</i>
-    </DeleteHolder>
+    return(
+        <DeleteHolder {...props}>
+            <DeleteIcon />
+        </DeleteHolder>
+    )
 }
 
 export const ButtonBack = (props) =>{
@@ -170,6 +181,18 @@ export const ButtonContinue = (props) =>{
         >
             {props.children}
         </ButtonContinueStyles>
+}
+
+export const ButtonAccept = (props) =>{
+    return <ButtonContinueStyles
+        variant="contained"
+        color="primary"
+        size="small"
+        {...props}
+        data-testid={props['data-testid'] ? props['data-testid'] : "continue"}
+    >
+        {props.children}
+    </ButtonContinueStyles>
 }
 
 export const ButtonCancel = (props) =>{

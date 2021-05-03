@@ -4,7 +4,6 @@ import { Translate } from 'react-localize-redux';
 import { Search as SearchPatientIcon } from "@material-ui/icons";
 import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
 import Form  from '../../components/general/form';
-import { usePatientsData, useInvestigations } from '../../hooks';
 import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { HOSPITAL_PATIENT } from '../../routes';
@@ -13,27 +12,30 @@ import { decryptPatientsData } from '../../utils';
 import PatientsTable from '../../components/general/PatientsTable';
 import { Alert } from '@material-ui/lab';
 import { ButtonBack } from '../../components/general/mini_components';
+import { connect } from 'react-redux';
 
 let personalFieldsForm = {};
 
-export default function SearchPatients(props) {
-    const {investigations, isLoading, error} = useInvestigations(props.investigations ? props.investigations : null);
-    const [decryptedPatientData, setDecryptedPatientData] = useState([]);//usePatientsData(investigations ? investigations[0] : null, investigations ? investigations[0].patientsPersonalData : []);
+function SearchPatients(props) {
+    
+    //const [decryptedPatientData, setDecryptedPatientData] = useState([]);//usePatientsData(investigations ? investigations[0] : null, investigations ? investigations[0].patientsPersonalData : []);
+    
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [showResults, setShowResults] = useState(false);
 
     const history = useHistory();
 
-    useEffect(() => {
-        if(investigations){
-            investigations[0].personalFields.sort((a,b) => a.order - b.order).forEach(personalField => {
-                const copyField = {...personalField};
-                copyField.required = false;
-                personalFieldsForm[personalField.name] = copyField
-            });
-            setDecryptedPatientData(decryptPatientsData(investigations[0].patientsPersonalData, investigations[0]))
-        }
-    }, [investigations])
+    const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
+    // useEffect(() => {
+    //     if(props.investigations.currentInvestigation){
+    //         props.investigations.currentInvestigation.personalFields.sort((a,b) => a.order - b.order).forEach(personalField => {
+    //             const copyField = {...personalField};
+    //             copyField.required = false;
+    //             personalFieldsForm[personalField.name] = copyField
+    //         });
+    //         setDecryptedPatientData(decryptPatientsData(props.investigations.currentInvestigation.patientsPersonalData, props.investigations.currentInvestigation))
+    //     }
+    // }, [props.investigations.currentInvestigation])
     function backToSearch(){
         setFilteredPatients([]);
         setShowResults(false);
@@ -49,11 +51,11 @@ export default function SearchPatients(props) {
         console.log(values);
         setShowResults(true); 
         //Filtrar decryptedPatientData con values
-        const filteredPatients = decryptedPatientData.filter(patient =>{
+        const filteredPatients = patients.sort((a,b) => b.id - a.id).filter(patient =>{
             let result = true;
             for(const keyValue of Object.keys(values)){
                 const value = values[keyValue];
-                const pF = investigations[0].personalFields.find(pp => pp.name === keyValue);
+                const pF = props.investigations.currentInvestigation.personalFields.find(pp => pp.name === keyValue);
                 if(pF.options.length > 0){
                     if(value !== "" && patient.personalData[keyValue] !== value){
                         result = false;
@@ -72,6 +74,13 @@ export default function SearchPatients(props) {
     }
     function renderCore(){
         if(!showResults){
+            let personalFieldsForm = {}
+            props.investigations.currentInvestigation.personalFields.sort((a,b) => a.order - b.order).forEach(personalField => {
+                            const copyField = {...personalField};
+                            copyField.required = false;
+                            personalFieldsForm[personalField.name] = copyField
+                        });
+            
             return (
                 <Box>
                     <Paper style={{padding:'1rem'}}>
@@ -103,7 +112,7 @@ export default function SearchPatients(props) {
                         <Grid item>
                             <PatientsTable patients={filteredPatients} mobile 
                                 showPatientCallBack={id => patientSelected(id)} 
-                                personalFields={investigations[0].personalFields} />
+                                personalFields={props.investigations.currentInvestigation.personalFields} />
                         </Grid>
                         <Grid item>
                             <ButtonBack onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>
@@ -112,7 +121,7 @@ export default function SearchPatients(props) {
             }
         }
     }
-    if(isLoading){
+    if(!props.patients.data){
         return <Loader />
     }
     return (
@@ -135,7 +144,15 @@ export default function SearchPatients(props) {
     )
 }
 
+const mapStateToProps = (state) =>{
+    return {
+        patients : state.patients,
+        investigations:state.investigations
+    }
+}
+
 SearchPatients.propTypes = {
     personalFields:PropTypes.array,
 }
 
+export default connect(mapStateToProps, null)(SearchPatients)

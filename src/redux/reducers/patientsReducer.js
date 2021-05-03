@@ -38,7 +38,7 @@ export default function reducer(state = initialState, action){
         case types.SAVE_PATIENT_SUCCESS:
             let newPatient = {...action.patient};
             newPatient.personalData = decryptSinglePatientData(action.patient.personalData, action.investigation);
-            if(types.UPDATE_PATIENT_SUCCESS){
+            if(action.type === types.UPDATE_PATIENT_SUCCESS){
                 const indexPat = newState.data[action.investigation.uuid].findIndex(pat => pat.uuid === action.uuidPatient);
                 newState.data[action.investigation.uuid][indexPat] = newPatient;
             }

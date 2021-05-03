@@ -31,6 +31,33 @@ export default function ShowRecordsSection(props) {
         const uuidSubmission = props.submissions[indexSubmission].id;
         props.callBackEditSubmission(uuidSubmission, uuidSection);
     }
+    function renderValue(valueRecord){
+        if(!valueRecord || !valueRecord.value){
+            return "-";
+        }
+        else if(Array.isArray(valueRecord.value)){
+            return(
+            <div style={{paddingLeft:"20px"}}>
+                {valueRecord.value.map(smartField => {
+                    return(
+                        <Typography variant="body2" gutterBottom>
+                            {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.hasOwnProperty("treatment") ? smartField.treatment : smartField.hasOwnProperty("background") ? smartField.background : smartField.allergy}
+                        </Typography>
+                    )
+                    
+                })}
+            </div>)
+        }
+        else{
+            return(
+                <Typography variant="body2" gutterBottom>
+                    { valueRecord.value }
+                </Typography>
+            );
+        }
+    }
+   
+    
     function renderSubmission(){
         const submission = props.submissions[indexSubmission];       
         
@@ -62,9 +89,8 @@ export default function ShowRecordsSection(props) {
                                         <Typography variant="h6" color="textPrimary">
                                             {field.name}: 
                                         </Typography>,
-                                        <Typography variant="body2" gutterBottom>
-                                            {valueRecord ? valueRecord.value : "-"}  
-                                        </Typography>
+                                        renderValue(valueRecord)
+                                        
                                     ]
                                 }
                                 
@@ -97,7 +123,7 @@ export default function ShowRecordsSection(props) {
                                     { props.section.name }
                                 </Typography>
                                 {
-                                    (dateCreated.getTime() + 86400000 > new Date().getTime()) && 
+                                    ((dateCreated.getTime() + 86400000 > new Date().getTime()) || props.permissions === 4) && 
                                     <ButtonEdit onClick={() => editSection(indexSubmission, props.section.uuid)} />
                                 }
                                 

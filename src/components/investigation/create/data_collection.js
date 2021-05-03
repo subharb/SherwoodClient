@@ -38,7 +38,7 @@ class DataCollection extends Component{
         this.renderNewSectionForm = this.renderNewSectionForm.bind(this);
         this.renderSections = this.renderSections.bind(this);
         this.closeNewSection = this.closeNewSection.bind(this);
-        this.handleNewDataCollection = this.handleNewDataCollection.bind(this);
+        this.saveDataCollection = this.saveDataCollection.bind(this);
         this.callBackNewSection = this.callBackNewSection.bind(this);
         this.changeName = this.changeName.bind(this);
         const initialState = {name:"", sections: [], addingSection:false, editingIndexSection:false}
@@ -74,7 +74,7 @@ class DataCollection extends Component{
                     <Grid item xs={12}>
                         <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
                             headCells={arrayHeader}
-                            rows={this.state.sections.map(section => {
+                            rows={this.state.sections.map((section, index) => {
                                 let tempSection = {}
                                 for(const keyField of Object.keys(SECTION_FORM)){
                                     const field = SECTION_FORM[keyField];
@@ -86,6 +86,7 @@ class DataCollection extends Component{
                                     }
                                     
                                 }
+                                tempSection["id"] = index;
                                 return tempSection;
                             })}
                             actions={{"delete" : (index) => this.deleteSection(index, "sections"), "edit" : (index) => this.editSection(index, "sections")}} 
@@ -161,16 +162,15 @@ class DataCollection extends Component{
         }
     }
 
-    handleNewDataCollection(values){
+    saveDataCollection(values){
         if(this.state.sections.length > 0){
-            this.props.callBackData({name : values["name"], sections : this.state.sections});
+            this.props.callBackData({...this.state});
         }
     }
     componentDidMount(){
         if(this.props.initialData){
             this.props.initialize(this.props.initialData)
         }
-        
     }
     render(){
         
@@ -200,7 +200,7 @@ class DataCollection extends Component{
             
                 <Grid item xs={12}>
                     <ButtonSave id="data_collection" data-testid="save_data_collection" disabled={this.state.name.length === 0 || this.state.sections.length === 0} 
-                        type="button" onClick={() => this.props.callBackData({name:this.state.name, sections : this.state.sections})}>
+                        type="button" onClick={this.saveDataCollection}>
                             <Translate id="investigation.create.edc.data_collections.save" />
                     </ButtonSave>
                 </Grid>

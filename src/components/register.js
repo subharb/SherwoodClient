@@ -112,6 +112,13 @@ const forms = {
             shortLabel: "register.key_generation.confirm",
             validation : "equalTo",
             validationValue: "register.common.key_generation.confirm"
+        },
+        "policy":{
+            required : true,
+            type:"checkbox",
+            label:{label : "register.common.accept-policy", url : "https://sherwood.science"},
+            shortLabel: "register.common.accept-policy",
+            validation : "notEmpty"
         }
     }
 }
@@ -121,7 +128,7 @@ class Register extends Component {
         this.iv = null;
         this.sections = props.typeUser === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_generation"];
 
-        this.state = {selected:0, info : {}, key : null, success : false, errorMessage : null}
+        this.state = {selected:props.initialState ? props.initialState.selected : 0, info : {}, key : null, success : false, errorMessage : null}
 
         this.generateKey = this.generateKey.bind(this);
         this.saveData = this.saveData.bind(this);
@@ -129,42 +136,6 @@ class Register extends Component {
     }
     crumbSelected(index){
         console.log(`Index selected ${index}`); 
-    }
-    async encodeKeyResearcher(data, keyString){
-        // Encrypt
-        
-
-        // let keyObj = await crypto.subtle.importKey(
-        //     "jwk",
-        //     {
-        //         alg: "A256GCM",
-        //         ext: true,
-        //         k: keyString,
-        //         key_ops: ["encrypt", "decrypt"],
-        //         kty: "oct"
-        //     },
-        //     {
-        //         "name":"AES-GCM",
-        //         "length":256
-        //     },
-        //     true,
-        //     ['encrypt','decrypt']
-        // );
-        // console.log(keyObj);
-        // let enc = new TextEncoder();
-        // let encoded = enc.encode(password);
-        // // The iv must never be reused with a given key.
-        // this.iv = window.crypto.getRandomValues(new Uint8Array(12));
-        // let ciphertext = await window.crypto.subtle.encrypt(
-        //     {
-        //         name: "AES-GCM",
-        //         iv: this.iv
-        //     },
-        //     keyObj,
-        //     encoded
-        // );
-        // let buffer = new Uint8Array(ciphertext, 0, 5);
-        // return buffer;
     }
     async saveData(data){
         let tempState = this.state;

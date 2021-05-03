@@ -10,13 +10,6 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     },
-    "ict":{
-        required : false,
-        type:"ict",
-        label:"Autocomplete",
-        shortLabel: "investigation.table.is_personal_data",
-        validation : "notEmpty"
-    },
     "checkbox":{
         required : false,
         type:"checkbox",

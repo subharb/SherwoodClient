@@ -19,8 +19,10 @@ import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
-
-import ICTSelector from './ICTSelector';
+import { change, registerField } from "redux-form";
+import MultipleICTSelector from './MultipleICTSelector';
+import { MultipleTreatmentSelector } from './MultipleTreatmentSelector';
+import SelectField from './SelectField';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -59,7 +61,7 @@ const RedFormHelperText = styled(FormHelperText)`
   color:red;
 `
 
-const TextFieldSherwood = styled(TextField)`
+export const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
 `;
 
@@ -109,21 +111,27 @@ class FieldSherwood extends Component{
         }
         
     }
-    diagnoseSelected(code){
-        this.props.input.onChange(code);
+    diagnosesSelected(listDiagnoses){
+        this.props.input.onChange(listDiagnoses);
     }
     resetDiagnose(){
         this.props.input.onChange(undefined);
     }
+    treatmentSelected(treatments){
+        this.props.input.onChange(treatments);
+    }
     handleDateChange(value){
         this.props.input.onChange(value);
     }
+    selectChange(value){
+        this.props.input.onChange(value);
+    }
     render(){
-        const {input, label, meta, type, options, size, option, removeClass, validation} = this.props;
+        const {input, label, meta, type, options, size, option, removeClass, validation, activationValues, activatedFields} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
-        const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
+        const labelString = label.hasOwnProperty("url") ? <a href={label.url} >{this.props.translate(label.label)}</a> : this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
                 let optionsArray = [];
@@ -141,7 +149,7 @@ class FieldSherwood extends Component{
                 }
                 const labelId = `${input.name}_label`;
                 return(
-                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} >
+                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} error={errorState} >
                         <InputLabel id={labelId}>{labelString}</InputLabel>
                         <Select
                         labelId={labelId}
@@ -154,6 +162,10 @@ class FieldSherwood extends Component{
                     </FormControl>
                     
                 )
+            // case "select":
+            //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
+            //         activationValues={activationValues} onChange={(value) => this.selectChange(value)}/>
+
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value.includes(option.value)){
@@ -192,11 +204,13 @@ class FieldSherwood extends Component{
                 return (
                     <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
                         <KeyboardDatePicker
+                            disableToolbar
                             margin={this.typeMargin}
                             id={input.name}
                             inputVariant="outlined"
                             style={{width: "235px"}}
                             label={input.value ? "" : labelString}
+                            //label={labelString}
                             format="dd/MM/yyyy"
                             value={value}
                             defaultValue={value} 
@@ -304,12 +318,23 @@ class FieldSherwood extends Component{
                         style={{ width: 300 }}
                         renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
                />
-                )
+                );
+            case "allergy":
+            case "family-background":
+            case "background":
             case "ict" : 
                 return(
-                    <ICTSelector label={labelString} {...input} variant="outlined" margin={this.typeMargin} 
-                        helperText={errorString} resetDiagnose={this.resetDiagnose}
-                        size="small" diagnoseSelected={(code) => this.diagnoseSelected(code)} />
+                    <MultipleICTSelector label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listDiagnosis: input.value} : null} variant="outlined" margin={this.typeMargin} 
+                        helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
+                        size="small" diagnosesSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
+                );
+            case "treatment" : 
+                return(
+                    <MultipleTreatmentSelector label={labelString} {...input} initialState={Array.isArray(input.value) ? {listTreatments: input.value} : null} 
+                        variant="outlined" typeMargin={this.typeMargin} 
+                        helperText={errorString}  errorState={errorState} slaves={this.props.slaves}
+                        resetDiagnose={this.resetDiagnose} 
+                        size="small" treatmentSelected={(code) => this.treatmentSelected(code)} />
                 );
             default:    
                     console.log("TextFieldSherwood",input.value);

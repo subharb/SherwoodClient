@@ -28,6 +28,7 @@ const Template = (args) => <Register {...args} />;
 export const Researcher = Template.bind({});
 Researcher.args = {
     typeUser:"researcher",
+    initialState:{selected:3},
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 

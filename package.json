@@ -62,13 +62,14 @@
     "redux-thunk": "2.3.0",
     "storybook": "^6.1.10",
     "styled-components": "5.2.1",
-    "typescript": "^4.2.3",
+    "typescript": "^4.2.4",
     "yup": "0.32.8"
   },
   "scripts": {
     "start": "react-scripts start --no-cache",
     "start-hospital": "REACT_APP_PRODUCT=HOSPITAL react-scripts start --no-cache --hospital",
-    "build": "env-cmd -f .env react-scripts build && rsync -a build/ build-beta-hospital/",
+    "build:research": "env-cmd -f .env.production.local react-scripts build",
+    "build:beta:research": "env-cmd -f .env.beta-research react-scripts build",
     "build:beta:hospital": "env-cmd -f .env.beta-hospital react-scripts build && rsync -a build/ build-beta-hospital/",
     "build:hospital": "env-cmd -f .env.hospital react-scripts build && rsync -a build/ build-hospital/",
     "test": "react-scripts test --env=jsdom-sixteen",

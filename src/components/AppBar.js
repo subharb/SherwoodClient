@@ -81,6 +81,7 @@ const AppBarComponent = ({ onDrawerToggle }) => (
             <Grid item>
               <IconButton
                 color="inherit"
+                data-testid="menu-hamburguer"
                 aria-label="Open drawer"
                 onClick={onDrawerToggle}
               >

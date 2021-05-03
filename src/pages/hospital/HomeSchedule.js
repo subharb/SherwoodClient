@@ -11,13 +11,14 @@ import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
 import Loader from '../../components/Loader';
 import {fetchProfileService} from '../../services/sherwoodService';
-
-
+import {selectInvestigation} from '../../redux/actions/investigationsActions';
+import { useDispatch } from "react-redux";
 
 function HomeSchedule(props) {
     const [loading, setLoading] = useState(false);
     const [profileInfo, setProfileInfo] = useState(null);
     const { pathname }= useRouter(props.initialState ? props.initialState.pathname : false);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         async function fetchProfile(){
@@ -36,53 +37,27 @@ function HomeSchedule(props) {
         }
         fetchProfile();
     }, [])
-    if(pathname === MY_SCHEDULE_ROUTE){
-        return(
-            
-                <Grid container spacing={3}>
-                    <Grid item xs={12} style={{textAlign:"center"}}>
-                        <Typography variant="h4" gutterBottom display="inline">
-                            {props.name} {props.surnames}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} style={{textAlign:"center"}}>
-                        <img src={calendar_image} alt="profile_picture" with="100%" />
-                    </Grid>
-                    <Grid item xs={12} style={{textAlign:"center"}}>
-                        <LinkPlain to={HOSPITAL_WARD_ROUTE}>
-                            <ButtonGrey >Hospital Ward</ButtonGrey>
-                        </LinkPlain>
-                    </Grid>
-                    <Grid item xs={12} style={{textAlign:"center"}}>
-                        <LinkPlain to={OUTPATIENTS_ROUTE}>
-                            <ButtonGrey >Outpatients</ButtonGrey>
-                        </LinkPlain>
-                    </Grid>
-                    <Grid item xs={12} style={{textAlign:"center"}}>
-                        <LinkPlain to={SEARCH_PATIENT_ROUTE}>
-                            <ButtonGrey >Consultations</ButtonGrey>
-                        </LinkPlain>
-                    </Grid>
-                </Grid>
-            
-        )
+
+    async function selectHospital(index){
+        await dispatch(selectInvestigation(index));
+        localStorage.setItem("indexHospital", index);
     }
-    else{
-        if(props.investigations.loading || !profileInfo){
-            return <Loader />
+    function renderCore(){
+        if(!props.investigations.currentInvestigation){
+            return props.investigations.data.map((inv, index) =>{
+                return(
+                    <Grid item xs={12} style={{display: 'flex',justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+                        <ButtonGrey onClick={()=>selectHospital(index)} data-testid="select-hospital" >{inv.name}</ButtonGrey>
+                    </Grid>) 
+            })
         }
-        return (
-            <BoxBckgr style={{ color:"white", padding:"1rem"}} color="text.primary">
-                <Grid container spacing={3}>
-                    <Grid item  xs={12} style={{textAlign:"center"}}>
-                        <Typography variant="h1" gutterBottom display="inline" >
-                            Welcome!
-                        </Typography>
-                    </Grid>
+        else{
+            return(
+                <React.Fragment>
                     <Grid item xs={6} style={{display:"flex", flexDirection: "row-reverse"}}>
                         <Grid item xs={6} style={{display: 'flex',justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
                             <Typography variant="body2" gutterBottom>
-                                {props.investigations.data[0].name}
+                                {props.investigations.currentInvestigation.name}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
                                 {profileInfo.name} {profileInfo.surnames}
@@ -120,15 +95,68 @@ function HomeSchedule(props) {
                         </Grid> */}
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={SEARCH_PATIENT_ROUTE}>
-                                <ButtonGrey >Search Patient</ButtonGrey>
+                                <ButtonGrey data-testid="search-patient" >Search Patient</ButtonGrey>
                             </LinkPlain>
                         </Grid>
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={ADD_PATIENT_ROUTE}>
-                                <ButtonGrey >Add Patient</ButtonGrey>
+                                <ButtonGrey data-testid="add-patient" >Add Patient</ButtonGrey>
                             </LinkPlain>
                         </Grid>
                     </Grid>
+                </React.Fragment>
+            )
+        }
+        
+    }
+
+    if(pathname === MY_SCHEDULE_ROUTE){
+        return(
+            
+                <Grid container spacing={3}>
+                    <Grid item xs={12} style={{textAlign:"center"}}>
+                        <Typography variant="h4" gutterBottom display="inline">
+                            {props.name} {props.surnames}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} style={{textAlign:"center"}}>
+                        <img src={calendar_image} alt="profile_picture" with="100%" />
+                    </Grid>
+                    <Grid item xs={12} style={{textAlign:"center"}}>
+                        <LinkPlain to={HOSPITAL_WARD_ROUTE}>
+                            <ButtonGrey data-testid="hospital-ward" >Hospital Ward</ButtonGrey>
+                        </LinkPlain>
+                    </Grid>
+                    <Grid item xs={12} style={{textAlign:"center"}}>
+                        <LinkPlain to={OUTPATIENTS_ROUTE}>
+                            <ButtonGrey data-testid="outpatients" >Outpatients</ButtonGrey>
+                        </LinkPlain>
+                    </Grid>
+                    <Grid item xs={12} style={{textAlign:"center"}}>
+                        <LinkPlain to={SEARCH_PATIENT_ROUTE}>
+                            <ButtonGrey data-testid="consultations" >Consultations</ButtonGrey>
+                        </LinkPlain>
+                    </Grid>
+                </Grid>
+            
+        )
+    }
+    else{
+        if(props.investigations.loading || !profileInfo){
+            return <Loader />
+        }
+        
+        return (
+            <BoxBckgr style={{ color:"white", padding:"1rem"}} color="text.primary">
+                <Grid container spacing={3}>
+                    <Grid item  xs={12} style={{textAlign:"center"}}>
+                        <Typography variant="h1" gutterBottom display="inline" >
+                            Welcome!
+                        </Typography>
+                    </Grid>
+                    {
+                        renderCore()
+                    }
                 </Grid>
             </BoxBckgr>
         )

@@ -37,15 +37,19 @@ export function NewInvestigation(props){
     async function saveData(publish){
         setIsLoading(true);
         let investigationInfo = {...investigation};
-        investigationInfo.publish = publish ? 1 : 0;
+        
+        investigationInfo = {...investigationInfo, ...investigation.basic_info};
+        delete investigationInfo.basic_info;
+        
+        investigationInfo.status = publish ? 1 : 0;
 
         const rawKeyResearcherInvestigation = await generateKey();
         investigationInfo.keyResearcherInvestigation = encryptData(rawKeyResearcherInvestigation, localStorage.getItem("rawKeyResearcher"));
     
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
         let response;
-        if(props.hasOwnProperty("uuidInvestigation")){
-            response = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.uuidInvestigation, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        if(props.hasOwnProperty("uuid")){
+            response = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.uuid, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;});
         }
         else{
@@ -53,15 +57,16 @@ export function NewInvestigation(props){
                 .catch(err => {console.log('Catch', err); return err;}); 
         }
         
-        
-        
         if(response.request.status === 200){
             console.log("Success!");
             setResultSave(1);
         }
-        else{
+        else if(response.request.status === 401){
             localStorage.removeItem("jwt");
             setResultSave(2);
+        }
+        else{
+            setResultSave(3);
         }
         setIsLoading(false);
     }
@@ -72,7 +77,6 @@ export function NewInvestigation(props){
         switch(step){
             case 0:
                 tempInvestigation.basic_info = {...data};
-                setInvestigation()
                 break;
             case 1:
                 tempInvestigation.personal_data = data;
@@ -138,7 +142,7 @@ export function NewInvestigation(props){
             </Grid>            
         )
     }
-    else if(errorEncryption){
+    else if(errorEncryption || resultSave === 3){
         return (<Alert mb={4} severity="error">
                 <Translate id="investigation.share.error.description" />
             </Alert>)
@@ -157,7 +161,7 @@ export function NewInvestigation(props){
         //                     stepBack = {stepBack}/>
         //     break;
         case 1: 
-            component = <PersonalData initialData={props.initialState ? props.initialState.investigation.personal_data : investigation.personal_data } callBackStepBack = {stepBack}  callBackData={addData} />
+            component = <PersonalData initialData={props.initialState ? props.initialState.investigation.personalFields : investigation.personalFields } callBackStepBack = {stepBack}  callBackData={addData} />
             break;
         case 2: 
             component = <EDC initialData={props.initialState ? {surveys : props.initialState.investigation.surveys} : investigation.surveys ? {surveys : investigation.surveys } : {surveys : [] }} callBackStepBack = {stepBack}  callBackData={addData} />

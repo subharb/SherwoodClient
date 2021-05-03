@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import * as ECT from '@whoicd/icd11ect';
 import '@whoicd/icd11ect/style.css';
-import { getTokenWho } from '../../services/sherwoodService';
+import { getTokenWho } from '../../../services/sherwoodService';
 import PropTypes from 'prop-types';
-import { withLocalize } from 'react-localize-redux';
-import { TextField } from '@material-ui/core';
+import { Translate, withLocalize } from 'react-localize-redux';
+import { Grid, TextField } from '@material-ui/core';
+import { ButtonCancel } from '../mini_components';
 
-function ICTSelector(props){
+function ICTSelectorOMS(props){
     const [show, setShow] = useState(false);
     const [diagnose, setDiagnose] = useState("");
 
     function resetField(){
-        props.resetDiagnose();
+        //props.resetDiagnose();
         setDiagnose("");
+    }
+    function cancel(){
+        props.cancel();
     }
     useEffect(() => {
         
@@ -21,7 +25,7 @@ function ICTSelector(props){
             apiSecured: true,
             icdMinorVersion: "2020-09" ,
             icdLinearization: "mms",
-            language: props.translate("lang"),
+            language: props.language,
             sourceApp: "Sherwood",
             wordsAvailable: false,
             chaptersAvailable: true,
@@ -46,8 +50,11 @@ function ICTSelector(props){
                 console.log('selected code: '+ selectedEntity.code);
                 console.log('selected bestMatchText: '+ selectedEntity.bestMatchText);
                 ECT.Handler.clear("1");
-                setDiagnose(selectedEntity.title);
-                props.diagnoseSelected(selectedEntity.code);
+                setDiagnose("");
+                props.diagnosisSelected({
+                    ict:selectedEntity.title,
+                    "ict-code" : selectedEntity.code
+                });
             },
             getNewTokenFunction: async () => {
                 // if the embedded coding tool is working with the cloud hosted ICD-API, you need to set apiSecured=true
@@ -77,17 +84,20 @@ function ICTSelector(props){
     const value = diagnose !== "" ? diagnose : props.value;
     return ([
         <div>
-            <TextField key="ict-input" {...props} value = {value} onFocus={resetField}
+            <TextField key="ict-input" {...props} label={props.translate("hospital.select-diagnostic")} value = {value} onFocus={resetField}
                 inputProps={{className : "ctw-input", "data-ctw-ino" : "1"}}   />
             <div key="ict-container" className="ctw-window" data-ctw-ino="1"></div>
+            <Grid item xs={12}>
+                <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
+            </Grid>
         </div>
     ]
         
     )
 }
 
-ICTSelector.propTypes = {
+ICTSelectorOMS.propTypes = {
     typeUser:PropTypes.string
 }
 
-export default withLocalize(ICTSelector)
+export default withLocalize(ICTSelectorOMS)

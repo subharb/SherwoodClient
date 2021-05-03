@@ -8,6 +8,7 @@ import { decryptPatientsData } from '../../utils';
 
  const initialState = {
     data: null,
+    currentInvestigation:null,
     loading: false,
     error: null
 }
@@ -18,6 +19,12 @@ export default function reducer(state = initialState, action){
     switch(action.type){
         case types.FETCH_INVESTIGATIONS_SUCCESS:
             newState.data = action.investigations;    
+            if(action.investigations.length === 1){
+                newState.currentInvestigation = action.investigations[0];
+            }
+            else if(localStorage.getItem("indexHospital")){
+                newState.currentInvestigation = action.investigations[localStorage.getItem("indexHospital")];
+            }
             newState.loading = false; 
             newState.error = null;   
             return newState;
@@ -25,7 +32,9 @@ export default function reducer(state = initialState, action){
             newState.loading = true;   
             newState.error = null;                           
             return newState;
-            
+        case types.SELECT_INVESTIGATION:    
+            newState.currentInvestigation = newState.data[action.selectedInvestigation];
+            return newState;
         default:
             return state;
     }

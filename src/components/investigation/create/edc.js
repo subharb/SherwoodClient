@@ -60,8 +60,8 @@ export default class EDC extends Component{
                                 {id:"number_sections", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
                             ]
          
-            const rows = this.state.surveys.map(survey => {
-                return { title : survey.name, number_sections : survey.sections.length};
+            const rows = this.state.surveys.map((survey, index) => {
+                return { id :index, title : survey.name, number_sections : survey.sections.length};
             })
                     
             return([
@@ -144,7 +144,8 @@ export default class EDC extends Component{
     render(){
         
         if(this.state.addingDataCollection){
-            return <DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} callBackData={this.callBackNewDataCollection} callBackStepBack={() => {this.toggleAddDataCollection()}}/>
+            return <DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} 
+                    callBackData={this.callBackNewDataCollection} callBackStepBack={() => {this.toggleAddDataCollection()}}/>
         }
         else{
             return (

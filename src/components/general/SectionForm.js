@@ -1,5 +1,6 @@
 import { isEmpty } from 'lodash';
 import React from 'react'
+import { DIAGNOSIS_TYPE, SLAVES_DIAGNOSIS, SLAVES_TREATMENT, TREATMENT_TYPE } from '../../constants';
 import Form from './form';
 
 export default function SectionForm(props) {
@@ -23,9 +24,14 @@ export default function SectionForm(props) {
         const dataFields = [];
         Object.keys(values).forEach(key =>{
             let tempObj = {};
-            tempObj["id_field"] = parseInt(key.replace(preString, ""));
+            const idField = parseInt(key.replace(preString, ""));
+            
+            tempObj["id_field"] = idField;
+
             tempObj["value"] = values[key];
             dataFields.push(tempObj);
+            
+            
         })
         props.callBackSectionForm(dataFields);
     }

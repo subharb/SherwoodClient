@@ -42,7 +42,8 @@ export default function ShowPatientRecords(props) {
             const submissionsSection = filterRecordsFromSubmissions(props.submissions, section.uuid);
 
             return(
-                <ShowRecordsSection callBackEditSubmission={(uuidSubmission, uuidSection) =>props.callBackEditSubmission(uuidSubmission, uuidSection)} submissions={submissionsSection} section={section} />
+                <ShowRecordsSection permissions={props.permissions} callBackEditSubmission={(uuidSubmission, uuidSection) =>props.callBackEditSubmission(uuidSubmission, uuidSection)} 
+                    submissions={submissionsSection} section={section} />
             )
         });
     }

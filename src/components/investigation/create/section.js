@@ -65,7 +65,6 @@ class Section extends Component{
             newValues.repeats = values.hasOwnProperty("repeats") ? values.repeats : false;
             this.props.callBackNewSection(newValues);
         }
-        
     }
     deleteElement(index, element){
         console.log("Delete Field", index);
@@ -75,6 +74,10 @@ class Section extends Component{
     }
     handleAddField(values){
         console.log("Nuevo field!", values);
+        if(values.hasOwnProperty("type_options")){
+            values["options"] = values.type_options;
+        }
+        values.validation = ["ict", "treatment"].indexOf(values.type) !== -1 ? "arrayOrFalse" : "notEmpty";
         let tempState = {...this.state};
         tempState.fields.push(values);
         this.setState(tempState);
@@ -146,7 +149,6 @@ class Section extends Component{
                                     {
                                         title
                                     }
-                                    
                                 </Typography>
                                 <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
                                     <Field type="text" name="name" label="name" required={true} component={FieldSherwood} />

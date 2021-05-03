@@ -15,6 +15,59 @@ export const edc_data1 = () => {
                         "repeats": false,
                         "isActive": true,
                         "fields": [
+                            {   id:7,
+                                required : true,
+                                type:"treatment",
+                                name : "treatment",
+                                label:"Drug Selector",
+                                shortLabel: "investigation.table.is_personal_data",
+                                validation : "notEmpty",
+                                "slaves" : [{
+                                    "id" : 10,
+                                    "required": true,
+                                    "encrypted": false,
+                                    "name": "drug-code",
+                                    "label": "Start Drug",
+                                    "type": "text",
+                                    "validation" : "notEmpty",
+                                },
+                                {
+                                    "id" : 11,
+                                    "required": true,
+                                    "encrypted": false,
+                                    "name": "drug-start",
+                                    "label": "Start Drug",
+                                    "type": "date",
+                                    "validation" : "notEmpty",
+                                },
+                                {
+                                    "id" : 12,
+                                    "required": true,
+                                    "encrypted": false,
+                                    "name": "drug-finish",
+                                    "label": "Finish Drug",
+                                    "type": "date",
+                                    "validation" : "notEmpty",
+                                },
+                                {
+                                    "id" : 13,
+                                    "required": true,
+                                    "encrypted": false,
+                                    "name": "drug-posology",
+                                    "label": "Posology",
+                                    "type": "select",
+                                    options:[
+                                        {"label" : "hospital.posology-types.4h", "value" : "4h"},
+                                        {"label": "hospital.posology-types.6h", "value" : "6h"},
+                                        {"label": "hospital.posology-types.8h", "value" : "8h"},
+                                        {"label": "hospital.posology-types.12h", "value" : "12h"},
+                                        {"label": "hospital.posology-types.24h", "value" : "24h"},
+                                        {"label": "hospital.posology-types.48h", "value" : "48h"},
+                                        {"label": "hospital.posology-types.week", "value" : "7d"}
+                                    ],
+                                    "validation" : "notEmpty",
+                                }]
+                            },
                             {
                                 "id": 5,
                                 "type": "text",
@@ -1090,6 +1143,35 @@ export const patients_personal_data_decryptedCypress = () => {
     ];
 }
 
+export const patient_hospital_personal_data_decryptedCypress = () => {
+    return [
+        {
+            "birthdate":"01/01/1974",
+            "phone":"+1 727 1728 9191",
+            "name":"John",
+            "surnames":"Hopkins",
+            "national_id" : "11222",
+            "sex" : "male"
+        },
+        {
+            "birthdate":"01/01/1974",
+            "phone":"+1 727 1728 9191",
+            "name":"Peter",
+            "surnames":"Petrelli",
+            "national_id" : "010101",
+            "sex" : "male"
+        },
+        {
+            "birthdate":"01/01/1974",
+            "phone":"+1 727 1728 9191",
+            "name":"Donald",
+            "surnames":"Trump",
+            "national_id" : "3333",
+            "sex" : "female"
+        },
+    ];
+}
+
 export const patients_personal_data_decrypted = () => {
     return [
         {
@@ -1915,6 +1997,15 @@ export const researcherD_data = {
     country:"es"
 }
 
+export const researcherPedro_data = {
+    name : "Pedro",
+    surnames: "Rodriguez",
+    email : "pedro.cruz@ucl.ac.uk",
+    password: "Roquetas2001?",
+    phone: "+24 772 08689060",
+    country:"es"
+}
+
 export const loginResearcherA = {
     email : researcherA_data.email,
     password: researcherA_data.password
@@ -1934,6 +2025,12 @@ export const loginResearcherD = {
     email : researcherD_data.email,
     password: researcherD_data.password
 }
+
+export const loginResearcherPedro = {
+    email : researcherPedro_data.email,
+    password: researcherPedro_data.password
+}
+
 
 const sharedResearchers =  [
     {

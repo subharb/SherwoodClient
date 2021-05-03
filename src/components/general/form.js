@@ -101,13 +101,13 @@ class Form extends Component {
         }
     }
     renderExtraFields(key){
-        //Un field que habilita la apararición de otro field
+        //Un field que habilita la aparición de otro field
         if(this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValues") && this.props.valuesForm.hasOwnProperty(key) && this.props.fields[key].activationValues.includes(this.props.valuesForm[key]))){
             const extraField = {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]}; 
             if(extraField.type === "options"){
                 return (
                     <div className="container">
-                        <FieldArray name={`options`} {...extraField} key={key} component={this.renderOptions} />
+                        <FieldArray name={`${key}_options`} {...extraField} key={key} component={this.renderOptions} />
                     </div>
                 )
             }
@@ -138,18 +138,6 @@ class Form extends Component {
                                     }
                                 </div>);
                         }
-                        // else if(!this.state.showOptions.hasOwnProperty(this.props.fields[key]) && (this.state.showOptions[this.props.fields[key]] === true)){
-                        //     //Si es de tipo options, muestro un boton para añadir opciones
-                        //     return ([
-                        //         <div className="row" key={key}>
-                        //             <FieldArray name={key} label={this.props.fields[key].label} {...this.props.fields[key]}  component={this.renderOptions} />
-                        //         </div>,
-                        //         <button data-testid="submit-form" type="button" className="waves-effect waves-light btn">
-                        //             {this.props.translate("investigation.create.save")}
-                        //         </button>   
-                        //     ]);
-                        // }
-                        
                     })}
                     <div style={{paddingTop:"1rem"}}>
                         <ButtonContinue type="submit" data-testid={this.props.dataTestid} spaceright={1} >
@@ -174,16 +162,29 @@ Form.propTypes = {
 
 function validate(values, props){
     const errors = {};
-    Object.keys(props.fields).forEach(key => {
-        console.log(key+" : "+props.fields[key].validation+" "+values[key]);
+    const dictFields = {};
+    for(const fieldKey in props.fields){
+        const field = props.fields[fieldKey];
+        dictFields[fieldKey] = field
+        
+        // if(field.hasOwnProperty("slaves")){
+        //     for(const slave of field.slaves){
+        //         dictFields[slave.name] = slave;
+        //     }
+        // }
+        
+    }
+  
+    Object.keys(dictFields).forEach(key => {
+        console.log(key+" : "+dictFields[key].validation+" "+values[key]);
         //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
-        const fieldValueCompare = props.fields[key].validationField ? values[props.fields[key].validationField] : props.fields[key].validationValue ? props.translate(props.fields[key].validationValue) : null;
-        const valueField = props.fields[key].type === "textarea" && typeof values[key] !== "undefined" ? values[key].replace(/<[^>]+>/g, '') : values[key];
-        const validationFunc = props.fields[key].validation ? props.fields[key].validation : "notEmpty";
+        const fieldValueCompare = dictFields[key].validationField ? values[dictFields[key].validationField] : dictFields[key].validationValue ? props.translate(dictFields[key].validationValue) : null;
+        const valueField = dictFields[key].type === "textarea" && typeof values[key] !== "undefined" ? values[key].replace(/<[^>]+>/g, '') : values[key];
+        const validationFunc = dictFields[key].validation ? dictFields[key].validation : "notEmpty";
         const validation = validateField({  
                                 value : valueField, 
                                 validation:validationFunc, 
-                                required:props.fields[key].required
+                                required:dictFields[key].required
                             },
                             fieldValueCompare);
         if(!validation.result){

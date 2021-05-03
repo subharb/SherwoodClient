@@ -5,6 +5,8 @@ import { fetchUser } from "../services/authService";
 import { decryptData, encryptData } from '../utils';
 import { useQuery } from 'react-query'
 import { SIGN_IN_ROUTE } from '../routes';
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { Translate } from 'react-localize-redux';
 
 export function usePatientsData(investigation, patientsData){
     const [decryptedPatientData, setDecryptedPatientData] = useState([]);
@@ -149,6 +151,38 @@ export function useRouter(initValue){
         pathname : initValue ? initValue : history.location.pathname,
 
     }
+}
+
+export function useSelectSmartField(initialState, label, errorState, setAddingSmartField){
+    const [addSmartField, setAddSmartField] = useState(initialState ? initialState.addSmartField : null);
+
+    function selectChanged(event){
+        console.log(event);
+        setAddSmartField(event.target.value);
+    }
+    function resetState(){
+        setAddSmartField(null);
+        setAddingSmartField(true);
+    }
+    function renderSelect(){
+        const optionsArray = [<MenuItem value={true}><Translate id="general.yes" /></MenuItem>, <MenuItem value={false}><Translate id="general.no" /></MenuItem>]
+        
+        return(
+            <FormControl variant="outlined" style={{width:"235px"}} error={errorState}>
+                <InputLabel id="show_treatment">{label}</InputLabel>
+                <Select
+                labelId="show_treatment"
+                id="show_treatment"
+                label={label}
+                value={addSmartField}
+                onChange={(event) => selectChanged(event)}
+                >
+                { optionsArray }
+                </Select>
+            </FormControl>
+        )
+    }
+    return [addSmartField, renderSelect, resetState]
 }
 
 export function useSherwoodUser(){

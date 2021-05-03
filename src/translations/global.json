@@ -10,7 +10,11 @@
         "update" : ["Update", "Actualizar"],
         "back" : ["Back", "Atrás"],
         "add" : ["Add", "Añadir"],
-        "view" : ["View", "Ver"]
+        "view" : ["View", "Ver"],
+        "startDate" : ["Start Date", "Fecha Inicio"],
+        "endDate" : ["End Date", "Fecha fin"],
+        "date" : ["Date", "Fecha"],
+        "accept" : ["Accept", "Aceptar"]
     },
     "hospital" : {
         "doctor" : ["Doctor", "Médico"],
@@ -25,7 +29,47 @@
             "updated-record" : ["Record updated!", "Registro Actualizado"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado"],
             "new-patient" : ["Patient Saved!", "Paciente añadido"]
-        }
+        },
+        "treatment-name" : ["Name", "Nombre"],
+        "posology" : ["Posology", "Posología"],
+        "chronic" : ["Long-term use", "Crónico"],
+        "posology-options" : {
+            "4h" : ["4 hours", "4 horas"],
+            "6h" : ["6 hours", "6 horas"],
+            "8h" : ["8 hours", "8 horas"],
+            "12h" : ["12 hours", "12 horas"],
+            "24h" : ["24 hours", "24 horas"],
+            "48h" : ["48 hours", "48 horas"],
+            "week" : ["1 week", "1 semana"]
+        },
+        "dose-options" : {
+            "1" : ["One tablet", "Una pastilla"],
+            "3/4" : ["3/4 of a tablet", "3/4 de pastilla"],
+            "1/2" : ["half a tablet", "Media pastilla"],
+            "1/4" : ["1/4 of a tablet", "1/4 de pastilla"]
+        },
+        "ict" : ["Diagnostic", "Diagnostico"],
+        "treatment" : ["Treatment", "Tratamiento"],
+        "allergy" : ["Allergy", "Alergía"],
+        "background" : ["Past Medical History", "Antecedente"],
+        "family-background" : ["Family Past Medical History", "Antecedente Familiar"],
+        "ict-plural" : ["Diagnoses", "Diagnosticos"],
+        "treatment-plural" : ["Treatments", "Tratamientos"],
+        "allergy-plural" : ["Allergies", "Alergías"],
+        "background-plural" : ["Past Medical History", "Antecedentes"],
+        "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares"],
+        "select-ict" : ["Enter diagnostic", "Seleccione diagnostico"],
+        "select-treatment" : ["Drug name", "Nombre medicamento"],
+        "select-background" : ["Enter Past Medical History", "Seleccione Antecedente"],
+        "select-family-background" : ["Enter Family Past Medical History", "Seleccione Antecedente Familiar"],
+        "select-allergy" : ["Enter Allergy", "Seleccione Allergy"],
+        "add-ict" : ["Add Diagnosis", "Añdir Diagnóstico"],
+        "add-treatment" : ["Add Treatment", "Añadir Tratamiento"],
+        "add-background" : ["Add Background", "Añadir Antecedente"],
+        "add-family-background" : ["Add Family Past Medical History", "Añadir Antecedente Familiar"],
+        "add-allergy" : ["Add Allergy", "Añdir Alergía"],
+        "background-date" : ["Enter date", "Introduzca la fecha"]
+        
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña"],
@@ -85,7 +129,8 @@
             },
             "key_generation" : {
                 "confirm" : ["CONFIRM", "CONFIRMAR"]
-            }
+            },
+            "accept-policy" : ["I accept the policy of Sherwood Science", "Acepto la política de privacidad de Sherwood Science"]
         },
         "researcher" : {
             "personal_info" : {
@@ -225,8 +270,14 @@
                 "no_fields" : ["No fields added yet", "No se han añadido campos aún"], 
                 "type_text" : ["Text", "texto"],
                 "type_number" : ["Number", "Número"],
+                "diagnosis" : ["Diagnosis", "Diagnostico"],
+                "treatment" : ["Treatment", "Tratamiento"],
                 "checkbox" : ["Checkbox", "Checkbox"],
+                "textarea" : ["Texarea", "Texto grande"],
                 "multioption" : ["Multioption", "Multiopción"],
+                "allergy" : ["Allergy", "Alergía"],
+                "background" : ["PMH", "Antecedentes"],
+                "family-background" : ["FPMH", "Antecedente Familiar"],
                 "dropdown" : ["Dropdown", "Despegable"],
                 "type_date" : ["Date", "fecha"], 
                 "choose" : ["Choose your option", "Elija una opción"],
