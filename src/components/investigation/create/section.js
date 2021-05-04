@@ -77,7 +77,7 @@ class Section extends Component{
         if(values.hasOwnProperty("type_options")){
             values["options"] = values.type_options;
         }
-        values.validation = ["ict", "treatment"].indexOf(values.type) !== -1 ? "arrayOrFalse" : "notEmpty";
+        values.validation = ["ict", "treatment", "allergy", "background", "family-background"].indexOf(values.type) !== -1 ? "arrayOrFalse" : "notEmpty";
         let tempState = {...this.state};
         tempState.fields.push(values);
         this.setState(tempState);
