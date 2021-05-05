@@ -19,7 +19,7 @@ export interface PropsIct{
 }
 
 export const ICTSelectorGeneral:React.FC<PropsIct> = (props) => {
-    if(["ean", "es", "ar"].indexOf(props.language) !== -1 ){
+    if(["en", "es", "ar"].indexOf(props.language) !== -1 ){
         return <ICTSelectorOMS type={props.type}  variant="outlined" margin={props.typeMargin} 
             cancel={props.cancel} language={props.language}
             size="small" elementSelected={props.elementSelected} />
