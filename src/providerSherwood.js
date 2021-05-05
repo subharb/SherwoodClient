@@ -61,11 +61,12 @@ function OtherProviders(props){
                         <LocalizeProvider initialize={{
                             languages: [
                             { name: "English", code: "en" },
-                            { name: "Spanish", code: "es" }
+                            { name: "Spanish", code: "es" },
+                            { name: "Français", code: "fr" }
                             ],
                             translation: globalTranslations,
                             options: {
-                            defaultLanguage: "en",
+                            defaultLanguage: localStorage.getItem("language") ? localStorage.getItem("language") :  "en",
                                 renderToStaticMarkup: renderToStaticMarkup
                             }
                         }}>

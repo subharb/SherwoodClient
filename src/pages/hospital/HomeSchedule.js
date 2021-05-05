@@ -13,6 +13,7 @@ import Loader from '../../components/Loader';
 import {fetchProfileService} from '../../services/sherwoodService';
 import {selectInvestigation} from '../../redux/actions/investigationsActions';
 import { useDispatch } from "react-redux";
+import { Translate } from 'react-localize-redux';
 
 function HomeSchedule(props) {
     const [loading, setLoading] = useState(false);
@@ -95,12 +96,12 @@ function HomeSchedule(props) {
                         </Grid> */}
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={SEARCH_PATIENT_ROUTE}>
-                                <ButtonGrey data-testid="search-patient" >Search Patient</ButtonGrey>
+                                <ButtonGrey data-testid="search-patient" ><Translate id="pages.hospital.search-patient.title" /></ButtonGrey>
                             </LinkPlain>
                         </Grid>
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={ADD_PATIENT_ROUTE}>
-                                <ButtonGrey data-testid="add-patient" >Add Patient</ButtonGrey>
+                                <ButtonGrey data-testid="add-patient" ><Translate id="pages.hospital.add-patient" /></ButtonGrey>
                             </LinkPlain>
                         </Grid>
                     </Grid>
@@ -151,7 +152,7 @@ function HomeSchedule(props) {
                 <Grid container spacing={3}>
                     <Grid item  xs={12} style={{textAlign:"center"}}>
                         <Typography variant="h1" gutterBottom display="inline" >
-                            Welcome!
+                            <Translate id="home" />
                         </Typography>
                     </Grid>
                     {
