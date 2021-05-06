@@ -59,6 +59,7 @@
         "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents"],
         "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "select-ict" : ["Enter diagnostic", "Seleccione diagnostico", "Entrer le diagnostic"],
+        "select-test" : ["Select Test", "Seleccione tipo de prueba", "Sélectionnez le type de test"],
         "select-treatment" : ["Drug name", "Nombre medicamento", "Nom du médicament"],
         "select-background" : ["Enter Past Medical History", "Seleccione Antecedente", "Sélectionnez Antécédent"],
         "select-family-background" : ["Enter Family Past Medical History", "Seleccione Antecedente Familiar", "Sélectionnez Antécédents familiaux"],
@@ -68,7 +69,11 @@
         "add-background" : ["Add Background", "Añadir Antecedente", "Ajouter un antécédent"],
         "add-family-background" : ["Add Family Past Medical History", "Añadir Antecedente Familiar", "Ajouter des antécédents familiaux"],
         "add-allergy" : ["Add Allergy", "Añadir Alergía", "Ajouter une allergie"],
-        "background-date" : ["Enter date", "Introduzca la fecha", "Entrez la date"]
+        "background-date" : ["Enter date", "Introduzca la fecha", "Entrez la date"],
+        "type-test" : {
+            "eco-ab" : ["Abdominal ultrasound", "Ecografía abdominal", "Échographie abdominale"],
+            "scan" : ["Bone Scan", "Radiografía", "scintigraphie osseuse"]
+        }
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña", "Mot de passe"],

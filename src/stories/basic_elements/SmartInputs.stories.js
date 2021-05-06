@@ -140,6 +140,16 @@ const FIELD_FAMILY_BACKGROUND = {
     }
 }
 
+const FIELD_IMAGE = {
+    "image":{
+        required : false,
+        type:"image",
+        label:"Image",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty"
+    }
+}
+
 export default {
     title: 'Basic Elements/Fields/Smart Fields',
     component: Form,
@@ -155,6 +165,7 @@ const TemplateICT = (args) => <Form {...args}  />
 const TemplateAllergy = (args) => <Form {...args}  />
 const TemplateBackground = (args) => <Form {...args}  />
 const TemplateFamilyBackground = (args) => <Form {...args}  />
+const TemplateImage = (args) => <Form {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
 TreatmentEmpty.args = {
@@ -217,3 +228,8 @@ Allergy.args = {
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 
+export const Image = TemplateImage.bind({});
+Image.args = {
+    fields : FIELD_IMAGE, 
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
+};
