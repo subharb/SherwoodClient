@@ -51,7 +51,7 @@ function ICTSelectorOMS(props){
                 console.log('selected bestMatchText: '+ selectedEntity.bestMatchText);
                 ECT.Handler.clear("1");
                 setDiagnose("");
-                props.diagnosisSelected({
+                props.elementSelected({
                     ict:selectedEntity.title,
                     "ict-code" : selectedEntity.code
                 });
