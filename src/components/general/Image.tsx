@@ -1,48 +1,99 @@
-import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
+import { PhotoCamera } from '@material-ui/icons';
 import React, {SyntheticEvent, useState} from 'react'
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
+import { useUpdateEffect } from '../../hooks';
+import styled from "styled-components";
 
-
-
-interface Props extends LocalizeContextProps{
-
+enum UPLOAD_STATE{
+    NOT_UPLOAD = 0,
+    LOADING = 1,
+    UPLOADED = 2,
+    ERROR = 3,
+  }
+interface FileUpload{
+    image:string, state:UPLOAD_STATE
 }
+interface Props extends LocalizeContextProps{
+    initialState : {listFiles:FileUpload[]},
+    label:string
+}
+
+const LoadingLayer = styled.div`
+    position:absolute;
+    width:100%;
+    height:100%;
+    background-color:black;
+    opacity:0.6;
+`;
+
+const GridImage = styled(Grid)`
+    display:flex;
+    position:relative;
+    align-items: center;
+    justify-content: center;
+`;
+
 const Image:React.FC<Props> = (props) => {
-    const [testSelected, setTestSelected] = useState<string | null>(null);
-    const [errorTest, setErrorTest] = useState(false);
-    const typeTests = ["eco-ab", "scan"];
-    
-    const optionsArray = typeTests.map(test => {
-        return <MenuItem value={test}><Translate id={`hospital.type-test.${test}`} /></MenuItem>
-    })
-    function selectType(event: React.ChangeEvent<{
-        name?: string | undefined;
-        value: unknown;
-    }>){
-        console.log(event);
-        if(event){
-            const type = event.currentTarget!.dataset.value as string;
-            setTestSelected(type);
-        }   
+    const [filesSelected, setFilesSelected] = useState<FileUpload[]>([]);
+    function onFileSelected(e:React.ChangeEvent<HTMLInputElement>){
+        if(e !== null){
+            const value = URL.createObjectURL(e.target.files[0]);
+            console.log("File selected");
+            let tempFilesSelected = [...filesSelected];
+            
+            tempFilesSelected.push(value);
+            console.log(tempFilesSelected);
+            setFilesSelected(tempFilesSelected);
+            
+        }
     }
-    return (
-        <div>
-            <Grid container>
-                <Grid item>
-                    <FormControl variant="outlined" margin="dense" style={{width:"235px"}} error={errorTest} >
-                        <InputLabel id="test-type"><Translate id="hospital.select-test" /></InputLabel>
-                        <Select onChange={(event) => selectType(event)}
-                        labelId="test-type"
-                        id="test-type"
-                        label={<Translate id="hospital.select-test" />}
-                        >
-                        { optionsArray }
-                        </Select>
-                    </FormControl>
+    useUpdateEffect(() =>{
+        if(props.initialState && props.initialState.listFiles.length >0 ){
+            setFilesSelected(props.initialState.listFiles);
+        }
+        
+    }, [props.initialState]);
+    return(
+        // { fileSelected && 
+        //     <img src={fileSelected} alt={label} width="80" />
+        // }
+        // { value.length > 2 && 
+        //     <img src={value} alt={label} width="80" />
+        // }
+        <Grid container>
+            <Grid item xs={12}>
+                <Typography variant="body2" gutterBottom>
+                    {props.label}
+                </Typography>
+            </Grid>
+            <Grid item container spacing={3} xs={12}>
+                {
+                    filesSelected.map(file =>{
+
+                        return(
+                            <GridImage item xs={2}>
+                                <LoadingLayer>
+                                    
+                                </LoadingLayer>
+                                <CircularProgress color="inherit" />
+                                <img src={file.image} alt="imagen" width="100%" />
+                            </GridImage>)
+                    })
+                }
+                <Grid item xs={2}>
+                    <input accept="image/*" id="image" name="image" style={{display:'none'}} 
+                        type="file" 
+                        onChange={(e) => onFileSelected(e)} />
+                    <label htmlFor="image">
+                        <IconButton color="primary" aria-label="upload picture" component="span">
+                            <PhotoCamera />
+                        </IconButton>
+                    </label>
                 </Grid>
             </Grid>
             
-        </div>
+        </Grid>        
     )
 }
 

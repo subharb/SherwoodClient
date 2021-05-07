@@ -98,6 +98,22 @@ export function searchDrugComponentService(searchText) {
     });
 }
 
+export function uploadFile(file) {
+    return new Promise((resolve, reject) => {
+      
+        axios.get(process.env.REACT_APP_API_URL+'/researcher/upload', { headers: {"Authorization" : localStorage.getItem("jwt"), 'Content-Type': 'multipart/form-data'}})
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
 export function searchDiagnosticService(searchText) {
     return new Promise((resolve, reject) => {
       

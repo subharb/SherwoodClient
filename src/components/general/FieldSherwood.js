@@ -321,7 +321,7 @@ class FieldSherwood extends Component{
                />
                 );
             case "image" : 
-                return <Image />
+                return <Image label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listFiles: input.value} : null} />
             case "allergy":
             case "family-background":
             case "background":
