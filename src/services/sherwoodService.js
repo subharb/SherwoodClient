@@ -103,23 +103,43 @@ export function uploadFile(file) {
 
     formData.append("files", file);
     return new Promise((resolve, reject) => {
-
-        var requestOptions = {
-            method: 'POST',
-            headers: {"Authorization" : localStorage.getItem("jwt")},
-            body: formData,
-            redirect: 'follow'
-          };
-        fetch(process.env.REACT_APP_API_URL+'/file', requestOptions)
-            .then((response) => {
+        axios({
+            method: 'post',
+            url: process.env.REACT_APP_API_URL+'/file',
+            data: formData,
+            headers: {"Authorization" : localStorage.getItem("jwt"), 'Content-Type': 'multipart/form-data' }
+            })
+            .then(function (response) {
+                //handle success
+                console.log(response);
                 if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+                    resolve(response.data);
+                }
+                else{
+                    reject(response.data);
+                }
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+                reject(response.data);
+            });
+        // var requestOptions = {
+        //     method: 'POST',
+        //     headers: {"Authorization" : localStorage.getItem("jwt")},
+        //     body: formData,
+        //     redirect: 'follow'
+        //   };
+        // fetch(process.env.REACT_APP_API_URL+'/file', requestOptions)
+        //     .then((response) => {
+        //         if(response.status === 200){
+        //           resolve(response.data);
+        //       }
+        //       else{
+        //           reject(response.data);
+        //       }
+        //   })
+        //   .catch(err => {console.log('Catch', err); reject(err);}); 
     });
 }
 

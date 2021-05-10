@@ -127,6 +127,9 @@ class FieldSherwood extends Component{
     selectChange(value){
         this.props.input.onChange(value);
     }
+    imagesSelected(images){
+        this.props.input.onChange(images);
+    }
     render(){
         const {input, label, meta, type, options, size, option, removeClass, validation, activationValues, activatedFields} = this.props;
         const sizeCurrent = size ? size : "s12";
@@ -321,7 +324,10 @@ class FieldSherwood extends Component{
                />
                 );
             case "image" : 
-                return <Image label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listFiles: input.value} : null} />
+                return <Image label={labelString} 
+                            imagesSelected = {(images) => this.imagesSelected(images) }
+                            type={type}{...input} 
+                            initialState={Array.isArray(input.value)  ? {listFiles: input.value} : null} />
             case "allergy":
             case "family-background":
             case "background":

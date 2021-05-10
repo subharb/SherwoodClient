@@ -4,7 +4,7 @@ import React, {SyntheticEvent, useEffect, useState} from 'react';
 import {uploadFile } from '../../services/sherwoodService';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { useUpdateEffect, usePrevious } from '../../hooks';
-import styled from "styled-components";
+import styled from 'styled-components';
 import { Check } from 'react-feather';
 
 enum UPLOAD_STATE{
@@ -14,11 +14,12 @@ enum UPLOAD_STATE{
     ERROR = 3,
   }
 interface FileUpload{
-    image:string, status:UPLOAD_STATE
+    image:FileList, status:UPLOAD_STATE, remoteName?:string
 }
 interface Props extends LocalizeContextProps{
     initialState : {listFiles:FileUpload[]},
-    label:string
+    label:string,
+    imagesSelected : (images : string[]) => void 
 }
 
 const OpacityLayer = styled.div`
@@ -26,7 +27,7 @@ const OpacityLayer = styled.div`
     width:100%;
     height:100%;
     background-color:black;
-    opacity:0.6;
+    opacity:0.2;
 `;
 
 const StatusLayer = styled.div`
@@ -44,6 +45,7 @@ const GridImage = styled(Grid)`
     position:relative;
     align-items: center;
     justify-content: center;
+    padding:0.5rem;
 `;
 
 const Image:React.FC<Props> = (props) => {
@@ -61,7 +63,7 @@ const Image:React.FC<Props> = (props) => {
             case UPLOAD_STATE.UPLOADED:
                 return (
                     <StatusLayer>
-                        <Check />
+                        <Check color="green" style={{ width: 60, height: 60}} />
                     </StatusLayer>
                 );
             default:
@@ -72,12 +74,12 @@ const Image:React.FC<Props> = (props) => {
         }
     }
     async function onFileSelected(e:React.ChangeEvent<HTMLInputElement>){
-        if(e !== null){
-            const value = URL.createObjectURL(e.target.files[0]);
+        if(e !== null && e.target.files !== null){
+            const value = e.target.files;
             console.log("File selected");
             let tempFilesSelected = [...filesSelected];
             
-            tempFilesSelected.push({image:value, status:UPLOAD_STATE.NOT_UPLOAD});
+            tempFilesSelected.push({image:value, status:UPLOAD_STATE.LOADING});
             console.log(tempFilesSelected);
             setFilesSelected(tempFilesSelected);
             
@@ -86,8 +88,8 @@ const Image:React.FC<Props> = (props) => {
     async function uploadFileIndex(index:number){
         try{
             const file = filesSelected[index];
-            const response = await uploadFile(file.image);
-            return response.data;
+            const response = await uploadFile(file.image[0]);
+            return response;
         }
         catch(err){
             console.log(err);
@@ -96,13 +98,22 @@ const Image:React.FC<Props> = (props) => {
     }
     async function uploadAndUpdate(lastIndex:number){
         let tempFilesSelected = [...filesSelected];
-        tempFilesSelected[lastIndex].status = UPLOAD_STATE.LOADING;
-        setFilesSelected(tempFilesSelected);
-        
+
         const response = await uploadFileIndex(lastIndex);
         
         if(response){
             tempFilesSelected[lastIndex].status = UPLOAD_STATE.UPLOADED;
+            tempFilesSelected[lastIndex].remoteName = response.fileName as string;
+            const remoteNames = tempFilesSelected.reduce((acc:string[],file) => {
+                if(file.remoteName){
+                    acc.push(file.remoteName as string);
+                    return acc;
+                }
+                else{
+                    return acc;
+                }
+            }, [])
+            props.imagesSelected(remoteNames);
         }
         else{
             tempFilesSelected[lastIndex].status = UPLOAD_STATE.ERROR;
@@ -125,12 +136,12 @@ const Image:React.FC<Props> = (props) => {
         
         changeFiles();
     }, [filesSelected]);
-    useUpdateEffect(() =>{
-        if(props.initialState && props.initialState.listFiles.length >0 ){
-            setFilesSelected(props.initialState.listFiles);
-        }
+    // useUpdateEffect(() =>{
+    //     if(props.initialState && props.initialState.listFiles.length >0 ){
+    //         setFilesSelected(props.initialState.listFiles);
+    //     }
         
-    }, [props.initialState]);
+    // }, [props.initialState]);
     return(
         // { fileSelected && 
         //     <img src={fileSelected} alt={label} width="80" />
@@ -144,7 +155,7 @@ const Image:React.FC<Props> = (props) => {
                     {props.label}
                 </Typography>
             </Grid>
-            <Grid item container spacing={3} xs={12}>
+            <Grid item container direction={'row'}  spacing={3} xs={12}>
                 {
                     filesSelected.map((file, index) =>{
 
@@ -155,7 +166,7 @@ const Image:React.FC<Props> = (props) => {
                                 }
                                 <OpacityLayer />
                                 
-                                <img src={file.image} alt="imagen" width="100%" />
+                                <img src={URL.createObjectURL(file.image[0])} alt="imagen" width="100%" />
                             </GridImage>)
                     })
                 }
