@@ -92,9 +92,10 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
         <React.Fragment>
             <Autocomplete
                 id="diagnostic"
-                loading = {loading}
-                noOptionsText="start typing"
+                loading = {loading} autoComplete
+                noOptionsText={ searchDiagnosis.length < 4 ? props.translate("general.start_typing") : diagnosticsOptions.length === 0 ? props.translate("general.no_results") : "BUG" }
                 options={diagnosticsOptions}
+                filterOptions={x => x}
                 onInputChange={(event, value, reason) => {
                     if(reason === "clear"){
                         setSearchDiagnosis("");
@@ -137,7 +138,10 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                     }
                 }}
             
-                getOptionLabel={(option:DiagnosisPost) => option.name}
+                getOptionLabel={(option:DiagnosisPost) => {
+                    console.log(option.name);
+                    return option.name
+                }}
                 style={{ width: 400 }}
                 renderInput={(params) => <TextField {...params} value={searchDiagnosis} fullWidth={true}
                     error={props.error || error} label={props.translate(`hospital.select-${props.type}`)} variant={props.variant} />}
