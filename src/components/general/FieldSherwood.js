@@ -23,7 +23,7 @@ import { change, registerField } from "redux-form";
 import MultipleICTSelector from './MultipleICTSelector';
 import { MultipleTreatmentSelector } from './MultipleTreatmentSelector';
 import SelectField from './SelectField';
-import Image from './Image';
+import File from './File';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -323,8 +323,8 @@ class FieldSherwood extends Component{
                         renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
                />
                 );
-            case "image" : 
-                return <Image label={labelString} 
+            case "file" : 
+                return <File label={labelString} 
                             imagesSelected = {(images) => this.imagesSelected(images) }
                             type={type}{...input} 
                             initialState={Array.isArray(input.value)  ? {listFiles: input.value} : null} />

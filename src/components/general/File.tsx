@@ -48,7 +48,7 @@ const GridImage = styled(Grid)`
     padding:0.5rem;
 `;
 
-const Image:React.FC<Props> = (props) => {
+const File:React.FC<Props> = (props) => {
     const [filesSelected, setFilesSelected] = useState<FileUpload[]>([]);
     const prevFilesSelected:FileUpload[] | undefined = usePrevious(filesSelected);
 
@@ -186,4 +186,4 @@ const Image:React.FC<Props> = (props) => {
     )
 }
 
-export default withLocalize(Image);
+export default withLocalize(File);
