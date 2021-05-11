@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Alert } from "@material-ui/lab";
 import { Translate } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
+import File from '../../../general/File';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
@@ -32,6 +33,9 @@ export default function ShowRecordsSection(props) {
         props.callBackEditSubmission(uuidSubmission, uuidSection);
     }
     function renderValue(valueRecord){
+        if(valueRecord.surveyField.type === "file"){
+            return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
+        }
         if(!valueRecord || !valueRecord.value){
             return "-";
         }

@@ -14,7 +14,11 @@ enum UPLOAD_STATE{
     LOADING = 1,
     OK = 2,
     ERROR = 3,
-  }
+}
+
+interface PostFile{
+    file:string, "file-date":Date
+}
 interface FileUpload{
     image?:FileList, 
     buffer?:string,
@@ -26,7 +30,7 @@ interface Props extends LocalizeContextProps{
     label:string,
     mode:string,
     value:{file:string, "file-date" : string}[],
-    imagesSelected : (images : string[]) => void 
+    imagesSelected : (images : PostFile[]) => void 
 }
 
 const OpacityLayer = styled.div`
@@ -148,15 +152,16 @@ const File:React.FC<Props> = (props) => {
         if(response){
             tempFilesSelected[lastIndex].status = UPLOAD_STATE.OK;
             tempFilesSelected[lastIndex].remoteName = response.fileName as string;
-            const remoteNames = tempFilesSelected.reduce((acc:string[],file) => {
-                if(file.remoteName){
-                    acc.push(file.remoteName as string);
-                    return acc;
+            let remoteNames:PostFile[] = [];
+            for(let i = 0; i < tempFilesSelected.length; i++){
+                const file = tempFilesSelected[i];
+                const element:PostFile = {
+                    file:file.remoteName as string,
+                    "file-date" : new Date()
                 }
-                else{
-                    return acc;
-                }
-            }, [])
+                remoteNames.push(element);
+            }
+            
             props.imagesSelected(remoteNames);
         }
         else{
@@ -194,7 +199,7 @@ const File:React.FC<Props> = (props) => {
             }
             else{
                 for(let i = 0; i < filesSelected.length; i++){
-                    if(filesSelected[i].status !== UPLOAD_STATE.OK){
+                    if(!((filesSelected[i].status === UPLOAD_STATE.OK) || (filesSelected[i].status === UPLOAD_STATE.ERROR))){
                         await getAndUpdate(i);
                     }
                 } 
@@ -265,7 +270,7 @@ const File:React.FC<Props> = (props) => {
                                 return(
                                     <GridImage item xs={2}>
                                         {
-                                            renderFileStatus(UPLOAD_STATE.LOADING, index)
+                                            renderFileStatus(file.status, index)
                                         }
                                         <OpacityLayer />
                                         <ImageFile src={LogoSherwood} width="100%" alt="Logo"/>
