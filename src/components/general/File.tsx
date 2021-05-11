@@ -6,6 +6,7 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { useUpdateEffect, usePrevious } from '../../hooks';
 import styled from 'styled-components';
 import { Check } from 'react-feather';
+import Modal from './modal';
 import LogoSherwood from '../../img/favicon-96x96.png';
 
 enum UPLOAD_STATE{
@@ -59,8 +60,18 @@ const ImageFile = styled.img`
 `;
 const File:React.FC<Props> = (props) => {
     const [filesSelected, setFilesSelected] = useState<FileUpload[]>([]);
+    const [showModal, setShowModal] = useState(false);
+    const [bufferDataFile, setBufferDataFile] = useState(-1);
     const prevFilesSelected:FileUpload[] | undefined = usePrevious(filesSelected);
 
+    function showFullSize(index:number){
+        const file = filesSelected[index];
+        let buf = Buffer.from(file.image);
+        let base64 = buf.toString('base64');
+        setBufferDataFile(base64);
+        setShowModal(true);
+    }
+    
     function renderFileStatus(status:number, index:number){
         switch(status){
             case UPLOAD_STATE.LOADING:
@@ -202,8 +213,15 @@ const File:React.FC<Props> = (props) => {
         }
         loadFiles();
     }, []);
+    
     return(
         <Grid container>
+            <Modal
+                open={showModal}
+                closeModal={() => setShowModal(false)}
+                >
+                    <ImageFile src={`data:image/jpeg;base64, ${bufferDataFile}`} width="100%" alt="Logo"/>
+            </Modal>
             <Grid item xs={12}>
                 <Typography variant="body2" gutterBottom>
                     {props.label}
@@ -231,8 +249,7 @@ const File:React.FC<Props> = (props) => {
                                 let base64 = buf.toString('base64');
                                 return(
                                     <GridImage item xs={2}>
-                                        <OpacityLayer />
-                                        <ImageFile src={`data:image/jpeg;base64, ${base64}`} alt=""/>
+                                        <ImageFile onClick={() => showFullSize(index)} src={`data:image/jpeg;base64, ${base64}`} alt=""/>
                                     </GridImage>
                                 )
                             }
