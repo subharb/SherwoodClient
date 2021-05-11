@@ -324,7 +324,7 @@ class FieldSherwood extends Component{
                />
                 );
             case "file" : 
-                return <File label={labelString} 
+                return <File label={labelString} mode="form"
                             imagesSelected = {(images) => this.imagesSelected(images) }
                             type={type}{...input} 
                             initialState={Array.isArray(input.value)  ? {listFiles: input.value} : null} />

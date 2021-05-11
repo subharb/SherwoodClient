@@ -279,6 +279,7 @@
                 "allergy" : ["Allergy", "Alergía", "Allergie"],
                 "background" : ["PMH", "Antecedentes", "Antécédents"],
                 "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],                
+                "files" : ["File/Image", "Imágenes", "Images"],       
                 "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
                 "textarea" : ["Texarea", "Texto largo", "Texarea"],
                 "multioption" : ["Multioption", "Multiopción", "Multioption"],

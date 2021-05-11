@@ -16,7 +16,10 @@ enum UPLOAD_STATE{
     ERROR = 3,
   }
 interface FileUpload{
-    image?:FileList, status:UPLOAD_STATE, remoteName?:string
+    image?:FileList, 
+    buffer?:string,
+    status:UPLOAD_STATE, 
+    remoteName?:string
 }
 interface Props extends LocalizeContextProps{
     initialState : {listFiles:FileUpload[]},
@@ -61,15 +64,18 @@ const ImageFile = styled.img`
 const File:React.FC<Props> = (props) => {
     const [filesSelected, setFilesSelected] = useState<FileUpload[]>([]);
     const [showModal, setShowModal] = useState(false);
-    const [bufferDataFile, setBufferDataFile] = useState(-1);
+    const [bufferDataFile, setBufferDataFile] = useState("");
     const prevFilesSelected:FileUpload[] | undefined = usePrevious(filesSelected);
 
     function showFullSize(index:number){
         const file = filesSelected[index];
-        let buf = Buffer.from(file.image);
-        let base64 = buf.toString('base64');
-        setBufferDataFile(base64);
-        setShowModal(true);
+        if(file.buffer){
+            let buf = Buffer.from(file.buffer);
+            let base64 = buf.toString('base64');
+            setBufferDataFile(base64);
+            setShowModal(true);
+        }
+        
     }
     
     function renderFileStatus(status:number, index:number){
@@ -165,7 +171,7 @@ const File:React.FC<Props> = (props) => {
         
         if(response){
             tempFilesSelected[index].status = UPLOAD_STATE.OK;
-            tempFilesSelected[index].image = response.file.Body
+            tempFilesSelected[index].buffer = response.file.Body
         }
         else{
             tempFilesSelected[index].status = UPLOAD_STATE.ERROR;
@@ -220,7 +226,7 @@ const File:React.FC<Props> = (props) => {
                 open={showModal}
                 closeModal={() => setShowModal(false)}
                 >
-                    <ImageFile src={`data:image/jpeg;base64, ${bufferDataFile}`} width="100%" alt="Logo"/>
+                <ImageFile src={`data:image/jpeg;base64, ${bufferDataFile}`} width="100%" alt="Logo"/>
             </Modal>
             <Grid item xs={12}>
                 <Typography variant="body2" gutterBottom>
@@ -232,7 +238,7 @@ const File:React.FC<Props> = (props) => {
                     filesSelected.map((file, index) =>{
                         
                         if(props.mode === "form"){
-                        
+                            if(file.image){
                                 return(
                                     <GridImage item xs={2}>
                                         {
@@ -241,11 +247,13 @@ const File:React.FC<Props> = (props) => {
                                         <OpacityLayer />
                                         
                                         <ImageFile src={URL.createObjectURL(file.image[0])} alt="imagen" />
-                                    </GridImage>)                                
+                                    </GridImage>)  
+                            }
+                                                              
                         }
                         else{
-                            if(file.image){
-                                let buf = Buffer.from(file.image);
+                            if(file.buffer){
+                                let buf = Buffer.from(file.buffer);
                                 let base64 = buf.toString('base64');
                                 return(
                                     <GridImage item xs={2}>
@@ -268,7 +276,7 @@ const File:React.FC<Props> = (props) => {
                     })
                 }
                 {
-                    props.mode === "input" &&
+                    props.mode === "form" &&
                     
                     <Grid item xs={2}>
                         <input accept="image/*" id="image" name="image" style={{display:'none'}} 

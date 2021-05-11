@@ -141,10 +141,10 @@ const FIELD_FAMILY_BACKGROUND = {
 }
 
 const FIELD_IMAGE = {
-    "image":{
+    "file":{
         required : false,
-        type:"image",
-        label:"Image",
+        type:"file",
+        label:"Image please",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     }
