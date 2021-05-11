@@ -14,7 +14,9 @@
         "startDate" : ["Start Date", "Fecha Inicio", "Date de début"],
         "endDate" : ["End Date", "Fecha fin", "Date de fin"],
         "date" : ["Date", "Fecha", "Date"],
-        "accept" : ["Accept", "Aceptar", "Accepter"]
+        "accept" : ["Accept", "Aceptar", "Accepter"],
+        "start_typing" : ["start typing", "escriba texto", "commencer à écrire"],
+        "no_results" : ["no results", "sin resultados", "no results"]
     },
     "hospital" : {
         "doctor" : ["Doctor", "Médico", "Médecin"],
@@ -61,8 +63,8 @@
         "select-ict" : ["Enter diagnostic", "Seleccione diagnostico", "Entrer le diagnostic"],
         "select-test" : ["Select Test", "Seleccione tipo de prueba", "Sélectionnez le type de test"],
         "select-treatment" : ["Drug name", "Nombre medicamento", "Nom du médicament"],
-        "select-background" : ["Enter Past Medical History", "Seleccione Antecedente", "Sélectionnez Antécédent"],
-        "select-family-background" : ["Enter Family Past Medical History", "Seleccione Antecedente Familiar", "Sélectionnez Antécédents familiaux"],
+        "select-background" : ["Enter Past Medical History", "Seleccione Antecedente", "Entrer un antécédent"],
+        "select-family-background" : ["Enter Family Past Medical History", "Seleccione Antecedente Familiar", "Entrer un antécédent"],
         "select-allergy" : ["Enter Allergy", "Seleccione Alergía", "Sélectionnez Allergie"],
         "add-ict" : ["Add Diagnosis", "Añadir Diagnóstico", "Ajouter un diagnostic"],
         "add-treatment" : ["Add Treatment", "Añadir Tratamiento", "Ajouter un traitement"],

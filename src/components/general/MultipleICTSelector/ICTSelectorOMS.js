@@ -51,10 +51,38 @@ function ICTSelectorOMS(props){
                 console.log('selected bestMatchText: '+ selectedEntity.bestMatchText);
                 ECT.Handler.clear("1");
                 setDiagnose("");
-                props.diagnosisSelected({
-                    ict:selectedEntity.title,
-                    "ict-code" : selectedEntity.code
-                });
+    
+                if(selectedEntity){
+                    let tempValue;
+                    if(props.type === "ict"){
+                        tempValue = {
+                            "ict" : selectedEntity.title,
+                            "ict-code" : selectedEntity.code
+                        }
+                    }
+                    else if(props.type === "background"){
+                        tempValue = {
+                            "background" : selectedEntity.title,
+                            "background-code" : selectedEntity.code,
+                            "background-date" : ""
+                        }
+                    }
+                    else if(props.type === "family-background"){
+                        tempValue = {
+                            "family-background" : selectedEntity.title,
+                            "family-background-code" : selectedEntity.code
+                        }
+                    }
+                    else{ 
+                        tempValue = {
+                            "allergy" : selectedEntity.title,
+                            "allergy-code" : selectedEntity.code
+                        }
+                    }
+                   
+                    props.elementSelected(tempValue);    
+                }
+                
             },
             getNewTokenFunction: async () => {
                 // if the embedded coding tool is working with the cloud hosted ICD-API, you need to set apiSecured=true
