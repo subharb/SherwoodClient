@@ -105,7 +105,7 @@ export function uploadFile(file) {
     return new Promise((resolve, reject) => {
         axios({
             method: 'post',
-            url: process.env.REACT_APP_API_URL+'/file',
+            url: process.env.REACT_APP_API_URL+'/files',
             data: formData,
             headers: {"Authorization" : localStorage.getItem("jwt"), 'Content-Type': 'multipart/form-data' }
             })
@@ -124,24 +124,26 @@ export function uploadFile(file) {
                 console.log(response);
                 reject(response.data);
             });
-        // var requestOptions = {
-        //     method: 'POST',
-        //     headers: {"Authorization" : localStorage.getItem("jwt")},
-        //     body: formData,
-        //     redirect: 'follow'
-        //   };
-        // fetch(process.env.REACT_APP_API_URL+'/file', requestOptions)
-        //     .then((response) => {
-        //         if(response.status === 200){
-        //           resolve(response.data);
-        //       }
-        //       else{
-        //           reject(response.data);
-        //       }
-        //   })
-        //   .catch(err => {console.log('Catch', err); reject(err);}); 
     });
 }
+
+export function getFile(fileName) {
+ 
+    return new Promise((resolve, reject) => {
+        axios.get(process.env.REACT_APP_API_URL+'/files/'+fileName, { headers: {"Authorization" : localStorage.getItem("jwt")}})
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
+
 
 export function searchDiagnosticService(searchText) {
     return new Promise((resolve, reject) => {
