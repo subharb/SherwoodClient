@@ -70,6 +70,7 @@ const File:React.FC<Props> = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [bufferDataFile, setBufferDataFile] = useState("");
     const prevFilesSelected:FileUpload[] | undefined = usePrevious(filesSelected);
+    const prevValue:FileUpload[] | undefined = usePrevious(props.value);
 
     function showFullSize(index:number){
         const file = filesSelected[index];
@@ -208,21 +209,20 @@ const File:React.FC<Props> = (props) => {
     }, [filesSelected]);
     useEffect(() =>{
         async function loadFiles(){
-            
-                if(props.value && props.value.length > 0 ){
-                    const tempFiles:FileUpload[] = props.value.map(file => {
-                        return {
-                            remoteName:file.file,
-                            status:UPLOAD_STATE.LOADING
-                        }
-                    })
-                    
-                    setFilesSelected(tempFiles);
-                }
-            
+            if(typeof prevValue === "undefined" && props.value && props.value.length > 0 ){
+                const tempFiles:FileUpload[] = props.value.map(file => {
+                    return {
+                        remoteName:file.file,
+                        status:UPLOAD_STATE.LOADING
+                    }
+                })
+                
+                setFilesSelected(tempFiles);
+                
+            }
         }
         loadFiles();
-    }, []);
+    }, [props.value]);
     
     return(
         <Grid container>
