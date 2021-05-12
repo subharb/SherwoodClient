@@ -185,8 +185,14 @@ const File:React.FC<Props> = (props) => {
     }
     useEffect(()=>{
         async function changeFiles(){
-            if(props.mode === "form"){
-                if(prevFilesSelected){
+            if((props.value && props.value.length > 0) && filesSelected.length === props.value.length){
+                for(let i = 0; i < filesSelected.length; i++){
+                    if(!((filesSelected[i].status === UPLOAD_STATE.OK) || (filesSelected[i].status === UPLOAD_STATE.ERROR))){
+                        await getAndUpdate(i);
+                    }
+                } 
+            }
+            else if(prevFilesSelected){
                     if(prevFilesSelected.length < filesSelected.length){
                         //Mando la imagen al servidor
                         const lastIndex = filesSelected.length -1;
@@ -197,20 +203,12 @@ const File:React.FC<Props> = (props) => {
                     }
                 }
             }
-            else{
-                for(let i = 0; i < filesSelected.length; i++){
-                    if(!((filesSelected[i].status === UPLOAD_STATE.OK) || (filesSelected[i].status === UPLOAD_STATE.ERROR))){
-                        await getAndUpdate(i);
-                    }
-                } 
-            }
-        }
         
         changeFiles();
     }, [filesSelected]);
     useEffect(() =>{
         async function loadFiles(){
-            if(props.mode === "show"){
+            
                 if(props.value && props.value.length > 0 ){
                     const tempFiles:FileUpload[] = props.value.map(file => {
                         return {
@@ -218,9 +216,10 @@ const File:React.FC<Props> = (props) => {
                             status:UPLOAD_STATE.LOADING
                         }
                     })
+                    
                     setFilesSelected(tempFiles);
                 }
-            }
+            
         }
         loadFiles();
     }, []);
@@ -241,43 +240,39 @@ const File:React.FC<Props> = (props) => {
             <Grid item container direction={'row'}  spacing={3} xs={12}>
                 {
                     filesSelected.map((file, index) =>{
-                        
-                        if(props.mode === "form"){
-                            if(file.image){
-                                return(
-                                    <GridImage item xs={2}>
-                                        {
-                                            renderFileStatus(file.status, index)
-                                        }
-                                        <OpacityLayer />
-                                        
-                                        <ImageFile src={URL.createObjectURL(file.image[0])} alt="imagen" />
-                                    </GridImage>)  
-                            }
-                                                              
+                        if(file.image){
+                            return(
+                                <GridImage item xs={2}>
+                                    {
+                                        renderFileStatus(file.status, index)
+                                    }
+                                    <OpacityLayer />
+                                    
+                                    <ImageFile src={URL.createObjectURL(file.image[0])} alt="imagen" />
+                                </GridImage>)  
+                        }
+                   
+                        if(file.buffer){
+                            let buf = Buffer.from(file.buffer);
+                            let base64 = buf.toString('base64');
+                            return(
+                                <GridImage item xs={2}>
+                                    <ImageFile onClick={() => showFullSize(index)} src={`data:image/jpeg;base64, ${base64}`} alt=""/>
+                                </GridImage>
+                            )
                         }
                         else{
-                            if(file.buffer){
-                                let buf = Buffer.from(file.buffer);
-                                let base64 = buf.toString('base64');
-                                return(
-                                    <GridImage item xs={2}>
-                                        <ImageFile onClick={() => showFullSize(index)} src={`data:image/jpeg;base64, ${base64}`} alt=""/>
-                                    </GridImage>
-                                )
-                            }
-                            else{
-                                return(
-                                    <GridImage item xs={2}>
-                                        {
-                                            renderFileStatus(file.status, index)
-                                        }
-                                        <OpacityLayer />
-                                        <ImageFile src={LogoSherwood} width="100%" alt="Logo"/>
-                                    </GridImage>
-                                )
-                            }
+                            return(
+                                <GridImage item xs={2}>
+                                    {
+                                        renderFileStatus(file.status, index)
+                                    }
+                                    <OpacityLayer />
+                                    <ImageFile src={LogoSherwood} width="100%" alt="Logo"/>
+                                </GridImage>
+                            )
                         }
+                        
                     })
                 }
                 {

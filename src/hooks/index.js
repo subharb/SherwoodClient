@@ -154,7 +154,7 @@ export function useRouter(initValue){
 }
 
 export function useSelectSmartField(initialState, label, errorState, setAddingSmartField){
-    const [addSmartField, setAddSmartField] = useState(initialState ? initialState.addSmartField : null);
+    const [addSmartField, setAddSmartField] = useState(initialState && initialState.addSmartField ? initialState.addSmartField : undefined);
 
     function selectChanged(event){
         console.log(event);

@@ -7,6 +7,8 @@ import { Alert } from "@material-ui/lab";
 import { Translate } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
+import MultipleICTSelector from '../../../general/MultipleICTSelector';
+import { MultipleTreatmentSelector } from '../../../general/MultipleTreatmentSelector';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
@@ -33,25 +35,35 @@ export default function ShowRecordsSection(props) {
         props.callBackEditSubmission(uuidSubmission, uuidSection);
     }
     function renderValue(valueRecord){
-        if(valueRecord.surveyField.type === "file"){
-            return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
-        }
         if(!valueRecord || !valueRecord.value){
             return "-";
         }
-        else if(Array.isArray(valueRecord.value)){
-            return(
-            <div style={{paddingLeft:"20px"}}>
-                {valueRecord.value.map(smartField => {
-                    return(
-                        <Typography variant="body2" gutterBottom>
-                            {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.hasOwnProperty("treatment") ? smartField.treatment : smartField.hasOwnProperty("background") ? smartField.background : smartField.allergy}
-                        </Typography>
-                    )
-                    
-                })}
-            </div>)
+        if(valueRecord.surveyField.type === "file"){
+            return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
         }
+        else if(["ict", "allergy", "background", "family-background"].includes(valueRecord.surveyField.type)){
+            return <MultipleICTSelector type={valueRecord.surveyField.type} mode="show" 
+                initialState={{listDiagnosis:valueRecord.value}}
+                label={valueRecord.surveyField.label}  />
+        }
+        else if(["treatment"].includes(valueRecord.surveyField.type)){
+            return <MultipleTreatmentSelector type={valueRecord.surveyField.type} mode="show" 
+                initialState={{listTreatments:valueRecord.value}}
+                label={valueRecord.surveyField.label}  />
+        }
+        // else if(Array.isArray(valueRecord.value)){
+        //     return(
+        //     <div style={{paddingLeft:"20px"}}>
+        //         {valueRecord.value.map(smartField => {
+        //             return(
+        //                 <Typography variant="body2" gutterBottom>
+        //                     {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.hasOwnProperty("treatment") ? smartField.treatment : smartField.hasOwnProperty("background") ? smartField.background : smartField.allergy}
+        //                 </Typography>
+        //             )
+                    
+        //         })}
+        //     </div>)
+        // }
         else{
             return(
                 <Typography variant="body2" gutterBottom>

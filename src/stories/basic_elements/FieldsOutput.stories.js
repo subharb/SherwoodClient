@@ -168,3 +168,11 @@ FileOuput.args = {
     value : [{file:"hospitals_1620728497713-256774649", "file-data" : "1111111"},
             {file:"hospitals_1620729868307-866470426", "file-data" : "1111111"}]
 }
+
+export const FileEdit = Template.bind({});
+FileEdit.args = {
+    mode:"form", 
+    label:"Radiografias",
+    value : [{file:"hospitals_1620728497713-256774649", "file-data" : "1111111"},
+            {file:"hospitals_1620729868307-866470426", "file-data" : "1111111"}]
+}

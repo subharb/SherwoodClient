@@ -40,6 +40,7 @@ interface Props extends LocalizeContextProps {
     slaves : object[],
     type:string,
     errorState: boolean,
+    mode : string,
     initialState:{
         addingDiagnosis:boolean,
         listDiagnosis:Diagnosis[]
@@ -51,7 +52,7 @@ interface Props extends LocalizeContextProps {
 const MultipleICTSelector:React.FC<Props> = (props) => {
     
     const [listDiagnosis, setListDiagnosis] = useState<Smartfield[]>(props.initialState ? props.initialState.listDiagnosis : []);
-    const [addingDiagnosis, setAddingDiagnosis] = useState(true);
+    const [addingDiagnosis, setAddingDiagnosis] = useState(props.mode === "form");
     const [addDiagnosis, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.errorState, setAddingDiagnosis);
 
     function cancel(){
@@ -105,10 +106,16 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
                 
                 return valueDict
             })
+            if(props.mode === "form"){
+                return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
+                    actions={{"delete" : (index:number) => removeDiagnosis(index)}}
+                />
+            }
+            else{
+                return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}     
+                    />
+            }
             
-            return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
-                actions={{"delete" : (index:number) => removeDiagnosis(index)}}
-            />
             
         }
     }
@@ -124,7 +131,7 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
         setAddingDiagnosis(true);
     }
     function renderSelector(){
-        if(addingDiagnosis){
+        if(addingDiagnosis && props.mode === "form"){
             if(props.type !== "allergy"){
                 return <ICTSelectorGeneral type={props.type}  variant="outlined" typeMargin={props.typeMargin} 
                     cancel={cancel} language={props.activeLanguage.code} error={props.errorState} 
@@ -145,10 +152,13 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     }, [props.initialState]);
     
     useUpdateEffect(() =>{
-        props.diagnosesSelected(listDiagnosis);
-        if(listDiagnosis.length === 0){
-            resetState()
+        if(props.mode === "form"){
+            props.diagnosesSelected(listDiagnosis);
+            if(listDiagnosis.length === 0){
+                resetState()
+            }
         }
+        
     }, [listDiagnosis]);
     useUpdateEffect(() =>{
         if(!addDiagnosis){
@@ -162,7 +172,7 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     return (
         <React.Fragment>
             {
-                (!addingDiagnosis) &&
+                (!addingDiagnosis && props.mode === "form") &&
                 <React.Fragment>
                     <ButtonPlus onClick={addDiagnose} />
                     <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>

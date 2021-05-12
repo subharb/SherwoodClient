@@ -22,6 +22,7 @@ interface Props{
     typeMargin : string,
     slaves : object[],
     errorState: boolean,
+    mode:string,
     initialState:{
         isAddingDrug:boolean,
         addTreatment: boolean | null,
@@ -89,21 +90,29 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
                     posology : treat['treatment-posology']
                 }
             })
-            
-            tableTreatments = <EnhancedTable noHeader rows={rows} headCells={headCells} 
-                actions={{"delete" : (index:number) => deleteTreatment(index)}}
-            />
+            if(props.mode === "form"){
+                tableTreatments = <EnhancedTable noSelectable={true} noHeader rows={rows} headCells={headCells} 
+                    actions={{"delete" : (index:number) => deleteTreatment(index)}}
+                />
+            }
+            else{
+                tableTreatments = <EnhancedTable noSelectable={true} noHeader rows={rows} headCells={headCells} 
+                />
+            }
         }
         
         return(
             <React.Fragment>
                 {tableTreatments}
-                <div style={{display:'flex',alignItems: "center",justifyContent: "left"}}>
-                    <ButtonAdd onClick={() =>{setIsAddingDrug(true)}} />
-                    <Typography variant="body2" component="span" >
-                        <Translate id="hospital.add-treatment" />
-                    </Typography>
-                </div>
+                { props.mode === "form" && 
+                    <div style={{display:'flex',alignItems: "center",justifyContent: "left"}}>
+                        <ButtonAdd onClick={() =>{setIsAddingDrug(true)}} />
+                        <Typography variant="body2" component="span" >
+                            <Translate id="hospital.add-treatment" />
+                        </Typography>
+                    </div>
+                }
+                
             </React.Fragment>
         );
     }
