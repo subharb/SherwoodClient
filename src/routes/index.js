@@ -95,6 +95,7 @@ export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/:action/data-coll
 export const HOSPITAL_PATIENT_DATACOLLECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection";
 export const HOSPITAL_PATIENT_EDIT_PERSONAL_DATA = "/patient/:uuidPatient/edit/personal-data";
 export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note/:idMedicalNote";
+export const HOSPITAL_PATIENT_TESTS = "/patient/:uuidPatient/tests/:typeTest";
 
 
 
@@ -165,8 +166,11 @@ const hospitalRoutes = {
             name: "Patient Data Collection",
             component: Patient
         },
-        
-        
+        {
+            path: HOSPITAL_PATIENT_TESTS,
+            name: "Patient Tests",
+            component: Patient
+        }
     ],
   };
 
