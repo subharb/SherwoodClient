@@ -95,6 +95,10 @@
                 "back-button" : ["Back to search", "Nueva búsqueda", "Nouvelle recherche"],
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
             },
+            "medical-imaging" : {
+                "name" : ["Medical Imaging", "Pruebas de Imagen", "Images"],
+                "title" : ["Images requests", "Petición de imagen", "Demandes d'imaginerie"]
+            },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"]
         }
