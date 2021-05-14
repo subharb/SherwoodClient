@@ -82,7 +82,7 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
         // listTreatment
         let tableTreatments = null;
         if(listTreatments.length > 0){
-            const headCells = [{ id: "name", alignment: "left", label: <Translate id="hospital.treatment-name" /> }, { id: "posology", alignment: "left", label: <Translate id="hospital.posology" /> }, { id: "posology", alignment: "left", label: <Translate id="hospital.dose" /> }, ]
+            const headCells = [{ id: "name", alignment: "left", label: <Translate id="hospital.treatment-name" /> }, { id: "posology", alignment: "left", label: <Translate id="hospital.posology" /> }, { id: "dose", alignment: "left", label: <Translate id="hospital.dose" /> }, ]
             const rows = listTreatments.map((treat, index) => {
 
                 return {
