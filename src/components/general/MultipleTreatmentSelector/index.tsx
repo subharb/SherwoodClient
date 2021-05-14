@@ -11,6 +11,7 @@ interface Treatment{
     treatment : string,
     "drug-code": string,
     "treatment-posology": string,
+    "treatment-dose": string,
     "treatment-start":Date,
     "treatment-finish":Date
    
@@ -81,13 +82,14 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
         // listTreatment
         let tableTreatments = null;
         if(listTreatments.length > 0){
-            const headCells = [{ id: "name", alignment: "left", label: <Translate id="hospital.treatment-name" /> }, { id: "posology", alignment: "left", label: <Translate id="hospital.posology" /> }, ]
+            const headCells = [{ id: "name", alignment: "left", label: <Translate id="hospital.treatment-name" /> }, { id: "posology", alignment: "left", label: <Translate id="hospital.posology" /> }, { id: "posology", alignment: "left", label: <Translate id="hospital.dose" /> }, ]
             const rows = listTreatments.map((treat, index) => {
 
                 return {
                     id : index,
                     name : treat.treatment,
-                    posology : treat['treatment-posology']
+                    posology : treat['treatment-posology'],
+                    dose : treat['treatment-dose'],
                 }
             })
             if(props.mode === "form"){
@@ -112,7 +114,6 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
                         </Typography>
                     </div>
                 }
-                
             </React.Fragment>
         );
     }

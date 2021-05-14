@@ -34,6 +34,7 @@
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
         "posology" : ["Posology", "Posología", "Posologie"],
+        "dose" : ["Dose", "Dosis", "Dose"],
         "chronic" : ["Long-term use", "Crónico", "chronique"],
         "posology-options" : {
             "4h" : ["4 hours", "4 horas", "4 heures"],
@@ -65,7 +66,7 @@
         "select-treatment" : ["Drug name", "Nombre medicamento", "Nom du médicament"],
         "select-background" : ["Enter Past Medical History", "Seleccione Antecedente", "Entrer un antécédent"],
         "select-family-background" : ["Enter Family Past Medical History", "Seleccione Antecedente Familiar", "Entrer un antécédent"],
-        "select-allergy" : ["Enter Allergy", "Seleccione Alergía", "Sélectionnez Allergie"],
+        "select-allergy" : ["Enter Allergy", "Seleccione Alergía", "Entrer Allergie"],
         "add-ict" : ["Add Diagnosis", "Añadir Diagnóstico", "Ajouter un diagnostic"],
         "add-treatment" : ["Add Treatment", "Añadir Tratamiento", "Ajouter un traitement"],
         "add-background" : ["Add Background", "Añadir Antecedente", "Ajouter un antécédent"],

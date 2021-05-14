@@ -34,9 +34,14 @@ export default function ShowRecordsSection(props) {
         const uuidSubmission = props.submissions[indexSubmission].id;
         props.callBackEditSubmission(uuidSubmission, uuidSection);
     }
-    function renderValue(valueRecord){
+    function renderValue(valueRecord, field){
         if(!valueRecord || !valueRecord.value){
-            return "-";
+            return[
+                <Typography variant="h6" color="textPrimary">
+                    {field.name}: 
+                </Typography>,
+                "-"
+            ];
         }
         if(valueRecord.surveyField.type === "file"){
             return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
@@ -65,10 +70,14 @@ export default function ShowRecordsSection(props) {
         //     </div>)
         // }
         else{
-            return(
+            return([
+                <Typography variant="h6" color="textPrimary">
+                    {field.name}: 
+                </Typography>,
                 <Typography variant="body2" gutterBottom>
                     { valueRecord.value }
                 </Typography>
+            ]
             );
         }
     }
@@ -101,13 +110,10 @@ export default function ShowRecordsSection(props) {
                                 }
                                 {
                                     (field.type !== "textarea") &&
-                                    [
-                                        <Typography variant="h6" color="textPrimary">
-                                            {field.name}: 
-                                        </Typography>,
-                                        renderValue(valueRecord)
+                                    
+                                        renderValue(valueRecord, field)
                                         
-                                    ]
+                                    
                                 }
                                 
                             </Grid>

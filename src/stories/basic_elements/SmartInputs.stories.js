@@ -190,6 +190,7 @@ TreatmentWithData.args = {
     fields:FIELD_TREATMENT, 
     initialData:{drug:[{treatment:"paracetamol", 
                         "treatment-posology": "6h", 
+                        "treatment-dose": "1 pill", 
                         startDate:"1111", endDate:"111"}
                     ]
                 },
