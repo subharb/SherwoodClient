@@ -177,6 +177,22 @@ export function fetchRecordsPatientFromSurvey(uuidInvestigation, patientUUID, su
     });
 }
 
+export function fetchRecordsSurveysService(uuidInvestigation, surveyUUID) {
+    return new Promise((resolve, reject) => {
+        
+        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/survey/"+surveyUUID+"/submissions", { headers: {"Authorization" : localStorage.getItem("jwt")} })
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
 
 export function fetchRecordsPatientAllSurveysService(uuidInvestigation, patientUUID) {
     return new Promise((resolve, reject) => {

@@ -1,6 +1,6 @@
 import * as types from "../../constants";
 import {
-    fetchRecordsPatientAllSurveysService, postRecordPatientService, updateRecordPatientService,
+    fetchRecordsPatientAllSurveysService, postRecordPatientService, updateRecordPatientService, fetchRecordsSurveysService
 } from "../../services/sherwoodService";
 
 

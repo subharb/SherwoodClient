@@ -90,11 +90,11 @@ function HomeSchedule(props) {
                     </Grid>
                     <Grid item container  spacing={3}>
                         
-                        {/* <Grid item xs={12} style={{textAlign:"center"}}>
+                        <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={HOSPITAL_IMAGES}>
                                 <ButtonGrey data-testid="medical-imaging" ><Translate id="pages.hospital.medical-imaging.name" /></ButtonGrey>
                             </LinkPlain>
-                        </Grid> */}
+                        </Grid>
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={SEARCH_PATIENT_ROUTE}>
                                 <ButtonGrey data-testid="search-patient" ><Translate id="pages.hospital.search-patient.title" /></ButtonGrey>
