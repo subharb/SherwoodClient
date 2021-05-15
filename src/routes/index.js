@@ -69,6 +69,7 @@ import HomeSchedule from "../pages/hospital/HomeSchedule";
 import ListPatients from "../pages/hospital/ListPatients";
 import Patient from "../pages/hospital/Patient";
 import SearchPatients from "../pages/hospital/SearchPatients";
+import Images from "../pages/hospital/Images";
 import AddPatient from "../pages/hospital/AddPatient";
 
 
@@ -95,6 +96,8 @@ export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/:action/data-coll
 export const HOSPITAL_PATIENT_DATACOLLECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection";
 export const HOSPITAL_PATIENT_EDIT_PERSONAL_DATA = "/patient/:uuidPatient/edit/personal-data";
 export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note/:idMedicalNote";
+export const HOSPITAL_PATIENT_TESTS = "/patient/:uuidPatient/tests/:typeTest";
+export const HOSPITAL_IMAGES = "/images";
 
 
 
@@ -165,8 +168,16 @@ const hospitalRoutes = {
             name: "Patient Data Collection",
             component: Patient
         },
-        
-        
+        {
+            path: HOSPITAL_PATIENT_TESTS,
+            name: "Patient Tests",
+            component: Patient
+        },
+        {
+            path: HOSPITAL_IMAGES,
+            name: "Hospital Images",
+            component: Images
+        }
     ],
   };
 

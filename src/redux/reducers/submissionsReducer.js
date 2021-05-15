@@ -16,11 +16,24 @@ import { decryptPatientsData } from '../../utils';
 export default function reducer(state = initialState, action){
     console.log(action)
     let newState = { ...state};
+    let tempData;
     switch(action.type){
+        //Requiere factorizacion
         case types.FETCH_SUBMISSIONS_SUCCESS:
-            let tempData = newState.data === initialState.data ? {} : newState.data;
+            tempData = newState.data === initialState.data ? {} : newState.data;
             
             tempData[action.meta.uuidInvestigation] = action.surveys;
+            newState.data = tempData;
+            newState.loading = initialState.loading;
+            newState.error = initialState.error;
+            return newState;
+        case types.FETCH_SUBMISSIONS_SURVEY_SUCCESS:
+            tempData = newState.data === initialState.data ? {} : newState.data;
+            const tempSurvey = {};
+            tempSurvey[action.survey.uuid] = action.survey;
+
+            tempData[action.meta.uuidInvestigation] = tempSurvey;
+
             newState.data = tempData;
             newState.loading = initialState.loading;
             newState.error = initialState.error;

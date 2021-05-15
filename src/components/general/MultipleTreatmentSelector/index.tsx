@@ -11,6 +11,7 @@ interface Treatment{
     treatment : string,
     "drug-code": string,
     "treatment-posology": string,
+    "treatment-dose": string,
     "treatment-start":Date,
     "treatment-finish":Date
    
@@ -22,6 +23,7 @@ interface Props{
     typeMargin : string,
     slaves : object[],
     errorState: boolean,
+    mode:string,
     initialState:{
         isAddingDrug:boolean,
         addTreatment: boolean | null,
@@ -80,30 +82,38 @@ export const MultipleTreatmentSelector:React.FC<Props> = (props) => {
         // listTreatment
         let tableTreatments = null;
         if(listTreatments.length > 0){
-            const headCells = [{ id: "name", alignment: "left", label: <Translate id="hospital.treatment-name" /> }, { id: "posology", alignment: "left", label: <Translate id="hospital.posology" /> }, ]
+            const headCells = [{ id: "name", alignment: "left", label: <Translate id="hospital.treatment-name" /> }, { id: "posology", alignment: "left", label: <Translate id="hospital.posology" /> }, { id: "dose", alignment: "left", label: <Translate id="hospital.dose" /> }, ]
             const rows = listTreatments.map((treat, index) => {
 
                 return {
                     id : index,
                     name : treat.treatment,
-                    posology : treat['treatment-posology']
+                    posology : treat['treatment-posology'],
+                    dose : treat['treatment-dose'],
                 }
             })
-            
-            tableTreatments = <EnhancedTable noHeader rows={rows} headCells={headCells} 
-                actions={{"delete" : (index:number) => deleteTreatment(index)}}
-            />
+            if(props.mode === "form"){
+                tableTreatments = <EnhancedTable noSelectable={true} noHeader rows={rows} headCells={headCells} 
+                    actions={{"delete" : (index:number) => deleteTreatment(index)}}
+                />
+            }
+            else{
+                tableTreatments = <EnhancedTable noSelectable={true} noHeader rows={rows} headCells={headCells} 
+                />
+            }
         }
         
         return(
             <React.Fragment>
                 {tableTreatments}
-                <div style={{display:'flex',alignItems: "center",justifyContent: "left"}}>
-                    <ButtonAdd onClick={() =>{setIsAddingDrug(true)}} />
-                    <Typography variant="body2" component="span" >
-                        <Translate id="hospital.add-treatment" />
-                    </Typography>
-                </div>
+                { props.mode === "form" && 
+                    <div style={{display:'flex',alignItems: "center",justifyContent: "left"}}>
+                        <ButtonAdd onClick={() =>{setIsAddingDrug(true)}} />
+                        <Typography variant="body2" component="span" >
+                            <Translate id="hospital.add-treatment" />
+                        </Typography>
+                    </div>
+                }
             </React.Fragment>
         );
     }

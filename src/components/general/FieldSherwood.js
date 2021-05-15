@@ -23,6 +23,7 @@ import { change, registerField } from "redux-form";
 import MultipleICTSelector from './MultipleICTSelector';
 import { MultipleTreatmentSelector } from './MultipleTreatmentSelector';
 import SelectField from './SelectField';
+import File from './File';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -125,6 +126,9 @@ class FieldSherwood extends Component{
     }
     selectChange(value){
         this.props.input.onChange(value);
+    }
+    imagesSelected(images){
+        this.props.input.onChange(images);
     }
     render(){
         const {input, label, meta, type, options, size, option, removeClass, validation, activationValues, activatedFields} = this.props;
@@ -319,18 +323,23 @@ class FieldSherwood extends Component{
                         renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
                />
                 );
+            case "file" : 
+                return <File label={labelString} mode="form"
+                            imagesSelected = {(images) => this.imagesSelected(images) }
+                            type={type}{...input} 
+                            value={input.value} />
             case "allergy":
             case "family-background":
             case "background":
             case "ict" : 
                 return(
-                    <MultipleICTSelector label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listDiagnosis: input.value} : null} variant="outlined" margin={this.typeMargin} 
+                    <MultipleICTSelector mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listDiagnosis: input.value} : null} variant="outlined" margin={this.typeMargin} 
                         helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
                         size="small" diagnosesSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                 );
             case "treatment" : 
                 return(
-                    <MultipleTreatmentSelector label={labelString} {...input} initialState={Array.isArray(input.value) ? {listTreatments: input.value} : null} 
+                    <MultipleTreatmentSelector mode="form" label={labelString} {...input} initialState={Array.isArray(input.value) ? {listTreatments: input.value} : null} 
                         variant="outlined" typeMargin={this.typeMargin} 
                         helperText={errorString}  errorState={errorState} slaves={this.props.slaves}
                         resetDiagnose={this.resetDiagnose} 

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
-        HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE } from '../../routes';
+        HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES } from '../../routes';
 import { ButtonGrey, BoxBckgr, LinkPlain } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
@@ -89,11 +89,12 @@ function HomeSchedule(props) {
                         <img src={photo_holder} alt="profile_picture" with="100%" />
                     </Grid>
                     <Grid item container  spacing={3}>
-                        {/* <Grid item xs={12} style={{textAlign:"center"}}>
-                            <LinkPlain to={MY_SCHEDULE_ROUTE}>
-                                <ButtonGrey >My Schedule</ButtonGrey>
+                        
+                        <Grid item xs={12} style={{textAlign:"center"}}>
+                            <LinkPlain to={HOSPITAL_IMAGES}>
+                                <ButtonGrey data-testid="medical-imaging" ><Translate id="pages.hospital.medical-imaging.name" /></ButtonGrey>
                             </LinkPlain>
-                        </Grid> */}
+                        </Grid>
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={SEARCH_PATIENT_ROUTE}>
                                 <ButtonGrey data-testid="search-patient" ><Translate id="pages.hospital.search-patient.title" /></ButtonGrey>

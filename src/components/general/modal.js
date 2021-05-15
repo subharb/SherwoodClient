@@ -49,6 +49,7 @@ export default function Modal(props){
 Modal.propTypes = {
     open: PropTypes.bool.isRequired,
     isTransparent:PropTypes.bool,
+    children:PropTypes.element,
     title: PropTypes.oneOfType([
         PropTypes.string.isRequired,
         PropTypes.object.isRequired

@@ -105,6 +105,7 @@
     "@testing-library/jest-dom": "^5.11.0",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "@types/styled-components": "^5.1.9",
     "babel-loader": "^8.1.0",
     "cypress": "^6.6.0",
     "eslint-config-prettier": "6.15.0",

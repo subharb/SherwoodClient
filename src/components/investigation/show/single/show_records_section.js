@@ -6,6 +6,9 @@ import styled from 'styled-components';
 import { Alert } from "@material-ui/lab";
 import { Translate } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
+import File from '../../../general/File';
+import MultipleICTSelector from '../../../general/MultipleICTSelector';
+import { MultipleTreatmentSelector } from '../../../general/MultipleTreatmentSelector';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
@@ -31,28 +34,50 @@ export default function ShowRecordsSection(props) {
         const uuidSubmission = props.submissions[indexSubmission].id;
         props.callBackEditSubmission(uuidSubmission, uuidSection);
     }
-    function renderValue(valueRecord){
+    function renderValue(valueRecord, field){
         if(!valueRecord || !valueRecord.value){
-            return "-";
+            return[
+                <Typography variant="h6" color="textPrimary">
+                    {field.name}: 
+                </Typography>,
+                "-"
+            ];
         }
-        else if(Array.isArray(valueRecord.value)){
-            return(
-            <div style={{paddingLeft:"20px"}}>
-                {valueRecord.value.map(smartField => {
-                    return(
-                        <Typography variant="body2" gutterBottom>
-                            {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.hasOwnProperty("treatment") ? smartField.treatment : smartField.hasOwnProperty("background") ? smartField.background : smartField.allergy}
-                        </Typography>
-                    )
+        if(valueRecord.surveyField.type === "file"){
+            return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
+        }
+        else if(["ict", "allergy", "background", "family-background"].includes(valueRecord.surveyField.type)){
+            return <MultipleICTSelector type={valueRecord.surveyField.type} mode="show" 
+                initialState={{listDiagnosis:valueRecord.value}}
+                label={valueRecord.surveyField.label}  />
+        }
+        else if(["treatment"].includes(valueRecord.surveyField.type)){
+            return <MultipleTreatmentSelector type={valueRecord.surveyField.type} mode="show" 
+                initialState={{listTreatments:valueRecord.value}}
+                label={valueRecord.surveyField.label}  />
+        }
+        // else if(Array.isArray(valueRecord.value)){
+        //     return(
+        //     <div style={{paddingLeft:"20px"}}>
+        //         {valueRecord.value.map(smartField => {
+        //             return(
+        //                 <Typography variant="body2" gutterBottom>
+        //                     {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.hasOwnProperty("treatment") ? smartField.treatment : smartField.hasOwnProperty("background") ? smartField.background : smartField.allergy}
+        //                 </Typography>
+        //             )
                     
-                })}
-            </div>)
-        }
+        //         })}
+        //     </div>)
+        // }
         else{
-            return(
+            return([
+                <Typography variant="h6" color="textPrimary">
+                    {field.name}: 
+                </Typography>,
                 <Typography variant="body2" gutterBottom>
                     { valueRecord.value }
                 </Typography>
+            ]
             );
         }
     }
@@ -85,13 +110,10 @@ export default function ShowRecordsSection(props) {
                                 }
                                 {
                                     (field.type !== "textarea") &&
-                                    [
-                                        <Typography variant="h6" color="textPrimary">
-                                            {field.name}: 
-                                        </Typography>,
-                                        renderValue(valueRecord)
+                                    
+                                        renderValue(valueRecord, field)
                                         
-                                    ]
+                                    
                                 }
                                 
                             </Grid>

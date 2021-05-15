@@ -34,6 +34,7 @@
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
         "posology" : ["Posology", "Posología", "Posologie"],
+        "dose" : ["Dose", "Dosis", "Dose"],
         "chronic" : ["Long-term use", "Crónico", "chronique"],
         "posology-options" : {
             "4h" : ["4 hours", "4 horas", "4 heures"],
@@ -61,16 +62,21 @@
         "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents"],
         "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "select-ict" : ["Enter diagnostic", "Seleccione diagnostico", "Entrer le diagnostic"],
+        "select-test" : ["Select Test", "Seleccione tipo de prueba", "Sélectionnez le type de test"],
         "select-treatment" : ["Drug name", "Nombre medicamento", "Nom du médicament"],
         "select-background" : ["Enter Past Medical History", "Seleccione Antecedente", "Entrer un antécédent"],
         "select-family-background" : ["Enter Family Past Medical History", "Seleccione Antecedente Familiar", "Entrer un antécédent"],
-        "select-allergy" : ["Enter Allergy", "Seleccione Alergía", "Sélectionnez Allergie"],
+        "select-allergy" : ["Enter Allergy", "Seleccione Alergía", "Entrer Allergie"],
         "add-ict" : ["Add Diagnosis", "Añadir Diagnóstico", "Ajouter un diagnostic"],
         "add-treatment" : ["Add Treatment", "Añadir Tratamiento", "Ajouter un traitement"],
         "add-background" : ["Add Background", "Añadir Antecedente", "Ajouter un antécédent"],
         "add-family-background" : ["Add Family Past Medical History", "Añadir Antecedente Familiar", "Ajouter des antécédents familiaux"],
         "add-allergy" : ["Add Allergy", "Añadir Alergía", "Ajouter une allergie"],
-        "background-date" : ["Enter date", "Introduzca la fecha", "Entrez la date"]
+        "background-date" : ["Enter date", "Introduzca la fecha", "Entrez la date"],
+        "type-test" : {
+            "eco-ab" : ["Abdominal ultrasound", "Ecografía abdominal", "Échographie abdominale"],
+            "scan" : ["Bone Scan", "Radiografía", "scintigraphie osseuse"]
+        }
     },
     "breadcrumb" : {
         "password" : ["Password", "Contraseña", "Mot de passe"],
@@ -89,6 +95,10 @@
                 "title" : ["Search Patient", "Buscar Paciente", "Recherche patient"],
                 "back-button" : ["Back to search", "Nueva búsqueda", "Nouvelle recherche"],
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
+            },
+            "medical-imaging" : {
+                "name" : ["Medical Imaging", "Pruebas de Imagen", "Images"],
+                "title" : ["Images requests", "Petición de imagen", "Demandes d'imaginerie"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"]
@@ -251,8 +261,8 @@
                 "fields" : ["Fields", "Campos", "Champs"],
                 "description" : ["Description", "Descripción", "Description"],
                 "number_fields" : ["Number of fields", "Número de campos", "Nombre de champs"],
-                "name_field" : ["Name of the field in your report", "Nombre del campo en los informes"], 
-                "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?"], 
+                "name_field" : ["Name of the field in your report", "Nombre del campo en los informes", "Nom du champ dans votre rapport"], 
+                "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?", "Quel type de données allez-vous stocker?"], 
                 "question_field" : ["Question that will appear in the data collection form", "Pregunta que aparecerá en el formulario de recolección de datos", "Question qui apparaîtra dans le formulaire de collecte de données"],
                 "other_researchers" : ["Add collaborators", "Añadir colaboradores", "Ajouter des collaborateurs"],
                 "institution" : ["Institution", "Organización", "Institution"],
@@ -274,6 +284,7 @@
                 "allergy" : ["Allergy", "Alergía", "Allergie"],
                 "background" : ["PMH", "Antecedentes", "Antécédents"],
                 "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],                
+                "files" : ["File/Image", "Imágenes", "Images"],       
                 "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
                 "textarea" : ["Texarea", "Texto largo", "Texarea"],
                 "multioption" : ["Multioption", "Multiopción", "Multioption"],

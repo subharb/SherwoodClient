@@ -98,6 +98,53 @@ export function searchDrugComponentService(searchText) {
     });
 }
 
+export function uploadFile(file) {
+    const formData = new FormData();
+
+    formData.append("files", file);
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'post',
+            url: process.env.REACT_APP_API_URL+'/files',
+            data: formData,
+            headers: {"Authorization" : localStorage.getItem("jwt"), 'Content-Type': 'multipart/form-data' }
+            })
+            .then(function (response) {
+                //handle success
+                console.log(response);
+                if(response.status === 200){
+                    resolve(response.data);
+                }
+                else{
+                    reject(response.data);
+                }
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+                reject(response.data);
+            });
+    });
+}
+
+export function getFile(fileName) {
+ 
+    return new Promise((resolve, reject) => {
+        axios.get(process.env.REACT_APP_API_URL+'/files/'+fileName, { headers: {"Authorization" : localStorage.getItem("jwt")}})
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
+
+
 export function searchDiagnosticService(searchText) {
     return new Promise((resolve, reject) => {
       
@@ -118,6 +165,22 @@ export function fetchRecordsPatientFromSurvey(uuidInvestigation, patientUUID, su
     return new Promise((resolve, reject) => {
       
         axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submission/"+patientUUID+"/survey/"+surveyUUID, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+          .then((response) => {
+              if(response.status === 200){
+                  resolve(response.data);
+              }
+              else{
+                  reject(response.data);
+              }
+          })
+          .catch(err => {console.log('Catch', err); reject(err);}); 
+    });
+}
+
+export function fetchRecordsSurveysService(uuidInvestigation, surveyUUID) {
+    return new Promise((resolve, reject) => {
+        
+        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/survey/"+surveyUUID+"/submissions", { headers: {"Authorization" : localStorage.getItem("jwt")} })
           .then((response) => {
               if(response.status === 200){
                   resolve(response.data);

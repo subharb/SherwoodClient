@@ -17,10 +17,12 @@ import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
-        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION } from '../../routes';
+        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_TESTS } from '../../routes';
 import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
 import icon_notes from "../../img/icons/history.svg";
+import iconImages from "../../img/icons/images.svg";
+import iconLab from "../../img/icons/lab.svg";
 import { useUpdateEffect } from '../../hooks';
 
 
@@ -41,6 +43,8 @@ function Patient(props) {
     const [indexDataCollection, setIndexDataCollection] = useState(-1);
     const [savedDataCollection, setSavedDataCollection] = useState(false);
     const [indexSection, setIndexSection] = useState(-1);
+
+    
     const dispatch = useDispatch();
     let { uuidPatient } = useParams();
     let { uuidSection } = useParams();
@@ -59,6 +63,28 @@ function Patient(props) {
     const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? props.investigations.currentInvestigation.surveys[indexDataCollection] : null;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
+    const filterValue = !parameters.hasOwnProperty("typeTest") ? 0 : parameters["typeTest"] === "images" ? 1 : 2;
+    const filteredRecords = surveyRecords ? surveyRecords.filter(rec => rec.typeSurvey === filterValue) : [];
+
+    function addRecord(){
+        if(!parameters.hasOwnProperty("typeTest")){
+            setShowOptions(!showOptions);
+        }
+        else{
+            const filterType = parameters.typeTest === "images" ? 1 : 2;
+            const dataCollection = props.investigations.currentInvestigation.surveys.find(sur => sur.type === filterType);
+
+            const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollection.uuid)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", dataCollection.sections[0].uuid)
+                .replace(":idSubmission", "");
+            history.push(nextUrl);
+        }
+    }
+    function goToTest(value){
+        const nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", value === 1 ? "images" : "lab")
+        history.push(nextUrl);
+    }
+
     function fillDataCollection(indexCollection){
         setIndexDataCollection(indexCollection);
     }
@@ -104,9 +130,12 @@ function Patient(props) {
         history.push(nextUrl);
     }
     function selectDataCollection(index){
-        console.log("Row seleccionado ", surveyRecords[index]);
+        console.log("Row seleccionado ", filteredRecords[index]);
         
-        const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":uuidDataCollection", surveyRecords[index].uuidSurvey);
+        goToSurveyUrl(filteredRecords[index].uuidSurvey);
+    }
+    function goToSurveyUrl(uuidSurvey){
+        const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":uuidDataCollection", uuidSurvey);
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
@@ -147,7 +176,7 @@ function Patient(props) {
                         <Translate id="hospital.data-collections" />:
                     </WhiteTypography>
                 </Grid>,
-                props.investigations.currentInvestigation.surveys.sort((a,b) => a.order - b.order).map((dataCollection, index) => {
+                props.investigations.currentInvestigation.surveys.sort((a,b) => a.order - b.order).filter(sur => sur.type === 0).map((dataCollection, index) => {
                     return(
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGreyBorderGrey>
@@ -177,6 +206,8 @@ function Patient(props) {
         }
     }
     function renderCore(){
+        
+            
         if(dataCollectionSelected !== null && sectionSelected !== null && (action === "fill" || action === "update")){
             const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
             if(savedDataCollection){
@@ -198,17 +229,17 @@ function Patient(props) {
             return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} mode="elements" callBackEditSubmission={callBackEditSubmission}
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
-        else if(surveyRecords.length === 0){
+        else if(filteredRecords.length === 0){
             return <Translate id="hospital.patient.no-records" />
         }
         else{
             return(
                 <EnhancedTable noHeader noSelectable selectRow={(index) => selectDataCollection(index)} 
-                rows={surveyRecords.map((record, index) => {
+                rows={filteredRecords.map((record, index) => {
                     const dateCreated = new Date(record.createdAt);
                     return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreated.toISOString().slice(0, 16).replace('T', ' ')})
-                })} headCells={[{ id: "researcher", alignment: "right", label: <Translate id="hospital.doctor" />}, { id: "surveyName", alignment: "right", label: <Translate id="hospital.data-collection" />},
-                                { id: "date", alignment: "right", label: "Date"}]} />
+                })} headCells={[{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "surveyName", alignment: "left", label: <Translate id="hospital.data-collection" />},
+                                { id: "date", alignment: "left", label: "Date"}]} />
             )
         }
     }
@@ -252,6 +283,7 @@ function Patient(props) {
                     let tempDict = {};
                     tempDict.surveyName = val.surveyName; 
                     tempDict.uuidSurvey = val.uuid; 
+                    tempDict.typeSurvey = val.type; 
                     const researcher = val.submissions[val.submissions.length -1].researcher
                     tempDict.researcher = researcher.name+" "+researcher.surnames;
                     tempDict.createdAt = val.submissions[val.submissions.length -1].createdAt;
@@ -377,7 +409,17 @@ function Patient(props) {
                                 </Button>
                             </Grid>
                             <Grid item xs={4}>
-                                <ButtonAdd data-testid="add-record" onClick={() => setShowOptions(!showOptions)} />
+                                <Button data-testid="images" onClick={() => goToTest(1)} >
+                                    <img src={iconImages} alt="Images"/>
+                                </Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button data-testid="lab" onClick={() => goToTest(2)} >
+                                    <img src={iconLab} alt="Lab"/>
+                                </Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <ButtonAdd data-testid="add-record" onClick={addRecord} />
                             </Grid>
                         </Grid>
                     

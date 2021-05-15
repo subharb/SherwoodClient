@@ -154,7 +154,7 @@ export function useRouter(initValue){
 }
 
 export function useSelectSmartField(initialState, label, errorState, setAddingSmartField){
-    const [addSmartField, setAddSmartField] = useState(initialState ? initialState.addSmartField : null);
+    const [addSmartField, setAddSmartField] = useState(initialState && initialState.addSmartField ? initialState.addSmartField : undefined);
 
     function selectChanged(event){
         console.log(event);
@@ -255,4 +255,12 @@ export function useSherwoodUser(){
         effect();
       }
     }, dependencies);
+  }
+
+export function usePrevious(value){
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
   }

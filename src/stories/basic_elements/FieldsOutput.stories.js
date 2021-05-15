@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../../components/general/form';
+import File from '../../components/general/File';
 import ProviderSherwood from '../../providerSherwood';
 
 const FIELD_TREATMENT = {
@@ -141,106 +141,38 @@ const FIELD_FAMILY_BACKGROUND = {
 }
 
 const FIELD_IMAGE = {
-    "file":{
+    "image":{
         required : false,
-        type:"file",
-        label:"Image please",
+        type:"image",
+        label:"Image",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
     }
 }
 
 export default {
-    title: 'Basic Elements/Fields/Smart Fields',
-    component: Form,
+    title: 'Basic Elements/Fields/Ouput Fields',
+    component: File,
     decorators: [story => 
         <ProviderSherwood>
                 {story()}
         </ProviderSherwood>],
 };
 
+const Template = (args) => <File {...args} />;
 
-const Template = (args) => <Form {...args}  />
-const TemplateICT = (args) => <Form {...args}  />
-const TemplateAllergy = (args) => <Form {...args}  />
-const TemplateBackground = (args) => <Form {...args}  />
-const TemplateFamilyBackground = (args) => <Form {...args}  />
-const TemplateImage = (args) => <Form {...args}  />
+export const FileOuput = Template.bind({});
+FileOuput.args = {
+    mode:"show", 
+    label:"Radiografias",
+    value : [{file:"hospitals_1620728497713-256774649", "file-data" : "1111111"},
+            {file:"hospitals_1620729868307-866470426", "file-data" : "1111111"}]
+}
 
-export const TreatmentEmpty = Template.bind({});
-TreatmentEmpty.args = {
-    fields:FIELD_TREATMENT, 
-    creating : true,
-    callBackForm : (values) => console.log("Result",JSON.stringify(values))}
-// TreatmentEmpty.args = {
-//     label:"Treatment", 
-//     variant:"outlined",
-//     margin:"small",
-//     helperText:"Error" , 
-//     addTreatment: null,
-//     errorState:false,
-//     slaves:FIELD_TREATMENT["drug"]["slaves"],
-//     resetDiagnose:() => {console.log("aaa")}, 
-//     size:"small",
-//     treatmentSelected : (values) => {console.log("Result",JSON.stringify(values))}
-// };
-
-export const TreatmentWithData = Template.bind({});
-TreatmentWithData.args = {
-    fields:FIELD_TREATMENT, 
-    initialData:{drug:[{treatment:"paracetamol", 
-                        "treatment-posology": "6h", 
-                        "treatment-dose": "1 pill", 
-                        startDate:"1111", endDate:"111"}
-                    ]
-                },
-    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
-};
-
-
-export const ICT = TemplateICT.bind({});
-ICT.args = {
-    fields : FIELD_ICT, 
-    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
-};
-
-export const ICTWithData = TemplateICT.bind({});
-ICTWithData.args = {
-    fields : FIELD_ICT, 
-    initialData : {ict : [{ict:"Paludism", "ict-code" : "2233"}]},
-    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
-};
-
-export const Background = TemplateBackground.bind({});
-Background.args = {
-    fields : FIELD_BACKGROUND, 
-    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
-};
-
-export const FamilyBackground = TemplateFamilyBackground.bind({});
-FamilyBackground.args = {
-    fields : FIELD_FAMILY_BACKGROUND, 
-    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
-};
-
-export const Allergy = TemplateAllergy.bind({});
-Allergy.args = {
-    fields : FIELD_ALLERGY, 
-    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
-};
-
-export const Image = TemplateImage.bind({});
-Image.args = {
-    fields : FIELD_IMAGE, 
-    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
-};
-
-export const ImageWithData = TemplateImage.bind({});
-ImageWithData.args = {
-    fields : FIELD_IMAGE, 
-    initialData:{
-        "image" : [{"image" : "blob:http://localhost:6006/21bb71fd-4a8e-4c12-b7e6-0ed4ab1830a3", status : 3}, 
-                    {"image" : "blob:http://localhost:6006/d184ca51-3a1d-4a6a-ba03-b47288c48779", "status" : 0}]
-    },
-    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
-};
+export const FileEdit = Template.bind({});
+FileEdit.args = {
+    mode:"form", 
+    label:"Radiografias",
+    value : [{file:"hospitals_1620728497713-256774649", "file-data" : "1111111"},
+            {file:"hospitals_1620729868307-866470426", "file-data" : "1111111"}]
+}

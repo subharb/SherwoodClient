@@ -1,6 +1,6 @@
 import * as types from "../../constants";
 import {
-    postRecordPatientService, fetchSubmissionsAllPatientsInvestigationService
+    postRecordPatientService, fetchSubmissionsAllPatientsInvestigationService, fetchRecordsSurveysService
 } from "../../services/sherwoodService";
 
 export function saveSubmissionAction(postObj, uuidInvestigation, patientId, surveyUUID) {
@@ -19,6 +19,25 @@ export function saveSubmissionAction(postObj, uuidInvestigation, patientId, surv
         throw error;
       });
   };
+}
+
+export function fetchSubmissionsSurveyAction(uuidInvestigation, uuidSurvey) {
+    return async (dispatch) => {
+      dispatch({ type: types.SUBMISSIONS_LOADING });
+  
+      return fetchRecordsSurveysService(uuidInvestigation, uuidSurvey)
+        .then((response) => {
+          dispatch({
+            type: types.FETCH_SUBMISSIONS_SURVEY_SUCCESS,
+            survey: response.survey,
+            meta:{uuidInvestigation}
+          });
+        })
+        .catch((error) => {
+          dispatch({ type: types.FETCH_SUBMISSIONS_ERROR });
+          throw error;
+        });
+    };
 }
 
 export function fetchSubmissionsInvestigationAction(uuidInvestigation, ) {
