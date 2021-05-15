@@ -43,6 +43,8 @@ function Patient(props) {
     const [indexDataCollection, setIndexDataCollection] = useState(-1);
     const [savedDataCollection, setSavedDataCollection] = useState(false);
     const [indexSection, setIndexSection] = useState(-1);
+
+    
     const dispatch = useDispatch();
     let { uuidPatient } = useParams();
     let { uuidSection } = useParams();
@@ -61,6 +63,9 @@ function Patient(props) {
     const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? props.investigations.currentInvestigation.surveys[indexDataCollection] : null;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
+    const filterValue = !parameters.hasOwnProperty("typeTest") ? 0 : parameters["typeTest"] === "images" ? 1 : 2;
+    const filteredRecords = surveyRecords ? surveyRecords.filter(rec => rec.typeSurvey === filterValue) : [];
+
     function addRecord(){
         if(!parameters.hasOwnProperty("typeTest")){
             setShowOptions(!showOptions);
@@ -125,9 +130,9 @@ function Patient(props) {
         history.push(nextUrl);
     }
     function selectDataCollection(index){
-        console.log("Row seleccionado ", surveyRecords[index]);
+        console.log("Row seleccionado ", filteredRecords[index]);
         
-        goToSurveyUrl(surveyRecords[index].uuidSurvey);
+        goToSurveyUrl(filteredRecords[index].uuidSurvey);
     }
     function goToSurveyUrl(uuidSurvey){
         const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":uuidDataCollection", uuidSurvey);
@@ -201,8 +206,7 @@ function Patient(props) {
         }
     }
     function renderCore(){
-        const filterValue = !parameters.hasOwnProperty("typeTest") ? 0 : parameters["typeTest"] === "images" ? 1 : 2;
-        const filteredRecords = surveyRecords.filter(rec => rec.typeSurvey === filterValue);
+        
             
         if(dataCollectionSelected !== null && sectionSelected !== null && (action === "fill" || action === "update")){
             const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
