@@ -89,12 +89,6 @@ function HomeSchedule(props) {
                         <img src={photo_holder} alt="profile_picture" with="100%" />
                     </Grid>
                     <Grid item container  spacing={3}>
-                        
-                        <Grid item xs={12} style={{textAlign:"center"}}>
-                            <LinkPlain to={HOSPITAL_IMAGES}>
-                                <ButtonGrey data-testid="medical-imaging" ><Translate id="pages.hospital.medical-imaging.name" /></ButtonGrey>
-                            </LinkPlain>
-                        </Grid>
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={SEARCH_PATIENT_ROUTE}>
                                 <ButtonGrey data-testid="search-patient" ><Translate id="pages.hospital.search-patient.title" /></ButtonGrey>
@@ -103,6 +97,11 @@ function HomeSchedule(props) {
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={ADD_PATIENT_ROUTE}>
                                 <ButtonGrey data-testid="add-patient" ><Translate id="pages.hospital.add-patient" /></ButtonGrey>
+                            </LinkPlain>
+                        </Grid>
+                        <Grid item xs={12} style={{textAlign:"center"}}>
+                            <LinkPlain to={HOSPITAL_IMAGES}>
+                                <ButtonGrey data-testid="medical-imaging" ><Translate id="pages.hospital.medical-imaging.name" /></ButtonGrey>
                             </LinkPlain>
                         </Grid>
                     </Grid>

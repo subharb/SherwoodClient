@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
-import iconImages from "../../img/icons/images.svg";
+import iconImages from "../../img/icons/images.png";
 import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
 import Form  from '../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";

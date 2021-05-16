@@ -20,9 +20,12 @@ import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDI
         HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_TESTS } from '../../routes';
 import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
-import icon_notes from "../../img/icons/history.svg";
-import iconImages from "../../img/icons/images.svg";
-import iconLab from "../../img/icons/lab.svg";
+import iconNotes from "../../img/icons/history.png";
+import iconImages from "../../img/icons/images.png";
+import iconLab from "../../img/icons/lab.png";
+import iconNotesGreen from "../../img/icons/history_green.png";
+import iconImagesGreen from "../../img/icons/images_green.png";
+import iconLabGreen from "../../img/icons/lab_green.png";
 import { useUpdateEffect } from '../../hooks';
 
 
@@ -405,17 +408,17 @@ function Patient(props) {
                         <Grid item container xs={5}  justify="center" alignItems="center">
                             <Grid item xs={4}>
                                 <Button data-testid="medical-notes" onClick={() => backToRoot()} >
-                                    <img src={icon_notes} alt="Medical Notes"/>
+                                    <img src={filterValue === 0 ? iconNotesGreen : iconNotes} alt="Medical Notes" height="60" />
                                 </Button>
                             </Grid>
                             <Grid item xs={4}>
                                 <Button data-testid="images" onClick={() => goToTest(1)} >
-                                    <img src={iconImages} alt="Images"/>
+                                    <img src={filterValue === 1 ? iconImagesGreen : iconImages} alt="Images" height="60" />
                                 </Button>
                             </Grid>
                             <Grid item xs={4}>
                                 <Button data-testid="lab" onClick={() => goToTest(2)} >
-                                    <img src={iconLab} alt="Lab"/>
+                                    <img src={filterValue === 2 ? iconLabGreen : iconLab} alt="Lab" height="60" />
                                 </Button>
                             </Grid>
                             <Grid item xs={4}>

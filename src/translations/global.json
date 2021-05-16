@@ -58,7 +58,7 @@
         "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],     
         "ict-plural" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
-        "allergy-plural" : ["Allergies", "Alergías", "Allergies"],
+        "allergy-plural" : ["Allergies", "Alergías", "Allergies aux medicam"],
         "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents"],
         "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "select-ict" : ["Enter diagnostic", "Seleccione diagnostico", "Entrer le diagnostic"],
@@ -97,7 +97,7 @@
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
             },
             "medical-imaging" : {
-                "name" : ["Medical Imaging", "Pruebas de Imagen", "Images"],
+                "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
                 "title" : ["Images requests", "Petición de imagen", "Demandes d'imaginerie"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
