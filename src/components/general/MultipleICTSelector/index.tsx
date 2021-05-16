@@ -6,7 +6,7 @@ import { useSelectSmartField, useUpdateEffect } from '../../../hooks';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import BackgroundSelector from './ICTSelectorFR';
 import { EnhancedTable } from '../EnhancedTable';
-import { ICTSelectorGeneral } from './ICTSelectorGeneral';
+import ICTSelectorGeneral from './ICTSelectorGeneral';
 
 export interface Allergy{
     allergy : string,
