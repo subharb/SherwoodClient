@@ -22,7 +22,8 @@ export interface Background{
 
 export interface FamilyBackground{
     "family-background" : string,
-    "family-background-code" : string
+    "family-background-code" : string,
+    "family-background-relation" ?: string
 }
 
 
@@ -99,7 +100,8 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
                     const backf = element as FamilyBackground;
                     valueDict = {
                         id : index,
-                        name :  backf["family-background"]
+                        name : backf["family-background"],
+                        relation : backf["family-background-relation"],
                     }
                     
                 }

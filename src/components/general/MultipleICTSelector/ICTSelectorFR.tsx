@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { searchDiagnosticService, searchDrugComponentService } from '../../../services/sherwoodService';
 import { Grid, TextField } from '@material-ui/core';
 import { ButtonAccept, ButtonCancel } from '../mini_components';
-import { Allergy, Background, Smartfield } from './index';
+import { Allergy, Background, Smartfield, FamilyBackground } from './index';
 import { Autocomplete } from '@material-ui/lab';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { PropsIct } from './ICTSelectorGeneral';
@@ -25,7 +25,7 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
     const [error, setError] = useState(false);
     const [errorDate, setErrorDate] = useState(false);
     const [diagnose, setDiagnose] = useState<Smartfield | null>(null);
-    
+    const [relation, setRelation] = useState("");
     const [date, setDate] = useState<string | null | undefined>(null);
 
     function cancel(){
@@ -33,6 +33,11 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
     }
     function elementSelected(value:Smartfield){
         if(props.type === "background"){
+            setDiagnose(value);
+        }
+        else if(props.type === "family-background"){
+            const familyValue = value as FamilyBackground;
+            familyValue["family-background-relation"] = relation;
             setDiagnose(value);
         }
         else{
@@ -177,8 +182,14 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                         />
                     </MuiPickersUtilsProvider>
                 </Grid>
-                
+            }
+            {
+                props.type === "family-background" &&
             
+                <Grid item xs={12}>
+                    <TextField value={relation} onChange={(val) => setRelation(val)} />
+                </Grid>
+                
             }
             <Grid item xs={12}>
             {
