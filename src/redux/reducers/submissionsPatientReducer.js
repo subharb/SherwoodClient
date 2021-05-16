@@ -54,6 +54,7 @@ export default function reducer(state = initialState, action){
                 tempDict = {
                     surveyName : action.meta.surveyName,
                     uuid : action.meta.surveyUUID,
+                    type : action.meta.surveyType,
                     submissions:[action.submission]
                 }
             }

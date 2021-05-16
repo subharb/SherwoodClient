@@ -165,7 +165,7 @@ function Patient(props) {
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
             console.log(data);
-            await dispatch(postSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name));
+            await dispatch(postSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
         }
     }
     function renderOptions(){
