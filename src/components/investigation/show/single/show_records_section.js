@@ -56,19 +56,6 @@ export default function ShowRecordsSection(props) {
                 initialState={{listTreatments:valueRecord.value}}
                 label={valueRecord.surveyField.label}  />
         }
-        // else if(Array.isArray(valueRecord.value)){
-        //     return(
-        //     <div style={{paddingLeft:"20px"}}>
-        //         {valueRecord.value.map(smartField => {
-        //             return(
-        //                 <Typography variant="body2" gutterBottom>
-        //                     {smartField.hasOwnProperty("ict") ? smartField.ict : smartField.hasOwnProperty("treatment") ? smartField.treatment : smartField.hasOwnProperty("background") ? smartField.background : smartField.allergy}
-        //                 </Typography>
-        //             )
-                    
-        //         })}
-        //     </div>)
-        // }
         else{
             return([
                 <Typography variant="h6" color="textPrimary">
