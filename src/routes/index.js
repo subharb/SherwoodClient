@@ -229,7 +229,7 @@ const dashboardImagesRoutes = {
 
 const dashboardLabRoutes = {
     id: <Translate id="pages.hospital.laboratory.title" />,
-    path: HOSPITAL_IMAGES,
+    path: HOSPITAL_LAB,
     icon: <SearchPatientIcon />,
     badge: "",
     component: {
