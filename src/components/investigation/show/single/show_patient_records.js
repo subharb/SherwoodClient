@@ -84,20 +84,20 @@ export default function ShowPatientRecords(props) {
         <Grid container direction="column" spacing={0}>
             {
                 sectionSelected !== null && 
-                <Grid item>
+                <Grid item xs={12}>
                     <ButtonBack onClick={() => setSectionSelected(null)} >Back</ButtonBack>
                 </Grid>
             }
             {
                 props.singlePatient &&
-                <Grid item>
+                <Grid item xs={12}>
                     <Typography variant="subtitle1">
                         <Translate id="investigation.fill.survey.patient_name" />: {`${props.patientPersonalData.name} ${props.patientPersonalData.surnames}`} - {props.patientPersonalData.uuid}
                     </Typography>
                 </Grid>
             }
             
-            <Grid item>
+            <Grid item xs={12}>
                 {
                     renderCore()
                 }

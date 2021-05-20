@@ -170,22 +170,23 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <Grid container spacing={2}>
             {
                 (!addingDiagnosis && props.mode === "form") &&
-                <React.Fragment>
+                <Grid item xs={12}>
                     <ButtonPlus onClick={addDiagnose} />
                     <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
-                </React.Fragment>
+                </Grid>
             }
             {
                 renderSelector()
             }
-            
+            <Grid item xs={12}>
             {
                 renderDiagnosis()
             }
-        </React.Fragment>
+            </Grid>
+        </Grid>
     )
 }
 export default withLocalize(MultipleICTSelector);

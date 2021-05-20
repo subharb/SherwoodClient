@@ -136,7 +136,7 @@
             },
             "contact_info" : {
                 "email" : ["Email", "Email", "Email"],
-                "phone" : ["Phone", "Teléfono", "Telephone"]
+                "phone" : ["Phone", "Teléfono", "Téléphone"]
             },
             "key_generation" : {
                 "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
@@ -212,7 +212,7 @@
                     "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité nationale"],
                     "email" : ["Email", "Email", "Email"],
-                    "phone" : ["Phone number", "Número de teléfono", "Numero de telephone"],
+                    "phone" : ["Phone number", "Número de teléfono", "Número de téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento", "Date de naissance"],
                     "sex" : ["Sex", "Sexo", "Sex"]
@@ -223,9 +223,9 @@
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
                     "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
-                    "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité nationale"],
+                    "national_id" : ["National ID card", "Documento nacional de identidad", "Carte d'identité nationale"],
                     "email" : ["Email", "Email", "Email"],
-                    "phone" : ["Phone number", "Número de teléfono", "Numero de telephone"],
+                    "phone" : ["Phone number", "Número de teléfono", "Número de téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["DOB", "Fecha de nacimiento", "Date de naissance"],
                     "sex" : ["Sex", "Sexo", "Sex"]
