@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
-        HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES } from '../../routes';
+        HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB } from '../../routes';
 import { ButtonGrey, BoxBckgr, LinkPlain } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
@@ -97,6 +97,11 @@ function HomeSchedule(props) {
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <LinkPlain to={ADD_PATIENT_ROUTE}>
                                 <ButtonGrey data-testid="add-patient" ><Translate id="pages.hospital.add-patient" /></ButtonGrey>
+                            </LinkPlain>
+                        </Grid>
+                        <Grid item xs={12} style={{textAlign:"center"}}>
+                            <LinkPlain to={HOSPITAL_LAB}>
+                                <ButtonGrey data-testid="lab" ><Translate id="pages.hospital.laboratory.name" /></ButtonGrey>
                             </LinkPlain>
                         </Grid>
                         <Grid item xs={12} style={{textAlign:"center"}}>

@@ -69,7 +69,7 @@ import HomeSchedule from "../pages/hospital/HomeSchedule";
 import ListPatients from "../pages/hospital/ListPatients";
 import Patient from "../pages/hospital/Patient";
 import SearchPatients from "../pages/hospital/SearchPatients";
-import Images from "../pages/hospital/Images";
+import TestsHome from "../pages/hospital/TestsHome";
 import AddPatient from "../pages/hospital/AddPatient";
 
 
@@ -98,6 +98,7 @@ export const HOSPITAL_PATIENT_EDIT_PERSONAL_DATA = "/patient/:uuidPatient/edit/p
 export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note/:idMedicalNote";
 export const HOSPITAL_PATIENT_TESTS = "/patient/:uuidPatient/tests/:typeTest";
 export const HOSPITAL_IMAGES = "/images";
+export const HOSPITAL_LAB = "/lab";
 
 
 
@@ -176,7 +177,12 @@ const hospitalRoutes = {
         {
             path: HOSPITAL_IMAGES,
             name: "Hospital Images",
-            component: Images
+            component: TestsHome
+        },
+        {
+            path: HOSPITAL_LAB,
+            name: "Hospital Lab",
+            component: TestsHome
         }
     ],
   };
@@ -203,6 +209,33 @@ const dashboardSearchPatientRoutes = {
         path: SEARCH_PATIENT_ROUTE,
         name: "Search Patient",
         component: SearchPatients
+    },
+    children: null
+}
+
+
+const dashboardImagesRoutes = {
+    id: <Translate id="pages.hospital.medical-imaging.title" />,
+    path: HOSPITAL_IMAGES,
+    icon: <SearchPatientIcon />,
+    badge: "",
+    component: {
+        path: HOSPITAL_IMAGES,
+        name: "Images",
+        component: TestsHome
+    },
+    children: null
+}
+
+const dashboardLabRoutes = {
+    id: <Translate id="pages.hospital.laboratory.title" />,
+    path: HOSPITAL_IMAGES,
+    icon: <SearchPatientIcon />,
+    badge: "",
+    component: {
+        path: HOSPITAL_LAB,
+        name: "Laboratory",
+        component: TestsHome
     },
     children: null
 }
@@ -776,4 +809,6 @@ export const sidebarRoutesHospital = [
     dashboardHomeRoutes,
     dashboardSearchPatientRoutes,
     dashboardAddPatientRoutes,
+    dashboardImagesRoutes,
+    dashboardLabRoutes
   ];

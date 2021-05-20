@@ -2,35 +2,46 @@ import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
 import iconImages from "../../img/icons/images.png";
+import iconLab from "../../img/icons/lab.png";
 import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
 import Form  from '../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
-import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, } from '../../routes';
+import { HOSPITAL_PATIENT_DATACOLLECTION, } from '../../routes';
 import Loader from '../../components/Loader';
-import { decryptPatientsData } from '../../utils'; 
-import PatientsTable from '../../components/general/PatientsTable';
-import { Alert } from '@material-ui/lab';
-import { ButtonBack } from '../../components/general/mini_components';
+
+import {
+    useLocation
+  } from "react-router-dom";
 import { connect } from 'react-redux';
 import { fetchSubmissionsSurveyAction } from '../../redux/actions/submissionsActions';
 
-let personalFieldsForm = {};
+export function TestsHome(props){
+    let location = useLocation();
+    if(location.pathname === "/images"){
+        return <TestsHomeComponent type={0} {...props} />
+    }
+    else if(location.pathname === "/lab"){
+        return <TestsHomeComponent type={1} {...props}/>
+    }
+    else return null;
+}
 
-function Images(props) {
+export function TestsHomeComponent(props) {
     const [ surveyRecords, setSurveyRecords] = useState([]);
-    const [surveyImages, setSurveyImages] = useState(null);
+    const [surveyTests, setSurveyTests] = useState(null);
     const history = useHistory();
 
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
-    const submissionData = props.submissions.data && surveyImages && props.investigations.currentInvestigation ? props.submissions.data[props.investigations.currentInvestigation.uuid][surveyImages.uuid].submissions : [];
+    const submissionData = props.submissions.data && surveyTests && props.investigations.currentInvestigation ? props.submissions.data[props.investigations.currentInvestigation.uuid][surveyTests.uuid].submissions : [];
     const dispatch = useDispatch(); 
+    const translations = ["medical-imaging", "laboratory"];
 
     function goToSubmission(index){
         console.log(surveyRecords[index]);
         const patient = surveyRecords[index].patient
-        const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", patient.uuid).replace(":action", "show").replace(":uuidDataCollection", surveyImages.uuid);
+        const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", patient.uuid).replace(":action", "show").replace(":uuidDataCollection", surveyTests.uuid);
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
@@ -45,8 +56,8 @@ function Images(props) {
     }
     useEffect(() => {
         async function fetchRecordsPatient(){
-            const survey = props.investigations.currentInvestigation.surveys.find(sur => sur.type === 1);
-            setSurveyImages(survey);
+            const survey = props.investigations.currentInvestigation.surveys.find(sur => sur.type === props.type);
+            setSurveyTests(survey);
             await dispatch(fetchSubmissionsSurveyAction(props.investigations.currentInvestigation.uuid, survey.uuid));
         }
         if(props.investigations.currentInvestigation){
@@ -88,16 +99,20 @@ function Images(props) {
     return (
         <React.Fragment>
             <Grid container spacing={6} >
-                <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
-                    <img src={iconImages} alt="images"/>
-                    <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
-                        <Translate id="pages.hospital.medical-imaging.title" />
-                    </Typography>
+                <Grid container alignItems="center" alignContent="center" item xs={12}>
+                    <Grid xs={2} alignContent="center">
+                        <img src={props.type === 0 ? iconImages : iconLab } alt="images" width="40" />
+                    </Grid>
+                    <Grid xs={8}>
+                        <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
+                            <Translate id={`pages.hospital.${translations[props.type]}.title`} />
+                        </Typography>
+                    </Grid>   
                 </Grid>
                 <Grid item xs={12}>
-                        {
+                    {
                         renderCore()
-                        }     
+                    }     
                 </Grid>         
             </Grid>
         </React.Fragment>
@@ -112,8 +127,8 @@ const mapStateToProps = (state) =>{
     }
 }
 
-Images.propTypes = {
+TestsHome.propTypes = {
     personalFields:PropTypes.array,
 }
 
-export default connect(mapStateToProps, null)(Images)
+export default connect(mapStateToProps, null)(TestsHome)

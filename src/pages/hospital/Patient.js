@@ -68,6 +68,7 @@ function Patient(props) {
     
     const filterValue = !parameters.hasOwnProperty("typeTest") ? 0 : parameters["typeTest"] === "images" ? 1 : 2;
     const filteredRecords = surveyRecords ? surveyRecords.filter(rec => rec.typeSurvey === filterValue) : [];
+    const translations = ["patient", "medical-imaging", "laboratory"]; 
 
     function addRecord(){
         if(!parameters.hasOwnProperty("typeTest")){
@@ -197,8 +198,6 @@ function Patient(props) {
                     </WhiteTypography>
                 </Grid>, 
                 dataCollectionSelected.sections.sort((a,b) => a.order - b.order).map((section, index) => {
-                    
-                    
                     return(
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <ButtonGreyBorderGrey data-testid={section.name} onClick={() => sectionSelect(index)}>{section.name}</ButtonGreyBorderGrey>
@@ -233,7 +232,7 @@ function Patient(props) {
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
         else if(filteredRecords.length === 0){
-            return <Translate id="hospital.patient.no-records" />
+            return <Translate id={`hospital.${translations[filterValue]}.no-records`} />
         }
         else{
             return(

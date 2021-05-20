@@ -20,7 +20,7 @@ const CardPadding = styled(Card)`
     margin-bottom:1rem;
 `;
 const GridPadded = styled(Grid)`
-    padding:0rem 0rem 2rem 1rem;
+    padding:0rem 0rem 1rem 1rem;
 `;
 const HeaderSection = styled.div`
     display:flex;
@@ -36,14 +36,37 @@ export default function ShowRecordsSection(props) {
     }
     function renderValue(valueRecord, field){
         if(!valueRecord || !valueRecord.value){
-            return[
-                <Typography variant="h6" color="textPrimary">
-                    {field.name}: 
-                </Typography>,
-                "-"
-            ];
+            return <React.Fragment>
+                {
+                    props.section.fields.length > 1 &&
+                    <Typography variant="h6" color="textPrimary">
+                        {field.name}: 
+                    </Typography>
+                }
+                {
+                    ["ict", "allergy", "background", "family-background", "treatment"].includes(field.type) &&
+                    <Translate id="general.no" />
+                }
+                {
+                    !["ict", "allergy", "background", "family-background", "treatment"].includes(field.type) &&
+                    "-"
+                }
+            </React.Fragment>;
         }
-        if(valueRecord.surveyField.type === "file"){
+        if(field.type === "textarea"){
+            return(
+            <React.Fragment>
+                {
+                    props.section.fields.length > 1 &&
+                    <Typography variant="h6" color="textPrimary">
+                        {field.name}: 
+                    </Typography>
+                }
+                <div dangerouslySetInnerHTML={{__html: valueRecord ? valueRecord.value : "-"}}></div>                    
+            </React.Fragment>
+            );
+        }
+        else if(valueRecord.surveyField.type === "file"){
             return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
         }
         else if(["ict", "allergy", "background", "family-background"].includes(valueRecord.surveyField.type)){
@@ -57,14 +80,16 @@ export default function ShowRecordsSection(props) {
                 label={valueRecord.surveyField.label}  />
         }
         else{
-            return([
-                <Typography variant="h6" color="textPrimary">
-                    {field.name}: 
-                </Typography>,
+            return(<React.Fragment>
+                { props.section.fields.length > 1 &&
+                    <Typography variant="h6" color="textPrimary">
+                        {field.name}: 
+                    </Typography>
+                }
                 <Typography variant="body2" gutterBottom>
                     { valueRecord.value }
                 </Typography>
-            ]
+            </React.Fragment>
             );
         }
     }
@@ -84,23 +109,7 @@ export default function ShowRecordsSection(props) {
                         return (
                             <Grid item xs={12}>
                                 {
-                                    (field.type === "textarea") &&
-                                    [
-                                        <Typography variant="h6" color="textPrimary">
-                                            {field.name}:
-                                        </Typography>,
-                                        <Typography variant="body2" gutterBottom>
-                                            <div dangerouslySetInnerHTML={{__html: valueRecord ? valueRecord.value : "-"}}>
-                                            </div>    
-                                        </Typography>
-                                    ]
-                                }
-                                {
-                                    (field.type !== "textarea") &&
-                                    
-                                        renderValue(valueRecord, field)
-                                        
-                                    
+                                    renderValue(valueRecord, field)                                    
                                 }
                                 
                             </Grid>

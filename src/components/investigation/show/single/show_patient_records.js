@@ -68,7 +68,10 @@ export default function ShowPatientRecords(props) {
                 }
             }
             else{
-                return renderSubmissionsSection();
+                return(
+                <div style={{paddingTop:"0.6rem"}}>
+                    { renderSubmissionsSection() }
+                </div> )
             }
         }
         else{
@@ -81,7 +84,7 @@ export default function ShowPatientRecords(props) {
     }
     
     return (
-        <Grid container direction="column" spacing={0}>
+        <Grid container direction="column" spacing={2}>
             {
                 sectionSelected !== null && 
                 <Grid item xs={12}>

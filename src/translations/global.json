@@ -23,6 +23,12 @@
         "data-collection" : ["Form", "Formulario", "Forme"],
         "data-collections" : ["Surveys", "Encuestas", "Enquêtes"],
         "sections" : ["Sections", "Secciones", "Sections"],
+        "medical-imaging" : {
+            "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"]
+        },
+        "laboratory" : {
+            "no-records" : ["No medical lab results available", "No dispone de pruebas de laboratorio", "Aucun test de laboratoire"]
+        },
         "patient" : {
             "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"],
             "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
@@ -32,7 +38,7 @@
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"]
         },
-        "treatment-name" : ["Name", "Nombre", "Nom"],
+        "treatment-name" : ["Name drug", "Nombre medicamento", "Nom du medicament"],
         "posology" : ["Posology", "Posología", "Posologie"],
         "dose" : ["Dose", "Dosis", "Dose"],
         "chronic" : ["Long-term use", "Crónico", "chronique"],
@@ -59,8 +65,8 @@
         "ict-plural" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "allergy-plural" : ["Allergies", "Alergías", "Allergies aux medicam"],
-        "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents"],
-        "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
+        "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents personnels"],
+        "family-background-plural" : ["Family Past Medical History", "Antecedentes familiaux", "Histoire de famille"],
         "select-ict" : ["Enter diagnostic", "Seleccione diagnostico", "Entrer le diagnostic"],
         "select-test" : ["Select Test", "Seleccione tipo de prueba", "Sélectionnez le type de test"],
         "select-treatment" : ["Drug name", "Nombre medicamento", "Nom du médicament"],
@@ -92,13 +98,17 @@
         "hospital" : {
             "home" : ["Home", "Home", "Accueil"],
             "search-patient" : {
-                "title" : ["Search Patient", "Buscar Paciente", "Recherche patient"],
+                "title" : ["Search Patient", "Buscar Paciente", "Recherche de patient"],
                 "back-button" : ["Back to search", "Nueva búsqueda", "Nouvelle recherche"],
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
             },
             "medical-imaging" : {
                 "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
                 "title" : ["Images requests", "Petición de imagen", "Demandes d'imaginerie"]
+            },
+            "laboratory" : {
+                "name" : ["Laboratory", "Laboratorio", "Laboratoire"],
+                "title" : ["Laboratory", "Laboratorio", "Laboratoire"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"]
@@ -210,9 +220,9 @@
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
                     "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
-                    "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité nationale"],
+                    "national_id" : ["National ID card", "Documento nacional de identidad", "Carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
-                    "phone" : ["Phone number", "Número de teléfono", "Número de téléphone"],
+                    "phone" : ["Phone number", "Número de teléfono", "Número téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento", "Date de naissance"],
                     "sex" : ["Sex", "Sexo", "Sex"]
@@ -223,7 +233,7 @@
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
                     "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
-                    "national_id" : ["National ID card", "Documento nacional de identidad", "Carte d'identité nationale"],
+                    "national_id" : ["National ID card", "Documento nacional de identidad", "Carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
                     "phone" : ["Phone number", "Número de teléfono", "Número de téléphone"],
                     "uuid" : ["ID", "ID", "ID"],

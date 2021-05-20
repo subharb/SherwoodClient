@@ -5,7 +5,7 @@ import { NavLink, withRouter } from "react-router-dom";
 import { darken } from "polished";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "../vendor/perfect-scrollbar.css";
-import pathLogo from '../logo-sherwood.png';
+import pathLogo from '../img/logo_sherwood_web.png';
 import { spacing } from "@material-ui/system";
 import { getData } from '../utils';
 import {
@@ -125,7 +125,7 @@ const Category = styled(ListItem)`
 
   &.${(props) => props.activeClassName} {
     background-color: ${(props) =>
-      darken(0.03, props.theme.sidebar.background)};
+    darken(0.03, props.theme.sidebar.background)};
 
     span {
       color: ${(props) => props.theme.sidebar.color};
@@ -165,12 +165,12 @@ const Link = styled(ListItem)`
 
   &:hover {
     background-color: ${(props) =>
-      darken(0.015, props.theme.sidebar.background)};
+    darken(0.015, props.theme.sidebar.background)};
   }
 
   &.${(props) => props.activeClassName} {
     background-color: ${(props) =>
-      darken(0.03, props.theme.sidebar.background)};
+    darken(0.03, props.theme.sidebar.background)};
 
     span {
       color: ${(props) => props.theme.sidebar.color};
@@ -241,7 +241,7 @@ const SidebarFooterBadge = styled(Badge)`
   margin-right: ${(props) => props.theme.spacing(1)}px;
   span {
     background-color: ${(props) =>
-      props.theme.sidebar.footer.online.background};
+    props.theme.sidebar.footer.online.background};
     border: 1.5px solid ${(props) => props.theme.palette.common.white};
     height: 12px;
     width: 12px;
@@ -329,17 +329,17 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
     );
   };
   let appRoutes = routes;
-  if(process.env.REACT_APP_PRODUCT === "HOSPITAL"){
+  if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
     appRoutes = routesHospital;
   }
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>
-        <Box ml={1}>
-            Sherwood 
+        <Box ml={1} pt={6}>
+          <img src={pathLogo} alt="Sherwood Science" height="55" /> {"  "}
         </Box>
-        <img src={pathLogo} alt="Sherwood Science" height="32" /> {"  "}
-        
+
+
       </Brand>
       <Scrollbar>
         <List disablePadding>
@@ -396,29 +396,29 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
         </List>
       </Scrollbar>
       <SidebarFooter>
-            <Grid container component={LinkNoDecoration} to="/profile" spacing={2}>
-                <Grid item>
-                    <SidebarFooterBadge
-                    overlap="circle"
-                    anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "right",
-                    }}
-                    variant="dot"
-                    >
-                    <Avatar
-                        alt="Lucy Lavender"
-                        src="/static/img/avatars/avatar-1.jpg"
-                    />
-                    </SidebarFooterBadge>
-                </Grid>
-                <Grid item>
-                    <SidebarFooterText variant="body2">{getData("name")+" "+getData("surnames")}</SidebarFooterText>
-                    {/* <SidebarFooterSubText variant="caption">
+        <Grid container component={LinkNoDecoration} to="/profile" spacing={2}>
+          <Grid item>
+            <SidebarFooterBadge
+              overlap="circle"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              variant="dot"
+            >
+              <Avatar
+                alt="Lucy Lavender"
+                src="/static/img/avatars/avatar-1.jpg"
+              />
+            </SidebarFooterBadge>
+          </Grid>
+          <Grid item>
+            <SidebarFooterText variant="body2">{getData("name") + " " + getData("surnames")}</SidebarFooterText>
+            {/* <SidebarFooterSubText variant="caption">
                         UX Designer
                     </SidebarFooterSubText> */}
-                </Grid>
-            </Grid>
+          </Grid>
+        </Grid>
       </SidebarFooter>
     </Drawer>
   );

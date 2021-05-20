@@ -161,7 +161,7 @@ const createSortHandler = (property) => (event) => {
 
 return (
     <TableHead>
-    <TableRow>
+    <TableRow> 
         {!props.noSelectable &&
             <TableCell padding="checkbox">
                 <Checkbox
@@ -178,6 +178,7 @@ return (
             align={headCell.alignment}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
+            style={{borderWidth:"4px"}}
         >
             <TableSortLabel
             active={orderBy === headCell.id}
