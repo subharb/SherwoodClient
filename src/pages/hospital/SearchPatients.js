@@ -109,12 +109,12 @@ function SearchPatients(props) {
                 
                 return(
                     <Grid container spacing={2}>
-                        <Grid item>
-                            <PatientsTable patients={filteredPatients} mobile 
+                        <Grid item xs={12}>
+                            <PatientsTable patients={filteredPatients} 
                                 showPatientCallBack={id => patientSelected(id)} 
                                 personalFields={props.investigations.currentInvestigation.personalFields} />
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={12}>
                             <ButtonBack onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>
                         </Grid>
                     </Grid>)
@@ -126,7 +126,7 @@ function SearchPatients(props) {
     }
     return (
         <React.Fragment>
-            <Grid container spacing={6} >
+            <Grid container spacing={2} >
                 <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
                     <SearchPatientIcon style={{fontSize:"2.5rem"}} />
                     <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
@@ -135,9 +135,9 @@ function SearchPatients(props) {
                 </Grid>
                 
                 <Grid item xs={12}>
-                        {
+                    {
                         renderCore()
-                        }     
+                    }     
                 </Grid>         
             </Grid>
         </React.Fragment>

@@ -26,20 +26,11 @@ export default function PatientsTable(props) {
     const headCells = props.personalFields.map(pField => {
         return { id: pField.name, alignment: "right", label: <Translate id={`investigation.create.personal_data.short-fields.${pField.name}`} /> }
     }) 
-    if(props.mobile){
-        return (
-            <EnhancedTable titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
-                selectRow={index => props.showPatientCallBack(index)}
-                />
-        )
-    }
-    else{
-        return (
-            <EnhancedTable titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
-                actions={{"view":(index => props.showPatientCallBack(index)), "add" : (index) => props.addInfoPatientCallBack(index)}}
-                />
-        )
-    }
+    return (
+        <EnhancedTable noHeader noSelectable  titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
+            selectRow={index => props.showPatientCallBack(index)}
+            />
+    )
     
 }
 

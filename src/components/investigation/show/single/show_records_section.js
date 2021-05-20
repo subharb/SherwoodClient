@@ -82,7 +82,7 @@ export default function ShowRecordsSection(props) {
                         })
                         
                         return (
-                            <Grid item>
+                            <Grid item xs={12}>
                                 {
                                     (field.type === "textarea") &&
                                     [
