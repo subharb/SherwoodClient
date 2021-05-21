@@ -19,7 +19,7 @@ import {
   Sliders,
   Users,
 } from "react-feather";
-import { Home as HomeIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon } from "@material-ui/icons";
+import { Home as HomeIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon, Image as ImageIcon } from "@material-ui/icons";
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
 import SignUp from "../pages/auth/SignUp";
@@ -217,7 +217,7 @@ const dashboardSearchPatientRoutes = {
 const dashboardImagesRoutes = {
     id: <Translate id="pages.hospital.medical-imaging.title" />,
     path: HOSPITAL_IMAGES,
-    icon: <SearchPatientIcon />,
+    icon: <ImageIcon />,
     badge: "",
     component: {
         path: HOSPITAL_IMAGES,

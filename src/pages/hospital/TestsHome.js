@@ -20,10 +20,10 @@ import { fetchSubmissionsSurveyAction } from '../../redux/actions/submissionsAct
 export function TestsHome(props){
     let location = useLocation();
     if(location.pathname === "/images"){
-        return <TestsHomeComponent type={0} {...props} />
+        return <TestsHomeComponent type={1} {...props} />
     }
     else if(location.pathname === "/lab"){
-        return <TestsHomeComponent type={1} {...props}/>
+        return <TestsHomeComponent type={2} {...props}/>
     }
     else return null;
 }
@@ -37,7 +37,7 @@ export function TestsHomeComponent(props) {
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     const submissionData = props.submissions.data && surveyTests && props.investigations.currentInvestigation ? props.submissions.data[props.investigations.currentInvestigation.uuid][surveyTests.uuid].submissions : [];
     const dispatch = useDispatch(); 
-    const translations = ["medical-imaging", "laboratory"];
+    const translations = ["patient", "medical-imaging", "laboratory"];
 
     function goToSubmission(index){
         console.log(surveyRecords[index]);

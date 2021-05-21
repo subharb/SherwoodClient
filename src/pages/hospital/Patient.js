@@ -61,13 +61,15 @@ function Patient(props) {
 
     const isInitialMount = useRef(true);
 
+    const typeSurveys = !parameters.hasOwnProperty("typeTest") ? 0 : parameters["typeTest"] === "images" ? 1 : 2;
+    const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => sur.type === typeSurveys) : [];
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
-    const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? props.investigations.currentInvestigation.surveys[indexDataCollection] : null;
+    const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
-    const filterValue = !parameters.hasOwnProperty("typeTest") ? 0 : parameters["typeTest"] === "images" ? 1 : 2;
-    const filteredRecords = surveyRecords ? surveyRecords.filter(rec => rec.typeSurvey === filterValue) : [];
+    
+    const filteredRecords = surveyRecords ? surveyRecords.filter(rec => rec.typeSurvey === typeSurveys) : [];
     const translations = ["patient", "medical-imaging", "laboratory"]; 
 
     function addRecord(){
@@ -76,7 +78,7 @@ function Patient(props) {
         }
         else{
             const filterType = parameters.typeTest === "images" ? 1 : 2;
-            const dataCollection = props.investigations.currentInvestigation.surveys.find(sur => sur.type === filterType);
+            const dataCollection = currentSurveys.find(sur => sur.type === filterType);
 
             const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollection.uuid)
                 .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", dataCollection.sections[0].uuid)
@@ -180,7 +182,7 @@ function Patient(props) {
                         <Translate id="hospital.data-collections" />:
                     </WhiteTypography>
                 </Grid>,
-                props.investigations.currentInvestigation.surveys.sort((a,b) => a.order - b.order).filter(sur => sur.type === 0).map((dataCollection, index) => {
+                currentSurveys.sort((a,b) => a.order - b.order).map((dataCollection, index) => {
                     return(
                         <Grid item xs={12} style={{textAlign:"center"}}>
                             <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGreyBorderGrey>
@@ -232,7 +234,7 @@ function Patient(props) {
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
         else if(filteredRecords.length === 0){
-            return <Translate id={`hospital.${translations[filterValue]}.no-records`} />
+            return <Translate id={`hospital.${translations[typeSurveys]}.no-records`} />
         }
         else{
             return(
@@ -407,17 +409,17 @@ function Patient(props) {
                         <Grid item container xs={5}  justify="center" alignItems="center">
                             <Grid item xs={4}>
                                 <Button data-testid="medical-notes" onClick={() => backToRoot()} >
-                                    <img src={filterValue === 0 ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
+                                    <img src={typeSurveys === 0 ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
                                 </Button>
                             </Grid>
                             <Grid item xs={4}>
                                 <Button data-testid="images" onClick={() => goToTest(1)} >
-                                    <img src={filterValue === 1 ? iconImagesGreen : iconImages} alt="Images" height="40" />
+                                    <img src={typeSurveys === 1 ? iconImagesGreen : iconImages} alt="Images" height="40" />
                                 </Button>
                             </Grid>
                             <Grid item xs={4}>
                                 <Button data-testid="lab" onClick={() => goToTest(2)} >
-                                    <img src={filterValue === 2 ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                                    <img src={typeSurveys === 2 ? iconLabGreen : iconLab} alt="Lab" height="40" />
                                 </Button>
                             </Grid>
                             <Grid item xs={4}>
