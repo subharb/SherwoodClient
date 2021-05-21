@@ -38,7 +38,7 @@
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"]
         },
-        "treatment-name" : ["Name drug", "Nombre medicamento", "Nom du medicament"],
+        "treatment-name" : ["Name drug", "Nombre medicamento", "Nom du médicament"],
         "posology" : ["Posology", "Posología", "Posologie"],
         "dose" : ["Dose", "Dosis", "Dose"],
         "chronic" : ["Long-term use", "Crónico", "chronique"],
@@ -61,12 +61,12 @@
         "treatment" : ["Treatment", "Tratamiento", "Traitement"],
         "allergy" : ["Allergy", "Alergía", "Allergie"],
         "background" : ["PMH", "Antecedentes", "Antécédents"],
-        "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],     
+        "family-background" : ["FPMH", "Antecedente Familiar", "Antécédents familiaux"],     
         "ict-plural" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "allergy-plural" : ["Allergies", "Alergías", "Allergies aux medicam"],
         "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents personnels"],
-        "family-background-plural" : ["Family Past Medical History", "Antecedentes familiaux", "Histoire de famille"],
+        "family-background-plural" : ["Family History", "Antecedentes familiares", "Antécédents familiaux"],
         "select-ict" : ["Enter diagnostic", "Seleccione diagnostico", "Entrer le diagnostic"],
         "select-test" : ["Select Test", "Seleccione tipo de prueba", "Sélectionnez le type de test"],
         "select-treatment" : ["Drug name", "Nombre medicamento", "Nom du médicament"],
@@ -104,7 +104,7 @@
             },
             "medical-imaging" : {
                 "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
-                "title" : ["Images requests", "Petición de imagen", "Demandes d'imaginerie"]
+                "title" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"]
             },
             "laboratory" : {
                 "name" : ["Laboratory", "Laboratorio", "Laboratoire"],
@@ -293,7 +293,7 @@
                 "treatment" : ["Treatment", "Tratamiento", "Traitement"],
                 "allergy" : ["Allergy", "Alergía", "Allergie"],
                 "background" : ["PMH", "Antecedentes", "Antécédents"],
-                "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],                
+                "family-background" : ["FPMH", "Antecedente Familiar", "Antécédents familiaux"],                
                 "files" : ["File/Image", "Imágenes", "Images"],       
                 "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
                 "textarea" : ["Texarea", "Texto largo", "Texarea"],

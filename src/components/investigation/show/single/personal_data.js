@@ -7,10 +7,11 @@ import { Grid, Typography } from '@material-ui/core';
 
 export default function PersonalDataForm(props) {
     let form = {}
-    for(let i = 0; i < props.fields.length; i++){
-        const value = props.fields[i];
+    const orderedFields = props.fields.sort((a,b) => a.order - b.order)
+    for(let i = 0; i < orderedFields.length; i++){
+        const value = orderedFields[i];
         
-        form[value.name] = props.fields[i]; 
+        form[value.name] = orderedFields[i]; 
     }
     //Se generan las claves del paciente, tanto para el researcher como para el posterior acceso del paciente
     async function encryptPersonalData(data){
@@ -73,6 +74,8 @@ export default function PersonalDataForm(props) {
             )
         }
     }
+    const personalFields = {};
+    
     return (
         <Grid container spacing={1}>
             <Grid item xs={12}>
