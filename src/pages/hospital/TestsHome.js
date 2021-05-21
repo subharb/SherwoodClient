@@ -31,6 +31,7 @@ export function TestsHome(props){
 export function TestsHomeComponent(props) {
     const [ surveyRecords, setSurveyRecords] = useState([]);
     const [surveyTests, setSurveyTests] = useState(null);
+    const [loading, setLoading] = useState(false);
     const history = useHistory();
 
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
@@ -46,19 +47,26 @@ export function TestsHomeComponent(props) {
         history.push(nextUrl);
     }
     function renderCore(){
-        return (<EnhancedTable noHeader noSelectable selectRow={(index) => goToSubmission(index)} 
+        if(surveyRecords.length === 0){
+            return <Translate id={`hospital.${translations[props.type]}.no-records`} />
+        }
+        else{
+            return (<EnhancedTable noHeader noSelectable selectRow={(index) => goToSubmission(index)} 
                 rows={surveyRecords.map((record, index) => {
                     const dateCreated = new Date(record.createdAt);
                     return({id : index, researcher : record.researcher, patient : `${record.patient.personalData.name} ${record.patient.personalData.surnames}`, date : dateCreated.toISOString().slice(0, 16).replace('T', ' ')})
                 })} headCells={[{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "patient", alignment: "left", label: <Translate id="investigation.create.personal_data.fields.name" />},
                                 { id: "date", alignment: "left", label: "Date"}]} />
-        );
+            );
+        }
     }
     useEffect(() => {
         async function fetchRecordsPatient(){
             const survey = props.investigations.currentInvestigation.surveys.find(sur => sur.type === props.type);
-            setSurveyTests(survey);
+            setLoading(true);
             await dispatch(fetchSubmissionsSurveyAction(props.investigations.currentInvestigation.uuid, survey.uuid));
+            setSurveyTests(survey);
+            setLoading(false);
         }
         if(props.investigations.currentInvestigation){
             fetchRecordsPatient()
@@ -91,16 +99,17 @@ export function TestsHomeComponent(props) {
             setSurveyRecords(tempSubmissions);
         }
         
-    }, [props.submissions])
+    }, [submissionData])
 
-    if(!props.submissions.data){
+    if(!props.submissions.data || loading){
         return(<Loader />);
     }
+    
     return (
         <React.Fragment>
             <Grid container spacing={6} >
                 <Grid container alignItems="center" alignContent="center" item xs={12}>
-                    <Grid xs={2} alignContent="center">
+                    <Grid xs={2} style={{textAlign:"right"}}>
                         <img src={props.type === 0 ? iconImages : iconLab } alt="images" width="40" />
                     </Grid>
                     <Grid xs={8}>
