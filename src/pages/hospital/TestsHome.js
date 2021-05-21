@@ -113,7 +113,7 @@ export function TestsHomeComponent(props) {
                         <img src={props.type === 0 ? iconImages : iconLab } alt="images" width="40" />
                     </Grid>
                     <Grid xs={8}>
-                        <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
+                        <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
                             <Translate id={`pages.hospital.${translations[props.type]}.title`} />
                         </Typography>
                     </Grid>   
