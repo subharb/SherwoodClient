@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { searchDiagnosticService, searchDrugComponentService } from '../../../services/sherwoodService';
+import { searchDiagnosticService, searchDrugComponentService } from '../../../../services/sherwoodService';
 import { Grid, TextField } from '@material-ui/core';
-import { ButtonAccept, ButtonCancel } from '../mini_components';
-import { Allergy, Background, Smartfield, FamilyBackground } from './index';
+import { ButtonAccept, ButtonCancel } from '../../mini_components';
+import { Allergy, BackgroundType, SmartFieldType, FamilyBackground, Diagnosis } from '../index';
 import { Autocomplete } from '@material-ui/lab';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { PropsIct } from './ICTSelectorGeneral';
+import { PropsIct } from '../index';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
@@ -24,9 +24,7 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
     const [searchDiagnosis, setSearchDiagnosis] = useState("");
     const [error, setError] = useState(false);
    
-
-    
-    function elementSelected(value:Smartfield){
+    function elementSelected(value:Diagnosis){
         props.elementSelected(value);
     }
     
@@ -81,32 +79,35 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                 }}
                 onChange={(event, value, reason, details) => {
                     if(value){
-                        let tempValue:Smartfield;
-                        if(props.type === "ict"){
-                            tempValue = {
-                                "ict" : value.name,
-                                "ict-code" : value.code
-                            }
+                        const tempValue:SmartFieldType = {
+                            "ict" : value.name,
+                            "ict-code" : value.code
                         }
-                        else if(props.type === "background"){
-                            tempValue = {
-                                "background" : value.name,
-                                "background-code" : value.code,
-                                "background-date" : ""
-                            }
-                        }
-                        else if(props.type === "family-background"){
-                            tempValue = {
-                                "family-background" : value.name,
-                                "family-background-code" : value.code
-                            }
-                        }
-                        else{ 
-                            tempValue = {
-                                "allergy" : value.name,
-                                "allergy-code" : value.code
-                            }
-                        }
+                        // if(props.type === "ict"){
+                        //     tempValue = {
+                        //         "ict" : value.name,
+                        //         "ict-code" : value.code
+                        //     }
+                        // }
+                        // else if(props.type === "background"){
+                        //     tempValue = {
+                        //         "background" : value.name,
+                        //         "background-code" : value.code,
+                        //         "background-date" : ""
+                        //     }
+                        // }
+                        // else if(props.type === "family-background"){
+                        //     tempValue = {
+                        //         "family-background" : value.name,
+                        //         "family-background-code" : value.code
+                        //     }
+                        // }
+                        // else{ 
+                        //     tempValue = {
+                        //         "allergy" : value.name,
+                        //         "allergy-code" : value.code
+                        //     }
+                        // }
                        
                         elementSelected(tempValue);
                     }

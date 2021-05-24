@@ -1,12 +1,28 @@
 import React, { useState } from 'react'
-import ICTSelectorOMS from './ICTSelectorOMS';
+import ICTSelectorOMS from './ICT/ICTSelectorOMS';
 import { ButtonDelete, ButtonPlus } from '../mini_components';
 import { Grid, PropTypes, Typography } from '@material-ui/core';
 import { useSelectSmartField, useUpdateEffect } from '../../../hooks';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import BackgroundSelector from './ICTSelectorFR';
 import { EnhancedTable } from '../EnhancedTable';
-import ICTSelectorGeneral from './ICTSelectorGeneral';
+import ICTSelectorGeneral from './ICT';
+import Background from './Background';
+
+export interface PropsIctGeneral extends LocalizeContextProps{
+    variant:"standard" | "filled" | "outlined" | undefined,
+    size:string,
+    language:string,
+    typeMargin:PropTypes.Margin | undefined,
+    type:string,
+    cancel: () => void,
+    elementSelected: (element:SmartFieldType) => void,
+    error:boolean,
+}
+export interface PropsIct extends PropsIctGeneral{
+    
+    diagnose:SmartFieldType | null,
+    setError:(error:boolean) => void,
+}
 
 export interface Allergy{
     allergy : string,
@@ -14,7 +30,7 @@ export interface Allergy{
 }
 
 
-export interface Background{
+export interface BackgroundType{
     background : string,
     "background-code" : string,
     "background-date" : string
@@ -26,9 +42,7 @@ export interface FamilyBackground{
     "family-background-relation" ?: string
 }
 
-
-
-export type Smartfield = Diagnosis | Background | FamilyBackground | Allergy;
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackground | Allergy;
 
 export interface Diagnosis{
     ict : string,
@@ -46,31 +60,29 @@ interface Props extends LocalizeContextProps {
         addingDiagnosis:boolean,
         listDiagnosis:Diagnosis[]
     },
-    diagnosesSelected: (treatments:Smartfield[] | boolean) => void
+    diagnosesSelected: (treatments:SmartFieldType[] | boolean) => void
 }
 
-
-const MultipleICTSelector:React.FC<Props> = (props) => {
-    
-    const [listDiagnosis, setListDiagnosis] = useState<Smartfield[]>(props.initialState ? props.initialState.listDiagnosis : []);
-    const [addingDiagnosis, setAddingDiagnosis] = useState(props.mode === "form");
-    const [addDiagnosis, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.errorState, setAddingDiagnosis);
+const SmartField:React.FC<Props> = (props) => {
+    const [listElements, setListElements] = useState<SmartFieldType[]>(props.initialState ? props.initialState.listDiagnosis : []);
+    const [addingElements, setAddingElements] = useState(props.mode === "form");
+    const [addElement, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.errorState, setAddingElements);
 
     function cancel(){
-        if(listDiagnosis.length === 0){
+        if(listElements.length === 0){
             resetState();
         }
         else{
-            setAddingDiagnosis(false);
+            setAddingElements(false);
         }
     }
-    function renderDiagnosis(){
-        if(listDiagnosis.length > 0 && !addingDiagnosis){
+    function renderElements(){
+        if(listElements.length > 0 && !addingElements){
             const headCells = [{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
             if(props.type === "background"){
                 headCells.push({ id: "date", alignment: "left", label: <Translate id={`general.date`} /> })  
             }
-            const rows = listDiagnosis.map((element, index) => {
+            const rows = listElements.map((element, index) => {
                 let valueDict = {};
                 
                 if(props.type === "ict"){
@@ -89,7 +101,7 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
                     
                 }
                 if(props.type === "background"){
-                    const back = element as Background;
+                    const back = element as BackgroundType;
                     valueDict = {
                         id : index,
                         name :  back["background"],
@@ -116,65 +128,68 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
             else{
                 return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}     
                     />
-            }
-            
-            
+            }   
         }
     }
     function removeDiagnosis(id:number){
-        setListDiagnosis(listDiagnosis.filter((item, index) => index !== id));
+        setListElements(listElements.filter((item, index) => index !== id));
     }
-    function elementSelected(diagnose:Smartfield){
+    function elementSelected(diagnose:SmartFieldType){
         console.log(diagnose);
-        setListDiagnosis(oldArray => [...oldArray, diagnose]);
-        setAddingDiagnosis(false);
+        setListElements(oldArray => [...oldArray, diagnose]);
+        setAddingElements(false);
     }
     function addDiagnose(){
-        setAddingDiagnosis(true);
+        setAddingElements(true);
     }
     function renderSelector(){
-        if(addingDiagnosis && props.mode === "form"){
-            if(props.type !== "allergy"){
+        if(addingElements && props.mode === "form"){
+            if(props.type === "background"){
+                return <Background type={props.type}  variant="outlined" typeMargin={props.typeMargin} 
+                cancel={cancel} language={props.activeLanguage.code} error={props.errorState} 
+                size="small" elementSelected={(diag:SmartFieldType) => elementSelected(diag)} />
+            }
+            else if(props.type !== "allergy"){
                 return <ICTSelectorGeneral type={props.type}  variant="outlined" typeMargin={props.typeMargin} 
                     cancel={cancel} language={props.activeLanguage.code} error={props.errorState} 
-                    size="small" elementSelected={(diag:Smartfield) => elementSelected(diag)} />
+                    size="small" elementSelected={(diag:SmartFieldType) => elementSelected(diag)} />
             }
             
-            return <BackgroundSelector type={props.type} variant="outlined" typeMargin={props.typeMargin} 
-                    cancel={cancel} size="small" error={props.errorState} language={props.activeLanguage.code} 
-                    elementSelected={(diag:Smartfield) => elementSelected(diag)} />
+            // return <BackgroundSelector type={props.type} variant="outlined" typeMargin={props.typeMargin} 
+            //         cancel={cancel} size="small" error={props.errorState} language={props.activeLanguage.code} 
+            //         elementSelected={(diag:Smartfield) => elementSelected(diag)} />
         }
     }
     useUpdateEffect(() =>{
         if(props.initialState && props.initialState.listDiagnosis.length >0 ){
-            setListDiagnosis(props.initialState.listDiagnosis);
-            setAddingDiagnosis(false);
+            setListElements(props.initialState.listDiagnosis);
+            setAddingElements(false);
         }
         
     }, [props.initialState]);
     
     useUpdateEffect(() =>{
         if(props.mode === "form"){
-            props.diagnosesSelected(listDiagnosis);
-            if(listDiagnosis.length === 0){
+            props.diagnosesSelected(listElements);
+            if(listElements.length === 0){
                 resetState()
             }
         }
         
-    }, [listDiagnosis]);
+    }, [listElements]);
     useUpdateEffect(() =>{
-        if(!addDiagnosis){
+        if(!addElement){
             props.diagnosesSelected(false);
         }
-    }, [addDiagnosis]);
-    if(!addDiagnosis && listDiagnosis.length === 0){
+    }, [addElement]);
+    if(!addElement && listElements.length === 0){
         return renderSelect();
     }
 
     return (
         <React.Fragment>
             {
-                (!addingDiagnosis && props.mode === "form") &&
+                (!addingElements && props.mode === "form") &&
                 <React.Fragment>
                     <ButtonPlus onClick={addDiagnose} />
                     <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
@@ -185,9 +200,9 @@ const MultipleICTSelector:React.FC<Props> = (props) => {
             }
             
             {
-                renderDiagnosis()
+                renderElements()
             }
         </React.Fragment>
     )
 }
-export default withLocalize(MultipleICTSelector);
+export default withLocalize(SmartField);

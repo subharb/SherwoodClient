@@ -7,7 +7,7 @@ import { Alert } from "@material-ui/lab";
 import { Translate } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
-import MultipleICTSelector from '../../../general/MultipleICTSelector';
+import MultipleICTSelector from '../../../general/SmartFields';
 import { MultipleTreatmentSelector } from '../../../general/MultipleTreatmentSelector';
 
 /**

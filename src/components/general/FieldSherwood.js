@@ -20,7 +20,7 @@ import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 import { change, registerField } from "redux-form";
-import MultipleICTSelector from './MultipleICTSelector';
+import MultipleICTSelector from './SmartFields';
 import { MultipleTreatmentSelector } from './MultipleTreatmentSelector';
 import SelectField from './SelectField';
 import File from './File';
