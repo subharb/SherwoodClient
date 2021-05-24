@@ -7,24 +7,33 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { EnhancedTable } from '../EnhancedTable';
 import ICTSelectorGeneral from './ICT';
 import Background from './Background';
+import Allergy from './Allergy';
 
-export interface PropsIctGeneral extends LocalizeContextProps{
+
+export interface PropsSmartField {
     variant:"standard" | "filled" | "outlined" | undefined,
     size:string,
     language:string,
     typeMargin:PropTypes.Margin | undefined,
     type:string,
-    cancel: () => void,
+    cancel: boolean | (() => void),
     elementSelected: (element:SmartFieldType) => void,
     error:boolean,
 }
-export interface PropsIct extends PropsIctGeneral{
+export interface PropsSmartFieldLocalized extends PropsSmartField, LocalizeContextProps{
+
+}
+export interface PropsIct extends PropsSmartField{
     
     diagnose:SmartFieldType | null,
     setError:(error:boolean) => void,
 }
 
-export interface Allergy{
+export interface DrugType{
+    name:string,
+    code:string
+}
+export interface AllergyType{
     allergy : string,
     "allergy-code" : string
 }
@@ -42,7 +51,7 @@ export interface FamilyBackground{
     "family-background-relation" ?: string
 }
 
-export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackground | Allergy;
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackground | AllergyType;
 
 export interface Diagnosis{
     ict : string,
@@ -93,7 +102,7 @@ const SmartField:React.FC<Props> = (props) => {
                     }
                 }
                 if(props.type === "allergy"){
-                    const allergy = element as Allergy;
+                    const allergy = element as AllergyType;
                     valueDict = {
                         id : index,
                         name : allergy["allergy"]
@@ -144,15 +153,18 @@ const SmartField:React.FC<Props> = (props) => {
     }
     function renderSelector(){
         if(addingElements && props.mode === "form"){
+            const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
+                cancel:cancel, language:props.activeLanguage.code, error:props.errorState,
+                size:"small", elementSelected:(diag:SmartFieldType) => elementSelected(diag)}
+                
             if(props.type === "background"){
-                return <Background type={props.type}  variant="outlined" typeMargin={props.typeMargin} 
-                cancel={cancel} language={props.activeLanguage.code} error={props.errorState} 
-                size="small" elementSelected={(diag:SmartFieldType) => elementSelected(diag)} />
+                return <Background {...propsSmartField} />
+            }
+            if(props.type === "allergy"){
+                return <Allergy {...propsSmartField}/>
             }
             else if(props.type !== "allergy"){
-                return <ICTSelectorGeneral type={props.type}  variant="outlined" typeMargin={props.typeMargin} 
-                    cancel={cancel} language={props.activeLanguage.code} error={props.errorState} 
-                    size="small" elementSelected={(diag:SmartFieldType) => elementSelected(diag)} />
+                return <ICTSelectorGeneral {...propsSmartField} />
             }
             
             // return <BackgroundSelector type={props.type} variant="outlined" typeMargin={props.typeMargin} 

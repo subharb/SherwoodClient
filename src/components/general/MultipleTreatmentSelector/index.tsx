@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SingleTreatmentSelector from './SingleTreatmentSelector';
+import SingleTreatmentSelector from '../SmartFields/SingleTreatmentSelector';
 import { ButtonAdd } from '../mini_components';
 import { Translate } from 'react-localize-redux';
 import { FormControl, InputLabel, Select, Typography, MenuItem } from '@material-ui/core';

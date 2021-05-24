@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { searchDiagnosticService, searchDrugComponentService } from '../../../../services/sherwoodService';
 import { Grid, TextField } from '@material-ui/core';
 import { ButtonAccept, ButtonCancel } from '../../mini_components';
-import { Allergy, BackgroundType, SmartFieldType, FamilyBackground, Diagnosis } from '../index';
+import { AllergyType, BackgroundType, SmartFieldType, FamilyBackground, Diagnosis } from '../index';
 import { Autocomplete } from '@material-ui/lab';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { PropsIct } from '../index';

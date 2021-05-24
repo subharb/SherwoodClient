@@ -5,14 +5,14 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import React, {useState} from 'react';
 import { Translate, withLocalize } from 'react-localize-redux';
-import { ButtonAccept } from '../mini_components';
+import { ButtonAccept, ButtonCancel } from '../mini_components';
 import ICT from './ICT';
-import { PropsIctGeneral, Diagnosis, BackgroundType, SmartFieldType } from './index'
+import { PropsSmartField, Diagnosis, BackgroundType, SmartFieldType, PropsSmartFieldLocalized } from './index'
 
 type Props = {
 
 };
-function Background(props: PropsIctGeneral) {
+function Background(props: PropsSmartFieldLocalized) {
     const [diagnose, setDiagnose] = useState<Diagnosis | null>(null);
     const [date, setDate] = useState<string | null | undefined>(null);
     const [error, setError] = useState(false);
@@ -34,6 +34,7 @@ function Background(props: PropsIctGeneral) {
     }
 
     function diagnoseSelected(element:SmartFieldType){
+        console.log(element);
         const diag:Diagnosis = element as Diagnosis;
         //const backgr:BackgroundType = {background:diag.ict, "background-date" : diag['ict-code']};
         setDiagnose(diag);
@@ -44,7 +45,7 @@ function Background(props: PropsIctGeneral) {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <ICT {...props} elementSelected={diagnoseSelected} />
+                <ICT {...props} cancel={false} elementSelected={diagnoseSelected} />
             </Grid>
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider key="end-date" utils={DateFnsUtils} >
@@ -76,6 +77,7 @@ function Background(props: PropsIctGeneral) {
             </Grid>
             <Grid item xs={12}>
                 <ButtonAccept onClick={addBackground}><Translate id="general.add" /></ButtonAccept> 
+                <ButtonCancel onClick={props.cancel} ><Translate id="general.cancel" /></ButtonCancel>
             </Grid>
             
         </Grid>

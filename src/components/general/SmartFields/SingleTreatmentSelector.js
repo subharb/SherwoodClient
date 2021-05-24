@@ -7,6 +7,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { ButtonAccept, ButtonCancel } from '../mini_components'; 
+import DrugSelector from './DrugSelector';
 
 // interface Props{
 //     name : string,
@@ -17,45 +18,21 @@ import { ButtonAccept, ButtonCancel } from '../mini_components';
 // }
 
 function SingleTreatmentSelector(props){
-    const [searchDrug, setSearchDrug] = useState("");
+    
     const [finishDate, setFinishDate] = useState(null);
     const [isCurrent, setIsCurrent] = useState(true);
     const [posology, setPosology] = useState(null);
     const [dose, setDose] = useState(null);
     const [errorPosology, setErrorPosology] = useState(false);
-    const [errorDrug, setErrorDrug] = useState(false);
+    
     const [errorDose, setErrorDose] = useState(false);
     const [errorFinishDate, setErrorFinishDate] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [errorDrug, setErrorDrug] = useState(false);
     const [drug, setDrug] = useState(null);
-    const [drugOptions, setDrugOptions] = useState([]);
+    
     const [error, setError] = useState(false);
-    useEffect(() => {
-        async function searchDrugRemote(){
-            try{
-                setLoading(true);
-                const response = await searchDrugService(searchDrug);
-                if(response.status === 200){
-                    setDrugOptions(response.drugs)
-                }
-                setLoading(false);
-            }
-            catch(error){
-                console.log(error);
-                setError(true);
-                setLoading(false);
-            }
-            
-        }
-        if(!drug && searchDrug.length > 3){
-            searchDrugRemote();
-        }
-    }, [searchDrug]);
-    function drugSelected(drug){
-        console.log(drug);
-        setDrug(drug);
-        setErrorDrug(false);
-    }
+    
+    
     function saveDrug(){
         let valid = true;
         if(!drug){
@@ -83,6 +60,11 @@ function SingleTreatmentSelector(props){
                 "treatment-start" : startDate, "treatment-finish" : finishDate, 
             });
         }
+    }
+    function drugSelected(drug){
+        console.log(drug);
+        setErrorDrug(false);
+        setDrug(drug);
     }
     function cancel(){
         props.cancelTreatment()
@@ -112,34 +94,11 @@ function SingleTreatmentSelector(props){
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Autocomplete
-                    id={props.name}
-                    loading = {loading}
-                    noOptionsText="start typing"
-                    options={drugOptions}
-                    onInputChange={(event, value, reason) => {
-                        if(reason === "clear"){
-                            setSearchDrug("");
-                        }
-                        else{
-                            setSearchDrug(value);
-                        }
-                        
-                    }}
-                    onChange={(event, value, reason, details) => {
-                        drugSelected(value);
-                    }}
-                
-                    getOptionLabel={(option) => option.name}
-                    style={{ width: 300 }}
-                    renderInput={(params) => <TextField {...params} value={searchDrug} error={errorDrug} 
-                            label={props.translate("hospital.select-treatment")} variant="outlined" />}
-                />
+                <DrugSelector drugSelected={(drug) => drugSelected(drug) } />
             </Grid>
             <Grid item xs={12}>
                 <Autocomplete
                     id="posology"
-                    
                     options={selectPosology.options}
                     getOptionLabel={(option) => props.translate(option.label)}
                     style={{ width: 300 }}

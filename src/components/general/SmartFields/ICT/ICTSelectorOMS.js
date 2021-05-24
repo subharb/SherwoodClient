@@ -48,38 +48,14 @@ function ICTSelectorOMS(props){
                 console.log('selected code: '+ selectedEntity.code);
                 console.log('selected bestMatchText: '+ selectedEntity.bestMatchText);
                 ECT.Handler.clear("1");
-                setDiagnose("");
+                setDiagnose(selectedEntity.title);
     
                 if(selectedEntity){
                     const tempValue = {
                         "ict" : selectedEntity.title,
                         "ict-code" : selectedEntity.code
                     }
-                    // if(props.type === "ict"){
-                    //     tempValue = {
-                    //         "ict" : selectedEntity.title,
-                    //         "ict-code" : selectedEntity.code
-                    //     }
-                    // }
-                    // else if(props.type === "background"){
-                    //     tempValue = {
-                    //         "background" : selectedEntity.title,
-                    //         "background-code" : selectedEntity.code,
-                    //         "background-date" : ""
-                    //     }
-                    // }
-                    // else if(props.type === "family-background"){
-                    //     tempValue = {
-                    //         "family-background" : selectedEntity.title,
-                    //         "family-background-code" : selectedEntity.code
-                    //     }
-                    // }
-                    // else{ 
-                    //     tempValue = {
-                    //         "allergy" : selectedEntity.title,
-                    //         "allergy-code" : selectedEntity.code
-                    //     }
-                    // }
+                   
                    
                     props.elementSelected(tempValue);    
                 }
@@ -113,7 +89,7 @@ function ICTSelectorOMS(props){
     const value = diagnose !== "" ? diagnose : props.value;
     return ([
         <div>
-            <TextField key="ict-input" {...props} label={props.translate("hospital.select-ict")} value = {value} onFocus={resetField}
+            <TextField key="ict-input" {...props} label={props.translate("hospital.select-ict")} value = {value}
                 inputProps={{className : "ctw-input", "data-ctw-ino" : "1"}}   />
             <div key="ict-container" className="ctw-window" data-ctw-ino="1"></div>
         </div>
