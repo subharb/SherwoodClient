@@ -40,6 +40,15 @@
         "treatment-start-table" : ["Start date", "F.Inicio", "Date de début"],
         "treatment-finish-table" : ["End date", "Fecha fin", "Date de fin"],
         "chronic" : ["Long-term use", "Crónico", "chronique"],
+        "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
+        "number-elements" : ["Amount", "Cantidad", "montant"],
+        "time-unit" : ["Days/weeks", "Dúas/semanas", "jours semaines"],
+        "time-unit-options" : {
+            "days" : ["days", "días", "jours"],
+            "weeks" : ["weeks", "semanas", "semaines"],
+            "months" : ["months", "meses", "mois"]
+        },
+        "duration" : ["Duration", "Duración", "Durée"],
         "posology-options" : {
             "4h" : ["4 hours", "4 horas", "4 heures"],
             "6h" : ["6 hours", "6 horas", "6 heures"],

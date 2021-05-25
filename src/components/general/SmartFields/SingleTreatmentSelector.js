@@ -8,7 +8,11 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { ButtonAccept, ButtonCancel } from '../mini_components'; 
 import DrugSelector from './DrugSelector';
+import {addMinutes} from 'date-fns'
 
+const DAYS = "days";
+const WEEKS = "weeks";
+const MONTHS = "months";
 // interface Props{
 //     name : string,
 //     label : string,
@@ -19,14 +23,15 @@ import DrugSelector from './DrugSelector';
 
 function SingleTreatmentSelector(props){
     
-    const [finishDate, setFinishDate] = useState(null);
-    const [isCurrent, setIsCurrent] = useState(true);
+    const [isCurrent, setIsCurrent] = useState(false);
     const [posology, setPosology] = useState(null);
     const [dose, setDose] = useState(null);
     const [errorPosology, setErrorPosology] = useState(false);
-    
+    const [isOneDose, setIsOneDose] = useState(false);
     const [errorDose, setErrorDose] = useState(false);
-    const [errorFinishDate, setErrorFinishDate] = useState(false);
+    const [amount, setAmount] = useState(null);
+    const [timeUnit, setTimeUnit] = useState(null);
+    const [errorDuration, setErrorDuration] = useState(false);
     const [errorDrug, setErrorDrug] = useState(false);
     const [drug, setDrug] = useState(null);
     
@@ -47,16 +52,19 @@ function SingleTreatmentSelector(props){
             setErrorDose(true);
             valid = false;
         }
-        if(!finishDate && !isCurrent){
-            setErrorFinishDate(true);
+        if(!amount || !timeUnit){
+            setErrorDuration(true);
             valid = false;
         }
         if(valid){
             const startDate = new Date();
-            props.elementSelected({
-                treatment:drug.name,"drug-code" : drug.code, 
-                "treatment-posology": posology.value, 
-                "treatment-dose": dose.value, 
+            const unitMinutes = timeUnit === DAYS ? 1440 : timeUnit === WEEKS ? 10080 : timeUnit === MONTHS ? 43200 : null;
+            const duration = amount * unitMinutes;
+            const finishDate = addMinutes(startDate, duration);
+             props.elementSelected({
+                treatment:drug.name,"drug-code" : drug.cis, 
+                "treatment-posology": posology, 
+                "treatment-dose": dose, 
                 "treatment-start" : startDate, 
                 "treatment-finish" : finishDate, 
             });
@@ -85,41 +93,30 @@ function SingleTreatmentSelector(props){
     function drugError(error){
         setError(error);
     }
-    
+    function onChangeIsOnce(e){
+        console.log(e.target.checked);
+        setIsOneDose(e.target.checked);
+    }
     if(error){
         return(
             <Alert severity="error">
                 <Translate id="investigation.share.error.description" />
             </Alert>);
     }
+    
     const finishDateLabel = props.translate("general.endDate");
     const emptyLabel = props.translate("hospital.background-date").toString();
     const selectPosology = props.slaves.find(slave => slave.name === "treatment-posology");
     const selectDose = props.slaves.find(slave => slave.name === "treatment-dose");
     const isCurrentLabel = props.translate("hospital.chronic");
+    const isOneDoseLabel = props.translate("hospital.single-dose");
+    const numberElements = [1,2,3,4,5,6,7,8,9].map(val => <MenuItem value={val}>{val}</MenuItem>);
+    const timesArray = [DAYS, WEEKS, MONTHS].map(val => <MenuItem value={val}><Translate id={`hospital.time-unit-options.${val}`} /></MenuItem>);
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
                 <DrugSelector drugSelected={(drug) => drugSelected(drug) }  error={errorDrug}
                     callbackError={(error) => drugError(error)}/>
-            </Grid>
-            <Grid item xs={12}>
-                <Autocomplete
-                    id="posology"
-                    options={selectPosology.options}
-                    getOptionLabel={(option) => props.translate(option.label)}
-                    style={{ width: 300 }}
-                    onInputChange={(event, value, reason) => {
-                        posologySelected(value);
-                    }}
-                    onChange={(event, value, reason, details) => {
-                        posologySelected(value);
-                    }}
-                    freeSolo
-                    renderInput={(params) => <TextField {...params} 
-                        label={selectPosology.label} variant="outlined" helperText="If no options match, write your own" 
-                        error={errorPosology} />}
-                    />
             </Grid>
             <Grid item xs={12}>
                 <Autocomplete
@@ -131,7 +128,7 @@ function SingleTreatmentSelector(props){
                         doseSelected(value);
                     }}
                     onChange={(event, value, reason, details) => {
-                        doseSelected(value);
+                        doseSelected(value.value);
                     }}
                     freeSolo
                     renderInput={(params) => <TextField {...params} 
@@ -141,38 +138,58 @@ function SingleTreatmentSelector(props){
                     />
             </Grid>
             <Grid item xs={12}>
-                <FormControlLabel
+                <FormControlLabel 
+                    control={<Checkbox checked={isOneDose} onChange={onChangeIsOnce} />}
+                    label={isOneDoseLabel}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Autocomplete
+                    id="posology" disabled={isOneDose}
+                    options={selectPosology.options}
+                    getOptionLabel={(option) => props.translate(option.label)}
+                    style={{ width: 300 }}
+                    onInputChange={(event, value, reason) => {
+                        posologySelected(value);
+                    }}
+                    onChange={(event, value, reason, details) => {
+                        posologySelected(value.value);
+                    }}
+                    freeSolo
+                    renderInput={(params) => <TextField {...params} 
+                        label={selectPosology.label} variant="outlined" helperText="If no options match, write your own" 
+                        error={errorPosology} />}
+                    />
+            </Grid>
+            <Grid item xs={12}>
+                <FormControlLabel disabled={isOneDose}
                     control={<Checkbox checked={isCurrent} onChange={onChangeIsCurrent} />}
                     label={isCurrentLabel}
                 />
             </Grid>
-             <Grid item xs={12}>
-                <MuiPickersUtilsProvider key="end-date" utils={DateFnsUtils} id="end-date">
-                    <KeyboardDatePicker
-                        margin={props.typeMargin}
-                        id="end-date"
-                        inputVariant="outlined"
-                        size="small"
-                        label={finishDate ? "" : finishDateLabel}
-                        format="MM/dd/yyyy"
-                        value={finishDate}
-                        disabled={isCurrent}
-                        defaultValue={finishDate} 
-                        openTo="year"
-                        minDate={new Date() }
-                        onChange={(date, value) => {
-                            setFinishDate(value);
-                            setErrorFinishDate(false);
-                        }}
-                        
-                        emptyLabel={emptyLabel}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                        error={errorFinishDate} 
-                        // helperText={errorString} 
-                    />
-                </MuiPickersUtilsProvider>
+            
+            <Grid item xs={12}>
+                <InputLabel id="duration"><Translate id="hospital.duration" /></InputLabel>
+                <FormControl style={{minWidth: 140}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
+                    <InputLabel id="numberElements"><Translate id="hospital.number-elements" /></InputLabel>
+                    <Select
+                        id="numberElements"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        >
+                        { numberElements }
+                    </Select>
+                </FormControl>
+                <FormControl  style={{minWidth: 150}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
+                    <InputLabel id="timeUnit"><Translate id="hospital.time-unit" /></InputLabel>
+                    <Select
+                        id="timeUnit"
+                        value={timeUnit}
+                        onChange={(e) => setTimeUnit(e.target.value)}
+                        >
+                        { timesArray }
+                    </Select>
+                </FormControl>
             </Grid>
             <Grid item xs={12}>
                 <ButtonAccept onClick={saveDrug}><Translate id="general.add" /></ButtonAccept>
