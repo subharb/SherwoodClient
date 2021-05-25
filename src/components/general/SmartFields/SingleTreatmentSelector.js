@@ -82,10 +82,15 @@ function SingleTreatmentSelector(props){
         console.log(e.target.checked);
         setIsCurrent(e.target.checked);
     }
+    function drugError(error){
+        setError(error);
+    }
+    
     if(error){
-        return <Alert severity="error">
-            <Translate id="investigation.share.error.description" />
-        </Alert>
+        return(
+            <Alert severity="error">
+                <Translate id="investigation.share.error.description" />
+            </Alert>);
     }
     const finishDateLabel = props.translate("general.endDate");
     const emptyLabel = props.translate("hospital.background-date").toString();
@@ -95,7 +100,8 @@ function SingleTreatmentSelector(props){
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <DrugSelector drugSelected={(drug) => drugSelected(drug) } />
+                <DrugSelector drugSelected={(drug) => drugSelected(drug) }  error={errorDrug}
+                    callbackError={(error) => drugError(error)}/>
             </Grid>
             <Grid item xs={12}>
                 <Autocomplete

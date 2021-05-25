@@ -4,6 +4,7 @@ import { AllergyType, DrugType, PropsSmartFieldLocalized } from './index';
 import DrugSelector from './DrugSelector';
 import { Grid } from '@material-ui/core';
 import { ButtonCancel } from '../mini_components';
+import { Alert } from '@material-ui/lab';
 
 function Allergy(props: PropsSmartFieldLocalized) {
     const [drug, setDrug] = useState<DrugType | null>(null);
@@ -16,7 +17,14 @@ function Allergy(props: PropsSmartFieldLocalized) {
             "allergy-code":drug.code
         }
         props.elementSelected(allergy);
-    }   
+    }  
+    
+    if(error){
+        return(
+            <Alert severity="error">
+                <Translate id="investigation.share.error.description" />
+            </Alert>);
+    }
     return(
         <Grid container spacing={3}>
             <Grid xs={12}>
