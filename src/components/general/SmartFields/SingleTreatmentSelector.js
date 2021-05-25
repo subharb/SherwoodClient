@@ -52,15 +52,19 @@ function SingleTreatmentSelector(props){
             setErrorDose(true);
             valid = false;
         }
-        if(amount === null || !timeUnit){
+        if(!isCurrent && (amount === null || !timeUnit)){
             setErrorDuration(true);
             valid = false;
         }
         if(valid){
             const startDate = new Date();
-            const unitMinutes = timeUnit === DAYS ? 1440 : timeUnit === WEEKS ? 10080 : timeUnit === MONTHS ? 43200 : null;
-            const duration = amount * unitMinutes;
-            const finishDate = addMinutes(startDate, duration);
+            let finishDate = null;
+            if(!isCurrent){
+                const unitMinutes = timeUnit === DAYS ? 1440 : timeUnit === WEEKS ? 10080 : timeUnit === MONTHS ? 43200 : null;
+                const duration = amount * unitMinutes;
+                finishDate = addMinutes(startDate, duration);
+            }
+            
              props.elementSelected({
                 treatment:drug.name,"drug-code" : drug.cis, 
                 "treatment-posology": posology, 
@@ -107,8 +111,6 @@ function SingleTreatmentSelector(props){
             </Alert>);
     }
     
-    const finishDateLabel = props.translate("general.endDate");
-    const emptyLabel = props.translate("hospital.background-date").toString();
     const selectPosology = props.slaves.find(slave => slave.name === "treatment-posology");
     const selectDose = props.slaves.find(slave => slave.name === "treatment-dose");
     const isCurrentLabel = props.translate("hospital.chronic");
@@ -173,7 +175,7 @@ function SingleTreatmentSelector(props){
             
             <Grid item xs={12}>
                 <InputLabel id="duration"><Translate id="hospital.duration" /></InputLabel>
-                <FormControl disabled={isOneDose} style={{minWidth: 140}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
+                <FormControl disabled={isOneDose || isCurrent} style={{minWidth: 140}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
                     <InputLabel id="numberElements"><Translate id="hospital.number-elements" /></InputLabel>
                     <Select
                         id="numberElements"
@@ -183,7 +185,7 @@ function SingleTreatmentSelector(props){
                         { numberElements }
                     </Select>
                 </FormControl>
-                <FormControl disabled={isOneDose} style={{minWidth: 150}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
+                <FormControl disabled={isOneDose || isCurrent} style={{minWidth: 150}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
                     <InputLabel id="timeUnit"><Translate id="hospital.time-unit" /></InputLabel>
                     <Select
                         id="timeUnit"
