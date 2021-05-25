@@ -20,8 +20,7 @@ import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 import { change, registerField } from "redux-form";
-import MultipleICTSelector from './MultipleICTSelector';
-import { MultipleTreatmentSelector } from './MultipleTreatmentSelector';
+import SmartField from './SmartFields';
 import SelectField from './SelectField';
 import File from './File';
 
@@ -332,19 +331,20 @@ class FieldSherwood extends Component{
             case "family-background":
             case "background":
             case "ict" : 
-                return(
-                    <MultipleICTSelector mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listDiagnosis: input.value} : null} variant="outlined" margin={this.typeMargin} 
-                        helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
-                        size="small" diagnosesSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
-                );
             case "treatment" : 
                 return(
-                    <MultipleTreatmentSelector mode="form" label={labelString} {...input} initialState={Array.isArray(input.value) ? {listTreatments: input.value} : null} 
-                        variant="outlined" typeMargin={this.typeMargin} 
-                        helperText={errorString}  errorState={errorState} slaves={this.props.slaves}
-                        resetDiagnose={this.resetDiagnose} 
-                        size="small" treatmentSelected={(code) => this.treatmentSelected(code)} />
+                    <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} variant="outlined" margin={this.typeMargin} 
+                        helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
+                        size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                 );
+            // case "treatment" : 
+            //     return(
+            //         <MultipleTreatmentSelector mode="form" label={labelString} {...input} initialState={Array.isArray(input.value) ? {listTreatments: input.value} : null} 
+            //             variant="outlined" typeMargin={this.typeMargin} 
+            //             helperText={errorString}  errorState={errorState} slaves={this.props.slaves}
+            //             resetDiagnose={this.resetDiagnose} 
+            //             size="small" treatmentSelected={(code) => this.treatmentSelected(code)} />
+            //     );
             default:    
                     console.log("TextFieldSherwood",input.value);
                 return(

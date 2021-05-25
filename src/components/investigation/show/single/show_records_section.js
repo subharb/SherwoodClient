@@ -7,8 +7,8 @@ import { Alert } from "@material-ui/lab";
 import { Translate } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
-import MultipleICTSelector from '../../../general/MultipleICTSelector';
-import { MultipleTreatmentSelector } from '../../../general/MultipleTreatmentSelector';
+import SmartField from '../../../general/SmartFields';
+import { isSmartField } from '../../../../utils';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
@@ -69,16 +69,17 @@ export default function ShowRecordsSection(props) {
         else if(valueRecord.surveyField.type === "file"){
             return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
         }
-        else if(["ict", "allergy", "background", "family-background"].includes(valueRecord.surveyField.type)){
-            return <MultipleICTSelector type={valueRecord.surveyField.type} mode="show" 
-                initialState={{listDiagnosis:valueRecord.value}}
+        else if(isSmartField(valueRecord.surveyField.type)){
+            return <SmartField type={valueRecord.surveyField.type} mode="show" 
+                initialState={{listElements:valueRecord.value}}
                 label={valueRecord.surveyField.label}  />
         }
-        else if(["treatment"].includes(valueRecord.surveyField.type)){
-            return <MultipleTreatmentSelector type={valueRecord.surveyField.type} mode="show" 
-                initialState={{listTreatments:valueRecord.value}}
-                label={valueRecord.surveyField.label}  />
-        }
+        // else if(["treatment"].includes(valueRecord.surveyField.type)){
+        //     return <MultipleTreatmentSelector type={valueRecord.surveyField.type} mode="show" 
+        //         initialState={{listTreatments:valueRecord.value}}
+        //         label={valueRecord.surveyField.label}  />
+        // }
+   
         else{
             return(<React.Fragment>
                 { props.section.fields.length > 1 &&

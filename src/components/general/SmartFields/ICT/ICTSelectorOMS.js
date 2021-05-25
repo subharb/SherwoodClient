@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import * as ECT from '@whoicd/icd11ect';
 import '@whoicd/icd11ect/style.css';
-import { getTokenWho } from '../../../services/sherwoodService';
+import { getTokenWho } from '../../../../services/sherwoodService';
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { Grid, TextField } from '@material-ui/core';
-import { ButtonCancel } from '../mini_components';
 
 function ICTSelectorOMS(props){
     const [show, setShow] = useState(false);
@@ -19,7 +18,6 @@ function ICTSelectorOMS(props){
         props.cancel();
     }
     useEffect(() => {
-        
         const mySettings = {
             apiServerUrl: "https://id.who.int",   
             apiSecured: true,
@@ -50,35 +48,14 @@ function ICTSelectorOMS(props){
                 console.log('selected code: '+ selectedEntity.code);
                 console.log('selected bestMatchText: '+ selectedEntity.bestMatchText);
                 ECT.Handler.clear("1");
-                setDiagnose("");
+                setDiagnose(selectedEntity.title);
     
                 if(selectedEntity){
-                    let tempValue;
-                    if(props.type === "ict"){
-                        tempValue = {
-                            "ict" : selectedEntity.title,
-                            "ict-code" : selectedEntity.code
-                        }
+                    const tempValue = {
+                        "ict" : selectedEntity.title,
+                        "ict-code" : selectedEntity.code
                     }
-                    else if(props.type === "background"){
-                        tempValue = {
-                            "background" : selectedEntity.title,
-                            "background-code" : selectedEntity.code,
-                            "background-date" : ""
-                        }
-                    }
-                    else if(props.type === "family-background"){
-                        tempValue = {
-                            "family-background" : selectedEntity.title,
-                            "family-background-code" : selectedEntity.code
-                        }
-                    }
-                    else{ 
-                        tempValue = {
-                            "allergy" : selectedEntity.title,
-                            "allergy-code" : selectedEntity.code
-                        }
-                    }
+                   
                    
                     props.elementSelected(tempValue);    
                 }
@@ -112,12 +89,9 @@ function ICTSelectorOMS(props){
     const value = diagnose !== "" ? diagnose : props.value;
     return ([
         <div>
-            <TextField key="ict-input" {...props} label={props.translate("hospital.select-ict")} value = {value} onFocus={resetField}
+            <TextField key="ict-input" {...props} label={props.translate("hospital.select-ict")} value = {value}
                 inputProps={{className : "ctw-input", "data-ctw-ino" : "1"}}   />
             <div key="ict-container" className="ctw-window" data-ctw-ino="1"></div>
-            <Grid item xs={12}>
-                <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
-            </Grid>
         </div>
     ]
         

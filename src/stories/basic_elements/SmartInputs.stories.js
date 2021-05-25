@@ -12,7 +12,7 @@ const FIELD_TREATMENT = {
         "slaves" : [{
             "required": true,
             "encrypted": false,
-            "name": "treatment-code",
+            "name": "drug-code",
             "label": "Start Drug",
             "type": "text",
             "validation" : "notEmpty",

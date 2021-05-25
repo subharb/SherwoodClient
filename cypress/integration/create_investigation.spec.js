@@ -9,7 +9,7 @@ describe('Testing create an investigation', () => {
         
         cy.loginResearcher(loginResearcherA);
 
-        cy.contains('Create investigation').click();
+        
 
 
         cy.createInvestigation(basic_info1, personal_data_investigation1(),edc_data1() )   
