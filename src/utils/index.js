@@ -506,3 +506,7 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
     
     return encryptedFields;
 }
+
+export function isSmartField(type){
+    return ["ict", "allergy", "background", "family-background", "treatment"].includes(type);
+}
