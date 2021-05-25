@@ -79,7 +79,7 @@ export function NewInvestigation(props){
                 tempInvestigation.basic_info = {...data};
                 break;
             case 1:
-                tempInvestigation.personal_data = data;
+                tempInvestigation.personalFields = data;
                 break;
             case 2:
                 tempInvestigation.surveys = data.surveys;

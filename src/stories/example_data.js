@@ -21,6 +21,7 @@ export const edc_data1 = () => {
                                 name : "treatment",
                                 label:"Drug Selector",
                                 shortLabel: "investigation.table.is_personal_data",
+                                "typeValueCypress" : "Treatment",
                                 validation : "notEmpty",
                                 "slaves" : [{
                                     "id" : 10,
@@ -412,7 +413,7 @@ export const basic_info1 = {
             "value" : "CN", 
             "type" : "text"
         },
-        "type":{"value" : "audit", "type" : "select", "textValue" : "Clinical Trial"},
+        "type":{"value" : "audit", "type" : "select", "textValue" : "Clinical trial"},
         "principal_researcher":{"value" : "Pedro Rodriguez", "type" : "text"},
         "institution":{"value" : "Oxford University", "type" : "text"},
         "contact":{"value" : "test@email.com", "type" : "text"},
@@ -1965,7 +1966,7 @@ export const researcherA_data = {
     name : "David",
     surnames: "Shaikh Urbina",
     email : "dshaikhurbina@gmail.com",
-    password: "Cabezadesherwood2",
+    password: "Ciencia2!",
     phone: "+34647727132",
     country:"es"
 }
