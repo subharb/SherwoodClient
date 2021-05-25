@@ -52,7 +52,7 @@ function SingleTreatmentSelector(props){
             setErrorDose(true);
             valid = false;
         }
-        if(!amount || !timeUnit){
+        if(amount === null || !timeUnit){
             setErrorDuration(true);
             valid = false;
         }
@@ -96,6 +96,9 @@ function SingleTreatmentSelector(props){
     function onChangeIsOnce(e){
         console.log(e.target.checked);
         setIsOneDose(e.target.checked);
+        setPosology("single-dose");
+        setAmount(0);
+        setTimeUnit("days");
     }
     if(error){
         return(
@@ -170,7 +173,7 @@ function SingleTreatmentSelector(props){
             
             <Grid item xs={12}>
                 <InputLabel id="duration"><Translate id="hospital.duration" /></InputLabel>
-                <FormControl style={{minWidth: 140}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
+                <FormControl disabled={isOneDose} style={{minWidth: 140}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
                     <InputLabel id="numberElements"><Translate id="hospital.number-elements" /></InputLabel>
                     <Select
                         id="numberElements"
@@ -180,7 +183,7 @@ function SingleTreatmentSelector(props){
                         { numberElements }
                     </Select>
                 </FormControl>
-                <FormControl  style={{minWidth: 150}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
+                <FormControl disabled={isOneDose} style={{minWidth: 150}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
                     <InputLabel id="timeUnit"><Translate id="hospital.time-unit" /></InputLabel>
                     <Select
                         id="timeUnit"
