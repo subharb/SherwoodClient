@@ -46,8 +46,6 @@ const ICTSelectorGeneral:React.FC<PropsSmartFieldLocalized> = (props) => {
                     <ButtonCancel onClick={props.cancel} ><Translate id="general.cancel" /></ButtonCancel>
                 </Grid> 
             }
-                  
-           
         </Grid>)
 }
 export default withLocalize(ICTSelectorGeneral)

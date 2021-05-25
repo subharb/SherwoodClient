@@ -53,11 +53,12 @@ function SingleTreatmentSelector(props){
         }
         if(valid){
             const startDate = new Date();
-            props.treatmentSelected({
+            props.elementSelected({
                 treatment:drug.name,"drug-code" : drug.code, 
                 "treatment-posology": posology.value, 
                 "treatment-dose": dose.value, 
-                "treatment-start" : startDate, "treatment-finish" : finishDate, 
+                "treatment-start" : startDate, 
+                "treatment-finish" : finishDate, 
             });
         }
     }
@@ -117,7 +118,6 @@ function SingleTreatmentSelector(props){
             <Grid item xs={12}>
                 <Autocomplete
                     id="dose"
-                    
                     options={selectDose.options}
                     getOptionLabel={(option) => props.translate(option.label)}
                     style={{ width: 300 }}
@@ -136,9 +136,9 @@ function SingleTreatmentSelector(props){
             </Grid>
             <Grid item xs={12}>
                 <FormControlLabel
-                        control={<Checkbox checked={isCurrent} onChange={onChangeIsCurrent} />}
-                        label={isCurrentLabel}
-                    />
+                    control={<Checkbox checked={isCurrent} onChange={onChangeIsCurrent} />}
+                    label={isCurrentLabel}
+                />
             </Grid>
              <Grid item xs={12}>
                 <MuiPickersUtilsProvider key="end-date" utils={DateFnsUtils} id="end-date">

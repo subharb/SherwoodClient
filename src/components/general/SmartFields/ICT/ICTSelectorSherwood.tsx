@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { searchDiagnosticService, searchDrugComponentService } from '../../../../services/sherwoodService';
 import { Grid, TextField } from '@material-ui/core';
 import { ButtonAccept, ButtonCancel } from '../../mini_components';
-import { AllergyType, BackgroundType, SmartFieldType, FamilyBackground, Diagnosis } from '../index';
+import { AllergyType, BackgroundType, SmartFieldType, Diagnosis } from '../index';
 import { Autocomplete } from '@material-ui/lab';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { PropsIct } from '../index';
@@ -34,14 +34,8 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                 setLoading(true);
                 let response;
                 let elements = []
-                if(["ict", "background", "family-background"].includes(props.type)){
-                    response = await searchDiagnosticService(searchDiagnosis);
-                    elements = response.diagnostics;
-                }
-                else{
-                    response = await searchDrugComponentService(searchDiagnosis);
-                    elements = response.drugComposition;
-                }
+                response = await searchDiagnosticService(searchDiagnosis);
+                elements = response.diagnostics;
                 
                 if(response.status === 200){
                     setDiagnosticsOptions(elements);
@@ -82,33 +76,7 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                         const tempValue:SmartFieldType = {
                             "ict" : value.name,
                             "ict-code" : value.code
-                        }
-                        // if(props.type === "ict"){
-                        //     tempValue = {
-                        //         "ict" : value.name,
-                        //         "ict-code" : value.code
-                        //     }
-                        // }
-                        // else if(props.type === "background"){
-                        //     tempValue = {
-                        //         "background" : value.name,
-                        //         "background-code" : value.code,
-                        //         "background-date" : ""
-                        //     }
-                        // }
-                        // else if(props.type === "family-background"){
-                        //     tempValue = {
-                        //         "family-background" : value.name,
-                        //         "family-background-code" : value.code
-                        //     }
-                        // }
-                        // else{ 
-                        //     tempValue = {
-                        //         "allergy" : value.name,
-                        //         "allergy-code" : value.code
-                        //     }
-                        // }
-                       
+                        }                       
                         elementSelected(tempValue);
                     }
                 }}
@@ -121,9 +89,6 @@ const ICTSelectorFR:React.FC<Props> = (props) => {
                 renderInput={(params) => <TextField {...params} value={searchDiagnosis} fullWidth={true}
                     error={props.error || error} label={props.translate(`hospital.select-${props.type}`)} variant={props.variant} />}
             />
-            
-            
-            
         </React.Fragment>
     )
 }

@@ -8,6 +8,8 @@ import { EnhancedTable } from '../EnhancedTable';
 import ICTSelectorGeneral from './ICT';
 import Background from './Background';
 import Allergy from './Allergy';
+import FamilyBackground from './FamilyBackground';
+import SingleTreatmentSelector from './SingleTreatmentSelector';
 
 
 export interface PropsSmartField {
@@ -16,6 +18,7 @@ export interface PropsSmartField {
     language:string,
     typeMargin:PropTypes.Margin | undefined,
     type:string,
+    slaves?:object[],
     cancel: boolean | (() => void),
     elementSelected: (element:SmartFieldType) => void,
     error:boolean,
@@ -45,13 +48,13 @@ export interface BackgroundType{
     "background-date" : string
 }
 
-export interface FamilyBackground{
+export interface FamilyBackgroundType{
     "family-background" : string,
     "family-background-code" : string,
     "family-background-relation" ?: string
 }
 
-export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackground | AllergyType;
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType;
 
 export interface Diagnosis{
     ict : string,
@@ -66,14 +69,14 @@ interface Props extends LocalizeContextProps {
     errorState: boolean,
     mode : string,
     initialState:{
-        addingDiagnosis:boolean,
-        listDiagnosis:Diagnosis[]
+        addingElements:boolean,
+        listElements:Diagnosis[]
     },
-    diagnosesSelected: (treatments:SmartFieldType[] | boolean) => void
+    elementSelected: (treatments:SmartFieldType[] | boolean) => void
 }
 
 const SmartField:React.FC<Props> = (props) => {
-    const [listElements, setListElements] = useState<SmartFieldType[]>(props.initialState ? props.initialState.listDiagnosis : []);
+    const [listElements, setListElements] = useState<SmartFieldType[]>(props.initialState ? props.initialState.listElements : []);
     const [addingElements, setAddingElements] = useState(props.mode === "form");
     const [addElement, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.errorState, setAddingElements);
 
@@ -87,46 +90,26 @@ const SmartField:React.FC<Props> = (props) => {
     }
     function renderElements(){
         if(listElements.length > 0 && !addingElements){
-            const headCells = [{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
-            if(props.type === "background"){
-                headCells.push({ id: "date", alignment: "left", label: <Translate id={`general.date`} /> })  
+            const headCells = [];//[{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
+            
+            const keys = Object.keys(listElements[0]);
+            for(let i = 0; i < keys.length;i++){
+                if(!keys[i].includes("code")){
+                    headCells.push({ id: keys[i], alignment: "left", label: <Translate id={`hospital.${keys[i]}-table`} /> }) 
+                }
             }
             const rows = listElements.map((element, index) => {
-                let valueDict = {};
-                
-                if(props.type === "ict"){
-                    const diag = element as Diagnosis;
-                    valueDict = {
-                        id : index,
-                        name : diag["ict"]
-                    }
+                let valueDict:any = {...element};
+                for(const [key, val] of Object.entries(element)) {
+                    if(val && typeof val.getMonth === 'function'){
+                        valueDict[key] = val.toLocaleDateString();
+                    }   
+                    else{
+                        valueDict[key] = val;
+                    } 
                 }
-                if(props.type === "allergy"){
-                    const allergy = element as AllergyType;
-                    valueDict = {
-                        id : index,
-                        name : allergy["allergy"]
-                    }
+                valueDict.id = index;
                     
-                }
-                if(props.type === "background"){
-                    const back = element as BackgroundType;
-                    valueDict = {
-                        id : index,
-                        name :  back["background"],
-                        date : back["background-date"],
-                    }
-                }
-                if(props.type === "family-background"){
-                    const backf = element as FamilyBackground;
-                    valueDict = {
-                        id : index,
-                        name : backf["family-background"],
-                        relation : backf["family-background-relation"],
-                    }
-                    
-                }
-                
                 return valueDict
             })
             if(props.mode === "form"){
@@ -154,27 +137,32 @@ const SmartField:React.FC<Props> = (props) => {
     function renderSelector(){
         if(addingElements && props.mode === "form"){
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
-                cancel:cancel, language:props.activeLanguage.code, error:props.errorState,
+                cancel:cancel, language:props.activeLanguage.code, error:props.errorState, slaves:props.slaves,
                 size:"small", elementSelected:(diag:SmartFieldType) => elementSelected(diag)}
                 
             if(props.type === "background"){
                 return <Background {...propsSmartField} />
             }
+            if(props.type === "family-background"){
+                return <FamilyBackground {...propsSmartField} />
+            }
             if(props.type === "allergy"){
                 return <Allergy {...propsSmartField}/>
             }
-            else if(props.type !== "allergy"){
+            else if(props.type === "ict"){
                 return <ICTSelectorGeneral {...propsSmartField} />
             }
-            
+            else if(props.type === "treatment"){
+                return <SingleTreatmentSelector {...propsSmartField} />
+            }
             // return <BackgroundSelector type={props.type} variant="outlined" typeMargin={props.typeMargin} 
             //         cancel={cancel} size="small" error={props.errorState} language={props.activeLanguage.code} 
             //         elementSelected={(diag:Smartfield) => elementSelected(diag)} />
         }
     }
     useUpdateEffect(() =>{
-        if(props.initialState && props.initialState.listDiagnosis.length >0 ){
-            setListElements(props.initialState.listDiagnosis);
+        if(props.initialState && props.initialState.listElements.length >0 ){
+            setListElements(props.initialState.listElements);
             setAddingElements(false);
         }
         
@@ -182,7 +170,7 @@ const SmartField:React.FC<Props> = (props) => {
     
     useUpdateEffect(() =>{
         if(props.mode === "form"){
-            props.diagnosesSelected(listElements);
+            props.elementSelected(listElements);
             if(listElements.length === 0){
                 resetState()
             }
@@ -191,7 +179,7 @@ const SmartField:React.FC<Props> = (props) => {
     }, [listElements]);
     useUpdateEffect(() =>{
         if(!addElement){
-            props.diagnosesSelected(false);
+            props.elementSelected(false);
         }
     }, [addElement]);
     if(!addElement && listElements.length === 0){
