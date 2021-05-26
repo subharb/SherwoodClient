@@ -115,7 +115,7 @@ function SingleTreatmentSelector(props){
     const selectDose = props.slaves.find(slave => slave.name === "treatment-dose");
     const isCurrentLabel = props.translate("hospital.chronic");
     const isOneDoseLabel = props.translate("hospital.single-dose");
-    const numberElements = [1,2,3,4,5,6,7,8,9].map(val => <MenuItem value={val}>{val}</MenuItem>);
+    const numberElements = [1,2,3,4,5,6,7,8,9,10].map(val => <MenuItem value={val}>{val}</MenuItem>);
     const timesArray = [DAYS, WEEKS, MONTHS].map(val => <MenuItem value={val}><Translate id={`hospital.time-unit-options.${val}`} /></MenuItem>);
     return (
         <Grid container spacing={2}>

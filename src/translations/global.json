@@ -41,7 +41,7 @@
         "treatment-finish-table" : ["End date", "Fecha fin", "Date de fin"],
         "chronic" : ["Long-term use", "Crónico", "chronique"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
-        "number-elements" : ["Amount", "Cantidad", "montant"],
+        "number-elements" : ["Amount", "Cantidad", "temp"],
         "time-unit" : ["Days/weeks", "Dúas/semanas", "jours semaines"],
         "time-unit-options" : {
             "days" : ["days", "días", "jours"],
@@ -117,6 +117,9 @@
                 "title" : ["Search Patient", "Buscar Paciente", "Recherche patient"],
                 "back-button" : ["Back to search", "Nueva búsqueda", "Nouvelle recherche"],
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
+            },
+            "laboratory":{
+                "title" : ["Laboratory", "Laboratorio", "Laboratoire"]
             },
             "medical-imaging" : {
                 "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
