@@ -53,6 +53,7 @@ function DrugSelector(props: Props) {
             loading = {loading}
             noOptionsText="start typing"
             options={drugOptions}
+            filterOptions={x => x}
             onInputChange={(event, value, reason) => {
                 if(reason === "clear"){
                     setSearchDrug("");
