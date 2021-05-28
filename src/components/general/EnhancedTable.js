@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import { NavLink } from "react-router-dom";
-
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Helmet from "react-helmet";
 
 import {
@@ -15,6 +15,7 @@ import {
     IconButton,
     Link,
     Paper as MuiPaper,
+    RootRef,
     Table,
     TableBody,
     TableCell,
@@ -287,6 +288,9 @@ const handleChangeRowsPerPage = (event) => {
     setPage(0);
 };
 
+const onDragEnd = (result) => {
+    props.orderUpdate(result)
+}
 const isSelected = (id) => selected.indexOf(id) !== -1;
 
 const emptyRows =
@@ -316,85 +320,107 @@ return (
                 actions={actions}
                 noSelectable={noSelectable}
             />
-            <TableBody>
-            {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                const isItemSelected = isSelected(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
+            <DragDropContext
+                onDragEnd={(result) => onDragEnd(result)}>
 
-                return (
-                    <TableRow
-                    hover
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={`${index}`}
-                    selected={isItemSelected}
-                    onClick={props.selectRow ? () => props.selectRow( row.id) : null}
-                    >
-                    {
-                        !noSelectable &&
-                        <TableCell padding="checkbox">
-                            <Checkbox
-                                checked={isItemSelected}
-                                inputProps={{ "aria-labelledby": labelId }}
-                                onClick={(event) => handleClick(event, row.id)}
-                            />
-                        </TableCell>
-                    }
+                <Droppable droppableId="droppable">
                     
                     {
-                        headCells.map(headCell =>{
-                            let value = row[headCell.id];
-                            if(typeof row[headCell.id] === "boolean"){ 
-                                value = <Checkbox checked={row[headCell.id]}  />
+                        (provided, snapshot) =>(
+                            <RootRef rootRef={provided.innerRef}>
+                            <TableBody>
+                                
+                            {stableSort(rows, getComparator(order, orderBy))
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map((row, index) => {
+                                const isItemSelected = isSelected(row.id);
+                                const labelId = `enhanced-table-checkbox-${index}`;
+        
+                                return (
+                                    <Draggable draggableId={`item-${row.id}`} index={index}>
+                                        {
+                                            (provided, snapshot)=>(
+                                                
+                                                <TableRow
+                                                    hover
+                                                    role="checkbox"
+                                                    aria-checked={isItemSelected}
+                                                    tabIndex={-1}
+                                                    key={`${index}`}
+                                                    selected={isItemSelected}
+                                                    onClick={props.selectRow ? () => props.selectRow( row.id) : null}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    innerRef={provided.innerRef}
+                                                    >
+                                                    
+                                                    {
+                                                        !noSelectable &&
+                                                        <TableCell padding="checkbox">
+                                                            <Checkbox
+                                                                checked={isItemSelected}
+                                                                inputProps={{ "aria-labelledby": labelId }}
+                                                                onClick={(event) => handleClick(event, row.id)}
+                                                            />
+                                                        </TableCell>
+                                                    }
+                                                    
+                                                    {
+                                                        headCells.map(headCell =>{
+                                                            let value = row[headCell.id];
+                                                            if(typeof row[headCell.id] === "boolean"){ 
+                                                                value = <Checkbox checked={row[headCell.id]}  />
+                                                            }
+                                                            return <TableCell key={headCell.id} align={headCell.alignment}>{value}</TableCell>
+                                                            
+                                                        })
+                                                    }         
+                                                    {
+                                                        props.actions && 
+                                                        <TableCell padding="none" align="right">
+                                                            <Box mr={2}>
+                                                                {
+                                                                    props.actions.hasOwnProperty("add") &&
+                                                                    <IconButton data-testid="add-element" aria-label="add" onClick={() => props.actions.add( row.id)}>
+                                                                        <AddIcon />
+                                                                    </IconButton>
+                                                                }
+                                                                {
+                                                                    props.actions.hasOwnProperty("view") &&
+                                                                    <IconButton data-testid="view-element" aria-label="view" onClick={() => props.actions.view( row.id)}>
+                                                                        <RemoveRedEyeIcon />
+                                                                    </IconButton>
+                                                                }
+                                                                {
+                                                                    props.actions.hasOwnProperty("delete") &&
+                                                                    <IconButton data-testid="delete-element" aria-label="delete" onClick={() => props.actions.delete(row.id)}>
+                                                                        <DeleteIcon />
+                                                                    </IconButton>
+                                                                }
+                                                                {
+                                                                    props.actions.hasOwnProperty("edit") &&
+                                                                    <IconButton data-testid="edit-element" aria-label="edit" onClick={() => props.actions.edit( row.id)}>
+                                                                        <EditIcon />
+                                                                    </IconButton>
+                                                                }
+                                                            </Box>
+                                                        </TableCell>
+                                                    }   
+                                                    </TableRow>
+                                            )
+                                        }
+                                        
+                                    </Draggable>
+                                );
+                                })
                             }
-                            return <TableCell key={headCell.id} align={headCell.alignment}>{value}</TableCell>
-                            
-                        })
-                    }         
-                    {
-                        props.actions && 
-                        <TableCell padding="none" align="right">
-                            <Box mr={2}>
-                                {
-                                    props.actions.hasOwnProperty("add") &&
-                                    <IconButton data-testid="add-element" aria-label="add" onClick={() => props.actions.add( row.id)}>
-                                        <AddIcon />
-                                    </IconButton>
-                                }
-                                {
-                                    props.actions.hasOwnProperty("view") &&
-                                    <IconButton data-testid="view-element" aria-label="view" onClick={() => props.actions.view( row.id)}>
-                                        <RemoveRedEyeIcon />
-                                    </IconButton>
-                                }
-                                {
-                                    props.actions.hasOwnProperty("delete") &&
-                                    <IconButton data-testid="delete-element" aria-label="delete" onClick={() => props.actions.delete(row.id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                }
-                                {
-                                    props.actions.hasOwnProperty("edit") &&
-                                    <IconButton data-testid="edit-element" aria-label="edit" onClick={() => props.actions.edit( row.id)}>
-                                        <EditIcon />
-                                    </IconButton>
-                                }
-                            </Box>
-                        </TableCell>
-                    }          
-                    
-                    </TableRow>
-                );
-                })}
-            {/* {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={8} />
-                </TableRow>
-            )} */}
-            </TableBody>
+                            { provided.placeholder}
+                            </TableBody>
+                            </RootRef>
+                        )
+                    }
+                </Droppable>
+            </DragDropContext>
         </Table>
         </TableContainer>
         <TablePagination
