@@ -220,10 +220,8 @@ export default class EDC extends Component{
         }
         else{
             return (
-                <Grid container spacing={3}>
-                        <button onClick={this.toggleOrder}>{this.state.reordering ? "Finish reorder" : "Set order"}</button>
-                        { this.renderDataCollections() }
-                    
+                <Grid container spacing={3}>    
+                    { this.renderDataCollections() }
                     <Grid item xs={12}>
                         {
                             this.props.callBackStepBack && 
