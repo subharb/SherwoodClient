@@ -17,10 +17,10 @@ export default function PatientsTable(props) {
                     day: '2-digit'
                     }).replace(/\./g, '/');
             }
-            else if(pField.name === "name" || pField.name === "surnames"){
-                const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", patient.uuid);
-                value = <Link to={nextUrl} >{patient.personalData[pField.name]}</Link>
-            }
+            // else if(pField.name === "name" || pField.name === "surnames"){
+            //     const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", patient.uuid);
+            //     value = <Link to={nextUrl} >{patient.personalData[pField.name]}</Link>
+            // }
             
             tempRow[pField.name] = value;
         }
