@@ -109,7 +109,7 @@ class Section extends Component{
                 const value = FIELDS_FORM[key];
                 return { id: key, alignment: "right", label: <Translate id={value.shortLabel} /> }
             });
-            const rows = this.state.fields.map((aField, index) => {
+            const rows = this.state.fields.sort((a, b) => a.order - b.order ).map((aField, index) => {
                 let tempSection = {};
                 
                 for(const keyField of Object.keys(FIELDS_FORM)){

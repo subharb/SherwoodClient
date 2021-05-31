@@ -79,8 +79,8 @@ export default class EDC extends Component{
             </Grid>)
         }
         else{
-            const headCells =[{ id:"title", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
-                                {id:"number_sections", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
+            const headCells =[{ id:"title", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
+                                {id:"number_sections", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
                             ]
          
             const rows = this.state.surveys.map((survey, index) => {

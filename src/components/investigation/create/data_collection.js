@@ -84,7 +84,7 @@ class DataCollection extends Component{
                         <EnhancedTable orderUpdate={(dragDrop) => this.orderUpdate(dragDrop)} noSelectable
                             titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
                             headCells={arrayHeader}
-                            rows={this.state.sections.map((section, index) => {
+                            rows={this.state.sections.sort((a, b) => a.order - b.order ).map((section, index) => {
                                 let tempSection = {}
                                 for(const keyField of Object.keys(SECTION_FORM)){
                                     const field = SECTION_FORM[keyField];
