@@ -16,7 +16,8 @@
         "date" : ["Date", "Fecha", "Date"],
         "accept" : ["Accept", "Aceptar", "Accepter"],
         "start_typing" : ["start typing", "escriba texto", "commencer à écrire"],
-        "no_results" : ["no results", "sin resultados", "no results"]
+        "no_results" : ["no results", "sin resultados", "no results"],
+        "no-option-match" : ["If no options match, write your own", "Si ninguna opción coincide, escriba la suya", "Si aucune option, écrivez le vôtre"]
     },
     "hospital" : {
         "doctor" : ["Doctor", "Médico", "Médecin"],
@@ -33,16 +34,16 @@
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"]
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
-        "posology" : ["Frequency", "Frecuencia", "fréquence"],
-        "treatment-posology-table" : ["Frequency", "Frecuencia", "fréquence"],
-        "dose" : ["Dose", "Dosis", "Dose"],
-        "treatment-dose-table" : ["Dose", "Dosis", "Dose"],
+        "posology" : ["Frequency", "Frecuencia", "Fréquence"],
+        "treatment-posology-table" : ["Frequency", "Frecuencia", "Fréquence"],
+        "dose" : ["Quantity", "Cantidad", "Quantité"],
+        "treatment-dose-table" :["Quantity", "Cantidad", "Quantité"],
         "treatment-start-table" : ["Start date", "F.Inicio", "Date de début"],
         "treatment-finish-table" : ["End date", "Fecha fin", "Date de fin"],
-        "chronic" : ["Long-term use", "Crónico", "chronique"],
+        "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
-        "number-elements" : ["Amount", "Cantidad", "temp"],
-        "time-unit" : ["Days/weeks", "Dúas/semanas", "jours semaines"],
+        "number-elements" : ["Number", "Nombre", "Número"],
+        "time-unit" : ["Time", "Tiempo", "Temps"],
         "time-unit-options" : {
             "days" : ["days", "días", "jours"],
             "weeks" : ["weeks", "semanas", "semaines"],
@@ -73,7 +74,7 @@
         "ict-plural" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
         "ict-table" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
-        "treatment-table" : ["Treatments", "Tratamientos", "Traitement"],
+        "treatment-table" : ["Drug", "Medicamento", "Médicament"],
         "allergy-plural" : ["Allergies", "Alergías", "Allergies aux medicam"],
         "allergy-table" : ["Allergies", "Alergías", "Allergies aux medicam"],
         "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents"],
@@ -119,10 +120,12 @@
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
             },
             "laboratory":{
+                "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Il n'a aucune laboratoire result"],
                 "name" : ["Laboratory", "Laboratorio", "Laboratoire"],
                 "title" : ["Laboratory", "Laboratorio", "Laboratoire"]
             },
             "medical-imaging" : {
+                "no-records" : ["No medical images available", "No dispone de imágenes", "Il n'a aucune image"],
                 "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
                 "title" : ["Images requests", "Petición de imagen", "Demandes d'imaginerie"]
             },
@@ -162,7 +165,7 @@
             },
             "contact_info" : {
                 "email" : ["Email", "Email", "Email"],
-                "phone" : ["Phone", "Teléfono", "Telephone"]
+                "phone" : ["Phone", "Teléfono", "Téléphone"]
             },
             "key_generation" : {
                 "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
@@ -236,9 +239,9 @@
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
                     "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
-                    "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité nationale"],
+                    "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
-                    "phone" : ["Phone number", "Número de teléfono", "Numero de telephone"],
+                    "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento", "Date de naissance"],
                     "sex" : ["Sex", "Sexo", "Sex"]
@@ -249,9 +252,9 @@
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
                     "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
-                    "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité nationale"],
+                    "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
-                    "phone" : ["Phone number", "Número de teléfono", "Numero de telephone"],
+                    "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["DOB", "Fecha de nacimiento", "Date de naissance"],
                     "sex" : ["Sex", "Sexo", "Sex"]

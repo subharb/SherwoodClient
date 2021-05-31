@@ -138,7 +138,7 @@ function SingleTreatmentSelector(props){
                     freeSolo
                     renderInput={(params) => <TextField {...params} 
                         label={selectDose.label} variant="outlined" 
-                        helperText="If no options match, write your own" 
+                        helperText={props.translate("general.no-option-match")} 
                         error={errorDose} />}
                     />
             </Grid>
@@ -162,7 +162,7 @@ function SingleTreatmentSelector(props){
                     }}
                     freeSolo
                     renderInput={(params) => <TextField {...params} 
-                        label={selectPosology.label} variant="outlined" helperText="If no options match, write your own" 
+                        label={selectPosology.label} variant="outlined" helperText={props.translate("general.no-option-match")} 
                         error={errorPosology} />}
                     />
             </Grid>
