@@ -47,7 +47,7 @@ class Section extends Component{
         this.toogleField = this.toogleField.bind(this);
         this.renderFields = this.renderFields.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.deleteElement = this.deleteElement.bind(this);
+        this.deleteField = this.deleteField.bind(this);
         this.handleNewSection = this.handleNewSection.bind(this); 
 
         const initialState = { addingField: false, fields : [] }
@@ -66,10 +66,10 @@ class Section extends Component{
             this.props.callBackNewSection(newValues);
         }
     }
-    deleteElement(index, element){
+    deleteField(index){
         console.log("Delete Field", index);
         let tempState = {...this.state};
-        tempState[element].splice(index, 1);
+        tempState.fields.splice(index, 1);
         this.setState(tempState);
     }
     handleAddField(values){
@@ -79,6 +79,7 @@ class Section extends Component{
         }
         values.validation =  isSmartField(values.type) ? "arrayOrFalse" : "notEmpty";
         let tempState = {...this.state};
+        values.order = tempState.fields.length;
         tempState.fields.push(values);
         this.setState(tempState);
         this.toogleField();
@@ -93,29 +94,43 @@ class Section extends Component{
         tempState.addingField = false;
         this.setState(tempState);
     }
+    orderUpdate(dragDrop){
+        console.log("Parent reorder");
+        let tempState = {...this.state};
+        const result = Array.from(tempState.fields);
+        const [removed] = result.splice(dragDrop.source.index, 1);
+        result.splice(dragDrop.destination.index, 0, removed);
+        tempState.fields = result.map((field, index) => {field.order = index; return field;});
+        this.setState(tempState);
+    }
     renderFields(){
         if(this.state.fields.length > 0){
             const arrayHeader = Object.keys(FIELDS_FORM).map(key => {
                 const value = FIELDS_FORM[key];
                 return { id: key, alignment: "right", label: <Translate id={value.shortLabel} /> }
             });
-            const rows = this.state.fields.map(aField => {
-                let tempSection = {}
+            const rows = this.state.fields.map((aField, index) => {
+                let tempSection = {};
+                
                 for(const keyField of Object.keys(FIELDS_FORM)){
                     const field = FIELDS_FORM[keyField];
                     if(field.type === "checkbox"){
-                        tempSection[keyField] = aField[keyField] === true
+                        tempSection[keyField] = aField[keyField] === true;
                     }
                     else{
                         tempSection[keyField] = aField[keyField]
                     }
+                
+                
                 }
+                tempSection["id"] = index;
                 return tempSection;
             })
-            return <EnhancedTable titleTable={<Translate id="investigation.create.edc.fields" />}  
+            return <EnhancedTable orderUpdate={(dragDrop) => this.orderUpdate(dragDrop)} 
+                        noSelectable titleTable={<Translate id="investigation.create.edc.fields" />}  
                         headCells={arrayHeader}
                         rows={rows}
-                        actions={{"delete" : (index) => this.deleteElement(index, "fields") }} 
+                        actions={{"delete" : (index) => this.deleteField(index) }} 
                     />
         }
         else{

@@ -62,8 +62,7 @@ export default class EDC extends Component{
         const result = Array.from(tempState.surveys);
         const [removed] = result.splice(dragDrop.source.index, 1);
         result.splice(dragDrop.destination.index, 0, removed);
-        tempState.surveys = tempState.surveys.map((survey, index) => survey.order = index);
-        tempState.surveys = result;
+        tempState.surveys = result.map((survey, index) => {survey.order = index; return survey;});
         this.setState(tempState);
     }
     renderDataCollections(){
@@ -91,8 +90,9 @@ export default class EDC extends Component{
             if(!this.state.reordering){
                 return([
                     <Grid item xs={12}>
-                        <EnhancedTable orderUpdate={(result) => this.orderUpdate(result)} titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
-                                actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
+                        <EnhancedTable orderUpdate={(result) => this.orderUpdate(result)} noSelectable
+                            titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
+                            actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
                     
                     </Grid>,
                     <Grid item xs={12}>

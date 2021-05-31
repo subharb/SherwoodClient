@@ -55,8 +55,7 @@ class DataCollection extends Component{
         const result = Array.from(tempState.sections);
         const [removed] = result.splice(dragDrop.source.index, 1);
         result.splice(dragDrop.destination.index, 0, removed);
-        tempState.sections = tempState.sections.map((section, index) => section.order = index);
-        tempState.sections = result;
+        tempState.sections = result.map((section, index) => {section.order = index; return section;});
         this.setState(tempState);
     }
     renderSections(){
@@ -82,7 +81,8 @@ class DataCollection extends Component{
             return(
                 <Grid container item xs={12}>
                     <Grid item xs={12}>
-                        <EnhancedTable orderUpdate={(dragDrop) => this.orderUpdate(dragDrop)} titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
+                        <EnhancedTable orderUpdate={(dragDrop) => this.orderUpdate(dragDrop)} noSelectable
+                            titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
                             headCells={arrayHeader}
                             rows={this.state.sections.map((section, index) => {
                                 let tempSection = {}
@@ -136,10 +136,10 @@ class DataCollection extends Component{
             tempState.sections[this.state.editingIndexSection] = section;
         }
         else{
+            section.order =  tempState.sections.length;
             tempState.sections.push(section);
         }
         this.setState(tempState);
-
     }
     closeNewSection(){
         console.log("closeNewSection");

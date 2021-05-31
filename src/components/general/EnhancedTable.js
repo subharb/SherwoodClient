@@ -337,7 +337,8 @@ return (
                                 const labelId = `enhanced-table-checkbox-${index}`;
         
                                 return (
-                                    <Draggable draggableId={`item-${row.id}`} index={index}>
+                                    <Draggable draggableId={`item-${row.id}`} index={index}
+                                        isDragDisabled={!props.orderUpdate}>
                                         {
                                             (provided, snapshot)=>(
                                                 
