@@ -49,6 +49,16 @@ class DataCollection extends Component{
         tempState.name = e.target.value;
         this.setState(tempState);
     }
+    orderUpdate(dragDrop){
+        console.log("Parent reorder");
+        let tempState = {...this.state};
+        const result = Array.from(tempState.sections);
+        const [removed] = result.splice(dragDrop.source.index, 1);
+        result.splice(dragDrop.destination.index, 0, removed);
+        tempState.sections = tempState.sections.map((section, index) => section.order = index);
+        tempState.sections = result;
+        this.setState(tempState);
+    }
     renderSections(){
         const AddButton= <ButtonAdd disabled={this.state.addingSection || Number.isInteger(this.state.editingIndexSection)} 
                             type="button" data-testid="add-sections" show={!this.state.addingSection}  
@@ -72,7 +82,7 @@ class DataCollection extends Component{
             return(
                 <Grid container item xs={12}>
                     <Grid item xs={12}>
-                        <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
+                        <EnhancedTable orderUpdate={(dragDrop) => this.orderUpdate(dragDrop)} titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
                             headCells={arrayHeader}
                             rows={this.state.sections.map((section, index) => {
                                 let tempSection = {}

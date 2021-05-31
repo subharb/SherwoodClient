@@ -62,6 +62,7 @@ export default class EDC extends Component{
         const result = Array.from(tempState.surveys);
         const [removed] = result.splice(dragDrop.source.index, 1);
         result.splice(dragDrop.destination.index, 0, removed);
+        tempState.surveys = tempState.surveys.map((survey, index) => survey.order = index);
         tempState.surveys = result;
         this.setState(tempState);
     }

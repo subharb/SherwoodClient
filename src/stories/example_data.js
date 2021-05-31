@@ -92,7 +92,34 @@ export const edc_data1 = () => {
                                 "typeValueCypress" : "Text"
                             }
                         ]
-                    }
+                    },
+                    {
+                        "id": 5,
+                        "uuid": "50083f66-6610-4126-90c6-ffb6ee414f40",
+                        "name": "Diagnosis",
+                        "repeats": false,
+                        "isActive": true,
+                        "fields": [
+                            {   id:10,
+                                required : true,
+                                type:"ict",
+                                name : "ict",
+                                label:"Current Diagnosis",
+                                shortLabel: "investigation.table.is_personal_data",
+                                "typeValueCypress" : "Diagnosis",
+                                validation : "notEmpty",
+                                "slaves" : [{
+                                    "id" : 10,
+                                    "required": true,
+                                    "encrypted": false,
+                                    "name": "ict-code",
+                                    "label": "-",
+                                    "type": "text",
+                                    "validation" : "notEmpty",
+                                }]
+                            }
+                        ]
+                    },
                 ]
             },
             {

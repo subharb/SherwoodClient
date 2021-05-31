@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
-import { validateField, FIELDS_FORM } from '../../../utils';
+import { validateField, FIELDS_FORM, isSmartField } from '../../../utils';
 import styled from "styled-components";
 import FieldSherwood from '../../general/FieldSherwood';
 import Table from '../../general/table';
@@ -77,7 +77,7 @@ class Section extends Component{
         if(values.hasOwnProperty("type_options")){
             values["options"] = values.type_options;
         }
-        values.validation = ["ict", "treatment", "allergy", "background", "family-background"].indexOf(values.type) !== -1 ? "arrayOrFalse" : "notEmpty";
+        values.validation =  isSmartField(values.type) ? "arrayOrFalse" : "notEmpty";
         let tempState = {...this.state};
         tempState.fields.push(values);
         this.setState(tempState);
