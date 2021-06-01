@@ -77,6 +77,16 @@ const FIELDS_FORM = {
                 {"label": "Option 3", "value" : "checkbox"},
         ]                             
     },
+    "radio":{
+        required : false,
+        type:"radio",
+        label:"Radio Buttons",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty",
+        options:[{"label" : "Option 1", "value" : "text"},
+                {"label": "Option 2", "value" : "number"},
+                {"label": "Option 3", "value" : "checkbox"}]
+    },
     "date" : {
         required : false,
         type:"date",

@@ -184,6 +184,7 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.textarea", "value" : "textarea"},
                 {"label": "investigation.create.edc.dropdown", "value" : "select"},
                 {"label": "investigation.create.edc.multioption", "value" : "multioption"},
+                {"label": "investigation.create.edc.radio", "value" : "radio"},
                 {"label": "investigation.create.edc.diagnosis", "value" : "ict"},
                 {"label": "investigation.create.edc.treatment", "value" : "treatment"},
                 {"label": "investigation.create.edc.allergy", "value" : "allergy"},
@@ -191,7 +192,7 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.files", "value" : "file"},
                 {"label": "investigation.create.edc.family-background", "value" : "family-background"}
         ],
-        activationValues : ["dropdown", "multioption"],
+        activationValues : ["dropdown", "multioption", "radio"],
         activatedFields:[
             {
                 required : true,
@@ -200,6 +201,13 @@ export const FIELDS_FORM = {
                 label : "investigation.create.edc.choose",
                 shortLabel: "investigation.table.type"
             },
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            }, 
             {
                 required : true,
                 type:"options",

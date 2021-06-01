@@ -17,7 +17,9 @@
         "accept" : ["Accept", "Aceptar", "Accepter"],
         "start_typing" : ["start typing", "escriba texto", "commencer à écrire"],
         "no_results" : ["no results", "sin resultados", "no results"],
-        "no-option-match" : ["If no options match, write your own", "Si ninguna opción coincide, escriba la suya", "Si aucune option, écrivez le vôtre"]
+        "no-option-match" : ["If no options match, write your own", "Si ninguna opción coincide, escriba la suya", "Si aucune option, écrivez le vôtre"],
+        "field-required" : ["This field is required", "Este campo es obligatorio", "Ce champ est requis"],
+        "choose-options" : ["Choose the options that apply", "Elija las opciones que apliquen", "Choisissez les options qui s'appliquent"]
     },
     "hospital" : {
         "doctor" : ["Doctor", "Médico", "Médecin"],
@@ -317,6 +319,7 @@
                 "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
                 "textarea" : ["Texarea", "Texto largo", "Texarea"],
                 "multioption" : ["Multioption", "Multiopción", "Multioption"],
+                "radio" : ["Radio button", "Radio button", "Radio button"],
                 "dropdown" : ["Dropdown", "Dropdown", "Dropdown"],
                 "type_date" : ["Date", "Fecha", "Date"], 
                 "choose" : ["Choose an option", "Elija una opción", "Choisir une option"],

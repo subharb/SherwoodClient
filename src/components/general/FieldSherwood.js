@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { withLocalize } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
-        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText } from '@material-ui/core';
+        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio } from '@material-ui/core';
 import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
@@ -74,6 +74,7 @@ class FieldSherwood extends Component{
         this.multiOptionSelected = this.multiOptionSelected.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.resetDiagnose = this.resetDiagnose.bind(this);
+        this.handleRadioChange = this.handleRadioChange.bind(this);
     }
 
     async componentDidMount(){
@@ -85,6 +86,10 @@ class FieldSherwood extends Component{
             }
         }
 
+    }
+    handleRadioChange(event){
+        console.log(event);
+        this.props.input.onChange(event.target.value);
     }
     multiOptionSelected(value){
         let tempValue = [value];
@@ -183,18 +188,32 @@ class FieldSherwood extends Component{
                                 <InputLabel id={input.name}>{labelString}</InputLabel>
                             </div>
                             <div className="row">
-                                <InputLabel shrink={true}>Choose the options that apply</InputLabel>
+                                <InputLabel shrink={true}><Translate id="general.choose-options" /></InputLabel>
                             </div>
                             <ButtonGroup color="primary" aria-label="outlined primary button group">
                                 {optionButtons}
                             </ButtonGroup>
                         </div>
-                    ])
+                    ]);
+            case "radio":
+                return(
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">{labelString}</FormLabel>
+                        <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={this.handleRadioChange}>
+                            {
+                                options.map(option => {
+                                    return <FormControlLabel value={option.value} control={<Radio />} label={option.label} />
+                                })
+                            }
+                        </RadioGroup>
+                    </FormControl>
+                )
+                
             case "checkbox":
                 console.log("Value checkbox: "+input.name+" "+input.value);
                 const classNameError = (meta.touched && meta.error) ? "error text" : "";
                 const className = removeClass ?  `col ${sizeCurrent}` : `col ${sizeCurrent}`
-                const errorText = errorState ? <RedFormHelperText>This field is required</RedFormHelperText> : "";
+                const errorText = errorState ? <RedFormHelperText><Translate id="general.field-required" /></RedFormHelperText> : "";
                 return([
                     <FormControlLabel
                         control={<Checkbox checked={input.value} {...input} />}
