@@ -319,6 +319,7 @@
                 "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
                 "textarea" : ["Texarea", "Texto largo", "Texarea"],
                 "multioption" : ["Multioption", "Multiopción", "Multioption"],
+                "evaluation" : ["Evaluation", "Evaluación", "Evaluation"],
                 "radio" : ["Radio button", "Radio button", "Radio button"],
                 "dropdown" : ["Dropdown", "Dropdown", "Dropdown"],
                 "type_date" : ["Date", "Fecha", "Date"], 

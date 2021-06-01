@@ -101,12 +101,13 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
-    "evaluate" : {
+    "evaluation" : {
         required : false,
-        type:"evaluate",
+        type:"evaluation",
         label:"Evaluate opinion",
         shortLabel: "investigation.table.name",
-        validation : "textMin2"
+        validation : "textMin2",
+        options:[3,7]
     },
     "textarea" : {
         required : false,

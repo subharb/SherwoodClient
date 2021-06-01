@@ -6,7 +6,7 @@ import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
-        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio } from '@material-ui/core';
+        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid } from '@material-ui/core';
 import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
@@ -21,7 +21,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 import { change, registerField } from "redux-form";
 import SmartField from './SmartFields';
-import SelectField from './SelectField';
+import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import File from './File';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
@@ -38,6 +39,16 @@ const QuillWrapper = styled.div`
     `
     }
   }
+`;
+const EvaluateContainer = styled.div`
+    display:flex;
+`;
+const EvaluateElement = styled.div`
+    display:flex;
+    flex-direction:column;
+`;
+const SpanElement = styled.span`
+  text-align:center;
 `;
 const sharedStyle = css`
     // & label {
@@ -135,7 +146,7 @@ class FieldSherwood extends Component{
         this.props.input.onChange(images);
     }
     render(){
-        const {input, label, meta, type, options, size, option, removeClass, validation, activationValues, activatedFields} = this.props;
+        const {input, label, meta, type, options, size, removeClass, validation} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -269,19 +280,18 @@ class FieldSherwood extends Component{
                     </MuiPickersUtilsProvider>
                     
                 )
-            case "evaluate":
+            case "evaluation":
                 let arrayButtons = [];
-                for(let i= 0;i < 10; i++){
-                    const value = i+1;
-                    let iconString = "panorama_fish_eye";
-                    if(input.value ===  value){
-                        iconString = "fiber_manual_record";
+                for(let i= options[0];i <=options[1]; i++){
+                    let Icon = PanoramaFishEyeIcon;
+                    if(input.value ===  i){
+                        Icon = FiberManualRecordIcon;
                     }
                     arrayButtons.push(
-                        <IconButton onClick={()=>this.props.input.onChange(value)}>
-                            {value}.
-                            <Icon>{iconString}</Icon>
-                        </IconButton>
+                        <EvaluateElement>
+                            <Icon onClick={()=>this.props.input.onChange(i)}></Icon>
+                            <SpanElement><Typography variant="body2" gutterBottom>{i}</Typography></SpanElement>
+                        </EvaluateElement>
                     )
                 }
                 return (
@@ -289,9 +299,9 @@ class FieldSherwood extends Component{
                         <div className="row">
                             <InputLabel id={input.name}>{labelString}</InputLabel>
                         </div>
-                        <div className="row">
+                        <EvaluateContainer>
                             {arrayButtons}
-                        </div>
+                        </EvaluateContainer>
                     </div>
                     );
                 
@@ -356,20 +366,14 @@ class FieldSherwood extends Component{
                         helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
                         size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                 );
-            // case "treatment" : 
-            //     return(
-            //         <MultipleTreatmentSelector mode="form" label={labelString} {...input} initialState={Array.isArray(input.value) ? {listTreatments: input.value} : null} 
-            //             variant="outlined" typeMargin={this.typeMargin} 
-            //             helperText={errorString}  errorState={errorState} slaves={this.props.slaves}
-            //             resetDiagnose={this.resetDiagnose} 
-            //             size="small" treatmentSelected={(code) => this.treatmentSelected(code)} />
-            //     );
             default:    
-                    console.log("TextFieldSherwood",input.value);
+                console.log("TextFieldSherwood",input.value);
                 return(
-                        <TextFieldSherwood {...input} variant="outlined" margin={this.typeMargin}
-                            label={labelString} error={errorState} size="small"
-                            helperText={errorString} />
+                    <TextFieldSherwood {...input} variant="outlined" margin={this.typeMargin}
+                        label={labelString} error={errorState} size="small"
+                        helperText={errorString} />
+                    
+                        
                 )
         }
     }
