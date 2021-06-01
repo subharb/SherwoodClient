@@ -107,7 +107,7 @@ const FIELDS_FORM = {
         label:"Evaluate opinion",
         shortLabel: "investigation.table.name",
         validation : "textMin2",
-        options:[3,7]
+        options:[{value:3, label:3}, {value:7, label:7}]
     },
     "textarea" : {
         required : false,

@@ -282,7 +282,7 @@ class FieldSherwood extends Component{
                 )
             case "evaluation":
                 let arrayButtons = [];
-                for(let i= options[0];i <=options[1]; i++){
+                for(let i= options[0].value;i <=options[1].value; i++){
                     let Icon = PanoramaFishEyeIcon;
                     if(input.value ===  i){
                         Icon = FiberManualRecordIcon;

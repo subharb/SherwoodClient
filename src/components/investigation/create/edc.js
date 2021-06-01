@@ -78,72 +78,33 @@ export default class EDC extends Component{
                 
             </Grid>)
         }
-        else{
-            const headCells =[{ id:"title", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
-                                {id:"number_sections", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
-                            ]
-         
-            const rows = this.state.surveys.map((survey, index) => {
-                return { id :index, title : survey.name, number_sections : survey.sections.length};
-            })
+        
+        const headCells =[{ id:"title", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
+                            {id:"number_sections", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
+                        ]
+        
+        const rows = this.state.surveys.sort((a, b) => a.order - b.order).map((survey, index) => {
+            return { id :index, title : survey.name, number_sections : survey.sections.length};
+        })
+            
+        if(!this.state.reordering){
+            return([
+                <Grid item xs={12}>
+                    <EnhancedTable orderUpdate={(result) => this.orderUpdate(result)} noSelectable
+                        titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
+                        actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
                 
-            if(!this.state.reordering){
-                return([
-                    <Grid item xs={12}>
-                        <EnhancedTable orderUpdate={(result) => this.orderUpdate(result)} noSelectable
-                            titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
-                            actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
-                    
-                    </Grid>,
-                    <Grid item xs={12}>
-                        {AddButton}
-                        <Typography variant="body2" gutterBottom component="span">
-                            <Translate id="investigation.create.edc.data_collections.new" />
-                        </Typography> 
-                    </Grid>
-                ]
-                )
-            }
-            else{
-                return (
-                    <DragDropContext onDragEnd={(result) => this.onDragEnd(result)}>
-                      <Droppable droppableId="droppable">
-                        {(provided, snapshot) => (
-                          <RootRef rootRef={provided.innerRef}>
-                            <List style={this.getListStyle(snapshot.isDraggingOver)}>
-                              {rows.map((item, index) => (
-                                <Draggable key={item.id} draggableId={`item-${item.id}`} index={index}>
-                                  {(provided, snapshot) => (
-                                    <ListItem
-                                        innerRef={provided.innerRef}
-                                      ContainerComponent="li"
-                                      ContainerProps={{ ref: provided.innerRef }}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      style={this.getItemStyle(
-                                        snapshot.isDragging,
-                                        provided.draggableProps.style
-                                      )}
-                                    >
-                                      <ListItemIcon>
-                                        <DragIndicatorIcon />
-                                      </ListItemIcon>
-                                      <ListItemText
-                                        primary={item.title}
-                                      />
-                                      
-                                    </ListItem>
-                                  )}
-                                </Draggable>
-                              ))}
-                              {provided.placeholder}
-                            </List>
-                          </RootRef>
-                        )}
-                        </Droppable>
-                    </DragDropContext>
-                );
-            }
+                </Grid>,
+                <Grid item xs={12}>
+                    {AddButton}
+                    <Typography variant="body2" gutterBottom component="span">
+                        <Translate id="investigation.create.edc.data_collections.new" />
+                    </Typography> 
+                </Grid>
+            ]
+            )
+            
+           
         }
     }
     toggleAddDataCollection(){
