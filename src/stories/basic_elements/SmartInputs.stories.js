@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from '../../components/general/form';
+import ICTSelectorGeneral from '../../components/general/SmartFields/ICT/index'
 import ProviderSherwood from '../../providerSherwood';
 
 const FIELD_TREATMENT = {
@@ -161,7 +162,7 @@ export default {
 
 
 const Template = (args) => <Form {...args}  />
-const TemplateICT = (args) => <Form {...args}  />
+const TemplateICT = (args) => <ICTSelectorGeneral {...args}  />
 const TemplateAllergy = (args) => <Form {...args}  />
 const TemplateBackground = (args) => <Form {...args}  />
 const TemplateFamilyBackground = (args) => <Form {...args}  />
@@ -200,7 +201,8 @@ TreatmentWithData.args = {
 
 export const ICT = TemplateICT.bind({});
 ICT.args = {
-    fields : FIELD_ICT, 
+    ...FIELD_ICT["ict"], 
+    language : "en",
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 
