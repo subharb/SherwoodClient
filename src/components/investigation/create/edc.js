@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Translate } from 'react-localize-redux';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, List, ListItem, ListItemIcon, ListItemText, RootRef, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Table from '../../general/table';
 import DataCollection from './data_collection';
 import { ButtonContinue, ButtonAdd, ButtonBack } from '../../general/mini_components';  
 import { EnhancedTable } from '../../general/EnhancedTable';
-
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 /**
  * An EDC is a collection of data_collections
  */
@@ -38,9 +39,31 @@ export default class EDC extends Component{
         this.closeNewDataCollection = this.closeNewDataCollection.bind(this);
         this.submitData = this.submitData.bind(this);
         this.callBackNewDataCollection = this.callBackNewDataCollection.bind(this);
-        
-        const initialState = {surveys: [], addingDataCollection:false, editingIndexDataCollection:false}
+        this.toggleOrder = this.toggleOrder.bind(this);
+        const initialState = {surveys: [], addingDataCollection:false, editingIndexDataCollection:false, ordering:false}
         this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
+    }
+    getItemStyle(isDragging, draggableStyle){
+        // styles we need to apply on draggables
+        return {...draggableStyle,
+            ...(isDragging && {
+            background: "rgb(235,235,235)"
+        })}
+    }
+    getListStyle(isDraggingOver){
+        //background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    }
+    onDragEnd(result){
+        console.log(result);
+    }
+    orderUpdate(dragDrop){
+        console.log("Parent reorder");
+        let tempState = {...this.state};
+        const result = Array.from(tempState.surveys);
+        const [removed] = result.splice(dragDrop.source.index, 1);
+        result.splice(dragDrop.destination.index, 0, removed);
+        tempState.surveys = result.map((survey, index) => {survey.order = index; return survey;});
+        this.setState(tempState);
     }
     renderDataCollections(){
         const AddButton= <ButtonAdd disabled={this.state.addingDataCollection || Number.isInteger(this.state.editingIndexDataCollection)} 
@@ -55,19 +78,21 @@ export default class EDC extends Component{
                 
             </Grid>)
         }
-        else{
-            const headCells =[{ id:"title", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
-                                {id:"number_sections", alignment: "right", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
-                            ]
-         
-            const rows = this.state.surveys.map((survey, index) => {
-                return { id :index, title : survey.name, number_sections : survey.sections.length};
-            })
-                    
+        
+        const headCells =[{ id:"title", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
+                            {id:"number_sections", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
+                        ]
+        
+        const rows = this.state.surveys.sort((a, b) => a.order - b.order).map((survey, index) => {
+            return { id :index, title : survey.name, number_sections : survey.sections.length};
+        })
+            
+        if(!this.state.reordering){
             return([
                 <Grid item xs={12}>
-                    <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
-                            actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
+                    <EnhancedTable orderUpdate={(result) => this.orderUpdate(result)} noSelectable
+                        titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
+                        actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
                 
                 </Grid>,
                 <Grid item xs={12}>
@@ -77,7 +102,9 @@ export default class EDC extends Component{
                     </Typography> 
                 </Grid>
             ]
-                )
+            )
+            
+           
         }
     }
     toggleAddDataCollection(){
@@ -141,6 +168,11 @@ export default class EDC extends Component{
     submitData(){
         this.props.callBackData({surveys : this.state.surveys});
     }
+    toggleOrder(){
+        const tempState = {...this.state};
+        tempState.reordering = !tempState.reordering;
+        this.setState(tempState);
+    }
     render(){
         
         if(this.state.addingDataCollection){
@@ -149,10 +181,8 @@ export default class EDC extends Component{
         }
         else{
             return (
-                <Grid container spacing={3}>
-                    
-                        { this.renderDataCollections() }
-                    
+                <Grid container spacing={3}>    
+                    { this.renderDataCollections() }
                     <Grid item xs={12}>
                         {
                             this.props.callBackStepBack && 

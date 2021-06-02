@@ -22,7 +22,7 @@ Basic.args = {
 
 export const Edit = Template.bind({});
 Edit.args = {
-    initialData :edc_data1() ,
+    initialData:{fields : edc_data1().surveys[0].sections[0].fields},
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 

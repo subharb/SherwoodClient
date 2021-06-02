@@ -6,6 +6,7 @@ import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
+import { Grid } from '@material-ui/core';
 
 
  /**
@@ -63,34 +64,68 @@ class Form extends Component {
         tempState.showOptions[key] = false;
         this.setState(tempState);
     }
-    renderOptions(value){
-        console.log("Fields", value.fields);
-        if(!this.state.showOptions.hasOwnProperty(value.fields.name) || (this.state.showOptions[value.fields.name] === true)){
-            return (
-                <div className="">
-                    <Translate id={value.label} />
-                    <ButtonAdd type="button" onClick={() => value.fields.push("")} />
-                    
-                    <div className="container">
-                        {value.fields.map((hobby, index) =>
-                            <div className="row">
+    renderOptions(extraField){
+        console.log("Fields", extraField.fields);
+        console.log("value", extraField);
+        if(!this.state.showOptions.hasOwnProperty(extraField.fields.name) || (this.state.showOptions[extraField.fields.name] === true)){
+                if(extraField.type == "min_max"){
+                    return (
+                        [
+                            <Grid item xs={6}>
                                 <Field
-                                    size = "s12"
-                                    name={hobby}
+                                    size = "s6"
+                                    name="type_options[0]"
                                     type="text"
                                     component={FieldSherwood}
-                                    label={`Option #${index + 1}`}/>
-                                <DeleteHolder onClick={() => value.fields.remove(index)}>
-                                    <i className="material-icons">delete</i>
-                                </DeleteHolder>
+                                    label="Mínimo"/>
+                            </Grid>,
+                            <Grid item xs={6}>
+                                <Field
+                                    size = "s6"
+                                    name="type_options[1]"
+                                    type="text"
+                                    component={FieldSherwood}
+                                    label="Máximo"/>
+                            </Grid>
+                        ]
+                    )
+                }
+                else{
+                    return (
+                        <div className="">
+                            {
+                                (extraField.type !== "min_max" || (extraField.type === "min_max" && extraField.fields.length < 2)) &&
+                                [
+                                    <Translate id={extraField.label} />,
+                                    <ButtonAdd type="button" onClick={() => extraField.fields.push("")} />
+                                ]
+                            }
+                            <div className="container">
+                                {extraField.fields.map((hobby, index) =>{
+                                    return(
+                                        <div className="row">
+                                            <Field
+                                                size = "s12"
+                                                name={hobby}
+                                                type="text"
+                                                component={FieldSherwood}
+                                                label={`Option #${index + 1}`}/>
+                                            <DeleteHolder onClick={() => extraField.fields.remove(index)}>
+                                                <i className="material-icons">delete</i>
+                                            </DeleteHolder>
+                                        </div>
+                                    )
+                                }                                
+                                )}
                             </div>
-                        )}
-                    </div>
-                </div>);
+                        </div>);
+                }
+                
+            
         }
-        else if(this.state.showOptions.hasOwnProperty(value.fields.name)){
+        else if(this.state.showOptions.hasOwnProperty(extraField.fields.name)){
             return(
-                <button onClick={() => this.showOptions(value.fields.name)} 
+                <button onClick={() => this.showOptions(extraField.fields.name)} 
                     data-testid="save-option" type="button" className="waves-effect waves-light btn-small">
                     <i className="material-icons">open_in_full</i>
                 </button>
@@ -110,6 +145,13 @@ class Form extends Component {
                         <FieldArray name={`${key}_options`} {...extraField} key={key} component={this.renderOptions} />
                     </div>
                 )
+            }
+            else if(extraField.type === "min_max"){
+                return(
+                    <div className="container">
+                        <FieldArray name={`${key}_options`} {...extraField} key={key} component={this.renderOptions} />
+                    </div>
+                ) 
             }
             else{
                 return(

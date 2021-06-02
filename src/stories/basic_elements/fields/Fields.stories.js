@@ -77,6 +77,16 @@ const FIELDS_FORM = {
                 {"label": "Option 3", "value" : "checkbox"},
         ]                             
     },
+    "radio":{
+        required : false,
+        type:"radio",
+        label:"Radio Buttons",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty",
+        options:[{"label" : "Option 1", "value" : "text"},
+                {"label": "Option 2", "value" : "number"},
+                {"label": "Option 3", "value" : "checkbox"}]
+    },
     "date" : {
         required : false,
         type:"date",
@@ -91,12 +101,13 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
-    "evaluate" : {
+    "evaluation" : {
         required : false,
-        type:"evaluate",
+        type:"evaluation",
         label:"Evaluate opinion",
         shortLabel: "investigation.table.name",
-        validation : "textMin2"
+        validation : "textMin2",
+        options:[{value:3, label:3}, {value:7, label:7}]
     },
     "textarea" : {
         required : false,

@@ -48,7 +48,7 @@ export function TestsHomeComponent(props) {
     }
     function renderCore(){
         if(surveyRecords.length === 0){
-            return <Translate id={`hospital.${translations[props.type]}.no-records`} />
+            return <Translate id={`pages.hospital.${translations[props.type]}.no-records`} />
         }
         else{
             return (<EnhancedTable noHeader noSelectable selectRow={(index) => goToSubmission(index)} 

@@ -2,6 +2,8 @@ import React from 'react'
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from './EnhancedTable';
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
+import { HOSPITAL_PATIENT } from '../../routes';
 
 export default function PatientsTable(props) {
     const rows = props.patients.map(patient => {
@@ -15,6 +17,10 @@ export default function PatientsTable(props) {
                     day: '2-digit'
                     }).replace(/\./g, '/');
             }
+            // else if(pField.name === "name" || pField.name === "surnames"){
+            //     const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", patient.uuid);
+            //     value = <Link to={nextUrl} >{patient.personalData[pField.name]}</Link>
+            // }
             
             tempRow[pField.name] = value;
         }
