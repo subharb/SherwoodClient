@@ -124,12 +124,12 @@
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
             "laboratory":{
-                "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Il n'a aucune laboratoire result"],
+                "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Aucun test de laboratoire"],
                 "name" : ["Laboratory", "Laboratorio", "Laboratoire"],
                 "title" : ["Laboratory", "Laboratorio", "Laboratoire"]
             },
             "medical-imaging" : {
-                "no-records" : ["No medical images available", "No dispone de imágenes", "Il n'a aucune image"],
+                "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
                 "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
                 "title" : ["Images requests", "Petición de imagen", "Demandes d'imaginerie"]
             },
