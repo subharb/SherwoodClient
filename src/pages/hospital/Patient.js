@@ -234,7 +234,7 @@ function Patient(props) {
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
         else if(filteredRecords.length === 0){
-            return <Translate id={`hospital.${translations[typeSurveys]}.no-records`} />
+            return <Translate id={`pages.hospital.${translations[typeSurveys]}.no-records`} />
         }
         else{
             return(

@@ -27,7 +27,6 @@
         "data-collections" : ["Surveys", "Encuestas", "Enquêtes"],
         "sections" : ["Sections", "Secciones", "Sections"],
         "patient" : {
-            "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"],
             "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
             "new-record" : ["Record saved", "Registro Guardado", "Enregistrement enregistré"],
@@ -121,13 +120,16 @@
                 "back-button" : ["Back to search", "Nueva búsqueda", "Nouvelle recherche"],
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
             },
+            "patient" : {
+                "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
+            },
             "laboratory":{
-                "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Il n'a aucune laboratoire result"],
+                "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Aucun test de laboratoire"],
                 "name" : ["Laboratory", "Laboratorio", "Laboratoire"],
                 "title" : ["Laboratory", "Laboratorio", "Laboratoire"]
             },
             "medical-imaging" : {
-                "no-records" : ["No medical images available", "No dispone de imágenes", "Il n'a aucune image"],
+                "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
                 "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
                 "title" : ["Images requests", "Petición de imagen", "Demandes d'imaginerie"]
             },
