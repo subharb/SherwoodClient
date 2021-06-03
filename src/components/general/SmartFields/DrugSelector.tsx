@@ -3,10 +3,11 @@ import { Autocomplete } from '@material-ui/lab';
 import React, { useState, useEffect } from 'react';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { PropsSmartFieldLocalized, DrugType } from './index'
-import { searchDrugService } from '../../../services/sherwoodService';
+import { searchDrugComponentService, searchDrugService } from '../../../services/sherwoodService';
 
 interface Props extends LocalizeContextProps {
     error:boolean;
+    chemicalComponent?:boolean,
     drugSelected:(drug:DrugType) => void,
     callbackError:(error:boolean) => void
 }
@@ -29,10 +30,21 @@ function DrugSelector(props: Props) {
         async function searchDrugRemote(){
             try{
                 setLoading(true);
-                const response = await searchDrugService(searchDrug);
-                if(response.status === 200){
-                    setDrugOptions(response.drugs)
+                let response;
+                if(!props.chemicalComponent){
+                    response = await searchDrugService(searchDrug);
+                    if(response.status === 200){
+                        setDrugOptions(response.drugs)
+                    }
                 }
+                else{
+                    response = await searchDrugComponentService(searchDrug);
+                    if(response.status === 200){
+                        setDrugOptions(response.drugComposition)
+                    }
+                }
+                
+                
                 setLoading(false);
             }
             catch(error){
