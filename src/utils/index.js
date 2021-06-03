@@ -308,7 +308,7 @@ export const PERSONAL_DATA_FIELDS = {
         shortLabel:"investigation.create.personal_data.fields.sex",
         validation : "notEmpty",
         options:[
-            {"value" : "Male", "label" : "Male"},{"value" : "female", "label" : "Female"}
+            "Male","female"
         ]
     }
 }
