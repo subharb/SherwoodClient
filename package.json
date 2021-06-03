@@ -74,6 +74,7 @@
     "build:research": "env-cmd -f .env.production.local react-scripts build",
     "build:beta:research": "env-cmd -f .env.beta-research react-scripts build",
     "build:beta:hospital": "env-cmd -f .env.beta-hospital react-scripts build && rsync -a build/ build-beta-hospital/",
+    "build:local:hospital": "env-cmd -f .env.local-hospital react-scripts build && rsync -a build/ build-beta-hospital/",
     "build:hospital": "env-cmd -f .env.hospital react-scripts build && rsync -a build/ build-hospital/",
     "test": "react-scripts test --env=jsdom-sixteen",
     "eject": "react-scripts eject",
