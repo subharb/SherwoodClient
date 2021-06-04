@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
-import iconImages from "../../img/icons/images.png";
-import iconLab from "../../img/icons/lab.png";
+import iconImages from "../../img/icons/images_white.png";
+import iconLab from "../../img/icons/lab_white.png";
 import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
 import Form  from '../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";
@@ -110,7 +110,7 @@ export function TestsHomeComponent(props) {
             <Grid container spacing={6} >
                 <Grid container alignItems="center" alignContent="center" item xs={12}>
                     <Grid xs={2} style={{textAlign:"right"}}>
-                        <img src={props.type === 0 ? iconImages : iconLab } alt="images" width="40" />
+                        <img src={props.type === 1 ? iconImages : iconLab } alt="images" width="40" />
                     </Grid>
                     <Grid xs={8}>
                         <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>

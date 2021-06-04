@@ -76,16 +76,21 @@ export function AddPatientComponent(props) {
             />
             <Grid container spacing={3}>
                 <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
-                    <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
-                    {
-                        !props.patient &&
-                        [<PersonAddSharp style={{fontSize:"2.5rem"}} />,
-                        <Translate id="pages.hospital.add-patient" />]
+                    {!props.patient &&
+                        <PersonAddSharp style={{fontSize:"2.5rem"}} />
                     }
                     {
                         props.patient &&
-                        [<EditOutlined style={{fontSize:"2.5rem"}} />,
-                        <Translate id="pages.hospital.edit-patient" />]
+                        <EditOutlined style={{fontSize:"2.5rem"}} />
+                    }
+                    <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
+                    {
+                        !props.patient &&
+                        <Translate id="pages.hospital.add-patient" />
+                    }
+                    {
+                        props.patient &&
+                        <Translate id="pages.hospital.edit-patient" />
                     }
                     </Typography>
                 </Grid>
