@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 import variants from "./variants";
 import typography from "./typography";
 import overrides from "./overrides";
@@ -14,7 +14,7 @@ const createTheme = (name) => {
         themeConfig = variants[0];
     }
 
-    return createMuiTheme(
+    return responsiveFontSizes(createMuiTheme(
         {
         spacing: 4,
         breakpoints: breakpoints,
@@ -52,7 +52,7 @@ const createTheme = (name) => {
         footer: themeConfig.footer,
         sidebar: themeConfig.sidebar,
         }
-    );
+    ));
 };
 
 export default createTheme;

@@ -131,7 +131,7 @@
             "medical-imaging" : {
                 "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
                 "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
-                "title" : ["Images requests", "Petición de imagen", "Demandes d'imaginerie"]
+                "title" : ["Images requests", "Petición de imagen", "Demandes d'imagerie"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"]
