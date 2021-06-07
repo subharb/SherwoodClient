@@ -526,3 +526,52 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
 export function isSmartField(type){
     return ["ict", "allergy", "background", "family-background", "treatment"].includes(type);
 }
+
+export function getIndexedDB(){
+    const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+
+    return indexedDB;
+}
+
+export function openStore(storeName){
+    return new Promise(
+        function(resolve, reject) {
+            const db = getIndexedDB();
+            if (!db) {
+                return null;
+            }
+            let request = db.open(storeName, 3);
+
+            request.onerror = function(event) {
+                // Hacer algo con request.errorCode!
+                reject(Error("Error text"));
+            };
+            request.onsuccess = function(event) {
+                // Hacer algo con request.result!
+            };
+      
+            request.onupgradeneeded = function(event) {
+              // Objectstore does not exist. Nothing to load
+              event.target.transaction.abort();
+              reject(Error('Not found'));
+            };
+      
+            request.onsuccess = function(event) {
+                resolve(event.target.result);
+            //   var database      = event.target.result;
+            //   var transaction   = database.transaction([storeName]);
+            //   var objectStore   = transaction.objectStore(storeName);
+            //   var objectRequest = objectStore.get(id);
+      
+            //   objectRequest.onerror = function(event) {
+            //     reject(Error('Error text'));
+            //   };
+      
+            //   objectRequest.onsuccess = function(event) {
+            //     if (objectRequest.result) resolve(objectRequest.result);
+            //     else reject(Error('object not found'));
+            //   };
+            };
+          }
+    );
+}

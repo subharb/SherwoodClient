@@ -19,7 +19,11 @@
         "no_results" : ["no results", "sin resultados", "no results"],
         "no-option-match" : ["If no options match, write your own", "Si ninguna opción coincide, escriba la suya", "Si aucune option, écrivez le vôtre"],
         "field-required" : ["This field is required", "Este campo es obligatorio", "Ce champ est requis"],
-        "choose-options" : ["Choose the options that apply", "Elija las opciones que apliquen", "Choisissez les options qui s'appliquent"]
+        "choose-options" : ["Choose the options that apply", "Elija las opciones que apliquen", "Choisissez les options qui s'appliquent"],
+        "offline" : {
+            "title" : ["Offline", "Sin conexión", "Sans connexion"],
+            "description" : ["You can still use the app, however unsyncronized records will be updated automaticly when connection is recovered", "Aún puede usar la aplicación, sin embargo, los registros no sincronizados se actualizarán automáticamente cuando se recupere la conexión", "Vous pouvez toujours utiliser l'application, mais les enregistrements non synchronisés seront mis à jour automatiquement lorsque la connexion sera rétablie"]
+        }
     },
     "hospital" : {
         "doctor" : ["Doctor", "Médico", "Médecin"],
