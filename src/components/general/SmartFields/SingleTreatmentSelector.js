@@ -80,7 +80,7 @@ function SingleTreatmentSelector(props){
         setDrug(drug);
     }
     function cancel(){
-        props.cancelTreatment()
+        props.cancel()
     }
     function posologySelected(posology){
         setPosology(posology);
@@ -120,7 +120,7 @@ function SingleTreatmentSelector(props){
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <DrugSelector drugSelected={(drug) => drugSelected(drug) }  error={errorDrug}
+                <DrugSelector drugSelected={(drug) => drugSelected(drug) }  error={errorDrug} variant={props.variant}
                     callbackError={(error) => drugError(error)}/>
             </Grid>
             <Grid item xs={12}>

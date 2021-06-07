@@ -10,8 +10,11 @@ import { BackgroundType } from '../index';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import DateFnsUtils from '@date-io/date-fns';
 import { PropsSmartField } from '../index';
+import { useOffline } from '../../../../hooks';
+import { OfflineField } from '../OfflineField';
 
 const ICTSelectorGeneral:React.FC<PropsSmartFieldLocalized> = (props) => {
+    const offline = useOffline();
     const [diagnose, setDiagnose] = useState<SmartFieldType | null>(null);
     const [error, setError] = useState(false);
     
@@ -20,20 +23,28 @@ const ICTSelectorGeneral:React.FC<PropsSmartFieldLocalized> = (props) => {
     function changeRelation(e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
         setRelation(e.target.value);
     }
+    function getOffline(value:string){
+        props.elementSelected({"ict" : value, "ict-code" : "offline"});
+    }
     function renderIctSelector(){
-        if(["en", "es", "ar"].indexOf(props.language) !== -1 ){
-            return <ICTSelectorOMS type={props.type}  variant="outlined" margin={props.typeMargin} 
-                        cancel={props.cancel} language={props.language}
-                        size="small" elementSelected={props.elementSelected} />
+        if(offline){
+            return <OfflineField error={props.error} variant={props.variant} callbackOffline={(value) => getOffline(value)} />
         }
         else{
-            return <ICTSelectorFR type={props.type} variant="outlined" language={props.language}
-                        cancel={props.cancel} size="small" error={props.error}  typeMargin={props.typeMargin} 
-                        diagnose={diagnose} setError={(error) => setError(error)}
-                        elementSelected={props.elementSelected} />
+            if(["en", "es", "ar"].indexOf(props.language) !== -1 ){
+                return <ICTSelectorOMS type={props.type}  variant="outlined" margin={props.typeMargin} 
+                            cancel={props.cancel} language={props.language}
+                            size="small" elementSelected={props.elementSelected} />
+            }
+            else{
+                return <ICTSelectorFR type={props.type} variant="outlined" language={props.language}
+                            cancel={props.cancel} size="small" error={props.error}  typeMargin={props.typeMargin} 
+                            diagnose={diagnose} setError={(error) => setError(error)}
+                            elementSelected={props.elementSelected} />
+            }
         }
+        
     }
-    
     
     return(
         <Grid container spacing={3}>
