@@ -399,8 +399,8 @@
                 "add_data" : ["Add data", "Añadir datos", "Ajouter des données"],
                 "view_data" : ["View data", "Ver datos", "Voir les données"],
                 "no_records" : ["This data collection form has no records", "Este formulario no contiene registros", "Ce formulaire n'a pas d'enregistrements"],
-                "section-filled" : ["This section has already been filled out", "Esta sección ya ha sido rellenada", "Cette section a déjà été remplie"]
-
+                "section-filled" : ["This section has already been filled out", "Esta sección ya ha sido rellenada", "Cette section a déjà été remplie"],
+                "record-offline" : ["Sorry, you can't visualize unsincronize records", "Lo sentimos, pero no puede visualizar registros no sincronizados", "Désolé, vous ne pouvez pas visualiser les enregistrements de désynchronisation"]
             },
             "section" : {
                 "already_filled" : ["This section has been completed", "Esta sección ya ha sido completada", "Cette section a été complétée"]

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components/macro";
 import { Power } from "react-feather";
 import { useHistory } from "react-router-dom";
@@ -20,10 +20,15 @@ const IconButton = styled(MuiIconButton)`
   }
 `;
 
+  
+
 function UserDropdown() {
   const [anchorMenu, setAnchorMenu] = React.useState(null);
+  const [online, setOnline] = React.useState(true);
+  const onlineString = online ? "ONLINE" : "OFFLINE";
   const history = useHistory();
   const dispatch = useDispatch();
+  
 
   const toggleMenu = (event) => {
     setAnchorMenu(event.currentTarget);
@@ -39,6 +44,13 @@ function UserDropdown() {
       history.push("/auth/sign-in");
   };
 
+  function updateOnlineStatus(){
+      setOnline(navigator.onLine);
+  }
+  useEffect(() => {
+      window.addEventListener('online',  updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
+  }, []);
   return (
     <React.Fragment>
       <Tooltip data-testid="account" title="Account">
@@ -57,6 +69,7 @@ function UserDropdown() {
         open={Boolean(anchorMenu)}
         onClose={closeMenu}
       >
+        {onlineString}
         { <MenuItem onClick={closeMenu}>Profile</MenuItem> }
         <MenuItem data-testid="log_out" onClick={handleSignOut}>Sign out</MenuItem>
       </Menu>
