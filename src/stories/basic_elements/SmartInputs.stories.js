@@ -2,6 +2,7 @@ import React from 'react';
 import Form from '../../components/general/form';
 import ICTSelectorGeneral from '../../components/general/SmartFields/ICT/index'
 import ProviderSherwood from '../../providerSherwood';
+import TreatmentCore from '../../components/general/SmartFields/SingleTreatmentSelector';
 
 const FIELD_TREATMENT = {
     "drug":{
@@ -167,12 +168,24 @@ const TemplateAllergy = (args) => <Form {...args}  />
 const TemplateBackground = (args) => <Form {...args}  />
 const TemplateFamilyBackground = (args) => <Form {...args}  />
 const TemplateImage = (args) => <Form {...args}  />
+const TemplateTreatmentRaw = (args) => <TreatmentCore {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
 TreatmentEmpty.args = {
     fields:FIELD_TREATMENT, 
     creating : true,
     callBackForm : (values) => console.log("Result",JSON.stringify(values))}
+
+export const TreatmentRaw = TemplateTreatmentRaw.bind({});
+TreatmentRaw.args = {
+    variant:'outlined', 
+    size : 'small',
+    language:'fr',
+    type:'treatment',
+    typeMargin:'',
+    slaves:FIELD_TREATMENT["drug"].slaves,
+    callBackForm : (values) => console.log("Result",JSON.stringify(values))}
+    
 // TreatmentEmpty.args = {
 //     label:"Treatment", 
 //     variant:"outlined",

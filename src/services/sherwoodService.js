@@ -66,10 +66,10 @@ export function fetchInvestigation(uuid) {
     });
 }
 
-export function searchDrugService(searchText) {
+export function searchDrugService(searchText, country) {
     return new Promise((resolve, reject) => {
       
-        axios.get(process.env.REACT_APP_API_URL+'/hospital/search/drug/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
+        axios.get(process.env.REACT_APP_API_URL+'/hospital/search/drug/'+country+'/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
           .then((response) => {
               if(response.status === 200){
                   resolve(response.data);
@@ -82,10 +82,10 @@ export function searchDrugService(searchText) {
     });
 }
 
-export function searchDrugComponentService(searchText) {
+export function searchDrugComponentService(searchText, country) {
     return new Promise((resolve, reject) => {
       
-        axios.get(process.env.REACT_APP_API_URL+'/hospital/search/component/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
+        axios.get(process.env.REACT_APP_API_URL+'/hospital/search/component/'+country+'/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
           .then((response) => {
               if(response.status === 200){
                   resolve(response.data);

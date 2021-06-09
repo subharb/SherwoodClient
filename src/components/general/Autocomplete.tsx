@@ -1,0 +1,97 @@
+import { CircularProgress, TextField, Typography } from '@material-ui/core';
+
+import React, { useEffect, useState } from 'react';
+import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
+import styled from 'styled-components';
+
+const ContainerOptions = styled.div`
+    position:absolute;
+    background-color:white;
+    z-index:1000;
+    padding:1rem;
+`;
+
+const Option = styled.div`
+    cursor:pointer;
+`;
+
+interface Props extends LocalizeContextProps{
+    error:boolean,
+    country:string,
+    getOptionsResponse:(option:any) => any, 
+    remoteSearch:(searchText: string, country: string) => Promise<any>,
+    getOptionLabel:(option:{name:string}) => string,
+    onValueSelected:(option:any) => void
+}
+const MIN_LENGTH_SEARCH:number = 3;
+
+const AutocompleteSherwood = (props:Props) => {
+    const [searchTerm, setSearchterm] = useState("");
+    const [errorSearch, setErrorSearch] = useState(false);
+    const [options, setOptions] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [optionSelected, setOptionSelected] = useState(false);
+
+    async function changeInput(value:string){
+        setOptionSelected(false);
+        setSearchterm(value);
+    }
+    function onOptionSelected(index:number, term:string){
+        setSearchterm(term);
+        props.onValueSelected(options[index]);
+        setOptionSelected(true);
+    }
+    function renderOptions(){
+        if(loading){
+            return <CircularProgress />;
+        }
+        else if(options.length === 0 && searchTerm.length > MIN_LENGTH_SEARCH){
+            return "No hay resultados";
+        }
+        else if(searchTerm.length <= MIN_LENGTH_SEARCH || optionSelected){
+            return null;
+        }
+        return(
+            <ContainerOptions>
+                {
+                    options.map((option, index) => {
+                        return(<Option onClick={() => onOptionSelected(index, props.getOptionLabel(option))}>
+                                <Typography variant="body2" gutterBottom>{ props.getOptionLabel(option)}</Typography> 
+                            </Option>)
+                    })
+                }
+            </ContainerOptions>)
+    }
+    useEffect(() => {
+        async function makeRemoteSearch(){
+            if(searchTerm.length > MIN_LENGTH_SEARCH){
+                setLoading(true);
+                const response = await props.remoteSearch(searchTerm, props.country);
+                if(response.status === 200){
+                    setOptions(props.getOptionsResponse(response));
+                }
+                else{
+                    setErrorSearch(true);
+                }
+                setLoading(false);
+            }
+        }
+        if(!optionSelected){
+            makeRemoteSearch();
+        }
+        
+    }, [searchTerm])
+    return (
+        <React.Fragment>
+            <TextField value={searchTerm} error={errorSearch || props.error} 
+            onChange={(event) => changeInput(event.target.value)}
+            label={props.translate("hospital.select-treatment")} variant="outlined" />
+            {
+                renderOptions()
+            }
+        </React.Fragment>
+        
+    );
+};
+
+export default withLocalize(AutocompleteSherwood);
