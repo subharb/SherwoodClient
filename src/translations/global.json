@@ -4,6 +4,7 @@
     "general" : {
         "yes" : ["Yes", "Si", "Oui"], 
         "no" : ["No", "No", "Non"], 
+        "updating-records" : ["We are syncronizing the records, please hold on.", "Estamos actualizando los registros, por favor espere.", "Nous mettons à jour les enregistrements, veuillez patienter."],
         "delete" : ["Delete", "Borrar", "Effacer"],
         "cancel" : ["Cancel", "Cancelar", "Annuler"],
         "edit" : ["Edit", "Editar", "Éditer"],
