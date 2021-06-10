@@ -9,6 +9,8 @@ const ContainerOptions = styled.div`
     background-color:white;
     z-index:1000;
     padding:1rem;
+    height:10rem;
+    overflow:auto;
 `;
 
 const Option = styled.div`
@@ -40,6 +42,11 @@ const AutocompleteSherwood = (props:Props) => {
         setSearchterm(term);
         props.onValueSelected(options[index]);
         setOptionSelected(true);
+    }
+    function restart(){
+        setSearchterm("");
+        setOptions([]);
+        setOptionSelected(false);
     }
     function renderOptions(){
         if(loading){
@@ -83,7 +90,7 @@ const AutocompleteSherwood = (props:Props) => {
     }, [searchTerm])
     return (
         <React.Fragment>
-            <TextField value={searchTerm} error={errorSearch || props.error} 
+            <TextField value={searchTerm} error={errorSearch || props.error} onFocus={restart}
             onChange={(event) => changeInput(event.target.value)}
             label={props.translate("hospital.select-treatment")} variant="outlined" />
             {
