@@ -6,6 +6,10 @@ import App from "./App";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import ProviderSherwood from './providerSherwood';
 
+if (process.env.NODE_ENV === 'production') {
+    console.log = function () {};
+}
+
 ReactDOM.render(
     <ProviderSherwood>
         <App />
