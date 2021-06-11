@@ -2,7 +2,7 @@ import React from "react";
 import styled, { withTheme } from "styled-components/macro";
 import { darken } from "polished";
 import { Search as SearchIcon } from "react-feather";
-
+import OfflineDropDown from './OfflineDropDown'
 import {
   Grid,
   Hidden,
@@ -91,9 +91,9 @@ const AppBarComponent = ({ onDrawerToggle }) => (
           </Hidden>
           <Grid item xs />
           <Grid item>
-            {/* <NotificationsDropdown items={3} /> */}
-            <LanguagesDropdown />
-            <UserDropdown />
+              <OfflineDropDown />
+              <LanguagesDropdown />
+              <UserDropdown />
           </Grid>
         </Grid>
       </Toolbar>

@@ -137,8 +137,13 @@ function Patient(props) {
     }
     function selectDataCollection(index){
         console.log("Row seleccionado ", filteredRecords[index]);
+        if(filteredRecords[index].offline){
+            setShowSnackbar({show:true, severity: "warning", message : "investigation.fill.survey.record-offline"});
+        }
+        else{
+            goToSurveyUrl(filteredRecords[index].uuidSurvey);
+        }
         
-        goToSurveyUrl(filteredRecords[index].uuidSurvey);
     }
     function goToSurveyUrl(uuidSurvey){
         const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":uuidDataCollection", uuidSurvey);
@@ -288,8 +293,10 @@ function Patient(props) {
                     tempDict.surveyName = val.surveyName; 
                     tempDict.uuidSurvey = val.uuid; 
                     tempDict.typeSurvey = val.type; 
-                    const researcher = val.submissions[val.submissions.length -1].researcher
-                    tempDict.researcher = researcher.name+" "+researcher.surnames;
+                    const researcher = val.submissions[val.submissions.length -1].researcher;
+                    //Si es en modo offline no hay researcher.
+                    tempDict.researcher = researcher.name ? researcher.name+" "+researcher.surnames : researcher;
+                    tempDict.offline = researcher.name ? false : true;
                     tempDict.createdAt = val.submissions[val.submissions.length -1].createdAt;
     
                     return acc.concat(tempDict)

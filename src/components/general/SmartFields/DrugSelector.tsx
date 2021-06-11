@@ -5,15 +5,18 @@ import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { PropsSmartFieldLocalized, DrugType } from './index'
 import { searchDrugComponentService, searchDrugService } from '../../../services/sherwoodService';
 import AutocompleteSherwood from '../Autocomplete';
+import { useOffline } from '../../../hooks';
+import { OfflineField } from './OfflineField';
 
 interface Props extends LocalizeContextProps {
     error:boolean;
     chemicalComponent?:boolean,
-    country:string,
+    variant:"standard" | "filled" | "outlined" | undefined,
     drugSelected:(drug:DrugType) => void,
     callbackError:(error:boolean) => void
 }
 function DrugSelector(props: Props) {
+    const offline = useOffline();
     const [drug, setDrug] = useState<DrugType | null>(null);
     const [searchDrug, setSearchDrug] = useState("");
     const [loading, setLoading] = useState(false);
@@ -27,7 +30,9 @@ function DrugSelector(props: Props) {
         setDrug(drug);
         props.drugSelected(drug);
     }
-
+    function getOffline(value:string){
+        props.drugSelected({name:value, code:"offline"});
+    }
     useEffect(() => {
         async function searchDrugRemote(){
             try{
@@ -61,6 +66,9 @@ function DrugSelector(props: Props) {
         }
     }, [searchDrug]);
 
+    if(offline){
+        return <OfflineField error={props.error} variant={props.variant} callbackOffline={(value) => getOffline(value)} />
+    }    
     return(
         <AutocompleteSherwood error={props.error} remoteSearch={searchDrugService} 
             country={props.country} getOptionsResponse={(option) => option.drugs}

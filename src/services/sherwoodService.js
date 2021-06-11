@@ -283,7 +283,12 @@ export function postRecordPatientService(postObj, uuidInvestigation, patientId, 
                   reject(response.data);
               }
           })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+          .catch((error) => {
+                // console.log(error.response);
+                // console.log(error.response.data);
+                // console.log(error.response.status);
+                // console.log(error.response.headers);
+              console.log('Catch', error); reject(error);}); 
     });
 }
 

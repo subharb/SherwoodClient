@@ -37,8 +37,22 @@ export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPati
           });
         })
         .catch((error) => {
-          dispatch({ type: types.SAVE_SUBMISSIONS_PATIENT_ERROR });
-          throw error;
+          if(!error.status){
+              const offlinePost = postObj.submission[0];
+              offlinePost.researcher = "Submission not saved";
+              offlinePost.createdAt = new Date();
+              //offlinePost.surveyRecords = postObj.submission[0].answers;
+              dispatch({
+                type: types.SAVE_SUBMISSIONS_PATIENT_SUCCESS,
+                submission: offlinePost,
+                meta:{uuidPatient, surveyUUID, surveyName, surveyType}
+              });
+          }
+          else{
+            dispatch({ type: types.SAVE_SUBMISSIONS_PATIENT_ERROR });
+            throw error;  
+          }
+          
         });
     };
 }

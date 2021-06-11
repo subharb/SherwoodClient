@@ -58,3 +58,5 @@ export const SLAVES_TREATMENT = ["drug-code", "treatment-start", "treatment-fini
 export const SLAVES_DIAGNOSIS = ["ict-code"];
 
 
+//Offline
+export const UPDATE_RECORDS_LOADING = "UPDATE_RECORDS_LOADING";
