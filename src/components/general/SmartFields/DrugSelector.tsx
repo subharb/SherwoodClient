@@ -11,6 +11,7 @@ import { OfflineField } from './OfflineField';
 interface Props extends LocalizeContextProps {
     error:boolean;
     chemicalComponent?:boolean,
+    country:string,
     variant:"standard" | "filled" | "outlined" | undefined,
     drugSelected:(drug:DrugType) => void,
     callbackError:(error:boolean) => void
