@@ -27,6 +27,7 @@ import iconNotesGreen from "../../img/icons/history_green.png";
 import iconImagesGreen from "../../img/icons/images_green.png";
 import iconLabGreen from "../../img/icons/lab_green.png";
 import { useUpdateEffect } from '../../hooks';
+import { fetchProfileInfo } from '../../redux/actions/profileActions';
 
 
 const WhiteTypography = styled(Typography)`
@@ -160,13 +161,14 @@ function Patient(props) {
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
 
-        const postObj = {submission : [
+        const postObj = [
             {
                 uuid_section:sectionSelected.uuid,
-                answers:data
+                researcher: props.profile.info,
+                surveyRecords:data
             }
-            ]
-        }
+        ]
+        
         if(action === "update"){
             await dispatch(updateSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
         }
@@ -245,8 +247,8 @@ function Patient(props) {
             return(
                 <EnhancedTable noHeader noSelectable selectRow={(index) => selectDataCollection(index)} 
                 rows={filteredRecords.map((record, index) => {
-                    const dateCreated = new Date(record.createdAt);
-                    return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreated.toISOString().slice(0, 16).replace('T', ' ')})
+                    const dateCreatedString = record.createdAt ? new Date(record.createdAt).toISOString().slice(0, 16).replace('T', ' ') : "Unsincronized";
+                    return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreatedString})
                 })} headCells={[{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "surveyName", alignment: "left", label: <Translate id="hospital.data-collection" />},
                                 { id: "date", alignment: "left", label: "Date"}]} />
             )
@@ -273,6 +275,11 @@ function Patient(props) {
             fetchRecordsPatient()
         }
     }, [props.investigations])
+    useEffect(() => {
+        if(!props.profile.info){
+            dispatch(fetchProfileInfo());
+        }
+    }, [])
     useUpdateEffect(() => {
         
         if(action === "update"){
@@ -297,7 +304,7 @@ function Patient(props) {
                     //Si es en modo offline no hay researcher.
                     tempDict.researcher = researcher.name ? researcher.name+" "+researcher.surnames : researcher;
                     tempDict.offline = researcher.name ? false : true;
-                    tempDict.createdAt = val.submissions[val.submissions.length -1].createdAt;
+                    tempDict.createdAt = val.submissions[val.submissions.length -1].surveyRecords[0].createdAt;
     
                     return acc.concat(tempDict)
                 }, []);
@@ -325,7 +332,7 @@ function Patient(props) {
                     setShowSnackbar({show:true, severity:"error", message : "hospital.patient.no-update"});
                 }
                 if(action === "fill"){
-                    setShowSnackbar({show:true, severity:"error", message : "register.researcher.error"});
+                    setShowSnackbar({show:true, severity:"error", message : "hospital.patient.error"});
                 }
             }
     }, [props.patientsSubmissions.loading]);    
@@ -451,7 +458,8 @@ const mapStateToProps = (state) =>{
     return {
         investigations : state.investigations,
         patientsSubmissions:state.patientsSubmissions,
-        patients:state.patients
+        patients:state.patients,
+        profile:state.profile
     }
 }
 export default connect(mapStateToProps, null)(Patient)

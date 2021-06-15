@@ -16,8 +16,22 @@ export function savePatientAction(investigation, patientData) {
         });
       })
       .catch((error) => {
-        dispatch({ type: types.SAVE_PATIENT_ERROR });
-        throw error;
+        if(!error.response){
+          const offlinePost = patientData;
+          //offlinePost.surveyRecords = postObj.submission[0].answers;
+          offlinePost.uuid = Math.random().toString(36).substring(2); 
+          dispatch({
+            type: types.SAVE_PATIENT_SUCCESS,
+            patient: {...offlinePost},
+            investigation:investigation
+          });
+        }
+        else{
+          dispatch({ type: types.SAVE_PATIENT_ERROR });
+          throw error;
+        }
+        
+       
       });
   };
 }
@@ -36,8 +50,23 @@ export function updatePatientAction(investigation, uuidPatient, patientData) {
           });
         })
         .catch((error) => {
-          dispatch({ type: types.SAVE_PATIENT_ERROR });
-          throw error;
+          if(!error.response){
+            const offlinePost = patientData.personalData;
+            //offlinePost.surveyRecords = postObj.submission[0].answers;
+            offlinePost.uuid = Math.random().toString(36).substring(2); 
+            dispatch({
+              type: types.UPDATE_PATIENT_SUCCESS,
+              patient: {...offlinePost},
+              uuidPatient:uuidPatient,
+            investigation:investigation
+            });
+          }
+          else{
+            dispatch({ type: types.SAVE_PATIENT_ERROR });
+            throw error;
+          }
+          
+          
         });
     };
   }

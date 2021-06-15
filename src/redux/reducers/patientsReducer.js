@@ -43,6 +43,10 @@ export default function reducer(state = initialState, action){
                 newState.data[action.investigation.uuid][indexPat] = newPatient;
             }
             else{
+                //Para los pacientes metido en offline
+                if(!newPatient.id){
+                    newPatient.id = newState.data[action.investigation.uuid].length;
+                }
                 newState.data[action.investigation.uuid].push(newPatient);
             }
 

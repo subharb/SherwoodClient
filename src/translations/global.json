@@ -35,6 +35,7 @@
             "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
             "new-record" : ["Record saved", "Registro Guardado", "Enregistrement enregistré"],
+            "error" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
             "updated-record" : ["Record updated!", "Registro Actualizado", "Fichier mis à jour"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"]

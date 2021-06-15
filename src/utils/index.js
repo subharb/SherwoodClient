@@ -443,12 +443,10 @@ export function filterRecordsFromSubmissions(submissions, sectionUUID){
     for(let i = 0; i < submissions.length; i++){
         let filteredRecords = [];
         const submission = submissions[i];
-        for(let j = 0; j < submission.surveyRecords.length; j++){
-            const patientRecord = submission.surveyRecords[j];
-            if(patientRecord.surveySection.uuid === sectionUUID){ 
-                filteredRecords.push(patientRecord); 
-            }
-        } 
+        if(submission.uuid_section === sectionUUID){ 
+            filteredRecords = submission.surveyRecords; 
+        }
+      
         if(filteredRecords.length > 0){
             filteredSubmissions.push({
                 id:submission.id,

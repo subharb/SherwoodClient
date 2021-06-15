@@ -1,5 +1,6 @@
 import { isEmpty } from 'lodash';
 import React from 'react'
+import { connect } from 'react-redux';
 import { DIAGNOSIS_TYPE, SLAVES_DIAGNOSIS, SLAVES_TREATMENT, TREATMENT_TYPE } from '../../constants';
 import Form from './form';
 
@@ -25,13 +26,10 @@ export default function SectionForm(props) {
         Object.keys(values).forEach(key =>{
             let tempObj = {};
             const idField = parseInt(key.replace(preString, ""));
-            
-            tempObj["id_field"] = idField;
-
+            const surveyField = props.fields.find(field => field.id = idField);
+            tempObj["surveyField"] = surveyField;
             tempObj["value"] = values[key];
             dataFields.push(tempObj);
-            
-            
         })
         props.callBackSectionForm(dataFields);
     }
