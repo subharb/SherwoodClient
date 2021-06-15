@@ -39,6 +39,8 @@ export default function reducer(state = initialState, action){
         case types.SAVE_SUBMISSIONS_PATIENT_SUCCESS:
             tempData = newState.data === initialState.data ? {} : newState.data;
             let tempDict = {};
+            //Si se genera en offline, no hay id
+            
             if(tempData[action.meta.uuidPatient].hasOwnProperty(action.meta.surveyUUID)){
                 tempDict = tempData[action.meta.uuidPatient][action.meta.surveyUUID];
                 if(action.type === types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS){
@@ -46,11 +48,17 @@ export default function reducer(state = initialState, action){
                     tempDict.submissions[indexSub] = action.submission;
                 }
                 else{
+                    if(!action.submission.id){
+                        action.submission.id = tempDict.submissions[tempDict.submissions.length -1].id + 1;
+                    }
                     tempDict.submissions.push(action.submission);
                 }
                 
             }
             else{
+                if(!action.submission.id){
+                    action.submission.id = 1;
+                }
                 tempDict = {
                     surveyName : action.meta.surveyName,
                     uuid : action.meta.surveyUUID,

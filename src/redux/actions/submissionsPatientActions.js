@@ -47,7 +47,7 @@ export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPati
           });
         })
         .catch(function (error) {
-            if(!error.response){
+          if(!error.response){
                 const offlinePost = postObj[0];
                 //offlinePost.surveyRecords = postObj.submission[0].answers;
                 dispatch({
@@ -78,8 +78,20 @@ export function updateSubmissionPatientAction(postObj, uuidInvestigation, uuidPa
           });
         })
         .catch((error) => {
-          dispatch({ type: types.SAVE_SUBMISSIONS_PATIENT_ERROR });
-          throw error;
+          if(!error.response){
+            const offlinePost = postObj[0];
+            //offlinePost.surveyRecords = postObj.submission[0].answers;
+            dispatch({
+              type: types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS,
+              submission: offlinePost,
+              meta:{uuidPatient, surveyUUID, surveyName, idSubmission}
+                  });
+            }
+            else{
+              dispatch({ type: types.SAVE_SUBMISSIONS_PATIENT_ERROR });
+              throw error;  
+            }
+         
         });
     };
 }
