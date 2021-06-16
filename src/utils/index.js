@@ -1,5 +1,7 @@
+import $ from 'jquery';
 import { func } from "prop-types";
 import CryptoJS from 'crypto-js';
+import mixpanel from 'mixpanel-browser';
 
 /**
  * Function that validates fields from anywhere in the app
@@ -572,4 +574,24 @@ export function openStore(storeName){
             };
           }
     );
+}
+
+export function postErrorSlack(url, error, info){
+    console.log("Enviamos el error a ", process.env.REACT_APP_SLACK_HOOK);
+    let location = "URL:"+window.location.href+url;
+  
+    var text = location+" Error: "+error+ " Message:"+JSON.stringify(info);
+
+    $.ajax({
+        data: 'payload=' + JSON.stringify({
+            "text": text
+        }),
+        dataType: 'json',
+        processData: false,
+        type: 'POST',
+        url: process.env.REACT_APP_SLACK_HOOK
+    });
+    mixpanel.track("Error", {
+        "error" : error.stack ? error.stack : JSON.stringify(info)
+    });
 }

@@ -14,7 +14,8 @@
   import { StaleWhileRevalidate } from 'workbox-strategies';
   import {BackgroundSyncPlugin} from 'workbox-background-sync';
   import {NetworkOnly, NetworkFirst} from 'workbox-strategies';
-
+  import { BroadcastChannel } from 'broadcast-channel';
+  
   console.log("Hello Im the service worker, Im the walrus 11");
   clientsClaim();
 

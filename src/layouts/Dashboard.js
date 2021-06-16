@@ -20,7 +20,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import Loader from '../components/Loader';
-
+import { BroadcastChannel } from 'broadcast-channel';
 import { isWidthUp } from "@material-ui/core/withWidth";
 import { LoadingOverlay } from "@material-ui/data-grid";
 
@@ -123,6 +123,7 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
         if(!investigations.data){
             fetchRemoteInvestigations()
         }
+    
         const channel = new BroadcastChannel('sw-messages');
         channel.addEventListener("message", async (event) => {
             console.log("Message received"+ event.data);
