@@ -14,7 +14,7 @@
   import { StaleWhileRevalidate } from 'workbox-strategies';
   import {BackgroundSyncPlugin} from 'workbox-background-sync';
   import {NetworkOnly, NetworkFirst} from 'workbox-strategies';
-  import { BroadcastChannel } from 'broadcast-channel';
+  //import { BroadcastChannel } from 'broadcast-channel';
   
   console.log("Hello Im the service worker, Im the walrus 11");
   clientsClaim();
@@ -141,3 +141,20 @@
     ({ url }) => { console.log("Rutas GET "+process.env.REACT_APP_API_URL , url.origin); return url.origin === process.env.REACT_APP_API_URL }, // Customize this strategy as needed, e.g., by changing to CacheFirst.
     new NetworkFirst()
   );
+
+
+  self.addEventListener('activate', function(event) {
+    event.waitUntil(
+      caches.keys().then(function(cacheNames) {
+        return Promise.all(
+          cacheNames.filter(function(cacheName) {
+            // Return true if you want to remove this cache,
+            // but remember that caches are shared across
+            // the whole origin
+          }).map(function(cacheName) {
+            return caches.delete(cacheName);
+          })
+        );
+      })
+    );
+  });

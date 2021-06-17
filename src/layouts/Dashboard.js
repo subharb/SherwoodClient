@@ -20,7 +20,7 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import Loader from '../components/Loader';
-import { BroadcastChannel } from 'broadcast-channel';
+//import { BroadcastChannel } from 'broadcast-channel';
 import { isWidthUp } from "@material-ui/core/withWidth";
 import { LoadingOverlay } from "@material-ui/data-grid";
 
@@ -123,20 +123,26 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
         if(!investigations.data){
             fetchRemoteInvestigations()
         }
-    
-        const channel = new BroadcastChannel('sw-messages');
-        channel.addEventListener("message", async (event) => {
-            console.log("Message received"+ event.data);
-            if(event.data.hasOwnProperty("updatingRecords")){
-                console.log(event.data.updatingRecords);
-                await dispatch(
-                    updateLoadingRecords(event.data.updatingRecords)
-                );
-                if(event.data.updatingRecords === false){
-                  window.location.reload();
-                }
-            }
-        }, false);
+        try{
+          const channel = new BroadcastChannel('sw-messages');
+          console.log(channel);
+          channel.addEventListener("message", async (event) => {
+              console.log("Message received", event);
+              if(event.data.hasOwnProperty("updatingRecords")){
+                  console.log(event.data.updatingRecords);
+                  await dispatch(
+                      updateLoadingRecords(event.data.updatingRecords)
+                  );
+                  if(event.data.updatingRecords === false){
+                    window.location.reload();
+                  }
+              }
+          }, false);
+        }
+        catch(error){
+          console.log("BroadcastChannel not available");
+        }
+        
     }, [])
     if(isLoading){
         return <Loader />
