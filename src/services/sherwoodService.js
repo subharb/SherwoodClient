@@ -237,7 +237,10 @@ export function addPatient(uuidInvestigation, patientData){
                     reject(response.data);
                 }
             })
-            .catch(err => {console.log('Catch', err); reject(err);}); 
+            .catch(err => {
+                console.log('Catch', err); 
+                reject(err);
+            }); 
     })
 }
 

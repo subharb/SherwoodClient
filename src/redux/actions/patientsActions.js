@@ -4,6 +4,9 @@ import {
 } from "../../services/sherwoodService";
 
 export function savePatientAction(investigation, patientData) {
+  //Añado un uuid por si falla la conexión tener una referencia de este paciente
+  //Para también usarlo en el reenvio.
+  patientData.uuid = Math.random().toString(36).substring(2); 
   return async (dispatch) => {
     dispatch({ type: types.SAVE_PATIENT_LOADING });
 
@@ -17,9 +20,7 @@ export function savePatientAction(investigation, patientData) {
       })
       .catch((error) => {
         if(!error.response){
-          const offlinePost = patientData;
-          //offlinePost.surveyRecords = postObj.submission[0].answers;
-          offlinePost.uuid = Math.random().toString(36).substring(2); 
+          const offlinePost = patientData;          
           dispatch({
             type: types.SAVE_PATIENT_SUCCESS,
             patient: {...offlinePost},
