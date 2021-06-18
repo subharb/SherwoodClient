@@ -68,6 +68,7 @@ interface Props extends LocalizeContextProps {
     type:string,
     errorState: boolean,
     mode : string,
+    language?:string,
     initialState:{
         addingElements:boolean,
         listElements:Diagnosis[]
@@ -137,7 +138,7 @@ const SmartField:React.FC<Props> = (props) => {
     function renderSelector(){
         if(addingElements && props.mode === "form"){
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
-                cancel:cancel, language:props.activeLanguage.code, error:props.errorState, slaves:props.slaves,
+                cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, error:props.errorState, slaves:props.slaves,
                 size:"small", elementSelected:(diag:SmartFieldType) => elementSelected(diag)}
                 
             if(props.type === "background"){

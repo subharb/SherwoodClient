@@ -105,16 +105,32 @@
   // })
 
   const bgSyncPlugin = new BackgroundSyncPlugin('postRequests', {
-      maxRetentionTime: 24 * 60, // Retry for max of 24 Hours (specified in minutes),
+      maxRetentionTime: 48 * 60, // Retry for max of 24 Hours (specified in minutes),
       onSync: async ({queue}) => {
         console.log("Callback on SYNC 11!", queue);
         const channel = new BroadcastChannel('sw-messages');
         channel.postMessage({updatingRecords : true});
         let entry;
+        let uuidPatients = [];
+        let oldUuids = [];
         while ((entry = await queue.shiftRequest())) {
           try {
-            await fetch(entry.request);
-            console.error("Replay successful for request", entry.request);
+            console.log(entry.request);
+            const cloneRequest = entry.request.clone();
+            const body = await cloneRequest.json();
+            console.log("Body", body);
+            const response = await fetch(entry.request);
+            const data = await response.json();
+            console.log(data);
+            const urlRequest = entry.request.url;
+            console.log(urlRequest);
+            
+            if(urlRequest.endsWith("/patient") && entry.request.method === "POST"){
+                uuidPatients.push(data.patient.uuid);
+                //oldUuid = 
+            }
+            
+            console.info("Replay successful for request", entry.request);
           } catch (error) {
             console.error("Replay failed for request", entry.request, error);
 
@@ -151,6 +167,7 @@
             // Return true if you want to remove this cache,
             // but remember that caches are shared across
             // the whole origin
+            //return true;
           }).map(function(cacheName) {
             return caches.delete(cacheName);
           })

@@ -71,16 +71,21 @@ const AutocompleteSherwood = (props:Props) => {
     }
     useEffect(() => {
         async function makeRemoteSearch(){
-            if(searchTerm.length > MIN_LENGTH_SEARCH){
-                setLoading(true);
-                const response = await props.remoteSearch(searchTerm, props.country);
-                if(response.status === 200){
-                    setOptions(props.getOptionsResponse(response));
+            try{
+                if(searchTerm.length > MIN_LENGTH_SEARCH){
+                    setLoading(true);
+                    const response = await props.remoteSearch(searchTerm, props.country);
+                    if(response.status === 200){
+                        setOptions(props.getOptionsResponse(response));
+                    }
+                    else{
+                        setErrorSearch(true);
+                    }
+                    setLoading(false);
                 }
-                else{
-                    setErrorSearch(true);
-                }
-                setLoading(false);
+            }
+            catch(error){
+                setErrorSearch(true);
             }
         }
         if(!optionSelected){
