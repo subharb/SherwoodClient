@@ -112,23 +112,51 @@
         channel.postMessage({updatingRecords : true});
         let entry;
         let uuidPatients = [];
-        let oldUuids = [];
+        
         while ((entry = await queue.shiftRequest())) {
           try {
             console.log(entry.request);
+            let urlRequest = entry.request.url;
             const cloneRequest = entry.request.clone();
-            const body = await cloneRequest.json();
-            console.log("Body", body);
-            const response = await fetch(entry.request);
-            const data = await response.json();
+            let data;
+            let response;
+
+            if(urlRequest.includes("submission") && (entry.request.method === "POST" || entry.request.method === "PUT")){
+                const uuidObj = uuidPatients.find(obj => urlRequest.includes(obj.oldUUID));
+                if(uuidObj){
+                  console.log("uuidObj", uuidObj);
+                  urlRequest = urlRequest.replace(uuidObj.oldUUID, uuidObj.newUUID);
+                  console.log("urlRequest", urlRequest);
+                }
+                const body = await cloneRequest.json();
+            
+                let initFetch = {
+                  method: entry.request.method,
+                  body: JSON.stringify(body), // data can be `string` or {object}!
+                  headers:entry.request.headers
+                }
+                //initFetch.body = body;
+                response = await fetch(urlRequest, initFetch); 
+            }
+            else{
+              response = await fetch(entry.request);   
+            }
+            data = await response.json();
+            
             console.log(data);
-            const urlRequest = entry.request.url;
+            
             console.log(urlRequest);
             
             if(urlRequest.endsWith("/patient") && entry.request.method === "POST"){
-                uuidPatients.push(data.patient.uuid);
-                //oldUuid = 
+                const body = await cloneRequest.json();
+                console.log("Body", body);
+            
+                uuidPatients.push({
+                    newUUID : data.patient.uuid,
+                    oldUUID : body.uuid
+                });
             }
+            
             
             console.info("Replay successful for request", entry.request);
           } catch (error) {
@@ -160,7 +188,7 @@
 
 
   self.addEventListener('activate', function(event) {
-    event.waitUntil(
+    event.skipWaiting(
       caches.keys().then(function(cacheNames) {
         return Promise.all(
           cacheNames.filter(function(cacheName) {

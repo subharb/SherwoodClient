@@ -134,7 +134,7 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
                       updateLoadingRecords(event.data.updatingRecords)
                   );
                   if(event.data.updatingRecords === false){
-                    window.location.reload();
+                    window.location.href = window.location.origin;
                   }
               }
           }, false);
