@@ -38,7 +38,9 @@
             "error" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
             "updated-record" : ["Record updated!", "Registro Actualizado", "Fichier mis à jour"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
-            "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"]
+            "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
+            "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
+            "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
         "posology" : ["Frequency", "Frecuencia", "Fréquence"],

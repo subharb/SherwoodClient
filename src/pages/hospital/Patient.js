@@ -26,7 +26,7 @@ import iconLab from "../../img/icons/lab.png";
 import iconNotesGreen from "../../img/icons/history_green.png";
 import iconImagesGreen from "../../img/icons/images_green.png";
 import iconLabGreen from "../../img/icons/lab_green.png";
-import { useUpdateEffect } from '../../hooks';
+import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
 
 
@@ -40,7 +40,7 @@ function Patient(props) {
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
     const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
     
-    const [showSnackbar, setShowSnackbar] = useState({show : false, message:""});
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [surveyRecords, setSurveyRecords] = useState(null);
     const [showOptions, setShowOptions] = useState(false);
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);

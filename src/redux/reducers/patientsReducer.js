@@ -35,6 +35,7 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error;
             return newState;
         case types.UPDATE_PATIENT_SUCCESS:    
+        case types.SAVE_PATIENT_OFFLINE:
         case types.SAVE_PATIENT_SUCCESS:
             let newPatient = {...action.patient};
             newPatient.personalData = decryptSinglePatientData(action.patient.personalData, action.investigation);
@@ -52,6 +53,10 @@ export default function reducer(state = initialState, action){
 
             newState.loading = initialState.loading;
             newState.error = initialState.error;
+            if(action.type === types.SAVE_PATIENT_OFFLINE){
+                newState.error = 2;//Saved but offline
+            }
+            
             return newState;
         default:
             return state;

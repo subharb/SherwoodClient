@@ -2,6 +2,7 @@ import * as types from "../../constants";
 
 const initialState = {
     loading: false,
+    pendingActions : []
 }
 
 export default function reducer(state = initialState, action){
@@ -10,6 +11,12 @@ export default function reducer(state = initialState, action){
     switch(action.type){
         case types.UPDATE_RECORDS_LOADING:
             newState.loading = action.loading;
+            return newState;
+        case types.SAVE_PATIENT_OFFLINE:
+            const tempPendingActions = [...newState.pendingActions];
+            tempPendingActions.push({action : "add_patient"});
+            newState.pendingActions = tempPendingActions;
+
             return newState;
         default:
             return state;    

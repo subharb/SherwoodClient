@@ -185,6 +185,12 @@ export function useSelectSmartField(initialState, label, errorState, setAddingSm
     return [addSmartField, renderSelect, resetState]
 }
 
+export function useSnackBarState(){
+    const [showSnackbar, setShowSnackbar] = useState({show : false, message:""});
+
+    return [showSnackbar, setShowSnackbar];
+}
+
 export function useSherwoodUser(){
     const history = useHistory();
     let location = useLocation();

@@ -21,6 +21,7 @@ import {
 } from "@material-ui/core";
 import { Bell, Home, UserPlus, Server } from "react-feather";
 import { Translate } from "react-localize-redux";
+import { Update } from "@material-ui/icons";
 
 const Popover = styled(MuiPopover)`
   .MuiPaper-root {
@@ -103,6 +104,9 @@ function NotificationsDropdown(props) {
             );
           } ) 
   }
+  function flushPendingRequests(){
+      
+  }
   return (
     <React.Fragment>
       <Tooltip title="Notifications">
@@ -131,12 +135,19 @@ function NotificationsDropdown(props) {
           <List disablePadding>
              { renderNotifications()}
           </List>
-          {props.isOffline && 
+          
           <Box p={1} display="flex" justifyContent="center">
-            <Button size="small" component={Link} to="#">
+            {
+              props.isOffline &&
               <Translate id="general.offline.description" />
-            </Button>
-          </Box> }
+            }
+            {
+              (!props.isOffline && props.notifications.length > 0) &&
+              <Button size="small" onClick={flushPendingRequests}>
+                <Update color="primary" /> Update!
+              </Button>
+            }
+          </Box>
         </React.Fragment>
       </Popover>
     </React.Fragment>

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Box, Button, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
@@ -12,41 +12,65 @@ import { Translate } from 'react-localize-redux';
 import { BoxBckgr } from '../../components/general/mini_components';
 import { useDispatch } from "react-redux";
 import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
+import { useSnackBarState, useUpdateEffect } from '../../hooks';
+import { Alert } from '@material-ui/lab';
 
 export function AddPatient(props) {
     let { uuidPatient } = useParams();
 
     const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
-    return <AddPatientComponent investigations={props.investigations} patient={patient} />
+    return <AddPatientComponent investigations={props.investigations} patient={patient} {...props} />
 }   
 
 export function AddPatientComponent(props) {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(false);
-    const [showSnackbar, setShowSnackBar] = useState(false);
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
 
     
     const dispatch = useDispatch();
 
     function handleClose(){
-        setShowSnackBar(false);
+        setShowSnackbar({show:false});
     }
+    useUpdateEffect(() => {
+        if(!props.patients.loading){
+            let messageId = "";
+            let severity = "success";
+            if(props.patient){
+                messageId = "hospital.patient.updated-patient";
+            }
+            else{
+                messageId = "hospital.patient.new-patient";
+            }
+            if(props.patients.error === 2){
+                messageId += "-offline";
+                severity = "warning";
+            }
+            else if(props.patients.error){
+                messageId = "hospital.patient.error";
+                severity = "error";
+            }
+            setShowSnackbar({show:true, severity:severity, message : messageId});
+        }
+        
+    }, [props.patients.loading])
     async function saveUpdatePatient(patientData){
         try{
             setIsLoading(true);
+            
             if(props.patient){
                 await dispatch( updatePatientAction(props.investigations.currentInvestigation, props.patient.uuid, patientData));
+                
             }
             else{
                 await dispatch( savePatientAction(props.investigations.currentInvestigation, patientData));
+                
             }
-            
-            setIsLoading(false);
-            setShowSnackBar(true);
+            setIsLoading(false);            
         }
         catch(error){
             setIsLoading(true);
-            setError(true);
+            setShowSnackbar({show:true, severity:"error", message : "hospital.patient.error"});
         }
     }
     if(props.investigations.loading || isLoading){
@@ -59,21 +83,17 @@ export function AddPatientComponent(props) {
                 vertical: 'top',
                 horizontal: 'center',
                 }}
-                open={showSnackbar}
+                open={showSnackbar.show}
                 autoHideDuration={2000}
-                onClose={handleClose}
-                message={props.patient ? <Translate id="hospital.patient.updated-patient" /> : <Translate id="hospital.patient.new-patient" />}
-                action={
-                <React.Fragment>
-                    <Button color="secondary" size="small" onClick={handleClose}>
-                    
-                    </Button>
-                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-                    <CloseIcon fontSize="small" />
-                    </IconButton>
-                </React.Fragment>
-                }
-            />
+                onClose={handleClose}>
+                    {
+                            showSnackbar.message && 
+                            <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
+                                <Translate id={showSnackbar.message} />
+                            </Alert>
+                        }
+                </Snackbar>
+            
             <Grid container spacing={3}>
                 <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
                     {!props.patient &&
@@ -108,7 +128,6 @@ export function AddPatientComponent(props) {
 }
 
 AddPatientComponent.propTypes = {
-    /** Checks if it's in loading state */
     investigations:PropTypes.object
 
   };

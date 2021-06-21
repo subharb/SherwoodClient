@@ -22,7 +22,7 @@ export function savePatientAction(investigation, patientData) {
         if(!error.response){
           const offlinePost = patientData;          
           dispatch({
-            type: types.SAVE_PATIENT_SUCCESS,
+            type: types.SAVE_PATIENT_OFFLINE,
             patient: {...offlinePost},
             investigation:investigation
           });
