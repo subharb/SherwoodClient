@@ -104,9 +104,7 @@ function NotificationsDropdown(props) {
             );
           } ) 
   }
-  function flushPendingRequests(){
-      
-  }
+ 
   return (
     <React.Fragment>
       <Tooltip title="Notifications">
@@ -143,9 +141,7 @@ function NotificationsDropdown(props) {
             }
             {
               (!props.isOffline && props.notifications.length > 0) &&
-              <Button size="small" onClick={flushPendingRequests}>
-                <Update color="primary" /> Update!
-              </Button>
+              <Translate id="general.offline-update.description" />
             }
           </Box>
         </React.Fragment>

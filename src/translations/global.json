@@ -24,6 +24,10 @@
         "offline" : {
             "title" : ["Offline", "Sin conexión", "Sans connexion"],
             "description" : ["You can still use the app, however unsyncronized records will be updated automaticly when connection is recovered", "Aún puede usar la aplicación, sin embargo, los registros no sincronizados se actualizarán automáticamente cuando se recupere la conexión", "Vous pouvez toujours utiliser l'application, mais les enregistrements non synchronisés seront mis à jour automatiquement lorsque la connexion sera rétablie"]
+        },
+        "offline-update" : {
+            "title" : ["Offline", "Sin conexión", "Sans connexion"],
+            "description" : ["There are some items to be syncronized. The app will automaticly upload these items when the connection is recovered. Please don't refresh the page until this message disappears.", "Hay algunos elementos para sincronizar. La aplicación cargará automáticamente estos elementos cuando se recupere la conexión. No actualice la página hasta que desaparezca este mensaje.", "Il y a certains éléments à synchroniser. L'application téléchargera automatiquement ces éléments lorsque la connexion sera rétablie. Veuillez ne pas actualiser la page jusqu'à ce que ce message disparaisse."]
         }
     },
     "hospital" : {
