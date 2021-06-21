@@ -326,15 +326,27 @@ function Patient(props) {
     }, [props.patientsSubmissions])
 
     useEffect(() => {
-        
             if(props.patientsSubmissions.error){
+                let severity = "error";
+                let message = "";
                 if(action === "update"){
-                    setShowSnackbar({show:true, severity:"error", message : "hospital.patient.no-update"});
+                    message = "hospital.patient.error";
                 }
                 if(action === "fill"){
-                    setShowSnackbar({show:true, severity:"error", message : "hospital.patient.error"});
+                    message = "hospital.patient.error";
                 }
+                if(props.patientsSubmissions.error === 2){
+                    severity = "warning";
+                    if(action === "update"){
+                        message = "hospital.patient.updated-record-offline";
+                    }
+                    if(action === "fill"){
+                        message = "hospital.patient.new-record-offline";
+                    }
+                }
+                setShowSnackbar({show:true, severity:severity, message : message});
             }
+            
     }, [props.patientsSubmissions.loading]);    
 
     if(error){

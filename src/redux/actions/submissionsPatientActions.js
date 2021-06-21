@@ -51,7 +51,7 @@ export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPati
                 const offlinePost = postObj[0];
                 //offlinePost.surveyRecords = postObj.submission[0].answers;
                 dispatch({
-                  type: types.SAVE_SUBMISSIONS_PATIENT_SUCCESS,
+                  type: types.SAVE_SUBMISSIONS_PATIENT_OFFLINE,
                   submission: offlinePost,
                   meta:{uuidPatient, surveyUUID, surveyName, surveyType}
                 });

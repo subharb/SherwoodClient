@@ -46,7 +46,8 @@ export default function reducer(state = initialState, action){
             else{
                 //Para los pacientes metido en offline
                 if(!newPatient.id){
-                    newPatient.id = newState.data[action.investigation.uuid].length;
+                    const maxiId =  newState.data[action.investigation.uuid].sort((a,b)=>b.id-a.id)[0].id;
+                    newPatient.id = maxiId +1;
                 }
                 newState.data[action.investigation.uuid].push(newPatient);
             }

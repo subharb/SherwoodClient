@@ -30,6 +30,7 @@
             "description" : ["There are some items to be syncronized. The app will automaticly upload these items when the connection is recovered. Please don't refresh the page until this message disappears.", "Hay algunos elementos para sincronizar. La aplicación cargará automáticamente estos elementos cuando se recupere la conexión. No actualice la página hasta que desaparezca este mensaje.", "Il y a certains éléments à synchroniser. L'application téléchargera automatiquement ces éléments lorsque la connexion sera rétablie. Veuillez ne pas actualiser la page jusqu'à ce que ce message disparaisse."]
         }
     },
+    
     "hospital" : {
         "doctor" : ["Doctor", "Médico", "Médecin"],
         "data-collection" : ["Form", "Formulario", "Forme"],
@@ -39,12 +40,20 @@
             "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
             "new-record" : ["Record saved", "Registro Guardado", "Enregistrement enregistré"],
+            "new-record-offline" : ["Record saved offline", "Registro Guardado offline", "Enregistrement enregistré offline"],
             "error" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
             "updated-record" : ["Record updated!", "Registro Actualizado", "Fichier mis à jour"],
+            "updated-record-offline" : ["Record updated Offline!", "Registro Actualizado Offline", "Fichier mis à jour Offline"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
+        },
+        "notification": {
+            "offline" : {
+                "patient" : ["Add patient pending", "Agregar paciente pendiente", "Add patient pending"],
+                "submission" : ["Patient submission pending", "Envío de datos pendiente", "En attente de soumission des données"]
+            }
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
         "posology" : ["Frequency", "Frecuencia", "Fréquence"],

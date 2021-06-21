@@ -36,6 +36,7 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error;
             return newState;
         case types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS:
+        case types.SAVE_SUBMISSIONS_PATIENT_OFFLINE:
         case types.SAVE_SUBMISSIONS_PATIENT_SUCCESS:
             tempData = newState.data === initialState.data ? {} : newState.data;
             let tempDict = {};
@@ -53,7 +54,6 @@ export default function reducer(state = initialState, action){
                     }
                     tempDict.submissions.push(action.submission);
                 }
-                
             }
             else{
                 if(!action.submission.id){
@@ -69,6 +69,9 @@ export default function reducer(state = initialState, action){
             tempData[action.meta.uuidPatient][action.meta.surveyUUID] = tempDict;                   
             newState.loading = initialState.loading;
             newState.error = initialState.error;
+            if(types.SAVE_SUBMISSIONS_PATIENT_OFFLINE){
+                newState.error = 2;//Offline
+            }
             
             newState.nUpdatedRegisters++ 
             
