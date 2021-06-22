@@ -45,7 +45,7 @@ function Background(props: PropsSmartFieldLocalized) {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <ICT {...props} cancel={false} elementSelected={diagnoseSelected} />
+                <ICT {...props} error={error} cancel={false} elementSelected={diagnoseSelected} />
             </Grid>
             <Grid item xs={12}>
                 <MuiPickersUtilsProvider key="end-date" utils={DateFnsUtils} >

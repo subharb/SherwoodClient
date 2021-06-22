@@ -6,6 +6,7 @@ import { ButtonAccept } from '../mini_components';
 interface Props{
     callbackOffline : (text:string) => void,
     error : boolean,
+    label : string,
     variant:"standard" | "filled" | "outlined" | undefined
 }
 export const OfflineField:React.FC<Props> = (props) => {
@@ -18,7 +19,7 @@ export const OfflineField:React.FC<Props> = (props) => {
     }
     return( 
         <React.Fragment>
-            <TextField error={props.error} size="small" value={text} variant={props.variant} onChange={ (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setText(e.target.value)} />
+            <TextField label={props.label } error={props.error} value={text} variant="outlined" onChange={ (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setText(e.target.value)} />
             {
                 !saved && 
                 <ButtonAccept onClick={saveField}><Translate id="general.add" /></ButtonAccept>

@@ -12,6 +12,7 @@ interface Props extends LocalizeContextProps {
     error:boolean;
     chemicalComponent?:boolean,
     country:string,
+    type:string,
     variant:"standard" | "filled" | "outlined" | undefined,
     drugSelected:(drug:DrugType) => void,
     callbackError:(error:boolean) => void
@@ -68,7 +69,7 @@ function DrugSelector(props: Props) {
     }, [searchDrug]);
 
     if(offline){
-        return <OfflineField error={props.error} variant={props.variant} callbackOffline={(value) => getOffline(value)} />
+        return <OfflineField label={props.translate(`hospital.select-${props.type}`).toString()} error={props.error} variant={props.variant} callbackOffline={(value) => getOffline(value)} />
     }    
     return(
         <AutocompleteSherwood error={props.error} remoteSearch={props.chemicalComponent ? searchDrugComponentService : searchDrugService} 

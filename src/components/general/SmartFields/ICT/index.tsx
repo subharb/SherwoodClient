@@ -28,12 +28,13 @@ const ICTSelectorGeneral:React.FC<PropsSmartFieldLocalized> = (props) => {
     }
     function renderIctSelector(){
         if(offline){
-            return <OfflineField error={props.error} variant={props.variant} callbackOffline={(value) => getOffline(value)} />
+            return <OfflineField label={props.translate(`hospital.select-ict`).toString()} error={props.error} 
+                        variant={props.variant} callbackOffline={(value) => getOffline(value)} />
         }
         else{
             if(["en", "es", "ar"].indexOf(props.language) !== -1 ){
                 return <ICTSelectorOMS type={props.type}  variant="outlined" margin={props.typeMargin} 
-                            cancel={props.cancel} language={props.language}
+                            cancel={props.cancel} language={props.language} error={props.error}
                             size="small" elementSelected={props.elementSelected} />
             }
             else{

@@ -28,7 +28,8 @@ function Allergy(props: PropsSmartFieldLocalized) {
     return(
         <Grid container spacing={3}>
             <Grid xs={12}>
-                <DrugSelector variant={props.variant} error={error} callbackError={(error) => setError(error)}  
+                <DrugSelector type={props.type} variant={props.variant} error={error || props.error} 
+                    callbackError={(error) => setError(error)}  
                     chemicalComponent country={props.language}
                     drugSelected={(drug) => drugSelected(drug)} />
             </Grid>
