@@ -275,7 +275,7 @@ export function useOffline(){
     const [offline, setOffline] = React.useState(!navigator.onLine);
 
     function updateOffline(){
-        if(offline !== !navigator.onLine){
+        if(offline === navigator.onLine){
             setOffline(!navigator.onLine);
         }
     }

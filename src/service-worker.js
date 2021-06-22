@@ -14,6 +14,7 @@
   import { StaleWhileRevalidate } from 'workbox-strategies';
   import {BackgroundSyncPlugin} from 'workbox-background-sync';
   import {NetworkOnly, NetworkFirst} from 'workbox-strategies';
+  import {Queue} from 'workbox-background-sync';
   //import { BroadcastChannel } from 'broadcast-channel';
   
   console.log("Hello Im the service worker, Im the walrus 11");
@@ -71,38 +72,14 @@
     if (event.data && event.data.type === 'SKIP_WAITING') {
       self.skipWaiting();
     }
+    else if (event.data && event.data.type === 'FORCE_UPDATE') {
+      console.log("You force to update");
+      console.log("Pending Requests", bgSyncPlugin);
+  }
   });
 
   // Any other custom service worker logic can go here.
 
-  // self.addEventListener('fetch', function(event) {
-  //   // We will cache all POST requests, but in the real world, you will probably filter for
-  //   // specific URLs like if(... || event.request.url.href.match(...))
-  //   if(event.request.method === "GET"){
-      
-  //     // Init the cache. We use Dexie here to simplify the code. You can use any other
-  //     // way to access IndexedDB of course.
-  //     var db = new Dexie("getRequests");
-  //     db.version(1).stores({
-  //       post_cache: 'key,response,timestamp'
-  //     })
-    
-  //     event.respondWith(
-  //       // First try to fetch the request from the server
-  //       fetch(event.request.clone())
-  //       .then(function(response) {
-  //         // If it works, put the response into IndexedDB
-  //         cachePut(event.request.clone(), response.clone(), db.post_cache);
-  //         return response;
-  //       })
-  //       .catch(function() {
-  //         // If it does not work, return the cached response. If the cache does not
-  //         // contain a response for our request, it will give us a 503-response
-  //         return cacheMatch(event.request.clone(), db.post_cache);
-  //       })
-  //     );
-  //   }
-  // })
 
   const bgSyncPlugin = new BackgroundSyncPlugin('postRequests', {
       maxRetentionTime: 48 * 60, // Retry for max of 24 Hours (specified in minutes),
@@ -119,7 +96,7 @@
             let urlRequest = entry.request.url;
             const cloneRequest = entry.request.clone();
             let data;
-            let response;
+            let response; 
 
             if(urlRequest.includes("submission") && (entry.request.method === "POST" || entry.request.method === "PUT")){
                 const uuidObj = uuidPatients.find(obj => urlRequest.includes(obj.oldUUID));
@@ -188,15 +165,10 @@
 
 
   self.addEventListener('activate', function(event) {
-    event.skipWaiting(
+    event.waitUntil(
       caches.keys().then(function(cacheNames) {
         return Promise.all(
-          cacheNames.filter(function(cacheName) {
-            // Return true if you want to remove this cache,
-            // but remember that caches are shared across
-            // the whole origin
-            //return true;
-          }).map(function(cacheName) {
+          cacheNames.map(function(cacheName) {
             return caches.delete(cacheName);
           })
         );

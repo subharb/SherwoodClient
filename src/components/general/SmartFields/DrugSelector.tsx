@@ -75,33 +75,7 @@ function DrugSelector(props: Props) {
             country={props.country} getOptionsResponse={props.chemicalComponent ? (response) => response.drugComposition : (response) => response.drugs}
             onValueSelected={(value) =>drugSelected(value)}
             getOptionLabel={(option) => option.name}/>
-        // <Autocomplete
-        //     id="drug"
-        //     loading = {loading}
-        //     noOptionsText="start typing"
-        //     options={drugOptions}
-        //     filterOptions={x => x}
-        //     onInputChange={(event, value, reason) => {
-        //         if(reason === "clear"){
-        //             setSearchDrug("");
-        //         }
-        //         else{
-        //             setSearchDrug(value);
-        //         }
-                
-        //     }}
-        //     onChange={(event, value, reason, details) => {
-        //         if(value){
-        //             drugSelected(value);    
-        //         }
-        //     }}
-        
-        //     getOptionLabel={(option) => option.name}
-        //     style={{ width: 300 }}
-        //     renderInput={(params) => <TextField {...params} value={searchDrug} error={errorDrug || props.error} 
-        //             label={props.translate("hospital.select-treatment")} variant="outlined" />}
-        // />
-    );
+    )
 }
 
 export default withLocalize(DrugSelector);
