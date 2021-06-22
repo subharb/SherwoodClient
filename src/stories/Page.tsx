@@ -1,10 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { Header } from './Header';
-//import './page.css';
+import './page.css';
 
-export const Page = ({ user, onLogin, onLogout, onCreateAccount }) => (
+export interface PageProps {
+  user?: {};
+  onLogin: () => void;
+  onLogout: () => void;
+  onCreateAccount: () => void;
+}
+
+export const Page: React.FC<PageProps> = ({ user, onLogin, onLogout, onCreateAccount }) => (
   <article>
     <Header user={user} onLogin={onLogin} onLogout={onLogout} onCreateAccount={onCreateAccount} />
 
@@ -34,8 +40,8 @@ export const Page = ({ user, onLogin, onLogout, onCreateAccount }) => (
       </ul>
       <p>
         Get a guided tutorial on component-driven development at{' '}
-        <a href="https://www.learnstorybook.com" target="_blank" rel="noopener noreferrer">
-          Learn Storybook
+        <a href="https://storybook.js.org/tutorials/" target="_blank" rel="noopener noreferrer">
+          Storybook tutorials
         </a>
         . Read more in the{' '}
         <a href="https://storybook.js.org/docs" target="_blank" rel="noopener noreferrer">
@@ -59,13 +65,3 @@ export const Page = ({ user, onLogin, onLogout, onCreateAccount }) => (
     </section>
   </article>
 );
-Page.propTypes = {
-  user: PropTypes.shape({}),
-  onLogin: PropTypes.func.isRequired,
-  onLogout: PropTypes.func.isRequired,
-  onCreateAccount: PropTypes.func.isRequired,
-};
-
-Page.defaultProps = {
-  user: null,
-};
