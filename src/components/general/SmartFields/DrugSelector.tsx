@@ -33,7 +33,9 @@ function DrugSelector(props: Props) {
         props.drugSelected(drug);
     }
     function getOffline(value:string){
-        props.drugSelected({name:value, code:"offline"});
+        const drugSelected:DrugType = {name:value, code:"offline"};
+        console.log("Offline Drug Selected: ", drugSelected);
+        props.drugSelected(drugSelected);
     }
     useEffect(() => {
         async function searchDrugRemote(){
@@ -69,7 +71,9 @@ function DrugSelector(props: Props) {
     }, [searchDrug]);
 
     if(offline){
-        return <OfflineField label={props.translate(`hospital.select-${props.type}`).toString()} error={props.error} variant={props.variant} callbackOffline={(value) => getOffline(value)} />
+        return <OfflineField label={props.translate(`hospital.select-${props.type}`).toString()} 
+                error={props.error} variant={props.variant} 
+                callbackOffline={(value) => getOffline(value)} />
     }    
     return(
         <AutocompleteSherwood error={props.error} remoteSearch={props.chemicalComponent ? searchDrugComponentService : searchDrugService} 

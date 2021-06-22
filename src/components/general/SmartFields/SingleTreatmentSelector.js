@@ -66,7 +66,7 @@ function SingleTreatmentSelector(props){
             }
             
              props.elementSelected({
-                treatment:drug.name,"drug-code" : drug.cis, 
+                treatment:drug.name,"drug-code" : drug.code, 
                 "treatment-posology": posology, 
                 "treatment-dose": dose, 
                 "treatment-start" : startDate, 
@@ -75,7 +75,7 @@ function SingleTreatmentSelector(props){
         }
     }
     function drugSelected(drug){
-        console.log(drug);
+        console.log("Treatment Drug:", drug);
         setErrorDrug(false);
         setDrug(drug);
     }
