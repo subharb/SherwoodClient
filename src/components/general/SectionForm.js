@@ -24,7 +24,6 @@ export default function SectionForm(props) {
         let copyValues = Object.assign({}, values)
         const dataFields = [];
         Object.keys(values).forEach(key =>{
-            let tempObj = {};
             const idField = parseInt(key.replace(preString, ""));
             const surveyField = props.fields.find(field => field.id = idField);
             

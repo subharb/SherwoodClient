@@ -33,7 +33,7 @@ function DrugSelector(props: Props) {
         props.drugSelected(drug);
     }
     function getOffline(value:string){
-        const drugSelected:DrugType = {name:value, code:"offline"};
+        const drugSelected:DrugType = {name:value, id:"offline"};
         console.log("Offline Drug Selected: ", drugSelected);
         props.drugSelected(drugSelected);
     }

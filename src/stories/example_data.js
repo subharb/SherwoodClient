@@ -27,7 +27,7 @@ export const edc_data1 = () => {
                                     "id" : 10,
                                     "required": true,
                                     "encrypted": false,
-                                    "name": "drug-code",
+                                    "name": "drug-id",
                                     "label": "Start Drug",
                                     "type": "text",
                                     "validation" : "notEmpty",

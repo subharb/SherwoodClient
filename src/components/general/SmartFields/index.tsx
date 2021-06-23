@@ -34,11 +34,11 @@ export interface PropsIct extends PropsSmartField{
 
 export interface DrugType{
     name:string,
-    code:string
+    id:string
 }
 export interface AllergyType{
     allergy : string,
-    "allergy-code" : string
+    "drug-id" : string
 }
 
 
@@ -54,12 +54,24 @@ export interface FamilyBackgroundType{
     "family-background-relation" ?: string
 }
 
-export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType;
+export interface TreatmentType{
+    "treatment" : string,
+    "drug-id" : string,
+    "treatment-posology": string, 
+    "treatment-dose": string, 
+    "treatment-start" : string, 
+    "treatment-finish" : string 
+}
+
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType;
 
 export interface Diagnosis{
     ict : string,
     "ict-code": string
 }
+
+const DATE_FIELDS = ["background-date", "treatment-start", "treatment-finish"];
+
 interface Props extends LocalizeContextProps {
     name : string,
     label : string,
@@ -97,20 +109,28 @@ const SmartField:React.FC<Props> = (props) => {
             
             const keys = Object.keys(listElements[0]);
             for(let i = 0; i < keys.length;i++){
-                if(!keys[i].includes("code")){
+                //Para no incluir attributos de los smarfield en la tabla
+                if(!["code", "id"].some(word => keys[i].includes(word))){
                     headCells.push({ id: keys[i], alignment: "left", label: <Translate id={`hospital.${keys[i]}-table`} /> }) 
                 }
             }
             const rows = listElements.map((element, index) => {
                 let valueDict:any = {...element};
                 for(const [key, val] of Object.entries(element)) {
-                    if(val && typeof val.getMonth === 'function'){
-                        valueDict[key] = val.toLocaleDateString();
-                    }   
-                    else if(TRANSLATED_COLUMNS.includes(key)){
+                    
+                    if(val && DATE_FIELDS.includes(key)){
+                        if(val && typeof val.getMonth === 'function'){
+                            valueDict[key] = val.toLocaleDateString();
+                        }   
+                        else if(val && Date.parse(val)){
+                            valueDict[key] = new Date(val.replace(' ', 'T').replace(' ', 'Z')).toLocaleDateString();
+                        }
+                    }
+                    else if( val && TRANSLATED_COLUMNS.includes(key)){
                         const translation = props.translate(`hospital.${key}-values.${val}`).toString();
                         valueDict[key] = translation.includes('Missing translationId:') ? val : translation;
                     } 
+                    
                     else{
                         valueDict[key] = val;
                     }

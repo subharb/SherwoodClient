@@ -14,7 +14,7 @@ const FIELD_TREATMENT = {
         "slaves" : [{
             "required": true,
             "encrypted": false,
-            "name": "drug-code",
+            "name": "drug-id",
             "label": "Start Drug",
             "type": "text",
             "validation" : "notEmpty",
@@ -98,9 +98,9 @@ const FIELD_ALLERGY = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "allergy-code",
+            "name": "drug-id",
             "label": "Code Diagnosis",
-            "type": "allergy-code",
+            "type": "drug-id",
             "validation" : "notEmpty",
         }]
     }
@@ -116,7 +116,7 @@ const FIELD_BACKGROUND = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "allergy-code",
+            "name": "drug-id",
             "label": "Code Diagnosis",
             "type": "background-code",
             "validation" : "notEmpty",
@@ -134,7 +134,7 @@ const FIELD_FAMILY_BACKGROUND = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "allergy-code",
+            "name": "drug-id",
             "label": "Code Diagnosis",
             "type": "family-background-code",
             "validation" : "notEmpty",

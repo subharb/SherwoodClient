@@ -56,7 +56,7 @@ export const UPDATE_SUBMISSIONS_PATIENT_SUCCESS = "UPDATE_SUBMISSIONS_PATIENT_SU
 
 export const TREATMENT_TYPE = "treatment"
 export const DIAGNOSIS_TYPE = "ict"
-export const SLAVES_TREATMENT = ["drug-code", "treatment-start", "treatment-finish", "treatment-posology"];
+export const SLAVES_TREATMENT = ["drug-id", "treatment-start", "treatment-finish", "treatment-posology"];
 export const SLAVES_DIAGNOSIS = ["ict-code"];
 
 
