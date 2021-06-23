@@ -47,7 +47,7 @@ export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPati
           });
         })
         .catch(function (error) {
-          if(!error.response){
+          if(!error.status){
                 const offlinePost = postObj[0];
                 //offlinePost.surveyRecords = postObj.submission[0].answers;
                 dispatch({
@@ -78,7 +78,7 @@ export function updateSubmissionPatientAction(postObj, uuidInvestigation, uuidPa
           });
         })
         .catch((error) => {
-          if(!error.response){
+          if(!error.status){
             const offlinePost = postObj[0];
             //offlinePost.surveyRecords = postObj.submission[0].answers;
             dispatch({

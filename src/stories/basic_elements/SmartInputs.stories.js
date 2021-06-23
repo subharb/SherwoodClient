@@ -184,7 +184,7 @@ TreatmentRaw.args = {
     type:'treatment',
     typeMargin:'',
     slaves:FIELD_TREATMENT["drug"].slaves,
-    callBackForm : (values) => console.log("Result",JSON.stringify(values))}
+    elementSelected : (values) => console.log("Result",JSON.stringify(values))}
     
 // TreatmentEmpty.args = {
 //     label:"Treatment", 
@@ -205,7 +205,7 @@ TreatmentWithData.args = {
     initialData:{drug:[{treatment:"paracetamol", 
                         "treatment-posology": "6h", 
                         "treatment-dose": "1 pill", 
-                        startDate:"1111", endDate:"111"}
+                        "treatment-start":"1111", "treatment-finish":"111"}
                     ]
                 },
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 

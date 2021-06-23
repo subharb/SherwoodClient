@@ -69,7 +69,7 @@ export default function reducer(state = initialState, action){
             tempData[action.meta.uuidPatient][action.meta.surveyUUID] = tempDict;                   
             newState.loading = initialState.loading;
             newState.error = initialState.error;
-            if(types.SAVE_SUBMISSIONS_PATIENT_OFFLINE){
+            if(action.type === types.SAVE_SUBMISSIONS_PATIENT_OFFLINE){
                 newState.error = 2;//Offline
             }
             

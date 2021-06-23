@@ -134,7 +134,13 @@ function SingleTreatmentSelector(props){
                         doseSelected(value);
                     }}
                     onChange={(event, value, reason, details) => {
-                        doseSelected(value.value);
+                        if(value){
+                            doseSelected(value.value);
+                        }
+                        else{
+                            doseSelected(null);
+                        }
+                        
                     }}
                     freeSolo
                     renderInput={(params) => <TextField {...params} 
@@ -159,7 +165,12 @@ function SingleTreatmentSelector(props){
                         posologySelected(value);
                     }}
                     onChange={(event, value, reason, details) => {
-                        posologySelected(value.value);
+                        if(value){
+                            posologySelected(value.value);
+                        }
+                        else{
+                            posologySelected(null);
+                        }
                     }}
                     freeSolo
                     renderInput={(params) => <TextField {...params} 

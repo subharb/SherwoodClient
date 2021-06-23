@@ -66,6 +66,9 @@
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
         "number-elements" : ["Number", "Nombre", "Número"],
         "time-unit" : ["Time", "Tiempo", "Temps"],
+        "treatment-posology-values" : {
+            "single-dose" : ["Single dose", "Dosis única", "Une seule dose"]
+        },
         "time-unit-options" : {
             "days" : ["days", "días", "jours"],
             "weeks" : ["weeks", "semanas", "semaines"],

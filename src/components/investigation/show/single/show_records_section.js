@@ -152,7 +152,6 @@ export default function ShowRecordsSection(props) {
                                     ((dateCreated.getTime() + 86400000 > new Date().getTime()) || props.permissions === 4) && 
                                     <ButtonEdit onClick={() => editSection(indexSubmission, props.section.uuid)} />
                                 }
-                                
                             </HeaderSection>
                         }
                         

@@ -66,7 +66,7 @@ interface Props extends LocalizeContextProps {
     typeMargin : PropTypes.Margin | undefined,
     slaves : object[],
     type:string,
-    errorState: boolean,
+    error: boolean,
     mode : string,
     language?:string,
     initialState:{
@@ -76,10 +76,12 @@ interface Props extends LocalizeContextProps {
     elementSelected: (treatments:SmartFieldType[] | boolean) => void
 }
 
+const TRANSLATED_COLUMNS = ["treatment-posology"]
+
 const SmartField:React.FC<Props> = (props) => {
     const [listElements, setListElements] = useState<SmartFieldType[]>(props.initialState ? props.initialState.listElements : []);
     const [addingElements, setAddingElements] = useState(props.mode === "form");
-    const [addElement, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.errorState, setAddingElements);
+    const [addElement, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.error, setAddingElements);
 
     function cancel(){
         if(listElements.length === 0){
@@ -105,9 +107,13 @@ const SmartField:React.FC<Props> = (props) => {
                     if(val && typeof val.getMonth === 'function'){
                         valueDict[key] = val.toLocaleDateString();
                     }   
+                    else if(TRANSLATED_COLUMNS.includes(key)){
+                        const translation = props.translate(`hospital.${key}-values.${val}`).toString();
+                        valueDict[key] = translation.includes('Missing translationId:') ? val : translation;
+                    } 
                     else{
                         valueDict[key] = val;
-                    } 
+                    }
                 }
                 valueDict.id = index;
                     
@@ -138,7 +144,7 @@ const SmartField:React.FC<Props> = (props) => {
     function renderSelector(){
         if(addingElements && props.mode === "form"){
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
-                cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, error:props.errorState, slaves:props.slaves,
+                cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, error:props.error, slaves:props.slaves,
                 size:"small", elementSelected:(diag:SmartFieldType) => elementSelected(diag)}
                 
             if(props.type === "background"){

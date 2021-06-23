@@ -18,3 +18,5 @@ localStorage.setItem("rawKeyResearcher", "efUlOZqQTcTlxbZPIWib_Rg0piWJST7JgG0g23
 
 localStorage.setItem("type", "researcher");
 localStorage.setItem("password", "Cabezadesherwood2");
+
+localStorage.setItem("language", "fr");

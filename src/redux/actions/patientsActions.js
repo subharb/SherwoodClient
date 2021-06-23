@@ -19,7 +19,7 @@ export function savePatientAction(investigation, patientData) {
         });
       })
       .catch((error) => {
-        if(!error.response){
+        if(!error.status){
           const offlinePost = patientData;          
           dispatch({
             type: types.SAVE_PATIENT_OFFLINE,
@@ -51,7 +51,7 @@ export function updatePatientAction(investigation, uuidPatient, patientData) {
           });
         })
         .catch((error) => {
-          if(!error.response){
+          if(!error.status){
             const offlinePost = patientData.personalData;
             //offlinePost.surveyRecords = postObj.submission[0].answers;
             offlinePost.uuid = Math.random().toString(36).substring(2); 

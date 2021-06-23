@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useRef } from 'react'
-
 import { connect } from 'react-redux';
 import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
