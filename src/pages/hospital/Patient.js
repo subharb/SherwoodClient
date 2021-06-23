@@ -160,13 +160,12 @@ function Patient(props) {
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
 
-        const postObj = [
+        const postObj = 
             {
                 uuid_section:sectionSelected.uuid,
                 researcher: props.profile.info,
                 surveyRecords:data
             }
-        ]
         
         if(action === "update"){
             await dispatch(updateSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
@@ -177,7 +176,7 @@ function Patient(props) {
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
             console.log(data);
-            await dispatch(postSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
+            await dispatch(postSubmissionPatientAction([postObj], props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
         }
     }
     function renderOptions(){

@@ -13,9 +13,12 @@ export default function SectionForm(props) {
         copyField["name"] = preString+field.id.toString();
         dictFields[preString+field.id.toString()] = copyField;
         if(props.initData){
-            const record = props.initData.surveyRecords.find(record => record.surveyField.name === field.name);
+            const record = props.initData.surveyRecords.find(record => record.surveyField.id === field.id);
             if(record){
-                initialData[preString+field.id.toString()] = record.value;
+                if(Array.isArray(record.value) ){
+                    console.log("Es un array!");
+                }
+                initialData[preString+field.id.toString()] = Array.isArray(record.value) ? [...record.value] : record.value;
             }            
         }
     });
@@ -25,7 +28,7 @@ export default function SectionForm(props) {
         const dataFields = [];
         Object.keys(values).forEach(key =>{
             const idField = parseInt(key.replace(preString, ""));
-            const surveyField = props.fields.find(field => field.id = idField);
+            const surveyField = props.fields.find(field => field.id === idField);
             
             dataFields.push({
                 surveyField : {...surveyField},
