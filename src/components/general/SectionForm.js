@@ -27,9 +27,11 @@ export default function SectionForm(props) {
             let tempObj = {};
             const idField = parseInt(key.replace(preString, ""));
             const surveyField = props.fields.find(field => field.id = idField);
-            tempObj["surveyField"] = surveyField;
-            tempObj["value"] = values[key];
-            dataFields.push(tempObj);
+            
+            dataFields.push({
+                surveyField : {...surveyField},
+                value : values[key]
+            });
         })
         props.callBackSectionForm(dataFields);
     }

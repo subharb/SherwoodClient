@@ -343,6 +343,7 @@ function Patient(props) {
                         message = "hospital.patient.new-record-offline";
                     }
                 }
+                setError(true);
                 setShowSnackbar({show:true, severity:severity, message : message});
             }
             
