@@ -261,6 +261,7 @@ function Patient(props) {
     function closeModal(){
         setShowOptions(false);
         setIndexSection(-1);
+        setIndexDataCollection(-1);
     }
     useEffect(() => {
         setShowOptions(false);
@@ -342,7 +343,10 @@ function Patient(props) {
                         message = "hospital.patient.new-record-offline";
                     }
                 }
-                setError(true);
+                else{
+                    setError(true);
+                }
+                
                 setShowSnackbar({show:true, severity:severity, message : message});
             }
             

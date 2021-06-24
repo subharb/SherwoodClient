@@ -80,7 +80,7 @@ export function TestsHomeComponent(props) {
                 const researcher = val.researcher;
                 tempDict.researcher = researcher.name+" "+researcher.surnames;
 
-                const patient = patients.find(pat => pat.uuid === val.patient.uuid);
+                const patient = patients.find(pat => pat.uuid === val.uuid_patient);
                 tempDict.patient = patient;
                 tempDict.createdAt = val.createdAt;
 

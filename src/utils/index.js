@@ -432,7 +432,7 @@ export function numberRecordsSection(section, submissions){
     for(let i = 0; i < submissions.length; i++){
         const submission = submissions[i];
         
-            if(submission.surveyRecords[0].surveySection.uuid === section.uuid){
+            if(submission.uuid_section === section.uuid){
                 nRegistros++;
             }
         

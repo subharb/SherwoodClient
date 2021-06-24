@@ -52,14 +52,13 @@ export function updatePatientAction(investigation, uuidPatient, patientData) {
         })
         .catch((error) => {
           if(!error.status){
-            const offlinePost = patientData.personalData;
-            //offlinePost.surveyRecords = postObj.submission[0].answers;
-            offlinePost.uuid = Math.random().toString(36).substring(2); 
+            const offlinePost = patientData;  
+            offlinePost.uuid = uuidPatient;
             dispatch({
-              type: types.UPDATE_PATIENT_SUCCESS,
-              patient: {...offlinePost},
-              uuidPatient:uuidPatient,
-            investigation:investigation
+                type: types.UPDATE_PATIENT_OFFLINE,
+                patient: {...offlinePost},
+                uuidPatient:uuidPatient,
+                investigation:investigation
             });
           }
           else{

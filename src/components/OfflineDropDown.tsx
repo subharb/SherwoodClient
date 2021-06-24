@@ -17,6 +17,11 @@ function OfflineDropDown(props: Props) {
     const offline = useOffline();
     const [notifications, setNotifications] = React.useState([]);
 
+    useEffect(() =>{
+        window.onbeforeunload = function() {
+            return offline;
+          };
+    }, []);
     console.log("Cambio Offline", offline);
     return <NotificationsDropdown offline isOffline={offline} notifications={!props.offline.pendingActions ? [] : props.offline.pendingActions.map(action =>{
         return {

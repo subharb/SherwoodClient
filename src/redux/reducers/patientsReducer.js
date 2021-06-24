@@ -34,12 +34,13 @@ export default function reducer(state = initialState, action){
             newState.loading = true;
             newState.error = initialState.error;
             return newState;
+        case types.UPDATE_PATIENT_OFFLINE:
         case types.UPDATE_PATIENT_SUCCESS:    
         case types.SAVE_PATIENT_OFFLINE:
         case types.SAVE_PATIENT_SUCCESS:
             let newPatient = {...action.patient};
             newPatient.personalData = decryptSinglePatientData(action.patient.personalData, action.investigation);
-            if(action.type === types.UPDATE_PATIENT_SUCCESS){
+            if([types.UPDATE_PATIENT_SUCCESS, types.UPDATE_PATIENT_OFFLINE].includes(action.type)){
                 const indexPat = newState.data[action.investigation.uuid].findIndex(pat => pat.uuid === action.uuidPatient);
                 newState.data[action.investigation.uuid][indexPat] = newPatient;
             }
@@ -54,7 +55,7 @@ export default function reducer(state = initialState, action){
 
             newState.loading = initialState.loading;
             newState.error = initialState.error;
-            if(action.type === types.SAVE_PATIENT_OFFLINE){
+            if([types.SAVE_PATIENT_OFFLINE, types.UPDATE_PATIENT_OFFLINE].includes(action.type)){
                 newState.error = 2;//Saved but offline
             }
             

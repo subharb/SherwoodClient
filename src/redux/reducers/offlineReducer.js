@@ -16,6 +16,7 @@ export default function reducer(state = initialState, action){
                 newState.pendingActions = [];
             }
             return newState;
+        case types.UPDATE_PATIENT_OFFLINE:
         case types.SAVE_PATIENT_OFFLINE:
             tempPendingActions = [...newState.pendingActions];
             tempPendingActions.push({action : "patient"});
