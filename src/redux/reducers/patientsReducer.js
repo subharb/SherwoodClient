@@ -34,6 +34,9 @@ export default function reducer(state = initialState, action){
             newState.loading = true;
             newState.error = initialState.error;
             return newState;
+        case types.SUBMISSIONS_PATIENT_RESET_ERROR:
+            newState.error = initialState.error;
+            return newState;
         case types.UPDATE_PATIENT_OFFLINE:
         case types.UPDATE_PATIENT_SUCCESS:    
         case types.SAVE_PATIENT_OFFLINE:
@@ -57,6 +60,9 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error;
             if([types.SAVE_PATIENT_OFFLINE, types.UPDATE_PATIENT_OFFLINE].includes(action.type)){
                 newState.error = 2;//Saved but offline
+            }
+            else{
+                newState.error = initialState.error;
             }
             
             return newState;

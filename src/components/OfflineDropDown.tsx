@@ -16,11 +16,20 @@ interface Props{
 function OfflineDropDown(props: Props) {
     const offline = useOffline();
     const [notifications, setNotifications] = React.useState([]);
-
+    
     useEffect(() =>{
-        window.onbeforeunload = function() {
-            return offline;
-          };
+        function unload(){
+            
+            if(!navigator.onLine){
+                return true;
+            }
+            else{
+                return null;
+            }
+        }
+        window.onbeforeunload = unload;
+        
+        //return () => window.removeEventListener("beforeunload", unload);
     }, []);
     console.log("Cambio Offline", offline);
     return <NotificationsDropdown offline isOffline={offline} notifications={!props.offline.pendingActions ? [] : props.offline.pendingActions.map(action =>{

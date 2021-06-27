@@ -47,7 +47,7 @@ export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPati
           });
         })
         .catch(function (error) {
-          if(!error.status){
+          if(!error.status && !error.response){
                 const offlinePost = postObj[0];
                 //offlinePost.surveyRecords = postObj.submission[0].answers;
                 dispatch({
@@ -78,11 +78,12 @@ export function updateSubmissionPatientAction(postObj, uuidInvestigation, uuidPa
           });
         })
         .catch((error) => {
-          if(!error.status){
-            const offlinePost = postObj[0];
+          
+          if(!error.status && !error.response){
+            const offlinePost = postObj;
             //offlinePost.surveyRecords = postObj.submission[0].answers;
             dispatch({
-              type: types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS,
+              type: types.UPDATE_SUBMISSIONS_PATIENT_OFFLINE,
               submission: offlinePost,
               meta:{uuidPatient, surveyUUID, surveyName, idSubmission}
                   });
@@ -94,4 +95,11 @@ export function updateSubmissionPatientAction(postObj, uuidInvestigation, uuidPa
          
         });
     };
+}
+
+export function resetPatientsSubmissionsError() {
+  return async (dispatch) => {
+    dispatch({ type: types.SUBMISSIONS_PATIENT_RESET_ERROR});
+
+  };
 }

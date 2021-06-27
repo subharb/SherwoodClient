@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../../redux/actions/submissionsPatientActions';
-import { fetchSubmissionsPatientInvestigationAction } from '../../redux/actions/submissionsPatientActions';
+import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../redux/actions/submissionsPatientActions';
 import Loader from '../../components/Loader';
 import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg } from '../../components/general/mini_components';
 import Modal from '../../components/general/modal';
@@ -263,6 +263,13 @@ function Patient(props) {
         setIndexSection(-1);
         setIndexDataCollection(-1);
     }
+    async function resetSnackBar(){
+        setShowSnackbar({show:false});
+        if(props.patientsSubmissions.error){
+            await dispatch(resetPatientsSubmissionsError())
+        }
+        
+    }
     useEffect(() => {
         setShowOptions(false);
     }, [uuidDataCollection, uuidSection])
@@ -346,8 +353,8 @@ function Patient(props) {
                 else{
                     setError(true);
                 }
-                
                 setShowSnackbar({show:true, severity:severity, message : message});
+                
             }
             
     }, [props.patientsSubmissions.loading]);    
@@ -378,7 +385,7 @@ function Patient(props) {
                     }}
                     open={showSnackbar.show}
                     autoHideDuration={2000}
-                    onClose={() => setShowSnackbar({show:false})}>
+                    onClose={resetSnackBar}>
                         {
                             showSnackbar.message && 
                             <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
