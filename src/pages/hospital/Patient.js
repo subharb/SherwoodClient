@@ -163,6 +163,8 @@ function Patient(props) {
         const postObj = 
             {
                 uuid_section:sectionSelected.uuid,
+                uuid_patient:uuidPatient,
+                id:idSubmission,
                 researcher: props.profile.info,
                 surveyRecords:data
             }

@@ -156,6 +156,13 @@
     }),
     'POST'
   );
+  registerRoute(
+    ({ url }) => true,
+    new NetworkOnly({
+      plugins: [bgSyncPlugin]
+    }),
+    'PUT'
+  );
 
   registerRoute(
     // Add in any other file extensions or routing criteria as needed.
