@@ -46,7 +46,7 @@ function FamilyBackground(props: PropsSmartFieldLocalized) {
                 <ICT {...props} cancel={false} elementSelected={diagnoseSelected} error={error}/>
             </Grid>
             <Grid item xs={12}>
-                <TextField label={props.translate("hospital.family-relation")} error={errorRelation}
+                <TextField label={props.translate("hospital.family-relation")} variant="outlined" error={errorRelation}
                     onChange={(e) => setRelation(e.target.value)}  />
             </Grid>
             <Grid item xs={12}>

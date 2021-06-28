@@ -2,6 +2,7 @@ import React from 'react';
 import Form from '../../components/general/form';
 import ICTSelectorGeneral from '../../components/general/SmartFields/ICT/index'
 import ProviderSherwood from '../../providerSherwood';
+import TreatmentCore from '../../components/general/SmartFields/SingleTreatmentSelector';
 
 const FIELD_TREATMENT = {
     "drug":{
@@ -13,7 +14,7 @@ const FIELD_TREATMENT = {
         "slaves" : [{
             "required": true,
             "encrypted": false,
-            "name": "drug-code",
+            "name": "drug-id",
             "label": "Start Drug",
             "type": "text",
             "validation" : "notEmpty",
@@ -97,9 +98,9 @@ const FIELD_ALLERGY = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "allergy-code",
+            "name": "drug-id",
             "label": "Code Diagnosis",
-            "type": "allergy-code",
+            "type": "drug-id",
             "validation" : "notEmpty",
         }]
     }
@@ -115,7 +116,7 @@ const FIELD_BACKGROUND = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "allergy-code",
+            "name": "drug-id",
             "label": "Code Diagnosis",
             "type": "background-code",
             "validation" : "notEmpty",
@@ -133,7 +134,7 @@ const FIELD_FAMILY_BACKGROUND = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "allergy-code",
+            "name": "drug-id",
             "label": "Code Diagnosis",
             "type": "family-background-code",
             "validation" : "notEmpty",
@@ -167,12 +168,24 @@ const TemplateAllergy = (args) => <Form {...args}  />
 const TemplateBackground = (args) => <Form {...args}  />
 const TemplateFamilyBackground = (args) => <Form {...args}  />
 const TemplateImage = (args) => <Form {...args}  />
+const TemplateTreatmentRaw = (args) => <TreatmentCore {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
 TreatmentEmpty.args = {
     fields:FIELD_TREATMENT, 
     creating : true,
     callBackForm : (values) => console.log("Result",JSON.stringify(values))}
+
+export const TreatmentRaw = TemplateTreatmentRaw.bind({});
+TreatmentRaw.args = {
+    variant:'outlined', 
+    size : 'small',
+    language:'fr',
+    type:'treatment',
+    typeMargin:'',
+    slaves:FIELD_TREATMENT["drug"].slaves,
+    elementSelected : (values) => console.log("Result",JSON.stringify(values))}
+    
 // TreatmentEmpty.args = {
 //     label:"Treatment", 
 //     variant:"outlined",
@@ -192,7 +205,7 @@ TreatmentWithData.args = {
     initialData:{drug:[{treatment:"paracetamol", 
                         "treatment-posology": "6h", 
                         "treatment-dose": "1 pill", 
-                        startDate:"1111", endDate:"111"}
+                        "treatment-start":"1111", "treatment-finish":"111"}
                     ]
                 },
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 

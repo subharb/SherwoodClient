@@ -66,7 +66,7 @@ function SingleTreatmentSelector(props){
             }
             
              props.elementSelected({
-                treatment:drug.name,"drug-code" : drug.cis, 
+                treatment:drug.name,"drug-id" : drug.id, 
                 "treatment-posology": posology, 
                 "treatment-dose": dose, 
                 "treatment-start" : startDate, 
@@ -75,12 +75,12 @@ function SingleTreatmentSelector(props){
         }
     }
     function drugSelected(drug){
-        console.log(drug);
+        console.log("Treatment Drug:", drug);
         setErrorDrug(false);
         setDrug(drug);
     }
     function cancel(){
-        props.cancelTreatment()
+        props.cancel()
     }
     function posologySelected(posology){
         setPosology(posology);
@@ -120,7 +120,8 @@ function SingleTreatmentSelector(props){
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <DrugSelector drugSelected={(drug) => drugSelected(drug) }  error={errorDrug}
+                <DrugSelector drugSelected={(drug) => drugSelected(drug) } country={props.language}
+                    error={errorDrug} variant={props.variant} type="treatment"
                     callbackError={(error) => drugError(error)}/>
             </Grid>
             <Grid item xs={12}>
@@ -133,7 +134,13 @@ function SingleTreatmentSelector(props){
                         doseSelected(value);
                     }}
                     onChange={(event, value, reason, details) => {
-                        doseSelected(value.value);
+                        if(value){
+                            doseSelected(value.value);
+                        }
+                        else{
+                            doseSelected(null);
+                        }
+                        
                     }}
                     freeSolo
                     renderInput={(params) => <TextField {...params} 
@@ -158,7 +165,12 @@ function SingleTreatmentSelector(props){
                         posologySelected(value);
                     }}
                     onChange={(event, value, reason, details) => {
-                        posologySelected(value.value);
+                        if(value){
+                            posologySelected(value.value);
+                        }
+                        else{
+                            posologySelected(null);
+                        }
                     }}
                     freeSolo
                     renderInput={(params) => <TextField {...params} 

@@ -1,11 +1,10 @@
 
 import React, { useState, useEffect, useRef } from 'react'
-
 import { connect } from 'react-redux';
 import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../../redux/actions/submissionsPatientActions';
-import { fetchSubmissionsPatientInvestigationAction } from '../../redux/actions/submissionsPatientActions';
+import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../redux/actions/submissionsPatientActions';
 import Loader from '../../components/Loader';
 import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg } from '../../components/general/mini_components';
 import Modal from '../../components/general/modal';
@@ -26,7 +25,8 @@ import iconLab from "../../img/icons/lab.png";
 import iconNotesGreen from "../../img/icons/history_green.png";
 import iconImagesGreen from "../../img/icons/images_green.png";
 import iconLabGreen from "../../img/icons/lab_green.png";
-import { useUpdateEffect } from '../../hooks';
+import { useSnackBarState, useUpdateEffect } from '../../hooks';
+import { fetchProfileInfo } from '../../redux/actions/profileActions';
 
 
 const WhiteTypography = styled(Typography)`
@@ -39,7 +39,7 @@ function Patient(props) {
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
     const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
     
-    const [showSnackbar, setShowSnackbar] = useState({show : false, message:""});
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [surveyRecords, setSurveyRecords] = useState(null);
     const [showOptions, setShowOptions] = useState(false);
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
@@ -137,8 +137,13 @@ function Patient(props) {
     }
     function selectDataCollection(index){
         console.log("Row seleccionado ", filteredRecords[index]);
+        if(filteredRecords[index].offline){
+            setShowSnackbar({show:true, severity: "warning", message : "investigation.fill.survey.record-offline"});
+        }
+        else{
+            goToSurveyUrl(filteredRecords[index].uuidSurvey);
+        }
         
-        goToSurveyUrl(filteredRecords[index].uuidSurvey);
     }
     function goToSurveyUrl(uuidSurvey){
         const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":uuidDataCollection", uuidSurvey);
@@ -155,13 +160,15 @@ function Patient(props) {
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
 
-        const postObj = {submission : [
+        const postObj = 
             {
                 uuid_section:sectionSelected.uuid,
-                answers:data
+                uuid_patient:uuidPatient,
+                id:idSubmission,
+                researcher: props.profile.info,
+                surveyRecords:data
             }
-            ]
-        }
+        
         if(action === "update"){
             await dispatch(updateSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
         }
@@ -171,7 +178,7 @@ function Patient(props) {
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
             console.log(data);
-            await dispatch(postSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
+            await dispatch(postSubmissionPatientAction([postObj], props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
         }
     }
     function renderOptions(){
@@ -240,8 +247,8 @@ function Patient(props) {
             return(
                 <EnhancedTable noHeader noSelectable selectRow={(index) => selectDataCollection(index)} 
                 rows={filteredRecords.map((record, index) => {
-                    const dateCreated = new Date(record.createdAt);
-                    return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreated.toISOString().slice(0, 16).replace('T', ' ')})
+                    const dateCreatedString = record.createdAt ? new Date(record.createdAt).toISOString().slice(0, 16).replace('T', ' ') : "Unsincronized";
+                    return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreatedString})
                 })} headCells={[{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "surveyName", alignment: "left", label: <Translate id="hospital.data-collection" />},
                                 { id: "date", alignment: "left", label: "Date"}]} />
             )
@@ -256,6 +263,14 @@ function Patient(props) {
     function closeModal(){
         setShowOptions(false);
         setIndexSection(-1);
+        setIndexDataCollection(-1);
+    }
+    async function resetSnackBar(){
+        setShowSnackbar({show:false});
+        if(props.patientsSubmissions.error){
+            await dispatch(resetPatientsSubmissionsError())
+        }
+        
     }
     useEffect(() => {
         setShowOptions(false);
@@ -268,6 +283,11 @@ function Patient(props) {
             fetchRecordsPatient()
         }
     }, [props.investigations])
+    useEffect(() => {
+        if(!props.profile.info){
+            dispatch(fetchProfileInfo());
+        }
+    }, [])
     useUpdateEffect(() => {
         
         if(action === "update"){
@@ -288,9 +308,11 @@ function Patient(props) {
                     tempDict.surveyName = val.surveyName; 
                     tempDict.uuidSurvey = val.uuid; 
                     tempDict.typeSurvey = val.type; 
-                    const researcher = val.submissions[val.submissions.length -1].researcher
-                    tempDict.researcher = researcher.name+" "+researcher.surnames;
-                    tempDict.createdAt = val.submissions[val.submissions.length -1].createdAt;
+                    const researcher = val.submissions[val.submissions.length -1].researcher;
+                    //Si es en modo offline no hay researcher.
+                    tempDict.researcher = researcher.name ? researcher.name+" "+researcher.surnames : researcher;
+                    tempDict.offline = researcher.name ? false : true;
+                    tempDict.createdAt = val.submissions[val.submissions.length -1].surveyRecords[0].createdAt;
     
                     return acc.concat(tempDict)
                 }, []);
@@ -312,15 +334,31 @@ function Patient(props) {
     }, [props.patientsSubmissions])
 
     useEffect(() => {
-        
             if(props.patientsSubmissions.error){
+                let severity = "error";
+                let message = "";
                 if(action === "update"){
-                    setShowSnackbar({show:true, severity:"error", message : "hospital.patient.no-update"});
+                    message = "hospital.patient.error";
                 }
                 if(action === "fill"){
-                    setShowSnackbar({show:true, severity:"error", message : "register.researcher.error"});
+                    message = "hospital.patient.error";
                 }
+                if(props.patientsSubmissions.error === 2){
+                    severity = "warning";
+                    if(action === "update"){
+                        message = "hospital.patient.updated-record-offline";
+                    }
+                    if(action === "fill"){
+                        message = "hospital.patient.new-record-offline";
+                    }
+                }
+                else{
+                    setError(true);
+                }
+                setShowSnackbar({show:true, severity:severity, message : message});
+                
             }
+            
     }, [props.patientsSubmissions.loading]);    
 
     if(error){
@@ -349,7 +387,7 @@ function Patient(props) {
                     }}
                     open={showSnackbar.show}
                     autoHideDuration={2000}
-                    onClose={() => setShowSnackbar({show:false})}>
+                    onClose={resetSnackBar}>
                         {
                             showSnackbar.message && 
                             <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
@@ -444,7 +482,8 @@ const mapStateToProps = (state) =>{
     return {
         investigations : state.investigations,
         patientsSubmissions:state.patientsSubmissions,
-        patients:state.patients
+        patients:state.patients,
+        profile:state.profile
     }
 }
 export default connect(mapStateToProps, null)(Patient)

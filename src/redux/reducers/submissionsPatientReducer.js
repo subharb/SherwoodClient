@@ -36,21 +36,30 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error;
             return newState;
         case types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS:
+        case types.UPDATE_SUBMISSIONS_PATIENT_OFFLINE:
+        case types.SAVE_SUBMISSIONS_PATIENT_OFFLINE:
         case types.SAVE_SUBMISSIONS_PATIENT_SUCCESS:
             tempData = newState.data === initialState.data ? {} : newState.data;
             let tempDict = {};
+            //Si se genera en offline, no hay id
+            
             if(tempData[action.meta.uuidPatient].hasOwnProperty(action.meta.surveyUUID)){
                 tempDict = tempData[action.meta.uuidPatient][action.meta.surveyUUID];
-                if(action.type === types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS){
+                if([types.UPDATE_SUBMISSIONS_PATIENT_OFFLINE, types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS].includes(action.type)){
                     const indexSub = tempDict.submissions.findIndex(sub => sub.id === action.meta.idSubmission);
                     tempDict.submissions[indexSub] = action.submission;
                 }
                 else{
+                    if(!action.submission.id){
+                        action.submission.id = tempDict.submissions[tempDict.submissions.length -1].id + 1;
+                    }
                     tempDict.submissions.push(action.submission);
                 }
-                
             }
             else{
+                if(!action.submission.id){
+                    action.submission.id = 1;
+                }
                 tempDict = {
                     surveyName : action.meta.surveyName,
                     uuid : action.meta.surveyUUID,
@@ -61,6 +70,12 @@ export default function reducer(state = initialState, action){
             tempData[action.meta.uuidPatient][action.meta.surveyUUID] = tempDict;                   
             newState.loading = initialState.loading;
             newState.error = initialState.error;
+            if([types.SAVE_SUBMISSIONS_PATIENT_OFFLINE, types.UPDATE_SUBMISSIONS_PATIENT_OFFLINE].includes(action.type)){
+                newState.error = 2;//Offline
+            }
+            else{
+                newState.error = initialState.error;
+            }
             
             newState.nUpdatedRegisters++ 
             
@@ -69,6 +84,9 @@ export default function reducer(state = initialState, action){
         case types.SAVE_SUBMISSIONS_PATIENT_ERROR:
             newState.loading = initialState.loading;
             newState.error = true;
+            return newState;
+        case types.SUBMISSIONS_PATIENT_RESET_ERROR:
+            newState.error = initialState.error;
             return newState;
         default:
             return state;

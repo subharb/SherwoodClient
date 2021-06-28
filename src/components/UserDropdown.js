@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components/macro";
 import { Power } from "react-feather";
 import { useHistory } from "react-router-dom";
@@ -20,10 +20,13 @@ const IconButton = styled(MuiIconButton)`
   }
 `;
 
+  
+
 function UserDropdown() {
   const [anchorMenu, setAnchorMenu] = React.useState(null);
   const history = useHistory();
   const dispatch = useDispatch();
+  
 
   const toggleMenu = (event) => {
     setAnchorMenu(event.currentTarget);
@@ -38,6 +41,8 @@ function UserDropdown() {
       localStorage.removeItem("indexHospital");
       history.push("/auth/sign-in");
   };
+
+ 
 
   return (
     <React.Fragment>

@@ -185,6 +185,12 @@ export function useSelectSmartField(initialState, label, errorState, setAddingSm
     return [addSmartField, renderSelect, resetState]
 }
 
+export function useSnackBarState(){
+    const [showSnackbar, setShowSnackbar] = useState({show : false, message:""});
+
+    return [showSnackbar, setShowSnackbar];
+}
+
 export function useSherwoodUser(){
     const history = useHistory();
     let location = useLocation();
@@ -263,4 +269,43 @@ export function usePrevious(value){
       ref.current = value;
     });
     return ref.current;
-  }
+}
+
+export function useOffline(){
+    const [offline, setOffline] = React.useState(!navigator.onLine);
+
+    function updateOffline(){
+        if(offline === navigator.onLine){
+            setOffline(!navigator.onLine);
+        }
+    }
+    useEffect(() => {
+        async function subscribeToDB(){
+            // const db = await openStore("workbox-background-sync");
+            // var tx = db.transaction("requests", "readwrite");
+
+            // tx.objectStore("requests").openCursor(0).onsuccess = function (event:any) {
+            //     var cursor, object;
+
+            //     cursor = event.target.result;
+            //     object = cursor.value;
+            //     object.value = 43;
+            //     cursor.update(object).onsuccess = function (event:any) {
+            //         db.transaction("requests").objectStore("requests").get(0).onsuccess = function (event:any) {
+            //             console.log("Cursor update onsuccess event:");
+            //             console.log(event.target.result);
+            //         };
+            //     };
+
+            // };
+        }
+        window.addEventListener('online',  updateOffline);
+        window.addEventListener('offline', updateOffline);
+       
+        subscribeToDB();
+        
+    }, [offline]);
+
+
+    return offline;
+}

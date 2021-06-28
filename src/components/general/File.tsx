@@ -58,6 +58,7 @@ const GridImage = styled(Grid)`
     justify-content: center;
     padding:0.5rem;
     height:10rem;
+    overflow: hidden;
 `;
 
 const ImageFile = styled.img`

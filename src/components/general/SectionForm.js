@@ -1,5 +1,6 @@
 import { isEmpty } from 'lodash';
 import React from 'react'
+import { connect } from 'react-redux';
 import { DIAGNOSIS_TYPE, SLAVES_DIAGNOSIS, SLAVES_TREATMENT, TREATMENT_TYPE } from '../../constants';
 import Form from './form';
 
@@ -12,9 +13,12 @@ export default function SectionForm(props) {
         copyField["name"] = preString+field.id.toString();
         dictFields[preString+field.id.toString()] = copyField;
         if(props.initData){
-            const record = props.initData.surveyRecords.find(record => record.surveyField.name === field.name);
+            const record = props.initData.surveyRecords.find(record => record.surveyField.id === field.id);
             if(record){
-                initialData[preString+field.id.toString()] = record.value;
+                if(Array.isArray(record.value) ){
+                    console.log("Es un array!");
+                }
+                initialData[preString+field.id.toString()] = Array.isArray(record.value) ? [...record.value] : record.value;
             }            
         }
     });
@@ -23,15 +27,13 @@ export default function SectionForm(props) {
         let copyValues = Object.assign({}, values)
         const dataFields = [];
         Object.keys(values).forEach(key =>{
-            let tempObj = {};
             const idField = parseInt(key.replace(preString, ""));
+            const surveyField = props.fields.find(field => field.id === idField);
             
-            tempObj["id_field"] = idField;
-
-            tempObj["value"] = values[key];
-            dataFields.push(tempObj);
-            
-            
+            dataFields.push({
+                surveyField : {...surveyField},
+                value : values[key]
+            });
         })
         props.callBackSectionForm(dataFields);
     }

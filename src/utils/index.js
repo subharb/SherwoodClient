@@ -1,5 +1,7 @@
+import $ from 'jquery';
 import { func } from "prop-types";
 import CryptoJS from 'crypto-js';
+import mixpanel from 'mixpanel-browser';
 
 /**
  * Function that validates fields from anywhere in the app
@@ -430,7 +432,7 @@ export function numberRecordsSection(section, submissions){
     for(let i = 0; i < submissions.length; i++){
         const submission = submissions[i];
         
-            if(submission.surveyRecords[0].surveySection.uuid === section.uuid){
+            if(submission.uuid_section === section.uuid){
                 nRegistros++;
             }
         
@@ -443,12 +445,10 @@ export function filterRecordsFromSubmissions(submissions, sectionUUID){
     for(let i = 0; i < submissions.length; i++){
         let filteredRecords = [];
         const submission = submissions[i];
-        for(let j = 0; j < submission.surveyRecords.length; j++){
-            const patientRecord = submission.surveyRecords[j];
-            if(patientRecord.surveySection.uuid === sectionUUID){ 
-                filteredRecords.push(patientRecord); 
-            }
-        } 
+        if(submission.uuid_section === sectionUUID){ 
+            filteredRecords = submission.surveyRecords; 
+        }
+      
         if(filteredRecords.length > 0){
             filteredSubmissions.push({
                 id:submission.id,
@@ -525,4 +525,73 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
 
 export function isSmartField(type){
     return ["ict", "allergy", "background", "family-background", "treatment"].includes(type);
+}
+
+export function getIndexedDB(){
+    const indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+
+    return indexedDB;
+}
+
+export function openStore(storeName){
+    return new Promise(
+        function(resolve, reject) {
+            const db = getIndexedDB();
+            if (!db) {
+                return null;
+            }
+            let request = db.open(storeName, 3);
+
+            request.onerror = function(event) {
+                // Hacer algo con request.errorCode!
+                reject(Error("Error text"));
+            };
+            request.onsuccess = function(event) {
+                // Hacer algo con request.result!
+            };
+      
+            request.onupgradeneeded = function(event) {
+              // Objectstore does not exist. Nothing to load
+              event.target.transaction.abort();
+              reject(Error('Not found'));
+            };
+      
+            request.onsuccess = function(event) {
+                resolve(event.target.result);
+            //   var database      = event.target.result;
+            //   var transaction   = database.transaction([storeName]);
+            //   var objectStore   = transaction.objectStore(storeName);
+            //   var objectRequest = objectStore.get(id);
+      
+            //   objectRequest.onerror = function(event) {
+            //     reject(Error('Error text'));
+            //   };
+      
+            //   objectRequest.onsuccess = function(event) {
+            //     if (objectRequest.result) resolve(objectRequest.result);
+            //     else reject(Error('object not found'));
+            //   };
+            };
+          }
+    );
+}
+
+export function postErrorSlack(url, error, info){
+    console.log("Enviamos el error a ", process.env.REACT_APP_SLACK_HOOK);
+    let location = "URL:"+window.location.href+url;
+  
+    var text = location+" Error: "+error+ " Message:"+JSON.stringify(info);
+
+    $.ajax({
+        data: 'payload=' + JSON.stringify({
+            "text": text
+        }),
+        dataType: 'json',
+        processData: false,
+        type: 'POST',
+        url: process.env.REACT_APP_SLACK_HOOK
+    });
+    mixpanel.track("Error", {
+        "error" : error.stack ? error.stack : JSON.stringify(info)
+    });
 }

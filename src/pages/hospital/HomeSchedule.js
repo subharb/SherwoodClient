@@ -10,33 +10,19 @@ import { ButtonGrey, BoxBckgr, LinkPlain } from '../../components/general/mini_c
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
 import Loader from '../../components/Loader';
-import {fetchProfileService} from '../../services/sherwoodService';
 import {selectInvestigation} from '../../redux/actions/investigationsActions';
 import { useDispatch } from "react-redux";
 import { Translate } from 'react-localize-redux';
+import { fetchProfileInfo } from '../../redux/actions/profileActions';
 
 function HomeSchedule(props) {
     const [loading, setLoading] = useState(false);
-    const [profileInfo, setProfileInfo] = useState(null);
+  
     const { pathname }= useRouter(props.initialState ? props.initialState.pathname : false);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        async function fetchProfile(){
-            try{
-                setLoading(true);
-                const response = await fetchProfileService();
-                if(response.status === 200){
-                    setProfileInfo(response.profileInfo)
-                }
-                setLoading(false);
-            }
-            catch(error){
-                console.log(error);
-
-            }
-        }
-        fetchProfile();
+        dispatch(fetchProfileInfo());
     }, [])
 
     async function selectHospital(index){
@@ -61,25 +47,25 @@ function HomeSchedule(props) {
                                 {props.investigations.currentInvestigation.name}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                {profileInfo.name} {profileInfo.surnames}
+                                {props.profile.info.name} {props.profile.info.surnames}
                             </Typography>
                             {
-                                profileInfo.department &&
+                                props.profile.info.department &&
                                 <Typography variant="body2" gutterBottom>
-                                    {profileInfo.department.name}
+                                    {props.profile.info.department.name}
                                 </Typography>
                             }
                             {
-                                profileInfo.institution &&
+                                props.profile.info.institution &&
                                 <Typography variant="body2" gutterBottom>
-                                    {profileInfo.institution.name}
+                                    {props.profile.info.institution.name}
                                 </Typography>
                             }
                         </Grid>                        
-                        {profileInfo.institution &&
+                        {props.profile.info.institution &&
                         <Grid item xs={6}>
                             <Typography variant="body2" gutterBottom>
-                            {profileInfo.institution.name}
+                            {props.profile.info.institution.name}
                             </Typography>
                         </Grid>
                         }
@@ -113,7 +99,6 @@ function HomeSchedule(props) {
                 </React.Fragment>
             )
         }
-        
     }
 
     if(pathname === MY_SCHEDULE_ROUTE){
@@ -122,7 +107,7 @@ function HomeSchedule(props) {
                 <Grid container spacing={3}>
                     <Grid item xs={12} style={{textAlign:"center"}}>
                         <Typography variant="h4" gutterBottom display="inline">
-                            {props.name} {props.surnames}
+                            {props.profile.info.name} {props.profile.info.surnames}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
@@ -148,7 +133,7 @@ function HomeSchedule(props) {
         )
     }
     else{
-        if(props.investigations.loading || !profileInfo){
+        if(props.investigations.loading || !props.profile.info){
             return <Loader />
         }
         
@@ -172,7 +157,8 @@ function HomeSchedule(props) {
 
 const mapStateToProps = (state) =>{
     return {
-        investigations : state.investigations
+        investigations : state.investigations,
+        profile : state.profile
     }
 }
 

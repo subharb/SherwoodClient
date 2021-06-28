@@ -14,7 +14,7 @@ function Allergy(props: PropsSmartFieldLocalized) {
         setDrug(drug);
         const allergy:AllergyType={
             allergy:drug.name,
-            "allergy-code":drug.code
+            "drug-id":drug.id
         }
         props.elementSelected(allergy);
     }  
@@ -28,8 +28,9 @@ function Allergy(props: PropsSmartFieldLocalized) {
     return(
         <Grid container spacing={3}>
             <Grid xs={12}>
-                <DrugSelector error={error} callbackError={(error) => setError(error)}  
-                    chemicalComponent
+                <DrugSelector type={props.type} variant={props.variant} error={error || props.error} 
+                    callbackError={(error) => setError(error)}  
+                    chemicalComponent country={props.language}
                     drugSelected={(drug) => drugSelected(drug)} />
             </Grid>
             <Grid xs={12}>

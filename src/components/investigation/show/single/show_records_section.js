@@ -74,12 +74,19 @@ export default function ShowRecordsSection(props) {
                 initialState={{listElements:valueRecord.value}}
                 label={valueRecord.surveyField.label}  />
         }
-        // else if(["treatment"].includes(valueRecord.surveyField.type)){
-        //     return <MultipleTreatmentSelector type={valueRecord.surveyField.type} mode="show" 
-        //         initialState={{listTreatments:valueRecord.value}}
-        //         label={valueRecord.surveyField.label}  />
-        // }
-   
+        else if(typeof valueRecord.value.getMonth === 'function' ){
+            return(<React.Fragment>
+                { props.section.fields.length > 1 &&
+                    <Typography variant="h6" color="textPrimary">
+                        {field.name}: 
+                    </Typography>
+                }
+                <Typography variant="body2" gutterBottom>
+                    { valueRecord.value.toISOString() }
+                </Typography>
+            </React.Fragment>
+            );
+        }   
         else{
             return(<React.Fragment>
                 { props.section.fields.length > 1 &&
@@ -145,7 +152,6 @@ export default function ShowRecordsSection(props) {
                                     ((dateCreated.getTime() + 86400000 > new Date().getTime()) || props.permissions === 4) && 
                                     <ButtonEdit onClick={() => editSection(indexSubmission, props.section.uuid)} />
                                 }
-                                
                             </HeaderSection>
                         }
                         

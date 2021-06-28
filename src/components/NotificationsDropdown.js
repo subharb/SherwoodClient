@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
+import { green, red } from "@material-ui/core/colors";
 
 import {
   Avatar as MuiAvatar,
@@ -18,6 +20,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Bell, Home, UserPlus, Server } from "react-feather";
+import { Translate } from "react-localize-redux";
+import { Update } from "@material-ui/icons";
 
 const Popover = styled(MuiPopover)`
   .MuiPaper-root {
@@ -35,7 +39,7 @@ const Indicator = styled(Badge)`
 `;
 
 const Avatar = styled(MuiAvatar)`
-  background: ${(props) => props.theme.palette.primary.main};
+  background: #000;
 `;
 
 const NotificationHeader = styled(Box)`
@@ -77,12 +81,36 @@ function NotificationsDropdown(props) {
     setOpen(false);
   };
 
+  function currentIcon(){
+    if(props.offline){
+        return(
+          <OfflineBoltIcon style={props.isOffline ? { color: red[500] } : { color: green[500] } }  /> 
+        )
+    }
+    else{
+        return <Bell />
+    }
+    
+  }
+  function renderNotifications(){
+ 
+      return props.notifications.map(notification => {
+            return(
+                <Notification
+                  title={notification.title}
+                  description={notification.description}
+                  Icon={Server}
+                />
+            );
+          } ) 
+  }
+ 
   return (
     <React.Fragment>
       <Tooltip title="Notifications">
         <IconButton color="inherit" ref={ref} onClick={handleOpen}>
-          <Indicator badgeContent={props.items}>
-            <Bell />
+          <Indicator badgeContent={props.notifications.length}>
+             { currentIcon() }
           </Indicator>
         </IconButton>
       </Tooltip>
@@ -96,37 +124,25 @@ function NotificationsDropdown(props) {
         open={isOpen}
       >
         <NotificationHeader p={2}>
-          <Typography variant="subtitle1" color="textPrimary">
-            7 New Notifications
-          </Typography>
+            <Typography variant="subtitle1" color="textPrimary">
+              {props.notifications.length} New Notifications
+            </Typography>
+          
         </NotificationHeader>
         <React.Fragment>
           <List disablePadding>
-            <Notification
-              title="Update complete"
-              description="Restart server to complete update."
-              Icon={Server}
-            />
-            <Notification
-              title="New connection"
-              description="Anna accepted your request."
-              Icon={UserPlus}
-            />
-            <Notification
-              title="Lorem ipsum"
-              description="Aliquam ex eros, imperdiet vulputate hendrerit et"
-              Icon={Bell}
-            />
-            <Notification
-              title="New login"
-              description="Login from 192.186.1.1."
-              Icon={Home}
-            />
+             { renderNotifications()}
           </List>
+          
           <Box p={1} display="flex" justifyContent="center">
-            <Button size="small" component={Link} to="#">
-              Show all notifications
-            </Button>
+            {
+              props.isOffline &&
+              <Translate id="general.offline.description" />
+            }
+            {
+              (!props.isOffline && props.notifications.length > 0) &&
+              <Translate id="general.offline-update.description" />
+            }
           </Box>
         </React.Fragment>
       </Popover>

@@ -362,7 +362,8 @@ class FieldSherwood extends Component{
             case "ict" : 
             case "treatment" : 
                 return(
-                    <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} variant="outlined" margin={this.typeMargin} 
+                    <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
+                        variant="outlined" margin={this.typeMargin} error={errorState}
                         helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
                         size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                 );

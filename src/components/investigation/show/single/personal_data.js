@@ -23,7 +23,7 @@ export default function PersonalDataForm(props) {
         const rawKeyResearcher = localStorage.getItem("rawKeyResearcher"); //await decryptData(payload.keyResearcher, password);
         const rawKeyInvestigation = decryptData(props.keyResearcherInvestigation, rawKeyResearcher);
 
-        let encryptedData = {};
+        let encryptedData = [];
        
         
         for (const key of Object.keys(data)) {
@@ -31,7 +31,9 @@ export default function PersonalDataForm(props) {
             if(typeof value.getMonth === 'function'){
                 value = value.getTime().toString();
             }
-            encryptedData[key] =  encryptData(value, rawKeyInvestigation);
+            const field = form[key];
+            field.value = encryptData(value, rawKeyInvestigation);
+            encryptedData.push(field)  
         }
         
         

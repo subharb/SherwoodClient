@@ -43,7 +43,7 @@ const createTheme = (name) => {
         },
         primary : {
             background : "#35887D",
-            color : "#FFF"
+            color : "#FFF",
         }
         },
         {
