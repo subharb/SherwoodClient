@@ -8,8 +8,9 @@ import { loginUser, toggleLoading } from '../../actions';
 import FieldSherwood  from '../general/FieldSherwood';
 import Header from '../general/header';
 import LoadingScreen from '../general/loading_screen';
-import { validateField } from '../../utils';
+import { validateField, decryptData } from '../../utils';
 import { ButtonContinue } from '../../components/general/mini_components';
+import jwt from 'jsonwebtoken';
 
 /**
  * Component for login researchers
@@ -62,6 +63,10 @@ class Login extends Component {
             console.log("TOKEN: "+request.data.jwt);
             localStorage.setItem("jwt", request.data.jwt);
             localStorage.setItem("type", this.props.match.params.type);
+            const payload = jwt.decode(localStorage.getItem("jwt"));
+            const rawKeyResearcher = await decryptData(payload.keyResearcher, password);
+            localStorage.setItem("rawKeyResearcher", rawKeyResearcher);
+
             axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
             this.props.history.push("/dashboard");
         }

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import jwt from 'jsonwebtoken';
 
 import { LOGIN_USER, LOADING, FETCH_INVESTIGATION } from './types';
 
@@ -16,11 +17,9 @@ export const loginUser = (email, password) => async dispatch => {
     if(request.status === 200){
         console.log("TOKEN: "+request.data.token);
         localStorage.setItem("jwt", request.data.token);
+        const payload = jwt.decode(localStorage.getItem("jwt"));
+        localStorage.setItem("keyResearcher", payload.keyResearcher);
     }
-    // dispatch({
-    //     type : LOGIN_USER,
-    //     payload : request.data
-    // });
 }
 
 

@@ -24,17 +24,22 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('loginResearcher', () => {
+import { researchers_to_share } from "../../src/stories/example_data";
+
+Cypress.Commands.add('loginResearcher', (credentials) => {
     cy.get('input[name="email"]')
-        .type('dshaikhurbina@gmail.com')
-        .should('have.value', 'dshaikhurbina@gmail.com');
+        .type(credentials.email)
+        .should('have.value', credentials.email);
 
     cy.get('input[name="password"]')
-        .type('Cabezadesherwood2')
-        .should('have.value', 'Cabezadesherwood2');
+        .type(credentials.password)
+        .should('have.value', credentials.password);
 
+    cy.intercept('POST', '**/researcher/login').as('loginResearcher');
     cy.get('button[data-testid="continue"]')
         .click();
+    cy.wait('@loginResearcher');
+
 });
 Cypress.Commands.add('createEDC', (surveys) => {
     surveys.forEach(survey => {
@@ -54,7 +59,7 @@ Cypress.Commands.add('createEDC', (surveys) => {
         section.fields.forEach(field => {
             cy.get('button[data-testid="add-field"]')
                 .click();
-            cy.get('#modal1').within(() => {
+            cy.get('.MuiDialog-paper').within(() => {
                 if(field.required){
                     cy.contains('Required').click();
                 }
@@ -71,6 +76,7 @@ Cypress.Commands.add('createEDC', (surveys) => {
             cy.get('[aria-labelledby^="type"]')
                     .click();
             cy.contains(field.typeValueCypress).click(); 
+            //cy.contains(pField, {matchCase: false})
     
             cy.get('button[data-testid="save-field"]')
                 .click();
@@ -85,49 +91,66 @@ Cypress.Commands.add('createEDC', (surveys) => {
         .click();
 });
 
-Cypress.Commands.add('createBasicInfo', (basicInfo) => {    
-    cy.get('input[name="name"]')
-            .type('COVID Nose')
-            .should('have.value', 'COVID Nose');
-
-    cy.get('input[name="acronym"]')
-        .type('CN')
-        .should('have.value', 'CN');
+Cypress.Commands.add('createBasicInfo', (basicInfo) => {  
+      Object.keys(basicInfo).forEach(key => {
+            const field = basicInfo[key];
+            if(field.type === "textarea"){
+                cy.get('.ql-editor')//Solo vale si solo hay un editor
+                .type(field.value);
+            }
+            else if(field.type === "select"){
+                cy.get('[aria-labelledby^="'+key+'"]') 
+                    .click()
+                cy.contains(field.textValue).click();
+            }
+            else{
+                cy.get('input[name="'+key+'"]')
+                    .type(field.value)
+                    .should('have.value', field.value);
+            }
+      })
     
-    cy.get('[aria-labelledby^="type"]')
-        .click()
-        cy.contains("Clinical Trial").click();
+
+    // cy.get('input[name="acronym"]')
+    //     .type('CN')
+    //     .should('have.value', 'CN');
+    // cy.get('.ql-editor')
+    //     .type('Estudio sobre el impacto en la anosmia en pacientes de COVID19');
+    
+    // cy.get('[aria-labelledby^="type"]')
+    //     .click()
+    //     cy.contains("Clinical Trial").click();
         
-    cy.get('input[name="principal_researcher"]')
-        .type('Pedro Rodríguez')
-        .should('have.value', 'Pedro Rodríguez');
+    // cy.get('input[name="principal_researcher"]')
+    //     .type('Pedro Rodríguez')
+    //     .should('have.value', 'Pedro Rodríguez');
 
-    cy.get('input[name="institution"]')
-        .type('Oxford University')
-        .should('have.value', 'Oxford University');
+    // cy.get('input[name="institution"]')
+    //     .type('Oxford University')
+    //     .should('have.value', 'Oxford University');
     
-    cy.get('input[name="contact"]')
-        .type('testing@test.email')
-        .should('have.value', 'testing@test.email');
+    // cy.get('input[name="contact"]')
+    //     .type('testing@test.email')
+    //     .should('have.value', 'testing@test.email');
     
-    cy.get('input[name="ethics_body"]')
-        .type('123456')
-        .should('have.value', '123456');
+    // cy.get('input[name="ethics_body"]')
+    //     .type('123456')
+    //     .should('have.value', '123456');
 
-    cy.get('[aria-labelledby^="reference_number_state"]')
-        .click()
-    cy.contains("Approved").click();
+    // cy.get('[aria-labelledby^="reference_number_state"]')
+    //     .click()
+    // cy.contains("Approved").click();
 
     cy.get('button[data-testid="continue"]')
         .click();
 });
 
 Cypress.Commands.add('fillPatient', (patient) => { 
-    patient.records.forEach(record => {
-        console.log(record.nameCypress);
+    patient.submissions.forEach(submission => {
+        console.log(submission.nameCypress);
         cy.get('table').then(($body) => {
-            if($body.text().includes(record.nameCypress)){
-                cy.contains('td', record.nameCypress)  // gives you the cell 
+            if($body.text().includes(submission.nameCypress)){
+                cy.contains('td', submission.nameCypress)  // gives you the cell 
                     .parent()                              // gives you the row
                     .within($tr => {                       // filters just that row
                         cy.get('button')                         // finds the buttons cell of that row
@@ -135,23 +158,134 @@ Cypress.Commands.add('fillPatient', (patient) => {
                     })
             }
         })
-    
-        record.submission.forEach(submission => {
-            cy.contains('td', submission.nameCypress)  // gives you the cell 
+        cy.contains('td', submission.surveyRecords[0].surveySection.name)  // gives you the cell 
                 .parent()                              // gives you the row
                 .within($tr => {                       // filters just that row
                     cy.get('button')                         // finds the buttons cell of that row
                     .click()
                 })
-            Object.keys(submission.answers).forEach(key => {
-                cy.get('input[name="'+key+'"]')
-                .type(submission.answers[key])
-                .should('have.value', submission.answers[key]);
-            })
-            cy.get('button[data-testid="continue"]').first()
-                .click();
+        let index = 0;
+        submission.surveyRecords.forEach(surveyRecord => {
+                //cy.contains(surveyRecord.surveyField.label, {force: true}).click().type(surveyRecord.value);
+                cy.get('input').eq(index)
+                    .type(surveyRecord.value)
+                    .should('have.value', surveyRecord.value);
+                index++;
         });
+        cy.get('button[data-testid="continue"]').first()
+                .click();
+        // cy.get('button[data-testid="back"]').first()
+        //     .click();
     });
-    cy.get('button[data-testid="back"]').first()
-        .click();
+    // cy.get('button[data-testid="back"]').first()
+    //     .click();
 });   
+Cypress.Commands.add('shareWithResearchers', () => { 
+    cy.wait(2000);
+    cy.get('.investigation').first().find('button[data-testid="share"]').click();
+    cy.wait(2000);
+    researchers_to_share.forEach(researcher =>{
+        cy.get('button[data-testid="add_researcher"]')
+            .click();
+        
+            cy.get('input[name="email"]')
+                .type(researcher["email"])
+                .should('have.value', researcher["email"]);
+            cy.get('[aria-labelledby^="permission"]') 
+                .click()
+            cy.contains(researcher.permissionTextValue).click();
+        
+        cy.get('button[data-testid="continue"]')
+            .click();
+    });
+
+    
+    cy.get('button[data-testid="submit"]')
+            .click();
+    
+    cy.intercept('POST','**/researcher/investigation/**/share').as('shareInvestigation');
+    cy.get('button[data-testid="continue-modal"]')
+        .click();
+    cy.wait('@shareInvestigation');
+    
+});
+Cypress.Commands.add('logOut', () => { 
+    cy.get('button[data-testid="account"]')
+        .click();
+    cy.get('li[data-testid="log_out"]')
+        .click();
+});
+
+Cypress.Commands.add('registerResearcher', (researcher) => { 
+    cy.get('input[name="name"]')
+            .type(researcher["name"])
+            .should('have.value', researcher["name"]);
+    cy.get('input[name="surnames"]')
+        .type(researcher["surnames"])
+        .should('have.value', researcher["surnames"]);
+    cy.get('[aria-labelledby^="country"]') 
+        .click()
+    cy.contains("españa").click();
+
+    cy.get('button[data-testid="continue"]')
+    .click();
+
+    cy.get('input[name="email"]')
+        .type(researcher["email"])
+        .should('have.value', researcher["email"]);
+    cy.get('input[name="phone"]')
+        .type(researcher["phone"])
+        .should('have.value', researcher["phone"]);
+    
+    cy.get('button[data-testid="continue"]')
+        .click();
+
+    cy.get('input[name="password"]')
+        .type(researcher["password"])
+        .should('have.value', researcher["password"]);
+    cy.get('input[name="repeat_password"]')
+        .type(researcher["password"])
+        .should('have.value', researcher["password"]);
+
+    cy.get('button[data-testid="continue"]')
+        .click();
+
+    cy.get('input[name="confirm"]')
+        .type("CONFIRM")
+        .should('have.value', "CONFIRM");
+    cy.intercept('POST', '**/researcher/register').as('registerResearcher');
+    cy.get('button[data-testid="continue"]')
+            .click();
+    cy.wait('@registerResearcher');
+});
+
+Cypress.Commands.add('createInvestigation', (basic_info, personal_data, edc_data) => { 
+
+//Introducimos datos de BASIC INFO
+    cy.createBasicInfo(basic_info);
+
+    personal_data.forEach(pField => {
+        cy.get('input[name="'+pField.name+'"]').click();
+        //cy.contains(pField, {matchCase: false}).click();    
+    });
+    
+    cy.get('button[data-testid="continue"]')
+        .click();
+
+    cy.createEDC(edc_data.surveys);
+
+    
+    cy.intercept('POST', '**/researcher/investigation').as('saveInvestigation');
+    cy.get('button[data-testid="publish-investigation"]')
+        .click(); 
+    cy.wait('@saveInvestigation');
+    cy.get('button[data-testid="continue"]')
+        .click(); 
+    
+});
+
+Cypress.Commands.add('acceptInvestigation', () => {
+    cy.intercept('PUT', '**/researcher/investigation/**/answer').as('answerInvestigation');
+    cy.get('.investigation').first().find('button[data-testid="accept"]').click();
+    cy.wait('@answerInvestigation');
+});

@@ -6,6 +6,7 @@ import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
+import { Grid } from '@material-ui/core';
 
 
  /**
@@ -25,7 +26,14 @@ class Form extends Component {
         this.state = {showOptions:{}}
     }
     callBackForm(values){
-        return this.props.callBackForm(values);
+        //Filtro los que sean undefined
+        let tempValues = {}
+        Object.keys(values).forEach(key => {
+            if(typeof values[key] !== "undefined"){
+                tempValues[key] = values[key]
+            }
+        })
+        return this.props.callBackForm(tempValues);
     }
     componentDidMount(){
         //Busco el campo DefaultValue para inicializar el form con esos valores
@@ -56,34 +64,68 @@ class Form extends Component {
         tempState.showOptions[key] = false;
         this.setState(tempState);
     }
-    renderOptions(value){
-        console.log("Fields", value.fields);
-        if(!this.state.showOptions.hasOwnProperty(value.fields.name) || (this.state.showOptions[value.fields.name] === true)){
-            return (
-                <div className="">
-                    <Translate id={value.label} />
-                    <ButtonAdd type="button" onClick={() => value.fields.push("")} />
-                    
-                    <div className="container">
-                        {value.fields.map((hobby, index) =>
-                            <div className="row">
+    renderOptions(extraField){
+        console.log("Fields", extraField.fields);
+        console.log("value", extraField);
+        if(!this.state.showOptions.hasOwnProperty(extraField.fields.name) || (this.state.showOptions[extraField.fields.name] === true)){
+                if(extraField.type == "min_max"){
+                    return (
+                        [
+                            <Grid item xs={6}>
                                 <Field
                                     size = "s6"
-                                    name={hobby}
+                                    name="type_options[0]"
                                     type="text"
                                     component={FieldSherwood}
-                                    label={`Option #${index + 1}`}/>
-                                <DeleteHolder onClick={() => value.fields.remove(index)}>
-                                    <i className="material-icons">delete</i>
-                                </DeleteHolder>
+                                    label="Mínimo"/>
+                            </Grid>,
+                            <Grid item xs={6}>
+                                <Field
+                                    size = "s6"
+                                    name="type_options[1]"
+                                    type="text"
+                                    component={FieldSherwood}
+                                    label="Máximo"/>
+                            </Grid>
+                        ]
+                    )
+                }
+                else{
+                    return (
+                        <div className="">
+                            {
+                                (extraField.type !== "min_max" || (extraField.type === "min_max" && extraField.fields.length < 2)) &&
+                                [
+                                    <Translate id={extraField.label} />,
+                                    <ButtonAdd type="button" onClick={() => extraField.fields.push("")} />
+                                ]
+                            }
+                            <div className="container">
+                                {extraField.fields.map((hobby, index) =>{
+                                    return(
+                                        <div className="row">
+                                            <Field
+                                                size = "s12"
+                                                name={hobby}
+                                                type="text"
+                                                component={FieldSherwood}
+                                                label={`Option #${index + 1}`}/>
+                                            <DeleteHolder onClick={() => extraField.fields.remove(index)}>
+                                                <i className="material-icons">delete</i>
+                                            </DeleteHolder>
+                                        </div>
+                                    )
+                                }                                
+                                )}
                             </div>
-                        )}
-                    </div>
-                </div>);
+                        </div>);
+                }
+                
+            
         }
-        else if(this.state.showOptions.hasOwnProperty(value.fields.name)){
+        else if(this.state.showOptions.hasOwnProperty(extraField.fields.name)){
             return(
-                <button onClick={() => this.showOptions(value.fields.name)} 
+                <button onClick={() => this.showOptions(extraField.fields.name)} 
                     data-testid="save-option" type="button" className="waves-effect waves-light btn-small">
                     <i className="material-icons">open_in_full</i>
                 </button>
@@ -94,15 +136,22 @@ class Form extends Component {
         }
     }
     renderExtraFields(key){
-        //Un field que habilita la apararición de otro field
+        //Un field que habilita la aparición de otro field
         if(this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValues") && this.props.valuesForm.hasOwnProperty(key) && this.props.fields[key].activationValues.includes(this.props.valuesForm[key]))){
             const extraField = {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]}; 
             if(extraField.type === "options"){
                 return (
                     <div className="container">
-                        <FieldArray name={`${key}-options`} {...extraField} key={key} component={this.renderOptions} />
+                        <FieldArray name={`${key}_options`} {...extraField} key={key} component={this.renderOptions} />
                     </div>
                 )
+            }
+            else if(extraField.type === "min_max"){
+                return(
+                    <div className="container">
+                        <FieldArray name={`${key}_options`} {...extraField} key={key} component={this.renderOptions} />
+                    </div>
+                ) 
             }
             else{
                 return(
@@ -131,21 +180,9 @@ class Form extends Component {
                                     }
                                 </div>);
                         }
-                        // else if(!this.state.showOptions.hasOwnProperty(this.props.fields[key]) && (this.state.showOptions[this.props.fields[key]] === true)){
-                        //     //Si es de tipo options, muestro un boton para añadir opciones
-                        //     return ([
-                        //         <div className="row" key={key}>
-                        //             <FieldArray name={key} label={this.props.fields[key].label} {...this.props.fields[key]}  component={this.renderOptions} />
-                        //         </div>,
-                        //         <button data-testid="submit-form" type="button" className="waves-effect waves-light btn">
-                        //             {this.props.translate("investigation.create.save")}
-                        //         </button>   
-                        //     ]);
-                        // }
-                        
                     })}
                     <div style={{paddingTop:"1rem"}}>
-                        <ButtonContinue type="submit" data-testid={this.props.dataTestid} >
+                        <ButtonContinue type="submit" data-testid={this.props.dataTestid} spaceright={1} >
                             { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}
                         </ButtonContinue>
                         {this.props.closeCallBack &&
@@ -167,14 +204,29 @@ Form.propTypes = {
 
 function validate(values, props){
     const errors = {};
-    Object.keys(props.fields).forEach(key => {
-        console.log(key+" : "+props.fields[key].validation+" "+values[key]);
+    const dictFields = {};
+    for(const fieldKey in props.fields){
+        const field = props.fields[fieldKey];
+        dictFields[fieldKey] = field
+        
+        // if(field.hasOwnProperty("slaves")){
+        //     for(const slave of field.slaves){
+        //         dictFields[slave.name] = slave;
+        //     }
+        // }
+        
+    }
+  
+    Object.keys(dictFields).forEach(key => {
+        console.log(key+" : "+dictFields[key].validation+" "+values[key]);
         //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
-        const fieldValueCompare = props.fields[key].validationField ? values[props.fields[key].validationField] : props.fields[key].validationValue ? props.translate(props.fields[key].validationValue) : null;
+        const fieldValueCompare = dictFields[key].validationField ? values[dictFields[key].validationField] : dictFields[key].validationValue ? props.translate(dictFields[key].validationValue) : null;
+        const valueField = dictFields[key].type === "textarea" && typeof values[key] !== "undefined" ? values[key].replace(/<[^>]+>/g, '') : values[key];
+        const validationFunc = dictFields[key].validation ? dictFields[key].validation : "notEmpty";
         const validation = validateField({  
-                                value : values[key], 
-                                validation:props.fields[key].validation, 
-                                required:props.fields[key].required
+                                value : valueField, 
+                                validation:validationFunc, 
+                                required:dictFields[key].required
                             },
                             fieldValueCompare);
         if(!validation.result){

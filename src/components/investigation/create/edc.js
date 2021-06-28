@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Translate } from 'react-localize-redux';
-import styled from "styled-components";
+import { Grid, List, ListItem, ListItemIcon, ListItemText, RootRef, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Table from '../../general/table';
 import DataCollection from './data_collection';
 import { ButtonContinue, ButtonAdd, ButtonBack } from '../../general/mini_components';  
-
+import { EnhancedTable } from '../../general/EnhancedTable';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 /**
  * An EDC is a collection of data_collections
  */
@@ -37,30 +39,72 @@ export default class EDC extends Component{
         this.closeNewDataCollection = this.closeNewDataCollection.bind(this);
         this.submitData = this.submitData.bind(this);
         this.callBackNewDataCollection = this.callBackNewDataCollection.bind(this);
-        
-        const initialState = {surveys: [], addingDataCollection:false, editingIndexDataCollection:false}
+        this.toggleOrder = this.toggleOrder.bind(this);
+        const initialState = {surveys: [], addingDataCollection:false, editingIndexDataCollection:false, ordering:false}
         this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
+    }
+    getItemStyle(isDragging, draggableStyle){
+        // styles we need to apply on draggables
+        return {...draggableStyle,
+            ...(isDragging && {
+            background: "rgb(235,235,235)"
+        })}
+    }
+    getListStyle(isDraggingOver){
+        //background: isDraggingOver ? 'lightblue' : 'lightgrey',
+    }
+    onDragEnd(result){
+        console.log(result);
+    }
+    orderUpdate(dragDrop){
+        console.log("Parent reorder");
+        let tempState = {...this.state};
+        const result = Array.from(tempState.surveys);
+        const [removed] = result.splice(dragDrop.source.index, 1);
+        result.splice(dragDrop.destination.index, 0, removed);
+        tempState.surveys = result.map((survey, index) => {survey.order = index; return survey;});
+        this.setState(tempState);
     }
     renderDataCollections(){
         const AddButton= <ButtonAdd disabled={this.state.addingDataCollection || Number.isInteger(this.state.editingIndexDataCollection)} 
                             type="button" data-testid="add_data_collections" show={!this.state.addingDataCollection}  
                             onClick={this.toggleAddDataCollection}></ButtonAdd>
         if(this.state.surveys.length === 0){
-            return [
-                AddButton,
-                <Translate id="investigation.create.edc.data_collections.none" />
-            ]
+            return (<Grid item xs={12}>
+                { AddButton }
+                <Typography variant="body2" gutterBottom component="span">
+                    <Translate id="investigation.create.edc.data_collections.none" />
+                </Typography>
+                
+            </Grid>)
         }
-        else{
-            let arrayHeader =["investigation.create.edc.data_collections.title", "investigation.create.edc.data_collections.number_sections"]
-            return(
-                <div>
-                    <Table key="added_fields" header={arrayHeader} 
-                        values = {this.state.surveys.map(survey => {
-                            return [survey.name, survey.sections];
-                    })} deleteCallBack={(index) => this.deleteDataCollection(index, "data_collections")} editCallBack={(index) => this.editDataCollection(index, "data_collections")}/>
+        
+        const headCells =[{ id:"title", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.name" />}, 
+                            {id:"number_sections", alignment: "left", label: <Translate id="investigation.create.edc.data_collections.number_sections" />}
+                        ]
+        
+        const rows = this.state.surveys.sort((a, b) => a.order - b.order).map((survey, index) => {
+            return { id :index, title : survey.name, number_sections : survey.sections.length};
+        })
+            
+        if(!this.state.reordering){
+            return([
+                <Grid item xs={12}>
+                    <EnhancedTable orderUpdate={(result) => this.orderUpdate(result)} noSelectable
+                        titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
+                        actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
+                
+                </Grid>,
+                <Grid item xs={12}>
                     {AddButton}
-                </div>)
+                    <Typography variant="body2" gutterBottom component="span">
+                        <Translate id="investigation.create.edc.data_collections.new" />
+                    </Typography> 
+                </Grid>
+            ]
+            )
+            
+           
         }
     }
     toggleAddDataCollection(){
@@ -124,33 +168,32 @@ export default class EDC extends Component{
     submitData(){
         this.props.callBackData({surveys : this.state.surveys});
     }
+    toggleOrder(){
+        const tempState = {...this.state};
+        tempState.reordering = !tempState.reordering;
+        this.setState(tempState);
+    }
     render(){
         
         if(this.state.addingDataCollection){
-            return <DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} callBackData={this.callBackNewDataCollection} callBackStepBack={() => {this.toggleAddDataCollection()}}/>
+            return <DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} 
+                    callBackData={this.callBackNewDataCollection} callBackStepBack={() => {this.toggleAddDataCollection()}}/>
         }
         else{
             return (
-            
-                <div key="container" >
-                    <h5 className="teal-text lighten-1"><Translate id="investigation.create.edc.title"/></h5>
-                    <blockquote>
-                        <Translate id="investigation.create.edc.intro" />
-                    </blockquote>
-                   
+                <Grid container spacing={3}>    
                     { this.renderDataCollections() }
-                    <div className="row" style={{paddingTop:"20px"}}>
+                    <Grid item xs={12}>
                         {
                             this.props.callBackStepBack && 
-                            <ButtonBack spaceRight={true} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
+                            <ButtonBack spaceright={1} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
                         }
                         <ButtonContinue data-testid="save_surveys" disabled={this.state.surveys.length === 0} 
                             type="button" onClick={this.submitData}>
                                 <Translate id="investigation.create.continue" />
                         </ButtonContinue>
-                    </div>
-                </div>
-                
+                    </Grid>
+                </Grid>
             )
         }
         

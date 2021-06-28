@@ -44,9 +44,9 @@ export const FIELDS = {
         label : "investigation.create.edc.choose",
         shortLabel: "investigation.create.edc.choose",
         defaultOption:{"text" : "investigation.create.choose", "value" : ""},
-        options:[{"text" : "investigation.create.type_text", "value" : "text"},
-                {"text": "investigation.create.type_number", "value" : "number"}, 
-                {"text": "investigation.create.type_date", "value" : "date"}],
+        options:[{"label" : "investigation.create.type_text", "value" : "text"},
+                {"label": "investigation.create.type_number", "value" : "number"}, 
+                {"label": "investigation.create.type_date", "value" : "date"}],
         value:"text"
                                         
     },

@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
+import { SIGN_IN_ROUTE } from '../routes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from './general/modal';
-import Header from './general/header';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import Form from '../components/general/form';
-import { generateKey, encriptData, decryptData, isUserLoggedIn } from '../utils';
+import { generateKey, encryptData, decryptData, isUserLoggedIn } from '../utils';
 import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
 import { toggleLoading } from '../actions';
 import successImage from '../img/7893-confetti-cannons.gif';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 const SpanError = styled.span`
     color:red;
 `;
 const ParaKey = styled.p`
-
 `;
 
 const SuccessContainer = styled.div`
@@ -35,6 +35,10 @@ const ImageSuccess = styled.img`
     display: block;
     margin: 0 auto;
 `;
+
+const PaperPadding = styled(Paper)`
+    padding:1rem;
+`
     
 const forms = {
     "personal_info" : {
@@ -108,6 +112,13 @@ const forms = {
             shortLabel: "register.key_generation.confirm",
             validation : "equalTo",
             validationValue: "register.common.key_generation.confirm"
+        },
+        "policy":{
+            required : true,
+            type:"checkbox",
+            label:{label : "register.common.accept-policy", url : "https://sherwood.science"},
+            shortLabel: "register.common.accept-policy",
+            validation : "notEmpty"
         }
     }
 }
@@ -117,7 +128,7 @@ class Register extends Component {
         this.iv = null;
         this.sections = props.typeUser === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_generation"];
 
-        this.state = {selected:0, info : {}, key : null, success : false, errorMessage : null}
+        this.state = {selected:props.initialState ? props.initialState.selected : 0, info : {}, key : null, success : false, errorMessage : null}
 
         this.generateKey = this.generateKey.bind(this);
         this.saveData = this.saveData.bind(this);
@@ -125,42 +136,6 @@ class Register extends Component {
     }
     crumbSelected(index){
         console.log(`Index selected ${index}`); 
-    }
-    async encodeKeyResearcher(data, keyString){
-        // Encrypt
-        
-
-        // let keyObj = await crypto.subtle.importKey(
-        //     "jwk",
-        //     {
-        //         alg: "A256GCM",
-        //         ext: true,
-        //         k: keyString,
-        //         key_ops: ["encrypt", "decrypt"],
-        //         kty: "oct"
-        //     },
-        //     {
-        //         "name":"AES-GCM",
-        //         "length":256
-        //     },
-        //     true,
-        //     ['encrypt','decrypt']
-        // );
-        // console.log(keyObj);
-        // let enc = new TextEncoder();
-        // let encoded = enc.encode(password);
-        // // The iv must never be reused with a given key.
-        // this.iv = window.crypto.getRandomValues(new Uint8Array(12));
-        // let ciphertext = await window.crypto.subtle.encrypt(
-        //     {
-        //         name: "AES-GCM",
-        //         iv: this.iv
-        //     },
-        //     keyObj,
-        //     encoded
-        // );
-        // let buffer = new Uint8Array(ciphertext, 0, 5);
-        // return buffer;
     }
     async saveData(data){
         let tempState = this.state;
@@ -171,7 +146,7 @@ class Register extends Component {
             delete tempState.info.repeat_password;
             const hashPassword = CryptoJS.SHA256(tempState.info.password).toString(CryptoJS.enc.Base64)
             //Hay que guardar tb el this.iv
-            tempState.info.keyEncrypted = await encriptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
+            tempState.info.keyEncrypted = await encryptData(tempState.key, tempState.info.password);//await this.encodeKeyResearcher(tempState.info.password, this.state.key);
             tempState.info.password = hashPassword;
             console.log(JSON.stringify(tempState.info));
             let response = null
@@ -200,6 +175,9 @@ class Register extends Component {
                 else if(response.request.status === 402){
                     tempState.errorMessage = "account_registered";
                 }
+                else{
+                    tempState.errorMessage = "account_registered";
+                }
             }
             this.props.toggleLoading();
         }
@@ -219,7 +197,13 @@ class Register extends Component {
     continue(){
         console.log("Success!");
         this.setState({success : false});
-        this.props.history.push("/"+this.props.typeUser+"/login");
+        //this.props.history.push(SIGN_IN_ROUTE);
+        this.props.history.push({
+            pathname: SIGN_IN_ROUTE,
+            state: { 
+                from: this.props.location.pathname
+            }
+        })
     }  
     render() {
         console.log("Register!");
@@ -238,26 +222,35 @@ class Register extends Component {
         }
 
         return ([
-            <Modal key="modal" open={this.state.success} title={<Translate id="register.common.success_title" />}
-                    component={<SuccessContainer>
-                                <ImageSuccess src={successImage} width="200" alt="Success!" />
-                                <SuccessText><Translate id={`register.${this.props.typeUser}.success_text`} /></SuccessText>
-                                </SuccessContainer>} 
-                    callBackForm={this.continue}/>,
-            <div className="container" key="container">
-                <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return "breadcrumb."+section})} />    
-                <p><Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} /></p>
-                <div className="row">
-                    <div className="col s5 offset-s4">
-                        <div className="row">
-                            { content }
-                            {this.state.errorMessage && 
-                                <SpanError><Translate id={`register.${this.props.typeUser}.error.${this.state.errorMessage}`} /></SpanError>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Modal key="modal" open={this.state.success} title={<Translate id="register.researcher.success.title" />}
+                confirmAction={this.continue}>
+                <SuccessContainer>
+                    <ImageSuccess src={successImage} width="200" alt="Success!" />
+                    <Typography variant="body2" gutterBottom>
+                        <Translate id={`register.researcher.success.description`} />
+                    </Typography>
+                </SuccessContainer>
+            </Modal>
+            ,
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return this.props.translate("breadcrumb."+section)})} />    
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="subtitle1" color="textPrimary">
+                        <Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} />
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} padding={1}>
+                    <PaperPadding>
+                        { content }
+                        {
+                            this.state.errorMessage && 
+                            <SpanError><Translate id={`register.${this.props.typeUser}.error.${this.state.errorMessage}`} /></SpanError>
+                        }
+                    </PaperPadding>
+                </Grid>
+            </Grid>
         ])
     }
 }
@@ -266,4 +259,4 @@ Register.propTypes = {
     typeUser:PropTypes.string
 }
 
-export default withRouter(connect(null, { toggleLoading })(Register))
+export default withLocalize(withRouter(connect(null, { toggleLoading })(Register)))

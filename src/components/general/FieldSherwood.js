@@ -1,72 +1,106 @@
 import React, { Component } from 'react'
-import { withLocalize } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
 import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
-import { FormControl, Select, InputLabel, MenuItem, TextField, 
-        FormControlLabel, Checkbox, ButtonGroup, IconButton, Icon, TextareaAutosize } from '@material-ui/core';
+import { Select, InputLabel, MenuItem, TextField, 
+        FormControlLabel, Checkbox, ButtonGroup, IconButton, 
+        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid } from '@material-ui/core';
+import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
     KeyboardTimePicker
     } from '@material-ui/pickers';
 import 'date-fns';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
+import { Autocomplete } from '@material-ui/lab';
+import { change, registerField } from "redux-form";
+import SmartField from './SmartFields';
+import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import File from './File';
 
-const sharedStyle = css`
-    & label {
-        position: relative;
-        padding-right: 25px;
-        &+div{
-        margin-top: 0;
-        &:before {
-            bottom: 5px;
-        }
-        &:after {
-            bottom: 5px;
-        }
-        svg {
-            top: 0;
-        }
-        }
+const FormControlSpacing = styled(MuiFormControl)(spacing);
+
+const FormControl = styled(FormControlSpacing)`
+    min-width: 148px!important;
+    xmargin-top:1rem!important;
+`;
+const QuillWrapper = styled.div`
+  .ql-editor {
+    min-height: 200px;
+    ${props => props.error && css`
+        border:1px solid red;
+    `
     }
+  }
+`;
+const EvaluateContainer = styled.div`
+    display:flex;
+`;
+const EvaluateElement = styled.div`
+    display:flex;
+    flex-direction:column;
+`;
+const SpanElement = styled.span`
+  text-align:center;
+`;
+const sharedStyle = css`
+    // & label {
+    //     position: relative;
+    //     padding-right: 25px;
+    //     &+div{
+    //     margin-top: 0;
+    //     &:before {
+    //         bottom: 5px;
+    //     }
+    //     &:after {
+    //         bottom: 5px;
+    //     }
+    //     svg {
+    //         top: 0;
+    //     }
+    //     }
+    // }
+`
+const RedFormHelperText = styled(FormHelperText)`
+  color:red;
 `
 
-const FormControlSherwood = styled(FormControl)`
-    ${sharedStyle}
-`;
-
-const TextFieldSherwood = styled(TextField)`
+export const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
 `;
 
 class FieldSherwood extends Component{
     constructor(props){
         super(props);
-
-        this.state = {options : [], date : new Date()}
+        this.typeMargin = "dense";//dense, none;
+        this.state = {options : [], date : new Date(), loading:false}
 
         this.multiOptionSelected = this.multiOptionSelected.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
-        
+        this.resetDiagnose = this.resetDiagnose.bind(this);
+        this.handleRadioChange = this.handleRadioChange.bind(this);
     }
-    // componentDidUpdate(){
-    //     let selects = document.querySelectorAll('select');
-    //     var instances = M.FormSelect.init(selects, {});
-    // }
+
     async componentDidMount(){
         if(typeof this.props.optionsUrl !== "undefined"){
             const request = await axios.get(this.props.optionsUrl);
             if(request.status === 200){
-                this.setState({options : request.data});
+                let options = request.data.map(opt => {return {"label" : opt.code, "value":opt.id}});
+                this.setState({options : options});
             }
         }
-        // if(this.props.type === "select"){
-        //     let selects = document.querySelectorAll('select[name="'+this.props.input.name+'"]');
-        //     M.FormSelect.init(selects, {});
-            
-        // }
+
+    }
+    handleRadioChange(event){
+        console.log(event);
+        this.props.input.onChange(event.target.value);
     }
     multiOptionSelected(value){
         let tempValue = [value];
@@ -83,48 +117,78 @@ class FieldSherwood extends Component{
         this.props.input.onChange(tempValue);
         
     }
-    
+    autoCompleteChanged(value){
+        console.log("Este es el value "+value);
+        if(value.length > 4){
+            let tempState = {...this.state};
+            tempState.loading = true;
+            this.setState(tempState);
+
+        }
+        
+    }
+    diagnosesSelected(listDiagnoses){
+        this.props.input.onChange(listDiagnoses);
+    }
+    resetDiagnose(){
+        this.props.input.onChange(undefined);
+    }
+    treatmentSelected(treatments){
+        this.props.input.onChange(treatments);
+    }
     handleDateChange(value){
         this.props.input.onChange(value);
     }
+    selectChange(value){
+        this.props.input.onChange(value);
+    }
+    imagesSelected(images){
+        this.props.input.onChange(images);
+    }
     render(){
-        const {input, label, meta, type, options, size, option, removeClass} = this.props;
+        const {input, label, meta, type, options, size, removeClass, validation} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
-        const errorString = meta.error ? this.props.translate(meta.error) : "";
-        const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
+        const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
+        const labelString = label.hasOwnProperty("url") ? <a href={label.url} >{this.props.translate(label.label)}</a> : this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
                 let optionsArray = [];
                 if(typeof this.props.optionsUrl !== "undefined"){
                     optionsArray = this.state.options.map(anOption => {
-                        return <option key={anOption[option.value]} value={anOption[option.value]}>{anOption[option.text]}</option>
+                        return <MenuItem value={anOption.value}>{anOption.label}</MenuItem>
                     })
                 }
                 else{
                     optionsArray = options.map(option => {
-                        const optionText = this.props.translate(option.text).indexOf("Missing translationId:") !== -1 ?  option.text : this.props.translate(option.text);
+                        const optionText = this.props.translate(option.label).indexOf("Missing translationId:") !== -1 ?  option.label : this.props.translate(option.label);
                     return <MenuItem value={option.value}>{optionText}</MenuItem>
                         
                     })
                 }
+                const labelId = `${input.name}_label`;
                 return(
-                    <FormControlSherwood >
-                        <InputLabel id={input.name}>{labelString}</InputLabel>
-                        <Select  
-                            labelId={input.name}
-                            {...input} error={errorState} 
-                            helperText={errorString}
-                            >
-                            {optionsArray}
+                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} error={errorState} >
+                        <InputLabel id={labelId}>{labelString}</InputLabel>
+                        <Select
+                        labelId={labelId}
+                        id={input.name}
+                        label={labelString}
+                        {...input} 
+                        >
+                        { optionsArray }
                         </Select>
-                    </FormControlSherwood>
+                    </FormControl>
                     
                 )
+            // case "select":
+            //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
+            //         activationValues={activationValues} onChange={(value) => this.selectChange(value)}/>
+
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value.includes(option.value)){
-                            return <ButtonCheck spaceRight={false} onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
+                            return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
                         }
                         return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonEmptyCheck>
                     });
@@ -135,36 +199,63 @@ class FieldSherwood extends Component{
                                 <InputLabel id={input.name}>{labelString}</InputLabel>
                             </div>
                             <div className="row">
-                                <InputLabel shrink={true}>Choose the options that apply</InputLabel>
+                                <InputLabel shrink={true}><Translate id="general.choose-options" /></InputLabel>
                             </div>
                             <ButtonGroup color="primary" aria-label="outlined primary button group">
                                 {optionButtons}
                             </ButtonGroup>
                         </div>
-                    ])
+                    ]);
+            case "radio":
+                return(
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">{labelString}</FormLabel>
+                        <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={this.handleRadioChange}>
+                            {
+                                options.map(option => {
+                                    return <FormControlLabel value={option.value} control={<Radio />} label={option.label} />
+                                })
+                            }
+                        </RadioGroup>
+                    </FormControl>
+                )
+                
             case "checkbox":
                 console.log("Value checkbox: "+input.name+" "+input.value);
                 const classNameError = (meta.touched && meta.error) ? "error text" : "";
                 const className = removeClass ?  `col ${sizeCurrent}` : `col ${sizeCurrent}`
-                return(
+                const errorText = errorState ? <RedFormHelperText><Translate id="general.field-required" /></RedFormHelperText> : "";
+                return([
                     <FormControlLabel
                         control={<Checkbox checked={input.value} {...input} />}
                         label={labelString}
-                    />
-                );
+                    />,
+                    errorText
+                ]);
             case "date":
+                const value = input.value ? input.value : "";
                 return (
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
                         <KeyboardDatePicker
-                            margin="normal"
+                            disableToolbar
+                            margin={this.typeMargin}
                             id={input.name}
-                            label={label}
-                            format="MM/dd/yyyy"
-                            value={input.value === "" ? new Date() : input.value}
+                            inputVariant="outlined"
+                            style={{width: "235px"}}
+                            label={input.value ? "" : labelString}
+                            //label={labelString}
+                            format="dd/MM/yyyy"
+                            value={value}
+                            defaultValue={value} 
+                            openTo="year"
                             onChange={this.handleDateChange}
+                            maxDate={validation === "pastDate" ? new Date() : undefined}
+                            emptyLabel={labelString}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
                             }}
+                            error={errorState} 
+                            helperText={errorString} 
                         />
                     </MuiPickersUtilsProvider>
                     
@@ -173,7 +264,9 @@ class FieldSherwood extends Component{
                 return (
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardTimePicker
-                            margin="normal"
+                            margin={this.typeMargin}
+                            size="small"
+                            inputVariant="outlined"
                             id={input.name}
                             label={labelString}
                             value={input.value === "" ? new Date() : input.value}
@@ -181,23 +274,24 @@ class FieldSherwood extends Component{
                             KeyboardButtonProps={{
                                 'aria-label': 'change time',
                             }}
+                            error={errorState} 
+                            helperText={errorString}
                         />
                     </MuiPickersUtilsProvider>
                     
                 )
-            case "evaluate":
+            case "evaluation":
                 let arrayButtons = [];
-                for(let i= 0;i < 10; i++){
-                    const value = i+1;
-                    let iconString = "panorama_fish_eye";
-                    if(input.value ===  value){
-                        iconString = "fiber_manual_record";
+                for(let i= options[0].value;i <=options[1].value; i++){
+                    let Icon = PanoramaFishEyeIcon;
+                    if(input.value ===  i){
+                        Icon = FiberManualRecordIcon;
                     }
                     arrayButtons.push(
-                        <IconButton onClick={()=>this.props.input.onChange(value)}>
-                            {value}.
-                            <Icon>{iconString}</Icon>
-                        </IconButton>
+                        <EvaluateElement>
+                            <Icon onClick={()=>this.props.input.onChange(i)}></Icon>
+                            <SpanElement><Typography variant="body2" gutterBottom>{i}</Typography></SpanElement>
+                        </EvaluateElement>
                     )
                 }
                 return (
@@ -205,9 +299,9 @@ class FieldSherwood extends Component{
                         <div className="row">
                             <InputLabel id={input.name}>{labelString}</InputLabel>
                         </div>
-                        <div className="row">
+                        <EvaluateContainer>
                             {arrayButtons}
-                        </div>
+                        </EvaluateContainer>
                     </div>
                     );
                 
@@ -217,14 +311,70 @@ class FieldSherwood extends Component{
                 );
             case "textarea":
                 return(
-                    <TextareaAutosize aria-label="empty textarea" placeholder="Empty" {...input}  />
+                    <Box mt={3} mb={3} >
+                        <Typography variant="body2" gutterBottom>
+                            {labelString}: 
+                        </Typography>
+                        <QuillWrapper className={input.name} error={errorState}>
+                            <ReactQuill
+                                {...input}
+                                onChange={(newValue, delta, source) => {
+                                    if (source === 'user') {
+                                    input.onChange(newValue);
+                                    }
+                                }}
+                                onBlur={(range, source, quill) => {
+                                    input.onBlur(quill.getHTML());
+                                }}
+                            />
+                        </QuillWrapper>
+                    </Box>
                 )
-            default:    
-                    console.log("TextFieldSherwood",input.value);
+            case "password":
                 return(
-                    <TextFieldSherwood {...input}  
-                        label={labelString} error={errorState} 
+                    <Box mt={1}>
+                        <TextFieldSherwood {...input}  type="password"
+                            label={labelString} error={errorState} 
+                            helperText={errorString} />
+                    </Box>
+                )  
+            case "autocomplete":
+                return(
+                    <Autocomplete
+                        id={input.name}
+                        options={this.state.options}
+                        onInputChange={(event, newValue) => {
+                            this.autoCompleteChanged(newValue);
+                          }}
+                        getOptionLabel={(option) => option.title}
+                        style={{ width: 300 }}
+                        renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
+               />
+                );
+            case "file" : 
+                return <File label={labelString} mode="form"
+                            imagesSelected = {(images) => this.imagesSelected(images) }
+                            type={type}{...input} 
+                            value={input.value} />
+            case "allergy":
+            case "family-background":
+            case "background":
+            case "ict" : 
+            case "treatment" : 
+                return(
+                    <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
+                        variant="outlined" margin={this.typeMargin} error={errorState}
+                        helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
+                        size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
+                );
+            default:    
+                console.log("TextFieldSherwood",input.value);
+                return(
+                    <TextFieldSherwood {...input} variant="outlined" margin={this.typeMargin}
+                        label={labelString} error={errorState} size="small"
                         helperText={errorString} />
+                    
+                        
                 )
         }
     }

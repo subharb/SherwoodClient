@@ -3,6 +3,13 @@ import Form from '../../../components/general/form';
 import ProviderSherwood from '../../../providerSherwood';
 
 const FIELDS_FORM = {
+    "autocomplete":{
+        required : false,
+        type:"autocomplete",
+        label:"Autocomplete",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty"
+    },
     "checkbox":{
         required : false,
         type:"checkbox",
@@ -24,9 +31,9 @@ const FIELDS_FORM = {
         label : "Simple Select",
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "Option 1", "value" : "text"},
-                {"text": "Option 2", "value" : "number"},
-                {"text": "Option 3", "value" : "checkbox"},
+        options:[{"label" : "Option 1", "value" : "text"},
+                {"label": "Option 2", "value" : "number"},
+                {"label": "Option 3", "value" : "checkbox"},
         ]                             
     },
     "select-activate" : {
@@ -36,9 +43,9 @@ const FIELDS_FORM = {
         label : "Select With activation field Option 2, 3",
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "Option 1", "value" : "text"},
-                {"text": "Option 2", "value" : "number"},
-                {"text": "Option 3", "value" : "checkbox"},
+        options:[{"label" : "Option 1", "value" : "text"},
+                {"label": "Option 2", "value" : "number"},
+                {"label": "Option 3", "value" : "checkbox"},
         ],
         activationValues : ["checkbox", "number"],
         activatedFields:[
@@ -65,10 +72,20 @@ const FIELDS_FORM = {
         label : "Multioption",
         shortLabel: "investigation.table.type",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "Option 1", "value" : "text"},
-                {"text": "Option 2", "value" : "number"},
-                {"text": "Option 3", "value" : "checkbox"},
+        options:[{"label" : "Option 1", "value" : "text"},
+                {"label": "Option 2", "value" : "number"},
+                {"label": "Option 3", "value" : "checkbox"},
         ]                             
+    },
+    "radio":{
+        required : false,
+        type:"radio",
+        label:"Radio Buttons",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty",
+        options:[{"label" : "Option 1", "value" : "text"},
+                {"label": "Option 2", "value" : "number"},
+                {"label": "Option 3", "value" : "checkbox"}]
     },
     "date" : {
         required : false,
@@ -84,12 +101,13 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
-    "evaluate" : {
+    "evaluation" : {
         required : false,
-        type:"evaluate",
+        type:"evaluation",
         label:"Evaluate opinion",
         shortLabel: "investigation.table.name",
-        validation : "textMin2"
+        validation : "textMin2",
+        options:[{value:3, label:3}, {value:7, label:7}]
     },
     "textarea" : {
         required : false,

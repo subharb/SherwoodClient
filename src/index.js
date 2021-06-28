@@ -1,48 +1,50 @@
-import React from 'react';
-import ReactDom from 'react-dom';
-import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import ProviderSherwood from './providerSherwood';
-import axios from 'axios';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import reducers from './reducers';
-import Home from './components/home';
-import Login from './components/dashboard/login';
-import RegisterUser from './components/register';
-import Dashboard from './components/dashboard';
-import { ThemeProvider }  from 'styled-components';
-import M from 'materialize-css';
+import ErrorBoundary from "./components/general/ErrorBoundary";
+import mixpanel from 'mixpanel-browser';
+
+if (process.env.NODE_ENV === 'production') {
+    console.log = function () {};
+
+}
+mixpanel.init(process.env.REACT_APP_MIXPANEL_TOKEN);
+// or with require() syntax:
+// const mixpanel = require('mixpanel-browser');
 
 
 
-const store = createStore(reducers, {}, applyMiddleware(thunk));
-document.addEventListener('DOMContentLoaded', function() {
-    M.AutoInit();
-});
 
-axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
-Sentry.init({
-    dsn: "https://1e889cc84edc4a2fa8fffba2173af28b@o491166.ingest.sentry.io/5556260",
-    autoSessionTracking: true,
-    integrations: [
-      new Integrations.BrowserTracing(),
-    ],
-  
-    // We recommend adjusting this value in production, or using tracesSampler
-    // for finer control
-    tracesSampleRate: 1.0,
-  });
-
-ReactDom.render(
+ReactDOM.render(
     <ProviderSherwood>
-            <Switch>
-                <Route exact path="/:type(patient|researcher)/login" children={(props) => <Login {...props} /> } />
-                <Route exact path="/:type(patient|researcher)/register/:uuidPatient?" children={(props) => <RegisterUser typeUser={props.match.params.type} /> } />
-                <Route exact path="/dashboard" children={(props) => <Dashboard /> } />
-                <Route exact path="/investigation/:action/:uuid?" children={(props) => <Dashboard action={props.match.params.action} uuid={props.match.params.uuid} /> } />
-                <Route exact path="/" children={(props) => <Home {...props} />} />
-            </Switch>
-    </ProviderSherwood>, document.getElementById('root')
+        <ErrorBoundary>
+            <App />
+        </ErrorBoundary>
+    </ProviderSherwood>,
+    document.getElementById("root")
 );
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://cra.link/PWA
+
+//serviceWorkerRegistration.register();
+serviceWorkerRegistration.register({
+  onSuccess: () => console.log("[Service Worker] Installation Success"),
+  onUpdate: reg => {
+    const registrationWaiting = reg.waiting;
+    if (registrationWaiting) {
+      registrationWaiting.postMessage({ type: 'SKIP_WAITING' });
+      registrationWaiting.addEventListener('statechange', e => {
+        if (e.target.state === 'activated') {
+          window.location.reload();
+        }
+      });
+    }
+    console.log("[Service Worker] Update Success")
+  },
+});

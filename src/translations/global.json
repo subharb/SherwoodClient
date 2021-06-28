@@ -1,75 +1,227 @@
-{
-    "home" : ["Welcome", "Bienvenido"],
+{   
+    "lang" : ["en", "es","fr"],
+    "home" : ["Welcome!", "Bienvenido", "Bienvenue"],
     "general" : {
-        "yes" : ["Yes", "No"], 
-        "no" : ["No", "No"], 
-        "delete" : ["Delete", "Borrar"],
-        "cancel" : ["Cancel", "Cancelar"],
-        "edit" : ["Edit", "Editar"],
-        "back" : ["Back", "Atrás"],
-        "add" : ["Add", "Añadir"],
-        "view" : ["View", "Ver"]
+        "yes" : ["Yes", "Si", "Oui"], 
+        "no" : ["No", "No", "Non"], 
+        "updating-records" : ["We are syncronizing the records, please hold on.", "Estamos actualizando los registros, por favor espere.", "Nous mettons à jour les enregistrements, veuillez patienter."],
+        "delete" : ["Delete", "Borrar", "Effacer"],
+        "cancel" : ["Cancel", "Cancelar", "Annuler"],
+        "edit" : ["Edit", "Editar", "Éditer"],
+        "update" : ["Update", "Actualizar", "Mettre à jour"],
+        "back" : ["Back", "Atrás", "Returner"],
+        "add" : ["Add", "Añadir", "Ajouter"],
+        "view" : ["View", "Ver", "Voir"],
+        "startDate" : ["Start Date", "Fecha Inicio", "Date de début"],
+        "endDate" : ["End Date", "Fecha fin", "Date de fin"],
+        "date" : ["Date", "Fecha", "Date"],
+        "accept" : ["Accept", "Aceptar", "Accepter"],
+        "start_typing" : ["start typing", "escriba texto", "commencer à écrire"],
+        "no_results" : ["no results", "sin resultados", "no results"],
+        "no-option-match" : ["If no options match, write your own", "Si ninguna opción coincide, escriba la suya", "Si aucune option, écrivez le vôtre"],
+        "field-required" : ["This field is required", "Este campo es obligatorio", "Ce champ est requis"],
+        "choose-options" : ["Choose the options that apply", "Elija las opciones que apliquen", "Choisissez les options qui s'appliquent"],
+        "offline" : {
+            "title" : ["Offline", "Sin conexión", "Sans connexion"],
+            "description" : ["You can still use the app, however unsyncronized records will be updated automaticly when connection is recovered", "Aún puede usar la aplicación, sin embargo, los registros no sincronizados se actualizarán automáticamente cuando se recupere la conexión", "Vous pouvez toujours utiliser l'application, mais les enregistrements non synchronisés seront mis à jour automatiquement lorsque la connexion sera rétablie"]
+        },
+        "offline-update" : {
+            "title" : ["Offline", "Sin conexión", "Sans connexion"],
+            "description" : ["There are some items to be syncronized. The app will automaticly upload these items when the connection is recovered. Please don't refresh the page until this message disappears.", "Hay algunos elementos para sincronizar. La aplicación cargará automáticamente estos elementos cuando se recupere la conexión. No actualice la página hasta que desaparezca este mensaje.", "Il y a certains éléments à synchroniser. L'application téléchargera automatiquement ces éléments lorsque la connexion sera rétablie. Veuillez ne pas actualiser la page jusqu'à ce que ce message disparaisse."]
+        }
+    },
+    
+    "hospital" : {
+        "doctor" : ["Doctor", "Médico", "Médecin"],
+        "data-collection" : ["Form", "Formulario", "Forme"],
+        "data-collections" : ["Surveys", "Encuestas", "Enquêtes"],
+        "sections" : ["Sections", "Secciones", "Sections"],
+        "patient" : {
+            "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
+            "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
+            "new-record" : ["Record saved", "Registro Guardado", "Enregistrement enregistré"],
+            "new-record-offline" : ["Record saved offline", "Registro Guardado offline", "Enregistrement enregistré offline"],
+            "error" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
+            "updated-record" : ["Record updated!", "Registro Actualizado", "Fichier mis à jour"],
+            "updated-record-offline" : ["Record updated Offline!", "Registro Actualizado Offline", "Fichier mis à jour Offline"],
+            "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
+            "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
+            "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
+            "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
+        },
+        "notification": {
+            "offline" : {
+                "patient" : ["Add patient pending", "Agregar paciente pendiente", "Add patient pending"],
+                "submission" : ["Patient submission pending", "Envío de datos pendiente", "En attente de soumission des données"]
+            }
+        },
+        "treatment-name" : ["Name", "Nombre", "Nom"],
+        "posology" : ["Frequency", "Frecuencia", "Fréquence"],
+        "treatment-posology-table" : ["Frequency", "Frecuencia", "Fréquence"],
+        "dose" : ["Quantity", "Cantidad", "Quantité"],
+        "treatment-dose-table" :["Quantity", "Cantidad", "Quantité"],
+        "treatment-start-table" : ["Start date", "F.Inicio", "Date de début"],
+        "treatment-finish-table" : ["End date", "Fecha fin", "Date de fin"],
+        "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
+        "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
+        "number-elements" : ["Number", "Nombre", "Número"],
+        "time-unit" : ["Time", "Tiempo", "Temps"],
+        "treatment-posology-values" : {
+            "single-dose" : ["Single dose", "Dosis única", "Une seule dose"]
+        },
+        "time-unit-options" : {
+            "days" : ["days", "días", "jours"],
+            "weeks" : ["weeks", "semanas", "semaines"],
+            "months" : ["months", "meses", "mois"]
+        },
+        "duration" : ["Duration", "Duración", "Durée"],
+        "posology-options" : {
+            "4h" : ["4 hours", "4 horas", "4 heures"],
+            "6h" : ["od", "6 horas", "6 heures"],
+            "8h" : ["bd", "8 horas", "8 heures"],
+            "12h" : ["tds", "12 horas", "12 heures"],
+            "24h" : ["qds", "24 horas", "24 heures"],
+            "48h" : ["48 hours", "48 horas", "48 heures"],
+            "week" : ["1 week", "1 semana", "1 semaine"]
+        },
+        "dose-options" : {
+            "1" : ["One tablet", "Una pastilla", "une pilule"],
+            "3/4" : ["3/4 of a tablet", "3/4 de pastilla", "3/4 pilule"],
+            "1/2" : ["half a tablet", "Media pastilla", "Media pilule"],
+            "1/4" : ["1/4 of a tablet", "1/4 de pastilla", "1/4 pilule"]
+        },
+        "ict" : ["Diagnostic", "Diagnostico", "Diagnostic"],
+        "treatment" : ["Treatment", "Tratamiento", "Traitement"],
+        "allergy" : ["Allergy", "Alergía", "Allergie"],
+        "background" : ["PMH", "Antecedentes", "Antécédents"],
+        "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],     
+        "family-relation" : ["Relationship", "Relación Familiar", "Relation de famille"],     
+        "ict-plural" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
+        "ict-table" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
+        "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
+        "treatment-table" : ["Drug", "Medicamento", "Médicament"],
+        "allergy-plural" : ["Allergies", "Alergías", "Allergies aux medicam"],
+        "allergy-table" : ["Allergies", "Alergías", "Allergies aux medicam"],
+        "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents"],
+        "background-table" : ["Past Medical History", "Antecedentes", "Antécédents"],
+        "background-date" : ["Enter date", "Introduzca la fecha", "Entrez la date"],
+        "background-date-table" : ["Date", "Fecha", "Date"],
+        "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
+        "family-background-table" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
+        "family-background-relation-table" : ["Relationship", "Relación Familiar", "Relation de famille"],  
+        "select-ict" : ["Enter diagnostic", "Seleccione diagnostico", "Entrer le diagnostic"],
+        "select-test" : ["Select Test", "Seleccione tipo de prueba", "Sélectionnez le type de test"],
+        "select-treatment" : ["Drug name", "Nombre medicamento", "Nom du médicament"],
+        "select-background" : ["Enter Past Medical History", "Seleccione Antecedente", "Entrer un antécédent"],
+        "select-family-background" : ["Enter Family Past Medical History", "Seleccione Antecedente Familiar", "Entrer un antécédent"],
+        "select-allergy" : ["Enter Allergy", "Seleccione Alergía", "Entrer Allergie"],
+        "add-ict" : ["Add Diagnosis", "Añadir Diagnóstico", "Ajouter un diagnostic"],
+        "add-treatment" : ["Add Treatment", "Añadir Tratamiento", "Ajouter un traitement"],
+        "add-background" : ["Add Background", "Añadir Antecedente", "Ajouter un antécédent"],
+        "add-family-background" : ["Add Family Past Medical History", "Añadir Antecedente Familiar", "Ajouter des antécédents familiaux"],
+        "add-allergy" : ["Add Allergy", "Añadir Alergía", "Ajouter une allergie"],
+        
+        "type-test" : {
+            "eco-ab" : ["Abdominal ultrasound", "Ecografía abdominal", "Échographie abdominale"],
+            "scan" : ["Bone Scan", "Radiografía", "scintigraphie osseuse"]
+        }
     },
     "breadcrumb" : {
-        "password" : ["Password", "Contraseña"],
-        "key_generation": ["Key Generation", "Generación de clave"],
-        "personal_info" : ["Personal Info", "Datos personales"],
-        "contact_info" : ["Contact Info", "Datos de contacto"]
+        "password" : ["Password", "Contraseña", "Mot de passe"],
+        "key_generation": ["Key Generation", "Generación de clave", "Génération de clé"],
+        "personal_info" : ["Personal Info", "Datos personales", "Informations personnelles"],
+        "contact_info" : ["Contact Info", "Datos de contacto", "Informations de contact"]
+    },
+    "error" : {
+        "not_login" : ["You need to sign in to access this resource", "Para acceder a este recurso necesita iniciar sesión", "Vous devez vous connecter pour accéder à cette ressource"]
+    },
+    "pages" : {
+        "research" : [],
+        "hospital" : {
+            "home" : ["Home", "Home", "Accueil"],
+            "search-patient" : {
+                "title" : ["Search Patient", "Buscar Paciente", "Recherche patient"],
+                "back-button" : ["Back to search", "Nueva búsqueda", "Nouvelle recherche"],
+                "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
+            },
+            "patient" : {
+                "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
+            },
+            "laboratory":{
+                "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Aucun test de laboratoire"],
+                "name" : ["Laboratory", "Laboratorio", "Laboratoire"],
+                "title" : ["Laboratory", "Laboratorio", "Laboratoire"]
+            },
+            "medical-imaging" : {
+                "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
+                "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
+                "title" : ["Images requests", "Petición de imagen", "Demandes d'imagerie"]
+            },
+            "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
+            "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"]
+        }
     },
     "dashboard":{
-        "greetings" : ["Welcome", "Bienvenido"],
-        "investigation" : ["Investigation", "Investigación"],
-        "pending" : ["Pending Investigations", "Investigaciones pendientes"],
-        "create_investigation" : ["Create investigation", "Crear investigación"],
-        "show_investigations" : ["Show investigations", "Mostrar investigaciones"],
-        "draft_investigations" : ["Draft investigations", "Investigaciones Draft"],
-        "live_investigations" : ["Live investigations", "Investigaciones Live"],
-        "ongoing" : ["Show ongoing investigations", "Mostrar investigaciones corriente"],
+        "greetings" : ["Welcome", "Bienvenido", "Bienvenue"],
+        "investigation" : ["My studies", "Mis estudios", "Mes études"],
+        "pending" : ["Pending studies", "Estudios pendientes", "Études en cours"],
+        "create_investigation" : ["Create a new study", "Crear un nuevo estudio", "Créer une nouvelle étude"],
+        "show_investigations" : ["Show my studies", "Mostrar mis estudios", "Montrer mes études"],
+        "draft_investigations" : ["Draft studies", "Borradores de estudios", "Projets d'études"],
+        "live_investigations" : ["Live studies", "Estudios activos", "Études actives"],
+        "share_investigation" : ["Share study", "Compartir estudio", "Partager l'étude"],
+        "ongoing" : ["Show ongoing investigations", "Mostrar estudios en curso", "Montrer les études en cours"],
         "summary" : {
-            "title" : ["Summary", "Resumen"]
+            "title" : ["Summary", "Resumen", "Résumé"]
         }
     },
     "login":{
-        "email":["Email", "Email"],
-        "password":["Password", "Contraseña"]
+        "email":["Email", "Email", "Email"],
+        "password":["Password", "Contraseña", "Mot de passe"]
     },
     "register" : {
         "common" : {
             "password" : {
-                "password" : ["Password", "Contraseña"],
-                "repeat_password" : ["Repeat Password", "Repetir Contraseña"]
+                "password" : ["Password", "Contraseña", "Mot de passe"],
+                "repeat_password" : ["Repeat Password", "Repetir Contraseña", "Répéter le mot de passe"]
             },
             "personal_info" : {
-                "name" : ["Name", "Nombre"],
-                "surnames" : ["Surname", "Apellidos"],
-                "country" : ["Country", "País"]
+                "name" : ["Name", "Nombre", "Prenom"],
+                "surnames" : ["Surnames", "Apellidos", "Nom" ],
+                "surname" : ["Surname", "Apellido", "Nom"],
+                "country" : ["Country", "País", "Pays"]
             },
             "contact_info" : {
-                "email" : ["Email", "Email"],
-                "phone" : ["Phone", "Teléfono"]
+                "email" : ["Email", "Email", "Email"],
+                "phone" : ["Phone", "Teléfono", "Téléphone"]
             },
             "key_generation" : {
-                "confirm" : ["CONFIRM", "CONFIRMAR"]
-            },
-            "success_title" : ["Success!", "Enhorabuena!"]
+                "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
+            }
         },
         "researcher" : {
             "personal_info" : {
-                "explanation" : ["Few details to address you appropiately"]
+                "explanation" : ["Few details to address you appropriately", "Introduzca sus datos para registrarse", "Entrez vos coordonées pour vous inscrire"]
             },
             "contact_info" : {
-                "explanation" : ["We will use these information for you to access safely you information"]
+                "explanation" : ["We will use this information for contact reasons", "Usaremos esta información para motivos de contacto","Nous utiliserons ces informations pour des raisons de contact"]
             },
             "password" : {
-                "explanation" : ["Choose a password that is at least 6 characters long"]
+                "explanation" : ["Choose a password that is at least 6 characters long", "Elige una clave de al menos 6 caracteres","Choisissez un mot de passe d'au moons 6 characters"]
             },
             "key_generation" : {
-                "explanation" : ["Once you have saved in a secure place your key please write the text 'CONFIRM', in the box below", "Una vez haya guardado el la clave en un lugar seguro, por favor introduzca el texto en la caja"],
-                "key" : ["Key", "Clave"],
-                "email_error" : ["This email is already in use", "Este email ya se ha usado"]
+                "explanation" : ["Once you have saved your in a secure place, key please write 'CONFIRM', in the box below", "Una vez haya guardado la clave en un lugar seguro, por favor escriba 'CONFIRM' en el recuadro", "Une foes que vous aves enregistré voter clean dans un endroit sécurisé, veuillez écrire le text 'CONFIRM' dans la case ci-dessous" ],
+                "key" : ["Key", "Clave", "Mot de paste"],
+                "email_error" : ["This email is already in use", "Este email ya se ha usado", "Cet e-mail est déjà utilise"]
             },
+            "go_to_sign_in" : ["Go to sign in", "Iniciar sesión", "Commencer la session"],
+            "success" : {
+                "title" : ["Congratulations!", "¡Enhorabuena!", "Félicitations!"],
+                "description" : ["Congratulations! Now head to sign in and start using Sherwood", "!Enhorabuena! ya puedes iniciar sesión y empezar a usar Sherwood","Felicitations!,vous tes prêt à vos connecter et à utiliser Sherwood" ]
+            },     
             "error" : {
-                "account_registered" : ["This account has already been activated", "Esta cuenta ya ha sido activada"]
+                "account_registered" : ["This email has already been used", "Este email ya ha sido utilizado", "Cet e-mail est déjà utilise"],
+                "general" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"]
             }
         },
         "patient" : {
@@ -79,15 +231,14 @@
             "key_generation" : {
                 "explanation" : ["Loremipsum key_generation"],
                 "key" : ["Key", "Clave"],
-                "success_title" : ["Success!", "Enhorabuena!"],
-                "success_text" : ["An email is coming your way, click on it to verify your account and in no time your will be able to create investigations with privacy as a priority",
-                                    "Un email está en camino, haz click en el link que hay dentro para verificar tu cuenta. Dentro de poco podrás crear investigaciones con la privacidad como prioridad"],
-                "confirm" : ["CONFIRM", "CONFIRMAR"]
+                "success_title" : ["Success!", "Enhorabuena!", "Felicitations"],
+                "success_text" : ["Check your email to validate your user account and create your own study and data collection forms with privacy as a priority","Revisa tu correo para verificar tu cuenta de usuario y poder crear tu propio estudio y hojas de recolección de datos con la privacidad como prioridad", "Vérifiez votre messagerie pour valider votre compte utilisateur et créez vos propres formulaires d'étude et de collecte de données avec la confidentialité comme priorité"],
+                "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
             },
             "success_text" : ["You are only one step ahead to participate in the investigation and grant access to your personal information, deny or see who has accesed it.",
                 "Estás a un paso de participar en la investigación y dar acceso a tus datos personales, denegarlo o ver quien ha accedido a ellos."],
             "error" : {
-                "account_registered" : ["This account has already been activated", "Esta cuenta ya ha sido activada"]
+                "account_registered" : ["This account has already been activated", "Esta cuenta ya ha sido activada", "Ce compte a déjà été activé"]
             }
         }
         
@@ -95,162 +246,248 @@
     "investigation" : {
         "create" : {
             "steps" : {
-                "basic_info" : ["Basic Info", "Información básica"],
-                "edc" : ["EDC", "EDC"],
+                "basic_info" : ["Basic Info", "Información básica","Informations de base" ],
+                "edc" : ["EDC", "EDC", "EDC"],
                 "personal_data" : ["Personal Data", "Datos Personales"],
                 "sections" : ["Create Surveys", "Crear formulario"],
-                "patient_sheet" : ["Patient Sheet Information", "Documento de aceptación de paciente"],
-                "consents" : ["Consent forms", "Formularios de consentimiento"],
-                "summary" : ["Summary", "Resumen"]
+                "patient_sheet" : ["Patient Information Sheet", "Hoja de información de paciente", "Fiche d'information patient"],
+                "consents" : ["Consent forms", "Formularios de consentimiento", "Formulaire de consentement"],
+                "summary" : ["Summary", "Resumen", "Résumé"]
+            },
+            "basic_info" : {
+                "title" : ["Basic Info", "Información básica", "Informations de base"],
+                "intro" : ["Introduce a brief description of your study", "Introduce una breve descripción de tu estudio", "Présentez une brève description de votre étude"]
             },
             "personal_data" : {
-                "title" : ["Personal Data", "Datos Personales"],
-                "intro" : ["Please select the personal data you are planning to include in your investigation" ,"Seleccione los datos personales que desea incluir en su investigación"],
+                "title" : ["Personal Data", "Datos Personales", "Données personnelles"],
+                "intro" : ["Please select the personal data you are planning to include in your study" ,"Seleccione los datos personales que desea incluir en su estudio", "Sélectionnez les données personnelles que vous souhaitez inclure dans votre étude"],
                 "fields" : {
-                    "name" : ["Name", "Nombre"],
-                    "surname" : ["Surname", "Apellidos"],
-                    "address" : ["Address", "Dirección"],
-                    "health_id" : ["Health ID", "Nº Seguridad social"],
-                    "national_id" : ["National ID", "DNI"],
-                    "email" : ["Email", "Email"],
-                    "phone" : ["Phone", "Nº Teléfono"],
-                    "birthdate" : ["Date of birth", "Fecha de nacimiento"]
+                    "name" : ["Name", "Nombre","Prénom"],
+                    "surnames" : ["Surnames", "Apellidos", "Nom"],
+                    "surname" : ["Surname", "Apellido", "Nom"],
+                    "address" : ["Address", "Dirección", "Adresse"],
+                    "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
+                    "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
+                    "email" : ["Email", "Email", "Email"],
+                    "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
+                    "uuid" : ["ID", "ID", "ID"],
+                    "birthdate" : ["Date of birth", "Fecha de nacimiento", "Date de naissance"],
+                    "sex" : ["Sex", "Sexo", "Sex"]
+                },
+                "short-fields" : {
+                    "name" : ["Name", "Nombre", "Prénom"],
+                    "surnames" : ["Surnames", "Apellidos", "Nom"],
+                    "surname" : ["Surname", "Apellido", "Nom"],
+                    "address" : ["Address", "Dirección", "Adresse"],
+                    "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
+                    "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
+                    "email" : ["Email", "Email", "Email"],
+                    "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
+                    "uuid" : ["ID", "ID", "ID"],
+                    "birthdate" : ["DOB", "Fecha de nacimiento", "Date de naissance"],
+                    "sex" : ["Sex", "Sexo", "Sex"]
                 }
             }, 
             "edc" : {
-                "title" : ["EDC Design", ""],
-                "intro" : ["The Electronic Data Capture (EDC) design tool will allow you to create the necessary data collection forms and questionnaires to populate your database. Please follow our smart assistant who will take you through the process.", ""],
-                "no_sections" : ["You haven't added any sections yet"],
+                "title" : ["EDC Design", "Diseño EDC", "Design EDC"],
+                "intro" : ["The Electronic Data Capture (EDC) design tool will allow you to create the necessary data collection forms and surveys to populate your database. Please follow our smart assistant ", "La herramienta de diseño de captura electrónica de datos (EDC) le permitirá crear los formularios y encuestas de recopilación de datos necesarios para completar su base de datos. Siga a nuestro asistente inteligente", "L'outil de conception de capture électronique de données (EDC) vous permettra de créer les formulaires de collecte de données et les enquêtes nécessaires pour alimenter votre base de données. Veuillez suivre notre assistant intelligent"],
+                "no_sections" : ["You have not created any sections yet", "Aún no has creado ninguna sección","Vous n'avez encore créé aucune section"],
                 "data_collections" : {
-                    "title" : ["Data Collection", "Colleción de datos"],
-                    "intro" : ["Each data collection can have several sections" , "Ca"], 
-                    "new" : ["New data collection"],
-                    "name" : ["Data Collection name", "Nombre de la collección de datos"],
-                    "none" : ["You have no data collections", "No has creado ninguna collección de datos"],
-                    "number_sections" : ["Number sections", "Número de secciones"],
-                    "save" : ["Save Data Collection" , "Guardar Data Collection"]
+                    "title" : ["Data collection forms", "formularios de recolección de datos", "formulaires de collecte de données"],
+                    "intro" : ["Each data collection form can have several sections" ,"Cada formulario de recolección de datos puede tener varias secciones", "Chaque formulaire de collecte de données peut avoir plusieurs sections"], 
+                    "new" : ["New data collection form", "Nuevo formulario de recolección de datos", "Nouveau formulaire de collecte de données"],
+                    "name" : ["Name", "Nombre", "Nom"],
+                    "none" : ["You have no data collection forms", "No has creado ningún formulario de recolección de datos", "Vous n'avez pas de formulaires de collecte de données"],
+                    "number_sections" : ["Number of sections", "Número de secciones", "Nombre de sections"],
+                    "save" : ["Save data collection form" , "Guardar formulario de recolección de datos", "Enregistrer le formulaire de collecte de données"],
+                    "sections" : ["Sections", "Secciones", "Sections"]
                 },
                 "section" : {
-                    "name" : ["Section", "Sección"],
-                    "new" : ["New section"],
-                    "edit_section" : ["Edit section"],
-                    "section_name" : ["Name", "Nombre"],
-                    "add_section" : ["Add section"],
-                    "none" : ["You have no sections", "No has creado ninguna sección"]
+                    "name" : ["Section", "Sección", "Section"],
+                    "new" : ["New section", "Nueva sección", "Nouvelle section"],
+                    "edit_section" : ["Edit section", "Modificar sección", "Modifier la section"],
+                    "section_name" : ["Name", "Nombre", "Nom"],
+                    "add_section" : ["Save section", "Guardar sección", "Enregistrer la section"],
+                    "none" : ["You have no sections", "No ha creado ninguna sección", "Vous n'avez pas de sections"]
                 },
-                "name" : ["Study's name", "Nombre de la investigación"],
-                "add_field" : ["Add field", "añadir campo"], 
-                "required" : ["Required", "Obligatorio"],
-                "repeats" : ["Repeats", "Repite"],
-                "number_fields" : ["# fields", "Nº Campos"],
-                "name_field" : ["Name of the field in your report", "Nombre del campo en los informes"], 
-                "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?"], 
-                "question_field" : ["Question that will be shown in the form", "La pregunta que aparecerá en el formulario"],
-                "other_researchers" : ["Add other researchers", "Añadir otros investigadores"],
-                "institution" : ["Institution", "Organización"],
-                "contact" : ["Contact details", "Datos de contacto"],
-                "principal_researcher" : ["Principal researcher", "Investigador principal"],
-                "ethics_body" : ["Ethics Committee Body", "Comité ético"],
-                "reference_number" : ["Reference number", "Nº referencia"],
-                "reference_number_state" : ["Study State", "Estado estudio"],
+                "acronym" : ["Acronym", "Acrónimo", "Acronyme"],
+                "name" : ["Study's name", "Nombre del estudio", "Nom de l'étude"],
+                "add_field" : ["Add field", "Añadir campo", "Ajouter un champ"], 
+                "required" : ["Required", "Obligatorio", "Obligatoire"],
+                "repeats" : ["Longitudinal data collection", "Recopilación de datos longitudinales", "Collecte de données longitudinales"],
+                "fields" : ["Fields", "Campos", "Champs"],
+                "description" : ["Description", "Descripción", "Description"],
+                "number_fields" : ["Number of fields", "Número de campos", "Nombre de champs"],
+                "name_field" : ["Name of the field in your report", "Nombre del campo en los informes", "Nom du champ dans votre rapport"], 
+                "type_field" : ["What type of data will you store?", "¿Qué tipo de dato va a guardar?", "Quel type de données allez-vous stocker?"], 
+                "question_field" : ["Question that will appear in the data collection form", "Pregunta que aparecerá en el formulario de recolección de datos", "Question qui apparaîtra dans le formulaire de collecte de données"],
+                "other_researchers" : ["Add collaborators", "Añadir colaboradores", "Ajouter des collaborateurs"],
+                "institution" : ["Institution", "Organización", "Institution"],
+                "contact" : ["Contact details", "Datos de contacto", "Détails du contact"],
+                "principal_researcher" : ["Principal investigator", "Investigador principal", "Chercheur principal"],
+                "ethics_body" : ["Ethics Committee", "Comité ético", "Comité d'éthique"],
+                "reference_number" : ["Reference number", "Número de referencia", "Numéro de réference"],
+                "reference_number_state" : ["Study status", "Estado del estudio", "Statut de l'étude"],
                 "reference_number_state_type" : {
                     "not_applicable" : ["Not aplicable", "No aplicable"],
-                    "pending" : ["Pending", "Pendiente"],
-                    "approved" : ["Approved", "Aprobado"]
+                    "pending" : ["Pending", "Pendiente", "En attendant"],
+                    "approved" : ["Approved", "Aprobado", "Approuvé"]
                 },
-                "no_fields" : ["No fields added yet", "No se han añadido campos aún"], 
-                "type_text" : ["Text", "texto"],
-                "type_number" : ["Number", "Número"],
-                "checkbox" : ["Checkbox", "Checkbox"],
-                "multioption" : ["Multioption", "Multiopción"],
-                "dropdown" : ["Dropdown", "Despegable"],
-                "type_date" : ["Date", "fecha"], 
-                "choose" : ["Choose your option", "Elija una opción"],
-                "personal_info" : ["Is it a personal data", "¿Es un dato personal?"],
-                "choose_patient" : ["Choose a patient", "Elija un paciente"],
-                "type" : ["Type study", "Tipo de estudio"],
+                "no_fields" : ["No fields added yet", "No se ha agregado ningún campo", "Aucun champ ajouté pour le moment"], 
+                "type_text" : ["Text", "Texto", "Text"],
+                "type_number" : ["Number", "Número", "Nombre"],
+                "diagnosis" : ["Diagnosis", "Diagnostico", "Diagnostic"],
+                "treatment" : ["Treatment", "Tratamiento", "Traitement"],
+                "allergy" : ["Allergy", "Alergía", "Allergie"],
+                "background" : ["PMH", "Antecedentes", "Antécédents"],
+                "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],                
+                "files" : ["File/Image", "Imágenes", "Images"],       
+                "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
+                "textarea" : ["Texarea", "Texto largo", "Texarea"],
+                "multioption" : ["Multioption", "Multiopción", "Multioption"],
+                "evaluation" : ["Evaluation", "Evaluación", "Evaluation"],
+                "radio" : ["Radio button", "Radio button", "Radio button"],
+                "dropdown" : ["Dropdown", "Dropdown", "Dropdown"],
+                "type_date" : ["Date", "Fecha", "Date"], 
+                "choose" : ["Choose an option", "Elija una opción", "Choisir une option"],
+                "personal_info" : ["Is it a personal data?", "¿Es un dato personal?", "S'agit-il d'une donnée personnelle?"],
+                "choose_patient" : ["Choose a patient", "Elija un paciente", "Choisir un patient"],
+                "type" : ["Type of study", "Tipo de estudio", "Type d'étude"],
                 "type_study" : {
-                    "audit" : ["Audit", "Auditoría"],
-                    "clinical_trial" : ["Clinical Trial", "Ensayo clínico"],
-                    "medical_device" : ["Medical Device", "Aparato Médico"],
-                    "clinical_research_study" : ["Clinical Research Study", "Investigación Clínica"]
+                    "audit" : ["Clinical audit", "Auditoría clínica", "Audit clinique"],
+                    "clinical_trial" : ["Clinical trial", "Ensayo clínico", "Essai clinique"],
+                    "medical_device" : ["Medical device trial", "Ensayo de dispositive médico", "Essai de disposition médical"],
+                    "clinical_research_study" : ["Clinical research study", "Investigación clínica", "Étude de recherché clinique"]
                 }
             },
             "pis" : {
-                "title" : ["PIS generator", "Generador PIS"],
+                "title" : ["PIS generator", "Generador PIS", "Générateur PIS"],
                 "intro" : ["The information provided to participants is crucial for a number of reasons:  It explains to individuals everything that will happen to them, should they consent to participate; it allows them to weigh up the risks and benefits of taking part; and it ensures that the information provided to them is fully documented from a legal perspective.  All of the above should be achieved in as concise a way as possible, without compromising clarity.</br>Our smart PIS generator will guide you to design study information sheets. Please contact our team at <a href='mailto:support@sherwood.science'>support@sherwood.science</a> for more information.",
                             "texto intro"],
-                "pis_version" : ["PIS version(e.g. 1.0)", "PIS version(e.g. 1.0)"],
-                "date" : ["PIS Date", "Fecha PIS"],
-                "participants_age" : ["Participant's age", "Edad de los participantes"],
+                "pis_version" : ["PIS version(e.g. 1.0)", "PIS version(e.g. 1.0)", "PIS version(e.g. 1.0)"],
+                "date" : ["Patient information sheet date", "Fecha hoja de información del paciente", "Date fiche d'information du patient"],
+                "participants_age" : ["Age of participants", "Edad de los participantes", "Âge des participants"],
                 "ages" : {
-                    "adult" : ["Adult participants", "Adultos"],
-                    "children11-16" : ["Children 11-16", "Niños 11-16"],
-                    "children5-10" : ["Children 5-10", "Niños 5-10"],
-                    "children<5" : ["Children <5", "Niños <5"]
+                    "adult" : ["Adult participants", "Participantes adultos","Participants adultes"],
+                    "children11-16" : ["Children 11-16 years", "Niños de 11-16 años", "Enfants de 11 à 16 ans"],
+                    "children5-10" : ["Children 5-10 years", "Niños de 5-10 años", "Enfants de 5 à 10 ans"],
+                    "children<5" : ["Children <5 years", "Niños <5 años", "Enfants <5 ans"]
                 },    
-                "introduction" : ["Invitation paragraph", "Párrafo introductorio"]                
+                "introduction" : ["Invitation paragraph", "Párrafo introductorio", "Paragraphe d'invitation"]                
             },
             "add_patients" : {
-                "title" : ["Add patients", "Añadir pacientes"],
+                "title" : ["Add patients", "Añadir pacientes", "Ajouter des patients"],
                 "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
-                "personal_data" : ["Add the reasons why you need the personal data"],
-                "email" : ["Email", "Email"]
+                "personal_data" : ["Provide a brief explanation as to why you need to collect personal data", "Proporcione una breve explicación de por qué necesita recopilar datos personales", "Expliquez brièvement pourquoi vous devez collecter des données personnelles"],
+                "email" : ["Email", "Email", "Email"]
             },
             "consent" : {
-                "title" : ["Add consents", "Añadir consentimientos"],
+                "title" : ["Add consent forms", "Añadir formularios de consentimiento informado", "Ajouter des formulaires de consentement éclairé"],
                 "explanation" : ["In order to create a consent agreement we need you write down the reason why you are asking for the personal data. These reasons why appear in the consent for the patient to understand what will be the use of that data"],
-                "consent" : ["consent", "Consentimiento"],
-                "field" : ["Field", "Campo"],
-                "reason" : ["reason", "razón"],
-                "other_consent" : ["Other consent", "Otros consentimientos"],
-                "personal_data" : ["Here are the personal data you are asking to the patients, please add an explanation of why each is necessary", "A continuación encontrará los datos personales que ha pedido en el paso anterior. Por favor, añada una explicación de por qué son necesarios."],
-                "is_required" : ["Is a required consent to participate in the investigation", "Es un consentimiento obligatorio para participar en la investigation"],
-                "required" : ["Required", "Obligatorio"],
-                "name" : ["Name", "Nombre"]                
+                "consent" : ["Consent", "Consentimiento", "Consentement"],
+                "field" : ["Field", "Campo", "Champ"],
+                "reason" : ["Reason", "Razón", "Raison"],
+                "other_consent" : ["Other consent forms", "Otros consentimientos", "Autres formulaires de consentement"],
+                "personal_data" : ["These are the personal data that you will collect from patients. Please add an explanation as to why it is necessary", "Estos son los datos personales que recopilará de los pacientes. Agregue una explicación de por qué es necesario", "Ce sont les données personnelles que vous collecterez auprès des patients. Veuillez ajouter une explication pour expliquer pourquoi cela est nécessaire"],
+                "is_required" : ["It is a requirement to fill in this consent form to participate in the investigation", "Es requisito completar este formulario de consentimiento para participar en la investigación.", "Il est obligatoire de remplir ce formulaire de consentement pour participer à l'enquête"],
+                "required" : ["Required", "Obligatorio", "Obligatoire"],
+                "name" : ["Name", "Nombre", "Nom"]                
             },
             "summary" : {
-                "title" : ["Summary Investigation", "ResumenInvestigation"],
-                "explanation" : ["Check all the sections before saving the investigation", "Revise las secciones antes de guardar"],
-                "patients" : ["Patients", "Pacientes"],
-                "email" : ["email", "email"],
-                "review_consents" : ["Review consent", "Revisar el consentimiento"],
+                "title" : ["Study summary", "Resumen del estudio", "Résumé de l'étude"],
+                "intro" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco" ,"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco"],
+                "explanation" : ["Check all sections before saving your study", "Revise las secciones antes de guardar el estudio", "Vérifiez routes les sections avant d'enregistrer voter étude"],
+                "patients" : ["Patients", "Pacientes","Patients" ],
+                "email" : ["Email", "Email", "Email"],
+                "review_consents" : ["Review consent form", "Revisar el consentimiento informado", "Examiner le formulate de conséntement"],
                 "success" : {
-                    "title" : ["Success!", "Enhorabuena!"],
+                    "title" : ["Success!", "Enhorabuena!", "Felicitations"],
                     "description" : ["You have successfully created an investigation", "Has creado una investigación"],
-                    "continue" : ["Continue", "Continuar"]
+                    "continue" : ["Continue", "Continuar", "Continuer"]
                 },
-                "survey" : ["Survey", "Formulario"],
-                "personal_data" : ["Personal Data", "Datos Personales"]
+                "survey" : ["Survey", "Formulario", "Formulaire"],
+                "personal_data" : ["Personal Data", "Datos Personales", "Données personnelles"]
             },
-            "continue" : ["Continue", "Continuar"],            
-            "save_and_publish" : ["Save & publish", "Guardar y publicar"],
-            "save" : ["Save", "Guardar"]
+            "continue" : ["Continue", "Continuar", "Continuer"],            
+            "save_and_publish" : ["Save & publish", "Guardar y publicar", "Enregistrer et publier"],
+            "save" : ["Save", "Guardar", "Enregistrer"]
         },
         "fill" : {
             "personal_data" : {
-                "title" : ["Personal Data", "Datos Personales"],
-                "description" : ["Fill the personal information of the patient", "Rellene los datos personales del paciente"]
+                "title" : ["Personal data", "Datos Personales", "Données personnelles"],
+                "description" : ["Fill in the patient's personal data", "Rellene los datos personales del paciente", "Remplissez les données personnelles du patient"]
             },
             "survey" : {
-                "patient_name" : ["Patient's Name", "Nombre del Paciente"],
-                "title" : ["Data Collections", "Collecciones de datos"]
-            }
+                "patient_name" : ["Patient's name", "Nombre del Paciente", "Nom du patient"],
+                "title" : ["Data collections forms", "Formularios de recolección de datos", "Formulaires de collecte de données"],
+                "add_data" : ["Add data", "Añadir datos", "Ajouter des données"],
+                "view_data" : ["View data", "Ver datos", "Voir les données"],
+                "no_records" : ["This data collection form has no records", "Este formulario no contiene registros", "Ce formulaire n'a pas d'enregistrements"],
+                "section-filled" : ["This section has already been filled out", "Esta sección ya ha sido rellenada", "Cette section a déjà été remplie"],
+                "record-offline" : ["Sorry, you can't visualize unsincronize records", "Lo sentimos, pero no puede visualizar registros no sincronizados", "Désolé, vous ne pouvez pas visualiser les enregistrements de désynchronisation"]
+            },
+            "section" : {
+                "already_filled" : ["This section has been completed", "Esta sección ya ha sido completada", "Cette section a été complétée"]
+            },
+            "new_record" : ["New record added", "Nuevo registro añadido","Nouvel enregistrement ajouté" ],
+            "records" : ["Records", "Registros", "Records"]
+        },
+        "search-patients":{
+            "search" : ["Search", "Buscar", "Rechercher"]
+        },
+        "share" : {
+            "title" : ["Share my study", "Compartir mi estudio", "Partager mon étude"],
+            "add_researcher" : ["Add investigator", "Añadir investigador", "Ajouter un chercheur"],
+            "researchers" : ["Investigators", "Investigadores", "Chercheurs"],
+            "current_researchers" : ["Investigators granted access to my study", "Investigadores con acceso a mi estudio", "Chercheurs ayant accès à mon étude"],
+            "new_researchers" : ["New Researchers", "Nuevos Investigadores", "Nouveaux chercheurs"],
+            "form" : {
+                "email" : ["Email", "Email", "Email"],
+                "permission" :  ["Permissions", "Permisos", "Autorisations"]
+            },
+            "researcher" : {
+                "name" : ["Name", "Nombre", "Nom"],
+                "status" : ["Status", "Status", "Status"],
+                "permission" : ["Permission", "Permisos", "Autorisations"]
+            },
+            "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],
+            "confirm_dialog" : {
+                "title" : ["Please confirm", "Por favor confirmar","Veuillez confirmer"],
+                "description" : ["An email will be sent to the following email addresses with instructions on how to create a Sherwood account if they do not have one. Once they have agreed to participate in the study, they will be able to access the research data and perform the actions to which you have given them access. You can edit permissions at any time. Do you wish to continue?",
+                                "Se enviará un correo electrónico a las siguientes direcciones de correo electrónico con instrucciones sobre cómo crear una cuenta de Sherwood si no tienen una. Una vez que hayan aceptado participar en el estudio, podrán acceder a los datos de la investigación y realizar las acciones a las que les hayas dado acceso. Puede editar los permisos en cualquier momento. ¿Desea continuar?",
+
+				"Un e-mail sera envoyé aux adresses e-mail suivantes avec des instructions sur la façon de créer un compte Sherwood s'ils n'en ont pas. Une fois qu'ils auront accepté de participer à l'étude, ils pourront accéder aux données de la recherche et réaliser les actions auxquelles vous leur avez donné accès. Vous pouvez modifier les autorisations à tout moment. Souhaitez-vous continuer?"]
+            },
+            "error" : {
+                "title" : ["Error", "Error", "Erreur"],
+                "description" : ["An error ocurred, please try again later", "Se ha producido un error, inténtelo de nuevo más tarde", "Une erreur s'est produite, veuillez réessayer plus tard"]
+            },
+            "share" : ["Share", "Compartir", "Partager"],
+            "permissions" : {
+                "read_no_personal_data" : ["Read only medical data", "Solo lectura de datos médicos", "Lire uniquement les données médicales"],
+                "read_personal_data" : ["Read medical and personal data", "Lectura de datos personales y médicos", "Lire des données personnelles et médicales"],
+                "create_personal_data" : ["Add medical and personal data", "Añadir datos médicos y personales", "Ajouter des données médicales et personnelles"]
+            },
+            "status" : {
+                "pending" : ["Pending", "Pendiente", "En attendant"],
+                "accepted" : ["Accepted", "Aceptada", "Accepté"],
+                "denied" : ["Denied", "Rechazada", "Refusée"]
+            },
+            "no_researchers_added" : ["You have not added any investigators!", "No has añadido ningún investigador!", "Vous n'avez ajouté aucun enquêteur"]
         },
         "show" : {
-            
-            "view_investigation" : ["View Investigation", "Ver investigación"],
-            "title" : ["Title", "Título"],
-            "date_created" : ["Date create", "Fecha de creación"],
-            "description" : ["Description", "Descripción"],
+            "view_investigation" : ["View study", "Ver estudio", "Voir l'étude"],
+            "title" : ["Title", "Título", "Titre"],
+            "date_created" : ["Creation date", "Fecha de creación", "Date de creation"],
+            "description" : ["Description", "Descripción", "Description"],
             "all" : {
                 "researcher" : {
                     "no_investigations" : ["You don't have any investigations yet", "Aún no ha subido ninguna investigación"],
-                    "add_first_investigation" : ["Add your first investigation", "Cree su primera investigación"]
+                    "add_first_investigation" : ["Create your first study", "Crear tu primer estudio","Créez votre première étude"]
                 },
                 "patient" : {
                     "pending" : {
-                        "no_investigations" : ["You don't have any pending investigations yet", "No tiene ninguna investigación pendiente"]
+                        "no_investigations" : ["There are no pending investigations", "No tiene ninguna investigación pendiente", "Il n'a aucune étude en attente"]
                     }
                     
                 }
@@ -258,36 +495,37 @@
             },
             "accept_consents" : {
                 "success" : {
-                    "description" : ["You have succesfully joined the investigation. The researcher will contact you soon via email", "Se ha unido correctamente a la investigación. El investigador se pondrá en contacto contigo pronto via email"],
-                    "title" : ["Great!", "Genial!"]
+                    "description" : ["You have successfully joined the study. The principal investigator or study administrator will contact you soon via email with further details", "Te has unido con éxito al estudio. El investigador principal o el administrador del estudio se comunicará con usted pronto por correo electrónico con más detalles", "Vous avez rejoint l'étude avec succès. Le chercheur principal ou l'administrateur de l'étude vous contactera bientôt par e-mail avec plus de détails"],
+                    "title" : ["Great!", "Genial!", "Formidable!"]
                 }, 
-                "continue" : ["Continue", "Continuar"]
+                "continue" : ["Continue", "Continuar", "Continuer"]
             },
-            "patient_consents" : ["Patient Consents" , "Consentimiento de pacientes"]
+            "patient_consents" : ["Patients informed consents" , "Consentimiento informado de pacientes", "Consentement éclairé des patients"]
         },
         "table" : {
-            "is_personal_data" : ["personal data", "dato personal"],
-            "name" : ["name field", "nombre campo"], 
-            "required" : ["Required", "Obligatorio"],
-            "type" : ["type", "tipo"], 
-            "question" : ["question", "pregunta"]
+            "is_personal_data" : ["Personal data", "Datos personales", "Données personnelles"],
+            "name" : ["Field name", "Nombre del campo", "Nom de domaine"], 
+            "required" : ["Required", "Obligatorio", "Obligatoire"],
+            "type" : ["Type", "Tipo", "Type"], 
+            "question" : ["Question", "Pregunta", "Question"]
         },    
         "errors" : {
-            "error_email" : ["Email not valid", "Email no válido"],
-            "error_phone" : ["Phone not valid", "Teléfono no válido"],
-            "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres"],
-            "error_length6" : ["It has to be at least 6 characters long","Debe tener una longitud de al menos 6 caracteres"],
-            "error_length2" : ["It has to be at least 2 characters long","Debe tener una longitud de al menos 2 caracteres"],
-            "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío"],
-            "error_not_same" : ["Fields have to be the same", "El valor tiene que ser igual"]
+            "error_email" : ["Email not valid", "Email no válido", "Email invalide"],
+            "error_phone" : ["Phone not valid", "Teléfono no válido", "Téléphone non valide"],
+            "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres", "Le mot de passe doit contenir au moins 7 caractères"],
+            "error_length6" : ["It has to be at least 6 characters long","Debe tener al menos 6 caracteres", "Il doit comporter au moins 6 caractères"],
+            "error_length2" : ["This field can't be empty","Este campo no se puede dejar vacío"],
+            "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío", "Ce champ ne peut pas être vide"],
+            "error_not_same" : ["Fields have to be the same", "El valor de los campos tiene que ser igual", "Les champs doivent être les mêmes"],
+            "error_past_date" : ["You must choose a past date", "Debe seleccionar una fecha pasada", "Vous devez choisir une date passée"]
 
         }
     },
     "consent" : {
-        "title" : ["Accept Consents", "Aceptación de consentimientos"],
-        "personal_data_header" : ["These are the personal data that are required to participate in the investigation", "Estos son los datos personales necesarios para participar en la investigación"],
-        "personal_data" : ["Personal Data"],
-        "give_consent" : ["I give consent to store 'NAME'", "Doy consentimiento para guardar 'NAME'"],
-        "consent_reason" : ["The researcher group requires this data for 'CONSENT'", "El grupo investigador pide este dato para 'CONSENT'"]
+        "title" : ["Accept consents forms", "Aceptar formularios de consentimiento", "Accepter les formulaires de consentement"],
+        "personal_data_header" : ["These are the personal data required to participate in the study", "Estos son los datos personales necesarios para participar en el estudio", "Ce sont les données personnelles nécessaires pour participer à l'étude"],
+        "personal_data" : ["Personal Data", "Datos personales", "Données personnelles"],
+        "give_consent" : ["I give consent to store 'NAME'", "Doy mi consentimiento para guardar 'NAME'", "J'autorise l'enregistrement de 'NAME'"],
+        "consent_reason" : ["The study group requires this data for 'CONSENT'", "El grupo investigador requiere este dato para 'CONSENT'", "Le groupe d'étude a besoin de ces données pour 'CONSENT'"]
     }
 }

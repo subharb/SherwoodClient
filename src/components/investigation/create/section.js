@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Translate } from 'react-localize-redux';
-import { validateField } from '../../../utils';
+import { Translate, withLocalize } from 'react-localize-redux';
+import { validateField, FIELDS_FORM, isSmartField } from '../../../utils';
 import styled from "styled-components";
 import FieldSherwood from '../../general/FieldSherwood';
 import Table from '../../general/table';
@@ -8,71 +8,15 @@ import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { reduxForm, Field } from 'redux-form';
 import { ButtonAdd, ButtonSave, ButtonCancel  } from '../../general/mini_components';
+import { Grid,
+        Typography,
+        DialogTitle, 
+        DialogContent,
+        DialogContentText,
+        Button, TextField,DialogActions, Card, CardContent
+    } from "@material-ui/core";
 import PropTypes from 'prop-types';
-
-const FIELDS_FORM = {
-    "encrypted":{
-        required : false,
-        type:"checkbox",
-        label:"investigation.create.edc.personal_info",
-        shortLabel: "investigation.table.is_personal_data",
-        validation : "notEmpty"
-    },
-    "required":{
-        required : false,
-        type:"checkbox",
-        label:"investigation.create.edc.required",
-        shortLabel: "investigation.table.required",
-        validation : "notEmpty"
-    },
-    "name" : {
-        required : true,
-        type:"text",
-        label:"investigation.create.edc.name_field",
-        shortLabel: "investigation.table.name",
-        validation : "textMin2"
-    },
-    "type" : {
-        required : true,
-        type:"select",
-        validation : "notEmpty",
-        label : "investigation.create.edc.choose",
-        shortLabel: "investigation.table.type",
-        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-        options:[{"text" : "investigation.create.edc.type_text", "value" : "text"},
-                {"text": "investigation.create.edc.type_number", "value" : "number"},
-                {"text": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
-                {"text": "investigation.create.edc.type_date", "value" : "date"},
-                {"text": "investigation.create.edc.dropdown", "value" : "dropdown"},
-                {"text": "investigation.create.edc.multioption", "value" : "multioption"}
-        ],
-        activationValues : ["dropdown", "multioption"],
-        activatedFields:[
-            {
-                required : true,
-                type:"options",
-                validation : "notEmpty",
-                label : "investigation.create.edc.choose",
-                shortLabel: "investigation.table.type"
-            },
-            {
-                required : true,
-                type:"options",
-                validation : "notEmpty",
-                label : "investigation.create.edc.choose",
-                shortLabel: "investigation.table.type"
-            }]
-                                        
-    },
-    "label" : {
-        required : false,
-        type:"text",
-        label : "investigation.create.edc.question_field",
-        shortLabel: "investigation.table.question",
-        validation : "textMin6", 
-        size : "s6"
-    }
-}
+import { EnhancedTable } from '../../general/EnhancedTable';
 
 const SECTION_FORM = {
     "name" : {
@@ -103,7 +47,7 @@ class Section extends Component{
         this.toogleField = this.toogleField.bind(this);
         this.renderFields = this.renderFields.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.deleteElement = this.deleteElement.bind(this);
+        this.deleteField = this.deleteField.bind(this);
         this.handleNewSection = this.handleNewSection.bind(this); 
 
         const initialState = { addingField: false, fields : [] }
@@ -118,19 +62,24 @@ class Section extends Component{
             let newValues = Object.assign({}, values);
             newValues.fields = [...this.state.fields];
             console.log("handleNewSection:"+JSON.stringify(values));
+            newValues.repeats = values.hasOwnProperty("repeats") ? values.repeats : false;
             this.props.callBackNewSection(newValues);
         }
-        
     }
-    deleteElement(index, element){
+    deleteField(index){
         console.log("Delete Field", index);
         let tempState = {...this.state};
-        tempState[element].splice(index, 1);
+        tempState.fields.splice(index, 1);
         this.setState(tempState);
     }
     handleAddField(values){
         console.log("Nuevo field!", values);
+        if(values.hasOwnProperty("type_options")){
+            values["options"] = values.type_options;
+        }
+        values.validation =  isSmartField(values.type) ? "arrayOrFalse" : "notEmpty";
         let tempState = {...this.state};
+        values.order = tempState.fields.length;
         tempState.fields.push(values);
         this.setState(tempState);
         this.toogleField();
@@ -145,14 +94,44 @@ class Section extends Component{
         tempState.addingField = false;
         this.setState(tempState);
     }
+    orderUpdate(dragDrop){
+        console.log("Parent reorder");
+        let tempState = {...this.state};
+        const result = Array.from(tempState.fields);
+        const [removed] = result.splice(dragDrop.source.index, 1);
+        result.splice(dragDrop.destination.index, 0, removed);
+        tempState.fields = result.map((field, index) => {field.order = index; return field;});
+        this.setState(tempState);
+    }
     renderFields(){
         if(this.state.fields.length > 0){
-            const arrayHeader = Object.values(FIELDS_FORM).map(value => value.shortLabel);
-            return <Table key="added_fields" header={arrayHeader} 
-                values = {this.state.fields.map(field => {let arrayFields = Object.values(field);
-                        
-                        return arrayFields;
-                    })} deleteCallBack={(index) => this.deleteElement(index, "fields") }/>
+            const arrayHeader = Object.keys(FIELDS_FORM).map(key => {
+                const value = FIELDS_FORM[key];
+                return { id: key, alignment: "right", label: <Translate id={value.shortLabel} /> }
+            });
+            const rows = this.state.fields.sort((a, b) => a.order - b.order ).map((aField, index) => {
+                let tempSection = {};
+                
+                for(const keyField of Object.keys(FIELDS_FORM)){
+                    const field = FIELDS_FORM[keyField];
+                    if(field.type === "checkbox"){
+                        tempSection[keyField] = aField[keyField] === true;
+                    }
+                    else{
+                        tempSection[keyField] = aField[keyField]
+                    }
+                
+                
+                }
+                tempSection["id"] = index;
+                return tempSection;
+            })
+            return <EnhancedTable orderUpdate={(dragDrop) => this.orderUpdate(dragDrop)} 
+                        noSelectable titleTable={<Translate id="investigation.create.edc.fields" />}  
+                        headCells={arrayHeader}
+                        rows={rows}
+                        actions={{"delete" : (index) => this.deleteField(index) }} 
+                    />
         }
         else{
             return null;
@@ -165,42 +144,52 @@ class Section extends Component{
         }
     }
     render(){
-        const title = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
-        const saveText = this.props.initialData ? <Translate id="investigation.create.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
+        const title = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
+        const saveText = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
         return (
-            [<Modal key="modal" open={this.state.addingField} title={<Translate id="investigation.create.edc.add_field" />}
-            component={<Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />} 
-              />,
-            <div className="card">
-                <div className="card-body">
-                    <h6 className="">
-                        {
-                            title
-                        }
-                        
-                    </h6>
-                    <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
-                        <Field type="text" name="name" label="name" component={FieldSherwood} />
-                        <div>
-                            <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
-                        </div>
-                    
-                        
-                        <div style={{paddingTop:"40px"}}>
-                            Add field: 
-                            <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
-                                show={!this.state.addingField}>
-                            </ButtonAdd>  
-                        </div>  
-                        { this.renderFields() }
-                        <div style={{paddingTop:"40px"}}>
-                            <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
-                            <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
-                                type="button">Cancel</ButtonCancel>
-                        </div>
-                    </form>   
-                </div>
-            </div>]
+            <Grid container>
+                <Grid item xs={12}>
+                    <Modal
+                        open={this.state.addingField}
+                        closeModal={this.closeModal}
+                        title={this.props.translate("investigation.create.edc.add_field")}>
+                            <Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />
+                    </Modal>
+                </Grid>
+                <Grid item container xs={12}>
+                    <Card>
+                        <CardContent>
+                            <Grid item xs={12}>
+                                <Typography variant="subtitle1" color="textPrimary">
+                                    {
+                                        title
+                                    }
+                                </Typography>
+                                <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
+                                    <Field type="text" name="name" label="name" required={true} component={FieldSherwood} />
+                                    <div>
+                                        <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
+                                    </div>
+                                    <div style={{paddingTop:"40px"}}>
+                                        <Typography variant="body2" color="textPrimary" component="span"> 
+                                            <Translate id="investigation.create.edc.add_field" />
+                                        </Typography>
+                                        <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
+                                            show={!this.state.addingField}>
+                                        </ButtonAdd>  
+                                    </div>  
+                                    { this.renderFields() }
+                                    <div style={{paddingTop:"40px"}}>
+                                        <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
+                                        <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
+                                            type="button">Cancel</ButtonCancel>
+                                    </div>
+                                </form>   
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
         )
     }   
     
@@ -227,7 +216,7 @@ Section.propTypes = {
     closeNewSection: PropTypes.func.isRequired
 };
 
-export default reduxForm({
+export default withLocalize(reduxForm({
     validate : validate,
     form : 'section'
-})(Section)
+})(Section))

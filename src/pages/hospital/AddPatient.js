@@ -1,0 +1,141 @@
+
+import React, { useEffect, useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Box, Button, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
+import PersonalDataForm from '../../components/investigation/show/single/personal_data';
+import { connect } from 'react-redux';
+import { savePatientAction, updatePatientAction } from '../../redux/actions/patientsActions';
+import { CloseIcon } from '@material-ui/data-grid';
+import Loader from '../../components/Loader';
+import { Translate } from 'react-localize-redux';
+import { BoxBckgr } from '../../components/general/mini_components';
+import { useDispatch } from "react-redux";
+import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
+import { useSnackBarState, useUpdateEffect } from '../../hooks';
+import { Alert } from '@material-ui/lab';
+
+export function AddPatient(props) {
+    let { uuidPatient } = useParams();
+
+    const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
+    return <AddPatientComponent investigations={props.investigations} patient={patient} {...props} />
+}   
+
+export function AddPatientComponent(props) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
+
+    
+    const dispatch = useDispatch();
+
+    function handleClose(){
+        setShowSnackbar({show:false});
+    }
+    useUpdateEffect(() => {
+        if(!props.patients.loading){
+            let messageId = "";
+            let severity = "success";
+            if(props.patient){
+                messageId = "hospital.patient.updated-patient";
+            }
+            else{
+                messageId = "hospital.patient.new-patient";
+            }
+            if(props.patients.error === 2){
+                messageId += "-offline";
+                severity = "warning";
+            }
+            else if(props.patients.error){
+                messageId = "hospital.patient.error";
+                severity = "error";
+            }
+            setShowSnackbar({show:true, severity:severity, message : messageId});
+        }
+        
+    }, [props.patients.loading])
+    async function saveUpdatePatient(patientData){
+        try{
+            setIsLoading(true);
+            
+            if(props.patient){
+                await dispatch( updatePatientAction(props.investigations.currentInvestigation, props.patient.uuid, patientData));
+                
+            }
+            else{
+                await dispatch( savePatientAction(props.investigations.currentInvestigation, patientData));
+                
+            }
+            setIsLoading(false);            
+        }
+        catch(error){
+            setIsLoading(true);
+            setShowSnackbar({show:true, severity:"error", message : "hospital.patient.error"});
+        }
+    }
+    if(props.investigations.loading || isLoading){
+        return <Loader />
+    }
+    return (
+        <BoxBckgr color="text.primary" style={{color:"white"}}>
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+                }}
+                open={showSnackbar.show}
+                autoHideDuration={2000}
+                onClose={handleClose}>
+                    {
+                            showSnackbar.message && 
+                            <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
+                                <Translate id={showSnackbar.message} />
+                            </Alert>
+                        }
+                </Snackbar>
+            
+            <Grid container spacing={3}>
+                <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
+                    {!props.patient &&
+                        <PersonAddSharp style={{fontSize:"2.5rem"}} />
+                    }
+                    {
+                        props.patient &&
+                        <EditOutlined style={{fontSize:"2.5rem"}} />
+                    }
+                    <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
+                    {
+                        !props.patient &&
+                        <Translate id="pages.hospital.add-patient" />
+                    }
+                    {
+                        props.patient &&
+                        <Translate id="pages.hospital.edit-patient" />
+                    }
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper style={{padding:'1rem'}}>
+                        <PersonalDataForm fields={ props.investigations.currentInvestigation.personalFields} hospital={true}
+                            keyResearcherInvestigation={props.investigations.currentInvestigation.keyResearcherInvestigation}
+                            submitText={props.patient ? "general.update" : null}
+                            initialData={props.patient ? props.patient.personalData : null} callBackForm={(personalData) => saveUpdatePatient(personalData)}/>
+                    </Paper>
+                </Grid>
+            </Grid>
+        </BoxBckgr>
+    )
+}
+
+AddPatientComponent.propTypes = {
+    investigations:PropTypes.object
+
+  };
+
+const mapStateToProps = (state) =>{
+    return {
+        investigations : state.investigations,
+        patients:state.patients
+    }
+}
+export default connect(mapStateToProps, null)(AddPatient)
