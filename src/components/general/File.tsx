@@ -9,6 +9,7 @@ import { Check } from 'react-feather';
 import Modal from './modal';
 import LogoSherwood from '../../img/favicon-96x96.png';
 import PDFLogo from '../../img/pdf_icon.svg';
+import { jsPDF } from "jspdf";
 
 enum UPLOAD_STATE{
     NOT_UPLOAD = 0,
@@ -86,7 +87,14 @@ const File:React.FC<Props> = (props) => {
         }
         
     }
-    
+    function downloadPDF(indexPDF:number){
+        console.log("El archivo es el ", indexPDF);
+
+        const doc = new jsPDF();
+        let buf = Buffer.from(filesSelected[indexPDF].buffer);
+        let base64 = buf.toString('base64');
+        window.open('data:application/pdf;base64,' + base64);
+    }
     function renderFileStatus(status:number, index:number){
         switch(status){
             case UPLOAD_STATE.LOADING:
@@ -282,7 +290,7 @@ const File:React.FC<Props> = (props) => {
                             else{
                                 return(
                                     <GridImage item xs={2}>
-                                        <ImageFile src={PDFLogo} alt="pdf" />
+                                        <ImageFile onClick={() => downloadPDF(index)}  src={PDFLogo} alt="pdf" />
                                     </GridImage>
                                 )
                             }

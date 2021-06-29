@@ -38,6 +38,7 @@
     "google-map-react": "2.1.9",
     "jquery": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
+    "jspdf": "^2.3.1",
     "jss": "10.5.0",
     "lodash": "^4.17.21",
     "material-ui-dropzone": "3.5.0",
