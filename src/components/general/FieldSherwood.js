@@ -354,7 +354,7 @@ class FieldSherwood extends Component{
             case "file" : 
                 return <File label={labelString} mode="form"
                             imagesSelected = {(images) => this.imagesSelected(images) }
-                            type={type}{...input} 
+                            type={type} {...input} 
                             value={input.value} />
             case "allergy":
             case "family-background":
@@ -373,8 +373,6 @@ class FieldSherwood extends Component{
                     <TextFieldSherwood {...input} variant="outlined" margin={this.typeMargin}
                         label={labelString} error={errorState} size="small"
                         helperText={errorString} />
-                    
-                        
                 )
         }
     }

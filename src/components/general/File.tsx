@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { Check } from 'react-feather';
 import Modal from './modal';
 import LogoSherwood from '../../img/favicon-96x96.png';
+import PDFLogo from '../../img/pdf_icon.svg';
 
 enum UPLOAD_STATE{
     NOT_UPLOAD = 0,
@@ -17,11 +18,13 @@ enum UPLOAD_STATE{
 }
 
 interface PostFile{
-    file:string, "file-date":Date
+    file:string, 
+    type:string
 }
 interface FileUpload{
     image?:FileList, 
     buffer?:string,
+    type:string,
     status:UPLOAD_STATE, 
     remoteName?:string
 }
@@ -29,7 +32,7 @@ interface Props extends LocalizeContextProps{
     initialState : {listFiles:FileUpload[]},
     label:string,
     mode:string,
-    value:{file:string, "file-date" : string}[],
+    value:{file:string, type : string}[],
     imagesSelected : (images : PostFile[]) => void 
 }
 
@@ -106,12 +109,12 @@ const File:React.FC<Props> = (props) => {
         }
     }
     async function onFileSelected(e:React.ChangeEvent<HTMLInputElement>){
-        if(e !== null && e.target.files !== null){
+        if(e !== null && e.target.files !== null && e.target.files.length > 0){
             const value = e.target.files;
             console.log("File selected");
             let tempFilesSelected = [...filesSelected];
             
-            tempFilesSelected.push({image:value, status:UPLOAD_STATE.LOADING});
+            tempFilesSelected.push({image:value, status:UPLOAD_STATE.LOADING, type:value[0].type});
             console.log(tempFilesSelected);
             setFilesSelected(tempFilesSelected);
             
@@ -159,7 +162,7 @@ const File:React.FC<Props> = (props) => {
                 const file = tempFilesSelected[i];
                 const element:PostFile = {
                     file:file.remoteName as string,
-                    "file-date" : new Date()
+                    type : file.type
                 }
                 remoteNames.push(element);
             }
@@ -210,16 +213,15 @@ const File:React.FC<Props> = (props) => {
     }, [filesSelected]);
     useEffect(() =>{
         async function loadFiles(){
-            if(typeof prevValue === "undefined" && props.value && props.value.length > 0 ){
+            if(props.mode === "show" && typeof prevValue === "undefined" && props.value && props.value.length > 0 ){
                 const tempFiles:FileUpload[] = props.value.map(file => {
                     return {
                         remoteName:file.file,
-                        status:UPLOAD_STATE.LOADING
+                        status:UPLOAD_STATE.LOADING,
+                        type:file.type
                     }
                 })
-                
                 setFilesSelected(tempFiles);
-                
             }
         }
         loadFiles();
@@ -242,25 +244,48 @@ const File:React.FC<Props> = (props) => {
                 {
                     filesSelected.map((file, index) =>{
                         if(file.image){
-                            return(
-                                <GridImage item xs={2}>
-                                    {
-                                        renderFileStatus(file.status, index)
-                                    }
-                                    <OpacityLayer />
-                                    
-                                    <ImageFile src={URL.createObjectURL(file.image[0])} alt="imagen" />
-                                </GridImage>)  
+                            if(file.type === "image/png"){
+                                return(
+                                    <GridImage item xs={2}>
+                                        {
+                                            renderFileStatus(file.status, index)
+                                        }
+                                        <OpacityLayer />
+                                        
+                                        <ImageFile src={URL.createObjectURL(file.image[0])} alt="imagen" />
+                                    </GridImage>) 
+                            }
+                            else{
+                                return(
+                                    <GridImage item xs={2}>
+                                        {
+                                            renderFileStatus(file.status, index)
+                                        }
+                                        <OpacityLayer />
+                                        
+                                        <ImageFile src={PDFLogo} alt="pdf" />
+                                    </GridImage>) 
+                            }
+                             
                         }
                    
                         if(file.buffer){
-                            let buf = Buffer.from(file.buffer);
-                            let base64 = buf.toString('base64');
-                            return(
-                                <GridImage item xs={2}>
-                                    <ImageFile onClick={() => showFullSize(index)} src={`data:image/jpeg;base64, ${base64}`} alt=""/>
-                                </GridImage>
-                            )
+                            if(file.type === "image/png"){
+                                let buf = Buffer.from(file.buffer);
+                                let base64 = buf.toString('base64');
+                                return(
+                                    <GridImage item xs={2}>
+                                        <ImageFile onClick={() => showFullSize(index)} src={`data:image/jpeg;base64, ${base64}`} alt=""/>
+                                    </GridImage>
+                                )
+                            }
+                            else{
+                                return(
+                                    <GridImage item xs={2}>
+                                        <ImageFile src={PDFLogo} alt="pdf" />
+                                    </GridImage>
+                                )
+                            }
                         }
                         else{
                             return(
@@ -280,7 +305,7 @@ const File:React.FC<Props> = (props) => {
                     props.mode === "form" &&
                     
                     <Grid item xs={2}>
-                        <input accept="image/*" id="image" name="image" style={{display:'none'}} 
+                        <input accept="image/*,application/pdf,application/vnd.ms-excel" id="image" name="image" style={{display:'none'}} 
                             type="file" 
                             onChange={(e) => onFileSelected(e)} />
                         <label htmlFor="image">
