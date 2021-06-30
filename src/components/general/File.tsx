@@ -8,8 +8,7 @@ import styled from 'styled-components';
 import { Check } from 'react-feather';
 import Modal from './modal';
 import LogoSherwood from '../../img/favicon-96x96.png';
-import PDFLogo from '../../img/pdf_icon.svg';
-import { jsPDF } from "jspdf";
+import PDFLogo from '../../img/pdf_logo.jpeg';
 
 enum UPLOAD_STATE{
     NOT_UPLOAD = 0,
@@ -69,6 +68,7 @@ const ImageFile = styled.img`
     max-width:100%;
     display:block;
     height:auto;
+    cursor:pointer;
 `;
 const File:React.FC<Props> = (props) => {
     const [filesSelected, setFilesSelected] = useState<FileUpload[]>([]);
@@ -90,10 +90,22 @@ const File:React.FC<Props> = (props) => {
     function downloadPDF(indexPDF:number){
         console.log("El archivo es el ", indexPDF);
 
-        const doc = new jsPDF();
-        let buf = Buffer.from(filesSelected[indexPDF].buffer);
-        let base64 = buf.toString('base64');
-        window.open('data:application/pdf;base64,' + base64);
+        const dataBuffer = filesSelected[indexPDF].buffer;
+        if(dataBuffer){
+            let buf = Buffer.from(dataBuffer);
+        
+            const link = document.createElement('a');
+            // create a blobURI pointing to our Blob
+            const arr = new Uint8Array(buf);
+            const blob = new Blob([arr], { type: 'application/pdf' });
+            link.href = URL.createObjectURL(blob);
+            link.download = filesSelected[indexPDF].remoteName;
+            // some browser needs the anchor to be in the doc
+            document.body.append(link);
+            link.click();
+            link.remove();
+        }
+        
     }
     function renderFileStatus(status:number, index:number){
         switch(status){
