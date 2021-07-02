@@ -120,7 +120,7 @@ function SingleTreatmentSelector(props){
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <DrugSelector drugSelected={(drug) => drugSelected(drug) } country={props.language}
+                <DrugSelector drugSelected={(drug) => drugSelected(drug) } country={props.country}
                     error={errorDrug} variant={props.variant} type="treatment"
                     callbackError={(error) => drugError(error)}/>
             </Grid>

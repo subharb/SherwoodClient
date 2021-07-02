@@ -253,9 +253,7 @@ Image.args = {
 export const ImageWithData = TemplateImage.bind({});
 ImageWithData.args = {
     fields : FIELD_IMAGE, 
-    initialData:{
-        "image" : [{"image" : "blob:http://localhost:6006/21bb71fd-4a8e-4c12-b7e6-0ed4ab1830a3", status : 3}, 
-                    {"image" : "blob:http://localhost:6006/d184ca51-3a1d-4a6a-ba03-b47288c48779", "status" : 0}]
-    },
+    initialData:{file: [{file:"hospitals_1620728497713-256774649", "type" : "image/png"},
+    {file:"hospitals_1620729868307-866470426", "type" : "image/png"}]},
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
