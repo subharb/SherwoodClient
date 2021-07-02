@@ -19,6 +19,7 @@ export interface PropsSmartField {
     typeMargin:PropTypes.Margin | undefined,
     type:string,
     slaves?:object[],
+    country?:string,
     cancel: boolean | (() => void),
     elementSelected: (element:SmartFieldType) => void,
     error:boolean,
@@ -80,6 +81,7 @@ interface Props extends LocalizeContextProps {
     type:string,
     error: boolean,
     mode : string,
+    country:string,
     language?:string,
     initialState:{
         addingElements:boolean,
@@ -164,7 +166,7 @@ const SmartField:React.FC<Props> = (props) => {
     function renderSelector(){
         if(addingElements && props.mode === "form"){
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
-                cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, error:props.error, slaves:props.slaves,
+                cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, country:props.country, error:props.error, slaves:props.slaves,
                 size:"small", elementSelected:(diag:SmartFieldType) => elementSelected(diag)}
                 
             if(props.type === "background"){

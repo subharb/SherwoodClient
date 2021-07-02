@@ -165,7 +165,8 @@ export const FileOuput = Template.bind({});
 FileOuput.args = {
     mode:"show", 
     label:"Radiografias",
-    value : [{file:"hospitals_1625031469023-726690755", "type" : "application/json"},
+    value : [{file:"hospitals_1625034128144-429071031", "type" : "application/json"},
+            {file:"hospitals_1625034137017-300305320", "type" : "image/png"}
             ]
 }
 

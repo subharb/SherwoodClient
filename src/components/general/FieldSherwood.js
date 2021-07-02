@@ -146,7 +146,7 @@ class FieldSherwood extends Component{
         this.props.input.onChange(images);
     }
     render(){
-        const {input, label, meta, type, options, size, removeClass, validation} = this.props;
+        const {input, label, meta, type, options, size, removeClass, validation, country} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -363,7 +363,7 @@ class FieldSherwood extends Component{
             case "treatment" : 
                 return(
                     <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
-                        variant="outlined" margin={this.typeMargin} error={errorState}
+                        variant="outlined" margin={this.typeMargin} error={errorState} country={country}
                         helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
                         size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                 );

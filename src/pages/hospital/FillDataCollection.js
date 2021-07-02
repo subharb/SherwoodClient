@@ -18,6 +18,7 @@ export default function FillDataCollection(props) {
                     <Grid item xs={12}>
                         <Paper elevation={3} style={{padding:"1rem"}} >
                             <SectionForm initData={props.initData} key={props.sectionSelected.uuid} 
+                                country={props.investigation.country}
                                 fields={props.sectionSelected.fields.sort((a,b) => a.order - b.order)} 
                                 callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
                         </Paper>

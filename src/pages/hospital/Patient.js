@@ -231,7 +231,7 @@ function Patient(props) {
             else{
                 return(
                     <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
-                    patientId={props.patientId} investigation={props.investigation} callBackDataCollection={(values) => saveRecord(values)}/>
+                        patientId={props.patientId} investigation={props.investigations.currentInvestigation} callBackDataCollection={(values) => saveRecord(values)}/>
                 )
             }
             

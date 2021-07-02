@@ -99,7 +99,7 @@ const File:React.FC<Props> = (props) => {
             const arr = new Uint8Array(buf);
             const blob = new Blob([arr], { type: 'application/pdf' });
             link.href = URL.createObjectURL(blob);
-            link.download = filesSelected[indexPDF].remoteName;
+            link.download = filesSelected[indexPDF].remoteName as string;
             // some browser needs the anchor to be in the doc
             document.body.append(link);
             link.click();
