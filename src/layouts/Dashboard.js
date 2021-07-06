@@ -23,6 +23,7 @@ import Loader from '../components/Loader';
 //import { BroadcastChannel } from 'broadcast-channel';
 import { isWidthUp } from "@material-ui/core/withWidth";
 import { LoadingOverlay } from "@material-ui/data-grid";
+import { postErrorSlack } from "../utils";
 
 const drawerWidth = 258;
 
@@ -140,6 +141,7 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
           }, false);
         }
         catch(error){
+          postErrorSlack("", "BroadcastChannel not available", "");
           console.log("BroadcastChannel not available");
         }
         
