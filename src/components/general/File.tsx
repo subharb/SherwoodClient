@@ -19,7 +19,7 @@ enum UPLOAD_STATE{
 
 interface PostFile{
     file:string, 
-    type:string
+    file_type:string
 }
 interface FileUpload{
     image?:FileList, 
@@ -182,7 +182,7 @@ const File:React.FC<Props> = (props) => {
                 const file = tempFilesSelected[i];
                 const element:PostFile = {
                     file:file.remoteName as string,
-                    type : file.type
+                    file_type : file.type
                 }
                 remoteNames.push(element);
             }
