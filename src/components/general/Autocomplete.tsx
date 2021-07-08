@@ -1,8 +1,9 @@
-import { CircularProgress, TextField, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, TextField, Typography } from '@material-ui/core';
 
 import React, { useEffect, useState } from 'react';
-import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
+import { ButtonAccept } from './mini_components';
 
 const ContainerOptions = styled.div`
     position:absolute;
@@ -20,6 +21,7 @@ const Option = styled.div`
 interface Props extends LocalizeContextProps{
     error:boolean,
     country:string,
+    freeSolo:boolean,
     getOptionsResponse:(option:any) => any, 
     remoteSearch:(searchText: string, country: string) => Promise<any>,
     getOptionLabel:(option:{name:string}) => string,
@@ -43,6 +45,13 @@ const AutocompleteSherwood = (props:Props) => {
         props.onValueSelected(options[index]);
         setOptionSelected(true);
     }
+    function saveField(){
+        props.onValueSelected({
+            name : searchTerm,
+            id : ""
+        });
+        setOptionSelected(true);
+    }
     function restart(){
         setSearchterm("");
         setOptions([]);
@@ -52,8 +61,19 @@ const AutocompleteSherwood = (props:Props) => {
         if(loading){
             return <CircularProgress />;
         }
-        else if(options.length === 0 && searchTerm.length > MIN_LENGTH_SEARCH){
-            return "No hay resultados";
+        else if(!optionSelected && (options.length === 0 && searchTerm.length > MIN_LENGTH_SEARCH)){
+   
+            return(
+            <Grid container>
+                <Grid item>
+                    <Typography variant="body2" gutterBottom><Translate id="general.no-results"/></Typography> 
+                    {
+                        props.freeSolo &&
+                        <ButtonAccept onClick={saveField}><Translate id="general.add" /></ButtonAccept>
+                    }
+                </Grid>
+            </Grid>
+            );
         }
         else if(searchTerm.length <= MIN_LENGTH_SEARCH || optionSelected){
             return null;
