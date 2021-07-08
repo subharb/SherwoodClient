@@ -93,6 +93,7 @@
         },
         "ict" : ["Diagnostic", "Diagnostico", "Diagnostic"],
         "treatment" : ["Treatment", "Tratamiento", "Traitement"],
+        "treatment_regular" : ["Regular Treatment", "Tratamiento Regular", "Traitement Regulier"],
         "allergy" : ["Allergy", "Alergía", "Allergie"],
         "background" : ["PMH", "Antecedentes", "Antécédents"],
         "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],     

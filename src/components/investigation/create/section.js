@@ -1,19 +1,14 @@
 import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import { validateField, FIELDS_FORM, isSmartField } from '../../../utils';
-import styled from "styled-components";
 import FieldSherwood from '../../general/FieldSherwood';
-import Table from '../../general/table';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { reduxForm, Field } from 'redux-form';
 import { ButtonAdd, ButtonSave, ButtonCancel  } from '../../general/mini_components';
 import { Grid,
         Typography,
-        DialogTitle, 
-        DialogContent,
-        DialogContentText,
-        Button, TextField,DialogActions, Card, CardContent
+        Card, CardContent
     } from "@material-ui/core";
 import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../general/EnhancedTable';
