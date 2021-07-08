@@ -9,20 +9,19 @@ export default function PatientsTable(props) {
     const rows = props.patients.map(patient => {
         let tempRow = {};
         for(const pField of props.personalFields){
-            let value = patient.personalData[pField.name];
-            if(pField.type === "date"){
-                value = new Date(patient.personalData[pField.name]).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                    }).replace(/\./g, '/');
+            if(patient.personalData){
+                let value = patient.personalData[pField.name];
+                if(pField.type === "date"){
+                    value = new Date(patient.personalData[pField.name]).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                        }).replace(/\./g, '/');
+                }
+                
+                tempRow[pField.name] = value;
             }
-            // else if(pField.name === "name" || pField.name === "surnames"){
-            //     const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", patient.uuid);
-            //     value = <Link to={nextUrl} >{patient.personalData[pField.name]}</Link>
-            // }
             
-            tempRow[pField.name] = value;
         }
         tempRow["id"] = patient.id;
         return(

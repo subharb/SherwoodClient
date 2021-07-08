@@ -27,6 +27,7 @@ import iconImagesGreen from "../../img/icons/images_green.png";
 import iconLabGreen from "../../img/icons/lab_green.png";
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
+import { MEDICAL_ACCESS } from '../../constants';
 
 
 const WhiteTypography = styled(Typography)`
@@ -374,8 +375,8 @@ function Patient(props) {
         return <Loader />
     }
     else{
-        let years = yearsFromDate(patient.personalData.birthdate);
-        let stay = daysFromDate(props.dateIn);
+        let years = patient.personalData ? yearsFromDate(patient.personalData.birthdate) : "Not Available";
+        //let stay = daysFromDate(props.dateIn);
 
         return (
             
@@ -419,13 +420,20 @@ function Patient(props) {
                             </Grid> */}
                             <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}
                                 onClick={props.investigations.currentInvestigation.permissions >= 3 ? editPersonalData : null} >
-                                <IconPatient gender={patient.personalData.sex} />
+                                <IconPatient gender={patient.personalData ? patient.personalData.sex : "undefined"} />
                             </Grid>
                         </Grid>
                         <Grid item container xs={4}>
                             <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>
-                                    {patient.personalData.name} {patient.personalData.surnames}
+                                    {
+                                        patient.personalData &&
+                                        patient.personalData.name+" "+patient.personalData.surnames
+                                    }
+                                    {
+                                        !patient.personalData &&
+                                        "Not available"
+                                    }
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -444,27 +452,30 @@ function Patient(props) {
                                 </Typography>
                             </Grid> */}
                         </Grid>
-                        <Grid item container xs={5}  justify="center" alignItems="center">
-                            <Grid item xs={4}>
-                                <Button data-testid="medical-notes" onClick={() => backToRoot()} >
-                                    <img src={typeSurveys === 0 ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
-                                </Button>
+                        {
+                            props.investigations.currentInvestigation.permissions.includes(MEDICAL_ACCESS) &&
+                            <Grid item container xs={5}  justify="center" alignItems="center">
+                                <Grid item xs={4}>
+                                    <Button data-testid="medical-notes" onClick={() => backToRoot()} >
+                                        <img src={typeSurveys === 0 ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Button data-testid="images" onClick={() => goToTest(1)} >
+                                        <img src={typeSurveys === 1 ? iconImagesGreen : iconImages} alt="Images" height="40" />
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <Button data-testid="lab" onClick={() => goToTest(2)} >
+                                        <img src={typeSurveys === 2 ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <ButtonAdd data-testid="add-record" onClick={addRecord} />
+                                </Grid>
                             </Grid>
-                            <Grid item xs={4}>
-                                <Button data-testid="images" onClick={() => goToTest(1)} >
-                                    <img src={typeSurveys === 1 ? iconImagesGreen : iconImages} alt="Images" height="40" />
-                                </Button>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Button data-testid="lab" onClick={() => goToTest(2)} >
-                                    <img src={typeSurveys === 2 ? iconLabGreen : iconLab} alt="Lab" height="40" />
-                                </Button>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <ButtonAdd data-testid="add-record" onClick={addRecord} />
-                            </Grid>
-                        </Grid>
-                    
+                        }
+                        
                     </Grid>
                     <Grid item xs={12}>
                         {

@@ -285,7 +285,8 @@
                     "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["DOB", "Fecha de nacimiento", "Date de naissance"],
-                    "sex" : ["Sex", "Sexo", "Sex"]
+                    "sex" : ["Sex", "Sexo", "Sex"],
+                    "id" : ["ID", "ID", "ID"]
                 }
             }, 
             "edc" : {

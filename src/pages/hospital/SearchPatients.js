@@ -15,7 +15,13 @@ import { ButtonBack } from '../../components/general/mini_components';
 import { connect } from 'react-redux';
 
 let personalFieldsForm = {};
-
+const ID_FIELD = {
+    name : "id",
+    required: false,
+    type : "text",
+    label : "id",
+    order: 0
+}
 function SearchPatients(props) {
     
     //const [decryptedPatientData, setDecryptedPatientData] = useState([]);//usePatientsData(investigations ? investigations[0] : null, investigations ? investigations[0].patientsPersonalData : []);
@@ -50,26 +56,33 @@ function SearchPatients(props) {
     function searchPatientCallBack(values){
         console.log(values);
         setShowResults(true); 
-        //Filtrar decryptedPatientData con values
-        const filteredPatients = patients.sort((a,b) => b.id - a.id).filter(patient =>{
-            let result = true;
-            for(const keyValue of Object.keys(values)){
-                const value = values[keyValue];
-                const pF = props.investigations.currentInvestigation.personalFields.find(pp => pp.name === keyValue);
-                if(pF.options.length > 0){
-                    if(value !== "" && patient.personalData[keyValue] !== value){
-                        result = false;
+        let filteredPatients = [];
+        if(values.hasOwnProperty("id")){
+            filteredPatients = patients.filter(pat => pat.id === parseInt(values["id"]))
+        }
+        else{
+            //Filtrar decryptedPatientData con values
+            filteredPatients = patients.sort((a,b) => b.id - a.id).filter(patient =>{
+                let result = true;
+                for(const keyValue of Object.keys(values)){
+                    const value = values[keyValue];
+                    const pF = props.investigations.currentInvestigation.personalFields.find(pp => pp.name === keyValue);
+                    if(pF.options.length > 0){
+                        if(value !== "" && patient.personalData[keyValue] !== value){
+                            result = false;
+                        }
                     }
-                }
-                else{
-                    if(value !== "" && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
-                        result = false;
+                    else{
+                        if(value !== "" && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
+                            result = false;
+                        }
                     }
+                    
                 }
-                
-            }
-            return result;
-        });
+                return result;
+            });
+        }
+        
         setFilteredPatients(filteredPatients);
     }
     function renderCore(){
@@ -80,7 +93,7 @@ function SearchPatients(props) {
                             copyField.required = false;
                             personalFieldsForm[personalField.name] = copyField
                         });
-            
+            personalFieldsForm["id"] = ID_FIELD;
             return (
                 <Box>
                     <Paper style={{padding:'1rem'}}>
@@ -106,13 +119,14 @@ function SearchPatients(props) {
                 
             }
             else{
-                
+                let formSearch = [...props.investigations.currentInvestigation.personalFields]
+                formSearch.push(ID_FIELD);
                 return(
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <PatientsTable patients={filteredPatients} 
                                 showPatientCallBack={id => patientSelected(id)} 
-                                personalFields={props.investigations.currentInvestigation.personalFields} />
+                                personalFields={formSearch} />
                         </Grid>
                         <Grid item xs={12}>
                             <ButtonBack onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>
