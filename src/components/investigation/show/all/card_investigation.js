@@ -97,10 +97,15 @@ export default function CardInvestigation({ image, title, description, status, s
                 return(
                 <CardActions>
                     <NavLink to={`/investigation/edit/${uuid}`}>
-                            <Button data-testid="open" size="small" color="secondary">
-                                Edit
-                            </Button>
-                        </NavLink>
+                        <Button data-testid="open" size="small" color="secondary">
+                            Edit
+                        </Button>
+                    </NavLink>
+                    <NavLink to={`/investigation/share/${uuid}`} >
+                        <Button data-testid="share" size="small" color="primary">
+                            Share
+                        </Button>
+                    </NavLink>
                 </CardActions>
                 )
             }
