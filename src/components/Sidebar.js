@@ -333,7 +333,7 @@ const Sidebar = ({ classes, staticContext, location, investigations, ...rest }) 
   if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
     appRoutes = routesHospital;
   }
-  if(investigations.currentInvestigation.shareStatus === 0){
+  if(!investigations.currentInvestigation || investigations.currentInvestigation.shareStatus === 0){
       return null
   }
   return (
