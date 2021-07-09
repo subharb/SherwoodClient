@@ -39,7 +39,7 @@ export interface DrugType{
 }
 export interface AllergyType{
     allergy : string,
-    "drug-id" : string
+    "compo-code" : string
 }
 
 
@@ -57,14 +57,20 @@ export interface FamilyBackgroundType{
 
 export interface TreatmentType{
     "treatment" : string,
-    "drug-id" : string,
+    "drug-code" : string,
     "treatment-posology": string, 
     "treatment-dose": string, 
     "treatment-start" : string, 
     "treatment-finish" : string 
 }
 
-export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType;
+export interface TreatmentRegularType{
+    "treatment_regular" : string,
+    "drug-code" : string,
+    "treatment_regular-posology": string
+}
+
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType ;
 
 export interface Diagnosis{
     ict : string,
@@ -181,7 +187,7 @@ const SmartField:React.FC<Props> = (props) => {
             else if(props.type === "ict"){
                 return <ICTSelectorGeneral {...propsSmartField} />
             }
-            else if(props.type === "treatment"){
+            else if(props.type === "treatment" || props.type === "treatment_regular"){
                 return <SingleTreatmentSelector {...propsSmartField} />
             }
             // return <BackgroundSelector type={props.type} variant="outlined" typeMargin={props.typeMargin} 

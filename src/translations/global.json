@@ -64,17 +64,20 @@
             }
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
-        "posology" : ["Frequency", "Frecuencia", "Fréquence"],
-        "treatment-posology-table" : ["Frequency", "Frecuencia", "Fréquence"],
+        
+        "frecuency" : ["Frequency", "Frecuencia", "Fréquence"],
+        "treatment-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],
+        "treatment_regular-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],
         "dose" : ["Quantity", "Cantidad", "Quantité"],
         "treatment-dose-table" :["Quantity", "Cantidad", "Quantité"],
+        "treatment_regular-dose-table" :["Quantity", "Cantidad", "Quantité"],
         "treatment-start-table" : ["Start date", "F.Inicio", "Date de début"],
         "treatment-finish-table" : ["End date", "Fecha fin", "Date de fin"],
         "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
         "number-elements" : ["Number", "Nombre", "Número"],
         "time-unit" : ["Time", "Tiempo", "Temps"],
-        "treatment-posology-values" : {
+        "treatment-frecuency-values" : {
             "single-dose" : ["Single dose", "Dosis única", "Une seule dose"]
         },
         "time-unit-options" : {
@@ -83,7 +86,7 @@
             "months" : ["months", "meses", "mois"]
         },
         "duration" : ["Duration", "Duración", "Durée"],
-        "posology-options" : {
+        "frecuency-options" : {
             "4h" : ["4 hours", "4 horas", "4 heures"],
             "6h" : ["od", "6 horas", "6 heures"],
             "8h" : ["bd", "8 horas", "8 heures"],
@@ -109,6 +112,7 @@
         "ict-table" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "treatment-table" : ["Drug", "Medicamento", "Médicament"],
+        "treatment_regular-table" : ["Drug", "Medicamento", "Médicament"],
         "allergy-plural" : ["Allergies", "Alergías", "Allergies aux medicam"],
         "allergy-table" : ["Allergies", "Alergías", "Allergies aux medicam"],
         "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents"],

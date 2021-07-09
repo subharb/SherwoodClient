@@ -14,7 +14,7 @@ function Allergy(props: PropsSmartFieldLocalized) {
         setDrug(drug);
         const allergy:AllergyType={
             allergy:drug.name,
-            "drug-id":drug.id
+            "compo-code":drug.id
         }
         props.elementSelected(allergy);
     }  

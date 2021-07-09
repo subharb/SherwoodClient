@@ -14,7 +14,7 @@ const FIELD_TREATMENT = {
         "slaves" : [{
             "required": true,
             "encrypted": false,
-            "name": "drug-id",
+            "name": "drug-code",
             "label": "Start Drug",
             "type": "text",
             "validation" : "notEmpty",
@@ -38,17 +38,17 @@ const FIELD_TREATMENT = {
         {
             "required": true,
             "encrypted": false,
-            "name": "treatment-posology",
-            "label": "Posology",
+            "name": "treatment-frecuency",
+            "label": "frecuency",
             "type": "select",
             options:[
-                {"label" : "hospital.posology-options.4h", "value" : "4h"},
-                {"label": "hospital.posology-options.6h", "value" : "6h"},
-                {"label": "hospital.posology-options.8h", "value" : "8h"},
-                {"label": "hospital.posology-options.12h", "value" : "12h"},
-                {"label": "hospital.posology-options.24h", "value" : "24h"},
-                {"label": "hospital.posology-options.48h", "value" : "48h"},
-                {"label": "hospital.posology-options.week", "value" : "7d"}
+                {"label" : "hospital.frecuency-options.4h", "value" : "4h"},
+                {"label": "hospital.frecuency-options.6h", "value" : "6h"},
+                {"label": "hospital.frecuency-options.8h", "value" : "8h"},
+                {"label": "hospital.frecuency-options.12h", "value" : "12h"},
+                {"label": "hospital.frecuency-options.24h", "value" : "24h"},
+                {"label": "hospital.frecuency-options.48h", "value" : "48h"},
+                {"label": "hospital.frecuency-options.week", "value" : "7d"}
             ],
             "validation" : "notEmpty",
         },
@@ -56,6 +56,56 @@ const FIELD_TREATMENT = {
             "required": true,
             "encrypted": false,
             "name": "treatment-dose",
+            "label": "Dose",
+            "type": "select",
+            options:[
+                {"label" : "hospital.dose-options.1", "value" : "1"},
+                {"label": "hospital.dose-options.3/4", "value" : "3/4"},
+                {"label": "hospital.dose-options.1/2", "value" : "1/2"},
+                {"label": "hospital.dose-options.1/4", "value" : "1/4"},
+            ],
+            "validation" : "notEmpty",
+        }]
+    }
+    
+}
+
+const FIELD_TREATMENT_REGULAR = {
+    "drug":{
+        required : true,
+        type:"treatment_regular",
+        label:"Drug Selector",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "arrayOrFalse",
+        "slaves" : [{
+            "required": true,
+            "encrypted": false,
+            "name": "drug-code",
+            "label": "Start Drug",
+            "type": "text",
+            "validation" : "notEmpty",
+        },
+        {
+            "required": true,
+            "encrypted": false,
+            "name": "treatment_regular-frecuency",
+            "label": "frecuency",
+            "type": "select",
+            options:[
+                {"label" : "hospital.frecuency-options.4h", "value" : "4h"},
+                {"label": "hospital.frecuency-options.6h", "value" : "6h"},
+                {"label": "hospital.frecuency-options.8h", "value" : "8h"},
+                {"label": "hospital.frecuency-options.12h", "value" : "12h"},
+                {"label": "hospital.frecuency-options.24h", "value" : "24h"},
+                {"label": "hospital.frecuency-options.48h", "value" : "48h"},
+                {"label": "hospital.frecuency-options.week", "value" : "7d"}
+            ],
+            "validation" : "notEmpty",
+        },
+        {
+            "required": true,
+            "encrypted": false,
+            "name": "treatment_regular-dose",
             "label": "Dose",
             "type": "select",
             options:[
@@ -98,9 +148,9 @@ const FIELD_ALLERGY = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "drug-id",
+            "name": "compo-code",
             "label": "Code Diagnosis",
-            "type": "drug-id",
+            "type": "compo-code",
             "validation" : "notEmpty",
         }]
     }
@@ -116,7 +166,7 @@ const FIELD_BACKGROUND = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "drug-id",
+            "name": "drug-code",
             "label": "Code Diagnosis",
             "type": "background-code",
             "validation" : "notEmpty",
@@ -134,7 +184,7 @@ const FIELD_FAMILY_BACKGROUND = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "drug-id",
+            "name": "drug-code",
             "label": "Code Diagnosis",
             "type": "family-background-code",
             "validation" : "notEmpty",
@@ -162,7 +212,7 @@ export default {
 };
 
 
-const Template = (args) => <Form {...args}  />
+const Template = (args) => <Form {...args} country="fr" />
 const TemplateICT = (args) => <ICTSelectorGeneral {...args}  />
 const TemplateAllergy = (args) => <Form {...args}  />
 const TemplateBackground = (args) => <Form {...args}  />
@@ -175,6 +225,12 @@ TreatmentEmpty.args = {
     fields:FIELD_TREATMENT, 
     creating : true,
     callBackForm : (values) => console.log("Result",JSON.stringify(values))}
+
+export const TreatmentRegular = Template.bind({});
+TreatmentRegular.args = {
+        fields:FIELD_TREATMENT_REGULAR, 
+        creating : true,
+        callBackForm : (values) => console.log("Result",JSON.stringify(values))}
 
 export const TreatmentRaw = TemplateTreatmentRaw.bind({});
 TreatmentRaw.args = {
@@ -203,7 +259,7 @@ export const TreatmentWithData = Template.bind({});
 TreatmentWithData.args = {
     fields:FIELD_TREATMENT, 
     initialData:{drug:[{treatment:"paracetamol", 
-                        "treatment-posology": "6h", 
+                        "treatment-frecuency": "6h", 
                         "treatment-dose": "1 pill", 
                         "treatment-start":"1111", "treatment-finish":"111"}
                     ]

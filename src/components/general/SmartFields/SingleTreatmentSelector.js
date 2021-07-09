@@ -24,9 +24,9 @@ const MONTHS = "months";
 function SingleTreatmentSelector(props){
     
     const [isCurrent, setIsCurrent] = useState(false);
-    const [posology, setPosology] = useState(null);
+    const [frecuency, setfrecuency] = useState(null);
     const [dose, setDose] = useState(null);
-    const [errorPosology, setErrorPosology] = useState(false);
+    const [errorfrecuency, setErrorfrecuency] = useState(false);
     const [isOneDose, setIsOneDose] = useState(false);
     const [errorDose, setErrorDose] = useState(false);
     const [amount, setAmount] = useState(null);
@@ -44,13 +44,21 @@ function SingleTreatmentSelector(props){
             setErrorDrug(true);
             valid = false;
         }
-        if(!posology){
-            setErrorPosology(true);
+        if(!frecuency){
+            setErrorfrecuency(true);
             valid = false;
         }
         if(!dose){
             setErrorDose(true);
             valid = false;
+        }
+        if(valid && props.type === "treatment_regular"){
+            props.elementSelected({
+                treatment_regular:drug.name,"drug-code" : drug.id, 
+                "treatment_regular-frecuency": frecuency, 
+                "treatment_regular-dose": dose
+            });
+            return;
         }
         if(!isCurrent && (amount === null || !timeUnit)){
             setErrorDuration(true);
@@ -66,8 +74,8 @@ function SingleTreatmentSelector(props){
             }
             
              props.elementSelected({
-                treatment:drug.name,"drug-id" : drug.id, 
-                "treatment-posology": posology, 
+                treatment:drug.name,"drug-code" : drug.id, 
+                "treatment-frecuency": frecuency, 
                 "treatment-dose": dose, 
                 "treatment-start" : startDate, 
                 "treatment-finish" : finishDate, 
@@ -82,9 +90,9 @@ function SingleTreatmentSelector(props){
     function cancel(){
         props.cancel()
     }
-    function posologySelected(posology){
-        setPosology(posology);
-        setErrorPosology(false);
+    function frecuencySelected(frecuency){
+        setfrecuency(frecuency);
+        setErrorfrecuency(false);
     }
     function doseSelected(dose){
         setDose(dose);
@@ -100,7 +108,7 @@ function SingleTreatmentSelector(props){
     function onChangeIsOnce(e){
         console.log(e.target.checked);
         setIsOneDose(e.target.checked);
-        setPosology("single-dose");
+        setfrecuency("single-dose");
         setAmount(0);
         setTimeUnit("days");
     }
@@ -111,8 +119,8 @@ function SingleTreatmentSelector(props){
             </Alert>);
     }
     
-    const selectPosology = props.slaves.find(slave => slave.name === "treatment-posology");
-    const selectDose = props.slaves.find(slave => slave.name === "treatment-dose");
+    const selectfrecuency = props.slaves.find(slave => slave.name.includes("frecuency"));
+    const selectDose = props.slaves.find(slave => slave.name.includes("dose"));
     const isCurrentLabel = props.translate("hospital.chronic");
     const isOneDoseLabel = props.translate("hospital.single-dose");
     const numberElements = [1,2,3,4,5,6,7,8,9,10].map(val => <MenuItem value={val}>{val}</MenuItem>);
@@ -155,60 +163,66 @@ function SingleTreatmentSelector(props){
                     control={<Checkbox checked={isOneDose} onChange={onChangeIsOnce} />}
                     label={isOneDoseLabel}
                 />
-            </Grid>
+            </Grid>  
+            
             <Grid item xs={12}>
                 <Autocomplete
-                    id="posology" disabled={isOneDose}
-                    options={selectPosology.options}
+                    id="frecuency" disabled={isOneDose}
+                    options={selectfrecuency.options}
                     getOptionLabel={(option) => props.translate(option.label)}
                     style={{ width: 300 }}
                     onInputChange={(event, value, reason) => {
-                        posologySelected(value);
+                        frecuencySelected(value);
                     }}
                     onChange={(event, value, reason, details) => {
                         if(value){
-                            posologySelected(value.value);
+                            frecuencySelected(value.value);
                         }
                         else{
-                            posologySelected(null);
+                            frecuencySelected(null);
                         }
                     }}
                     freeSolo
                     renderInput={(params) => <TextField {...params} 
-                        label={selectPosology.label} variant="outlined" helperText={props.translate("general.no-option-match")} 
-                        error={errorPosology} />}
+                        label={selectfrecuency.label} variant="outlined" helperText={props.translate("general.no-option-match")} 
+                        error={errorfrecuency} />}
                     />
             </Grid>
-            <Grid item xs={12}>
-                <FormControlLabel disabled={isOneDose}
-                    control={<Checkbox checked={isCurrent} onChange={onChangeIsCurrent} />}
-                    label={isCurrentLabel}
-                />
-            </Grid>
-            
-            <Grid item xs={12}>
-                <InputLabel id="duration"><Translate id="hospital.duration" /></InputLabel>
-                <FormControl disabled={isOneDose || isCurrent} style={{minWidth: 140}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
-                    <InputLabel id="numberElements"><Translate id="hospital.number-elements" /></InputLabel>
-                    <Select
-                        id="numberElements"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        >
-                        { numberElements }
-                    </Select>
-                </FormControl>
-                <FormControl disabled={isOneDose || isCurrent} style={{minWidth: 150}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
-                    <InputLabel id="timeUnit"><Translate id="hospital.time-unit" /></InputLabel>
-                    <Select
-                        id="timeUnit"
-                        value={timeUnit}
-                        onChange={(e) => setTimeUnit(e.target.value)}
-                        >
-                        { timesArray }
-                    </Select>
-                </FormControl>
-            </Grid>
+            {
+                props.type === "treatment" &&
+                <React.Fragment>
+                    <Grid item xs={12}>
+                        <FormControlLabel disabled={isOneDose}
+                            control={<Checkbox checked={isCurrent} onChange={onChangeIsCurrent} />}
+                            label={isCurrentLabel}
+                        />
+                    </Grid>
+                    
+                    <Grid item xs={12}>
+                        <InputLabel id="duration"><Translate id="hospital.duration" /></InputLabel>
+                        <FormControl disabled={isOneDose || isCurrent} style={{minWidth: 140}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
+                            <InputLabel id="numberElements"><Translate id="hospital.number-elements" /></InputLabel>
+                            <Select
+                                id="numberElements"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                >
+                                { numberElements }
+                            </Select>
+                        </FormControl>
+                        <FormControl disabled={isOneDose || isCurrent} style={{minWidth: 150}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
+                            <InputLabel id="timeUnit"><Translate id="hospital.time-unit" /></InputLabel>
+                            <Select
+                                id="timeUnit"
+                                value={timeUnit}
+                                onChange={(e) => setTimeUnit(e.target.value)}
+                                >
+                                { timesArray }
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </React.Fragment>
+            }
             <Grid item xs={12}>
                 <ButtonAccept onClick={saveDrug}><Translate id="general.add" /></ButtonAccept>
                 <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
