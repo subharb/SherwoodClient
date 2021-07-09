@@ -40,7 +40,6 @@ function AllInvestigations(props){
                     }
                     
                 }
-                //Sería interesante redirigir a la nueva investigación
             }
             else{
                 setError(true);

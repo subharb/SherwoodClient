@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from 'react-redux';
 import styled from "styled-components/macro";
 import { rgba } from "polished";
 import { NavLink, withRouter } from "react-router-dom";
@@ -291,7 +292,7 @@ const SidebarLink = ({ name, to, badge, icon }) => {
   );
 };
 
-const Sidebar = ({ classes, staticContext, location, ...rest }) => {
+const Sidebar = ({ classes, staticContext, location, investigations, ...rest }) => {
   const initOpenRoutes = () => {
     /* Open collapse element that matches current url */
     const pathName = location.pathname;
@@ -331,6 +332,9 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
   let appRoutes = routes;
   if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
     appRoutes = routesHospital;
+  }
+  if(investigations.currentInvestigation.shareStatus === 0){
+      return null
   }
   return (
     <Drawer variant="permanent" {...rest}>
@@ -424,4 +428,13 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
   );
 };
 
-export default withRouter(Sidebar);
+const mapStateToProps = (state) =>{
+  return {
+      investigations : state.investigations,
+      profile : state.profile
+  }
+}
+
+export default withRouter(connect(mapStateToProps, null)(Sidebar))
+
+
