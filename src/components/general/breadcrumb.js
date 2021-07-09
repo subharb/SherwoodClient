@@ -25,7 +25,7 @@ export default function Breadcrumb(props){
                         props.stages.map((stage, index) => {
                             if(index === props.selected){
                                 return(
-                                    <Typography color="primary">
+                                    <Typography style={{color:'#fff'}}>
                                         {stage}
                                     </Typography>
                                 )

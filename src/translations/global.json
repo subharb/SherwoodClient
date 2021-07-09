@@ -31,7 +31,14 @@
         },
         "no-results" : ["No results", "Sin resultados", "Sans results"]
     },
-    
+    "countries" :{
+        "es" : ["Spain", "España", "Espagne"],
+        "ml" : ["Mali", "Malí", "Mali"],
+        "sn" : ["Senegal", "Senegal", "Senegal"],
+        "mx" : ["Mexico", "México", "Mexico"],
+        "bj" : ["Benin", "Benín", "Benin"],
+        "do" : ["Dominican Republic", "República Dominicana", "République Dominicaine"]
+    },
     "hospital" : {
         "doctor" : ["Doctor", "Médico", "Médecin"],
         "data-collection" : ["Form", "Formulario", "Forme"],
@@ -203,7 +210,7 @@
         },
         "researcher" : {
             "personal_info" : {
-                "explanation" : ["Few details to address you appropriately", "Introduzca sus datos para registrarse", "Entrez vos coordonées pour vous inscrire"]
+                "explanation" : ["Personal details", "Datos personales", "Informations personnelles"]
             },
             "contact_info" : {
                 "explanation" : ["We will use this information for contact reasons", "Usaremos esta información para motivos de contacto","Nous utiliserons ces informations pour des raisons de contact"]
@@ -340,6 +347,7 @@
                 "type_number" : ["Number", "Número", "Nombre"],
                 "diagnosis" : ["Diagnosis", "Diagnostico", "Diagnostic"],
                 "treatment" : ["Treatment", "Tratamiento", "Traitement"],
+                "treatment_regular" : ["Regular Treatment", "Tratamiento Regular", "Traitement Regulier"],
                 "allergy" : ["Allergy", "Alergía", "Allergie"],
                 "background" : ["PMH", "Antecedentes", "Antécédents"],
                 "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],                

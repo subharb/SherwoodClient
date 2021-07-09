@@ -156,7 +156,8 @@ class FieldSherwood extends Component{
                 let optionsArray = [];
                 if(typeof this.props.optionsUrl !== "undefined"){
                     optionsArray = this.state.options.map(anOption => {
-                        return <MenuItem value={anOption.value}>{anOption.label}</MenuItem>
+                        const optionString = this.props.translate(`countries.${anOption.label}`).indexOf("Missing translationId:") !== -1 ?  anOption.label : this.props.translate(`countries.${anOption.label}`);
+                        return <MenuItem value={anOption.value}>{optionString}</MenuItem>
                     })
                 }
                 else{
