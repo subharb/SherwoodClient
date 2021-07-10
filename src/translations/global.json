@@ -130,6 +130,7 @@
         "select-allergy" : ["Enter Allergy", "Seleccione Alergía", "Entrer Allergie"],
         "add-ict" : ["Add Diagnosis", "Añadir Diagnóstico", "Ajouter un diagnostic"],
         "add-treatment" : ["Add Treatment", "Añadir Tratamiento", "Ajouter un traitement"],
+        "add-treatment_regular" : ["Add Regular Treatment", "Añadir Tratamiento Regular", "Ajouter un traitement regulier"],
         "add-background" : ["Add Background", "Añadir Antecedente", "Ajouter un antécédent"],
         "add-family-background" : ["Add Family Past Medical History", "Añadir Antecedente Familiar", "Ajouter des antécédents familiaux"],
         "add-allergy" : ["Add Allergy", "Añadir Alergía", "Ajouter une allergie"],
