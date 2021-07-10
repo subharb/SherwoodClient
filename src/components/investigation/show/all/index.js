@@ -154,6 +154,7 @@ function AllInvestigations(props){
                                     answerRequest={inves.shareStatus === 0 ? answerRequest : null}
                                     shareStatus={inves.shareStatus}
                                     hostResearcher={inves.hostResearcher}
+                                    permissions={inves.permissions}
                                     textUrl={<Translate id="investigation.show.view_investigation" />}
                                     />
                             </Grid>

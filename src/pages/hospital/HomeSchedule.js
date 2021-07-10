@@ -31,17 +31,18 @@ function HomeSchedule(props) {
         localStorage.setItem("indexHospital", index);
     }
     function renderCore(){
-        if(!props.investigations.currentInvestigation){
+        if(props.investigations.data.find(inv => inv.shareStatus === 0)){
+            //Pendiente de aprobar
+            return <AllInvestigations application="hospital" typeUser={localStorage.getItem("type")} 
+                initialState={{investigations : props.investigations.data.filter(inv => inv.shareStatus === 0)}}  />
+        }
+        else if(!props.investigations.currentInvestigation){
             return props.investigations.data.map((inv, index) =>{
                 return(
                     <Grid item xs={12} style={{display: 'flex',justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
                         <ButtonGrey onClick={()=>selectHospital(index)} data-testid="select-hospital" >{inv.name}</ButtonGrey>
                     </Grid>) 
             })
-        }
-        else if(props.investigations.currentInvestigation.shareStatus === 0){
-            //Pendiente de aprobar
-            return <AllInvestigations application="hospital" typeUser={localStorage.getItem("type")} investigations={props.investigations}  />
         }
         else{
             return(

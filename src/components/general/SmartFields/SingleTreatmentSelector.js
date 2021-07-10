@@ -158,13 +158,15 @@ function SingleTreatmentSelector(props){
                         error={errorDose} />}
                     />
             </Grid>
-            <Grid item xs={12}>
-                <FormControlLabel 
-                    control={<Checkbox checked={isOneDose} onChange={onChangeIsOnce} />}
-                    label={isOneDoseLabel}
-                />
-            </Grid>  
-            
+            {
+                props.type === "treatment" &&
+                <Grid item xs={12}>
+                    <FormControlLabel 
+                        control={<Checkbox checked={isOneDose} onChange={onChangeIsOnce} />}
+                        label={isOneDoseLabel}
+                    />
+                </Grid>  
+            }
             <Grid item xs={12}>
                 <Autocomplete
                     id="frecuency" disabled={isOneDose}

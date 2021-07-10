@@ -55,7 +55,7 @@ const AvatarGroup = styled(MuiAvatarGroup)`
   margin-left: ${(props) => props.theme.spacing(2)}px;
 `;
 
-export default function CardInvestigation({ image, title, description, status, shareStatus, uuid, hostResearcher, answerRequest, index }) {
+export default function CardInvestigation({ image, title, description, status, shareStatus, uuid, hostResearcher, answerRequest, index, permissions }) {
     const history = useHistory();
     const chip = () => {
         switch(status){
@@ -101,22 +101,29 @@ export default function CardInvestigation({ image, title, description, status, s
                             Edit
                         </Button>
                     </NavLink>
-                    <NavLink to={`/investigation/share/${uuid}`} >
-                        <Button data-testid="share" size="small" color="primary">
-                            Share
-                        </Button>
-                    </NavLink>
+                    {
+                        permissions > 2 &&
+                        <NavLink to={`/investigation/share/${uuid}`} >
+                            <Button data-testid="share" size="small" color="primary">
+                                Share
+                            </Button>
+                        </NavLink>
+                    }
                 </CardActions>
                 )
             }
             else{
                 return(
                     <CardActions>
-                        <NavLink to={`/investigation/share/${uuid}`} >
-                            <Button data-testid="share" size="small" color="primary">
-                                Share
-                            </Button>
-                        </NavLink>
+                        {
+                            permissions > 2 &&
+                            <NavLink to={`/investigation/share/${uuid}`} >
+                                <Button data-testid="share" size="small" color="primary">
+                                    Share
+                                </Button>
+                            </NavLink>
+                        }
+                        
                             <NavLink to={`/investigation/show/${uuid}`}>
                                 <Button data-testid="open" size="small" color="secondary">
                                     Open
