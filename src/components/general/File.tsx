@@ -32,7 +32,7 @@ interface Props extends LocalizeContextProps{
     initialState : {listFiles:FileUpload[]},
     label:string,
     mode:string,
-    value:{file:string, type : string}[],
+    value:{file:string, file_type : string}[],
     imagesSelected : (images : PostFile[]) => void 
 }
 
@@ -238,7 +238,7 @@ const File:React.FC<Props> = (props) => {
                     return {
                         remoteName:file.file,
                         status:UPLOAD_STATE.LOADING,
-                        type:file.type
+                        type:file.file_type
                     }
                 })
                 setFilesSelected(tempFiles);
