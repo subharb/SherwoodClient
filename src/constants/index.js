@@ -60,7 +60,7 @@ export const SUBMISSIONS_PATIENT_RESET_ERROR = "SUBMISSIONS_PATIENT_RESET_ERROR"
 
 export const TREATMENT_TYPE = "treatment"
 export const DIAGNOSIS_TYPE = "ict"
-export const SLAVES_TREATMENT = ["drug-id", "treatment-start", "treatment-finish", "treatment-posology"];
+export const SLAVES_TREATMENT = ["drug-code", "treatment-start", "treatment-finish", "treatment-posology"];
 export const SLAVES_DIAGNOSIS = ["ict-code"];
 
 

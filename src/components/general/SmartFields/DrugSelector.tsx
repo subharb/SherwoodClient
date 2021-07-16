@@ -13,6 +13,7 @@ interface Props extends LocalizeContextProps {
     chemicalComponent?:boolean,
     country:string,
     type:string,
+    freeSolo:boolean,
     variant:"standard" | "filled" | "outlined" | undefined,
     drugSelected:(drug:DrugType) => void,
     callbackError:(error:boolean) => void
@@ -78,6 +79,7 @@ function DrugSelector(props: Props) {
     return(
         <AutocompleteSherwood error={props.error} remoteSearch={props.chemicalComponent ? searchDrugComponentService : searchDrugService} 
             country={props.country} getOptionsResponse={props.chemicalComponent ? (response) => response.drugComposition : (response) => response.drugs}
+            freeSolo = { props.freeSolo}
             onValueSelected={(value) =>drugSelected(value)}
             getOptionLabel={(option) => option.name}/>
     )

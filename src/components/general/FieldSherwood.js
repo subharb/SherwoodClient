@@ -156,7 +156,8 @@ class FieldSherwood extends Component{
                 let optionsArray = [];
                 if(typeof this.props.optionsUrl !== "undefined"){
                     optionsArray = this.state.options.map(anOption => {
-                        return <MenuItem value={anOption.value}>{anOption.label}</MenuItem>
+                        const optionString = this.props.translate(`countries.${anOption.label}`).indexOf("Missing translationId:") !== -1 ?  anOption.label : this.props.translate(`countries.${anOption.label}`);
+                        return <MenuItem value={anOption.value}>{optionString}</MenuItem>
                     })
                 }
                 else{
@@ -361,6 +362,7 @@ class FieldSherwood extends Component{
             case "background":
             case "ict" : 
             case "treatment" : 
+            case "treatment_regular" : 
                 return(
                     <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                         variant="outlined" margin={this.typeMargin} error={errorState} country={country}

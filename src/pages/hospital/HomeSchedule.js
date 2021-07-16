@@ -14,6 +14,7 @@ import {selectInvestigation} from '../../redux/actions/investigationsActions';
 import { useDispatch } from "react-redux";
 import { Translate } from 'react-localize-redux';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
+import AllInvestigations from '../../components/investigation/show/all';
 
 function HomeSchedule(props) {
     const [loading, setLoading] = useState(false);
@@ -30,7 +31,12 @@ function HomeSchedule(props) {
         localStorage.setItem("indexHospital", index);
     }
     function renderCore(){
-        if(!props.investigations.currentInvestigation){
+        if(props.investigations.data.find(inv => inv.shareStatus === 0)){
+            //Pendiente de aprobar
+            return <AllInvestigations application="hospital" typeUser={localStorage.getItem("type")} 
+                initialState={{investigations : props.investigations.data.filter(inv => inv.shareStatus === 0)}}  />
+        }
+        else if(!props.investigations.currentInvestigation){
             return props.investigations.data.map((inv, index) =>{
                 return(
                     <Grid item xs={12} style={{display: 'flex',justifyContent: "center", alignItems: "center", flexDirection: "column"}}>

@@ -96,7 +96,7 @@ const FIELD_ALLERGY = {
         slaves : [{
             "required": true,
             "encrypted": false,
-            "name": "drug-id",
+            "name": "compo-code",
             "label": "Code Diagnosis",
             "type": "drug-id",
             "validation" : "notEmpty",

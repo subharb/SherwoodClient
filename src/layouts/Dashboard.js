@@ -125,13 +125,16 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
             fetchRemoteInvestigations()
         }
         try{
-          const channel = new BroadcastChannel('sw-messages');
-          console.log(channel);
-          channel.addEventListener("message", async (event) => {
+          //const channel = new BroadcastChannel('sw-messages');
+          //console.log(channel);
+          //channel.addEventListener("message", async (event) => {
+            
+            
+          navigator.serviceWorker.addEventListener('message', async event => {
               console.log("Message received", event);
               if(event.data.hasOwnProperty("updatingRecords")){
                   console.log(event.data.updatingRecords);
-                  await dispatch(
+                  await dispatch( 
                       updateLoadingRecords(event.data.updatingRecords)
                   );
                   if(event.data.updatingRecords === false){
@@ -141,7 +144,7 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
           }, false);
         }
         catch(error){
-          postErrorSlack("", "BroadcastChannel not available", "");
+          //postErrorSlack("", "BroadcastChannel not available", "");
           console.log("BroadcastChannel not available");
         }
         

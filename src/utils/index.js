@@ -190,6 +190,7 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.evaluation", "value" : "evaluation"},
                 {"label": "investigation.create.edc.diagnosis", "value" : "ict"},
                 {"label": "investigation.create.edc.treatment", "value" : "treatment"},
+                {"label": "investigation.create.edc.treatment_regular", "value" : "treatment_regular"},
                 {"label": "investigation.create.edc.allergy", "value" : "allergy"},
                 {"label": "investigation.create.edc.background", "value" : "background"},
                 {"label": "investigation.create.edc.files", "value" : "file"},
@@ -524,7 +525,7 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
 }
 
 export function isSmartField(type){
-    return ["ict", "allergy", "background", "family-background", "treatment"].includes(type);
+    return ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular"].includes(type);
 }
 
 export function getIndexedDB(){

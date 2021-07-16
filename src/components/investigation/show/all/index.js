@@ -32,9 +32,14 @@ function AllInvestigations(props){
             if(response.status === 200){
                 setAnswer(true);
                 if(value === 2){
-                    history.push("/investigation/show/"+investigations[index].uuid);
+                    if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
+                        window.location.reload();
+                    }
+                    else{
+                        history.push("/investigation/show/"+investigations[index].uuid);
+                    }
+                    
                 }
-                //Sería interesante redirigir a la nueva investigación
             }
             else{
                 setError(true);
@@ -42,6 +47,7 @@ function AllInvestigations(props){
             setIsLoading(false);
         }
         catch(error){
+            console.log(error);
             setError(true);
             setIsLoading(false);
         }
@@ -73,7 +79,13 @@ function AllInvestigations(props){
     }, [answer])
     
     if(isLoading){
-        return <Loader />
+        return(
+            <Grid container>
+                <Grid item xs={12}>
+                    <Loader />
+                </Grid>
+            </Grid>
+        )
     }
     else if(error){
         return(
@@ -142,6 +154,7 @@ function AllInvestigations(props){
                                     answerRequest={inves.shareStatus === 0 ? answerRequest : null}
                                     shareStatus={inves.shareStatus}
                                     hostResearcher={inves.hostResearcher}
+                                    permissions={inves.permissions}
                                     textUrl={<Translate id="investigation.show.view_investigation" />}
                                     />
                             </Grid>
