@@ -14,6 +14,8 @@ import { useDispatch } from "react-redux";
 import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { Alert } from '@material-ui/lab';
+import { PERSONAL_ACCESS } from '../../constants';
+import { ROUTE_401, ROUTE_404 } from '../../routes';
 
 export function AddPatient(props) {
     let { uuidPatient } = useParams();
@@ -26,7 +28,7 @@ export function AddPatientComponent(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
 
-    
+    const history = useHistory();
     const dispatch = useDispatch();
 
     function handleClose(){
@@ -74,6 +76,10 @@ export function AddPatientComponent(props) {
         }
     }
     if(props.investigations.loading || isLoading){
+        return <Loader />
+    }
+    else if(!props.investigations.currentInvestigation.permissions.includes(PERSONAL_ACCESS)){
+        history.push(ROUTE_401);
         return <Loader />
     }
     return (

@@ -19,11 +19,13 @@ import {
   Sliders,
   Users,
 } from "react-feather";
-import { Home as HomeIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon, Image as ImageIcon } from "@material-ui/icons";
+import { Home as HomeIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon, Image as ImageIcon} from "@material-ui/icons";
+
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
 import SignUp from "../pages/auth/SignUp";
 import ResetPassword from "../pages/auth/ResetPassword";
+import Page401 from "../pages/auth/Page401";
 import Page404 from "../pages/auth/Page404";
 import Page500 from "../pages/auth/Page500";
 import {Translate} from 'react-localize-redux';
@@ -71,6 +73,8 @@ import Patient from "../pages/hospital/Patient";
 import SearchPatients from "../pages/hospital/SearchPatients";
 import TestsHome from "../pages/hospital/TestsHome";
 import AddPatient from "../pages/hospital/AddPatient";
+import Analytics from "../pages/hospital/Analytics";
+import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS } from "../constants";
 
 
 export const ROOT_ROUTE = "/";
@@ -98,7 +102,9 @@ export const HOSPITAL_PATIENT_EDIT_PERSONAL_DATA = "/patient/:uuidPatient/edit/p
 export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note/:idMedicalNote";
 export const HOSPITAL_PATIENT_TESTS = "/patient/:uuidPatient/tests/:typeTest";
 export const HOSPITAL_IMAGES = "/images";
+export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_LAB = "/lab";
+export const ROUTE_401 = "/auth/401";
 
 
 
@@ -183,7 +189,17 @@ const hospitalRoutes = {
             path: HOSPITAL_LAB,
             name: "Hospital Lab",
             component: TestsHome
-        }
+        },
+        {
+            path: ROUTE_401,
+            name: "401 Page",
+            component: Page401,
+        },
+        {
+            path: HOSPITAL_ANALYTICS,
+            name: "Analytics",
+            component: Analytics,
+        },
     ],
   };
 
@@ -192,6 +208,7 @@ const dashboardHomeRoutes = {
     path: HOSPITAL_HOME_ROUTE,
     icon: <HomeIcon />,
     badge: "",
+    permissions : [],
     component: {
         path: ROOT_ROUTE,
         name: "Home",
@@ -205,6 +222,7 @@ const dashboardSearchPatientRoutes = {
     path: SEARCH_PATIENT_ROUTE,
     icon: <SearchPatientIcon />,
     badge: "",
+    permissions : [],
     component: {
         path: SEARCH_PATIENT_ROUTE,
         name: "Search Patient",
@@ -219,6 +237,7 @@ const dashboardImagesRoutes = {
     path: HOSPITAL_IMAGES,
     icon: <ImageIcon />,
     badge: "",
+    permissions : [MEDICAL_READ],
     component: {
         path: HOSPITAL_IMAGES,
         name: "Images",
@@ -232,6 +251,7 @@ const dashboardLabRoutes = {
     path: HOSPITAL_LAB,
     icon: <SearchPatientIcon />,
     badge: "",
+    permissions : [MEDICAL_READ],
     component: {
         path: HOSPITAL_LAB,
         name: "Laboratory",
@@ -245,10 +265,25 @@ const dashboardAddPatientRoutes = {
     path: ADD_PATIENT_ROUTE,
     icon: <AddPatientIcon />,
     badge: "",
+    permissions : [PERSONAL_ACCESS],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "Add Patient",
         component: AddPatient
+    },
+    children: null
+}
+
+const dashboardAnalyticsRoutes = {
+    id: <Translate id="pages.hospital.analytics" />,
+    path: HOSPITAL_ANALYTICS,
+    icon: <SearchPatientIcon />,
+    badge: "",
+    permissions : [BUSINESS_READ],
+    component: {
+        path: ADD_PATIENT_ROUTE,
+        name: "Analytics",
+        component: Analytics
     },
     children: null
 }
@@ -466,6 +501,11 @@ const authRoutes = {
       name: "404 Page",
       component: Page404,
     },
+    {
+        path: "/auth/401",
+        name: "401 Page",
+        component: Page401,
+      },
     {
       path: "/auth/500",
       name: "500 Page",
@@ -810,5 +850,6 @@ export const sidebarRoutesHospital = [
     dashboardSearchPatientRoutes,
     dashboardAddPatientRoutes,
     dashboardImagesRoutes,
-    dashboardLabRoutes
+    dashboardLabRoutes,
+    dashboardAnalyticsRoutes
   ];

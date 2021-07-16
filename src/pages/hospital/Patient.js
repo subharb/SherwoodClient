@@ -16,7 +16,7 @@ import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
-        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_TESTS } from '../../routes';
+        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../routes';
 import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
 import iconNotes from "../../img/icons/history.png";
@@ -27,7 +27,7 @@ import iconImagesGreen from "../../img/icons/images_green.png";
 import iconLabGreen from "../../img/icons/lab_green.png";
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
-import { MEDICAL_ACCESS } from '../../constants';
+import { MEDICAL_ACCESS, MEDICAL_READ, PERSONAL_WRITE } from '../../constants';
 
 
 const WhiteTypography = styled(Typography)`
@@ -453,7 +453,7 @@ function Patient(props) {
                             </Grid> */}
                         </Grid>
                         {
-                            props.investigations.currentInvestigation.permissions.includes(MEDICAL_ACCESS) &&
+                            props.investigations.currentInvestigation.permissions.includes(MEDICAL_READ) &&
                             <Grid item container xs={5}  justify="center" alignItems="center">
                                 <Grid item xs={4}>
                                     <Button data-testid="medical-notes" onClick={() => backToRoot()} >

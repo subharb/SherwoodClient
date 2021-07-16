@@ -179,19 +179,28 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
               <GlobalStyle />
               <Drawer>
                   <Hidden mdUp implementation="js">
-                  <Sidebar
-                      routes={routes}
-                      PaperProps={{ style: { width: drawerWidth } }}
-                      variant="temporary"
-                      open={mobileOpen}
-                      onClose={handleDrawerToggle}
-                  />
+                  {
+                      (investigations.data && investigations.currentInvestigation) &&
+                      <Sidebar
+                        routes={routes}
+                        PaperProps={{ style: { width: drawerWidth } }}
+                        variant="temporary"
+                        investigation={investigations.currentInvestigation}
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                    />    
+                  }
+                  
                   </Hidden>
                   <Hidden smDown implementation="css">
-                  <Sidebar
-                      routes={routes}
-                      PaperProps={{ style: { width: drawerWidth } }}
-                  />
+                  {
+                      (investigations.data && investigations.currentInvestigation) &&
+                      <Sidebar
+                          routes={routes}
+                          investigation={investigations.currentInvestigation}
+                          PaperProps={{ style: { width: drawerWidth } }}
+                      />
+                  }
                   </Hidden>
               </Drawer>
               <AppContent>

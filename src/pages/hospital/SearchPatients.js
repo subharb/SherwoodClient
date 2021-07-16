@@ -6,13 +6,14 @@ import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
 import Form  from '../../components/general/form';
 import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
-import { HOSPITAL_PATIENT } from '../../routes';
+import { HOSPITAL_PATIENT, ROUTE_404 } from '../../routes';
 import Loader from '../../components/Loader';
 import { decryptPatientsData } from '../../utils'; 
 import PatientsTable from '../../components/general/PatientsTable';
 import { Alert } from '@material-ui/lab';
 import { ButtonBack } from '../../components/general/mini_components';
 import { connect } from 'react-redux';
+import { PERSONAL_READ } from '../../constants';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -135,7 +136,8 @@ function SearchPatients(props) {
             }
         }
     }
-    if(!props.patients.data){
+
+    if(!props.investigations.data){
         return <Loader />
     }
     return (

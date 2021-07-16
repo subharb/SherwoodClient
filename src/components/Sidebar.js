@@ -291,7 +291,7 @@ const SidebarLink = ({ name, to, badge, icon }) => {
   );
 };
 
-const Sidebar = ({ classes, staticContext, location, ...rest }) => {
+const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) => {
   const initOpenRoutes = () => {
     /* Open collapse element that matches current url */
     const pathName = location.pathname;
@@ -312,6 +312,50 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
   };
 
   const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
+  const renderCategory = (category, index, openRoutes) => {
+    const hasPermission = investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
+    if(category.permissions.length === 0 || hasPermission)
+    return category.children && category.icon ? (
+      <React.Fragment key={index}>
+        <SidebarCategory
+          isOpen={!openRoutes[index]}
+          isCollapsable={true}
+          name={category.id}
+          icon={category.icon}
+          button={true}
+          onClick={() => toggle(index)}
+        />
+  
+        <Collapse
+          in={openRoutes[index]}
+          timeout="auto"
+          unmountOnExit
+        >
+          {category.children.map((route, index) => (
+            <SidebarLink
+              key={index}
+              name={route.name}
+              to={route.path}
+              icon={route.icon}
+              badge={route.badge}
+            />
+          ))}
+        </Collapse>
+      </React.Fragment>
+    ) : category.icon ? (
+      <SidebarCategory
+        isCollapsable={false}
+        name={category.id}
+        to={category.path}
+        activeClassName="active"
+        component={NavLink}
+        icon={category.icon}
+        exact
+        button
+        badge={category.badge}
+      />
+    ) : null
+  }
 
   const toggle = (index) => {
     // Collapse all elements
@@ -349,47 +393,8 @@ const Sidebar = ({ classes, staticContext, location, ...rest }) => {
                 {category.header ? (
                   <SidebarSection>{category.header}</SidebarSection>
                 ) : null}
-
-                {category.children && category.icon ? (
-                  <React.Fragment key={index}>
-                    <SidebarCategory
-                      isOpen={!openRoutes[index]}
-                      isCollapsable={true}
-                      name={category.id}
-                      icon={category.icon}
-                      button={true}
-                      onClick={() => toggle(index)}
-                    />
-
-                    <Collapse
-                      in={openRoutes[index]}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      {category.children.map((route, index) => (
-                        <SidebarLink
-                          key={index}
-                          name={route.name}
-                          to={route.path}
-                          icon={route.icon}
-                          badge={route.badge}
-                        />
-                      ))}
-                    </Collapse>
-                  </React.Fragment>
-                ) : category.icon ? (
-                  <SidebarCategory
-                    isCollapsable={false}
-                    name={category.id}
-                    to={category.path}
-                    activeClassName="active"
-                    component={NavLink}
-                    icon={category.icon}
-                    exact
-                    button
-                    badge={category.badge}
-                  />
-                ) : null}
+                
+                { renderCategory(category, index, openRoutes)}
               </React.Fragment>
             ))}
           </Items>

@@ -158,6 +158,7 @@
                 "title" : ["Images requests", "Petición de imagen", "Demandes d'imagerie"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
+            "analytics" : ["Analytics", "Analytics", "Analytics"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"]
         }
     },

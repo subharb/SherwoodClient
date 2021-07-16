@@ -69,19 +69,18 @@ const RedText = styled.span`
   font-weight: ${(props) => props.theme.typography.fontWeightMedium};
 `;
 
-function DoughnutChart({ theme }) {
+const ColourText = styled.span`
+    color: ${(props) => props.color};
+    font-weight: ${(props) => props.theme.typography.fontWeightMedium};
+`;
+
+function DoughnutChart({ theme, title, labels, datasets, table, innerInfo }) {
   const data = {
-    labels: ["Social", "Search Engines", "Direct", "Other"],
-    datasets: [
-      {
-        data: [260, 125, 164],
-        backgroundColor: [theme.palette.secondary.main, red[500], orange[500]],
-        borderWidth: 5,
-        borderColor: theme.palette.background.paper,
-      },
-    ],
+    labels,
+    datasets,
   };
 
+  
   const options = {
     maintainAspectRatio: false,
     legend: {
@@ -98,53 +97,50 @@ function DoughnutChart({ theme }) {
             <MoreVertical />
           </IconButton>
         }
-        title="Source / Medium"
+        title={title}
       />
 
       <CardContent>
         <ChartWrapper>
-          <DoughnutInner variant="h4">
-            <Typography variant="h4">+23%</Typography>
-            <Typography variant="caption">new visitors</Typography>
-          </DoughnutInner>
+          {
+            innerInfo &&
+            <DoughnutInner variant="h4">
+              <Typography variant="h4">{innerInfo.value}</Typography>
+              <Typography variant="caption">{innerInfo.title}</Typography>
+            </DoughnutInner>
+          }
           <Doughnut data={data} options={options} />
         </ChartWrapper>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Source</TableCell>
-              <TableCell align="right">Revenue</TableCell>
-              <TableCell align="right">Value</TableCell>
+              <TableCell>{table.title}</TableCell>
+              {
+                table.columns.map(col => {
+                  return <TableCell align="right">{col}</TableCell>
+                })
+              }
+              <TableCell align="right">Percentage</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                Social
-              </TableCell>
-              <TableCell align="right">260</TableCell>
-              <TableCell align="right">
-                <GreenText>+35%</GreenText>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                Search Engines
-              </TableCell>
-              <TableCell align="right">125</TableCell>
-              <TableCell align="right">
-                <RedText>-12%</RedText>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell component="th" scope="row">
-                Direct
-              </TableCell>
-              <TableCell align="right">164</TableCell>
-              <TableCell align="right">
-                <GreenText>+46%</GreenText>
-              </TableCell>
-            </TableRow>
+            {
+              labels.map((label, index) =>{
+                return (
+                  <TableRow>
+                    <TableCell component="th" scope="row">
+                      { label }
+                    </TableCell>
+                    <TableCell align="right">{datasets[0].data[index]}</TableCell>
+                    <TableCell align="right">
+                      <ColourText color={datasets[0].backgroundColor[index]}>{datasets[0].percents[index]}%</ColourText>
+                    </TableCell>
+                  </TableRow>
+                )
+              })
+            }
+            
+            
           </TableBody>
         </Table>
       </CardContent>
