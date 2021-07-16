@@ -292,7 +292,7 @@ const SidebarLink = ({ name, to, badge, icon }) => {
   );
 };
 
-const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) => {
+const Sidebar = ({ classes, staticContext, location, investigations, ...rest }) => {
   const initOpenRoutes = () => {
     /* Open collapse element that matches current url */
     const pathName = location.pathname;
@@ -314,7 +314,7 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
 
   const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
   const renderCategory = (category, index, openRoutes) => {
-    const hasPermission = investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
+    const hasPermission = investigations.currentInvestigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
     if(category.permissions.length === 0 || hasPermission)
     return category.children && category.icon ? (
       <React.Fragment key={index}>
