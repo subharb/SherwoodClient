@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { connect } from 'react-redux';
 import styled from "styled-components/macro";
 import { rgba } from "polished";
 import { NavLink, withRouter } from "react-router-dom";
@@ -292,7 +291,7 @@ const SidebarLink = ({ name, to, badge, icon }) => {
   );
 };
 
-const Sidebar = ({ classes, staticContext, location, investigations, ...rest }) => {
+const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) => {
   const initOpenRoutes = () => {
     /* Open collapse element that matches current url */
     const pathName = location.pathname;
@@ -314,7 +313,7 @@ const Sidebar = ({ classes, staticContext, location, investigations, ...rest }) 
 
   const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
   const renderCategory = (category, index, openRoutes) => {
-    const hasPermission = investigations.currentInvestigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
+    const hasPermission = investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
     if(category.permissions.length === 0 || hasPermission)
     return category.children && category.icon ? (
       <React.Fragment key={index}>
@@ -377,9 +376,6 @@ const Sidebar = ({ classes, staticContext, location, investigations, ...rest }) 
   if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
     appRoutes = routesHospital;
   }
-  if(process.env.REACT_APP_PRODUCT === "HOSPITAL" && (!investigations.currentInvestigation || investigations.currentInvestigation.shareStatus === 0)){
-      return null
-  }
   return (
     <Drawer variant="permanent" {...rest}>
       <Brand component={NavLink} to="/" button>
@@ -433,13 +429,4 @@ const Sidebar = ({ classes, staticContext, location, investigations, ...rest }) 
   );
 };
 
-const mapStateToProps = (state) =>{
-  return {
-      investigations : state.investigations,
-      profile : state.profile
-  }
-}
-
-export default withRouter(connect(mapStateToProps, null)(Sidebar))
-
-
+export default withRouter(Sidebar);
