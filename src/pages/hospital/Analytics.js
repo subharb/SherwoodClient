@@ -22,12 +22,78 @@ import BarChart from '../dashboards/Analytics/BarChart';
 import DoughnutChart from '../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components/macro";
 import { yearsFromDate } from '../../utils';
-import TrafficTable from '../dashboards/Analytics/TrafficTable';
+import TimeTable from '../dashboards/Analytics/TimeTable';
+import { getStatsFirstMonitoring } from '../../services/sherwoodService';
 
 export function Analytics(props) {
     const history = useHistory();
-    
-    
+    const [startDate, setStartDate] = useState(Date.now() - 2629800000);
+    const [endDate, setEndDate] = useState(Date.now());
+    const [statsFirstMonitoring, setStatsFirstMonitoring] = useState(null);
+
+    function changeDate(value){
+      console.log("Date Changed!", value);
+      let tempStartDate = null;
+      let tempEndDate = null;
+      switch(value){
+        case 0:
+          tempStartDate = new Date();
+          tempStartDate.setHours(0,0,0,0);
+          tempEndDate = new Date();
+          break;
+        case 1:
+          tempStartDate = new Date(Date.now() - 172800000);
+          tempStartDate.setHours(0,0,0,0);
+          tempEndDate = new Date(Date.now() - 86400000);
+          tempEndDate.setHours(0,0,0,0);
+          break;
+        case 2:
+            tempStartDate = new Date(Date.now() - 604800000);
+            tempStartDate.setHours(0,0,0,0);
+            tempEndDate = new Date();
+            break;
+        case 3:
+            tempStartDate = new Date(Date.now() - 2592000000);
+            tempStartDate.setHours(0,0,0,0);
+            tempEndDate = new Date();
+            break;
+        case 4:
+          var date = new Date();
+          tempStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
+          tempStartDate.setHours(0,0,0,0);
+          tempEndDate = new Date();
+          break;
+        case 5:
+          tempStartDate = new Date();
+          tempStartDate.setDate(0); // set to last day of previous month
+          tempStartDate.setDate(1); // set to the first day of that month
+          tempStartDate.setHours(0,0,0,0);
+          tempEndDate = new Date();
+          tempEndDate.setDate(0); // set to last day of previous month
+          tempEndDate.setHours(23,59,59,0);
+          break;    
+        default:
+          console.log("Not defined");
+      }
+      console.log(tempStartDate.getTime());
+      console.log(tempEndDate.getTime());
+      setStartDate(tempStartDate.getTime());
+      setEndDate(tempEndDate.getTime());
+    }
+    useEffect(()=>{
+        async function getStats(){
+          const response = await getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate);
+          const tempStats = response.stats.map(stat => {
+            return [stat.researcher.name+" "+stat.researcher.surnames, stat.firstVisit, stat.monitoringVisit]
+          })
+          setStatsFirstMonitoring(tempStats);
+        }
+        
+        if(props.investigations.currentInvestigation){
+            getStats();
+        }
+    }, [startDate, endDate, props.investigations]);
+
     if(props.investigations.loading){
         return <Loader />
     }
@@ -57,6 +123,8 @@ export function Analytics(props) {
         }
         
     })
+
+   
     return(
         <Grid container spacing={6}>
           {
@@ -80,7 +148,7 @@ export function Analytics(props) {
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                     <DoughnutChart title="Patients Ages" labels={ageGroups.map(groupAge => groupAge[0]+"-"+groupAge[1])}
-                        table={{title:"Patients Ages", columns : ["Age"]}}
+                        table={{title:"Patients Ages", columns : ["Count"]}}
                         
                         
                         datasets={[
@@ -99,7 +167,11 @@ export function Analytics(props) {
           {
             props.investigations.currentInvestigation.permissions.includes(BUSINESS_READ) &&
             <Grid item xs={12} lg={8}>
-              <TrafficTable />
+              <TimeTable title="Doctors view patients" loading={!statsFirstMonitoring}
+                header={["Doctor", "First Visit", "Monitoring visit"]}
+                data={statsFirstMonitoring}
+                actionCallBack={(value) => changeDate(value)}
+              />
             </Grid>
           }
          

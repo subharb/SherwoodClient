@@ -326,3 +326,20 @@ export function resetPassword(credentials) {
       });
   });
 }
+
+
+export function getStatsFirstMonitoring(uuidInvestigation, startDate, endDate) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(process.env.REACT_APP_API_URL+"/hospital/investigation/"+uuidInvestigation+"/startDate/"+startDate+"/endDate/"+endDate+"/firstmonitoring",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }

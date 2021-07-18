@@ -50,7 +50,7 @@ export function usePatientsData(investigation, patientsData){
 
     return {decryptedPatientData:decryptedPatientData, errorEncryption:errorEncryption}
 }
-export function useFechData(name, request){
+export function useFetchData(name, request){
     const [data, setData] = useState([]);
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);

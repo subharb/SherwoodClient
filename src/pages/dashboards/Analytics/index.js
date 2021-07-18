@@ -18,7 +18,7 @@ import BarChart from "./BarChart";
 import DoughnutChart from "./DoughnutChart";
 import LanguagesTable from "./LanguagesTable";
 import Stats from "./Stats";
-import TrafficTable from "./TrafficTable";
+import TimeTable from "./TimeTable";
 import WorldMap from "./WorldMap";
 
 const Divider = styled(MuiDivider)(spacing);
@@ -108,7 +108,7 @@ function Analytics({ theme }) {
           <LanguagesTable />
         </Grid>
         <Grid item xs={12} lg={8}>
-          <TrafficTable />
+          <TimeTable />
         </Grid>
       </Grid>
     </React.Fragment>
