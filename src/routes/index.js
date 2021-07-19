@@ -18,7 +18,9 @@ import {
   PieChart,
   Sliders,
   Users,
+  User,
 } from "react-feather";
+import TimelineIcon from '@material-ui/icons/Timeline';
 import { Home as HomeIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon, Image as ImageIcon} from "@material-ui/icons";
 
 import Profile from "../pages/pages/Profile";
@@ -74,7 +76,8 @@ import SearchPatients from "../pages/hospital/SearchPatients";
 import TestsHome from "../pages/hospital/TestsHome";
 import AddPatient from "../pages/hospital/AddPatient";
 import Analytics from "../pages/hospital/Analytics";
-import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS } from "../constants";
+import UserManagement from "../components/investigation/share";
+import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS, SHARE_RESEARCHERS } from "../constants";
 
 
 export const ROOT_ROUTE = "/";
@@ -103,6 +106,7 @@ export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note
 export const HOSPITAL_PATIENT_TESTS = "/patient/:uuidPatient/tests/:typeTest";
 export const HOSPITAL_IMAGES = "/images";
 export const HOSPITAL_ANALYTICS = "/analytics";
+export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const ROUTE_401 = "/auth/401";
 
@@ -200,6 +204,11 @@ const hospitalRoutes = {
             name: "Analytics",
             component: Analytics,
         },
+        {
+            path: HOSPITAL_USER_MGMT,
+            name: "User Management",
+            component: UserManagement,
+        },
     ],
   };
 
@@ -277,13 +286,27 @@ const dashboardAddPatientRoutes = {
 const dashboardAnalyticsRoutes = {
     id: <Translate id="pages.hospital.analytics" />,
     path: HOSPITAL_ANALYTICS,
-    icon: <SearchPatientIcon />,
+    icon: <TimelineIcon />,
     badge: "",
     permissions : [BUSINESS_READ],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "Analytics",
         component: Analytics
+    },
+    children: null
+}
+
+const dashboardUserMgmtRoutes = {
+    id: <Translate id="pages.hospital.analytics" />,
+    path: HOSPITAL_USER_MGMT,
+    icon: <TimelineIcon />,
+    badge: "",
+    permissions : [SHARE_RESEARCHERS],
+    component: {
+        path: ADD_PATIENT_ROUTE,
+        name: "User Mgmt",
+        component: UserManagement
     },
     children: null
 }
@@ -851,5 +874,6 @@ export const sidebarRoutesHospital = [
     dashboardAddPatientRoutes,
     dashboardImagesRoutes,
     dashboardLabRoutes,
-    dashboardAnalyticsRoutes
+    dashboardAnalyticsRoutes,
+    dashboardUserMgmtRoutes
   ];

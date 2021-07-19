@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SIGN_IN_ROUTE } from '../../../routes';
+import { connect } from 'react-redux';
 import { Card, CardContent, 
         Typography, Grid, Box, Chip } from '@material-ui/core';
 import { Alert } from "@material-ui/lab";
@@ -70,13 +71,13 @@ const StatusChip = withLocalize((props) => {
 })
 
 function ShareInvestigation(props) {
-    const [isLoadingInvestigation, setIsLoadingInvestigation ] = useState(true);
-    const [investigation, setInvestigation] = useState(props.initialState && props.initialState.investigation ? props.initialState.investigation : null);
+    
+    const investigation = props.investigations.data && props.investigations.currentInvestigation ? props.investigations.currentInvestigation : null;
     const [error, setError] = useState(null);
     const [ addingResearcher, setAddingResearcher ] = useState(false);
     const [ newResearchers, setNewResearchers ] = useState(props.initialState && props.initialState.newResearchers ? props.initialState.newResearchers : []);
     const [showSendModal, setShowSendModal] = useState(false);
-    const [ sharedResearchers, setSharedResearchers] = useState(props.initialState && props.initialState.investigation ? props.initialState.investigation.sharedResearchers : []);
+    const [ sharedResearchers, setSharedResearchers] = useState([]);
     const [isLoadingShare, setIsLoadingShare] = useState(false);
     const [errorShare, setErrorShare] = useState(false);
     const history = useHistory();
@@ -120,6 +121,11 @@ function ShareInvestigation(props) {
         setIsLoadingShare(false);
     }
 
+    useEffect(()=>{
+        if(props.investigations.data && props.investigations.currentInvestigation.sharedResearchers){
+            setSharedResearchers(props.investigations.currentInvestigation.sharedResearchers);
+        }
+    }, [props.investigations])
     
     function renderNewResearchers(){
         if(newResearchers.length === 0){
@@ -220,35 +226,35 @@ function ShareInvestigation(props) {
     function editResearcher(index){
 
     }
-    useEffect(() => {
-        async function fetchInvestigation(uuid){
-            setIsLoadingInvestigation(true);
-            const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/'+uuid, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-            if(request.status === 200){
-                setSharedResearchers(request.data.investigation.sharedResearchers);
-                setInvestigation(request.data.investigation);
-            }
-            else if(request.status === 401){
-                this.props.history.push({
-                    pathname: SIGN_IN_ROUTE,
-                    state: { 
-                        from: this.props.location.pathname
-                    }
-                })
+    // useEffect(() => {
+    //     async function fetchInvestigation(uuid){
+    //         setIsLoadingInvestigation(true);
+    //         const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/'+uuid, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+    //         if(request.status === 200){
+    //             setSharedResearchers(request.data.investigation.sharedResearchers);
+    //             setInvestigation(request.data.investigation);
+    //         }
+    //         else if(request.status === 401){
+    //             props.history.push({
+    //                 pathname: SIGN_IN_ROUTE,
+    //                 state: { 
+    //                     from: props.location.pathname
+    //                 }
+    //             })
                 
-            }
-            setIsLoadingInvestigation(false);
-        }
-        if(investigation === null){
-            fetchInvestigation(props.uuid);
-        }
-        else{
-            setIsLoadingInvestigation(false);
-        }
+    //         }
+    //         setIsLoadingInvestigation(false);
+    //     }
+    //     if(investigation === null){
+    //         fetchInvestigation(props.uuid);
+    //     }
+    //     else{
+    //         setIsLoadingInvestigation(false);
+    //     }
         
-    }, [])
+    // }, [])
 
-    if(isLoadingInvestigation || isLoadingShare){
+    if(props.investigations.loading || isLoadingShare){
         return <Loader />
     }
     else if(error || errorShare){
@@ -298,4 +304,13 @@ function ShareInvestigation(props) {
         </React.Fragment>
     )
 }
-export default withLocalize(ShareInvestigation);
+
+
+
+const mapStateToProps = (state) =>{
+    return {
+        investigations : state.investigations
+    }
+}
+
+export default withLocalize(connect(mapStateToProps, null)(ShareInvestigation))
