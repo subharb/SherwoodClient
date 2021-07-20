@@ -150,7 +150,7 @@ class FieldSherwood extends Component{
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
-        const labelString = label.hasOwnProperty("url") ? <a href={label.url} >{this.props.translate(label.label)}</a> : this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
+        const labelString = label.hasOwnProperty("url") ? <a target="_blank" without rel="noreferrer" href={label.url} >{this.props.translate(label.label)}</a> : this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
                 let optionsArray = [];

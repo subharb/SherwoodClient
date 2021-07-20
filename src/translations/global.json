@@ -57,6 +57,18 @@
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
         },
+        "analytics" : {
+            "graphs" : {
+                "sex" : {
+                    "title" : ["Sex", "Sexo", "Sex"],
+                    "table-title" : ["Sex", "Sexo", "Sex"]
+                },
+                "age" : {
+                    "title" : ["Age", "Edad", "Âge"],
+                    "table-title" : ["Age(years)", "Edad(años)", "Âge(ans)"]
+                }
+            }
+        },
         "notification": {
             "offline" : {
                 "patient" : ["Add patient pending", "Agregar paciente pendiente", "Add patient pending"],
@@ -213,7 +225,8 @@
             },
             "key_generation" : {
                 "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
-            }
+            },
+            "accept-policy" : ["I accept privacy policy from Sherwood", "Acepto la política de privacidad de Sherwood", "J'accepte la politique de confidentialité de Sherwood"]
         },
         "researcher" : {
             "personal_info" : {
@@ -465,6 +478,7 @@
             },
             "roles" : {
                 "MEDICAL_DIRECTOR" : ["Medical Director", "Director Médico", "Medical Director"],
+                "STUDENT" : ["Student", "Estudiante", "Étudiant"],
                 "SHERWOOD_STAFF" : ["Sherwood Staff", "Sherwood Staff", "Sherwood Staff"],
                 "DOCTOR" : ["Doctor", "Doctor", "Doctor"],
                 "BUSINESS_MANAGER" : ["Business Manager", "Business Manager", "Business Manager"],

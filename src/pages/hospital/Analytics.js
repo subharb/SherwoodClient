@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { savePatientAction, updatePatientAction } from '../../redux/actions/patientsActions';
 import { CloseIcon } from '@material-ui/data-grid';
 import Loader from '../../components/Loader';
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import { BoxBckgr } from '../../components/general/mini_components';
 import { useDispatch } from "react-redux";
 import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
@@ -132,8 +132,8 @@ export function Analytics(props) {
           <Grid item xs={12}>
               <Grid container spacing={6}>
                 <Grid item xs={12} sm={12} md={6}>
-                    <DoughnutChart title="Patients genre" labels={["Male", "Female"]}
-                        table={{title:"Patients Genre", columns : ["Genre"]}}
+                    <DoughnutChart title={props.translate("hospital.analytics.graphs.sex.title")} labels={["Male", "Female"]}
+                        table={{title:props.translate("hospital.analytics.graphs.sex.table-title"), columns : ["Genre"]}}
                         innerInfo={{title:"Patients", value:props.investigations.currentInvestigation.patientsPersonalData.length}}
                         
                         datasets={[
@@ -189,4 +189,4 @@ const mapStateToProps = (state) =>{
         investigations : state.investigations
     }
 }
-export default withTheme(connect(mapStateToProps, null)(Analytics))
+export default withTheme(withLocalize(connect(mapStateToProps, null)(Analytics)))

@@ -17,12 +17,12 @@ import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
 import { getSharedResearchersService, saveResearcherPermissions } from '../../../services/sherwoodService';
-import { ALL_ROLES, ROLES } from '../../../constants';
+import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { grayscale } from 'polished';
 
 
-const optionsPermissions = Object.keys(ROLES).map(keyRole => {
-    return {"label" : "investigation.share.roles."+keyRole, "value" :ROLES[keyRole]}
+const optionsPermissions = Object.keys(USER_ROLES).map(keyRole => {
+    return {"label" : "investigation.share.roles."+keyRole, "value" :USER_ROLES[keyRole]}
 })
 
 const RESEARCHER_FORM = {
@@ -57,6 +57,9 @@ const PermissionChip = withLocalize((props) => {
     switch(props.value){
         case "MEDICAL_DIRECTOR":
             colour = orange[500];
+            break;
+        case "STUDENT":
+            colour = yellow[900];
             break;
         case "BUSINESS_MANAGER": 
             colour = orange[100];
@@ -127,7 +130,7 @@ function ShareInvestigation(props) {
         while(!roleFound && index < keyRolesArray.length){
             const keyRole = keyRolesArray[index];
             const rolePermissions = ALL_ROLES[keyRole];
-            const containsAll = rolePermissions.every(arr2Item => permissions.includes(arr2Item))
+            const containsAll = rolePermissions.every(arr2Item => permissions.includes(arr2Item)) && (rolePermissions.length === permissions.length)
             
             if(containsAll){
                 return keyRole;
@@ -299,7 +302,7 @@ function ShareInvestigation(props) {
         console.log("confirm to edit", sharedResearchers[index]);
         let valuesForm = {};
         valuesForm["email"] = sharedResearchers[index]["email"];
-        valuesForm["permissions"] = ROLES[permissionsToRole(sharedResearchers[index]["permissions"])];
+        valuesForm["permissions"] = USER_ROLES[permissionsToRole(sharedResearchers[index]["permissions"])];
         console.log(valuesForm);
         setIndexResearcherToEdit(index);
     }
@@ -344,10 +347,10 @@ function ShareInvestigation(props) {
     return (
         <BoxBckgr color="text.primary" style={{color:"white"}}>
             <Helmet title={props.translate("investigation.share.title")} />
-            <Modal key="modal" open={addingResearcher || indexResearcherToEdit} 
+            <Modal key="modal" open={addingResearcher || (indexResearcherToEdit !== false)} 
                 title={props.translate("investigation.share.add_researcher")}>
                     {
-                        indexResearcherToEdit &&
+                        indexResearcherToEdit !== false &&
                         <Form fields={RESEARCHER_FORM} callBackForm={editCallBack}
                             initialData={sharedResearchers[indexResearcherToEdit]} 
                             closeCallBack={() => setIndexResearcherToEdit(false)}/>
