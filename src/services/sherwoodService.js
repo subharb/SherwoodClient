@@ -342,4 +342,38 @@ export function getStatsFirstMonitoring(uuidInvestigation, startDate, endDate) {
           reject(error);
         });
     });
-  }
+}
+
+export function getSharedResearchersService(uuidInvestigation) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/researchers",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+export function saveResearcherPermissions(uuidInvestigation, permissions) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/permissions", permissions, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+

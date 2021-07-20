@@ -8,14 +8,22 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import { decryptData, encryptData, generateKey } from '../../../utils';
 import Loader from '../../Loader';
-import { ButtonAdd, ButtonContinue } from '../../general/mini_components';
+import { BoxBckgr, ButtonAdd, ButtonContinue } from '../../general/mini_components';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { EnhancedTable } from "../../general/EnhancedTable";
 import styled from 'styled-components';
-import { yellow, green, blue, red } from "@material-ui/core/colors";
+import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
+import { getSharedResearchersService, saveResearcherPermissions } from '../../../services/sherwoodService';
+import { ALL_ROLES, ROLES } from '../../../constants';
+import { grayscale } from 'polished';
+
+
+const optionsPermissions = Object.keys(ROLES).map(keyRole => {
+    return {"label" : "investigation.share.roles."+keyRole, "value" :ROLES[keyRole]}
+})
 
 const RESEARCHER_FORM = {
     "email":{
@@ -25,16 +33,14 @@ const RESEARCHER_FORM = {
         shortLabel: "investigation.share.form.email",
         validation : "validEmail"
     },
-    "permission":{
+    "permissions":{
         required : true,
         type:"select",
-        label:"investigation.share.form.permission",
-        shortLabel: "investigation.share.form.permission",
+        label:"investigation.share.form.role",
+        shortLabel: "investigation.share.form.role",
         validation : "notEmpty",
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
-        options:[{"label" : "investigation.share.permissions.read_no_personal_data", "value" : "0"},
-                {"label": "investigation.share.permissions.read_personal_data", "value" : "1"}, 
-                {"label": "investigation.share.permissions.create_personal_data", "value" : "2"}]
+        options:optionsPermissions
     },
 }
 
@@ -47,15 +53,36 @@ const ColourChip = styled(Chip)`
 `;
 
 const PermissionChip = withLocalize((props) => {
-    switch(props.value.toString()){
-        case "0":
-            return <ColourChip size="small" label={props.translate("investigation.share.permissions.read_no_personal_data")} rgbcolor={blue[500]} />
-        case "1": 
-            return <ColourChip size="small" label={props.translate("investigation.share.permissions.read_personal_data")} rgbcolor={yellow[500]} />
+    let colour = null;
+    switch(props.value){
+        case "MEDICAL_DIRECTOR":
+            colour = orange[500];
+            break;
+        case "BUSINESS_MANAGER": 
+            colour = orange[100];
+            break;
+        case "LAB_MANAGER": 
+            colour = orange[900];            
+            break;
+        case "DOCTOR": 
+            colour = blue[900];            
+            break;
+        case "BUSINESS_ASSISTANT": 
+            colour = blue[500];            
+            break;
+        case "LAB_ASSISTANT": 
+            colour = blue[100];            
+            break;
+        case "SHERWOOD_STAFF": 
+            colour = green[500];            
+            break;
+        case "NO_PERMISSIONS": 
+            colour = red[500];            
+            break;
         default:
-            return <ColourChip size="small" label={props.translate("investigation.share.permissions.create_personal_data")} rgbcolor={green[500]} />
+            return <ColourChip size="small" label={props.translate("investigation.share.roles.no-permissions")} rgbcolor={colour} />
     }
-    
+    return <ColourChip size="small" label={props.translate("investigation.share.roles."+props.value)} rgbcolor={colour} />
 })
 
 const StatusChip = withLocalize((props) => {
@@ -80,6 +107,8 @@ function ShareInvestigation(props) {
     const [ sharedResearchers, setSharedResearchers] = useState([]);
     const [isLoadingShare, setIsLoadingShare] = useState(false);
     const [errorShare, setErrorShare] = useState(false);
+    const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
+    const [researcherToDelete, setResearcherToDelete] = useState(false);
     const history = useHistory();
     
     function shareInvestigation(){
@@ -87,6 +116,27 @@ function ShareInvestigation(props) {
     }
     function cancelShare(){
         setShowSendModal(false);
+    }
+    function permissionsToRole(permissions){
+        if(permissions.length === 0){
+            return "NO_PERMISSIONS";
+        }
+        let roleFound = false;
+        const keyRolesArray = Object.keys(ALL_ROLES);
+        let index = 0;
+        while(!roleFound && index < keyRolesArray.length){
+            const keyRole = keyRolesArray[index];
+            const rolePermissions = ALL_ROLES[keyRole];
+            const containsAll = rolePermissions.every(arr2Item => permissions.includes(arr2Item))
+            
+            if(containsAll){
+                return keyRole;
+            }
+            else{
+                index++;
+            }
+        }
+        
     }
     async function sendInvitations(){
         setShowSendModal(false);
@@ -104,11 +154,12 @@ function ShareInvestigation(props) {
             })
      
             const postObject = {listResearchers:researchersWithKeys};
-            const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.uuid+'/share', postObject, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.investigations.currentInvestigation.uuid+'/share', postObject, { headers: {"Authorization" : localStorage.getItem("jwt")} })
             
             if(request.status === 200){
                 console.log("Great");
                 setSharedResearchers(request.data.sharedResearchers);
+                setNewResearchers([]);
             }
             else{
                 setErrorShare(true);
@@ -122,8 +173,14 @@ function ShareInvestigation(props) {
     }
 
     useEffect(()=>{
-        if(props.investigations.data && props.investigations.currentInvestigation.sharedResearchers){
-            setSharedResearchers(props.investigations.currentInvestigation.sharedResearchers);
+        async function getSharedResearchers(uuidInvestigation){
+            setIsLoadingShare(true);
+            const response = await getSharedResearchersService(uuidInvestigation);
+            setSharedResearchers(response.sharedResearchers);
+            setIsLoadingShare(false);
+        }
+        if(props.investigations.data && props.investigations.currentInvestigation){
+            getSharedResearchers(props.investigations.currentInvestigation.uuid);
         }
     }, [props.investigations])
     
@@ -146,14 +203,14 @@ function ShareInvestigation(props) {
                         <Grid item xs={12}>
                             <EnhancedTable titleTable={<Translate id="investigation.share.new_researchers" />}  noSelectable
                                     headCells={Object.keys(RESEARCHER_FORM).map(key => {
-                                        return { id: key, alignment: "right", label: <Translate id={`investigation.share.form.${key}`} />}
+                                        return { id: key, alignment: "left", label: <Translate id={RESEARCHER_FORM[key].label} />}
                                     })}
                                     rows={newResearchers.map(researcher => {
                                         let tempSection = {}
                                         for(const keyField of Object.keys(RESEARCHER_FORM)){
                                             const field = RESEARCHER_FORM[keyField];
                                             if(field.type === "select"){
-                                                tempSection[keyField] = <PermissionChip value={researcher[keyField]} />
+                                                tempSection[keyField] = <PermissionChip value={permissionsToRole(researcher.permissions)}  />
                                             }
                                             else{
                                                 tempSection[keyField] = researcher[keyField];
@@ -193,25 +250,26 @@ function ShareInvestigation(props) {
                         </Box>
         }
         else{
-            const columnsTable = ["name", "status", "permission"];
+            const columnsTable = ["name", "status", "permissions"];
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
     
-            content = <EnhancedTable titleTable={<Translate id="investigation.share.current_researchers" />}  
+            content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
                         headCells={arrayHeader}
-                        rows={sharedResearchers.map(researcher => {
+                        rows={sharedResearchers.map((researcher, idx) => {
                             const name = researcher.name ? researcher.name+" "+researcher.surnames : researcher.email;
 
                             let row = {
+                                    id:idx,
                                     name : name, 
-                                    permission : <PermissionChip value={researcher.permission} />, 
+                                    permissions : <PermissionChip value={permissionsToRole(researcher.permissions)} />, 
                                     status : <StatusChip value={researcher.status}/>
                                 }
                             
                             return row;
                         })}
-                        actions={{"delete" : (index) => deleteResearcher(index), "edit" : (index) => editResearcher(index)}} 
+                        actions={{"edit" : (index) => editAResearcher(index)}} 
         />
         }
         return (
@@ -220,11 +278,30 @@ function ShareInvestigation(props) {
             </Grid>
         )
     }
-    function deleteResearcher(index){
-
+    function deleteAResearcher(index){
+        console.log("confirm to delete", sharedResearchers[index]);
     }
-    function editResearcher(index){
-
+    async function editCallBack(values){
+        console.log("Datos nuevos de researcher", values);
+        const permissions = {"permissions" : [{
+            uuidResearcher : sharedResearchers[indexResearcherToEdit].uuid,
+            role : values["permissions"]
+        }]}
+        setIsLoadingShare(true);
+        const response = await saveResearcherPermissions(props.investigations.currentInvestigation.uuid, permissions);
+        setIsLoadingShare(false);
+        let copySharedResearchers = [...sharedResearchers];
+        copySharedResearchers[indexResearcherToEdit].permissions = response.sharedResearchers[0].permissions;
+        setSharedResearchers(copySharedResearchers);
+        setIndexResearcherToEdit(false);
+    }
+    function editAResearcher(index){
+        console.log("confirm to edit", sharedResearchers[index]);
+        let valuesForm = {};
+        valuesForm["email"] = sharedResearchers[index]["email"];
+        valuesForm["permissions"] = ROLES[permissionsToRole(sharedResearchers[index]["permissions"])];
+        console.log(valuesForm);
+        setIndexResearcherToEdit(index);
     }
     // useEffect(() => {
     //     async function fetchInvestigation(uuid){
@@ -265,12 +342,21 @@ function ShareInvestigation(props) {
         );
     }
     return (
-        <React.Fragment>
+        <BoxBckgr color="text.primary" style={{color:"white"}}>
             <Helmet title={props.translate("investigation.share.title")} />
-            <Modal key="modal" open={addingResearcher} 
+            <Modal key="modal" open={addingResearcher || indexResearcherToEdit} 
                 title={props.translate("investigation.share.add_researcher")}>
-                    <Form fields={RESEARCHER_FORM} callBackForm={addResearcher} 
-                        closeCallBack={() => setAddingResearcher(false)}/>
+                    {
+                        indexResearcherToEdit &&
+                        <Form fields={RESEARCHER_FORM} callBackForm={editCallBack}
+                            initialData={sharedResearchers[indexResearcherToEdit]} 
+                            closeCallBack={() => setIndexResearcherToEdit(false)}/>
+                    }
+                    {
+                        addingResearcher &&
+                        <Form fields={RESEARCHER_FORM} callBackForm={addResearcher} 
+                            closeCallBack={() => setAddingResearcher(false)}/>
+                    }
             </Modal>
             <Grid container spacing={3}>
                 <Grid item  xs={12}>
@@ -301,7 +387,7 @@ function ShareInvestigation(props) {
 
                 </Grid>
             </Grid>
-        </React.Fragment>
+        </BoxBckgr>
     )
 }
 

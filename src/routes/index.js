@@ -21,6 +21,8 @@ import {
   User,
 } from "react-feather";
 import TimelineIcon from '@material-ui/icons/Timeline';
+import FindInPageIcon from '@material-ui/icons/FindInPage';
+import GroupIcon from '@material-ui/icons/Group';
 import { Home as HomeIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon, Image as ImageIcon} from "@material-ui/icons";
 
 import Profile from "../pages/pages/Profile";
@@ -229,7 +231,7 @@ const dashboardHomeRoutes = {
 const dashboardSearchPatientRoutes = {
     id: <Translate id="pages.hospital.search-patient.title" />,
     path: SEARCH_PATIENT_ROUTE,
-    icon: <SearchPatientIcon />,
+    icon: <FindInPageIcon />,
     badge: "",
     permissions : [],
     component: {
@@ -298,9 +300,9 @@ const dashboardAnalyticsRoutes = {
 }
 
 const dashboardUserMgmtRoutes = {
-    id: <Translate id="pages.hospital.analytics" />,
+    id: <Translate id="pages.hospital.user_mgmt" />,
     path: HOSPITAL_USER_MGMT,
-    icon: <TimelineIcon />,
+    icon: <GroupIcon />,
     badge: "",
     permissions : [SHARE_RESEARCHERS],
     component: {

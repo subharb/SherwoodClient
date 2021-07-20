@@ -168,11 +168,12 @@
             },
             "medical-imaging" : {
                 "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
-                "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
+                "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie Medicale"],
                 "title" : ["Images requests", "Petición de imagen", "Demandes d'imagerie"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "analytics" : ["Analytics", "Analytics", "Analytics"],
+            "user_mgmt" : ["User Managment", "Administración de usuarios", "Gestion des utilisateurs"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"]
         }
     },
@@ -453,19 +454,29 @@
             "search" : ["Search", "Buscar", "Rechercher"]
         },
         "share" : {
-            "title" : ["Share my study", "Compartir mi estudio", "Partager mon étude"],
-            "add_researcher" : ["Add investigator", "Añadir investigador", "Ajouter un chercheur"],
-            "researchers" : ["Investigators", "Investigadores", "Chercheurs"],
-            "current_researchers" : ["Investigators granted access to my study", "Investigadores con acceso a mi estudio", "Chercheurs ayant accès à mon étude"],
-            "new_researchers" : ["New Researchers", "Nuevos Investigadores", "Nouveaux chercheurs"],
+            "title" : ["User Managment", "Administración de usuarios", "Gestion des utilisateurs"],
+            "add_researcher" : ["Add user", "Añadir usuario", "Ajouter un utilisateur"],
+            "researchers" : ["Users", "Usuarios", "Utilisateurs"],
+            "current_researchers" : ["Current users", "Usuarios actuales", "Utilisateurs actuels"],
+            "new_researchers" : ["New users", "Nuevos Usuarios", "Nouveaux Utilisateurs"],
             "form" : {
                 "email" : ["Email", "Email", "Email"],
-                "permission" :  ["Permissions", "Permisos", "Autorisations"]
+                "role" :  ["Role", "Rol", "Role"]
+            },
+            "roles" : {
+                "MEDICAL_DIRECTOR" : ["Medical Director", "Director Médico", "Medical Director"],
+                "SHERWOOD_STAFF" : ["Sherwood Staff", "Sherwood Staff", "Sherwood Staff"],
+                "DOCTOR" : ["Doctor", "Doctor", "Doctor"],
+                "BUSINESS_MANAGER" : ["Business Manager", "Business Manager", "Business Manager"],
+                "BUSINESS_ASSISTANT" : ["Business Assistant", "Business Assistant", "Business Assistant"],
+                "LAB_MANAGER" : ["Lab Manager", "Lab Manager", "Lab Manager"],
+                "LAB_ASSISTANT" : ["Lab Assistant", "Lab Assistant", "Lab Assistant"],
+                "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "status" : ["Status", "Status", "Status"],
-                "permission" : ["Permission", "Permisos", "Autorisations"]
+                "permissions" : ["Permissions", "Permisos", "Role"]
             },
             "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],
             "confirm_dialog" : {
