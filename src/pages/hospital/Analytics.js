@@ -132,8 +132,8 @@ export function Analytics(props) {
           <Grid item xs={12}>
               <Grid container spacing={6}>
                 <Grid item xs={12} sm={12} md={6}>
-                    <DoughnutChart title={props.translate("hospital.analytics.graphs.sex.title")} labels={["Male", "Female"]}
-                        table={{title:props.translate("hospital.analytics.graphs.sex.table-title"), columns : ["Genre"]}}
+                    <DoughnutChart title={props.translate("hospital.analytics.graphs.sex.title")} labels={[props.translate("hospital.analytics.graphs.sex.male"), props.translate("hospital.analytics.graphs.sex.female")]}
+                        table={{title:props.translate("hospital.analytics.graphs.sex.table-title"), columns : [props.translate("hospital.analytics.graphs.sex.count")]}}
                         innerInfo={{title:"Patients", value:props.investigations.currentInvestigation.patientsPersonalData.length}}
                         
                         datasets={[

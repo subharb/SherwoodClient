@@ -57,25 +57,31 @@ export const PermissionChip = withLocalize((props) => {
     let colour = null;
     switch(role){
         case "MEDICAL_DIRECTOR":
-            colour = orange[500];
-            break;
-        case "STUDENT":
-            colour = yellow[900];
-            break;
-        case "BUSINESS_MANAGER": 
-            colour = orange[100];
-            break;
-        case "LAB_MANAGER": 
-            colour = orange[900];            
+            colour = orange[900];
             break;
         case "DOCTOR": 
-            colour = blue[900];            
+            colour = orange[700];            
             break;
-        case "BUSINESS_ASSISTANT": 
+        case "STUDENT":
+            colour = orange[500];
+            break;
+        case "NURSE":
+            colour = orange[100];
+            break;
+        case "BUSINESS_MANAGER": 
+            colour = blue[900];
+            break;
+        case "ADMIN": 
             colour = blue[500];            
             break;
+        case "BUSINESS_ASSISTANT": 
+            colour = blue[300];            
+            break;
+        case "LAB_MANAGER": 
+            colour = yellow[900];            
+            break;
         case "LAB_ASSISTANT": 
-            colour = blue[100];            
+            colour = yellow[500];            
             break;
         case "SHERWOOD_STAFF": 
             colour = green[500];            

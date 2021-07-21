@@ -68,7 +68,10 @@
             "graphs" : {
                 "sex" : {
                     "title" : ["Sex", "Sexo", "Sex"],
-                    "table-title" : ["Sex", "Sexo", "Sex"]
+                    "table-title" : ["Sex", "Sexo", "Sex"],
+                    "count" : ["Count", "Cantidad", "Quantité"],
+                    "male" : ["Male", "Masculino", "Homme"],
+                    "female" : ["Female", "Femenino", "Femme"]
                 },
                 "age" : {
                     "title" : ["Age", "Edad", "Âge"],
@@ -76,7 +79,7 @@
                 },
                 "activity" : {
                     "title" : ["Hospital Activity", "Actividad Hospitalaria", "Activité hospitalière"],
-                    "table-title" : ["Doctor", "Médico", "Docteur"],
+                    "table-title" : ["Doctor", "Médico", "Médecin"],
                     "first-visit" : ["First visit", "Primera visita", "Première visite"],
                     "followup-visit" : ["Follow up visit", "Visita de seguimiento", "Visite de suivi"]
                 }
@@ -239,20 +242,20 @@
             "key_generation" : {
                 "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
             },
-            "accept-policy" : ["I accept privacy policy from Sherwood", "Acepto la política de privacidad de Sherwood", "J'accepte la politique de vie privée de Sherwood"]
+            "accept-policy" : ["I agree to Sherwood Science terms of use and privacy statement", "Acepto las condiciones de uso y la declaración de privacidad de Sherwood Science", "J'accepte les conditions d'utilisation et la déclaration de confidentialité de Sherwood Science"]
         },
         "researcher" : {
             "personal_info" : {
-                "explanation" : ["Personal details", "Datos personales", "Informations personnelles"]
+                "explanation" : ["What's your name?", "¿Cuál es tu nombre?", "Quel est votre nom ?"]
             },
             "contact_info" : {
-                "explanation" : ["We will use this information for contact reasons", "Usaremos esta información para motivos de contacto","Nous utiliserons ces informations pour des raisons de contact"]
+                "explanation" : ["What are your contact details?", "¿Cúales son tus datos de contacto?","Quelles sont vos coordonnées ?"]
             },
             "password" : {
-                "explanation" : ["Choose a password that is at least 6 characters long", "Elige una clave de al menos 6 caracteres","Choisissez un mot de passe d'au moons 6 characters"]
+                "explanation" : ["Enter the password you would like to use with your account (must be at least 6 characteres long)", "Introduzca la contraseña que desea utilizar con su cuenta (debe tener al menos 6 caracteres)","Entrez le mot de passe que vous souhaitez utiliser pour votre compte (doit comporter au moins 6 caractères)"]
             },
             "key_generation" : {
-                "explanation" : ["Once you have saved your in a secure place, key please write 'CONFIRM', in the box below", "Una vez haya guardado la clave en un lugar seguro, por favor escriba 'CONFIRMAR' en el recuadro", "Une fois que vous avez stocké la clé dans un endroit sûr, veuillez écrire 'VALIDER' dans la case" ],
+                "explanation" : ["Your personal private key is used to encrypt your patients' personal data. Save it in a safe place and then type 'CONFIRM' in the box below.", "Su clave privada personal se utiliza para cifrar los datos personales de sus pacientes. Guárdela en un lugar seguro y, a continuación, escriba 'CONFIRMAR' en la casilla siguiente.", "Votre clé privée personnelle est utilisée pour crypter les données personnelles de vos patients. Enregistrez-le dans un endroit sûr, puis tapez 'CONFIRMER' dans la case ci-dessous." ],
                 "key" : ["Key", "Clave", "Mot de paste"],
                 "email_error" : ["This email is already in use", "Este email ya se ha usado", "Cet e-mail est déjà utilise"]
             },
@@ -275,7 +278,7 @@
                 "key" : ["Key", "Clave"],
                 "success_title" : ["Success!", "Enhorabuena!", "Felicitations"],
                 "success_text" : ["Check your email to validate your user account and create your own study and data collection forms with privacy as a priority","Revisa tu correo para verificar tu cuenta de usuario y poder crear tu propio estudio y hojas de recolección de datos con la privacidad como prioridad", "Vérifiez votre messagerie pour valider votre compte utilisateur et créez vos propres formulaires d'étude et de collecte de données avec la confidentialité comme priorité"],
-                "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
+                "confirm" : ["CONFIRM", "CONFIRMAR", "CONFIRMER"]
             },
             "success_text" : ["You are only one step ahead to participate in the investigation and grant access to your personal information, deny or see who has accesed it.",
                 "Estás a un paso de participar en la investigación y dar acceso a tus datos personales, denegarlo o ver quien ha accedido a ellos."],
@@ -489,37 +492,39 @@
             "shared-by" : ["You were invited by: ", "Has sido invitado por: ", "Vous avez été invité par: "],
             "form" : {
                 "email" : ["Email", "Email", "Email"],
-                "role" :  ["Role", "Rol", "Role"]
+                "role" :  ["User type", "Tipo", "Type d'utilisateur"]
             },
             "roles" : {
-                "MEDICAL_DIRECTOR" : ["Medical Director", "Director Médico", "Medical Director"],
+                "MEDICAL_DIRECTOR" : ["Medical Director", "Director Médico", "Directeur médical"],
                 "STUDENT" : ["Student", "Estudiante", "Étudiant"],
                 "SHERWOOD_STAFF" : ["Sherwood Staff", "Sherwood Staff", "Sherwood Staff"],
-                "DOCTOR" : ["Doctor", "Doctor", "Doctor"],
-                "BUSINESS_MANAGER" : ["Business Manager", "Business Manager", "Business Manager"],
-                "BUSINESS_ASSISTANT" : ["Business Assistant", "Business Assistant", "Business Assistant"],
-                "LAB_MANAGER" : ["Lab Manager", "Lab Manager", "Lab Manager"],
-                "LAB_ASSISTANT" : ["Lab Assistant", "Lab Assistant", "Lab Assistant"],
+                "DOCTOR" : ["Medical Doctor", "Médico", "Médecin"],
+                "ADMIN" : ["Administrator", "Administrador", "Administrateur"],
+                "NURSE" : ["Nurse", "Enfermería", "Infirmière"],
+                "BUSINESS_MANAGER" : ["Executive director", "Director ejecutivo ", "Directeur général"],
+                "BUSINESS_ASSISTANT" : ["Executive Assistant", "Asistente ejecutivo", "Business Assistant"],
+                "LAB_MANAGER" : ["Lab Manager", "Director de laboratorio", "Directeur de laboratoire"],
+                "LAB_ASSISTANT" : ["Lab technician ", "Técnico laboratorio ", "Technicien de laboratoire"],
                 "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "status" : ["Status", "Status", "Status"],
-                "permissions" : ["Permissions", "Permisos", "Role"]
+                "permissions" : ["User type", "Tipo", "Type d'utilisateur"]
             },
             "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],
             "confirm_dialog" : {
                 "title" : ["Please note", "Atención","Attention"],
-                "description" : ["an email will then be sent to the email addresses entered with an invitation to create a Sherwood user account. Once the invitation has been accepted, users will have access to the data of the hospital or health centre in question. Access to medical and personal data as well as other functionalities will be limited by the type of user profile (this can be changed at a later date).",
+                "description" : ["an email will be sent to the email addresses entered with an invitation to create a Sherwood user account. Once the invitation has been accepted, users will have access to the data of the hospital or health centre. Access to medical and personal data as well as other functionalities will be limited by the type of user profile (this can be changed at a later date).",
                                 "A continuación se enviará un email a las direcciones de correo introducidas con instrucciones para crear una cuenta de usuario en Sherwood. Una vez aceptada la invitación, los usuarios tendrán acceso a los datos del hospital o centro de salud en cuestión. El acceso a datos medicos y personales y otras funcionalidades vendrá delimitado por el tipo de perfil elegido para cada usuario.",
-                                "Un courriel sera alors envoyé aux adresses électroniques saisies avec une invitation à créer un compte utilisateur Sherwood. Une fois l'invitation acceptée, les utilisateurs auront accès aux données de l'hôpital ou du centre de santé en question. L'accès aux données médicales et personnelles ainsi qu'à d'autres fonctionnalités sera limité par le type de profil d'utilisateur (ceci peut être modifié ultérieurement)."
+                                "Un courriel sera envoyé aux adresses électroniques saisies avec une invitation à créer un compte utilisateur Sherwood. Une fois l'invitation acceptée, les utilisateurs auront accès aux données de l'hôpital ou du centre de santé. L'accès aux données médicales et personnelles ainsi qu'à d'autres fonctionnalités sera limité par le type de profil d'utilisateur (ceci peut être modifié ultérieurement)."
 				]
             },
             "error" : {
                 "title" : ["Error", "Error", "Erreur"],
                 "description" : ["An error ocurred, please try again later", "Se ha producido un error, inténtelo de nuevo más tarde", "Une erreur s'est produite, veuillez réessayer plus tard"]
             },
-            "share" : ["Share", "Compartir", "Partager"],
+            "share" : ["Send", "Enviar", "Envoyer"],
             "permissions" : {
                 "read_no_personal_data" : ["Read only medical data", "Solo lectura de datos médicos", "Lire uniquement les données médicales"],
                 "read_personal_data" : ["Read medical and personal data", "Lectura de datos personales y médicos", "Lire des données personnelles et médicales"],
@@ -527,7 +532,7 @@
             },
             "status" : {
                 "pending" : ["Pending", "Pendiente", "En attendant"],
-                "accepted" : ["Accepted", "Aceptada", "Accepté"],
+                "accepted" : ["Active", "Activo", "Active"],
                 "denied" : ["Denied", "Rechazada", "Refusée"]
             },
             "no_researchers_added" : ["You have not added any investigators!", "No has añadido ningún investigador!", "Vous n'avez ajouté aucun enquêteur"]

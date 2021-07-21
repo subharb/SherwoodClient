@@ -27,7 +27,7 @@ import iconImagesGreen from "../../img/icons/images_green.png";
 import iconLabGreen from "../../img/icons/lab_green.png";
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
-import { MEDICAL_ACCESS, MEDICAL_READ, PERSONAL_WRITE } from '../../constants';
+import { MEDICAL_ACCESS, MEDICAL_READ, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../constants';
 
 
 const WhiteTypography = styled(Typography)`
@@ -62,15 +62,17 @@ function Patient(props) {
 
     const isInitialMount = useRef(true);
 
-    const typeSurveys = !parameters.hasOwnProperty("typeTest") ? 0 : parameters["typeTest"] === "images" ? 1 : 2;
-    const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => sur.type === typeSurveys) : [];
+    const typeSurveys = !parameters.hasOwnProperty("typeTest") ? [TYPE_MEDICAL_SURVEY,TYPE_FIRST_VISIT_SURVEY,TYPE_MONITORING_VISIT_SURVEY] : parameters["typeTest"] === "images" ? [TYPE_IMAGE_SURVEY] : [TYPE_LAB_SURVEY];
+    const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typeSurveys.includes(sur.type)) : [];
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     
-    const filteredRecords = surveyRecords ? surveyRecords.filter(rec => rec.typeSurvey === typeSurveys) : [];
+    const filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
+        return typeSurveys.includes(rec.typeSurvey)
+    }) : [];
     const translations = ["patient", "medical-imaging", "laboratory"]; 
 
     function addRecord(){
@@ -78,7 +80,7 @@ function Patient(props) {
             setShowOptions(!showOptions);
         }
         else{
-            const filterType = parameters.typeTest === "images" ? 1 : 2;
+            const filterType = parameters.typeTest === "images" ? TYPE_IMAGE_SURVEY : TYPE_LAB_SURVEY;
             const dataCollection = currentSurveys.find(sur => sur.type === filterType);
 
             const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollection.uuid)
