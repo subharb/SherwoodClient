@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { Helmet } from "react-helmet";
-
+import pathLogo from '../../img/logo_sherwood_web.png';
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { signUp } from "../../redux/actions/authActions";
@@ -30,12 +30,17 @@ const Wrapper = styled(Paper)`
   }
 `;
 
+
 function SignUp(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
   return (
+      <Wrapper>
         <Grid container spacing={1}>
+            <Grid item xs={12} align = "center" justify = "center" alignItems = "center" >
+              <img src={pathLogo} alt="Sherwood Science" height="55" />
+            </Grid>
             <Grid item xs={12}>
                 <Typography variant="h3" gutterBottom display="inline">
                     Sign up!
@@ -46,8 +51,7 @@ function SignUp(props) {
                 <Register typeUser="researcher" {...props} />
             </Grid>
         </Grid>
-            
-        
+      </Wrapper>        
   );
 }
 

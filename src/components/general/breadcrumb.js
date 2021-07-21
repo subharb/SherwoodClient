@@ -20,12 +20,13 @@ export default function Breadcrumb(props){
         const classes = useStyles();
         return (
             <div className={classes.root}>
+                
               <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
                     {
                         props.stages.map((stage, index) => {
                             if(index === props.selected){
                                 return(
-                                    <Typography style={{color:'#fff'}}>
+                                    <Typography style={{fontWeight:'bold', color:'#49CEBF'}}>
                                         {stage}
                                     </Typography>
                                 )

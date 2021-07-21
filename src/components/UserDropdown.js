@@ -40,6 +40,7 @@ function UserDropdown() {
       localStorage.removeItem("jwt");
       localStorage.removeItem("indexHospital");
       history.push("/auth/sign-in");
+      dispatch(signOut());
   };
 
  

@@ -110,11 +110,11 @@ export function Analytics(props) {
           countSex.female++;
         }
     })
-    const ageGroups=[[0,14], [14,24], [24, 54], [54, 64], [64, 1000]];
-    let countAge =[0, 0, 0,0,0];
+    const ageGroups=[[0,10], [11,20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
+    let countAge =[0,0,0,0,0,0,0,0,0,0,0];
     props.investigations.currentInvestigation.patientsPersonalData.forEach(patient =>{
         const patientAge = yearsFromDate(patient.personalData.birthdate);
-        const indexAgeGroup = ageGroups.findIndex(range => range[0]<= patientAge && range[1] > patientAge);
+        const indexAgeGroup = ageGroups.findIndex(range => range[0]<= patientAge && range[1] >= patientAge);
         if(indexAgeGroup > -1){
           countAge[indexAgeGroup]++;
         }
@@ -147,15 +147,15 @@ export function Analytics(props) {
                               ]} />
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
-                    <DoughnutChart title="Patients Ages" labels={ageGroups.map(groupAge => groupAge[0]+"-"+groupAge[1])}
-                        table={{title:"Patients Ages", columns : ["Count"]}}
+                    <DoughnutChart title={props.translate("hospital.analytics.graphs.age.title")} labels={ageGroups.map(groupAge => {if(groupAge[1] === 1000){return ">"+groupAge[0]}else {return groupAge[0]+"-"+groupAge[1]}})}
+                        table={{title:props.translate("hospital.analytics.graphs.age.table-title"), columns : ["Count"]}}
                         
                         
                         datasets={[
                               {
                                 data: countAge,
                                 percents:countAge.map(ageCount => Math.round((ageCount/props.investigations.currentInvestigation.patientsPersonalData.length)*100)),
-                                backgroundColor: [props.theme.palette.secondary.main, red[500], orange[500], yellow[500], blue[500]],
+                                backgroundColor: [props.theme.palette.secondary.main, red[500], orange[500], yellow[500], blue[500], props.theme.palette.secondary.main, red[500], orange[500], yellow[500], blue[500]],
                                 borderWidth: 5,
                                 borderColor: props.theme.palette.background.paper,
                               }
@@ -167,8 +167,8 @@ export function Analytics(props) {
           {
             props.investigations.currentInvestigation.permissions.includes(BUSINESS_READ) &&
             <Grid item xs={12} lg={8}>
-              <TimeTable title="Doctors view patients" loading={!statsFirstMonitoring}
-                header={["Doctor", "First Visit", "Monitoring visit"]}
+              <TimeTable title={props.translate("hospital.analytics.graphs.activity.title")} loading={!statsFirstMonitoring}
+                header={[props.translate("hospital.analytics.graphs.activity.table-title"), props.translate("hospital.analytics.graphs.activity.first-visit"), props.translate("hospital.analytics.graphs.activity.followup-visit")]}
                 data={statsFirstMonitoring}
                 actionCallBack={(value) => changeDate(value)}
               />

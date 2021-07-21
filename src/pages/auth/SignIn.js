@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { signIn } from "../../services/authService";
-import Loader from '../../components/Loader';
+import pathLogo from '../../img/logo_sherwood_web.png';
 
 import {
   Avatar,
@@ -21,6 +21,7 @@ import {
 } from "@material-ui/core";
 import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
+import { Translate } from "react-localize-redux";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -68,18 +69,22 @@ function SignIn() {
                 </React.Fragment>
             ) : (
                 <React.Fragment>
+                    <div style={{textAlign:'center', paddingBottom:'1rem'}}>
+                        <img src={pathLogo} alt="Sherwood Science" height="55" />
+                    </div>
+                    
                     <Typography component="h1" variant="h4" align="center" gutterBottom>
-                        Welcome to Sherwood!
+                        <Translate id="sign-in.title" />
                     </Typography>
                     <Typography component="h2" variant="body1" align="center">
-                        Sign in to your account to continue or 
+                        <Translate id="sign-in.description" />
                         <Button
                             component={Link}
                             to="/auth/sign-up"
                             fullWidth
                             color="primary"
                             >
-                            sign up
+                            <Translate id="sign-in.sign-up" />
                             </Button>
                     </Typography>
                 </React.Fragment>    
@@ -159,7 +164,7 @@ function SignIn() {
                 />
                 <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
-                    label="Remember me"
+                    label={<Translate id="sign-in.remember-me" />}
                 />
                 <Button
                     type="submit"
@@ -169,16 +174,16 @@ function SignIn() {
                     color="primary"
                     disabled={isSubmitting}
                 >
-                Sign in
+                <Translate id="sign-in.sign-in" />
                 </Button>
-                <Button
+                {/* <Button
                     component={Link}
                     to="/auth/reset-password"
                     fullWidth
                     color="primary"
                     >
                     Forgot password
-                </Button>
+                </Button> */}
             </form>
             )}
         </Formik>

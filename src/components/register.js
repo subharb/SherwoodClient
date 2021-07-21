@@ -31,6 +31,11 @@ const SuccessText = styled.div`
     padding:1rem;
 `;
 
+const StepsHolder = styled.div`
+    float: left;
+    padding-top: 0.1rem;
+    padding-right: 1rem;
+`;
 const ImageSuccess = styled.img`
     display: block;
     margin: 0 auto;
@@ -218,7 +223,10 @@ class Register extends Component {
             if(this.sections[this.state.selected] === "key_generation" && this.state.key === null){
                 this.generateKey(); 
             }
-            content = [<ParaKey>{ this.state.key }</ParaKey>, <Form fields={forms[currentSection]} callBackForm={this.saveData} />];
+            content = [
+                <ParaKey>Encription key: { this.state.key }</ParaKey>, 
+                <Form fields={forms[currentSection]} callBackForm={this.saveData} />
+            ];
         }
 
         return ([
@@ -234,7 +242,7 @@ class Register extends Component {
             ,
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return this.props.translate("breadcrumb."+section)})} />    
+                    <StepsHolder>Steps : </StepsHolder><Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return this.props.translate("breadcrumb."+section)})} />    
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="subtitle1" color="textPrimary">
