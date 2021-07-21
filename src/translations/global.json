@@ -169,10 +169,10 @@
         }
     },
     "breadcrumb" : {
-        "password" : ["Password", "Contraseña", "3"],
-        "key_generation": ["Key", "Clave", "4"],
-        "personal_info" : ["Personal Info", "Datos personales", "1"],
-        "contact_info" : ["Contact Info", "Datos de contacto", "2"]
+        "password" : ["3", "3", "3"],
+        "key_generation": ["4", "4", "4"],
+        "personal_info" : ["1", "1", "1"],
+        "contact_info" : ["2", "2", "2"]
     },
     "error" : {
         "not_login" : ["You need to sign in to access this resource", "Para acceder a este recurso necesita iniciar sesión", "Vous devez vous connecter pour accéder à cette ressource"]
@@ -240,8 +240,10 @@
                 "phone" : ["Phone", "Teléfono", "Téléphone"]
             },
             "key_generation" : {
+                "encription_key" : ["Private key: ", "Clave privada", "Clé privée"],
                 "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
             },
+            "create-account" : ["Create account", "Crear cuenta", "Créer un compte"],
             "accept-policy" : ["I agree to Sherwood Science terms of use and privacy statement", "Acepto las condiciones de uso y la declaración de privacidad de Sherwood Science", "J'accepte les conditions d'utilisation et la déclaration de confidentialité de Sherwood Science"]
         },
         "researcher" : {

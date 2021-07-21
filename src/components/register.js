@@ -217,15 +217,20 @@ class Register extends Component {
         let content = null;
         //Si no es key_generation fase
         if(this.sections[this.state.selected] !== "key_generation"){
-            content = <Form fields={forms[currentSection]} callBackForm={this.saveData} />
+            content = <Form fields={forms[currentSection]} 
+                        callBackForm={this.saveData} 
+                        submitText={"investigation.show.accept_consents.continue"} />
         }
         else{
             if(this.sections[this.state.selected] === "key_generation" && this.state.key === null){
                 this.generateKey(); 
             }
             content = [
-                <ParaKey>Encription key: { this.state.key }</ParaKey>, 
-                <Form fields={forms[currentSection]} callBackForm={this.saveData} />
+                <ParaKey><Translate id="register.common.key_generation.encription_key" />: { this.state.key }</ParaKey>, 
+                <Form fields={forms[currentSection]} 
+                    callBackForm={this.saveData}
+                    submitText={"register.common.create-account"} 
+                     />
             ];
         }
 
