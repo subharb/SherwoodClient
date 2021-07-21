@@ -241,22 +241,26 @@
             },
             "key_generation" : {
                 "encription_key" : ["Private key: ", "Clave privada", "Clé privée"],
-                "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
+                "confirm" : ["CONFIRM", "CONFIRMAR", "CONFIRMER"]
             },
             "create-account" : ["Create account", "Crear cuenta", "Créer un compte"],
             "accept-policy" : ["I agree to Sherwood Science terms of use and privacy statement", "Acepto las condiciones de uso y la declaración de privacidad de Sherwood Science", "J'accepte les conditions d'utilisation et la déclaration de confidentialité de Sherwood Science"]
         },
         "researcher" : {
             "personal_info" : {
-                "explanation" : ["What's your name?", "¿Cuál es tu nombre?", "Quel est votre nom ?"]
+                "title" : ["What's your name?", "¿Cuál es tu nombre?", "Quel est votre nom ?"],
+                "explanation" : ["", "",""]
             },
             "contact_info" : {
-                "explanation" : ["What are your contact details?", "¿Cúales son tus datos de contacto?","Quelles sont vos coordonnées ?"]
+                "title" : ["What are your contact details?", "¿Cúales son tus datos de contacto?","Quelles sont vos coordonnées ?"],
+                "explanation" : ["", "",""]
             },
             "password" : {
+                "title" : ["Create a password", "Crea tu contraseña", "Créer un mot de passe"],
                 "explanation" : ["Enter the password you would like to use with your account (must be at least 6 characteres long)", "Introduzca la contraseña que desea utilizar con su cuenta (debe tener al menos 6 caracteres)","Entrez le mot de passe que vous souhaitez utiliser pour votre compte (doit comporter au moins 6 caractères)"]
             },
             "key_generation" : {
+                "title" : ["Save your private key", "Guarda tu clave privada", "Enregistrez votre clé privée"],
                 "explanation" : ["Your personal private key is used to encrypt your patients' personal data. Save it in a safe place and then type 'CONFIRM' in the box below.", "Su clave privada personal se utiliza para cifrar los datos personales de sus pacientes. Guárdela en un lugar seguro y, a continuación, escriba 'CONFIRMAR' en la casilla siguiente.", "Votre clé privée personnelle est utilisée pour crypter les données personnelles de vos patients. Enregistrez-le dans un endroit sûr, puis tapez 'CONFIRMER' dans la case ci-dessous." ],
                 "key" : ["Key", "Clave", "Mot de paste"],
                 "email_error" : ["This email is already in use", "Este email ya se ha usado", "Cet e-mail est déjà utilise"]

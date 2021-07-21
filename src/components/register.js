@@ -250,7 +250,10 @@ class Register extends Component {
                     <StepsHolder>Steps : </StepsHolder><Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return this.props.translate("breadcrumb."+section)})} />    
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="subtitle1" color="textPrimary">
+                    <Typography style={{fontWeight:'900'}} variant="subtitle1" color="textPrimary">
+                        <Translate id={`register.${this.props.typeUser}.${currentSection}.title`} />
+                    </Typography>
+                    <Typography variant="body2" color="textPrimary">
                         <Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} />
                     </Typography>
                 </Grid>

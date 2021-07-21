@@ -334,7 +334,7 @@ class FieldSherwood extends Component{
             case "password":
                 return(
                     <Box mt={1}>
-                        <TextFieldSherwood {...input}  type="password"
+                        <TextFieldSherwood {...input}  type="password" variant="outlined"
                             label={labelString} error={errorState} 
                             helperText={errorString} />
                     </Box>
