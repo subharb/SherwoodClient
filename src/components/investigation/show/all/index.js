@@ -30,7 +30,7 @@ function AllInvestigations(props){
             
             const response = await answerRequestRemote(investigations[index].uuid, value, keyInvestigationResearcher);
             if(response.status === 200){
-                setAnswer(true);
+                
                 if(value === 2){
                     if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
                         window.location.reload();
@@ -40,6 +40,7 @@ function AllInvestigations(props){
                     }
                     
                 }
+                setAnswer(true);
             }
             else{
                 setError(true);

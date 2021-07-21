@@ -35,7 +35,7 @@ import { spacing } from "@material-ui/system";
 
 export const BoxBckgr = styled(Box)`
     background-color:#49CEBF; 
-    height:100vh;
+    min-height:100vh;
 `
 
 export const Divider = styled(MuiDivider)(spacing);

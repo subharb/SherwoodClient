@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components/macro";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import Helmet from "react-helmet";
+import {ColourChip, PermissionChip} from "../../share";
 
 import {
   Avatar, 
@@ -24,6 +24,7 @@ import { AvatarGroup as MuiAvatarGroup } from "@material-ui/lab";
 import { red, green, orange, yellow } from "@material-ui/core/colors";
 
 import { spacing } from "@material-ui/system";
+import { Translate } from "react-localize-redux";
 
 const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
 
@@ -70,7 +71,7 @@ export default function CardInvestigation({ image, title, description, status, s
     }
     const chipStatus = () => {
         if(shareStatus === 0){
-            return <Chip label="Pending" rgbcolor={orange[500]} />
+            return <ColourChip label="Pending" rgbcolor={orange[500]} />
         } 
         else{
             return null;
@@ -146,14 +147,14 @@ export default function CardInvestigation({ image, title, description, status, s
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    {chip()}
-                    {chipStatus()}
+                    Role: <PermissionChip value={permissions} />
+                    
                 </Grid>
                 {
                 shareStatus === 0 && 
                     <Grid item xs={12}>
                         <Typography variant="caption">
-                            Shared with you by: {hostResearcher.name} {hostResearcher.surnames}
+                            <Translate id="investigation.share.shared-by" />{hostResearcher.name} {hostResearcher.surnames}
                         </Typography>
                     </Grid>
                 }

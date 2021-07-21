@@ -482,9 +482,11 @@
         "share" : {
             "title" : ["User Managment", "Administración de usuarios", "Gestion des utilisateurs"],
             "add_researcher" : ["Add user", "Añadir usuario", "Ajouter un utilisateur"],
+            "edit_researcher" : ["Change user", "Modficar usuario", "Modifier un utilisateur"],
             "researchers" : ["Users", "Usuarios", "Utilisateurs"],
             "current_researchers" : ["Current users", "Usuarios actuales", "Utilisateurs actuels"],
             "new_researchers" : ["New users", "Nuevos Usuarios", "Nouveaux Utilisateurs"],
+            "shared-by" : ["You were invited by: ", "Has sido invitado por: ", "Vous avez été invité par: "],
             "form" : {
                 "email" : ["Email", "Email", "Email"],
                 "role" :  ["Role", "Rol", "Role"]
@@ -507,11 +509,11 @@
             },
             "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],
             "confirm_dialog" : {
-                "title" : ["Please confirm", "Por favor confirmar","Veuillez confirmer"],
-                "description" : ["An email will be sent to the following email addresses with instructions on how to create a Sherwood account if they do not have one. Once they have agreed to participate in the study, they will be able to access the research data and perform the actions to which you have given them access. You can edit permissions at any time. Do you wish to continue?",
-                                "Se enviará un correo electrónico a las siguientes direcciones de correo electrónico con instrucciones sobre cómo crear una cuenta de Sherwood si no tienen una. Una vez que hayan aceptado participar en el estudio, podrán acceder a los datos de la investigación y realizar las acciones a las que les hayas dado acceso. Puede editar los permisos en cualquier momento. ¿Desea continuar?",
-
-				"Un e-mail sera envoyé aux adresses e-mail suivantes avec des instructions sur la façon de créer un compte Sherwood s'ils n'en ont pas. Une fois qu'ils auront accepté de participer à l'étude, ils pourront accéder aux données de la recherche et réaliser les actions auxquelles vous leur avez donné accès. Vous pouvez modifier les autorisations à tout moment. Souhaitez-vous continuer?"]
+                "title" : ["Please note", "Atención","Attention"],
+                "description" : ["an email will then be sent to the email addresses entered with an invitation to create a Sherwood user account. Once the invitation has been accepted, users will have access to the data of the hospital or health centre in question. Access to medical and personal data as well as other functionalities will be limited by the type of user profile (this can be changed at a later date).",
+                                "A continuación se enviará un email a las direcciones de correo introducidas con instrucciones para crear una cuenta de usuario en Sherwood. Una vez aceptada la invitación, los usuarios tendrán acceso a los datos del hospital o centro de salud en cuestión. El acceso a datos medicos y personales y otras funcionalidades vendrá delimitado por el tipo de perfil elegido para cada usuario.",
+                                "Un courriel sera alors envoyé aux adresses électroniques saisies avec une invitation à créer un compte utilisateur Sherwood. Une fois l'invitation acceptée, les utilisateurs auront accès aux données de l'hôpital ou du centre de santé en question. L'accès aux données médicales et personnelles ainsi qu'à d'autres fonctionnalités sera limité par le type de profil d'utilisateur (ceci peut être modifié ultérieurement)."
+				]
             },
             "error" : {
                 "title" : ["Error", "Error", "Erreur"],

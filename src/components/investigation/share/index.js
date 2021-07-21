@@ -44,7 +44,7 @@ const RESEARCHER_FORM = {
     },
 }
 
-const ColourChip = styled(Chip)`
+export const ColourChip = styled(Chip)`
   height: 20px;
   padding: 4px 0;
   font-size: 90%;
@@ -52,9 +52,10 @@ const ColourChip = styled(Chip)`
   color: ${(props) => props.theme.palette.common.white};
 `;
 
-const PermissionChip = withLocalize((props) => {
+export const PermissionChip = withLocalize((props) => {
+    const role = permissionsToRole(props.value);
     let colour = null;
-    switch(props.value){
+    switch(role){
         case "MEDICAL_DIRECTOR":
             colour = orange[500];
             break;
@@ -85,7 +86,7 @@ const PermissionChip = withLocalize((props) => {
         default:
             return <ColourChip size="small" label={props.translate("investigation.share.roles.no-permissions")} rgbcolor={colour} />
     }
-    return <ColourChip size="small" label={props.translate("investigation.share.roles."+props.value)} rgbcolor={colour} />
+    return <ColourChip size="small" label={props.translate("investigation.share.roles."+role)} rgbcolor={colour} />
 })
 
 const StatusChip = withLocalize((props) => {
@@ -99,6 +100,28 @@ const StatusChip = withLocalize((props) => {
     }
     
 })
+
+function permissionsToRole(permissions){
+    if(permissions.length === 0){
+        return "NO_PERMISSIONS";
+    }
+    let roleFound = false;
+    const keyRolesArray = Object.keys(ALL_ROLES);
+    let index = 0;
+    while(!roleFound && index < keyRolesArray.length){
+        const keyRole = keyRolesArray[index];
+        const rolePermissions = ALL_ROLES[keyRole];
+        const containsAll = rolePermissions.every(arr2Item => permissions.includes(arr2Item)) && (rolePermissions.length === permissions.length)
+        
+        if(containsAll){
+            return keyRole;
+        }
+        else{
+            index++;
+        }
+    }
+    
+}
 
 function ShareInvestigation(props) {
     
@@ -120,27 +143,7 @@ function ShareInvestigation(props) {
     function cancelShare(){
         setShowSendModal(false);
     }
-    function permissionsToRole(permissions){
-        if(permissions.length === 0){
-            return "NO_PERMISSIONS";
-        }
-        let roleFound = false;
-        const keyRolesArray = Object.keys(ALL_ROLES);
-        let index = 0;
-        while(!roleFound && index < keyRolesArray.length){
-            const keyRole = keyRolesArray[index];
-            const rolePermissions = ALL_ROLES[keyRole];
-            const containsAll = rolePermissions.every(arr2Item => permissions.includes(arr2Item)) && (rolePermissions.length === permissions.length)
-            
-            if(containsAll){
-                return keyRole;
-            }
-            else{
-                index++;
-            }
-        }
-        
-    }
+    
     async function sendInvitations(){
         setShowSendModal(false);
         setIsLoadingShare(true);
@@ -213,7 +216,7 @@ function ShareInvestigation(props) {
                                         for(const keyField of Object.keys(RESEARCHER_FORM)){
                                             const field = RESEARCHER_FORM[keyField];
                                             if(field.type === "select"){
-                                                tempSection[keyField] = <PermissionChip value={permissionsToRole(researcher.permissions)}  />
+                                                tempSection[keyField] = <PermissionChip value={researcher.permissions}  />
                                             }
                                             else{
                                                 tempSection[keyField] = researcher[keyField];
@@ -266,7 +269,7 @@ function ShareInvestigation(props) {
                             let row = {
                                     id:idx,
                                     name : name, 
-                                    permissions : <PermissionChip value={permissionsToRole(researcher.permissions)} />, 
+                                    permissions : <PermissionChip value={researcher.permissions} />, 
                                     status : <StatusChip value={researcher.status}/>
                                 }
                             
@@ -348,7 +351,7 @@ function ShareInvestigation(props) {
         <BoxBckgr color="text.primary" style={{color:"white"}}>
             <Helmet title={props.translate("investigation.share.title")} />
             <Modal key="modal" open={addingResearcher || (indexResearcherToEdit !== false)} 
-                title={props.translate("investigation.share.add_researcher")}>
+                title={addingResearcher ? props.translate("investigation.share.add_researcher") : props.translate("investigation.share.edit_researcher")}>
                     {
                         indexResearcherToEdit !== false &&
                         <Form fields={RESEARCHER_FORM} callBackForm={editCallBack}
