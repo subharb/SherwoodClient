@@ -313,7 +313,7 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
 
   const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
   const renderCategory = (category, index, openRoutes) => {
-    const hasPermission = investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
+    const hasPermission = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
     if(category.permissions.length === 0 || hasPermission)
     return category.children && category.icon ? (
       <React.Fragment key={index}>

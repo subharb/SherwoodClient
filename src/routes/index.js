@@ -347,6 +347,7 @@ const investigationsRoutes = {
     path: ALL_INVESTIGATIONS_ROUTE,
     icon: <Briefcase />,
     badge: "8",
+    permissions : [],
     component: Investigations,
     children: [
         {
@@ -378,6 +379,7 @@ const dashboardsRoutes = {
   header: "Pages",
   icon: <Sliders />,
   component:CreateInvestigation,
+  permissions : [],
   children: null,
 };
 const dashboardsNotSideBarRoutes = {

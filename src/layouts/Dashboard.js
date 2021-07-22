@@ -159,6 +159,7 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
             </Alert>
         ) 
     }
+    const showSidebar = (investigations.data && investigations.currentInvestigation && process.env.REACT_APP_PRODUCT === 'HOSPITAL') || (process.env.REACT_APP_PRODUCT !== 'HOSPITAL')
     return (
       <React.Fragment>
         {
@@ -183,7 +184,7 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
               <Drawer>
                   <Hidden mdUp implementation="js">
                   {
-                      (investigations.data && investigations.currentInvestigation) &&
+                      (showSidebar) &&
                       <Sidebar
                         routes={routes}
                         PaperProps={{ style: { width: drawerWidth } }}
@@ -197,7 +198,7 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
                   </Hidden>
                   <Hidden smDown implementation="css">
                   {
-                      (investigations.data && investigations.currentInvestigation) &&
+                      (showSidebar) &&
                       <Sidebar
                           routes={routes}
                           investigation={investigations.currentInvestigation}
