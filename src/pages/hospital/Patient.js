@@ -73,7 +73,7 @@ function Patient(props) {
     const filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
         return typeSurveys.includes(rec.typeSurvey)
     }) : [];
-    const translations = ["patient", "medical-imaging", "laboratory"]; 
+    const translations = typeSurveys.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typeSurveys.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
 
     function addRecord(){
         if(!parameters.hasOwnProperty("typeTest")){
@@ -244,7 +244,7 @@ function Patient(props) {
                         submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
         }
         else if(filteredRecords.length === 0){
-            return <Translate id={`pages.hospital.${translations[typeSurveys]}.no-records`} />
+            return <Translate id={`pages.hospital.${translations}.no-records`} />
         }
         else{
             return(
