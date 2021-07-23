@@ -9,6 +9,7 @@ import { Check } from 'react-feather';
 import Modal from './modal';
 import LogoSherwood from '../../img/favicon-96x96.png';
 import PDFLogo from '../../img/pdf_logo.jpeg';
+import { isImageType } from '../../utils';
 
 enum UPLOAD_STATE{
     NOT_UPLOAD = 0,
@@ -264,7 +265,7 @@ const File:React.FC<Props> = (props) => {
                 {
                     filesSelected.map((file, index) =>{
                         if(file.image){
-                            if(file.type === "image/png"){
+                            if(file.type === "image/png" || file.type === "image/jpeg" || file.type === "image/jpg"){
                                 return(
                                     <GridImage item xs={2}>
                                         {
@@ -290,7 +291,7 @@ const File:React.FC<Props> = (props) => {
                         }
                    
                         if(file.buffer){
-                            if(file.type === "image/png"){
+                            if(isImageType(file.type)){
                                 let buf = Buffer.from(file.buffer);
                                 let base64 = buf.toString('base64');
                                 return(

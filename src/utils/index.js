@@ -534,6 +534,9 @@ export function getIndexedDB(){
     return indexedDB;
 }
 
+export function isImageType(typeImage){
+    return (typeImage === "image/png" || typeImage === "image/jpeg" || typeImage === "image/jpg");
+}
 export function openStore(storeName){
     return new Promise(
         function(resolve, reject) {
