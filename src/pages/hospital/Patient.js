@@ -27,7 +27,7 @@ import iconImagesGreen from "../../img/icons/images_green.png";
 import iconLabGreen from "../../img/icons/lab_green.png";
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
-import { MEDICAL_ACCESS, MEDICAL_READ, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../constants';
+import { MEDICAL_ACCESS, MEDICAL_READ, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../constants';
 
 
 const WhiteTypography = styled(Typography)`
@@ -421,7 +421,7 @@ function Patient(props) {
                                 </Typography>
                             </Grid> */}
                             <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}
-                                onClick={props.investigations.currentInvestigation.permissions >= 3 ? editPersonalData : null} >
+                                onClick={props.investigations.currentInvestigation.permissions.includes(PERSONAL_ACCESS) ? editPersonalData : null} >
                                 <IconPatient gender={patient.personalData ? patient.personalData.sex : "undefined"} />
                             </Grid>
                         </Grid>
