@@ -317,7 +317,7 @@
                     "surnames" : ["Surnames", "Apellidos", "Nom"],
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
-                    "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
+                    "health_id" : ["Health ID", "NHC(Número Historia Clínica)", "Identifiant de santé"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
                     "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
