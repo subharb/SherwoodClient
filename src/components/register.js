@@ -19,6 +19,7 @@ const SpanError = styled.span`
     color:red;
 `;
 const ParaKey = styled.p`
+    word-break: break-all;
 `;
 
 const SuccessContainer = styled.div`
