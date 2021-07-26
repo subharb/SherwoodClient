@@ -77,7 +77,8 @@ export interface Diagnosis{
     "ict-code": string
 }
 
-const DATE_FIELDS = ["background-date", "treatment-start", "treatment-finish"];
+enum DATE_FIELDS {"background-date", "treatment-start", "treatment-finish"};
+const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular"};
 
 interface Props extends LocalizeContextProps {
     name : string,
@@ -96,7 +97,7 @@ interface Props extends LocalizeContextProps {
     elementSelected: (treatments:SmartFieldType[] | boolean) => void
 }
 
-const TRANSLATED_COLUMNS = ["treatment-posology"]
+const TRANSLATED_COLUMNS = ["treatment-posology", "treatment-frecuency"]
 
 const SmartField:React.FC<Props> = (props) => {
     const [listElements, setListElements] = useState<SmartFieldType[]>(props.initialState ? props.initialState.listElements : []);
@@ -126,13 +127,16 @@ const SmartField:React.FC<Props> = (props) => {
                 let valueDict:any = {...element};
                 for(const [key, val] of Object.entries(element)) {
                     
-                    if(val && DATE_FIELDS.includes(key)){
+                    if(val && DATE_FIELDS_FORMAT.hasOwnProperty(key)){
+                        let dateObject = null;
+                        const format = DATE_FIELDS_FORMAT[key] as string;
                         if(val && typeof val.getMonth === 'function'){
-                            valueDict[key] = val.toLocaleDateString();
+                            dateObject = val;
                         }   
                         else if(val && Date.parse(val)){
-                            valueDict[key] = new Date(val.replace(' ', 'T').replace(' ', 'Z')).toLocaleDateString();
+                            dateObject =  new Date(val.replace(' ', 'T').replace(' ', 'Z'));
                         }
+                        valueDict[key] = format === "regular" ? dateObject.toLocaleDateString() : dateObject.getFullYear();
                     }
                     else if( val && TRANSLATED_COLUMNS.includes(key)){
                         const translation = props.translate(`hospital.${key}-values.${val}`).toString();

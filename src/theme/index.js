@@ -24,8 +24,15 @@ const createTheme = (name) => {
         shadows: shadows,
         palette: themeConfig.palette,
         buttonContinue : {
-            background : "#48bb78",
-            color : "#FFF"
+            primary: {
+                background : "#48bb78",
+                color : "#FFF"
+            },
+            secondary: {
+                background : "#ccc",
+                color : "#FFF"
+            }
+            
         },
         buttonCancel: {
             background : "#e53e3e",

@@ -148,7 +148,7 @@ export function Analytics(props) {
                 </Grid>
                 <Grid item xs={12} sm={12} md={6}>
                     <DoughnutChart title={props.translate("hospital.analytics.graphs.age.title")} labels={ageGroups.map(groupAge => {if(groupAge[1] === 1000){return ">"+groupAge[0]}else {return groupAge[0]+"-"+groupAge[1]}})}
-                        table={{title:props.translate("hospital.analytics.graphs.age.table-title"), columns : ["Count"]}}
+                        table={{title:props.translate("hospital.analytics.graphs.age.table-title"), columns : [[props.translate("hospital.analytics.graphs.sex.count")]]}}
                         
                         
                         datasets={[

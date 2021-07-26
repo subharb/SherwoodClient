@@ -99,8 +99,8 @@ export const ButtonCancelStyles = styled(BasicButtonStyles)`
     color:${props => props.theme.buttonCancel.color};
 `;
 export const ButtonContinueStyles = styled(BasicButtonStyles)`
-    background-color:${props => props.theme.buttonContinue.background}!important;
-    color:${props => props.theme.buttonContinue.color};
+    background-color:${props => props.color === "secondary" ? props.theme.buttonContinue.secondary.background : props.theme.buttonContinue.primary.background}!important;
+    color:${props => props.color === "secondary" ? props.theme.buttonContinue.secondary.color : props.theme.buttonContinue.primary.color};
 `;
 export const ButtonIcon = styled(IconButton)`
     background-color:${props => props.theme.buttonContinue.background}!important;
@@ -173,7 +173,7 @@ export const ButtonForward = (props) =>{
 export const ButtonContinue = (props) =>{
         return <ButtonContinueStyles
             variant="contained"
-            color="primary"
+            color={props.color ? props.color : "primary"}
             size="small"
             endIcon={<SendIcon />}
             {...props}
@@ -186,7 +186,7 @@ export const ButtonContinue = (props) =>{
 export const ButtonAccept = (props) =>{
     return <ButtonContinueStyles
         variant="contained"
-        color="primary"
+        color={props.color ? props.color : "primary"}
         size="small"
         {...props}
         data-testid={props['data-testid'] ? props['data-testid'] : "continue"}

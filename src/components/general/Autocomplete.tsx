@@ -69,7 +69,7 @@ const AutocompleteSherwood = (props:Props) => {
                     <Typography variant="body2" gutterBottom><Translate id="general.no-results"/></Typography> 
                     {
                         props.freeSolo &&
-                        <ButtonAccept onClick={saveField}><Translate id="general.add" /></ButtonAccept>
+                        <ButtonAccept color="secondary" onClick={saveField}><Translate id="general.add" /></ButtonAccept>
                     }
                 </Grid>
             </Grid>

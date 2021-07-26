@@ -66,16 +66,18 @@
         },
         "analytics" : {
             "graphs" : {
+                "percentage" : ["Percentage", "Porcentaje", "Pourcentage"],
                 "sex" : {
                     "title" : ["Sex", "Sexo", "Sex"],
                     "table-title" : ["Sex", "Sexo", "Sex"],
-                    "count" : ["Count", "Cantidad", "Quantité"],
+                    "count" : ["Count", "Número", "Quantité"],
                     "male" : ["Male", "Masculino", "Homme"],
                     "female" : ["Female", "Femenino", "Femme"]
                 },
                 "age" : {
                     "title" : ["Age", "Edad", "Âge"],
-                    "table-title" : ["Age(years)", "Edad(años)", "Âge(ans)"]
+                    "table-title" : ["Age (years)", "Edad (años)", "Âge (ans)"],
+                    "count" : ["Count", "Número", "Quantité"]
                 },
                 "activity" : {
                     "title" : ["Hospital Activity", "Actividad Hospitalaria", "Activité hospitalière"],
@@ -100,7 +102,7 @@
         "treatment-dose-table" :["Quantity", "Cantidad", "Quantité"],
         "treatment_regular-dose-table" :["Quantity", "Cantidad", "Quantité"],
         "treatment-start-table" : ["Start date", "F.Inicio", "Date de début"],
-        "treatment-finish-table" : ["End date", "Fecha fin", "Date de fin"],
+        "treatment-finish-table" : ["End date", "F. fin", "Date de fin"],
         "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
         "number-elements" : ["Number", "Nombre", "Número"],
@@ -124,44 +126,44 @@
             "week" : ["1 week", "1 semana", "1 semaine"]
         },
         "dose-options" : {
-            "1" : ["One tablet", "Una pastilla", "une pilule"],
-            "3/4" : ["3/4 of a tablet", "3/4 de pastilla", "3/4 pilule"],
-            "1/2" : ["half a tablet", "Media pastilla", "Media pilule"],
-            "1/4" : ["1/4 of a tablet", "1/4 de pastilla", "1/4 pilule"]
+            "1" : ["One tablet", "Un comprimido", "une pilule"],
+            "3/4" : ["3/4 of a tablet", "3/4 de comprimido", "3/4 pilule"],
+            "1/2" : ["1/2 a tablet", "1/2 comprimido", "1/2 pilule"],
+            "1/4" : ["1/4 of a tablet", "1/4 de comprimido", "1/4 pilule"]
         },
-        "ict" : ["Diagnostic", "Diagnostico", "Diagnostic"],
+        "ict" : ["Diagnostic", "Diagnóstico", "Diagnostic"],
         "treatment" : ["Treatment", "Tratamiento", "Traitement"],
         "treatment_regular" : ["Regular Treatment", "Tratamiento Regular", "Traitement Regulier"],
-        "allergy" : ["Allergy", "Alergía", "Allergie"],
+        "allergy" : ["Allergy", "Alergia", "Allergie"],
         "background" : ["PMH", "Antecedentes", "Antécédents"],
         "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],     
         "family-relation" : ["Relationship", "Relación Familiar", "Relation de famille"],     
-        "ict-plural" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
-        "ict-table" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
+        "ict-plural" : ["Diagnoses", "Diagnósticos", "Diagnostics"],
+        "ict-table" : ["Diagnoses", "Diagnósticos", "Diagnostics"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "treatment-table" : ["Drug", "Medicamento", "Médicament"],
         "treatment_regular-table" : ["Drug", "Medicamento", "Médicament"],
-        "allergy-plural" : ["Allergies", "Alergías", "Allergies aux medicam"],
-        "allergy-table" : ["Allergies", "Alergías", "Allergies aux medicam"],
+        "allergy-plural" : ["Allergies", "Alergias medicamentosas", "Allergies aux medicam"],
+        "allergy-table" : ["Allergies", "Alergias medicamentosas", "Allergies aux medicam"],
         "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents"],
         "background-table" : ["Past Medical History", "Antecedentes", "Antécédents"],
-        "background-date" : ["Enter date", "Introduzca la fecha", "Entrez la date"],
+        "background-date" : ["Enter date", "Introducir fecha", "Entrez la date"],
         "background-date-table" : ["Date", "Fecha", "Date"],
         "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "family-background-table" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "family-background-relation-table" : ["Relationship", "Relación Familiar", "Relation de famille"],  
-        "select-ict" : ["Enter diagnostic", "Seleccione diagnostico", "Entrer le diagnostic"],
+        "select-ict" : ["Enter diagnostic", "Introducir diagnóstico", "Entrer le diagnostic"],
         "select-test" : ["Select Test", "Seleccione tipo de prueba", "Sélectionnez le type de test"],
         "select-treatment" : ["Drug name", "Nombre medicamento", "Nom du médicament"],
-        "select-background" : ["Enter Past Medical History", "Seleccione Antecedente", "Entrer un antécédent"],
+        "select-background" : ["Enter Past Medical History", "Introducir Antecedente", "Entrer un antécédent"],
         "select-family-background" : ["Enter Family Past Medical History", "Seleccione Antecedente Familiar", "Entrer un antécédent"],
-        "select-allergy" : ["Enter Allergy", "Seleccione Alergía", "Entrer Allergie"],
+        "select-allergy" : ["Enter Allergy", "Seleccione Alergia", "Entrer Allergie"],
         "add-ict" : ["Add Diagnosis", "Añadir Diagnóstico", "Ajouter un diagnostic"],
         "add-treatment" : ["Add Treatment", "Añadir Tratamiento", "Ajouter un traitement"],
         "add-treatment_regular" : ["Add Regular Treatment", "Añadir Tratamiento Regular", "Ajouter un traitement regulier"],
         "add-background" : ["Add Background", "Añadir Antecedente", "Ajouter un antécédent"],
-        "add-family-background" : ["Add Family Past Medical History", "Añadir Antecedente Familiar", "Ajouter des antécédents familiaux"],
-        "add-allergy" : ["Add Allergy", "Añadir Alergía", "Ajouter une allergie"],
+        "add-family-background" : ["Add Family Past Medical History", "Añadir Antecedente", "Ajouter des antécédents"],
+        "add-allergy" : ["Add Allergy", "Añadir Alergia", "Ajouter une allergie"],
         
         "type-test" : {
             "eco-ab" : ["Abdominal ultrasound", "Ecografía abdominal", "Échographie abdominale"],
@@ -388,11 +390,11 @@
                 "no_fields" : ["No fields added yet", "No se ha agregado ningún campo", "Aucun champ ajouté pour le moment"], 
                 "type_text" : ["Text", "Texto", "Text"],
                 "type_number" : ["Number", "Número", "Nombre"],
-                "diagnosis" : ["Diagnosis", "Diagnostico", "Diagnostic"],
+                "diagnosis" : ["Diagnosis", "Diagnóstico", "Diagnostic"],
                 "treatment" : ["Treatment", "Tratamiento", "Traitement"],
                 "treatment_regular" : ["Regular Treatment", "Tratamiento Regular", "Traitement Regulier"],
-                "allergy" : ["Allergy", "Alergía", "Allergie"],
-                "background" : ["PMH", "Antecedentes", "Antécédents"],
+                "allergy" : ["Allergy", "Alergia", "Allergie"],
+                "background" : ["PMH", "Antecedentes Personales", "Antécédents personnel"],
                 "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],                
                 "files" : ["File/Image", "Imágenes", "Images"],       
                 "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
@@ -541,7 +543,7 @@
                 "accepted" : ["Active", "Activo", "Active"],
                 "denied" : ["Denied", "Rechazada", "Refusée"]
             },
-            "no_researchers_added" : ["You have not added any investigators!", "No has añadido ningún investigador!", "Vous n'avez ajouté aucun enquêteur"]
+            "no_researchers_added" : ["You have not added any investigators!", "No has añadido ningún usuario!", "Vous n'avez ajouté aucun enquêteur"]
         },
         "show" : {
             "view_investigation" : ["View study", "Ver estudio", "Voir l'étude"],

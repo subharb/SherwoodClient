@@ -21,6 +21,7 @@ import { spacing } from "@material-ui/system";
 import { Doughnut } from "react-chartjs-2";
 
 import { MoreVertical } from "react-feather";
+import { Translate } from "react-localize-redux";
 
 const Card = styled(MuiCard)(spacing);
 
@@ -120,7 +121,7 @@ function DoughnutChart({ theme, title, labels, datasets, table, innerInfo }) {
                   return <TableCell align="right">{col}</TableCell>
                 })
               }
-              <TableCell align="right">Percentage</TableCell>
+              <TableCell align="right"><Translate id="hospital.analytics.graphs.percentage" /></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
