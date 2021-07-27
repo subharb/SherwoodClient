@@ -106,7 +106,10 @@ function TimeTable(props){
   const handleClose = (value) => {
     console.log("Close");
     setAnchorEl(null);
-    props.actionCallBack(value);
+    if(value !== false){
+      props.actionCallBack(value);
+    }
+    
   };
   return(
       <Card mb={3}>
@@ -120,7 +123,7 @@ function TimeTable(props){
                   id="simple-menu"
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
-                  onClose={handleClose}
+                  onClose={() => handleClose(false)}
                 >
                   <MenuItem onClick={() => handleClose(0)}>Today</MenuItem>
                   <MenuItem onClick={() => handleClose(1)}>Yesterday</MenuItem>
