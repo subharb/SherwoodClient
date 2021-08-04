@@ -53,9 +53,7 @@ export default class EDC extends Component{
     getListStyle(isDraggingOver){
         //background: isDraggingOver ? 'lightblue' : 'lightgrey',
     }
-    onDragEnd(result){
-        console.log(result);
-    }
+    
     orderUpdate(dragDrop){
         console.log("Parent reorder");
         let tempState = {...this.state};
@@ -90,10 +88,12 @@ export default class EDC extends Component{
         if(!this.state.reordering){
             return([
                 <Grid item xs={12}>
-                    <EnhancedTable orderUpdate={(result) => this.orderUpdate(result)} noSelectable
+                    <DragDropContext
+                        onDragEnd={(result) => this.orderUpdate(result)}>
+                    <EnhancedTable orderUpdate={(result) => this.orderUpdate(result)} noSelectable droppableId="edc"
                         titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
                         actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
-                
+                    </DragDropContext>
                 </Grid>,
                 <Grid item xs={12}>
                     {AddButton}

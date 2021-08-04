@@ -288,9 +288,7 @@ const handleChangeRowsPerPage = (event) => {
     setPage(0);
 };
 
-const onDragEnd = (result) => {
-    props.orderUpdate(result)
-}
+
 const isSelected = (id) => selected.indexOf(id) !== -1;
 
 const emptyRows =
@@ -320,10 +318,9 @@ return (
                 actions={actions}
                 noSelectable={noSelectable}
             />
-            <DragDropContext
-                onDragEnd={(result) => onDragEnd(result)}>
+            
 
-                <Droppable droppableId="droppable">
+                <Droppable droppableId={props.droppableId ? props.droppableId : "droppableId"}>
                     
                     {
                         (provided, snapshot) =>(
@@ -337,8 +334,8 @@ return (
                                 const labelId = `enhanced-table-checkbox-${index}`;
         
                                 return (
-                                    <Draggable draggableId={`item-${row.id}`} index={index}
-                                        isDragDisabled={!props.orderUpdate}>
+                                    <Draggable draggableId={`item-${props.droppableId}-${row.id}`} index={index}
+                                        isDragDisabled={!props.droppableId}>
                                         {
                                             (provided, snapshot)=>(
                                                 
@@ -353,7 +350,7 @@ return (
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
                                                     innerRef={provided.innerRef}
-                                                    >
+                                                >
                                                     
                                                     {
                                                         !noSelectable &&
@@ -370,7 +367,7 @@ return (
                                                         headCells.map(headCell =>{
                                                             let value = row[headCell.id];
                                                             if(typeof row[headCell.id] === "boolean"){ 
-                                                                value = <Checkbox checked={row[headCell.id]}  />
+                                                                value = <Checkbox checked={row[headCell.id]} onClick={props.callBackCheckbox ? () => props.callBackCheckbox(row.id, headCell.id, !row[headCell.id]) : null} />
                                                             }
                                                             return <TableCell key={headCell.id} align={headCell.alignment}>{value}</TableCell>
                                                             
@@ -421,7 +418,7 @@ return (
                         )
                     }
                 </Droppable>
-            </DragDropContext>
+            
         </Table>
         </TableContainer>
         <TablePagination
