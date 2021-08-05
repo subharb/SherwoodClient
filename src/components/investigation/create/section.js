@@ -13,6 +13,7 @@ import { Grid,
 import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../general/EnhancedTable';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import AddField from './add_field';
 
 const SECTION_FORM = {
     "name" : {
@@ -147,14 +148,7 @@ class Section extends Component{
         const saveText = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
         return (
             <Grid container>
-                <Grid item xs={12}>
-                    <Modal
-                        open={this.state.addingField}
-                        closeModal={this.closeModal}
-                        title={this.props.translate("investigation.create.edc.add_field")}>
-                            <Form fields={FIELDS_FORM} callBackForm={this.handleAddField} closeCallBack={this.closeModal} dataTestid="save-field" />
-                    </Modal>
-                </Grid>
+              
                 <Grid item container xs={12}>
                     <Card>
                         <CardContent>
@@ -170,12 +164,11 @@ class Section extends Component{
                                         <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
                                     </div>
                                     <div style={{paddingTop:"40px"}}>
-                                        <Typography variant="body2" color="textPrimary" component="span"> 
-                                            <Translate id="investigation.create.edc.add_field" />
-                                        </Typography>
-                                        <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
-                                            show={!this.state.addingField}>
-                                        </ButtonAdd>  
+                                    <Typography variant="body2" color="textPrimary" component="span"> 
+                                        <Translate id="investigation.create.edc.add_field" />
+                                    </Typography>
+                                        <AddField fields={FIELDS_FORM}
+                                            callBackForm={(field) => this.handleAddField(field)}/>
                                     </div>  
                                     { this.renderFields() }
                                     <div style={{paddingTop:"40px"}}>

@@ -196,7 +196,82 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.files", "value" : "file"},
                 {"label": "investigation.create.edc.family-background", "value" : "family-background"}
         ],
-        activationValues : ["dropdown", "multioption", "radio", "evaluation"],
+        activationValues : ["select", "multioption", "radio", "evaluation"],
+        activatedFields:[
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            },
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            }, 
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            },
+            {
+                required : true,
+                type:"min_max",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            }]
+                                        
+    },
+    "label" : {
+        required : false,
+        type:"text",
+        label : "investigation.create.edc.question_field",
+        shortLabel: "investigation.table.question",
+        validation : "textMin6", 
+        size : "s6"
+    }
+}
+
+export const PERSONAL_FIELDS_FORM = {
+
+    "required":{
+        required : false,
+        type:"checkbox",
+        label:"investigation.create.edc.required",
+        shortLabel: "investigation.table.required",
+        validation : "notEmpty"
+    },
+    "name" : {
+        required : true,
+        type:"text",
+        label:"investigation.create.edc.name_field",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
+    "type" : {
+        required : true,
+        type:"select",
+        validation : "notEmpty",
+        label : "investigation.create.edc.choose",
+        shortLabel: "investigation.table.type",
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+        options:[{"label" : "investigation.create.edc.type_text", "value" : "text"},
+                {"label": "investigation.create.edc.type_number", "value" : "number"},
+                {"label": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
+                {"label": "investigation.create.edc.type_date", "value" : "date"},
+                {"label": "investigation.create.edc.textarea", "value" : "textarea"},
+                {"label": "investigation.create.edc.dropdown", "value" : "select"},
+                {"label": "investigation.create.edc.multioption", "value" : "multioption"},
+                {"label": "investigation.create.edc.radio", "value" : "radio"},
+                {"label": "investigation.create.edc.evaluation", "value" : "evaluation"}
+        ],
+        activationValues : ["select", "multioption", "radio", "evaluation"],
         activatedFields:[
             {
                 required : true,

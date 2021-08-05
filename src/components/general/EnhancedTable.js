@@ -200,7 +200,7 @@ return (
 }
 
 let EnhancedTableToolbar = (props) => {
-const { numSelected } = props;
+const { numSelected, noSelectable } = props;
 
 return (
     <Toolbar>
@@ -223,13 +223,13 @@ return (
             <ArchiveIcon />
             </IconButton>
         </Tooltip>
-        ) : (
+        ) : noSelectable ? (
         <Tooltip title="Filter list">
             <IconButton aria-label="Filter list">
             <FilterListIcon />
             </IconButton>
         </Tooltip>
-        )}
+        ) : null }
     </div>
     </Toolbar>
 );
@@ -302,7 +302,7 @@ return (
             <EnhancedTableToolbar title={titleTable} numSelected={selected.length} />
         }
         <TableContainer>
-        <Table style={{minWidth: "600px"}}
+        <Table style={{xminWidth: "600px"}}
             aria-labelledby="tableTitle"
             size={"medium"}
             aria-label="enhanced table"
@@ -421,15 +421,19 @@ return (
             
         </Table>
         </TableContainer>
-        <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
+        {
+            !props.noFooter &&
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+        }
+        
     </Paper>
     </div>
 );

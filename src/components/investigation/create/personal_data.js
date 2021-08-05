@@ -1,18 +1,21 @@
 import React from 'react'
-import { Translate } from 'react-localize-redux';
-import { PERSONAL_DATA_FIELDS } from '../../../utils';
+import { Translate, withLocalize } from 'react-localize-redux';
+import { isSmartField, PERSONAL_DATA_FIELDS, PERSONAL_FIELDS_FORM } from '../../../utils';
 import { validateField } from '../../../utils';
 import { Field, reduxForm } from 'redux-form'
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Component } from 'react';
-import { CardContent, Card, Grid } from '@material-ui/core';
+import { CardContent, Card, Grid, Typography } from '@material-ui/core';
 import { ButtonBack, ButtonContinue } from '../../general/mini_components';
 import { EnhancedTable } from '../../general/EnhancedTable';
+import AddField from './add_field';
 
 let PERSONAL_DATA_CHECKBOXES = {}
 class PersonalData extends Component{
     constructor(props){
         super(props);
+
+        this.handleAddField = this.handleAddField.bind(this);
         let availableFields = [];
         let selectedFields = [];
         const arrayKeys = Object.keys(PERSONAL_DATA_FIELDS);
@@ -75,23 +78,42 @@ class PersonalData extends Component{
         tempState.selectedFields[id][param] = value;
         this.setState(tempState);
     }
+    handleAddField(values){
+        console.log(values);
+        if(values.hasOwnProperty("type_options")){
+            values["options"] = values.type_options;
+        }
+        values.validation =  isSmartField(values.type) ? "arrayOrFalse" : "notEmpty";
+        let tempState = {...this.state};
+        values.order = tempState.selectedFields.length;
+        tempState.selectedFields.push(values);
+        this.setState(tempState);
+    }
     render(){
         const rowsAvailable = this.state.availableFields.map((field, index) => { return { id :index, title : <Translate id={field.label} />}});
-        const rowsSelected = this.state.selectedFields.map((field, index) => {return { id :index, title : <Translate id={field.label} />, required:field.required}});
+        const rowsSelected = this.state.selectedFields.length === 0 ? [{ id :0, title : "Arrastra aquí", required:""}] : this.state.selectedFields.map((field, index) => {return { id :index, title : this.props.translate(field.label).includes("translationId") ? field.label : <Translate id={field.label} />, required:field.required}});
         const headAvailable = [{ id:"title", alignment: "left", label: "name"} ];
         const headSelected = [{ id:"title", alignment: "left", label: "name"}, { id:"required", alignment: "left", label: "required"} ];
         return(    
-            <Grid container xs={12}>
+            <Grid container xs={12} spacing={3}>
+                <Grid item xs={12}>
+                    <Typography variant="body2" color="textPrimary" component="span"> 
+                        Añadir campo personalizado
+                    </Typography>
+                    <AddField fields={PERSONAL_FIELDS_FORM} 
+                        callBackForm={(field) => this.handleAddField(field)}/>
+                </Grid>
+                
                 <DragDropContext
                         onDragEnd={(result) => this.orderUpdate(result)}>
                     <Grid item xs={6}>
                         <EnhancedTable droppableId="availableFields"  noSelectable
-                            titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rowsAvailable} headCells={headAvailable} 
-                            />
+                            titleTable="Available Personal Fields" rows={rowsAvailable} headCells={headAvailable} 
+                            noFooter />
                     </Grid>
                     <Grid item xs={6}>
-                    <EnhancedTable droppableId="selectedFields"  noSelectable
-                            titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rowsSelected} headCells={headSelected} 
+                    <EnhancedTable droppableId="selectedFields"  noSelectable noFooter
+                            titleTable="Selected Personal Fields" rows={rowsSelected} headCells={headSelected} 
                             callBackCheckbox={(id, param, value) => this.changeCheckbox(id, param, value)} />
                     </Grid>
                     <Grid item xs={12}>
@@ -162,7 +184,7 @@ function validate(values, props){
     // //console.log(errors);
     return errors;
 }
-export default reduxForm({
+export default withLocalize(reduxForm({
     validate,
     form: 'personal_fields', // a unique identifier for this form
-  })(PersonalData)
+  })(PersonalData))

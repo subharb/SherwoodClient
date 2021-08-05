@@ -389,7 +389,7 @@
                 },
                 "no_fields" : ["No fields added yet", "No se ha agregado ningún campo", "Aucun champ ajouté pour le moment"], 
                 "type_text" : ["Text", "Texto", "Text"],
-                "type_number" : ["Number", "Número", "Nombre"],
+                "type_number" : ["Number", "Número", "Número"],
                 "diagnosis" : ["Diagnosis", "Diagnóstico", "Diagnostic"],
                 "treatment" : ["Treatment", "Tratamiento", "Traitement"],
                 "treatment_regular" : ["Regular Treatment", "Tratamiento Regular", "Traitement Regulier"],
