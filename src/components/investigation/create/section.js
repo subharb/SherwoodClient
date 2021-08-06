@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../general/EnhancedTable';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import AddField from './add_field';
+import OrderableTable from '../../general/OrderableTable';
 
 const SECTION_FORM = {
     "name" : {
@@ -123,15 +124,16 @@ class Section extends Component{
                 tempSection["id"] = index;
                 return tempSection;
             })
-            return <DragDropContext
-                        onDragEnd={(result) => this.orderUpdate(result)}>
-                        <EnhancedTable orderUpdate={(dragDrop) => this.orderUpdate(dragDrop)} droppableId="section"
-                                noSelectable titleTable={<Translate id="investigation.create.edc.fields" />}  
-                                headCells={arrayHeader}
-                                rows={rows}
-                                actions={{"delete" : (index) => this.deleteField(index) }} 
-                            />
-                    </DragDropContext>
+            return(
+                <OrderableTable onDragEnd={(result) => this.orderUpdate(result)}
+                    orderUpdate={(dragDrop) => this.orderUpdate(dragDrop)} 
+                    droppableId="droppable" noSelectable
+                    titleTable={<Translate id="investigation.create.edc.fields" />}  
+                    headCells={arrayHeader}
+                    rows={rows}
+                    actions={{"delete" : (index) => this.deleteField(index) }} 
+                />
+            )
         }
         else{
             return null;

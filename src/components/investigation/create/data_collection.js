@@ -9,6 +9,7 @@ import FieldSherwood from '../../general/FieldSherwood';
 import { reduxForm, Field, submit, FormSection } from 'redux-form';
 import { TextField, Grid, Container, Card, CardContent, Typography } from '@material-ui/core';
 import { EnhancedTable } from '../../general/EnhancedTable';
+import OrderableTable from '../../general/OrderableTable';
 /**
  * An EDC is a collection of sections
  */
@@ -81,7 +82,8 @@ class DataCollection extends Component{
             return(
                 <Grid container item xs={12}>
                     <Grid item xs={12}>
-                        <EnhancedTable orderUpdate={(dragDrop) => this.orderUpdate(dragDrop)} noSelectable
+                        <OrderableTable droppableId="sections"
+                            onDragEnd={(dragDrop) => this.orderUpdate(dragDrop)} noSelectable
                             titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
                             headCells={arrayHeader}
                             rows={this.state.sections.sort((a, b) => a.order - b.order ).map((section, index) => {
@@ -99,8 +101,8 @@ class DataCollection extends Component{
                                 tempSection["id"] = index;
                                 return tempSection;
                             })}
-                            actions={{"delete" : (index) => this.deleteSection(index, "sections"), "edit" : (index) => this.editSection(index, "sections")}} 
-                        />
+                            actions={{"delete" : (index) => this.deleteSection(index, "sections"), "edit" : (index) => this.editSection(index, "sections")}}
+                            />
                     </Grid>
                     <Grid item xs={12}>
                         {AddButton}
@@ -184,7 +186,7 @@ class DataCollection extends Component{
     }
     render(){
         
-        return (
+        return ( 
                 <Grid style={{ padding: 20 }} container key="container" spacing={3}>
                     {
                         this.props.callBackData && 

@@ -317,6 +317,7 @@ export const PERSONAL_DATA_FIELDS = {
     "name" : {
         required : true,
         name: "name",
+        encrypted : true,
         type:"text",
         label:"investigation.create.personal_data.fields.name",
         shortLabel:"investigation.create.personal_data.fields.name",
@@ -326,6 +327,7 @@ export const PERSONAL_DATA_FIELDS = {
         required : true,
         name: "surnames",
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.surname",
         shortLabel:"investigation.create.personal_data.fields.surname",
         validation : "textMin2"
@@ -334,6 +336,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "birthdate",
         required : true,
         type:"date",
+        encrypted : false,
         label:"investigation.create.personal_data.fields.birthdate",
         shortLabel:"investigation.create.personal_data.fields.birthdate",
         validation : "pastDate"
@@ -342,6 +345,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "address",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.address",
         shortLabel:"investigation.create.personal_data.fields.address",
         validation : "textMin2"
@@ -350,6 +354,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "health_id",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.health_id",
         shortLabel:"investigation.create.personal_data.fields.health_id",
         validation : "textMin2"
@@ -358,6 +363,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "national_id",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.national_id",
         shortLabel:"investigation.create.personal_data.fields.national_id",
         validation : "textMin2"
@@ -366,6 +372,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "email",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.email",
         shortLabel:"investigation.create.personal_data.fields.email",
         validation : "textMin2"
@@ -374,6 +381,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "phone",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.phone",
         shortLabel:"investigation.create.personal_data.fields.phone",
         validation : "textMin2"
@@ -382,6 +390,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "sex",
         required : true,
         type:"select",
+        encrypted : false,
         label:"investigation.create.personal_data.fields.sex",
         shortLabel:"investigation.create.personal_data.fields.sex",
         validation : "notEmpty",

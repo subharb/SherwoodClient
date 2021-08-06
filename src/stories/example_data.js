@@ -517,9 +517,9 @@ export const patient_data_decrypted1 = () => {
 
 export const summary_info1 = () => {
     return {
-        "basic_info":  basic_info1_raw(),
+        ...basic_info1_raw(),
         "status" : 1,
-        "personal_data" : personal_data_investigation1(),
+        "personalFields" : personal_data_investigation1(),
         "surveys" : edc_data1().surveys
     }   
 }

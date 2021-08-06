@@ -16,15 +16,15 @@ class PersonalData extends Component{
         super(props);
 
         this.handleAddField = this.handleAddField.bind(this);
+        this.callBackData = this.callBackData.bind(this);
+
         let availableFields = [];
         let selectedFields = [];
         const arrayKeys = Object.keys(PERSONAL_DATA_FIELDS);
         for(let i = 0; i < arrayKeys.length; i++){
             const currentKey = arrayKeys[i];
             let personalField = {...PERSONAL_DATA_FIELDS[currentKey]};
-            personalField.type = "checkbox";
-            PERSONAL_DATA_CHECKBOXES[currentKey] = personalField;
-
+        
             if(props.initialData && props.initialData.find(fi => fi.name === currentKey)){
                 const initField = props.initialData.find(fi => fi.name === currentKey);
                 personalField.required = initField.required;
@@ -49,28 +49,38 @@ class PersonalData extends Component{
     componentDidMount(){
         this.props.initialize(this.initData)
     }
-    callBackData(values){
-        console.log("CallbackData!!", values);
-        let tempValues = []; 
-        for(const key of Object.keys(values)){
-            if(values[key] === true){
-                tempValues.push(PERSONAL_DATA_FIELDS[key]);
-            }
-        }
-        this.props.callBackData(tempValues);
+    callBackData(){
+        // console.log("CallbackData!!", values);
+        // let tempValues = []; 
+        // for(const key of Object.keys(values)){
+        //     if(values[key] === true){
+        //         tempValues.push(PERSONAL_DATA_FIELDS[key]);
+        //     }
+        // }
+        this.props.callBackData(this.state.selectedFields);
     }
     orderUpdate(dragDrop){
         console.log(dragDrop);
         let tempState = {...this.state};
-        //if(dragDrop.source.droppableId === dragDrop.destination.droppableId){
-            const source = Array.from(tempState[dragDrop.source.droppableId]);
-            const destination = Array.from(tempState[dragDrop.destination.droppableId]);
+        const source = Array.from(tempState[dragDrop.source.droppableId]);
+        const destination = Array.from(tempState[dragDrop.destination.droppableId]);
+        
+        
+        if(dragDrop.source.droppableId !== dragDrop.destination.droppableId){
             const [removed] = source.splice(dragDrop.source.index, 1);
-            
             destination.splice(dragDrop.destination.index, 0, removed);
-            tempState[dragDrop.destination.droppableId] = destination.map((elem, index) => {elem.order = index; return elem;});
             tempState[dragDrop.source.droppableId] = source.map((elem, index) => {elem.order = index; return elem;});
-            this.setState(tempState);
+        }
+        else{
+            const [removed] = destination.splice(dragDrop.source.index, 1);
+            destination.splice(dragDrop.destination.index, 0, removed);
+            // const [removed] = result.splice(dragDrop.source.index, 1);
+            // result.splice(dragDrop.destination.index, 0, removed);
+        }
+        
+        tempState[dragDrop.destination.droppableId] = destination.map((elem, index) => {elem.order = index; return elem;});
+        //tempState[dragDrop.source.droppableId] = source.map((elem, index) => {elem.order = index; return elem;});
+        this.setState(tempState);
     }
     changeCheckbox(id, param, value){
         console.log("El id "+id+", param "+param+" y el value "+value);
@@ -121,42 +131,12 @@ class PersonalData extends Component{
                             this.props.callBackStepBack && 
                             <ButtonBack spaceright={1} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
                         }
-                        <ButtonContinue type="submit">
-                                <Translate id="investigation.create.continue" />
+                        <ButtonContinue onClick={this.callBackData}>
+                            <Translate id="investigation.create.continue" />
                         </ButtonContinue>
-                        
                     </Grid>
                 </DragDropContext>
-            </Grid>
-
-            
-            // <Card>
-            //     <CardContent>
-            //         <form data-testid="form" onSubmit={this.props.handleSubmit(values => {this.callBackData(values)})}  >
-            //             {
-            //                 Object.keys(PERSONAL_DATA_CHECKBOXES).map(key =>{
-            //                     return(
-            //                         <div className="row" key={key}>
-            //                             <Field name={key} {...PERSONAL_DATA_CHECKBOXES[key]} 
-            //                                 type={PERSONAL_DATA_CHECKBOXES[key].type} label={PERSONAL_DATA_CHECKBOXES[key].label}
-            //                                 component={FieldSherwood} />
-            //                         </div>
-            //                         );
-            //                 })
-            //             }
-            //             <div className="row" style={{paddingTop:"20px"}}>
-            //                 {
-            //                     this.props.callBackStepBack && 
-            //                     <ButtonBack spaceright={1} data-testid="back" onClick={this.props.callBackStepBack} ><Translate id="general.back"/></ButtonBack>
-            //                 }
-            //                 <ButtonContinue type="submit">
-            //                         <Translate id="investigation.create.continue" />
-            //                 </ButtonContinue>
-            //             </div>
-            //         </form>
-            //     </CardContent>
-            // </Card>
-            
+            </Grid>            
         )
         
     }
