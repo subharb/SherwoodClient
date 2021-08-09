@@ -94,7 +94,10 @@ function SearchPatients(props) {
                             copyField.required = false;
                             personalFieldsForm[personalField.name] = copyField
                         });
-            personalFieldsForm["id"] = ID_FIELD;
+            if(Object.keys(personalFieldsForm).length === 0){
+                personalFieldsForm["id"] = ID_FIELD;
+            }      
+            
             return (
                 <Box>
                     <Paper style={{padding:'1rem'}}>

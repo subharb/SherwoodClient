@@ -322,7 +322,7 @@
                     "health_id" : ["Health ID", "NHC", "Identifiant de santé"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
-                    "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
+                    "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento", "Date de naissance"],
                     "sex" : ["Sex", "Sexo", "Sex"]
@@ -332,10 +332,10 @@
                     "surnames" : ["Surnames", "Apellidos", "Nom"],
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
-                    "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
+                    "health_id" : ["Health ID", "NHC", "Identifiant de santé"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
-                    "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
+                    "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["DOB", "Fecha de nacimiento", "Date de naissance"],
                     "sex" : ["Sex", "Sexo", "Sex"],
@@ -584,8 +584,8 @@
             "error_phone" : ["Phone not valid", "Teléfono no válido", "Téléphone non valide"],
             "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres", "Le mot de passe doit contenir au moins 7 caractères"],
             "error_length6" : ["It has to be at least 6 characters long","Debe tener al menos 6 caracteres", "Il doit comporter au moins 6 caractères"],
-            "error_length2" : ["This field can't be empty","Este campo no se puede dejar vacío"],
-            "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío", "Ce champ ne peut pas être vide"],
+            "error_length2" : ["This field can't be empty","Debe tener al menos 2 caracteres", "Il doit comporter au moins 2 caractères"],
+            "error_not_empty" : ["This field can' be empty", "No debe estar vacío", "Il doit comporter au moins 2 caractères"],
             "error_not_same" : ["Fields have to be the same", "El valor de los campos tiene que ser igual", "Les champs doivent être les mêmes"],
             "error_past_date" : ["You must choose a past date", "Debe seleccionar una fecha pasada", "Vous devez choisir une date passée"]
 

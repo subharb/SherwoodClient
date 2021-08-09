@@ -1,11 +1,11 @@
 import React from 'react'
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from './EnhancedTable';
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import { HOSPITAL_PATIENT } from '../../routes';
 
-export default function PatientsTable(props) {
+function PatientsTable(props) {
     const rows = props.patients.map(patient => {
         let tempRow = {};
         for(const pField of props.personalFields){
@@ -29,7 +29,7 @@ export default function PatientsTable(props) {
         )
     });
     const headCells = props.personalFields.map(pField => {
-        return { id: pField.name, alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.${pField.name}`} /> }
+        return { id: pField.name, alignment: "left", label: !props.translate(`investigation.create.personal_data.short-fields.${pField.name}`).includes("Missing") ? props.translate(`investigation.create.personal_data.short-fields.${pField.name}`) : pField.label }
     }) 
     return (
         <EnhancedTable noHeader noSelectable  titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
@@ -46,3 +46,5 @@ PatientsTable.propTypes = {
     showPatientCallBack:PropTypes.func,
     addInfoPatientCallBack:PropTypes.func
 }
+
+export default withLocalize(PatientsTable)

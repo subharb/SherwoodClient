@@ -20,6 +20,7 @@ class PersonalData extends Component{
 
         let availableFields = [];
         let selectedFields = [];
+        let customFields = [...props.initialData];
         const arrayKeys = Object.keys(PERSONAL_DATA_FIELDS);
         for(let i = 0; i < arrayKeys.length; i++){
             const currentKey = arrayKeys[i];
@@ -27,14 +28,20 @@ class PersonalData extends Component{
         
             if(props.initialData && props.initialData.find(fi => fi.name === currentKey)){
                 const initField = props.initialData.find(fi => fi.name === currentKey);
+            
                 personalField.required = initField.required;
                 personalField.order = initField.order;
                 selectedFields.push(personalField);
+                const initFieldIndex = customFields.findIndex(fi => fi.name === currentKey)
+                customFields.splice(initFieldIndex, 1);
             }
             else{
                 availableFields.push(personalField);
             }
         }
+        customFields.forEach(elem => {
+            selectedFields.push(elem);
+        })
         
         // this.initData = {}
         // if(this.props.initialData){

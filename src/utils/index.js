@@ -41,11 +41,11 @@ export function validateField(field, fieldCompare){
                 response.messageCode =  pathErroTranslation+"error_password"
                 break;
             case "textMin2" : 
-                response.result = Boolean(field.value && field.value.length > 2);
+                response.result = Boolean(field.value && field.value.length >= 2);
                 response.messageCode =  pathErroTranslation+"error_length2"
                 break;
             case "textMin6" : 
-                response.result = Boolean(field.value && field.value.length > 6);
+                response.result = Boolean(field.value && field.value.length >= 6);
                 response.messageCode =  pathErroTranslation+"error_length6"
                 break;
             case "notEmpty" : 
@@ -336,7 +336,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "birthdate",
         required : true,
         type:"date",
-        encrypted : false,
+        encrypted : true,
         label:"investigation.create.personal_data.fields.birthdate",
         shortLabel:"investigation.create.personal_data.fields.birthdate",
         validation : "pastDate"
@@ -375,7 +375,7 @@ export const PERSONAL_DATA_FIELDS = {
         encrypted : true,
         label:"investigation.create.personal_data.fields.email",
         shortLabel:"investigation.create.personal_data.fields.email",
-        validation : "textMin2"
+        validation : "validEmail"
     },
     "phone" : {
         name: "phone",
@@ -384,13 +384,13 @@ export const PERSONAL_DATA_FIELDS = {
         encrypted : true,
         label:"investigation.create.personal_data.fields.phone",
         shortLabel:"investigation.create.personal_data.fields.phone",
-        validation : "textMin2"
+        validation : "validPhone"
     },
     "sex" : {
         name: "sex",
         required : true,
         type:"select",
-        encrypted : false,
+        encrypted : true,
         label:"investigation.create.personal_data.fields.sex",
         shortLabel:"investigation.create.personal_data.fields.sex",
         validation : "notEmpty",
