@@ -456,7 +456,7 @@ export const basic_info1_raw = () => {
     });
     return tempBasicInfo;
 }
-export const selected_personal_data = ["name", "surnames", "birthdate", "health_id"];
+export const selected_personal_data = [{name : "name", type:"text", encrypted:true, required:true, order:0}, {name:"surnames", type:"text", required:true, order:1}, {name:"birthdate", type:"date", required:true, order:2}, {name:"health_id", type:"text", required:false, order:1}];
 
 export const personal_data_investigation1 = () => {
     return  [
@@ -517,9 +517,9 @@ export const patient_data_decrypted1 = () => {
 
 export const summary_info1 = () => {
     return {
-        "basic_info":  basic_info1_raw(),
+        ...basic_info1_raw(),
         "status" : 1,
-        "personal_data" : personal_data_investigation1(),
+        "personalFields" : personal_data_investigation1(),
         "surveys" : edc_data1().surveys
     }   
 }

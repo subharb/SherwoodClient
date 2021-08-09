@@ -152,14 +152,6 @@ export function NewInvestigation(props){
             component = <BasicInfo initialData={ props.initialState ? props.initialState.investigation : investigation } 
                             callBackData={addData} />
             break;
-        // case 1:
-        //     component = <PISGenerator callBackData={addData} 
-        //                     stepBack = {stepBack}/>
-        //     break;
-        // case 2:
-        //     component = <AddConsents consents={ investigation.consents }  personalFields={investigation.basic_info.personalData} callBackData={addData} 
-        //                     stepBack = {stepBack}/>
-        //     break;
         case 1: 
             component = <PersonalData initialData={props.initialState ? props.initialState.investigation.personalFields : investigation.personalFields } callBackStepBack = {stepBack}  callBackData={addData} />
             break;
@@ -204,10 +196,8 @@ export function NewInvestigation(props){
                     {component}
                 </Grid>
             </Grid>
-            
         </React.Fragment>
     );
-    
 }
 
 NewInvestigation.propTypes = {

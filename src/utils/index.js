@@ -41,11 +41,11 @@ export function validateField(field, fieldCompare){
                 response.messageCode =  pathErroTranslation+"error_password"
                 break;
             case "textMin2" : 
-                response.result = Boolean(field.value && field.value.length > 2);
+                response.result = Boolean(field.value && field.value.length >= 2);
                 response.messageCode =  pathErroTranslation+"error_length2"
                 break;
             case "textMin6" : 
-                response.result = Boolean(field.value && field.value.length > 6);
+                response.result = Boolean(field.value && field.value.length >= 6);
                 response.messageCode =  pathErroTranslation+"error_length6"
                 break;
             case "notEmpty" : 
@@ -196,7 +196,82 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.files", "value" : "file"},
                 {"label": "investigation.create.edc.family-background", "value" : "family-background"}
         ],
-        activationValues : ["dropdown", "multioption", "radio", "evaluation"],
+        activationValues : ["select", "multioption", "radio", "evaluation"],
+        activatedFields:[
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            },
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            }, 
+            {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            },
+            {
+                required : true,
+                type:"min_max",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            }]
+                                        
+    },
+    "label" : {
+        required : false,
+        type:"text",
+        label : "investigation.create.edc.question_field",
+        shortLabel: "investigation.table.question",
+        validation : "textMin6", 
+        size : "s6"
+    }
+}
+
+export const PERSONAL_FIELDS_FORM = {
+
+    "required":{
+        required : false,
+        type:"checkbox",
+        label:"investigation.create.edc.required",
+        shortLabel: "investigation.table.required",
+        validation : "notEmpty"
+    },
+    "name" : {
+        required : true,
+        type:"text",
+        label:"investigation.create.edc.name_field",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
+    "type" : {
+        required : true,
+        type:"select",
+        validation : "notEmpty",
+        label : "investigation.create.edc.choose",
+        shortLabel: "investigation.table.type",
+        defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+        options:[{"label" : "investigation.create.edc.type_text", "value" : "text"},
+                {"label": "investigation.create.edc.type_number", "value" : "number"},
+                {"label": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
+                {"label": "investigation.create.edc.type_date", "value" : "date"},
+                {"label": "investigation.create.edc.textarea", "value" : "textarea"},
+                {"label": "investigation.create.edc.dropdown", "value" : "select"},
+                {"label": "investigation.create.edc.multioption", "value" : "multioption"},
+                {"label": "investigation.create.edc.radio", "value" : "radio"},
+                {"label": "investigation.create.edc.evaluation", "value" : "evaluation"}
+        ],
+        activationValues : ["select", "multioption", "radio", "evaluation"],
         activatedFields:[
             {
                 required : true,
@@ -242,6 +317,7 @@ export const PERSONAL_DATA_FIELDS = {
     "name" : {
         required : true,
         name: "name",
+        encrypted : true,
         type:"text",
         label:"investigation.create.personal_data.fields.name",
         shortLabel:"investigation.create.personal_data.fields.name",
@@ -251,6 +327,7 @@ export const PERSONAL_DATA_FIELDS = {
         required : true,
         name: "surnames",
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.surname",
         shortLabel:"investigation.create.personal_data.fields.surname",
         validation : "textMin2"
@@ -259,6 +336,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "birthdate",
         required : true,
         type:"date",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.birthdate",
         shortLabel:"investigation.create.personal_data.fields.birthdate",
         validation : "pastDate"
@@ -267,6 +345,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "address",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.address",
         shortLabel:"investigation.create.personal_data.fields.address",
         validation : "textMin2"
@@ -275,6 +354,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "health_id",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.health_id",
         shortLabel:"investigation.create.personal_data.fields.health_id",
         validation : "textMin2"
@@ -283,6 +363,7 @@ export const PERSONAL_DATA_FIELDS = {
         name: "national_id",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.national_id",
         shortLabel:"investigation.create.personal_data.fields.national_id",
         validation : "textMin2"
@@ -291,22 +372,25 @@ export const PERSONAL_DATA_FIELDS = {
         name: "email",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.email",
         shortLabel:"investigation.create.personal_data.fields.email",
-        validation : "textMin2"
+        validation : "validEmail"
     },
     "phone" : {
         name: "phone",
         required : true,
         type:"text",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.phone",
         shortLabel:"investigation.create.personal_data.fields.phone",
-        validation : "textMin2"
+        validation : "validPhone"
     },
     "sex" : {
         name: "sex",
         required : true,
         type:"select",
+        encrypted : true,
         label:"investigation.create.personal_data.fields.sex",
         shortLabel:"investigation.create.personal_data.fields.sex",
         validation : "notEmpty",

@@ -440,7 +440,7 @@ function Patient(props) {
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>
-                                    ID: {patient.id}
+                                    ID: {patient.personalData.health_id ? patient.personalData.health_id : patient.id }
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>

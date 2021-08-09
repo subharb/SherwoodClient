@@ -8,6 +8,7 @@ import { ButtonContinue, ButtonAdd, ButtonBack } from '../../general/mini_compon
 import { EnhancedTable } from '../../general/EnhancedTable';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import OrderableTable from '../../general/OrderableTable';
 /**
  * An EDC is a collection of data_collections
  */
@@ -53,9 +54,7 @@ export default class EDC extends Component{
     getListStyle(isDraggingOver){
         //background: isDraggingOver ? 'lightblue' : 'lightgrey',
     }
-    onDragEnd(result){
-        console.log(result);
-    }
+    
     orderUpdate(dragDrop){
         console.log("Parent reorder");
         let tempState = {...this.state};
@@ -90,10 +89,12 @@ export default class EDC extends Component{
         if(!this.state.reordering){
             return([
                 <Grid item xs={12}>
-                    <EnhancedTable orderUpdate={(result) => this.orderUpdate(result)} noSelectable
+                    <OrderableTable onDragEnd={(result) => this.orderUpdate(result)} 
+                        orderUpdate={(result) => this.orderUpdate(result)} noSelectable 
+                        droppableId="edc"
                         titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
-                        actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} />
-                
+                        actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} 
+                        />
                 </Grid>,
                 <Grid item xs={12}>
                     {AddButton}

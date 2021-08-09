@@ -119,7 +119,7 @@ class Summary extends Component {
                         <EditIcon />
                     </IconButton> 
                 </Typography>
-                <EnhancedTable noHeader={true}  noSelectable= {true}titleTable=""  
+                <EnhancedTable noHeader noSelectable titleTable=""  
                     headCells={[{ id: "data_collection", alignment: "left", label: "Data Collections" }, 
                                 { id: "n_sections", alignment: "left", label: "Number sections" },
                     ]}
