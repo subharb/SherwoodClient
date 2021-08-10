@@ -124,7 +124,10 @@ function SearchPatients(props) {
             }
             else{
                 let formSearch = [...props.investigations.currentInvestigation.personalFields]
-                formSearch.push(ID_FIELD);
+                if(formSearch.length === 0){
+                    formSearch.push(ID_FIELD);
+                } 
+                
                 return(
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
