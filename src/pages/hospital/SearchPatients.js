@@ -14,6 +14,9 @@ import { Alert } from '@material-ui/lab';
 import { ButtonBack } from '../../components/general/mini_components';
 import { connect } from 'react-redux';
 import { PERSONAL_READ } from '../../constants';
+import { useDispatch } from "react-redux";
+import { updatePatientsFromId } from '../../redux/actions/patientsActions';
+import _ from 'lodash';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -31,18 +34,11 @@ function SearchPatients(props) {
     const [showResults, setShowResults] = useState(false);
 
     const history = useHistory();
-
+    const dispatch = useDispatch();
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
-    // useEffect(() => {
-    //     if(props.investigations.currentInvestigation){
-    //         props.investigations.currentInvestigation.personalFields.sort((a,b) => a.order - b.order).forEach(personalField => {
-    //             const copyField = {...personalField};
-    //             copyField.required = false;
-    //             personalFieldsForm[personalField.name] = copyField
-    //         });
-    //         setDecryptedPatientData(decryptPatientsData(props.investigations.currentInvestigation.patientsPersonalData, props.investigations.currentInvestigation))
-    //     }
-    // }, [props.investigations.currentInvestigation])
+
+    const [valuesSearch, setValuesSearch] = useState(null);
+
     function backToSearch(){
         setFilteredPatients([]);
         setShowResults(false);
@@ -54,37 +50,13 @@ function SearchPatients(props) {
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
-    function searchPatientCallBack(values){
+    async function searchPatientCallBack(values){
         console.log(values);
-        setShowResults(true); 
-        let filteredPatients = [];
-        if(values.hasOwnProperty("id")){
-            filteredPatients = patients.filter(pat => pat.id === parseInt(values["id"]))
-        }
-        else{
-            //Filtrar decryptedPatientData con values
-            filteredPatients = patients.sort((a,b) => b.id - a.id).filter(patient =>{
-                let result = true;
-                for(const keyValue of Object.keys(values)){
-                    const value = values[keyValue];
-                    const pF = props.investigations.currentInvestigation.personalFields.find(pp => pp.name === keyValue);
-                    if(pF.options.length > 0){
-                        if(value !== "" && patient.personalData[keyValue] !== value){
-                            result = false;
-                        }
-                    }
-                    else{
-                        if(value !== "" && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
-                            result = false;
-                        }
-                    }
-                    
-                }
-                return result;
-            });
-        }
+        setValuesSearch(values);
         
-        setFilteredPatients(filteredPatients);
+        await dispatch(updatePatientsFromId(props.investigations.currentInvestigation, patients[0].id)); 
+
+        
     }
     function renderCore(){
         if(!showResults){
@@ -103,8 +75,7 @@ function SearchPatients(props) {
                     <Paper style={{padding:'1rem'}}>
                         <Translate id="pages.hospital.search-patient.note" />
                         <Form fields={personalFieldsForm} selectRow={(index) =>patientSelected(index)} 
-                            submitText="investigation.search-patients.search" callBackForm={searchPatientCallBack}/>
-                        
+                            submitText="investigation.search-patients.search" callBackForm={searchPatientCallBack} />
                     </Paper>
                 </Box>
                 
@@ -142,8 +113,41 @@ function SearchPatients(props) {
             }
         }
     }
-
-    if(!props.investigations.data){
+    useEffect(() => {
+        if(!props.patients.loading && valuesSearch !== null){
+            setShowResults(true); 
+            let filteredPatients = [];
+            if(valuesSearch.hasOwnProperty("id")){
+                filteredPatients = patients.filter(pat => pat.id === parseInt(valuesSearch["id"]))
+            }
+            else{
+                //Filtrar decryptedPatientData con values
+                
+                filteredPatients = patients.sort((a,b) => b.id - a.id).filter(patient =>{
+                    let result = true;
+                    for(const keyValue of Object.keys(valuesSearch)){
+                        const value = valuesSearch[keyValue];
+                        const pF = props.investigations.currentInvestigation.personalFields.find(pp => pp.name === keyValue);
+                        if(pF.options.length > 0){
+                            if(value !== "" && patient.personalData[keyValue] !== value){
+                                result = false;
+                            }
+                        }
+                        else{
+                            if(value !== "" && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
+                                result = false;
+                            }
+                        }
+                        
+                    }
+                    return result;
+                });
+            }
+        
+            setFilteredPatients(filteredPatients);
+        }
+    }, [props.patients.loading])
+    if(!props.investigations.data || props.patients.loading){
         return <Loader />
     }
     return (

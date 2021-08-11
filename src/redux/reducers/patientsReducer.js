@@ -14,10 +14,22 @@ import { decryptPatientsData, decryptSinglePatientData } from '../../utils';
 export default function reducer(state = initialState, action){
     console.log(action)
     let newState = { ...state};
+    let tempInvestigations;
     switch(action.type){
+        case types.FETCH_NEW_PATIENTS_SUCCESS:
+            let tempPatients = [...newState.data[action.investigation.uuid]];
+            
+            for(const patient of action.patients){
+                patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, action.investigation) : null;
+                tempPatients.push(patient);
+            }
+            newState.data[action.investigation.uuid] = tempPatients;
+            newState.loading = initialState.loading;
+            newState.error = initialState.error;                         
+            return newState;
         case types.FETCH_INVESTIGATIONS_SUCCESS:
             //Desencripto los datos de los pacientes
-            let tempInvestigations = {};
+            tempInvestigations = {};
             for(const investigation of action.investigations){
                 if(investigation.patientsPersonalData.length !== 0){
                     let tempDecryptedData = [];

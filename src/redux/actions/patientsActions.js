@@ -1,6 +1,6 @@
 import * as types from "../../constants";
 import {
-    addPatient as addPatientService, updatePersonalDataPatientService,
+    addPatient as addPatientService, updatePersonalDataPatientService, getPatientsFromId,
 } from "../../services/sherwoodService";
 
 export function savePatientAction(investigation, patientData) {
@@ -33,6 +33,36 @@ export function savePatientAction(investigation, patientData) {
         }
         
        
+      });
+  };
+}
+
+export function updatePatientsFromId(investigation, idPatient) {
+ 
+  return async (dispatch) => {
+    dispatch({ type: types.SAVE_PATIENT_LOADING });
+
+    return getPatientsFromId(investigation.uuid, idPatient)
+      .then((response) => {
+        dispatch({
+          type: types.FETCH_NEW_PATIENTS_SUCCESS,
+          patients: [...response.patients],
+          investigation:investigation
+        });
+      })
+      .catch((error) => {
+        if(!error.status && !error.response){
+                  
+          dispatch({
+            type: types.FETCH_NEW_PATIENTS_SUCCESS,
+            investigation:{investigation:{investigation:{patientsPersonalData:[]}}},
+            patients: [],
+          });
+        }
+        else{
+          dispatch({ type: types.SAVE_PATIENT_ERROR });
+          throw error;
+        }
       });
   };
 }
