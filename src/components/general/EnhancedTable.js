@@ -48,6 +48,11 @@ const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
 
 const Paper = styled(MuiPaper)(spacing);
 
+const TableSizes = styled(Table)`
+    ${({ miniTable }) => !miniTable && `
+        min-width:600px
+    `}
+    `;
 const Chip = styled(MuiChip)`
 ${spacing};
 
@@ -420,7 +425,7 @@ return (
             <EnhancedTableToolbar title={titleTable} numSelected={selected.length} />
         }
         <TableContainer>
-        <Table style={{xminWidth: "600px"}}
+        <TableSizes miniTable={props.miniTable} 
             aria-labelledby="tableTitle"
             size={"medium"}
             aria-label="enhanced table"
@@ -442,7 +447,7 @@ return (
                 renderBody()
             }
             
-        </Table>
+        </TableSizes>
         </TableContainer>
         {
             !props.noFooter &&

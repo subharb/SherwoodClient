@@ -440,7 +440,15 @@ function Patient(props) {
                             </Grid>
                             <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>
-                                    ID: {patient.personalData.health_id ? patient.personalData.health_id : patient.id }
+                                    {
+                                        patient.personalData.health_id &&
+                                        [<Translate id="investigation.create.personal_data.fields.health_id" />, ":", patient.personalData.health_id]
+                                    }
+                                    {
+                                        !patient.personalData.health_id &&
+                                        ["ID", ":", patient.id ]
+                                    }                                    
+                                    
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>

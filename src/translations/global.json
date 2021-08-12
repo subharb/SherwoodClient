@@ -507,6 +507,7 @@
                 "STUDENT" : ["Student", "Estudiante", "Étudiant"],
                 "SHERWOOD_STAFF" : ["Sherwood Staff", "Sherwood Staff", "Sherwood Staff"],
                 "DOCTOR" : ["Medical Doctor", "Médico", "Médecin"],
+                "PRIVATE_DOCTOR" : ["Private Doctor", "Médico Privado", "Médecin Privée"],
                 "ADMIN" : ["Administrator", "Administrador", "Administrateur"],
                 "NURSE" : ["Nurse", "Enfermería", "Infirmière"],
                 "BUSINESS_MANAGER" : ["Executive director", "Director ejecutivo ", "Directeur général"],

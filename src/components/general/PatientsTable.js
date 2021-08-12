@@ -18,7 +18,9 @@ function PatientsTable(props) {
                         day: '2-digit'
                         }).replace(/\./g, '/');
                 }
-                
+                if(pField.name === 'sex'){
+                    value = <Translate id={`hospital.analytics.graphs.sex.${patient.personalData[pField.name].toLowerCase()}`} />
+                }
                 tempRow[pField.name] = value;
             }
             
