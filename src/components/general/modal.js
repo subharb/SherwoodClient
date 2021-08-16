@@ -9,6 +9,7 @@ import { Dialog,
     Button, TextField,DialogActions, Card, CardContent
 } from "@material-ui/core";
 import PropTypes from 'prop-types'; 
+import { Translate } from 'react-localize-redux';
 
 export default function Modal(props){
 
@@ -34,11 +35,11 @@ export default function Modal(props){
                 <DialogActions>
                     {props.closeModal &&
                         <Button onClick={props.closeModal} data-testid="cancel-modal" color="primary">
-                            Cancel
+                            <Translate id="general.cancel" />
                         </Button>
                     }
                     <Button onClick={props.confirmAction} data-testid="continue-modal" color="primary">
-                        Continue
+                        <Translate id="general.continue" />
                     </Button>
                 </DialogActions> 
             }

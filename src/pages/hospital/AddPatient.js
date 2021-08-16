@@ -16,10 +16,12 @@ import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { Alert } from '@material-ui/lab';
 import { PERSONAL_ACCESS } from '../../constants';
 import { ROUTE_401, ROUTE_404 } from '../../routes';
+import { areSameBirthDates } from '../../utils';
+import Modal from '../../components/general/modal';
 
 export function AddPatient(props) {
     let { uuidPatient } = useParams();
-
+    
     const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     return <AddPatientComponent investigations={props.investigations} patient={patient} {...props} />
 }   
@@ -27,6 +29,7 @@ export function AddPatient(props) {
 export function AddPatientComponent(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
+    const [confirmPatient, setConfirmPatient] = useState(null);
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -56,6 +59,37 @@ export function AddPatientComponent(props) {
         }
         
     }, [props.patients.loading])
+    async function callBackSaveUpdate(patientData, rawPatientData){
+        if(!props.patient){
+            //Si es guardar, verifica si este paciente ya estaba
+            const existingPatient = props.patients.data[props.investigations.currentInvestigation.uuid].find((pat) => {
+                if(rawPatientData.hasOwnProperty("health_id") && pat.personalData["health_id"] === patientData.personalData["health_id"]){
+                    return true;
+                }
+                const rawName = rawPatientData["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const rawSurName = rawPatientData["surnames"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const patName = pat.personalData["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const patSurname = pat.personalData["surnames"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                console.log(`${rawName} === ${patName} =>${rawName === patName}`);
+                console.log(`${rawSurName} === ${patSurname} =>${rawSurName === patSurname}`);
+                console.log(`${rawPatientData["birthdate"]} === ${pat.personalData["birthdate"]} =>${rawPatientData["birthdate"] === pat.personalData["birthdate"]}`);
+                
+                if(rawPatientData["name"] === pat.personalData["name"] && 
+                    rawPatientData["surnames"] === pat.personalData["surnames"] &&
+                    areSameBirthDates(rawPatientData["birthdate"], pat.personalData["birthdate"]))
+                return true;
+            });
+            if(existingPatient){
+                //showModal    
+                setConfirmPatient({
+                    rawData : rawPatientData,
+                    encryptedData: patientData
+                });
+                return;
+            }
+        }
+        saveUpdatePatient(patientData)
+    }
     async function saveUpdatePatient(patientData){
         try{
             setIsLoading(true);
@@ -68,7 +102,8 @@ export function AddPatientComponent(props) {
                 await dispatch( savePatientAction(props.investigations.currentInvestigation, patientData));
                 
             }
-            setIsLoading(false);            
+            setIsLoading(false);   
+            setConfirmPatient(null);   
         }
         catch(error){
             setIsLoading(true);
@@ -84,6 +119,26 @@ export function AddPatientComponent(props) {
     }
     return (
         <BoxBckgr color="text.primary" style={{color:"white"}}>
+            <Modal key="modal" open={confirmPatient} 
+                title={<Translate id="pages.hospital.confirm-patient.title" />}
+                closeModal={() => setConfirmPatient(null)}
+                confirmAction={() => saveUpdatePatient(confirmPatient.encryptedData)}>
+                    {
+                        confirmPatient &&
+                        [<Translate id="pages.hospital.confirm-patient.description" />,
+                        <div>
+                            {
+                                confirmPatient.rawData.hasOwnProperty("health_id") && 
+                                <p><Translate id="investigation.create.personal_data.fields.health_id" />: {confirmPatient.rawData["health_id"]}</p>
+                            }
+                            <p><Translate id="investigation.create.personal_data.fields.name" />: {confirmPatient.rawData["name"]}</p>
+                            <p><Translate id="investigation.create.personal_data.fields.surnames" />: {confirmPatient.rawData["surnames"]}</p>
+                            <p><Translate id="investigation.create.personal_data.fields.birthdate" />: {confirmPatient.rawData["birthdate"].toLocaleDateString()}</p>
+                        </div>
+                        ]
+                    }
+                
+            </Modal>
             <Snackbar
                 anchorOrigin={{
                 vertical: 'top',
@@ -125,7 +180,8 @@ export function AddPatientComponent(props) {
                         <PersonalDataForm fields={ props.investigations.currentInvestigation.personalFields} hospital={true}
                             keyResearcherInvestigation={props.investigations.currentInvestigation.keyResearcherInvestigation}
                             submitText={props.patient ? "general.update" : null}
-                            initialData={props.patient ? props.patient.personalData : null} callBackForm={(personalData) => saveUpdatePatient(personalData)}/>
+                            initialData={props.patient ? props.patient.personalData : null} 
+                            callBackForm={(personalData, rawPersonalData) => callBackSaveUpdate(personalData, rawPersonalData)}/>
                     </Paper>
                 </Grid>
             </Grid>

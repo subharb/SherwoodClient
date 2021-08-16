@@ -44,7 +44,7 @@ export default function PersonalDataForm(props) {
         props.callBackForm({
             "keyPatInv" : patientKeyEncrInvestigation,
             "personalData" : encryptedData
-        });
+        }, data);
         // //TEST
         // for (const key of Object.keys(encryptedData)) {
         //     const decriptedValue =  decryptData(encryptedData[key], rawPatientKeyResearcher);
