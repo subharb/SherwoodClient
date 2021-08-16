@@ -72,10 +72,10 @@ export function AddPatientComponent(props) {
                 const patSurname = pat.personalData["surnames"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 console.log(`${rawName} === ${patName} =>${rawName === patName}`);
                 console.log(`${rawSurName} === ${patSurname} =>${rawSurName === patSurname}`);
-                console.log(`${rawPatientData["birthdate"]} === ${pat.personalData["birthdate"]} =>${rawPatientData["birthdate"] === pat.personalData["birthdate"]}`);
+                console.log(`${rawPatientData["birthdate"]} === ${pat.personalData["birthdate"]} =>${areSameBirthDates(rawPatientData["birthdate"], pat.personalData["birthdate"])}`);
                 
-                if(rawPatientData["name"] === pat.personalData["name"] && 
-                    rawPatientData["surnames"] === pat.personalData["surnames"] &&
+                if(rawName === patName && 
+                    rawSurName === patSurname &&
                     areSameBirthDates(rawPatientData["birthdate"], pat.personalData["birthdate"]))
                 return true;
             });
