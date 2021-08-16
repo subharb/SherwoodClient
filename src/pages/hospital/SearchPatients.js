@@ -53,7 +53,7 @@ function SearchPatients(props) {
     async function searchPatientCallBack(values){
         console.log(values);
         setValuesSearch(values);
-        const maxPatId = patients.reduce((a, b) => { return a.id > b.id ? a.id : b.id });
+        const maxPatId = patients.length === 0 ? 0 : patients.length === 1 ? patients[0].id : patients.reduce((a, b) => { return a.id > b.id ? a.id : b.id });
         await dispatch(updatePatientsFromId(props.investigations.currentInvestigation, maxPatId)); 
 
         
