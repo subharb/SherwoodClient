@@ -66,10 +66,14 @@ export function AddPatientComponent(props) {
                 if(rawPatientData.hasOwnProperty("health_id") && pat.personalData["health_id"] === patientData.personalData["health_id"]){
                     return true;
                 }
-                console.log(`${rawPatientData["name"]} === ${pat.personalData["name"]} =>${rawPatientData["name"] === pat.personalData["name"]}`);
-                console.log(`${rawPatientData["surnames"]} === ${pat.personalData["surnames"]} =>${rawPatientData["surnames"] === pat.personalData["surnames"]}`);
+                const rawName = rawPatientData["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const rawSurName = rawPatientData["surnames"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const patName = pat.personalData["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const patSurname = pat.personalData["surnames"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                console.log(`${rawName} === ${patName} =>${rawName === patName}`);
+                console.log(`${rawSurName} === ${patSurname} =>${rawSurName === patSurname}`);
                 console.log(`${rawPatientData["birthdate"]} === ${pat.personalData["birthdate"]} =>${rawPatientData["birthdate"] === pat.personalData["birthdate"]}`);
-
+                
                 if(rawPatientData["name"] === pat.personalData["name"] && 
                     rawPatientData["surnames"] === pat.personalData["surnames"] &&
                     areSameBirthDates(rawPatientData["birthdate"], pat.personalData["birthdate"]))
