@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
-import FieldSherwood from './FieldSherwood-fn';
+import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
@@ -16,6 +16,7 @@ import { Grid } from '@material-ui/core';
  * @param Boolean creating - If we are creating a form
  * 
  */
+
 
 
   const required = (value) => (value ? undefined : "Required");
@@ -57,14 +58,36 @@ const renderField = ({
       </div>
     );
   };
-
+const testSherwood = (value, key) => {
+    console.log("Validamos "+key);
+    return "ERRRORRR";
+}
 class Form extends Component {
     constructor(props){
         super(props);
-
+        this.sherwoodValidation = this.sherwoodValidation.bind(this)
         this.renderOptions = this.renderOptions.bind(this);
         //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
         this.state = {showOptions:{}}
+    }
+    sherwoodValidation(value, allValues, propsForm, key){
+        if(this.props.fields[key]){
+            const fieldValueCompare = this.props.fields[key].validationField ? value : this.props.fields[key].validationValue ? this.props.translate(this.props.fields[key].validationValue) : null;
+            const valueField = this.props.fields[key].type === "textarea" && typeof value !== "undefined" ? value.replace(/<[^>]+>/g, '') : value;
+            const validationFunc = this.props.fields[key].validation ? this.props.fields[key].validation : "notEmpty";
+            const validation = validateField({  
+                                    value : valueField, 
+                                    validation:validationFunc, 
+                                    required:this.props.fields[key].required
+                                },
+                                fieldValueCompare);
+
+            return validation.result ? undefined : validation.messageCode;
+            
+        }
+        else{
+            return undefined;
+        }
     }
     callBackForm(values){
         //Filtro los que sean undefined
@@ -208,38 +231,17 @@ class Form extends Component {
         return(
             <div className="container">
                 <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.callBackForm(values)})}  >
-                    <Field
-                        name="username"
-                        type="text"
-                        component={renderField}
-                        label="Username"
-                        validate={[required, maxLength15]}
-                    />
-                    <Field
-                        name="email"
-                        type="email"
-                        component={FieldSherwood}
-                        label="Email"
-                        validate={email}
-                        warn={aol}
-                    />
-                    <Field
-                        name="age"
-                        type="number"
-                        component={FieldSherwood}
-                        label="Age"
-                        validate={[required, number, minValue18]}
-                        warn={tooOld}
-                    />
+                    
+
                     {Object.keys(this.props.fields).map(key => {
                         return(
                             <Field
                                 name={this.props.fields[key].name}
                                 type={this.props.fields[key].type}
                                 component={FieldSherwood}
+                                key={key}
                                 label={this.props.fields[key].label}
-                                validate={[required, number, minValue18]}
-                                warn={tooOld}
+                                validate={[this.sherwoodValidation]}
                             />
                         );
                     })}

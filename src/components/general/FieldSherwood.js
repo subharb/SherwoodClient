@@ -98,12 +98,12 @@ class FieldSherwood extends PureComponent{
         }
 
     }
-    shouldComponentUpdate(nextProps, nextState){
-        console.log("shouldComponentUpdate");
-        console.log(`NextProps: ${nextProps.input.value} Props: ${this.props.input.value} Result: ${nextProps.input.value !== this.props.input.value}`);
+    // shouldComponentUpdate(nextProps, nextState){
+    //     console.log("shouldComponentUpdate");
+    //     console.log(`NextProps: ${nextProps.input.value} Props: ${this.props.input.value} Result: ${nextProps.input.value !== this.props.input.value}`);
         
-        return (nextProps.input.value !== this.props.input.value);
-    }
+    //     return (nextProps.input.value !== this.props.input.value);
+    // }
     handleRadioChange(event){
         console.log(event);
         this.props.input.onChange(event.target.value);

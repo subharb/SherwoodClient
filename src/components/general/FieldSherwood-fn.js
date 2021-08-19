@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react'
+import React, { Component, PureComponent, useEffect, useState } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -78,30 +78,91 @@ export const TextFieldSherwood = styled(TextField)`
 `;
 
 function FieldSherwood(props) {
-    const {input, label, meta, type, options, size, removeClass, validation, country} = this.props;
+    const [optionsRemote, setOptionsRemote] = useState([]);
+    const [date, setDate] = useState(new Date());
+    const [loading, setLoading] = useState(false);
+
+    const typeMargin = "dense";//dense, none;
+    const {input, label, meta, type, options, size, removeClass, validation, country} = props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
-        const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
-        const labelString = label.hasOwnProperty("url") ? <a target="_blank" without rel="noreferrer" href={label.url} >{this.props.translate(label.label)}</a> : this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
+        const errorString = meta.error && errorState ? props.translate(meta.error) : "";
+        const labelString = label.hasOwnProperty("url") ? <a target="_blank" without rel="noreferrer" href={label.url} >{props.translate(label.label)}</a> : props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : props.translate(label);
+    function handleRadioChange(event){
+        console.log(event);
+        props.input.onChange(event.target.value);
+    }
+    function multiOptionSelected(value){
+        let tempValue = [value];
+        if(props.input.value !== ""){
+            let index = props.input.value.indexOf(value);
+            if (index !== -1){
+                tempValue = [...props.input.value];
+                tempValue.splice(index, 1);
+            } 
+            else{
+                tempValue = props.input.value.concat([value]);
+            }
+        }
+        props.input.onChange(tempValue);
+        
+    }
+    function autoCompleteChanged(value){
+        console.log("Este es el value "+value);
+        if(value.length > 4){
+            setLoading(true);
+        }
+        
+    }
+    function diagnosesSelected(listDiagnoses){
+        props.input.onChange(listDiagnoses);
+    }
+    function resetDiagnose(){
+        props.input.onChange(undefined);
+    }
+    function treatmentSelected(treatments){
+        props.input.onChange(treatments);
+    }
+    function handleDateChange(value){
+        props.input.onChange(value);
+    }
+    function selectChange(value){
+        props.input.onChange(value);
+    }
+    function imagesSelected(images){
+        props.input.onChange(images);
+    }
+    useEffect(() => {
+        async function getRemoteOptions(){
+            if(typeof props.optionsUrl !== "undefined"){
+                const request = await axios.get(props.optionsUrl);
+                if(request.status === 200){
+                    let options = request.data.map(opt => {return {"label" : opt.code, "value":opt.id}});
+                    setOptionsRemote(options);
+                }
+            }
+        }
+        getRemoteOptions();
+    }, [])
         switch(type){
             case "select":
                 let optionsArray = [];
-                if(typeof this.props.optionsUrl !== "undefined"){
-                    optionsArray = this.state.options.map(anOption => {
-                        const optionString = this.props.translate(`countries.${anOption.label}`).indexOf("Missing translationId:") !== -1 ?  anOption.label : this.props.translate(`countries.${anOption.label}`);
+                if(typeof props.optionsUrl !== "undefined"){
+                    optionsArray = optionsRemote.map(anOption => {
+                        const optionString = props.translate(`countries.${anOption.label}`).indexOf("Missing translationId:") !== -1 ?  anOption.label : props.translate(`countries.${anOption.label}`);
                         return <MenuItem value={anOption.value}>{optionString}</MenuItem>
                     })
                 }
                 else{
                     optionsArray = options.map(option => {
-                        const optionText = this.props.translate(option.label).indexOf("Missing translationId:") !== -1 ?  option.label : this.props.translate(option.label);
+                        const optionText = props.translate(option.label).indexOf("Missing translationId:") !== -1 ?  option.label : props.translate(option.label);
                     return <MenuItem value={option.value}>{optionText}</MenuItem>
                         
                     })
                 }
                 const labelId = `${input.name}_label`;
                 return(
-                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} error={errorState} >
+                    <FormControl mt={3} variant="outlined" margin={typeMargin} style={{width:"235px"}} error={errorState} >
                         <InputLabel id={labelId}>{labelString}</InputLabel>
                         <Select
                         labelId={labelId}
@@ -116,14 +177,14 @@ function FieldSherwood(props) {
                 )
             // case "select":
             //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
-            //         activationValues={activationValues} onChange={(value) => this.selectChange(value)}/>
+            //         activationValues={activationValues} onChange={(value) => selectChange(value)}/>
 
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value.includes(option.value)){
-                            return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
+                            return <ButtonCheck onClick={() => multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
                         }
-                        return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonEmptyCheck>
+                        return <ButtonEmptyCheck onClick={() => multiOptionSelected(option.value)}>{option.text}</ButtonEmptyCheck>
                     });
                     console.log("optionButtons",input.value);
                     return ([
@@ -143,7 +204,7 @@ function FieldSherwood(props) {
                 return(
                     <FormControl component="fieldset">
                         <FormLabel component="legend">{labelString}</FormLabel>
-                        <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={this.handleRadioChange}>
+                        <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={handleRadioChange}>
                             {
                                 options.map(option => {
                                     return <FormControlLabel value={option.value} control={<Radio />} label={option.label} />
@@ -171,7 +232,7 @@ function FieldSherwood(props) {
                     <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
                         <KeyboardDatePicker
                             disableToolbar
-                            margin={this.typeMargin}
+                            margin={typeMargin}
                             id={input.name}
                             inputVariant="outlined"
                             style={{width: "235px"}}
@@ -181,7 +242,7 @@ function FieldSherwood(props) {
                             value={value}
                             defaultValue={value} 
                             openTo="year"
-                            onChange={this.handleDateChange}
+                            onChange={handleDateChange}
                             maxDate={validation === "pastDate" ? new Date() : undefined}
                             emptyLabel={labelString}
                             KeyboardButtonProps={{
@@ -197,13 +258,13 @@ function FieldSherwood(props) {
                 return (
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <KeyboardTimePicker
-                            margin={this.typeMargin}
+                            margin={typeMargin}
                             size="small"
                             inputVariant="outlined"
                             id={input.name}
                             label={labelString}
                             value={input.value === "" ? new Date() : input.value}
-                            onChange={this.handleDateChange}
+                            onChange={handleDateChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change time',
                             }}
@@ -222,7 +283,7 @@ function FieldSherwood(props) {
                     }
                     arrayButtons.push(
                         <EvaluateElement>
-                            <Icon onClick={()=>this.props.input.onChange(i)}></Icon>
+                            <Icon onClick={()=>props.input.onChange(i)}></Icon>
                             <SpanElement><Typography variant="body2" gutterBottom>{i}</Typography></SpanElement>
                         </EvaluateElement>
                     )
@@ -275,9 +336,9 @@ function FieldSherwood(props) {
                 return(
                     <Autocomplete
                         id={input.name}
-                        options={this.state.options}
+                        options={optionsRemote}
                         onInputChange={(event, newValue) => {
-                            this.autoCompleteChanged(newValue);
+                            autoCompleteChanged(newValue);
                           }}
                         getOptionLabel={(option) => option.title}
                         style={{ width: 300 }}
@@ -286,7 +347,7 @@ function FieldSherwood(props) {
                 );
             case "file" : 
                 return <File label={labelString} mode="form"
-                            imagesSelected = {(images) => this.imagesSelected(images) }
+                            imagesSelected = {(images) => imagesSelected(images) }
                             type={type} {...input} 
                             value={input.value} />
             case "allergy":
@@ -297,9 +358,9 @@ function FieldSherwood(props) {
             case "treatment_regular" : 
                 return(
                     <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
-                        variant="outlined" margin={this.typeMargin} error={errorState} country={country}
-                        helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
-                        size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
+                        variant="outlined" margin={typeMargin} error={errorState} country={country}
+                        helperText={errorString} resetDiagnose={resetDiagnose} typeMargin={typeMargin} 
+                        size="small" slaves={props.slaves} elementSelected={(listDiagnoses) => diagnosesSelected(listDiagnoses)} />
                 );
             case "separator":
                 return(
@@ -309,11 +370,11 @@ function FieldSherwood(props) {
             default:    
                 console.log("TextFieldSherwood",input.value);
                 return(
-                    <TextFieldSherwood {...input} variant="outlined" margin={this.typeMargin}
+                    <TextFieldSherwood {...input} variant="outlined" margin={typeMargin}
                         label={labelString} error={errorState} size="small"
                         helperText={errorString} />
                 )
         }
 }
 
-export default FieldSherwood;
+export default withLocalize(FieldSherwood);
