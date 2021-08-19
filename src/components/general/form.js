@@ -185,11 +185,11 @@ class Form extends Component {
     }
     renderFields(){
         let fieldsMarkup = [];
-        let currentSection = null;
+        let currentSection = [];
         Object.keys(this.props.fields).map((key, index) => {
             if(this.props.fields[key].type !== "options"){
                 if(this.props.fields[key].type === "separator"){
-                    if(currentSection !== null){
+                    if(currentSection.length > 0){
                         fieldsMarkup.push(
                             <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >
                                 {currentSection}
@@ -199,22 +199,23 @@ class Form extends Component {
                     currentSection = [];
                 }
                 
-                    currentSection.push(
-                        <div className="row" key={key}>
-                            <Field
-                                name={this.props.fields[key].name}
-                                type={this.props.fields[key].type}
-                                component={FieldSherwood}
-                                key={key}
-                                label={this.props.fields[key].label}
-                                validate={[this.sherwoodValidation]}
-                            />
-                            {
-                                this.renderExtraFields(key)
-                            }
-                        </div>
-                        
-                    );
+                currentSection.push(
+                    <div className="row" key={key}>
+                        <Field
+                            name={this.props.fields[key].name}
+                            type={this.props.fields[key].type}
+                            component={FieldSherwood}
+                            key={key}
+                            label={this.props.fields[key].label}
+                            validate={[this.sherwoodValidation]}
+                            {...this.props.fields[key]}
+                        />
+                        {
+                            this.renderExtraFields(key)
+                        }
+                    </div>
+                    
+                );
                 
                 if(index === Object.keys(this.props.fields).length -1){
                     fieldsMarkup.push(
