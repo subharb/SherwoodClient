@@ -6,7 +6,7 @@ import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
-import { Grid } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 
 
  /**
@@ -17,54 +17,11 @@ import { Grid } from '@material-ui/core';
  * 
  */
 
-
-
-  const required = (value) => (value ? undefined : "Required");
-  const maxLength = (max) => (value) =>
-    value && value.length > max ? `Must be ${max} characters or less` : undefined;
-  const maxLength15 = maxLength(15);
-  const number = (value) =>
-    value && isNaN(Number(value)) ? "Must be a number" : undefined;
-  const minValue = (min) => (value) =>
-    value && value < min ? `Must be at least ${min}` : undefined;
-  const minValue18 = minValue(18);
-  const email = (value) =>
-    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-      ? "Invalid email address"
-      : undefined;
-  const tooOld = (value) =>
-    value && value > 65 ? "You might be too old for this" : undefined;
-  const aol = (value) =>
-    value && /.+@aol\.com/.test(value)
-      ? "Really? You still use AOL for your email?"
-      : undefined;
-
-const renderField = ({
-    input,
-    label,
-    type,
-    meta: { touched, error, warning }
-  }) => {
-    console.log("renderField: " + label);
-    return (
-      <div>
-        <label>{label}</label>
-        <div>
-          <input {...input} placeholder={label} type={type} />
-          {touched &&
-            ((error && <span>{error}</span>) ||
-              (warning && <span>{warning}</span>))}
-        </div>
-      </div>
-    );
-  };
-const testSherwood = (value, key) => {
-    console.log("Validamos "+key);
-    return "ERRRORRR";
-}
 class Form extends Component {
     constructor(props){
         super(props);
+
+        this.renderFields= this.renderFields.bind(this);
         this.sherwoodValidation = this.sherwoodValidation.bind(this)
         this.renderOptions = this.renderOptions.bind(this);
         //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
@@ -226,15 +183,24 @@ class Form extends Component {
             }
         }
     }
-    render() {
-        const dataTestId = this.props.dataTestid ? "data-testid='"+this.props.dataTestid+"'": "";
-        return(
-            <div className="container">
-                <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.callBackForm(values)})}  >
-                    
-
-                    {Object.keys(this.props.fields).map(key => {
-                        return(
+    renderFields(){
+        let fieldsMarkup = [];
+        let currentSection = null;
+        Object.keys(this.props.fields).map((key, index) => {
+            if(this.props.fields[key].type !== "options"){
+                if(this.props.fields[key].type === "separator"){
+                    if(currentSection !== null){
+                        fieldsMarkup.push(
+                            <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >
+                                {currentSection}
+                            </Paper>
+                        );
+                    }
+                    currentSection = [];
+                }
+                
+                    currentSection.push(
+                        <div className="row" key={key}>
                             <Field
                                 name={this.props.fields[key].name}
                                 type={this.props.fields[key].type}
@@ -243,8 +209,33 @@ class Form extends Component {
                                 label={this.props.fields[key].label}
                                 validate={[this.sherwoodValidation]}
                             />
-                        );
-                    })}
+                            {
+                                this.renderExtraFields(key)
+                            }
+                        </div>
+                        
+                    );
+                
+                if(index === Object.keys(this.props.fields).length -1){
+                    fieldsMarkup.push(
+                        <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >
+                            {currentSection}
+                        </Paper>
+                    );
+                }
+            }
+            
+        })
+        return fieldsMarkup;
+    }
+    render() {
+        const dataTestId = this.props.dataTestid ? "data-testid='"+this.props.dataTestid+"'": "";
+        return(
+            <div className="container">
+                <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.callBackForm(values)})}  >
+                    {
+                        this.renderFields()
+                    }
                     {/* {Object.keys(this.props.fields).map(key => {
                         console.log(this.props.typeValue);
                         if(this.props.fields[key].type !== "options"){

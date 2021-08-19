@@ -46,12 +46,9 @@ export default function FillDataCollection(props) {
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Paper elevation={3} style={{padding:"1rem"}} >
-                            {
-                                renderSection()
-                            }
-                            
-                        </Paper>
+                        {
+                            renderSection()
+                        }
                     </Grid>
                 </Grid>
             </Grid>
