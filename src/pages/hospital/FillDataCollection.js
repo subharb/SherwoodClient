@@ -6,6 +6,36 @@ import PropTypes from 'prop-types';
 
 export default function FillDataCollection(props) {
         
+    function renderSection(){
+        if(props.sectionSelected){
+            return (<SectionForm initData={props.initData} key={props.sectionSelected.uuid} 
+                country={props.investigation.country}
+                fields={props.sectionSelected.fields.sort((a,b) => a.order - b.order)} 
+                callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>)
+        }
+        else{
+            let fields = [];
+            props.dataCollection.sections
+                .sort((a,b) => a.order - b.order)
+                .forEach((section, index) =>{
+                    fields.push({
+                        type:"separator",
+                        label:section.name,
+                        name:"separator_"+index,
+                        required:false, 
+                        validation: "notEmpty",
+                        id:index
+                    });
+                    fields = fields.concat(section.fields);
+            })
+            return(
+                <SectionForm initData={props.initData} key={props.dataCollection.uuid} 
+                    country={props.investigation.country}
+                    fields={fields} 
+                    callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
+            )
+        }
+    }
     return (
         <React.Fragment>
             <Grid container  spacing={3}>
@@ -17,10 +47,10 @@ export default function FillDataCollection(props) {
                     </Grid>
                     <Grid item xs={12}>
                         <Paper elevation={3} style={{padding:"1rem"}} >
-                            <SectionForm initData={props.initData} key={props.sectionSelected.uuid} 
-                                country={props.investigation.country}
-                                fields={props.sectionSelected.fields.sort((a,b) => a.order - b.order)} 
-                                callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
+                            {
+                                renderSection()
+                            }
+                            
                         </Paper>
                     </Grid>
                 </Grid>

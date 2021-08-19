@@ -46,7 +46,7 @@ function Patient(props) {
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
     const [indexDataCollection, setIndexDataCollection] = useState(-1);
     const [savedDataCollection, setSavedDataCollection] = useState(false);
-    const [indexSection, setIndexSection] = useState(-1);
+    // const [indexSection, setIndexSection] = useState(-1);
 
     
     const dispatch = useDispatch();
@@ -67,7 +67,7 @@ function Patient(props) {
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null;
-    const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
+    //const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     
     const filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
@@ -95,42 +95,44 @@ function Patient(props) {
     }
 
     function fillDataCollection(indexCollection){
-        setIndexDataCollection(indexCollection);
-    }
-    function callBackEditSubmission(idSubmission, uuidSection){
-        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
-                .replace(":uuidPatient", uuidPatient).replace(":action", "update").replace(":uuidSection", uuidSection)
-                .replace(":idSubmission", idSubmission);
-        setShowOptions(false);
-        //setIndexDataCollection(-1);
-        setIndexSection(-1);
-        history.push(nextUrl);
-    }
-    function sectionSelect(indexSection){
+        
+
         setSavedDataCollection(false);
-        const sectionSelected = dataCollectionSelected.sections[indexSection];
+        const dataCollectionSelected = currentSurveys[indexCollection];
 
         let isDisabled = false;
-        if(!sectionSelected.repeats){
-            const patientSubmissions = props.patientsSubmissions.data[uuidPatient].hasOwnProperty(dataCollectionSelected.uuid) ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions : [];
-            isDisabled =  numberRecordsSection(sectionSelected, patientSubmissions) > 0;
-        }
+        // if(!dataCollectionSelected.repeats){
+        //     const patientSubmissions = props.patientsSubmissions.data[uuidPatient].hasOwnProperty(dataCollectionSelected.uuid) ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions : [];
+        //     isDisabled =  numberRecordsSection(sectionSelected, patientSubmissions) > 0;
+        // }
         
         if(isDisabled){
             setShowSnackbar({show:true, severity: "warning", message : "investigation.fill.survey.section-filled"});
         }
         else{
-            const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
-                .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", sectionSelected.uuid)
+            const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "fill")
                 .replace(":idSubmission", "");
             console.log("Next url", nextUrl);
 
             setShowOptions(false);
             //setIndexDataCollection(-1);
-            setIndexSection(-1);
+            //setIndexSection(-1);
 
             history.push(nextUrl);
         }
+    }
+    function callBackEditSubmission(idSubmission, uuidSection){
+        const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "update").replace(":uuidSection", uuidSection)
+                .replace(":idSubmission", idSubmission);
+        setShowOptions(false);
+        //setIndexDataCollection(-1);
+        //setIndexSection(-1);
+        history.push(nextUrl);
+    }
+    function sectionSelect(indexSection){
+        
         
     }
     function backToRoot(){
@@ -165,7 +167,7 @@ function Patient(props) {
 
         const postObj = 
             {
-                uuid_section:sectionSelected.uuid,
+                //uuid_section:sectionSelected.uuid,
                 uuid_patient:uuidPatient,
                 id:idSubmission,
                 researcher: props.profile.info,
@@ -176,7 +178,7 @@ function Patient(props) {
             await dispatch(updateSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
         }
         else{
-            setIndexSection(-1);
+            //setIndexSection(-1);
             setShowOptions(true);
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
@@ -201,28 +203,28 @@ function Patient(props) {
                 })
             ]
         }
-        else if(indexSection === -1){
+        // else if(indexSection === -1){
             
-            return [
-                <Grid item xs={12} style={{textAlign:"center"}}>
-                    <WhiteTypography variant="body2" gutterBottom>
-                        { dataCollectionSelected.name }:
-                    </WhiteTypography>
-                </Grid>, 
-                dataCollectionSelected.sections.sort((a,b) => a.order - b.order).map((section, index) => {
-                    return(
-                        <Grid item xs={12} style={{textAlign:"center"}}>
-                            <ButtonGreyBorderGrey data-testid={section.name} onClick={() => sectionSelect(index)}>{section.name}</ButtonGreyBorderGrey>
-                        </Grid>
-                    )
-                })
-            ]
-        }
+        //     return [
+        //         <Grid item xs={12} style={{textAlign:"center"}}>
+        //             <WhiteTypography variant="body2" gutterBottom>
+        //                 { dataCollectionSelected.name }:
+        //             </WhiteTypography>
+        //         </Grid>, 
+        //         dataCollectionSelected.sections.sort((a,b) => a.order - b.order).map((section, index) => {
+        //             return(
+        //                 <Grid item xs={12} style={{textAlign:"center"}}>
+        //                     <ButtonGreyBorderGrey data-testid={section.name} onClick={() => sectionSelect(index)}>{section.name}</ButtonGreyBorderGrey>
+        //                 </Grid>
+        //             )
+        //         })
+        //     ]
+        // }
     }
     function renderCore(){
         
             
-        if(dataCollectionSelected !== null && sectionSelected !== null && (action === "fill" || action === "update")){
+        if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
             const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
             if(savedDataCollection){
                 return(
@@ -233,7 +235,7 @@ function Patient(props) {
             }
             else{
                 return(
-                    <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
+                    <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {null}
                         patientId={props.patientId} investigation={props.investigations.currentInvestigation} callBackDataCollection={(values) => saveRecord(values)}/>
                 )
             }
@@ -265,7 +267,7 @@ function Patient(props) {
     }
     function closeModal(){
         setShowOptions(false);
-        setIndexSection(-1);
+        //setIndexSection(-1);
         setIndexDataCollection(-1);
     }
     async function resetSnackBar(){

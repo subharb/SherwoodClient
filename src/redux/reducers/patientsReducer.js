@@ -12,7 +12,7 @@ import { decryptPatientsData, decryptSinglePatientData } from '../../utils';
     error: null
 }
 export default function reducer(state = initialState, action){
-    console.log(action)
+    
     let newState = { ...state};
     let tempInvestigations;
     switch(action.type){
