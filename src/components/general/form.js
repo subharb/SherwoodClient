@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
-import FieldSherwood from './FieldSherwood';
+import FieldSherwood from './FieldSherwood-fn';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
@@ -16,6 +16,47 @@ import { Grid } from '@material-ui/core';
  * @param Boolean creating - If we are creating a form
  * 
  */
+
+
+  const required = (value) => (value ? undefined : "Required");
+  const maxLength = (max) => (value) =>
+    value && value.length > max ? `Must be ${max} characters or less` : undefined;
+  const maxLength15 = maxLength(15);
+  const number = (value) =>
+    value && isNaN(Number(value)) ? "Must be a number" : undefined;
+  const minValue = (min) => (value) =>
+    value && value < min ? `Must be at least ${min}` : undefined;
+  const minValue18 = minValue(18);
+  const email = (value) =>
+    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+      ? "Invalid email address"
+      : undefined;
+  const tooOld = (value) =>
+    value && value > 65 ? "You might be too old for this" : undefined;
+  const aol = (value) =>
+    value && /.+@aol\.com/.test(value)
+      ? "Really? You still use AOL for your email?"
+      : undefined;
+
+const renderField = ({
+    input,
+    label,
+    type,
+    meta: { touched, error, warning }
+  }) => {
+    console.log("renderField: " + label);
+    return (
+      <div>
+        <label>{label}</label>
+        <div>
+          <input {...input} placeholder={label} type={type} />
+          {touched &&
+            ((error && <span>{error}</span>) ||
+              (warning && <span>{warning}</span>))}
+        </div>
+      </div>
+    );
+  };
 
 class Form extends Component {
     constructor(props){
@@ -167,20 +208,56 @@ class Form extends Component {
         return(
             <div className="container">
                 <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.callBackForm(values)})}  >
+                    <Field
+                        name="username"
+                        type="text"
+                        component={renderField}
+                        label="Username"
+                        validate={[required, maxLength15]}
+                    />
+                    <Field
+                        name="email"
+                        type="email"
+                        component={FieldSherwood}
+                        label="Email"
+                        validate={email}
+                        warn={aol}
+                    />
+                    <Field
+                        name="age"
+                        type="number"
+                        component={FieldSherwood}
+                        label="Age"
+                        validate={[required, number, minValue18]}
+                        warn={tooOld}
+                    />
                     {Object.keys(this.props.fields).map(key => {
+                        return(
+                            <Field
+                                name={this.props.fields[key].name}
+                                type={this.props.fields[key].type}
+                                component={FieldSherwood}
+                                label={this.props.fields[key].label}
+                                validate={[required, number, minValue18]}
+                                warn={tooOld}
+                            />
+                        );
+                    })}
+                    {/* {Object.keys(this.props.fields).map(key => {
                         console.log(this.props.typeValue);
                         if(this.props.fields[key].type !== "options"){
                             return (
                                 <div className="row" key={key}>
                                     <Field name={key} {...this.props.fields[key]} country={this.props.country}
-                                        type={this.props.fields[key].type} label={this.props.fields[key].label} callBackMultiOptionSelected={(name, value) => this.props.change(name, value)}
-                                        component={FieldSherwood} />
+                                        type={this.props.fields[key].type} label={this.props.fields[key].label} 
+                                        callBackMultiOptionSelected={(name, value) => this.props.change(name, value)}
+                                        component={renderField} />
                                     {
                                         this.renderExtraFields(key)
                                     }
                                 </div>);
                         }
-                    })}
+                    })} */}
                     <div style={{paddingTop:"1rem"}}>
                         <ButtonContinue type="submit" data-testid={this.props.dataTestid} spaceright={1} >
                             { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}
@@ -207,14 +284,7 @@ function validate(values, props){
     const dictFields = {};
     for(const fieldKey in props.fields){
         const field = props.fields[fieldKey];
-        dictFields[fieldKey] = field
-        
-        // if(field.hasOwnProperty("slaves")){
-        //     for(const slave of field.slaves){
-        //         dictFields[slave.name] = slave;
-        //     }
-        // }
-        
+        dictFields[fieldKey] = field;
     }
   
     Object.keys(dictFields).forEach(key => {
@@ -242,25 +312,29 @@ Form.propTypes = {
 }
 
 
-// Decorate with redux-form
-Form = reduxForm({
-    validate,
-    form: 'form'  // a unique identifier for this form               
-  })(Form)
+// // Decorate with redux-form
+// Form = reduxForm({
+//     validate,
+//     form: 'form'  // a unique identifier for this form               
+//   })(Form)
   
-  // Decorate with connect to read form values
-  const selector = formValueSelector('form') // <-- same as form name
-  //Filtro los campos que activan otros campos
-  //const activatingFields = this.props.fields.filter(filter => filter.hasOwnProperty("activationValues"));
-  Form = connect(
-    state => {
-      // can select values individually
-      const values = state.form.hasOwnProperty("form") ? state.form.form.values : {};      
-      return {
-        valuesForm :  values
-      }
-    }
-  )(Form)
+//   // Decorate with connect to read form values
+//   const selector = formValueSelector('form') // <-- same as form name
+//   //Filtro los campos que activan otros campos
+//   //const activatingFields = this.props.fields.filter(filter => filter.hasOwnProperty("activationValues"));
+//   Form = connect(
+//     state => {
+//       // can select values individually
+//       const values = state.form.hasOwnProperty("form") ? state.form.form.values : {};      
+//       return {
+//         valuesForm :  values
+//       }
+//     }
+//   )(Form)
 
+  export default reduxForm({
+    form: 'form', // a unique identifier for this form
+    // validate,
+  })(withLocalize(Form))
 
-export default withLocalize(Form);
+//export default withLocalize(Form);

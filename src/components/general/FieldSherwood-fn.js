@@ -25,6 +25,7 @@ import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import File from './File';
 
+
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
 const FormControl = styled(FormControlSpacing)`
@@ -76,83 +77,8 @@ export const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
 `;
 
-class FieldSherwood extends PureComponent{
-    constructor(props){
-        super(props);
-        this.typeMargin = "dense";//dense, none;
-        this.state = {options : [], date : new Date(), loading:false}
-
-        this.multiOptionSelected = this.multiOptionSelected.bind(this);
-        this.handleDateChange = this.handleDateChange.bind(this);
-        this.resetDiagnose = this.resetDiagnose.bind(this);
-        this.handleRadioChange = this.handleRadioChange.bind(this);
-    }
-
-    async componentDidMount(){
-        if(typeof this.props.optionsUrl !== "undefined"){
-            const request = await axios.get(this.props.optionsUrl);
-            if(request.status === 200){
-                let options = request.data.map(opt => {return {"label" : opt.code, "value":opt.id}});
-                this.setState({options : options});
-            }
-        }
-
-    }
-    shouldComponentUpdate(nextProps, nextState){
-        console.log("shouldComponentUpdate");
-        console.log(`NextProps: ${nextProps.input.value} Props: ${this.props.input.value} Result: ${nextProps.input.value !== this.props.input.value}`);
-        
-        return (nextProps.input.value !== this.props.input.value);
-    }
-    handleRadioChange(event){
-        console.log(event);
-        this.props.input.onChange(event.target.value);
-    }
-    multiOptionSelected(value){
-        let tempValue = [value];
-        if(this.props.input.value !== ""){
-            let index = this.props.input.value.indexOf(value);
-            if (index !== -1){
-                tempValue = [...this.props.input.value];
-                tempValue.splice(index, 1);
-            } 
-            else{
-                tempValue = this.props.input.value.concat([value]);
-            }
-        }
-        this.props.input.onChange(tempValue);
-        
-    }
-    autoCompleteChanged(value){
-        console.log("Este es el value "+value);
-        if(value.length > 4){
-            let tempState = {...this.state};
-            tempState.loading = true;
-            this.setState(tempState);
-
-        }
-        
-    }
-    diagnosesSelected(listDiagnoses){
-        this.props.input.onChange(listDiagnoses);
-    }
-    resetDiagnose(){
-        this.props.input.onChange(undefined);
-    }
-    treatmentSelected(treatments){
-        this.props.input.onChange(treatments);
-    }
-    handleDateChange(value){
-        this.props.input.onChange(value);
-    }
-    selectChange(value){
-        this.props.input.onChange(value);
-    }
-    imagesSelected(images){
-        this.props.input.onChange(images);
-    }
-    render(){
-        const {input, label, meta, type, options, size, removeClass, validation, country} = this.props;
+function FieldSherwood(props) {
+    const {input, label, meta, type, options, size, removeClass, validation, country} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -388,19 +314,6 @@ class FieldSherwood extends PureComponent{
                         helperText={errorString} />
                 )
         }
-    }
 }
 
-FieldSherwood.propTypes = {
-    input : PropTypes.object.isRequired,
-    label : PropTypes.string.isRequired,
-    meta : PropTypes.object.isRequired,
-    type : PropTypes.string.isRequired,
-    disabled : PropTypes.bool,
-    options : PropTypes.array,
-    defaultOption : PropTypes.object,
-    size : PropTypes.string,
-    option : PropTypes.object,
-    removeClass : PropTypes.string
-}
-export default withLocalize(FieldSherwood);
+export default FieldSherwood;
