@@ -27,12 +27,12 @@ const HeaderSection = styled.div`
 
 `;
 export default function ShowRecordsSection(props) {
-    let [indexSubmission, setIndexSubmission ] = useState(0);
+    //let [indexSubmission, setIndexSubmission ] = useState(0);
     let [error, setError] = useState(false);
 
-    function editSection(indexSubmission, uuidSection){
-        const uuidSubmission = props.submissions[indexSubmission].id;
-        props.callBackEditSubmission(uuidSubmission, uuidSection);
+    function editSection(uuidSection){
+    
+        props.callBackEditSubmission(props.idSubmission, uuidSection);
     }
     function renderValue(valueRecord, field){
         if(!valueRecord || !valueRecord.value){
@@ -104,13 +104,11 @@ export default function ShowRecordsSection(props) {
    
     
     function renderSubmission(){
-        const submission = props.submissions[indexSubmission];       
-        
         return(
             <GridPadded container direction="column" spacing={3}>
                 {
                     props.section.fields.sort((a,b) => a.order - b.order).map(field => {
-                        const valueRecord = submission.surveyRecords.find(record => {
+                        const valueRecord = props.records.find(record => {
                             return field.id === record.surveyField.id
                         })
                         
@@ -129,15 +127,15 @@ export default function ShowRecordsSection(props) {
             </GridPadded>
         );
     }
-    if(!props.submissions || error){
+    if(!props.records || error){
         return (
             <Alert mb={4} severity="error">
                 <Translate id="investigation.share.error.description" />
             </Alert>
         );
     }
-    else if(indexSubmission < props.submissions.length){
-        const dateCreated = new Date(props.submissions[indexSubmission].createdAt);
+    else if(props.records.length > 0){
+        const dateCreated = new Date(props.updatedAt);
         return (
             <CardPadding >
                 <Grid container direction="column" spacing={3}>
@@ -150,7 +148,7 @@ export default function ShowRecordsSection(props) {
                                 </Typography>
                                 {
                                     ((dateCreated.getTime() + 86400000 > new Date().getTime()) || props.permissions === 4) && 
-                                    <ButtonEdit onClick={() => editSection(indexSubmission, props.section.uuid)} />
+                                    <ButtonEdit onClick={() => editSection(props.section.uuid)} />
                                 }
                             </HeaderSection>
                         }
@@ -159,22 +157,7 @@ export default function ShowRecordsSection(props) {
                     {
                         renderSubmission()
                     }
-                    {
-                        props.submissions.length > 1 &&
-                        <Grid container direction="column" spacing={3}>
-                            <Grid item>
-                                <Typography variant="body2" gutterBottom>
-                                {
-                                    `${indexSubmission+1} / ${props.submissions.length}`
-                                }
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <ButtonBack disabled={indexSubmission === 0} onClick={() => setIndexSubmission(indexSubmission-1)}></ButtonBack>
-                                <ButtonForward disabled={indexSubmission === props.submissions.length -1} onClick={() => setIndexSubmission(indexSubmission+1)}></ButtonForward>
-                            </Grid>
-                        </Grid>
-                    }
+                    
                 </Grid> 
             </CardPadding> 
         )

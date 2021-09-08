@@ -79,6 +79,7 @@ import TestsHome from "../pages/hospital/TestsHome";
 import AddPatient from "../pages/hospital/AddPatient";
 import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";
+import Departments from  "../pages/hospital/Departments";
 import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS, SHARE_RESEARCHERS } from "../constants";
 
 
@@ -111,6 +112,7 @@ export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const ROUTE_401 = "/auth/401";
+export const HOSPITAL_DEPARTMENTS = "/departments";
 
 
 
@@ -211,6 +213,11 @@ const hospitalRoutes = {
             name: "User Management",
             component: UserManagement,
         },
+        {
+            path: HOSPITAL_DEPARTMENTS,
+            name: "Departments",
+            component: Departments,
+        },
     ],
   };
 
@@ -309,6 +316,20 @@ const dashboardUserMgmtRoutes = {
         path: ADD_PATIENT_ROUTE,
         name: "User Mgmt",
         component: UserManagement
+    },
+    children: null
+}
+
+const dashboardDepartmentRoutes = {
+    id: <Translate id="pages.hospital.user_mgmt" />,
+    path: HOSPITAL_DEPARTMENTS,
+    icon: <GroupIcon />,
+    badge: "",
+    permissions : [SHARE_RESEARCHERS],
+    component: {
+        path: HOSPITAL_DEPARTMENTS,
+        name: "Departments",
+        component: Departments
     },
     children: null
 }
@@ -879,5 +900,6 @@ export const sidebarRoutesHospital = [
     dashboardImagesRoutes,
     dashboardLabRoutes,
     dashboardAnalyticsRoutes,
-    dashboardUserMgmtRoutes
+    dashboardUserMgmtRoutes,
+    dashboardDepartmentRoutes
   ];

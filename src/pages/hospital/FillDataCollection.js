@@ -7,34 +7,35 @@ import PropTypes from 'prop-types';
 export default function FillDataCollection(props) {
         
     function renderSection(){
+        
+        let fields = [];
+        let sections = []
         if(props.sectionSelected){
-            return (<SectionForm initData={props.initData} key={props.sectionSelected.uuid} 
-                country={props.investigation.country}
-                fields={props.sectionSelected.fields.sort((a,b) => a.order - b.order)} 
-                callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>)
+            sections = [props.sectionSelected];
         }
         else{
-            let fields = [];
-            props.dataCollection.sections
-                .sort((a,b) => a.order - b.order)
-                .forEach((section, index) =>{
-                    fields.push({
-                        type:"separator",
-                        label:section.name,
-                        name:"separator_"+index,
-                        required:false, 
-                        validation: "notEmpty",
-                        id:index
-                    });
-                    fields = fields.concat(section.fields);
-            })
-            return(
-                <SectionForm initData={props.initData} key={props.dataCollection.uuid} 
-                    country={props.investigation.country}
-                    fields={fields} 
-                    callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
-            )
+            sections = props.dataCollection.sections;
         }
+        
+        sections.sort((a,b) => a.order - b.order)
+            .forEach((section, index) =>{
+                fields.push({
+                    type:"separator",
+                    label:section.name,
+                    name:"separator_"+index,
+                    required:false, 
+                    validation: "notEmpty",
+                    id:index
+                });
+                fields = fields.concat(section.fields);
+        })      
+        return(
+            <SectionForm initData={props.initData} key={props.dataCollection.uuid} 
+                country={props.investigation.country}
+                fields={fields} 
+                callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
+        )
+        
     }
     return (
         <React.Fragment>

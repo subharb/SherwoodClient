@@ -65,6 +65,12 @@
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
         },
+        "departments" : {
+            "title" : ["Hospital Departments", "Departamentos", "Departaments"],
+            "modal" : {
+                "title" : ["Add department", "Añadir Departamento", "Ajouter Department"]
+            }
+        },
         "analytics" : {
             "graphs" : {
                 "percentage" : ["Percentage", "Porcentaje", "Pourcentage"],
@@ -498,7 +504,7 @@
         "share" : {
             "title" : ["User Managment", "Administración de usuarios", "Gestion des utilisateurs"],
             "add_researcher" : ["Add user", "Añadir usuario", "Ajouter un utilisateur"],
-            "edit_researcher" : ["Change user", "Modficar usuario", "Modifier un utilisateur"],
+            "edit_researcher" : ["Change user", "Modificar usuario", "Modifier un utilisateur"],
             "researchers" : ["Users", "Usuarios", "Utilisateurs"],
             "current_researchers" : ["Current users", "Usuarios actuales", "Utilisateurs actuels"],
             "new_researchers" : ["New users", "Nuevos Usuarios", "Nouveaux Utilisateurs"],
@@ -507,6 +513,7 @@
                 "email" : ["Email", "Email", "Email"],
                 "role" :  ["User type", "Tipo", "Type d'utilisateur"]
             },
+            
             "roles" : {
                 "MEDICAL_DIRECTOR" : ["Medical Director", "Director Médico", "Directeur médical"],
                 "STUDENT" : ["Student", "Estudiante", "Étudiant"],
@@ -524,7 +531,8 @@
             "researcher" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "status" : ["Status", "Status", "Status"],
-                "permissions" : ["User type", "Tipo", "Type d'utilisateur"]
+                "permissions" : ["User type", "Tipo", "Type d'utilisateur"],
+                "department" : ["Department", "Departamento", "Departament"]
             },
             "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],
             "confirm_dialog" : {

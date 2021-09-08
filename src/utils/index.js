@@ -540,13 +540,21 @@ export function filterRecordsFromSubmissions(submissions, sectionUUID){
                 createdAt:submission.createdAt,
                 updatedAt:submission.updatedAt,
                 surveyRecords:filteredRecords
-            }
-                
-            ); 
+            }); 
         }
-        
     }
     return filteredSubmissions;
+}
+
+export function filterRecordsFromSection(submission, sectionUUID){
+    let filteredRecords = [];
+    for(let j = 0; j < submission.surveyRecords.length; j++){
+        const record = submission.surveyRecords[j];
+        if(record.surveySection.uuid === sectionUUID){ 
+            filteredRecords.push(record); 
+        }
+    }  
+    return filteredRecords;
 }
 
 export function yearsFromDate(fromDate){

@@ -67,7 +67,7 @@ function Patient(props) {
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null;
-    //const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
+    const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     
     const filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
@@ -123,7 +123,7 @@ function Patient(props) {
         }
     }
     function callBackEditSubmission(idSubmission, uuidSection){
-        const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
+        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
                 .replace(":uuidPatient", uuidPatient).replace(":action", "update").replace(":uuidSection", uuidSection)
                 .replace(":idSubmission", idSubmission);
         setShowOptions(false);
@@ -164,18 +164,26 @@ function Patient(props) {
     }
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
-
-        const postObj = 
-            {
-                //uuid_section:sectionSelected.uuid,
-                uuid_patient:uuidPatient,
-                id:idSubmission,
-                researcher: props.profile.info,
-                surveyRecords:data
+        const postObj = {};
+        data.forEach(fieldData => {
+            const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));
+            if(postObj.hasOwnProperty(sectionField.uuid)){
+                postObj[sectionField.uuid].surveyRecords.push(fieldData)
             }
+            else{
+                postObj[sectionField.uuid] = {
+                    uuid_section:sectionField.uuid,
+                    uuid_patient:uuidPatient,
+                    id:idSubmission,
+                    researcher: props.profile.info,
+                    surveyRecords:[fieldData]
+                }
+            }
+        });
+       
         
         if(action === "update"){
-            await dispatch(updateSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
+            await dispatch(updateSubmissionPatientAction(Object.values(postObj)[0], props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
         }
         else{
             //setIndexSection(-1);
@@ -183,7 +191,7 @@ function Patient(props) {
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
             console.log(data);
-            await dispatch(postSubmissionPatientAction([postObj], props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
+            await dispatch(postSubmissionPatientAction(Object.values(postObj), props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
         }
     }
     function renderOptions(){
@@ -235,7 +243,8 @@ function Patient(props) {
             }
             else{
                 return(
-                    <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {null}
+                    <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} 
+                        sectionSelected = {sectionSelected}
                         patientId={props.patientId} investigation={props.investigations.currentInvestigation} callBackDataCollection={(values) => saveRecord(values)}/>
                 )
             }
@@ -290,7 +299,7 @@ function Patient(props) {
     }, [props.investigations])
     useEffect(() => {
         if(!props.profile.info){
-            dispatch(fetchProfileInfo());
+            dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
         }
     }, [])
     useUpdateEffect(() => {
@@ -339,30 +348,30 @@ function Patient(props) {
     }, [props.patientsSubmissions])
 
     useEffect(() => {
-            if(props.patientsSubmissions.error){
-                let severity = "error";
-                let message = "";
+        if(props.patientsSubmissions.error){
+            let severity = "error";
+            let message = "";
+            if(action === "update"){
+                message = "hospital.patient.error";
+            }
+            if(action === "fill"){
+                message = "hospital.patient.error";
+            }
+            if(props.patientsSubmissions.error === 2){
+                severity = "warning";
                 if(action === "update"){
-                    message = "hospital.patient.error";
+                    message = "hospital.patient.updated-record-offline";
                 }
                 if(action === "fill"){
-                    message = "hospital.patient.error";
+                    message = "hospital.patient.new-record-offline";
                 }
-                if(props.patientsSubmissions.error === 2){
-                    severity = "warning";
-                    if(action === "update"){
-                        message = "hospital.patient.updated-record-offline";
-                    }
-                    if(action === "fill"){
-                        message = "hospital.patient.new-record-offline";
-                    }
-                }
-                else{
-                    setError(true);
-                }
-                setShowSnackbar({show:true, severity:severity, message : message});
-                
             }
+            else{
+                setError(true);
+            }
+            setShowSnackbar({show:true, severity:severity, message : message});
+            
+        }
             
     }, [props.patientsSubmissions.loading]);    
 

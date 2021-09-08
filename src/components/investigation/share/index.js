@@ -29,6 +29,7 @@ const RESEARCHER_FORM = {
     "email":{
         required : true,
         type:"text",
+        name:"email",
         label:"investigation.share.form.email",
         shortLabel: "investigation.share.form.email",
         validation : "validEmail"
@@ -36,6 +37,7 @@ const RESEARCHER_FORM = {
     "permissions":{
         required : true,
         type:"select",
+        name:"permissions",
         label:"investigation.share.form.role",
         shortLabel: "investigation.share.form.role",
         validation : "notEmpty",
