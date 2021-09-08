@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { Card, CardContent, 
-        Typography, Grid, Box, Chip } from '@material-ui/core';
-import { Alert } from "@material-ui/lab";
+        Typography, Grid, Box, Chip, AppBar, Tabs, Tab } from '@material-ui/core';
+import { Alert, TabPanel } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import { decryptData, encryptData, generateKey } from '../../utils';
@@ -241,7 +241,45 @@ function ShareInvestigation(props) {
         console.log(valuesForm);
         setIndexResearcherToEdit(index);
     }
-
+    function renderDepartments(){
+        const columnsTable = ["department"];
+            const arrayHeader = columnsTable.map(col => {
+                return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.department`} /> }
+            }) 
+    
+            return <EnhancedTable noSelectable noHeader
+                        headCells={arrayHeader}
+                        rows={departments.map(dep => {return {department : dep.name}})} 
+        />
+    }
+    function a11yProps(index) {
+        return {
+          id: `simple-tab-${index}`,
+          'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
+    function TabPanel(props) {
+        const { children, value, index, ...other } = props;
+      
+        return (
+          <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+          >
+            {value === index && (
+              <Box p={3}>
+                <Typography>{children}</Typography>
+              </Box>
+            )}
+          </div>
+        );
+      }
+    const handleChange = (event, newValue) => {
+        setTabSelector(newValue);
+    };
     if(props.investigations.loading || isLoadingDepartments){
         return <Loader />
     }
@@ -286,9 +324,24 @@ function ShareInvestigation(props) {
                             { investigation.name }
                         </Typography>
                     </Grid>
+                    <AppBar position="static">
+                        <Tabs value={tabSelector} onChange={handleChange} aria-label="simple tabs example">
+                        <Tab label="Users" {...a11yProps(0)} />
+                        <Tab label="Departments" {...a11yProps(1)} />
+                        
+                        </Tabs>
+                    </AppBar>
+                    <TabPanel value={tabSelector} index={0}>
                     {
                         renderResearchers()
                     }
+                    </TabPanel>
+                    <TabPanel value={tabSelector} index={1}>
+                    {
+                        renderDepartments()
+                    }
+                    </TabPanel>
+                    
                     
                 </Grid>
             </Grid>
