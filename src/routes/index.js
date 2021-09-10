@@ -23,7 +23,9 @@ import {
 import TimelineIcon from '@material-ui/icons/Timeline';
 import FindInPageIcon from '@material-ui/icons/FindInPage';
 import GroupIcon from '@material-ui/icons/Group';
-import { Home as HomeIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon, Image as ImageIcon} from "@material-ui/icons";
+import { Home as HomeIcon, Search as SearchPatientIcon, 
+    PersonAddSharp as AddPatientIcon, Image as ImageIcon,
+    PeopleOutline as PeopleOutlineIcon} from "@material-ui/icons";
 
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
@@ -321,9 +323,9 @@ const dashboardUserMgmtRoutes = {
 }
 
 const dashboardDepartmentRoutes = {
-    id: <Translate id="pages.hospital.user_mgmt" />,
+    id: <Translate id="pages.hospital.departments" />,
     path: HOSPITAL_DEPARTMENTS,
-    icon: <GroupIcon />,
+    icon: <PeopleOutlineIcon />,
     badge: "",
     permissions : [SHARE_RESEARCHERS],
     component: {

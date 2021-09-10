@@ -191,7 +191,7 @@ function ShareInvestigation(props) {
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
-    
+            const actions = (departments.length === 0) ? null : {"edit" : (index) => editAResearcher(index)}
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
                         headCells={arrayHeader}
                         rows={researchers.map((researcher, idx) => {
@@ -211,7 +211,7 @@ function ShareInvestigation(props) {
                             
                             return row;
                         })}
-                        actions={{"edit" : (index) => editAResearcher(index)}} 
+                        actions={actions} 
         />
         }
         return (
@@ -250,6 +250,7 @@ function ShareInvestigation(props) {
             return (
                 <div style={{width:'100%'}}>
                     {
+                        departments.length > 0 &&
                         departments.map(department => {
                             const researchersDepartment = researchers.filter(res => res.departments.find(dep => dep.name === department.name));
                             return (
@@ -284,6 +285,10 @@ function ShareInvestigation(props) {
                                 </Accordion>
                             )
                         })
+                    }
+                    {
+                        departments.length === 0 &&
+                        <Translate id="hospital.departments.no-departments" />
                     }
                     
                 </div>

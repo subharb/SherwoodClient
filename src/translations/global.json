@@ -66,11 +66,13 @@
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
         },
         "departments" : {
-            "title" : ["Hospital Departments", "Departamentos", "Departaments"],
+            
+            "title" : ["Hospital Departments", "Departamentos", "Départements"],
             "modal" : {
                 "title" : ["Add department", "Añadir Departamento", "Ajouter Department"]
             },
-            "no-doctors" : ["No doctors added yet", "No hay médicos", "Sans docteurs"]
+            "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
+            "no-doctors" : ["No doctors added yet", "No hay médicos", "Aucun médecin n'a encore été ajouté"]
         },
         "analytics" : {
             "graphs" : {
@@ -216,7 +218,8 @@
             "confirm-patient" : {
                 "title" : ["Attention", "Atención", "Attention"],
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
-            }
+            },
+            "departments" : ["Hospital Departments", "Departamentos", "Département"]
         }
     },
     "dashboard":{
