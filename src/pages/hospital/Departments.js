@@ -101,8 +101,8 @@ function Departments(props) {
             required : true,
             type:"select",
             name:"department",
-            label:"investigation.share.form.role",
-            shortLabel: "investigation.share.form.role",
+            label:"hospital.departments.department",
+            shortLabel: "hospital.departments.department",
             validation : "notEmpty",
             defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
             options:departments.map(dep =>{

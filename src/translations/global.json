@@ -71,6 +71,7 @@
             "modal" : {
                 "title" : ["Add department", "Añadir Departamento", "Ajouter Department"]
             },
+            "department" : ["Departament", "Departamento", "Department"],
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
             "no-doctors" : ["No doctors added yet", "No hay médicos", "Aucun médecin n'a encore été ajouté"]
         },
