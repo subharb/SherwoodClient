@@ -141,7 +141,7 @@ function HomeSchedule(props) {
         )
     }
     else{
-        if(props.investigations.loading || !props.profile.info){
+        if(props.investigations.loading || (!props.profile.info && props.investigations.currentInvestigation) ){
             return <Loader />
         }
         
