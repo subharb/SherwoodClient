@@ -248,7 +248,7 @@ function ShareInvestigation(props) {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.department`} /> }
             }) 
             return (
-                <React.Fragment>
+                <div style={{width:'100%'}}>
                     {
                         departments.map(department => {
                             const researchersDepartment = researchers.filter(res => res.departments.find(dep => dep.name === department.name));
@@ -286,7 +286,7 @@ function ShareInvestigation(props) {
                         })
                     }
                     
-                </React.Fragment>
+                </div>
                 
             )
             return <EnhancedTable noSelectable noHeader
@@ -373,12 +373,12 @@ function ShareInvestigation(props) {
                         
                         </Tabs>
                     </AppBar>
-                    <TabPanel value={tabSelector} index={0}>
+                    <TabPanel value={tabSelector} index={0} style={{width:'100%'}}>
                     {
                         renderResearchers()
                     }
                     </TabPanel>
-                    <TabPanel value={tabSelector} index={1}>
+                    <TabPanel value={tabSelector} index={1} style={{width:'100%'}}>
                     {
                         renderDepartments()
                     }
