@@ -80,7 +80,7 @@ function permissionsToRole(permissions){
     
 }
 
-function ShareInvestigation(props) {
+function Departments(props) {
     
     const investigation = props.investigations.data && props.investigations.currentInvestigation ? props.investigations.currentInvestigation : null;
     const [error, setError] = useState(null);
@@ -175,7 +175,7 @@ function ShareInvestigation(props) {
         setIsLoadingDepartments(true);
         const response = await saveDepartmentInstitutionService(props.investigations.currentInvestigation.institution.uuid, department);
         setIsLoadingDepartments(false);
-        setDepartments((arr) =>arr.push(response.department));
+        setDepartments((oldArray => [...oldArray, response.department]));
     }
     function renderResearchers(){
         let content = null;
@@ -191,7 +191,7 @@ function ShareInvestigation(props) {
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
-            const actions = (departments.length === 0) ? null : {"edit" : (index) => editAResearcher(index)}
+            const actions = (departments.length < 2) ? null : {"edit" : (index) => editAResearcher(index)}
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
                         headCells={arrayHeader}
                         rows={researchers.map((researcher, idx) => {
@@ -404,4 +404,4 @@ const mapStateToProps = (state) =>{
     }
 }
 
-export default withLocalize(connect(mapStateToProps, null)(ShareInvestigation))
+export default withLocalize(connect(mapStateToProps, null)(Departments))
