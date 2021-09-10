@@ -69,7 +69,8 @@
             "title" : ["Hospital Departments", "Departamentos", "Departaments"],
             "modal" : {
                 "title" : ["Add department", "Añadir Departamento", "Ajouter Department"]
-            }
+            },
+            "no-doctors" : ["No doctors added yet", "No hay médicos", "Sans docteurs"]
         },
         "analytics" : {
             "graphs" : {

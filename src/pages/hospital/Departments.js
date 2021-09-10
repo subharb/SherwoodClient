@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import { Card, CardContent, 
-        Typography, Grid, Box, Chip, AppBar, Tabs, Tab } from '@material-ui/core';
+        Typography, Grid, Box, Chip, AppBar, Tabs, Tab, List, ListItem, ListItemText } from '@material-ui/core';
 import { Alert, TabPanel } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
@@ -18,9 +18,10 @@ import { useHistory } from "react-router-dom";
 import { getSharedResearchersService, saveResearcherPermissions, getDepartmentsInstitution, getDepartmentsInstitutionService, saveDepartmentInstitutionService, assignDepartmentToResearcherService } from '../../services/sherwoodService';
 import { ALL_ROLES, USER_ROLES } from '../../constants';
 import { grayscale } from 'polished';
-
-
-
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const DEPARTMENT_FORM = {
     "name":{
@@ -246,7 +247,48 @@ function ShareInvestigation(props) {
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.department`} /> }
             }) 
-    
+            return (
+                <React.Fragment>
+                    {
+                        departments.map(department => {
+                            const researchersDepartment = researchers.filter(res => res.departments.find(dep => dep.name === department.name));
+                            return (
+                                <Accordion>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1a-content"
+                                        id="panel1a-header"
+                                        >
+                                        <Typography >{ department.name}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <List component="nav" aria-label="main mailbox folders">
+                                            {
+                                                (researchersDepartment.length > 0)&& 
+                                                researchersDepartment.map(res => {
+                                                    return(
+                                                        <ListItem button>
+                                                            <ListItemText primary={`${res.name} ${res.surnames}`} />
+                                                        </ListItem>
+                                                    )
+                                                })
+                                            }
+                                            {
+                                                (researchersDepartment.length === 0)&& 
+                                                <ListItem button>
+                                                    <ListItemText primary={<Translate id="hospital.departments.no-doctors"></Translate>} />
+                                                </ListItem>
+                                            }
+                                        </List>
+                                    </AccordionDetails>
+                                </Accordion>
+                            )
+                        })
+                    }
+                    
+                </React.Fragment>
+                
+            )
             return <EnhancedTable noSelectable noHeader
                         headCells={arrayHeader}
                         rows={departments.map(dep => {return {department : dep.name}})} 
