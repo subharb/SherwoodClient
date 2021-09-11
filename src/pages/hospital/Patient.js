@@ -76,12 +76,12 @@ function Patient(props) {
     const translations = typeSurveys.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typeSurveys.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
 
     function addRecord(){
-        if(!parameters.hasOwnProperty("typeTest")){
+        if(!parameters.hasOwnProperty("typeTest") && !(parameters.hasOwnProperty("action"))){
             setShowOptions(!showOptions);
         }
         else{
             const filterType = parameters.typeTest === "images" ? TYPE_IMAGE_SURVEY : TYPE_LAB_SURVEY;
-            const dataCollection = currentSurveys.find(sur => sur.type === filterType);
+            const dataCollection = dataCollectionSelected ? dataCollectionSelected : currentSurveys.find(sur => sur.type === filterType);
 
             const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollection.uuid)
                 .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", dataCollection.sections[0].uuid)
@@ -492,7 +492,7 @@ function Patient(props) {
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <ButtonAdd data-testid="add-record" onClick={addRecord} />
+                                    <ButtonAdd disabled={parameters.hasOwnProperty("action") && parameters["action"] === "fill"} data-testid="add-record" onClick={addRecord} />
                                 </Grid>
                             </Grid>
                         }
