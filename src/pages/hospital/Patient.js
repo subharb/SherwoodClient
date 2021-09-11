@@ -298,10 +298,10 @@ function Patient(props) {
         }
     }, [props.investigations])
     useEffect(() => {
-        if(!props.profile.info){
+        if(!props.profile.info && props.investigations.currentInvestigation){
             dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
         }
-    }, [])
+    }, [props.investigations])
     useUpdateEffect(() => {
         
         if(action === "update"){
