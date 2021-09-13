@@ -31,14 +31,14 @@ export default function reducer(state = initialState, action){
             //Desencripto los datos de los pacientes
             tempInvestigations = {};
             for(const investigation of action.investigations){
-                if(investigation.patientsPersonalData.length !== 0){
+                
                     let tempDecryptedData = [];
                     for(const patient of investigation.patientsPersonalData){
                         patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
                         tempDecryptedData.push(patient);
                     }
                     tempInvestigations[investigation.uuid] = tempDecryptedData;
-                }
+                
             }
             newState.data = tempInvestigations;                            
             return newState;
