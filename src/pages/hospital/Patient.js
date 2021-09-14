@@ -164,26 +164,22 @@ function Patient(props) {
     }
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
-        const postObj = {};
+        const postObj = {
+            uuid_survey:dataCollectionSelected.uuid,
+            uuid_patient:uuidPatient,
+            id:idSubmission,
+            researcher: props.profile.info,
+            surveyRecords:[]
+        }
         data.forEach(fieldData => {
-            const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));
-            if(postObj.hasOwnProperty(sectionField.uuid)){
-                postObj[sectionField.uuid].surveyRecords.push(fieldData)
-            }
-            else{
-                postObj[sectionField.uuid] = {
-                    uuid_survey:dataCollectionSelected.uuid,
-                    uuid_patient:uuidPatient,
-                    id:idSubmission,
-                    researcher: props.profile.info,
-                    surveyRecords:[fieldData]
-                }
-            }
+            //const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));
+            postObj.surveyRecords.push(fieldData);
+            
         });
        
         
         if(action === "update"){
-            await dispatch(updateSubmissionPatientAction(Object.values(postObj)[0], props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
+            await dispatch(updateSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
         }
         else{
             //setIndexSection(-1);
@@ -191,7 +187,7 @@ function Patient(props) {
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
             console.log(data);
-            await dispatch(postSubmissionPatientAction(Object.values(postObj)[0], props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
+            await dispatch(postSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
         }
     }
     function renderOptions(){
