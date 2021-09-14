@@ -172,7 +172,7 @@ function Patient(props) {
             }
             else{
                 postObj[sectionField.uuid] = {
-                    uuid_section:sectionField.uuid,
+                    uuid_survey:dataCollectionSelected.uuid,
                     uuid_patient:uuidPatient,
                     id:idSubmission,
                     researcher: props.profile.info,
@@ -191,7 +191,7 @@ function Patient(props) {
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
             console.log(data);
-            await dispatch(postSubmissionPatientAction(Object.values(postObj), props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
+            await dispatch(postSubmissionPatientAction(Object.values(postObj)[0], props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
         }
     }
     function renderOptions(){
