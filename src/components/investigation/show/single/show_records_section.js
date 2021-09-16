@@ -104,28 +104,42 @@ export default function ShowRecordsSection(props) {
    
     
     function renderSubmission(){
-        return(
-            <GridPadded container direction="column" spacing={3}>
-                {
-                    props.section.fields.sort((a,b) => a.order - b.order).map(field => {
-                        const valueRecord = props.records.find(record => {
-                            return field.id === record.surveyField.id
+        if(props.records.length === 0){
+            return (
+                <GridPadded item>
+                    <Grid item xs={12}>
+                        <Typography variant="body2" gutterBottom>
+                            No records available
+                        </Typography>
+                    </Grid>
+                </GridPadded>
+            )   
+        }
+        else{
+            return(
+                <GridPadded container direction="column" spacing={3}>
+                    {
+                        props.section.fields.sort((a,b) => a.order - b.order).map(field => {
+                            const valueRecord = props.records.find(record => {
+                                return field.id === record.surveyField.id
+                            })
+                            
+                            return (
+                                <Grid item xs={12}>
+                                    {
+                                        renderValue(valueRecord, field)                                    
+                                    }
+                                    
+                                </Grid>
+                            )
+                            
+                            
                         })
-                        
-                        return (
-                            <Grid item xs={12}>
-                                {
-                                    renderValue(valueRecord, field)                                    
-                                }
-                                
-                            </Grid>
-                        )
-                        
-                        
-                    })
-                }
-            </GridPadded>
-        );
+                    }
+                </GridPadded>
+            );
+        }
+        
     }
     if(!props.records || error){
         return (
@@ -134,7 +148,7 @@ export default function ShowRecordsSection(props) {
             </Alert>
         );
     }
-    else if(props.records.length > 0){
+    else{
         const dateCreated = new Date(props.updatedAt);
         return (
             <CardPadding >
@@ -162,24 +176,7 @@ export default function ShowRecordsSection(props) {
             </CardPadding> 
         )
     }
-    else{
-        return(
-            <CardPadding >
-                <Grid container direction="column" >
-                    <Grid item>
-                        <Typography variant="subtitle1" color="textPrimary">
-                            Section:{ props.section.name }
-                        </Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant="body2" gutterBottom>
-                            No records available
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </CardPadding>
-        )   
-    }
+    
 }
 
 ShowRecordsSection.propTypes = {

@@ -152,6 +152,7 @@ export const isUserLoggedIn = () => localStorage.getItem("jwt");
 
 export const FIELDS_FORM = {
     "encrypted":{
+        name : "encrypted",
         required : false,
         type:"checkbox",
         label:"investigation.create.edc.personal_info",
@@ -159,6 +160,7 @@ export const FIELDS_FORM = {
         validation : "notEmpty"
     },
     "required":{
+        name : "required",
         required : false,
         type:"checkbox",
         label:"investigation.create.edc.required",
@@ -166,6 +168,7 @@ export const FIELDS_FORM = {
         validation : "notEmpty"
     },
     "name" : {
+        name : "name",
         required : true,
         type:"text",
         label:"investigation.create.edc.name_field",
@@ -173,6 +176,7 @@ export const FIELDS_FORM = {
         validation : "textMin2"
     },
     "type" : {
+        name : "type",
         required : true,
         type:"select",
         validation : "notEmpty",
@@ -229,6 +233,7 @@ export const FIELDS_FORM = {
                                         
     },
     "label" : {
+        name : "label",
         required : false,
         type:"text",
         label : "investigation.create.edc.question_field",
@@ -241,6 +246,7 @@ export const FIELDS_FORM = {
 export const PERSONAL_FIELDS_FORM = {
 
     "required":{
+        name:"required",
         required : false,
         type:"checkbox",
         label:"investigation.create.edc.required",
@@ -248,6 +254,7 @@ export const PERSONAL_FIELDS_FORM = {
         validation : "notEmpty"
     },
     "name" : {
+        name:"name",
         required : true,
         type:"text",
         label:"investigation.create.edc.name_field",
@@ -255,6 +262,7 @@ export const PERSONAL_FIELDS_FORM = {
         validation : "textMin2"
     },
     "type" : {
+        name:"type",
         required : true,
         type:"select",
         validation : "notEmpty",
@@ -304,6 +312,7 @@ export const PERSONAL_FIELDS_FORM = {
                                         
     },
     "label" : {
+        name:"label",
         required : false,
         type:"text",
         label : "investigation.create.edc.question_field",
@@ -406,6 +415,7 @@ export const PERSONAL_DATA_TYPES = {
 
 export const FIELDS_BASIC_INFO = {
     "name":{
+        name : "name",
         required : true,
         type:"text",
         label:"investigation.create.edc.name",
@@ -413,6 +423,7 @@ export const FIELDS_BASIC_INFO = {
         value: ""
     },
     "acronym":{
+        name : "acronym",
         required : true,
         type:"text",
         label:"investigation.create.edc.acronym",
@@ -420,6 +431,7 @@ export const FIELDS_BASIC_INFO = {
         value: ""
     },
     "type":{
+        name : "type",
         required : true,
         type:"select",
         label:"investigation.create.edc.type",
@@ -434,6 +446,7 @@ export const FIELDS_BASIC_INFO = {
         value: ""
     },
     "description":{
+        name : "description",
         required : true,
         type:"textarea",
         label:"investigation.create.edc.description",
@@ -441,6 +454,7 @@ export const FIELDS_BASIC_INFO = {
         value: ""
     },
     "principal_researcher":{
+        name : "principal_researcher",
         required : true,
         type:"text",
         label:"investigation.create.edc.principal_researcher",
@@ -448,6 +462,7 @@ export const FIELDS_BASIC_INFO = {
         value: ""
     },
     "other_researcher":{
+        name : "other_researcher",
         required : true,
         type:"options",
         element:"text",//El tipo de cada una de las opciones
@@ -456,6 +471,7 @@ export const FIELDS_BASIC_INFO = {
         value: ""
     },
     "institution":{
+        name : "institution",
         required : true,
         type:"text",
         label:"investigation.create.edc.institution",
@@ -463,6 +479,7 @@ export const FIELDS_BASIC_INFO = {
         value: ""
     },
     "contact":{
+        name : "contact",
         required : true,
         type:"text",
         label:"investigation.create.edc.contact",
@@ -470,6 +487,7 @@ export const FIELDS_BASIC_INFO = {
         value: ""
     },
     "ethics_body":{
+        name : "ethics_body",
         required : true,
         type:"text",
         label:"investigation.create.edc.ethics_body",
@@ -477,6 +495,7 @@ export const FIELDS_BASIC_INFO = {
         value: ""
     },
     "reference_number_state":{
+        name : "reference_number_state",
         required : true,
         type:"select",
         label:"investigation.create.edc.reference_number_state",
