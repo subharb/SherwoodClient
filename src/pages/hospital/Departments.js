@@ -191,7 +191,7 @@ function Departments(props) {
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
-            const actions = (departments.length < 2) ? null : {"edit" : (index) => editAResearcher(index)}
+            const actions = (departments.length === 0) ? null : {"edit" : (index) => editAResearcher(index)}
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
                         headCells={arrayHeader}
                         rows={researchers.map((researcher, idx) => {

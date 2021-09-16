@@ -188,7 +188,15 @@ function Patient(props) {
             setSavedDataCollection(true);
             console.log(data);
             await dispatch(postSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
+
+            
         }
+
+        setTimeout(function(){
+            const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient)
+            history.push(nextUrl);
+       }, 1000);
+    
     }
     function renderOptions(){
         if(!dataCollectionSelected){
@@ -282,6 +290,7 @@ function Patient(props) {
         }
         
     }
+   
     useEffect(() => {
         setShowOptions(false);
     }, [uuidDataCollection, uuidSection])
@@ -313,19 +322,30 @@ function Patient(props) {
         if(props.patientsSubmissions.data){
             let tempSubmissions = []
             if(props.patientsSubmissions.data.hasOwnProperty(uuidPatient)){
-                tempSubmissions = Object.values(props.patientsSubmissions.data[uuidPatient]).reduce((acc, val)=> {
-                    let tempDict = {};
-                    tempDict.surveyName = val.surveyName; 
-                    tempDict.uuidSurvey = val.uuid; 
-                    tempDict.typeSurvey = val.type; 
-                    const researcher = val.submissions[val.submissions.length -1].researcher;
-                    //Si es en modo offline no hay researcher.
-                    tempDict.researcher = researcher.name ? researcher.name+" "+researcher.surnames : researcher;
-                    tempDict.offline = researcher.name ? false : true;
-                    tempDict.createdAt = val.submissions[val.submissions.length -1].surveyRecords[0].createdAt;
+                Object.values(props.patientsSubmissions.data[uuidPatient]).forEach((val)=> {
+                    const tempSubs = val.submissions.map(sub => {
+                        const tempSub = {...sub};
+                        tempSub.surveyName = val.surveyName;
+                        tempSub.uuidSurvey = val.uuid; 
+                        tempSub.typeSurvey = val.type; 
+                        const departmentName = tempSub.researcher.departments.length === 0 ? "" : " - "+tempSub.researcher.departments[0].name;
+                        tempSub.researcher = tempSub.researcher.name+" "+tempSub.researcher.surnames + departmentName
+                        return tempSub;
+                    })
+                    tempSubmissions = tempSubmissions.concat(tempSubs); 
+                    // tempSubmissions.concat(val.submissions);
+                    // let tempDict = {};
+                    // tempDict.surveyName = val.surveyName; 
+                    // tempDict.uuidSurvey = val.uuid; 
+                    // tempDict.typeSurvey = val.type; 
+                    // const researcher = val.submissions[val.submissions.length -1].researcher;
+                    // //Si es en modo offline no hay researcher.
+                    // tempDict.researcher = researcher.name ? researcher.name+" "+researcher.surnames : researcher;
+                    // tempDict.offline = researcher.name ? false : true;
+                    // tempDict.createdAt = val.submissions[val.submissions.length -1].surveyRecords[0].createdAt;
     
-                    return acc.concat(tempDict)
-                }, []);
+                    // return acc.concat(tempDict)
+                });
                 tempSubmissions.sort((a, b) => {
                     const aDate = new Date(a.createdAt);
                     const bDate = new Date(b.createdAt);
