@@ -85,7 +85,7 @@ function Patient(props) {
     const translations = typeSurveys.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typeSurveys.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
 
     function addRecord(){
-        if(!parameters.hasOwnProperty("typeTest") && !(parameters.hasOwnProperty("action"))){
+        if(!parameters.hasOwnProperty("typeTest")){
             setShowOptions(!showOptions);
         }
         else{
@@ -132,7 +132,8 @@ function Patient(props) {
         }
     }
     function callBackEditSubmission(idSubmission, uuidSection){
-        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
+        const submission = surveyRecords.find(sub => sub.id === idSubmission);
+        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", submission.uuidSurvey)
                 .replace(":uuidPatient", uuidPatient).replace(":action", "update").replace(":uuidSection", uuidSection)
                 .replace(":idSubmission", idSubmission);
         setShowOptions(false);
