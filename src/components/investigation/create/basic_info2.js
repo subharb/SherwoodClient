@@ -9,7 +9,10 @@ export default class BasicInfo2 extends Component {
     
     render() {
         let parsedData = {...this.props.initialData};
-        parsedData.institution = parsedData.institution.name;
+        if(parsedData.hasOwnProperty('institution')){
+            parsedData.institution = parsedData.institution.name;
+        }
+        
         return (
                 <Card>
                     <CardContent>

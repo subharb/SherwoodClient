@@ -16,7 +16,7 @@ import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
-        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../routes';
+        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../routes';
 import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
 import iconNotes from "../../img/icons/history.png";
@@ -60,6 +60,7 @@ function Patient(props) {
     let { uuidPatient } = useParams();
     let { uuidSection } = useParams();
     let { uuidDataCollection } = useParams();
+    
     let { action } = useParams();
     
     const parameters = useParams();
@@ -74,6 +75,7 @@ function Patient(props) {
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null;
+    
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     
@@ -147,18 +149,18 @@ function Patient(props) {
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
-    function selectDataCollection(index){
+    function selectSubmission(index){
         console.log("Row seleccionado ", filteredRecords[index]);
         if(filteredRecords[index].offline){
             setShowSnackbar({show:true, severity: "warning", message : "investigation.fill.survey.record-offline"});
         }
         else{
-            goToSurveyUrl(filteredRecords[index].uuidSurvey);
+            goToSurveyUrl(filteredRecords[index].id);
         }
         
     }
     function goToSurveyUrl(uuidSurvey){
-        const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":uuidDataCollection", uuidSurvey);
+        const nextUrl = HOSPITAL_PATIENT_SUBMISSION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":idSubmission", uuidSurvey);
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
@@ -261,16 +263,17 @@ function Patient(props) {
             }
             
         }
-        else if(dataCollectionSelected !== null && action === "show"){
-            return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} mode="elements" callBackEditSubmission={callBackEditSubmission}
-                        submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
+        else if(idSubmission !== null && action === "show"){
+            return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} 
+                        mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission}
+                        submissions={surveyRecords} surveys={props.investigations.currentInvestigation.surveys} />
         }
         else if(filteredRecords.length === 0){
             return <Translate id={`pages.hospital.${translations}.no-records`} />
         }
         else{
             return(
-                <EnhancedTable noHeader noSelectable selectRow={(index) => selectDataCollection(index)} 
+                <EnhancedTable noHeader noSelectable selectRow={(index) => selectSubmission(index)} 
                 rows={filteredRecords.map((record, index) => {
                     const dateCreatedString = record.createdAt ? new Date(record.createdAt).toISOString().slice(0, 16).replace('T', ' ') : "Unsincronized";
                     return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreatedString})

@@ -38,7 +38,8 @@ export default function ShowPatientRecords(props) {
         )
     }
     function renderSubmissionsSection(){    
-        return Object.values(props.survey.sections).sort((a,b) => a.order - b.order).map(section => {
+        const currentSurvey = props.surveys.find(sur => sur.uuid === props.submissions[indexSubmission].uuidSurvey);
+        return Object.values(currentSurvey.sections).sort((a,b) => a.order - b.order).map(section => {
            // const patientSubmissions = props.submissions.filter(sub=>sub.patient.uuid === props.patient.uuid);
             const recordsSection = filterRecordsFromSection(props.submissions[indexSubmission], section.uuid);
 
@@ -86,6 +87,10 @@ export default function ShowPatientRecords(props) {
             );
         }
     }
+    useEffect(() => {
+        const tempIndex = props.submissions.findIndex(sub => sub.id === props.idSubmission);
+        setIndexSubmission(tempIndex);
+    }, [props.idSubmission])
     const dateCurrentSubmission = new Date(props.submissions[indexSubmission].updatedAt)
     return (
         <Grid container direction="column" spacing={2}>
@@ -108,7 +113,8 @@ export default function ShowPatientRecords(props) {
                 <Grid item xs={12}>
                     <Paper style={{padding:"1rem", marginTop:'1rem'}}>
                         <Grid item xs={12}>
-                            <Typography variant="body2" gutterBottom><Translate id="hospital.doctor" />: {props.submissions[indexSubmission].researcher.name} {props.submissions[indexSubmission].researcher.surnames}</Typography>
+                        <Typography variant="body2" gutterBottom><Translate id="hospital.data-collection" />: {props.submissions[indexSubmission].surveyName}</Typography>
+                            <Typography variant="body2" gutterBottom><Translate id="hospital.doctor" />: {props.submissions[indexSubmission].researcher}</Typography>
                             <Typography variant="body2" gutterBottom><Translate id="general.date" />: {dateCurrentSubmission.toLocaleDateString()} {dateCurrentSubmission.toLocaleTimeString()}</Typography>                        
                         </Grid>
                         <Grid item>
