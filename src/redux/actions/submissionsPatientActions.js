@@ -7,7 +7,7 @@ import {
 
 export function fetchSubmissionsPatientInvestigationAction(uuidInvestigation, uuidPatient) {
     return async (dispatch) => {
-      dispatch({ type: types.SUBMISSIONS_LOADING });
+      dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
   
       return fetchRecordsPatientAllSurveysService(uuidInvestigation, uuidPatient)
         .then((response) => {
