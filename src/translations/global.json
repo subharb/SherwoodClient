@@ -73,7 +73,7 @@
             },
             "department" : ["Departament", "Departamento", "Department"],
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
-            "no-doctors" : ["No doctors added yet", "No hay médicos", "Aucun médecin n'a encore été ajouté"]
+            "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"]
         },
         "analytics" : {
             "graphs" : {
@@ -116,7 +116,7 @@
         "treatment-finish-table" : ["End date", "F. fin", "Date de fin"],
         "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
-        "number-elements" : ["Number", "Nombre", "Número"],
+        "number-elements" : ["Number", "Número", "Número"],
         "time-unit" : ["Time", "Tiempo", "Temps"],
         "treatment-frecuency-values" : {
             "single-dose" : ["Single dose", "Dosis única", "Une seule dose"]
@@ -137,7 +137,7 @@
             "week" : ["1 week", "1 semana", "1 semaine"]
         },
         "dose-options" : {
-            "1" : ["One tablet", "Un comprimido", "une pilule"],
+            "1" : ["1 tablet", "1 comprimido", "1 pilule"],
             "3/4" : ["3/4 of a tablet", "3/4 de comprimido", "3/4 pilule"],
             "1/2" : ["1/2 a tablet", "1/2 comprimido", "1/2 pilule"],
             "1/4" : ["1/4 of a tablet", "1/4 de comprimido", "1/4 pilule"]
@@ -150,7 +150,7 @@
         "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],     
         "family-relation" : ["Relationship", "Relación Familiar", "Relation de famille"],     
         "ict-plural" : ["Diagnoses", "Diagnósticos", "Diagnostics"],
-        "ict-table" : ["Diagnoses", "Diagnósticos", "Diagnostics"],
+        "ict-table" : ["Diagnoses", "Entidad", "Diagnostics"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "treatment-table" : ["Drug", "Medicamento", "Médicament"],
         "treatment_regular-table" : ["Drug", "Medicamento", "Médicament"],

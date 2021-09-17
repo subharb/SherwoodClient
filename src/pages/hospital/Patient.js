@@ -494,17 +494,17 @@ function Patient(props) {
                             <Grid item container xs={5}  justify="center" alignItems="center">
                                 <Grid item xs={4}>
                                     <Button data-testid="medical-notes" onClick={() => backToRoot()} >
-                                        <img src={typeSurveys === 0 ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
+                                        <img src={typeSurveys.includes(0) ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <Button data-testid="images" onClick={() => goToTest(1)} >
-                                        <img src={typeSurveys === 1 ? iconImagesGreen : iconImages} alt="Images" height="40" />
+                                        <img src={typeSurveys.includes(1) ? iconImagesGreen : iconImages} alt="Images" height="40" />
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <Button data-testid="lab" onClick={() => goToTest(2)} >
-                                        <img src={typeSurveys === 2 ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                                        <img src={typeSurveys.includes(2) ? iconLabGreen : iconLab} alt="Lab" height="40" />
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>

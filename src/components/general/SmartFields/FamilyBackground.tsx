@@ -49,9 +49,13 @@ function FamilyBackground(props: PropsSmartFieldLocalized) {
                 <TextField label={props.translate("hospital.family-relation")} variant="outlined" error={errorRelation}
                     onChange={(e) => setRelation(e.target.value)}  />
             </Grid>
-            <Grid item xs={12}>
-                <ButtonAccept onClick={addBackground}><Translate id="general.add" /></ButtonAccept> 
-                <ButtonCancel onClick={props.cancel} ><Translate id="general.cancel" /></ButtonCancel>
+            <Grid container item xs={12} spacing={1}>
+                <Grid item>
+                    <ButtonAccept onClick={addBackground}><Translate id="general.add" /></ButtonAccept> 
+                </Grid>
+                <Grid item>
+                    <ButtonCancel onClick={props.cancel} ><Translate id="general.cancel" /></ButtonCancel>
+                </Grid>
             </Grid>
         </Grid>
     );

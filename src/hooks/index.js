@@ -168,7 +168,7 @@ export function useSelectSmartField(initialState, label, errorState, setAddingSm
         const optionsArray = [<MenuItem value={true}><Translate id="general.yes" /></MenuItem>, <MenuItem value={false}><Translate id="general.no" /></MenuItem>]
         
         return(
-            <FormControl variant="outlined" style={{width:"235px"}} error={errorState}>
+            <FormControl variant="outlined" fullWidth error={errorState}>
                 <InputLabel id="show_treatment">{label}</InputLabel>
                 <Select
                 labelId="show_treatment"

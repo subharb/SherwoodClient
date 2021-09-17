@@ -65,13 +65,15 @@ const AutocompleteSherwood = (props:Props) => {
    
             return(
             <Grid container>
-                <Grid item>
+                <Grid item xs={12}>
                     <Typography variant="body2" gutterBottom><Translate id="general.no-results"/></Typography> 
-                    {
-                        props.freeSolo &&
-                        <ButtonAccept color="secondary" onClick={saveField}><Translate id="general.add" /></ButtonAccept>
-                    }
                 </Grid>
+                {
+                        props.freeSolo &&
+                        <Grid item>
+                            <ButtonAccept color="secondary" onClick={saveField}><Translate id="general.add" /></ButtonAccept>
+                        </Grid>
+                }                
             </Grid>
             );
         }

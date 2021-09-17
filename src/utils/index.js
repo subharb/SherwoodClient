@@ -238,7 +238,7 @@ export const FIELDS_FORM = {
         type:"text",
         label : "investigation.create.edc.question_field",
         shortLabel: "investigation.table.question",
-        validation : "textMin6", 
+        validation : "textMin2", 
         size : "s6"
     }
 }

@@ -203,19 +203,25 @@ function SingleTreatmentSelector(props){
                     <Grid item xs={12}>
                         <InputLabel id="duration"><Translate id="hospital.duration" /></InputLabel>
                         <FormControl disabled={isOneDose || isCurrent} style={{minWidth: 140}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
-                            <InputLabel id="numberElements"><Translate id="hospital.number-elements" /></InputLabel>
+                            <InputLabel id="numberElements-label"><Translate id="hospital.number-elements" /></InputLabel>
                             <Select
                                 id="numberElements"
+                                labelId="numberElements-label"
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                                 >
                                 { numberElements }
                             </Select>
                         </FormControl>
-                        <FormControl disabled={isOneDose || isCurrent} style={{minWidth: 150}} mt={3} variant="outlined" margin={props.typeMargin} error={errorDuration} >
-                            <InputLabel id="timeUnit"><Translate id="hospital.time-unit" /></InputLabel>
+                        <FormControl disabled={isOneDose || isCurrent} style={{minWidth: 150}} 
+                            mt={3} variant="outlined"
+                            margin={props.typeMargin} error={errorDuration} >
+                            <InputLabel id="timeUnit-label" >
+                                <Translate id="hospital.time-unit" />
+                            </InputLabel>
                             <Select
                                 id="timeUnit"
+                                labelId="timeUnit-label"
                                 value={timeUnit}
                                 onChange={(e) => setTimeUnit(e.target.value)}
                                 >
@@ -225,11 +231,14 @@ function SingleTreatmentSelector(props){
                     </Grid>
                 </React.Fragment>
             }
-            <Grid item xs={12}>
-                <ButtonAccept onClick={saveDrug}><Translate id="general.add" /></ButtonAccept>
-                <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
+            <Grid container item xs={12} spacing={1}>
+                <Grid item>
+                    <ButtonAccept onClick={saveDrug}><Translate id="general.add" /></ButtonAccept>
+                </Grid>
+                <Grid item>
+                    <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>    
+                </Grid>
             </Grid>
-            
         </Grid>
         
         

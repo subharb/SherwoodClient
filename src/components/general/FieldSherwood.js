@@ -34,10 +34,14 @@ const FormControl = styled(FormControlSpacing)`
 const QuillWrapper = styled.div`
   .ql-editor {
     min-height: 200px;
+
     ${props => props.error && css`
         border:1px solid red;
     `
     }
+  }
+  .ql-editor p{
+      font-size:18px;
   }
 `;
 const EvaluateContainer = styled.div`
@@ -72,6 +76,9 @@ const RedFormHelperText = styled(FormHelperText)`
   color:red;
 `
 
+const FieldWrapper = (props) => <Grid item xs={12} sm={7} lg={4}>
+    {props.children}
+</Grid> 
 export const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
 `;
@@ -175,18 +182,19 @@ class FieldSherwood extends PureComponent{
                 }
                 const labelId = `${input.name}_label`;
                 return(
-                    <FormControl mt={3} variant="outlined" margin={this.typeMargin} style={{width:"235px"}} error={errorState} >
-                        <InputLabel id={labelId}>{labelString}</InputLabel>
-                        <Select
-                        labelId={labelId}
-                        id={input.name}
-                        label={labelString}
-                        {...input} 
-                        >
-                        { optionsArray }
-                        </Select>
-                    </FormControl>
-                    
+                    <Grid item xs={12} sm={7} lg={4}>
+                        <FormControl mt={3} fullWidth variant="outlined"  margin={this.typeMargin} error={errorState} >
+                            <InputLabel id={labelId}>{labelString}</InputLabel>
+                            <Select
+                                labelId={labelId}
+                                id={input.name}
+                                label={labelString}
+                                {...input} 
+                            >
+                            { optionsArray }
+                            </Select>
+                        </FormControl>
+                    </Grid>
                 )
             // case "select":
             //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
@@ -242,50 +250,53 @@ class FieldSherwood extends PureComponent{
             case "date":
                 const value = input.value ? input.value : "";
                 return (
-                    <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
-                        <KeyboardDatePicker
-                            disableToolbar
-                            margin={this.typeMargin}
-                            id={input.name}
-                            inputVariant="outlined"
-                            style={{width: "235px"}}
-                            label={input.value ? "" : labelString}
-                            //label={labelString}
-                            format="dd/MM/yyyy"
-                            value={value}
-                            defaultValue={value} 
-                            openTo="year"
-                            onChange={this.handleDateChange}
-                            maxDate={validation === "pastDate" ? new Date() : undefined}
-                            emptyLabel={labelString}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                            error={errorState} 
-                            helperText={errorString} 
-                        />
-                    </MuiPickersUtilsProvider>
-                    
+                    <FieldWrapper>
+                        <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
+                            <KeyboardDatePicker
+                            fullWidth
+                                disableToolbar
+                                margin={this.typeMargin}
+                                id={input.name}
+                                inputVariant="outlined"
+                                fill
+                                label={input.value ? "" : labelString}
+                                format="dd/MM/yyyy"
+                                value={value}
+                                defaultValue={value} 
+                                openTo="year"
+                                onChange={this.handleDateChange}
+                                onKeyDown={(e) => this.handleDateChange(e.target.value)}
+                                maxDate={validation === "pastDate" ? new Date() : undefined}
+                                emptyLabel={labelString}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                                error={errorState} 
+                                helperText={errorString} 
+                            />
+                        </MuiPickersUtilsProvider>
+                    </FieldWrapper>
                 );
             case "time":
                 return (
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardTimePicker
-                            margin={this.typeMargin}
-                            size="small"
-                            inputVariant="outlined"
-                            id={input.name}
-                            label={labelString}
-                            value={input.value === "" ? new Date() : input.value}
-                            onChange={this.handleDateChange}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change time',
-                            }}
-                            error={errorState} 
-                            helperText={errorString}
-                        />
-                    </MuiPickersUtilsProvider>
-                    
+                    <FieldWrapper>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardTimePicker
+                                margin={this.typeMargin}
+                                size="small"
+                                inputVariant="outlined"
+                                id={input.name}
+                                label={labelString}
+                                value={input.value === "" ? new Date() : input.value}
+                                onChange={this.handleDateChange}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change time',
+                                }}
+                                error={errorState} 
+                                helperText={errorString}
+                            />
+                        </MuiPickersUtilsProvider>
+                    </FieldWrapper>
                 )
             case "evaluation":
                 let arrayButtons = [];
@@ -323,7 +334,7 @@ class FieldSherwood extends PureComponent{
                             {labelString}: 
                         </Typography>
                         <QuillWrapper className={input.name} error={errorState}>
-                            <ReactQuill
+                            <ReactQuill style={{fontSize:'24px'}}
                                 {...input}
                                 onChange={(newValue, delta, source) => {
                                     if (source === 'user') {
@@ -359,10 +370,14 @@ class FieldSherwood extends PureComponent{
                />
                 );
             case "file" : 
-                return <File label={labelString} mode="form"
+                return (
+                    <FieldWrapper>
+                        <File label={labelString} mode="form"
                             imagesSelected = {(images) => this.imagesSelected(images) }
                             type={type} {...input} 
                             value={input.value} />
+                    </FieldWrapper>
+                )
             case "allergy":
             case "family-background":
             case "background":
@@ -370,22 +385,26 @@ class FieldSherwood extends PureComponent{
             case "treatment" : 
             case "treatment_regular" : 
                 return(
-                    <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
-                        variant="outlined" margin={this.typeMargin} error={errorState} country={country}
-                        helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
-                        size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
+                    <FieldWrapper>
+                        <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
+                            variant="outlined" margin={this.typeMargin} error={errorState} country={country}
+                            helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
+                            size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
+                    </FieldWrapper>
                 );
             case "separator":
                 return(
-                    <Typography variant="subtitle1" style={{paddingBottom:'1rem'}}>
+                    <Typography variant="subtitle1" color="textPrimary" style={{ fontWeight: 600 }}>
                         { labelString }
                     </Typography>);
             default:    
                 console.log("TextFieldSherwood",input.value);
                 return(
-                    <TextFieldSherwood {...input} variant="outlined" margin={this.typeMargin}
-                        label={labelString} error={errorState} size="small"
-                        helperText={errorString} />
+                    <FieldWrapper>
+                        <TextFieldSherwood {...input} fullWidth variant="outlined" margin={this.typeMargin}
+                            label={labelString} error={errorState} size="small" 
+                            helperText={errorString} />
+                    </FieldWrapper>
                 )
         }
     }

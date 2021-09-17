@@ -54,6 +54,7 @@ export default function ShowRecordsSection(props) {
             </React.Fragment>;
         }
         if(field.type === "textarea"){
+            const parsedValue = valueRecord.value.replace('<h1>','').replace('</h1>','');;
             return(
             <React.Fragment>
                 {
@@ -62,7 +63,7 @@ export default function ShowRecordsSection(props) {
                         {field.name}: 
                     </Typography>
                 }
-                <div dangerouslySetInnerHTML={{__html: valueRecord ? valueRecord.value : "-"}}></div>                    
+                <div dangerouslySetInnerHTML={{__html: valueRecord ? parsedValue : "-"}}></div>                    
             </React.Fragment>
             );
         }

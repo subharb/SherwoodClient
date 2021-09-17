@@ -144,10 +144,6 @@ export function Analytics(props) {
 						Analytics Dashboard
 					</Typography>
 				</Grid>
-
-				<Grid item>
-					<DatesSelector onCallBack={datesSelected} />
-				</Grid>
 			</Grid>
 			<Divider my={6} />
 			<Grid container spacing={6}>
@@ -190,12 +186,20 @@ export function Analytics(props) {
 				}
 				{
 					props.investigations.currentInvestigation.permissions.includes(BUSINESS_READ) &&
-					<Grid item xs={12} lg={8}>
-						<TimeTable title={props.translate("hospital.analytics.graphs.activity.title")} loading={!statsFirstMonitoring}
-							header={[props.translate("hospital.analytics.graphs.activity.table-title"), props.translate("hospital.analytics.graphs.activity.first-visit"), props.translate("hospital.analytics.graphs.activity.followup-visit")]}
-							data={statsFirstMonitoring}
-							actionCallBack={(value) => changeDate(value)}
-						/>
+					<Grid container item spacing={1}>
+						<Grid item xs={0} lg={8} sm={6}> 
+							
+						</Grid>
+						<Grid item xs={12} lg={4} sm={6}> 
+							<DatesSelector onCallBack={datesSelected} />
+						</Grid>
+						<Grid item xs={12} >
+							<TimeTable title={props.translate("hospital.analytics.graphs.activity.title")} loading={!statsFirstMonitoring}
+								header={[props.translate("hospital.analytics.graphs.activity.table-title"), props.translate("hospital.analytics.graphs.activity.first-visit"), props.translate("hospital.analytics.graphs.activity.followup-visit")]}
+								data={statsFirstMonitoring}
+								actionCallBack={(value) => changeDate(value)}
+							/>
+						</Grid>
 					</Grid>
 				}
 
