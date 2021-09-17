@@ -35,6 +35,13 @@ const WhiteTypography = styled(Typography)`
     font-size: 1rem;
 `;
 
+const PatientToolBar = styled(Grid)`
+    background-color:white;
+    position:sticky;
+    top:65px;
+    z-index:1000;
+`
+
 function Patient(props) {
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
@@ -440,7 +447,7 @@ function Patient(props) {
                     }
                 </Modal>
                 <Grid container spacing={3}>
-                    <Grid item container style={{backgroundColor:"white"}}  xs={12}>
+                    <PatientToolBar item container className="patient_toolbar" xs={12}>
                         <Grid item container xs={3} >
                             {/* <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>
@@ -513,7 +520,7 @@ function Patient(props) {
                             </Grid>
                         }
                         
-                    </Grid>
+                    </PatientToolBar>
                     <Grid item xs={12}>
                         {
                             renderCore()
