@@ -6,7 +6,7 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import { ButtonAccept, ButtonCancel } from '../mini_components'; 
+import { ButtonAccept, ButtonCancel, FieldWrapper } from '../mini_components'; 
 import DrugSelector from './DrugSelector';
 import {addMinutes} from 'date-fns'
 
@@ -133,9 +133,10 @@ function SingleTreatmentSelector(props){
                     freeSolo
                     callbackError={(error) => drugError(error)}/>
             </Grid>
-            <Grid item xs={12}>
+            <FieldWrapper>
                 <Autocomplete
                     id="dose"
+                    fullWidth
                     options={selectDose.options}
                     getOptionLabel={(option) => props.translate(option.label)}
                     style={{ width: 300 }}
@@ -157,7 +158,7 @@ function SingleTreatmentSelector(props){
                         helperText={props.translate("general.no-option-match")} 
                         error={errorDose} />}
                     />
-            </Grid>
+            </FieldWrapper>
             {
                 props.type === "treatment" &&
                 <Grid item xs={12}>

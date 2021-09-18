@@ -7,6 +7,7 @@ import { useQuery } from 'react-query'
 import { SIGN_IN_ROUTE } from '../routes';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
+import { FieldWrapper } from '../components/general/mini_components';
 
 export function usePatientsData(investigation, patientsData){
     const [decryptedPatientData, setDecryptedPatientData] = useState([]);
@@ -168,18 +169,20 @@ export function useSelectSmartField(initialState, label, errorState, setAddingSm
         const optionsArray = [<MenuItem value={true}><Translate id="general.yes" /></MenuItem>, <MenuItem value={false}><Translate id="general.no" /></MenuItem>]
         
         return(
-            <FormControl variant="outlined" fullWidth error={errorState}>
-                <InputLabel id="show_treatment">{label}</InputLabel>
-                <Select
-                labelId="show_treatment"
-                id="show_treatment"
-                label={label}
-                value={addSmartField}
-                onChange={(event) => selectChanged(event)}
-                >
-                { optionsArray }
-                </Select>
-            </FormControl>
+            <FieldWrapper>
+                <FormControl variant="outlined" fullWidth error={errorState}>
+                    <InputLabel id="show_treatment">{label}</InputLabel>
+                    <Select
+                    labelId="show_treatment"
+                    id="show_treatment"
+                    label={label}
+                    value={addSmartField}
+                    onChange={(event) => selectChanged(event)}
+                    >
+                    { optionsArray }
+                    </Select>
+                </FormControl>
+            </FieldWrapper>
         )
     }
     return [addSmartField, renderSelect, resetState]

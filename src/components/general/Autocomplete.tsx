@@ -3,7 +3,7 @@ import { CircularProgress, Grid, TextField, Typography } from '@material-ui/core
 import React, { useEffect, useState } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
-import { ButtonAccept } from './mini_components';
+import { ButtonAccept, FieldWrapper } from './mini_components';
 
 const ContainerOptions = styled.div`
     position:absolute;
@@ -117,9 +117,11 @@ const AutocompleteSherwood = (props:Props) => {
     }, [searchTerm])
     return (
         <React.Fragment>
-            <TextField value={searchTerm} error={errorSearch || props.error} onFocus={restart}
-            onChange={(event) => changeInput(event.target.value)}
-            label={props.translate("hospital.select-treatment")} variant="outlined" />
+            <FieldWrapper>
+                <TextField value={searchTerm} error={errorSearch || props.error} onFocus={restart}
+                    onChange={(event) => changeInput(event.target.value)} fullWidth
+                    label={props.translate("hospital.select-treatment")} variant="outlined" />
+            </FieldWrapper>
             {
                 renderOptions()
             }

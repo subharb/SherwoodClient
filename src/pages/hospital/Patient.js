@@ -75,7 +75,7 @@ function Patient(props) {
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null;
-    
+    const iconSelected = typeSurveys.length === 1 ? typeSurveys[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     
@@ -505,17 +505,17 @@ function Patient(props) {
                             <Grid item container xs={5}  justify="center" alignItems="center">
                                 <Grid item xs={4}>
                                     <Button data-testid="medical-notes" onClick={() => backToRoot()} >
-                                        <img src={typeSurveys.includes(0) ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
+                                        <img src={iconSelected === TYPE_MEDICAL_SURVEY ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <Button data-testid="images" onClick={() => goToTest(1)} >
-                                        <img src={typeSurveys.includes(1) ? iconImagesGreen : iconImages} alt="Images" height="40" />
+                                        <img src={iconSelected === TYPE_IMAGE_SURVEY ? iconImagesGreen : iconImages} alt="Images" height="40" />
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <Button data-testid="lab" onClick={() => goToTest(2)} >
-                                        <img src={typeSurveys.includes(2) ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                                        <img src={iconSelected === TYPE_LAB_SURVEY ? iconLabGreen : iconLab} alt="Lab" height="40" />
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>

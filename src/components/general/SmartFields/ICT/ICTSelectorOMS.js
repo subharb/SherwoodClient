@@ -5,6 +5,7 @@ import { getTokenWho } from '../../../../services/sherwoodService';
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { Grid, TextField } from '@material-ui/core';
+import { FieldWrapper } from '../../mini_components';
 
 function ICTSelectorOMS(props){
     const [show, setShow] = useState(false);
@@ -88,11 +89,12 @@ function ICTSelectorOMS(props){
     
     const value = diagnose !== "" ? diagnose : props.value;
     return ([
-        <div>
+        <FieldWrapper>
             <TextField key="ict-input" {...props} label={props.translate("hospital.select-ict")} value = {value}
-                inputProps={{className : "ctw-input", "data-ctw-ino" : "1"}}   />
-            <div key="ict-container" className="ctw-window" data-ctw-ino="1"></div>
-        </div>
+                inputProps={{className : "ctw-input", "data-ctw-ino" : "1"}} fullWidth  />
+        </FieldWrapper>,
+        <div key="ict-container" className="ctw-window" data-ctw-ino="1"></div>
+    
     ]
         
     )

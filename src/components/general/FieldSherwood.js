@@ -24,6 +24,7 @@ import SmartField from './SmartFields';
 import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import File from './File';
+import { FieldWrapper } from './mini_components';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -76,9 +77,7 @@ const RedFormHelperText = styled(FormHelperText)`
   color:red;
 `
 
-const FieldWrapper = (props) => <Grid item xs={12} sm={7} lg={4}>
-    {props.children}
-</Grid> 
+ 
 export const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
 `;
@@ -385,12 +384,11 @@ class FieldSherwood extends PureComponent{
             case "treatment" : 
             case "treatment_regular" : 
                 return(
-                    <FieldWrapper>
-                        <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
-                            variant="outlined" margin={this.typeMargin} error={errorState} country={country}
-                            helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
-                            size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
-                    </FieldWrapper>
+                    <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
+                        variant="outlined" margin={this.typeMargin} error={errorState} country={country}
+                        helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
+                        size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
+                    
                 );
             case "separator":
                 return(
