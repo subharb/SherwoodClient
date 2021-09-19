@@ -23,7 +23,9 @@ import {
 import TimelineIcon from '@material-ui/icons/Timeline';
 import FindInPageIcon from '@material-ui/icons/FindInPage';
 import GroupIcon from '@material-ui/icons/Group';
-import { Home as HomeIcon, Search as SearchPatientIcon, PersonAddSharp as AddPatientIcon, Image as ImageIcon} from "@material-ui/icons";
+import { Home as HomeIcon, Search as SearchPatientIcon, 
+    PersonAddSharp as AddPatientIcon, Image as ImageIcon,
+    PeopleOutline as PeopleOutlineIcon} from "@material-ui/icons";
 
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
@@ -79,6 +81,7 @@ import TestsHome from "../pages/hospital/TestsHome";
 import AddPatient from "../pages/hospital/AddPatient";
 import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";
+import Departments from  "../pages/hospital/Departments";
 import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS, SHARE_RESEARCHERS } from "../constants";
 
 
@@ -103,6 +106,7 @@ export const OUTPATIENTS_ROUTE = "/outpatients";
 export const HOSPITAL_PATIENT = "/patient/:uuidPatient";
 export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection/section/:uuidSection/:idSubmission?";
 export const HOSPITAL_PATIENT_DATACOLLECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection";
+export const HOSPITAL_PATIENT_SUBMISSION = "/patient/:uuidPatient/:action/submission/:idSubmission";
 export const HOSPITAL_PATIENT_EDIT_PERSONAL_DATA = "/patient/:uuidPatient/edit/personal-data";
 export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note/:idMedicalNote";
 export const HOSPITAL_PATIENT_TESTS = "/patient/:uuidPatient/tests/:typeTest";
@@ -111,6 +115,7 @@ export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const ROUTE_401 = "/auth/401";
+export const HOSPITAL_DEPARTMENTS = "/departments";
 
 
 
@@ -182,6 +187,11 @@ const hospitalRoutes = {
             component: Patient
         },
         {
+            path: HOSPITAL_PATIENT_SUBMISSION,
+            name: "Patient Submission",
+            component: Patient
+        },
+        {
             path: HOSPITAL_PATIENT_TESTS,
             name: "Patient Tests",
             component: Patient
@@ -210,6 +220,11 @@ const hospitalRoutes = {
             path: HOSPITAL_USER_MGMT,
             name: "User Management",
             component: UserManagement,
+        },
+        {
+            path: HOSPITAL_DEPARTMENTS,
+            name: "Departments",
+            component: Departments,
         },
     ],
   };
@@ -309,6 +324,20 @@ const dashboardUserMgmtRoutes = {
         path: ADD_PATIENT_ROUTE,
         name: "User Mgmt",
         component: UserManagement
+    },
+    children: null
+}
+
+const dashboardDepartmentRoutes = {
+    id: <Translate id="pages.hospital.departments" />,
+    path: HOSPITAL_DEPARTMENTS,
+    icon: <PeopleOutlineIcon />,
+    badge: "",
+    permissions : [SHARE_RESEARCHERS],
+    component: {
+        path: HOSPITAL_DEPARTMENTS,
+        name: "Departments",
+        component: Departments
     },
     children: null
 }
@@ -879,5 +908,6 @@ export const sidebarRoutesHospital = [
     dashboardImagesRoutes,
     dashboardLabRoutes,
     dashboardAnalyticsRoutes,
-    dashboardUserMgmtRoutes
+    dashboardUserMgmtRoutes,
+    dashboardDepartmentRoutes
   ];

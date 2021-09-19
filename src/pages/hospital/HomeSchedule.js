@@ -23,8 +23,10 @@ function HomeSchedule(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchProfileInfo());
-    }, [])
+        if(props.investigations.currentInvestigation){
+            dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
+        }
+    }, [props.investigations])
 
     async function selectHospital(index){
         await dispatch(selectInvestigation(index));
@@ -139,7 +141,7 @@ function HomeSchedule(props) {
         )
     }
     else{
-        if(props.investigations.loading || !props.profile.info){
+        if(props.investigations.loading || (!props.profile.info && props.investigations.currentInvestigation) ){
             return <Loader />
         }
         

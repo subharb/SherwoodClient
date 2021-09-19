@@ -63,7 +63,7 @@ export function AddPatientComponent(props) {
         if(!props.patient){
             //Si es guardar, verifica si este paciente ya estaba
             const existingPatient = props.patients.data[props.investigations.currentInvestigation.uuid].find((pat) => {
-                if(rawPatientData.hasOwnProperty("health_id") && pat.personalData["health_id"] === patientData.personalData["health_id"]){
+                if(rawPatientData.hasOwnProperty("health_id") && pat.personalData["health_id"] === rawPatientData["health_id"]){
                     return true;
                 }
                 const rawName = rawPatientData["name"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");

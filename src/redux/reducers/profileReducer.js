@@ -7,7 +7,7 @@ const initialState = {
 }
 
 export default function reducer(state = initialState, action){
-    console.log(action)
+    
     let newState = { ...state};
     switch(action.type){
         case types.FETCH_PROFILE_SUCCESS:

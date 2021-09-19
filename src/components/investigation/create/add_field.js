@@ -27,7 +27,7 @@ function AddField(props) {
                     open={true}
                     closeModal={() => setAddingField(false)}
                     title={<Translate id="investigation.create.edc.add_field" />}>
-                        <Form fields={props.fields} callBackForm={(field) => callBack(field)} 
+                        <Form fields={props.fields} fullWidth callBackForm={(field) => callBack(field)} 
                             closeCallBack={() => setAddingField(false)} dataTestid="save-field" />
                 </Modal>
         );

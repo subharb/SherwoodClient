@@ -14,7 +14,7 @@ import { decryptPatientsData } from '../../utils';
 
  
 export default function reducer(state = initialState, action){
-    console.log(action)
+    
     let newState = { ...state};
     let tempData;
     switch(action.type){

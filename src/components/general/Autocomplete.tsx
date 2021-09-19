@@ -3,7 +3,7 @@ import { CircularProgress, Grid, TextField, Typography } from '@material-ui/core
 import React, { useEffect, useState } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
-import { ButtonAccept } from './mini_components';
+import { ButtonAccept, FieldWrapper } from './mini_components';
 
 const ContainerOptions = styled.div`
     position:absolute;
@@ -65,13 +65,15 @@ const AutocompleteSherwood = (props:Props) => {
    
             return(
             <Grid container>
-                <Grid item>
+                <Grid item xs={12}>
                     <Typography variant="body2" gutterBottom><Translate id="general.no-results"/></Typography> 
-                    {
-                        props.freeSolo &&
-                        <ButtonAccept color="secondary" onClick={saveField}><Translate id="general.add" /></ButtonAccept>
-                    }
                 </Grid>
+                {
+                        props.freeSolo &&
+                        <Grid item>
+                            <ButtonAccept color="secondary" onClick={saveField}><Translate id="general.add" /></ButtonAccept>
+                        </Grid>
+                }                
             </Grid>
             );
         }
@@ -115,9 +117,11 @@ const AutocompleteSherwood = (props:Props) => {
     }, [searchTerm])
     return (
         <React.Fragment>
-            <TextField value={searchTerm} error={errorSearch || props.error} onFocus={restart}
-            onChange={(event) => changeInput(event.target.value)}
-            label={props.translate("hospital.select-treatment")} variant="outlined" />
+            <FieldWrapper>
+                <TextField value={searchTerm} error={errorSearch || props.error} onFocus={restart}
+                    onChange={(event) => changeInput(event.target.value)} fullWidth
+                    label={props.translate("hospital.select-treatment")} variant="outlined" />
+            </FieldWrapper>
             {
                 renderOptions()
             }

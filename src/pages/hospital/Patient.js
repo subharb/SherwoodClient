@@ -16,7 +16,7 @@ import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
-        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../routes';
+        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../routes';
 import { CloseIcon } from '@material-ui/data-grid';
 import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
 import iconNotes from "../../img/icons/history.png";
@@ -27,13 +27,20 @@ import iconImagesGreen from "../../img/icons/images_green.png";
 import iconLabGreen from "../../img/icons/lab_green.png";
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
-import { MEDICAL_ACCESS, MEDICAL_READ, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../constants';
+import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../constants';
 
 
 const WhiteTypography = styled(Typography)`
     color:white;
     font-size: 1rem;
 `;
+
+const PatientToolBar = styled(Grid)`
+    background-color:white;
+    position:sticky;
+    top:65px;
+    z-index:1000;
+`
 
 function Patient(props) {
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
@@ -46,29 +53,31 @@ function Patient(props) {
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
     const [indexDataCollection, setIndexDataCollection] = useState(-1);
     const [savedDataCollection, setSavedDataCollection] = useState(false);
-    const [indexSection, setIndexSection] = useState(-1);
+    // const [indexSection, setIndexSection] = useState(-1);
 
     
     const dispatch = useDispatch();
     let { uuidPatient } = useParams();
     let { uuidSection } = useParams();
     let { uuidDataCollection } = useParams();
+    
     let { action } = useParams();
     
     const parameters = useParams();
     const idSubmission = parameters["idSubmission"] ? parseInt(parameters["idSubmission"]) : parameters["idSubmission"];
-    
+    const submission = idSubmission && surveyRecords ? surveyRecords.find(rec => rec.id === idSubmission) : null;
     const history = useHistory();
 
     const isInitialMount = useRef(true);
-
-    const typeSurveys = !parameters.hasOwnProperty("typeTest") ? [TYPE_MEDICAL_SURVEY,TYPE_FIRST_VISIT_SURVEY,TYPE_MONITORING_VISIT_SURVEY] : parameters["typeTest"] === "images" ? [TYPE_IMAGE_SURVEY] : [TYPE_LAB_SURVEY];
+    
+    const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
+    const typeSurveys = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : (dataCollectionSelected.type === TYPE_IMAGE_SURVEY ? [TYPE_IMAGE_SURVEY] : [TYPE_LAB_SURVEY])) : (parameters.hasOwnProperty("typeTest") ? (parameters["typeTest"] === "images" ? [TYPE_IMAGE_SURVEY] : [TYPE_LAB_SURVEY]) : MEDICAL_SURVEYS);
     const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typeSurveys.includes(sur.type)) : [];
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
-    const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null;
-    const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
+    const iconSelected = typeSurveys.length === 1 ? typeSurveys[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
+    const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     const filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
         return typeSurveys.includes(rec.typeSurvey)
@@ -81,10 +90,10 @@ function Patient(props) {
         }
         else{
             const filterType = parameters.typeTest === "images" ? TYPE_IMAGE_SURVEY : TYPE_LAB_SURVEY;
-            const dataCollection = currentSurveys.find(sur => sur.type === filterType);
+            const dataCollection = dataCollectionSelected ? dataCollectionSelected : currentSurveys.find(sur => sur.type === filterType);
 
-            const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollection.uuid)
-                .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", dataCollection.sections[0].uuid)
+            const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidDataCollection", dataCollection.uuid)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "fill")
                 .replace(":idSubmission", "");
             history.push(nextUrl);
         }
@@ -95,42 +104,45 @@ function Patient(props) {
     }
 
     function fillDataCollection(indexCollection){
-        setIndexDataCollection(indexCollection);
-    }
-    function callBackEditSubmission(idSubmission, uuidSection){
-        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
-                .replace(":uuidPatient", uuidPatient).replace(":action", "update").replace(":uuidSection", uuidSection)
-                .replace(":idSubmission", idSubmission);
-        setShowOptions(false);
-        //setIndexDataCollection(-1);
-        setIndexSection(-1);
-        history.push(nextUrl);
-    }
-    function sectionSelect(indexSection){
+        
+
         setSavedDataCollection(false);
-        const sectionSelected = dataCollectionSelected.sections[indexSection];
+        const dataCollectionSelected = currentSurveys[indexCollection];
 
         let isDisabled = false;
-        if(!sectionSelected.repeats){
-            const patientSubmissions = props.patientsSubmissions.data[uuidPatient].hasOwnProperty(dataCollectionSelected.uuid) ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions : [];
-            isDisabled =  numberRecordsSection(sectionSelected, patientSubmissions) > 0;
-        }
+        // if(!dataCollectionSelected.repeats){
+        //     const patientSubmissions = props.patientsSubmissions.data[uuidPatient].hasOwnProperty(dataCollectionSelected.uuid) ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions : [];
+        //     isDisabled =  numberRecordsSection(sectionSelected, patientSubmissions) > 0;
+        // }
         
         if(isDisabled){
             setShowSnackbar({show:true, severity: "warning", message : "investigation.fill.survey.section-filled"});
         }
         else{
-            const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
-                .replace(":uuidPatient", uuidPatient).replace(":action", "fill").replace(":uuidSection", sectionSelected.uuid)
+            const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidDataCollection", dataCollectionSelected.uuid)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "fill")
                 .replace(":idSubmission", "");
             console.log("Next url", nextUrl);
 
             setShowOptions(false);
             //setIndexDataCollection(-1);
-            setIndexSection(-1);
+            //setIndexSection(-1);
 
             history.push(nextUrl);
         }
+    }
+    function callBackEditSubmission(idSubmission, uuidSection){
+        const submission = surveyRecords.find(sub => sub.id === idSubmission);
+        const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", submission.uuidSurvey)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "update").replace(":uuidSection", uuidSection)
+                .replace(":idSubmission", idSubmission);
+        setShowOptions(false);
+        //setIndexDataCollection(-1);
+        //setIndexSection(-1);
+        history.push(nextUrl);
+    }
+    function sectionSelect(indexSection){
+        
         
     }
     function backToRoot(){
@@ -138,18 +150,18 @@ function Patient(props) {
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
-    function selectDataCollection(index){
+    function selectSubmission(index){
         console.log("Row seleccionado ", filteredRecords[index]);
         if(filteredRecords[index].offline){
             setShowSnackbar({show:true, severity: "warning", message : "investigation.fill.survey.record-offline"});
         }
         else{
-            goToSurveyUrl(filteredRecords[index].uuidSurvey);
+            goToSurveyUrl(filteredRecords[index].id);
         }
         
     }
     function goToSurveyUrl(uuidSurvey){
-        const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":uuidDataCollection", uuidSurvey);
+        const nextUrl = HOSPITAL_PATIENT_SUBMISSION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":idSubmission", uuidSurvey);
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
@@ -162,27 +174,39 @@ function Patient(props) {
     }
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
-
-        const postObj = 
-            {
-                uuid_section:sectionSelected.uuid,
-                uuid_patient:uuidPatient,
-                id:idSubmission,
-                researcher: props.profile.info,
-                surveyRecords:data
-            }
+        const postObj = {
+            uuid_survey:dataCollectionSelected.uuid,
+            uuid_patient:uuidPatient,
+            id:idSubmission,
+            researcher: props.profile.info,
+            surveyRecords:[]
+        }
+        data.forEach(fieldData => {
+            //const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));
+            postObj.surveyRecords.push(fieldData);
+            
+        });
+       
         
         if(action === "update"){
             await dispatch(updateSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
         }
         else{
-            setIndexSection(-1);
+            //setIndexSection(-1);
             setShowOptions(true);
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
             console.log(data);
-            await dispatch(postSubmissionPatientAction([postObj], props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
+            await dispatch(postSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
+
+            
         }
+
+        setTimeout(function(){
+            const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient)
+            history.push(nextUrl);
+       }, 1000);
+    
     }
     function renderOptions(){
         if(!dataCollectionSelected){
@@ -201,28 +225,28 @@ function Patient(props) {
                 })
             ]
         }
-        else if(indexSection === -1){
+        // else if(indexSection === -1){
             
-            return [
-                <Grid item xs={12} style={{textAlign:"center"}}>
-                    <WhiteTypography variant="body2" gutterBottom>
-                        { dataCollectionSelected.name }:
-                    </WhiteTypography>
-                </Grid>, 
-                dataCollectionSelected.sections.sort((a,b) => a.order - b.order).map((section, index) => {
-                    return(
-                        <Grid item xs={12} style={{textAlign:"center"}}>
-                            <ButtonGreyBorderGrey data-testid={section.name} onClick={() => sectionSelect(index)}>{section.name}</ButtonGreyBorderGrey>
-                        </Grid>
-                    )
-                })
-            ]
-        }
+        //     return [
+        //         <Grid item xs={12} style={{textAlign:"center"}}>
+        //             <WhiteTypography variant="body2" gutterBottom>
+        //                 { dataCollectionSelected.name }:
+        //             </WhiteTypography>
+        //         </Grid>, 
+        //         dataCollectionSelected.sections.sort((a,b) => a.order - b.order).map((section, index) => {
+        //             return(
+        //                 <Grid item xs={12} style={{textAlign:"center"}}>
+        //                     <ButtonGreyBorderGrey data-testid={section.name} onClick={() => sectionSelect(index)}>{section.name}</ButtonGreyBorderGrey>
+        //                 </Grid>
+        //             )
+        //         })
+        //     ]
+        // }
     }
     function renderCore(){
         
             
-        if(dataCollectionSelected !== null && sectionSelected !== null && (action === "fill" || action === "update")){
+        if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
             const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
             if(savedDataCollection){
                 return(
@@ -233,22 +257,24 @@ function Patient(props) {
             }
             else{
                 return(
-                    <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} sectionSelected = {sectionSelected}
+                    <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} 
+                        sectionSelected = {sectionSelected}
                         patientId={props.patientId} investigation={props.investigations.currentInvestigation} callBackDataCollection={(values) => saveRecord(values)}/>
                 )
             }
             
         }
-        else if(dataCollectionSelected !== null && action === "show"){
-            return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} mode="elements" callBackEditSubmission={callBackEditSubmission}
-                        submissions={props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions}  />
-        }
         else if(filteredRecords.length === 0){
             return <Translate id={`pages.hospital.${translations}.no-records`} />
         }
+        else if(idSubmission !== null && action === "show"){
+            return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} 
+                        mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission}
+                        submissions={filteredRecords} surveys={props.investigations.currentInvestigation.surveys} />
+        }
         else{
             return(
-                <EnhancedTable noHeader noSelectable selectRow={(index) => selectDataCollection(index)} 
+                <EnhancedTable noHeader noSelectable selectRow={(index) => selectSubmission(index)} 
                 rows={filteredRecords.map((record, index) => {
                     const dateCreatedString = record.createdAt ? new Date(record.createdAt).toISOString().slice(0, 16).replace('T', ' ') : "Unsincronized";
                     return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreatedString})
@@ -265,7 +291,7 @@ function Patient(props) {
     }
     function closeModal(){
         setShowOptions(false);
-        setIndexSection(-1);
+        //setIndexSection(-1);
         setIndexDataCollection(-1);
     }
     async function resetSnackBar(){
@@ -275,9 +301,10 @@ function Patient(props) {
         }
         
     }
+   
     useEffect(() => {
         setShowOptions(false);
-    }, [uuidDataCollection, uuidSection])
+    }, [uuidSection])
     useEffect(() => {
         async function fetchRecordsPatient(){
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.currentInvestigation.uuid, uuidPatient));
@@ -287,10 +314,10 @@ function Patient(props) {
         }
     }, [props.investigations])
     useEffect(() => {
-        if(!props.profile.info){
-            dispatch(fetchProfileInfo());
+        if(!props.profile.info && props.investigations.currentInvestigation){
+            dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
         }
-    }, [])
+    }, [props.investigations])
     useUpdateEffect(() => {
         
         if(action === "update"){
@@ -306,19 +333,30 @@ function Patient(props) {
         if(props.patientsSubmissions.data){
             let tempSubmissions = []
             if(props.patientsSubmissions.data.hasOwnProperty(uuidPatient)){
-                tempSubmissions = Object.values(props.patientsSubmissions.data[uuidPatient]).reduce((acc, val)=> {
-                    let tempDict = {};
-                    tempDict.surveyName = val.surveyName; 
-                    tempDict.uuidSurvey = val.uuid; 
-                    tempDict.typeSurvey = val.type; 
-                    const researcher = val.submissions[val.submissions.length -1].researcher;
-                    //Si es en modo offline no hay researcher.
-                    tempDict.researcher = researcher.name ? researcher.name+" "+researcher.surnames : researcher;
-                    tempDict.offline = researcher.name ? false : true;
-                    tempDict.createdAt = val.submissions[val.submissions.length -1].surveyRecords[0].createdAt;
+                Object.values(props.patientsSubmissions.data[uuidPatient]).forEach((val)=> {
+                    const tempSubs = val.submissions.map(sub => {
+                        const tempSub = {...sub};
+                        tempSub.surveyName = val.surveyName;
+                        tempSub.uuidSurvey = val.uuid; 
+                        tempSub.typeSurvey = val.type; 
+                        const departmentName = tempSub.researcher.departments.length === 0 ? "" : " - "+tempSub.researcher.departments[0].name;
+                        tempSub.researcher = tempSub.researcher.name+" "+tempSub.researcher.surnames + departmentName
+                        return tempSub;
+                    })
+                    tempSubmissions = tempSubmissions.concat(tempSubs); 
+                    // tempSubmissions.concat(val.submissions);
+                    // let tempDict = {};
+                    // tempDict.surveyName = val.surveyName; 
+                    // tempDict.uuidSurvey = val.uuid; 
+                    // tempDict.typeSurvey = val.type; 
+                    // const researcher = val.submissions[val.submissions.length -1].researcher;
+                    // //Si es en modo offline no hay researcher.
+                    // tempDict.researcher = researcher.name ? researcher.name+" "+researcher.surnames : researcher;
+                    // tempDict.offline = researcher.name ? false : true;
+                    // tempDict.createdAt = val.submissions[val.submissions.length -1].surveyRecords[0].createdAt;
     
-                    return acc.concat(tempDict)
-                }, []);
+                    // return acc.concat(tempDict)
+                });
                 tempSubmissions.sort((a, b) => {
                     const aDate = new Date(a.createdAt);
                     const bDate = new Date(b.createdAt);
@@ -337,30 +375,30 @@ function Patient(props) {
     }, [props.patientsSubmissions])
 
     useEffect(() => {
-            if(props.patientsSubmissions.error){
-                let severity = "error";
-                let message = "";
+        if(props.patientsSubmissions.error){
+            let severity = "error";
+            let message = "";
+            if(action === "update"){
+                message = "hospital.patient.error";
+            }
+            if(action === "fill"){
+                message = "hospital.patient.error";
+            }
+            if(props.patientsSubmissions.error === 2){
+                severity = "warning";
                 if(action === "update"){
-                    message = "hospital.patient.error";
+                    message = "hospital.patient.updated-record-offline";
                 }
                 if(action === "fill"){
-                    message = "hospital.patient.error";
+                    message = "hospital.patient.new-record-offline";
                 }
-                if(props.patientsSubmissions.error === 2){
-                    severity = "warning";
-                    if(action === "update"){
-                        message = "hospital.patient.updated-record-offline";
-                    }
-                    if(action === "fill"){
-                        message = "hospital.patient.new-record-offline";
-                    }
-                }
-                else{
-                    setError(true);
-                }
-                setShowSnackbar({show:true, severity:severity, message : message});
-                
             }
+            else{
+                setError(true);
+            }
+            setShowSnackbar({show:true, severity:severity, message : message});
+            
+        }
             
     }, [props.patientsSubmissions.loading]);    
 
@@ -413,7 +451,7 @@ function Patient(props) {
                     }
                 </Modal>
                 <Grid container spacing={3}>
-                    <Grid item container style={{backgroundColor:"white"}}  xs={12}>
+                    <PatientToolBar item container className="patient_toolbar" xs={12}>
                         <Grid item container xs={3} >
                             {/* <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>
@@ -467,26 +505,26 @@ function Patient(props) {
                             <Grid item container xs={5}  justify="center" alignItems="center">
                                 <Grid item xs={4}>
                                     <Button data-testid="medical-notes" onClick={() => backToRoot()} >
-                                        <img src={typeSurveys === 0 ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
+                                        <img src={iconSelected === TYPE_MEDICAL_SURVEY ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <Button data-testid="images" onClick={() => goToTest(1)} >
-                                        <img src={typeSurveys === 1 ? iconImagesGreen : iconImages} alt="Images" height="40" />
+                                        <img src={iconSelected === TYPE_IMAGE_SURVEY ? iconImagesGreen : iconImages} alt="Images" height="40" />
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <Button data-testid="lab" onClick={() => goToTest(2)} >
-                                        <img src={typeSurveys === 2 ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                                        <img src={iconSelected === TYPE_LAB_SURVEY ? iconLabGreen : iconLab} alt="Lab" height="40" />
                                     </Button>
                                 </Grid>
                                 <Grid item xs={4}>
-                                    <ButtonAdd data-testid="add-record" onClick={addRecord} />
+                                    <ButtonAdd disabled={parameters.hasOwnProperty("action") && parameters["action"] === "fill"} data-testid="add-record" onClick={addRecord} />
                                 </Grid>
                             </Grid>
                         }
                         
-                    </Grid>
+                    </PatientToolBar>
                     <Grid item xs={12}>
                         {
                             renderCore()

@@ -226,13 +226,13 @@ const SmartField:React.FC<Props> = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <Grid container spacing={3}>
             {
                 (!addingElements && props.mode === "form") &&
-                <React.Fragment>
+                <Grid item xs={12}>
                     <ButtonPlus onClick={addDiagnose} />
                     <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
-                </React.Fragment>
+                </Grid>
             }
             {
                 renderSelector()
@@ -241,7 +241,7 @@ const SmartField:React.FC<Props> = (props) => {
             {
                 renderElements()
             }
-        </React.Fragment>
+        </Grid>
     )
 }
 export default withLocalize(SmartField);

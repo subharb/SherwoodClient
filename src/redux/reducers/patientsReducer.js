@@ -12,7 +12,7 @@ import { decryptPatientsData, decryptSinglePatientData } from '../../utils';
     error: null
 }
 export default function reducer(state = initialState, action){
-    console.log(action)
+    
     let newState = { ...state};
     let tempInvestigations;
     switch(action.type){
@@ -32,12 +32,12 @@ export default function reducer(state = initialState, action){
             tempInvestigations = {};
             for(const investigation of action.investigations){
                 
-                    let tempDecryptedData = [];
-                    for(const patient of investigation.patientsPersonalData){
-                        patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
-                        tempDecryptedData.push(patient);
-                    }
-                    tempInvestigations[investigation.uuid] = tempDecryptedData;
+                let tempDecryptedData = [];
+                for(const patient of investigation.patientsPersonalData){
+                    patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
+                    tempDecryptedData.push(patient);
+                }
+                tempInvestigations[investigation.uuid] = tempDecryptedData;
                 
             }
             newState.data = tempInvestigations;                            

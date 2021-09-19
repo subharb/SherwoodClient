@@ -34,10 +34,10 @@ export function fetchInvestigations() {
     });
 }
 
-export function fetchProfileService() {
+export function fetchProfileService(uuidInvestigation) {
     return new Promise((resolve, reject) => {
       
-      axios.get(process.env.REACT_APP_API_URL+'/researcher/profile', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+      axios.get(process.env.REACT_APP_API_URL+'/researcher/profile/'+uuidInvestigation, { headers: {"Authorization" : localStorage.getItem("jwt")}})
           .then((response) => {
               if(response.status === 200){
                   resolve(response.data);
@@ -362,6 +362,54 @@ export function getSharedResearchersService(uuidInvestigation) {
     return new Promise((resolve, reject) => {
       axios
         .get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/researchers",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+export function getDepartmentsInstitutionService(uuidInstitution) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(process.env.REACT_APP_API_URL+"/hospital/departments/institution/"+uuidInstitution,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+export function assignDepartmentToResearcherService(uuidResearcher, uuidDepartment) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(process.env.REACT_APP_API_URL+"/hospital/department/"+uuidDepartment, {uuidResearcher}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+export function saveDepartmentInstitutionService(uuidInstitution, department) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(process.env.REACT_APP_API_URL+"/hospital/department/institution/"+uuidInstitution, department, { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .then((response) => {
           if (response.status === 200) {
             resolve(response.data);

@@ -74,10 +74,10 @@ function SearchPatients(props) {
             
             return (
                 <Box>
-                    <Paper style={{padding:'1rem'}}>
+                    <Paper style={{padding:'1rem', margin:'1rem'}}>
                         <Translate id="pages.hospital.search-patient.note" />
                         <Form fields={personalFieldsForm} selectRow={(index) =>patientSelected(index)} 
-                            submitText="investigation.search-patients.search" callBackForm={searchPatientCallBack} />
+                            submitText="investigation.search-patients.search" callBackForm={searchPatientCallBack} />                        
                     </Paper>
                 </Box>
                 

@@ -1,4 +1,4 @@
-import { TextField } from '@material-ui/core';
+import { Grid, TextField } from '@material-ui/core';
 import React, { useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { ButtonAccept } from '../mini_components';
@@ -18,13 +18,16 @@ export const OfflineField:React.FC<Props> = (props) => {
         setSaved(true);
     }
     return( 
-        <React.Fragment>
-            <TextField label={props.label } error={props.error} value={text} variant="outlined" onChange={ (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setText(e.target.value)} />
+        <Grid container spacing={2}>
+            <Grid item>
+                <TextField label={props.label } error={props.error} value={text} variant="outlined" onChange={ (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setText(e.target.value)} />
+            </Grid>
             {
                 !saved && 
-                <ButtonAccept onClick={saveField}><Translate id="general.add" /></ButtonAccept>
+                <Grid item>
+                    <ButtonAccept color="secondary" onClick={saveField}><Translate id="general.add" /></ButtonAccept>
+                </Grid>
             }
-            
-        </React.Fragment>
+        </Grid>
     );
 }

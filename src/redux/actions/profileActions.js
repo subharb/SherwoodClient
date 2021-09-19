@@ -2,11 +2,11 @@ import * as types from "../../constants";
 import { fetchProfileService } from "../../services/sherwoodService";
 
 
-export function fetchProfileInfo(value) {
+export function fetchProfileInfo(uuidInvestigation) {
   
   return async (dispatch) => {
     dispatch({ type: types.FETCH_PROFILE_LOADING });
-    return fetchProfileService()
+    return fetchProfileService(uuidInvestigation)
         .then((response) => {
             dispatch({
             type: types.FETCH_PROFILE_SUCCESS,

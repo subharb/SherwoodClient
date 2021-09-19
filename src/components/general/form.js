@@ -6,7 +6,7 @@ import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
-import { Grid } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 
 
  /**
@@ -21,9 +21,30 @@ class Form extends Component {
     constructor(props){
         super(props);
 
+        this.renderFields= this.renderFields.bind(this);
+        this.sherwoodValidation = this.sherwoodValidation.bind(this)
         this.renderOptions = this.renderOptions.bind(this);
         //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
         this.state = {showOptions:{}}
+    }
+    sherwoodValidation(value, allValues, propsForm, key){
+        if(this.props.fields[key]){
+            const fieldValueCompare = this.props.fields[key].validationField ? value : this.props.fields[key].validationValue ? this.props.translate(this.props.fields[key].validationValue) : null;
+            const valueField = this.props.fields[key].type === "textarea" && typeof value !== "undefined" ? value.replace(/<[^>]+>/g, '') : value;
+            const validationFunc = this.props.fields[key].validation ? this.props.fields[key].validation : "notEmpty";
+            const validation = validateField({  
+                                    value : valueField, 
+                                    validation:validationFunc, 
+                                    required:this.props.fields[key].required
+                                },
+                                fieldValueCompare);
+
+            return validation.result ? undefined : validation.messageCode;
+            
+        }
+        else{
+            return undefined;
+        }
     }
     callBackForm(values){
         //Filtro los que sean undefined
@@ -162,25 +183,77 @@ class Form extends Component {
             }
         }
     }
+    renderFields(){
+        let fieldsMarkup = [];
+        let currentSection = [];
+        Object.keys(this.props.fields).map((key, index) => {
+            if(this.props.fields[key].type !== "options"){
+                if(this.props.fields[key].type === "separator"){
+                    if(currentSection.length > 0){
+                        fieldsMarkup.push(
+                            <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >
+                                {currentSection}
+                            </Paper>
+                        );
+                    }
+                    currentSection = [];
+                }
+                
+                currentSection.push(
+                    <div className="row" key={key}>
+                        <Field
+                            name={this.props.fields[key].name}
+                            type={this.props.fields[key].type}
+                            component={FieldSherwood}
+                            key={key}
+                            fullWidth={this.props.fullWidth}
+                            country={this.props.country}
+                            label={this.props.fields[key].label}
+                            validate={[this.sherwoodValidation]}
+                            {...this.props.fields[key]}
+                        />
+                        {
+                            this.renderExtraFields(key)
+                        }
+                    </div>
+                    
+                );
+                
+                if(index === Object.keys(this.props.fields).length -1){
+                    fieldsMarkup.push(
+                        <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >
+                            {currentSection}
+                        </Paper>
+                    );
+                }
+            }
+            
+        })
+        return fieldsMarkup;
+    }
     render() {
         const dataTestId = this.props.dataTestid ? "data-testid='"+this.props.dataTestid+"'": "";
         return(
             <div className="container">
                 <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.callBackForm(values)})}  >
-                    {Object.keys(this.props.fields).map(key => {
+                    {
+                        this.renderFields()
+                    }
+                    {/* {Object.keys(this.props.fields).map(key => {
                         console.log(this.props.typeValue);
                         if(this.props.fields[key].type !== "options"){
                             return (
                                 <div className="row" key={key}>
                                     <Field name={key} {...this.props.fields[key]} country={this.props.country}
-                                        type={this.props.fields[key].type} label={this.props.fields[key].label} callBackMultiOptionSelected={(name, value) => this.props.change(name, value)}
-                                        component={FieldSherwood} />
+                                        type={this.props.fields[key].type} label={this.props.fields[key].label} 
+                                        callBackMultiOptionSelected={(name, value) => this.props.change(name, value)}
+                                        component={renderField} />
                                     {
                                         this.renderExtraFields(key)
                                     }
                                 </div>);
                         }
-                    })}
+                    })} */}
                     <div style={{paddingTop:"1rem"}}>
                         <ButtonContinue type="submit" data-testid={this.props.dataTestid} spaceright={1} >
                             { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}
@@ -207,14 +280,7 @@ function validate(values, props){
     const dictFields = {};
     for(const fieldKey in props.fields){
         const field = props.fields[fieldKey];
-        dictFields[fieldKey] = field
-        
-        // if(field.hasOwnProperty("slaves")){
-        //     for(const slave of field.slaves){
-        //         dictFields[slave.name] = slave;
-        //     }
-        // }
-        
+        dictFields[fieldKey] = field;
     }
   
     Object.keys(dictFields).forEach(key => {
@@ -242,25 +308,29 @@ Form.propTypes = {
 }
 
 
-// Decorate with redux-form
-Form = reduxForm({
-    validate,
-    form: 'form'  // a unique identifier for this form               
-  })(Form)
+// // Decorate with redux-form
+// Form = reduxForm({
+//     validate,
+//     form: 'form'  // a unique identifier for this form               
+//   })(Form)
   
-  // Decorate with connect to read form values
-  const selector = formValueSelector('form') // <-- same as form name
-  //Filtro los campos que activan otros campos
-  //const activatingFields = this.props.fields.filter(filter => filter.hasOwnProperty("activationValues"));
-  Form = connect(
-    state => {
-      // can select values individually
-      const values = state.form.hasOwnProperty("form") ? state.form.form.values : {};      
-      return {
-        valuesForm :  values
-      }
-    }
-  )(Form)
+//   // Decorate with connect to read form values
+//   const selector = formValueSelector('form') // <-- same as form name
+//   //Filtro los campos que activan otros campos
+//   //const activatingFields = this.props.fields.filter(filter => filter.hasOwnProperty("activationValues"));
+//   Form = connect(
+//     state => {
+//       // can select values individually
+//       const values = state.form.hasOwnProperty("form") ? state.form.form.values : {};      
+//       return {
+//         valuesForm :  values
+//       }
+//     }
+//   )(Form)
 
+  export default reduxForm({
+    form: 'form', // a unique identifier for this form
+    // validate,
+  })(withLocalize(Form))
 
-export default withLocalize(Form);
+//export default withLocalize(Form);

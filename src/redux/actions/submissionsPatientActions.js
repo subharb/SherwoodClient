@@ -7,7 +7,7 @@ import {
 
 export function fetchSubmissionsPatientInvestigationAction(uuidInvestigation, uuidPatient) {
     return async (dispatch) => {
-      dispatch({ type: types.SUBMISSIONS_LOADING });
+      dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
   
       return fetchRecordsPatientAllSurveysService(uuidInvestigation, uuidPatient)
         .then((response) => {
@@ -42,13 +42,13 @@ export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPati
         .then((response) => {
           dispatch({
             type: types.SAVE_SUBMISSIONS_PATIENT_SUCCESS,
-            submission: response.submissions[0],
+            submission: response.submission,
             meta:{uuidPatient, surveyUUID, surveyName, surveyType}
           });
         })
         .catch(function (error) {
           if(!error.status && !error.response){
-                const offlinePost = postObj[0];
+                const offlinePost = postObj;
                 //offlinePost.surveyRecords = postObj.submission[0].answers;
                 dispatch({
                   type: types.SAVE_SUBMISSIONS_PATIENT_OFFLINE,

@@ -73,8 +73,8 @@ function DrugSelector(props: Props) {
 
     if(offline){
         return <OfflineField label={props.translate(`hospital.select-${props.type}`).toString()} 
-                error={props.error} variant={props.variant} 
-                callbackOffline={(value) => getOffline(value)} />
+                    error={props.error} variant={props.variant} 
+                    callbackOffline={(value) => getOffline(value)} />
     }    
     return(
         <AutocompleteSherwood error={props.error} remoteSearch={props.chemicalComponent ? searchDrugComponentService : searchDrugService} 

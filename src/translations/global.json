@@ -65,6 +65,16 @@
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
         },
+        "departments" : {
+            
+            "title" : ["Hospital Departments", "Departamentos", "Départements"],
+            "modal" : {
+                "title" : ["Add department", "Añadir Departamento", "Ajouter Department"]
+            },
+            "department" : ["Departament", "Departamento", "Department"],
+            "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
+            "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"]
+        },
         "analytics" : {
             "graphs" : {
                 "percentage" : ["Percentage", "Porcentaje", "Pourcentage"],
@@ -106,7 +116,7 @@
         "treatment-finish-table" : ["End date", "F. fin", "Date de fin"],
         "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
-        "number-elements" : ["Number", "Nombre", "Número"],
+        "number-elements" : ["Number", "Número", "Número"],
         "time-unit" : ["Time", "Tiempo", "Temps"],
         "treatment-frecuency-values" : {
             "single-dose" : ["Single dose", "Dosis única", "Une seule dose"]
@@ -127,7 +137,7 @@
             "week" : ["1 week", "1 semana", "1 semaine"]
         },
         "dose-options" : {
-            "1" : ["One tablet", "Un comprimido", "une pilule"],
+            "1" : ["1 tablet", "1 comprimido", "1 pilule"],
             "3/4" : ["3/4 of a tablet", "3/4 de comprimido", "3/4 pilule"],
             "1/2" : ["1/2 a tablet", "1/2 comprimido", "1/2 pilule"],
             "1/4" : ["1/4 of a tablet", "1/4 de comprimido", "1/4 pilule"]
@@ -140,7 +150,7 @@
         "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],     
         "family-relation" : ["Relationship", "Relación Familiar", "Relation de famille"],     
         "ict-plural" : ["Diagnoses", "Diagnósticos", "Diagnostics"],
-        "ict-table" : ["Diagnoses", "Diagnósticos", "Diagnostics"],
+        "ict-table" : ["Diagnoses", "Entidad", "Diagnostics"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "treatment-table" : ["Drug", "Medicamento", "Médicament"],
         "treatment_regular-table" : ["Drug", "Medicamento", "Médicament"],
@@ -209,7 +219,8 @@
             "confirm-patient" : {
                 "title" : ["Attention", "Atención", "Attention"],
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
-            }
+            },
+            "departments" : ["Hospital Departments", "Departamentos", "Département"]
         }
     },
     "dashboard":{
@@ -498,7 +509,7 @@
         "share" : {
             "title" : ["User Managment", "Administración de usuarios", "Gestion des utilisateurs"],
             "add_researcher" : ["Add user", "Añadir usuario", "Ajouter un utilisateur"],
-            "edit_researcher" : ["Change user", "Modficar usuario", "Modifier un utilisateur"],
+            "edit_researcher" : ["Change user", "Modificar usuario", "Modifier un utilisateur"],
             "researchers" : ["Users", "Usuarios", "Utilisateurs"],
             "current_researchers" : ["Current users", "Usuarios actuales", "Utilisateurs actuels"],
             "new_researchers" : ["New users", "Nuevos Usuarios", "Nouveaux Utilisateurs"],
@@ -507,6 +518,7 @@
                 "email" : ["Email", "Email", "Email"],
                 "role" :  ["User type", "Tipo", "Type d'utilisateur"]
             },
+            
             "roles" : {
                 "MEDICAL_DIRECTOR" : ["Medical Director", "Director Médico", "Directeur médical"],
                 "STUDENT" : ["Student", "Estudiante", "Étudiant"],
@@ -524,7 +536,8 @@
             "researcher" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "status" : ["Status", "Status", "Status"],
-                "permissions" : ["User type", "Tipo", "Type d'utilisateur"]
+                "permissions" : ["User type", "Tipo", "Type d'utilisateur"],
+                "department" : ["Department", "Departamento", "Departament"]
             },
             "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],
             "confirm_dialog" : {
