@@ -27,7 +27,7 @@ import iconImagesGreen from "../../img/icons/images_green.png";
 import iconLabGreen from "../../img/icons/lab_green.png";
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
-import { MEDICAL_ACCESS, MEDICAL_READ, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../constants';
+import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../constants';
 
 
 const WhiteTypography = styled(Typography)`
@@ -65,19 +65,19 @@ function Patient(props) {
     
     const parameters = useParams();
     const idSubmission = parameters["idSubmission"] ? parseInt(parameters["idSubmission"]) : parameters["idSubmission"];
-    
+    const submission = idSubmission && surveyRecords ? surveyRecords.find(rec => rec.id === idSubmission) : null;
     const history = useHistory();
 
     const isInitialMount = useRef(true);
-
-    const typeSurveys = !parameters.hasOwnProperty("typeTest") ? [TYPE_MEDICAL_SURVEY,TYPE_FIRST_VISIT_SURVEY,TYPE_MONITORING_VISIT_SURVEY] : parameters["typeTest"] === "images" ? [TYPE_IMAGE_SURVEY] : [TYPE_LAB_SURVEY];
+    
+    const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
+    const typeSurveys = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : (dataCollectionSelected.type === TYPE_IMAGE_SURVEY ? [TYPE_IMAGE_SURVEY] : [TYPE_LAB_SURVEY])) : (parameters.hasOwnProperty("typeTest") ? (parameters["typeTest"] === "images" ? [TYPE_IMAGE_SURVEY] : [TYPE_LAB_SURVEY]) : MEDICAL_SURVEYS);
     const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typeSurveys.includes(sur.type)) : [];
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
-    const dataCollectionSelected = props.investigations.data && typeof uuidDataCollection !== "undefined" ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null;
+    
     const iconSelected = typeSurveys.length === 1 ? typeSurveys[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
-    
     
     const filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
         return typeSurveys.includes(rec.typeSurvey)
@@ -264,13 +264,13 @@ function Patient(props) {
             }
             
         }
+        else if(filteredRecords.length === 0){
+            return <Translate id={`pages.hospital.${translations}.no-records`} />
+        }
         else if(idSubmission !== null && action === "show"){
             return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} 
                         mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission}
-                        submissions={surveyRecords} surveys={props.investigations.currentInvestigation.surveys} />
-        }
-        else if(filteredRecords.length === 0){
-            return <Translate id={`pages.hospital.${translations}.no-records`} />
+                        submissions={filteredRecords} surveys={props.investigations.currentInvestigation.surveys} />
         }
         else{
             return(
@@ -304,7 +304,7 @@ function Patient(props) {
    
     useEffect(() => {
         setShowOptions(false);
-    }, [uuidDataCollection, uuidSection])
+    }, [uuidSection])
     useEffect(() => {
         async function fetchRecordsPatient(){
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.currentInvestigation.uuid, uuidPatient));

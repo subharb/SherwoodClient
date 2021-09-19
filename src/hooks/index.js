@@ -170,7 +170,7 @@ export function useSelectSmartField(initialState, label, errorState, setAddingSm
         
         return(
             <FieldWrapper>
-                <FormControl variant="outlined" fullWidth error={errorState}>
+                <FormControl variant="outlined" fullWidth margin="dense" error={errorState}>
                     <InputLabel id="show_treatment">{label}</InputLabel>
                     <Select
                     labelId="show_treatment"

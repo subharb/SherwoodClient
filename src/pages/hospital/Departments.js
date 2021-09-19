@@ -344,13 +344,13 @@ function Departments(props) {
                 title={addingDepartment ? props.translate("hospital.departments.modal.title") : props.translate("investigation.share.edit_researcher")}>
                     {
                         indexResearcherToEdit !== false &&
-                        <Form fields={CHANGE_DEPARTMENT_FORM} callBackForm={editCallBack}
+                        <Form fields={CHANGE_DEPARTMENT_FORM} fullWidth callBackForm={editCallBack}
                             initialData={researchers[indexResearcherToEdit]} 
                             closeCallBack={() => setIndexResearcherToEdit(false)}/>
                     }
                     {
                         addingDepartment &&
-                        <Form fields={DEPARTMENT_FORM} callBackForm={addDepartment} 
+                        <Form fields={DEPARTMENT_FORM} fullWidth callBackForm={addDepartment} 
                             closeCallBack={() => setAddingDepartment(false)}/>
                     }
             </Modal>

@@ -181,7 +181,7 @@ class FieldSherwood extends PureComponent{
                 }
                 const labelId = `${input.name}_label`;
                 return(
-                    <Grid item xs={12} sm={7} lg={4}>
+                    <FieldWrapper noWrap = {this.props.fullWidth}>
                         <FormControl mt={3} fullWidth variant="outlined"  margin={this.typeMargin} error={errorState} >
                             <InputLabel id={labelId}>{labelString}</InputLabel>
                             <Select
@@ -193,7 +193,7 @@ class FieldSherwood extends PureComponent{
                             { optionsArray }
                             </Select>
                         </FormControl>
-                    </Grid>
+                    </FieldWrapper>
                 )
             // case "select":
             //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
@@ -249,7 +249,7 @@ class FieldSherwood extends PureComponent{
             case "date":
                 const value = input.value ? input.value : "";
                 return (
-                    <FieldWrapper>
+                    <FieldWrapper noWrap = {this.props.fullWidth}>
                         <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
                             <KeyboardDatePicker
                             fullWidth
@@ -260,11 +260,12 @@ class FieldSherwood extends PureComponent{
                                 fill
                                 label={input.value ? "" : labelString}
                                 format="dd/MM/yyyy"
+                                
                                 value={value}
                                 defaultValue={value} 
                                 openTo="year"
                                 onChange={this.handleDateChange}
-                                onKeyDown={(e) => this.handleDateChange(e.target.value)}
+                                //onKeyDown={(e) => this.handleDateChange(e.target.value)}
                                 maxDate={validation === "pastDate" ? new Date() : undefined}
                                 emptyLabel={labelString}
                                 KeyboardButtonProps={{
@@ -278,7 +279,7 @@ class FieldSherwood extends PureComponent{
                 );
             case "time":
                 return (
-                    <FieldWrapper>
+                    <FieldWrapper noWrap = {this.props.fullWidth}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <KeyboardTimePicker
                                 margin={this.typeMargin}
@@ -370,7 +371,7 @@ class FieldSherwood extends PureComponent{
                 );
             case "file" : 
                 return (
-                    <FieldWrapper>
+                    <FieldWrapper noWrap = {this.props.fullWidth}>
                         <File label={labelString} mode="form"
                             imagesSelected = {(images) => this.imagesSelected(images) }
                             type={type} {...input} 
@@ -398,7 +399,7 @@ class FieldSherwood extends PureComponent{
             default:    
                 console.log("TextFieldSherwood",input.value);
                 return(
-                    <FieldWrapper>
+                    <FieldWrapper noWrap = {this.props.fullWidth}>
                         <TextFieldSherwood {...input} fullWidth variant="outlined" margin={this.typeMargin}
                             label={labelString} error={errorState} size="small" 
                             helperText={errorString} />

@@ -52,7 +52,30 @@ export default function ShowPatientRecords(props) {
             )
         });
     }
-    
+    function renderNavigation(){
+        const dateCurrentSubmission = new Date(props.submissions[indexSubmission].updatedAt)
+        return (
+            <Grid item xs={12}>
+                <Paper style={{padding:"1rem", marginTop:'1rem'}}>
+                    <Grid item xs={12}>
+                    <Typography variant="body2" gutterBottom><Translate id="hospital.data-collection" />: {props.submissions[indexSubmission].surveyName}</Typography>
+                        <Typography variant="body2" gutterBottom><Translate id="hospital.doctor" />: {props.submissions[indexSubmission].researcher}</Typography>
+                        <Typography variant="body2" gutterBottom><Translate id="general.date" />: {dateCurrentSubmission.toLocaleDateString()} {dateCurrentSubmission.toLocaleTimeString()}</Typography>                        
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="body2" gutterBottom>
+                        {
+                            `${indexSubmission+1} / ${props.submissions.length}`
+                        }
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <ButtonBack disabled={indexSubmission === 0} onClick={() => setIndexSubmission(indexSubmission-1)}></ButtonBack>
+                        <ButtonForward disabled={indexSubmission === props.submissions.length -1} onClick={() => setIndexSubmission(indexSubmission+1)}></ButtonForward>
+                    </Grid>
+                </Paper>
+            </Grid>)
+    }
     function renderCore(){
         if(showError === 0){
             if(!props.mode || props.mode === "table"){
@@ -91,7 +114,7 @@ export default function ShowPatientRecords(props) {
         const tempIndex = props.submissions.findIndex(sub => sub.id === props.idSubmission);
         setIndexSubmission(tempIndex);
     }, [props.idSubmission])
-    const dateCurrentSubmission = new Date(props.submissions[indexSubmission].updatedAt)
+    
     return (
         <Grid container direction="column" spacing={2}>
             {
@@ -110,26 +133,7 @@ export default function ShowPatientRecords(props) {
             }
             {
                 props.submissions.length > 1 &&
-                <Grid item xs={12}>
-                    <Paper style={{padding:"1rem", marginTop:'1rem'}}>
-                        <Grid item xs={12}>
-                        <Typography variant="body2" gutterBottom><Translate id="hospital.data-collection" />: {props.submissions[indexSubmission].surveyName}</Typography>
-                            <Typography variant="body2" gutterBottom><Translate id="hospital.doctor" />: {props.submissions[indexSubmission].researcher}</Typography>
-                            <Typography variant="body2" gutterBottom><Translate id="general.date" />: {dateCurrentSubmission.toLocaleDateString()} {dateCurrentSubmission.toLocaleTimeString()}</Typography>                        
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="body2" gutterBottom>
-                            {
-                                `${indexSubmission+1} / ${props.submissions.length}`
-                            }
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <ButtonBack disabled={indexSubmission === 0} onClick={() => setIndexSubmission(indexSubmission-1)}></ButtonBack>
-                            <ButtonForward disabled={indexSubmission === props.submissions.length -1} onClick={() => setIndexSubmission(indexSubmission+1)}></ButtonForward>
-                        </Grid>
-                    </Paper>
-                </Grid>
+                renderNavigation()
             }
             <Grid item xs={12}>
                 {

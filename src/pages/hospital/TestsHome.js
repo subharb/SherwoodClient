@@ -8,7 +8,7 @@ import Form  from '../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
-import { HOSPITAL_PATIENT_DATACOLLECTION, } from '../../routes';
+import { HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_SUBMISSION, } from '../../routes';
 import Loader from '../../components/Loader';
 
 import {
@@ -42,7 +42,7 @@ export function TestsHomeComponent(props) {
     function goToSubmission(index){
         console.log(surveyRecords[index]);
         const patient = surveyRecords[index].patient
-        const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidPatient", patient.uuid).replace(":action", "show").replace(":uuidDataCollection", surveyTests.uuid);
+        const nextUrl = HOSPITAL_PATIENT_SUBMISSION.replace(":uuidPatient", patient.uuid).replace(":action", "show").replace(":idSubmission", surveyRecords[index].id);
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
@@ -54,7 +54,7 @@ export function TestsHomeComponent(props) {
             return (<EnhancedTable noHeader noSelectable selectRow={(index) => goToSubmission(index)} 
                 rows={surveyRecords.map((record, index) => {
                     const dateCreated = new Date(record.createdAt);
-                    return({id : index, researcher : record.researcher, patient : `${record.patient.personalData.name} ${record.patient.personalData.surnames}`, date : dateCreated.toISOString().slice(0, 16).replace('T', ' ')})
+                    return({id : index, researcher : record.researcher, patient : `${record.patient.personalData.name} ${record.patient.personalData.surnames}`, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`})
                 })} headCells={[{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "patient", alignment: "left", label: <Translate id="investigation.create.personal_data.fields.name" />},
                                 { id: "date", alignment: "left", label: "Date"}]} />
             );
@@ -79,7 +79,7 @@ export function TestsHomeComponent(props) {
                 let tempDict = {};
                 const researcher = val.researcher;
                 tempDict.researcher = researcher.name+" "+researcher.surnames;
-
+                tempDict.id = val.id;
                 const patient = patients.find(pat => pat.uuid === val.uuid_patient);
                 tempDict.patient = patient;
                 tempDict.createdAt = val.createdAt;

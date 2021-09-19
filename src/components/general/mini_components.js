@@ -32,9 +32,18 @@ import {
 
 import { spacing } from "@material-ui/system";
 
-export const FieldWrapper = (props) => <Grid item xs={12} sm={7} lg={4}>
-    {props.children}
-</Grid>
+export const FieldWrapper = (props) => {
+    if(props.noWrap){
+        return props.children
+    }
+    else{
+        return (
+            <Grid item xs={12} sm={7} lg={4}>
+                {props.children}
+            </Grid>
+        )
+    }
+}
 
 export const BoxBckgr = styled(Box)`
     background-color:#49CEBF; 
