@@ -9,6 +9,7 @@ import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
 import SmartField from '../../../general/SmartFields';
 import { isSmartField } from '../../../../utils';
+import { ALL_SMARTFIELDS_TYPES } from '../../../../constants';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
@@ -44,11 +45,11 @@ export default function ShowRecordsSection(props) {
                     </Typography>
                 }
                 {
-                    ["ict", "allergy", "background", "family-background", "treatment"].includes(field.type) &&
+                    ALL_SMARTFIELDS_TYPES.includes(field.type) &&
                     <Translate id="general.no" />
                 }
                 {
-                    !["ict", "allergy", "background", "family-background", "treatment"].includes(field.type) &&
+                    !ALL_SMARTFIELDS_TYPES.includes(field.type) &&
                     "-"
                 }
             </React.Fragment>;

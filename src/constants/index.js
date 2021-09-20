@@ -65,6 +65,7 @@ export const DIAGNOSIS_TYPE = "ict"
 export const SLAVES_TREATMENT = ["drug-code", "treatment-start", "treatment-finish", "treatment-posology"];
 export const SLAVES_DIAGNOSIS = ["ict-code"];
 
+export const ALL_SMARTFIELDS_TYPES = ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular"];
 
 //Offline
 export const UPDATE_RECORDS_LOADING = "UPDATE_RECORDS_LOADING";
