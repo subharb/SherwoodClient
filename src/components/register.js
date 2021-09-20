@@ -49,6 +49,7 @@ const PaperPadding = styled(Paper)`
 const forms = {
     "personal_info" : {
         "name":{
+            name:"name",
             required : true,
             type:"text",
             label:"register.common.personal_info.name",
@@ -56,6 +57,7 @@ const forms = {
             validation : "notEmpty"
         },
         "surnames" : {
+            name:"surnames",
             required : true,
             type:"text",
             label:"register.common.personal_info.surnames",
@@ -63,6 +65,7 @@ const forms = {
             validation : "notEmpty"
         },
         "country" : {
+            name:"country",
             required : true,
             type:"select",
             defaultOption:{"text" : "register.common.personal_info.country", "value" : ""},
@@ -79,6 +82,7 @@ const forms = {
     },
     "contact_info" : {
         "email":{
+            name:"email",
             required : true,
             type:"text",
             label:"register.common.contact_info.email",
@@ -86,6 +90,7 @@ const forms = {
             validation : "validEmail"
         },
         "phone" : {
+            name:"phone",
             required : true,
             type:"text",
             label:"register.common.contact_info.phone",
@@ -95,6 +100,7 @@ const forms = {
     },
     "password" : {
         "password":{
+            name:"password",
             required : true,
             type:"password",
             label:"register.common.password.password",
@@ -102,6 +108,7 @@ const forms = {
             validation : "textMin6"
         },
         "repeat_password":{
+            name:"repeat_password",
             required : true,
             type:"password",
             label:"register.common.password.repeat_password",
@@ -112,6 +119,7 @@ const forms = {
     },
     "key_generation" : {
         "confirm":{
+            name:"confirm",
             required : true,
             type:"text",
             label:"register.common.key_generation.confirm",
@@ -120,6 +128,7 @@ const forms = {
             validationValue: "register.common.key_generation.confirm"
         },
         "policy":{
+            name:"policy",
             required : true,
             type:"checkbox",
             label:{label : "register.common.accept-policy", url : "https://hospital.sherwood.science/Sherwood_privacy_policy_.21July2021.pdf"},
@@ -218,7 +227,7 @@ class Register extends Component {
         let content = null;
         //Si no es key_generation fase
         if(this.sections[this.state.selected] !== "key_generation"){
-            content = <Form fields={forms[currentSection]} 
+            content = <Form fields={forms[currentSection]} fullWidth
                         callBackForm={this.saveData} 
                         submitText={"investigation.show.accept_consents.continue"} />
         }
@@ -228,7 +237,7 @@ class Register extends Component {
             }
             content = [
                 <ParaKey><Translate id="register.common.key_generation.encription_key" />: { this.state.key }</ParaKey>, 
-                <Form fields={forms[currentSection]} 
+                <Form fields={forms[currentSection]} fullWidth
                     callBackForm={this.saveData}
                     submitText={"register.common.create-account"} 
                      />
