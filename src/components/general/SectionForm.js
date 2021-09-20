@@ -9,7 +9,7 @@ export default function SectionForm(props) {
     const preString = "field_";
     const inputSeparator = "separator_";
     let initialData = {}; //props.initData ? props.initData : null;
-    props.fields.forEach(field => {
+    props.fields.sort((a,b) => a.order - b.order).forEach(field => {
         let copyField = Object.assign({}, field);
         const preText = field.type === "separator" ? inputSeparator : preString;
         copyField["name"] = preText+field.id.toString();
