@@ -9,10 +9,12 @@ export default function SectionForm(props) {
     const preString = "field_";
     const inputSeparator = "separator_";
     let initialData = {}; //props.initData ? props.initData : null;
-    props.fields.sort((a,b) => a.order - b.order).forEach(field => {
+    props.fields.forEach(field => {
+        
         let copyField = Object.assign({}, field);
         const preText = field.type === "separator" ? inputSeparator : preString;
         copyField["name"] = preText+field.id.toString();
+        
         dictFields[preString+field.id.toString()] = copyField;
         if(props.initData){
             const record = props.initData.surveyRecords.find(record => record.surveyField.id === field.id);

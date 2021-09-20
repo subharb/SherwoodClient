@@ -30,6 +30,15 @@
             "title" : ["Offline", "Sin conexión", "Sans connexion"],
             "description" : ["There are some items to be syncronized. The app will automaticly upload these items when the connection is recovered. Please don't refresh the page until this message disappears.", "Hay algunos elementos para sincronizar. La aplicación cargará automáticamente estos elementos cuando se recupere la conexión. No actualice la página hasta que desaparezca este mensaje.", "Il y a certains éléments à synchroniser. L'application téléchargera automatiquement ces éléments lorsque la connexion sera rétablie. Veuillez ne pas actualiser la page jusqu'à ce que ce message disparaisse."]
         },
+        "default-label" : {
+            "text" : ["Enter text", "Introducir texto", "Entrez du texte"],
+            "select" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "family-background" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "background" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "ict" : ["Add diagnosis", "¿Añadir diagnóstico?", "Ajouter un diagnostic ?"],
+            "allergy" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "treatment_regular" : ["Select", "Seleccionar", "Pour sélectionner"]
+        },
         "no-results" : ["No results", "Sin resultados", "Sans results"]
     },
     "sign-in" : {

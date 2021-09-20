@@ -3,6 +3,7 @@ import { Grid, Typography, Paper } from '@material-ui/core';
 import { BoxBckgr, IconPatient, ButtonAdd, CheckCircleOutlineSvg } from '../../components/general/mini_components';
 import SectionForm from '../../components/general/SectionForm';
 import PropTypes from 'prop-types';
+import { Translate } from 'react-localize-redux';
 
 export default function FillDataCollection(props) {
         
@@ -19,7 +20,13 @@ export default function FillDataCollection(props) {
         
         sections.sort((a,b) => a.order - b.order)
             .forEach((section, index) =>{
-                fields.push({
+                let  sectionFields = [...section.fields.sort((a,b) => a.order - b.order)]
+                
+                
+                if((sectionFields.length === 1 || sectionFields[0].label === section.name)&& sectionFields[0].type !== "textarea"){
+                    sectionFields[0].label = `general.default-label.${sectionFields[0].type}`
+                }
+                sectionFields.unshift({
                     type:"separator",
                     label:section.name,
                     name:"separator_"+index,
@@ -27,7 +34,7 @@ export default function FillDataCollection(props) {
                     validation: "notEmpty",
                     id:index
                 });
-                fields = fields.concat(section.fields);
+                fields = fields.concat(sectionFields);
         })      
         return(
             <SectionForm initData={props.initData} key={props.dataCollection.uuid} 
