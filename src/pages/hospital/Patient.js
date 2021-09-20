@@ -38,8 +38,11 @@ const WhiteTypography = styled(Typography)`
 const PatientToolBar = styled(Grid)`
     background-color:white;
     position:sticky;
-    top:65px;
+    top:53px;
     z-index:1000;
+    @media (min-width: 768px) {
+        top:60px;
+    }
 `
 
 function Patient(props) {

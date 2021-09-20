@@ -54,7 +54,7 @@ export default function ShowRecordsSection(props) {
             </React.Fragment>;
         }
         if(field.type === "textarea"){
-            const parsedValue = valueRecord.value.replace('<h1>','').replace('</h1>','');;
+            const parsedValue = valueRecord.value.replace('<h1>','').replace('</h1>','').replace('<h2>','').replace('</h2>','');;
             return(
             <React.Fragment>
                 {
