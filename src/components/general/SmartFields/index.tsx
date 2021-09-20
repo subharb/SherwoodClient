@@ -152,13 +152,20 @@ const SmartField:React.FC<Props> = (props) => {
                 return valueDict
             })
             if(props.mode === "form"){
-                return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
-                    actions={{"delete" : (index:number) => removeDiagnosis(index)}}
-                />
+                return <Grid item xs={12}>
+                        <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
+                            actions={{"delete" : (index:number) => removeDiagnosis(index)}}
+                        />
+                    </Grid>
+                    
             }
             else{
-                return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}     
+                return (
+                    <Grid item xs={12}>
+                        <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}     
                     />
+                    </Grid>
+                )
             }   
         }
     }
