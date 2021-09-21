@@ -365,13 +365,13 @@ function ShareInvestigation(props) {
                 title={addingResearcher ? props.translate("investigation.share.add_researcher") : props.translate("investigation.share.edit_researcher")}>
                     {
                         indexResearcherToEdit !== false &&
-                        <Form fields={RESEARCHER_FORM} callBackForm={editCallBack}
+                        <Form fields={RESEARCHER_FORM} fullWidth callBackForm={editCallBack}
                             initialData={sharedResearchers[indexResearcherToEdit]} 
                             closeCallBack={() => setIndexResearcherToEdit(false)}/>
                     }
                     {
                         addingResearcher &&
-                        <Form fields={RESEARCHER_FORM} callBackForm={addResearcher} 
+                        <Form fields={RESEARCHER_FORM} fullWidth callBackForm={addResearcher} 
                             closeCallBack={() => setAddingResearcher(false)}/>
                     }
             </Modal>
