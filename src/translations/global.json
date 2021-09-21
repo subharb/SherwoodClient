@@ -37,7 +37,8 @@
             "background" : ["Select", "Seleccionar", "Pour sélectionner"],
             "ict" : ["Add diagnosis", "¿Añadir diagnóstico?", "Ajouter un diagnostic ?"],
             "allergy" : ["Select", "Seleccionar", "Pour sélectionner"],
-            "treatment_regular" : ["Select", "Seleccionar", "Pour sélectionner"]
+            "treatment_regular" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "treatment" : ["Select", "Seleccionar", "Pour sélectionner"]
         },
         "no-results" : ["No results", "Sin resultados", "Sans results"]
     },
