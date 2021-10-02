@@ -434,6 +434,8 @@
                 "personal_info" : ["Is it a personal data?", "¿Es un dato personal?", "S'agit-il d'une donnée personnelle?"],
                 "choose_patient" : ["Choose a patient", "Elija un paciente", "Choisir un patient"],
                 "type" : ["Type of study", "Tipo de estudio", "Type d'étude"],
+                "separator" : ["Divider", "Separador", "Divider"],
+                "text_blob" : ["Explaining text", "Texto explicativo", "Explaining text"],
                 "type_study" : {
                     "audit" : ["Clinical audit", "Auditoría clínica", "Audit clinique"],
                     "clinical_trial" : ["Clinical trial", "Ensayo clínico", "Essai clinique"],

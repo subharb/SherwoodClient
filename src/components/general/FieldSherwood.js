@@ -6,7 +6,7 @@ import styled, {css} from 'styled-components';
 import { ButtonAdd, ButtonCheck, ButtonDelete, ButtonEmptyCheck, DeleteHolder } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
-        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid } from '@material-ui/core';
+        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider } from '@material-ui/core';
 import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
@@ -436,11 +436,20 @@ class FieldSherwood extends PureComponent{
                         size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                     
                 );
-            case "separator":
+            case "title_section":
                 return(
                     <Typography variant="subtitle1" color="textPrimary" style={{ fontWeight: 600 }}>
                         { labelString }
                     </Typography>);
+            case "text_blob":
+                return(
+                    <Typography variant="body2" color="textPrimary" >
+                        { labelString }
+                    </Typography>);
+            case "separator":
+                return(
+                    <Divider />
+                );
             default:    
                 console.log("TextFieldSherwood",input.value);
                 return(

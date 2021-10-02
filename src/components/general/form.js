@@ -107,7 +107,7 @@ class Form extends Component {
         let currentSection = [];
         Object.keys(this.props.fields).map((key, index) => {
             if(this.props.fields[key].type !== "options"){
-                if(this.props.fields[key].type === "separator"){
+                if(this.props.fields[key].type === "title_section"){
                     if(currentSection.length > 0){
                         fieldsMarkup.push(
                             <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >
