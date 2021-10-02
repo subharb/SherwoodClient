@@ -25,6 +25,7 @@ import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import File from './File';
 import { FieldWrapper } from './mini_components';
+import { Field, FieldArray } from 'redux-form'
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -92,6 +93,8 @@ class FieldSherwood extends PureComponent{
         this.handleDateChange = this.handleDateChange.bind(this);
         this.resetDiagnose = this.resetDiagnose.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
+        this.renderOptions = this.renderOptions.bind(this);
+        this.renderOptionText = this.renderOptionText.bind(this);
     }
 
     async componentDidMount(){
@@ -157,8 +160,43 @@ class FieldSherwood extends PureComponent{
     imagesSelected(images){
         this.props.input.onChange(images);
     }
+    renderOptionText(props){
+        return <FieldWrapper noWrap = {this.props.fullWidth}>
+                    <TextFieldSherwood {...props.input} fullWidth variant="outlined" 
+                        margin={this.typeMargin}
+                        label={props.label}  size="small" 
+                         />
+                </FieldWrapper>
+    }
+    renderOptions(props){
+        const {fields} = props;
+        let elements = [
+            <button type="button" onClick={() => fields.push({})}>
+                Add Member
+            </button>
+        ]
+        const options = fields.map((member, index) => (
+            <li key={index}>
+              <button
+                type="button"
+                title="Remove Member"
+                onClick={() => fields.remove(index)}
+              />
+              <h4>Option #{index + 1}</h4>
+              <Field
+                name={`Option`}
+                type="text"
+                component={this.renderOptionText}
+                label="Option"
+              />
+              
+            </li>
+          ))
+        elements = elements.concat(options);
+        return elements;
+    }
     render(){
-        const {input, label, meta, type, options, size, removeClass, validation, country} = this.props;
+        const {input, label, meta, type, options, size, removeClass, validation, country, activationValues, activatedFields} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -179,8 +217,13 @@ class FieldSherwood extends PureComponent{
                         
                     })
                 }
+                let extraField = null;
+                if(typeof activationValues !== "undefined" && activationValues.indexOf(input.value) !== -1){
+                    extraField = {...activatedFields[activationValues.indexOf(input.value)]}; 
+                }
+                
                 const labelId = `${input.name}_label`;
-                return(
+                return([
                     <FieldWrapper noWrap = {this.props.fullWidth}>
                         <FormControl mt={3} fullWidth variant="outlined"  margin={this.typeMargin} error={errorState} >
                             <InputLabel id={labelId}>{labelString}</InputLabel>
@@ -193,7 +236,10 @@ class FieldSherwood extends PureComponent{
                             { optionsArray }
                             </Select>
                         </FormControl>
-                    </FieldWrapper>
+                    </FieldWrapper>,
+                        extraField ? <FieldArray name={`${input.name}_options`} key={input.name} component={this.renderOptions} />
+                                    : null
+                ]
                 )
             // case "select":
             //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
