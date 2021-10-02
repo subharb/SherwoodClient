@@ -172,7 +172,7 @@ class FieldSherwood extends PureComponent{
         const {fields} = props;
         let elements = [
             <Grid item xs={12}>
-                <ButtonAdd type="button" onClick={() => fields.push({})} />
+                <ButtonAdd type="button" onClick={() => fields.push("")} />
             </Grid>
             
         ]
@@ -180,7 +180,7 @@ class FieldSherwood extends PureComponent{
             <Grid item xs={12}>
                 <div style={{display:'flex'}}>
                     <Field
-                        name={`${member}.option`}
+                        name={`${member}`}
                         type="text"
                         component={this.renderOptionText}
                         label={`Option ${index + 1}`}

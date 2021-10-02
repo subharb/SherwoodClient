@@ -23,7 +23,7 @@ class Form extends Component {
 
         this.renderFields= this.renderFields.bind(this);
         this.sherwoodValidation = this.sherwoodValidation.bind(this)
-        this.renderOptions = this.renderOptions.bind(this);
+        
         //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
         this.state = {showOptions:{}}
     }
@@ -85,80 +85,7 @@ class Form extends Component {
         tempState.showOptions[key] = false;
         this.setState(tempState);
     }
-    renderOptions(props){
-        const {fields} = props;
-        let elements = [
-            <button type="button" onClick={() => fields.push({})}>
-                Add Member
-            </button>
-        ]
-        const options = fields.map((member, index) => (
-            <li key={index}>
-              <button
-                type="button"
-                title="Remove Member"
-                onClick={() => fields.remove(index)}
-              />
-              <h4>Member #{index + 1}</h4>
-              <Field
-                name={`${member}.firstName`}
-                type="text"
-                component={FieldSherwood}
-                label="First Name"
-              />
-              <Field
-                name={`${member}.lastName`}
-                type="text"
-                component={FieldSherwood}
-                label="Last Name"
-              />
-              
-            </li>
-          ))
-        elements = elements.concat(options);
-        return elements;
-        // if(input){
-        //     const extraField = {...activatedFields[activationValues.indexOf()]}; 
-        //     console.log("Fields", extraField.fields);
-        //     console.log("value", extraField);
-            
-            
-        //     if(!this.state.showOptions.hasOwnProperty(extraField.fields.name) || (this.state.showOptions[extraField.fields.name] === true)){
-        //         return (
-        //             <div className="container">
-        //                     {extraField.fields.map((hobby, index) =>{
-        //                         return(
-        //                             <div className="row">
-        //                                 <Field
-        //                                     size = "s12"
-        //                                     name={hobby}
-        //                                     type="text"
-        //                                     component={FieldSherwood}
-        //                                     label={`Option #${index + 1}`}/>
-        //                                 <DeleteHolder onClick={() => extraField.fields.remove(index)}>
-        //                                     <i className="material-icons">delete</i>
-        //                                 </DeleteHolder>
-        //                             </div>
-        //                         )
-        //                     }                                
-        //                     )}
-                        
-        //             </div>);
-        //     }
-        //     else if(this.state.showOptions.hasOwnProperty(extraField.fields.name)){
-        //         return(
-        //             <button onClick={() => this.showOptions(extraField.fields.name)} 
-        //                 data-testid="save-option" type="button" className="waves-effect waves-light btn-small">
-        //                 <i className="material-icons">open_in_full</i>
-        //             </button>
-        //         )
-        //     }
-        //     else{
-        //         return null;
-        //     }
-        // }
-        
-    }
+    
     renderExtraFields(key){
         //Un field que habilita la aparición de otro field
        
