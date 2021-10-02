@@ -3,7 +3,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
-import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
+import { ButtonAdd, ButtonCheck, ButtonDelete, ButtonEmptyCheck, DeleteHolder } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
         Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid } from '@material-ui/core';
@@ -171,29 +171,28 @@ class FieldSherwood extends PureComponent{
     renderOptions(props){
         const {fields} = props;
         let elements = [
-            <button type="button" onClick={() => fields.push({})}>
-                Add Member
-            </button>
+            <Grid item xs={12}>
+                <ButtonAdd type="button" onClick={() => fields.push({})} />
+            </Grid>
+            
         ]
         const options = fields.map((member, index) => (
-            <li key={index}>
-              <button
-                type="button"
-                title="Remove Member"
-                onClick={() => fields.remove(index)}
-              />
-              <h4>Option #{index + 1}</h4>
-              <Field
-                name={`Option`}
-                type="text"
-                component={this.renderOptionText}
-                label="Option"
-              />
-              
-            </li>
+            <Grid item xs={12}>
+                <div style={{display:'flex'}}>
+                    <Field
+                        name={`${member}.option`}
+                        type="text"
+                        component={this.renderOptionText}
+                        label={`Option ${index + 1}`}
+                    />
+                    <ButtonDelete onClick={() => fields.remove(index)} />
+                </div>
+            </Grid>
           ))
         elements = elements.concat(options);
-        return elements;
+        return <Grid container>
+            {elements}
+        </Grid>;
     }
     render(){
         const {input, label, meta, type, options, size, removeClass, validation, country, activationValues, activatedFields} = this.props;

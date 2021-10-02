@@ -55,7 +55,7 @@ export const Divider = styled(MuiDivider)(spacing);
 const Fab = styled(MuiFab)(spacing);
 
 export const DeleteHolder = styled.div`
-    display: inline-block;
+    display: flex;
     color:#E16580;
     cursor:pointer;
     align-items: center;
