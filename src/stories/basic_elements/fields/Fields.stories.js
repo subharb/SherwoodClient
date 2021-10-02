@@ -6,6 +6,7 @@ const FIELDS_FORM = {
     "autocomplete":{
         required : false,
         type:"autocomplete",
+        name:"autocomplete",
         label:"Autocomplete",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
@@ -13,6 +14,7 @@ const FIELDS_FORM = {
     "checkbox":{
         required : false,
         type:"checkbox",
+        name:"checkbox",
         label:"Checkbox",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty"
@@ -20,6 +22,7 @@ const FIELDS_FORM = {
     "text" : {
         required : false,
         type:"text",
+        name:"text",
         label:"Textfield",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
@@ -27,6 +30,7 @@ const FIELDS_FORM = {
     "select" : {
         required : false,
         type:"select",
+        name:"select",
         validation : "notEmpty",
         label : "Simple Select",
         shortLabel: "investigation.table.type",
@@ -39,6 +43,7 @@ const FIELDS_FORM = {
     "select-activate" : {
         required : false,
         type:"select",
+        name:"select-activate",
         validation : "notEmpty",
         label : "Select With activation field Option 2, 3",
         shortLabel: "investigation.table.type",
@@ -68,6 +73,7 @@ const FIELDS_FORM = {
     "multioption" : {
         required : false,
         type:"multioption",
+        name:"multioption",
         validation : "notEmpty",
         label : "Multioption",
         shortLabel: "investigation.table.type",
@@ -80,6 +86,7 @@ const FIELDS_FORM = {
     "radio":{
         required : false,
         type:"radio",
+        name:"radio",
         label:"Radio Buttons",
         shortLabel: "investigation.table.is_personal_data",
         validation : "notEmpty",
@@ -90,6 +97,7 @@ const FIELDS_FORM = {
     "date" : {
         required : false,
         type:"date",
+        name:"date",
         label:"Date",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
@@ -97,6 +105,7 @@ const FIELDS_FORM = {
     "time" : {
         required : false,
         type:"time",
+        name:"time",
         label:"Time",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
@@ -104,6 +113,7 @@ const FIELDS_FORM = {
     "evaluation" : {
         required : false,
         type:"evaluation",
+        name:"evaluation",
         label:"Evaluate opinion",
         shortLabel: "investigation.table.name",
         validation : "textMin2",
@@ -112,6 +122,7 @@ const FIELDS_FORM = {
     "textarea" : {
         required : false,
         type:"textarea",
+        name:"textarea",
         label:"Long field for text area",
         shortLabel: "investigation.table.name",
         validation : "textMin2"
