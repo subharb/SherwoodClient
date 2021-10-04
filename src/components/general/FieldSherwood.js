@@ -253,30 +253,34 @@ class FieldSherwood extends PureComponent{
                     });
                     console.log("optionButtons",input.value);
                     return ([
-                        <div className="container">
-                            <div className="row">
+                        <Grid container style={{paddingTop:'0.5rem'}}>
+                            <Grid item  xs={12}>
                                 <InputLabel id={input.name}>{labelString}</InputLabel>
-                            </div>
-                            <div className="row">
+                            </Grid>
+                            <Grid item  xs={12}>
                                 <InputLabel shrink={true}><Translate id="general.choose-options" /></InputLabel>
-                            </div>
-                            <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                {optionButtons}
-                            </ButtonGroup>
-                        </div>
+                            </Grid>
+                            <Grid item  xs={12}>
+                                <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                    {optionButtons}
+                                </ButtonGroup>
+                            </Grid>
+                        </Grid>
                     ]);
             case "radio":
                 return(
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">{labelString}</FormLabel>
-                        <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={this.handleRadioChange}>
-                            {
-                                options.map(option => {
-                                    return <FormControlLabel value={option.value} control={<Radio />} label={option.label} />
-                                })
-                            }
-                        </RadioGroup>
-                    </FormControl>
+                    <Grid container style={{paddingTop:'0.5rem'}}>
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">{labelString}</FormLabel>
+                            <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={this.handleRadioChange}>
+                                {
+                                    options.map(option => {
+                                        return <FormControlLabel value={option.value} control={<Radio />} label={option.label} />
+                                    })
+                                }
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
                 )
                 
             case "checkbox":
@@ -358,14 +362,16 @@ class FieldSherwood extends PureComponent{
                     )
                 }
                 return (
-                    <div className="container">
-                        <div className="row">
+                    <Grid container style={{paddingTop:'0.5rem'}}>
+                        <Grid item xs={12}>
                             <InputLabel id={input.name}>{labelString}</InputLabel>
-                        </div>
-                        <EvaluateContainer>
-                            {arrayButtons}
-                        </EvaluateContainer>
-                    </div>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <EvaluateContainer>
+                                {arrayButtons}
+                            </EvaluateContainer>
+                        </Grid>
+                    </Grid>
                     );
                 
             case "hidden":
