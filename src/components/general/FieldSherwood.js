@@ -247,9 +247,9 @@ class FieldSherwood extends PureComponent{
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value.includes(option.value)){
-                            return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
+                            return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.label}</ButtonCheck>
                         }
-                        return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonEmptyCheck>
+                        return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.label}</ButtonEmptyCheck>
                     });
                     console.log("optionButtons",input.value);
                     return ([
