@@ -27,9 +27,9 @@ export default function FillDataCollection(props) {
                     sectionFields[0].label = `general.default-label.${sectionFields[0].type}`
                 }
                 sectionFields.unshift({
-                    type:"separator",
+                    type:"title_section",
                     label:section.name,
-                    name:"separator_"+index,
+                    name:"title_section_"+index,
                     required:false, 
                     validation: "notEmpty",
                     id:index

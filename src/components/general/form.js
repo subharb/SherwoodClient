@@ -23,7 +23,7 @@ class Form extends Component {
 
         this.renderFields= this.renderFields.bind(this);
         this.sherwoodValidation = this.sherwoodValidation.bind(this)
-        this.renderOptions = this.renderOptions.bind(this);
+        
         //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
         this.state = {showOptions:{}}
     }
@@ -85,110 +85,29 @@ class Form extends Component {
         tempState.showOptions[key] = false;
         this.setState(tempState);
     }
-    renderOptions(extraField){
-        console.log("Fields", extraField.fields);
-        console.log("value", extraField);
-        if(!this.state.showOptions.hasOwnProperty(extraField.fields.name) || (this.state.showOptions[extraField.fields.name] === true)){
-                if(extraField.type == "min_max"){
-                    return (
-                        [
-                            <Grid item xs={6}>
-                                <Field
-                                    size = "s6"
-                                    name="type_options[0]"
-                                    type="text"
-                                    component={FieldSherwood}
-                                    label="Mínimo"/>
-                            </Grid>,
-                            <Grid item xs={6}>
-                                <Field
-                                    size = "s6"
-                                    name="type_options[1]"
-                                    type="text"
-                                    component={FieldSherwood}
-                                    label="Máximo"/>
-                            </Grid>
-                        ]
-                    )
-                }
-                else{
-                    return (
-                        <div className="">
-                            {
-                                (extraField.type !== "min_max" || (extraField.type === "min_max" && extraField.fields.length < 2)) &&
-                                [
-                                    <Translate id={extraField.label} />,
-                                    <ButtonAdd type="button" onClick={() => extraField.fields.push("")} />
-                                ]
-                            }
-                            <div className="container">
-                                {extraField.fields.map((hobby, index) =>{
-                                    return(
-                                        <div className="row">
-                                            <Field
-                                                size = "s12"
-                                                name={hobby}
-                                                type="text"
-                                                component={FieldSherwood}
-                                                label={`Option #${index + 1}`}/>
-                                            <DeleteHolder onClick={() => extraField.fields.remove(index)}>
-                                                <i className="material-icons">delete</i>
-                                            </DeleteHolder>
-                                        </div>
-                                    )
-                                }                                
-                                )}
-                            </div>
-                        </div>);
-                }
-                
-            
-        }
-        else if(this.state.showOptions.hasOwnProperty(extraField.fields.name)){
-            return(
-                <button onClick={() => this.showOptions(extraField.fields.name)} 
-                    data-testid="save-option" type="button" className="waves-effect waves-light btn-small">
-                    <i className="material-icons">open_in_full</i>
-                </button>
-            )
-        }
-        else{
-            return null;
-        }
-    }
+    
     renderExtraFields(key){
         //Un field que habilita la aparición de otro field
-        if(this.props.hasOwnProperty("valuesForm") && (this.props.fields[key].hasOwnProperty("activationValues") && this.props.valuesForm.hasOwnProperty(key) && this.props.fields[key].activationValues.includes(this.props.valuesForm[key]))){
-            const extraField = {...this.props.fields[key].activatedFields[this.props.fields[key].activationValues.indexOf(this.props.valuesForm[key])]}; 
-            if(extraField.type === "options"){
-                return (
-                    <div className="container">
-                        <FieldArray name={`${key}_options`} {...extraField} key={key} component={this.renderOptions} />
-                    </div>
-                )
-            }
-            else if(extraField.type === "min_max"){
-                return(
-                    <div className="container">
-                        <FieldArray name={`${key}_options`} {...extraField} key={key} component={this.renderOptions} />
-                    </div>
-                ) 
-            }
-            else{
-                return(
-                    <div className="s6">
-                        <Field name={key} {...extraField} type={extraField.type} label={extraField.label} component={FieldSherwood} />
-                    </div>
-                ) 
-            }
-        }
+       
+        // const {input, activationValues, activatedFields} = {...this.props.fields[key]};
+
+        // if(activationValues && activatedFields){
+            
+            
+        //         return (
+        //             <div className="container">
+        //                 <FieldArray name={`${key}_options`} key={key} component={this.renderOptions} />
+        //             </div>
+        //         )
+            
+        // }
     }
     renderFields(){
         let fieldsMarkup = [];
         let currentSection = [];
         Object.keys(this.props.fields).map((key, index) => {
             if(this.props.fields[key].type !== "options"){
-                if(this.props.fields[key].type === "separator"){
+                if(this.props.fields[key].type === "title_section"){
                     if(currentSection.length > 0){
                         fieldsMarkup.push(
                             <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >

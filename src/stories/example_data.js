@@ -70,6 +70,28 @@ export const edc_data1 = () => {
                                 }]
                             },
                             {
+                                "id": 15,
+                                "type": "text_blob",
+                                "name": "red_cells",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "Esto es un texto explicativo de lo que se tiene que hacer en los sigientes inputs",
+                                "isActive": true,
+                                "options": [],
+                                "typeValueCypress" : "Text"
+                            },
+                            {
+                                "id": 9,
+                                "type": "separator",
+                                "name": "red_cells",
+                                "encrypted": false,
+                                "required": true,
+                                "label": "",
+                                "isActive": true,
+                                "options": [],
+                                "typeValueCypress" : "Text"
+                            },
+                            {
                                 "id": 5,
                                 "type": "text",
                                 "name": "red_cells",

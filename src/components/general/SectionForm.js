@@ -7,12 +7,12 @@ import Form from './form';
 export default function SectionForm(props) {
     const dictFields = {};
     const preString = "field_";
-    const inputSeparator = "separator_";
+    const sectionStart = "title_section_";
     let initialData = {}; //props.initData ? props.initData : null;
     props.fields.forEach(field => {
         
         let copyField = Object.assign({}, field);
-        const preText = field.type === "separator" ? inputSeparator : preString;
+        const preText = field.type === "title_section_" ? sectionStart : preString;
         copyField["name"] = preText+field.id.toString();
         
         dictFields[preString+field.id.toString()] = copyField;
@@ -31,7 +31,7 @@ export default function SectionForm(props) {
         let copyValues = Object.assign({}, values)
         const dataFields = [];
         Object.keys(values).forEach(key =>{
-            if(!key.includes(inputSeparator)){
+            if(!key.includes(sectionStart)){
                 const idField = parseInt(key.replace(preString, ""));
                 const surveyField = props.fields.find(field => field.id === idField);
                 

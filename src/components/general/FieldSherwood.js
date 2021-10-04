@@ -3,10 +3,10 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
-import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
+import { ButtonAdd, ButtonCheck, ButtonDelete, ButtonEmptyCheck, DeleteHolder } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
-        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid } from '@material-ui/core';
+        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider } from '@material-ui/core';
 import { spacing } from "@material-ui/system";
 import {
     MuiPickersUtilsProvider,
@@ -25,6 +25,7 @@ import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import File from './File';
 import { FieldWrapper } from './mini_components';
+import { Field, FieldArray } from 'redux-form'
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -92,6 +93,8 @@ class FieldSherwood extends PureComponent{
         this.handleDateChange = this.handleDateChange.bind(this);
         this.resetDiagnose = this.resetDiagnose.bind(this);
         this.handleRadioChange = this.handleRadioChange.bind(this);
+        this.renderOptions = this.renderOptions.bind(this);
+        this.renderOptionText = this.renderOptionText.bind(this);
     }
 
     async componentDidMount(){
@@ -157,8 +160,42 @@ class FieldSherwood extends PureComponent{
     imagesSelected(images){
         this.props.input.onChange(images);
     }
+    renderOptionText(props){
+        return <FieldWrapper noWrap = {this.props.fullWidth}>
+                    <TextFieldSherwood {...props.input} fullWidth variant="outlined" 
+                        margin={this.typeMargin}
+                        label={props.label}  size="small" 
+                         />
+                </FieldWrapper>
+    }
+    renderOptions(props){
+        const {fields} = props;
+        let elements = [
+            <Grid item xs={12}>
+                <ButtonAdd type="button" onClick={() => fields.push("")} />
+            </Grid>
+            
+        ]
+        const options = fields.map((member, index) => (
+            <Grid item xs={12}>
+                <div style={{display:'flex'}}>
+                    <Field
+                        name={`${member}`}
+                        type="text"
+                        component={this.renderOptionText}
+                        label={`Option ${index + 1}`}
+                    />
+                    <ButtonDelete onClick={() => fields.remove(index)} />
+                </div>
+            </Grid>
+          ))
+        elements = elements.concat(options);
+        return <Grid container>
+            {elements}
+        </Grid>;
+    }
     render(){
-        const {input, label, meta, type, options, size, removeClass, validation, country} = this.props;
+        const {input, label, meta, type, options, size, removeClass, validation, country, activationValues, activatedFields} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -179,8 +216,13 @@ class FieldSherwood extends PureComponent{
                         
                     })
                 }
+                let extraField = null;
+                if(typeof activationValues !== "undefined" && activationValues.indexOf(input.value) !== -1){
+                    extraField = {...activatedFields[activationValues.indexOf(input.value)]}; 
+                }
+                
                 const labelId = `${input.name}_label`;
-                return(
+                return([
                     <FieldWrapper noWrap = {this.props.fullWidth}>
                         <FormControl mt={3} fullWidth variant="outlined"  margin={this.typeMargin} error={errorState} >
                             <InputLabel id={labelId}>{labelString}</InputLabel>
@@ -193,7 +235,10 @@ class FieldSherwood extends PureComponent{
                             { optionsArray }
                             </Select>
                         </FormControl>
-                    </FieldWrapper>
+                    </FieldWrapper>,
+                        extraField ? <FieldArray name={`${input.name}_options`} key={input.name} component={this.renderOptions} />
+                                    : null
+                ]
                 )
             // case "select":
             //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
@@ -202,36 +247,40 @@ class FieldSherwood extends PureComponent{
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value.includes(option.value)){
-                            return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonCheck>
+                            return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.label}</ButtonCheck>
                         }
-                        return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.text}</ButtonEmptyCheck>
+                        return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.label}</ButtonEmptyCheck>
                     });
                     console.log("optionButtons",input.value);
                     return ([
-                        <div className="container">
-                            <div className="row">
+                        <Grid container style={{paddingTop:'0.5rem'}}>
+                            <Grid item  xs={12}>
                                 <InputLabel id={input.name}>{labelString}</InputLabel>
-                            </div>
-                            <div className="row">
+                            </Grid>
+                            <Grid item  xs={12}>
                                 <InputLabel shrink={true}><Translate id="general.choose-options" /></InputLabel>
-                            </div>
-                            <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                {optionButtons}
-                            </ButtonGroup>
-                        </div>
+                            </Grid>
+                            <Grid item  xs={12}>
+                                <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                    {optionButtons}
+                                </ButtonGroup>
+                            </Grid>
+                        </Grid>
                     ]);
             case "radio":
                 return(
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">{labelString}</FormLabel>
-                        <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={this.handleRadioChange}>
-                            {
-                                options.map(option => {
-                                    return <FormControlLabel value={option.value} control={<Radio />} label={option.label} />
-                                })
-                            }
-                        </RadioGroup>
-                    </FormControl>
+                    <Grid container style={{paddingTop:'0.5rem'}}>
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">{labelString}</FormLabel>
+                            <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={this.handleRadioChange}>
+                                {
+                                    options.map(option => {
+                                        return <FormControlLabel value={option.value} control={<Radio />} label={option.label} />
+                                    })
+                                }
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
                 )
                 
             case "checkbox":
@@ -313,14 +362,16 @@ class FieldSherwood extends PureComponent{
                     )
                 }
                 return (
-                    <div className="container">
-                        <div className="row">
+                    <Grid container style={{paddingTop:'0.5rem'}}>
+                        <Grid item xs={12}>
                             <InputLabel id={input.name}>{labelString}</InputLabel>
-                        </div>
-                        <EvaluateContainer>
-                            {arrayButtons}
-                        </EvaluateContainer>
-                    </div>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <EvaluateContainer>
+                                {arrayButtons}
+                            </EvaluateContainer>
+                        </Grid>
+                    </Grid>
                     );
                 
             case "hidden":
@@ -391,11 +442,20 @@ class FieldSherwood extends PureComponent{
                         size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                     
                 );
-            case "separator":
+            case "title_section":
                 return(
                     <Typography variant="subtitle1" color="textPrimary" style={{ fontWeight: 600 }}>
                         { labelString }
                     </Typography>);
+            case "text_blob":
+                return(
+                    <Typography variant="body2" color="textPrimary" >
+                        { labelString }
+                    </Typography>);
+            case "separator":
+                return(
+                    <Divider />
+                );
             default:    
                 console.log("TextFieldSherwood",input.value);
                 return(

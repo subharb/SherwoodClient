@@ -417,6 +417,15 @@ function Patient(props) {
     else if(props.investigations.loading || props.patientsSubmissions.loading || surveyRecords === null){
         return <Loader />
     }
+    else if(!patient){
+        return(
+            <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
+                <Alert mb={4} severity="error">
+                    <Translate id="hospital.patient.error-nopatient" />
+                </Alert>
+            </BoxBckgr>
+        ) 
+    }
     else{
         let years = patient.personalData ? yearsFromDate(patient.personalData.birthdate) : "Not Available";
         //let stay = daysFromDate(props.dateIn);
