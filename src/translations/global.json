@@ -68,6 +68,7 @@
             "new-record" : ["Record saved", "Registro Guardado", "Enregistrement enregistré"],
             "new-record-offline" : ["Record saved offline", "Registro Guardado offline", "Enregistrement enregistré offline"],
             "error" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
+            "error-nopatient" : ["You don't have access to this patient, please verify this patient belongs to the hospital you are logged in", "No tiene acceso a este paciente, verifique que este paciente pertenece al hospital en el que inició sesión", "Vous n'avez pas accès à ce patient, veuillez vérifier que ce patient appartient à l'hôpital auquel vous êtes connecté"],
             "updated-record" : ["Record updated!", "Registro Actualizado", "Fichier mis à jour"],
             "updated-record-offline" : ["Record updated Offline!", "Registro Actualizado Offline", "Fichier mis à jour Offline"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
