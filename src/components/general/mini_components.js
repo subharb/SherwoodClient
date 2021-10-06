@@ -74,12 +74,12 @@ export const BasicButtonStyles = styled(Button)`
 `
 
 export const IconPatient = (props) =>{
-    if(props.gender.toLowerCase() === "male"){
-        return <img src={icon_male} alt="male" width="40" {...props}/>
+
+    const iconSex = props.gender.toLowerCase() === "male" ? icon_male : props.gender.toLowerCase() === "female" ? icon_female : null;
+    if(iconSex){
+        return <img src={iconSex} alt="female" width={props.width ? props.width : "40"} {...props} />
     }
-    else if(props.gender.toLowerCase() === "female"){
-        return <img src={icon_female} alt="female" width="40" {...props} />
-    }
+    
     return null;
 }
 const GreyButtonStyles = styled(Button)`
