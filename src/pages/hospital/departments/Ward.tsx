@@ -2,6 +2,7 @@ import { Avatar, Grid, List, ListItem, Paper, Typography } from '@material-ui/co
 import React, { useState } from 'react';
 import Loader from '../../../components/Loader';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import DeleteIcon from '@material-ui/icons/Delete';
 import HotelIcon from '@material-ui/icons/Hotel';
 import { IconPatient } from '../../../components/general/mini_components';
 import EditIcon from '@material-ui/icons/Edit';
@@ -18,6 +19,7 @@ interface Props {
     },
     editCallBack : () => void,
     viewCallBack : () => void,
+    deleteCallBack : () => void,
 }
 
 const Row = styled(Grid)`
@@ -25,7 +27,7 @@ const Row = styled(Grid)`
     border-bottom:2px #ccc solid;
 `;
 
-const Ward:React.FC<Props> = ({loading, name, beds, editCallBack, viewCallBack}) => {
+const Ward:React.FC<Props> = ({loading, name, beds, editCallBack, viewCallBack, deleteCallBack}) => {
 
     if(loading){
         return <Loader />
@@ -34,14 +36,17 @@ const Ward:React.FC<Props> = ({loading, name, beds, editCallBack, viewCallBack})
         return(
             <Grid container spacing={3}>
                 <Row item container>
-                    <Grid item xs={8}>
+                    <Grid item xs={9}>
                         <Typography variant="body2" component="div"> { name }</Typography>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={1}>
                        <EditIcon style={{cursor:"pointer"}} onClick={editCallBack } />
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={1}>
                        <VisibilityIcon style={{cursor:"pointer"}} onClick={viewCallBack } />
+                    </Grid>
+                    <Grid item xs={1}>
+                       <DeleteIcon style={{cursor:"pointer"}} onClick={deleteCallBack } />
                     </Grid>
                 </Row>
                 <Row item alignItems="center" container >

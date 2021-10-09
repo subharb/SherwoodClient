@@ -6,7 +6,7 @@ import Ward from '../../pages/hospital/departments/Ward';
 import ProviderSherwood from '../../providerSherwood';
 
 export default {
-  title: 'Hospital/Departments',
+  title: 'Hospital/Departments/Ward',
   component: Ward,
   argTypes: {
     loading: { control: 'string' }

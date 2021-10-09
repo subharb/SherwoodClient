@@ -64,6 +64,10 @@ export function validateField(field, fieldCompare){
                 response.result = Array.isArray(field.value) || (field.value === false)
                 response.messageCode =  pathErroTranslation+"error_notarrayorfalse"
                 break;
+            case "number":
+                response.result = !isNaN(field.value);
+                response.messageCode =  pathErroTranslation+"error_notnumber"
+                break;
             default:
                 console.log("Validación no definida");
                 response.result = false;

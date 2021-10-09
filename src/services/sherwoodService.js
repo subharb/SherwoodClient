@@ -377,7 +377,7 @@ export function getSharedResearchersService(uuidInvestigation) {
 export function getDepartmentsInstitutionService(uuidInstitution) {
     return new Promise((resolve, reject) => {
       axios
-        .get(process.env.REACT_APP_API_URL+"/hospital/departments/institution/"+uuidInstitution,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .get(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/departments",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .then((response) => {
           if (response.status === 200) {
             resolve(response.data);
@@ -393,7 +393,7 @@ export function getDepartmentsInstitutionService(uuidInstitution) {
 export function assignDepartmentToResearcherService(uuidResearcher, uuidDepartment) {
     return new Promise((resolve, reject) => {
       axios
-        .post(process.env.REACT_APP_API_URL+"/hospital/department/"+uuidDepartment, {uuidResearcher}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .post(process.env.REACT_APP_API_URL+"/hospital/department/"+uuidDepartment+"/toresearcher", {uuidResearcher}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .then((response) => {
           if (response.status === 200) {
             resolve(response.data);
@@ -409,7 +409,7 @@ export function assignDepartmentToResearcherService(uuidResearcher, uuidDepartme
 export function saveDepartmentInstitutionService(uuidInstitution, department) {
     return new Promise((resolve, reject) => {
       axios
-        .post(process.env.REACT_APP_API_URL+"/hospital/department/institution/"+uuidInstitution, department, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .post(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/department", department, { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .then((response) => {
           if (response.status === 200) {
             resolve(response.data);
@@ -421,6 +421,39 @@ export function saveDepartmentInstitutionService(uuidInstitution, department) {
         });
     });
 }
+
+export function saveUpdateWardService(uuidInstitution, uuidDepartment, ward) {
+    return new Promise((resolve, reject) => {
+      axios
+        .put(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/department/"+uuidDepartment+"/ward", ward, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+export function deleteWardService(uuidInstitution, uuidWard) {
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/ward/"+uuidWard, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
 
 export function saveResearcherPermissions(uuidInvestigation, permissions) {
     return new Promise((resolve, reject) => {

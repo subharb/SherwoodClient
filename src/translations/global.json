@@ -77,14 +77,30 @@
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
         },
         "departments" : {
-            
             "title" : ["Hospital Departments", "Departamentos", "Départements"],
             "modal" : {
-                "title" : ["Add department", "Añadir Departamento", "Ajouter Department"]
+                "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
             },
             "department" : ["Departament", "Departamento", "Department"],
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
-            "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"]
+            "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
+            "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "¿está seguro de borrar esta sala?"],
+            "no-wards" : ["No current wards", "No hay salas en este departamento", "Il n'y a pas de chambres dans ce département"],
+            "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce département"],
+            "action-success" : ["Action performed successfully!", "Action performed successfully!", "Action effectuée avec succès !"],
+            "forms" : {
+                "ward" : {
+                    "title" : ["Fill the ward details", "Complete los detalles de la sala", "Remplissez les détails de la paroisse"],
+                    "name" : ["Name ward", "Nombre sala", "Nom chambre"],
+                    "beds" : ["Number Beds", "Número total camas", "Nombre total de lits"],
+                    "male" : ["Male beds", "Camas para hombres", "Lits pour hommes"],
+                    "female" : ["Female beds", "Camas para mujeres", "Lits pour femmes"]
+                },
+                "department" : {
+                    "title" : ["Add department", "Añadir Departamento", "Ajouter Department"],
+                    "name" : ["Name department", "Nombre departamento", "Nom department"]
+                }
+            }
         },
         "analytics" : {
             "graphs" : {
