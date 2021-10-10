@@ -77,7 +77,7 @@ export const IconPatient = (props) =>{
 
     const iconSex = props.gender.toLowerCase() === "male" ? icon_male : props.gender.toLowerCase() === "female" ? icon_female : null;
     if(iconSex){
-        return <img src={iconSex} alt="female" width={props.width ? props.width : "40"} {...props} />
+        return <img src={iconSex} alt={iconSex} width={props.width ? props.width : "40"} {...props} />
     }
     
     return null;

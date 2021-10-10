@@ -12,6 +12,9 @@
         "update" : ["Update", "Actualizar", "Mettre à jour"],
         "back" : ["Back", "Atrás", "Returner"],
         "add" : ["Add", "Añadir", "Ajouter"],
+        "male" : ["Male", "Masculino", "Homme"],
+        "female" : ["Female", "Femenino", "Femme"],
+        "any" : ["Any", "Indiferente", "Indifférent"],
         "view" : ["View", "Ver", "Voir"],
         "startDate" : ["Start Date", "Fecha Inicio", "Date de début"],
         "endDate" : ["End Date", "Fecha fin", "Date de fin"],
@@ -75,6 +78,16 @@
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
+        },
+        "ward" : {
+            "title" : ["Ward", "Sala", "Paroisse"],
+            "edit-bed" : ["Edit bed", "Editar cama", "Modifier le lit"],
+            "bed" : {
+                "name" : ["Name", "Nombre", "Nom"],
+                "genre" : ["Genre", "Género", "Genre"],
+                "active" : ["Active", "Activa", "Active"]
+            }
+            
         },
         "departments" : {
             "title" : ["Hospital Departments", "Departamentos", "Départements"],

@@ -1,10 +1,10 @@
 import { Avatar, Grid, List, ListItem, Paper, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
-import Loader from '../../../components/Loader';
+import Loader from '../../../../components/Loader';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import HotelIcon from '@material-ui/icons/Hotel';
-import { IconPatient } from '../../../components/general/mini_components';
+import { IconPatient } from '../../../../components/general/mini_components';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 
@@ -27,7 +27,7 @@ const Row = styled(Grid)`
     border-bottom:2px #ccc solid;
 `;
 
-const Ward:React.FC<Props> = ({loading, name, beds, editCallBack, viewCallBack, deleteCallBack}) => {
+const WardForm:React.FC<Props> = ({loading, name, beds, editCallBack, viewCallBack, deleteCallBack}) => {
 
     if(loading){
         return <Loader />
@@ -88,4 +88,4 @@ const Ward:React.FC<Props> = ({loading, name, beds, editCallBack, viewCallBack, 
 
 }
 
-export default Ward;
+export default WardForm;

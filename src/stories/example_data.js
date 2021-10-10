@@ -2351,3 +2351,107 @@ export const listPatientsHospitalWard = [
     }
 
 ]
+export const wardInfo = 
+{
+    "id": 6,
+    "uuid": "c949e026-f04a-44cd-80f6-dd9e667cc21c",
+    "name": "ICU Ward",
+    "department": {
+        "id": 1,
+        "uuid": "ef85866d-b465-4142-b45a-37214223ec25",
+        "code": "NEU",
+        "name": "Neurología",
+        "institution": {
+            "id": 1,
+            "uuid": "42cbc8b4-379e-4c9f-839b-88b38258e1e2",
+            "acr": "HBM",
+            "name": "Hospital Belako Mali"
+        }
+    },
+    "beds": [
+        {
+            "id": 85,
+            "name": "l",
+            "active": true,
+            "gender": 1,
+            "order": 11
+        },
+        {
+            "id": 84,
+            "name": "k",
+            "active": true,
+            "gender": 0,
+            "order": 10
+        },
+        {
+            "id": 83,
+            "name": "j",
+            "active": true,
+            "gender": 0,
+            "order": 9
+        },
+        {
+            "id": 82,
+            "name": "i",
+            "active": false,
+            "gender": 0,
+            "order": 8
+        },
+        {
+            "id": 81,
+            "name": "h",
+            "active": false,
+            "gender": 0,
+            "order": 7
+        },
+        {
+            "id": 80,
+            "name": "g",
+            "active": true,
+            "gender": 0,
+            "order": 6
+        },
+        {
+            "id": 79,
+            "name": "f",
+            "active": true,
+            "gender": 0,
+            "order": 5
+        },
+        {
+            "id": 78,
+            "name": "e",
+            "active": true,
+            "gender": 0,
+            "order": 4
+        },
+        {
+            "id": 77,
+            "name": "d",
+            "active": true,
+            "gender": 0,
+            "order": 3
+        },
+        {
+            "id": 76,
+            "name": "c",
+            "active": true,
+            "gender": 0,
+            "order": 2
+        },
+        {
+            "id": 75,
+            "name": "b",
+            "active": true,
+            "gender": 0,
+            "order": 1
+        },
+        {
+            "id": 74,
+            "name": "a",
+            "active": true,
+            "gender": 0,
+            "order": 0
+        }
+    ]
+}

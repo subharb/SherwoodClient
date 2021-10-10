@@ -22,7 +22,7 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Ward from './departments/Ward';
+import WardForm from './departments/Ward/WardForm';
 import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../redux/actions/hospitalActions';
 import { useSnackBarState } from '../../hooks';
 
@@ -302,7 +302,7 @@ function Departments(props) {
                         male:ward.beds.filter(bed => bed.gender === 0).length,
                         female:ward.beds.filter(bed => bed.gender === 1).length
                     }
-                    return (<Ward name={ward.name} beds={bedsInfo} 
+                    return (<WardForm name={ward.name} beds={bedsInfo} 
                                 editCallBack = {() => editWard(ward, department.uuid)}
                                 deleteCallBack = {() => deleteWardConfirm(ward, department.uuid)}
                                 />)
