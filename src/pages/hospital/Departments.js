@@ -120,7 +120,6 @@ function permissionsToRole(permissions){
 function Departments(props) {
     
     const investigation = props.investigations.data && props.investigations.currentInvestigation ? props.investigations.currentInvestigation : null;
-    const [error, setError] = useState(null);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [ addingDepartment, setAddingDepartment ] = useState(false);
     const [ uuidDepartmentAddWard, setUuidDepartmentAddWard ] = useState(false);
@@ -166,9 +165,9 @@ function Departments(props) {
         const wardInfo = {
             name:ward.name,
             beds:{
-                total: ward.total,
-                male: ward.male,
-                female: ward.female,
+                total: parseInt(ward.total),
+                male: parseInt(ward.male),
+                female: parseInt(ward.female),
                 numerical : "numerical"
             }
         }
@@ -249,7 +248,6 @@ function Departments(props) {
        
         await dispatch(assignDepartmentToResearcherAction(props.researchers[indexResearcherToEdit].uuid, values.department));
         
-        resetModal()
     }
     function editAResearcher(index){
         console.log("confirm to edit", props.researchers[index]);
@@ -362,6 +360,7 @@ function Departments(props) {
         setShowOptions(false);
         setUuidDepartmentAddWard(false);
         setWardToEdit(false);
+        setWardToDelete(false);
     }
     function a11yProps(index) {
         return {
@@ -395,8 +394,10 @@ function Departments(props) {
         })
     }
     useEffect(()=>{
+        if(wardToDelete || wardToEdit || addingDepartment){
+            setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
+        }
         resetModal();
-        setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
     }, [props.departments, props.researchers])
 
     useEffect(()=>{
@@ -404,8 +405,21 @@ function Departments(props) {
             let message;
             let severity;
             if(wardToEdit){
-                message = "hospital.departments.ward-same-name";
-                severity = "warning";
+                switch(props.hospital.error){
+                    case 4:
+                        message = "hospital.departments.errors.ward-same-name";
+                        severity = "warning";
+                        break;
+                    case 2:
+                        message = "hospital.departments.errors.bad-configuration";
+                        severity = "warning";
+                        break;
+                    default:
+                        message = "register.researcher.error.general";
+                        severity = "error";
+                }
+                
+                
             }
             else if(wardToDelete){
                 message = "register.researcher.error.general";
@@ -435,13 +449,6 @@ function Departments(props) {
     };
     if(!props.investigations.data || props.loading){
         return <Loader />
-    }
-    else if(error || errorShare){
-        return (
-            <Alert mb={4} severity="error">
-                <Translate id="investigation.share.error.description" />
-            </Alert>
-        );
     }
     return (
         <BoxBckgr color="text.primary" style={{color:"white"}}>

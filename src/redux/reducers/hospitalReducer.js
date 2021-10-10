@@ -23,13 +23,16 @@ export default function reducer(state = initialState, action){
                 researchers : action.researchers,
                 departments : action.departments
             };    
-            newState.loading = false; 
-            newState.error = null;   
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
             return newState;
         case types.SAVE_DEPARTMENT_SUCCESS:
-            newState.data.departments.push(action.department);
-            newState.loading = false; 
-            newState.error = null;   
+            tempDepartments = [...newState.data.departments];
+            tempDepartments.push(action.department);
+
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
             return newState;
         case types.SAVE_WARD_SUCCESS:
             tempDepartments = [...newState.data.departments];
@@ -45,16 +48,16 @@ export default function reducer(state = initialState, action){
                 
             }
             newState.data.departments = tempDepartments;
-            newState.loading = false; 
-            newState.error = null;   
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
             return newState;
         case types.ASSIGN_RESEARCHER_DEPARTMENT_SUCCESS:
             const indexResearcher = newState.data.researchers.findIndex(res => res.uuid === action.uuidResearcher);
             if(indexResearcher !== -1){
                 newState.data.researchers[indexResearcher].departments = action.departments;
             }
-            newState.loading = false; 
-            newState.error = null;   
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
             return newState;  
         case types.DELETE_WARD_SUCCESS:
             tempDepartments = [...newState.data.departments];
@@ -63,16 +66,16 @@ export default function reducer(state = initialState, action){
                 tempDepartments[indexDepartment].wards = action.wards;
             }
             newState.data.departments = tempDepartments;
-            newState.loading = false; 
-            newState.error = null; 
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error; 
             return newState;  
         case types.FETCH_HOSPITAL_LOADING:
             newState.loading = true;   
-            newState.error = null;                           
+            newState.error = initialState.error;                           
             return newState;
         case types.HOSPITAL_ERROR:
-            newState.loading = false;   
-            newState.error = true;                           
+            newState.loading = initialState.loading;   
+            newState.error = action.errorCode;                           
             return newState;
         case types.HOSPITAL_RESET_ERROR:
             newState.error = initialState.error;

@@ -80,7 +80,8 @@ export function saveUpdateWardAction(uuidInstitution, uuidDepartment, ward) {
           });
         })
         .catch((error) => {
-          dispatch({ type: types.HOSPITAL_ERROR });
+          dispatch({ type: types.HOSPITAL_ERROR,
+                    errorCode:error.errorCode });
           throw error;
         });
     };
