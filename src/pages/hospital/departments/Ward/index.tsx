@@ -4,7 +4,7 @@ import Loader from '../../../../components/Loader';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import HotelIcon from '@material-ui/icons/Hotel';
-import { BoxBckgr, IconPatient } from '../../../../components/general/mini_components';
+import { BoxBckgr, ButtonCancel, ButtonContinue, IconPatient } from '../../../../components/general/mini_components';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 import PatientButton from '../../../../components/general/PatientButton';
@@ -27,8 +27,8 @@ interface Props {
     },
     uuid:string,
     edit:boolean,
-    editCallBack : () => void,
-    deleteCallBack : () => void,
+    editCallBack : (bed:Bed) => void,
+    deleteCallBack : (bed:Bed) => void,
 }
 
 const Row = styled(Grid)`
@@ -51,7 +51,7 @@ const BED_FORM = {
         type:"select",
         label:"hospital.ward.bed.genre",
         shortLabel: "hospital.ward.bed.genre",
-        validation : "textMin2",
+        validation : "number",
         options:[
             {value:0, label:"general.male"},
             {value:1, label:"general.female"},
@@ -59,41 +59,80 @@ const BED_FORM = {
         ]
     },
     "active":{
-        required : true,
+        required : false,
         name:"active",
-        type:"radio",
+        type:"checkbox",
         label:"hospital.ward.bed.active",
         shortLabel: "hospital.ward.bed.active",
-        validation : "textMin2",
-        options:[
-            {value:true, label:"general.yes"},
-            {value:false, label:"general.no"}
-        ]
+        validation : "textMin2"
     },
 }
 
 const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack}) => {
     const [showModal, setShowModal] = useState(false);
     const [bedToEdit, setBedToEdit] = useState<Bed | null>(null);
+    const [bedToDelete, setBedToDelete] = useState<Bed | null>(null);
+
+    function editCallBackForm(bed:Bed){
+        editCallBack(bed);
+        resetModal()
+    }
     function resetModal(){
         setShowModal(false);
+        setBedToEdit(null);
+        setBedToDelete(null);
     }
-    
     function editBed(bed:Bed){
         setShowModal(true);
         setBedToEdit(bed);
     }
+    function deleteBed(e:any, bed:Bed){
+        e.stopPropagation();
+        setBedToDelete(bed);
+        setShowModal(true);
+    }
+    function deleteCallBackForm(bed:Bed){
+        deleteCallBack(bed);
+        resetModal();
+    }
+
     if(loading){
         return <Loader />
     }
     else{
         return(
-            <BoxBckgr color="text.primary">
+            <BoxBckgr color="text.primary" style={{padding:'1rem'}}>
                 <Modal key="modal" open={showModal} closeModal={() => resetModal()}
                     title={<Translate id="hospital.ward.edit-bed" />}>
-                        <Form fields={BED_FORM} fullWidth callBackForm={editCallBack}
-                            initialData={bedToEdit} 
-                            closeCallBack={() => resetModal()}/>
+                        <div>
+                        {
+                            bedToEdit &&
+                            <Form fields={BED_FORM} fullWidth callBackForm={editCallBackForm}
+                                initialData={bedToEdit} 
+                                closeCallBack={() => resetModal()}/>
+                        }
+                        {
+                            bedToDelete &&
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <Typography variant="h6" component="div" gutterBottom>
+                                        <Translate id="hospital.departments.delete-ward-prompt" />
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {bedToDelete.name}
+                                    </Typography> 
+                                </Grid>
+                                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                        <Translate id="general.cancel" />
+                                    </ButtonCancel>
+                                    <ButtonContinue onClick={deleteCallBackForm} data-testid="continue-modal" color="primary">
+                                        <Translate id="general.continue" />
+                                    </ButtonContinue>
+                                </Grid>
+                            </Grid>
+                        }
+                        </div>
                 </Modal>
                 <Typography variant="h3" gutterBottom display="inline" style={{color:"white"}}>
                     <Translate id="hospital.ward.title" />: {ward.name}
@@ -103,8 +142,11 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
                     {
                         edit &&
                         ward.beds.sort((a, b) => a.order - b.order).map(bed => {
-                            return <PatientButton name={bed.name} onClick={() => editBed(bed)}
-                            type="edit" active={bed.active} gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"}/>
+                            return(
+                                <PatientButton name={bed.name} onClick={() => editBed(bed)}
+                                    type="edit" active={bed.active} deleteCallBack={(e) => deleteBed(e, bed)}
+                                    gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"}/>
+                            )
                         })
                     }
                 </Row>

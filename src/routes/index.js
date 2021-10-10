@@ -74,7 +74,7 @@ import Investigation  from "../components/investigation";
 import ShareInvestigationRouter from "../components/investigation/share/wrapper";
 
 import HomeSchedule from "../pages/hospital/HomeSchedule";
-import ListPatients from "../pages/hospital/ListPatients";
+
 import Patient from "../pages/hospital/Patient";
 import SearchPatients from "../pages/hospital/SearchPatients";
 import TestsHome from "../pages/hospital/TestsHome";
@@ -140,16 +140,6 @@ const hospitalRoutes = {
             path: MY_SCHEDULE_ROUTE,
             name: "My Schedule",
             component: HomeSchedule
-        },
-        {
-            path: HOSPITAL_WARD_ROUTE,
-            name: "Hospital Ward",
-            component: ListPatients
-        },
-        {
-            path: OUTPATIENTS_ROUTE,
-            name: "Outpatients",
-            component:ListPatients
         },
         {
             path: SEARCH_PATIENT_ROUTE,
@@ -353,11 +343,6 @@ const dashboardHospitalRoutes = {
             path: ROOT_ROUTE,
             name: "Home",
             component: HomeSchedule
-        },
-        {
-            path: HOSPITAL_WARD_ROUTE,
-            name: "Hospital Ward",
-            component: ListPatients
         },
         {
             path: SEARCH_PATIENT_ROUTE,

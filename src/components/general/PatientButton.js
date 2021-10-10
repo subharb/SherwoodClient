@@ -1,7 +1,7 @@
 import { Grid, Typography } from '@material-ui/core';
 import React from 'react'
-import { IconPatient } from './mini_components'
-import styled from 'styled-components';
+import { ButtonDelete, IconPatient } from './mini_components'
+import styled, { css } from 'styled-components';
 
 const Container = styled.div`
     width:7rem;
@@ -25,6 +25,15 @@ const TypographyColorGender = styled(Typography)`
     color:${props => props.gender === "female" ? "#EE6658" : "#008187"}
 `;
 
+const GridHeaderPatient = styled(Grid)`
+    text-align:left;
+    ${props => props.type === 'edit' && css`
+        display:flex; 
+        justify-content:space-between;
+    `}
+`;
+
+
 const TypographyFree = styled(Typography)`
     color:green;
 `;
@@ -41,11 +50,16 @@ export default function PatientButton(props) {
     return (
         <Container onClick={props.onClick} active={props.active} >
             <Grid container xs={12}>
-                <Grid xs={12} style={{textAlign:'left'}}>
-                    <Typography variant="body2" gutterBottom>
+                <GridHeaderPatient xs={12} type={props.type}>
+                    <Typography variant="body2" component="span" gutterBottom >
                         {props.name}
                     </Typography>
-                </Grid>
+                    {
+                        props.type === "edit" &&
+                        <ButtonDelete onClick={props.deleteCallBack} />
+                    }
+                    
+                </GridHeaderPatient>
                 <Grid xs={12} style={{textAlign:"center"}}>
                     <IconPatient width="30" gender={props.gender} />
                 </Grid>

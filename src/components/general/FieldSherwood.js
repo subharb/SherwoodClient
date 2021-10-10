@@ -274,7 +274,7 @@ class FieldSherwood extends PureComponent{
                     <Grid container style={{paddingTop:'0.5rem'}}>
                         <FormControl component="fieldset">
                             <FormLabel component="legend">{labelString}</FormLabel>
-                            <RadioGroup aria-label={input.name} name={input.name} valueSelected={input.value} onChange={this.handleRadioChange}>
+                            <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={this.handleRadioChange}>
                                 {
                                     options.map(option => {
                                         const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  option.label : this.props.translate(option.label);

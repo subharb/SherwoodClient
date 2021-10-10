@@ -41,7 +41,7 @@ WardEditStory.args = {
     loading:false,
     ward:wardInfo,
     edit:true,
-    editCallBack:() => console.log("Editar!"), 
-    viewCallBack:() => console.log("View!"), 
+    editCallBack:(ward) => console.log("Editar!", ward), 
+    deleteCallBack:(ward) => console.log("Delete!", ward), 
   
 };
