@@ -1,16 +1,17 @@
-import { Avatar, Grid, List, ListItem, Paper, Typography } from '@material-ui/core';
+import { Avatar, Grid, List, ListItem, Paper, RootRef, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import Loader from '../../../../components/Loader';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
-import HotelIcon from '@material-ui/icons/Hotel';
+
 import { BoxBckgr, ButtonCancel, ButtonContinue, IconPatient } from '../../../../components/general/mini_components';
 import EditIcon from '@material-ui/icons/Edit';
-import styled from 'styled-components';
-import PatientButton from '../../../../components/general/PatientButton';
+
+import BedButton from '../../../../components/general/BedButton';
 import { Translate } from 'react-localize-redux';
 import Modal from '../../../../components/general/modal';
 import Form from '../../../../components/general/form';
+import {Droppable, Draggable, SortableItem} from '../../../../components/general/Draggable-Droppable';
+import {DndContext} from '@dnd-kit/core';
+import {SortableContext} from '@dnd-kit/sortable';
 
 interface Bed{
     id:number,
@@ -30,11 +31,6 @@ interface Props {
     editCallBack : (bed:Bed) => void,
     deleteCallBack : (bed:Bed) => void,
 }
-
-const Row = styled(Grid)`
-    display:flex;
-    border-bottom:2px #ccc solid;
-`;
 
 const BED_FORM = {
     "name":{
@@ -69,6 +65,9 @@ const BED_FORM = {
 }
 
 const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack}) => {
+    const [isDropped, setIsDropped] = useState(false);
+    
+    
     const [showModal, setShowModal] = useState(false);
     const [bedToEdit, setBedToEdit] = useState<Bed | null>(null);
     const [bedToDelete, setBedToDelete] = useState<Bed | null>(null);
@@ -86,7 +85,7 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
         setShowModal(true);
         setBedToEdit(bed);
     }
-    function deleteBed(e:any, bed:Bed){
+    function deleteBed(e:Event, bed:Bed){
         e.stopPropagation();
         setBedToDelete(bed);
         setShowModal(true);
@@ -95,7 +94,9 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
         deleteCallBack(bed);
         resetModal();
     }
-
+    function orderUpdate(event:DragEndEvent){
+        console.log("Drop the bomb", event);
+    }
     if(loading){
         return <Loader />
     }
@@ -137,22 +138,29 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
                 <Typography variant="h3" gutterBottom display="inline" style={{color:"white"}}>
                     <Translate id="hospital.ward.title" />: {ward.name}
                 </Typography>
-                <Grid container spacing={3}>
-                <Row item container>
-                    {
-                        edit &&
-                        ward.beds.sort((a, b) => a.order - b.order).map(bed => {
-                            return(
-                                <PatientButton name={bed.name} onClick={() => editBed(bed)}
-                                    type="edit" active={bed.active} deleteCallBack={(e) => deleteBed(e, bed)}
-                                    gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"}/>
-                            )
-                        })
-                    }
-                </Row>
-            </Grid>
+                <Grid container spacing={3} >
+                
+                    <DndContext onDragEnd={orderUpdate} >
+                            <Droppable id="droppable">
+                                {
+                                    ward.beds.sort((a, b) => a.order - b.order).map((bed, index) => {
+                                        return(
+                                            
+                                                <Draggable id={`${index}`}>
+                                                    <BedButton name={bed.name} onClick={() => editBed(bed)}
+                                                        type="edit" active={bed.active} deleteCallBack={(e:Event) => deleteBed(e, bed)}
+                                                        gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
+                                                    />                                            
+                                                </Draggable>
+                                            
+                                        )
+                                    })
+                                } 
+                            </Droppable>
+                        
+                    </DndContext>
+                </Grid>
             </BoxBckgr>
-            
             )
     }
 

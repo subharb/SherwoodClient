@@ -37,7 +37,7 @@ const GridHeaderPatient = styled(Grid)`
 const TypographyFree = styled(Typography)`
     color:green;
 `;
-export default function PatientButton(props) {
+export default function BedButton(props) {
     if(props.type === "show" && props.empty){
         return (
             <Container onClick={props.onClick}>
@@ -48,7 +48,7 @@ export default function PatientButton(props) {
         )
     }
     return (
-        <Container onClick={props.onClick} active={props.active} >
+        <Container  active={props.active} >
             <Grid container xs={12}>
                 <GridHeaderPatient xs={12} type={props.type}>
                     <Typography variant="body2" component="span" gutterBottom >
@@ -56,7 +56,7 @@ export default function PatientButton(props) {
                     </Typography>
                     {
                         props.type === "edit" &&
-                        <ButtonDelete onClick={props.deleteCallBack} />
+                        <ButtonDelete  />
                     }
                     
                 </GridHeaderPatient>
