@@ -10,8 +10,17 @@ import { Translate } from 'react-localize-redux';
 import Modal from '../../../../components/general/modal';
 import Form from '../../../../components/general/form';
 import {Droppable, Draggable, SortableItem} from '../../../../components/general/Draggable-Droppable';
-import {DndContext} from '@dnd-kit/core';
 import {SortableContext} from '@dnd-kit/sortable';
+import {
+    closestCenter,
+    DndContext,
+    DragOverlay,
+    alias,
+    MouseSensor,
+    TouchSensor,
+    useSensor,
+    useSensors
+  } from "@dnd-kit/core";
 
 interface Bed{
     id:number,
@@ -66,7 +75,7 @@ const BED_FORM = {
 
 const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack}) => {
     const [isDropped, setIsDropped] = useState(false);
-    
+    const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
     
     const [showModal, setShowModal] = useState(false);
     const [bedToEdit, setBedToEdit] = useState<Bed | null>(null);
@@ -101,6 +110,7 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
         return <Loader />
     }
     else{
+        const bedsSorted = ward.beds.sort((a, b) => a.order - b.order);
         return(
             <BoxBckgr color="text.primary" style={{padding:'1rem'}}>
                 <Modal key="modal" open={showModal} closeModal={() => resetModal()}
@@ -139,25 +149,29 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
                     <Translate id="hospital.ward.title" />: {ward.name}
                 </Typography>
                 <Grid container spacing={3} >
-                
-                    <DndContext onDragEnd={orderUpdate} >
-                            <Droppable id="droppable">
-                                {
-                                    ward.beds.sort((a, b) => a.order - b.order).map((bed, index) => {
-                                        return(
-                                            
-                                                <Draggable id={`${index}`}>
+                    <DndContext 
+                        onDragEnd={orderUpdate}>
+                        <SortableContext items={bedsSorted.map(bed => bed.order.toString())}>
+                                <Droppable id="droppable">
+                                    {
+                                        bedsSorted.map((bed, index) => {
+                                            return(
+                                                
+                                                <SortableItem
+                                                    key={index}
+                                                    id={index.toString()}>
                                                     <BedButton name={bed.name} onClick={() => editBed(bed)}
                                                         type="edit" active={bed.active} deleteCallBack={(e:Event) => deleteBed(e, bed)}
                                                         gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
-                                                    />                                            
-                                                </Draggable>
-                                            
-                                        )
-                                    })
-                                } 
-                            </Droppable>
-                        
+                                                    />                                               
+                                                    </SortableItem>
+                                                
+                                            )
+                                        })
+                                    } 
+                                </Droppable>
+                            
+                        </SortableContext>
                     </DndContext>
                 </Grid>
             </BoxBckgr>

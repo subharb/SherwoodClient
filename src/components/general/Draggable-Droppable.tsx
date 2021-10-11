@@ -1,10 +1,38 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useDroppable} from '@dnd-kit/core';
 import {useDraggable} from '@dnd-kit/core';
-import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import styled from 'styled-components';
 import { Grid } from '@material-ui/core';
+import {createPortal} from 'react-dom';
+import {
+  Announcements,
+  closestCenter,
+  CollisionDetection,
+  DragOverlay,
+  DndContext,
+  DropAnimation,
+  defaultDropAnimation,
+  KeyboardSensor,
+  Modifiers,
+  MouseSensor,
+  MeasuringConfiguration,
+  PointerActivationConstraint,
+  ScreenReaderInstructions,
+  TouchSensor,
+  UniqueIdentifier,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  useSortable,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  SortingStrategy,
+  rectSortingStrategy,
+  AnimateLayoutChanges,
+} from '@dnd-kit/sortable';
 
 interface Props{
     id : string
@@ -41,9 +69,10 @@ export const SortableItem:React.FC<Props> = (props) => {
     const style = {    transform: CSS.Transform.toString(transform),    transition, display:'flex' };    
     return (    
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>      
-            {
+            <Draggable id={props.id}>{
                 props.children
-            }    
+            }
+            </Draggable>    
         </div>  
     );
 }
