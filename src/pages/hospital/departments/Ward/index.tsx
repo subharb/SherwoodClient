@@ -2,7 +2,7 @@ import { Avatar, Grid, List, ListItem, FormControlLabel, Switch, Typography } fr
 import React, { useState } from 'react';
 import Loader from '../../../../components/Loader';
 
-import { BoxBckgr, ButtonCancel, ButtonContinue, IconPatient } from '../../../../components/general/mini_components';
+import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, IconPatient } from '../../../../components/general/mini_components';
 
 import { useParams, useHistory } from 'react-router-dom';
 import BedButton from '../../../../components/general/BedButton';
@@ -23,7 +23,9 @@ import {
   } from "@dnd-kit/core";
 import { useEffect } from 'react';
 import { IBed, IDepartment, IWard } from '../../../../constants/types';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { deleteBedAction, updateBedAction } from '../../../../redux/actions/hospitalActions';
+import { useDepartments } from '../../../../hooks';
 
 
 interface Props {
@@ -33,10 +35,19 @@ interface Props {
     editCallBack : (bed:IBed) => void,
     deleteCallBack : (bed:IBed) => void,
     reorderCallBack : (fromIndex:number, toIndex:number) => void
+    addCallBack : (bed:IBed) => void,
     
 }
 
 const BED_FORM = {
+    "id" : {
+        required : true,
+        name:"name",
+        type:"hidden",
+        label:"hidden",
+        shortLabel: "hidden",
+        validation : "textMin2"
+    },
     "name":{
         required : true,
         name:"name",
@@ -70,55 +81,67 @@ const BED_FORM = {
 
 interface PropsRouter extends LocalizeContextProps{
     departments:IDepartment[],
+    investigations:any,
     loading:boolean
 }
 
 const WardRouter:React.FC<PropsRouter> = (props) => {
     const [ward, setWard] = useState<IWard | null>(null);
+    const [department, setDepartment] = useState<IDepartment | null>(null);
+    const {departments, investigations} = useDepartments();
 
+    const dispatch = useDispatch();
     let { uuidWard } = useParams<{uuidWard?: string}>();
     
-    function editCallBack(bed:IBed){
-        console.log(bed);
+    async function editCallBack(bed:IBed){
+        
+        if(ward){
+            await(dispatch(updateBedAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bed)))
+        }        
     }
-    function deleteCallBack(bed:IBed){
-        console.log(bed);
+    async function deleteCallBack(bed:IBed){
+        if(ward){
+            await(dispatch(deleteBedAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bed)))
+        }
     }
     function reorderCallBack(toIndex:number, fromIndex:number){
         console.log(toIndex, fromIndex);
     }
+    
+    
     useEffect(() => {
-        if(props.departments.length > 0){
-            const allWards = props.departments.reduce((acc:IWard[], depar:IDepartment) => {
-                acc = acc.concat(depar.wards);
-                return acc;
-            }, [])
-            const findWard = allWards.find((ward:IWard) => ward.uuid === uuidWard);
-            if(findWard){
-                setWard(findWard);
+        if(departments.length > 0){
+            for(let i = 0; i < departments.length; i++){
+                const department = departments[i];
+                const indexWard = department.wards.findIndex((ward:IWard) => ward.uuid === uuidWard);
+                if(indexWard !== -1){
+                    setWard(department.wards[indexWard]);
+                    setDepartment(department);
+                    return;
+                }
             }
-            
         }
-    },[props.departments])
+    },[departments])
+
+
+    
     return <Ward loading={props.loading} edit={true} ward={ward}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
-                reorderCallBack={(a, b)=>reorderCallBack(a, b)}
+                reorderCallBack={(a, b)=>reorderCallBack(a, b)} addCallBack={addCallBack}
                 />
 }   
 
 const mapStateToProps = (state:any) =>{
     return {
-        investigations : state.investigations,
         hospital : state.hospital,
-        loading : state.hospital.loading || state.investigations.loading,
-        departments : state.hospital.data ? state.hospital.data.departments : []
+        loading : state.hospital.loading || state.investigations.loading
     }
 }
 
 const WardLocalized = withLocalize(connect(mapStateToProps, null)(WardRouter));
 export { WardLocalized };
 
-const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack, reorderCallBack}) => {
+const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, deleteCallBack, reorderCallBack}) => {
     const [isDropped, setIsDropped] = useState(false);
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
     
@@ -126,9 +149,15 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
     const [showModal, setShowModal] = useState(false);
     const [bedToEdit, setBedToEdit] = useState<IBed | null>(null);
     const [bedToDelete, setBedToDelete] = useState<IBed | null>(null);
+    const [addingBed, setAddingBed] = useState(false);
 
     function editCallBackForm(bed:IBed){
+        
         editCallBack(bed);
+        resetModal()
+    }
+    function addCallBackForm(bed:IBed){
+        addCallBack(bed);
         resetModal()
     }
     function resetModal(){
@@ -145,8 +174,11 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
         setBedToDelete(bed);
         setShowModal(true);
     }
-    function deleteCallBackForm(bed:IBed){
-        deleteCallBack(bed);
+    function deleteCallBackForm(){
+        if(bedToDelete){
+            deleteCallBack(bedToDelete);
+        }
+        
         resetModal();
     }
     function orderUpdate(event:DragEndEvent){
@@ -163,12 +195,17 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
         return(
             <BoxBckgr color="text.primary" style={{padding:'1rem'}}>
                 <Modal key="modal" open={showModal} closeModal={() => resetModal()}
-                    title={<Translate id="hospital.ward.edit-bed" />}>
+                    title={bedToEdit ? <Translate id="hospital.ward.edit-bed" /> : addingBed ? <Translate id="hospital.ward.add-bed" /> : bedToDelete ? <Translate id="hospital.ward.delete-bed" /> : null}>
                         <div>
                         {
                             bedToEdit &&
                             <Form fields={BED_FORM} fullWidth callBackForm={editCallBackForm}
                                 initialData={bedToEdit} 
+                                closeCallBack={() => resetModal()}/>
+                        }
+                        {
+                            addingBed &&
+                            <Form fields={BED_FORM} fullWidth callBackForm={addCallBackForm}                                
                                 closeCallBack={() => resetModal()}/>
                         }
                         {
@@ -198,49 +235,61 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, deleteCallBack
                     <Translate id="hospital.ward.title" />: {ward.name}
                 </Typography>
                 <Grid container>
-                <FormControlLabel
-                    control={<Switch
-                        checked={reorder}
-                        onChange={(e) => setReorder(e.target.checked)}
-                        name="checkedA"
-                        inputProps={{ 'aria-label': 'secondary checkbox' }}
-                    />}
-                    label="Reorder or delete beds"
-                />
-                
-                    <DndContext 
-                        onDragEnd={orderUpdate}>
-                        <SortableContext items={bedsSorted.map(bed => bed.order.toString())}>
-                            <Droppable id="droppable">
-                                {
-                                    bedsSorted.map((bed, index) => {
-                                        if(reorder){
-                                            return(
-                                                <SortableItem
-                                                    key={index}
-                                                    id={index.toString()}>
-                                                    <BedButton name={bed.name} 
-                                                        type="edit" active={bed.active}
-                                                        gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
-                                                    />                                               
-                                                    </SortableItem>
-                                            )
-                                        }
-                                        else{
-                                            return(
-                                            <BedButton name={bed.name} onClick={() => editBed(bed)}
-                                                type="edit" active={bed.active} deleteCallBack={(e:Event) => deleteBed(e, bed)}
-                                                gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
-                                            /> 
-                                            );
-                                        }
-                                    })
-                                } 
+                    <Grid item xs={12}>
+                        <FormControlLabel
+                            control={<Switch
+                                checked={reorder}
+                                onChange={(e) => setReorder(e.target.checked)}
+                                name="checkedA"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                            />}
+                            label="Reorder or delete beds"
+                        />  
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="body2" gutterBottom display="inline">
+                            <Translate id="hospital.ward.add-bed" />
+                        </Typography>
+                        <ButtonAdd disabled={addingBed} 
+                            type="button" data-testid="add_researcher" 
+                            onClick={() => {
+                                setAddingBed(true);
+                                setShowModal(true);
+                            }} />
+                    </Grid>
+                <DndContext 
+                    onDragEnd={orderUpdate}>
+                    <SortableContext items={bedsSorted.map(bed => bed.order.toString())}>
+                        <Droppable id="droppable">
+                            {
+                                bedsSorted.map((bed, index) => {
+                                    if(reorder){
+                                        return(
+                                            <SortableItem
+                                                key={index}
+                                                id={index.toString()}>
+                                                <BedButton name={bed.name} 
+                                                    type="edit" active={bed.active}
+                                                    gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
+                                                />                                               
+                                                </SortableItem>
+                                        )
+                                    }
+                                    else{
+                                        return(
+                                        <BedButton name={bed.name} onClick={() => editBed(bed)}
+                                            type="edit" active={bed.active} deleteCallBack={(e:Event) => deleteBed(e, bed)}
+                                            gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
+                                        /> 
+                                        );
+                                    }
+                                })
+                            } 
                             </Droppable>
                         </SortableContext>
-                    </DndContext>
-                </Grid>
-            </BoxBckgr>
+                </DndContext>
+            </Grid>
+        </BoxBckgr>
         )
     }
 

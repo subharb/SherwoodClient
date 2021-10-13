@@ -12,11 +12,27 @@ import { decryptPatientsData } from '../../utils';
     error: null
 }
  
+function findIndexDepartment(departments, uuidDepartment){
+    let tempDepartments = [...departments];
+    const indexDepartment = tempDepartments.findIndex(dep => dep.uuid === uuidDepartment);
+
+    return indexDepartment;
+    
+}
+
+function findIndexWard(department, uuidWard){
+    const indexWard = department.wards.findIndex(ward => ward.uuid === uuidWard);
+    return indexWard;
+}
 export default function reducer(state = initialState, action){
     
     let newState = { ...state};
     let tempDepartments;
     let indexDepartment;
+    let department;
+    let indexWard;
+    let ward;
+    let bedIndex;
     switch(action.type){
         case types.FETCH_HOSPITAL_SUCCESS:
             newState.data = {
@@ -38,7 +54,7 @@ export default function reducer(state = initialState, action){
             tempDepartments = [...newState.data.departments];
             indexDepartment = tempDepartments.findIndex(dep => dep.uuid === action.uuidDepartment);
             if(indexDepartment !== -1){
-                const indexWard = tempDepartments[indexDepartment].wards.findIndex(ward => ward.uuid === action.ward.uuid);
+                indexWard = tempDepartments[indexDepartment].wards.findIndex(ward => ward.uuid === action.ward.uuid);
                 if(indexWard !== -1){
                     tempDepartments[indexDepartment].wards[indexWard] = action.ward;
                 }
@@ -59,6 +75,34 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;  
+        case types.UPDATE_BED_WARD_SUCCESS:
+            indexDepartment = findIndexDepartment(newState.data.departments, action.uuidDepartment);
+            tempDepartments = [...newState.data.departments];
+            department = tempDepartments[indexDepartment];
+            indexWard = findIndexWard(department, action.uuidWard);
+
+            ward = department.wards[indexWard];
+            bedIndex = ward.beds.findIndex((bed) => bed.id === action.bed.id);
+            ward.beds[bedIndex] = action.bed;
+
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error; 
+            return newState;
+        case types.DELETE_BED_WARD_SUCCESS:
+            indexDepartment = findIndexDepartment(newState.data.departments, action.uuidDepartment);
+            tempDepartments = [...newState.data.departments];
+            department = tempDepartments[indexDepartment];
+            indexWard = findIndexWard(department, action.uuidWard);
+
+            ward = department.wards[indexWard];
+            ward.beds = action.beds;
+            
+
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error; 
+            return newState;
         case types.DELETE_WARD_SUCCESS:
             tempDepartments = [...newState.data.departments];
             indexDepartment = tempDepartments.findIndex(dep => dep.uuid === action.uuidDepartment);

@@ -455,6 +455,38 @@ export function deleteWardService(uuidInstitution, uuidWard) {
 }
 
 
+export function updateBedService(uuidInstitution, bedInfo) {
+    return new Promise((resolve, reject) => {
+      axios
+        .put(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/bed/"+bedInfo.id, bedInfo, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+export function deleteBedService(uuidInstitution, bedInfo) {
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/bed/"+bedInfo.id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
 export function saveResearcherPermissions(uuidInvestigation, permissions) {
     return new Promise((resolve, reject) => {
       axios

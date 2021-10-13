@@ -24,7 +24,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import WardForm from './departments/Ward/WardForm';
 import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../redux/actions/hospitalActions';
-import { useSnackBarState } from '../../hooks';
+import { useDepartments, useSnackBarState } from '../../hooks';
 import { HOSPITAL_WARD_SETTINGS_ROUTE } from '../../routes';
 
 const DEPARTMENT_FORM = {
@@ -128,6 +128,7 @@ function Departments(props) {
     const [ wardToDelete, setWardToDelete ] = useState(false);
     const [ showModal, setShowModal ] = useState(false);
     const [ showOptions, setShowOptions ] = useState(false);
+    const {departments, researchers} = useDepartments();
 
 
     
@@ -149,7 +150,7 @@ function Departments(props) {
             shortLabel: "hospital.departments.department",
             validation : "notEmpty",
             defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
-            options:props.departments.map(dep =>{
+            options:departments.map(dep =>{
                 return {"label" : dep.name, "value" :dep.uuid}
             })
         }
@@ -207,7 +208,7 @@ function Departments(props) {
     
     function renderResearchers(){
         let content = null;
-        if(props.researchers.length === 0){
+        if(researchers.length === 0){
             content = <Box mt={3}>
                             <Typography variant="body2" component="div" gutterBottom>
                                 <Translate id="investigation.share.no_researchers_added" />
@@ -219,10 +220,10 @@ function Departments(props) {
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
-            const actions = (props.departments.length === 0) ? null : {"edit" : (index) => editAResearcher(index)}
+            const actions = (departments.length === 0) ? null : {"edit" : (index) => editAResearcher(index)}
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
                         headCells={arrayHeader}
-                        rows={props.researchers.map((researcher, idx) => {
+                        rows={researchers.map((researcher, idx) => {
                             const name = researcher.name ? researcher.name+" "+researcher.surnames : researcher.email;
 
                             let row = {
@@ -252,21 +253,21 @@ function Departments(props) {
     async function editCallBack(values){
         console.log("Datos nuevos de researcher", values);
        
-        await dispatch(assignDepartmentToResearcherAction(props.researchers[indexResearcherToEdit].uuid, values.department));
+        await dispatch(assignDepartmentToResearcherAction(researchers[indexResearcherToEdit].uuid, values.department));
         
     }
     function editAResearcher(index){
-        console.log("confirm to edit", props.researchers[index]);
+        console.log("confirm to edit", researchers[index]);
         let valuesForm = {};
-        valuesForm["email"] = props.researchers[index]["email"];
-        valuesForm["permissions"] = USER_ROLES[permissionsToRole(props.researchers[index]["permissions"])];
+        valuesForm["email"] = researchers[index]["email"];
+        valuesForm["permissions"] = USER_ROLES[permissionsToRole(researchers[index]["permissions"])];
         console.log(valuesForm);
         setIndexResearcherToEdit(index);
         setShowModal(true);
     }
     function renderDepartment(department, type){
         if(type === "departments"){
-            const researchersDepartment = props.researchers.filter(res => res.departments.find(dep => dep.name === department.name));
+            const researchersDepartment = researchers.filter(res => res.departments.find(dep => dep.name === department.name));
             return (
                 <List component="nav" aria-label="main mailbox folders">
                 {
@@ -329,8 +330,8 @@ function Departments(props) {
             <div style={{width:'100%'}}>
                 
                 {
-                    props.departments.length > 0 &&
-                    props.departments.sort((a,b) => a.name.localeCompare(b.name)).map(department => {
+                    departments.length > 0 &&
+                    departments.sort((a,b) => a.name.localeCompare(b.name)).map(department => {
                         return (
                             <Accordion>
                                 <AccordionSummary
@@ -351,7 +352,7 @@ function Departments(props) {
                     })
                 }
                 {
-                    props.departments.length === 0 &&
+                    departments.length === 0 &&
                     <Translate id="hospital.departments.no-departments" />
                 }
                 
@@ -405,7 +406,7 @@ function Departments(props) {
             setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
         }
         resetModal();
-    }, [props.departments, props.researchers])
+    }, [departments, researchers])
 
     useEffect(()=>{
         if(props.hospital.error){
@@ -440,16 +441,7 @@ function Departments(props) {
         }
     }, [props.hospital.error])
     
-    useEffect(()=>{
-        async function getDepartments(uuidInstitution){
-            await dispatch(
-                getDepartmentsInstitutionAction(uuidInstitution)
-            ); 
-        }
-        if(props.investigations.data && props.investigations.currentInvestigation){
-            getDepartments(props.investigations.currentInvestigation.institution.uuid)
-        }
-    }, [props.investigations])
+    
 
     const handleChange = (event, newValue) => {
         setTabSelector(newValue);
@@ -500,7 +492,7 @@ function Departments(props) {
                     {
                         indexResearcherToEdit !== false &&
                         <Form fields={CHANGE_DEPARTMENT_FORM} fullWidth callBackForm={editCallBack}
-                            initialData={props.researchers[indexResearcherToEdit]} 
+                            initialData={researchers[indexResearcherToEdit]} 
                             closeCallBack={() => resetModal()}/>
                     }
                     {
@@ -583,9 +575,7 @@ const mapStateToProps = (state) =>{
     return {
         investigations : state.investigations,
         hospital : state.hospital,
-        loading : state.hospital.loading || state.investigations.loading,
-        departments : state.hospital.data ? state.hospital.data.departments : [],
-        researchers : state.hospital.data ? state.hospital.data.researchers : [],
+        loading : state.hospital.loading || state.investigations.loading
     }
 }
 

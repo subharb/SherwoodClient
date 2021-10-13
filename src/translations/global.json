@@ -82,6 +82,8 @@
         "ward" : {
             "title" : ["Ward", "Sala", "Paroisse"],
             "edit-bed" : ["Edit bed", "Editar cama", "Modifier le lit"],
+            "add-bed" : ["Add bed", "Añadir cama", "Ajouter le lit"],
+            "delete-bed" : ["Delete bed", "Eliminar cama", "Supprimer le lit"],
             "bed" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "genre" : ["Genre", "Género", "Genre"],

@@ -8,6 +8,8 @@ import { SIGN_IN_ROUTE } from '../routes';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
 import { FieldWrapper } from '../components/general/mini_components';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDepartmentsInstitutionAction } from '../redux/actions/hospitalActions';
 
 export function usePatientsData(investigation, patientsData){
     const [decryptedPatientData, setDecryptedPatientData] = useState([]);
@@ -152,6 +154,27 @@ export function useRouter(initValue){
         pathname : initValue ? initValue : history.location.pathname,
 
     }
+}
+
+export function useDepartments(){
+    const investigations= useSelector((state) => state.investigations);
+    const departments = useSelector((state) => state.hospital.data ? state.hospital.data.departments : []);
+    const researchers = useSelector((state) => state.hospital.data ? state.hospital.data.researchers : []);
+
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        async function getDepartments(uuidInstitution){
+            await dispatch(
+                getDepartmentsInstitutionAction(uuidInstitution)
+            ); 
+        }
+        if(investigations.data && investigations.currentInvestigation){
+            getDepartments(investigations.currentInvestigation.institution.uuid)
+        }
+    }, [investigations])
+
+    return { departments, researchers, investigations}
 }
 
 export function useSelectSmartField(initialState, label, errorState, setAddingSmartField){
