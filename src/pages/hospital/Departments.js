@@ -25,6 +25,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import WardForm from './departments/Ward/WardForm';
 import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../redux/actions/hospitalActions';
 import { useSnackBarState } from '../../hooks';
+import { HOSPITAL_WARD_SETTINGS_ROUTE } from '../../routes';
 
 const DEPARTMENT_FORM = {
     "name":{
@@ -127,12 +128,12 @@ function Departments(props) {
     const [ wardToDelete, setWardToDelete ] = useState(false);
     const [ showModal, setShowModal ] = useState(false);
     const [ showOptions, setShowOptions ] = useState(false);
-    const [ newResearchers, setNewResearchers ] = useState(props.initialState && props.initialState.newResearchers ? props.initialState.newResearchers : []);
+
 
     
     const [tabSelector, setTabSelector] = useState(0);
     const [isLoadingDepartments, setIsLoadingDepartments] = useState(false);
-    const [errorShare, setErrorShare] = useState(false);
+
     const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
 
     const dispatch = useDispatch();
@@ -160,6 +161,7 @@ function Departments(props) {
         await dispatch(saveDepartmentAction(props.investigations.currentInvestigation.institution.uuid, department));
 
     }
+
     async function addWard(ward){
         
         const wardInfo = {
@@ -195,6 +197,10 @@ function Departments(props) {
         setShowModal(true);
     }
 
+    function settingsCallBack(ward){
+        const nextUrl = HOSPITAL_WARD_SETTINGS_ROUTE.replace(":uuidWard", ward.uuid);
+        history.push(nextUrl);
+    }
     async function deleteWard(){
         await dispatch(deleteWardAction(props.investigations.currentInvestigation.institution.uuid, uuidDepartmentAddWard, wardToDelete.uuid));
     }
@@ -305,6 +311,7 @@ function Departments(props) {
                     return (<WardForm name={ward.name} beds={bedsInfo} 
                                 editCallBack = {() => editWard(ward, department.uuid)}
                                 deleteCallBack = {() => deleteWardConfirm(ward, department.uuid)}
+                                settingsCallBack = {() => settingsCallBack(ward, department.uuid)}
                                 />)
                 })
                 return [

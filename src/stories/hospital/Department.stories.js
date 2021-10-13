@@ -1,5 +1,5 @@
 import React from 'react';
-import { HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
+
 import { AddPatientComponent } from '../../pages/hospital/AddPatient'
 import { personal_data_investigation1, investigation_server, wardInfo } from "../example_data";
 import WardForm from '../../pages/hospital/departments/Ward/WardForm';
@@ -43,5 +43,6 @@ WardEditStory.args = {
     edit:true,
     editCallBack:(ward) => console.log("Editar!", ward), 
     deleteCallBack:(ward) => console.log("Delete!", ward), 
+    reorderCallBack:(indexA, indexB) => console.log("Reorder!", indexA, indexB), 
   
 };

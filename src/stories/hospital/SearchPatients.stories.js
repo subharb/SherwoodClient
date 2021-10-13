@@ -1,5 +1,5 @@
 import React from 'react';
-import { HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
+
 import SearchPatients from '../../pages/hospital/SearchPatients'
 import { personal_data_investigation1, investigation_server } from "../example_data";
 import ProviderSherwood from '../../providerSherwood';

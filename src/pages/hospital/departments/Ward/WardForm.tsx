@@ -2,6 +2,7 @@ import { Avatar, Grid, List, ListItem, Paper, Typography } from '@material-ui/co
 import React, { useState } from 'react';
 import Loader from '../../../../components/Loader';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import SettingsIcon from '@material-ui/icons/Settings';
 import DeleteIcon from '@material-ui/icons/Delete';
 import HotelIcon from '@material-ui/icons/Hotel';
 import { IconPatient } from '../../../../components/general/mini_components';
@@ -20,6 +21,7 @@ interface Props {
     editCallBack : () => void,
     viewCallBack : () => void,
     deleteCallBack : () => void,
+    settingsCallBack : () => void,
 }
 
 const Row = styled(Grid)`
@@ -27,7 +29,7 @@ const Row = styled(Grid)`
     border-bottom:2px #ccc solid;
 `;
 
-const WardForm:React.FC<Props> = ({loading, name, beds, editCallBack, viewCallBack, deleteCallBack}) => {
+const WardForm:React.FC<Props> = ({loading, name, beds, editCallBack, settingsCallBack, viewCallBack, deleteCallBack}) => {
 
     if(loading){
         return <Loader />
@@ -44,6 +46,9 @@ const WardForm:React.FC<Props> = ({loading, name, beds, editCallBack, viewCallBa
                     </Grid>
                     <Grid item xs={1}>
                        <VisibilityIcon style={{cursor:"pointer"}} onClick={viewCallBack } />
+                    </Grid>
+                    <Grid item xs={1}>
+                       <SettingsIcon style={{cursor:"pointer"}} onClick={settingsCallBack } />
                     </Grid>
                     <Grid item xs={1}>
                        <DeleteIcon style={{cursor:"pointer"}} onClick={deleteCallBack } />

@@ -82,6 +82,8 @@ import AddPatient from "../pages/hospital/AddPatient";
 import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";
 import Departments from  "../pages/hospital/Departments";
+import { WardLocalized } from  "../pages/hospital/departments/Ward";
+
 import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS, SHARE_RESEARCHERS } from "../constants";
 
 
@@ -101,7 +103,7 @@ export const HOSPITAL_HOME_ROUTE = "/hospital";
 export const MY_SCHEDULE_ROUTE = "/my-schedule";
 export const SEARCH_PATIENT_ROUTE = "/search-patient";
 export const ADD_PATIENT_ROUTE = "/add-patient";
-export const HOSPITAL_WARD_ROUTE = "/hospital-ward";
+export const HOSPITAL_WARD_SETTINGS_ROUTE = "/ward/settings/:uuidWard";
 export const OUTPATIENTS_ROUTE = "/outpatients";
 export const HOSPITAL_PATIENT = "/patient/:uuidPatient";
 export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection/section/:uuidSection/:idSubmission?";
@@ -216,6 +218,12 @@ const hospitalRoutes = {
             name: "Departments",
             component: Departments,
         },
+        {
+            path: HOSPITAL_WARD_SETTINGS_ROUTE,
+            name: "Ward",
+            component: WardLocalized,
+        },
+        
     ],
   };
 

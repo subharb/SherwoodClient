@@ -1,5 +1,4 @@
 import React from 'react';
-import { HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
 import FillDataCollection from '../../pages/hospital/FillDataCollection'
 import { listPatientsHospitalWard, edc_data1, investigation_server } from "../example_data";
 import ProviderSherwood from '../../providerSherwood';

@@ -3,6 +3,7 @@ import React from 'react'
 import { ButtonDelete, IconPatient } from './mini_components'
 import styled, { css } from 'styled-components';
 
+
 const Container = styled.div`
     width:7rem;
     height:7rem;
@@ -48,15 +49,15 @@ export default function BedButton(props) {
         )
     }
     return (
-        <Container  active={props.active} >
+        <Container active={props.active} shake={props.shake} onClick={props.onClick} >
             <Grid container xs={12}>
                 <GridHeaderPatient xs={12} type={props.type}>
                     <Typography variant="body2" component="span" gutterBottom >
                         {props.name}
                     </Typography>
                     {
-                        props.type === "edit" &&
-                        <ButtonDelete  />
+                        props.deleteCallBack &&
+                        <ButtonDelete onClick={props.deleteCallBack}  />
                     }
                     
                 </GridHeaderPatient>
