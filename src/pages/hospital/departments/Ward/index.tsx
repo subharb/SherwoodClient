@@ -10,7 +10,7 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import Modal from '../../../../components/general/modal';
 import Form from '../../../../components/general/form';
 import {Droppable, Draggable, SortableItem} from '../../../../components/general/Draggable-Droppable';
-import {SortableContext} from '@dnd-kit/sortable';
+import {rectSortingStrategy, SortableContext} from '@dnd-kit/sortable';
 import {
     closestCenter,
     DndContext,
@@ -151,6 +151,9 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
     
     const [reorder, setReorder] = useState(true);
+    const [orderChanged, setOrderChanged] = useState(true);
+    const [beds, setBeds] = useState<IBed[] | null>(null);
+    const [draggedBedIndex, setDraggedBedIndex ] = useState(-1);
     const [showModal, setShowModal] = useState(false);
     const [bedToEdit, setBedToEdit] = useState<IBed | null>(null);
     const [bedToDelete, setBedToDelete] = useState<IBed | null>(null);
@@ -203,14 +206,28 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
     function orderUpdate(event:DragEndEvent){
         console.log("Drop the bomb", event);
         if(event && event.over){
-            reorderCallBack(parseInt(event.active.id), parseInt(event.over.id));
+            if(beds){
+                setDraggedBedIndex(-1);
+                let bedsTemp = [...beds];
+                bedsTemp[parseInt(event.active.id)].order = parseInt(event.over.id);
+                bedsTemp[parseInt(event.over.id)].order = parseInt(event.active.id);
+                reorderCallBack(parseInt(event.active.id), parseInt(event.active.id));
+                setBeds(bedsTemp);
+                setOrderChanged(true);
+            }
+            
         }
     }
-    if(loading || ward === null){
+    useEffect(() =>{
+        if(ward){
+            setBeds(ward.beds);
+        }
+    }, [ward]);
+    if(loading || ward === null || beds === null){
         return <Loader />
     }
     else{
-        const bedsSorted = ward.beds.sort((a, b) => a.order - b.order);
+        const bedsSorted = beds.sort((a, b) => a.order - b.order);
         return(
             <BoxBckgr color="text.primary" style={{padding:'1rem'}}>
                 <Modal key="modal" open={showModal} closeModal={() => resetModal()}
@@ -278,21 +295,25 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
                             }} />
                     </Grid>
                 <DndContext 
+                    sensors={sensors}
+                    onDragStart={(event) => setDraggedBedIndex(parseInt(event.active.id))}
                     onDragEnd={orderUpdate}>
-                    <SortableContext items={bedsSorted.map(bed => bed.order.toString())}>
-                        <Droppable id="droppable">
+                    <SortableContext items={bedsSorted.map(bed => bed.order.toString())}
+                        strategy={rectSortingStrategy}>
+                        
                             {
                                 bedsSorted.map((bed, index) => {
                                     if(reorder){
                                         return(
                                             <SortableItem
                                                 key={index}
-                                                id={index.toString()}>
-                                                <BedButton name={bed.name} 
-                                                    type="edit" active={bed.active}
-                                                    gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
-                                                />                                               
+                                                id={index.toString()} >
+                                                <BedButton name={bed.name} onClick={() => editBed(bed)}
+                                                        type="edit" active={bed.active} deleteCallBack={(e:Event) => deleteBed(e, bed)}
+                                                        gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
+                                                    /> 
                                                 </SortableItem>
+                                                
                                         )
                                     }
                                     else{
@@ -305,8 +326,15 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
                                     }
                                 })
                             } 
-                            </Droppable>
-                        </SortableContext>
+                            
+                    </SortableContext>
+                    <DragOverlay adjustScale={true}>
+                        {draggedBedIndex !== -1 ? (
+                        <BedButton name={beds[draggedBedIndex].name} 
+                            type="edit" active={beds[draggedBedIndex].active} 
+                            gender={beds[draggedBedIndex].gender === 0 ? "male" : beds[draggedBedIndex].gender === 1 ? "female" : "any"} 
+                        />) : null}
+                    </DragOverlay>
                 </DndContext>
             </Grid>
         </BoxBckgr>
