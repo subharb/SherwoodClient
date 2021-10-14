@@ -4,7 +4,7 @@ import {
   signUp as authSignUp,
   resetPassword as authResetPassword,
 } from "../../services/authService";
-import { assignDepartmentToResearcherService, deleteBedService, deleteWardService, getDepartmentsInstitutionService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService } from "../../services/sherwoodService";
+import { assignDepartmentToResearcherService, createBedService, deleteBedService, deleteWardService, getDepartmentsInstitutionService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService } from "../../services/sherwoodService";
 
 
 
@@ -135,6 +135,27 @@ export function deleteBedAction(uuidInstitution, uuidDepartment, uuidWard, bedIn
         dispatch({
           type: types.DELETE_BED_WARD_SUCCESS,
           beds: response.beds,
+          uuidDepartment:uuidDepartment,
+          uuidWard:uuidWard
+        });
+      })
+      .catch((error) => {
+        dispatch({ type: types.HOSPITAL_ERROR });
+        throw error;
+      });
+  };
+}
+
+
+export function createBedAction(uuidInstitution, uuidDepartment, uuidWard, bedInfo) {
+  return async (dispatch) => {
+    dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+
+    return createBedService(uuidInstitution, uuidWard, bedInfo)
+      .then((response) => {
+        dispatch({
+          type: types.CREATE_BED_WARD_SUCCESS,
+          bed: response.bed,
           uuidDepartment:uuidDepartment,
           uuidWard:uuidWard
         });

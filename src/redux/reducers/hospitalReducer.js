@@ -74,7 +74,20 @@ export default function reducer(state = initialState, action){
             }
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
-            return newState;  
+            return newState; 
+        case types.CREATE_BED_WARD_SUCCESS:
+            indexDepartment = findIndexDepartment(newState.data.departments, action.uuidDepartment);
+            tempDepartments = [...newState.data.departments];
+            department = tempDepartments[indexDepartment];
+            indexWard = findIndexWard(department, action.uuidWard);
+
+            ward = department.wards[indexWard];
+            ward.beds.push(action.bed);
+
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error; 
+            return newState;
         case types.UPDATE_BED_WARD_SUCCESS:
             indexDepartment = findIndexDepartment(newState.data.departments, action.uuidDepartment);
             tempDepartments = [...newState.data.departments];

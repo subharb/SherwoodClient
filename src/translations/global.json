@@ -84,6 +84,7 @@
             "edit-bed" : ["Edit bed", "Editar cama", "Modifier le lit"],
             "add-bed" : ["Add bed", "Añadir cama", "Ajouter le lit"],
             "delete-bed" : ["Delete bed", "Eliminar cama", "Supprimer le lit"],
+            "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"],
             "bed" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "genre" : ["Genre", "Género", "Genre"],

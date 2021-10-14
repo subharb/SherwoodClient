@@ -24,7 +24,7 @@ import {
 import { useEffect } from 'react';
 import { IBed, IDepartment, IWard } from '../../../../constants/types';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { deleteBedAction, updateBedAction } from '../../../../redux/actions/hospitalActions';
+import { createBedAction, deleteBedAction, updateBedAction } from '../../../../redux/actions/hospitalActions';
 import { useDepartments } from '../../../../hooks';
 
 
@@ -104,6 +104,11 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
             await(dispatch(deleteBedAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bed)))
         }
     }
+    async function addCallBack(bed:IBed) {
+        if(ward){
+            await(dispatch(createBedAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bed)))
+        }
+    }
     function reorderCallBack(toIndex:number, fromIndex:number){
         console.log(toIndex, fromIndex);
     }
@@ -145,25 +150,39 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
     const [isDropped, setIsDropped] = useState(false);
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
     
-    const [reorder, setReorder] = useState(false);
+    const [reorder, setReorder] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [bedToEdit, setBedToEdit] = useState<IBed | null>(null);
     const [bedToDelete, setBedToDelete] = useState<IBed | null>(null);
     const [addingBed, setAddingBed] = useState(false);
+    const [showNameError, setShowNameError] = useState(false);
 
+    function checkNameBeds(bed:IBed){
+        const foundBed = ward?.beds.find((aBed) => aBed.name === bed.name);
+        if(foundBed){
+            setShowNameError(true);
+            return true;
+        }
+
+        return false;
+    }
     function editCallBackForm(bed:IBed){
-        
-        editCallBack(bed);
-        resetModal()
+        if(!checkNameBeds(bed)){
+            editCallBack(bed);
+            resetModal();
+        }
     }
     function addCallBackForm(bed:IBed){
-        addCallBack(bed);
-        resetModal()
+        if(!checkNameBeds(bed)){
+            addCallBack(bed);
+            resetModal()
+        }
     }
     function resetModal(){
         setShowModal(false);
         setBedToEdit(null);
         setBedToDelete(null);
+        setAddingBed(false);
     }
     function editBed(bed:IBed){
         setShowModal(true);
@@ -205,7 +224,8 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
                         }
                         {
                             addingBed &&
-                            <Form fields={BED_FORM} fullWidth callBackForm={addCallBackForm}                                
+                            <Form fields={BED_FORM} fullWidth callBackForm={addCallBackForm}   
+                                externalError ={showNameError ? "hospital.ward.name-bed-error" : null}                           
                                 closeCallBack={() => resetModal()}/>
                         }
                         {

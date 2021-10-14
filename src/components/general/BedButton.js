@@ -28,6 +28,8 @@ const TypographyColorGender = styled(Typography)`
 
 const GridHeaderPatient = styled(Grid)`
     text-align:left;
+    height:2rem;
+    
     ${props => props.type === 'edit' && css`
         display:flex; 
         justify-content:space-between;
@@ -51,7 +53,7 @@ export default function BedButton(props) {
     return (
         <Container active={props.active} shake={props.shake} onClick={props.onClick} >
             <Grid container xs={12}>
-                <GridHeaderPatient xs={12} type={props.type}>
+                <GridHeaderPatient xs={12} type={props.type} >
                     <Typography variant="body2" component="span" gutterBottom >
                         {props.name}
                     </Typography>

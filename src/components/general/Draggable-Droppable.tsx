@@ -40,7 +40,6 @@ interface Props{
 
 const RowGrid = styled(Grid)`
     display:flex;
-    border-bottom:2px #ccc solid;
 `;
 
 
@@ -65,14 +64,28 @@ export const  Draggable:React.FC<Props> = (props) => {
 }
 
 export const SortableItem:React.FC<Props> = (props) => {  
-    const {    attributes,    listeners,    setNodeRef,    transform,    transition,  } = useSortable({id: props.id});    
-    const style = {    transform: CSS.Transform.toString(transform),    transition, display:'flex' };    
-    return (    
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>      
-            <Draggable id={props.id}>{
-                props.children
-            }
-            </Draggable>    
-        </div>  
+    const sortable = useSortable({id: props.id});
+    const {
+        attributes,
+        listeners,
+        isDragging,
+        setNodeRef,
+        transform,
+        transition,
+    } = sortable;
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            {...props}
+            {...attributes}
+            {...listeners}
+        />
     );
 }
