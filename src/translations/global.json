@@ -4,6 +4,8 @@
     "general" : {
         "yes" : ["Yes", "Si", "Oui"], 
         "no" : ["No", "No", "Non"], 
+        "save" : ["Save", "Guardar", "Enregistrer"],
+        "discard" : ["Discard", "Descartar", "Jeter"],
         "updating-records" : ["We are syncronizing the records, please hold on.", "Estamos actualizando los registros, por favor espere.", "Nous mettons à jour les enregistrements, veuillez patienter."],
         "delete" : ["Delete", "Borrar", "Effacer"],
         "cancel" : ["Cancel", "Cancelar", "Annuler"],
@@ -83,6 +85,7 @@
             "title" : ["Ward", "Sala", "Paroisse"],
             "edit-bed" : ["Edit bed", "Editar cama", "Modifier le lit"],
             "add-bed" : ["Add bed", "Añadir cama", "Ajouter le lit"],
+            "save-order" : ["Save the changes once you finished reordering", "Guarde los cambios una vez que haya terminado de reordenar", "Enregistrez les modifications une fois que vous avez terminé de réorganiser"],
             "delete-bed" : ["Delete bed", "Eliminar cama", "Supprimer le lit"],
             "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"],
             "bed" : {

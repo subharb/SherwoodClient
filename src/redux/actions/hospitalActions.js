@@ -4,7 +4,7 @@ import {
   signUp as authSignUp,
   resetPassword as authResetPassword,
 } from "../../services/authService";
-import { assignDepartmentToResearcherService, createBedService, deleteBedService, deleteWardService, getDepartmentsInstitutionService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService } from "../../services/sherwoodService";
+import { assignDepartmentToResearcherService, createBedService, deleteBedService, deleteWardService, getDepartmentsInstitutionService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services/sherwoodService";
 
 
 
@@ -166,3 +166,25 @@ export function createBedAction(uuidInstitution, uuidDepartment, uuidWard, bedIn
       });
   };
 }
+
+export function updateOrderBedsAction(uuidInstitution, uuidDepartment, uuidWard, bedsReorder) {
+  return async (dispatch) => {
+    dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+
+    return updateOrderBedsService(uuidInstitution, uuidWard, bedsReorder)
+      .then((response) => {
+        dispatch({
+          type: types.UPDATE_ORDER_BEDS_SUCCESS,
+          bed: response.bed,
+          uuidDepartment:uuidDepartment,
+          uuidWard:uuidWard
+        });
+      })
+      .catch((error) => {
+        dispatch({ type: types.HOSPITAL_ERROR });
+        throw error;
+      });
+  };
+}
+
+

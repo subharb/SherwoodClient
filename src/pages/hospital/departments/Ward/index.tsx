@@ -24,7 +24,7 @@ import {
 import { useEffect } from 'react';
 import { IBed, IDepartment, IWard } from '../../../../constants/types';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { createBedAction, deleteBedAction, updateBedAction } from '../../../../redux/actions/hospitalActions';
+import { createBedAction, deleteBedAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
 import { useDepartments } from '../../../../hooks';
 
 
@@ -34,8 +34,8 @@ interface Props {
     edit:boolean,
     editCallBack : (bed:IBed) => void,
     deleteCallBack : (bed:IBed) => void,
-    reorderCallBack : (fromIndex:number, toIndex:number) => void
     addCallBack : (bed:IBed) => void,
+    saveOrderCallBack: (beds:IBed[]) => void
     
 }
 
@@ -109,8 +109,11 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
             await(dispatch(createBedAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bed)))
         }
     }
-    function reorderCallBack(toIndex:number, fromIndex:number){
-        console.log(toIndex, fromIndex);
+    async function saveOrderCallBack(bedsReorder:IBed[]){
+        console.log("Reorder",bedsReorder);
+        if(ward){
+            await(dispatch(updateOrderBedsAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bedsReorder)))
+        }
     }
     
     
@@ -132,7 +135,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     
     return <Ward loading={props.loading} edit={true} ward={ward}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
-                reorderCallBack={(a, b)=>reorderCallBack(a, b)} addCallBack={addCallBack}
+                saveOrderCallBack={saveOrderCallBack} addCallBack={addCallBack}
                 />
 }   
 
@@ -146,12 +149,12 @@ const mapStateToProps = (state:any) =>{
 const WardLocalized = withLocalize(connect(mapStateToProps, null)(WardRouter));
 export { WardLocalized };
 
-const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, deleteCallBack, reorderCallBack}) => {
+const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, deleteCallBack, saveOrderCallBack}) => {
     const [isDropped, setIsDropped] = useState(false);
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
     
     const [reorder, setReorder] = useState(true);
-    const [orderChanged, setOrderChanged] = useState(true);
+    const [orderChanged, setOrderChanged] = useState(false);
     const [beds, setBeds] = useState<IBed[] | null>(null);
     const [draggedBedIndex, setDraggedBedIndex ] = useState(-1);
     const [showModal, setShowModal] = useState(false);
@@ -203,25 +206,36 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
         
         resetModal();
     }
+    function saveNewOrder(){
+        if(beds){
+            saveOrderCallBack(beds);
+        }
+        
+    }
+    function resetBeds(){
+        console.log("Discard order")
+        if(ward){
+            setBeds(JSON.parse(JSON.stringify(ward.beds)));
+        }
+        setOrderChanged(false);
+    }
     function orderUpdate(event:DragEndEvent){
         console.log("Drop the bomb", event);
-        if(event && event.over){
+        if(event && event.over && (event.over.id !== event.active.id)){
             if(beds){
                 setDraggedBedIndex(-1);
                 let bedsTemp = [...beds];
                 bedsTemp[parseInt(event.active.id)].order = parseInt(event.over.id);
                 bedsTemp[parseInt(event.over.id)].order = parseInt(event.active.id);
-                reorderCallBack(parseInt(event.active.id), parseInt(event.active.id));
                 setBeds(bedsTemp);
                 setOrderChanged(true);
             }
             
         }
     }
+
     useEffect(() =>{
-        if(ward){
-            setBeds(ward.beds);
-        }
+        resetBeds()
     }, [ward]);
     if(loading || ward === null || beds === null){
         return <Loader />
@@ -282,18 +296,37 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
                             />}
                             label="Reorder or delete beds"
                         />  
+                        {
+                        orderChanged &&
+                        <Grid item xs={12}>
+                             <Typography variant="body2" gutterBottom>
+                                <Translate id="hospital.ward.save-order" />
+                             </Typography>
+                             <ButtonCancel spaceright onClick={resetBeds}>
+                                <Translate id="general.discard" />
+                             </ButtonCancel>
+                            <ButtonContinue onClick={() => saveOrderCallBack(beds)}>
+                                <Translate id="general.save" />
+                            </ButtonContinue>
+                        </Grid>
+                        }
                     </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="body2" gutterBottom display="inline">
-                            <Translate id="hospital.ward.add-bed" />
-                        </Typography>
-                        <ButtonAdd disabled={addingBed} 
-                            type="button" data-testid="add_researcher" 
-                            onClick={() => {
-                                setAddingBed(true);
-                                setShowModal(true);
-                            }} />
-                    </Grid>
+                    {
+                        !reorder && 
+                        <Grid item xs={12}>
+                            <Typography variant="body2" gutterBottom display="inline">
+                                <Translate id="hospital.ward.add-bed" />
+                            </Typography>
+                            <ButtonAdd disabled={addingBed} 
+                                type="button" data-testid="add_researcher" 
+                                onClick={() => {
+                                    setAddingBed(true);
+                                    setShowModal(true);
+                                }} />
+                            
+                        </Grid>
+                    }
+                    
                 <DndContext 
                     sensors={sensors}
                     onDragStart={(event) => setDraggedBedIndex(parseInt(event.active.id))}

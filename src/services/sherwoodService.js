@@ -503,6 +503,24 @@ export function createBedService(uuidInstitution, uuidWard, bedInfo) {
     });
 }
 
+
+export function updateOrderBedsService(uuidInstitution, uuidWard, bedsReorder) {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/ward/"+uuidWard+"/beds", bedsReorder, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+} 
+
+
 export function saveResearcherPermissions(uuidInvestigation, permissions) {
     return new Promise((resolve, reject) => {
       axios

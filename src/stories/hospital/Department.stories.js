@@ -43,6 +43,6 @@ WardEditStory.args = {
     edit:true,
     editCallBack:(ward) => console.log("Editar!", ward), 
     deleteCallBack:(ward) => console.log("Delete!", ward), 
-    reorderCallBack:(indexA, indexB) => console.log("Reorder!", indexA, indexB), 
+    saveOrderCallBack:(beds) => console.log("Save new order!", beds), 
   
 };
