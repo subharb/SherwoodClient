@@ -36,9 +36,9 @@ const WardForm:React.FC<Props> = ({loading, name, beds, editCallBack, settingsCa
     }
     else{
         return(
-            <Grid container spacing={3}>
+            <Grid container spacing={3} style={{maxWidth:'20rem'}}>
                 <Row item container>
-                    <Grid item xs={9}>
+                    <Grid item xs={8}>
                         <Typography variant="body2" component="div"> { name }</Typography>
                     </Grid>
                     <Grid item xs={1}>
@@ -54,36 +54,36 @@ const WardForm:React.FC<Props> = ({loading, name, beds, editCallBack, settingsCa
                        <DeleteIcon style={{cursor:"pointer"}} onClick={deleteCallBack } />
                     </Grid>
                 </Row>
-                <Row item alignItems="center" container >
-                    <Grid item xs={3}>
+                <Row item container xs={12} alignItems="center" >
+                    <Grid item xs={4} style={{textAlign:'center'}}>
                         <HotelIcon />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4} style={{textAlign:'center'}}>
                         <Typography variant="body2">Number beds</Typography> 
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4} style={{textAlign:'center'}}>
                         <Typography variant="body2">{beds.total}</Typography>
                     </Grid>
                 </Row>
                 <Row item container alignItems="center">
-                    <Grid item xs={3}>
+                    <Grid item xs={4} style={{textAlign:'center'}}>
                         <IconPatient gender="male"  width="15"  />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4} style={{textAlign:'center'}}>
                         <Typography variant="body2">Male</Typography>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4} style={{textAlign:'center'}}>
                         <Typography variant="body2">{beds.male}</Typography>
                     </Grid>
                 </Row>
                 <Row item container alignItems="center">
-                    <Grid item xs={3}>
+                    <Grid item xs={4} style={{textAlign:'center'}}>
                         <IconPatient gender="female" width="15" />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4} style={{textAlign:'center'}}>
                         <Typography variant="body2">Female</Typography>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4} style={{textAlign:'center'}}>
                         <Typography variant="body2">{beds.female}</Typography>
                     </Grid>
                 </Row>
