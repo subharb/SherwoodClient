@@ -31,6 +31,7 @@ import { useDepartments } from '../../../../hooks';
 interface Props {
     loading:boolean,
     ward:null | IWard,
+    bedsProps:null | IBed[],
     edit:boolean,
     editCallBack : (bed:IBed) => void,
     deleteCallBack : (bed:IBed) => void,
@@ -133,7 +134,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
 
 
     
-    return <Ward loading={props.loading} edit={true} ward={ward}
+    return <Ward loading={props.loading} edit={true} ward={ward} bedsProps={ward ? ward.beds : null}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
                 saveOrderCallBack={saveOrderCallBack} addCallBack={addCallBack}
                 />
@@ -149,7 +150,7 @@ const mapStateToProps = (state:any) =>{
 const WardLocalized = withLocalize(connect(mapStateToProps, null)(WardRouter));
 export { WardLocalized };
 
-const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, deleteCallBack, saveOrderCallBack}) => {
+const Ward:React.FC<Props> = ({loading, bedsProps, ward, editCallBack, addCallBack, deleteCallBack, saveOrderCallBack}) => {
     const [isDropped, setIsDropped] = useState(false);
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
     
@@ -215,7 +216,7 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
     function resetBeds(){
         console.log("Discard order")
         if(ward){
-            setBeds(JSON.parse(JSON.stringify(ward.beds)));
+            setBeds(JSON.parse(JSON.stringify(bedsProps)));
         }
         setOrderChanged(false);
     }
@@ -236,12 +237,13 @@ const Ward:React.FC<Props> = ({loading, edit, ward, editCallBack, addCallBack, d
 
     useEffect(() =>{
         resetBeds()
-    }, [ward]);
+    }, [bedsProps]);
     if(loading || ward === null || beds === null){
         return <Loader />
     }
     else{
         const bedsSorted = beds.sort((a, b) => a.order - b.order);
+        console.log(bedsProps);
         return(
             <BoxBckgr color="text.primary" style={{padding:'1rem'}}>
                 <Modal key="modal" open={showModal} closeModal={() => resetModal()}

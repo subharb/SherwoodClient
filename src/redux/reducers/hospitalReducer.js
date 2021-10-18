@@ -96,7 +96,25 @@ export default function reducer(state = initialState, action){
 
             ward = department.wards[indexWard];
             bedIndex = ward.beds.findIndex((bed) => bed.id === action.bed.id);
-            ward.beds[bedIndex] = action.bed;
+            const tempBeds = [...ward.beds];
+
+            tempBeds[bedIndex] = {...action.bed};
+            ward.beds = tempBeds;
+            department.wards[indexWard] = {...ward};
+
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error; 
+            return newState;
+        case types.UPDATE_ORDER_BEDS_SUCCESS:
+            indexDepartment = findIndexDepartment(newState.data.departments, action.uuidDepartment);
+            tempDepartments = [...newState.data.departments];
+            department = tempDepartments[indexDepartment];
+            indexWard = findIndexWard(department, action.uuidWard);
+
+            ward = department.wards[indexWard];
+            ward.beds = [...action.beds];
+            department.wards[indexWard] = {...ward};
 
             newState.data.departments = tempDepartments;
             newState.loading = initialState.loading; 

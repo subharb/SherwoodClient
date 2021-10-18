@@ -175,7 +175,7 @@ export function updateOrderBedsAction(uuidInstitution, uuidDepartment, uuidWard,
       .then((response) => {
         dispatch({
           type: types.UPDATE_ORDER_BEDS_SUCCESS,
-          bed: response.bed,
+          beds: response.beds,
           uuidDepartment:uuidDepartment,
           uuidWard:uuidWard
         });
