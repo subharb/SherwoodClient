@@ -40,6 +40,7 @@ export const WardEditStory = TemplateWard.bind({});
 WardEditStory.args = {
     loading:false,
     ward:wardInfo,
+    bedsProps:wardInfo.beds,
     edit:true,
     editCallBack:(ward) => console.log("Editar!", ward), 
     deleteCallBack:(ward) => console.log("Delete!", ward), 
