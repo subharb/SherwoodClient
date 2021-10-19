@@ -1226,138 +1226,37 @@ export const patients_personal_data_decrypted = () => {
     return [
         {
             "uuid": "801952ca-66da-4410-8583-3faa6f460e03",
-            "personalData": [
+            "id" : 65,
+            "personalData": 
                 {
-                    "name": "email",
-                    "required": true,
-                    "value": "peter@petrelli.com",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.email",
-                    "encrypted": true
-                },
-                {
-                    "name": "phone",
-                    "required": true,
-                    "value": "+34 7471771721",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.phone",
-                    "encrypted": true
-                },
-                {
-                    "name": "name",
-                    "required": true,
-                    "value": "Peter",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.name",
-                    "encrypted": true
-                },
-                {
-                    "name": "surnames",
-                    "required": true,
-                    "value": "Petrelli Jimenez",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.surname",
-                    "encrypted": true
-                },
-                {
-                    "name": "birthdate",
-                    "required": true,
-                    "value": "1987-08-21",
-                    "type": "date",
-                    "label": "investigation.create.personal_data.fields.birthdate",
-                    "encrypted": true
+                    "email" : "peter@petrelli.com",
+                    "phone" : "+34 7471771721",
+                    "name" : "Peter",
+                    "surnames" : "Petrelli Jimenez",
+                    "birthdate" : "1987/08/21"
                 }
-            ]
+            
+        },{
+            "id" : 68,
+            "personalData": 
+                {
+                    "email" : "donnie@gmail.com",
+                    "phone" : "+1 61791 91892983",
+                    "name" : "Donald",
+                    "surnames" : "Trump Cruz",
+                    "birthdate" : "1947/01/11"
+                }
         },
         {
-            "uuid": "e3ed69b5-d423-4dcf-9cfb-96c24f7a8df6",
-            "personalData": [
-                {
-                    "name": "email",
-                    "required": true,
-                    "value": "donnie@gmail.com",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.email",
-                    "encrypted": true
-                },
-                {
-                    "name": "phone",
-                    "required": true,
-                    "value": "+1 61791 91892983",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.phone",
-                    "encrypted": true
-                },
-                {
-                    "name": "name",
-                    "required": true,
-                    "value": "Donald",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.name",
-                    "encrypted": true
-                },
-                {
-                    "name": "surnames",
-                    "required": true,
-                    "value": "Trump Cruz",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.surname",
-                    "encrypted": true
-                },
-                {
-                    "name": "birthdate",
-                    "required": true,
-                    "value": "1954-03-21",
-                    "type": "date",
-                    "label": "investigation.create.personal_data.fields.birthdate",
-                    "encrypted": true
-                }
-            ]
-        },
-        {
-            "uuid": "4e58bc59-2566-482c-9cfa-c3ae915c9d8f",
-            "personalData": [
-                {
-                    "name": "email",
-                    "required": true,
-                    "value": "jessie@hotmail.com",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.email",
-                    "encrypted": true
-                },
-                {
-                    "name": "phone",
-                    "required": true,
-                    "value": "+32 91 9192 9192",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.phone",
-                    "encrypted": true
-                },
-                {
-                    "name": "name",
-                    "required": true,
-                    "value": "Jessie",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.name",
-                    "encrypted": true
-                },
-                {
-                    "name": "surnames",
-                    "required": true,
-                    "value": "Jones",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.surname",
-                    "encrypted": true
-                },
-                {
-                    "name": "birthdate",
-                    "required": true,
-                    "value": "1976-01-31",
-                    "type": "date",
-                    "label": "investigation.create.personal_data.fields.birthdate",
-                    "encrypted": true
-                }
-            ]
+            "id" : 67,
+            "personalData": 
+            {
+                "email" : "jessie@hotmail.com",
+                "phone" : "+32 91 9192 9192",
+                "name" : "Jessie",
+                "surnames" : "Jones",
+                "birthdate" : "1976/03/09"
+            }
         }
     ]
 }

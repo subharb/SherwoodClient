@@ -36,6 +36,8 @@ function PatientsTable(props) {
     return (
         <EnhancedTable noHeader noSelectable  titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
             selectRow={index => props.showPatientCallBack(index)}
+            actions={[{"type" : "hospital", "func" : (index) => props.hospitalizePatientCallBack(index)}]}
+            
             />
     )
     
@@ -46,7 +48,8 @@ PatientsTable.propTypes = {
     mobile:PropTypes.bool,
     personalFields:PropTypes.array,
     showPatientCallBack:PropTypes.func,
-    addInfoPatientCallBack:PropTypes.func
+    addInfoPatientCallBack:PropTypes.func,
+    hospitalizePatientCallBack:PropTypes.func
 }
 
 export default withLocalize(PatientsTable)

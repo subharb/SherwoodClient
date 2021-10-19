@@ -8,12 +8,12 @@ import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { HOSPITAL_PATIENT, ROUTE_404 } from '../../routes';
 import Loader from '../../components/Loader';
-import { decryptPatientsData } from '../../utils'; 
+
 import PatientsTable from '../../components/general/PatientsTable';
-import { Alert } from '@material-ui/lab';
+
 import { ButtonBack } from '../../components/general/mini_components';
 import { connect } from 'react-redux';
-import { PERSONAL_READ } from '../../constants';
+
 import { useDispatch } from "react-redux";
 import { updatePatientsFromId } from '../../redux/actions/patientsActions';
 import _ from 'lodash';
@@ -26,30 +26,16 @@ const ID_FIELD = {
     label : "id",
     order: 0
 }
-function SearchPatients(props) {
-    
-    //const [decryptedPatientData, setDecryptedPatientData] = useState([]);//usePatientsData(investigations ? investigations[0] : null, investigations ? investigations[0].patientsPersonalData : []);
-    
-    const [filteredPatients, setFilteredPatients] = useState([]);
-    const [showResults, setShowResults] = useState(false);
 
-    const history = useHistory();
-    const dispatch = useDispatch();
-    const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
-
+function SearchPatients(props){
     const [valuesSearch, setValuesSearch] = useState(null);
+    const [showResults, setShowResults] = useState(false);
+    const [filteredPatients, setFilteredPatients] = useState([]);
 
-    function backToSearch(){
-        setFilteredPatients([]);
-        setShowResults(false);
-    }
-    function patientSelected(id){
-        console.log(HOSPITAL_PATIENT);
-        const selectedPatient = filteredPatients.find(pat => pat.id === id);
-        const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", selectedPatient.uuid)
-        console.log("Next url", nextUrl);
-        history.push(nextUrl);
-    }
+    const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     async function searchPatientCallBack(values){
         console.log(values);
         setValuesSearch(values);
@@ -60,60 +46,16 @@ function SearchPatients(props) {
 
         
     }
-    function renderCore(){
-        if(!showResults){
-            let personalFieldsForm = {}
-            props.investigations.currentInvestigation.personalFields.sort((a,b) => a.order - b.order).forEach(personalField => {
-                            const copyField = {...personalField};
-                            copyField.required = false;
-                            personalFieldsForm[personalField.name] = copyField
-                        });
-            if(Object.keys(personalFieldsForm).length === 0){
-                personalFieldsForm["id"] = ID_FIELD;
-            }      
-            
-            return (
-                <Box>
-                    <Paper style={{padding:'1rem', margin:'1rem'}}>
-                        <Translate id="pages.hospital.search-patient.note" />
-                        <Form fields={personalFieldsForm} selectRow={(index) =>patientSelected(index)} 
-                            submitText="investigation.search-patients.search" callBackForm={searchPatientCallBack} />                        
-                    </Paper>
-                </Box>
-                
-                );
-        }
-        else{
-            if(filteredPatients.length === 0){
-                return ([
-                    <Box mb={2}>
-                        <Paper style={{padding:'1rem'}}>
-                            No patients meet the criteria
-                        </Paper>
-                    </Box>,    
-                    <ButtonBack mt={2} onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>,
-                ])
-                
-            }
-            else{
-                let formSearch = [...props.investigations.currentInvestigation.personalFields]
-                if(formSearch.length === 0){
-                    formSearch.push(ID_FIELD);
-                } 
-                
-                return(
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <PatientsTable patients={filteredPatients} 
-                                showPatientCallBack={id => patientSelected(id)} 
-                                personalFields={formSearch} />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ButtonBack onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>
-                        </Grid>
-                    </Grid>)
-            }
-        }
+    function backToSearchCallBack(){
+        setFilteredPatients([]);
+        setShowResults(false);
+    }
+    function patientSelectedCallBack(id){
+        console.log(HOSPITAL_PATIENT);
+        const selectedPatient = filteredPatients.find(pat => pat.id === id);
+        const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", selectedPatient.uuid)
+        console.log("Next url", nextUrl);
+        history.push(nextUrl);
     }
     useEffect(() => {
         if(!props.patients.loading && valuesSearch !== null){
@@ -149,9 +91,100 @@ function SearchPatients(props) {
             setFilteredPatients(filteredPatients);
         }
     }, [props.patients.loading])
+
     if(!props.investigations.data || props.patients.loading){
         return <Loader />
     }
+    return <SearchPatientsComponent showResults={showResults} 
+                patients={filteredPatients}
+                personalFields={props.investigations.currentInvestigation.personalFields}
+                searchPatientCallBack={searchPatientCallBack}
+                backToSearchCallBack={backToSearchCallBack} 
+                patientSelectedCallBack={patientSelectedCallBack}
+            />
+}
+
+
+const mapStateToProps = (state) =>{
+    return {
+        patients : state.patients,
+        investigations:state.investigations
+    }
+}
+
+SearchPatients.propTypes = {
+    personalFields:PropTypes.array,
+}
+
+export default connect(mapStateToProps, null)(SearchPatients)
+
+export function SearchPatientsComponent(props) {
+
+    function backToSearch(){
+        props.backToSearchCallBack()
+    }
+    function patientSelected(id){
+        props.patientSelectedCallBack(id);
+    }
+   
+    function renderCore(){
+        if(!props.showResults){
+            let personalFieldsForm = {}
+            props.personalFields.sort((a,b) => a.order - b.order).forEach(personalField => {
+                            const copyField = {...personalField};
+                            copyField.required = false;
+                            personalFieldsForm[personalField.name] = copyField
+                        });
+            if(Object.keys(personalFieldsForm).length === 0){
+                personalFieldsForm["id"] = ID_FIELD;
+            }      
+            
+            return (
+                <Box>
+                    <Paper style={{padding:'1rem', margin:'1rem'}}>
+                        <Translate id="pages.hospital.search-patient.note" />
+                        <Form fields={personalFieldsForm} selectRow={(index) =>patientSelected(index)} 
+                            submitText="investigation.search-patients.search" callBackForm={props.searchPatientCallBack} />                        
+                    </Paper>
+                </Box>
+                
+                );
+        }
+        else{
+            if(props.patients.length === 0){
+                return ([
+                    <Box mb={2}>
+                        <Paper style={{padding:'1rem'}}>
+                            No patients meet the criteria
+                        </Paper>
+                    </Box>,    
+                    <ButtonBack mt={2} onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>,
+                ])
+                
+            }
+            else{
+                let formSearch = [...props.personalFields]
+                if(formSearch.length === 0){
+                    formSearch.push(ID_FIELD);
+                } 
+                
+                return(
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <PatientsTable patients={props.patients} 
+                                showPatientCallBack={id => patientSelected(id)} 
+                                personalFields={formSearch}
+                                hospitalizePatientCallBack={(index) => props.hospitalizePatientCallBack(index)} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ButtonBack onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>
+                        </Grid>
+                    </Grid>)
+            }
+        }
+    }
+   
+    
     return (
         <React.Fragment>
             <Grid container spacing={2} >
@@ -171,16 +204,3 @@ function SearchPatients(props) {
         </React.Fragment>
     )
 }
-
-const mapStateToProps = (state) =>{
-    return {
-        patients : state.patients,
-        investigations:state.investigations
-    }
-}
-
-SearchPatients.propTypes = {
-    personalFields:PropTypes.array,
-}
-
-export default connect(mapStateToProps, null)(SearchPatients)

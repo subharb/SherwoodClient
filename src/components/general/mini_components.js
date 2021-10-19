@@ -17,7 +17,8 @@ import {
     AddCircle as PlusIcon,
     ArrowForwardIos as ArrowForwardIosIcon,
     ArrowBackIos as ArrowBackIosIcon,
-    LocalHospital as HospitalIcon
+    LocalHospital as HospitalIcon,
+    Hotel as HotelIcon,
   } from "@material-ui/icons";
   import {
     Button, Icon, IconButton,
@@ -31,6 +32,23 @@ import {
   } from "@material-ui/core";  
 
 import { spacing } from "@material-ui/system";
+
+export const IconGenerator = (props) => {
+    switch(props.type){
+        case "add":
+            return <AddIcon style={{color:props.theme.buttonContinue.secondary.background }} />
+        case "view":
+            return <RemoveRedEyeIcon style={{color:"#000"}} />
+        case "delete":
+            return <DeleteIcon style={{color:"red"}}/>
+        case "edit":
+            return <EditIcon  style={{color:"yellow"}}/>
+        case "hospital":
+            return <HotelIcon style={{color:"#000"}} />
+        default:
+            return <AddIcon />
+    }
+}
 
 export const FieldWrapper = (props) => {
     if(props.noWrap){

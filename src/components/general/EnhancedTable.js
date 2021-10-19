@@ -41,6 +41,7 @@ Delete as DeleteIcon
 } from "@material-ui/icons";
 
 import { spacing } from "@material-ui/system";
+import { IconGenerator } from "./mini_components";
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -298,11 +299,30 @@ const isSelected = (id) => selected.indexOf(id) !== -1;
 
 const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+    function renderActions(row){
+        let buttonActions = []
+        for(let i = 0; i < props.actions.length; i++){
+            const action = props.actions[i];
+            const func = action["func"];
+            buttonActions.push(
+                <IconButton data-testid={action.type} aria-label={action.type} 
+                    onClick={(e) => {
+                        func(row.id);
+                        e.stopPropagation();
+                    }}>
+                    <IconGenerator type={action.type} />
+                </IconButton>
+            );
+        }
+        return buttonActions;
+        
+    }
 function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dragHandleProps, innerRef){
     return(
         <TableRow
             hover
-            role="checkbox"
+            role="checkbox"  
             aria-checked={isItemSelected}
             tabIndex={-1}
             key={`${index}`}
@@ -339,28 +359,7 @@ function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dra
                 <TableCell padding="none" align="right">
                     <Box mr={2}>
                         {
-                            props.actions.hasOwnProperty("add") &&
-                            <IconButton data-testid="add-element" aria-label="add" onClick={() => props.actions.add( row.id)}>
-                                <AddIcon />
-                            </IconButton>
-                        }
-                        {
-                            props.actions.hasOwnProperty("view") &&
-                            <IconButton data-testid="view-element" aria-label="view" onClick={() => props.actions.view( row.id)}>
-                                <RemoveRedEyeIcon />
-                            </IconButton>
-                        }
-                        {
-                            props.actions.hasOwnProperty("delete") &&
-                            <IconButton data-testid="delete-element" aria-label="delete" onClick={() => props.actions.delete(row.id)}>
-                                <DeleteIcon />
-                            </IconButton>
-                        }
-                        {
-                            props.actions.hasOwnProperty("edit") &&
-                            <IconButton data-testid="edit-element" aria-label="edit" onClick={() => props.actions.edit( row.id)}>
-                                <EditIcon />
-                            </IconButton>
+                            renderActions(row)
                         }
                     </Box>
                 </TableCell>

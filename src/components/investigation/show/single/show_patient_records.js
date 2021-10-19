@@ -91,7 +91,8 @@ export default function ShowPatientRecords(props) {
                     })
                     return(
                         <EnhancedTable titleTable="" rows={rows} headCells={headCells} 
-                            actions = {{"add" : (index) => addRegistry(index)}} />
+                            actions={[{"type" : "add", "func" : (index) => addRegistry(index)}]}
+                            />
                     )
                 }
             }

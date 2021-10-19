@@ -154,7 +154,8 @@ const SmartField:React.FC<Props> = (props) => {
             if(props.mode === "form"){
                 return <Grid item xs={12}>
                         <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
-                            actions={{"delete" : (index:number) => removeDiagnosis(index)}}
+                            actions={[{"type" : "delete", "func" : (index:number) => removeDiagnosis(index)}]}
+                            
                         />
                     </Grid>
                     
