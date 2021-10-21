@@ -2250,6 +2250,8 @@ export const listPatientsHospitalWard = [
     }
 
 ]
+
+
 export const wardInfo = 
 {
     "id": 6,
@@ -2353,4 +2355,19 @@ export const wardInfo =
             "order": 0
         }
     ]
+}
+
+
+export const departmentsInfo = {
+    "departments" : [
+        {
+            "name" : "Neurologia",
+            "wards" : [wardInfo]
+        },
+        {
+            "name" : "Cardiología",
+            "wards" : [wardInfo]
+        }
+    ]
+
 }

@@ -11,12 +11,13 @@ import Loader from '../../components/Loader';
 
 import PatientsTable from '../../components/general/PatientsTable';
 
-import { ButtonBack } from '../../components/general/mini_components';
+import { ButtonBack, ButtonCancel, ButtonContinue } from '../../components/general/mini_components';
 import { connect } from 'react-redux';
 
 import { useDispatch } from "react-redux";
 import { updatePatientsFromId } from '../../redux/actions/patientsActions';
 import _ from 'lodash';
+import Modal from '../../components/general/modal';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -49,6 +50,9 @@ function SearchPatients(props){
     function backToSearchCallBack(){
         setFilteredPatients([]);
         setShowResults(false);
+    }
+    function hospitalizePatientCallBack(indexPatient){
+        
     }
     function patientSelectedCallBack(id){
         console.log(HOSPITAL_PATIENT);
@@ -101,6 +105,7 @@ function SearchPatients(props){
                 searchPatientCallBack={searchPatientCallBack}
                 backToSearchCallBack={backToSearchCallBack} 
                 patientSelectedCallBack={patientSelectedCallBack}
+                hospitalizePatientCallBack={hospitalizePatientCallBack}
             />
 }
 
@@ -119,6 +124,8 @@ SearchPatients.propTypes = {
 export default connect(mapStateToProps, null)(SearchPatients)
 
 export function SearchPatientsComponent(props) {
+    
+    const [patientHospitalizeIndex, setPatientHospitalizeIndex] = useState(-1);
 
     function backToSearch(){
         props.backToSearchCallBack()
@@ -126,7 +133,16 @@ export function SearchPatientsComponent(props) {
     function patientSelected(id){
         props.patientSelectedCallBack(id);
     }
-   
+    function hospitalizePatient(id){
+        const findPatientIndex = props.patients.findIndex((pat) => pat.id === id);
+        setPatientHospitalizeIndex(findPatientIndex);
+    }
+    function confirmHospitalization(){
+        props.hospitalizePatientCallBack(patientHospitalizeIndex)
+    }
+    function resetModal(){
+        setPatientHospitalizeIndex(null)
+    }
     function renderCore(){
         if(!props.showResults){
             let personalFieldsForm = {}
@@ -174,7 +190,7 @@ export function SearchPatientsComponent(props) {
                             <PatientsTable patients={props.patients} 
                                 showPatientCallBack={id => patientSelected(id)} 
                                 personalFields={formSearch}
-                                hospitalizePatientCallBack={(index) => props.hospitalizePatientCallBack(index)} />
+                                hospitalizePatientCallBack={(index) => hospitalizePatient(index)} />
                         </Grid>
                         <Grid item xs={12}>
                             <ButtonBack onClick={backToSearch}><Translate id="pages.hospital.search-patient.back-button" /></ButtonBack>
@@ -187,6 +203,36 @@ export function SearchPatientsComponent(props) {
     
     return (
         <React.Fragment>
+            <Modal key="modal" open={patientHospitalizeIndex !== -1} 
+                title="¿Desea hospitalizar a este paciente?" 
+                closeCallBack={resetModal}
+                >
+                    {
+                        patientHospitalizeIndex !== -1 &&
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Typography variant="body2">
+                                    Nombre: {props.patients[patientHospitalizeIndex].personalData.name}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Apellidos: {props.patients[patientHospitalizeIndex].personalData.surnames}    
+                                </Typography>
+                                <Typography variant="body2">
+                                    Género: {props.patients[patientHospitalizeIndex].personalData.gender}    
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                    <Translate id="general.cancel" />
+                                </ButtonCancel>
+                                <ButtonContinue onClick={confirmHospitalization} data-testid="continue-modal" color="primary">
+                                    <Translate id="general.continue" />
+                                </ButtonContinue>
+                            </Grid>
+                        </Grid>
+                    }
+                    
+            </Modal>
             <Grid container spacing={2} >
                 <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
                     <SearchPatientIcon style={{fontSize:"2.5rem"}} />

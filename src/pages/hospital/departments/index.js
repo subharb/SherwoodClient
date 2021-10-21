@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import * as types from "../../constants";
+import * as types from "../../../constants";
 import { connect, useDispatch } from 'react-redux';
 import { Card, CardContent, 
         Typography, Grid, Box, Chip, AppBar, Tabs, Tab, List, ListItem, ListItemText, Snackbar, Button } from '@material-ui/core';
 import { Alert, TabPanel } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
-import { decryptData, encryptData, generateKey } from '../../utils';
-import Loader from '../../components/Loader';
-import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, ButtonGrey } from '../../components/general/mini_components';
-import Modal from '../../components/general/modal';
-import Form from '../../components/general/form';
-import { EnhancedTable } from "../../components/general/EnhancedTable";
+import { decryptData, encryptData, generateKey } from '../../../utils';
+import Loader from '../../../components/Loader';
+import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, ButtonGrey } from '../../../components/general/mini_components';
+import Modal from '../../../components/general/modal';
+import Form from '../../../components/general/form';
+import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import styled from 'styled-components';
 import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
-import { ALL_ROLES, USER_ROLES } from '../../constants';
+import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { useHistory } from "react-router-dom";
 
 
@@ -22,10 +22,10 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import WardForm from './departments/Ward/WardForm';
-import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../redux/actions/hospitalActions';
-import { useDepartments, useSnackBarState } from '../../hooks';
-import { HOSPITAL_WARD_SETTINGS_ROUTE } from '../../routes';
+import WardForm from './Ward/WardForm';
+import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../../redux/actions/hospitalActions';
+import { useDepartments, useSnackBarState } from '../../../hooks';
+import { HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 
 const DEPARTMENT_FORM = {
     "name":{
@@ -309,7 +309,7 @@ function Departments(props) {
                         male:ward.beds.filter(bed => bed.gender === 0).length,
                         female:ward.beds.filter(bed => bed.gender === 1).length
                     }
-                    return (<WardForm name={ward.name} beds={bedsInfo} 
+                    return (<WardForm mode="edit" name={ward.name} beds={bedsInfo}                                 
                                 editCallBack = {() => editWard(ward, department.uuid)}
                                 deleteCallBack = {() => deleteWardConfirm(ward, department.uuid)}
                                 settingsCallBack = {() => settingsCallBack(ward, department.uuid)}

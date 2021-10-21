@@ -19,3 +19,13 @@ export interface IDepartment{
     name:string,
     wards:IWard[]
 }
+
+export interface IDepartmentServer extends IDepartment{
+    uuid:string
+}
+
+export interface IResearcher{
+    name:string,
+    surnames:string,
+    departments:IDepartment[]
+}

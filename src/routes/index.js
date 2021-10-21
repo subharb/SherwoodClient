@@ -81,7 +81,7 @@ import TestsHome from "../pages/hospital/TestsHome";
 import AddPatient from "../pages/hospital/AddPatient";
 import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";
-import Departments from  "../pages/hospital/Departments";
+import Departments from  "../pages/hospital/departments";
 import { WardLocalized } from  "../pages/hospital/departments/Ward";
 
 import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS, SHARE_RESEARCHERS } from "../constants";
