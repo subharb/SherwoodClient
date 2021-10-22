@@ -5,7 +5,7 @@ import Loader from '../../../../components/Loader';
 import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, IconPatient } from '../../../../components/general/mini_components';
 
 import { useParams, useHistory } from 'react-router-dom';
-import BedButton from '../../../../components/general/BedButton';
+import { BedButtonEdit, BedButtonAssignBed } from '../../../../components/general/BedButton';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import Modal from '../../../../components/general/modal';
 import Form from '../../../../components/general/form';
@@ -22,23 +22,18 @@ import {
     useSensors
   } from "@dnd-kit/core";
 import { useEffect } from 'react';
-import { IBed, IDepartment, IWard } from '../../../../constants/types';
+import { IBed, IDepartment, IPatient, IWard } from '../../../../constants/types';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { createBedAction, deleteBedAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
 import { useDepartments } from '../../../../hooks';
 
-
-interface Props {
-    loading:boolean,
-    ward:null | IWard,
-    bedsProps:null | IBed[],
-    edit:boolean,
-    editCallBack : (bed:IBed) => void,
-    deleteCallBack : (bed:IBed) => void,
-    addCallBack : (bed:IBed) => void,
-    saveOrderCallBack: (beds:IBed[]) => void
-    
+export enum WardModes {
+    Edit = "edit",
+    AssignPatient = "assign-patient",
+    View = "view"
 }
+
+
 
 const BED_FORM = {
     "id" : {
@@ -116,6 +111,13 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
             await(dispatch(updateOrderBedsAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bedsReorder)))
         }
     }
+
+    async function assignBedPatientCallBack(bedAssigned:IBed){
+        console.log("bedAssigned",bedAssigned);
+        if(ward){
+            //await(dispatch(updateOrderBedsAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bedsReorder)))
+        }
+    }
     
     
     useEffect(() => {
@@ -134,8 +136,9 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
 
 
     
-    return <Ward loading={props.loading} edit={true} ward={ward} bedsProps={ward ? ward.beds : null}
+    return <Ward loading={props.loading} mode={WardModes.Edit} ward={ward} bedsProps={ward ? ward.beds : null}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
+                assignBedPatientCallBack = {assignBedPatientCallBack}
                 saveOrderCallBack={saveOrderCallBack} addCallBack={addCallBack}
                 />
 }   
@@ -150,17 +153,34 @@ const mapStateToProps = (state:any) =>{
 const WardLocalized = withLocalize(connect(mapStateToProps, null)(WardRouter));
 export { WardLocalized };
 
-const Ward:React.FC<Props> = ({loading, bedsProps, ward, editCallBack, addCallBack, deleteCallBack, saveOrderCallBack}) => {
+
+interface Props {
+    loading:boolean,
+    ward:null | IWard,
+    bedsProps:null | IBed[],
+    mode:WardModes,
+    patient?:IPatient,
+    editCallBack : (bed:IBed) => void,
+    deleteCallBack : (bed:IBed) => void,
+    addCallBack : (bed:IBed) => void,    
+    saveOrderCallBack: (beds:IBed[]) => void,
+    assignBedPatientCallBack ?: (bed:IBed) => void
+    
+}
+
+const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, 
+                        editCallBack, addCallBack, deleteCallBack, saveOrderCallBack, assignBedPatientCallBack}) => {
     const [isDropped, setIsDropped] = useState(false);
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
     
-    const [reorder, setReorder] = useState(true);
+    const [reorder, setReorder] = useState(false);
     const [orderChanged, setOrderChanged] = useState(false);
-    const [beds, setBeds] = useState<IBed[] | null>(null);
+    const [beds, setBeds] = useState<IBed[]>([]);
     const [draggedBedIndex, setDraggedBedIndex ] = useState(-1);
     const [showModal, setShowModal] = useState(false);
     const [bedToEdit, setBedToEdit] = useState<IBed | null>(null);
     const [bedToDelete, setBedToDelete] = useState<IBed | null>(null);
+    const [bedToAssign, setBedToAssign] = useState<IBed | null>(null);
     const [addingBed, setAddingBed] = useState(false);
     const [showNameError, setShowNameError] = useState(false);
 
@@ -172,6 +192,21 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, editCallBack, addCallBa
         }
 
         return false;
+    }
+
+    function assignBedPatient(bed:IBed){
+        console.log(bed);
+        setBedToAssign(bed);
+        setShowModal(true);
+    }
+    
+
+    function assignBedPatientConfirm(bed:IBed){
+        console.log(bed);
+        if(assignBedPatientCallBack){
+            assignBedPatientCallBack(bed);
+        }
+        
     }
     function editCallBackForm(bed:IBed){
         if(!checkNameBeds(bed)){
@@ -195,8 +230,8 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, editCallBack, addCallBa
         setShowModal(true);
         setBedToEdit(bed);
     }
-    function deleteBed(e:Event, bed:IBed){
-        e.stopPropagation();
+    function deleteBed(bed:IBed){
+        
         setBedToDelete(bed);
         setShowModal(true);
     }
@@ -231,7 +266,76 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, editCallBack, addCallBa
                 setBeds(bedsTemp);
                 setOrderChanged(true);
             }
-            
+        }
+    }
+
+    function renderSettingControls(){
+        if(mode === WardModes.Edit){
+            return (
+                <Grid container item xs={12}>
+                    <Grid item xs={12}>
+                        <FormControlLabel
+                            control={<Switch
+                                checked={reorder}
+                                onChange={(e) => setReorder(e.target.checked)}
+                                name="checkedA"
+                                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                            />}
+                            label="Reorder or delete beds"
+                        />  
+                        {
+                        orderChanged &&
+                        <Grid item xs={12}>
+                                <Typography variant="body2" gutterBottom>
+                                <Translate id="hospital.ward.save-order" />
+                                </Typography>
+                                <ButtonCancel spaceright onClick={resetBeds}>
+                                <Translate id="general.discard" />
+                                </ButtonCancel>
+                            <ButtonContinue onClick={() => saveOrderCallBack(beds)}>
+                                <Translate id="general.save" />
+                            </ButtonContinue>
+                        </Grid>
+                        }
+                    </Grid>
+                    {
+                        !reorder && 
+                        <Grid item xs={12}>
+                            <Typography variant="body2" gutterBottom display="inline">
+                                <Translate id="hospital.ward.add-bed" />
+                            </Typography>
+                            <ButtonAdd disabled={addingBed} 
+                                type="button" data-testid="add_researcher" 
+                                onClick={() => {
+                                    setAddingBed(true);
+                                    setShowModal(true);
+                                }} />
+                            
+                        </Grid>
+                    }
+                </Grid>
+                
+            )
+        }
+        else if(mode === WardModes.AssignPatient){
+            return(
+                <Grid container item xs={12}>
+                    <Grid item xs={12}>
+                        <Typography variant="body2" >
+                            Name:{ patient?.personalData.name}
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            Surnames:{ patient?.personalData.surnames}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="body2" gutterBottom display="inline">
+                            <Translate id="hospital.ward.select-bed" />
+                        </Typography>
+                    </Grid>
+                    
+                </Grid>
+            )
         }
     }
 
@@ -242,7 +346,10 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, editCallBack, addCallBa
         return <Loader />
     }
     else{
-        const bedsSorted = beds.sort((a, b) => a.order - b.order);
+        let bedsSorted = beds.sort((a, b) => a.order - b.order);
+        if(mode === WardModes.AssignPatient){
+            bedsSorted = bedsSorted.filter((bed) => bed.active === true);
+        }
         console.log(bedsProps);
         return(
             <BoxBckgr color="text.primary" style={{padding:'1rem'}}>
@@ -282,51 +389,35 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, editCallBack, addCallBa
                                 </Grid>
                             </Grid>
                         }
+                        {
+                            bedToAssign && 
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <Typography variant="h6" component="div" gutterBottom>
+                                        <Translate id="hospital.ward.assign-bed-ward-prompt" />
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {bedToAssign.name}
+                                    </Typography> 
+                                </Grid>
+                                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                        <Translate id="general.cancel" />
+                                    </ButtonCancel>
+                                    <ButtonContinue onClick={assignBedPatientConfirm} data-testid="continue-modal" color="primary">
+                                        <Translate id="general.continue" />
+                                    </ButtonContinue>
+                                </Grid>
+                            </Grid>
+                        }
                         </div>
                 </Modal>
                 <Typography variant="h3" gutterBottom display="inline" style={{color:"white"}}>
                     <Translate id="hospital.ward.title" />: {ward.name}
                 </Typography>
                 <Grid container>
-                    <Grid item xs={12}>
-                        <FormControlLabel
-                            control={<Switch
-                                checked={reorder}
-                                onChange={(e) => setReorder(e.target.checked)}
-                                name="checkedA"
-                                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                            />}
-                            label="Reorder or delete beds"
-                        />  
-                        {
-                        orderChanged &&
-                        <Grid item xs={12}>
-                             <Typography variant="body2" gutterBottom>
-                                <Translate id="hospital.ward.save-order" />
-                             </Typography>
-                             <ButtonCancel spaceright onClick={resetBeds}>
-                                <Translate id="general.discard" />
-                             </ButtonCancel>
-                            <ButtonContinue onClick={() => saveOrderCallBack(beds)}>
-                                <Translate id="general.save" />
-                            </ButtonContinue>
-                        </Grid>
-                        }
-                    </Grid>
                     {
-                        !reorder && 
-                        <Grid item xs={12}>
-                            <Typography variant="body2" gutterBottom display="inline">
-                                <Translate id="hospital.ward.add-bed" />
-                            </Typography>
-                            <ButtonAdd disabled={addingBed} 
-                                type="button" data-testid="add_researcher" 
-                                onClick={() => {
-                                    setAddingBed(true);
-                                    setShowModal(true);
-                                }} />
-                            
-                        </Grid>
+                        renderSettingControls()
                     }
                     
                 <DndContext 
@@ -338,26 +429,33 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, editCallBack, addCallBa
                         
                             {
                                 bedsSorted.map((bed, index) => {
+                                    const bedButtonElement = (mode === WardModes.AssignPatient) ? 
+                                    <BedButtonAssignBed name={bed.name} 
+                                        active={bed.active} 
+                                        empty={bed.empty}
+                                        gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
+                                        onClickCallBack={() => assignBedPatient(bed)}
+                                    /> 
+                                    :
+                                    <BedButtonEdit name={bed.name} onClickCallBack={() => editBed(bed)}
+                                                    active={bed.active} deleteCallBack={() => deleteBed(bed)}
+                                                    gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
+                                                    /> 
                                     if(reorder){
                                         return(
                                             <SortableItem
                                                 key={index}
                                                 id={index.toString()} >
-                                                <BedButton name={bed.name} onClick={() => editBed(bed)}
-                                                        type="edit" active={bed.active} deleteCallBack={(e:Event) => deleteBed(e, bed)}
-                                                        gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
-                                                    /> 
+                                                {
+                                                    bedButtonElement
+                                                }
                                                 </SortableItem>
                                                 
                                         )
                                     }
                                     else{
-                                        return(
-                                        <BedButton name={bed.name} onClick={() => editBed(bed)}
-                                            type="edit" active={bed.active} deleteCallBack={(e:Event) => deleteBed(e, bed)}
-                                            gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
-                                        /> 
-                                        );
+                                        return(bedButtonElement);
+                                        
                                     }
                                 })
                             } 
@@ -365,8 +463,8 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, editCallBack, addCallBa
                     </SortableContext>
                     <DragOverlay adjustScale={true}>
                         {draggedBedIndex !== -1 ? (
-                        <BedButton name={beds[draggedBedIndex].name} 
-                            type="edit" active={beds[draggedBedIndex].active} 
+                        <BedButtonEdit name={beds[draggedBedIndex].name} 
+                            active={beds[draggedBedIndex].active} 
                             gender={beds[draggedBedIndex].gender === 0 ? "male" : beds[draggedBedIndex].gender === 1 ? "female" : "any"} 
                         />) : null}
                     </DragOverlay>

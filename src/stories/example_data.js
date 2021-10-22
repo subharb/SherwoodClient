@@ -2275,21 +2275,24 @@ export const wardInfo =
             "name": "l",
             "active": true,
             "gender": 1,
-            "order": 11
+            "order": 11,
+            "empty" : false
         },
         {
             "id": 84,
             "name": "k",
             "active": true,
             "gender": 0,
-            "order": 10
+            "order": 10,
+            "empty" : true
         },
         {
             "id": 83,
             "name": "j",
             "active": true,
             "gender": 0,
-            "order": 9
+            "order": 9,
+            "empty" : false
         },
         {
             "id": 82,

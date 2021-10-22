@@ -20,8 +20,8 @@ export default {
 
 const Template = (args) => <DepartmentsAccordion {...args} />; 
 
-export const DepartmentWard = Template.bind({});
-DepartmentsAccordion.args = {
+export const DepartmentsWard = Template.bind({});
+DepartmentsWard.args = {
     departments:departmentsInfo.departments,
     mode:"ward-selection",
     selectWardCallBack:(uuid) => console.log("selectWard!"+uuid)

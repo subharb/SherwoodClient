@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import icon_male from "../../img/icons/icon_male.svg";
 import { Link } from 'react-router-dom'
 import icon_female from "../../img/icons/icon_female.svg";
@@ -148,11 +148,6 @@ export const ButtonGrey = (props) => {
         </GreyButtonStyles>)
 }
 
-export const ButtonGreyBorderGrey = styled(ButtonGrey)`
-    &&&{
-        background: #E5E5E5;
-        border: 5px solid #6F6C6D;
-`;
 
 export const ButtonEdit = (props) =>{
     return(
@@ -309,3 +304,8 @@ export const ButtonView = (props) =>{
     //         {props.children}
     // </ButtonContinueStyles>
 }
+export const ButtonGreyBorderGrey = styled(ButtonGrey)`
+    &&&{
+        background: #E5E5E5;
+        border: 5px solid #6F6C6D;
+`;

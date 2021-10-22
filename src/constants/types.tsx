@@ -3,7 +3,8 @@ export interface IBed{
     gender:number,
     name:string,
     active:boolean,
-    order:number
+    order:number,
+    empty?:boolean
 }
 
 export interface IWard{
@@ -28,4 +29,18 @@ export interface IResearcher{
     name:string,
     surnames:string,
     departments:IDepartment[]
+}
+
+interface PersonalData{
+    name ?: string,
+    email ?: string,
+    phone ?: string,
+    surnames ?: string,
+    birthdate ?: string,
+    
+}
+export interface IPatient{
+    uuid:string,
+    id:number,
+    personalData: PersonalData
 }

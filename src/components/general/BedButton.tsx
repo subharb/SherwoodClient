@@ -2,16 +2,17 @@ import { Grid, Typography } from '@material-ui/core';
 import React from 'react'
 import { ButtonDelete, IconPatient } from './mini_components'
 import styled, { css } from 'styled-components';
+import { WardModes } from '../../pages/hospital/departments/Ward';
 
 
-const Container = styled.div`
+export const Container = styled("div")<{active?:boolean}>`
     width:7rem;
     height:7rem;
     background: #FFFFFF;
     border: 2px solid #6F6C6D;
     box-sizing: border-box;
     border-radius: 15px;
-    cursor:pointer;
+    cursor:${props => props.active ? 'pointer' : 'auto'};
     display: flex;
     justify-content: center;
     align-content: center;
@@ -22,11 +23,13 @@ const Container = styled.div`
     padding:1rem;
     opacity:${props => props.active ? '1.0' : '0.7'};
 `;
-const TypographyColorGender = styled(Typography)`
+
+
+export const TypographyColorGender = styled(Typography)<{gender:string}>`
     color:${props => props.gender === "female" ? "#EE6658" : "#008187"}
 `;
 
-const GridHeaderPatient = styled(Grid)`
+export const GridHeaderPatient = styled(Grid)<{type:string}>`
     text-align:left;
     height:2rem;
     
@@ -37,29 +40,60 @@ const GridHeaderPatient = styled(Grid)`
 `;
 
 
-const TypographyFree = styled(Typography)`
+export const TypographyFree = styled(Typography)`
     color:green;
 `;
-export default function BedButton(props) {
-    if(props.type === "show" && props.empty){
-        return (
-            <Container onClick={props.onClick}>
-                <TypographyFree variant="body2" gutterBottom>
-                    FREE
-                </TypographyFree>
-            </Container>
-        )
+
+interface Props {
+    mode:WardModes,
+    empty?:boolean,
+    active:boolean,
+    name:string,
+    gender:string,
+    onClickCallBack?:() => void,
+    deleteCallBack?:() => void,
+}
+
+type PropsEdit = Omit<Props, "mode">;
+
+type PropsAssign = Omit<Props, "deleteCallBack" | "mode">;
+
+export const BedButtonEdit:React.FC<PropsEdit> = (props) => <BedButton {...props} mode={WardModes.Edit} />
+export const BedButtonAssignBed:React.FC<PropsAssign> = (props) => <BedButton {...props} mode={WardModes.AssignPatient} />
+
+const BedButton:React.FC<Props> = (props) => {
+    
+    function onClick(){
+        if(!props.onClickCallBack){
+            return 
+        }
+        if(props.mode === WardModes.AssignPatient && props.empty){
+            props.onClickCallBack()
+            
+        }
+        else{
+            props.onClickCallBack();
+        }
+        
     }
+    function deleteAction(e:Event){
+        e.stopPropagation();
+        if(props.deleteCallBack){
+            props.deleteCallBack();
+        }
+    }
+    
+    const active = !props.active ? false : (props.mode === WardModes.AssignPatient && props.empty) ? true : (props.mode === WardModes.Edit);
     return (
-        <Container active={props.active} shake={props.shake} onClick={props.onClick} >
+        <Container active={active} onClick={onClick} >
             <Grid container xs={12}>
-                <GridHeaderPatient xs={12} type={props.type} >
+                <GridHeaderPatient xs={12} type={props.mode} >
                     <Typography variant="body2" component="span" gutterBottom >
                         {props.name}
                     </Typography>
                     {
-                        props.deleteCallBack &&
-                        <ButtonDelete onClick={props.deleteCallBack}  />
+                        props.mode === "edit" &&
+                        <ButtonDelete onClick={(e:Event) => deleteAction(e)}  />
                     }
                     
                 </GridHeaderPatient>
