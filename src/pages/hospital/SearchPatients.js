@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { updatePatientsFromId } from '../../redux/actions/patientsActions';
 import _ from 'lodash';
 import Modal from '../../components/general/modal';
+import { DepartmentsAccordionRedux } from './departments/DepartmentsAccordion';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -32,7 +33,7 @@ function SearchPatients(props){
     const [valuesSearch, setValuesSearch] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [filteredPatients, setFilteredPatients] = useState([]);
-    const [patientHospitalized, setPatientHospitalized] = useState(null);
+    
 
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     const dispatch = useDispatch();
@@ -52,10 +53,7 @@ function SearchPatients(props){
         setFilteredPatients([]);
         setShowResults(false);
     }
-    function hospitalizePatientCallBack(indexPatient){
-        setPatientHospitalized({...patients[indexPatient]});
-        
-    }
+    
     function patientSelectedCallBack(id){
         console.log(HOSPITAL_PATIENT);
         const selectedPatient = filteredPatients.find(pat => pat.id === id);
@@ -107,7 +105,7 @@ function SearchPatients(props){
                 searchPatientCallBack={searchPatientCallBack}
                 backToSearchCallBack={backToSearchCallBack} 
                 patientSelectedCallBack={patientSelectedCallBack}
-                hospitalizePatientCallBack={hospitalizePatientCallBack}
+                
             />
 }
 
@@ -128,6 +126,7 @@ export default connect(mapStateToProps, null)(SearchPatients)
 export function SearchPatientsComponent(props) {
     
     const [patientHospitalizeIndex, setPatientHospitalizeIndex] = useState(-1);
+    const [patientHospitalized, setPatientHospitalized] = useState(null);
 
     function backToSearch(){
         props.backToSearchCallBack()
@@ -138,9 +137,11 @@ export function SearchPatientsComponent(props) {
     function hospitalizePatient(id){
         const findPatientIndex = props.patients.findIndex((pat) => pat.id === id);
         setPatientHospitalizeIndex(findPatientIndex);
+        
     }
+    
     function confirmHospitalization(){
-        props.hospitalizePatientCallBack(patientHospitalizeIndex);
+        setPatientHospitalized({...props.patients[patientHospitalizeIndex]});
     }
     function resetModal(){
         setPatientHospitalizeIndex(-1);
@@ -206,11 +207,11 @@ export function SearchPatientsComponent(props) {
     return (
         <React.Fragment>
             <Modal key="modal" open={patientHospitalizeIndex !== -1} 
-                title="¿Desea hospitalizar a este paciente?" 
+                title={!patientHospitalized ? "¿Desea hospitalizar a este paciente?" : "Seleccione la sala"} 
                 closeCallBack={resetModal}
                 >
                     {
-                        patientHospitalizeIndex !== -1 &&
+                        (patientHospitalizeIndex !== -1 && !patientHospitalized) &&
                         <Grid container>
                             <Grid item xs={12}>
                                 <Typography variant="body2">
@@ -232,6 +233,10 @@ export function SearchPatientsComponent(props) {
                                 </ButtonContinue>
                             </Grid>
                         </Grid>
+                    }
+                    {
+                        patientHospitalized &&
+                        <DepartmentsAccordionRedux uuidPatient={patientHospitalized.uuid} />
                     }
                     
             </Modal>

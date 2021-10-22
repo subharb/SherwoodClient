@@ -160,6 +160,7 @@ export function useDepartments(){
     const investigations= useSelector((state) => state.investigations);
     const departments = useSelector((state) => state.hospital.data ? state.hospital.data.departments : []);
     const researchers = useSelector((state) => state.hospital.data ? state.hospital.data.researchers : []);
+    const loading = useSelector((state) => state.hospital.loading | state.investigations.loading);
 
     const dispatch = useDispatch();
 
@@ -174,7 +175,7 @@ export function useDepartments(){
         }
     }, [investigations])
 
-    return { departments, researchers, investigations}
+    return { departments, researchers, investigations, loading}
 }
 
 export function useSelectSmartField(initialState, label, errorState, setAddingSmartField){

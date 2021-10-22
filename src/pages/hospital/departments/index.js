@@ -17,17 +17,10 @@ import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { useHistory } from "react-router-dom";
 
-
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import WardForm from './Ward/WardForm';
-
 import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
-import DepartmentsAccordion, { DepartmentAccordionModes } from './DepartmentsAccordion';
+import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
 
 const DEPARTMENT_FORM = {
     "name":{
@@ -172,7 +165,7 @@ export default connect(mapStateToProps, null)(DepartmentsRouter)
 
 function Departments(props) {
     
-    const investigation = props.investigations.data && props.investigations.currentInvestigation ? props.investigations.currentInvestigation : null;
+    //const investigation = props.investigation.data && props.investigations.currentInvestigation ? props.investigations.currentInvestigation : null;
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [ addingDepartment, setAddingDepartment ] = useState(false);
     const [ uuidDepartmentAddWard, setUuidDepartmentAddWard ] = useState(false);
@@ -209,7 +202,12 @@ function Departments(props) {
 
     }
 
-    async function addWard(ward){
+    function addWard(uuidDepartment){
+        setUuidDepartmentAddWard(uuidDepartment);
+        setShowModal(true);
+    }
+
+    function addWardCallBack(ward){
         
         const wardInfo = {
             name:ward.name,
@@ -306,102 +304,102 @@ function Departments(props) {
         setIndexResearcherToEdit(index);
         setShowModal(true);
     }
-    function renderDepartment(department, type){
-        if(type === "departments"){
-            const researchersDepartment = props.researchers.filter(res => res.departments.find(dep => dep.name === department.name));
-            return (
-                <List component="nav" aria-label="main mailbox folders">
-                {
-                    (researchersDepartment.length > 0)&& 
-                    researchersDepartment.map(res => {
-                        return(
-                            <ListItem button>
-                                <ListItemText primary={`${res.name} ${res.surnames}`} />
-                            </ListItem>
-                        )
-                    })
-                }
-                {
-                    (researchersDepartment.length === 0)&& 
-                    <ListItem button>
-                        <ListItemText primary={<Translate id="hospital.departments.no-doctors"></Translate>} />
-                    </ListItem>
-                }
-                </List>
-                )
-        }
-        else{
-            const AddWardButton = <ButtonAdd disabled={uuidDepartmentAddWard} 
-                                type="button" data-testid="add_researcher" 
-                                onClick={() => {
-                                    setUuidDepartmentAddWard(department.uuid);
-                                    setShowModal(true);
-                                }}></ButtonAdd>
-            if(department.wards.length === 0){
-                return [
-                    AddWardButton,
-                    <ListItemText primary={<Translate id="hospital.departments.no-wards"></Translate>} />
-                ]
-            }
-            else{
-                const wardsDepartment = department.wards.map((ward, index) => {
-                    const bedsInfo = {
-                        total:ward.beds.length,
-                        male:ward.beds.filter(bed => bed.gender === 0).length,
-                        female:ward.beds.filter(bed => bed.gender === 1).length
-                    }
-                    return (<WardForm mode="edit" name={ward.name} beds={bedsInfo}                                 
-                                editCallBack = {() => editWard(ward, department.uuid)}
-                                deleteCallBack = {() => deleteWardConfirm(ward, department.uuid)}
-                                settingsCallBack = {() => props.settingsCallBack(ward, department.uuid)}
-                                />)
-                })
-                return [
-                    AddWardButton,
-                    wardsDepartment
-                ]
+    // function renderDepartment(department, type){
+    //     if(type === "departments"){
+    //         const researchersDepartment = props.researchers.filter(res => res.departments.find(dep => dep.name === department.name));
+    //         return (
+    //             <List component="nav" aria-label="main mailbox folders">
+    //             {
+    //                 (researchersDepartment.length > 0)&& 
+    //                 researchersDepartment.map(res => {
+    //                     return(
+    //                         <ListItem button>
+    //                             <ListItemText primary={`${res.name} ${res.surnames}`} />
+    //                         </ListItem>
+    //                     )
+    //                 })
+    //             }
+    //             {
+    //                 (researchersDepartment.length === 0)&& 
+    //                 <ListItem button>
+    //                     <ListItemText primary={<Translate id="hospital.departments.no-doctors"></Translate>} />
+    //                 </ListItem>
+    //             }
+    //             </List>
+    //             )
+    //     }
+    //     else{
+    //         const AddWardButton = <ButtonAdd disabled={uuidDepartmentAddWard} 
+    //                             type="button" data-testid="add_researcher" 
+    //                             onClick={() => {
+    //                                 setUuidDepartmentAddWard(department.uuid);
+    //                                 setShowModal(true);
+    //                             }}></ButtonAdd>
+    //         if(department.wards.length === 0){
+    //             return [
+    //                 AddWardButton,
+    //                 <ListItemText primary={<Translate id="hospital.departments.no-wards"></Translate>} />
+    //             ]
+    //         }
+    //         else{
+    //             const wardsDepartment = department.wards.map((ward, index) => {
+    //                 const bedsInfo = {
+    //                     total:ward.beds.length,
+    //                     male:ward.beds.filter(bed => bed.gender === 0).length,
+    //                     female:ward.beds.filter(bed => bed.gender === 1).length
+    //                 }
+    //                 return (<WardForm mode="edit" name={ward.name} beds={bedsInfo}                                 
+    //                             editCallBack = {() => editWard(ward, department.uuid)}
+    //                             deleteCallBack = {() => deleteWardConfirm(ward, department.uuid)}
+    //                             settingsCallBack = {() => props.settingsCallBack(ward, department.uuid)}
+    //                             />)
+    //             })
+    //             return [
+    //                 AddWardButton,
+    //                 wardsDepartment
+    //             ]
                 
-            }
-        }   
+    //         }
+    //     }   
         
-    }
-    function renderDepartments(type){
+    // }
+    // function renderDepartments(type){
        
-        return (
-            <div style={{width:'100%'}}>
+    //     return (
+    //         <div style={{width:'100%'}}>
                 
-                {
-                    props.departments.length > 0 &&
-                    props.departments.sort((a,b) => a.name.localeCompare(b.name)).map(department => {
-                        return (
-                            <Accordion>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1a-content"
-                                    id="panel1a-header"
-                                    >
-                                    <Typography >{ department.name}</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                        {
-                                            renderDepartment(department, type)
-                                        }
+    //             {
+    //                 props.departments.length > 0 &&
+    //                 props.departments.sort((a,b) => a.name.localeCompare(b.name)).map(department => {
+    //                     return (
+    //                         <Accordion>
+    //                             <AccordionSummary
+    //                                 expandIcon={<ExpandMoreIcon />}
+    //                                 aria-controls="panel1a-content"
+    //                                 id="panel1a-header"
+    //                                 >
+    //                                 <Typography >{ department.name}</Typography>
+    //                             </AccordionSummary>
+    //                             <AccordionDetails>
+    //                                     {
+    //                                         renderDepartment(department, type)
+    //                                     }
                                     
-                                </AccordionDetails>
-                            </Accordion>
-                        )
-                    })
-                }
-                {
-                    props.departments.length === 0 &&
-                    <Translate id="hospital.departments.no-departments" />
-                }
+    //                             </AccordionDetails>
+    //                         </Accordion>
+    //                     )
+    //                 })
+    //             }
+    //             {
+    //                 props.departments.length === 0 &&
+    //                 <Translate id="hospital.departments.no-departments" />
+    //             }
                 
-            </div>
+    //         </div>
                 
-            )
+    //         )
             
-    }
+    // }
     function resetModal(){
         setShowModal(false);
         setAddingDepartment(false);
@@ -442,7 +440,7 @@ function Departments(props) {
         props.resetError()
     }
     useEffect(()=>{
-        if(wardToDelete || wardToEdit || addingDepartment){
+        if(wardToDelete || uuidDepartmentAddWard || addingDepartment){
             setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
         }
         resetModal();
@@ -484,7 +482,7 @@ function Departments(props) {
     const handleChange = (event, newValue) => {
         setTabSelector(newValue);
     };
-    if(!investigation || props.loading){
+    if(!props.investigation || props.loading){
         return <Loader />
     }
     return (
@@ -544,7 +542,7 @@ function Departments(props) {
 
                     {
                         (uuidDepartmentAddWard && !wardToDelete) &&
-                        <Form fields={WARD_FORM} fullWidth callBackForm={addWard} 
+                        <Form fields={WARD_FORM} fullWidth callBackForm={addWardCallBack} 
                             initialData={wardToEdit}
                             closeCallBack={() => resetModal()}/>
                     }
@@ -577,7 +575,7 @@ function Departments(props) {
                 <Grid item container xs={12} spacing={3}>
                     <Grid item xs={12} >
                         <Typography gutterBottom variant="h5" component="h2">
-                            { investigation.name }
+                            { props.investigation.name }
                         </Typography>
                     </Grid>
                     <AppBar position="static">
@@ -596,6 +594,7 @@ function Departments(props) {
                     <TabPanel value={tabSelector} index={1} style={{width:'100%'}}>
                         <DepartmentsAccordion mode={DepartmentAccordionModes.Researchers } researchers={props.researchers}
                             departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
+
                         />
                     </TabPanel>
                     <TabPanel value={tabSelector} index={2} style={{width:'100%'}}>

@@ -26,6 +26,7 @@ import { IBed, IDepartment, IPatient, IWard } from '../../../../constants/types'
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { createBedAction, deleteBedAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
 import { useDepartments } from '../../../../hooks';
+import { getWardService } from '../../../../services/sherwoodService';
 
 export enum WardModes {
     Edit = "edit",
@@ -84,10 +85,12 @@ interface PropsRouter extends LocalizeContextProps{
 const WardRouter:React.FC<PropsRouter> = (props) => {
     const [ward, setWard] = useState<IWard | null>(null);
     const [department, setDepartment] = useState<IDepartment | null>(null);
-    const {departments, investigations} = useDepartments();
+    const investigations = useSelector((state:any) => state.investigations);
+
 
     const dispatch = useDispatch();
     let { uuidWard } = useParams<{uuidWard?: string}>();
+    let { uuidPatient } = useParams<{uuidPatient?: string}>();
     
     async function editCallBack(bed:IBed){
         
@@ -121,22 +124,19 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     
     
     useEffect(() => {
-        if(departments.length > 0){
-            for(let i = 0; i < departments.length; i++){
-                const department = departments[i];
-                const indexWard = department.wards.findIndex((ward:IWard) => ward.uuid === uuidWard);
-                if(indexWard !== -1){
-                    setWard(department.wards[indexWard]);
-                    setDepartment(department);
-                    return;
-                }
+        async function getWard(){
+            if(!ward && investigations.data){
+                const response = await(getWardService(investigations.currentInvestigation.institution.uuid, uuidWard))
+                console.log(response);
+                setWard(response.ward);
             }
         }
-    },[departments])
-
+        getWard();
+    },[investigations])
 
     
-    return <Ward loading={props.loading} mode={WardModes.Edit} ward={ward} bedsProps={ward ? ward.beds : null}
+    
+    return <Ward loading={props.loading} mode={uuidPatient ? WardModes.AssignPatient : WardModes.Edit} ward={ward} bedsProps={ward ? ward.beds : null}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
                 assignBedPatientCallBack = {assignBedPatientCallBack}
                 saveOrderCallBack={saveOrderCallBack} addCallBack={addCallBack}

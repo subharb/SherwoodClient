@@ -5,6 +5,10 @@ import { IBed, IDepartment, IDepartmentServer, IResearcher, IWard } from '../../
 import { Translate } from 'react-localize-redux';
 import { WardFormEdit, WardFormModes, WardFormSelect } from './Ward/WardForm';
 import { ButtonAdd } from '../../../components/general/mini_components';
+import { useDepartments } from '../../../hooks';
+import Loader from '../../../components/Loader';
+import { useHistory } from 'react-router-dom';
+import { HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE } from '../../../routes';
 
 export enum DepartmentAccordionModes {
     Researchers = "researchers",
@@ -16,19 +20,52 @@ interface Props {
     departments:IDepartmentServer[],
     researchers:IResearcher[],
     mode : DepartmentAccordionModes,
-    uuidDepartmentAddWard:string,
-    selectWardCallBack: (ward:IWard, uuidDepartment:string) => void,
-    viewWardCallBack: (ward:IWard, uuidDepartment:string) => void,
-    settingsWardCallBack: (ward:IWard, uuidDepartment:string) => void,
-    editWardCallBack: (ward:IWard, uuidDepartment:string) => void,
-    deleteWardConfirmCallBack: (ward:IWard, uuidDepartment:string) => void,
-    addWardCallBack: (uuidDepartment:string) => void
+    uuidDepartmentAddWard?:string,
+    uuidPatient?:string,
+    selectWardCallBack?: (ward:IWard) => void,
+    viewWardCallBack?: (ward:IWard, uuidDepartment:string) => void,
+    settingsWardCallBack?: (ward:IWard, uuidDepartment:string) => void,
+    editWardCallBack?: (ward:IWard, uuidDepartment:string) => void,
+    deleteWardConfirmCallBack?: (ward:IWard, uuidDepartment:string) => void,
+    addWardCallBack?: (uuidDepartment:string) => void
 }
 
+type PropsRedux = Omit<Props, "deleteCallBack" | "uuidDepartmentAddWard" | "viewWardCallBack" | "settingsWardCallBack" | "editWardCallBack" | "addWardCallBack">;
 
 
+export const DepartmentsAccordionRedux:React.FC<PropsRedux> = (props) =>{
+    const {departments, researchers, loading} = useDepartments();
+    const history = useHistory();
 
-const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmentAddWard, researchers, mode, selectWardCallBack, addWardCallBack, editWardCallBack, deleteWardConfirmCallBack, viewWardCallBack, settingsWardCallBack}) => {
+    function selectWardCallBack(ward:IWard){
+        console.log("Nos vamos a ward", ward);
+        if(ward.uuid && props.uuidPatient){
+            const nextUrl = HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE.replace(":uuidWard", ward.uuid).replace(":uuidPatient", props.uuidPatient)
+            history.push(nextUrl);
+        }
+        
+    }
+    if(loading){
+        return <Loader />
+    }
+    else{
+        return(
+            <DepartmentsAccordionWards departments={departments} researchers={researchers} 
+                mode={DepartmentAccordionModes.WardSelection} selectWardCallBack={selectWardCallBack}
+            />
+        )
+    }
+}
+
+const DepartmentsAccordionWards:React.FC<PropsRedux> = ({departments, researchers, mode, selectWardCallBack}) =>{
+    return(
+        <DepartmentsAccordion departments={departments} researchers={researchers} 
+                mode={mode} selectWardCallBack={selectWardCallBack}
+            />
+    )
+}
+
+export const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmentAddWard, researchers, mode, selectWardCallBack, addWardCallBack, editWardCallBack, deleteWardConfirmCallBack, viewWardCallBack, settingsWardCallBack}) => {
     
     function renderDepartment(department:IDepartmentServer){
         if(mode === DepartmentAccordionModes.Researchers){
@@ -58,8 +95,9 @@ const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmentAddWar
             const AddWardButton = <ButtonAdd disabled={uuidDepartmentAddWard} 
                                 type="button" data-testid="add_researcher" 
                                 onClick={() => {
-                                    addWardCallBack(department.uuid);
-                                    
+                                    if(addWardCallBack){
+                                        addWardCallBack(department.uuid);
+                                    }
                                 }}></ButtonAdd>
             if(department.wards.length === 0){
                 return [
@@ -75,26 +113,36 @@ const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmentAddWar
                         female:ward.beds.filter((bed:IBed) => bed.gender === 1).length
                     }
                     if(mode === DepartmentAccordionModes.WardSelection){
-                        return (<WardFormSelect mode={ WardFormModes.Select } name={ward.name} beds={bedsInfo}                                                             
-                                    selectWardCallBack = {() => selectWardCallBack(ward, department.uuid)}
+                        if(selectWardCallBack){
+                            return (<WardFormSelect mode={ WardFormModes.Select } name={ward.name} beds={bedsInfo}                                                             
+                                    selectWardCallBack = {() => selectWardCallBack(ward)}
                                 />)
+                        }
+                        
                     }
                     else{
-                        return (<WardFormEdit name={ward.name} beds={bedsInfo}                                                             
-                                    editCallBack = {() => editWardCallBack(ward, department.uuid)}
-                                    viewCallBack = {() => viewWardCallBack(ward, department.uuid)}
-                                    settingsCallBack = {() => settingsWardCallBack(ward, department.uuid)}
-                                    deleteCallBack = {() => deleteWardConfirmCallBack(ward, department.uuid)}
-                                />)
+                        if(editWardCallBack && viewWardCallBack && settingsWardCallBack && deleteWardConfirmCallBack){
+                            return (<WardFormEdit name={ward.name} beds={bedsInfo}                                                             
+                                        editCallBack = {() => editWardCallBack(ward, department.uuid)}
+                                        viewCallBack = {() => viewWardCallBack(ward, department.uuid)}
+                                        settingsCallBack = {() => settingsWardCallBack(ward, department.uuid)}
+                                        deleteCallBack = {() => deleteWardConfirmCallBack(ward, department.uuid)}
+                                    />)
+                        }
+                        
                     }
                     
                     
                 })
-                return [
-                    AddWardButton,
-                    wardsDepartment
-                ]
-                
+                if(mode === DepartmentAccordionModes.WardSelection){
+                    return wardsDepartment
+                }
+                else{
+                    return [
+                        AddWardButton,
+                        wardsDepartment
+                    ]
+                }
             }
         }   
         
@@ -134,5 +182,3 @@ const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmentAddWar
         
     );
 }
-
-export default DepartmentsAccordion;

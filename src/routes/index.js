@@ -104,6 +104,7 @@ export const MY_SCHEDULE_ROUTE = "/my-schedule";
 export const SEARCH_PATIENT_ROUTE = "/search-patient";
 export const ADD_PATIENT_ROUTE = "/add-patient";
 export const HOSPITAL_WARD_SETTINGS_ROUTE = "/ward/settings/:uuidWard";
+export const HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE = "/ward/settings/:uuidWard/patient/:uuidPatient";
 export const OUTPATIENTS_ROUTE = "/outpatients";
 export const HOSPITAL_PATIENT = "/patient/:uuidPatient";
 export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection/section/:uuidSection/:idSubmission?";
@@ -220,6 +221,11 @@ const hospitalRoutes = {
         },
         {
             path: HOSPITAL_WARD_SETTINGS_ROUTE,
+            name: "Ward",
+            component: WardLocalized,
+        },
+        {
+            path: HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE,
             name: "Ward",
             component: WardLocalized,
         },
