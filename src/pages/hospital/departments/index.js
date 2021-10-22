@@ -23,9 +23,11 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import WardForm from './Ward/WardForm';
+
 import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
+import DepartmentsAccordion, { DepartmentAccordionModes } from './DepartmentsAccordion';
 
 const DEPARTMENT_FORM = {
     "name":{
@@ -118,6 +120,56 @@ function permissionsToRole(permissions){
     
 }
 
+function DepartmentsRouter(props){
+    const investigation = props.investigations.data && props.investigations.currentInvestigation ? props.investigations.currentInvestigation : null;
+    const {departments, researchers} = useDepartments();
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+
+    async function saveDepartmentCallBack(department){
+        await dispatch(saveDepartmentAction(props.investigations.currentInvestigation.institution.uuid, department));
+    }
+    async function addWardCallBack(wardInfo, uuidDepartmentAddWard){
+        await dispatch(saveUpdateWardAction(props.investigations.currentInvestigation.institution.uuid, uuidDepartmentAddWard, wardInfo));
+    }
+    function settingsCallBack(ward){
+        const nextUrl = HOSPITAL_WARD_SETTINGS_ROUTE.replace(":uuidWard", ward.uuid);
+        history.push(nextUrl);
+    }
+    
+    async function editCallBack(uuid, department){       
+        await dispatch(assignDepartmentToResearcherAction(uuid, department));
+        
+    }
+    async function deleteWardCallBack(uuidDepartmentAddWard, wardToDelete){
+        await dispatch(deleteWardAction(props.investigations.currentInvestigation.institution.uuid, uuidDepartmentAddWard, wardToDelete.uuid));
+    }
+    async function resetError(){
+        await dispatch({
+            type:types.HOSPITAL_RESET_ERROR
+        })
+    }
+    return <DepartmentLocalized investigation={investigation} loading={props.loading}
+                departments={departments} researchers={researchers} hospitalError={props.hospital.error}
+                saveDepartmentCallBack={saveDepartmentCallBack} 
+                addWardCallBack={addWardCallBack} settingsCallBack={settingsCallBack}
+                editCallBack={editCallBack} deleteWardCallBack={deleteWardCallBack}
+                resetError={resetError}
+            />
+}
+
+const mapStateToProps = (state) =>{
+    return {
+        investigations : state.investigations,
+        hospital : state.hospital,
+        loading : state.hospital.loading || state.investigations.loading
+    }
+}
+
+export default connect(mapStateToProps, null)(DepartmentsRouter)
+
 function Departments(props) {
     
     const investigation = props.investigations.data && props.investigations.currentInvestigation ? props.investigations.currentInvestigation : null;
@@ -128,18 +180,12 @@ function Departments(props) {
     const [ wardToDelete, setWardToDelete ] = useState(false);
     const [ showModal, setShowModal ] = useState(false);
     const [ showOptions, setShowOptions ] = useState(false);
-    const {departments, researchers} = useDepartments();
-
-
     
     const [tabSelector, setTabSelector] = useState(0);
     const [isLoadingDepartments, setIsLoadingDepartments] = useState(false);
 
     const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
 
-    const dispatch = useDispatch();
-    
-    const history = useHistory();
 
     const CHANGE_DEPARTMENT_FORM = {
         "department":{
@@ -150,7 +196,7 @@ function Departments(props) {
             shortLabel: "hospital.departments.department",
             validation : "notEmpty",
             defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
-            options:departments.map(dep =>{
+            options:props.departments.map(dep =>{
                 return {"label" : dep.name, "value" :dep.uuid}
             })
         }
@@ -159,7 +205,7 @@ function Departments(props) {
     async function addDepartment(department){
         setAddingDepartment(false);
         setIsLoadingDepartments(true);
-        await dispatch(saveDepartmentAction(props.investigations.currentInvestigation.institution.uuid, department));
+        props.saveDepartmentCallBack()
 
     }
 
@@ -177,7 +223,7 @@ function Departments(props) {
         if(wardToEdit){
             wardInfo.uuid = wardToEdit.uuid;
         }
-        await dispatch(saveUpdateWardAction(props.investigations.currentInvestigation.institution.uuid, uuidDepartmentAddWard, wardInfo));
+        props.addWardCallBack(wardInfo, uuidDepartmentAddWard);
     }
 
     async function editWard(ward, uuidDepartment){
@@ -193,22 +239,23 @@ function Departments(props) {
     }
 
     function deleteWardConfirm(ward, uuidDepartment){
+        console.log("Borrar sala?");
         setUuidDepartmentAddWard(uuidDepartment);
         setWardToDelete(ward);
         setShowModal(true);
     }
 
-    function settingsCallBack(ward){
-        const nextUrl = HOSPITAL_WARD_SETTINGS_ROUTE.replace(":uuidWard", ward.uuid);
-        history.push(nextUrl);
-    }
-    async function deleteWard(){
-        await dispatch(deleteWardAction(props.investigations.currentInvestigation.institution.uuid, uuidDepartmentAddWard, wardToDelete.uuid));
+    
+    async function editCallBack(values){
+        console.log("Datos nuevos de researcher", values);
+        props.editCallBack(props.researchers[indexResearcherToEdit].uuid, values.department)
+        
+        
     }
     
     function renderResearchers(){
         let content = null;
-        if(researchers.length === 0){
+        if(props.researchers.length === 0){
             content = <Box mt={3}>
                             <Typography variant="body2" component="div" gutterBottom>
                                 <Translate id="investigation.share.no_researchers_added" />
@@ -220,10 +267,10 @@ function Departments(props) {
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
-            const actions = (departments.length === 0) ? null : {"edit" : (index) => editAResearcher(index)}
+            const actions = (props.departments.length === 0) ? null : {"edit" : (index) => editAResearcher(index)}
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
                         headCells={arrayHeader}
-                        rows={researchers.map((researcher, idx) => {
+                        rows={props.researchers.map((researcher, idx) => {
                             const name = researcher.name ? researcher.name+" "+researcher.surnames : researcher.email;
 
                             let row = {
@@ -250,24 +297,18 @@ function Departments(props) {
         )
     }
 
-    async function editCallBack(values){
-        console.log("Datos nuevos de researcher", values);
-       
-        await dispatch(assignDepartmentToResearcherAction(researchers[indexResearcherToEdit].uuid, values.department));
-        
-    }
     function editAResearcher(index){
-        console.log("confirm to edit", researchers[index]);
+        console.log("confirm to edit", props.researchers[index]);
         let valuesForm = {};
-        valuesForm["email"] = researchers[index]["email"];
-        valuesForm["permissions"] = USER_ROLES[permissionsToRole(researchers[index]["permissions"])];
+        valuesForm["email"] = props.researchers[index]["email"];
+        valuesForm["permissions"] = USER_ROLES[permissionsToRole(props.researchers[index]["permissions"])];
         console.log(valuesForm);
         setIndexResearcherToEdit(index);
         setShowModal(true);
     }
     function renderDepartment(department, type){
         if(type === "departments"){
-            const researchersDepartment = researchers.filter(res => res.departments.find(dep => dep.name === department.name));
+            const researchersDepartment = props.researchers.filter(res => res.departments.find(dep => dep.name === department.name));
             return (
                 <List component="nav" aria-label="main mailbox folders">
                 {
@@ -312,7 +353,7 @@ function Departments(props) {
                     return (<WardForm mode="edit" name={ward.name} beds={bedsInfo}                                 
                                 editCallBack = {() => editWard(ward, department.uuid)}
                                 deleteCallBack = {() => deleteWardConfirm(ward, department.uuid)}
-                                settingsCallBack = {() => settingsCallBack(ward, department.uuid)}
+                                settingsCallBack = {() => props.settingsCallBack(ward, department.uuid)}
                                 />)
                 })
                 return [
@@ -330,8 +371,8 @@ function Departments(props) {
             <div style={{width:'100%'}}>
                 
                 {
-                    departments.length > 0 &&
-                    departments.sort((a,b) => a.name.localeCompare(b.name)).map(department => {
+                    props.departments.length > 0 &&
+                    props.departments.sort((a,b) => a.name.localeCompare(b.name)).map(department => {
                         return (
                             <Accordion>
                                 <AccordionSummary
@@ -352,7 +393,7 @@ function Departments(props) {
                     })
                 }
                 {
-                    departments.length === 0 &&
+                    props.departments.length === 0 &&
                     <Translate id="hospital.departments.no-departments" />
                 }
                 
@@ -394,26 +435,25 @@ function Departments(props) {
             )}
           </div>
         );
-      }
+    }
+
     async function resetSnackBar(){
         setShowSnackbar({show:false});
-        await dispatch({
-            type:types.HOSPITAL_RESET_ERROR
-        })
+        props.resetError()
     }
     useEffect(()=>{
         if(wardToDelete || wardToEdit || addingDepartment){
             setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
         }
         resetModal();
-    }, [departments, researchers])
+    }, [props.departments, props.researchers])
 
     useEffect(()=>{
-        if(props.hospital.error){
+        if(props.hospitalError){
             let message;
             let severity;
             if(wardToEdit){
-                switch(props.hospital.error){
+                switch(props.hospitalError){
                     case 4:
                         message = "hospital.departments.errors.ward-same-name";
                         severity = "warning";
@@ -439,14 +479,12 @@ function Departments(props) {
             }
             setShowSnackbar({show:true, severity: severity, message : message});
         }
-    }, [props.hospital.error])
-    
-    
+    }, [props.hospitalError])
 
     const handleChange = (event, newValue) => {
         setTabSelector(newValue);
     };
-    if(!props.investigations.data || props.loading){
+    if(!investigation || props.loading){
         return <Loader />
     }
     return (
@@ -477,22 +515,25 @@ function Departments(props) {
                                 <Typography variant="h6" component="div" gutterBottom>
                                     <Translate id="hospital.departments.delete-ward-prompt" />
                                 </Typography>
-                                <span style={{fontWeight:'bold'}}>{wardToDelete.name}</span>
+                                <Typography variant="body2" style={{fontWeight:'bold'}} component="div" gutterBottom>
+                                    {wardToDelete.name}
+                                </Typography>
+                                
                              </Grid>
                              <Grid item xs={12} style={{paddingTop:'1rem'}}>
                                 <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                     <Translate id="general.cancel" />
                                 </ButtonCancel>
-                                <ButtonContinue onClick={deleteWard} data-testid="continue-modal" color="primary">
+                                <ButtonContinue onClick={() => props.deleteWardCallBack(uuidDepartmentAddWard, wardToDelete)} data-testid="continue-modal" color="primary">
                                     <Translate id="general.continue" />
                                 </ButtonContinue>
                             </Grid>
                         </Grid>
-                    }
+                    } 
                     {
                         indexResearcherToEdit !== false &&
                         <Form fields={CHANGE_DEPARTMENT_FORM} fullWidth callBackForm={editCallBack}
-                            initialData={researchers[indexResearcherToEdit]} 
+                            initialData={props.researchers[indexResearcherToEdit]} 
                             closeCallBack={() => resetModal()}/>
                     }
                     {
@@ -553,14 +594,16 @@ function Departments(props) {
                     }
                     </TabPanel>
                     <TabPanel value={tabSelector} index={1} style={{width:'100%'}}>
-                    {
-                        renderDepartments("departments")
-                    }
+                        <DepartmentsAccordion mode={DepartmentAccordionModes.Researchers } researchers={props.researchers}
+                            departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
+                        />
                     </TabPanel>
                     <TabPanel value={tabSelector} index={2} style={{width:'100%'}}>
-                    {
-                        renderDepartments("wards")
-                    }
+                        <DepartmentsAccordion mode={DepartmentAccordionModes.Wards } researchers={props.researchers}
+                            departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
+                            editWardCallBack={editWard} deleteWardConfirmCallBack={deleteWardConfirm}
+                            addWardCallBack={addWard}
+                            />
                     </TabPanel>
                     
                 </Grid>
@@ -569,14 +612,6 @@ function Departments(props) {
     )
 }
 
+export const DepartmentLocalized = withLocalize(Departments);
 
 
-const mapStateToProps = (state) =>{
-    return {
-        investigations : state.investigations,
-        hospital : state.hospital,
-        loading : state.hospital.loading || state.investigations.loading
-    }
-}
-
-export default withLocalize(connect(mapStateToProps, null)(Departments))

@@ -2361,8 +2361,7 @@ export const wardInfo =
 }
 
 
-export const departmentsInfo = {
-    "departments" : [
+export const departmentsInfo = [
         {
             "name" : "Neurologia",
             "wards" : [wardInfo]
@@ -2373,4 +2372,77 @@ export const departmentsInfo = {
         }
     ]
 
+export const hospital = {
+    "departments":departmentsInfo,
+    "researchers": [
+        {
+            "name": "David",
+            "uuid": "ca78d9df-625f-4c1a-9aae-551f06268f41",
+            "surnames": "Shaikh",
+            "status": 2,
+            "email": "dshaikhurbina@gmail.com",
+            "permissions": [],
+            "departments": []
+        },
+        {
+            "name": "Pedro ",
+            "uuid": "9c6dd74a-2362-4a30-b826-10330f250c07",
+            "surnames": "Rodriguez Cruz",
+            "status": 2,
+            "email": "pedro.cruz@ucl.ac.uk",
+            "permissions": [
+                "SHARE_RESEARCHERS",
+                "EDIT_INVESTIGATION",
+                "EDIT_SUBMISSIONS",
+                "BUSINESS_READ",
+                "PERSONAL_ACCESS",
+                "MEDICAL_WRITE",
+                "MEDICAL_READ"
+            ],
+            "departments": []
+        },
+        {
+            "name": "Cristina",
+            "uuid": "7557d857-7836-413f-bcf6-06bce5977d5f",
+            "surnames": "Fernández Hoyos",
+            "status": 2,
+            "email": "cristinafernandezhoyos@gmail.com",
+            "permissions": [
+                "SHARE_RESEARCHERS",
+                "BUSINESS_READ",
+                "PERSONAL_ACCESS",
+                "MEDICAL_READ",
+                "MEDICAL_WRITE"
+            ],
+            "departments": []
+        },
+        {
+            "name": "Dénis",
+            "uuid": "954d1c74-8ea3-4c6e-8ce8-c1e8f885bc7d",
+            "surnames": "Sagara",
+            "status": 2,
+            "email": "akonisagara@gmail.com",
+            "permissions": [
+                "PERSONAL_ACCESS",
+                "MEDICAL_READ",
+                "MEDICAL_WRITE"
+            ],
+            "departments": []
+        },
+        {
+            "name": "María del Mae",
+            "uuid": "6cae761b-e46c-449b-a9bd-e4d10c3e6567",
+            "surnames": "Rodriguez Carrasco",
+            "status": 2,
+            "email": "arimar_vera@hotmail.com",
+            "permissions": [
+                "SHARE_RESEARCHERS",
+                "BUSINESS_READ",
+                "PERSONAL_ACCESS",
+                "MEDICAL_READ",
+                "MEDICAL_WRITE"
+            ],
+            "departments": []
+        }
+    ]
 }

@@ -32,6 +32,7 @@ function SearchPatients(props){
     const [valuesSearch, setValuesSearch] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [filteredPatients, setFilteredPatients] = useState([]);
+    const [patientHospitalized, setPatientHospitalized] = useState(null);
 
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     const dispatch = useDispatch();
@@ -52,6 +53,7 @@ function SearchPatients(props){
         setShowResults(false);
     }
     function hospitalizePatientCallBack(indexPatient){
+        setPatientHospitalized({...patients[indexPatient]});
         
     }
     function patientSelectedCallBack(id){
@@ -138,10 +140,10 @@ export function SearchPatientsComponent(props) {
         setPatientHospitalizeIndex(findPatientIndex);
     }
     function confirmHospitalization(){
-        props.hospitalizePatientCallBack(patientHospitalizeIndex)
+        props.hospitalizePatientCallBack(patientHospitalizeIndex);
     }
     function resetModal(){
-        setPatientHospitalizeIndex(null)
+        setPatientHospitalizeIndex(-1);
     }
     function renderCore(){
         if(!props.showResults){
@@ -218,7 +220,7 @@ export function SearchPatientsComponent(props) {
                                     Apellidos: {props.patients[patientHospitalizeIndex].personalData.surnames}    
                                 </Typography>
                                 <Typography variant="body2">
-                                    Género: {props.patients[patientHospitalizeIndex].personalData.gender}    
+                                    Género: {props.patients[patientHospitalizeIndex].personalData.sex === "Male" ? <Translate id="general.male" /> : <Translate id="general.female" />}    
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} style={{paddingTop:'1rem'}}>

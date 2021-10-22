@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { IBed, IDepartment, IDepartmentServer, IResearcher, IWard } from '../../../constants/types';
 import { Translate } from 'react-localize-redux';
-import WardForm, { WardFormEdit, WardFormModes, WardFormSelect } from './Ward/WardForm';
+import { WardFormEdit, WardFormModes, WardFormSelect } from './Ward/WardForm';
 import { ButtonAdd } from '../../../components/general/mini_components';
 
-enum DepartmentAccordionModes {
+export enum DepartmentAccordionModes {
     Researchers = "researchers",
     Wards = "wards",
     WardSelection = "ward-selection"

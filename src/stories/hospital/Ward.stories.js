@@ -2,14 +2,14 @@ import React from 'react';
 
 import { AddPatientComponent } from '../../pages/hospital/AddPatient'
 import { personal_data_investigation1, investigation_server, wardInfo, patients_personal_data_decrypted } from "../example_data";
-import WardForm from '../../pages/hospital/departments/Ward/WardForm';
+
 import ProviderSherwood from '../../providerSherwood';
-import Ward from '../../pages/hospital/departments/Ward';
+import Ward, {WardFormEdit}  from '../../pages/hospital/departments/Ward';
 import { BedButton, BedButtonAssignBed, BedButtonEdit } from '../../components/general/BedButton';
 
 export default {
   title: 'Hospital/Ward',
-  component: WardForm,
+  component: WardFormEdit,
   argTypes: {
     loading: { control: 'boolean' }
   },
@@ -19,7 +19,7 @@ export default {
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <WardForm {...args} />; 
+const Template = (args) => <WardFormEdit {...args} />; 
 
 const TemplateWard = (args) => <Ward {...args} />; 
 
