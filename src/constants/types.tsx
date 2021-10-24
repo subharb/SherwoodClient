@@ -4,7 +4,7 @@ export interface IBed{
     name:string,
     active:boolean,
     order:number,
-    empty?:boolean
+    stay?:boolean
 }
 
 export interface IWard{

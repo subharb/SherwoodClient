@@ -521,6 +521,24 @@ export function updateOrderBedsService(uuidInstitution, uuidWard, bedsReorder) {
 } 
 
 
+export function createStayPatientService(uuidInstitution, idBed, uuidPatient) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/bed/"+idBed+"/stay", {uuidPatient},{ headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        error.errorCode = 500;
+        reject(error);
+      });
+  });
+} 
+
+
 export function saveResearcherPermissions(uuidInvestigation, permissions) {
     return new Promise((resolve, reject) => {
       axios

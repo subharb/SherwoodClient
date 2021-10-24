@@ -46,7 +46,7 @@ export const TypographyFree = styled(Typography)`
 
 interface Props {
     mode:WardModes,
-    empty?:boolean,
+    stay?:boolean,
     active:boolean,
     name:string,
     gender:string,
@@ -67,7 +67,7 @@ const BedButton:React.FC<Props> = (props) => {
         if(!props.onClickCallBack){
             return 
         }
-        if(props.mode === WardModes.AssignPatient && props.empty){
+        if(props.mode === WardModes.AssignPatient && props.stay){
             props.onClickCallBack()
             
         }
@@ -83,7 +83,7 @@ const BedButton:React.FC<Props> = (props) => {
         }
     }
     
-    const active = !props.active ? false : (props.mode === WardModes.AssignPatient && props.empty) ? true : (props.mode === WardModes.Edit);
+    const active = !props.active ? false : (props.mode === WardModes.AssignPatient && !props.stay) ? true : (props.mode === WardModes.Edit);
     return (
         <Container active={active} onClick={onClick} >
             <Grid container xs={12}>

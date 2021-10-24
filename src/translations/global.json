@@ -89,7 +89,14 @@
             "delete-bed" : ["Delete bed", "Eliminar cama", "Supprimer le lit"],
             "select-bed" : ["Select the bed you wish to hospitalize the patient", "Seleccione la cama en la que desea hospitalizar a la paciente.", "Sélectionnez le lit dans lequel vous souhaitez hospitaliser le patient"],
             "assign-bed-ward-prompt" : ["Are you sure to want to assign this bed?", "¿Estás seguro de querer asignar esta cama?", "Êtes-vous sûr de vouloir attribuer ce lit ?"],
-            "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"],
+            "assign-bed-success" : ["Bed assigned correctly", "Cama asignada correctamente", "Lit correctement attribué"],
+            "error" : {
+                "default" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
+                "bed-not-exist" : ["Bed does not exist, please refresh the page", "La cama no existe, refresque la página.", "Le lit n'existe pas, veuillez rafraîchir la page"],
+                "bed-assigned" : ["This bed is already busy", "Esta cama ya esta ocupada", "Ce lit est déjà occupé"],
+                "patient-not-exist" : ["patient does not exist", "El paciente no existe", "les patients n'existent pas"],
+                "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"]
+            },
             "bed" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "genre" : ["Genre", "Género", "Genre"],

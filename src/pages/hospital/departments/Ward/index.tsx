@@ -1,4 +1,4 @@
-import { Avatar, Grid, List, ListItem, FormControlLabel, Switch, Typography } from '@material-ui/core';
+import { Avatar, Grid, List, Snackbar, FormControlLabel, Switch, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 import Loader from '../../../../components/Loader';
 
@@ -24,9 +24,11 @@ import {
 import { useEffect } from 'react';
 import { IBed, IDepartment, IPatient, IWard } from '../../../../constants/types';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { createBedAction, deleteBedAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
-import { useDepartments } from '../../../../hooks';
+import { createBedAction, createStayPatientAction, deleteBedAction, resetHospitalAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
+import { useDepartments, useSnackBarState } from '../../../../hooks';
 import { getWardService } from '../../../../services/sherwoodService';
+import { Alert } from '@material-ui/lab';
+import { HOSPITAL_PATIENT } from '../../../../routes';
 
 export enum WardModes {
     Edit = "edit",
@@ -79,73 +81,98 @@ const BED_FORM = {
 interface PropsRouter extends LocalizeContextProps{
     departments:IDepartment[],
     investigations:any,
+    hospital:any,
+    patients:any,
     loading:boolean
 }
 
 const WardRouter:React.FC<PropsRouter> = (props) => {
     const [ward, setWard] = useState<IWard | null>(null);
-    const [department, setDepartment] = useState<IDepartment | null>(null);
+    const [uuidDepartment, setUuidDepartment] = useState<string | null>(null);
+    const {departments, researchers} = useDepartments();
     const investigations = useSelector((state:any) => state.investigations);
-
+    const [patient, setPatient] = useState<IPatient | undefined>(undefined);
 
     const dispatch = useDispatch();
+    const history = useHistory();
+
     let { uuidWard } = useParams<{uuidWard?: string}>();
     let { uuidPatient } = useParams<{uuidPatient?: string}>();
     
+    function goToPatientHistory(){
+        if(uuidPatient){
+            history.push(HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient));
+        }
+    }
+
     async function editCallBack(bed:IBed){
         
         if(ward){
-            await(dispatch(updateBedAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bed)))
+            await(dispatch(updateBedAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, bed)))
         }        
     }
     async function deleteCallBack(bed:IBed){
         if(ward){
-            await(dispatch(deleteBedAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bed)))
+            await(dispatch(deleteBedAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, bed)))
         }
     }
     async function addCallBack(bed:IBed) {
         if(ward){
-            await(dispatch(createBedAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bed)))
+            await(dispatch(createBedAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, bed)))
         }
     }
     async function saveOrderCallBack(bedsReorder:IBed[]){
         console.log("Reorder",bedsReorder);
         if(ward){
-            await(dispatch(updateOrderBedsAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bedsReorder)))
+            await(dispatch(updateOrderBedsAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, bedsReorder)))
         }
     }
 
     async function assignBedPatientCallBack(bedAssigned:IBed){
         console.log("bedAssigned",bedAssigned);
-        if(ward){
-            //await(dispatch(updateOrderBedsAction(investigations.currentInvestigation.institution.uuid, department?.uuid, ward.uuid, bedsReorder)))
+        if(ward && patient){
+            await(dispatch(createStayPatientAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, patient.uuid, bedAssigned.id)))
         }
     }
     
-    
+    function resetErrorHospital(){
+        resetHospitalAction();
+    }
+
     useEffect(() => {
         async function getWard(){
             if(!ward && investigations.data){
+                const patient = props.patients.data[investigations.currentInvestigation.uuid].find((pat:IPatient) => pat.uuid === uuidPatient);
+                setPatient(patient);
                 const response = await(getWardService(investigations.currentInvestigation.institution.uuid, uuidWard))
                 console.log(response);
                 setWard(response.ward);
+                setUuidDepartment(response.ward.department.uuid)
             }
         }
         getWard();
     },[investigations])
 
+    useEffect(() => {
+        if(departments.length > 0 && uuidDepartment){
+            const ward = departments.find((depart:IDepartment) => depart.uuid === uuidDepartment).wards.find((ward:IWard) => ward.uuid === uuidWard);
+            setWard(ward);
+        }
+        
+    },[departments])    
     
-    
-    return <Ward loading={props.loading} mode={uuidPatient ? WardModes.AssignPatient : WardModes.Edit} ward={ward} bedsProps={ward ? ward.beds : null}
+    return <Ward loading={props.loading} error={props.hospital.error} mode={uuidPatient ? WardModes.AssignPatient : WardModes.Edit} ward={ward} 
+                bedsProps={ward ? ward.beds : null} patient={patient}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
-                assignBedPatientCallBack = {assignBedPatientCallBack}
-                saveOrderCallBack={saveOrderCallBack} addCallBack={addCallBack}
+                assignBedPatientCallBack = {assignBedPatientCallBack} resetErrorHospital={resetErrorHospital}
+                saveOrderCallBack={saveOrderCallBack} addCallBack={addCallBack} goToPatientHistory={goToPatientHistory}
                 />
 }   
 
 const mapStateToProps = (state:any) =>{
     return {
         hospital : state.hospital,
+        patients: state.patients,
         loading : state.hospital.loading || state.investigations.loading
     }
 }
@@ -157,6 +184,7 @@ export { WardLocalized };
 interface Props {
     loading:boolean,
     ward:null | IWard,
+    error:number | null,
     bedsProps:null | IBed[],
     mode:WardModes,
     patient?:IPatient,
@@ -164,15 +192,18 @@ interface Props {
     deleteCallBack : (bed:IBed) => void,
     addCallBack : (bed:IBed) => void,    
     saveOrderCallBack: (beds:IBed[]) => void,
-    assignBedPatientCallBack ?: (bed:IBed) => void
+    assignBedPatientCallBack ?: (bed:IBed) => void,
+    resetErrorHospital: () => void,
+    goToPatientHistory:() => void
     
 }
 
-const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, 
-                        editCallBack, addCallBack, deleteCallBack, saveOrderCallBack, assignBedPatientCallBack}) => {
+const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error,
+                        editCallBack, addCallBack, deleteCallBack, saveOrderCallBack, assignBedPatientCallBack, resetErrorHospital, goToPatientHistory}) => {
     const [isDropped, setIsDropped] = useState(false);
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
-    
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
+
     const [reorder, setReorder] = useState(false);
     const [orderChanged, setOrderChanged] = useState(false);
     const [beds, setBeds] = useState<IBed[]>([]);
@@ -201,10 +232,9 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient,
     }
     
 
-    function assignBedPatientConfirm(bed:IBed){
-        console.log(bed);
-        if(assignBedPatientCallBack){
-            assignBedPatientCallBack(bed);
+    function assignBedPatientConfirm(){
+        if(assignBedPatientCallBack && bedToAssign){
+            assignBedPatientCallBack(bedToAssign);
         }
         
     }
@@ -250,8 +280,8 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient,
     }
     function resetBeds(){
         console.log("Discard order")
-        if(ward){
-            setBeds(JSON.parse(JSON.stringify(bedsProps)));
+        if(ward && bedsProps){
+            setBeds([...bedsProps]);
         }
         setOrderChanged(false);
     }
@@ -338,9 +368,43 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient,
             )
         }
     }
+    async function resetSnackBar(){
+        setShowSnackbar({show:false});
+        resetErrorHospital()
+    }
+    useEffect(()=>{
+        if(bedToAssign && error){
+            let messageSnackBar = "";
+                switch(error){
+                    case 1:
+                        messageSnackBar = "hospital.ward.error.bed-not-exist";
+                        break;
+                    case 2:
+                        messageSnackBar = "hospital.ward.error.bed-assigned";
+                        break;
+                    case 3:
+                        messageSnackBar = "hospital.ward.error.patient-not-exist";
+                        break;
+
+                    default:
+                        messageSnackBar = "hospital.ward.error.default"
+                }
+                    
+                setShowSnackbar({show:true, severity: "error", message : messageSnackBar});
+            
+        }
+        resetModal();
+    }, [error])
 
     useEffect(() =>{
-        resetBeds()
+        
+        if(bedToAssign && !error){
+            setShowSnackbar({show:true, severity: "success", message : "hospital.ward.assign-bed-success"});
+            setBedToAssign(null);
+            goToPatientHistory()
+        }
+        resetBeds();
+        resetModal();
     }, [bedsProps]);
     if(loading || ward === null || beds === null){
         return <Loader />
@@ -353,6 +417,25 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient,
         console.log(bedsProps);
         return(
             <BoxBckgr color="text.primary" style={{padding:'1rem'}}>
+                <Snackbar
+                    anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                    }}
+                    open={showSnackbar.show}
+                    autoHideDuration={2000}
+                    onClose={resetSnackBar}>
+                        <div>
+                            {
+                                (showSnackbar.message && showSnackbar.severity) &&
+                                <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
+                                    <Translate id={showSnackbar.message} />
+                                </Alert>
+                            }
+                        </div>
+                        
+                        
+                </Snackbar>
                 <Modal key="modal" open={showModal} closeModal={() => resetModal()}
                     title={bedToEdit ? <Translate id="hospital.ward.edit-bed" /> : addingBed ? <Translate id="hospital.ward.add-bed" /> : bedToDelete ? <Translate id="hospital.ward.delete-bed" /> : null}>
                         <div>
@@ -432,7 +515,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient,
                                     const bedButtonElement = (mode === WardModes.AssignPatient) ? 
                                     <BedButtonAssignBed name={bed.name} 
                                         active={bed.active} 
-                                        empty={bed.empty}
+                                        stay={bed.stay}
                                         gender={bed.gender === 0 ? "male" : bed.gender === 1 ? "female" : "any"} 
                                         onClickCallBack={() => assignBedPatient(bed)}
                                     /> 

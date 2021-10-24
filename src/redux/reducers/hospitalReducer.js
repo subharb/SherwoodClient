@@ -88,6 +88,25 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error; 
             return newState;
+        case types.CREATE_STAY_SUCCESS:
+            indexDepartment = findIndexDepartment(newState.data.departments, action.uuidDepartment);
+            tempDepartments = [...newState.data.departments];
+            department = tempDepartments[indexDepartment];
+            indexWard = findIndexWard(department, action.uuidWard);
+
+            ward = department.wards[indexWard];
+            bedIndex = ward.beds.findIndex((bed) => bed.id === action.stay.bed.id);
+            const tempBedsC = [...ward.beds];
+            const tempBedC = {...tempBedsC[bedIndex]};
+            tempBedC.stay = {...action.stay};
+            tempBedsC[bedIndex] = {...tempBedC};
+            ward.beds = [...tempBedsC];
+            department.wards[indexWard] = {...ward};
+
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error; 
+            return newState;
         case types.UPDATE_BED_WARD_SUCCESS:
             indexDepartment = findIndexDepartment(newState.data.departments, action.uuidDepartment);
             tempDepartments = [...newState.data.departments];
