@@ -18,6 +18,7 @@ import NotificationsDropdown from "./NotificationsDropdown";
 import MessagesDropdown from "./MessagesDropdown";
 import LanguagesDropdown from "./LanguagesDropdown";
 import UserDropdown from "./UserDropdown";
+import DataSensor from "./DataSensor";
 
 const AppBar = styled(MuiAppBar)`
   background: ${(props) => props.theme.header.background};
@@ -91,6 +92,7 @@ const AppBarComponent = ({ onDrawerToggle }) => (
           </Hidden>
           <Grid item xs />
           <Grid item>
+              <DataSensor />
               <OfflineDropDown />
               <LanguagesDropdown />
               <UserDropdown />
