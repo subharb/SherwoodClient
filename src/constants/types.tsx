@@ -31,12 +31,14 @@ export interface IResearcher{
     departments:IDepartment[]
 }
 
-interface PersonalData{
+export interface PersonalData{
     name ?: string,
     email ?: string,
     phone ?: string,
     surnames ?: string,
     birthdate ?: string,
+    health_id?:string,
+    sex:string,
     
 }
 export interface IPatient{

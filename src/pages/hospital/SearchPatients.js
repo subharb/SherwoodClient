@@ -144,6 +144,7 @@ export function SearchPatientsComponent(props) {
         setPatientHospitalized({...props.patients[patientHospitalizeIndex]});
     }
     function resetModal(){
+        console.log(patientHospitalizeIndex);
         setPatientHospitalizeIndex(-1);
     }
     function renderCore(){
@@ -208,7 +209,7 @@ export function SearchPatientsComponent(props) {
         <React.Fragment>
             <Modal key="modal" open={patientHospitalizeIndex !== -1} 
                 title={!patientHospitalized ? "¿Desea hospitalizar a este paciente?" : "Seleccione la sala"} 
-                closeCallBack={resetModal}
+                closeModal={resetModal}
                 >
                     {
                         (patientHospitalizeIndex !== -1 && !patientHospitalized) &&

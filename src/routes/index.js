@@ -75,7 +75,7 @@ import ShareInvestigationRouter from "../components/investigation/share/wrapper"
 
 import HomeSchedule from "../pages/hospital/HomeSchedule";
 
-import Patient from "../pages/hospital/Patient";
+import Patient from "../pages/hospital/patient";
 import SearchPatients from "../pages/hospital/SearchPatients";
 import TestsHome from "../pages/hospital/TestsHome";
 import AddPatient from "../pages/hospital/AddPatient";

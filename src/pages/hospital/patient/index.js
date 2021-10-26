@@ -2,48 +2,35 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux';
 import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
-import { EnhancedTable } from '../../components/general/EnhancedTable';
-import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../../redux/actions/submissionsPatientActions';
-import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../redux/actions/submissionsPatientActions';
-import Loader from '../../components/Loader';
-import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg } from '../../components/general/mini_components';
-import Modal from '../../components/general/modal';
+import { EnhancedTable } from '../../../components/general/EnhancedTable';
+import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../../../redux/actions/submissionsPatientActions';
+import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../../redux/actions/submissionsPatientActions';
+import Loader from '../../../components/Loader';
+import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg } from '../../../components/general/mini_components';
+import Modal from '../../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
-import { yearsFromDate, daysFromDate, numberRecordsSection } from '../../utils';
-import FillDataCollection from './FillDataCollection';
+import { yearsFromDate, daysFromDate, numberRecordsSection } from '../../../utils';
+import FillDataCollection from '../FillDataCollection';
 import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
-        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../routes';
-import { CloseIcon } from '@material-ui/data-grid';
-import ShowPatientRecords from '../../components/investigation/show/single/show_patient_records';
-import iconNotes from "../../img/icons/history.png";
-import iconImages from "../../img/icons/images.png";
-import iconLab from "../../img/icons/lab.png";
-import iconNotesGreen from "../../img/icons/history_green.png";
-import iconImagesGreen from "../../img/icons/images_green.png";
-import iconLabGreen from "../../img/icons/lab_green.png";
-import { useSnackBarState, useUpdateEffect } from '../../hooks';
-import { fetchProfileInfo } from '../../redux/actions/profileActions';
-import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../constants';
+        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../../routes';
+
+import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
+
+import { useSnackBarState, useUpdateEffect } from '../../../hooks';
+import { fetchProfileInfo } from '../../../redux/actions/profileActions';
+import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
+import { PatientToolBar } from './toolbar';
+
 
 
 const WhiteTypography = styled(Typography)`
     color:white;
     font-size: 1rem;
 `;
-
-const PatientToolBar = styled(Grid)`
-    background-color:white;
-    position:sticky;
-    top:53px;
-    z-index:1000;
-    @media (min-width: 768px) {
-        top:60px;
-    }
-`
 
 function Patient(props) {
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
@@ -79,7 +66,7 @@ function Patient(props) {
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     
-    const iconSelected = typeSurveys.length === 1 ? typeSurveys[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
+    const typSurveySelected = typeSurveys.length === 1 ? typeSurveys[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
     const filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
@@ -463,80 +450,14 @@ function Patient(props) {
                     }
                 </Modal>
                 <Grid container spacing={3}>
-                    <PatientToolBar item container className="patient_toolbar" xs={12}>
-                        <Grid item container xs={3} >
-                            {/* <Grid item xs={12}>
-                                <Typography variant="body2" gutterBottom>
-                                    {props.number}
-                                </Typography>
-                            </Grid> */}
-                            <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}
-                                onClick={props.investigations.currentInvestigation.permissions.includes(PERSONAL_ACCESS) ? editPersonalData : null} >
-                                <IconPatient gender={patient.personalData ? patient.personalData.sex : "undefined"} />
-                            </Grid>
-                        </Grid>
-                        <Grid item container xs={4}>
-                            <Grid item xs={12}>
-                                <Typography variant="body2" gutterBottom>
-                                    {
-                                        patient.personalData &&
-                                        patient.personalData.name+" "+patient.personalData.surnames
-                                    }
-                                    {
-                                        !patient.personalData &&
-                                        "Not available"
-                                    }
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Typography variant="body2" gutterBottom>
-                                    {
-                                        patient.personalData.health_id &&
-                                        [<Translate id="investigation.create.personal_data.fields.health_id" />, ":", patient.personalData.health_id]
-                                    }
-                                    {
-                                        !patient.personalData.health_id &&
-                                        ["ID", ":", patient.id ]
-                                    }                                    
-                                    
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Typography variant="body2" gutterBottom>
-                                    {years} years
-                                </Typography>
-                            </Grid>
-                            {/* <Grid item xs={12}>
-                                <Typography variant="body2" gutterBottom>
-                                    {stay} days
-                                </Typography>
-                            </Grid> */}
-                        </Grid>
-                        {
-                            props.investigations.currentInvestigation.permissions.includes(MEDICAL_READ) &&
-                            <Grid item container xs={5}  justify="center" alignItems="center">
-                                <Grid item xs={4}>
-                                    <Button data-testid="medical-notes" onClick={() => backToRoot()} >
-                                        <img src={iconSelected === TYPE_MEDICAL_SURVEY ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Button data-testid="images" onClick={() => goToTest(1)} >
-                                        <img src={iconSelected === TYPE_IMAGE_SURVEY ? iconImagesGreen : iconImages} alt="Images" height="40" />
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <Button data-testid="lab" onClick={() => goToTest(2)} >
-                                        <img src={iconSelected === TYPE_LAB_SURVEY ? iconLabGreen : iconLab} alt="Lab" height="40" />
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <ButtonAdd disabled={parameters.hasOwnProperty("action") && parameters["action"] === "fill"} data-testid="add-record" onClick={addRecord} />
-                                </Grid>
-                            </Grid>
-                        }
+                    <PatientToolBar showMedical={props.investigations.currentInvestigation.permissions.includes(MEDICAL_READ) }
+                        editPersonalData={props.investigations.currentInvestigation.permissions.includes(PERSONAL_ACCESS) ? editPersonalData : null}
+                        action={parameters} patientID={patient.id} personalData={patient.personalData} years={years}
+                        medicalNotesCallBack={() => backToRoot()} testCallBack={() => goToTest(1)} labCallBack={() => goToTest(2)}
+                        addRecordCallBack={addRecord}
+                        hospitalize={}
+                    />
                         
-                    </PatientToolBar>
                     <Grid item xs={12}>
                         {
                             renderCore()

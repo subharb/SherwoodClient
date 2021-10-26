@@ -132,6 +132,12 @@ function DepartmentsRouter(props){
         history.push(nextUrl);
     }
     
+
+    function viewWardCallBack(ward){
+        const nextUrl = HOSPITAL_WARD_SETTINGS_ROUTE.replace(":uuidWard", ward.uuid);
+        history.push(nextUrl);
+    }
+    
     async function editCallBack(uuid, department){       
         await dispatch(assignDepartmentToResearcherAction(uuid, department));
         
@@ -149,6 +155,7 @@ function DepartmentsRouter(props){
                 saveDepartmentCallBack={saveDepartmentCallBack} 
                 addWardCallBack={addWardCallBack} settingsCallBack={settingsCallBack}
                 editCallBack={editCallBack} deleteWardCallBack={deleteWardCallBack}
+                viewWardCallBack={viewWardCallBack}
                 resetError={resetError}
             />
 }
@@ -601,7 +608,8 @@ function Departments(props) {
                         <DepartmentsAccordion mode={DepartmentAccordionModes.Wards } researchers={props.researchers}
                             departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
                             editWardCallBack={editWard} deleteWardConfirmCallBack={deleteWardConfirm}
-                            addWardCallBack={addWard}
+                            addWardCallBack={addWard} settingsWardCallBack={props.settingsCallBack}
+                            viewWardCallBack={props.viewWardCallBack}
                             />
                     </TabPanel>
                     

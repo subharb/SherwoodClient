@@ -99,14 +99,9 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmen
                                         addWardCallBack(department.uuid);
                                     }
                                 }}></ButtonAdd>
-            if(department.wards.length === 0){
-                return [
-                    AddWardButton,
-                    <ListItemText primary={<Translate id="hospital.departments.no-wards"></Translate>} />
-                ]
-            }
-            else{
-                const wardsDepartment = department.wards.map((ward:IWard, index:number) => {
+    
+                
+            const wardsDepartment = department.wards.length === 0 ? <ListItemText primary={<Translate id="hospital.departments.no-wards"></Translate>} /> : department.wards.map((ward:IWard, index:number) => {
                     const bedsInfo = {
                         total:ward.beds.length,
                         male:ward.beds.filter((bed:IBed) => bed.gender === 0).length,
@@ -131,19 +126,19 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmen
                         }
                         
                     }
-                    
-                    
-                })
-                if(mode === DepartmentAccordionModes.WardSelection){
-                    return wardsDepartment
-                }
-                else{
-                    return [
-                        AddWardButton,
-                        wardsDepartment
-                    ]
-                }
+                
+                
+            })
+            if(mode === DepartmentAccordionModes.WardSelection){
+                return wardsDepartment
             }
+            else{
+                return [
+                    AddWardButton,
+                    wardsDepartment
+                ]
+            }
+            
         }   
         
     }

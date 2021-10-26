@@ -2166,11 +2166,11 @@ export const listPatientsHospitalWard = [
         dateIn:"2021/02/01",
         dateOut:null,
         
-        patient:{
+        personalData:{
             name:"Peter",
             surnames:"Petrelli",
             dateOfBirth:"1976/07/31",
-            gender:"male",
+            sex:"male",
         }
     },
     {
