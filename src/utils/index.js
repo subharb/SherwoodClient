@@ -2,7 +2,6 @@ import $ from 'jquery';
 import { func } from "prop-types";
 import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
-import { updateDataConsumption } from '../redux/actions/dataActions';
 
 /**
  * Function that validates fields from anywhere in the app
@@ -739,10 +738,21 @@ export  function datalogger(wrapped){
     return async function() {
         console.log('Starting');
         const result = await wrapped.apply(this, arguments);
-        const bytesDownloaded = Buffer.byteLength(JSON.stringify(result));  
+        const bytesDownloaded = Buffer.byteLength(JSON.stringify(result));
+        let total = 0;
 
-        updateDataConsumption(bytesDownloaded)
+        const dateStored = new Date(localStorage.getItem("data_download_date"));
+        console.log(dateStored);
+        if(localStorage.getItem("data_download_date") && new Date(localStorage.getItem("data_download_date")).toDateString() === new Date().toDateString()){
+            total = parseInt(localStorage.getItem("data_download"));
+        }
+        else{
+            localStorage.setItem("data_download_date", new Date());
+        }
+        total += bytesDownloaded;
+        localStorage.setItem("data_download", total);
 
+        console.log('Data Downloaded', formatData(total));
         return result;
       }
 }

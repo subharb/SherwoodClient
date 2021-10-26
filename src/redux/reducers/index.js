@@ -8,7 +8,7 @@ import patientsReducer from "./patientsReducer";
 import patientsSubmissions from "./submissionsPatientReducer";
 import offlineReducer from "./offlineReducer";
 import profileReducer from "./profileReducer";
-import dataReducer from "./dataReducer";
+
 
 export const rootReducer = combineReducers({
   themeReducer,
@@ -19,6 +19,5 @@ export const rootReducer = combineReducers({
   patientsSubmissions: patientsSubmissions,
   offline: offlineReducer,
   profile: profileReducer,
-  form:formReducer,
-  data:dataReducer
+  form:formReducer
 });
