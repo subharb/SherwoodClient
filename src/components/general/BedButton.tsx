@@ -67,11 +67,11 @@ const BedButton:React.FC<Props> = (props) => {
         if(!props.onClickCallBack){
             return 
         }
-        if(props.mode === WardModes.AssignPatient && props.stay){
+        if(props.mode === WardModes.AssignPatient && !props.stay){
             props.onClickCallBack()
             
         }
-        else{
+        else if(props.mode !== WardModes.AssignPatient){
             props.onClickCallBack();
         }
         
