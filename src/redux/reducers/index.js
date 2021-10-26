@@ -9,6 +9,7 @@ import patientsSubmissions from "./submissionsPatientReducer";
 import offlineReducer from "./offlineReducer";
 import profileReducer from "./profileReducer";
 
+
 export const rootReducer = combineReducers({
   themeReducer,
   authReducer,

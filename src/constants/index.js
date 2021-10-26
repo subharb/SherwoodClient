@@ -9,6 +9,9 @@ export const THEMES = {
   INDIGO: "INDIGO",
 };
 
+export const UPDATE_TOTAL_DATA = "UPDATE_TOTAL_DATA";
+
+
 // Auth
 export const AUTH_SIGN_IN_REQUEST = "AUTH_SIGN_IN_REQUEST";
 export const AUTH_SIGN_IN_SUCCESS = "AUTH_SIGN_IN_SUCCESS";

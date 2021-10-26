@@ -1,8 +1,10 @@
 import axios from "../utils/axios";
 import jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
+import { datalogger } from "../utils";
 
-export function answerRequest(uuidInvestigation, value, keyInvestigationResearcher) {
+
+export const answerRequest = datalogger((uuidInvestigation, value, keyInvestigationResearcher) => {
   return new Promise((resolve, reject) => {
     const putObject= {answer:value, keyInvestigationResearcher:keyInvestigationResearcher}
     axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+uuidInvestigation+'/answer', putObject, { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -16,9 +18,9 @@ export function answerRequest(uuidInvestigation, value, keyInvestigationResearch
         })
         .catch(err => {console.log('Catch', err); reject(err);}); 
   });
-}
+});
 
-export function fetchInvestigations() {
+export const fetchInvestigations = datalogger(() => {
     return new Promise((resolve, reject) => {
       
       axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -32,9 +34,9 @@ export function fetchInvestigations() {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+});
 
-export function fetchProfileService(uuidInvestigation) {
+export const fetchProfileService = datalogger( (uuidInvestigation) => {
     return new Promise((resolve, reject) => {
       
       axios.get(process.env.REACT_APP_API_URL+'/researcher/profile/'+uuidInvestigation, { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -48,9 +50,9 @@ export function fetchProfileService(uuidInvestigation) {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+});
 
-export function fetchInvestigation(uuid) {
+export const fetchInvestigation = datalogger((uuid) => {
     return new Promise((resolve, reject) => {
       
         axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/'+uuid, { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -64,9 +66,9 @@ export function fetchInvestigation(uuid) {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+})
 
-export function searchDrugService(searchText, country) {
+export const searchDrugService = datalogger((searchText, country) =>{
     return new Promise((resolve, reject) => {
       
         axios.get(process.env.REACT_APP_API_URL+'/hospital/search/drug/'+country+'/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -80,9 +82,9 @@ export function searchDrugService(searchText, country) {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+})
 
-export function searchDrugComponentService(searchText, country) {
+export const searchDrugComponentService = datalogger((searchText, country) => {
     return new Promise((resolve, reject) => {
       
         axios.get(process.env.REACT_APP_API_URL+'/hospital/search/component/'+country+'/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -96,9 +98,9 @@ export function searchDrugComponentService(searchText, country) {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+})
 
-export function uploadFile(file) {
+export const uploadFile = datalogger((file) =>{
     const formData = new FormData();
 
     formData.append("files", file);
@@ -125,9 +127,9 @@ export function uploadFile(file) {
                 reject(response.data);
             });
     });
-}
+});
 
-export function getFile(fileName) {
+export const getFile =datalogger((fileName) => {
  
     return new Promise((resolve, reject) => {
         axios.get(process.env.REACT_APP_API_URL+'/files/'+fileName, { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -141,11 +143,9 @@ export function getFile(fileName) {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+});
 
-
-
-export function searchDiagnosticService(searchText) {
+export const searchDiagnosticService = datalogger((searchText) => {
     return new Promise((resolve, reject) => {
       
         axios.get(process.env.REACT_APP_API_URL+'/hospital/search/diagnostic/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
@@ -159,9 +159,9 @@ export function searchDiagnosticService(searchText) {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+})
 
-export function fetchRecordsPatientFromSurvey(uuidInvestigation, patientUUID, surveyUUID) {
+export const fetchRecordsPatientFromSurvey = datalogger((uuidInvestigation, patientUUID, surveyUUID) => {
     return new Promise((resolve, reject) => {
       
         axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submission/"+patientUUID+"/survey/"+surveyUUID, { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -175,9 +175,9 @@ export function fetchRecordsPatientFromSurvey(uuidInvestigation, patientUUID, su
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+});
 
-export function fetchRecordsSurveysService(uuidInvestigation, surveyUUID) {
+export const fetchRecordsSurveysService = datalogger((uuidInvestigation, surveyUUID) => {
     return new Promise((resolve, reject) => {
         
         axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/survey/"+surveyUUID+"/submissions", { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -191,10 +191,10 @@ export function fetchRecordsSurveysService(uuidInvestigation, surveyUUID) {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+})
 
 
-export function fetchRecordsPatientAllSurveysService(uuidInvestigation, patientUUID) {
+export const fetchRecordsPatientAllSurveysService = datalogger((uuidInvestigation, patientUUID) => {
     return new Promise((resolve, reject) => {
       
         axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patient/"+patientUUID+"/submissions", { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -208,9 +208,9 @@ export function fetchRecordsPatientAllSurveysService(uuidInvestigation, patientU
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+})
 
-export function fetchSubmissionsAllPatientsInvestigationService(uuidInvestigation, surveyUUID) {
+export const fetchSubmissionsAllPatientsInvestigationService = datalogger((uuidInvestigation, surveyUUID) => {
     return new Promise((resolve, reject) => {
       
         axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submissions", { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -224,9 +224,9 @@ export function fetchSubmissionsAllPatientsInvestigationService(uuidInvestigatio
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
+});
 
-export function addPatient(uuidInvestigation, patientData){
+export const addPatient = datalogger((uuidInvestigation, patientData) => {
     return new Promise((resolve, reject) => {
         axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patient", patientData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .then((response) => {
@@ -242,9 +242,9 @@ export function addPatient(uuidInvestigation, patientData){
                 reject(err);
             }); 
     })
-}
+});
 
-export function updatePersonalDataPatientService(uuidInvestigation, uuidPatient, patientData){
+export const updatePersonalDataPatientService = datalogger((uuidInvestigation, uuidPatient, patientData) => {
     return new Promise((resolve, reject) => {
         axios.put(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patient/"+uuidPatient, patientData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .then((response) => {
@@ -257,9 +257,9 @@ export function updatePersonalDataPatientService(uuidInvestigation, uuidPatient,
             })
             .catch(err => {console.log('Catch', err); reject(err);}); 
     })
-}
+});
 
-export function getTokenWho(lang){
+export const getTokenWho = datalogger((lang) => {
     return new Promise((resolve, reject) => {
         axios.get(process.env.REACT_APP_API_URL+"/hospital/token/who/"+lang, { headers: {"Authorization" : localStorage.getItem("jwt")} })
             .then((response) => {
@@ -272,9 +272,9 @@ export function getTokenWho(lang){
             })
             .catch(err => {console.log('Catch', err); reject(err);}); 
     })
-}
+});
 
-export function postRecordPatientService(postObj, uuidInvestigation, patientId, surveyUUID) {
+export const postRecordPatientService = datalogger((postObj, uuidInvestigation, patientId, surveyUUID) => {
     return new Promise((resolve, reject) => {
         
         axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submission/"+patientId+"/survey/"+surveyUUID, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -293,9 +293,9 @@ export function postRecordPatientService(postObj, uuidInvestigation, patientId, 
                 // console.log(error.response.headers);
               console.log('Catch', error); reject(error);}); 
     });
-}
+});
 
-export function updateRecordPatientService(postObj, uuidInvestigation, patientId, surveyUUID, idSubmission) {
+export const updateRecordPatientService = datalogger((postObj, uuidInvestigation, patientId, surveyUUID, idSubmission) => {
     return new Promise((resolve, reject) => {
         
         axios.put(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patient/"+patientId+"/survey/"+surveyUUID+"/submission/"+idSubmission, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -309,8 +309,9 @@ export function updateRecordPatientService(postObj, uuidInvestigation, patientId
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
-export function getPatientsFromId(uuidInvestigation, patientId){
+});
+
+export const getPatientsFromId = datalogger((uuidInvestigation, patientId) => {
     return new Promise((resolve, reject) => {
         
         axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patientsfrom/"+patientId, { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -324,8 +325,9 @@ export function getPatientsFromId(uuidInvestigation, patientId){
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-}
-export function resetPassword(credentials) {
+});
+
+export const resetPassword = datalogger((credentials) => {
   return new Promise((resolve, reject) => {
     axios
       .post("/api/auth/reset-password", credentials)
@@ -339,10 +341,10 @@ export function resetPassword(credentials) {
         reject(error);
       });
   });
-}
+});
 
 
-export function getStatsFirstMonitoring(uuidInvestigation, startDate, endDate) {
+export const getStatsFirstMonitoring = datalogger((uuidInvestigation, startDate, endDate) => {
     return new Promise((resolve, reject) => {
       axios
         .get(process.env.REACT_APP_API_URL+"/hospital/investigation/"+uuidInvestigation+"/startDate/"+startDate+"/endDate/"+endDate+"/firstmonitoring",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -356,9 +358,9 @@ export function getStatsFirstMonitoring(uuidInvestigation, startDate, endDate) {
           reject(error);
         });
     });
-}
+});
 
-export function getSharedResearchersService(uuidInvestigation) {
+export const getSharedResearchersService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
       axios
         .get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/researchers",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -372,9 +374,9 @@ export function getSharedResearchersService(uuidInvestigation) {
           reject(error);
         });
     });
-}
+});
 
-export function getDepartmentsInstitutionService(uuidInstitution) {
+export const getDepartmentsInstitutionService = datalogger((uuidInstitution) => {
     return new Promise((resolve, reject) => {
       axios
         .get(process.env.REACT_APP_API_URL+"/hospital/departments/institution/"+uuidInstitution,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -388,9 +390,9 @@ export function getDepartmentsInstitutionService(uuidInstitution) {
           reject(error);
         });
     });
-}
+});
 
-export function assignDepartmentToResearcherService(uuidResearcher, uuidDepartment) {
+export const assignDepartmentToResearcherService = datalogger((uuidResearcher, uuidDepartment) => {
     return new Promise((resolve, reject) => {
       axios
         .post(process.env.REACT_APP_API_URL+"/hospital/department/"+uuidDepartment, {uuidResearcher}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -404,9 +406,9 @@ export function assignDepartmentToResearcherService(uuidResearcher, uuidDepartme
           reject(error);
         });
     });
-}
+});
 
-export function saveDepartmentInstitutionService(uuidInstitution, department) {
+export const saveDepartmentInstitutionService = datalogger((uuidInstitution, department) => {
     return new Promise((resolve, reject) => {
       axios
         .post(process.env.REACT_APP_API_URL+"/hospital/department/institution/"+uuidInstitution, department, { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -420,9 +422,9 @@ export function saveDepartmentInstitutionService(uuidInstitution, department) {
           reject(error);
         });
     });
-}
+});
 
-export function saveResearcherPermissions(uuidInvestigation, permissions) {
+export const saveResearcherPermissions = datalogger((uuidInvestigation, permissions) => {
     return new Promise((resolve, reject) => {
       axios
         .post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/permissions", permissions, { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -436,6 +438,6 @@ export function saveResearcherPermissions(uuidInvestigation, permissions) {
           reject(error);
         });
     });
-}
+});
 
 

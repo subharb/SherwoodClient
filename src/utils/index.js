@@ -719,3 +719,40 @@ export function areSameBirthDates(date1, date2){
     console.log(`Days: ${date1.getDate()} - ${date2.getDate()}`);
     return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
 }
+
+
+export function formatData(dataBytes){
+    if(dataBytes > 1000000){
+      return (dataBytes/1000000).toFixed(2)+"MB";  
+    }
+    else if(dataBytes > 1000){
+          return (dataBytes/1000).toFixed(2)+"KB";
+    }
+    else{
+        return dataBytes+"B";
+    }
+      
+}
+
+export  function datalogger(wrapped){
+    return async function() {
+        console.log('Starting');
+        const result = await wrapped.apply(this, arguments);
+        const bytesDownloaded = Buffer.byteLength(JSON.stringify(result));
+        let total = 0;
+
+        const dateStored = new Date(localStorage.getItem("data_download_date"));
+        console.log(dateStored);
+        if(localStorage.getItem("data_download_date") && new Date(localStorage.getItem("data_download_date")).toDateString() === new Date().toDateString()){
+            total = parseInt(localStorage.getItem("data_download"));
+        }
+        else{
+            localStorage.setItem("data_download_date", new Date());
+        }
+        total += bytesDownloaded;
+        localStorage.setItem("data_download", total);
+
+        console.log('Data Downloaded', formatData(total));
+        return result;
+      }
+}
