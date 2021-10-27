@@ -385,7 +385,9 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error,
                     case 3:
                         messageSnackBar = "hospital.ward.error.patient-not-exist";
                         break;
-
+                    case 4:
+                        messageSnackBar = "hospital.ward.error.patient-already-hospitalized";
+                        break;
                     default:
                         messageSnackBar = "hospital.ward.error.default"
                 }

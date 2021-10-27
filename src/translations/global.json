@@ -95,7 +95,8 @@
                 "bed-not-exist" : ["Bed does not exist, please refresh the page", "La cama no existe, refresque la página.", "Le lit n'existe pas, veuillez rafraîchir la page"],
                 "bed-assigned" : ["This bed is already busy", "Esta cama ya esta ocupada", "Ce lit est déjà occupé"],
                 "patient-not-exist" : ["patient does not exist", "El paciente no existe", "les patients n'existent pas"],
-                "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"]
+                "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"],
+                "patient-already-hospitalized" : ["This patient is already hospitalized, please discharge him from his bed first", "Este paciente ya está hospitalizado, primero déle de alta de su cama.", "Este paciente ya está hospitalizado, primero déle de alta de su cama."]
             },
             "bed" : {
                 "name" : ["Name", "Nombre", "Nom"],

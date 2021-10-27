@@ -24,6 +24,7 @@ import { useSnackBarState, useUpdateEffect } from '../../../hooks';
 import { fetchProfileInfo } from '../../../redux/actions/profileActions';
 import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
+import { getPatientStaysAction } from '../../../redux/actions/hospitalActions';
 
 
 
@@ -65,7 +66,7 @@ function Patient(props) {
     const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typeSurveys.includes(sur.type)) : [];
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
-    
+    const staysPatient = props.hospital.data && props.hospital.data.stays && props.hospital.data.stays[uuidPatient] ? props.hospital.data.stays[uuidPatient] : [];
     const typSurveySelected = typeSurveys.length === 1 ? typeSurveys[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
@@ -165,7 +166,7 @@ function Patient(props) {
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
         const postObj = {
-            uuid_survey:dataCollectionSelected.uuid,
+            uuid_survey:dataCollectionSelected.uuid, 
             uuid_patient:uuidPatient,
             id:idSubmission,
             researcher: props.profile.info,
@@ -291,7 +292,10 @@ function Patient(props) {
         }
         
     }
-   
+    function showHospitalizeAction(){
+        console.log("Mostrar menu para dar alta o cambiar de cama");
+    }
+
     useEffect(() => {
         setShowOptions(false);
     }, [uuidSection])
@@ -299,10 +303,15 @@ function Patient(props) {
         async function fetchRecordsPatient(){
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.currentInvestigation.uuid, uuidPatient));
         }
+        async function fetchPatientsStay(){
+            await dispatch(getPatientStaysAction(props.investigations.currentInvestigation.uuid, uuidPatient));
+        }
         if(props.investigations.data && (!props.patientsSubmissions.data || !props.patientsSubmissions.data.hasOwnProperty(uuidPatient))){
-            fetchRecordsPatient()
+            fetchRecordsPatient();
+            fetchPatientsStay()
         }
     }, [props.investigations])
+    
     useEffect(() => {
         if(!props.profile.info && props.investigations.currentInvestigation){
             dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
@@ -416,7 +425,7 @@ function Patient(props) {
     else{
         let years = patient.personalData ? yearsFromDate(patient.personalData.birthdate) : "Not Available";
         //let stay = daysFromDate(props.dateIn);
-
+        let isPatientHospitalized = staysPatient.length === 0 ? false : staysPatient[staysPatient.length -1].dateOut !== null;
         return (
             
             <React.Fragment>
@@ -455,7 +464,7 @@ function Patient(props) {
                         action={parameters} patientID={patient.id} personalData={patient.personalData} years={years}
                         medicalNotesCallBack={() => backToRoot()} testCallBack={() => goToTest(1)} labCallBack={() => goToTest(2)}
                         addRecordCallBack={addRecord}
-                        hospitalize={}
+                        hospitalize={ isPatientHospitalized ? showHospitalizeAction : null }
                     />
                         
                     <Grid item xs={12}>
@@ -475,7 +484,8 @@ const mapStateToProps = (state) =>{
         investigations : state.investigations,
         patientsSubmissions:state.patientsSubmissions,
         patients:state.patients,
-        profile:state.profile
+        profile:state.profile,
+        hospital:state.hospital
     }
 }
 export default connect(mapStateToProps, null)(Patient)

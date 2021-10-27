@@ -4,7 +4,7 @@ import {
   signUp as authSignUp,
   resetPassword as authResetPassword,
 } from "../../services/authService";
-import { assignDepartmentToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, getDepartmentsInstitutionService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services/sherwoodService";
+import { assignDepartmentToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, getDepartmentsInstitutionService, getPatientStaysService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services/sherwoodService";
 
 
 
@@ -198,6 +198,26 @@ export function createStayPatientAction(uuidInstitution, uuidDepartment, uuidWar
           stay: response.stay,
           uuidDepartment:uuidDepartment,
           uuidWard:uuidWard
+        });
+      })
+      .catch((error) => {
+        
+        dispatch({ ...error, type: types.HOSPITAL_ERROR});
+        throw error;
+      });
+  };
+}
+
+export function getPatientStaysAction(uuidPatient) {
+  return async (dispatch) => {
+    dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+
+    return getPatientStaysService(uuidPatient)
+      .then((response) => {
+        dispatch({
+          type: types.FETCH_PATIENT_STAYS,
+          stays: response.stays,
+          uuidPatient:uuidPatient
         });
       })
       .catch((error) => {
