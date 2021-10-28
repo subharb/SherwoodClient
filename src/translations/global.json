@@ -45,6 +45,7 @@
             "treatment_regular" : ["Select", "Seleccionar", "Pour sélectionner"],
             "treatment" : ["Select", "Seleccionar", "Pour sélectionner"]
         },
+        "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"],
         "no-results" : ["No results", "Sin resultados", "Sans results"]
     },
     "sign-in" : {
@@ -72,14 +73,18 @@
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
             "new-record" : ["Record saved", "Registro Guardado", "Enregistrement enregistré"],
             "new-record-offline" : ["Record saved offline", "Registro Guardado offline", "Enregistrement enregistré offline"],
-            "error" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
-            "error-nopatient" : ["You don't have access to this patient, please verify this patient belongs to the hospital you are logged in", "No tiene acceso a este paciente, verifique que este paciente pertenece al hospital en el que inició sesión", "Vous n'avez pas accès à ce patient, veuillez vérifier que ce patient appartient à l'hôpital auquel vous êtes connecté"],
             "updated-record" : ["Record updated!", "Registro Actualizado", "Fichier mis à jour"],
             "updated-record-offline" : ["Record updated Offline!", "Registro Actualizado Offline", "Fichier mis à jour Offline"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
-            "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
+            "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"],
+            "error" : {
+                "general" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
+                "patient-alredy-discharged" : ["This patient was already discharged, please refresh the clinical history", "Este paciente ya fue dado de alta, actualice la historia clínica", "Ce patient a déjà obtenu son congé, veuillez actualiser l'historique clinique"],
+                "no-patient" : ["You don't have access to this patient, please verify this patient belongs to the hospital you are logged in", "No tiene acceso a este paciente, verifique que este paciente pertenece al hospital en el que inició sesión", "Vous n'avez pas accès à ce patient, veuillez vérifier que ce patient appartient à l'hôpital auquel vous êtes connecté"],
+                "missing-discharge-survey" : ["The survey for to discharge patients is missing, please contact Sherwood for more details", "Falta el formulario para dar de alta a los pacientes, comuníquese con Sherwood para obtener más detalles.", "L'enquête pour la sortie des patients est manquante, veuillez contacter Sherwood pour plus de détails"]
+            }
         },
         "ward" : {
             "title" : ["Ward", "Sala", "Paroisse"],

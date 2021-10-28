@@ -1233,18 +1233,21 @@ export const patients_personal_data_decrypted = () => {
                     "phone" : "+34 7471771721",
                     "name" : "Peter",
                     "surnames" : "Petrelli Jimenez",
-                    "birthdate" : "1987/08/21"
+                    "birthdate" : "1987/08/21",
+                    "sex" : "male"
                 }
             
         },{
             "id" : 68,
+            "uuid":"dc4515d1-0555-4734-a6a4-5e4fbc27c6a4",
             "personalData": 
                 {
                     "email" : "donnie@gmail.com",
                     "phone" : "+1 61791 91892983",
                     "name" : "Donald",
                     "surnames" : "Trump Cruz",
-                    "birthdate" : "1947/01/11"
+                    "birthdate" : "1947/01/11",
+                    "sex" : "female"
                 }
         },
         {
@@ -2276,7 +2279,24 @@ export const wardInfo =
             "active": true,
             "gender": 1,
             "order": 11,
-            "empty" : false
+            "empty" : false,
+            "stay": {
+                "id": 10,
+                "dateIn": "2021-10-28T08:19:25.399Z",
+                "dateOut": null,
+                "updatedAt": "2021-10-28T08:19:25.399Z",
+                "createdAt": "2021-10-28T08:19:25.399Z",
+                "patientInvestigation": {
+                    "id": 1241,
+                    "uuid": "dc4515d1-0555-4734-a6a4-5e4fbc27c6a4",
+                    "status": 0,
+                    "investigationId": 2,
+                    "patientId": 1241,
+                    "patientIdInvestigation": 0,
+                    "encryptedKeyUsed": 0,
+                    "keyPatientInvestigation": "U2FsdGVkX1+0FkH3e0F011GnnHaRbbhSXBulTK4dUPv8DZlgKOSzPIxqdqFClfDXiAAdQl5sZo5pMM7lmG8ysw=="
+                }
+            }
         },
         {
             "id": 84,
@@ -2355,7 +2375,24 @@ export const wardInfo =
             "name": "a",
             "active": true,
             "gender": 0,
-            "order": 0
+            "order": 0,
+            "stay": {
+                "id": 10,
+                "dateIn": "2021-10-28T08:19:25.399Z",
+                "dateOut": null,
+                "updatedAt": "2021-10-28T08:19:25.399Z",
+                "createdAt": "2021-10-28T08:19:25.399Z",
+                "patientInvestigation": {
+                    "id": 1241,
+                    "uuid": "801952ca-66da-4410-8583-3faa6f460e03",
+                    "status": 0,
+                    "investigationId": 2,
+                    "patientId": 1241,
+                    "patientIdInvestigation": 0,
+                    "encryptedKeyUsed": 0,
+                    "keyPatientInvestigation": "U2FsdGVkX1+0FkH3e0F011GnnHaRbbhSXBulTK4dUPv8DZlgKOSzPIxqdqFClfDXiAAdQl5sZo5pMM7lmG8ysw=="
+                }
+            }
         }
     ]
 }

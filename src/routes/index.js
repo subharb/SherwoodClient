@@ -82,7 +82,7 @@ import AddPatient from "../pages/hospital/AddPatient";
 import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";
 import Departments from  "../pages/hospital/departments";
-import { WardLocalized } from  "../pages/hospital/departments/Ward";
+import { WardLocalized, WardModes } from  "../pages/hospital/departments/Ward";
 
 import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS, SHARE_RESEARCHERS } from "../constants";
 
@@ -104,6 +104,7 @@ export const MY_SCHEDULE_ROUTE = "/my-schedule";
 export const SEARCH_PATIENT_ROUTE = "/search-patient";
 export const ADD_PATIENT_ROUTE = "/add-patient";
 export const HOSPITAL_WARD_SETTINGS_ROUTE = "/ward/settings/:uuidWard";
+export const HOSPITAL_WARD_ROUTE = "/ward/:uuidWard";
 export const HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE = "/ward/settings/:uuidWard/patient/:uuidPatient";
 export const OUTPATIENTS_ROUTE = "/outpatients";
 export const HOSPITAL_PATIENT = "/patient/:uuidPatient";
@@ -220,14 +221,20 @@ const hospitalRoutes = {
             component: Departments,
         },
         {
+            path: HOSPITAL_WARD_ROUTE,
+            name: "Ward",
+            component: () => <WardLocalized mode={WardModes.View} />,
+        },
+        
+        {
             path: HOSPITAL_WARD_SETTINGS_ROUTE,
             name: "Ward",
-            component: WardLocalized,
+            component: () => <WardLocalized mode={WardModes.Edit} />,
         },
         {
             path: HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE,
             name: "Ward",
-            component: WardLocalized,
+            component: () =>  <WardLocalized mode={WardModes.AssignPatient} />,
         },
         
     ],

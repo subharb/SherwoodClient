@@ -19,7 +19,7 @@ import { useHistory } from "react-router-dom";
 
 import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
-import { HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
+import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
 
 const DEPARTMENT_FORM = {
@@ -134,7 +134,7 @@ function DepartmentsRouter(props){
     
 
     function viewWardCallBack(ward){
-        const nextUrl = HOSPITAL_WARD_SETTINGS_ROUTE.replace(":uuidWard", ward.uuid);
+        const nextUrl = HOSPITAL_WARD_ROUTE.replace(":uuidWard", ward.uuid);
         history.push(nextUrl);
     }
     
@@ -205,7 +205,7 @@ function Departments(props) {
     async function addDepartment(department){
         setAddingDepartment(false);
         setIsLoadingDepartments(true);
-        props.saveDepartmentCallBack()
+        props.saveDepartmentCallBack(department)
 
     }
 
@@ -575,7 +575,7 @@ function Departments(props) {
                             type="button" data-testid="add_researcher" 
                             onClick={() => {
                                 setShowModal(true);
-                                setShowOptions(true)
+                                setAddingDepartment(true);
                             }}></ButtonAdd>
                     </Grid>
                 </Grid>

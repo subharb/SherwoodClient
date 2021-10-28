@@ -574,7 +574,25 @@ export function getWardService(uuidInstitution, uuidWard) {
 export function getPatientStaysService(uuidPatient) {
   return new Promise((resolve, reject) => {
     axios
-      .get(process.env.REACT_APP_API_URL+"/hospital/stays"+uuidPatient, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .get(process.env.REACT_APP_API_URL+"/hospital/stays/"+uuidPatient, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+
+
+export function dischargePatientService(uuidInstitution, uuidPatient) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/discharge", {uuidPatient}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);

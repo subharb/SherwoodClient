@@ -215,14 +215,20 @@ export function SearchPatientsComponent(props) {
                         (patientHospitalizeIndex !== -1 && !patientHospitalized) &&
                         <Grid container>
                             <Grid item xs={12}>
+                                {
+                                    props.patients[patientHospitalizeIndex].personalData.health_id &&
+                                    [
+                                        <Translate id="investigation.create.personal_data.fields.health_id" />, ",", props.patients[patientHospitalizeIndex].personalData.health_id
+                                    ]
+                                }
                                 <Typography variant="body2">
-                                    Nombre: {props.patients[patientHospitalizeIndex].personalData.name}
+                                    <Translate id="investigation.create.personal_data.fields.name" />: {props.patients[patientHospitalizeIndex].personalData.name}
                                 </Typography>
                                 <Typography variant="body2">
-                                    Apellidos: {props.patients[patientHospitalizeIndex].personalData.surnames}    
+                                    <Translate id="investigation.create.personal_data.fields.surnames" />: {props.patients[patientHospitalizeIndex].personalData.surnames}    
                                 </Typography>
                                 <Typography variant="body2">
-                                    Género: {props.patients[patientHospitalizeIndex].personalData.sex === "Male" ? <Translate id="general.male" /> : <Translate id="general.female" />}    
+                                    <Translate id="investigation.create.personal_data.fields.sex" />: {props.patients[patientHospitalizeIndex].personalData.sex === "Male" ? <Translate id="general.male" /> : <Translate id="general.female" />}    
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} style={{paddingTop:'1rem'}}>

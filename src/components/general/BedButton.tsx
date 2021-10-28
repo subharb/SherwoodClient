@@ -3,11 +3,13 @@ import React from 'react'
 import { ButtonDelete, IconPatient } from './mini_components'
 import styled, { css } from 'styled-components';
 import { WardModes } from '../../pages/hospital/departments/Ward';
+import { IPatient, PersonalData } from '../../constants/types';
+import { sexStringToColor } from '../../utils';
 
 
-export const Container = styled("div")<{active?:boolean}>`
-    width:7rem;
-    height:7rem;
+export const Container = styled("div")<{active?:boolean, genderBorder:boolean, genderColor:string}>`
+    width:8rem;
+    height:8rem;
     background: #FFFFFF;
     border: 2px solid #6F6C6D;
     box-sizing: border-box;
@@ -20,8 +22,9 @@ export const Container = styled("div")<{active?:boolean}>`
     text-align: center;
     margin-left:1rem;
     margin-top:1rem;
-    padding:1rem;
+    padding:0.5rem;
     opacity:${props => props.active ? '1.0' : '0.7'};
+    box-shadow:${props => props.genderBorder ? props.genderColor+'  0px -0.55rem 0px inset' : 'none'};
 `;
 
 
@@ -46,19 +49,32 @@ export const TypographyFree = styled(Typography)`
 
 interface Props {
     mode:WardModes,
-    stay?:boolean,
-    active:boolean,
-    name:string,
+    active:boolean,    
     gender:string,
-    onClickCallBack?:() => void,
+    stay?:any,
+    name:string,   
+    age?:number  | null,
+    patient?:PersonalData | null
     deleteCallBack?:() => void,
+    onClickCallBack?:(uuidPatient?:string) => void,
+}
+interface PropsEdit extends Omit<Props, "mode" | "age" >{
+    name:string,    
+    deleteCallBack:() => void,
 }
 
-type PropsEdit = Omit<Props, "mode">;
+interface PropsView extends Omit<Props, "mode" | "deleteCallBack">{
+    patient:PersonalData | null,
+    age:number | null,
+}
 
-type PropsAssign = Omit<Props, "deleteCallBack" | "mode">;
+interface PropsAssign extends Omit<Props, "mode" | "age" | "deleteCallBack" >{
+    stay:boolean
+}
+
 
 export const BedButtonEdit:React.FC<PropsEdit> = (props) => <BedButton {...props} mode={WardModes.Edit} />
+export const BedButtonViewPatient:React.FC<PropsView> = (props) => <BedButton {...props} mode={WardModes.View} />
 export const BedButtonAssignBed:React.FC<PropsAssign> = (props) => <BedButton {...props} mode={WardModes.AssignPatient} />
 
 const BedButton:React.FC<Props> = (props) => {
@@ -83,13 +99,15 @@ const BedButton:React.FC<Props> = (props) => {
         }
     }
     
-    const active = !props.active ? false : (props.mode === WardModes.AssignPatient && !props.stay) ? true : (props.mode === WardModes.Edit);
+    const active = !props.active ? false : (props.mode === WardModes.AssignPatient && !props.stay) ? true : props.active;
+    const name = props.mode === WardModes.View && props.patient ? props.patient.name+" "+props.patient.surnames : props.name;  
+    const showIcon = !(props.mode === WardModes.View && props.patient)
     return (
-        <Container active={active} onClick={onClick} >
+        <Container active={active} onClick={onClick} genderBorder={!showIcon} genderColor={sexStringToColor(props.gender)} >
             <Grid container xs={12}>
                 <GridHeaderPatient xs={12} type={props.mode} >
-                    <Typography variant="body2" component="span" gutterBottom >
-                        {props.name}
+                    <Typography variant="body2" style={{lineHeight:1}} component="span" gutterBottom>
+                        {name}
                     </Typography>
                     {
                         props.mode === "edit" &&
@@ -97,9 +115,23 @@ const BedButton:React.FC<Props> = (props) => {
                     }
                     
                 </GridHeaderPatient>
-                <Grid xs={12} style={{textAlign:"center"}}>
-                    <IconPatient width="30" gender={props.gender} />
-                </Grid>
+                {
+                    (showIcon) &&
+                    <Grid xs={12} style={{textAlign:"center"}}>
+                        <IconPatient width="30" gender={props.gender} />
+                    </Grid>
+                }
+                {
+                    props.stay &&
+                    <React.Fragment>
+                        <Typography variant="body2" component="span" gutterBottom style={{height:'1px', color:"darkblue"}} >
+                            {props.age} years
+                        </Typography>
+                        <Typography variant="body2" component="span" gutterBottom style={{height:'1px', color:"green"}} >
+                            {props.stay} Days
+                        </Typography>
+                    </React.Fragment>
+                }
                 {/* <Grid item xs={8} >
                     <Grid xs={12} style={{textAlign:"center"}}>
                         <Typography variant="body2" gutterBottom>

@@ -5,7 +5,7 @@ import { personal_data_investigation1, investigation_server, wardInfo, patients_
 
 import ProviderSherwood from '../../providerSherwood';
 import Ward, {WardFormEdit}  from '../../pages/hospital/departments/Ward';
-import { BedButton, BedButtonAssignBed, BedButtonEdit } from '../../components/general/BedButton';
+import { BedButton, BedButtonAssignBed, BedButtonEdit, BedButtonViewPatient } from '../../components/general/BedButton';
 
 export default {
   title: 'Hospital/Ward',
@@ -25,6 +25,7 @@ const TemplateWard = (args) => <Ward {...args} />;
 
 const TemplateBedEdit = (args) => <BedButtonEdit {...args} />; 
 const TemplateBedAssigned = (args) => <BedButtonAssignBed {...args} />; 
+const TemplateBedView = (args) => <BedButtonViewPatient {...args} />; 
 
 export const BedEdit = TemplateBedEdit.bind({});
 BedEdit.args = {
@@ -40,6 +41,17 @@ BedAssignBed.args = {
     name:"Test Bed",
     gender:"female",
     mode:"assign-patient",
+    onClick:() => console.log("Se hace click"),
+    deleteCallBack:() => console.log("Delete!"),
+};
+
+export const BedView = TemplateBedView.bind({});
+BedView.args = {
+    name:"Test Bed",
+    gender:"male",
+    mode:"view",
+    stay:3,
+    patient:patients_personal_data_decrypted()[0].personalData,
     onClick:() => console.log("Se hace click"),
     deleteCallBack:() => console.log("Delete!"),
 };
@@ -78,6 +90,17 @@ WardAssignBedPatient.args = {
     ward:wardInfo,
     bedsProps:wardInfo.beds,
     patient:patients_personal_data_decrypted()[0],
+    assignBedPatientCallBack:(bed) => console.log("Bed Patient!", bed), 
+  
+};
+
+export const WardView = TemplateWard.bind({});
+WardView.args = {
+    mode:"view",
+    loading:false,
+    ward:wardInfo,
+    bedsProps:wardInfo.beds,
+    patients:patients_personal_data_decrypted(),
     assignBedPatientCallBack:(bed) => console.log("Bed Patient!", bed), 
   
 };

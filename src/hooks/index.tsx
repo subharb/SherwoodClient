@@ -29,8 +29,8 @@ export function useRouter(initValue:any){
 
 export function useDepartments(){
     const investigations= useSelector((state:any) => state.investigations);
-    const departments = useSelector((state:any) => state.hospital.data ? state.hospital.data.departments : []);
-    const researchers = useSelector((state:any) => state.hospital.data ? state.hospital.data.researchers : []);
+    const departments = useSelector((state:any) => state.hospital.data.departments ? state.hospital.data.departments : []);
+    const researchers = useSelector((state:any) => state.hospital.data.researchers ? state.hospital.data.researchers : []);
     const loading = useSelector((state:any) => state.hospital.loading | state.investigations.loading);
 
     const dispatch = useDispatch();

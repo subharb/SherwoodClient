@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux';
+import * as types from "../../../constants";
 import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../../../redux/actions/submissionsPatientActions';
 import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../../redux/actions/submissionsPatientActions';
 import Loader from '../../../components/Loader';
-import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg } from '../../../components/general/mini_components';
+import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
 import { yearsFromDate, daysFromDate, numberRecordsSection } from '../../../utils';
@@ -24,7 +25,7 @@ import { useSnackBarState, useUpdateEffect } from '../../../hooks';
 import { fetchProfileInfo } from '../../../redux/actions/profileActions';
 import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
-import { getPatientStaysAction } from '../../../redux/actions/hospitalActions';
+import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
 
 
 
@@ -37,7 +38,9 @@ function Patient(props) {
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
     const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
-    
+    const [showMenuHospitalize, setShowMenuHospitalize] = useState(false);
+    const [dischargeConfirm, setDischargeConfirm] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [surveyRecords, setSurveyRecords] = useState(null);
     const [showOptions, setShowOptions] = useState(false);
@@ -66,18 +69,35 @@ function Patient(props) {
     const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typeSurveys.includes(sur.type)) : [];
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
-    const staysPatient = props.hospital.data && props.hospital.data.stays && props.hospital.data.stays[uuidPatient] ? props.hospital.data.stays[uuidPatient] : [];
+    const staysPatient = props.hospital.data.stays && props.hospital.data.stays[uuidPatient] ? props.hospital.data.stays[uuidPatient] : [];
     const typSurveySelected = typeSurveys.length === 1 ? typeSurveys[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     
-    const filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
+    let filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
         return typeSurveys.includes(rec.typeSurvey)
     }) : [];
+    staysPatient.forEach((stay) => {
+        filteredRecords.push({
+            researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
+            surveyName : "Hospitalized in "+stay.bed.ward.name,
+            createdAt : stay.dateIn
+        })
+        if(stay.dateOut){
+            filteredRecords.push({
+                researcher : stay.checkoutResearcher.researcher.name +" "+stay.checkoutResearcher.researcher.surnames,
+                surveyName : "Discharged from "+stay.bed.ward.name,
+                createdAt : stay.dateOut
+            })  
+        }
+    })
+    filteredRecords = filteredRecords.sort((a, b) => a.createdAt > b.createdAt)
+    
     const translations = typeSurveys.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typeSurveys.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
 
     function addRecord(){
         if(!parameters.hasOwnProperty("typeTest")){
-            setShowOptions(!showOptions);
+            setShowOptions(true);
+            setShowModal(true);
         }
         else{
             const filterType = parameters.typeTest === "images" ? TYPE_IMAGE_SURVEY : TYPE_LAB_SURVEY;
@@ -88,6 +108,23 @@ function Patient(props) {
                 .replace(":idSubmission", "");
             history.push(nextUrl);
         }
+    }
+    async function discharge(){
+        const dischargeSurvey = props.investigations.currentInvestigation.surveys.find((sur) => sur.type === types.TYPE_DISCHARGE_SURVEY);
+        if(dischargeSurvey){
+            const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidDataCollection", dischargeSurvey.uuid)
+                .replace(":uuidPatient", uuidPatient).replace(":action", "fill")
+                .replace(":idSubmission", "");
+            console.log("Next url", nextUrl);
+
+            resetModal();
+
+            history.push(nextUrl);
+        }
+        else{
+            setShowSnackbar({show:true, severity: "warning", message : "hospital.patient.error.missing-discharge-survey"});
+        }
+        //
     }
     function goToTest(value){
         const nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", value === 1 ? "images" : "lab")
@@ -115,9 +152,7 @@ function Patient(props) {
                 .replace(":idSubmission", "");
             console.log("Next url", nextUrl);
 
-            setShowOptions(false);
-            //setIndexDataCollection(-1);
-            //setIndexSection(-1);
+            resetModal();
 
             history.push(nextUrl);
         }
@@ -127,15 +162,12 @@ function Patient(props) {
         const nextUrl = HOSPITAL_PATIENT_SECTION.replace(":uuidDataCollection", submission.uuidSurvey)
                 .replace(":uuidPatient", uuidPatient).replace(":action", "update").replace(":uuidSection", uuidSection)
                 .replace(":idSubmission", idSubmission);
-        setShowOptions(false);
+        resetModal();
         //setIndexDataCollection(-1);
         //setIndexSection(-1);
         history.push(nextUrl);
     }
-    function sectionSelect(indexSection){
-        
-        
-    }
+
     function backToRoot(){
         const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
         console.log("Next url", nextUrl);
@@ -156,13 +188,12 @@ function Patient(props) {
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
-    function selectRecord(index){
-        console.log("Row seleccionado ", surveyRecords[index]);
-        
-        const nextUrl = HOSPITAL_PATIENT_MEDICAL_NOTE.replace(":uuidPatient", uuidPatient).replace(":idMedicalNote", surveyRecords[index].id);
-        console.log("Next url", nextUrl);
-        history.push(nextUrl);
+    function resetModal(){
+        setShowOptions(false);
+        setShowModal(false);
+        setDischargeConfirm(false);
     }
+
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
         const postObj = {
@@ -185,6 +216,7 @@ function Patient(props) {
         else{
             //setIndexSection(-1);
             setShowOptions(true);
+            setShowModal(true);
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
             console.log(data);
@@ -235,8 +267,6 @@ function Patient(props) {
         // }
     }
     function renderCore(){
-        
-            
         if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
             const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
             if(savedDataCollection){
@@ -282,6 +312,7 @@ function Patient(props) {
     }
     function closeModal(){
         setShowOptions(false);
+        setShowModal(false);
         //setIndexSection(-1);
         setIndexDataCollection(-1);
     }
@@ -290,21 +321,46 @@ function Patient(props) {
         if(props.patientsSubmissions.error){
             await dispatch(resetPatientsSubmissionsError())
         }
+        if(props.hospital.error){
+            async function resetError(){
+                await dispatch({
+                    type:types.HOSPITAL_RESET_ERROR
+                })
+            }
+        }
         
     }
-    function showHospitalizeAction(){
-        console.log("Mostrar menu para dar alta o cambiar de cama");
+    async function makeDischarge(){
+        (await dispatch(dischargePatientAction(props.investigations.currentInvestigation.institution.uuid, uuidPatient)))
     }
+    function showConfirm(){
+        setDischargeConfirm(true);
+        setShowModal(true);
+    }
+    useEffect(() => {
+        if(props.hospital.error){
+            let message = "";
+            switch(props.hospital.error){
+                case 10: 
+                    message = "hospital.patient.error.patient-alredy-discharged";
+                    break;
+                default:
+                    message = "general.error";
+            }
 
+            setShowSnackbar({show:true, severity:"error", message : message});
+        }
+    }, [props.hospital.error])
     useEffect(() => {
         setShowOptions(false);
+        setShowModal(false);
     }, [uuidSection])
     useEffect(() => {
         async function fetchRecordsPatient(){
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.currentInvestigation.uuid, uuidPatient));
         }
         async function fetchPatientsStay(){
-            await dispatch(getPatientStaysAction(props.investigations.currentInvestigation.uuid, uuidPatient));
+            await dispatch(getPatientStaysAction(uuidPatient));
         }
         if(props.investigations.data && (!props.patientsSubmissions.data || !props.patientsSubmissions.data.hasOwnProperty(uuidPatient))){
             fetchRecordsPatient();
@@ -325,7 +381,10 @@ function Patient(props) {
         if(action === "fill"){
             setShowSnackbar({show:true, severity:"success", message : "hospital.patient.new-record"});
         }
-        
+        if(dataCollectionSelected.type === types.TYPE_DISCHARGE_SURVEY){
+            makeDischarge()
+        }
+        //Curso el alta del paciente si el ultimo registro es de un formulario de alta
     }, [props.patientsSubmissions.nUpdatedRegisters]);
     
     useEffect(() => {
@@ -378,10 +437,10 @@ function Patient(props) {
             let severity = "error";
             let message = "";
             if(action === "update"){
-                message = "hospital.patient.error";
+                message = "hospital.patient.error.general";
             }
             if(action === "fill"){
-                message = "hospital.patient.error";
+                message = "hospital.patient.error.general";
             }
             if(props.patientsSubmissions.error === 2){
                 severity = "warning";
@@ -417,7 +476,7 @@ function Patient(props) {
         return(
             <BoxBckgr color="text.primary" style={{padding:"1rem"}}>
                 <Alert mb={4} severity="error">
-                    <Translate id="hospital.patient.error-nopatient" />
+                    <Translate id="hospital.patient.error.no-patient" />
                 </Alert>
             </BoxBckgr>
         ) 
@@ -425,7 +484,7 @@ function Patient(props) {
     else{
         let years = patient.personalData ? yearsFromDate(patient.personalData.birthdate) : "Not Available";
         //let stay = daysFromDate(props.dateIn);
-        let isPatientHospitalized = staysPatient.length === 0 ? false : staysPatient[staysPatient.length -1].dateOut !== null;
+        let isPatientHospitalized = staysPatient.length === 0 ? false : staysPatient[staysPatient.length -1].dateOut === null;
         return (
             
             <React.Fragment>
@@ -445,7 +504,7 @@ function Patient(props) {
                         }
                         
                 </Snackbar>
-                <Modal isTransparent={true} open={showOptions || loading || saved} closeModal={closeModal}>
+                <Modal isTransparent={showOptions} open={showModal || loading || saved } closeModal={closeModal}>
                     {
                         saved &&
                         <CheckCircleOutlineSvg style={{ color: "green",fontSize: 80 }}/>
@@ -457,14 +516,59 @@ function Patient(props) {
                         }
                         </Grid>
                     }
+                    {
+                        dischargeConfirm && 
+                        
+                        <Grid container>
+                             <Grid item xs={12}>
+                                <Typography variant="h6" component="div" gutterBottom>
+                                    <Typography variant="body2">Are you sure you want to discharge this patient?</Typography>
+                                </Typography>
+                                <Typography variant="body2" style={{fontWeight:'bold'}} component="div" gutterBottom>
+                                {
+                                    patient.personalData.health_id &&
+                                    [
+                                        <Translate id="investigation.create.personal_data.fields.health_id" />, ",", patient.personalData.health_id
+                                    ]
+                                }
+                                <Typography variant="body2">
+                                    <Translate id="investigation.create.personal_data.fields.name" />: {patient.personalData.name}
+                                </Typography>
+                                <Typography variant="body2">
+                                    <Translate id="investigation.create.personal_data.fields.surnames" />: {patient.personalData.surnames}    
+                                </Typography>
+                                <Typography variant="body2">
+                                    <Translate id="investigation.create.personal_data.fields.sex" />: {patient.personalData.sex === "Male" ? <Translate id="general.male" /> : <Translate id="general.female" />}    
+                                </Typography>
+                                </Typography>
+                                
+                             </Grid>
+                             <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                    <Translate id="general.cancel" />
+                                </ButtonCancel>
+                                <ButtonContinue onClick={() => discharge()} data-testid="continue-modal" color="primary">
+                                    <Translate id="general.continue" />
+                                </ButtonContinue>
+                            </Grid>
+                        </Grid>
+                    }
+                    {
+                        (showMenuHospitalize && !dischargeConfirm) &&
+                        <ButtonGrey onClick={()=> {
+                            setDischargeConfirm(true);
+                        }} data-testid="select-hospital" >Alta Hospitalaria</ButtonGrey>
+                    }
                 </Modal>
                 <Grid container spacing={3}>
                     <PatientToolBar showMedical={props.investigations.currentInvestigation.permissions.includes(MEDICAL_READ) }
                         editPersonalData={props.investigations.currentInvestigation.permissions.includes(PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} patientID={patient.id} personalData={patient.personalData} years={years}
-                        medicalNotesCallBack={() => backToRoot()} testCallBack={() => goToTest(1)} labCallBack={() => goToTest(2)}
+                        medicalNotesCallBack={() => backToRoot()} 
+                        testCallBack={() => goToTest(1)} 
+                        labCallBack={() => goToTest(2)}
                         addRecordCallBack={addRecord}
-                        hospitalize={ isPatientHospitalized ? showHospitalizeAction : null }
+                        hospitalize={ isPatientHospitalized ?  showConfirm : null }
                     />
                         
                     <Grid item xs={12}>

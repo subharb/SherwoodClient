@@ -723,3 +723,12 @@ export function areSameBirthDates(date1, date2){
     console.log(`Days: ${date1.getDate()} - ${date2.getDate()}`);
     return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
 }
+
+export function sexNumberToString(sex){
+    return sex === 0 ? "male" : sex === 1 ? "female" : "any"
+}
+
+export function sexStringToColor(sex){
+    const sexLowercase = sex.toLowerCase();
+    return sexLowercase === "male" ? "#f3948a" : sexLowercase === "female" ? "#4da7ab" : "#aba74d";
+}

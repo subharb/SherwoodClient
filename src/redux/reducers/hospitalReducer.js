@@ -7,7 +7,11 @@ import { decryptPatientsData } from '../../utils';
  */
 
  const initialState = {
-    data: null,
+    data: {
+        researchers:null,
+        departments:null,
+        stays:null
+    },
     loading: false,
     error: null
 }
@@ -35,10 +39,9 @@ export default function reducer(state = initialState, action){
     let bedIndex;
     switch(action.type){
         case types.FETCH_HOSPITAL_SUCCESS:
-            newState.data = {
-                researchers : action.researchers,
-                departments : action.departments
-            };    
+            newState.data.researchers = action.researchers;
+            newState.data.departments = action.departments;
+           
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;
