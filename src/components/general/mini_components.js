@@ -38,13 +38,13 @@ export const IconGenerator = (props) => {
         case "add":
             return <AddIcon style={{color:props.theme.buttonContinue.secondary.background }} />
         case "view":
-            return <RemoveRedEyeIcon style={{color:"#000"}} />
+            return <RemoveRedEyeIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}/>
         case "delete":
-            return <DeleteIcon style={{color:"red"}}/>
+            return <DeleteIcon style={{color:"red"}} fontSize={props.size ? props.size : "small"}/>
         case "edit":
-            return <EditIcon  style={{color:"yellow"}}/>
+            return <EditIcon  style={{color:"yellow"}} fontSize={props.size ? props.size : "small"}/>
         case "hospital":
-            return <HotelIcon style={{color:"#000"}} />
+            return <HotelIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
         default:
             return <AddIcon />
     }

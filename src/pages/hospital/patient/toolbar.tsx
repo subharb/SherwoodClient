@@ -31,7 +31,6 @@ interface Props{
 const Container = styled(Grid)`
     background-color:white;
     position:sticky;
-    border:1px red solid;
     top:53px;
     z-index:1000;
     @media (min-width: 768px) {
@@ -97,17 +96,17 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, showMed
             {
                 showMedical &&
                 <Grid item container xs={5}  justify="center" alignItems="center">
-                    <Grid item xs={4}>
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="medical-notes" onClick={() => medicalNotesCallBack()} >
                             <img src={typeSurveySelected === TYPE_MEDICAL_SURVEY ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
                         </Button>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="images" onClick={() => testCallBack()} >
                             <img src={typeSurveySelected === TYPE_IMAGE_SURVEY ? iconImagesGreen : iconImages} alt="Images" height="40" />
                         </Button>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="lab" onClick={() => labCallBack()} >
                             <img src={typeSurveySelected === TYPE_LAB_SURVEY ? iconLabGreen : iconLab} alt="Lab" height="40" />
                         </Button>
@@ -117,7 +116,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, showMed
                         {
                             hospitalize &&
                             <Button data-testid="lab" onClick={ hospitalize} >
-                                <IconGenerator type="hospital" />
+                                <IconGenerator type="hospital" size="large" />
                             </Button>
                         }
                         
