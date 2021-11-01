@@ -296,7 +296,7 @@ function Departments(props) {
         />
         }
         return (
-            <Grid item  xs={12}>
+            <Grid item xs={12}>
                 {content}
             </Grid>
         )
@@ -587,9 +587,9 @@ function Departments(props) {
                     </Grid>
                     <AppBar position="static">
                         <Tabs value={tabSelector} onChange={handleChange} aria-label="simple tabs example">
-                        <Tab label="Users" {...a11yProps(0)} />
-                        <Tab label="Departments" {...a11yProps(1)} />
-                        <Tab label="In Patients" {...a11yProps(1)} />
+                        <Tab label={<Translate id="hospital.departments.users" />} {...a11yProps(0)} />
+                        <Tab label={<Translate id="hospital.departments.departments" />} {...a11yProps(1)} />
+                        <Tab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
                         
                         </Tabs>
                     </AppBar>

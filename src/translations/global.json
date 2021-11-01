@@ -95,6 +95,11 @@
             "select-bed" : ["Select the bed you wish to hospitalize the patient", "Seleccione la cama en la que desea hospitalizar a la paciente.", "Sélectionnez le lit dans lequel vous souhaitez hospitaliser le patient"],
             "assign-bed-ward-prompt" : ["Are you sure to want to assign this bed?", "¿Estás seguro de querer asignar esta cama?", "Êtes-vous sûr de vouloir attribuer ce lit ?"],
             "assign-bed-success" : ["Bed assigned correctly", "Cama asignada correctamente", "Lit correctement attribué"],
+            "bed" : {
+                "name" : ["Name", "Nombre", "Nom"],
+                "genre" : ["Genre", "Género", "Genre"],
+                "active" : ["Active", "Activa", "Active"]
+            },
             "error" : {
                 "default" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
                 "bed-not-exist" : ["Bed does not exist, please refresh the page", "La cama no existe, refresque la página.", "Le lit n'existe pas, veuillez rafraîchir la page"],
@@ -102,11 +107,6 @@
                 "patient-not-exist" : ["patient does not exist", "El paciente no existe", "les patients n'existent pas"],
                 "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"],
                 "patient-already-hospitalized" : ["This patient is already hospitalized, please discharge him from his bed first", "Este paciente ya está hospitalizado, primero déle de alta de su cama.", "Este paciente ya está hospitalizado, primero déle de alta de su cama."]
-            },
-            "bed" : {
-                "name" : ["Name", "Nombre", "Nom"],
-                "genre" : ["Genre", "Género", "Genre"],
-                "active" : ["Active", "Activa", "Active"]
             }
             
         },
@@ -116,6 +116,9 @@
                 "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
             },
             "department" : ["Departament", "Departamento", "Department"],
+            "departments" : ["Departaments", "Departamentos", "Departments"],
+            "users" : ["Users", "Usuarios", "utilisateurs"],
+            "inpatients" : ["Inpatients", "Pacientes hospitalizados", "patients hospitalisés"],
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
             "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
             "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "¿está seguro de borrar esta sala?"],

@@ -113,7 +113,6 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmen
                                     selectWardCallBack = {() => selectWardCallBack(ward)}
                                 />)
                         }
-                        
                     }
                     else{
                         if(editWardCallBack && viewWardCallBack && settingsWardCallBack && deleteWardConfirmCallBack){
@@ -133,10 +132,15 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmen
                 return wardsDepartment
             }
             else{
-                return [
-                    AddWardButton,
-                    wardsDepartment
-                ]
+                return(
+                <Grid container>
+                    <Grid xs={12} item style={{marginBottom:'1rem'}}>
+                        { AddWardButton }
+                    </Grid>
+                    <Grid xs={12} container item>
+                        {wardsDepartment}
+                    </Grid>
+                </Grid>)
             }
             
         }   
