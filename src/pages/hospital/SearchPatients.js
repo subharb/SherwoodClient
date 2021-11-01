@@ -19,6 +19,7 @@ import { updatePatientsFromId } from '../../redux/actions/patientsActions';
 import _ from 'lodash';
 import Modal from '../../components/general/modal';
 import { DepartmentsAccordionRedux } from './departments/DepartmentsAccordion';
+import { yearsFromDate } from '../../utils';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -221,6 +222,12 @@ export function SearchPatientsComponent(props) {
                                         <Translate id="investigation.create.personal_data.fields.health_id" />, ",", props.patients[patientHospitalizeIndex].personalData.health_id
                                     ]
                                 }
+                                {
+                                    !props.patients[patientHospitalizeIndex].personalData.health_id && 
+                                    <Typography variant="body2" >
+                                        <Translate id="investigation.create.personal_data.fields.uuid" />:{ props.patients[patientHospitalizeIndex]?.id}
+                                    </Typography>
+                                }
                                 <Typography variant="body2">
                                     <Translate id="investigation.create.personal_data.fields.name" />: {props.patients[patientHospitalizeIndex].personalData.name}
                                 </Typography>
@@ -229,6 +236,9 @@ export function SearchPatientsComponent(props) {
                                 </Typography>
                                 <Typography variant="body2">
                                     <Translate id="investigation.create.personal_data.fields.sex" />: {props.patients[patientHospitalizeIndex].personalData.sex === "Male" ? <Translate id="general.male" /> : <Translate id="general.female" />}    
+                                </Typography>
+                                <Typography variant="body2">
+                                    <Translate id="hospital.analytics.graphs.age.table-title" />: {yearsFromDate(props.patients[patientHospitalizeIndex].personalData.birthdate)}    
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} style={{paddingTop:'1rem'}}>

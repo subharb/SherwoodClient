@@ -137,7 +137,7 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, uuidDepartmen
                     <Grid xs={12} item style={{marginBottom:'1rem'}}>
                         { AddWardButton }
                     </Grid>
-                    <Grid xs={12} container item>
+                    <Grid xs={12} container>
                         {wardsDepartment}
                     </Grid>
                 </Grid>)

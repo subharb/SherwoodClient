@@ -95,6 +95,8 @@
             "select-bed" : ["Select the bed you wish to hospitalize the patient", "Seleccione la cama en la que desea hospitalizar a la paciente.", "Sélectionnez le lit dans lequel vous souhaitez hospitaliser le patient"],
             "assign-bed-ward-prompt" : ["Are you sure to want to assign this bed?", "¿Estás seguro de querer asignar esta cama?", "Êtes-vous sûr de vouloir attribuer ce lit ?"],
             "assign-bed-success" : ["Bed assigned correctly", "Cama asignada correctamente", "Lit correctement attribué"],
+            "reorder" : ["Switch to reorder", "Activar para reordenar", "Activer pour réorganiser"],
+            "delete-bed-prompt" : ["Are you sure to delete this bed?", "¿Está seguro de borrar esta cama?", "Êtes-vous sûr de supprimer ce lit ?"],
             "bed" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "genre" : ["Genre", "Género", "Genre"],
@@ -121,7 +123,7 @@
             "inpatients" : ["Inpatients", "Pacientes hospitalizados", "patients hospitalisés"],
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
             "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
-            "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "¿está seguro de borrar esta sala?"],
+            "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "Êtes-vous sûr de supprimer cette pièce ?"],
             
             "no-wards" : ["No current wards", "No hay salas en este departamento", "Il n'y a pas de chambres dans ce département"],
             "errors" : {

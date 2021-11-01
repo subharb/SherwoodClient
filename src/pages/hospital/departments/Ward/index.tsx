@@ -362,7 +362,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                                 name="checkedA"
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                             />}
-                            label="Reorder or delete beds"
+                            label={<Translate id="hospital.ward.reorder" />}
                         />  
                         {
                         orderChanged &&
@@ -402,11 +402,29 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
             return(
                 <Grid container item xs={12}>
                     <Grid item xs={12}>
+                        {
+                            patient?.personalData.health_id && 
+                            <Typography variant="body2" >
+                                <Translate id="investigation.create.personal_data.fields.health_id" />:{ patient?.personalData.health_id}
+                            </Typography>
+                        }
+                        {
+                            !patient?.personalData.health_id && 
+                            <Typography variant="body2" >
+                                <Translate id="investigation.create.personal_data.fields.uuid" />:{ patient?.id}
+                            </Typography>
+                        }
                         <Typography variant="body2" >
-                            Name:{ patient?.personalData.name}
+                            <Translate id="investigation.create.personal_data.fields.name" />:{ patient?.personalData.name}
                         </Typography>
                         <Typography variant="body2" gutterBottom>
-                            Surnames:{ patient?.personalData.surnames}
+                            <Translate id="investigation.create.personal_data.fields.surnames" />:{ patient?.personalData.surnames}
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            <Translate id="investigation.create.personal_data.fields.sex" />:{ patient?.personalData.sex}
+                        </Typography>
+                        <Typography variant="body2">
+                            <Translate id="hospital.analytics.graphs.age.table-title" />: {yearsFromDate(patient?.personalData.birthdate)}    
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
@@ -510,7 +528,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                             <Grid container>
                                 <Grid item xs={12}>
                                     <Typography variant="h6" component="div" gutterBottom>
-                                        <Translate id="hospital.departments.delete-ward-prompt" />
+                                        <Translate id="hospital.ward.delete-bed-prompt" />
                                     </Typography>
                                     <Typography variant="body2">
                                         {bedToDelete.name}

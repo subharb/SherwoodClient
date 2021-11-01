@@ -4,7 +4,7 @@ import { ButtonDelete, IconPatient } from './mini_components'
 import styled, { css } from 'styled-components';
 import { WardModes } from '../../pages/hospital/departments/Ward';
 import { IPatient, PersonalData } from '../../constants/types';
-import { sexStringToColor } from '../../utils';
+import { daysFromDate, sexStringToColor } from '../../utils';
 
 
 export const Container = styled("div")<{active?:boolean, genderBorder:boolean, genderColor:string}>`
@@ -128,7 +128,7 @@ const BedButton:React.FC<Props> = (props) => {
                             {props.age} years
                         </Typography>
                         <Typography variant="body2" component="span" gutterBottom style={{height:'1px', color:"green"}} >
-                            {props.stay} Days
+                            {daysFromDate(props.stay.dateIn)} Days
                         </Typography>
                     </React.Fragment>
                 }
