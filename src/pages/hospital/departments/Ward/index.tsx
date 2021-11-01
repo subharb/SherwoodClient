@@ -54,7 +54,7 @@ const BED_FORM = {
         type:"text",
         label:"hospital.ward.bed.name",
         shortLabel: "hospital.ward.bed.name",
-        validation : "textMin2"
+        validation : "notEmpty"
     },
     "gender":{
         required : true,
@@ -227,7 +227,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     const [showNameError, setShowNameError] = useState(false);
 
     function checkNameBeds(bed:IBed){
-        const foundBed = ward?.beds.find((aBed) => aBed.name === bed.name);
+        const foundBed = ward?.beds.find((aBed, i) => (aBed.name === bed.name && typeof bed.id === undefined) || (aBed.name === bed.name && bed.id !== aBed.id));
         if(foundBed){
             setShowNameError(true);
             return true;
