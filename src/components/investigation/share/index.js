@@ -286,7 +286,7 @@ function ShareInvestigation(props) {
                             
                             return row;
                         })}
-                        actions={{"edit" : (index) => editAResearcher(index)}} 
+                        actions={[{"type" : "edit" , "func" : (index) => editAResearcher(index)}]} 
         />
         }
         return (

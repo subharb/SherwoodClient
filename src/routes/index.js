@@ -119,8 +119,8 @@ export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const ROUTE_401 = "/auth/401";
-export const HOSPITAL_DEPARTMENTS = "/departments";
-
+export const HOSPITAL_DEPARTMENTS = "/departments/settings";
+export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
 
 
 const hospitalRoutes = {
@@ -218,8 +218,14 @@ const hospitalRoutes = {
         {
             path: HOSPITAL_DEPARTMENTS,
             name: "Departments",
-            component: Departments,
+            component: () => <Departments admin={true}/>,
         },
+        {
+            path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
+            name: "My Departments",
+            component: () => <Departments admin={false}/>,
+        },
+        
         {
             path: HOSPITAL_WARD_ROUTE,
             name: "Ward",
@@ -339,8 +345,8 @@ const dashboardUserMgmtRoutes = {
     children: null
 }
 
-const dashboardDepartmentRoutes = {
-    id: <Translate id="pages.hospital.departments" />,
+const dashboardAdminDepartmentRoutes = {
+    id: <Translate id="pages.hospital.admin-departments" />,
     path: HOSPITAL_DEPARTMENTS,
     icon: <PeopleOutlineIcon />,
     badge: "",
@@ -348,7 +354,21 @@ const dashboardDepartmentRoutes = {
     component: {
         path: HOSPITAL_DEPARTMENTS,
         name: "Departments",
-        component: Departments
+        component: () => <Departments admin={true} />
+    },
+    children: null
+}
+
+const dashboardMyDepartmentRoutes = {
+    id: <Translate id="pages.hospital.departments" />,
+    path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
+    icon: <PeopleOutlineIcon />,
+    badge: "",
+    permissions : [MEDICAL_READ],
+    component: {
+        path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
+        name: "Departments",
+        component: () => <Departments admin={false} />
     },
     children: null
 }
@@ -915,5 +935,6 @@ export const sidebarRoutesHospital = [
     dashboardLabRoutes,
     dashboardAnalyticsRoutes,
     dashboardUserMgmtRoutes,
-    dashboardDepartmentRoutes
+    dashboardAdminDepartmentRoutes,
+    dashboardMyDepartmentRoutes
   ];

@@ -53,7 +53,7 @@ const WardForm:React.FC<Props> = ({mode, name, beds, editCallBack, settingsCallB
 
 
     return(
-        <Grid container item spacing={3} style={{minWidth:'20rem', marginRight:'2rem', marginBottom:'1rem'}}>
+        <Grid container item spacing={3} style={{width:'20rem', marginRight:'2rem', marginBottom:'1rem'}}>
             <Row item container>
                 <Grid item xs={8}>
                     <Typography variant="body2" component="div"> { name }</Typography>

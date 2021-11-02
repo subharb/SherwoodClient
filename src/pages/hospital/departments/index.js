@@ -150,7 +150,7 @@ function DepartmentsRouter(props){
             type:types.HOSPITAL_RESET_ERROR
         })
     }
-    return <DepartmentLocalized investigation={investigation} loading={props.loading}
+    return <DepartmentLocalized admin={props.admin} investigation={investigation} loading={props.loading}
                 departments={departments} researchers={researchers} hospitalError={props.hospital.error}
                 saveDepartmentCallBack={saveDepartmentCallBack} 
                 addWardCallBack={addWardCallBack} settingsCallBack={settingsCallBack}
@@ -272,7 +272,7 @@ function Departments(props) {
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
-            const actions = (props.departments.length === 0) ? null : {"edit" : (index) => editAResearcher(index)}
+            const actions = (props.departments.length === 0) ? null : [{"type" : "edit", "func" : (index) => editAResearcher(index) }];
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
                         headCells={arrayHeader}
                         rows={props.researchers.map((researcher, idx) => {
@@ -311,102 +311,7 @@ function Departments(props) {
         setIndexResearcherToEdit(index);
         setShowModal(true);
     }
-    // function renderDepartment(department, type){
-    //     if(type === "departments"){
-    //         const researchersDepartment = props.researchers.filter(res => res.departments.find(dep => dep.name === department.name));
-    //         return (
-    //             <List component="nav" aria-label="main mailbox folders">
-    //             {
-    //                 (researchersDepartment.length > 0)&& 
-    //                 researchersDepartment.map(res => {
-    //                     return(
-    //                         <ListItem button>
-    //                             <ListItemText primary={`${res.name} ${res.surnames}`} />
-    //                         </ListItem>
-    //                     )
-    //                 })
-    //             }
-    //             {
-    //                 (researchersDepartment.length === 0)&& 
-    //                 <ListItem button>
-    //                     <ListItemText primary={<Translate id="hospital.departments.no-doctors"></Translate>} />
-    //                 </ListItem>
-    //             }
-    //             </List>
-    //             )
-    //     }
-    //     else{
-    //         const AddWardButton = <ButtonAdd disabled={uuidDepartmentAddWard} 
-    //                             type="button" data-testid="add_researcher" 
-    //                             onClick={() => {
-    //                                 setUuidDepartmentAddWard(department.uuid);
-    //                                 setShowModal(true);
-    //                             }}></ButtonAdd>
-    //         if(department.wards.length === 0){
-    //             return [
-    //                 AddWardButton,
-    //                 <ListItemText primary={<Translate id="hospital.departments.no-wards"></Translate>} />
-    //             ]
-    //         }
-    //         else{
-    //             const wardsDepartment = department.wards.map((ward, index) => {
-    //                 const bedsInfo = {
-    //                     total:ward.beds.length,
-    //                     male:ward.beds.filter(bed => bed.gender === 0).length,
-    //                     female:ward.beds.filter(bed => bed.gender === 1).length
-    //                 }
-    //                 return (<WardForm mode="edit" name={ward.name} beds={bedsInfo}                                 
-    //                             editCallBack = {() => editWard(ward, department.uuid)}
-    //                             deleteCallBack = {() => deleteWardConfirm(ward, department.uuid)}
-    //                             settingsCallBack = {() => props.settingsCallBack(ward, department.uuid)}
-    //                             />)
-    //             })
-    //             return [
-    //                 AddWardButton,
-    //                 wardsDepartment
-    //             ]
-                
-    //         }
-    //     }   
-        
-    // }
-    // function renderDepartments(type){
-       
-    //     return (
-    //         <div style={{width:'100%'}}>
-                
-    //             {
-    //                 props.departments.length > 0 &&
-    //                 props.departments.sort((a,b) => a.name.localeCompare(b.name)).map(department => {
-    //                     return (
-    //                         <Accordion>
-    //                             <AccordionSummary
-    //                                 expandIcon={<ExpandMoreIcon />}
-    //                                 aria-controls="panel1a-content"
-    //                                 id="panel1a-header"
-    //                                 >
-    //                                 <Typography >{ department.name}</Typography>
-    //                             </AccordionSummary>
-    //                             <AccordionDetails>
-    //                                     {
-    //                                         renderDepartment(department, type)
-    //                                     }
-                                    
-    //                             </AccordionDetails>
-    //                         </Accordion>
-    //                     )
-    //                 })
-    //             }
-    //             {
-    //                 props.departments.length === 0 &&
-    //                 <Translate id="hospital.departments.no-departments" />
-    //             }
-                
-    //         </div>
-                
-    //         )
-            
-    // }
+    
     function resetModal(){
         setShowModal(false);
         setAddingDepartment(false);
@@ -571,12 +476,15 @@ function Departments(props) {
                         <Typography variant="h3" gutterBottom display="inline">
                             <Translate id="hospital.departments.title" />
                         </Typography>
-                        <ButtonAdd disabled={addingDepartment} 
-                            type="button" data-testid="add_researcher" 
-                            onClick={() => {
-                                setShowModal(true);
-                                setAddingDepartment(true);
-                            }}></ButtonAdd>
+                        {
+                            props.admin &&
+                            <ButtonAdd disabled={addingDepartment} 
+                                type="button" data-testid="add_researcher" 
+                                onClick={() => {
+                                    setShowModal(true);
+                                    setAddingDepartment(true);
+                                }} />
+                        }
                     </Grid>
                 </Grid>
                 <Grid item container xs={12} spacing={3}>
@@ -586,24 +494,36 @@ function Departments(props) {
                         </Typography>
                     </Grid>
                     <AppBar position="static">
+
                         <Tabs value={tabSelector} onChange={handleChange} aria-label="simple tabs example">
-                        <Tab label={<Translate id="hospital.departments.users" />} {...a11yProps(0)} />
-                        <Tab label={<Translate id="hospital.departments.departments" />} {...a11yProps(1)} />
-                        <Tab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
-                        
+                        { 
+                            props.admin &&
+                            [
+                                <Tab label={<Translate id="hospital.departments.users" />} {...a11yProps(0)} />,
+                                <Tab label={<Translate id="hospital.departments.departments" />} {...a11yProps(1)} />
+                            ]
+                            
+                        }
+                            <Tab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
                         </Tabs>
                     </AppBar>
-                    <TabPanel value={tabSelector} index={0} style={{width:'100%'}}>
                     {
-                        renderResearchers()
-                    }
-                    </TabPanel>
-                    <TabPanel value={tabSelector} index={1} style={{width:'100%'}}>
-                        <DepartmentsAccordion mode={DepartmentAccordionModes.Researchers } researchers={props.researchers}
-                            departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
+                        props.admin &&
+                        <React.Fragment>
+                            <TabPanel value={tabSelector} index={0} style={{width:'100%'}}>
+                            {
+                                renderResearchers()
+                            }
+                            </TabPanel>
+                            <TabPanel value={tabSelector} index={1} style={{width:'100%'}}>
+                                <DepartmentsAccordion mode={DepartmentAccordionModes.Researchers } researchers={props.researchers}
+                                    departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
 
-                        />
-                    </TabPanel>
+                                />
+                            </TabPanel>
+                        </React.Fragment>
+                    }
+                    
                     <TabPanel value={tabSelector} index={2} style={{width:'100%'}}>
                         <DepartmentsAccordion mode={DepartmentAccordionModes.Wards } researchers={props.researchers}
                             departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}

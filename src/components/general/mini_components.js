@@ -42,7 +42,7 @@ export const IconGenerator = (props) => {
         case "delete":
             return <DeleteIcon style={{color:"red"}} fontSize={props.size ? props.size : "small"}/>
         case "edit":
-            return <EditIcon  style={{color:"yellow"}} fontSize={props.size ? props.size : "small"}/>
+            return <EditIcon  style={{color:"black"}} fontSize={props.size ? props.size : "small"}/>
         case "hospital":
             return <HotelIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
         default:

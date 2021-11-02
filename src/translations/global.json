@@ -291,7 +291,8 @@
                 "title" : ["Attention", "Atención", "Attention"],
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
             },
-            "departments" : ["Hospital Departments", "Departamentos", "Département"]
+            "departments" : ["Hospital Departments", "Departamentos", "Département"],
+            "admin-departments" : ["Admin. Departments", "Admin.Departamentos", "Gestion Départements"]
         }
     },
     "dashboard":{
