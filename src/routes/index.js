@@ -83,9 +83,7 @@ import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";
 import Departments from  "../pages/hospital/departments";
 import { WardLocalized, WardModes } from  "../pages/hospital/departments/Ward";
-
-import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS, SHARE_RESEARCHERS } from "../constants";
-
+import { PERMISSION } from "../constants/types";
 
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
@@ -280,7 +278,7 @@ const dashboardImagesRoutes = {
     path: HOSPITAL_IMAGES,
     icon: <ImageIcon />,
     badge: "",
-    permissions : [MEDICAL_READ],
+    permissions : [PERMISSION.MEDICAL_READ],
     component: {
         path: HOSPITAL_IMAGES,
         name: "Images",
@@ -294,7 +292,7 @@ const dashboardLabRoutes = {
     path: HOSPITAL_LAB,
     icon: <SearchPatientIcon />,
     badge: "",
-    permissions : [MEDICAL_READ],
+    permissions : [PERMISSION.MEDICAL_READ],
     component: {
         path: HOSPITAL_LAB,
         name: "Laboratory",
@@ -308,7 +306,7 @@ const dashboardAddPatientRoutes = {
     path: ADD_PATIENT_ROUTE,
     icon: <AddPatientIcon />,
     badge: "",
-    permissions : [PERSONAL_ACCESS],
+    permissions : [PERMISSION.PERSONAL_ACCESS],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "Add Patient",
@@ -322,7 +320,7 @@ const dashboardAnalyticsRoutes = {
     path: HOSPITAL_ANALYTICS,
     icon: <TimelineIcon />,
     badge: "",
-    permissions : [BUSINESS_READ],
+    permissions : [PERMISSION.BUSINESS_READ],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "Analytics",
@@ -336,7 +334,7 @@ const dashboardUserMgmtRoutes = {
     path: HOSPITAL_USER_MGMT,
     icon: <GroupIcon />,
     badge: "",
-    permissions : [SHARE_RESEARCHERS],
+    permissions : [PERMISSION.SHARE_RESEARCHERS],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "User Mgmt",
@@ -350,7 +348,7 @@ const dashboardAdminDepartmentRoutes = {
     path: HOSPITAL_DEPARTMENTS,
     icon: <PeopleOutlineIcon />,
     badge: "",
-    permissions : [SHARE_RESEARCHERS],
+    permissions : [PERMISSION.SHARE_RESEARCHERS],
     component: {
         path: HOSPITAL_DEPARTMENTS,
         name: "Departments",
@@ -364,7 +362,7 @@ const dashboardMyDepartmentRoutes = {
     path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
     icon: <PeopleOutlineIcon />,
     badge: "",
-    permissions : [MEDICAL_READ],
+    permissions : [PERMISSION.MEDICAL_READ],
     component: {
         path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
         name: "Departments",

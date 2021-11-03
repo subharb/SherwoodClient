@@ -26,6 +26,7 @@ import { fetchProfileInfo } from '../../../redux/actions/profileActions';
 import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
+import { PERMISSION } from '../../../constants/types';
 
 
 
@@ -561,8 +562,8 @@ function Patient(props) {
                     }
                 </Modal>
                 <Grid container spacing={3}>
-                    <PatientToolBar showMedical={props.investigations.currentInvestigation.permissions.includes(MEDICAL_READ) }
-                        editPersonalData={props.investigations.currentInvestigation.permissions.includes(PERSONAL_ACCESS) ? editPersonalData : null}
+                    <PatientToolBar showMedical={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
+                        editPersonalData={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} patientID={patient.id} personalData={patient.personalData} years={years}
                         medicalNotesCallBack={() => backToRoot()} 
                         testCallBack={() => goToTest(1)} 

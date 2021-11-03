@@ -18,6 +18,7 @@ import { PERSONAL_ACCESS } from '../../constants';
 import { ROUTE_401, ROUTE_404 } from '../../routes';
 import { areSameBirthDates } from '../../utils';
 import Modal from '../../components/general/modal';
+import { PERMISSION } from '../../constants/types';
 
 export function AddPatient(props) {
     let { uuidPatient } = useParams();
@@ -113,7 +114,7 @@ export function AddPatientComponent(props) {
     if(props.investigations.loading || isLoading){
         return <Loader />
     }
-    else if(!props.investigations.currentInvestigation.permissions.includes(PERSONAL_ACCESS)){
+    else if(!props.investigations.currentInvestigation.permissions.includes(PERMISSION.ACCESS)){
         history.push(ROUTE_401);
         return <Loader />
     }

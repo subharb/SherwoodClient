@@ -519,7 +519,7 @@ function Departments(props) {
                             <TabPanel value={tabSelector} index={1} style={{width:'100%'}}>
                                 <DepartmentsAccordion mode={DepartmentAccordionModes.Researchers } researchers={props.researchers}
                                     departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
-
+                                    permissions={props.investigation.permissions}
                                 />
                             </TabPanel>
                         </React.Fragment>
@@ -528,6 +528,7 @@ function Departments(props) {
                     <TabPanel value={tabSelector} index={2} style={{width:'100%'}}>
                         <DepartmentsAccordion mode={DepartmentAccordionModes.Wards } researchers={props.researchers}
                             departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
+                            permissions={props.investigation.permissions}
                             editWardCallBack={editWard} deleteWardConfirmCallBack={deleteWardConfirm}
                             addWardCallBack={addWard} settingsWardCallBack={props.settingsCallBack}
                             viewWardCallBack={props.viewWardCallBack}

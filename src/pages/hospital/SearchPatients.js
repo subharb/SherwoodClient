@@ -106,7 +106,7 @@ function SearchPatients(props){
                 searchPatientCallBack={searchPatientCallBack}
                 backToSearchCallBack={backToSearchCallBack} 
                 patientSelectedCallBack={patientSelectedCallBack}
-                
+                permissions={props.investigations.currentInvestigation.permissions}
             />
 }
 
@@ -194,7 +194,7 @@ export function SearchPatientsComponent(props) {
                         <Grid item xs={12}>
                             <PatientsTable patients={props.patients} 
                                 showPatientCallBack={id => patientSelected(id)} 
-                                personalFields={formSearch}
+                                personalFields={formSearch} permissions={props.permissions}
                                 hospitalizePatientCallBack={(index) => hospitalizePatient(index)} />
                         </Grid>
                         <Grid item xs={12}>
@@ -253,7 +253,8 @@ export function SearchPatientsComponent(props) {
                     }
                     {
                         patientHospitalized &&
-                        <DepartmentsAccordionRedux uuidPatient={patientHospitalized.uuid} />
+                        <DepartmentsAccordionRedux currentInvestigation={props.investigations.currentInvestigation} 
+                            uuidPatient={patientHospitalized.uuid} />
                     }
                     
             </Modal>

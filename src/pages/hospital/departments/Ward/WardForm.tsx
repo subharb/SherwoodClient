@@ -9,6 +9,7 @@ import { IconPatient } from '../../../../components/general/mini_components';
 import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
+import { PERMISSION } from '../../../../constants/types';
 
 
 export enum WardFormModes {
@@ -23,6 +24,7 @@ interface Props {
         female:number
     },
     mode?:WardFormModes,
+    permissions:PERMISSION[],
     editCallBack ?: () => void,
     viewCallBack ?: () => void,
     deleteCallBack ?: () => void,
@@ -49,7 +51,7 @@ const Row = styled(Grid)`
 export const WardFormEdit :React.FC<PropsEdit> = (props) => <WardForm {...props} mode={WardFormModes.Edit}/>
 export const WardFormSelect :React.FC<PropsSelect> = (props) => <WardForm {...props} mode={WardFormModes.Select}/>
 
-const WardForm:React.FC<Props> = ({mode, name, beds, editCallBack, settingsCallBack, viewCallBack, deleteCallBack, selectWardCallBack}) => {
+const WardForm:React.FC<Props> = ({mode, name, beds, permissions, editCallBack, settingsCallBack, viewCallBack, deleteCallBack, selectWardCallBack}) => {
 
 
     return(
@@ -62,17 +64,22 @@ const WardForm:React.FC<Props> = ({mode, name, beds, editCallBack, settingsCallB
                     mode === WardFormModes.Edit && 
                     <React.Fragment>
                         <Grid item xs={1}>
-                            <EditIcon style={{cursor:"pointer"}} onClick={editCallBack } />
-                        </Grid>
-                        <Grid item xs={1}>
                             <VisibilityIcon style={{cursor:"pointer"}} onClick={viewCallBack } />
                         </Grid>
-                        <Grid item xs={1}>
-                            <SettingsIcon style={{cursor:"pointer"}} onClick={settingsCallBack } />
-                        </Grid>
-                        <Grid item xs={1}>
-                            <DeleteIcon style={{cursor:"pointer"}} onClick={deleteCallBack } />
-                        </Grid>
+                        {
+                            permissions.includes(PERMISSION.SHARE_RESEARCHERS) &&
+                            <React.Fragment>
+                                <Grid item xs={1}>
+                                    <EditIcon style={{cursor:"pointer"}} onClick={editCallBack } />
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <SettingsIcon style={{cursor:"pointer"}} onClick={settingsCallBack } />
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <DeleteIcon style={{cursor:"pointer"}} onClick={deleteCallBack } />
+                                </Grid>
+                            </React.Fragment>
+                        }
                     </React.Fragment>
                     
                 }
