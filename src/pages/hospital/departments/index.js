@@ -181,7 +181,8 @@ function Departments(props) {
     const [ showModal, setShowModal ] = useState(false);
     const [ showOptions, setShowOptions ] = useState(false);
     
-    const [tabSelector, setTabSelector] = useState(0);
+    //Sino es admin que salga el de in patients
+    const [tabSelector, setTabSelector] = useState(props.admin ? 0 : 2);
     const [isLoadingDepartments, setIsLoadingDepartments] = useState(false);
 
     const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
