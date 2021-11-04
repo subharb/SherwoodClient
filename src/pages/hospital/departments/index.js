@@ -21,6 +21,7 @@ import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAc
 import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
+import { FUNCTIONALITY } from '../../../constants/types';
 
 const DEPARTMENT_FORM = {
     "name":{
@@ -398,6 +399,9 @@ function Departments(props) {
     if(!props.investigation || props.loading){
         return <Loader />
     }
+    else if(!props.investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION) && !props.admin){
+        return "NO tiene nada que ver"
+    }
     return (
         <BoxBckgr color="text.primary" style={{color:"white"}}>
             <Helmet title={props.translate("investigation.share.title")} />
@@ -505,7 +509,11 @@ function Departments(props) {
                             ]
                             
                         }
+                        {
+                            props.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION) &&
                             <Tab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
+                        }
+                            
                         </Tabs>
                     </AppBar>
                     {

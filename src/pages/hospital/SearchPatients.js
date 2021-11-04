@@ -103,10 +103,12 @@ function SearchPatients(props){
     return <SearchPatientsComponent showResults={showResults} 
                 patients={filteredPatients}
                 personalFields={props.investigations.currentInvestigation.personalFields}
+                permissions={props.investigations.currentInvestigation.permissions}
+                functionalities={props.investigations.currentInvestigation.functionalities}
                 searchPatientCallBack={searchPatientCallBack}
                 backToSearchCallBack={backToSearchCallBack} 
                 patientSelectedCallBack={patientSelectedCallBack}
-                permissions={props.investigations.currentInvestigation.permissions}
+                
             />
 }
 
@@ -193,8 +195,9 @@ export function SearchPatientsComponent(props) {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <PatientsTable patients={props.patients} 
-                                showPatientCallBack={id => patientSelected(id)} 
                                 personalFields={formSearch} permissions={props.permissions}
+                                functionalities={props.functionalities}
+                                showPatientCallBack={id => patientSelected(id)} 
                                 hospitalizePatientCallBack={(index) => hospitalizePatient(index)} />
                         </Grid>
                         <Grid item xs={12}>

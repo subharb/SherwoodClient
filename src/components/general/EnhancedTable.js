@@ -355,7 +355,7 @@ function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dra
                 })
             }         
             {
-                props.actions && 
+                props.actions.length > 0 && 
                 <TableCell padding="none" align="right">
                     <Box mr={2}>
                         {
