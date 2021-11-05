@@ -197,7 +197,7 @@ return (
         </TableCell>
         ))}
         {
-            (props.actions) &&
+            (props.actions.length > 0) &&
             <TableCell align="right">Actions</TableCell>
         } 
     </TableRow>
