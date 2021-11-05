@@ -498,24 +498,33 @@ function Departments(props) {
                             { props.investigation.name }
                         </Typography>
                     </Grid>
-                    <AppBar position="static">
+                    {
+                        props.departments.length > 0 &&
 
-                        <Tabs value={tabSelector} onChange={handleChange} aria-label="simple tabs example">
-                        { 
-                            props.admin &&
-                            [
-                                <Tab label={<Translate id="hospital.departments.users" />} {...a11yProps(0)} />,
-                                <Tab label={<Translate id="hospital.departments.departments" />} {...a11yProps(1)} />
-                            ]
+                        <AppBar position="static">
+                            <Tabs value={tabSelector} onChange={handleChange} aria-label="simple tabs example">
+                            { 
+                                props.admin &&
+                                [
+                                    <Tab label={<Translate id="hospital.departments.users" />} {...a11yProps(0)} />,
+                                    <Tab label={<Translate id="hospital.departments.departments" />} {...a11yProps(1)} />
+                                ]
+                                
+                            }
+                            {
+                                props.investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION) &&
+                                <Tab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
+                            }
+                                
+                            </Tabs>
                             
-                        }
-                        {
-                            props.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION) &&
-                            <Tab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
-                        }
                             
-                        </Tabs>
-                    </AppBar>
+                        </AppBar>
+                    }
+                    {
+                        props.departments.length === 0 &&
+                        <Translate id="hospital.departments.no-my-departments" />
+                    }
                     {
                         props.admin &&
                         <React.Fragment>

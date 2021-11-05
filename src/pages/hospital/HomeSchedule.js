@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
-        HOSPITAL_WARD_SETTINGS_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB } from '../../routes';
+        HOSPITAL_WARD_SETTINGS_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB, HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE, HOSPITAL_MY_DEPARTMENTS_ROUTE } from '../../routes';
 import { ButtonGrey, BoxBckgr, LinkPlain } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { Translate } from 'react-localize-redux';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
 import AllInvestigations from '../../components/investigation/show/all';
+import { FUNCTIONALITY, PERMISSION } from '../../constants/types';
 
 function HomeSchedule(props) {
     const [loading, setLoading] = useState(false);
@@ -47,6 +48,7 @@ function HomeSchedule(props) {
             })
         }
         else{
+            const investigation = props.investigations.currentInvestigation;
             return(
                 <React.Fragment>
                     <Grid item xs={6} style={{display:"flex", flexDirection: "row-reverse"}}>
@@ -103,12 +105,21 @@ function HomeSchedule(props) {
                                 <ButtonGrey data-testid="medical-imaging" ><Translate id="pages.hospital.medical-imaging.name" /></ButtonGrey>
                             </LinkPlain>
                         </Grid>
+                        {
+                            (investigation.permissions.includes(PERMISSION.MEDICAL_WRITE) && investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION)) &&
+                            <Grid item xs={12} style={{textAlign:"center"}}>
+                                <LinkPlain to={HOSPITAL_MY_DEPARTMENTS_ROUTE}>
+                                    <ButtonGrey data-testid="my-departments" ><Translate id="pages.hospital.departments" /></ButtonGrey>
+                                </LinkPlain>
+                            </Grid>
+                        }
+                        
                     </Grid>
                 </React.Fragment>
             )
         }
     }
-
+    
     if(pathname === MY_SCHEDULE_ROUTE){
         return(
             

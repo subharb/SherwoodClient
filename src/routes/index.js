@@ -117,7 +117,7 @@ export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const ROUTE_401 = "/auth/401";
-export const HOSPITAL_DEPARTMENTS = "/departments/settings";
+export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
 export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
 
 
@@ -214,7 +214,7 @@ const hospitalRoutes = {
             component: UserManagement,
         },
         {
-            path: HOSPITAL_DEPARTMENTS,
+            path: HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE,
             name: "Departments",
             component: () => <Departments admin={true}/>,
         },
@@ -345,12 +345,12 @@ const dashboardUserMgmtRoutes = {
 
 const dashboardAdminDepartmentRoutes = {
     id: <Translate id="pages.hospital.admin-departments" />,
-    path: HOSPITAL_DEPARTMENTS,
+    path: HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE,
     icon: <PeopleOutlineIcon />,
     badge: "",
     permissions : [PERMISSION.SHARE_RESEARCHERS],
     component: {
-        path: HOSPITAL_DEPARTMENTS,
+        path: HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE,
         name: "Departments",
         component: () => <Departments admin={true} />
     },

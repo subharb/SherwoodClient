@@ -124,7 +124,7 @@
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
             "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
             "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "Êtes-vous sûr de supprimer cette pièce ?"],
-            
+            "no-my-departments" : ["You haven't been added any department, ask your administrator", "No se le ha agregado ningún departamento, pregunte a su administrador", "Vous n'avez été ajouté à aucun département, demandez à votre administrateur"],
             "no-wards" : ["No current wards", "No hay salas en este departamento", "Il n'y a pas de chambres dans ce département"],
             "errors" : {
                 "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce département"],
@@ -291,6 +291,7 @@
                 "title" : ["Attention", "Atención", "Attention"],
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
             },
+            
             "departments" : ["Hospital Departments", "Departamentos", "Département"],
             "admin-departments" : ["Admin. Departments", "Admin.Departamentos", "Gestion Départements"]
         }
