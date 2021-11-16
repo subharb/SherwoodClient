@@ -81,9 +81,10 @@ import TestsHome from "../pages/hospital/TestsHome";
 import AddPatient from "../pages/hospital/AddPatient";
 import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";
-import Departments from  "../pages/hospital/departments";
+import Departments from  "../pages/hospital/departments/Admin";
+import InPatients from  "../pages/hospital/departments/Inpatients";
 import { WardLocalized, WardModes } from  "../pages/hospital/departments/Ward";
-import { PERMISSION } from "../constants/types";
+import { FUNCTIONALITY, PERMISSION } from "../constants/types";
 
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
@@ -221,7 +222,7 @@ const hospitalRoutes = {
         {
             path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
             name: "My Departments",
-            component: () => <Departments admin={false}/>,
+            component: () => <InPatients />,
         },
         
         {
@@ -250,6 +251,7 @@ const dashboardHomeRoutes = {
     icon: <HomeIcon />,
     badge: "",
     permissions : [],
+    functionalities:[],
     component: {
         path: ROOT_ROUTE,
         name: "Home",
@@ -264,6 +266,7 @@ const dashboardSearchPatientRoutes = {
     icon: <FindInPageIcon />,
     badge: "",
     permissions : [],
+    functionalities:[],
     component: {
         path: SEARCH_PATIENT_ROUTE,
         name: "Search Patient",
@@ -279,6 +282,7 @@ const dashboardImagesRoutes = {
     icon: <ImageIcon />,
     badge: "",
     permissions : [PERMISSION.MEDICAL_READ],
+    functionalities:[],
     component: {
         path: HOSPITAL_IMAGES,
         name: "Images",
@@ -293,6 +297,7 @@ const dashboardLabRoutes = {
     icon: <SearchPatientIcon />,
     badge: "",
     permissions : [PERMISSION.MEDICAL_READ],
+    functionalities:[],
     component: {
         path: HOSPITAL_LAB,
         name: "Laboratory",
@@ -307,6 +312,7 @@ const dashboardAddPatientRoutes = {
     icon: <AddPatientIcon />,
     badge: "",
     permissions : [PERMISSION.PERSONAL_ACCESS],
+    functionalities:[],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "Add Patient",
@@ -321,6 +327,7 @@ const dashboardAnalyticsRoutes = {
     icon: <TimelineIcon />,
     badge: "",
     permissions : [PERMISSION.BUSINESS_READ],
+    functionalities:[],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "Analytics",
@@ -335,6 +342,7 @@ const dashboardUserMgmtRoutes = {
     icon: <GroupIcon />,
     badge: "",
     permissions : [PERMISSION.SHARE_RESEARCHERS],
+    functionalities:[],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "User Mgmt",
@@ -349,6 +357,7 @@ const dashboardAdminDepartmentRoutes = {
     icon: <PeopleOutlineIcon />,
     badge: "",
     permissions : [PERMISSION.SHARE_RESEARCHERS],
+    functionalities:[],
     component: {
         path: HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE,
         name: "Departments",
@@ -358,15 +367,16 @@ const dashboardAdminDepartmentRoutes = {
 }
 
 const dashboardMyDepartmentRoutes = {
-    id: <Translate id="pages.hospital.departments" />,
+    id: <Translate id="pages.hospital.inpatients" />,
     path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
     icon: <PeopleOutlineIcon />,
     badge: "",
     permissions : [PERMISSION.MEDICAL_READ],
+    functionalities:[FUNCTIONALITY.HOSPITALIZATION],
     component: {
         path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
-        name: "Departments",
-        component: () => <Departments admin={false} />
+        name: "My Departments",
+        component: () => <InPatients />
     },
     children: null
 }

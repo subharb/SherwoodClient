@@ -11,6 +11,7 @@ import { FieldWrapper } from '../components/general/mini_components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDepartmentsInstitutionAction } from '../redux/actions/hospitalActions';
 import { Color } from '@material-ui/lab';
+import { IDepartment } from '../constants/types';
 
 
 export function useSnackBarState(){
@@ -29,7 +30,7 @@ export function useRouter(initValue:any){
 
 export function useDepartments(){
     const investigations= useSelector((state:any) => state.investigations);
-    const departments = useSelector((state:any) => state.hospital.data.departments ? state.hospital.data.departments : []);
+    const departments = useSelector((state:{hospital : {data: {departments : IDepartment[]}}}) => state.hospital.data.departments ? state.hospital.data.departments : []);
     const researchers = useSelector((state:any) => state.hospital.data.researchers ? state.hospital.data.researchers : []);
     const loading = useSelector((state:any) => state.hospital.loading | state.investigations.loading);
 

@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import { WardModes } from '../../pages/hospital/departments/Ward';
 import { IPatient, PersonalData } from '../../constants/types';
 import { daysFromDate, sexStringToColor } from '../../utils';
+import { Translate } from 'react-localize-redux';
 
 
 export const Container = styled("div")<{active?:boolean, genderBorder:boolean, genderColor:string}>`
@@ -51,9 +52,10 @@ interface Props {
     mode:WardModes,
     active:boolean,    
     gender:string,
-    stay?:any,
+    stayDays?:number,
+    hasStay?:boolean,
     name:string,   
-    age?:number  | null,
+    age?:number | null,
     patient?:PersonalData | null
     deleteCallBack?:() => void,
     onClickCallBack?:(uuidPatient?:string) => void,
@@ -66,10 +68,11 @@ interface PropsEdit extends Omit<Props, "mode" | "age" >{
 interface PropsView extends Omit<Props, "mode" | "deleteCallBack">{
     patient:PersonalData | null,
     age:number | null,
+    hasStay:boolean,
 }
 
 interface PropsAssign extends Omit<Props, "mode" | "age" | "deleteCallBack" >{
-    stay:boolean
+    hasStay:boolean,
 }
 
 
@@ -83,7 +86,7 @@ const BedButton:React.FC<Props> = (props) => {
         if(!props.onClickCallBack){
             return 
         }
-        if(props.mode === WardModes.AssignPatient && !props.stay){
+        if(props.mode === WardModes.AssignPatient && props.hasStay){
             props.onClickCallBack()
             
         }
@@ -99,7 +102,7 @@ const BedButton:React.FC<Props> = (props) => {
         }
     }
     
-    const active = !props.active ? false : (props.mode === WardModes.AssignPatient && !props.stay) ? true : props.active;
+    const active = !props.active ? false : (props.mode === WardModes.AssignPatient && props.hasStay) ? true : props.active;
     const name = props.mode === WardModes.View && props.patient ? props.patient.name+" "+props.patient.surnames : props.name;  
     const showIcon = !(props.mode === WardModes.View && props.patient)
     return (
@@ -122,15 +125,19 @@ const BedButton:React.FC<Props> = (props) => {
                     </Grid>
                 }
                 {
-                    props.stay &&
-                    <React.Fragment>
-                        <Typography variant="body2" component="span" gutterBottom style={{height:'1px', color:"darkblue"}} >
-                            {props.age} years
-                        </Typography>
-                        <Typography variant="body2" component="span" gutterBottom style={{height:'1px', color:"green"}} >
-                            {daysFromDate(props.stay.dateIn)} Days
-                        </Typography>
-                    </React.Fragment>
+                    props.hasStay &&
+                    <Grid container item xs={12}>
+                        <Grid item xs={12}>
+                            <Typography variant="body2" component="div" gutterBottom style={{height:'1px', color:"darkblue"}} >
+                                {props.age} years
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Typography variant="body2" component="div" gutterBottom style={{height:'1px', color:"green"}} >
+                                {props.stayDays} <Translate id="hospital.time-unit-options.days" />
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 }
                 {/* <Grid item xs={8} >
                     <Grid xs={12} style={{textAlign:"center"}}>

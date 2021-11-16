@@ -81,17 +81,21 @@ function Patient(props) {
         filteredRecords.push({
             researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
             surveyName : "Hospitalized in "+stay.bed.ward.name,
-            createdAt : stay.dateIn
+            createdAt : stay.dateIn,
+            type:"stay"
         })
         if(stay.dateOut){
             filteredRecords.push({
                 researcher : stay.checkoutResearcher.researcher.name +" "+stay.checkoutResearcher.researcher.surnames,
                 surveyName : "Discharged from "+stay.bed.ward.name,
-                createdAt : stay.dateOut
+                createdAt : stay.dateOut,
+                type:"stay"
             })  
         }
     })
-    filteredRecords = filteredRecords.sort((a, b) => a.createdAt > b.createdAt)
+    filteredRecords.sort((a, b) => {
+        return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
+    })
     
     const translations = typeSurveys.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typeSurveys.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
 
@@ -179,7 +183,7 @@ function Patient(props) {
         if(filteredRecords[index].offline){
             setShowSnackbar({show:true, severity: "warning", message : "investigation.fill.survey.record-offline"});
         }
-        else{
+        else if(filteredRecords[index].id){
             goToSurveyUrl(filteredRecords[index].id);
         }
         
@@ -292,7 +296,7 @@ function Patient(props) {
         else if(idSubmission !== null && action === "show"){
             return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} 
                         mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission}
-                        submissions={filteredRecords} surveys={props.investigations.currentInvestigation.surveys} />
+                        submissions={filteredRecords.filter((record) => record.type !== "stay")} surveys={props.investigations.currentInvestigation.surveys} />
         }
         else{
             return(

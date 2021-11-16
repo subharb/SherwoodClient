@@ -109,7 +109,7 @@ function HomeSchedule(props) {
                             (investigation.permissions.includes(PERMISSION.MEDICAL_WRITE) && investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION)) &&
                             <Grid item xs={12} style={{textAlign:"center"}}>
                                 <LinkPlain to={HOSPITAL_MY_DEPARTMENTS_ROUTE}>
-                                    <ButtonGrey data-testid="my-departments" ><Translate id="pages.hospital.departments" /></ButtonGrey>
+                                    <ButtonGrey data-testid="inpatients" ><Translate id="pages.hospital.inpatients" /></ButtonGrey>
                                 </LinkPlain>
                             </Grid>
                         }

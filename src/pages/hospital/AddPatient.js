@@ -114,7 +114,7 @@ export function AddPatientComponent(props) {
     if(props.investigations.loading || isLoading){
         return <Loader />
     }
-    else if(!props.investigations.currentInvestigation.permissions.includes(PERMISSION.ACCESS)){
+    else if(!props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
         history.push(ROUTE_401);
         return <Loader />
     }

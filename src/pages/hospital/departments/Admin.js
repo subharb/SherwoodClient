@@ -233,16 +233,21 @@ function Departments(props) {
         props.addWardCallBack(wardInfo, uuidDepartmentAddWard);
     }
 
-    async function editWard(ward, uuidDepartment){
-        setUuidDepartmentAddWard(uuidDepartment);
-        setWardToEdit({
-            name:ward.name,
-            uuid:ward.uuid,
-            total:ward.beds.length,
-            male:ward.beds.filter(bed => bed.gender === 0).length,
-            female:ward.beds.filter(bed => bed.gender === 1).length,
-        });
-        setShowModal(true);
+    async function editWard(ward, uuidDepartment, editWardCallBack){
+        if(editWardCallBack === 0){
+            setUuidDepartmentAddWard(uuidDepartment);
+            setWardToEdit({
+                name:ward.name,
+                uuid:ward.uuid,
+                total:ward.beds.length,
+                male:ward.beds.filter(bed => bed.gender === 0).length,
+                female:ward.beds.filter(bed => bed.gender === 1).length,
+            });
+            setShowModal(true);
+        }
+        else{
+            setShowSnackbar({show:true, severity: "warning", message : "hospital.departments.no-edit-ward"});
+        }
     }
 
     function deleteWardConfirm(ward, uuidDepartment){
@@ -274,7 +279,7 @@ function Departments(props) {
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
-            const actions = (props.departments.length === 0) ? null : [{"type" : "edit", "func" : (index) => editAResearcher(index) }];
+            const actions = (props.departments.length === 0) ? [] : [{"type" : "edit", "func" : (index) => editAResearcher(index) }];
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
                         headCells={arrayHeader}
                         rows={props.researchers.map((researcher, idx) => {
@@ -522,8 +527,11 @@ function Departments(props) {
                         </AppBar>
                     }
                     {
-                        props.departments.length === 0 &&
-                        <Translate id="hospital.departments.no-my-departments" />
+                        (!props.admin && props.departments.length === 0) &&
+                        <Grid item xs={12} >
+                            <Translate id="hospital.departments.no-my-departments" />    
+                        </Grid>
+                        
                     }
                     {
                         props.admin &&
@@ -543,12 +551,12 @@ function Departments(props) {
                     }
                     
                     <TabPanel value={tabSelector} index={2} style={{width:'100%'}}>
-                        <DepartmentsAccordion mode={DepartmentAccordionModes.Wards } researchers={props.researchers}
+                        <DepartmentsAccordion mode={ props.admin ? DepartmentAccordionModes.Wards : DepartmentAccordionModes.WardSelection} researchers={props.researchers}
                             departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
-                            permissions={props.investigation.permissions}
+                            permissions={props.investigation.permissions} 
                             editWardCallBack={editWard} deleteWardConfirmCallBack={deleteWardConfirm}
-                            addWardCallBack={addWard} settingsWardCallBack={props.settingsCallBack}
-                            viewWardCallBack={props.viewWardCallBack}
+                            addWardCallBack={props.admin ? addWard : null} settingsWardCallBack={props.settingsCallBack}
+                            viewWardCallBack={props.viewWardCallBack} selectWardCallBack={props.viewWardCallBack}
                             />
                     </TabPanel>
                     

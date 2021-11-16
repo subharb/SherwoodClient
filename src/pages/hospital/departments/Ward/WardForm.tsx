@@ -10,6 +10,7 @@ import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
 import { PERMISSION } from '../../../../constants/types';
+import { Translate } from 'react-localize-redux';
 
 
 export enum WardFormModes {
@@ -21,7 +22,12 @@ interface Props {
     beds:{
         total:number,
         male:number,
-        female:number
+        female:number,
+        undefined:number,
+        busyTotal:number,
+        busyMale:number,
+        busyFemale:number,
+        busyUndefined:number
     },
     mode?:WardFormModes,
     permissions:PERMISSION[],
@@ -53,7 +59,7 @@ export const WardFormSelect :React.FC<PropsSelect> = (props) => <WardForm {...pr
 
 const WardForm:React.FC<Props> = ({mode, name, beds, permissions, editCallBack, settingsCallBack, viewCallBack, deleteCallBack, selectWardCallBack}) => {
 
-
+    
     return(
         <Grid container item spacing={3} style={{width:'20rem', marginRight:'2rem', marginBottom:'1rem'}}>
             <Row item container>
@@ -99,7 +105,7 @@ const WardForm:React.FC<Props> = ({mode, name, beds, permissions, editCallBack, 
                     <Typography variant="body2">Number beds</Typography> 
                 </Grid>
                 <Grid item xs={4} style={{textAlign:'center'}}>
-                    <Typography variant="body2">{beds.total}</Typography>
+                    <Typography variant="body2">{beds.busyTotal}/{beds.total}</Typography>
                 </Grid>
             </Row>
             <Row item container alignItems="center">
@@ -107,10 +113,10 @@ const WardForm:React.FC<Props> = ({mode, name, beds, permissions, editCallBack, 
                     <IconPatient gender="male"  width="15"  />
                 </Grid>
                 <Grid item xs={4} style={{textAlign:'center'}}>
-                    <Typography variant="body2">Male</Typography>
+                    <Typography variant="body2"><Translate id="general.male" /></Typography>
                 </Grid>
                 <Grid item xs={4} style={{textAlign:'center'}}>
-                    <Typography variant="body2">{beds.male}</Typography>
+                    <Typography variant="body2">{beds.busyMale}/{beds.male}</Typography>
                 </Grid>
             </Row>
             <Row item container alignItems="center">
@@ -118,10 +124,21 @@ const WardForm:React.FC<Props> = ({mode, name, beds, permissions, editCallBack, 
                     <IconPatient gender="female" width="15" />
                 </Grid>
                 <Grid item xs={4} style={{textAlign:'center'}}>
-                    <Typography variant="body2">Female</Typography>
+                    <Typography variant="body2"><Translate id="general.female" /></Typography>
                 </Grid>
                 <Grid item xs={4} style={{textAlign:'center'}}>
-                    <Typography variant="body2">{beds.female}</Typography>
+                    <Typography variant="body2">{beds.busyFemale}/{beds.female}</Typography>
+                </Grid>
+            </Row>
+            <Row item container alignItems="center">
+                <Grid item xs={4} style={{textAlign:'center'}}>
+                    <IconPatient gender="undefined" width="15" />
+                </Grid>
+                <Grid item xs={4} style={{textAlign:'center'}}>
+                    <Typography variant="body2"><Translate id="general.undetermined" /></Typography>
+                </Grid>
+                <Grid item xs={4} style={{textAlign:'center'}}>
+                    <Typography variant="body2">{beds.busyUndefined}/{beds.undefined}</Typography>
                 </Grid>
             </Row>
         </Grid>

@@ -17,7 +17,7 @@ export enum DepartmentAccordionModes {
 }
 
 interface Props {
-    departments:IDepartmentServer[],
+    departments:IDepartment[],
     researchers:IResearcher[],
     mode : DepartmentAccordionModes,
     uuidDepartmentAddWard?:string,
@@ -27,7 +27,7 @@ interface Props {
     selectWardCallBack?: (ward:IWard) => void,
     viewWardCallBack?: (ward:IWard, uuidDepartment:string) => void,
     settingsWardCallBack?: (ward:IWard, uuidDepartment:string) => void,
-    editWardCallBack?: (ward:IWard, uuidDepartment:string) => void,
+    editWardCallBack?: (ward:IWard, uuidDepartment:string, busyBeds:number) => void,
     deleteWardConfirmCallBack?: (ward:IWard, uuidDepartment:string) => void,
     addWardCallBack?: (uuidDepartment:string) => void
 }
@@ -71,7 +71,7 @@ const DepartmentsAccordionWards:React.FC<PropsRedux> = ({departments, permission
 
 export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, uuidDepartmentAddWard, researchers, mode, selectWardCallBack, addWardCallBack, editWardCallBack, deleteWardConfirmCallBack, viewWardCallBack, settingsWardCallBack}) => {
     
-    function renderDepartment(department:IDepartmentServer){
+    function renderDepartment(department:IDepartment){
         if(mode === DepartmentAccordionModes.Researchers){
             const researchersDepartment = researchers.filter((res:IResearcher) => res.departments.find((dep:IDepartment) => dep.name === department.name));
             return (
@@ -96,20 +96,23 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                 )
         }
         else{
-            const AddWardButton = <ButtonAdd disabled={uuidDepartmentAddWard} 
+            const AddWardButton = (addWardCallBack) ? <ButtonAdd disabled={uuidDepartmentAddWard} 
                                 type="button" data-testid="add_researcher" 
                                 onClick={() => {
-                                    if(addWardCallBack){
-                                        addWardCallBack(department.uuid);
-                                    }
-                                }}></ButtonAdd>
+                                    addWardCallBack(department.uuid as string);
+                                }}></ButtonAdd> : null;
     
                 
             const wardsDepartment = department.wards.length === 0 ? <ListItemText primary={<Translate id="hospital.departments.no-wards"></Translate>} /> : department.wards.map((ward:IWard, index:number) => {
                     const bedsInfo = {
                         total:ward.beds.length,
                         male:ward.beds.filter((bed:IBed) => bed.gender === 0).length,
-                        female:ward.beds.filter((bed:IBed) => bed.gender === 1).length
+                        female:ward.beds.filter((bed:IBed) => bed.gender === 1).length,
+                        undefined:ward.beds.filter((bed:IBed) => bed.gender === 2).length,
+                        busyTotal : ward.beds.filter((bed:IBed) => bed.stay !== null).length,
+                        busyMale : ward.beds.filter((bed:IBed) => (bed.gender === 0 && bed.stay !== null)).length,
+                        busyFemale : ward.beds.filter((bed:IBed) => (bed.gender === 1 && bed.stay !== null)).length,
+                        busyUndefined : ward.beds.filter((bed:IBed) => (bed.gender === 2 && bed.stay !== null)).length,
                     }
                     if(mode === DepartmentAccordionModes.WardSelection){
                         if(selectWardCallBack){
@@ -119,13 +122,14 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                         }
                     }
                     else{
+                        const uuidDepartment:string = department.uuid as string;
                         if(editWardCallBack && viewWardCallBack && settingsWardCallBack && deleteWardConfirmCallBack){
                             return (<WardFormEdit name={ward.name} beds={bedsInfo}     
                                         permissions={permissions}                                                         
-                                        editCallBack = {() => editWardCallBack(ward, department.uuid)}
-                                        viewCallBack = {() => viewWardCallBack(ward, department.uuid)}
-                                        settingsCallBack = {() => settingsWardCallBack(ward, department.uuid)}
-                                        deleteCallBack = {() => deleteWardConfirmCallBack(ward, department.uuid)}
+                                        editCallBack = {() => editWardCallBack(ward, uuidDepartment, bedsInfo.busyTotal)}
+                                        viewCallBack = {() => viewWardCallBack(ward, uuidDepartment)}
+                                        settingsCallBack = {() => settingsWardCallBack(ward, uuidDepartment)}
+                                        deleteCallBack = {() => deleteWardConfirmCallBack(ward, uuidDepartment)}
                                     />)
                         }
                         
@@ -134,7 +138,16 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                 
             })
             if(mode === DepartmentAccordionModes.WardSelection){
-                return wardsDepartment
+                return(
+                    <Grid container>
+                        <Grid xs={12} item style={{marginBottom:'1rem'}}>
+                            { AddWardButton }
+                        </Grid>
+                        <Grid xs={12} container>
+                            {wardsDepartment}
+                        </Grid>
+                    </Grid>
+                )
             }
             else{
                 return(
@@ -166,7 +179,7 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                                 >
                                 <Typography >{ department.name}</Typography>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
                                     {
                                         renderDepartment(department)
                                     }

@@ -101,7 +101,7 @@ function SearchPatients(props){
         return <Loader />
     }
     return <SearchPatientsComponent showResults={showResults} 
-                patients={filteredPatients}
+                patients={filteredPatients} investigation={props.investigations.currentInvestigation}
                 personalFields={props.investigations.currentInvestigation.personalFields}
                 permissions={props.investigations.currentInvestigation.permissions}
                 functionalities={props.investigations.currentInvestigation.functionalities}
@@ -241,7 +241,7 @@ export function SearchPatientsComponent(props) {
                                     <Translate id="investigation.create.personal_data.fields.sex" />: {props.patients[patientHospitalizeIndex].personalData.sex === "Male" ? <Translate id="general.male" /> : <Translate id="general.female" />}    
                                 </Typography>
                                 <Typography variant="body2">
-                                    <Translate id="hospital.analytics.graphs.age.table-title" />: {yearsFromDate(props.patients[patientHospitalizeIndex].personalData.birthdate)}    
+                                    <Translate id="investigation.create.personal_data.fields.birthdate" />: {props.patients[patientHospitalizeIndex].personalData.birthdate.toLocaleDateString()}    
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} style={{paddingTop:'1rem'}}>
@@ -256,7 +256,7 @@ export function SearchPatientsComponent(props) {
                     }
                     {
                         patientHospitalized &&
-                        <DepartmentsAccordionRedux currentInvestigation={props.investigations.currentInvestigation} 
+                        <DepartmentsAccordionRedux currentInvestigation={props.investigation} 
                             uuidPatient={patientHospitalized.uuid} />
                     }
                     

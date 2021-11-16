@@ -16,6 +16,7 @@
         "add" : ["Add", "Añadir", "Ajouter"],
         "male" : ["Male", "Masculino", "Homme"],
         "female" : ["Female", "Femenino", "Femme"],
+        "undetermined" : ["Undetermined", "Indeterminado", "Indéterminé"],
         "any" : ["Any", "Indiferente", "Indifférent"],
         "view" : ["View", "Ver", "Voir"],
         "startDate" : ["Start Date", "Fecha Inicio", "Date de début"],
@@ -130,7 +131,7 @@
                 "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce département"],
                 "bad-configuration" : ["Doesn't match total number beds, check amount of female/male beds", "No coincide con el número total de camas, verifique la cantidad de camas femeninas / masculinas", "Ne correspond pas au nombre total de lits, vérifiez le nombre de lits pour femmes/hommes"]
             },
-
+            "no-edit-ward" : ["Can't edit wards with busy beds", "Can't edit wards with busy beds","Can't edit wards with busy beds"],
             "action-success" : ["Action performed successfully!", "Action performed successfully!", "Action effectuée avec succès !"],
             "forms" : {
                 "ward" : {
@@ -291,8 +292,7 @@
                 "title" : ["Attention", "Atención", "Attention"],
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
             },
-            
-            "departments" : ["Hospital Departments", "Departamentos", "Département"],
+            "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Patients hospitalisés"],
             "admin-departments" : ["Admin. Departments", "Admin.Departamentos", "Gestion Départements"]
         }
     },

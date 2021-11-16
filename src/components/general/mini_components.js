@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import icon_male from "../../img/icons/icon_male.svg";
 import { Link } from 'react-router-dom'
 import icon_female from "../../img/icons/icon_female.svg";
+import icon_undefined from "../../img/icons/icon_undefined.svg";
 import {
     Add as AddIcon,
     HighlightOff as CloseIcon,
@@ -93,7 +94,7 @@ export const BasicButtonStyles = styled(Button)`
 
 export const IconPatient = (props) =>{
 
-    const iconSex = props.gender.toLowerCase() === "male" ? icon_male : props.gender.toLowerCase() === "female" ? icon_female : null;
+    const iconSex = props.gender.toLowerCase() === "male" ? icon_male : props.gender.toLowerCase() === "female" ? icon_female : icon_undefined;
     if(iconSex){
         return <img src={iconSex} alt={iconSex} width={props.width ? props.width : "40"} {...props} />
     }

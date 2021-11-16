@@ -4,7 +4,7 @@ import React from 'react';
 import {  departmentsInfo, hospital, investigationsShowAll, investigation_server } from "../example_data";
 import ProviderSherwood from '../../providerSherwood';
 import DepartmentsAccordion from '../../pages/hospital/departments/DepartmentsAccordion';
-import { DepartmentLocalized } from '../../pages/hospital/departments';
+import { DepartmentLocalized } from '../../pages/hospital/departments/Admin';
 
 export default {
   title: 'Hospital/Departments',

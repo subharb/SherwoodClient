@@ -1,11 +1,12 @@
 import React from 'react';
 
 import { AddPatientComponent } from '../../pages/hospital/AddPatient'
-import { personal_data_investigation1, investigation_server, wardInfo, patients_personal_data_decrypted } from "../example_data";
+import { personal_data_investigation1, investigation_server, wardInfo, patients_personal_data_decrypted, departmentsInfo } from "../example_data";
 
 import ProviderSherwood from '../../providerSherwood';
 import Ward, {WardFormEdit}  from '../../pages/hospital/departments/Ward';
 import { BedButton, BedButtonAssignBed, BedButtonEdit, BedButtonViewPatient } from '../../components/general/BedButton';
+import { InpatientsLocalized } from '../../pages/hospital/departments/Inpatients';
 
 export default {
   title: 'Hospital/Ward',
@@ -22,6 +23,8 @@ export default {
 const Template = (args) => <WardFormEdit {...args} />; 
 
 const TemplateWard = (args) => <Ward {...args} />; 
+
+const TemplateInPatients = (args) => <InpatientsLocalized {...args} />; 
 
 const TemplateBedEdit = (args) => <BedButtonEdit {...args} />; 
 const TemplateBedAssigned = (args) => <BedButtonAssignBed {...args} />; 
@@ -102,5 +105,11 @@ WardView.args = {
     bedsProps:wardInfo.beds,
     patients:patients_personal_data_decrypted(),
     assignBedPatientCallBack:(bed) => console.log("Bed Patient!", bed), 
+  
+};
+
+export const MyWards = TemplateInPatients.bind({});
+MyWards.args = {
+    departments:departmentsInfo
   
 };

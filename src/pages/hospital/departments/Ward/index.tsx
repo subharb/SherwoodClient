@@ -37,8 +37,6 @@ export enum WardModes {
     View = "view"
 }
 
-
-
 const BED_FORM = {
     "id" : {
         required : true,
@@ -85,7 +83,8 @@ interface PropsRouter extends LocalizeContextProps{
     hospital:any,
     patients:any,
     mode : WardModes,
-    loading:boolean
+    loading:boolean,
+    admin:boolean
 }
 
 const WardRouter:React.FC<PropsRouter> = (props) => {
@@ -161,9 +160,17 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     },[investigations])
 
     useEffect(() => {
-        if(departments.length > 0 && uuidDepartment){
-            const ward = departments.find((depart:IDepartment) => depart.uuid === uuidDepartment).wards.find((ward:IWard) => ward.uuid === uuidWard);
-            setWard(ward);
+        if(props.admin && departments.length > 0 && uuidDepartment){
+            const department = departments.find((depart:IDepartment) => depart.uuid === uuidDepartment);
+            if(department){
+                const ward = department.wards.find((ward:IWard) => ward.uuid === uuidWard);
+                if(ward){
+                    setWard(ward);
+                }
+            }
+            
+            
+            
         }
         
     },[departments])    
@@ -197,18 +204,25 @@ interface Props {
     mode:WardModes,
     patient?:IPatient,
     patients?:IPatient[],
-    editCallBack : (bed:IBed) => void,
-    deleteCallBack : (bed:IBed) => void,
-    addCallBack : (bed:IBed) => void,    
-    saveOrderCallBack: (beds:IBed[]) => void,
+    inModule?:boolean,
+    editCallBack ?: (bed:IBed) => void,
+    deleteCallBack ?: (bed:IBed) => void,
+    addCallBack ?: (bed:IBed) => void,    
+    saveOrderCallBack ?: (beds:IBed[]) => void,
     assignBedPatientCallBack ?: (bed:IBed) => void,
-    resetErrorHospital: () => void,
-    goToPatientHistory:() => void,
-    viewCallBack:(uuidPatient:string) => void,
+    resetErrorHospital?: () => void,
+    goToPatientHistory?:() => void,
+    viewCallBack?:(uuidPatient:string) => void,
     
 }
 
-const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, patients,
+interface PropsView extends Omit<Props, "editCallBack" | "deleteCallBack" | "addCallBack"  | "saveOrderCallBack" | "assignBedPatientCallBack" | "saveOrderCallBack" >{
+    
+}
+
+export const WardView :React.FC<PropsView> = (props) => <Ward {...props} mode={WardModes.View}/>
+
+const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, patients, inModule,
                         editCallBack, addCallBack, deleteCallBack, saveOrderCallBack, assignBedPatientCallBack, 
                         resetErrorHospital, goToPatientHistory, viewCallBack}) => {
     const [isDropped, setIsDropped] = useState(false);
@@ -250,13 +264,13 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         
     }
     function editCallBackForm(bed:IBed){
-        if(!checkNameBeds(bed)){
+        if(!checkNameBeds(bed) && editCallBack){
             editCallBack(bed);
             resetModal();
         }
     }
     function addCallBackForm(bed:IBed){
-        if(!checkNameBeds(bed)){
+        if(!checkNameBeds(bed) && addCallBack){
             addCallBack(bed);
             resetModal()
         }
@@ -278,14 +292,14 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         setShowModal(true);
     }
     function deleteCallBackForm(){
-        if(bedToDelete){
+        if(bedToDelete && deleteCallBack){
             deleteCallBack(bedToDelete);
         }
         
         resetModal();
     }
     function saveNewOrder(){
-        if(beds){
+        if(beds && saveOrderCallBack){
             saveOrderCallBack(beds);
         }
         
@@ -312,11 +326,27 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     }
     function renderBedButton(bed:IBed){
         let buttonBed = null;
+        const currentPatient = bed.stay && patients ? patients.find((pat:IPatient) => pat.uuid === bed.stay.patientInvestigation.uuid) : null;
+        const personalData = currentPatient ? currentPatient.personalData : null;
+        const gender = personalData ? personalData.sex : sexNumberToString(bed.gender); 
+                
+        let stayDays = undefined;
+        let ageYears = null;
+        let hasStay:boolean = false;
+        if(bed.stay){
+            var date1 = new Date(bed.stay.dateIn);
+            var date2 = new Date();
+            var Difference_In_Time = date2.getTime() - date1.getTime();
+            stayDays = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
+            hasStay = true;
+            ageYears = yearsFromDate(personalData?.birthdate);
+        }
         switch(mode){
             case WardModes.AssignPatient:
                 buttonBed = <BedButtonAssignBed name={bed.name} 
                                 active={bed.active} 
-                                stay={bed.stay} 
+                                hasStay={hasStay}
+                                stayDays={stayDays}
                                 gender={sexNumberToString(bed.gender)} 
                                 onClickCallBack={() => assignBedPatient(bed)}
                             /> 
@@ -328,23 +358,11 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                             /> 
             break;
             case WardModes.View:
-                const currentPatient = bed.stay && patients ? patients.find((pat:IPatient) => pat.uuid === bed.stay.patientInvestigation.uuid) : null;
-                const personalData = currentPatient ? currentPatient.personalData : null;
-                const gender = personalData ? personalData.sex : sexNumberToString(bed.gender); 
-                let stayDays = null;
-                let ageYears = null;
-                if(bed.stay){
-                    var date1 = new Date(bed.stay.dateIn);
-                    var date2 = new Date();
-                    var Difference_In_Time = date2.getTime() - date1.getTime();
-                    stayDays = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
-            
-                    ageYears = yearsFromDate(personalData?.birthdate)
-                }
                 
-                buttonBed = <BedButtonViewPatient patient={personalData} gender={gender} 
-                                active={bed.active} name={bed.name} stay={stayDays} age={ageYears}
-                                onClickCallBack={currentPatient ? () => viewCallBack(currentPatient.uuid) : undefined}
+                
+                buttonBed = <BedButtonViewPatient patient={personalData} gender={gender} hasStay={hasStay}
+                                active={bed.active} name={bed.name} stayDays={stayDays} age={ageYears}
+                                onClickCallBack={(  currentPatient && viewCallBack) ? () => viewCallBack(currentPatient.uuid) : undefined}
                             />
             break;
         }
@@ -365,7 +383,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                             label={<Translate id="hospital.ward.reorder" />}
                         />  
                         {
-                        orderChanged &&
+                        (orderChanged && saveOrderCallBack) &&
                         <Grid item xs={12}>
                                 <Typography variant="body2" gutterBottom>
                                 <Translate id="hospital.ward.save-order" />
@@ -439,7 +457,10 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     }
     async function resetSnackBar(){
         setShowSnackbar({show:false});
-        resetErrorHospital()
+        if(resetErrorHospital){
+            resetErrorHospital()
+        }
+        
     }
     useEffect(()=>{
         if(bedToAssign && error){
@@ -472,7 +493,10 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         if(bedToAssign && !error){
             setShowSnackbar({show:true, severity: "success", message : "hospital.ward.assign-bed-success"});
             setBedToAssign(null);
-            goToPatientHistory()
+            if(goToPatientHistory){
+                goToPatientHistory()
+            }
+            
         }
         resetBeds();
         resetModal();
@@ -487,6 +511,32 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         }
         console.log(bedsProps);
         
+        const bedsList = bedsSorted.map((bed, index) => {
+            const bedButtonElement = renderBedButton(bed)
+            if(reorder){
+                return(
+                    <SortableItem
+                        key={index}
+                        id={index.toString()} >
+                        {
+                            bedButtonElement
+                        }
+                        </SortableItem>
+                        
+                )
+            }
+            else{
+                return(bedButtonElement);
+                
+            }
+        })
+        if(inModule){
+            return(
+                <Grid container>
+                    { bedsList }
+                </Grid>
+            )
+        }
         return(
             <BoxBckgr color="text.primary" style={{padding:'1rem'}}>
                 <Snackbar
@@ -567,9 +617,12 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         }
                         </div>
                 </Modal>
+                
                 <Typography variant="h3" gutterBottom display="inline" style={{color:"white"}}>
-                    <Translate id="hospital.ward.title" />: {ward.name}
+                    {ward.name}
                 </Typography>
+                
+                
                 <Grid container>
                     {
                         renderSettingControls()
@@ -583,25 +636,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         strategy={rectSortingStrategy}>
                         
                             {
-                                bedsSorted.map((bed, index) => {
-                                    const bedButtonElement = renderBedButton(bed)
-                                    if(reorder){
-                                        return(
-                                            <SortableItem
-                                                key={index}
-                                                id={index.toString()} >
-                                                {
-                                                    bedButtonElement
-                                                }
-                                                </SortableItem>
-                                                
-                                        )
-                                    }
-                                    else{
-                                        return(bedButtonElement);
-                                        
-                                    }
-                                })
+                                bedsList
                             } 
                             
                     </SortableContext>

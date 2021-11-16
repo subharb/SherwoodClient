@@ -197,7 +197,7 @@ return (
         </TableCell>
         ))}
         {
-            (props.actions.length > 0) &&
+            (props.actions && props.actions.length > 0) &&
             <TableCell align="right">Actions</TableCell>
         } 
     </TableRow>
@@ -355,7 +355,7 @@ function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dra
                 })
             }         
             {
-                props.actions.length > 0 && 
+                (props.actions && props.actions.length > 0) && 
                 <TableCell padding="none" align="right">
                     <Box mr={2}>
                         {
