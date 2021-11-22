@@ -55,12 +55,13 @@ interface Props {
     stayDays?:number,
     hasStay?:boolean,
     name:string,   
+    patientName?:string,
     age?:number | null,
     patient?:PersonalData | null
     deleteCallBack?:() => void,
     onClickCallBack?:(uuidPatient?:string) => void,
 }
-interface PropsEdit extends Omit<Props, "mode" | "age" >{
+interface PropsEdit extends Omit<Props, "mode" | "age" | "patientName" >{
     name:string,    
     deleteCallBack:() => void,
 }
@@ -103,15 +104,20 @@ const BedButton:React.FC<Props> = (props) => {
     }
     
     const active = !props.active ? false : (props.mode === WardModes.AssignPatient && props.hasStay) ? true : props.active;
-    const name = props.mode === WardModes.View && props.patient ? props.patient.name+" "+props.patient.surnames : props.name;  
+    const patientName = props.patient ? props.patient.name+" "+props.patient.surnames : "" ;
+    //const name = props.mode === WardModes.View && props.patient ? props.patient.name+" "+props.patient.surnames : props.name;  
     const showIcon = !(props.mode === WardModes.View && props.patient)
     return (
         <Container active={active} onClick={onClick} genderBorder={!showIcon} genderColor={sexStringToColor(props.gender)} >
             <Grid container xs={12}>
                 <GridHeaderPatient xs={12} type={props.mode} >
-                    <Typography variant="body2" style={{lineHeight:1}} component="span" gutterBottom>
-                        {name}
+                    <Typography variant="body2" style={{lineHeight:1}} component="div" gutterBottom>
+                        {props.name}
                     </Typography>
+                    <Typography variant="body2" style={{lineHeight:1}} component="div" gutterBottom>
+                        {patientName}
+                    </Typography>
+                    
                     {
                         props.mode === "edit" &&
                         <ButtonDelete onClick={(e:Event) => deleteAction(e)}  />

@@ -358,8 +358,6 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                             /> 
             break;
             case WardModes.View:
-                
-                
                 buttonBed = <BedButtonViewPatient patient={personalData} gender={gender} hasStay={hasStay}
                                 active={bed.active} name={bed.name} stayDays={stayDays} age={ageYears}
                                 onClickCallBack={(  currentPatient && viewCallBack) ? () => viewCallBack(currentPatient.uuid) : undefined}
