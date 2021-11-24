@@ -106,7 +106,7 @@ function ShowSurveys(props) {
                             <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
                                 rows={props.surveys.map(survey => {return {name : survey.name}})}
                                 headCells={[{ id: "name", alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.name`} /> }]}
-                                actions={{"add" : (indexSurvey) => addRecordSurvey(indexSurvey)}}
+                                actions={[{"type":"add", "func" : (indexSurvey) => addRecordSurvey(indexSurvey)}]}
                             />
                         </div>)
                 }
@@ -115,7 +115,8 @@ function ShowSurveys(props) {
                         <div className="row">
                             <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  rows={props.surveys.map(survey => {return {name : survey.name}})}
                                 headCells={[{ id: "name", alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.name`} /> }]}
-                                actions={{"view" : (indexSurvey) => viewSurvey(indexSurvey)}}
+                                actions={[{"type":"view", "func" : (indexSurvey) => viewSurvey(indexSurvey)}]}
+                                
                             />
                         </div>)
                 }
@@ -142,7 +143,7 @@ function ShowSurveys(props) {
                             <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.sections" />} 
                                 rows={props.surveys[indexSurvey].sections.map(section => {return {name : section.name}})}
                                     headCells={[{ id: "name", alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.name`} /> }]}
-                                    actions={{"add" : (indexSurvey) => sectionSelected(indexSurvey)}}
+                                    actions={[{"type":"add", "func" : (indexSurvey) => sectionSelected(indexSurvey)}]}
                                 />
                         </div>
                     );

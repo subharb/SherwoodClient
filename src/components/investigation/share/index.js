@@ -235,7 +235,7 @@ function ShareInvestigation(props) {
                                         }
                                         return tempSection;
                                     })}
-                                    actions={{"delete" : (index) => removeResearcher(index)}} 
+                                    actions={[{"type" : "delete", "func" : (index) => removeResearcher(index)}]}
                                 />
                         </Grid>
                         <Grid item xs={12} >
@@ -286,7 +286,7 @@ function ShareInvestigation(props) {
                             
                             return row;
                         })}
-                        actions={{"edit" : (index) => editAResearcher(index)}} 
+                        actions={[{"type" : "edit" , "func" : (index) => editAResearcher(index)}]} 
         />
         }
         return (

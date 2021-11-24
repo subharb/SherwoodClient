@@ -314,7 +314,8 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
   const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
   const renderCategory = (category, index, openRoutes) => {
     const hasPermission = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
-    if(category.permissions.length === 0 || hasPermission)
+    const hasFunctionality = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.filter(value => category.functionalities.includes(value)).length > 0;
+    if((category.permissions.length === 0 || hasPermission) && (category.functionalities.length === 0 || hasFunctionality))
     return category.children && category.icon ? (
       <React.Fragment key={index}>
         <SidebarCategory
@@ -382,8 +383,6 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
         <Box ml={1} pt={6}>
           <img src={pathLogo} alt="Sherwood Science" height="55" /> {"  "}
         </Box>
-
-
       </Brand>
       <Scrollbar>
         <List disablePadding>

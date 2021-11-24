@@ -1226,138 +1226,40 @@ export const patients_personal_data_decrypted = () => {
     return [
         {
             "uuid": "801952ca-66da-4410-8583-3faa6f460e03",
-            "personalData": [
+            "id" : 65,
+            "personalData": 
                 {
-                    "name": "email",
-                    "required": true,
-                    "value": "peter@petrelli.com",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.email",
-                    "encrypted": true
-                },
-                {
-                    "name": "phone",
-                    "required": true,
-                    "value": "+34 7471771721",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.phone",
-                    "encrypted": true
-                },
-                {
-                    "name": "name",
-                    "required": true,
-                    "value": "Peter",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.name",
-                    "encrypted": true
-                },
-                {
-                    "name": "surnames",
-                    "required": true,
-                    "value": "Petrelli Jimenez",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.surname",
-                    "encrypted": true
-                },
-                {
-                    "name": "birthdate",
-                    "required": true,
-                    "value": "1987-08-21",
-                    "type": "date",
-                    "label": "investigation.create.personal_data.fields.birthdate",
-                    "encrypted": true
+                    "email" : "peter@petrelli.com",
+                    "phone" : "+34 7471771721",
+                    "name" : "Peter",
+                    "surnames" : "Petrelli Jimenez",
+                    "birthdate" : "1987/08/21",
+                    "sex" : "male"
                 }
-            ]
+            
+        },{
+            "id" : 68,
+            "uuid":"dc4515d1-0555-4734-a6a4-5e4fbc27c6a4",
+            "personalData": 
+                {
+                    "email" : "donnie@gmail.com",
+                    "phone" : "+1 61791 91892983",
+                    "name" : "Donald",
+                    "surnames" : "Trump Cruz",
+                    "birthdate" : "1947/01/11",
+                    "sex" : "female"
+                }
         },
         {
-            "uuid": "e3ed69b5-d423-4dcf-9cfb-96c24f7a8df6",
-            "personalData": [
-                {
-                    "name": "email",
-                    "required": true,
-                    "value": "donnie@gmail.com",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.email",
-                    "encrypted": true
-                },
-                {
-                    "name": "phone",
-                    "required": true,
-                    "value": "+1 61791 91892983",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.phone",
-                    "encrypted": true
-                },
-                {
-                    "name": "name",
-                    "required": true,
-                    "value": "Donald",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.name",
-                    "encrypted": true
-                },
-                {
-                    "name": "surnames",
-                    "required": true,
-                    "value": "Trump Cruz",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.surname",
-                    "encrypted": true
-                },
-                {
-                    "name": "birthdate",
-                    "required": true,
-                    "value": "1954-03-21",
-                    "type": "date",
-                    "label": "investigation.create.personal_data.fields.birthdate",
-                    "encrypted": true
-                }
-            ]
-        },
-        {
-            "uuid": "4e58bc59-2566-482c-9cfa-c3ae915c9d8f",
-            "personalData": [
-                {
-                    "name": "email",
-                    "required": true,
-                    "value": "jessie@hotmail.com",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.email",
-                    "encrypted": true
-                },
-                {
-                    "name": "phone",
-                    "required": true,
-                    "value": "+32 91 9192 9192",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.phone",
-                    "encrypted": true
-                },
-                {
-                    "name": "name",
-                    "required": true,
-                    "value": "Jessie",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.name",
-                    "encrypted": true
-                },
-                {
-                    "name": "surnames",
-                    "required": true,
-                    "value": "Jones",
-                    "type": "text",
-                    "label": "investigation.create.personal_data.fields.surname",
-                    "encrypted": true
-                },
-                {
-                    "name": "birthdate",
-                    "required": true,
-                    "value": "1976-01-31",
-                    "type": "date",
-                    "label": "investigation.create.personal_data.fields.birthdate",
-                    "encrypted": true
-                }
-            ]
+            "id" : 67,
+            "personalData": 
+            {
+                "email" : "jessie@hotmail.com",
+                "phone" : "+32 91 9192 9192",
+                "name" : "Jessie",
+                "surnames" : "Jones",
+                "birthdate" : "1976/03/09"
+            }
         }
     ]
 }
@@ -2267,11 +2169,11 @@ export const listPatientsHospitalWard = [
         dateIn:"2021/02/01",
         dateOut:null,
         
-        patient:{
+        personalData:{
             name:"Peter",
             surnames:"Petrelli",
             dateOfBirth:"1976/07/31",
-            gender:"male",
+            sex:"male",
         }
     },
     {
@@ -2351,3 +2253,233 @@ export const listPatientsHospitalWard = [
     }
 
 ]
+
+
+export const wardInfo = 
+{
+    "id": 6,
+    "uuid": "c949e026-f04a-44cd-80f6-dd9e667cc21c",
+    "name": "ICU Ward",
+    "department": {
+        "id": 1,
+        "uuid": "ef85866d-b465-4142-b45a-37214223ec25",
+        "code": "NEU",
+        "name": "Neurología",
+        "institution": {
+            "id": 1,
+            "uuid": "42cbc8b4-379e-4c9f-839b-88b38258e1e2",
+            "acr": "HBM",
+            "name": "Hospital Belako Mali"
+        }
+    },
+    "beds": [
+        {
+            "id": 85,
+            "name": "l",
+            "active": true,
+            "gender": 1,
+            "order": 11,
+            "empty" : false,
+            "stay": {
+                "id": 10,
+                "dateIn": "2021-10-28T08:19:25.399Z",
+                "dateOut": null,
+                "updatedAt": "2021-10-28T08:19:25.399Z",
+                "createdAt": "2021-10-28T08:19:25.399Z",
+                "patientInvestigation": {
+                    "id": 1241,
+                    "uuid": "dc4515d1-0555-4734-a6a4-5e4fbc27c6a4",
+                    "status": 0,
+                    "investigationId": 2,
+                    "patientId": 1241,
+                    "patientIdInvestigation": 0,
+                    "encryptedKeyUsed": 0,
+                    "keyPatientInvestigation": "U2FsdGVkX1+0FkH3e0F011GnnHaRbbhSXBulTK4dUPv8DZlgKOSzPIxqdqFClfDXiAAdQl5sZo5pMM7lmG8ysw=="
+                }
+            }
+        },
+        {
+            "id": 84,
+            "name": "k",
+            "active": true,
+            "gender": 0,
+            "order": 10,
+            "empty" : true
+        },
+        {
+            "id": 83,
+            "name": "j",
+            "active": true,
+            "gender": 0,
+            "order": 9,
+            "empty" : false
+        },
+        {
+            "id": 82,
+            "name": "i",
+            "active": false,
+            "gender": 0,
+            "order": 8
+        },
+        {
+            "id": 81,
+            "name": "h",
+            "active": false,
+            "gender": 0,
+            "order": 7
+        },
+        {
+            "id": 80,
+            "name": "g",
+            "active": true,
+            "gender": 0,
+            "order": 6
+        },
+        {
+            "id": 79,
+            "name": "f",
+            "active": true,
+            "gender": 0,
+            "order": 5
+        },
+        {
+            "id": 78,
+            "name": "e",
+            "active": true,
+            "gender": 0,
+            "order": 4
+        },
+        {
+            "id": 77,
+            "name": "d",
+            "active": true,
+            "gender": 0,
+            "order": 3
+        },
+        {
+            "id": 76,
+            "name": "c",
+            "active": true,
+            "gender": 0,
+            "order": 2
+        },
+        {
+            "id": 75,
+            "name": "b",
+            "active": true,
+            "gender": 0,
+            "order": 1
+        },
+        {
+            "id": 74,
+            "name": "a",
+            "active": true,
+            "gender": 0,
+            "order": 0,
+            "stay": {
+                "id": 10,
+                "dateIn": "2021-10-28T08:19:25.399Z",
+                "dateOut": null,
+                "updatedAt": "2021-10-28T08:19:25.399Z",
+                "createdAt": "2021-10-28T08:19:25.399Z",
+                "patientInvestigation": {
+                    "id": 1241,
+                    "uuid": "801952ca-66da-4410-8583-3faa6f460e03",
+                    "status": 0,
+                    "investigationId": 2,
+                    "patientId": 1241,
+                    "patientIdInvestigation": 0,
+                    "encryptedKeyUsed": 0,
+                    "keyPatientInvestigation": "U2FsdGVkX1+0FkH3e0F011GnnHaRbbhSXBulTK4dUPv8DZlgKOSzPIxqdqFClfDXiAAdQl5sZo5pMM7lmG8ysw=="
+                }
+            }
+        }
+    ]
+}
+
+
+export const departmentsInfo = [
+        {
+            "name" : "Neurologia",
+            "wards" : [wardInfo]
+        },
+        {
+            "name" : "Cardiología",
+            "wards" : [wardInfo]
+        }
+    ]
+
+export const hospital = {
+    "departments":departmentsInfo,
+    "researchers": [
+        {
+            "name": "David",
+            "uuid": "ca78d9df-625f-4c1a-9aae-551f06268f41",
+            "surnames": "Shaikh",
+            "status": 2,
+            "email": "dshaikhurbina@gmail.com",
+            "permissions": [],
+            "departments": []
+        },
+        {
+            "name": "Pedro ",
+            "uuid": "9c6dd74a-2362-4a30-b826-10330f250c07",
+            "surnames": "Rodriguez Cruz",
+            "status": 2,
+            "email": "pedro.cruz@ucl.ac.uk",
+            "permissions": [
+                "SHARE_RESEARCHERS",
+                "EDIT_INVESTIGATION",
+                "EDIT_SUBMISSIONS",
+                "BUSINESS_READ",
+                "PERSONAL_ACCESS",
+                "MEDICAL_WRITE",
+                "MEDICAL_READ"
+            ],
+            "departments": []
+        },
+        {
+            "name": "Cristina",
+            "uuid": "7557d857-7836-413f-bcf6-06bce5977d5f",
+            "surnames": "Fernández Hoyos",
+            "status": 2,
+            "email": "cristinafernandezhoyos@gmail.com",
+            "permissions": [
+                "SHARE_RESEARCHERS",
+                "BUSINESS_READ",
+                "PERSONAL_ACCESS",
+                "MEDICAL_READ",
+                "MEDICAL_WRITE"
+            ],
+            "departments": []
+        },
+        {
+            "name": "Dénis",
+            "uuid": "954d1c74-8ea3-4c6e-8ce8-c1e8f885bc7d",
+            "surnames": "Sagara",
+            "status": 2,
+            "email": "akonisagara@gmail.com",
+            "permissions": [
+                "PERSONAL_ACCESS",
+                "MEDICAL_READ",
+                "MEDICAL_WRITE"
+            ],
+            "departments": []
+        },
+        {
+            "name": "María del Mae",
+            "uuid": "6cae761b-e46c-449b-a9bd-e4d10c3e6567",
+            "surnames": "Rodriguez Carrasco",
+            "status": 2,
+            "email": "arimar_vera@hotmail.com",
+            "permissions": [
+                "SHARE_RESEARCHERS",
+                "BUSINESS_READ",
+                "PERSONAL_ACCESS",
+                "MEDICAL_READ",
+                "MEDICAL_WRITE"
+            ],
+            "departments": []
+        }
+    ]
+}

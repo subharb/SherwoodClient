@@ -1,8 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import icon_male from "../../img/icons/icon_male.svg";
 import { Link } from 'react-router-dom'
 import icon_female from "../../img/icons/icon_female.svg";
+import icon_undefined from "../../img/icons/icon_undefined.svg";
 import {
     Add as AddIcon,
     HighlightOff as CloseIcon,
@@ -17,7 +18,8 @@ import {
     AddCircle as PlusIcon,
     ArrowForwardIos as ArrowForwardIosIcon,
     ArrowBackIos as ArrowBackIosIcon,
-    LocalHospital as HospitalIcon
+    LocalHospital as HospitalIcon,
+    Hotel as HotelIcon,
   } from "@material-ui/icons";
   import {
     Button, Icon, IconButton,
@@ -31,6 +33,23 @@ import {
   } from "@material-ui/core";  
 
 import { spacing } from "@material-ui/system";
+
+export const IconGenerator = (props) => {
+    switch(props.type){
+        case "add":
+            return <AddIcon style={{color:props.theme.buttonContinue.secondary.background }} />
+        case "view":
+            return <RemoveRedEyeIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}/>
+        case "delete":
+            return <DeleteIcon style={{color:"red"}} fontSize={props.size ? props.size : "small"}/>
+        case "edit":
+            return <EditIcon  style={{color:"black"}} fontSize={props.size ? props.size : "small"}/>
+        case "hospital":
+            return <HotelIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
+        default:
+            return <AddIcon />
+    }
+}
 
 export const FieldWrapper = (props) => {
     if(props.noWrap){
@@ -74,12 +93,12 @@ export const BasicButtonStyles = styled(Button)`
 `
 
 export const IconPatient = (props) =>{
-    if(props.gender.toLowerCase() === "male"){
-        return <img src={icon_male} alt="male" width="40" {...props}/>
+
+    const iconSex = props.gender.toLowerCase() === "male" ? icon_male : props.gender.toLowerCase() === "female" ? icon_female : icon_undefined;
+    if(iconSex){
+        return <img src={iconSex} alt={iconSex} width={props.width ? props.width : "40"} {...props} />
     }
-    else if(props.gender.toLowerCase() === "female"){
-        return <img src={icon_female} alt="female" width="40" {...props} />
-    }
+    
     return null;
 }
 const GreyButtonStyles = styled(Button)`
@@ -130,11 +149,6 @@ export const ButtonGrey = (props) => {
         </GreyButtonStyles>)
 }
 
-export const ButtonGreyBorderGrey = styled(ButtonGrey)`
-    &&&{
-        background: #E5E5E5;
-        border: 5px solid #6F6C6D;
-`;
 
 export const ButtonEdit = (props) =>{
     return(
@@ -291,3 +305,8 @@ export const ButtonView = (props) =>{
     //         {props.children}
     // </ButtonContinueStyles>
 }
+export const ButtonGreyBorderGrey = styled(ButtonGrey)`
+    &&&{
+        background: #E5E5E5;
+        border: 5px solid #6F6C6D;
+`;

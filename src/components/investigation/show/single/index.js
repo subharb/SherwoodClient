@@ -63,7 +63,8 @@ export function ShowInvestigation(props) {
             <EnhancedTable titleTable={<Translate id="investigation.fill.survey.title" />} 
                 rows={currentInvestigation.surveys.map(survey => {
                     return {name : survey.name}})} 
-                headCells={headCells} actions={{"view":(index) => showSurvey(index)}}
+                headCells={headCells} 
+                actions={[{"type" : "view", "func" :(index) => showSurvey(index)}]}
                 />
         )
     }

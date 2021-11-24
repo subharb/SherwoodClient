@@ -74,16 +74,17 @@ import Investigation  from "../components/investigation";
 import ShareInvestigationRouter from "../components/investigation/share/wrapper";
 
 import HomeSchedule from "../pages/hospital/HomeSchedule";
-import ListPatients from "../pages/hospital/ListPatients";
-import Patient from "../pages/hospital/Patient";
+
+import Patient from "../pages/hospital/patient";
 import SearchPatients from "../pages/hospital/SearchPatients";
 import TestsHome from "../pages/hospital/TestsHome";
 import AddPatient from "../pages/hospital/AddPatient";
 import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";
-import Departments from  "../pages/hospital/Departments";
-import { BUSINESS_READ, MEDICAL_READ, PERSONAL_ACCESS, SHARE_RESEARCHERS } from "../constants";
-
+import Departments from  "../pages/hospital/departments/Admin";
+import InPatients from  "../pages/hospital/departments/Inpatients";
+import { WardLocalized, WardModes } from  "../pages/hospital/departments/Ward";
+import { FUNCTIONALITY, PERMISSION } from "../constants/types";
 
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
@@ -101,7 +102,9 @@ export const HOSPITAL_HOME_ROUTE = "/hospital";
 export const MY_SCHEDULE_ROUTE = "/my-schedule";
 export const SEARCH_PATIENT_ROUTE = "/search-patient";
 export const ADD_PATIENT_ROUTE = "/add-patient";
-export const HOSPITAL_WARD_ROUTE = "/hospital-ward";
+export const HOSPITAL_WARD_SETTINGS_ROUTE = "/ward/settings/:uuidWard";
+export const HOSPITAL_WARD_ROUTE = "/ward/:uuidWard";
+export const HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE = "/ward/settings/:uuidWard/patient/:uuidPatient";
 export const OUTPATIENTS_ROUTE = "/outpatients";
 export const HOSPITAL_PATIENT = "/patient/:uuidPatient";
 export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection/section/:uuidSection/:idSubmission?";
@@ -115,8 +118,8 @@ export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const ROUTE_401 = "/auth/401";
-export const HOSPITAL_DEPARTMENTS = "/departments";
-
+export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
+export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
 
 
 const hospitalRoutes = {
@@ -140,16 +143,6 @@ const hospitalRoutes = {
             path: MY_SCHEDULE_ROUTE,
             name: "My Schedule",
             component: HomeSchedule
-        },
-        {
-            path: HOSPITAL_WARD_ROUTE,
-            name: "Hospital Ward",
-            component: ListPatients
-        },
-        {
-            path: OUTPATIENTS_ROUTE,
-            name: "Outpatients",
-            component:ListPatients
         },
         {
             path: SEARCH_PATIENT_ROUTE,
@@ -222,10 +215,33 @@ const hospitalRoutes = {
             component: UserManagement,
         },
         {
-            path: HOSPITAL_DEPARTMENTS,
+            path: HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE,
             name: "Departments",
-            component: Departments,
+            component: () => <Departments admin={true}/>,
         },
+        {
+            path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
+            name: "My Departments",
+            component: () => <InPatients />,
+        },
+        
+        {
+            path: HOSPITAL_WARD_ROUTE,
+            name: "Ward",
+            component: () => <WardLocalized mode={WardModes.View} />,
+        },
+        
+        {
+            path: HOSPITAL_WARD_SETTINGS_ROUTE,
+            name: "Ward",
+            component: () => <WardLocalized mode={WardModes.Edit} />,
+        },
+        {
+            path: HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE,
+            name: "Ward",
+            component: () =>  <WardLocalized mode={WardModes.AssignPatient} />,
+        },
+        
     ],
   };
 
@@ -235,6 +251,7 @@ const dashboardHomeRoutes = {
     icon: <HomeIcon />,
     badge: "",
     permissions : [],
+    functionalities:[],
     component: {
         path: ROOT_ROUTE,
         name: "Home",
@@ -249,6 +266,7 @@ const dashboardSearchPatientRoutes = {
     icon: <FindInPageIcon />,
     badge: "",
     permissions : [],
+    functionalities:[],
     component: {
         path: SEARCH_PATIENT_ROUTE,
         name: "Search Patient",
@@ -263,7 +281,8 @@ const dashboardImagesRoutes = {
     path: HOSPITAL_IMAGES,
     icon: <ImageIcon />,
     badge: "",
-    permissions : [MEDICAL_READ],
+    permissions : [PERMISSION.MEDICAL_READ],
+    functionalities:[],
     component: {
         path: HOSPITAL_IMAGES,
         name: "Images",
@@ -277,7 +296,8 @@ const dashboardLabRoutes = {
     path: HOSPITAL_LAB,
     icon: <SearchPatientIcon />,
     badge: "",
-    permissions : [MEDICAL_READ],
+    permissions : [PERMISSION.MEDICAL_READ],
+    functionalities:[],
     component: {
         path: HOSPITAL_LAB,
         name: "Laboratory",
@@ -291,7 +311,8 @@ const dashboardAddPatientRoutes = {
     path: ADD_PATIENT_ROUTE,
     icon: <AddPatientIcon />,
     badge: "",
-    permissions : [PERSONAL_ACCESS],
+    permissions : [PERMISSION.PERSONAL_ACCESS],
+    functionalities:[],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "Add Patient",
@@ -305,7 +326,8 @@ const dashboardAnalyticsRoutes = {
     path: HOSPITAL_ANALYTICS,
     icon: <TimelineIcon />,
     badge: "",
-    permissions : [BUSINESS_READ],
+    permissions : [PERMISSION.BUSINESS_READ],
+    functionalities:[],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "Analytics",
@@ -319,7 +341,8 @@ const dashboardUserMgmtRoutes = {
     path: HOSPITAL_USER_MGMT,
     icon: <GroupIcon />,
     badge: "",
-    permissions : [SHARE_RESEARCHERS],
+    permissions : [PERMISSION.SHARE_RESEARCHERS],
+    functionalities:[],
     component: {
         path: ADD_PATIENT_ROUTE,
         name: "User Mgmt",
@@ -328,16 +351,32 @@ const dashboardUserMgmtRoutes = {
     children: null
 }
 
-const dashboardDepartmentRoutes = {
-    id: <Translate id="pages.hospital.departments" />,
-    path: HOSPITAL_DEPARTMENTS,
+const dashboardAdminDepartmentRoutes = {
+    id: <Translate id="pages.hospital.admin-departments" />,
+    path: HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE,
     icon: <PeopleOutlineIcon />,
     badge: "",
-    permissions : [SHARE_RESEARCHERS],
+    permissions : [PERMISSION.SHARE_RESEARCHERS],
+    functionalities:[],
     component: {
-        path: HOSPITAL_DEPARTMENTS,
+        path: HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE,
         name: "Departments",
-        component: Departments
+        component: () => <Departments admin={true} />
+    },
+    children: null
+}
+
+const dashboardMyDepartmentRoutes = {
+    id: <Translate id="pages.hospital.inpatients" />,
+    path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
+    icon: <PeopleOutlineIcon />,
+    badge: "",
+    permissions : [PERMISSION.MEDICAL_READ],
+    functionalities:[FUNCTIONALITY.HOSPITALIZATION],
+    component: {
+        path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
+        name: "My Departments",
+        component: () => <InPatients />
     },
     children: null
 }
@@ -353,11 +392,6 @@ const dashboardHospitalRoutes = {
             path: ROOT_ROUTE,
             name: "Home",
             component: HomeSchedule
-        },
-        {
-            path: HOSPITAL_WARD_ROUTE,
-            name: "Hospital Ward",
-            component: ListPatients
         },
         {
             path: SEARCH_PATIENT_ROUTE,
@@ -909,5 +943,6 @@ export const sidebarRoutesHospital = [
     dashboardLabRoutes,
     dashboardAnalyticsRoutes,
     dashboardUserMgmtRoutes,
-    dashboardDepartmentRoutes
+    dashboardAdminDepartmentRoutes,
+    dashboardMyDepartmentRoutes
   ];

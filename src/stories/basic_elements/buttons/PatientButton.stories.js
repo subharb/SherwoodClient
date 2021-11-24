@@ -1,11 +1,11 @@
 import React from 'react';
 
-import PatientButton  from '../../../components/general/PatientButton';
+import BedButton  from '../../../components/general/BedButton';
 import ProviderSherwood from '../../../providerSherwood';
 
 export default {
   title: 'Basic Elements/Buttons/Patient',
-  component: PatientButton,
+  component: BedButton,
   argTypes: {
     type: {
         control: {
@@ -37,7 +37,7 @@ export default {
     </ProviderSherwood>],
 };
 
-const Template = (args) => <PatientButton {...args} />;
+const Template = (args) => <BedButton {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {

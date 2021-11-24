@@ -4,6 +4,7 @@ import { EnhancedTable } from './EnhancedTable';
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 import { HOSPITAL_PATIENT } from '../../routes';
+import { FUNCTIONALITY, PERMISSION } from '../../constants/types';
 
 function PatientsTable(props) {
     const rows = props.patients.map(patient => {
@@ -33,9 +34,14 @@ function PatientsTable(props) {
     const headCells = props.personalFields.map(pField => {
         return { id: pField.name, alignment: "left", label: !props.translate(`investigation.create.personal_data.short-fields.${pField.name}`).includes("Missing") ? props.translate(`investigation.create.personal_data.short-fields.${pField.name}`) : pField.label }
     }) 
+    let actions = [];
+    if(props.permissions.includes(PERMISSION.MEDICAL_WRITE) && props.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION)){
+        actions.push({"type" : "hospital", "func" : (index) => props.hospitalizePatientCallBack(index)})
+    }
     return (
         <EnhancedTable noHeader noSelectable  titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
             selectRow={index => props.showPatientCallBack(index)}
+            actions={actions}
             />
     )
     
@@ -46,7 +52,8 @@ PatientsTable.propTypes = {
     mobile:PropTypes.bool,
     personalFields:PropTypes.array,
     showPatientCallBack:PropTypes.func,
-    addInfoPatientCallBack:PropTypes.func
+    addInfoPatientCallBack:PropTypes.func,
+    hospitalizePatientCallBack:PropTypes.func
 }
 
 export default withLocalize(PatientsTable)

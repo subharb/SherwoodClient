@@ -64,6 +64,10 @@ export function validateField(field, fieldCompare){
                 response.result = Array.isArray(field.value) || (field.value === false)
                 response.messageCode =  pathErroTranslation+"error_notarrayorfalse"
                 break;
+            case "number":
+                response.result = !isNaN(field.value);
+                response.messageCode =  pathErroTranslation+"error_notnumber"
+                break;
             default:
                 console.log("Validación no definida");
                 response.result = false;
@@ -755,4 +759,11 @@ export  function datalogger(wrapped){
         console.log('Data Downloaded', formatData(total));
         return result;
       }
+export function sexNumberToString(sex){
+    return sex === 0 ? "male" : sex === 1 ? "female" : "any"
+}
+
+export function sexStringToColor(sex){
+    const sexLowercase = sex.toLowerCase();
+    return sexLowercase === "male" ? "#f3948a" : sexLowercase === "female" ? "#4da7ab" : "#aba74d";
 }

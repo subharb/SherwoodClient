@@ -4,6 +4,8 @@
     "general" : {
         "yes" : ["Yes", "Si", "Oui"], 
         "no" : ["No", "No", "Non"], 
+        "save" : ["Save", "Guardar", "Enregistrer"],
+        "discard" : ["Discard", "Descartar", "Jeter"],
         "updating-records" : ["We are syncronizing the records, please hold on.", "Estamos actualizando los registros, por favor espere.", "Nous mettons à jour les enregistrements, veuillez patienter."],
         "delete" : ["Delete", "Borrar", "Effacer"],
         "cancel" : ["Cancel", "Cancelar", "Annuler"],
@@ -12,6 +14,10 @@
         "update" : ["Update", "Actualizar", "Mettre à jour"],
         "back" : ["Back", "Atrás", "Returner"],
         "add" : ["Add", "Añadir", "Ajouter"],
+        "male" : ["Male", "Masculino", "Homme"],
+        "female" : ["Female", "Femenino", "Femme"],
+        "undetermined" : ["Undetermined", "Indeterminado", "Indéterminé"],
+        "any" : ["Any", "Indiferente", "Indifférent"],
         "view" : ["View", "Ver", "Voir"],
         "startDate" : ["Start Date", "Fecha Inicio", "Date de début"],
         "endDate" : ["End Date", "Fecha fin", "Date de fin"],
@@ -40,6 +46,7 @@
             "treatment_regular" : ["Select", "Seleccionar", "Pour sélectionner"],
             "treatment" : ["Select", "Seleccionar", "Pour sélectionner"]
         },
+        "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"],
         "no-results" : ["No results", "Sin resultados", "Sans results"]
     },
     "sign-in" : {
@@ -67,24 +74,78 @@
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
             "new-record" : ["Record saved", "Registro Guardado", "Enregistrement enregistré"],
             "new-record-offline" : ["Record saved offline", "Registro Guardado offline", "Enregistrement enregistré offline"],
-            "error" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
-            "error-nopatient" : ["You don't have access to this patient, please verify this patient belongs to the hospital you are logged in", "No tiene acceso a este paciente, verifique que este paciente pertenece al hospital en el que inició sesión", "Vous n'avez pas accès à ce patient, veuillez vérifier que ce patient appartient à l'hôpital auquel vous êtes connecté"],
             "updated-record" : ["Record updated!", "Registro Actualizado", "Fichier mis à jour"],
             "updated-record-offline" : ["Record updated Offline!", "Registro Actualizado Offline", "Fichier mis à jour Offline"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
-            "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
+            "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"],
+            "error" : {
+                "general" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
+                "patient-alredy-discharged" : ["This patient was already discharged, please refresh the clinical history", "Este paciente ya fue dado de alta, actualice la historia clínica", "Ce patient a déjà obtenu son congé, veuillez actualiser l'historique clinique"],
+                "no-patient" : ["You don't have access to this patient, please verify this patient belongs to the hospital you are logged in", "No tiene acceso a este paciente, verifique que este paciente pertenece al hospital en el que inició sesión", "Vous n'avez pas accès à ce patient, veuillez vérifier que ce patient appartient à l'hôpital auquel vous êtes connecté"],
+                "missing-discharge-survey" : ["The survey for to discharge patients is missing, please contact Sherwood for more details", "Falta el formulario para dar de alta a los pacientes, comuníquese con Sherwood para obtener más detalles.", "L'enquête pour la sortie des patients est manquante, veuillez contacter Sherwood pour plus de détails"]
+            }
+        },
+        "ward" : {
+            "title" : ["Ward", "Sala", "Paroisse"],
+            "edit-bed" : ["Edit bed", "Editar cama", "Modifier le lit"],
+            "add-bed" : ["Add bed", "Añadir cama", "Ajouter le lit"],
+            "save-order" : ["Save the changes once you finished reordering", "Guarde los cambios una vez que haya terminado de reordenar", "Enregistrez les modifications une fois que vous avez terminé de réorganiser"],
+            "delete-bed" : ["Delete bed", "Eliminar cama", "Supprimer le lit"],
+            "select-bed" : ["Select the bed you wish to hospitalize the patient", "Seleccione la cama en la que desea hospitalizar a la paciente.", "Sélectionnez le lit dans lequel vous souhaitez hospitaliser le patient"],
+            "assign-bed-ward-prompt" : ["Are you sure to want to assign this bed?", "¿Estás seguro de querer asignar esta cama?", "Êtes-vous sûr de vouloir attribuer ce lit ?"],
+            "assign-bed-success" : ["Bed assigned correctly", "Cama asignada correctamente", "Lit correctement attribué"],
+            "reorder" : ["Switch to reorder", "Activar para reordenar", "Activer pour réorganiser"],
+            "delete-bed-prompt" : ["Are you sure to delete this bed?", "¿Está seguro de borrar esta cama?", "Êtes-vous sûr de supprimer ce lit ?"],
+            "bed" : {
+                "name" : ["Name", "Nombre", "Nom"],
+                "genre" : ["Genre", "Género", "Genre"],
+                "active" : ["Active", "Activa", "Active"]
+            },
+            "error" : {
+                "default" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
+                "bed-not-exist" : ["Bed does not exist, please refresh the page", "La cama no existe, refresque la página.", "Le lit n'existe pas, veuillez rafraîchir la page"],
+                "bed-assigned" : ["This bed is already busy", "Esta cama ya esta ocupada", "Ce lit est déjà occupé"],
+                "patient-not-exist" : ["patient does not exist", "El paciente no existe", "les patients n'existent pas"],
+                "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"],
+                "patient-already-hospitalized" : ["This patient is already hospitalized, please discharge him from his bed first", "Este paciente ya está hospitalizado, primero déle de alta de su cama.", "Este paciente ya está hospitalizado, primero déle de alta de su cama."]
+            }
+            
         },
         "departments" : {
-            
             "title" : ["Hospital Departments", "Departamentos", "Départements"],
             "modal" : {
-                "title" : ["Add department", "Añadir Departamento", "Ajouter Department"]
+                "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
             },
             "department" : ["Departament", "Departamento", "Department"],
+            "departments" : ["Departaments", "Departamentos", "Departments"],
+            "users" : ["Users", "Usuarios", "utilisateurs"],
+            "inpatients" : ["Inpatients", "Pacientes hospitalizados", "patients hospitalisés"],
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
-            "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"]
+            "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
+            "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "Êtes-vous sûr de supprimer cette pièce ?"],
+            "no-my-departments" : ["You haven't been added any department, ask your administrator", "No se le ha agregado ningún departamento, pregunte a su administrador", "Vous n'avez été ajouté à aucun département, demandez à votre administrateur"],
+            "no-wards" : ["No current wards", "No hay salas en este departamento", "Il n'y a pas de chambres dans ce département"],
+            "errors" : {
+                "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce département"],
+                "bad-configuration" : ["Doesn't match total number beds, check amount of female/male beds", "No coincide con el número total de camas, verifique la cantidad de camas femeninas / masculinas", "Ne correspond pas au nombre total de lits, vérifiez le nombre de lits pour femmes/hommes"]
+            },
+            "no-edit-ward" : ["Can't edit wards with busy beds", "Can't edit wards with busy beds","Can't edit wards with busy beds"],
+            "action-success" : ["Action performed successfully!", "Action performed successfully!", "Action effectuée avec succès !"],
+            "forms" : {
+                "ward" : {
+                    "title" : ["Fill the ward details", "Complete los detalles de la sala", "Remplissez les détails de la paroisse"],
+                    "name" : ["Name ward", "Nombre sala", "Nom chambre"],
+                    "beds" : ["Number Beds", "Número total camas", "Nombre total de lits"],
+                    "male" : ["Male beds", "Camas para hombres", "Lits pour hommes"],
+                    "female" : ["Female beds", "Camas para mujeres", "Lits pour femmes"]
+                },
+                "department" : {
+                    "title" : ["Add department", "Añadir Departamento", "Ajouter Department"],
+                    "name" : ["Name department", "Nombre departamento", "Nom department"]
+                }
+            }
         },
         "analytics" : {
             "graphs" : {
@@ -231,7 +292,8 @@
                 "title" : ["Attention", "Atención", "Attention"],
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
             },
-            "departments" : ["Hospital Departments", "Departamentos", "Département"]
+            "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Patients hospitalisés"],
+            "admin-departments" : ["Admin. Departments", "Admin.Departamentos", "Gestion Départements"]
         }
     },
     "dashboard":{

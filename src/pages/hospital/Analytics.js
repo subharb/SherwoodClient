@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { Alert } from '@material-ui/lab';
-import { BUSINESS_READ, PERSONAL_ACCESS } from '../../constants';
+
 import { ROUTE_401, ROUTE_404 } from '../../routes';
 import Stats from '../dashboards/Analytics/Stats';
 import BarChart from '../dashboards/Analytics/BarChart';
@@ -27,6 +27,7 @@ import TimeTable from '../dashboards/Analytics/TimeTable';
 import { getStatsFirstMonitoring } from '../../services/sherwoodService';
 import { spacing } from "@material-ui/system";
 import DatesSelector from '../dashboards/Analytics/DatesSelector';
+import { PERMISSION } from '../../constants/types';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -107,7 +108,7 @@ export function Analytics(props) {
 	if (props.investigations.loading) {
 		return <Loader />
 	}
-	else if (!props.investigations.currentInvestigation.permissions.includes(BUSINESS_READ)) {
+	else if (!props.investigations.currentInvestigation.permissions.includes(PERMISSION.BUSINESS_READ)) {
 		history.push(ROUTE_401);
 		return <Loader />
 	}
@@ -148,7 +149,7 @@ export function Analytics(props) {
 			<Divider my={6} />
 			<Grid container spacing={6}>
 				{
-					props.investigations.currentInvestigation.permissions.includes(PERSONAL_ACCESS) &&
+					props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) &&
 					<Grid item xs={12}>
 						<Grid container spacing={6}>
 							<Grid item xs={12} sm={12} md={6}>
@@ -185,7 +186,7 @@ export function Analytics(props) {
 					</Grid>
 				}
 				{
-					props.investigations.currentInvestigation.permissions.includes(BUSINESS_READ) &&
+					props.investigations.currentInvestigation.permissions.includes(PERMISSION.BUSINESS_READ) &&
 					<Grid container item spacing={1}>
 						<Grid item xs={0} lg={8} sm={6}> 
 							

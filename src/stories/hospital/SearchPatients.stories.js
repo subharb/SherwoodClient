@@ -1,12 +1,12 @@
 import React from 'react';
-import { HOSPITAL_WARD_ROUTE, OUTPATIENTS_ROUTE } from '../../routes';
-import SearchPatients from '../../pages/hospital/SearchPatients'
-import { personal_data_investigation1, investigation_server } from "../example_data";
+
+import { SearchPatientsComponent } from '../../pages/hospital/SearchPatients'
+import { personal_data_investigation1, patients_personal_data_decrypted } from "../example_data";
 import ProviderSherwood from '../../providerSherwood';
 
 export default {
   title: 'Hospital/Search Patients',
-  component: SearchPatients,
+  component: SearchPatientsComponent,
   argTypes: {
     name: { control: 'string' },
     surnames: { control: 'string' }
@@ -17,10 +17,15 @@ export default {
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <SearchPatients {...args} />; 
+const Template = (args) => <SearchPatientsComponent {...args} />;  
 
 export const Basic = Template.bind({});
 Basic.args = {
     personalFields : personal_data_investigation1(),
-    investigations:[investigation_server()]
+    showResults:true,
+    patients:patients_personal_data_decrypted(),
+    searchPatientCallBack:() => console.log("searchPatientCallBack "),
+    backToSearchCallBack:() => console.log("backToSearchCallBack "),
+    patientSelectedCallBack:() => console.log("patientSelectedCallBack "),
+    hospitalizePatientCallBack:(i) => console.log("hospitalizePatientCallBack "+i)
 };

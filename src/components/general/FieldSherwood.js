@@ -114,8 +114,10 @@ class FieldSherwood extends PureComponent{
     //     return (nextProps.input.value !== this.props.input.value);
     // }
     handleRadioChange(event){
-        console.log(event);
-        this.props.input.onChange(event.target.value);
+        const valueRetuned = event.target.value;
+        const value = valueRetuned.toLowerCase() === "true" ? true : valueRetuned.toLowerCase() === "false" ? false : valueRetuned; 
+    
+        this.props.input.onChange(value);
     }
     multiOptionSelected(value){
         let tempValue = [value];
@@ -275,7 +277,8 @@ class FieldSherwood extends PureComponent{
                             <RadioGroup aria-label={input.name} name={input.name} value={input.value} onChange={this.handleRadioChange}>
                                 {
                                     options.map(option => {
-                                        return <FormControlLabel value={option.value} control={<Radio />} label={option.label} />
+                                        const labelString = this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  option.label : this.props.translate(option.label);
+                                        return <FormControlLabel value={option.value} control={<Radio />} label={labelString}  />
                                     })
                                 }
                             </RadioGroup>

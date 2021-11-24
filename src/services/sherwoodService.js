@@ -379,7 +379,7 @@ export const getSharedResearchersService = datalogger((uuidInvestigation) => {
 export const getDepartmentsInstitutionService = datalogger((uuidInstitution) => {
     return new Promise((resolve, reject) => {
       axios
-        .get(process.env.REACT_APP_API_URL+"/hospital/departments/institution/"+uuidInstitution,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .get(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/departments",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .then((response) => {
           if (response.status === 200) {
             resolve(response.data);
@@ -395,7 +395,7 @@ export const getDepartmentsInstitutionService = datalogger((uuidInstitution) => 
 export const assignDepartmentToResearcherService = datalogger((uuidResearcher, uuidDepartment) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(process.env.REACT_APP_API_URL+"/hospital/department/"+uuidDepartment, {uuidResearcher}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .post(process.env.REACT_APP_API_URL+"/hospital/department/"+uuidDepartment+"/toresearcher", {uuidResearcher}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .then((response) => {
           if (response.status === 200) {
             resolve(response.data);
@@ -411,7 +411,7 @@ export const assignDepartmentToResearcherService = datalogger((uuidResearcher, u
 export const saveDepartmentInstitutionService = datalogger((uuidInstitution, department) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(process.env.REACT_APP_API_URL+"/hospital/department/institution/"+uuidInstitution, department, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .post(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/department", department, { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .then((response) => {
           if (response.status === 200) {
             resolve(response.data);
@@ -424,7 +424,124 @@ export const saveDepartmentInstitutionService = datalogger((uuidInstitution, dep
     });
 });
 
-export const saveResearcherPermissions = datalogger((uuidInvestigation, permissions) => {
+export function saveUpdateWardService(uuidInstitution, uuidDepartment, ward) {
+    return new Promise((resolve, reject) => {
+      axios
+        .put(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/department/"+uuidDepartment+"/ward", ward, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+export function deleteWardService(uuidInstitution, uuidWard) {
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/ward/"+uuidWard, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+
+export function updateBedService(uuidInstitution, bedInfo) {
+    return new Promise((resolve, reject) => {
+      axios
+        .put(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/bed/"+bedInfo.id, bedInfo, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+export function deleteBedService(uuidInstitution, bedInfo) {
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/bed/"+bedInfo.id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+export function createBedService(uuidInstitution, uuidWard, bedInfo) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/ward/"+uuidWard+"/bed", bedInfo, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+}
+
+
+export function updateOrderBedsService(uuidInstitution, uuidWard, bedsReorder) {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/ward/"+uuidWard+"/beds", bedsReorder, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+} 
+
+
+export function createStayPatientService(uuidInstitution, idBed, uuidPatient) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/bed/"+idBed+"/stay", {uuidPatient},{ headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        error.errorCode = 500;
+        reject(error);
+      });
+  });
+} 
+
+
+export function saveResearcherPermissions(uuidInvestigation, permissions) {
     return new Promise((resolve, reject) => {
       axios
         .post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/permissions", permissions, { headers: {"Authorization" : localStorage.getItem("jwt")} })
@@ -440,4 +557,52 @@ export const saveResearcherPermissions = datalogger((uuidInvestigation, permissi
     });
 });
 
+export function getWardService(uuidInstitution, uuidWard) {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/ward/"+uuidWard, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
 
+export function getPatientStaysService(uuidPatient) {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(process.env.REACT_APP_API_URL+"/hospital/stays/"+uuidPatient, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+
+
+export function dischargePatientService(uuidInstitution, uuidPatient) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/discharge", {uuidPatient}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}

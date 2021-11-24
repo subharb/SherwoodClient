@@ -6,7 +6,7 @@ import FieldSherwood from './FieldSherwood';
 import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 
 
  /**
@@ -173,6 +173,12 @@ class Form extends Component {
                                 </div>);
                         }
                     })} */}
+                    {
+                        this.props.externalError &&
+                        <Typography variant="body2" style={{color:"#e53e3e"}}>
+                            <Translate id={this.props.externalError} />
+                        </Typography> 
+                    }
                     <div style={{paddingTop:"1rem"}}>
                         <ButtonContinue type="submit" data-testid={this.props.dataTestid} spaceright={1} >
                             { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}

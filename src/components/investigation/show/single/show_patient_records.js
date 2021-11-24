@@ -10,12 +10,13 @@ import { EnhancedTable } from '../../../general/EnhancedTable';
 import { fetchRecordsPatientFromSurvey } from '../../../../services/sherwoodService';
 import { Card, CardContent, Typography, Grid, Paper } from '@material-ui/core';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
+import Loader from '../../../Loader';
 
 /**
  * Component in charge of showing records of a given patient in a survey
  */
 export default function ShowPatientRecords(props) {
-    let [indexSubmission, setIndexSubmission ] = useState(0);
+    let [indexSubmission, setIndexSubmission ] = useState(-1);
     const [sectionSelected, setSectionSelected] = useState(null);
 
     const [showError, setShowError] = useState(0);
@@ -38,9 +39,10 @@ export default function ShowPatientRecords(props) {
         )
     }
     function renderSubmissionsSection(){    
+        
         const currentSurvey = props.surveys.find(sur => sur.uuid === props.submissions[indexSubmission].uuidSurvey);
         return Object.values(currentSurvey.sections).sort((a,b) => a.order - b.order).map(section => {
-           // const patientSubmissions = props.submissions.filter(sub=>sub.patient.uuid === props.patient.uuid);
+        // const patientSubmissions = props.submissions.filter(sub=>sub.patient.uuid === props.patient.uuid);
             const recordsSection = filterRecordsFromSection(props.submissions[indexSubmission], section.uuid);
 
             return(
@@ -51,6 +53,8 @@ export default function ShowPatientRecords(props) {
                     updatedAt={props.submissions[indexSubmission].updatedAt}/>
             )
         });
+        
+        
     }
     function renderNavigation(){
         const dateCurrentSubmission = new Date(props.submissions[indexSubmission].updatedAt)
@@ -91,7 +95,8 @@ export default function ShowPatientRecords(props) {
                     })
                     return(
                         <EnhancedTable titleTable="" rows={rows} headCells={headCells} 
-                            actions = {{"add" : (index) => addRegistry(index)}} />
+                            actions={[{"type" : "add", "func" : (index) => addRegistry(index)}]}
+                            />
                     )
                 }
             }
@@ -115,6 +120,9 @@ export default function ShowPatientRecords(props) {
         setIndexSubmission(tempIndex);
     }, [props.idSubmission])
     
+    if(indexSubmission === -1){
+        return <Loader />
+    }
     return (
         <Grid container direction="column" spacing={2}>
             {
