@@ -555,7 +555,7 @@ export function saveResearcherPermissions(uuidInvestigation, permissions) {
           reject(error);
         });
     });
-});
+}
 
 export function getWardService(uuidInstitution, uuidWard) {
   return new Promise((resolve, reject) => {

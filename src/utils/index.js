@@ -759,6 +759,8 @@ export  function datalogger(wrapped){
         console.log('Data Downloaded', formatData(total));
         return result;
       }
+}
+
 export function sexNumberToString(sex){
     return sex === 0 ? "male" : sex === 1 ? "female" : "any"
 }
