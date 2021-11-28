@@ -87,7 +87,7 @@ const BedButton:React.FC<Props> = (props) => {
         if(!props.onClickCallBack){
             return 
         }
-        if(props.mode === WardModes.AssignPatient && props.hasStay){
+        if(props.mode === WardModes.AssignPatient && !props.hasStay){
             props.onClickCallBack()
             
         }
@@ -103,10 +103,10 @@ const BedButton:React.FC<Props> = (props) => {
         }
     }
     
-    const active = !props.active ? false : (props.mode === WardModes.AssignPatient && props.hasStay) ? true : props.active;
+    const active = !props.active ? false : (props.mode === WardModes.AssignPatient && props.hasStay) ? true : (props.mode === WardModes.View && !props.hasStay) ? false : props.active;
     const patientName = props.patient ? props.patient.name+" "+props.patient.surnames : "" ;
     //const name = props.mode === WardModes.View && props.patient ? props.patient.name+" "+props.patient.surnames : props.name;  
-    const showIcon = !(props.mode === WardModes.View && props.patient)
+    const showIcon = !(props.patient)
     return (
         <Container active={active} onClick={onClick} genderBorder={!showIcon} genderColor={sexStringToColor(props.gender)} >
             <Grid container xs={12}>

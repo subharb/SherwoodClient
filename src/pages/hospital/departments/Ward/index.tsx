@@ -160,7 +160,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     },[investigations])
 
     useEffect(() => {
-        if(props.admin && departments.length > 0 && uuidDepartment){
+        if(departments.length > 0 && uuidDepartment){
             const department = departments.find((depart:IDepartment) => depart.uuid === uuidDepartment);
             if(department){
                 const ward = department.wards.find((ward:IWard) => ward.uuid === uuidWard);
@@ -168,9 +168,6 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
                     setWard(ward);
                 }
             }
-            
-            
-            
         }
         
     },[departments])    
@@ -181,7 +178,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
                 assignBedPatientCallBack = {assignBedPatientCallBack} resetErrorHospital={resetErrorHospital}
                 saveOrderCallBack={saveOrderCallBack} addCallBack={addCallBack} goToPatientHistory={goToPatientHistory}
                 viewCallBack={viewCallBack}
-                />
+            />
 }   
 
 const mapStateToProps = (state:any) =>{
@@ -344,6 +341,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         switch(mode){
             case WardModes.AssignPatient:
                 buttonBed = <BedButtonAssignBed name={bed.name} 
+                                patient={personalData}
                                 active={bed.active} 
                                 hasStay={hasStay}
                                 stayDays={stayDays}
