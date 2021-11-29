@@ -323,15 +323,15 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     }
     function renderBedButton(bed:IBed){
         let buttonBed = null;
-        const currentPatient = bed.stay && patients ? patients.find((pat:IPatient) => pat.uuid === bed.stay.patientInvestigation.uuid) : null;
+        const currentPatient = bed.stays.length > 0 && patients ? patients.find((pat:IPatient) => pat.uuid === bed.stays[0].patientInvestigation.uuid) : null;
         const personalData = currentPatient ? currentPatient.personalData : null;
         const gender = personalData ? personalData.sex : sexNumberToString(bed.gender); 
                 
         let stayDays = undefined;
         let ageYears = null;
         let hasStay:boolean = false;
-        if(bed.stay){
-            var date1 = new Date(bed.stay.dateIn);
+        if(bed.stays.length > 0){
+            var date1 = new Date(bed.stays[0].dateIn);
             var date2 = new Date();
             var Difference_In_Time = date2.getTime() - date1.getTime();
             stayDays = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));

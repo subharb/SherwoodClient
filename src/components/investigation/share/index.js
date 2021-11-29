@@ -73,6 +73,9 @@ export const PermissionChip = withLocalize((props) => {
         case "NURSE":
             colour = orange[100];
             break;
+        case "NURSE_PRACTITIONER":
+            colour = orange[150];
+            break;
         case "BUSINESS_MANAGER": 
             colour = blue[900];
             break;

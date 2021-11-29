@@ -109,10 +109,10 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                         male:ward.beds.filter((bed:IBed) => bed.gender === 0).length,
                         female:ward.beds.filter((bed:IBed) => bed.gender === 1).length,
                         undefined:ward.beds.filter((bed:IBed) => bed.gender === 2).length,
-                        busyTotal : ward.beds.filter((bed:IBed) => bed.stay !== null).length,
-                        busyMale : ward.beds.filter((bed:IBed) => (bed.gender === 0 && bed.stay !== null)).length,
-                        busyFemale : ward.beds.filter((bed:IBed) => (bed.gender === 1 && bed.stay !== null)).length,
-                        busyUndefined : ward.beds.filter((bed:IBed) => (bed.gender === 2 && bed.stay !== null)).length,
+                        busyTotal : ward.beds.filter((bed:IBed) => bed.stays.length > 0).length,
+                        busyMale : ward.beds.filter((bed:IBed) => (bed.gender === 0 && bed.stays.length > 0)).length,
+                        busyFemale : ward.beds.filter((bed:IBed) => (bed.gender === 1 && bed.stays.length > 0)).length,
+                        busyUndefined : ward.beds.filter((bed:IBed) => (bed.gender === 2 && bed.stays.length > 0)).length,
                     }
                     if(mode === DepartmentAccordionModes.WardSelection){
                         if(selectWardCallBack){
