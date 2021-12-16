@@ -37,6 +37,7 @@ export default function reducer(state = initialState, action){
     let indexWard;
     let ward;
     let bedIndex;
+    let allPatientsStays = {};
     switch(action.type){
         case types.FETCH_HOSPITAL_SUCCESS:
             newState.data.researchers = action.researchers;
@@ -106,6 +107,11 @@ export default function reducer(state = initialState, action){
             ward.beds = [...tempBedsC];
             department.wards[indexWard] = {...ward};
 
+            allPatientsStays = newState.data["stays"] ? newState.data["stays"] : {};
+            const patientStays = allPatientsStays.hasOwnProperty(action.stay.patientInvestigation.uuid) ? allPatientsStays[action.stay.patientInvestigation.uuid] : [];
+            patientStays.push(action.stay);
+            allPatientsStays[action.stay.patientInvestigation.uuid] = [...patientStays];
+            newState.data.stay = {...allPatientsStays};
             newState.data.departments = tempDepartments;
             newState.loading = initialState.loading; 
             newState.error = initialState.error; 
@@ -167,7 +173,7 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error; 
             return newState;  
         case types.FETCH_PATIENT_STAYS:
-            let allPatientsStays = {};
+            
             if(newState.data.stays){
                 allPatientsStays = newState.data.stays;
             }
