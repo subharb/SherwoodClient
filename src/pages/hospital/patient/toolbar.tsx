@@ -15,7 +15,8 @@ interface Props{
     personalData:PersonalData,
     patientID:number,
     years:number,
-    showMedical:boolean,
+    readMedicalPermission:boolean,
+    writeMedicalPermission:boolean,
     action:any,
     typeSurveySelected:number,
     stay:any,
@@ -38,7 +39,8 @@ const Container = styled(Grid)`
     }
 `
 
-export const PatientToolBar:React.FC<Props> = ({personalData, patientID, showMedical,
+export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMedicalPermission,
+                                                writeMedicalPermission,
                                                 typeSurveySelected, action, years, 
                                                 addRecordCallBack, hospitalize, medicalNotesCallBack, 
                                                 editCallBack, labCallBack, testCallBack}) =>{
@@ -72,11 +74,11 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, showMed
                 <Grid item xs={12}>
                     <Typography variant="body2" gutterBottom>
                         {
-                            personalData.health_id &&
+                            personalData?.health_id &&
                             [<Translate id="investigation.create.personal_data.fields.health_id" />, ":", personalData.health_id]
                         }
                         {
-                            !personalData.health_id &&
+                            !personalData?.health_id &&
                             ["ID", ":", patientID ]
                         }                                    
                         
@@ -94,7 +96,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, showMed
                 </Grid> */}
             </Grid>
             {
-                showMedical &&
+                readMedicalPermission &&
                 <Grid item container xs={5}  justify="center" alignItems="center">
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="medical-notes" onClick={() => medicalNotesCallBack()} >
@@ -114,7 +116,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, showMed
 
                     <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
                         {
-                            hospitalize &&
+                            (hospitalize && writeMedicalPermission) &&
                             <Button data-testid="lab" onClick={ hospitalize} >
                                 <IconGenerator type="hospital" size="large" />
                             </Button>
@@ -122,7 +124,11 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, showMed
                         
                     </Grid>
                     <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
-                        <ButtonAdd disabled={action && action === "fill"} data-testid="add-record" onClick={addRecordCallBack} />
+                        {
+                            writeMedicalPermission && 
+                            <ButtonAdd disabled={action && action === "fill"} data-testid="add-record" onClick={addRecordCallBack} />
+                        }
+                        
                     </Grid>
                     <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
                         

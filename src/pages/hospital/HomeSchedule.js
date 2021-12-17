@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
-        HOSPITAL_WARD_SETTINGS_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB, HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE, HOSPITAL_MY_DEPARTMENTS_ROUTE } from '../../routes';
+        HOSPITAL_WARD_SETTINGS_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB, HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE, HOSPITAL_MY_DEPARTMENTS_ROUTE, HOSPITAL_ANALYTICS } from '../../routes';
 import { ButtonGrey, BoxBckgr, LinkPlain } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
@@ -85,35 +85,50 @@ function HomeSchedule(props) {
                         <img src={photo_holder} alt="profile_picture" with="100%" />
                     </Grid>
                     <Grid item container  spacing={3}>
-                        <Grid item xs={12} style={{textAlign:"center"}}>
-                            <LinkPlain to={SEARCH_PATIENT_ROUTE}>
-                                <ButtonGrey data-testid="search-patient" ><Translate id="pages.hospital.search-patient.title" /></ButtonGrey>
-                            </LinkPlain>
-                        </Grid>
-                        <Grid item xs={12} style={{textAlign:"center"}}>
-                            <LinkPlain to={ADD_PATIENT_ROUTE}>
-                                <ButtonGrey data-testid="add-patient" ><Translate id="pages.hospital.add-patient" /></ButtonGrey>
-                            </LinkPlain>
-                        </Grid>
-                        <Grid item xs={12} style={{textAlign:"center"}}>
-                            <LinkPlain to={HOSPITAL_LAB}>
-                                <ButtonGrey data-testid="lab" ><Translate id="pages.hospital.laboratory.name" /></ButtonGrey>
-                            </LinkPlain>
-                        </Grid>
-                        <Grid item xs={12} style={{textAlign:"center"}}>
-                            <LinkPlain to={HOSPITAL_IMAGES}>
-                                <ButtonGrey data-testid="medical-imaging" ><Translate id="pages.hospital.medical-imaging.name" /></ButtonGrey>
-                            </LinkPlain>
-                        </Grid>
                         {
-                            (investigation.permissions.includes(PERMISSION.MEDICAL_WRITE) && investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION)) &&
+                            investigation.permissions.includes(PERMISSION.MEDICAL_READ) &&
+                            <React.Fragment>
+                                <Grid item xs={12} style={{textAlign:"center"}}>
+                                    <LinkPlain to={SEARCH_PATIENT_ROUTE}>
+                                        <ButtonGrey data-testid="search-patient" ><Translate id="pages.hospital.search-patient.title" /></ButtonGrey>
+                                    </LinkPlain>
+                                </Grid>
+                                {(investigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)) &&
+                                    <Grid item xs={12} style={{textAlign:"center"}}>
+                                        <LinkPlain to={ADD_PATIENT_ROUTE}>
+                                            <ButtonGrey data-testid="add-patient" ><Translate id="pages.hospital.add-patient" /></ButtonGrey>
+                                        </LinkPlain>
+                                    </Grid>
+                                }
+                                <Grid item xs={12} style={{textAlign:"center"}}>
+                                    <LinkPlain to={HOSPITAL_LAB}>
+                                        <ButtonGrey data-testid="lab" ><Translate id="pages.hospital.laboratory.name" /></ButtonGrey>
+                                    </LinkPlain>
+                                </Grid>
+                                <Grid item xs={12} style={{textAlign:"center"}}>
+                                    <LinkPlain to={HOSPITAL_IMAGES}>
+                                        <ButtonGrey data-testid="medical-imaging" ><Translate id="pages.hospital.medical-imaging.name" /></ButtonGrey>
+                                    </LinkPlain>
+                                </Grid>
+                                {
+                                    (investigation.permissions.includes(PERMISSION.MEDICAL_WRITE) && investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION)) &&
+                                    <Grid item xs={12} style={{textAlign:"center"}}>
+                                        <LinkPlain to={HOSPITAL_MY_DEPARTMENTS_ROUTE}>
+                                            <ButtonGrey data-testid="inpatients" ><Translate id="pages.hospital.inpatients" /></ButtonGrey>
+                                        </LinkPlain>
+                                    </Grid>
+                                }
+                            </React.Fragment>
+                        }
+                        {
+                            investigation.permissions.includes(PERMISSION.BUSINESS_READ) &&
                             <Grid item xs={12} style={{textAlign:"center"}}>
-                                <LinkPlain to={HOSPITAL_MY_DEPARTMENTS_ROUTE}>
-                                    <ButtonGrey data-testid="inpatients" ><Translate id="pages.hospital.inpatients" /></ButtonGrey>
+                                <LinkPlain to={HOSPITAL_ANALYTICS}>
+                                    <ButtonGrey data-testid="analytcs" ><Translate id="pages.hospital.analytics" /></ButtonGrey>
                                 </LinkPlain>
                             </Grid>
-                        }
-                        
+                            
+                        } 
                     </Grid>
                 </React.Fragment>
             )

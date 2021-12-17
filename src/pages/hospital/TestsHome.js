@@ -16,6 +16,7 @@ import {
   } from "react-router-dom";
 import { connect } from 'react-redux';
 import { fetchSubmissionsSurveyAction } from '../../redux/actions/submissionsActions';
+import { PERMISSION } from '../../constants/types';
 
 export function TestsHome(props){
     let location = useLocation();
@@ -51,12 +52,17 @@ export function TestsHomeComponent(props) {
             return <Translate id={`pages.hospital.${translations[props.type]}.no-records`} />
         }
         else{
+            const hasPersonalPermmissions = props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS);
+            const headerTable = hasPersonalPermmissions ?  [{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "patient", alignment: "left", label: <Translate id="investigation.create.personal_data.fields.name" />},
+            { id: "date", alignment: "left", label: "Date"}] : [{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "idPatient", alignment: "left", label: <Translate id="investigation.create.personal_data.fields.name" />},
+            { id: "date", alignment: "left", label: "Date"}]
             return (<EnhancedTable noHeader noSelectable selectRow={(index) => goToSubmission(index)} 
                 rows={surveyRecords.map((record, index) => {
                     const dateCreated = new Date(record.createdAt);
-                    return({id : index, researcher : record.researcher, patient : `${record.patient.personalData.name} ${record.patient.personalData.surnames}`, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`})
-                })} headCells={[{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "patient", alignment: "left", label: <Translate id="investigation.create.personal_data.fields.name" />},
-                                { id: "date", alignment: "left", label: "Date"}]} />
+                    return hasPersonalPermmissions ? {id : index, researcher : record.researcher, patient : `${record.patient.personalData.name} ${record.patient.personalData.surnames}`, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`} : 
+                    {id : index, researcher : record.researcher, idPatient : record.patient.id, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`}
+                    
+                })} headCells={headerTable} />
             );
         }
     }

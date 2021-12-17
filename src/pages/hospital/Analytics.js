@@ -113,27 +113,32 @@ export function Analytics(props) {
 		return <Loader />
 	}
 	let countSex = { male: 0, female: 0 };
-	props.investigations.currentInvestigation.patientsPersonalData.forEach(patient => {
-		if (patient.personalData.sex.toLowerCase() === "male") {
-			countSex.male++;
-		}
-		else {
-			countSex.female++;
-		}
-	})
 	const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
 	let countAge = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	props.investigations.currentInvestigation.patientsPersonalData.forEach(patient => {
-		const patientAge = yearsFromDate(patient.personalData.birthdate);
-		const indexAgeGroup = ageGroups.findIndex(range => range[0] <= patientAge && range[1] >= patientAge);
-		if (indexAgeGroup > -1) {
-			countAge[indexAgeGroup]++;
-		}
-		else {
-			console.log(patient.personalData.birthdate);
-		}
-
-	})
+	
+	if(props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
+		props.investigations.currentInvestigation.patientsPersonalData.forEach(patient => {
+			if (patient.personalData.sex.toLowerCase() === "male") {
+				countSex.male++;
+			}
+			else {
+				countSex.female++;
+			}
+		})
+		props.investigations.currentInvestigation.patientsPersonalData.forEach(patient => {
+			const patientAge = yearsFromDate(patient.personalData.birthdate);
+			const indexAgeGroup = ageGroups.findIndex(range => range[0] <= patientAge && range[1] >= patientAge);
+			if (indexAgeGroup > -1) {
+				countAge[indexAgeGroup]++;
+			}
+			else {
+				console.log(patient.personalData.birthdate);
+			}
+	
+		})
+	}
+	
+	
 
 
 	return (
@@ -153,6 +158,9 @@ export function Analytics(props) {
 					<Grid item xs={12}>
 						<Grid container spacing={6}>
 							<Grid item xs={12} sm={12} md={6}>
+								{
+
+								}
 								<DoughnutChart title={props.translate("hospital.analytics.graphs.sex.title")} labels={[props.translate("hospital.analytics.graphs.sex.male"), props.translate("hospital.analytics.graphs.sex.female")]}
 									table={{ title: props.translate("hospital.analytics.graphs.sex.table-title"), columns: [props.translate("hospital.analytics.graphs.sex.count")] }}
 									innerInfo={{ title: "Patients", value: props.investigations.currentInvestigation.patientsPersonalData.length }}

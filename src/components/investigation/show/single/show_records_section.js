@@ -10,6 +10,7 @@ import File from '../../../general/File';
 import SmartField from '../../../general/SmartFields';
 import { isSmartField } from '../../../../utils';
 import { ALL_SMARTFIELDS_TYPES } from '../../../../constants';
+import { PERMISSION } from '../../../../constants/types';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
@@ -163,7 +164,7 @@ export default function ShowRecordsSection(props) {
                                     { props.section.name }
                                 </Typography>
                                 {
-                                    ((dateCreated.getTime() + 86400000 > new Date().getTime()) || props.permissions === 4) && 
+                                    ((dateCreated.getTime() + 86400000 > new Date().getTime()) && props.permissions.includes(PERMISSION.MEDICAL) ) && 
                                     <ButtonEdit onClick={() => editSection(props.section.uuid)} />
                                 }
                             </HeaderSection>

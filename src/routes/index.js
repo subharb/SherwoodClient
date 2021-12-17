@@ -265,7 +265,7 @@ const dashboardSearchPatientRoutes = {
     path: SEARCH_PATIENT_ROUTE,
     icon: <FindInPageIcon />,
     badge: "",
-    permissions : [],
+    permissions : [PERMISSION.MEDICAL_READ],
     functionalities:[],
     component: {
         path: SEARCH_PATIENT_ROUTE,

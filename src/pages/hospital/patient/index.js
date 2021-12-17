@@ -28,8 +28,6 @@ import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
 import { PERMISSION } from '../../../constants/types';
 
-
-
 const WhiteTypography = styled(Typography)`
     color:white;
     font-size: 1rem;
@@ -77,22 +75,26 @@ function Patient(props) {
     let filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
         return typeSurveys.includes(rec.typeSurvey)
     }) : [];
-    staysPatient.forEach((stay) => {
-        filteredRecords.push({
-            researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
-            surveyName : "Hospitalized in "+stay.bed.ward.name,
-            createdAt : stay.dateIn,
-            type:"stay"
-        })
-        if(stay.dateOut){
+
+    if(dataCollectionSelected?.type === TYPE_MEDICAL_SURVEY){
+        staysPatient.forEach((stay) => {
             filteredRecords.push({
-                researcher : stay.checkoutResearcher.researcher.name +" "+stay.checkoutResearcher.researcher.surnames,
-                surveyName : "Discharged from "+stay.bed.ward.name,
-                createdAt : stay.dateOut,
+                researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
+                surveyName : "Hospitalized in "+stay.bed.ward.name,
+                createdAt : stay.dateIn,
                 type:"stay"
-            })  
-        }
-    })
+            })
+            if(stay.dateOut){
+                filteredRecords.push({
+                    researcher : stay.checkoutResearcher.researcher.name +" "+stay.checkoutResearcher.researcher.surnames,
+                    surveyName : "Discharged from "+stay.bed.ward.name,
+                    createdAt : stay.dateOut,
+                    type:"stay"
+                })  
+            }
+        })
+    }
+    
     filteredRecords.sort((a, b) => {
         return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
     })
@@ -301,11 +303,11 @@ function Patient(props) {
         else{
             return(
                 <EnhancedTable noHeader noSelectable selectRow={(index) => selectSubmission(index)} 
-                rows={filteredRecords.map((record, index) => {
-                    const dateCreatedString = record.createdAt ? new Date(record.createdAt).toISOString().slice(0, 16).replace('T', ' ') : "Unsincronized";
-                    return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreatedString})
-                })} headCells={[{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "surveyName", alignment: "left", label: <Translate id="hospital.data-collection" />},
-                                { id: "date", alignment: "left", label: "Date"}]} />
+                    rows={filteredRecords.map((record, index) => {
+                        const dateCreatedString = record.createdAt ? new Date(record.createdAt).toISOString().slice(0, 16).replace('T', ' ') : "Unsincronized";
+                        return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreatedString})
+                    })} headCells={[{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "surveyName", alignment: "left", label: <Translate id="hospital.data-collection" />},
+                                    { id: "date", alignment: "left", label: "Date"}]} />
             )
         }
     }
@@ -566,7 +568,8 @@ function Patient(props) {
                     }
                 </Modal>
                 <Grid container spacing={3}>
-                    <PatientToolBar showMedical={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
+                    <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
+                        writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editPersonalData={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} patientID={patient.id} personalData={patient.personalData} years={years}
                         medicalNotesCallBack={() => backToRoot()} 
