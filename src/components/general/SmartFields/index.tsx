@@ -10,6 +10,8 @@ import Background from './Background';
 import Allergy from './Allergy';
 import FamilyBackground from './FamilyBackground';
 import SingleTreatmentSelector from './SingleTreatmentSelector';
+import BMIField from './BMIField';
+
 
 
 export interface PropsSmartField {
@@ -186,25 +188,26 @@ const SmartField:React.FC<Props> = (props) => {
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
                 cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, country:props.country, error:props.error, slaves:props.slaves,
                 size:"small", elementSelected:(diag:SmartFieldType) => elementSelected(diag)}
-                
-            if(props.type === "background"){
-                return <Background {...propsSmartField} />
+            
+            switch(props.type){
+                case "background":
+                    return <Background {...propsSmartField} />
+                case "family-background":
+                    return <FamilyBackground {...propsSmartField} />        
+                case "allergy":
+                    return <Allergy {...propsSmartField}/>
+                case "ict": 
+                    return <ICTSelectorGeneral {...propsSmartField} />    
+                case "treatment":
+                    return <SingleTreatmentSelector {...propsSmartField} />
+                case "treatment_regular":
+                    return <SingleTreatmentSelector {...propsSmartField} />
+                case "bmi":
+                    return <BMIField {...propsSmartField} />
+                default:
+                    return "Smarfield not defined"
             }
-            if(props.type === "family-background"){
-                return <FamilyBackground {...propsSmartField} />
-            }
-            if(props.type === "allergy"){
-                return <Allergy {...propsSmartField}/>
-            }
-            else if(props.type === "ict"){
-                return <ICTSelectorGeneral {...propsSmartField} />
-            }
-            else if(props.type === "treatment" || props.type === "treatment_regular"){
-                return <SingleTreatmentSelector {...propsSmartField} />
-            }
-            // return <BackgroundSelector type={props.type} variant="outlined" typeMargin={props.typeMargin} 
-            //         cancel={cancel} size="small" error={props.errorState} language={props.activeLanguage.code} 
-            //         elementSelected={(diag:Smartfield) => elementSelected(diag)} />
+            
         }
     }
     useUpdateEffect(() =>{

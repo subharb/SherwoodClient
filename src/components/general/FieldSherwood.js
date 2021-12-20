@@ -438,6 +438,7 @@ class FieldSherwood extends PureComponent{
             case "ict" : 
             case "treatment" : 
             case "treatment_regular" : 
+            case "bmi":
                 return(
                     <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                         variant="outlined" margin={this.typeMargin} error={errorState} country={country}

@@ -202,6 +202,16 @@ const FIELD_IMAGE = {
     }
 }
 
+const FIELD_BMI = {
+    "bmi":{
+        required : false,
+        type:"bmi",
+        label:"BMI Field",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty"
+    }
+}
+
 export default {
     title: 'Basic Elements/Fields/Smart Fields',
     component: Form,
@@ -219,6 +229,7 @@ const TemplateBackground = (args) => <Form {...args}  />
 const TemplateFamilyBackground = (args) => <Form {...args}  />
 const TemplateImage = (args) => <Form {...args}  />
 const TemplateTreatmentRaw = (args) => <TreatmentCore {...args}  />
+const TemplateBMI = (args) => <Form {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
 TreatmentEmpty.args = {
@@ -311,5 +322,12 @@ ImageWithData.args = {
     fields : FIELD_IMAGE, 
     initialData:{file: [{file:"hospitals_1620728497713-256774649", "type" : "image/png"},
     {file:"hospitals_1620729868307-866470426", "type" : "image/png"}]},
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
+};
+
+
+export const BMIField = TemplateBMI.bind({});
+BMIField.args = {
+    fields : FIELD_BMI, 
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
