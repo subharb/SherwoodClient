@@ -154,7 +154,7 @@ const SmartField:React.FC<Props> = (props) => {
                 return valueDict
             })
             if(props.mode === "form"){
-                return <Grid item xs={12}>
+                return <Grid item xs={12} spacing={3}>
                         <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
                             actions={[{"type" : "delete", "func" : (index:number) => removeDiagnosis(index)}]}
                             
@@ -189,25 +189,37 @@ const SmartField:React.FC<Props> = (props) => {
                 cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, country:props.country, error:props.error, slaves:props.slaves,
                 size:"small", elementSelected:(diag:SmartFieldType) => elementSelected(diag)}
             
+            let smartField = null;
             switch(props.type){
                 case "background":
-                    return <Background {...propsSmartField} />
+                    smartField = <Background {...propsSmartField} />
+                    break;
                 case "family-background":
-                    return <FamilyBackground {...propsSmartField} />        
+                    smartField = <FamilyBackground {...propsSmartField} />        
+                    break;
                 case "allergy":
-                    return <Allergy {...propsSmartField}/>
+                    smartField = <Allergy {...propsSmartField}/>
+                    break;
                 case "ict": 
-                    return <ICTSelectorGeneral {...propsSmartField} />    
+                    smartField = <ICTSelectorGeneral {...propsSmartField} />    
+                    break;
                 case "treatment":
-                    return <SingleTreatmentSelector {...propsSmartField} />
+                    smartField = <SingleTreatmentSelector {...propsSmartField} />
+                    break;
                 case "treatment_regular":
-                    return <SingleTreatmentSelector {...propsSmartField} />
+                    smartField = <SingleTreatmentSelector {...propsSmartField} />
+                    break;
                 case "bmi":
-                    return <BMIField {...propsSmartField} />
+                    smartField = <BMIField {...propsSmartField} />
+                    break;
                 default:
-                    return "Smarfield not defined"
+                    smartField = "Smarfield not defined"
             }
-            
+            return(
+                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                    { smartField }
+                </Grid>
+            ) 
         }
     }
     useUpdateEffect(() =>{

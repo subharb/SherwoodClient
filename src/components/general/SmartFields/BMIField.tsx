@@ -70,7 +70,7 @@ function BMIField(props: PropsSmartFieldLocalized) {
             {
                 bmi &&
                 <Grid item xs={12}>
-                    <Typography variant="body2" component="span">Result : {bmi.toFixed(2)}</Typography>
+                    <Typography variant="body2" component="span">Result : {typeof(bmi) === 'number' ? bmi.toFixed(2) : "undefined"}</Typography>
                 </Grid>
             }
             

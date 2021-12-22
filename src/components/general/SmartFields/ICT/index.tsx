@@ -54,7 +54,7 @@ const ICTSelectorGeneral:React.FC<PropsSmartFieldLocalized> = (props) => {
             </Grid>
             {
                 props.cancel && 
-                <Grid xs={12}>
+                <Grid item xs={12}>
                     <ButtonCancel onClick={props.cancel} ><Translate id="general.cancel" /></ButtonCancel>
                 </Grid> 
             }
