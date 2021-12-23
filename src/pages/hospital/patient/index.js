@@ -76,7 +76,7 @@ function Patient(props) {
         return typeSurveys.includes(rec.typeSurvey)
     }) : [];
 
-    if(dataCollectionSelected?.type === TYPE_MEDICAL_SURVEY){
+    if(typSurveySelected === TYPE_MEDICAL_SURVEY){
         staysPatient.forEach((stay) => {
             filteredRecords.push({
                 researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
