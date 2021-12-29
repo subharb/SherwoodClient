@@ -102,7 +102,7 @@ function Patient(props) {
     const translations = typeSurveys.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typeSurveys.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
 
     function addRecord(){
-        if(!parameters.hasOwnProperty("typeTest")){
+        if(currentSurveys.length > 1 ){
             setShowOptions(true);
             setShowModal(true);
         }
@@ -569,6 +569,7 @@ function Patient(props) {
                 </Modal>
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
+                        typeSurveySelected={typSurveySelected}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editPersonalData={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} patientID={patient.id} personalData={patient.personalData} years={years}
