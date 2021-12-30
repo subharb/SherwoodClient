@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 
-import { ButtonAccept, ButtonCancel, ButtonEdit } from '../mini_components';
+import { ButtonAccept, ButtonCancel, ButtonEdit } from './mini_components';
 import styled from 'styled-components';
 
 interface Props extends LocalizeContextProps {

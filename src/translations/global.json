@@ -236,6 +236,8 @@
         "bmi-weight" : ["Weight(kgs.)", "Peso(kgs.)", "Poids(kgs.)"],
         "bmi-height" : ["Height(cms.)", "Peso(cms.)", "Taille(cms.)"],
         "bmi-error-message" : ["Enter a weight in kg and a height in cm. valid","Entrez un poids en kg et une taille en cm. valide"],
+        "edd" : ["Expected Delivery Date", "Fecha de salida de cuenta", "Date de livraison prévue"],
+        "edd-title" : ["Select the date of the last rule", "Seleccione la fecha de la ultima regla", "Sélectionnez la date de la dernière période"],
         "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "family-background-table" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "family-background-relation-table" : ["Relationship", "Relación Familiar", "Relation de famille"],  
@@ -504,6 +506,7 @@
                 "separator" : ["Divider", "Separador", "Divider"],
                 "text_blob" : ["Explaining text", "Texto explicativo", "Explaining text"],
                 "bmi" : ["Body Mass Index", "Índice Masa Corporal", "Indice de masse corporelle"],
+                "edd" : ["Expected Delivery Date", "Fecha de salida de cuenta", "Date de livraison prévue"],
                 "type_study" : {
                     "audit" : ["Clinical audit", "Auditoría clínica", "Audit clinique"],
                     "clinical_trial" : ["Clinical trial", "Ensayo clínico", "Essai clinique"],

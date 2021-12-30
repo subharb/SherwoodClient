@@ -26,7 +26,8 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import File from './File';
 import { FieldWrapper } from './mini_components';
 import { Field, FieldArray } from 'redux-form'
-import BMIField from './SmartFields/BMIField';
+import BMIField from './BMIField';
+import EDDField  from './EDDField';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -156,6 +157,9 @@ class FieldSherwood extends PureComponent{
     }
     bmiUpdated(value){
         this.props.input.onChange(value);
+    }
+    eddDateCallback(date){
+        this.props.input.onChange(date);
     }
     handleDateChange(value){
         this.props.input.onChange(value);
@@ -436,6 +440,8 @@ class FieldSherwood extends PureComponent{
                             value={input.value} />
                     </FieldWrapper>
                 )
+            case "edd":
+                return <EDDField error={errorState} eddDateCallback={(value) => this.eddDateCallback(value)}/>
             case "bmi":
                 return <BMIField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                             variant="outlined" margin={this.typeMargin} 

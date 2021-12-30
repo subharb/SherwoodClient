@@ -10,7 +10,7 @@ import Background from './Background';
 import Allergy from './Allergy';
 import FamilyBackground from './FamilyBackground';
 import SingleTreatmentSelector from './SingleTreatmentSelector';
-import BMIField from './BMIField';
+
 
 
 

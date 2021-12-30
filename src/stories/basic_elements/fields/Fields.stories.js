@@ -135,6 +135,14 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
+    "edd" : {
+        required : false,
+        type:"edd",
+        name:"edd",
+        label:"Long field for text area",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
 }
 
 
