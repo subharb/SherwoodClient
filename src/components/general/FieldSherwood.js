@@ -26,6 +26,7 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import File from './File';
 import { FieldWrapper } from './mini_components';
 import { Field, FieldArray } from 'redux-form'
+import BMIField from './SmartFields/BMIField';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -152,6 +153,9 @@ class FieldSherwood extends PureComponent{
     }
     treatmentSelected(treatments){
         this.props.input.onChange(treatments);
+    }
+    bmiUpdated(value){
+        this.props.input.onChange(value);
     }
     handleDateChange(value){
         this.props.input.onChange(value);
@@ -432,13 +436,18 @@ class FieldSherwood extends PureComponent{
                             value={input.value} />
                     </FieldWrapper>
                 )
+            case "bmi":
+                return <BMIField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
+                            variant="outlined" margin={this.typeMargin} 
+                            bmiUpdated={(value) => this.bmiUpdated(value)}
+                            error={errorState} country={country} />
             case "allergy":
             case "family-background":
             case "background":
             case "ict" : 
             case "treatment" : 
             case "treatment_regular" : 
-            case "bmi":
+            
                 return(
                     <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                         variant="outlined" margin={this.typeMargin} error={errorState} country={country}

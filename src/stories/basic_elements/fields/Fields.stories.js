@@ -127,7 +127,14 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
-    
+    "bmi" : {
+        required : false,
+        type:"bmi",
+        name:"bmi",
+        label:"Long field for text area",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
 }
 
 

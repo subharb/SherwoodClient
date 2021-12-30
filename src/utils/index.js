@@ -204,7 +204,8 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.files", "value" : "file"},
                 {"label": "investigation.create.edc.family-background", "value" : "family-background"},
                 {"label": "investigation.create.edc.separator", "value" : "separator"},
-                {"label": "investigation.create.edc.text_blob", "value" : "text_blob"}
+                {"label": "investigation.create.edc.text_blob", "value" : "text_blob"},
+                {"label": "investigation.create.edc.bmi", "value" : "bmi"}
         ],
         activationValues : ["select", "multioption", "radio", "evaluation"],
         activatedFields:[

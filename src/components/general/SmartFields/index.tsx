@@ -209,9 +209,6 @@ const SmartField:React.FC<Props> = (props) => {
                 case "treatment_regular":
                     smartField = <SingleTreatmentSelector {...propsSmartField} />
                     break;
-                case "bmi":
-                    smartField = <BMIField {...propsSmartField} />
-                    break;
                 default:
                     smartField = "Smarfield not defined"
             }
