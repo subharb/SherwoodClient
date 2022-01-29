@@ -88,7 +88,7 @@ export default function reducer(state = initialState, action){
             ward = department.wards[indexWard];
             ward.beds.push(action.bed);
 
-            newState.data.departments = tempDepartments;
+            newState.data.departments = [...tempDepartments];
             newState.loading = initialState.loading; 
             newState.error = initialState.error; 
             return newState;

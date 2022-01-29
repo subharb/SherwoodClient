@@ -499,6 +499,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         else if(bedToEdit && !error){
             setShowSnackbar({show:true, severity: "success", message : "hospital.ward.bed-update-success"});
         }
+      
         resetBeds();
         resetModal();
     }, [bedsProps]);
