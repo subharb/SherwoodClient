@@ -98,6 +98,7 @@
             "assign-bed-success" : ["Bed assigned correctly", "Cama asignada correctamente", "Lit correctement attribué"],
             "reorder" : ["Switch to reorder", "Activar para reordenar", "Activer pour réorganiser"],
             "delete-bed-prompt" : ["Are you sure to delete this bed?", "¿Está seguro de borrar esta cama?", "Êtes-vous sûr de supprimer ce lit ?"],
+            "bed-update-success" : ["Bed updated succesfully", "Cama actualizada correctamente", "Lit mis à jour avec succès"],
             "bed" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "genre" : ["Genre", "Género", "Genre"],
@@ -107,9 +108,12 @@
                 "default" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
                 "bed-not-exist" : ["Bed does not exist, please refresh the page", "La cama no existe, refresque la página.", "Le lit n'existe pas, veuillez rafraîchir la page"],
                 "bed-assigned" : ["This bed is already busy", "Esta cama ya esta ocupada", "Ce lit est déjà occupé"],
+                "bed-edit-assigned" : ["Can't change a busy bed", "No puede cambiar una cama ocupada", "Impossible de changer un lit occupé"],
                 "patient-not-exist" : ["patient does not exist", "El paciente no existe", "les patients n'existent pas"],
                 "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"],
+                "ward-patient-bed" : ["This ward has beds occupied, please discharge any patients first", "Esta sala tiene camas ocupadas, primero dé el alta a los pacientes", "Ce service a des lits occupés, veuillez d'abord libérer les patients"],
                 "patient-already-hospitalized" : ["This patient is already hospitalized, please discharge him from his bed first", "Este paciente ya está hospitalizado, primero déle de alta de su cama.", "Este paciente ya está hospitalizado, primero déle de alta de su cama."]
+
             }
             
         },
