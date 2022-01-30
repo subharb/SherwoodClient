@@ -28,6 +28,7 @@ export function signIn(credentials, typeUser) {
                 saveData("rawKeyResearcher", rawKeyResearcher);
                 saveData("name", payload.name);
                 saveData("surnames", payload.surnames);
+                saveData("uuid", payload.uuid);
                 axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
                 resolve(response.data);
             }
