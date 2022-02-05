@@ -20,7 +20,7 @@ const EDDField:React.FC<Props> = (props) => {
             let cloneDate = new Date(value.valueOf());
             cloneDate.setDate(cloneDate.getDate() + 280);
             setEDDate(cloneDate);
-            const eddElement:EDDType = {edd:cloneDate.getTime().toString(), edd_last_period : value.getTime().toString()};
+            const eddElement:EDDType = {edd:cloneDate, edd_last_period : value};
             props.elementSelected(eddElement);
         }
         

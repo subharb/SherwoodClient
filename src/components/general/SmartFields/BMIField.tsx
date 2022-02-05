@@ -39,7 +39,7 @@ function BMIField(props: Props) {
         if(bmi !== null && isString(weight) && isString(height)){
             setShowError(false);
             setSaved(true);
-            const bmiElement:BMIType = {bmi:bmi.toString(), bmi_height:height, bmi_weight:weight};
+            const bmiElement:BMIType = {bmi:bmi, bmi_height:parseFloat(height), bmi_weight:parseFloat(weight)};
             props.elementSelected(bmiElement);
         }
         else{

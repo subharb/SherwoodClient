@@ -212,6 +212,16 @@ const FIELD_BMI = {
     }
 }
 
+const FIELD_EDD = {
+    "edd":{
+        required : false,
+        type:"edd",
+        label:"Expected Delivery Date",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty"
+    }
+}
+
 export default {
     title: 'Basic Elements/Fields/Smart Fields',
     component: Form,
@@ -331,3 +341,10 @@ BMIField.args = {
     fields : FIELD_BMI, 
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
+
+export const EDDField = TemplateBMI.bind({});
+EDDField.args = {
+    fields : FIELD_EDD, 
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
+};
+

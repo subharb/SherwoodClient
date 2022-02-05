@@ -12,6 +12,7 @@ import FamilyBackground from './FamilyBackground';
 import SingleTreatmentSelector from './SingleTreatmentSelector';
 import BMIField from './BMIField';
 import EDDField from './EDDField';
+import { isInteger } from 'lodash';
 
 
 
@@ -75,14 +76,14 @@ export interface TreatmentRegularType{
 }
 
 export interface BMIType{
-    "bmi" : string,
-    "bmi_height" : string,
-    "bmi_weight": string
+    "bmi" : number,
+    "bmi_height" : number,
+    "bmi_weight": number
 }
 
 export interface EDDType{
-    "edd" : string,
-    "edd_last_period" : string
+    "edd" : Date,
+    "edd_last_period" : Date
 }
 
 export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType;
@@ -93,7 +94,7 @@ export interface Diagnosis{
 }
 
 enum DATE_FIELDS {"background-date", "treatment-start", "treatment-finish"};
-const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular"};
+const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular", edd : "regular", edd_last_period:"regular"};
 
 const SINGLE_SMARTFIELDS = ["bmi", "edd"]
 export const INITIAL_SELECT = ["ict", "background", "treatment_regular", "family-background", "allergy"];
@@ -162,7 +163,12 @@ const SmartField:React.FC<Props> = (props) => {
                     } 
                     
                     else{
-                        valueDict[key] = val;
+                        if(isNaN(val) || isInteger(val)){
+                            valueDict[key] = val;
+                        }
+                        else{
+                            valueDict[key] = val.toFixed(2);
+                        }
                     }
                 }
                 valueDict.id = index;

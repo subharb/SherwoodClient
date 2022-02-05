@@ -230,6 +230,8 @@
         "bmi-table" : ["BMI", "IMC", "IMC"],
         "bmi_height-table" : ["Height(cms.)", "Altura(cms.)", "Taille(cms.)"],
         "bmi_weight-table" : ["Weight(kgs.)", "Peso(kgs.)", "Poids(kgs.)"],
+        "edd-table" : ["EDD", "Fecha salida de cuentas", "Date de livraison prévue"],
+        "edd_last_period-table" : ["Last period", "Última menstruación", "Dernière menstruation"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "treatment-table" : ["Drug", "Medicamento", "Médicament"],
         "treatment_regular-table" : ["Drug", "Medicamento", "Médicament"],
