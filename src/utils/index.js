@@ -644,7 +644,7 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
 }
 
 export function isSmartField(type){
-    return ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular"].includes(type);
+    return ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular", "bmi", "edd"].includes(type);
 }
 
 export function getIndexedDB(){

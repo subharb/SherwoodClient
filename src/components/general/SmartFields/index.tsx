@@ -167,7 +167,7 @@ const SmartField:React.FC<Props> = (props) => {
                             valueDict[key] = val;
                         }
                         else{
-                            valueDict[key] = val.toFixed(2);
+                            valueDict[key] = parseFloat(val).toFixed(2);
                         }
                     }
                 }

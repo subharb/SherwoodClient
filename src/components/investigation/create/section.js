@@ -131,7 +131,7 @@ class Section extends Component{
                     titleTable={<Translate id="investigation.create.edc.fields" />}  
                     headCells={arrayHeader}
                     rows={rows}
-                    actions={{"delete" : (index) => this.deleteField(index) }} 
+                    actions={[{"type" : "delete", "func" : (index) => this.deleteField(index) }]} 
                 />
             )
         }
@@ -161,7 +161,7 @@ class Section extends Component{
                                     }
                                 </Typography>
                                 <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
-                                    <Field type="text" name="name" label="name" required={true} component={FieldSherwood} />
+                                    <Field type="text" name="name" fullWidth label="name" required={true} component={FieldSherwood} />
                                     <div>
                                         <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
                                     </div>

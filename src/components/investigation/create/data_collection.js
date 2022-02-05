@@ -101,7 +101,7 @@ class DataCollection extends Component{
                                 tempSection["id"] = index;
                                 return tempSection;
                             })}
-                            actions={{"delete" : (index) => this.deleteSection(index, "sections"), "edit" : (index) => this.editSection(index, "sections")}}
+                            actions={[{"type" : "delete", "func" : (index) => this.deleteSection(index, "sections")}, {"type" : "edit", "func" : (index) => this.editSection(index, "sections")}]}
                             />
                     </Grid>
                     <Grid item xs={12}>

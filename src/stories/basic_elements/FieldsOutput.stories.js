@@ -1,5 +1,7 @@
 import React from 'react';
 import File from '../../components/general/File';
+import SmartFields from '../../components/general/SmartFields';
+import BMIField from '../../components/general/SmartFields/BMIField';
 import ProviderSherwood from '../../providerSherwood';
 
 const FIELD_TREATMENT = {
@@ -151,7 +153,7 @@ const FIELD_IMAGE = {
 }
 
 export default {
-    title: 'Basic Elements/Fields/Ouput Fields',
+    title: 'Basic Elements/Fields/Output Fields',
     component: File,
     decorators: [story => 
         <ProviderSherwood>
@@ -160,6 +162,7 @@ export default {
 };
 
 const Template = (args) => <File {...args} />;
+const TemplateSmartField = (args) => <SmartFields {...args} />;
 
 export const FileOuput = Template.bind({});
 FileOuput.args = {
@@ -176,4 +179,13 @@ FileEdit.args = {
     label:"Radiografias",
     value : [{file:"hospitals_1620728497713-256774649", "file-data" : "1111111"},
             {file:"hospitals_1620729868307-866470426", "file-data" : "1111111"}]
+}
+
+export const BMIOutput = TemplateSmartField.bind({});
+BMIOutput.args = {
+    mode:"show", 
+    label:"BMI",
+    type: "bmi",
+    initialState : {listElements : [{bmi:31, bmi_height:"45", bmi_weight:"14"}
+            ]}
 }
