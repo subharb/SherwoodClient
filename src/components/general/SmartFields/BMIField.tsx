@@ -4,11 +4,13 @@ import { useEffect } from 'react';
 import { useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 
-import { ButtonAccept, ButtonCancel, ButtonEdit } from './mini_components';
-import styled from 'styled-components';
+import { ButtonAccept, ButtonEdit } from '../mini_components';
+
+import { BMIType } from '.';
+import { isString } from 'lodash';
 
 interface Props extends LocalizeContextProps {
-    bmiUpdated:(value:number) => void
+    elementSelected:(bmi:BMIType) => void
 }
 
 const RedTypography = withStyles({
@@ -18,6 +20,7 @@ const RedTypography = withStyles({
   })(Typography);
 
 function BMIField(props: Props) {
+    
     const [errorWeight, setErrorWeight] = useState(false);
     const [showError, setShowError] = useState(false);
     const [saved, setSaved] = useState(false);
@@ -33,10 +36,11 @@ function BMIField(props: Props) {
     }
 
     function saveBMI(){
-        if(bmi !== null){
+        if(bmi !== null && isString(weight) && isString(height)){
             setShowError(false);
             setSaved(true);
-            props.bmiUpdated(bmi);
+            const bmiElement:BMIType = {bmi:bmi.toString(), bmi_height:height, bmi_weight:weight};
+            props.elementSelected(bmiElement);
         }
         else{
             setShowError(true);

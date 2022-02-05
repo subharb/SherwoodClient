@@ -2,13 +2,14 @@ import { Grid, Typography } from "@material-ui/core"
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
 import { useState } from "react"
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux"
-import { ButtonEdit, FieldWrapper } from "./mini_components"
+import { ButtonEdit, FieldWrapper } from "../mini_components"
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date"
+import { EDDType } from "."
 
 interface Props extends LocalizeContextProps {
     error:boolean,
-    eddDateCallback:(date:Date) => void
+    elementSelected:(edd:EDDType) => void
 }
 
 const EDDField:React.FC<Props> = (props) => {
@@ -19,7 +20,8 @@ const EDDField:React.FC<Props> = (props) => {
             let cloneDate = new Date(value.valueOf());
             cloneDate.setDate(cloneDate.getDate() + 280);
             setEDDate(cloneDate);
-            props.eddDateCallback(cloneDate);
+            const eddElement:EDDType = {edd:cloneDate.getTime().toString(), edd_last_period : value.getTime().toString()};
+            props.elementSelected(eddElement);
         }
         
     }
