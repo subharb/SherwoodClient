@@ -263,7 +263,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     function editCallBackForm(bed:IBed){
         if(!checkNameBeds(bed) && editCallBack){
             editCallBack(bed);
-            resetModal();
+            
         }
     }
     function addCallBackForm(bed:IBed){
@@ -280,8 +280,13 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         setAddingBed(false);
     }
     function editBed(bed:IBed){
-        setShowModal(true);
-        setBedToEdit(bed);
+        if(bed.stays.length === 0){
+            setShowModal(true);
+            setBedToEdit(bed);
+        }
+        else{
+            setShowSnackbar({show:true, severity: "warning", message : "hospital.ward.error.bed-edit-assigned"});
+        }
     }
     function deleteBed(bed:IBed){
         
@@ -292,8 +297,6 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         if(bedToDelete && deleteCallBack){
             deleteCallBack(bedToDelete);
         }
-        
-        resetModal();
     }
     function saveNewOrder(){
         if(beds && saveOrderCallBack){
@@ -491,9 +494,12 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
             setBedToAssign(null);
             if(goToPatientHistory){
                 goToPatientHistory()
-            }
-            
+            } 
         }
+        else if(bedToEdit && !error){
+            setShowSnackbar({show:true, severity: "success", message : "hospital.ward.bed-update-success"});
+        }
+      
         resetBeds();
         resetModal();
     }, [bedsProps]);

@@ -411,6 +411,7 @@ const investigationsRoutes = {
     icon: <Briefcase />,
     badge: "8",
     permissions : [],
+    functionalities:[],
     component: Investigations,
     children: [
         {
@@ -443,6 +444,7 @@ const dashboardsRoutes = {
   icon: <Sliders />,
   component:CreateInvestigation,
   permissions : [],
+  functionalities : [],
   children: null,
 };
 const dashboardsNotSideBarRoutes = {

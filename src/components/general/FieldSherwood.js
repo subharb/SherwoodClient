@@ -153,6 +153,7 @@ class FieldSherwood extends PureComponent{
     treatmentSelected(treatments){
         this.props.input.onChange(treatments);
     }
+ 
     handleDateChange(value){
         this.props.input.onChange(value);
     }
@@ -432,12 +433,15 @@ class FieldSherwood extends PureComponent{
                             value={input.value} />
                     </FieldWrapper>
                 )
+            case "edd":
+            case "bmi":    
             case "allergy":
             case "family-background":
             case "background":
             case "ict" : 
             case "treatment" : 
             case "treatment_regular" : 
+            
                 return(
                     <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                         variant="outlined" margin={this.typeMargin} error={errorState} country={country}

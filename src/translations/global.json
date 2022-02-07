@@ -98,6 +98,7 @@
             "assign-bed-success" : ["Bed assigned correctly", "Cama asignada correctamente", "Lit correctement attribué"],
             "reorder" : ["Switch to reorder", "Activar para reordenar", "Activer pour réorganiser"],
             "delete-bed-prompt" : ["Are you sure to delete this bed?", "¿Está seguro de borrar esta cama?", "Êtes-vous sûr de supprimer ce lit ?"],
+            "bed-update-success" : ["Bed updated succesfully", "Cama actualizada correctamente", "Lit mis à jour avec succès"],
             "bed" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "genre" : ["Genre", "Género", "Genre"],
@@ -107,9 +108,12 @@
                 "default" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
                 "bed-not-exist" : ["Bed does not exist, please refresh the page", "La cama no existe, refresque la página.", "Le lit n'existe pas, veuillez rafraîchir la page"],
                 "bed-assigned" : ["This bed is already busy", "Esta cama ya esta ocupada", "Ce lit est déjà occupé"],
+                "bed-edit-assigned" : ["Can't change a busy bed", "No puede cambiar una cama ocupada", "Impossible de changer un lit occupé"],
                 "patient-not-exist" : ["patient does not exist", "El paciente no existe", "les patients n'existent pas"],
                 "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"],
+                "ward-patient-bed" : ["This ward has beds occupied, please discharge any patients first", "Esta sala tiene camas ocupadas, primero dé el alta a los pacientes", "Ce service a des lits occupés, veuillez d'abord libérer les patients"],
                 "patient-already-hospitalized" : ["This patient is already hospitalized, please discharge him from his bed first", "Este paciente ya está hospitalizado, primero déle de alta de su cama.", "Este paciente ya está hospitalizado, primero déle de alta de su cama."]
+
             }
             
         },
@@ -223,6 +227,11 @@
         "family-relation" : ["Relationship", "Relación Familiar", "Relation de famille"],     
         "ict-plural" : ["Diagnoses", "Diagnósticos", "Diagnostics"],
         "ict-table" : ["Diagnoses", "Entidad", "Diagnostics"],
+        "bmi-table" : ["BMI", "IMC", "IMC"],
+        "bmi_height-table" : ["Height(cms.)", "Altura(cms.)", "Taille(cms.)"],
+        "bmi_weight-table" : ["Weight(kgs.)", "Peso(kgs.)", "Poids(kgs.)"],
+        "edd-table" : ["EDD", "Fecha salida de cuentas", "Date de livraison prévue"],
+        "edd_last_period-table" : ["Last period", "Última menstruación", "Dernière menstruation"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "treatment-table" : ["Drug", "Medicamento", "Médicament"],
         "treatment_regular-table" : ["Drug", "Medicamento", "Médicament"],
@@ -232,6 +241,12 @@
         "background-table" : ["Past Medical History", "Antecedentes", "Antécédents"],
         "background-date" : ["Enter date", "Introducir fecha", "Entrez la date"],
         "background-date-table" : ["Date", "Fecha", "Date"],
+        "bmi" : ["Body Mass Index", "Índice de Masa Corporal", "Indice de masse corporelle"],
+        "bmi-weight" : ["Weight(kgs.)", "Peso(kgs.)", "Poids(kgs.)"],
+        "bmi-height" : ["Height(cms.)", "Peso(cms.)", "Taille(cms.)"],
+        "bmi-error-message" : ["Enter a weight in kg and a height in cm. valid","Entrez un poids en kg et une taille en cm. valide"],
+        "edd" : ["Expected Delivery Date", "Fecha de salida de cuenta", "Date de livraison prévue"],
+        "edd-title" : ["Select the date of the last rule", "Seleccione la fecha de la ultima regla", "Sélectionnez la date de la dernière période"],
         "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "family-background-table" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "family-background-relation-table" : ["Relationship", "Relación Familiar", "Relation de famille"],  
@@ -484,7 +499,7 @@
                 "treatment_regular" : ["Regular Treatment", "Tratamiento Regular", "Traitement Regulier"],
                 "allergy" : ["Allergy", "Alergia", "Allergie"],
                 "background" : ["PMH", "Antecedentes Personales", "Antécédents personnel"],
-                "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],                
+                "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],   
                 "files" : ["File/Image", "Imágenes", "Images"],       
                 "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
                 "textarea" : ["Texarea", "Texto largo", "Texarea"],
@@ -499,6 +514,8 @@
                 "type" : ["Type of study", "Tipo de estudio", "Type d'étude"],
                 "separator" : ["Divider", "Separador", "Divider"],
                 "text_blob" : ["Explaining text", "Texto explicativo", "Explaining text"],
+                "bmi" : ["Body Mass Index", "Índice Masa Corporal", "Indice de masse corporelle"],
+                "edd" : ["Expected Delivery Date", "Fecha de salida de cuenta", "Date de livraison prévue"],
                 "type_study" : {
                     "audit" : ["Clinical audit", "Auditoría clínica", "Audit clinique"],
                     "clinical_trial" : ["Clinical trial", "Ensayo clínico", "Essai clinique"],

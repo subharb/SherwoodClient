@@ -93,7 +93,7 @@ export default class EDC extends Component{
                         orderUpdate={(result) => this.orderUpdate(result)} noSelectable 
                         droppableId="edc"
                         titleTable={<Translate id="investigation.create.edc.data_collections.title" />} rows={rows} headCells={headCells} 
-                        actions = {{"delete" : (index) => this.deleteDataCollection(index), "edit" : (index) => this.editDataCollection(index)}} 
+                        actions = {[{"type" : "delete", "func" : (index) => this.deleteDataCollection(index)}, {"type" : "edit", "func" : (index) => this.editDataCollection(index)}]} 
                         />
                 </Grid>,
                 <Grid item xs={12}>
@@ -104,8 +104,6 @@ export default class EDC extends Component{
                 </Grid>
             ]
             )
-            
-           
         }
     }
     toggleAddDataCollection(){

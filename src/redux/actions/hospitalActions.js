@@ -100,7 +100,14 @@ export function deleteWardAction(uuidInstitution, uuidDepartment, uuidWard) {
         });
       })
       .catch((error) => {
-        dispatch({ type: types.HOSPITAL_ERROR });
+        if(error.status === 400){
+            dispatch({ type: types.DELETE_WARD_ERROR,
+                        error : 400 });  
+        }
+        else{
+          dispatch({ type: types.HOSPITAL_ERROR });
+        }
+        
         throw error;
       });
   };

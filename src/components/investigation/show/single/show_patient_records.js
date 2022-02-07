@@ -48,7 +48,7 @@ export default function ShowPatientRecords(props) {
             return(
                 <ShowRecordsSection permissions={props.permissions} indexSubmission={indexSubmission}
                     callBackEditSubmission={(uuidSubmission, uuidSection) =>props.callBackEditSubmission(uuidSubmission, uuidSection)} 
-                    records={recordsSection} section={section} 
+                    records={recordsSection} section={section} uuidResearcher = {props.submissions[indexSubmission].uuidResearcher}
                     idSubmission = {props.submissions[indexSubmission].id}
                     updatedAt={props.submissions[indexSubmission].updatedAt}/>
             )

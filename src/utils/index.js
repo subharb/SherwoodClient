@@ -204,7 +204,9 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.files", "value" : "file"},
                 {"label": "investigation.create.edc.family-background", "value" : "family-background"},
                 {"label": "investigation.create.edc.separator", "value" : "separator"},
-                {"label": "investigation.create.edc.text_blob", "value" : "text_blob"}
+                {"label": "investigation.create.edc.text_blob", "value" : "text_blob"},
+                {"label": "investigation.create.edc.bmi", "value" : "bmi"},
+                {"label": "investigation.create.edc.edd", "value" : "edd"}
         ],
         activationValues : ["select", "multioption", "radio", "evaluation"],
         activatedFields:[
@@ -642,7 +644,7 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
 }
 
 export function isSmartField(type){
-    return ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular"].includes(type);
+    return ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular", "bmi", "edd"].includes(type);
 }
 
 export function getIndexedDB(){

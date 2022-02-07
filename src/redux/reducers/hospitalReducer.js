@@ -88,7 +88,7 @@ export default function reducer(state = initialState, action){
             ward = department.wards[indexWard];
             ward.beds.push(action.bed);
 
-            newState.data.departments = tempDepartments;
+            newState.data.departments = [...tempDepartments];
             newState.loading = initialState.loading; 
             newState.error = initialState.error; 
             return newState;
@@ -172,6 +172,11 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error; 
             return newState;  
+        case types.DELETE_WARD_ERROR:
+        
+            newState.loading = initialState.loading; 
+            newState.error = action.error; 
+            return newState; 
         case types.FETCH_PATIENT_STAYS:
             
             if(newState.data.stays){

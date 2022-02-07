@@ -76,7 +76,7 @@ function Patient(props) {
         return typeSurveys.includes(rec.typeSurvey)
     }) : [];
 
-    if(dataCollectionSelected?.type === TYPE_MEDICAL_SURVEY){
+    if(typSurveySelected === TYPE_MEDICAL_SURVEY){
         staysPatient.forEach((stay) => {
             filteredRecords.push({
                 researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
@@ -102,7 +102,7 @@ function Patient(props) {
     const translations = typeSurveys.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typeSurveys.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
 
     function addRecord(){
-        if(!parameters.hasOwnProperty("typeTest")){
+        if(currentSurveys.length > 1 ){
             setShowOptions(true);
             setShowModal(true);
         }
@@ -403,9 +403,11 @@ function Patient(props) {
                         const tempSub = {...sub};
                         tempSub.surveyName = val.surveyName;
                         tempSub.uuidSurvey = val.uuid; 
+                        tempSub.uuidResearcher = tempSub.researcher.uuid;
                         tempSub.typeSurvey = val.type; 
                         const departmentName = tempSub.researcher.departments.length === 0 ? "" : " - "+tempSub.researcher.departments[0].name;
-                        tempSub.researcher = tempSub.researcher.name+" "+tempSub.researcher.surnames + departmentName
+                        tempSub.researcher = tempSub.researcher.name+" "+tempSub.researcher.surnames + departmentName;
+
                         return tempSub;
                     })
                     tempSubmissions = tempSubmissions.concat(tempSubs); 
@@ -569,8 +571,9 @@ function Patient(props) {
                 </Modal>
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
+                        typeSurveySelected={typSurveySelected}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
-                        editPersonalData={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
+                        editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} patientID={patient.id} personalData={patient.personalData} years={years}
                         medicalNotesCallBack={() => backToRoot()} 
                         testCallBack={() => goToTest(1)} 

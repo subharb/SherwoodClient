@@ -8,7 +8,7 @@ import { Translate } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
 import SmartField from '../../../general/SmartFields';
-import { isSmartField } from '../../../../utils';
+import { getData, isSmartField } from '../../../../utils';
 import { ALL_SMARTFIELDS_TYPES } from '../../../../constants';
 import { PERMISSION } from '../../../../constants/types';
 
@@ -164,7 +164,7 @@ export default function ShowRecordsSection(props) {
                                     { props.section.name }
                                 </Typography>
                                 {
-                                    ((dateCreated.getTime() + 86400000 > new Date().getTime()) && props.permissions.includes(PERMISSION.MEDICAL) ) && 
+                                    ((dateCreated.getTime() + 86400000 > new Date().getTime()) && props.uuidResearcher === getData("uuid")) && 
                                     <ButtonEdit onClick={() => editSection(props.section.uuid)} />
                                 }
                             </HeaderSection>

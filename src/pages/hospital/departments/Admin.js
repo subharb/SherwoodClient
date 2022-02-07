@@ -252,17 +252,25 @@ function Departments(props) {
 
     function deleteWardConfirm(ward, uuidDepartment){
         console.log("Borrar sala?");
-        setUuidDepartmentAddWard(uuidDepartment);
-        setWardToDelete(ward);
-        setShowModal(true);
+        const hasPatients = ward.beds.reduce((acc, bed) => {
+            return acc || bed.stays.length > 0
+        }, false)
+        if(hasPatients){
+          
+            setShowSnackbar({show:true, severity: "warning", message : "hospital.ward.error.ward-patient-bed"});
+        }
+        else{
+            setUuidDepartmentAddWard(uuidDepartment);
+            setWardToDelete(ward);
+            setShowModal(true);
+        }
+        
     }
 
     
     async function editCallBack(values){
         console.log("Datos nuevos de researcher", values);
         props.editCallBack(props.researchers[indexResearcherToEdit].uuid, values.department)
-        
-        
     }
     
     function renderResearchers(){
@@ -387,13 +395,20 @@ function Departments(props) {
                 
             }
             else if(wardToDelete){
-                message = "register.researcher.error.general";
-                severity = "error";
+                if(props.hospitalError === 400){
+                    message = "hospital.ward.error.ward-patient-bed";
+                    severity = "error";
+                }
+                else{
+                    message = "register.researcher.error.general";
+                    severity = "error";
+                }
             }
             else{
                 message = "register.researcher.error.general";
                 severity = "error";
             }
+            resetModal();
             setShowSnackbar({show:true, severity: severity, message : message});
         }
     }, [props.hospitalError])

@@ -10,6 +10,11 @@ import Background from './Background';
 import Allergy from './Allergy';
 import FamilyBackground from './FamilyBackground';
 import SingleTreatmentSelector from './SingleTreatmentSelector';
+import BMIField from './BMIField';
+import EDDField from './EDDField';
+import { isInteger } from 'lodash';
+
+
 
 
 export interface PropsSmartField {
@@ -70,7 +75,18 @@ export interface TreatmentRegularType{
     "treatment_regular-posology": string
 }
 
-export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType ;
+export interface BMIType{
+    "bmi" : number,
+    "bmi_height" : number,
+    "bmi_weight": number
+}
+
+export interface EDDType{
+    "edd" : Date,
+    "edd_last_period" : Date
+}
+
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType;
 
 export interface Diagnosis{
     ict : string,
@@ -78,7 +94,10 @@ export interface Diagnosis{
 }
 
 enum DATE_FIELDS {"background-date", "treatment-start", "treatment-finish"};
-const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular"};
+const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular", edd : "regular", edd_last_period:"regular"};
+
+const SINGLE_SMARTFIELDS = ["bmi", "edd"]
+export const INITIAL_SELECT = ["ict", "background", "treatment_regular", "family-background", "allergy"];
 
 interface Props extends LocalizeContextProps {
     name : string,
@@ -102,7 +121,7 @@ const TRANSLATED_COLUMNS = ["treatment-posology", "treatment-frecuency"]
 const SmartField:React.FC<Props> = (props) => {
     const [listElements, setListElements] = useState<SmartFieldType[]>(props.initialState ? props.initialState.listElements : []);
     const [addingElements, setAddingElements] = useState(props.mode === "form");
-    const [addElement, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.error, setAddingElements);
+    const [addElement, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.type, props.error, setAddingElements);
 
     function cancel(){
         if(listElements.length === 0){
@@ -144,7 +163,12 @@ const SmartField:React.FC<Props> = (props) => {
                     } 
                     
                     else{
-                        valueDict[key] = val;
+                        if(isNaN(val) || isInteger(val)){
+                            valueDict[key] = val;
+                        }
+                        else{
+                            valueDict[key] = parseFloat(val).toFixed(2);
+                        }
                     }
                 }
                 valueDict.id = index;
@@ -152,7 +176,7 @@ const SmartField:React.FC<Props> = (props) => {
                 return valueDict
             })
             if(props.mode === "form"){
-                return <Grid item xs={12}>
+                return <Grid item xs={12} spacing={3}>
                         <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
                             actions={[{"type" : "delete", "func" : (index:number) => removeDiagnosis(index)}]}
                             
@@ -181,37 +205,55 @@ const SmartField:React.FC<Props> = (props) => {
     function addDiagnose(){
         setAddingElements(true);
     }
+   
     function renderSelector(){
         if(addingElements && props.mode === "form"){
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
                 cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, country:props.country, error:props.error, slaves:props.slaves,
-                size:"small", elementSelected:(diag:SmartFieldType) => elementSelected(diag)}
-                
-            if(props.type === "background"){
-                return <Background {...propsSmartField} />
+                size:"small", elementSelected:(smartF:SmartFieldType) => elementSelected(smartF)}
+            
+            let smartField = null;
+            switch(props.type){
+                case "background":
+                    smartField = <Background {...propsSmartField} />
+                    break;
+                case "family-background":
+                    smartField = <FamilyBackground {...propsSmartField} />        
+                    break;
+                case "allergy":
+                    smartField = <Allergy {...propsSmartField}/>
+                    break;
+                case "ict": 
+                    smartField = <ICTSelectorGeneral {...propsSmartField} />    
+                    break;
+                case "treatment":
+                    smartField = <SingleTreatmentSelector {...propsSmartField} />
+                    break;
+                case "treatment_regular":
+                    smartField = <SingleTreatmentSelector {...propsSmartField} />
+                    break;
+                case "bmi":
+                    smartField = <BMIField {...propsSmartField} />
+                    break;
+                case "edd":
+                    smartField = <EDDField {...propsSmartField} />
+                    break;
+                default:
+                    smartField = "Smarfield not defined"
             }
-            if(props.type === "family-background"){
-                return <FamilyBackground {...propsSmartField} />
-            }
-            if(props.type === "allergy"){
-                return <Allergy {...propsSmartField}/>
-            }
-            else if(props.type === "ict"){
-                return <ICTSelectorGeneral {...propsSmartField} />
-            }
-            else if(props.type === "treatment" || props.type === "treatment_regular"){
-                return <SingleTreatmentSelector {...propsSmartField} />
-            }
-            // return <BackgroundSelector type={props.type} variant="outlined" typeMargin={props.typeMargin} 
-            //         cancel={cancel} size="small" error={props.errorState} language={props.activeLanguage.code} 
-            //         elementSelected={(diag:Smartfield) => elementSelected(diag)} />
+            return(
+                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                    { smartField }
+                </Grid>
+            ) 
         }
     }
     useUpdateEffect(() =>{
-        if(props.initialState && props.initialState.listElements.length >0 ){
+        if(props.initialState && props.initialState.listElements.length > 0 ){
             setListElements(props.initialState.listElements);
             setAddingElements(false);
         }
+    
         
     }, [props.initialState]);
     
@@ -229,27 +271,30 @@ const SmartField:React.FC<Props> = (props) => {
             props.elementSelected(false);
         }
     }, [addElement]);
+    
     if(!addElement && listElements.length === 0){
         return renderSelect();
     }
-
-    return (
-        <Grid container spacing={3}>
-            {
-                (!addingElements && props.mode === "form") &&
-                <Grid item xs={12}>
-                    <ButtonPlus onClick={addDiagnose} />
-                    <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
-                </Grid>
-            }
-            {
-                renderSelector()
-            }
-            
-            {
-                renderElements()
-            }
-        </Grid>
-    )
+    else{
+        return (
+            <Grid container spacing={3}>
+                {
+                    (!addingElements && props.mode === "form" && !SINGLE_SMARTFIELDS.includes(props.type)) &&
+                    <Grid item xs={12}>
+                        <ButtonPlus onClick={addDiagnose} />
+                        <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
+                    </Grid>
+                }
+                {
+                    renderSelector()
+                }
+                
+                {
+                    renderElements()
+                }
+            </Grid>
+        )
+    }
+    
 }
 export default withLocalize(SmartField);

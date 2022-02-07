@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDepartmentsInstitutionAction } from '../redux/actions/hospitalActions';
 import { Color } from '@material-ui/lab';
 import { IDepartment } from '../constants/types';
+import { INITIAL_SELECT } from '../components/general/SmartFields';
 
 
 export function useSnackBarState(){
@@ -50,8 +51,8 @@ export function useDepartments(){
     return { departments, researchers, investigations, loading}
 }
 
-export function useSelectSmartField(initialState:any, label:string, errorState:boolean, setAddingSmartField:(adding:boolean) => void){
-    const [addSmartField, setAddSmartField] = useState(initialState && initialState.addSmartField ? initialState.addSmartField : undefined);
+export function useSelectSmartField(initialState:any, label:string, type:string, errorState:boolean, setAddingSmartField:(adding:boolean) => void){
+    const [addSmartField, setAddSmartField] = useState(initialState && initialState.addSmartField ? initialState.addSmartField : !INITIAL_SELECT.includes(type));
 
     function selectChanged(event:React.ChangeEvent<{
         name?: string | undefined;
@@ -61,7 +62,7 @@ export function useSelectSmartField(initialState:any, label:string, errorState:b
         setAddSmartField(event.target.value);
     }
     function resetState(){
-        setAddSmartField(null);
+        setAddSmartField(!INITIAL_SELECT.includes(type));
         setAddingSmartField(true);
     }
     function renderSelect(){
