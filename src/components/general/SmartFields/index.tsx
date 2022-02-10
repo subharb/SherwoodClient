@@ -97,7 +97,7 @@ enum DATE_FIELDS {"background-date", "treatment-start", "treatment-finish"};
 const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular", edd : "regular", edd_last_period:"regular"};
 
 const SINGLE_SMARTFIELDS = ["bmi", "edd"]
-export const INITIAL_SELECT = ["ict", "background", "treatment_regular", "family-background", "allergy"];
+export const INITIAL_SELECT = ["ict", "background", "treatment", "treatment_regular", "family-background", "allergy"];
 
 interface Props extends LocalizeContextProps {
     name : string,
