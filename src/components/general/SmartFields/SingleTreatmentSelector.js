@@ -128,37 +128,42 @@ function SingleTreatmentSelector(props){
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <DrugSelector drugSelected={(drug) => drugSelected(drug) } country={props.country}
-                    error={errorDrug} variant={props.variant} type="treatment"
-                    freeSolo
-                    callbackError={(error) => drugError(error)}/>
+                <Grid item xs={12} sm={4} lg={3}>
+                    <DrugSelector drugSelected={(drug) => drugSelected(drug) } country={props.country}
+                        error={errorDrug} variant={props.variant} type="treatment"
+                        freeSolo
+                        callbackError={(error) => drugError(error)}/>
+                </Grid>
             </Grid>
-            <FieldWrapper>
-                <Autocomplete
-                    id="dose"
-                    fullWidth
-                    options={selectDose.options}
-                    getOptionLabel={(option) => props.translate(option.label)}
-                    style={{ width: 300 }}
-                    onInputChange={(event, value, reason) => {
-                        doseSelected(value);
-                    }}
-                    onChange={(event, value, reason, details) => {
-                        if(value){
-                            doseSelected(value.value);
-                        }
-                        else{
-                            doseSelected(null);
-                        }
+            <Grid item xs={12}>
+                <Grid item xs={12} sm={4} lg={3}>
+                    <Autocomplete
+                        id="dose"
+                        fullWidth
+                        options={selectDose.options}
+                        getOptionLabel={(option) => props.translate(option.label)}
                         
-                    }}
-                    freeSolo
-                    renderInput={(params) => <TextField {...params} 
-                        label={props.translate("hospital.dose")} variant="outlined" 
-                        helperText={props.translate("general.no-option-match")} 
-                        error={errorDose} />}
-                    />
-            </FieldWrapper>
+                        onInputChange={(event, value, reason) => {
+                            doseSelected(value);
+                        }}
+                        onChange={(event, value, reason, details) => {
+                            if(value){
+                                doseSelected(value.value);
+                            }
+                            else{
+                                doseSelected(null);
+                            }
+                            
+                        }}
+                        freeSolo
+                        renderInput={(params) => <TextField {...params} 
+                            label={props.translate("hospital.dose")} variant="outlined" 
+                            helperText={props.translate("general.no-option-match")} 
+                            error={errorDose} />}
+                        />
+                </Grid>
+            </Grid>
+            
             {
                 props.type === "treatment" &&
                 <Grid item xs={12}>
@@ -168,28 +173,31 @@ function SingleTreatmentSelector(props){
                     />
                 </Grid>  
             }
-            <Grid item xs={12}>
-                <Autocomplete
-                    id="frecuency" disabled={isOneDose}
-                    options={selectfrecuency.options}
-                    getOptionLabel={(option) => props.translate(option.label)}
-                    style={{ width: 300 }}
-                    onInputChange={(event, value, reason) => {
-                        frecuencySelected(value);
-                    }}
-                    onChange={(event, value, reason, details) => {
-                        if(value){
-                            frecuencySelected(value.value);
-                        }
-                        else{
-                            frecuencySelected(null);
-                        }
-                    }}
-                    freeSolo
-                    renderInput={(params) => <TextField {...params} 
-                        label={props.translate("hospital.frecuency")} variant="outlined" helperText={props.translate("general.no-option-match")} 
-                        error={errorfrecuency} />}
-                    />
+           <Grid item xs={12}>
+                <Grid item xs={12} sm={4} lg={3}>
+                    <Autocomplete
+                        id="frecuency" disabled={isOneDose}
+                        
+                        options={selectfrecuency.options}
+                        getOptionLabel={(option) => props.translate(option.label)}
+                        
+                        onInputChange={(event, value, reason) => {
+                            frecuencySelected(value);
+                        }}
+                        onChange={(event, value, reason, details) => {
+                            if(value){
+                                frecuencySelected(value.value);
+                            }
+                            else{
+                                frecuencySelected(null);
+                            }
+                        }}
+                        freeSolo
+                        renderInput={(params) => <TextField {...params} 
+                            label={props.translate("hospital.frecuency")} variant="outlined" helperText={props.translate("general.no-option-match")} 
+                            error={errorfrecuency} />}
+                        />
+                </Grid>
             </Grid>
             {
                 props.type === "treatment" &&

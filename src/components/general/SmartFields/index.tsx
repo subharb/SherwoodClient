@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ICTSelectorOMS from './ICT/ICTSelectorOMS';
 import { ButtonDelete, ButtonPlus } from '../mini_components';
-import { Grid, PropTypes, Typography } from '@material-ui/core';
+import { Card, CardContent, Grid, PropTypes, Typography } from '@material-ui/core';
 import { useSelectSmartField, useUpdateEffect } from '../../../hooks';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../EnhancedTable';
@@ -243,7 +243,14 @@ const SmartField:React.FC<Props> = (props) => {
             }
             return(
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                    { smartField }
+                    <Card variant="outlined">
+                        <CardContent>
+                            <Typography color="textSecondary" gutterBottom>
+                                <Translate id={`hospital.${props.type}`} />
+                            </Typography>
+                            { smartField }
+                        </CardContent>
+                    </Card>
                 </Grid>
             ) 
         }

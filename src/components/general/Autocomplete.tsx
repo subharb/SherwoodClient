@@ -117,11 +117,10 @@ const AutocompleteSherwood = (props:Props) => {
     }, [searchTerm])
     return (
         <React.Fragment>
-            <FieldWrapper>
-                <TextField value={searchTerm} error={errorSearch || props.error} onFocus={restart}
-                    onChange={(event) => changeInput(event.target.value)} fullWidth
-                    label={props.translate("hospital.select-treatment")} variant="outlined" />
-            </FieldWrapper>
+            <TextField value={searchTerm} error={errorSearch || props.error} onFocus={restart}
+                onChange={(event) => changeInput(event.target.value)} fullWidth
+                label={props.translate("hospital.select-treatment")} variant="outlined" />
+            
             {
                 renderOptions()
             }
