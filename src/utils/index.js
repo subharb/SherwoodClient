@@ -769,5 +769,5 @@ export function sexNumberToString(sex){
 
 export function sexStringToColor(sex){
     const sexLowercase = sex.toLowerCase();
-    return sexLowercase === "male" ? "#f3948a" : sexLowercase === "female" ? "#4da7ab" : "#aba74d";
+    return sexLowercase === "male" ? "#4da7ab" : sexLowercase === "female" ? "#f3948a" : "#aba74d";
 }

@@ -333,6 +333,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         let stayDays = undefined;
         let ageYears = null;
         let hasStay:boolean = false;
+        let sex = "";
         if(bed.stays.length > 0){
             var date1 = new Date(bed.stays[0].dateIn);
             var date2 = new Date();
@@ -340,6 +341,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
             stayDays = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
             hasStay = true;
             ageYears = yearsFromDate(personalData?.birthdate);
+            sex = personalData!.sex;
         }
         switch(mode){
             case WardModes.AssignPatient:
@@ -348,7 +350,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                                 active={bed.active} 
                                 hasStay={hasStay}
                                 stayDays={stayDays}
-                                gender={sexNumberToString(bed.gender)} 
+                                gender={sex} 
                                 onClickCallBack={() => assignBedPatient(bed)}
                             /> 
             break;
