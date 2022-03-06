@@ -129,7 +129,7 @@ class PersonalData extends Component{
                             noFooter />
                     </Grid>
                     <Grid item xs={6}>
-                    <EnhancedTable droppableId="selectedFields" miniTable noSelectable noFooter
+                        <EnhancedTable droppableId="selectedFields" miniTable noSelectable noFooter
                             titleTable="Selected Personal Fields" rows={rowsSelected} headCells={headSelected} 
                             callBackCheckbox={(id, param, value) => this.changeCheckbox(id, param, value)} />
                     </Grid>
