@@ -114,7 +114,7 @@ function SignIn() {
                 }
                 
             } catch (error) {
-                const message = error.message || "Something went wrong";
+                const message = error.message || "Wrong email or password. If you can't remember your password contact customersupport@sherwood.science";
 
                 setStatus({ success: false });
                 setErrors({ submit: message });
@@ -139,28 +139,28 @@ function SignIn() {
                 </Alert>
                 )}
                 <TextField
-                type="email"
-                name="email"
-                label="Email Address"
-                value={values.email}
-                error={Boolean(touched.email && errors.email)}
-                fullWidth
-                helperText={touched.email && errors.email}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                my={2}
+                    type="email"
+                    name="email"
+                    label="Email Address"
+                    value={values.email}
+                    error={Boolean(touched.email && errors.email)}
+                    fullWidth
+                    helperText={touched.email && errors.email}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    my={2}
                 />
                 <TextField
-                type="password"
-                name="password"
-                label="Password"
-                value={values.password}
-                error={Boolean(touched.password && errors.password)}
-                fullWidth
-                helperText={touched.password && errors.password}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                my={2}
+                    type="password"
+                    name="password"
+                    label="Password"
+                    value={values.password}
+                    error={Boolean(touched.password && errors.password)}
+                    fullWidth
+                    helperText={touched.password && errors.password}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    my={2}
                 />
                 <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
