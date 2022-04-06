@@ -400,7 +400,7 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
         </List>
       </Scrollbar>
       <SidebarFooter>
-        <Grid container component={LinkNoDecoration} to="/profile" spacing={2}>
+        <Grid container spacing={2}>
           <Grid item>
             <SidebarFooterBadge
               overlap="circle"
