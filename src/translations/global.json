@@ -69,6 +69,10 @@
         "data-collection" : ["Form", "Formulario", "Forme"],
         "data-collections" : ["Surveys", "Encuestas", "Enquêtes"],
         "sections" : ["Sections", "Secciones", "Sections"],
+        "inpatients" : {
+            "wish-hopitalize" : ["Do you wish to hospitalize this patient?", "¿Desea hospitalizar a este paciente?", "Voulez-vous hospitaliser ce patient?"],
+            "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le département"]
+        },
         "patient" : {
             "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
@@ -141,7 +145,7 @@
                 "ward" : {
                     "title" : ["Fill the ward details", "Complete los detalles de la sala", "Remplissez les détails de la paroisse"],
                     "name" : ["Name ward", "Nombre sala", "Nom chambre"],
-                    "beds" : ["Number Beds", "Número total camas", "Nombre total de lits"],
+                    "beds" : ["Number Beds", "Número camas", "Numero de lits"],
                     "male" : ["Male beds", "Camas para hombres", "Lits pour hommes"],
                     "female" : ["Female beds", "Camas para mujeres", "Lits pour femmes"]
                 },

@@ -22,7 +22,7 @@ function ICTSelectorOMS(props){
         const mySettings = {
             apiServerUrl: "https://id.who.int",   
             apiSecured: true,
-            icdMinorVersion: "2020-09" ,
+            icdMinorVersion: "2022-02" ,
             icdLinearization: "mms",
             language: props.language,
             sourceApp: "Sherwood",

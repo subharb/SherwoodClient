@@ -107,7 +107,7 @@ class PersonalData extends Component{
         this.setState(tempState);
     }
     render(){
-        const rowsAvailable = this.state.availableFields.map((field, index) => { return { id :index, title : <Translate id={field.label} />}});
+        const rowsAvailable = this.state.availableFields.length === 0 ? [{ id :0, title : "no hay más campos disponibles"}] : this.state.availableFields.map((field, index) => { return { id :index, title : <Translate id={field.label} />}});
         const rowsSelected = this.state.selectedFields.length === 0 ? [{ id :0, title : "Arrastra aquí", required:""}] : this.state.selectedFields.map((field, index) => {return { id :index, title : this.props.translate(field.label).includes("translationId") ? field.label : <Translate id={field.label} />, required:field.required}});
         const headAvailable = [{ id:"title", alignment: "left", label: "name"} ];
         const headSelected = [{ id:"title", alignment: "left", label: "name"}, { id:"required", alignment: "left", label: "required"} ];
@@ -129,7 +129,7 @@ class PersonalData extends Component{
                             noFooter />
                     </Grid>
                     <Grid item xs={6}>
-                    <EnhancedTable droppableId="selectedFields" miniTable noSelectable noFooter
+                        <EnhancedTable droppableId="selectedFields" miniTable noSelectable noFooter
                             titleTable="Selected Personal Fields" rows={rowsSelected} headCells={headSelected} 
                             callBackCheckbox={(id, param, value) => this.changeCheckbox(id, param, value)} />
                     </Grid>

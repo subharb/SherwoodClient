@@ -17,6 +17,7 @@ import {
 import { connect } from 'react-redux';
 import { fetchSubmissionsSurveyAction } from '../../redux/actions/submissionsActions';
 import { PERMISSION } from '../../constants/types';
+import styled from 'styled-components';
 
 export function TestsHome(props){
     let location = useLocation();
@@ -28,6 +29,11 @@ export function TestsHome(props){
     }
     else return null;
 }
+
+const IconHolder = styled.div`
+    padding-right:1rem;
+    padding-left:1rem;
+`;
 
 export function TestsHomeComponent(props) {
     const [ surveyRecords, setSurveyRecords] = useState([]);
@@ -115,14 +121,17 @@ export function TestsHomeComponent(props) {
         <React.Fragment>
             <Grid container spacing={6} >
                 <Grid container alignItems="center" alignContent="center" item xs={12}>
-                    <Grid xs={2} style={{textAlign:"right"}}>
-                        <img src={props.type === 1 ? iconImages : iconLab } alt="images" width="40" />
-                    </Grid>
-                    <Grid xs={8}>
-                        <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
-                            <Translate id={`pages.hospital.${translations[props.type]}.title`} />
-                        </Typography>
-                    </Grid>   
+                    
+                        <IconHolder>
+                            <img src={props.type === 1 ? iconImages : iconLab } alt="images" width="40" />
+                        </IconHolder>
+                        <div>
+                            <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
+                                <Translate id={`pages.hospital.${translations[props.type]}.title`} />
+                            </Typography>
+                        </div>
+                        
+                    
                 </Grid>
                 <Grid item xs={12}>
                     {

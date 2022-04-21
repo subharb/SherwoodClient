@@ -102,7 +102,7 @@ const WardForm:React.FC<Props> = ({mode, name, beds, permissions, editCallBack, 
                     <HotelIcon />
                 </Grid>
                 <Grid item xs={4} style={{textAlign:'center'}}>
-                    <Typography variant="body2">Number beds</Typography> 
+                    <Typography variant="body2"><Translate id="hospital.departments.forms.ward.beds" /></Typography> 
                 </Grid>
                 <Grid item xs={4} style={{textAlign:'center'}}>
                     <Typography variant="body2">{beds.busyTotal}/{beds.total}</Typography>

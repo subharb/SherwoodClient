@@ -52,7 +52,8 @@ export function useDepartments(){
 }
 
 export function useSelectSmartField(initialState:any, label:string, type:string, errorState:boolean, setAddingSmartField:(adding:boolean) => void){
-    const [addSmartField, setAddSmartField] = useState(initialState && initialState.addSmartField ? initialState.addSmartField : !INITIAL_SELECT.includes(type));
+    //Hay que devolver undefined para que el select no ponga el placeholder arriba
+    const [addSmartField, setAddSmartField] = useState(initialState && initialState.addSmartField ? initialState.addSmartField : !INITIAL_SELECT.includes(type) ? true : undefined);
 
     function selectChanged(event:React.ChangeEvent<{
         name?: string | undefined;

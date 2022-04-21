@@ -212,7 +212,7 @@ export function SearchPatientsComponent(props) {
     return (
         <React.Fragment>
             <Modal key="modal" open={patientHospitalizeIndex !== -1} 
-                title={!patientHospitalized ? "¿Desea hospitalizar a este paciente?" : "Seleccione la sala"} 
+                title={!patientHospitalized ? <Translate id="hospital.inpatients.wish-hopitalize" /> : <Translate id="hospital.inpatients.choose-ward" />} 
                 closeModal={resetModal}
                 >
                     {
