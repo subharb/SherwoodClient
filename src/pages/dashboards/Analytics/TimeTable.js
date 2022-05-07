@@ -111,6 +111,43 @@ function TimeTable(props){
     }
     
   };
+  function renderHeader(){
+    if(props.data.length === 0){
+       return null;
+    }
+    else{
+        return props.header.map((header, index)=> {
+          if(index === 0){
+            return <TableCell>{header}</TableCell>
+          }
+          else{
+              return <TableCell align="right">{header}</TableCell>
+          }
+        })
+      }
+  }
+  function renderBodyTable(){
+    if(props.data.length === 0){
+      return <TableRow><TableCell>No data available</TableCell></TableRow>
+    }
+    else{
+      return props.data.map((row, index) => (
+        <TableRow key={index}>
+            {
+              row.map((element, index) =>{
+                if(index === 0){
+                    return <TableCell component="th" scope="row">{element}</TableCell>
+                }
+                else{
+                    return <TableCell align="right">{element}</TableCell>
+                }
+              })
+            }
+        </TableRow>
+      ))
+    }
+    
+  }
   return(
       <Card mb={3}>
           <CardHeader
@@ -146,39 +183,17 @@ function TimeTable(props){
               !props.loading &&
               <TableWrapper>
 
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    {
-                      props.header.map((header, index)=> {
-                        if(index === 0){
-                          return <TableCell>{header}</TableCell>
-                        }
-                        else{
-                            return <TableCell align="right">{header}</TableCell>
-                        }
-                      })
-                    }
-                    
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {props.data.map((row, index) => (
-                    <TableRow key={index}>
-                        {
-                          row.map((element, index) =>{
-                            if(index === 0){
-                                return <TableCell component="th" scope="row">{element}</TableCell>
-                            }
-                            else{
-                                return <TableCell align="right">{element}</TableCell>
-                            }
-                          })
-                        }
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      { renderHeader()}
+                      
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHead>
+                  <TableBody>
+                    {renderBodyTable()}
+                  </TableBody>
+                </Table>
             </TableWrapper>
             }
             

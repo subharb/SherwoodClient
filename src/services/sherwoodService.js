@@ -360,6 +360,22 @@ export const getStatsFirstMonitoring = datalogger((uuidInvestigation, startDate,
     });
 });
 
+export const getStatsMostCommonDiagnosis = datalogger((uuidInstitution, startDate, endDate) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(process.env.REACT_APP_API_URL+"/hospital/institution/"+uuidInstitution+"/stats/most-common-ict/startDate/"+startDate+"/endDate/"+endDate,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .then((response) => {
+        if (response.status === 200) {
+          resolve(response.data);
+        }
+        reject(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+});
+
 export const getSharedResearchersService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
       axios

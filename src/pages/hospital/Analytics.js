@@ -1,41 +1,36 @@
 
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import {  useHistory } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import PropTypes from 'prop-types';
-import { green, red, orange, yellow, blue } from "@material-ui/core/colors";
+import { green, red, orange, yellow, blue, amber, brown, cyan, deepOrange } from "@material-ui/core/colors";
 import { Box, Button, Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
-import PersonalDataForm from '../../components/investigation/show/single/personal_data';
+
 import { connect } from 'react-redux';
-import { savePatientAction, updatePatientAction } from '../../redux/actions/patientsActions';
-import { CloseIcon } from '@material-ui/data-grid';
 import Loader from '../../components/Loader';
 import { Translate, withLocalize } from 'react-localize-redux';
-import { BoxBckgr } from '../../components/general/mini_components';
-import { useDispatch } from "react-redux";
-import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
-import { useSnackBarState, useUpdateEffect } from '../../hooks';
-import { Alert } from '@material-ui/lab';
+
 
 import { ROUTE_401, ROUTE_404 } from '../../routes';
-import Stats from '../dashboards/Analytics/Stats';
-import BarChart from '../dashboards/Analytics/BarChart';
 import DoughnutChart from '../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components/macro";
 import { yearsFromDate } from '../../utils';
 import TimeTable from '../dashboards/Analytics/TimeTable';
-import { getStatsFirstMonitoring } from '../../services/sherwoodService';
+import { getStatsFirstMonitoring, getStatsMostCommonDiagnosis } from '../../services/sherwoodService';
 import { spacing } from "@material-ui/system";
 import DatesSelector from '../dashboards/Analytics/DatesSelector';
 import { PERMISSION } from '../../constants/types';
 
 const Divider = styled(MuiDivider)(spacing);
 
+const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
+
 export function Analytics(props) {
 	const history = useHistory();
-	const [startDate, setStartDate] = useState(Date.now() - 2629800000);
+	const [startDate, setStartDate] = useState(2020, 1, 1);
 	const [endDate, setEndDate] = useState(Date.now());
 	const [statsFirstMonitoring, setStatsFirstMonitoring] = useState(null);
+	const [mostCommonDiagnosis, setMostCommonDiagnosis] = useState(null);
 
 	function changeDate(value) {
 		console.log("Date Changed!", value);
@@ -93,11 +88,19 @@ export function Analytics(props) {
 	}
 	useEffect(() => {
 		async function getStats() {
-			const response = await getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate);
-			const tempStats = response.stats.map(stat => {
-				return [stat.researcher.name + " " + stat.researcher.surnames, stat.firstVisit, stat.monitoringVisit]
-			})
-			setStatsFirstMonitoring(tempStats);
+			getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate)
+							.then(response => {
+								const tempStats = response.stats.map(stat => {
+									return [stat.researcher.name + " " + stat.researcher.surnames, stat.firstVisit, stat.monitoringVisit]
+								}) 
+								setStatsFirstMonitoring(tempStats);
+							})
+			getStatsMostCommonDiagnosis(props.investigations.currentInvestigation.institution.uuid, startDate, endDate)
+							.then(response => {
+								setMostCommonDiagnosis(Object.entries(response.stats).map(keyValue => {
+									return [keyValue[0], keyValue[1]]
+								}));
+							})
 		}
 
 		if (props.investigations.currentInvestigation) {
@@ -140,7 +143,7 @@ export function Analytics(props) {
 	
 	
 
-
+	const totalDiagnosis = mostCommonDiagnosis ? Object.values(mostCommonDiagnosis).reduce((total, stat) => stat + total, 0) : 0;
 	return (
 		<React.Fragment>
 			<Helmet title="Analytics Dashboard" />
@@ -158,9 +161,6 @@ export function Analytics(props) {
 					<Grid item xs={12}>
 						<Grid container spacing={6}>
 							<Grid item xs={12} sm={12} md={6}>
-								{
-
-								}
 								<DoughnutChart title={props.translate("hospital.analytics.graphs.sex.title")} labels={[props.translate("hospital.analytics.graphs.sex.male"), props.translate("hospital.analytics.graphs.sex.female")]}
 									table={{ title: props.translate("hospital.analytics.graphs.sex.table-title"), columns: [props.translate("hospital.analytics.graphs.sex.count")] }}
 									innerInfo={{ title: "Patients", value: props.investigations.currentInvestigation.patientsPersonalData.length }}
@@ -175,7 +175,7 @@ export function Analytics(props) {
 										}
 									]} />
 							</Grid>
-							<Grid item xs={12} sm={12} md={6}>
+							<Grid item xs={12} sm={12} md={12}>
 								<DoughnutChart title={props.translate("hospital.analytics.graphs.age.title")} labels={ageGroups.map(groupAge => { if (groupAge[1] === 1000) { return ">" + groupAge[0] } else { return groupAge[0] + "-" + groupAge[1] } })}
 									table={{ title: props.translate("hospital.analytics.graphs.age.table-title"), columns: [[props.translate("hospital.analytics.graphs.sex.count")]] }}
 
@@ -190,18 +190,23 @@ export function Analytics(props) {
 										}
 									]} />
 							</Grid>
+								
 						</Grid>
 					</Grid>
 				}
+				<Grid item xs={12} lg={4} sm={6}> 
+					<DatesSelector onCallBack={datesSelected} />
+				</Grid>
+				<Grid item xs={12} >
+					<TimeTable title={props.translate("hospital.analytics.graphs.most-common-diagnosis.title")} loading={!mostCommonDiagnosis}
+						header={[props.translate("hospital.analytics.graphs.most-common-diagnosis.diagnostic"), props.translate("hospital.analytics.graphs.most-common-diagnosis.count")]}
+						data={mostCommonDiagnosis}
+						actionCallBack={(value) => changeDate(value)}
+					/>
+				</Grid>
 				{
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.BUSINESS_READ) &&
 					<Grid container item spacing={1}>
-						<Grid item xs={0} lg={8} sm={6}> 
-							
-						</Grid>
-						<Grid item xs={12} lg={4} sm={6}> 
-							<DatesSelector onCallBack={datesSelected} />
-						</Grid>
 						<Grid item xs={12} >
 							<TimeTable title={props.translate("hospital.analytics.graphs.activity.title")} loading={!statsFirstMonitoring}
 								header={[props.translate("hospital.analytics.graphs.activity.table-title"), props.translate("hospital.analytics.graphs.activity.first-visit"), props.translate("hospital.analytics.graphs.activity.followup-visit")]}

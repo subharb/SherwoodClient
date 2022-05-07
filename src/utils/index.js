@@ -82,6 +82,18 @@ export function validateField(field, fieldCompare){
     return response;   
 }
 
+
+export function formatDateByLocale(locale){
+    switch(locale){
+        case "fr":
+        case "es":
+            return "dd/MM/yyyy"
+        case "en":
+        default:
+            return "yyyy/MM/dd";
+    }
+}
+
 //Wrapper para que funcione en la validación por campo
 export function fieldLevelNotEmpty(value){
     return notEmpty(value) ? undefined : "investigation.errors.error_not_empty"

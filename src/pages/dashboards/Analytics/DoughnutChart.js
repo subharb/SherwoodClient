@@ -22,6 +22,8 @@ import { Doughnut } from "react-chartjs-2";
 
 import { MoreVertical } from "react-feather";
 import { Translate } from "react-localize-redux";
+import props from "../../../theme/props";
+import Loader from "../../../components/Loader";
 
 const Card = styled(MuiCard)(spacing);
 
@@ -110,40 +112,52 @@ function DoughnutChart({ theme, title, labels, datasets, table, innerInfo }) {
               <Typography variant="caption">{innerInfo.title}</Typography>
             </DoughnutInner>
           }
-          <Doughnut data={data} options={options} />
+          {
+            props.loading &&
+            <Loader />
+          }
+          {
+            !props.loading &&
+            <Doughnut data={data} options={options} />
+          }
+          
         </ChartWrapper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>{table.title}</TableCell>
-              {
-                table.columns.map(col => {
-                  return <TableCell align="right">{col}</TableCell>
-                })
-              }
-              <TableCell align="right"><Translate id="hospital.analytics.graphs.percentage" /></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              labels.map((label, index) =>{
-                return (
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      { label }
-                    </TableCell>
-                    <TableCell align="right">{datasets[0].data[index]}</TableCell>
-                    <TableCell align="right">
-                      <ColourText color={datasets[0].backgroundColor[index]}>{datasets[0].percents[index]}%</ColourText>
-                    </TableCell>
-                  </TableRow>
-                )
-              })
-            }
-            
-            
-          </TableBody>
-        </Table>
+        {
+            !props.loading &&
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>{table.title}</TableCell>
+                  {
+                    table.columns.map(col => {
+                      return <TableCell align="right">{col}</TableCell>
+                    })
+                  }
+                  <TableCell align="right"><Translate id="hospital.analytics.graphs.percentage" /></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {
+                  labels.map((label, index) =>{
+                    return (
+                      <TableRow>
+                        <TableCell component="th" scope="row">
+                          { label }
+                        </TableCell>
+                        <TableCell align="right">{datasets[0].data[index]}</TableCell>
+                        <TableCell align="right">
+                          <ColourText color={datasets[0].backgroundColor[index]}>{datasets[0].percents[index]}%</ColourText>
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })
+                }
+                
+                
+              </TableBody>
+            </Table>
+          }
+        
       </CardContent>
     </Card>
   );

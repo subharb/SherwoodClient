@@ -3,15 +3,15 @@ import { Button, Button as MuiButton, Grid, Menu, MenuItem, Paper } from "@mater
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import { Translate } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
+import { formatDateByLocale } from '../../../utils';
 
-interface Props{
+interface Props extends LocalizeContextProps{
     onCallBack:(dates:Date[]) => void 
 }
 
 function DatesSelector(props:Props){
-    var d = new Date();
-    d.setMonth(d.getMonth() - 1);
+    var d = new Date(2020, 0, 1);
     const [startDate, setStartDate] = React.useState(d);
     const [endDate, setEndDate] = React.useState(new Date());
 
@@ -39,7 +39,7 @@ function DatesSelector(props:Props){
     useEffect(() =>{
         props.onCallBack([startDate, endDate])
     }, [startDate, endDate])
-    return [
+    return(
         <Paper style={{padding:'1rem'}}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
                 <Grid container spacing={3}>
@@ -50,7 +50,7 @@ function DatesSelector(props:Props){
                             onClose={() => setOpenStartDate(false)}
                             id="date-picker-dialog-start"
                             label="Start Date"
-                            format="MM/dd/yyyy"
+                            format={formatDateByLocale(props.activeLanguage.code)}
                             value={startDate}
                             maxDate = {endDate}
                             onChange={handleStartDateChange}
@@ -62,7 +62,7 @@ function DatesSelector(props:Props){
                         />
                         <Button variant="contained"
                             color="secondary" 
-                            onClick={showStartCalendar}><Translate id="general.startDate" />: {startDate.toLocaleDateString()}</Button>
+                            onClick={showStartCalendar}><Translate id="general.startDate" />: {startDate.toLocaleDateString(props.activeLanguage.code)}</Button>
                     </Grid>
                     <Grid item >
                         <KeyboardDatePicker
@@ -88,8 +88,8 @@ function DatesSelector(props:Props){
                 </Grid>
             </MuiPickersUtilsProvider>
         </Paper>
-
-    ]
+    )
+        
 }
 
-export default DatesSelector
+export default withLocalize(DatesSelector)

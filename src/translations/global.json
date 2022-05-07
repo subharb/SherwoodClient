@@ -158,6 +158,12 @@
         "analytics" : {
             "graphs" : {
                 "percentage" : ["Percentage", "Porcentaje", "Pourcentage"],
+                "most-common-diagnosis" : {
+                    "title" :["Most Common Diagnosis", "Diagnósticos más comunes", "Les diagnostics les plus courants"],
+                    "table-title" : ["Most Common Diagnosis", "Diagnósticos más comunes", "Les diagnostics les plus courants"],
+                    "diagnostic" : ["Diagnostic", "Diagnóstico", "Diagnostic"],
+                    "count" : ["Count", "Número", "Quantité"]
+                }, 
                 "sex" : {
                     "title" : ["Sex", "Sexo", "Sex"],
                     "table-title" : ["Sex", "Sexo", "Sex"],
