@@ -20,6 +20,7 @@ import { getStatsFirstMonitoring, getStatsMostCommonDiagnosis } from '../../serv
 import { spacing } from "@material-ui/system";
 import DatesSelector from '../dashboards/Analytics/DatesSelector';
 import { PERMISSION } from '../../constants/types';
+import SearchTable from '../dashboards/Analytics/SearchTable';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -156,6 +157,9 @@ export function Analytics(props) {
 			</Grid>
 			<Divider my={6} />
 			<Grid container spacing={6}>
+				<Grid item xs={12} lg={5} sm={6}> 
+					<SearchTable />
+				</Grid>
 				{
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) &&
 					<Grid item xs={12}>
@@ -194,7 +198,7 @@ export function Analytics(props) {
 						</Grid>
 					</Grid>
 				}
-				<Grid item xs={12} lg={4} sm={6}> 
+				<Grid item xs={12} lg={5} sm={6}> 
 					<DatesSelector onCallBack={datesSelected} />
 				</Grid>
 				<Grid item xs={12} >

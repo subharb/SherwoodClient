@@ -78,7 +78,7 @@ function DrugSelector(props: Props) {
     }    
     return(
         <AutocompleteSherwood error={props.error} remoteSearch={props.chemicalComponent ? searchDrugComponentService : searchDrugService} 
-            country={props.country} getOptionsResponse={props.chemicalComponent ? (response) => response.drugComposition : (response) => response.drugs}
+            params={{country : props.country}} getOptionsResponse={props.chemicalComponent ? (response) => response.drugComposition : (response) => response.drugs}
             freeSolo = { props.freeSolo}
             onValueSelected={(value) =>drugSelected(value)}
             getOptionLabel={(option) => option.name}/>

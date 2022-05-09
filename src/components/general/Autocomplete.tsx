@@ -20,10 +20,10 @@ const Option = styled.div`
 
 interface Props extends LocalizeContextProps{
     error:boolean,
-    country:string,
+    params:{ [country: string]: string },
     freeSolo:boolean,
     getOptionsResponse:(option:any) => any, 
-    remoteSearch:(searchText: string, country: string) => Promise<any>,
+    remoteSearch:(...args: any[])  => Promise<any>,
     getOptionLabel:(option:{name:string}) => string,
     onValueSelected:(option:any) => void
 }
@@ -96,7 +96,8 @@ const AutocompleteSherwood = (props:Props) => {
             try{
                 if(searchTerm.length > MIN_LENGTH_SEARCH){
                     setLoading(true);
-                    const response = await props.remoteSearch(searchTerm, props.country);
+                    const params = Object.values(props.params);
+                    const response = await props.remoteSearch(searchTerm, params);
                     if(response.status === 200){
                         setOptions(props.getOptionsResponse(response));
                     }
