@@ -158,7 +158,8 @@ export function Analytics(props) {
 			<Divider my={6} />
 			<Grid container spacing={6}>
 				<Grid item xs={12} lg={5} sm={6}> 
-					<SearchTable />
+					<SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
+						title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
 				</Grid>
 				{
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) &&

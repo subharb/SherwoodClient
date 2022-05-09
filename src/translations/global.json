@@ -157,6 +157,10 @@
         },
         "analytics" : {
             "graphs" : {
+                "search-diagnose" : {
+                    "title" : ["Search metric per Diagnose", "Búsqueda de estadistica por diagnóstico", "Recherche de statistiques par diagnostic"],
+                    "search" : ["Search diagnostic", "Buscar diagnóstico", "Trouver un diagnostic"]
+                },
                 "percentage" : ["Percentage", "Porcentaje", "Pourcentage"],
                 "most-common-diagnosis" : {
                     "title" :["Most Common Diagnosis", "Diagnósticos más comunes", "Les diagnostics les plus courants"],

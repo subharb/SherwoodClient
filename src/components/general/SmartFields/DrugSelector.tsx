@@ -77,7 +77,7 @@ function DrugSelector(props: Props) {
                     callbackOffline={(value) => getOffline(value)} />
     }    
     return(
-        <AutocompleteSherwood error={props.error} remoteSearch={props.chemicalComponent ? searchDrugComponentService : searchDrugService} 
+        <AutocompleteSherwood label={props.translate("hospital.select-treatment").toString()} error={props.error} remoteSearch={props.chemicalComponent ? searchDrugComponentService : searchDrugService} 
             params={{country : props.country}} getOptionsResponse={props.chemicalComponent ? (response) => response.drugComposition : (response) => response.drugs}
             freeSolo = { props.freeSolo}
             onValueSelected={(value) =>drugSelected(value)}

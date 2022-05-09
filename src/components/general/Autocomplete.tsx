@@ -20,12 +20,13 @@ const Option = styled.div`
 
 interface Props extends LocalizeContextProps{
     error:boolean,
+    label:string,
     params:{ [country: string]: string },
     freeSolo:boolean,
     getOptionsResponse:(option:any) => any, 
     remoteSearch:(...args: any[])  => Promise<any>,
     getOptionLabel:(option:{name:string}) => string,
-    onValueSelected:(option:any) => void
+    onValueSelected?:(option:any) => void
 }
 const MIN_LENGTH_SEARCH:number = 3;
 
@@ -42,14 +43,20 @@ const AutocompleteSherwood = (props:Props) => {
     }
     function onOptionSelected(index:number, term:string){
         setSearchterm(term);
-        props.onValueSelected(options[index]);
+        if(props.onValueSelected){
+            props.onValueSelected(options[index]);
+        }
+        
         setOptionSelected(true);
     }
     function saveField(){
-        props.onValueSelected({
-            name : searchTerm,
-            id : ""
-        });
+        if(props.onValueSelected){
+            props.onValueSelected({
+                name : searchTerm,
+                id : ""
+            });
+        }
+        
         setOptionSelected(true);
     }
     function restart(){
@@ -120,7 +127,7 @@ const AutocompleteSherwood = (props:Props) => {
         <React.Fragment>
             <TextField value={searchTerm} error={errorSearch || props.error} onFocus={restart}
                 onChange={(event) => changeInput(event.target.value)} fullWidth
-                label={props.translate("hospital.select-treatment")} variant="outlined" />
+                label={props.label} variant="outlined" />
             
             {
                 renderOptions()
