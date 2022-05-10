@@ -100,6 +100,21 @@ export const searchDrugComponentService = datalogger((searchText, country) => {
     });
 })
 
+export const searchPatientByDiagnosis = datalogger((uuidInvestivation, ictCode) => {
+  return new Promise((resolve, reject) => {
+      axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/'+uuidInvestivation+'/patientsbydiagnose/'+ictCode, { headers: {"Authorization" : localStorage.getItem("jwt")}})
+        .then((response) => {
+            if(response.status === 200){
+                resolve(response.data);
+            }
+            else{
+                reject(response.data);
+            }
+        })
+        .catch(err => {console.log('Catch', err); reject(err);}); 
+  });
+})
+
 export const uploadFile = datalogger((file) =>{
     const formData = new FormData();
 

@@ -15,14 +15,7 @@ import { OfflineField } from '../OfflineField';
 
 const ICTSelectorGeneral:React.FC<PropsSmartFieldLocalized> = (props) => {
     const offline = useOffline();
-    const [diagnose, setDiagnose] = useState<SmartFieldType | null>(null);
-    const [error, setError] = useState(false);
-    
-    const [relation, setRelation] = useState("");
-    
-    function changeRelation(e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
-        setRelation(e.target.value);
-    }
+
     function getOffline(value:string){
         props.elementSelected({"ict" : value, "ict-code" : "offline"});
     }

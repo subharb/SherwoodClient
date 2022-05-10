@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import { Search as SearchPatientIcon } from "@material-ui/icons";
-import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
+import { Box, Grid, Paper, Typography, Button, Tabs, Tab } from '@material-ui/core';
 import Form  from '../../components/general/form';
 import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
@@ -19,7 +19,11 @@ import { updatePatientsFromId } from '../../redux/actions/patientsActions';
 import _ from 'lodash';
 import Modal from '../../components/general/modal';
 import { DepartmentsAccordionRedux } from './departments/DepartmentsAccordion';
-import { yearsFromDate } from '../../utils';
+import { decryptSinglePatientData, yearsFromDate } from '../../utils';
+import { TabPanel } from '@material-ui/lab';
+import TabsSherwood from '../../components/general/TabsSherwood';
+import ICT from '../../components/general/SmartFields/ICT';
+import { searchPatientByDiagnosis } from '../../services/sherwoodService';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -34,7 +38,7 @@ function SearchPatients(props){
     const [valuesSearch, setValuesSearch] = useState(null);
     const [showResults, setShowResults] = useState(false);
     const [filteredPatients, setFilteredPatients] = useState([]);
-    
+    const [patientsDiagnoseLoading, setPatientsDiagnoseLoading] = useState(false);
 
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     const dispatch = useDispatch();
@@ -47,8 +51,24 @@ function SearchPatients(props){
         const maxPatId = patients.length === 0 ? 0 : patients.length === 1 ? patients[0].id : Math.max.apply(Math, patients.map(function(o) { return o.id; }));
 
         await dispatch(updatePatientsFromId(props.investigations.currentInvestigation, maxPatId)); 
-
         
+    }
+    function diagnoseSelectedCallBack(ict){
+        setPatientsDiagnoseLoading(true);
+        searchPatientByDiagnosis(props.investigations.currentInvestigation.uuid, ict["ict-code"])
+        .then(response => {
+            setShowResults(true); 
+            const decryptedPatients = response.patients.map(patient => {
+                patient.personalData = decryptSinglePatientData(patient.personalData, props.investigations.currentInvestigation);
+                return patient;
+            })
+            setFilteredPatients(decryptedPatients);
+            setPatientsDiagnoseLoading(false);
+        })
+        .catch(error =>{
+            console.error(error);
+            setPatientsDiagnoseLoading(false);
+        })
     }
     function backToSearchCallBack(){
         setFilteredPatients([]);
@@ -97,19 +117,23 @@ function SearchPatients(props){
         }
     }, [props.patients.loading])
 
-    if(!props.investigations.data || props.patients.loading){
+    if(!props.investigations.data || props.patients.loading || patientsDiagnoseLoading){
         return <Loader />
     }
-    return <SearchPatientsComponent showResults={showResults} 
-                patients={filteredPatients} investigation={props.investigations.currentInvestigation}
-                personalFields={props.investigations.currentInvestigation.personalFields}
-                permissions={props.investigations.currentInvestigation.permissions}
-                functionalities={props.investigations.currentInvestigation.functionalities}
-                searchPatientCallBack={searchPatientCallBack}
-                backToSearchCallBack={backToSearchCallBack} 
-                patientSelectedCallBack={patientSelectedCallBack}
-                
-            />
+    return(
+        <React.Fragment>
+            <SearchPatientsComponent showResults={showResults} 
+                        patients={filteredPatients} investigation={props.investigations.currentInvestigation}
+                        personalFields={props.investigations.currentInvestigation.personalFields}
+                        permissions={props.investigations.currentInvestigation.permissions}
+                        functionalities={props.investigations.currentInvestigation.functionalities}
+                        searchPatientCallBack={searchPatientCallBack}
+                        backToSearchCallBack={backToSearchCallBack} 
+                        patientSelectedCallBack={patientSelectedCallBack}
+                        diagnoseSelectedCallBack={diagnoseSelectedCallBack}
+                    />
+        </React.Fragment>                          
+    )
 }
 
 
@@ -126,7 +150,7 @@ SearchPatients.propTypes = {
 
 export default connect(mapStateToProps, null)(SearchPatients)
 
-export function SearchPatientsComponent(props) {
+export const SearchPatientsComponent = withLocalize((props) => {
     
     const [patientHospitalizeIndex, setPatientHospitalizeIndex] = useState(-1);
     const [patientHospitalized, setPatientHospitalized] = useState(null);
@@ -150,6 +174,7 @@ export function SearchPatientsComponent(props) {
         console.log(patientHospitalizeIndex);
         setPatientHospitalizeIndex(-1);
     }
+
     function renderCore(){
         if(!props.showResults){
             let personalFieldsForm = {}
@@ -163,15 +188,21 @@ export function SearchPatientsComponent(props) {
             }      
             
             return (
-                <Box>
-                    <Paper style={{padding:'1rem', margin:'1rem'}}>
-                        <Translate id="pages.hospital.search-patient.note" />
-                        <Form fields={personalFieldsForm} selectRow={(index) =>patientSelected(index)} 
-                            submitText="investigation.search-patients.search" callBackForm={props.searchPatientCallBack} />                        
-                    </Paper>
-                </Box>
-                
-                );
+                <TabsSherwood defaultTab={1}>
+                    <Box label={<Translate id="pages.hospital.search-patient.by-personal-details" />}>
+                        <Paper style={{padding:'1rem', margin:'1rem'}}>
+                            <Translate id="pages.hospital.search-patient.note" />
+                            <Form fields={personalFieldsForm} selectRow={(index) =>patientSelected(index)} 
+                                submitText="investigation.search-patients.search" callBackForm={props.searchPatientCallBack} />                        
+                        </Paper>
+                    </Box>
+                    <Box label={<Translate id="pages.hospital.search-patient.by-diagnose" />}>
+                        <Paper style={{padding:'1rem', margin:'1rem'}}>
+                            <ICT language={props.activeLanguage.code} elementSelected={props.diagnoseSelectedCallBack}/>
+                        </Paper>
+                    </Box>
+                </TabsSherwood> 
+            );
         }
         else{
             if(props.patients.length === 0){
@@ -277,4 +308,4 @@ export function SearchPatientsComponent(props) {
             </Grid>
         </React.Fragment>
     )
-}
+})
