@@ -20,6 +20,7 @@ import {
     ArrowBackIos as ArrowBackIosIcon,
     LocalHospital as HospitalIcon,
     Hotel as HotelIcon,
+    Undo as UndoIcon
   } from "@material-ui/icons";
   import {
     Button, Icon, IconButton,
@@ -46,6 +47,8 @@ export const IconGenerator = (props) => {
             return <EditIcon  style={{color:"black"}} fontSize={props.size ? props.size : "small"}/>
         case "hospital":
             return <HotelIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
+        case "undo":
+            return <UndoIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
         default:
             return <AddIcon />
     }

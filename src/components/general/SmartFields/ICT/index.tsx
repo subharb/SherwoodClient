@@ -8,7 +8,10 @@ import { ButtonCancel } from '../../mini_components';
 import { useOffline } from '../../../../hooks';
 import { OfflineField } from '../OfflineField';
 
-const ICTSelectorGeneral:React.FC<PropsSmartFieldLocalized> = (props) => {
+interface ICTProps extends PropsSmartFieldLocalized{
+    resetICTSelectorCallback?: () => void
+}
+const ICTSelectorGeneral:React.FC<ICTProps> = (props) => {
     const offline = useOffline();
 
     function getOffline(value:string){
@@ -23,7 +26,8 @@ const ICTSelectorGeneral:React.FC<PropsSmartFieldLocalized> = (props) => {
             if(["en", "es", "ar", "fr"].indexOf(props.language) !== -1 ){
                 return <ICTSelectorOMS type={props.type}  variant="outlined" margin={props.typeMargin} 
                             cancel={props.cancel} language={props.language} error={props.error}
-                            size="small" elementSelected={props.elementSelected} />
+                            size="small" elementSelected={props.elementSelected} 
+                            resetICTSelectorCallback = {props.resetICTSelectorCallback}/>
             }
             //Francés está incluido en la OMS, este componente se deberá reusar cuando tengamos otro idioma
             //Que no esté en la api de la OMS
@@ -44,7 +48,7 @@ const ICTSelectorGeneral:React.FC<PropsSmartFieldLocalized> = (props) => {
             </Grid>
             {
                 props.cancel && 
-                <Grid item xs={12}>
+                <Grid item xs={6}>
                     <ButtonCancel onClick={props.cancel} ><Translate id="general.cancel" /></ButtonCancel>
                 </Grid> 
             }

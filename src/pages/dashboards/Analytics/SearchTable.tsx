@@ -12,6 +12,8 @@ import Loader from '../../../components/Loader';
 import { getStatsPerDiagnosisService } from '../../../services/sherwoodService';
 import { Bar } from "react-chartjs-2";
 import { red } from '@material-ui/core/colors';
+import { IconGenerator } from '../../../components/general/mini_components';
+import { LIST_COLORS } from '../../hospital/Analytics';
 
 interface Props extends LocalizeContextProps{
     label:string,
@@ -25,7 +27,7 @@ interface Props extends LocalizeContextProps{
 function SearchTable(props:Props){
     const [loading, setLoading] = useState(false);
     const [stats, setStats] = useState(null);
-    
+    const [ict, setICT] = useState(null);
 
     function renderResults(){
         if(loading){
@@ -34,7 +36,7 @@ function SearchTable(props:Props){
         else if(JSON.stringify(stats) === '{}' ){
             return "No hay resultados"
         }
-        else if(stats !== null) {
+        else if(stats !== null && ict) {
             const labels = Object.keys(stats).map(key => {
                 const date = new Date(key);
                 return date.toLocaleString(props.locale,{month:'short', year:'numeric'})
@@ -43,25 +45,15 @@ function SearchTable(props:Props){
                 labels: labels,
                 datasets: [
                   {
-                    label: "Mobile",
-                    backgroundColor: red[500],
+                    label: ict["ict"],
+                    backgroundColor: LIST_COLORS[0],
                     borderColor: red[500],
                     hoverBackgroundColor: red[500],
                     hoverBorderColor: red[500],
-                    data: [54, 67, 41, 55, 62, 45, 55, 73, 60, 76, 48, 79],
-                    barPercentage: 0.4,
+                    data: Object.values(stats),
+                    barPercentage: 1 / Object.values(stats).length + 0.2,
                     categoryPercentage: 0.5,
-                  },
-                  {
-                    label: "Desktop",
-                    backgroundColor: red[500],
-                    borderColor: red[500],
-                    hoverBackgroundColor: red[500],
-                    hoverBorderColor: red[500],
-                    data: [69, 66, 24, 48, 52, 51, 44, 53, 62, 79, 51, 68],
-                    barPercentage: 0.4,
-                    categoryPercentage: 0.5,
-                  },
+                  }
                 ],
               };
             
@@ -101,17 +93,25 @@ function SearchTable(props:Props){
         }
     }
     function diagnoseSelectedCallBack(ict:any){
-        getStatsPerDiagnosisService(props.uuidInstitution, ict["ict-code"], props.startDate, props.endDate)
+        setICT(ict);
+        getStatsPerDiagnosisService(props.uuidInstitution, ict["ict-code"], new Date(2020, 0, 1).getTime(), new Date().getTime())
             .then(response => {
                 setStats(response.stats)
             })
     }
-
+    function resetICTSelectorCallback(){ 
+      setStats(null);
+    }
     return(
         <Paper style={{padding:'1rem'}}>
             <Typography variant="h4" gutterBottom={true}>{props.title}</Typography>
-            <ICT type="ict" variant='outlined' language={props.activeLanguage.code} typeMargin="normal" 
-                error={false} elementSelected={diagnoseSelectedCallBack}/>
+            
+              <ICT type="ict" variant='outlined' language={props.activeLanguage.code} typeMargin="normal" 
+                  error={false} elementSelected={diagnoseSelectedCallBack}
+                  resetICTSelectorCallback = {resetICTSelectorCallback}/>
+              
+            
+            
             {
                 renderResults()
             }

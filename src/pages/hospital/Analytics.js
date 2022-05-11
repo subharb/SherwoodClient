@@ -24,7 +24,7 @@ import SearchTable from '../dashboards/Analytics/SearchTable';
 
 const Divider = styled(MuiDivider)(spacing);
 
-const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
+export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
 
 export function Analytics(props) {
 	const history = useHistory();
@@ -153,12 +153,6 @@ export function Analytics(props) {
 			</Grid>
 			<Divider my={6} />
 			<Grid container spacing={6}>
-				<Grid item xs={12}> 
-					<SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
-						uuidInstitution={props.investigations.currentInvestigation.institution.uuid}
-						startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
-						title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
-				</Grid>
 				{
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) &&
 					<Grid item xs={12}>
@@ -197,6 +191,12 @@ export function Analytics(props) {
 						</Grid>
 					</Grid>
 				}
+				<Grid item xs={12}> 
+					<SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
+						uuidInstitution={props.investigations.currentInvestigation.institution.uuid}
+						startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
+						title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
+				</Grid>
 				<Grid item xs={12} lg={5} sm={6}> 
 					<DatesSelector onCallBack={datesSelected} />
 				</Grid>

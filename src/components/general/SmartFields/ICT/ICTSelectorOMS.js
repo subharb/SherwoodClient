@@ -5,18 +5,25 @@ import { getTokenWho } from '../../../../services/sherwoodService';
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { Grid, TextField } from '@material-ui/core';
-import { FieldWrapper } from '../../mini_components';
+import { FieldWrapper, IconGenerator } from '../../mini_components';
+import styled from 'styled-components';
 
+const RedoHolder = styled.div`
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+`
 function ICTSelectorOMS(props){
     const [show, setShow] = useState(false);
-    const [diagnose, setDiagnose] = useState("");
-
-    function resetField(){
-        //props.resetDiagnose();
-        setDiagnose("");
+    const [textDiagnose, setTextDiagnose] = useState("");
+    function redoSearch(){
+        console.log("Redo Search")
+        setTextDiagnose("");
+        props.resetICTSelectorCallback();
     }
-    function cancel(){
-        props.cancel();
+    function onChange(event){
+        console.log(event.target.value);
+        setTextDiagnose(event.target.value);
     }
     useEffect(() => {
         const mySettings = {
@@ -49,7 +56,8 @@ function ICTSelectorOMS(props){
                 console.log('selected code: '+ selectedEntity.code);
                 console.log('selected bestMatchText: '+ selectedEntity.bestMatchText);
                 ECT.Handler.clear("1");
-                setDiagnose(selectedEntity.title);
+                setTextDiagnose(selectedEntity.title);
+                
     
                 if(selectedEntity){
                     const tempValue = {
@@ -87,11 +95,20 @@ function ICTSelectorOMS(props){
         
     }, [show])
     
-    const value = diagnose !== "" ? diagnose : props.value;
+    //const value = textDiagnose ? textDiagnose : props.value;
+    const value = props.value ? props.value : textDiagnose;
     return ([
         <FieldWrapper>
-            <TextField key="ict-input" {...props} label={props.translate("hospital.select-ict")} value = {value}
-                inputProps={{className : "ctw-input", "data-ctw-ino" : "1"}} fullWidth  />
+            <div style={{display:'flex'}}>
+                <TextField key="ict-input" {...props} label={props.translate("hospital.select-ict")} value = {value}
+                    inputProps={{className : "ctw-input", "data-ctw-ino" : "1"}} fullWidth onChange={(event) => onChange(event) } />
+                {
+                    props.resetICTSelectorCallback && 
+                    <RedoHolder onClick={redoSearch} >
+                        <IconGenerator type="undo" /> 
+                    </RedoHolder>
+                }
+            </div>
         </FieldWrapper>,
         <div key="ict-container" className="ctw-window" data-ctw-ino="1"></div>
     
