@@ -28,7 +28,7 @@ const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], 
 
 export function Analytics(props) {
 	const history = useHistory();
-	const [startDate, setStartDate] = useState(2020, 1, 1);
+	const [startDate, setStartDate] = useState(new Date(2020, 0, 1).getTime());
 	const [endDate, setEndDate] = useState(Date.now());
 	const [statsFirstMonitoring, setStatsFirstMonitoring] = useState(null);
 	const [mostCommonDiagnosis, setMostCommonDiagnosis] = useState(null);
@@ -138,13 +138,9 @@ export function Analytics(props) {
 			else {
 				console.log(patient.personalData.birthdate);
 			}
-	
 		})
 	}
 	
-	
-
-	const totalDiagnosis = mostCommonDiagnosis ? Object.values(mostCommonDiagnosis).reduce((total, stat) => stat + total, 0) : 0;
 	return (
 		<React.Fragment>
 			<Helmet title="Analytics Dashboard" />
@@ -157,8 +153,10 @@ export function Analytics(props) {
 			</Grid>
 			<Divider my={6} />
 			<Grid container spacing={6}>
-				<Grid item xs={12} lg={5} sm={6}> 
+				<Grid item xs={12}> 
 					<SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
+						uuidInstitution={props.investigations.currentInvestigation.institution.uuid}
+						startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
 						title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
 				</Grid>
 				{

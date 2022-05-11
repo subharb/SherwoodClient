@@ -19,13 +19,13 @@ import { isInteger } from 'lodash';
 
 export interface PropsSmartField {
     variant:"standard" | "filled" | "outlined" | undefined,
-    size:string,
+    size?:string,
     language:string,
     typeMargin:PropTypes.Margin | undefined,
     type:string,
     slaves?:object[],
     country?:string,
-    cancel: boolean | (() => void),
+    cancel?: boolean | (() => void),
     elementSelected: (element:SmartFieldType) => void,
     error:boolean,
 }

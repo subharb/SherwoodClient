@@ -3,13 +3,8 @@ import ICTSelectorFR  from './ICTSelectorSherwood'
 import ICTSelectorOMS from './ICTSelectorOMS'
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { PropsSmartFieldLocalized, SmartFieldType } from '..';
-import { Grid, PropTypes, TextField } from '@material-ui/core';
-import { ButtonAccept, ButtonCancel } from '../../mini_components';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { BackgroundType } from '../index';
-import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import DateFnsUtils from '@date-io/date-fns';
-import { PropsSmartField } from '../index';
+import { Grid } from '@material-ui/core';
+import { ButtonCancel } from '../../mini_components';
 import { useOffline } from '../../../../hooks';
 import { OfflineField } from '../OfflineField';
 
