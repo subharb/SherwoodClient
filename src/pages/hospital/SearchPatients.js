@@ -188,7 +188,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
             }      
             
             return (
-                <TabsSherwood defaultTab={1}>
+                <TabsSherwood defaultTab={0}>
                     <Box label={<Translate id="pages.hospital.search-patient.by-personal-details" />}>
                         <Paper style={{padding:'1rem', margin:'1rem'}}>
                             <Translate id="pages.hospital.search-patient.note" />
