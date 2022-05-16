@@ -167,7 +167,7 @@ const createSortHandler = (property) => (event) => {
 };
 
 return (
-    <TableHead>
+    <TableHead style={{fontWeight:'600'}}>
     <TableRow> 
         {!props.noSelectable &&
             <TableCell padding="checkbox">
@@ -185,12 +185,13 @@ return (
             align={headCell.alignment}
             padding={headCell.disablePadding ? "none" : "default"}
             sortDirection={orderBy === headCell.id ? order : false}
-            style={{borderWidth:"4px"}}
+            
         >
             <TableSortLabel
             active={orderBy === headCell.id}
             direction={orderBy === headCell.id ? order : "asc"}
             onClick={createSortHandler(headCell.id)}
+            style={{fontWeight:"600"}}
             >
             {headCell.label}
             </TableSortLabel>
@@ -198,7 +199,7 @@ return (
         ))}
         {
             (props.actions && props.actions.length > 0) &&
-            <TableCell align="right">Actions</TableCell>
+            <TableCell style={{fontWeight:"600"}} align="right">Actions</TableCell>
         } 
     </TableRow>
     </TableHead>
@@ -216,7 +217,7 @@ return (
             {numSelected} selected
         </Typography>
         ) : (
-        <Typography variant="h6" id="tableTitle">
+        <Typography variant="h5" id="tableTitle" style={{fontWeight:"600"}}>
             {props.title}
         </Typography>
         )}

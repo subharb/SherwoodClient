@@ -118,10 +118,10 @@ function TimeTable(props){
     else{
         return props.header.map((header, index)=> {
           if(index === 0){
-            return <TableCell>{header}</TableCell>
+            return <TableCell style={{fontWeight:'bold'}}>{header}</TableCell>
           }
           else{
-              return <TableCell align="right">{header}</TableCell>
+              return <TableCell style={{fontWeight:'bold'}} align="right">{header}</TableCell>
           }
         })
       }
