@@ -26,13 +26,18 @@ const Divider = styled(MuiDivider)(spacing);
 
 export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
 
+const COUNT_AGE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 export function Analytics(props) {
 	const history = useHistory();
 	const [startDate, setStartDate] = useState(new Date(2020, 0, 1).getTime());
 	const [endDate, setEndDate] = useState(Date.now());
 	const [statsFirstMonitoring, setStatsFirstMonitoring] = useState(null);
 	const [mostCommonDiagnosis, setMostCommonDiagnosis] = useState(null);
-
+	const [filteredPatients, setFilteredPatients] = useState([]);
+	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
+	
+	const [countAge, setCountAge] = useState(COUNT_AGE)
+	
 	function changeDate(value) {
 		console.log("Date Changed!", value);
 		let tempStartDate = null;
@@ -87,6 +92,39 @@ export function Analytics(props) {
 		setStartDate(dates[0].getTime());
 		setEndDate(dates[1].getTime());
 	}
+	function filterPatientsByDate(startDateFilter, endDateFilter){
+		if(props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
+			const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
+				return startDateFilter < patient.createdAt && endDateFilter > patient.createdAt;
+			})
+			let tempCountSex = 0;
+			tempFilterPatients.forEach(patient => {
+				if(startDateFilter < patient.createdAt && endDateFilter > patient.createdAt){
+					if (patient.personalData.sex.toLowerCase() === "male") {
+						tempCountSex.male++;
+					}
+					else {
+						tempCountSex.female++;
+					}
+				}
+				
+			})
+			let tempCountAge = COUNT_AGE;
+			tempFilterPatients.forEach(patient => {
+				const patientAge = yearsFromDate(patient.personalData.birthdate);
+				const indexAgeGroup = ageGroups.findIndex(range => range[0] <= patientAge && range[1] >= patientAge);
+				if (indexAgeGroup > -1) {
+					countAge[indexAgeGroup]++;
+				}
+				else {
+					console.log(patient.personalData.birthdate);
+				}
+			})
+			setCountAge(tempCountAge);
+			setCountSex(tempCountSex);
+			setFilteredPatients(tempFilterPatients);
+		}
+	}
 	useEffect(() => {
 		async function getStats() {
 			getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate)
@@ -102,6 +140,7 @@ export function Analytics(props) {
 									return [keyValue[0], keyValue[1]]
 								}));
 							})
+			filterPatientsByDate(startDate, endDate);
 		}
 
 		if (props.investigations.currentInvestigation) {
@@ -116,39 +155,20 @@ export function Analytics(props) {
 		history.push(ROUTE_401);
 		return <Loader />
 	}
-	let countSex = { male: 0, female: 0 };
+
 	const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
-	let countAge = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	
-	if(props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
-		props.investigations.currentInvestigation.patientsPersonalData.forEach(patient => {
-			if (patient.personalData.sex.toLowerCase() === "male") {
-				countSex.male++;
-			}
-			else {
-				countSex.female++;
-			}
-		})
-		props.investigations.currentInvestigation.patientsPersonalData.forEach(patient => {
-			const patientAge = yearsFromDate(patient.personalData.birthdate);
-			const indexAgeGroup = ageGroups.findIndex(range => range[0] <= patientAge && range[1] >= patientAge);
-			if (indexAgeGroup > -1) {
-				countAge[indexAgeGroup]++;
-			}
-			else {
-				console.log(patient.personalData.birthdate);
-			}
-		})
-	}
 	
 	return (
 		<React.Fragment>
 			<Helmet title="Analytics Dashboard" />
-			<Grid justify="space-between" container spacing={6}>
-				<Grid item>
+			<Grid justify="space-between" direction='row' container spacing={6}>
+				<Grid item xs={6}>
 					<Typography variant="h3" gutterBottom style={{ color: "white" }}>
 						Analytics Dashboard
-					</Typography>
+					</Typography>					
+				</Grid>
+				<Grid item xs={6}>
+					<DatesSelector onCallBack={datesSelected} />
 				</Grid>
 			</Grid>
 			<Divider my={6} />
@@ -160,7 +180,7 @@ export function Analytics(props) {
 							<Grid item xs={12} sm={12} md={6}>
 								<DoughnutChart title={props.translate("hospital.analytics.graphs.sex.title")} labels={[props.translate("hospital.analytics.graphs.sex.male"), props.translate("hospital.analytics.graphs.sex.female")]}
 									table={{ title: props.translate("hospital.analytics.graphs.sex.table-title"), columns: [props.translate("hospital.analytics.graphs.sex.count")] }}
-									innerInfo={{ title: "Patients", value: props.investigations.currentInvestigation.patientsPersonalData.length }}
+									innerInfo={{ title: "Patients", value: filteredPatients.length }}
 
 									datasets={[
 										{
@@ -198,7 +218,7 @@ export function Analytics(props) {
 						title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
 				</Grid>
 				<Grid item xs={12} lg={5} sm={6}> 
-					<DatesSelector onCallBack={datesSelected} />
+					
 				</Grid>
 				<Grid item xs={12} >
 					<TimeTable title={props.translate("hospital.analytics.graphs.most-common-diagnosis.title")} loading={!mostCommonDiagnosis}

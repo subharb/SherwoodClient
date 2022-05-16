@@ -217,7 +217,7 @@ return (
             {numSelected} selected
         </Typography>
         ) : (
-        <Typography variant="h5" id="tableTitle" style={{fontWeight:"600"}}>
+        <Typography variant="h5" id="tableTitle"  style={{fontSize:'1.2rem'}}>
             {props.title}
         </Typography>
         )}

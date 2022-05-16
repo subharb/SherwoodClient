@@ -12,6 +12,7 @@ interface Props extends LocalizeContextProps{
 
 function DatesSelector(props:Props){
     var d = new Date(2020, 0, 1);
+    const [typeRange, setTypeRange] = React.useState(null);
     const [startDate, setStartDate] = React.useState(d);
     const [endDate, setEndDate] = React.useState(new Date());
 
@@ -39,10 +40,11 @@ function DatesSelector(props:Props){
     useEffect(() =>{
         props.onCallBack([startDate, endDate])
     }, [startDate, endDate])
+    
     return(
-        <Paper style={{padding:'1rem'}}>
+        
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                <Typography variant="h4" gutterBottom >Select dates: </Typography>
+                <Typography variant="h4" style={{color:'#FFF'}} gutterBottom  >Select dates: </Typography>
                 <Grid container spacing={3}>    
                     <Grid item >                    
                         <KeyboardDatePicker
@@ -88,7 +90,7 @@ function DatesSelector(props:Props){
                     </Grid>
                 </Grid>
             </MuiPickersUtilsProvider>
-        </Paper>
+        
     )
         
 }

@@ -14,6 +14,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from "@material-ui/core";
 
 import {
@@ -118,10 +119,10 @@ function TimeTable(props){
     else{
         return props.header.map((header, index)=> {
           if(index === 0){
-            return <TableCell style={{fontWeight:'bold'}}>{header}</TableCell>
+            return <TableCell style={{fontSize:'1.1rem'}}>{header}</TableCell>
           }
           else{
-              return <TableCell style={{fontWeight:'bold'}} align="right">{header}</TableCell>
+              return <TableCell style={{fontSize:'1.1rem'}} align="right">{header}</TableCell>
           }
         })
       }
@@ -151,6 +152,7 @@ function TimeTable(props){
   return(
       <Card mb={3}>
           <CardHeader
+            
             action={
               <React.Fragment>
               <IconButton aria-label="settings" aria-owns={anchorEl ? "simple-menu" : undefined} onClick={handleClick}>
@@ -171,7 +173,7 @@ function TimeTable(props){
               </Menu>
               </React.Fragment>
             }
-            title={props.title}
+            title={<Typography variant="h5"  style={{fontSize:'1.2rem'}}>{props.title}</Typography> }
           />
 
           <Paper>
