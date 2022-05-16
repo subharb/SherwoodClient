@@ -36,7 +36,7 @@ export function Analytics(props) {
 	const [filteredPatients, setFilteredPatients] = useState([]);
 	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
 	
-	const [countAge, setCountAge] = useState(COUNT_AGE)
+	const [countAge, setCountAge] = useState([...COUNT_AGE])
 	
 	function changeDate(value) {
 		console.log("Date Changed!", value);
@@ -95,26 +95,26 @@ export function Analytics(props) {
 	function filterPatientsByDate(startDateFilter, endDateFilter){
 		if(props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
 			const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
-				return startDateFilter < patient.createdAt && endDateFilter > patient.createdAt;
+				const dateCreated = new Date(patient.dateCreated);
+				return startDateFilter < dateCreated.getTime() && endDateFilter > dateCreated.getTime();
 			})
-			let tempCountSex = 0;
+			let tempCountSex = {male : 0, female : 0};
 			tempFilterPatients.forEach(patient => {
-				if(startDateFilter < patient.createdAt && endDateFilter > patient.createdAt){
-					if (patient.personalData.sex.toLowerCase() === "male") {
-						tempCountSex.male++;
-					}
-					else {
-						tempCountSex.female++;
-					}
+				
+				if (patient.personalData.sex.toLowerCase() === "male") {
+					tempCountSex.male++;
+				}
+				else {
+					tempCountSex.female++;
 				}
 				
 			})
-			let tempCountAge = COUNT_AGE;
+			let tempCountAge = [...COUNT_AGE];
 			tempFilterPatients.forEach(patient => {
 				const patientAge = yearsFromDate(patient.personalData.birthdate);
 				const indexAgeGroup = ageGroups.findIndex(range => range[0] <= patientAge && range[1] >= patientAge);
 				if (indexAgeGroup > -1) {
-					countAge[indexAgeGroup]++;
+					tempCountAge[indexAgeGroup]++;
 				}
 				else {
 					console.log(patient.personalData.birthdate);
@@ -200,7 +200,7 @@ export function Analytics(props) {
 									datasets={[
 										{
 											data: countAge,
-											percents: countAge.map(ageCount => Math.round((ageCount / props.investigations.currentInvestigation.patientsPersonalData.length) * 100)),
+											percents: countAge.map(countAge => Math.round((countAge / filteredPatients.length) * 100)),
 											backgroundColor: [props.theme.palette.secondary.main, red[500], orange[500], yellow[500], blue[500], props.theme.palette.secondary.main, red[500], orange[500], yellow[500], blue[500]],
 											borderWidth: 5,
 											borderColor: props.theme.palette.background.paper,
