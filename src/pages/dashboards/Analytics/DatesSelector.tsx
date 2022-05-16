@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Button as MuiButton, Grid, Menu, MenuItem, Paper } from "@material-ui/core";
+import { Button, Button as MuiButton, Grid, Menu, MenuItem, Paper, Typography } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
@@ -42,7 +42,8 @@ function DatesSelector(props:Props){
     return(
         <Paper style={{padding:'1rem'}}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                <Grid container spacing={3}>
+                <Typography variant="h4" gutterBottom >Select dates: </Typography>
+                <Grid container spacing={3}>    
                     <Grid item >                    
                         <KeyboardDatePicker
                             margin="normal"
