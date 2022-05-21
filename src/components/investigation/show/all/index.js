@@ -57,6 +57,7 @@ function AllInvestigations(props){
         async function fetchInvestigations(){
             try{
                 setIsLoading(true);
+                
                 const response = await fetchInvestigationsRemote();
                 if(response.status === 200){
                     setInvestigations(response.investigations);

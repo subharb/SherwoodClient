@@ -39,7 +39,8 @@ function PatientsTable(props) {
         actions.push({"type" : "hospital", "func" : (index) => props.hospitalizePatientCallBack(index)})
     }
     return (
-        <EnhancedTable noHeader noSelectable  titleTable={<Translate id="investigation.create.summary.patients" />} rows={rows} headCells={headCells} 
+        <EnhancedTable noHeader noSelectable  titleTable={<Translate id="investigation.create.summary.patients" />} 
+            rows={rows} headCells={headCells} 
             selectRow={index => props.showPatientCallBack(index)}
             actions={actions}
             />

@@ -16,7 +16,9 @@ export function fetchUser(){
 export function signIn(credentials, typeUser) {
   return new Promise((resolve, reject) => {
     saveData("password", credentials.password); 
+    console.log("Pass", credentials.password);
     credentials.password = CryptoJS.SHA256(credentials.password).toString(CryptoJS.enc.Base64) 
+    console.log("Pass Encr", credentials.password);
     axios.post(process.env.REACT_APP_API_URL+'/'+typeUser+'/login', credentials)
         .then((response) => {
             if(response.status === 200){

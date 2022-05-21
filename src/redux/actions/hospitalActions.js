@@ -1,9 +1,4 @@
 import * as types from "../../constants";
-import {
-  signIn as authSignIn,
-  signUp as authSignUp,
-  resetPassword as authResetPassword,
-} from "../../services/authService";
 import { assignDepartmentToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService, getPatientStaysService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services/sherwoodService";
 
 

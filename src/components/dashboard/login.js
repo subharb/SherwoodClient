@@ -87,7 +87,6 @@ class Login extends Component {
     }
     render() {
         console.log("Render");
-        
         return ([
             <LoadingScreen />,
             <Header key="header" />,
