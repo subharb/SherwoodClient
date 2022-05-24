@@ -12,7 +12,6 @@ import Loader from '../../../components/Loader';
 import { getStatsPerDiagnosisService } from '../../../services/sherwoodService';
 import { Bar } from "react-chartjs-2";
 import { red } from '@material-ui/core/colors';
-import { IconGenerator } from '../../../components/general/mini_components';
 import { LIST_COLORS } from '../../hospital/Analytics';
 
 interface Props extends LocalizeContextProps{

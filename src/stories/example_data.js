@@ -511,7 +511,14 @@ export const personal_data_investigation1 = () => {
             "encrypted": true
         },
         {
-            "name": "health_id",
+            "name": "sex",
+            "type": "text",
+            "required": true,
+            "label": "investigation.create.personal_data.fields.surname",
+            "encrypted": true
+        },
+        {
+            "name": "birthdate",
             "type": "text",
             "required": true,
             "label": "investigation.create.personal_data.fields.health_id",
@@ -2483,3 +2490,29 @@ export const hospital = {
         }
     ]
 }
+
+export const listDecryptedPatients = [
+    {
+        "uuid": "8af62a69-4532-4293-b470-f23424e180e8",
+        "id": 930,
+        "dateCreated" : "2020/10/13",
+        personalData: {
+            "name" : "Peter",
+            "surnames" : "Petrelli",
+            "birthdate" : "2022/05/03",
+            "sex" : "male"
+        }
+    },
+    {
+        "id": 969,
+        "uuid": "4f371709-7976-44bd-b1ae-484576a57a1c",
+        "dateCreated" : "2021/11/09",
+        personalData: {
+            "name" : "Conan",
+            "surnames" : "O'brian",
+            "birthdate" : "1958/05/03",
+            "sex" : "male"
+        }
+    }
+]
+

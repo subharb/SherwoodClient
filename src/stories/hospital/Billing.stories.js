@@ -3,7 +3,7 @@ import React from 'react';
 import Billing from '../../pages/hospital/Billing'
 import { BillForm } from '../../pages/hospital/Billing/bill_form'
 import { FindPatient } from '../../pages/hospital/Billing/find_patient'
-import { listPatientsHospitalWard,} from "../example_data";
+import { listDecryptedPatients, listPatientsHospitalWard, personal_data_investigation1,} from "../example_data";
 import ProviderSherwood from '../../providerSherwood';
 
 export default {
@@ -35,17 +35,14 @@ Toolbar.args = {
 
 export const Bill_Form = TemplateBillForm.bind({});
 Bill_Form.args = {
-    personalData:testPatient.personalData,
-    years:34,
-    showMedical:true,
-    action:{},
-    typeSurveySelected:0,
-    hospitalize:() => console.log("Hospitalize")
+  patients : listDecryptedPatients,
+  personalFields : personal_data_investigation1()
 };
 
 export const Find_Patient = TemplateFindPatient.bind({});
 Find_Patient.args = {
-    patients : [{personalData: {name : "Peter", surnames:"Petrelli"}, dateCread : 2222}]
+    patients : listDecryptedPatients,
+    personalFields : personal_data_investigation1()
 };
 
 

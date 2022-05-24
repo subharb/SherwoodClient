@@ -41,10 +41,31 @@ export interface PersonalData{
     sex:string,
     
 }
+
+export interface OptionField{
+    id:number,
+    value:string,
+    label:string,
+    isActive:boolean
+}
+
+export interface PersonalField{
+    id:number,
+    name:string,
+    type:string,
+    required:boolean,
+    order:number,
+    label:string,
+    encrypted:boolean,
+    validation:string,
+    options:OptionField[]
+}
+
 export interface IPatient{
     uuid:string,
     id:number,
-    personalData: PersonalData
+    personalData: PersonalData,
+    dateCreated:Date
 }
 
 export enum PERMISSION {

@@ -2,7 +2,7 @@ import $ from 'jquery';
 import { func } from "prop-types";
 import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
-
+import { Translate } from 'react-localize-redux';
 /**
  * Function that validates fields from anywhere in the app
  * 
@@ -653,6 +653,36 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
     }
     
     return encryptedFields;
+}
+
+export function formatPatients(patients, personalFields){
+    const arrayPatients = patients.map(patient => {
+        let tempRow = {};
+        for(const pField of personalFields){
+            if(patient.personalData){
+                let value = patient.personalData[pField.name];
+                if(pField.type === "date"){
+                    value = new Date(patient.personalData[pField.name]).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                        }).replace(/\./g, '/');
+                }
+                if(pField.name === 'sex'){
+                    value = <Translate id={`hospital.analytics.graphs.sex.${patient.personalData[pField.name].toLowerCase()}`} />
+                }
+                tempRow[pField.name] = value;
+            }
+            
+        }
+        tempRow["dateCreated"] = patient.dateCreated;
+        tempRow["id"] = patient.id;
+        return(
+            tempRow
+        )
+    });
+
+    return arrayPatients;
 }
 
 export function isSmartField(type){

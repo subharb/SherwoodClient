@@ -4,10 +4,13 @@ import { Translate } from "react-localize-redux";
 import { connect } from "react-redux";
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import { IPatient } from "../../../constants/types";
+import { formatPatients } from "../../../utils";
 
 
 interface Props{
-    patients:IPatient[]
+    patients:IPatient[],
+    personalFields:[],
+    onPatientSelected:(idPatient:number) => void,
 }
 export const FindPatient:React.FC<Props> = (props) => {
     const [patientName, setPatientName] = useState<null | string>(null);
@@ -30,13 +33,11 @@ export const FindPatient:React.FC<Props> = (props) => {
                 const headCells = [{ id: "name", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.name`} /> },
                                     { id: "surnames", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.surnames`} /> },
                                     { id: "sex", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.sex`} /> },
-                                    { id: "age", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.birthdate`} /> },
-                                    { id: "dateCreated", alignment: "left", label: <Translate id={`hospital.dateCreated-table`} /> }]
-                const rows = filteredPatients.map((patient:any) => {
-                    return {name :patient.personalData.name, surnames:patient.personalData.surnames, sex:patient.personalData.sex}
-                })
+                                    { id: "birthdate", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.birthdate`} /> },
+                                    { id: "dateCreated", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.dateCreated`} /> }]
+                const rows = formatPatients(filteredPatients, props.personalFields)
                 return(
-                    <EnhancedTable rows={rows} headCells={headCells}   />
+                    <EnhancedTable rows={rows} headCells={headCells} selectRow={(idPatient:number)=> props.onPatientSelected(idPatient)} />
                 )
             }
         }
@@ -44,7 +45,7 @@ export const FindPatient:React.FC<Props> = (props) => {
     }
     return(
         <React.Fragment>
-            <TextField onChange={(event) => onChange(event) } />
+            <TextField label="Search Patient" onChange={(event) => onChange(event) } />
             {
                 renderResults()
             }

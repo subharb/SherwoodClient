@@ -194,6 +194,23 @@
                 "submission" : ["Patient submission pending", "Envío de datos pendiente", "En attente de soumission des données"]
             }
         },
+        "billing" : {
+            "item" : {
+                "concept" : ["Concept", "Concepto", "Concept"],
+                "amount" : ["Amount", "Cantidad", "montant"],
+                "type" : ["Type", "Tipo", "Type"],
+                "types" : {
+                    "charge" : ["Charge", "Cargo", "Devoir"],
+                    "discount_amount" : ["Amount Discount", "Cantidad descuento", "Remise quantité"],
+                    "discount" : ["Discount %", "Descuento %", "Remise"]
+                },
+                "error" : {
+                    "concept" : ["Must have at 3 characters", "Debe tener al menos 3 caracteres", "Doit avoir 3 caractères"],
+                    "amount" : ["Must be positive", "Debe ser positivo", "Doit être positif"],
+                    "type" : ["Must select one", "Debe seleccionar uno", "Doit en sélectionner un"]
+                }
+            }
+        },
         "treatment-name" : ["Name", "Nombre", "Nom"],
         
         "frecuency" : ["Frequency", "Frecuencia", "Fréquence"],
@@ -445,6 +462,7 @@
                     "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento", "Date de naissance"],
+                    "dateCreated" : ["Creation Date", "Fecha de alta", "Date de création"],
                     "sex" : ["Sex", "Sexo", "Sex"]
                 },
                 "short-fields" : {
@@ -458,6 +476,7 @@
                     "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["DOB", "Fecha de nacimiento", "Date de naissance"],
+                    "dateCreated" : ["Creation Date", "Fecha de alta", "Date de création"],
                     "sex" : ["Sex", "Sexo", "Sex"],
                     "id" : ["ID", "ID", "ID"]
                 }

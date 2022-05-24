@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, withTheme } from 'styled-components';
 import icon_male from "../../img/icons/icon_male.svg";
 import { Link } from 'react-router-dom'
 import icon_female from "../../img/icons/icon_female.svg";
@@ -35,10 +35,10 @@ import {
 
 import { spacing } from "@material-ui/system";
 
-export const IconGenerator = (props) => {
+export const IconGenerator = withTheme((props) => {
     switch(props.type){
         case "add":
-            return <AddIcon style={{color:props.theme.buttonContinue.secondary.background }} />
+            return <AddIcon style={{color:props.theme.buttonContinue.primary.background }} />
         case "view":
             return <RemoveRedEyeIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}/>
         case "delete":
@@ -52,7 +52,7 @@ export const IconGenerator = (props) => {
         default:
             return <AddIcon />
     }
-}
+})
 
 export const FieldWrapper = (props) => {
     if(props.noWrap){
