@@ -23,20 +23,18 @@ const Template = (args) => <Billing {...args} />;
 const TemplateBillForm = (args) => <BillForm {...args} />; 
 const TemplateFindPatient = (args) => <FindPatient {...args} />; 
 const testPatient = listPatientsHospitalWard[0];
-export const Toolbar = Template.bind({});
-Toolbar.args = {
-    personalData:testPatient.personalData,
-    years:34,
-    showMedical:true,
-    action:{},
-    typeSurveySelected:0,
-    hospitalize:() => console.log("Hospitalize")
+export const Billing_Section = Template.bind({});
+Billing_Section.args = {
+  patients : listDecryptedPatients,
+  personalFields : personal_data_investigation1(),
+  currency : "€"
 };
 
 export const Bill_Form = TemplateBillForm.bind({});
 Bill_Form.args = {
   patients : listDecryptedPatients,
-  personalFields : personal_data_investigation1()
+  personalFields : personal_data_investigation1(),
+  currency : "€"
 };
 
 export const Find_Patient = TemplateFindPatient.bind({});

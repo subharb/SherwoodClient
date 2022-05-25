@@ -202,13 +202,17 @@
                 "types" : {
                     "charge" : ["Charge", "Cargo", "Devoir"],
                     "discount_amount" : ["Amount Discount", "Cantidad descuento", "Remise quantité"],
-                    "discount" : ["Discount %", "Descuento %", "Remise"]
+                    "discount_percent" : ["Discount %", "Descuento %", "Remise"]
                 },
                 "error" : {
-                    "concept" : ["Must have at 3 characters", "Debe tener al menos 3 caracteres", "Doit avoir 3 caractères"],
-                    "amount" : ["Must be positive", "Debe ser positivo", "Doit être positif"],
-                    "type" : ["Must select one", "Debe seleccionar uno", "Doit en sélectionner un"]
+                    "concept_short" : ["Must have at 3 characters", "Debe tener al menos 3 caracteres", "Doit avoir 3 caractères"],
+                    "amount_negative" : ["Must be positive", "Debe ser positivo", "Doit être positif"], 
+                    "amount_percent" : ["Must be lower than 100", "Debe ser menor a 100", "Doit être inférieur à 100"],
+                    "type_not_selected" : ["Must select one", "Debe seleccionar uno", "Doit en sélectionner un"]
                 }
+            },
+            "bill" : {
+                "total" : ["Total", "Total", "Total"]
             }
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],

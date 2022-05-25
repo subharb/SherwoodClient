@@ -1,3 +1,5 @@
+import { ReactElement } from "react"
+
 export interface IBed{
     id:number,
     gender:number,
@@ -83,4 +85,27 @@ export enum FUNCTIONALITY {
     HOSPITALIZATION = "HOSPITALIZATION"
 }
 
+export enum TYPE_BILL_ITEM {
+    CHARGE = 0,
+    DISCOUNT_AMOUNT = 1,
+    DISCOUNT_PERCENT = 2,
+}
 
+export interface BillItem{
+    concept:string,
+    type:number,
+    amount:number
+}
+export interface BillItemTable{
+    id:number,
+    concept:ReactElement,
+    type:ReactElement,
+    amount:ReactElement,
+    action : JSX.Element
+}
+
+export enum BillItemKeys{
+    concept = "concept",
+    amount = "amount",
+    type = "type"
+}

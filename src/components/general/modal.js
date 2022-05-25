@@ -14,7 +14,7 @@ import { Translate } from 'react-localize-redux';
 export default function Modal(props){
 
     return(
-        <Dialog style={{backgroundColor:"transparent"}}
+        <Dialog disableEscapeKeyDown style={{backgroundColor:"transparent"} }
             PaperProps={props.isTransparent &&
                 {
                     style: {

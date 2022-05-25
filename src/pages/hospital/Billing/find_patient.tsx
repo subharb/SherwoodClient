@@ -37,7 +37,7 @@ export const FindPatient:React.FC<Props> = (props) => {
                                     { id: "dateCreated", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.dateCreated`} /> }]
                 const rows = formatPatients(filteredPatients, props.personalFields)
                 return(
-                    <EnhancedTable rows={rows} headCells={headCells} selectRow={(idPatient:number)=> props.onPatientSelected(idPatient)} />
+                    <EnhancedTable  noSelectable noFooter rows={rows} headCells={headCells} selectRow={(idPatient:number)=> props.onPatientSelected(idPatient)} />
                 )
             }
         }
