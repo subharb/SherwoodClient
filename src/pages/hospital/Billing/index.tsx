@@ -10,7 +10,8 @@ import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@material-ui/lab';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
-import { BillItem, IPatient } from '../../../constants/types';
+import { BillItem, BillItemTable, IPatient } from '../../../constants/types';
+import { calculateTotalBill } from '../../../utils/bill';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -31,9 +32,10 @@ const Billing:React.FC<Props> = (props) => {
     }
     function onCancelBill(){
         setShowModal(false);
+    
     }
     function onBillCreated(items:BillItem[]){
-
+        
     }
     return(
         <React.Fragment>
@@ -55,9 +57,9 @@ const Billing:React.FC<Props> = (props) => {
                         }
                         </React.Fragment>
                 </Snackbar>
-            <Modal key="modal" open={showModal} title="Create bill">
+            <Modal key="modal" medium open={showModal} title="Create bill" closeModal={() => setShowModal(false)}>
                     <BillForm patients={props.patients} personalFields={props.personalFields} 
-                        currency={props.currency} 
+                        currency={props.currency}
                         onBillCreated={(items) => onBillCreated(items)} 
                         onCancelBill={onCancelBill}/>
             </Modal>

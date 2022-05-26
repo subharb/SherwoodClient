@@ -1,13 +1,12 @@
 import { Button, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core"
-import { number } from "prop-types"
+import { red } from "@material-ui/core/colors"
 import React, { ReactElement, useState } from "react"
 import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { EnhancedTable } from "../../../components/general/EnhancedTable"
-import FieldSherwood from "../../../components/general/FieldSherwood"
-
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
 import { BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
+import { calculateTotalBill } from "../../../utils/bill"
 import { FindPatient } from "./find_patient"
 
 interface Props{
@@ -23,7 +22,7 @@ const GridContainer = styled(Grid)`
     flex-direction: column;
     @media (min-width: 768px) {
         min-height:500px;
-        min-width:200px;   
+        min-width:400px;   
     }
 `
 
@@ -35,7 +34,8 @@ export const BillForm:React.FC<Props> = (props) => {
     const [items, setItems] = useState<BillItem[]>([]);
     const [addingItem, setAddingItem] = useState(false);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);
-    const [fieldErrors, setFieldErrors] = useState({"concept" : "", "type" :"", "amount" :""})
+    const [fieldErrors, setFieldErrors] = useState({"concept" : "", "type" :"", "amount" :""});
+    const [errorBill, setErrorBill] = useState("");
 
     function onPatientSelected(idPatient:number){
         const findPatient = props.patients.find((patient) => patient.id === idPatient);
@@ -53,7 +53,7 @@ export const BillForm:React.FC<Props> = (props) => {
         else{
             return(
                 <Grid item xs={12}>
-                    <Typography  variant="body2">Patient: {patient.personalData.name} {patient.personalData.surnames}</Typography> 
+                    <Typography variant="body2">Patient: {patient.personalData.name} {patient.personalData.surnames}</Typography> 
                 </Grid>
             )
         }
@@ -115,6 +115,15 @@ export const BillForm:React.FC<Props> = (props) => {
         const tempItems = [...items];
         tempItems.splice(index, 1);
         setItems(tempItems);
+        setErrorBill("");
+    }
+    function onClickContinue(items:BillItem[]){
+        if(calculateTotalBill(items) > 0){
+            props.onBillCreated(items);
+        }
+        else{
+            setErrorBill("La cantidad total debe ser positiva");
+        }
     }
     function addITem(index:number){
         console.log(index);
@@ -137,25 +146,15 @@ export const BillForm:React.FC<Props> = (props) => {
             setAddingItem(false);
             setCurrentItem(DEFAULT_CURRENT_ITEM);
         }
+        setErrorBill("");
         setFieldErrors(tempFieldErrors);
     }
-    function calculateTotalBill(items:BillItem[]){
-        let amountSeparation = [0,0,0];
-        for(let i = 0; i < items.length; i++){
-            const currentBillItem = items[i];
-            amountSeparation[currentBillItem.type] += currentBillItem.amount; 
-        }
-        const firstAmount = amountSeparation[0] - amountSeparation[1];
-        const discountAmount = (firstAmount*amountSeparation[2])/100;
-        const total = firstAmount - discountAmount;
-        //Redondeo a dos decimales
-        return  Math.round(total * 100) / 100
-    }
+   
     function renderItems(){
         if(patient){
             let rows:BillItemTable[] = items.map((val, index) => {
                 
-                const color = val.type !== 0 ? "red" : "black";
+                const color = val.type !== 0 ? red[900] : "black";
                 const amountString = val.type !== 0 ? "- "+val.amount+" "+(val.type === 2 ? "%" : props.currency) : val.amount+" €";
                 return {id : index, 
                         concept :<Typography variant="body2" style={{color:color}}>{val.concept}</Typography>, 
@@ -167,6 +166,7 @@ export const BillForm:React.FC<Props> = (props) => {
                     }});
             let totalBill = calculateTotalBill(items);
             if(addingItem){
+                console.log(Object.keys(TYPE_BILL_ITEM));
                 let field: BillItemTable = {
                         id:rows.length -1,
                         concept : <TextField label="Concept" type="text"  error={fieldErrors.concept !== ""} 
@@ -186,7 +186,11 @@ export const BillForm:React.FC<Props> = (props) => {
                                         }>) => changeSelect(event, BillItemKeys.type)}
                                         >
                                             {
-                                                Object.entries(TYPE_BILL_ITEM).map(([key, value]) => <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>)
+                                                Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
+                                                    return isNaN(Number(key))
+                                                }).map(([key, value]) =>{
+                                                    return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
+                                                }) 
                                             }
                                         
                                     </Select>
@@ -196,6 +200,22 @@ export const BillForm:React.FC<Props> = (props) => {
                                     <IconGenerator type="add"/>
                                 </IconButton>
                     }
+                rows.push(field)
+            }
+            else{
+                let field: BillItemTable = {
+                    id:rows.length -1,
+                    concept : <React.Fragment></React.Fragment>, 
+                    type :   <React.Fragment></React.Fragment>,
+                    amount : <React.Fragment></React.Fragment>,
+                    action : <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem} 
+                                type="button" data-testid="add_bill" 
+                                onClick={() => {
+                                    setErrorBill("");
+                                    setAddingItem(true)
+                                }} /></React.Fragment>
+                                
+                }
                 rows.push(field)
             }
             if(items.length > 0){
@@ -213,31 +233,30 @@ export const BillForm:React.FC<Props> = (props) => {
               
             return(
                 <React.Fragment>
-                    <Grid item xs={12}>
-                        <Typography  variant="body2">Add Item <ButtonAdd disabled={addingItem} 
-                            type="button" data-testid="add_bill" 
-                            onClick={() => {
-                                setAddingItem(true)
-                            }} />
-                        </Typography> 
-                    </Grid>
-                    {
-                        rows.length > 0 && 
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <EnhancedTable noFooter noSelectable headCells={headCells} rows={rows} 
-                                    />
-                            </Grid>
-                            <Grid item xs={12} style={{display: "flex",justifyContent: "end"}} >
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <EnhancedTable noFooter noSelectable headCells={headCells} rows={rows} 
+                                />
+                        </Grid>
+                        <Grid item xs={12} style={{display: "flex",flexDirection:"column"}} >
+                            {
+                                errorBill !== "" &&
+                                <Grid item xs={12} style={{textAlign:"right", paddingTop:"10px"}}>
+                                    <Typography variant="body2" style={{color:"red"}} >{errorBill}</Typography>
+                                </Grid>
+                                
+                            }
+                             <Grid item xs={12} style={{display: "flex",justifyContent: "end"}} >
                                 <Button onClick={props.onCancelBill} data-testid="cancel-modal" color="primary">
                                     <Translate id="general.cancel" />
                                 </Button>
-                                <Button onClick={() => props.onBillCreated(items)} data-testid="continue-modal" color="primary">
+                                <Button onClick={() => onClickContinue(items)} data-testid="continue-modal" color="primary">
                                     <Translate id="general.continue" />
                                 </Button>
-                            </Grid>
+                             </Grid>
+                            
                         </Grid>
-                    }
+                    </Grid>
                 </React.Fragment>
             )
         }

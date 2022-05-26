@@ -196,6 +196,7 @@
         },
         "billing" : {
             "item" : {
+                "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],
                 "concept" : ["Concept", "Concepto", "Concept"],
                 "amount" : ["Amount", "Cantidad", "montant"],
                 "type" : ["Type", "Tipo", "Type"],
