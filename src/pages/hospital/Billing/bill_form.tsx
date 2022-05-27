@@ -6,6 +6,7 @@ import styled from "styled-components"
 import { EnhancedTable } from "../../../components/general/EnhancedTable"
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
 import { BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
+import { createBillService } from "../../../services/billing"
 import { calculateTotalBill } from "../../../utils/bill"
 import { FindPatient } from "./find_patient"
 
@@ -13,7 +14,8 @@ interface Props{
     patients:IPatient[],
     personalFields:[],
     currency: string,
-    onBillCreated:(items:BillItem[]) => void,
+    uuidInvestigation:string,
+    onBillSuccesfullyCreated:() => void,
     onCancelBill:() => void,
     
 }
@@ -35,7 +37,8 @@ export const BillForm:React.FC<Props> = (props) => {
     const [addingItem, setAddingItem] = useState(false);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);
     const [fieldErrors, setFieldErrors] = useState({"concept" : "", "type" :"", "amount" :""});
-    const [errorBill, setErrorBill] = useState("");
+    const [errorBill, setErrorBill] = useState<ReactElement>();
+    const [loading, setLoading] = useState(false);
 
     function onPatientSelected(idPatient:number){
         const findPatient = props.patients.find((patient) => patient.id === idPatient);
@@ -115,14 +118,24 @@ export const BillForm:React.FC<Props> = (props) => {
         const tempItems = [...items];
         tempItems.splice(index, 1);
         setItems(tempItems);
-        setErrorBill("");
+        setErrorBill(undefined);
     }
-    function onClickContinue(items:BillItem[]){
-        if(calculateTotalBill(items) > 0){
-            props.onBillCreated(items);
+    async function onClickContinue(items:BillItem[]){
+        if(calculateTotalBill(items) > 0 && patient){
+            setLoading(true);
+            const response = await createBillService(props.uuidInvestigation, patient?.uuid, items);
+            if(response.status === 200){
+                props.onBillSuccesfullyCreated();  
+            }
+            else{
+                setErrorBill(<Translate id="hospital.bill.error.create" />);
+            }
+            setLoading(false);
+            setAddingItem(false);
+            //props.onBillCreated(items);
         }
         else{
-            setErrorBill("La cantidad total debe ser positiva");
+            setErrorBill(<Translate id="hospital.bill.error.positive" />);
         }
     }
     function addITem(index:number){
@@ -146,7 +159,7 @@ export const BillForm:React.FC<Props> = (props) => {
             setAddingItem(false);
             setCurrentItem(DEFAULT_CURRENT_ITEM);
         }
-        setErrorBill("");
+        setErrorBill(undefined);
         setFieldErrors(tempFieldErrors);
     }
    
@@ -211,7 +224,7 @@ export const BillForm:React.FC<Props> = (props) => {
                     action : <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem} 
                                 type="button" data-testid="add_bill" 
                                 onClick={() => {
-                                    setErrorBill("");
+                                    setErrorBill(undefined);
                                     setAddingItem(true)
                                 }} /></React.Fragment>
                                 
@@ -240,7 +253,7 @@ export const BillForm:React.FC<Props> = (props) => {
                         </Grid>
                         <Grid item xs={12} style={{display: "flex",flexDirection:"column"}} >
                             {
-                                errorBill !== "" &&
+                                !errorBill &&
                                 <Grid item xs={12} style={{textAlign:"right", paddingTop:"10px"}}>
                                     <Typography variant="body2" style={{color:"red"}} >{errorBill}</Typography>
                                 </Grid>
@@ -250,7 +263,7 @@ export const BillForm:React.FC<Props> = (props) => {
                                 <Button onClick={props.onCancelBill} data-testid="cancel-modal" color="primary">
                                     <Translate id="general.cancel" />
                                 </Button>
-                                <Button onClick={() => onClickContinue(items)} data-testid="continue-modal" color="primary">
+                                <Button disabled={loading || items.length === 0} onClick={() => onClickContinue(items)} data-testid="continue-modal" color="primary">
                                     <Translate id="general.continue" />
                                 </Button>
                              </Grid>

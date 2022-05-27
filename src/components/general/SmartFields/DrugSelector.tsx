@@ -3,7 +3,7 @@ import { Autocomplete } from '@material-ui/lab';
 import React, { useState, useEffect } from 'react';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { PropsSmartFieldLocalized, DrugType } from './index'
-import { searchDrugComponentService, searchDrugService } from '../../../services/sherwoodService';
+import { searchDrugComponentService, searchDrugService } from '../../../services';
 import AutocompleteSherwood from '../Autocomplete';
 import { useOffline } from '../../../hooks';
 import { OfflineField } from './OfflineField';

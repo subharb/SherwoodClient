@@ -1,7 +1,7 @@
 import * as types from "../../constants";
 import {
     fetchInvestigations as fetchInvestigationsService
-} from "../../services/sherwoodService";
+} from "../../services";
 
 export function fetchInvestigations() {
   return async (dispatch) => {

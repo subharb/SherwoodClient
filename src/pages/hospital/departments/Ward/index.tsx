@@ -26,7 +26,7 @@ import { IBed, IDepartment, IPatient, IWard } from '../../../../constants/types'
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { createBedAction, createStayPatientAction, deleteBedAction, resetHospitalAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../../hooks';
-import { getWardService } from '../../../../services/sherwoodService';
+import { getWardService } from '../../../../services';
 import { Alert } from '@material-ui/lab';
 import { HOSPITAL_PATIENT } from '../../../../routes';
 import { sexNumberToString, yearsFromDate } from '../../../../utils';

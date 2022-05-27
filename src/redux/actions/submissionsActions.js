@@ -1,7 +1,7 @@
 import * as types from "../../constants";
 import {
     postRecordPatientService, fetchSubmissionsAllPatientsInvestigationService, fetchRecordsSurveysService
-} from "../../services/sherwoodService";
+} from "../../services";
 
 export function saveSubmissionAction(postObj, uuidInvestigation, patientId, surveyUUID) {
   return async (dispatch) => {

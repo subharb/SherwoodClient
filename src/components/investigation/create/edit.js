@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import UpdateInvestigation from './index';
-import { fetchInvestigation as fetchInvestigationRemote } from '../../../services/sherwoodService';
+import { fetchInvestigation as fetchInvestigationRemote } from '../../../services';
 
 export default function EditInvestigation(props) {
     const [isLoading, setIsLoading] = useState(true);

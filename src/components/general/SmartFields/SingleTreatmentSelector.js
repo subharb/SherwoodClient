@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { Alert, Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, AutocompleteInputChangeReason } from '@material-ui/lab';
-import { searchDrugService } from '../../../services/sherwoodService';
+import { searchDrugService } from '../../../services';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';

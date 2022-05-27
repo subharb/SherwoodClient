@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as ECT from '@whoicd/icd11ect';
 import '@whoicd/icd11ect/style.css';
-import { getTokenWho } from '../../../../services/sherwoodService';
+import { getTokenWho } from '../../../../services';
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { Grid, TextField } from '@material-ui/core';

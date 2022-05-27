@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { fetchProfileService } from "../../services/sherwoodService";
+import { fetchProfileService } from "../../services";
 
 
 export function fetchProfileInfo(uuidInvestigation) {

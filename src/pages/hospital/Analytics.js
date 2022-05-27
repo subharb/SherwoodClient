@@ -16,7 +16,7 @@ import DoughnutChart from '../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components/macro";
 import { yearsFromDate } from '../../utils';
 import TimeTable from '../dashboards/Analytics/TimeTable';
-import { getStatsFirstMonitoring, getStatsMostCommonDiagnosis } from '../../services/sherwoodService';
+import { getStatsFirstMonitoring, getStatsMostCommonDiagnosis } from '../../services';
 import { spacing } from "@material-ui/system";
 import DatesSelector from '../dashboards/Analytics/DatesSelector';
 import { PERMISSION } from '../../constants/types';

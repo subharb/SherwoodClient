@@ -1,7 +1,7 @@
 import * as types from "../../constants";
 import {
     addPatient as addPatientService, updatePersonalDataPatientService, getPatientsFromId,
-} from "../../services/sherwoodService";
+} from "../../services";
 
 export function savePatientAction(investigation, patientData) {
   //Añado un uuid por si falla la conexión tener una referencia de este paciente

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { searchDiagnosticService, searchDrugComponentService } from '../../../../services/sherwoodService';
+import { searchDiagnosticService, searchDrugComponentService } from '../../../../services';
 import { Grid, TextField } from '@material-ui/core';
 import { ButtonAccept, ButtonCancel } from '../../mini_components';
 import { AllergyType, BackgroundType, SmartFieldType, Diagnosis } from '../index';

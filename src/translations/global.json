@@ -213,7 +213,11 @@
                 }
             },
             "bill" : {
-                "total" : ["Total", "Total", "Total"]
+                "total" : ["Total", "Total", "Total"],
+                "error" : {
+                    "create" : ["There was an error creating the bill, please try again","Hubo un error al crear la factura, inténtalo de nuevo", "Une erreur s'est produite lors de la création de la facture, veuillez réessayer"],
+                    "positive" : ["The total must be positive", "El total debe ser positivo", "Le total doit être positif"]
+                }
             }
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],

@@ -12,19 +12,53 @@ import { ButtonAdd } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
 import { BillItem, BillItemTable, IPatient } from '../../../constants/types';
 import { calculateTotalBill } from '../../../utils/bill';
+import { createBillService } from '../../../services/billing';
+import { connect } from 'react-redux';
 
 const Divider = styled(MuiDivider)(spacing);
+
+interface PropsRedux{
+    investigations:any,
+    patients:any,
+    uuidInvestigation : string
+}
+
+const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
+    const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
+    
+    if(investigation){
+        return <BillingLocalized patients={patients} 
+                uuidInvestigation={investigation.uuid as string}
+                personalFields={investigation.personalFields}
+                currency={investigation.billing.currency} />
+    }
+    else{
+        return null;
+    }
+    
+}
+
+const mapStateToProps = (state:any) =>{
+    return {
+        investigations : state.investigations,
+        patients: state.patients,
+    }
+}
+
+export default connect(mapStateToProps, null)(BillingRedux);
+
 
 interface Props extends LocalizeContextProps{
     patients:IPatient[],
     personalFields:[],
+    uuidInvestigation:string,
     currency: string,
-    onPatientSelected:(idPatient:number) => void,
 }
 
 const Billing:React.FC<Props> = (props) => {
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false)
 
     async function resetSnackBar(){
         setShowSnackbar({show:false});
@@ -34,7 +68,7 @@ const Billing:React.FC<Props> = (props) => {
         setShowModal(false);
     
     }
-    function onBillCreated(items:BillItem[]){
+    function onBillCreated(){
         
     }
     return(
@@ -59,14 +93,14 @@ const Billing:React.FC<Props> = (props) => {
                 </Snackbar>
             <Modal key="modal" medium open={showModal} title="Create bill" closeModal={() => setShowModal(false)}>
                     <BillForm patients={props.patients} personalFields={props.personalFields} 
-                        currency={props.currency}
-                        onBillCreated={(items) => onBillCreated(items)} 
+                        currency={props.currency} uuidInvestigation={props.uuidInvestigation}
+                        onBillSuccesfullyCreated={() => onBillCreated()} 
                         onCancelBill={onCancelBill}/>
             </Modal>
 			<Grid justify="space-between" direction='row' container spacing={6}>
 				<Grid item xs={6}>
 					<Typography variant="h3" gutterBottom style={{ color: "white" }}>
-						Billing
+						<Translate id="hospital.billing.title" />
 					</Typography>	
                     <ButtonAdd disabled={showModal} 
                         type="button" data-testid="add_bill" 
@@ -81,4 +115,4 @@ const Billing:React.FC<Props> = (props) => {
     )
 }
 
-export default withLocalize(Billing);
+export const BillingLocalized = withLocalize(Billing);

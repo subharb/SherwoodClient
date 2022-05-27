@@ -1,7 +1,7 @@
 import { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
 import { PhotoCamera, Replay } from '@material-ui/icons';
 import React, {SyntheticEvent, useEffect, useState} from 'react';
-import { uploadFile, getFile } from '../../services/sherwoodService';
+import { uploadFile, getFile } from '../../services';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { useUpdateEffect, usePrevious } from '../../hooks';
 import styled from 'styled-components';

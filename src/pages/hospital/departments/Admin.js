@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import * as types from "../../../constants";
 import { connect, useDispatch } from 'react-redux';
-import { Card, CardContent, 
-        Typography, Grid, Box, Chip, AppBar, Tabs, Tab, List, ListItem, ListItemText, Snackbar, Button } from '@material-ui/core';
-import { Alert, TabPanel } from "@material-ui/lab";
+import { Typography, Grid, Box, Chip, AppBar, Tabs, Tab, Snackbar } from '@material-ui/core';
+import { Alert } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
-import { decryptData, encryptData, generateKey } from '../../../utils';
 import Loader from '../../../components/Loader';
 import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, ButtonGrey } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
@@ -16,8 +14,7 @@ import styled from 'styled-components';
 import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { useHistory } from "react-router-dom";
-
-import { saveDepartmentAction, saveUpdateWardAction, getDepartmentsInstitutionAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../../redux/actions/hospitalActions';
+import { saveDepartmentAction, saveUpdateWardAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';

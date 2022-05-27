@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
-import { answerRequest as answerRequestRemote, fetchInvestigations as fetchInvestigationsRemote} from '../../../../services/sherwoodService';
+import { answerRequest as answerRequestRemote, fetchInvestigations as fetchInvestigationsRemote} from '../../../../services';
 import CardInvestigation from './card_investigation'
 import { Link } from 'react-router-dom';
 import { Translate, withLocalize } from 'react-localize-redux';

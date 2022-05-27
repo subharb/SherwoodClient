@@ -16,7 +16,7 @@ import styled from 'styled-components';
 import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
-import { getSharedResearchersService, saveResearcherPermissions } from '../../../services/sherwoodService';
+import { getSharedResearchersService, saveResearcherPermissions } from '../../../services';
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { grayscale } from 'polished';
 

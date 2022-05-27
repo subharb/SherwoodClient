@@ -23,7 +23,7 @@ import { decryptSinglePatientData, yearsFromDate } from '../../utils';
 import { TabPanel } from '@material-ui/lab';
 import TabsSherwood from '../../components/general/TabsSherwood';
 import ICT from '../../components/general/SmartFields/ICT';
-import { searchPatientByDiagnosis } from '../../services/sherwoodService';
+import { searchPatientByDiagnosis } from '../../services';
 
 let personalFieldsForm = {};
 const ID_FIELD = {

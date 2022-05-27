@@ -9,7 +9,7 @@ import AutocompleteSherwood from '../../../components/general/Autocomplete';
 import ICTSelectorOMS from '../../../components/general/SmartFields/ICT/ICTSelectorOMS';
 import ICT from '../../../components/general/SmartFields/ICT';
 import Loader from '../../../components/Loader';
-import { getStatsPerDiagnosisService } from '../../../services/sherwoodService';
+import { getStatsPerDiagnosisService } from '../../../services';
 import { Bar } from "react-chartjs-2";
 import { red } from '@material-ui/core/colors';
 import { LIST_COLORS } from '../../hospital/Analytics';
