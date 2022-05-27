@@ -1,11 +1,12 @@
 import { Button, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core"
 import { red } from "@material-ui/core/colors"
+import { string } from "prop-types"
 import React, { ReactElement, useState } from "react"
 import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { EnhancedTable } from "../../../components/general/EnhancedTable"
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
-import { BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
+import { ActionsEnhancedTable, Bill, BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
 import { createBillService } from "../../../services/billing"
 import { calculateTotalBill } from "../../../utils/bill"
 import { FindPatient } from "./find_patient"
@@ -15,6 +16,7 @@ interface Props{
     personalFields:[],
     currency: string,
     uuidInvestigation:string,
+    bill:Bill | null,
     onBillSuccesfullyCreated:() => void,
     onCancelBill:() => void,
     
@@ -32,8 +34,8 @@ const GridContainer = styled(Grid)`
 const DEFAULT_CURRENT_ITEM = {concept:"", type :0, amount:0}
 
 export const BillForm:React.FC<Props> = (props) => {
-    const [patient, setPatient] = useState<null | IPatient>(null);
-    const [items, setItems] = useState<BillItem[]>([]);
+    const [patient, setPatient] = useState<null | IPatient>(props.bill ? props.bill.patientInvestigation : null);
+    const [items, setItems] = useState<BillItem[]>(props.bill ? props.bill.billItems :[]);
     const [addingItem, setAddingItem] = useState(false);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);
     const [fieldErrors, setFieldErrors] = useState({"concept" : "", "type" :"", "amount" :""});
@@ -162,22 +164,34 @@ export const BillForm:React.FC<Props> = (props) => {
         setErrorBill(undefined);
         setFieldErrors(tempFieldErrors);
     }
-   
+    function usedItem(index:number){
+
+    }
+    function paidItem(index:number){
+
+    }
     function renderItems(){
         if(patient){
             let rows:BillItemTable[] = items.map((val, index) => {
                 
                 const color = val.type !== 0 ? red[900] : "black";
                 const amountString = val.type !== 0 ? "- "+val.amount+" "+(val.type === 2 ? "%" : props.currency) : val.amount+" €";
+                
                 return {id : index, 
-                        concept :<Typography variant="body2" style={{color:color}}>{val.concept}</Typography>, 
-                        type : <Typography variant="body2" style={{color:color}}><Translate id={`hospital.billing.item.types.${TYPE_BILL_ITEM[val.type].toLowerCase()}`} /></Typography>, 
-                        amount:<Typography variant="body2" style={{color:color}}>{amountString}</Typography>,
-                        action : <IconButton onClick={() => removeItem(index)}>
+                    concept :<Typography variant="body2" style={{color:color}}>{val.concept}</Typography>, 
+                    type : <Typography variant="body2" style={{color:color}}><Translate id={`hospital.billing.item.types.${TYPE_BILL_ITEM[val.type].toLowerCase()}`} /></Typography>, 
+                    amount:<Typography variant="body2" style={{color:color}}>{amountString}</Typography>,
+                    delete : <IconButton onClick={() => removeItem(index)}>
+                                <IconGenerator type="delete"/>
+                            </IconButton>,
+                    used : val.type === 0 ? <IconButton onClick={() => removeItem(index)}>
                                     <IconGenerator type="delete"/>
-                                </IconButton>
-                    }});
-            let totalBill = calculateTotalBill(items);
+                            </IconButton> : <React.Fragment></React.Fragment>,
+                    paid : val.type === 0 ? <IconButton onClick={() => removeItem(index)}>
+                                <IconGenerator type="delete"/>
+                            </IconButton> : <React.Fragment></React.Fragment>,   
+                }});
+            
             if(addingItem){
                 console.log(Object.keys(TYPE_BILL_ITEM));
                 let field: BillItemTable = {
@@ -209,19 +223,19 @@ export const BillForm:React.FC<Props> = (props) => {
                                     </Select>
                                 </FormControl>,
                         amount : <TextField label="Amount" variant="outlined" helperText={helperText(BillItemKeys.amount)} error={fieldErrors.amount !== ""}  type="text" onChange={(event) => changeField(event, BillItemKeys.amount)}/>,
-                        action : <IconButton onClick={() => addITem(rows.length -1)}>
+                        delete : <IconButton onClick={() => addITem(rows.length -1)}>
                                     <IconGenerator type="add"/>
                                 </IconButton>
                     }
                 rows.push(field)
             }
-            else{
+            else if(!props.bill){
                 let field: BillItemTable = {
                     id:rows.length -1,
                     concept : <React.Fragment></React.Fragment>, 
                     type :   <React.Fragment></React.Fragment>,
                     amount : <React.Fragment></React.Fragment>,
-                    action : <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem} 
+                    delete : <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem} 
                                 type="button" data-testid="add_bill" 
                                 onClick={() => {
                                     setErrorBill(undefined);
@@ -229,20 +243,28 @@ export const BillForm:React.FC<Props> = (props) => {
                                 }} /></React.Fragment>
                                 
                 }
-                rows.push(field)
+                rows.push(field);
             }
             if(items.length > 0){
+                let totalBill = calculateTotalBill(items);
                 rows.push({id : items.length, concept : <React.Fragment></React.Fragment>, 
                     type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography> , 
                     amount:<Typography style={{fontWeight:'bold'}} >{totalBill +" "+props.currency}</Typography>,
-                    action : <React.Fragment></React.Fragment>,
+                    delete : <React.Fragment></React.Fragment>,
                 });
             }
             const headCells = [{ id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item.concept`} /> },
                     { id: "type", alignment: "left", label: <Translate id={`hospital.billing.item.type`} /> },
-                    { id: "amount", alignment: "left", label: <Translate id={`hospital.billing.item.amount`} /> },
-                    { id: "action", alignment: "right", label: "" }
+                    { id: "amount", alignment: "left", label: <Translate id={`hospital.billing.item.amount`} /> }
                 ]
+            
+            if(!props.bill){
+                headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
+            }
+            else{
+                headCells.push({ id: "paid", alignment: "right", label: <React.Fragment>Paid</React.Fragment> });
+                headCells.push({ id: "used", alignment: "right", label: <React.Fragment>Used</React.Fragment> });
+            }
               
             return(
                 <React.Fragment>

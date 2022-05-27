@@ -195,6 +195,7 @@
             }
         },
         "billing" : {
+            "title" : ["Billing", "Facturación", "Facturation"],
             "item" : {
                 "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],
                 "concept" : ["Concept", "Concepto", "Concept"],
@@ -213,7 +214,10 @@
                 }
             },
             "bill" : {
+                "name" : ["Bill", "Factura", "Facture"],
                 "total" : ["Total", "Total", "Total"],
+                "total_pending" : ["Pending", "Pendiente", "Pendant"],
+                "patient" : ["Patient", "Paciente","Patients"],
                 "error" : {
                     "create" : ["There was an error creating the bill, please try again","Hubo un error al crear la factura, inténtalo de nuevo", "Une erreur s'est produite lors de la création de la facture, veuillez réessayer"],
                     "positive" : ["The total must be positive", "El total debe ser positivo", "Le total doit être positif"]

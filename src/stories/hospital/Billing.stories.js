@@ -3,7 +3,7 @@ import React from 'react';
 import {BillingLocalized} from '../../pages/hospital/Billing'
 import { BillForm } from '../../pages/hospital/Billing/bill_form'
 import { FindPatient } from '../../pages/hospital/Billing/find_patient'
-import { listDecryptedPatients, listPatientsHospitalWard, personal_data_investigation1,} from "../example_data";
+import { bills, listDecryptedPatients, listPatientsHospitalWard, personal_data_investigation1,} from "../example_data";
 import ProviderSherwood from '../../providerSherwood';
 
 export default {
@@ -28,7 +28,8 @@ Billing_Section.args = {
   patients : listDecryptedPatients,
   personalFields : personal_data_investigation1(),
   uuidInvestigation : "64d46bc7-6a86-44dd-a7d5-6b00a2a0cb59",
-  currency : "€"
+  currency : "€",
+  bills : bills
 };
 
 export const Bill_Form = TemplateBillForm.bind({});

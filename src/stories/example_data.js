@@ -2516,3 +2516,56 @@ export const listDecryptedPatients = [
     }
 ]
 
+export const bills = [
+        {
+            "id": 10,
+            "total": "79.20",
+            "totalPaid": "0.00",
+            "createdAt": "2022-05-27T15:22:29.614Z",
+            "updatedAt": "2022-05-27T15:22:29.614Z",
+            "deletedAt": null,
+            "billItems": [
+                {
+                    "id": 1,
+                    "concept": "Primera consulta Dr. Rodriguez",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },
+                {
+                    "id": 2,
+                    "concept": "Descuento empadronamiento",
+                    "type": 1,
+                    "amount": "10.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.603Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },
+                {
+                    "id": 3,
+                    "concept": "Descuento aseguradora",
+                    "type": 2,
+                    "amount": "12.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.608Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                }
+            ],
+            "patientInvestigation": {
+                "id": 930,
+                "uuid": "8af62a69-4532-4293-b470-f23424e180e8",
+                "status": 0,
+                "investigationId": 2,
+                "patientId": 1219,
+                "patientIdInvestigation": 930
+            }
+        }
+    ]

@@ -85,10 +85,26 @@ export enum FUNCTIONALITY {
     HOSPITALIZATION = "HOSPITALIZATION"
 }
 
+export interface ActionsEnhancedTable{
+    type: string,
+    func: (index: number) => void
+}
+
 export enum TYPE_BILL_ITEM {
     CHARGE = 0,
     DISCOUNT_AMOUNT = 1,
     DISCOUNT_PERCENT = 2,
+}
+
+export interface Bill{
+    id:number,
+    patientInvestigation:IPatient,
+    billItems:BillItem[],
+    paid:null | Date,
+    used: null | Date,
+    total:number,
+    totalPaid:number,
+    createdAt:Date
 }
 
 export interface BillItem{
@@ -101,7 +117,9 @@ export interface BillItemTable{
     concept:ReactElement,
     type:ReactElement,
     amount:ReactElement,
-    action : JSX.Element
+    delete : JSX.Element,
+    used?: JSX.Element,
+    paid?: JSX.Element
 }
 
 export enum BillItemKeys{
