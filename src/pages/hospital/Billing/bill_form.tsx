@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core"
+import { Button, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core"
 import { red } from "@material-ui/core/colors"
 import { string } from "prop-types"
 import React, { ReactElement, useState } from "react"
@@ -7,11 +7,12 @@ import styled from "styled-components"
 import { EnhancedTable } from "../../../components/general/EnhancedTable"
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
 import { ActionsEnhancedTable, Bill, BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
-import { createBillService } from "../../../services/billing"
+import { createBillService, updateBillService } from "../../../services/billing"
 import { calculateTotalBill } from "../../../utils/bill"
 import { FindPatient } from "./find_patient"
 
 interface Props{
+    updatingBill:boolean,
     patients:IPatient[],
     personalFields:[],
     currency: string,
@@ -125,7 +126,14 @@ export const BillForm:React.FC<Props> = (props) => {
     async function onClickContinue(items:BillItem[]){
         if(calculateTotalBill(items) > 0 && patient){
             setLoading(true);
-            const response = await createBillService(props.uuidInvestigation, patient?.uuid, items);
+            let response;
+            if(props.updatingBill && props.bill){
+                response = await updateBillService(props.uuidInvestigation, props.bill.id, items);
+            }
+            else{
+                response = await createBillService(props.uuidInvestigation, patient?.uuid, items);
+            }
+            
             if(response.status === 200){
                 props.onBillSuccesfullyCreated();  
             }
@@ -165,10 +173,16 @@ export const BillForm:React.FC<Props> = (props) => {
         setFieldErrors(tempFieldErrors);
     }
     function usedItem(index:number){
-
+        console.log(index);
+        const tempItems = [...items];
+        tempItems[index].used = !tempItems[index].used; 
+        setItems(tempItems);
     }
     function paidItem(index:number){
-
+        console.log(index);
+        const tempItems = [...items];
+        tempItems[index].paid = !tempItems[index].paid; 
+        setItems(tempItems);
     }
     function renderItems(){
         if(patient){
@@ -184,12 +198,8 @@ export const BillForm:React.FC<Props> = (props) => {
                     delete : <IconButton onClick={() => removeItem(index)}>
                                 <IconGenerator type="delete"/>
                             </IconButton>,
-                    used : val.type === 0 ? <IconButton onClick={() => removeItem(index)}>
-                                    <IconGenerator type="delete"/>
-                            </IconButton> : <React.Fragment></React.Fragment>,
-                    paid : val.type === 0 ? <IconButton onClick={() => removeItem(index)}>
-                                <IconGenerator type="delete"/>
-                            </IconButton> : <React.Fragment></React.Fragment>,   
+                    used : val.type === 0 ? <Checkbox color="primary" checked={items[index].used}  onClick={() => usedItem(index)} /> : <React.Fragment></React.Fragment>,
+                    paid : val.type === 0 ? <Checkbox color="secondary" checked={items[index].paid}  onClick={() => paidItem(index)} /> : <React.Fragment></React.Fragment>,   
                 }});
             
             if(addingItem){
@@ -229,7 +239,7 @@ export const BillForm:React.FC<Props> = (props) => {
                     }
                 rows.push(field)
             }
-            else if(!props.bill){
+            else if(!props.updatingBill){
                 let field: BillItemTable = {
                     id:rows.length -1,
                     concept : <React.Fragment></React.Fragment>, 
@@ -258,7 +268,7 @@ export const BillForm:React.FC<Props> = (props) => {
                     { id: "amount", alignment: "left", label: <Translate id={`hospital.billing.item.amount`} /> }
                 ]
             
-            if(!props.bill){
+            if(!props.updatingBill){
                 headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
             }
             else{

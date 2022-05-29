@@ -110,7 +110,9 @@ export interface Bill{
 export interface BillItem{
     concept:string,
     type:number,
-    amount:number
+    amount:number,
+    used?: boolean,
+    paid?: boolean
 }
 export interface BillItemTable{
     id:number,

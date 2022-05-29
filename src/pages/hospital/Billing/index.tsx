@@ -117,7 +117,7 @@ const Billing:React.FC<Props> = (props) => {
     }
     return(
         <React.Fragment>
-			<Helmet title="Analytics Dashboard" />
+			<Helmet title="Billing Dashboard" />
             <Snackbar
                     anchorOrigin={{
                     vertical: 'top',
@@ -135,12 +135,12 @@ const Billing:React.FC<Props> = (props) => {
                         }
                         </React.Fragment>
                 </Snackbar>
-            <Modal key="modal" medium open={showModal} title="Create bill" closeModal={() => onCloseModal()}>
+            <Modal key="modal" medium open={showModal} title={!currentBill ? "Create bill" : "Bill Id:"+currentBill.id} closeModal={() => onCloseModal()}>
                     <BillForm patients={props.patients} personalFields={props.personalFields} 
                         currency={props.currency} uuidInvestigation={props.uuidInvestigation}
                         onBillSuccesfullyCreated={() => onBillCreated()} 
                         onCancelBill={onCancelBill}
-                        bill={currentBill}
+                        bill={currentBill} updatingBill = {currentBill !== null}
                         />
             </Modal>
 			<Grid justify="space-between" direction='row' container spacing={6}>
