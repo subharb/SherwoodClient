@@ -19,7 +19,7 @@ const Divider = styled(MuiDivider)(spacing);
 
 interface PropsRedux{
     investigations:any,
-    patients:any,
+    patients:{data:any},
     uuidInvestigation : string
 }
 
@@ -27,10 +27,10 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
     const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
     
     if(investigation){
-        return <BillingLocalized patients={patients} 
+        return <BillingLocalized patients={patients.data[investigation.uuid]} 
                 uuidInvestigation={investigation.uuid as string}
                 personalFields={investigation.personalFields}
-                currency={investigation.billing.currency} 
+                currency={investigation.billingInfo.currency} 
                 bills={[]} />
     }
     else{
@@ -72,7 +72,15 @@ const Billing:React.FC<Props> = (props) => {
         setShowModal(false);
     
     }
-    function onBillCreated(){
+    function onBillCreated(bill:Bill){
+        console.log(bill);
+        setShowModal(false);
+        if(currentBill){
+            setShowSnackbar({message:"hospital.billing.bill.success.updated", show:true, severity:"success"});
+        }
+        else{
+            setShowSnackbar({message:"hospital.billing.bill.success.created", show:true, severity:"success"});
+        }
         
     }
     function billSelected(idBill:number){
@@ -126,19 +134,21 @@ const Billing:React.FC<Props> = (props) => {
                     open={showSnackbar.show}
                     autoHideDuration={2000}
                     onClose={resetSnackBar}>
-                        <React.Fragment>
-                        {
-                            showSnackbar.message && 
-                            <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
-                                <Translate id={showSnackbar.message} />
-                            </Alert>
-                        }
-                        </React.Fragment>
+                        <div>
+                            {
+                                (showSnackbar.message && showSnackbar.severity) &&
+                                <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
+                                    <Translate id={showSnackbar.message} />
+                                </Alert>
+                            }
+                        </div>
+                        
+                        
                 </Snackbar>
             <Modal key="modal" medium open={showModal} title={!currentBill ? "Create bill" : "Bill Id:"+currentBill.id} closeModal={() => onCloseModal()}>
-                    <BillForm patients={props.patients} personalFields={props.personalFields} 
+                    <BillForm patients={props.patients } personalFields={props.personalFields} 
                         currency={props.currency} uuidInvestigation={props.uuidInvestigation}
-                        onBillSuccesfullyCreated={() => onBillCreated()} 
+                        onBillSuccesfullyCreated={(bill:Bill) => onBillCreated(bill)} 
                         onCancelBill={onCancelBill}
                         bill={currentBill} updatingBill = {currentBill !== null}
                         />

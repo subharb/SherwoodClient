@@ -18,7 +18,7 @@ interface Props{
     currency: string,
     uuidInvestigation:string,
     bill:Bill | null,
-    onBillSuccesfullyCreated:() => void,
+    onBillSuccesfullyCreated:(bill:Bill) => void,
     onCancelBill:() => void,
     
 }
@@ -126,7 +126,7 @@ export const BillForm:React.FC<Props> = (props) => {
     async function onClickContinue(items:BillItem[]){
         if(calculateTotalBill(items) > 0 && patient){
             setLoading(true);
-            let response;
+            let response:{status:number, bill?:Bill};
             if(props.updatingBill && props.bill){
                 response = await updateBillService(props.uuidInvestigation, props.bill.id, items);
             }
@@ -134,8 +134,8 @@ export const BillForm:React.FC<Props> = (props) => {
                 response = await createBillService(props.uuidInvestigation, patient?.uuid, items);
             }
             
-            if(response.status === 200){
-                props.onBillSuccesfullyCreated();  
+            if(response.status === 200 && response.bill){
+                props.onBillSuccesfullyCreated(response.bill);  
             }
             else{
                 setErrorBill(<Translate id="hospital.bill.error.create" />);
