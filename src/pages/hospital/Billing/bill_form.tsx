@@ -1,11 +1,13 @@
 import { Button, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core"
 import { red } from "@material-ui/core/colors"
+import { isThisYear, isToday } from "date-fns"
 import { string } from "prop-types"
-import React, { ReactElement, useState } from "react"
-import { Translate } from "react-localize-redux"
+import React, { ReactElement, useEffect, useState } from "react"
+import { Language, Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { EnhancedTable } from "../../../components/general/EnhancedTable"
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
+import Loader from "../../../components/Loader"
 import { ActionsEnhancedTable, Bill, BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
 import { createBillService, updateBillService } from "../../../services/billing"
 import { calculateTotalBill } from "../../../utils/bill"
@@ -18,8 +20,9 @@ interface Props{
     currency: string,
     uuidInvestigation:string,
     bill:Bill | null,
+    locale:Language,
     onBillSuccesfullyCreated:(bill:Bill) => void,
-    onCancelBill:() => void,
+    onCancelBill:() => void
     
 }
 
@@ -54,6 +57,7 @@ export const BillForm:React.FC<Props> = (props) => {
         if(!patient){
             return <FindPatient patients={props.patients} 
                 personalFields={props.personalFields}
+                codeLanguage={props.locale.code}
                 onPatientSelected={(idPatient) => onPatientSelected(idPatient)} />
         }
         else{
@@ -184,7 +188,33 @@ export const BillForm:React.FC<Props> = (props) => {
         tempItems[index].paid = !tempItems[index].paid; 
         setItems(tempItems);
     }
+    function renderCheckOrDate(color:"default" | "primary" | "secondary" | undefined, 
+            value:boolean | string | undefined, index:number, fn: (index:number) => void){
+        if (typeof value == "boolean" || value === null) {
+            return <Checkbox color={color} checked={value} onClick={() =>fn(index)} /> 
+        }
+        else if(value){
+            const dateObject =  new Date(value.replace(' ', 'T').replace(' ', 'Z'));
+            if(dateObject){
+                if(isToday(dateObject)){
+                    return <React.Fragment>{dateObject.getHours() +":"+dateObject.getMinutes()+":"+dateObject.getSeconds()}</React.Fragment>
+                }
+                else if(isThisYear(dateObject)){
+                    return <React.Fragment>{dateObject.getDate() +" "+dateObject.toLocaleString(props.locale.code,{month:'short'}) }</React.Fragment>
+                }
+                else{
+                    return <React.Fragment>{dateObject.getDate() +" "+dateObject.toLocaleString(props.locale.code,{month:'short', year:'numeric'}) }</React.Fragment>
+                }
+                
+            }
+            
+        }
+        
+    }
     function renderItems(){
+        if(loading){
+            return <Loader />
+        }
         if(patient){
             let rows:BillItemTable[] = items.map((val, index) => {
                 
@@ -198,8 +228,8 @@ export const BillForm:React.FC<Props> = (props) => {
                     delete : <IconButton onClick={() => removeItem(index)}>
                                 <IconGenerator type="delete"/>
                             </IconButton>,
-                    used : val.type === 0 ? <Checkbox color="primary" checked={items[index].used}  onClick={() => usedItem(index)} /> : <React.Fragment></React.Fragment>,
-                    paid : val.type === 0 ? <Checkbox color="secondary" checked={items[index].paid}  onClick={() => paidItem(index)} /> : <React.Fragment></React.Fragment>,   
+                    used : val.type === 0 ? renderCheckOrDate("primary", items[index].used, index, usedItem): <React.Fragment></React.Fragment>,
+                    paid : val.type === 0 ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,   
                 }});
             
             if(addingItem){
@@ -292,7 +322,7 @@ export const BillForm:React.FC<Props> = (props) => {
                                 
                             }
                              <Grid item xs={12} style={{display: "flex",justifyContent: "end"}} >
-                                <Button onClick={props.onCancelBill} data-testid="cancel-modal" color="primary">
+                                <Button disabled={loading} onClick={props.onCancelBill} data-testid="cancel-modal" color="primary">
                                     <Translate id="general.cancel" />
                                 </Button>
                                 <Button disabled={loading || items.length === 0} onClick={() => onClickContinue(items)} data-testid="continue-modal" color="primary">
@@ -306,6 +336,7 @@ export const BillForm:React.FC<Props> = (props) => {
             )
         }
     }
+
     return(
         <GridContainer container xs={12} >
             {

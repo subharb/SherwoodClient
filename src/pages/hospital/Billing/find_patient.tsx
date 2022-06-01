@@ -10,6 +10,7 @@ import { formatPatients } from "../../../utils";
 interface Props{
     patients:IPatient[],
     personalFields:[],
+    codeLanguage:string,
     onPatientSelected:(idPatient:number) => void,
 }
 export const FindPatient:React.FC<Props> = (props) => {
@@ -35,7 +36,7 @@ export const FindPatient:React.FC<Props> = (props) => {
                                     { id: "sex", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.sex`} /> },
                                     { id: "birthdate", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.birthdate`} /> },
                                     { id: "dateCreated", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.dateCreated`} /> }]
-                const rows = formatPatients(filteredPatients, props.personalFields)
+                const rows = formatPatients(filteredPatients, props.personalFields, props.codeLanguage)
                 return(
                     <EnhancedTable  noSelectable noFooter rows={rows} headCells={headCells} selectRow={(idPatient:number)=> props.onPatientSelected(idPatient)} />
                 )

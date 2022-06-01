@@ -655,14 +655,17 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
     return encryptedFields;
 }
 
-export function formatPatients(patients, personalFields){
+export function stringDatePostgresToDate(date){
+    return new Date(date.replace(' ', 'T').replace(' ', 'Z'));
+}
+export function formatPatients(patients, personalFields, code = 'es-ES'){
     const arrayPatients = patients.map(patient => {
         let tempRow = {};
         for(const pField of personalFields){
             if(patient.personalData){
                 let value = patient.personalData[pField.name];
                 if(pField.type === "date"){
-                    value = new Date(patient.personalData[pField.name]).toLocaleDateString('es-ES', {
+                    value = new Date(patient.personalData[pField.name]).toLocaleDateString(code, {
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit'
@@ -675,7 +678,12 @@ export function formatPatients(patients, personalFields){
             }
             
         }
-        tempRow["dateCreated"] = patient.dateCreated;
+        const dateObject =  stringDatePostgresToDate(patient.dateCreated);
+        tempRow["dateCreated"] = dateObject.toLocaleString(code,{
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+            })
         tempRow["id"] = patient.id;
         return(
             tempRow
@@ -813,3 +821,10 @@ export function sexStringToColor(sex){
     const sexLowercase = sex.toLowerCase();
     return sexLowercase === "male" ? "#4da7ab" : sexLowercase === "female" ? "#f3948a" : "#aba74d";
 }
+
+export const isToday = (someDate) => {
+    const today = new Date()
+    return someDate.getDate() === today.getDate() &&
+      someDate.getMonth() === today.getMonth() &&
+      someDate.getFullYear() === today.getFullYear()
+  }
