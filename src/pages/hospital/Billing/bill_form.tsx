@@ -56,9 +56,9 @@ export const BillForm:React.FC<Props> = (props) => {
     function renderPatient(){
         if(!patient){
             return <FindPatient patients={props.patients} 
-                personalFields={props.personalFields}
-                codeLanguage={props.locale.code}
-                onPatientSelected={(idPatient) => onPatientSelected(idPatient)} />
+                        personalFields={props.personalFields}
+                        codeLanguage={props.locale.code}
+                        onPatientSelected={(idPatient) => onPatientSelected(idPatient)} />
         }
         else{
             return(
@@ -197,7 +197,7 @@ export const BillForm:React.FC<Props> = (props) => {
             const dateObject =  new Date(value.replace(' ', 'T').replace(' ', 'Z'));
             if(dateObject){
                 if(isToday(dateObject)){
-                    return <React.Fragment>{dateObject.getHours() +":"+dateObject.getMinutes()+":"+dateObject.getSeconds()}</React.Fragment>
+                    return <React.Fragment>{dateObject.toLocaleTimeString(props.locale.code)}</React.Fragment>
                 }
                 else if(isThisYear(dateObject)){
                     return <React.Fragment>{dateObject.getDate() +" "+dateObject.toLocaleString(props.locale.code,{month:'short'}) }</React.Fragment>
