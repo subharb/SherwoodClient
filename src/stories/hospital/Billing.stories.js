@@ -1,6 +1,5 @@
-import React from 'react';
+import { BillingLocalized } from '../../pages/hospital/Billing'
 
-import {BillingLocalized} from '../../pages/hospital/Billing'
 import { BillForm } from '../../pages/hospital/Billing/bill_form'
 import { FindPatient } from '../../pages/hospital/Billing/find_patient'
 import { bills, listDecryptedPatients, listPatientsHospitalWard, personal_data_investigation1,} from "../example_data";
@@ -22,6 +21,8 @@ export default {
 const Template = (args) => <BillingLocalized {...args} />; 
 const TemplateBillForm = (args) => <BillForm {...args} />; 
 const TemplateFindPatient = (args) => <FindPatient {...args} />; 
+
+
 const testPatient = listPatientsHospitalWard[0];
 export const Billing_Section = Template.bind({});
 Billing_Section.args = {

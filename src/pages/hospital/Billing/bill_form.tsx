@@ -11,7 +11,6 @@ import Loader from "../../../components/Loader"
 import { ActionsEnhancedTable, Bill, BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
 import { createBillService, updateBillService } from "../../../services/billing"
 import { calculateTotalBill } from "../../../utils/bill"
-import { BillPDF } from "./bill_pdf"
 import { FindPatient } from "./find_patient"
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
@@ -50,7 +49,6 @@ export const BillForm:React.FC<Props> = (props) => {
     const [fieldErrors, setFieldErrors] = useState({"concept" : "", "type" :"", "amount" :""});
     const [errorBill, setErrorBill] = useState<ReactElement>();
     const [loading, setLoading] = useState(false);
-    const [showPDF, setShowPDF] = useState(false);
     const printRef = useRef<HTMLHeadingElement>(null);
 
     function onPatientSelected(idPatient:number){
@@ -351,10 +349,7 @@ export const BillForm:React.FC<Props> = (props) => {
                 headCells.push({ id: "paid", alignment: "right", label: <React.Fragment>Paid</React.Fragment> });
                 headCells.push({ id: "used", alignment: "right", label: <React.Fragment>Used</React.Fragment> });
             }
-              
-            if(showPDF){
-                return <BillPDF />
-            }
+            
             return(
                 <div ref={printRef} >
                     <Grid container>
