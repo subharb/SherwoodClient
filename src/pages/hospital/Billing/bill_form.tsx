@@ -2,7 +2,7 @@ import { Button, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, 
 import { red } from "@material-ui/core/colors"
 import { isThisYear, isToday } from "date-fns"
 import { string } from "prop-types"
-import React, { ReactElement, useEffect, useState } from "react"
+import React, { ReactElement, useEffect, useRef, useState } from "react"
 import { Language, Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { EnhancedTable } from "../../../components/general/EnhancedTable"
@@ -11,7 +11,12 @@ import Loader from "../../../components/Loader"
 import { ActionsEnhancedTable, Bill, BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
 import { createBillService, updateBillService } from "../../../services/billing"
 import { calculateTotalBill } from "../../../utils/bill"
+import { BillPDF } from "./bill_pdf"
 import { FindPatient } from "./find_patient"
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import { fullDateFromPostgresString } from "../../../utils"
+import { textAlign } from "@material-ui/system"
 
 interface Props{
     updatingBill:boolean,
@@ -45,6 +50,8 @@ export const BillForm:React.FC<Props> = (props) => {
     const [fieldErrors, setFieldErrors] = useState({"concept" : "", "type" :"", "amount" :""});
     const [errorBill, setErrorBill] = useState<ReactElement>();
     const [loading, setLoading] = useState(false);
+    const [showPDF, setShowPDF] = useState(false);
+    const printRef = useRef<HTMLHeadingElement>(null);
 
     function onPatientSelected(idPatient:number){
         const findPatient = props.patients.find((patient) => patient.id === idPatient);
@@ -62,9 +69,19 @@ export const BillForm:React.FC<Props> = (props) => {
         }
         else{
             return(
-                <Grid item xs={12}>
-                    <Typography variant="body2">Patient: {patient.personalData.name} {patient.personalData.surnames}</Typography> 
+                <Grid container>
+                    <Grid item xs={6}  >
+                        <Typography variant="body2"><Translate id="hospital.billing.bill.patient" /> {patient.personalData.name} {patient.personalData.surnames}</Typography> 
+                    </Grid>
+                    {
+                        props.bill &&
+                        <Grid item xs={6} style={{textAlign:'right'}} >
+                            <Typography variant="body2"><Translate id="hospital.billing.bill.date" />: {fullDateFromPostgresString(props.locale.code, props.bill.createdAt)}</Typography> 
+                        </Grid>    
+                    }
+                    
                 </Grid>
+                
             )
         }
     }
@@ -211,6 +228,35 @@ export const BillForm:React.FC<Props> = (props) => {
         }
         
     }
+    async function createPDF(){
+        
+        const element = printRef.current;
+        if(element){
+            const canvas = await html2canvas(element);
+            const data = canvas.toDataURL('image/png');
+        
+            const pdf = new jsPDF();
+            const imgProperties = pdf.getImageProperties(data);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight =
+                (imgProperties.height * pdfWidth) / imgProperties.width;
+        
+            pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save('print.pdf');
+        }
+        else{
+            console.log("No element PDF");
+        }
+          
+    }
+    function renderTextOkButton(){
+        if(props.updatingBill){
+            return <Translate id="hospital.billing.bill.update" />
+        }
+        else{
+            return <Translate id="hospital.billing.bill.save" />
+        }
+    }
     function renderItems(){
         if(loading){
             return <Loader />
@@ -240,28 +286,28 @@ export const BillForm:React.FC<Props> = (props) => {
                                         helperText={helperText(BillItemKeys.concept)} 
                                         onChange={(event) => changeField(event, BillItemKeys.concept)}
                                         variant="outlined"/>, 
-                        type :   <FormControl variant="outlined" fullWidth margin="dense" error={fieldErrors.type !== ""}>
-                                    <InputLabel id="show_treatment">Type</InputLabel>
-                                    <Select
-                                        labelId="show_treatment"
-                                        id="show_treatment"
-                                        label="type"
-                                        value={currentItem[BillItemKeys.type]}
-                                        onChange={(event:React.ChangeEvent<{
-                                            name?: string | undefined;
-                                            value: unknown;
-                                        }>) => changeSelect(event, BillItemKeys.type)}
-                                        >
-                                            {
-                                                Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
-                                                    return isNaN(Number(key))
-                                                }).map(([key, value]) =>{
-                                                    return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
-                                                }) 
-                                            }
+                        // type :   <FormControl variant="outlined" fullWidth margin="dense" error={fieldErrors.type !== ""}>
+                        //             <InputLabel id="show_treatment">Type</InputLabel>
+                        //             <Select
+                        //                 labelId="show_treatment"
+                        //                 id="show_treatment"
+                        //                 label="type"
+                        //                 value={currentItem[BillItemKeys.type]}
+                        //                 onChange={(event:React.ChangeEvent<{
+                        //                     name?: string | undefined;
+                        //                     value: unknown;
+                        //                 }>) => changeSelect(event, BillItemKeys.type)}
+                        //                 >
+                        //                     {
+                        //                         Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
+                        //                             return isNaN(Number(key))
+                        //                         }).map(([key, value]) =>{
+                        //                             return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
+                        //                         }) 
+                        //                     }
                                         
-                                    </Select>
-                                </FormControl>,
+                        //             </Select>
+                        //         </FormControl>,
                         amount : <TextField label="Amount" variant="outlined" helperText={helperText(BillItemKeys.amount)} error={fieldErrors.amount !== ""}  type="text" onChange={(event) => changeField(event, BillItemKeys.amount)}/>,
                         delete : <IconButton onClick={() => addITem(rows.length -1)}>
                                     <IconGenerator type="add"/>
@@ -273,7 +319,7 @@ export const BillForm:React.FC<Props> = (props) => {
                 let field: BillItemTable = {
                     id:rows.length -1,
                     concept : <React.Fragment></React.Fragment>, 
-                    type :   <React.Fragment></React.Fragment>,
+                    //type :   <React.Fragment></React.Fragment>,
                     amount : <React.Fragment></React.Fragment>,
                     delete : <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem} 
                                 type="button" data-testid="add_bill" 
@@ -288,13 +334,13 @@ export const BillForm:React.FC<Props> = (props) => {
             if(items.length > 0){
                 let totalBill = calculateTotalBill(items);
                 rows.push({id : items.length, concept : <React.Fragment></React.Fragment>, 
-                    type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography> , 
+                    //type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography> , 
                     amount:<Typography style={{fontWeight:'bold'}} >{totalBill +" "+props.currency}</Typography>,
                     delete : <React.Fragment></React.Fragment>,
                 });
             }
             const headCells = [{ id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item.concept`} /> },
-                    { id: "type", alignment: "left", label: <Translate id={`hospital.billing.item.type`} /> },
+                    //{ id: "type", alignment: "left", label: <Translate id={`hospital.billing.item.type`} /> },
                     { id: "amount", alignment: "left", label: <Translate id={`hospital.billing.item.amount`} /> }
                 ]
             
@@ -306,8 +352,11 @@ export const BillForm:React.FC<Props> = (props) => {
                 headCells.push({ id: "used", alignment: "right", label: <React.Fragment>Used</React.Fragment> });
             }
               
+            if(showPDF){
+                return <BillPDF />
+            }
             return(
-                <React.Fragment>
+                <div ref={printRef} >
                     <Grid container>
                         <Grid item xs={12}>
                             <EnhancedTable noFooter noSelectable headCells={headCells} rows={rows} 
@@ -326,13 +375,13 @@ export const BillForm:React.FC<Props> = (props) => {
                                     <Translate id="general.cancel" />
                                 </Button>
                                 <Button disabled={loading || items.length === 0} onClick={() => onClickContinue(items)} data-testid="continue-modal" color="primary">
-                                    <Translate id="general.continue" />
+                                    { renderTextOkButton()} 
                                 </Button>
                              </Grid>
                             
                         </Grid>
                     </Grid>
-                </React.Fragment>
+                </div>
             )
         }
     }

@@ -196,6 +196,7 @@
         },
         "billing" : {
             "title" : ["Billing", "Facturación", "Facturation"],
+            "no_bills" : ["Click the plus button to create your first bill", "Haga clic en el botón más para crear su primera factura", "Cliquez sur le bouton plus pour créer votre première facture"],
             "item" : {
                 "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],
                 "concept" : ["Concept", "Concepto", "Concept"],
@@ -218,6 +219,9 @@
                 "total" : ["Total", "Total", "Total"],
                 "total_pending" : ["Pending", "Pendiente", "Pendant"],
                 "patient" : ["Patient", "Paciente","Patients"],
+                "save" : ["Save", "Guardar", "Enregistrer"],
+                "update" : ["Update", "Actualizar", "Mettre à jour"],
+                "date" : ["Date", "Fecha", "Date"],
                 "success" : {
                     "created" : ["Bill succesfully created", "Factura creada correctamente", "Facture créée avec succès"],
                     "updated" : ["Bill succesfully updated", "Factura actualizada correctamente", "Facture mis à jour avec succès"]

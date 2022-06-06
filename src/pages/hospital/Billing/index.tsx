@@ -144,11 +144,11 @@ const Billing:React.FC<Props> = (props) => {
             return <Loader />
         }
         if(props.bills.length === 0){
-            return "No hay facturas";
+            return <Translate id="hospital.billing.no_bills" />;
         }
         else{
             const rows = props.bills.map((bill) => {
-                const patient = props.patients.find((patient) => patient.id === bill.patientInvestigation.id);
+                const patient = props.patients.sort((patA, patB) => patB.id - patA.id).find((patient) => patient.id === bill.patientInvestigation.id);
                 return {
                     "id" : bill.id,
                     "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 
@@ -163,7 +163,8 @@ const Billing:React.FC<Props> = (props) => {
                     { id: "totalPending", alignment: "left", label: <Translate id={`hospital.billing.bill.total_pending`} /> }
                 ]
             return <EnhancedTable headCells={headCells} rows={rows}  noSelectable
-                    actions={[{"type" : "view", "func" : (index:number) => billSelected(index)}]} />
+                    actions={[{"type" : "edit", "func" : (index:number) => billSelected(index)},
+                            {"type" : "view", "func" : (index:number) => billSelected(index)}]} />
         }
     }
     return(
@@ -197,7 +198,7 @@ const Billing:React.FC<Props> = (props) => {
                         locale={props.activeLanguage}
                         />
             </Modal>
-			<Grid justify="space-between" direction='row' container spacing={6}>
+			<Grid justify="space-between" direction='row'  container spacing={6}>
 				<Grid item xs={6}>
 					<Typography variant="h3" gutterBottom style={{ color: "white" }}>
 						<Translate id="hospital.billing.title" />
@@ -211,7 +212,7 @@ const Billing:React.FC<Props> = (props) => {
 				
 			</Grid>
 			<Divider my={6} />
-            <Grid direction='row' container spacing={6} justify="center" >
+            <Grid direction='row' container spacing={6} justify="center" style={{ color: "white" }}>
                 {
                     renderBills()
                 }

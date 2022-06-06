@@ -655,6 +655,14 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
     return encryptedFields;
 }
 
+export function fullDateFromPostgresString(localeCode, dateString){
+    const dateObject =  stringDatePostgresToDate(dateString);
+    return dateObject.toLocaleString(localeCode,{
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+            })
+}
 export function stringDatePostgresToDate(date){
     return new Date(date.replace(' ', 'T').replace(' ', 'Z'));
 }
