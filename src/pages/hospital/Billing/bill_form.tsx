@@ -12,9 +12,8 @@ import { ActionsEnhancedTable, Bill, BillItem, BillItemKeys, BillItemTable, IPat
 import { createBillService, updateBillService } from "../../../services/billing"
 import { calculateTotalBill } from "../../../utils/bill"
 import { FindPatient } from "./find_patient"
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
-import { fullDateFromPostgresString } from "../../../utils"
+
+import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils"
 import { textAlign } from "@material-ui/system"
 
 interface Props{
@@ -25,6 +24,7 @@ interface Props{
     uuidInvestigation:string,
     bill:Bill | null,
     locale:Language,
+    print:boolean,
     onBillSuccesfullyCreated:(bill:Bill) => void,
     onCancelBill:() => void
     
@@ -38,6 +38,10 @@ const GridContainer = styled(Grid)`
     }
 `
 
+const GridBottom = styled(Grid)<{ hide: boolean }>`
+    display:${props => props.hide ? 'none' : 'flex' };
+    justify-content:end;
+`;
 
 const DEFAULT_CURRENT_ITEM = {concept:"", type :0, amount:0}
 
@@ -69,15 +73,17 @@ export const BillForm:React.FC<Props> = (props) => {
             return(
                 <Grid container>
                     <Grid item xs={6}  >
-                        <Typography variant="body2"><Translate id="hospital.billing.bill.patient" /> {patient.personalData.name} {patient.personalData.surnames}</Typography> 
+                        <Typography variant="body2"><Translate id="hospital.billing.bill.patient" />: {patient.personalData.name} {patient.personalData.surnames}</Typography> 
+                        <Typography variant="body2"><Translate id="investigation.create.personal_data.fields.birthdate" />: {dateToFullDateString(patient.personalData.birthdate, props.locale.code)}</Typography> 
+                        <Typography variant="body2"><Translate id="investigation.create.personal_data.fields.sex" />: {patient.personalData.sex}</Typography> 
                     </Grid>
                     {
                         props.bill &&
                         <Grid item xs={6} style={{textAlign:'right'}} >
+                            <Typography variant="body2"><Translate id="hospital.billing.bill.num_bill" />: {props.bill.id}</Typography> 
                             <Typography variant="body2"><Translate id="hospital.billing.bill.date" />: {fullDateFromPostgresString(props.locale.code, props.bill.createdAt)}</Typography> 
                         </Grid>    
                     }
-                    
                 </Grid>
                 
             )
@@ -211,42 +217,24 @@ export const BillForm:React.FC<Props> = (props) => {
         else if(value){
             const dateObject =  new Date(value.replace(' ', 'T').replace(' ', 'Z'));
             if(dateObject){
-                if(isToday(dateObject)){
-                    return <React.Fragment>{dateObject.toLocaleTimeString(props.locale.code)}</React.Fragment>
-                }
-                else if(isThisYear(dateObject)){
-                    return <React.Fragment>{dateObject.getDate() +" "+dateObject.toLocaleString(props.locale.code,{month:'short'}) }</React.Fragment>
-                }
-                else{
-                    return <React.Fragment>{dateObject.getDate() +" "+dateObject.toLocaleString(props.locale.code,{month:'short', year:'numeric'}) }</React.Fragment>
-                }
+                return <React.Fragment>{dateObject.getDate() +" "+dateObject.toLocaleString(props.locale.code,{month:'short', year:'numeric'}) }</React.Fragment>
+
+                // if(isToday(dateObject)){
+                //     return <React.Fragment>{dateObject.toLocaleTimeString(props.locale.code)}</React.Fragment>
+                // }
+                // else if(isThisYear(dateObject)){
+                //     return <React.Fragment>{dateObject.getDate() +" "+dateObject.toLocaleString(props.locale.code,{month:'short'}) }</React.Fragment>
+                // }
+                // else{
+                //     return <React.Fragment>{dateObject.getDate() +" "+dateObject.toLocaleString(props.locale.code,{month:'short', year:'numeric'}) }</React.Fragment>
+                // }
                 
             }
             
         }
         
     }
-    async function createPDF(){
-        
-        const element = printRef.current;
-        if(element){
-            const canvas = await html2canvas(element);
-            const data = canvas.toDataURL('image/png');
-        
-            const pdf = new jsPDF();
-            const imgProperties = pdf.getImageProperties(data);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight =
-                (imgProperties.height * pdfWidth) / imgProperties.width;
-        
-            pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save('print.pdf');
-        }
-        else{
-            console.log("No element PDF");
-        }
-          
-    }
+
     function renderTextOkButton(){
         if(props.updatingBill){
             return <Translate id="hospital.billing.bill.update" />
@@ -365,14 +353,14 @@ export const BillForm:React.FC<Props> = (props) => {
                                 </Grid>
                                 
                             }
-                             <Grid item xs={12} style={{display: "flex",justifyContent: "end"}} >
+                             <GridBottom hide={props.print} item xs={12} >
                                 <Button disabled={loading} onClick={props.onCancelBill} data-testid="cancel-modal" color="primary">
                                     <Translate id="general.cancel" />
                                 </Button>
                                 <Button disabled={loading || items.length === 0} onClick={() => onClickContinue(items)} data-testid="continue-modal" color="primary">
                                     { renderTextOkButton()} 
                                 </Button>
-                             </Grid>
+                             </GridBottom>
                             
                         </Grid>
                     </Grid>

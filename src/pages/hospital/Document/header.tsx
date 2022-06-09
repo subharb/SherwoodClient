@@ -3,21 +3,18 @@ import React, { useState } from "react"
 import { Translate } from "react-localize-redux";
 import { connect } from "react-redux";
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
-import { IPatient } from "../../../constants/types";
+import { BillingInfo, IPatient } from "../../../constants/types";
 import { formatPatients } from "../../../utils";
 
 
-interface Props{
+interface Props extends BillingInfo{
     size:"A4" | "ticket",
-    imageUrl:string,
-    address:string,
-    telephone:string,
-    email:string
+ 
 }
 export const HeaderDocument:React.FC<Props> = (props) => {
     if(props.size === "A4"){
         return(
-            <Grid container xs={12} style={{width:"3508px", border:'1px red solid'}}>
+            <Grid container xs={12}>
                 <Grid item style={{textAlign:'center', maxWidth:'300px'}}>
                     <Grid >
                         <img src={props.imageUrl} width="80" alt="logo" />

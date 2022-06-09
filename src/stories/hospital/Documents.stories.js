@@ -1,6 +1,8 @@
 import { HeaderDocument } from '../../pages/hospital/Document/header';
 import { Document } from '../../pages/hospital/Document';
 import ProviderSherwood from '../../providerSherwood';
+import { bills, listPatientsHospitalWard } from '../example_data';
+import { BillForm } from '../../pages/hospital/Billing/bill_form';
 
 export default {
   title: 'Hospital/Documents',
@@ -14,8 +16,18 @@ export default {
                         {story()}
                 </ProviderSherwood>],
 };
+const testPatient = listPatientsHospitalWard[0];
 
-const Template = (args) => <Document {...args} >Paparruchas</Document>; 
+const Template = (args) => (
+    <Document {...args} >
+        <BillForm updatingBill={true} locale={{code:"es"}} currency="€" 
+            bill= {{...bills[0], patientInvestigation : testPatient}}
+            print={true}
+            />
+    </Document>
+  );
+
+; 
 const TemplateHeader = (args) => <HeaderDocument {...args} />; 
 
 const HeaderInfo = {

@@ -40,8 +40,7 @@ export interface PersonalData{
     surnames ?: string,
     birthdate ?: string,
     health_id?:string,
-    sex:string,
-    
+    sex:string,   
 }
 
 export interface OptionField{
@@ -128,4 +127,12 @@ export enum BillItemKeys{
     concept = "concept",
     amount = "amount",
     type = "type"
+}
+
+export interface BillingInfo{
+    address:string,
+    currency:string,
+    telephone:string,
+    email:string,
+    imageUrl:string
 }

@@ -18,14 +18,14 @@ export default function Modal(props){
             minWidth: "800px"
         }
           
-    } : "";
+    } : {};
     paperStyles = props.isTransparent ? {...paperStyles, 
         backgroundColor: 'transparent',
         boxShadow: 'none',
         } : paperStyles;
     
     return(
-        <Dialog className='modal' maxWidth="lg" fullWidth disableEscapeKeyDown 
+        <Dialog className='modal' fullWidth disableEscapeKeyDown 
             PaperProps={{style : paperStyles}}
             open={props.open}
             onClose={props.closeModal}
@@ -56,6 +56,7 @@ Modal.propTypes = {
     open: PropTypes.bool.isRequired,
     isTransparent:PropTypes.bool,
     medium:PropTypes.bool,
+    size:PropTypes.string,
     children:PropTypes.element,
     title: PropTypes.oneOfType([
         PropTypes.string.isRequired,

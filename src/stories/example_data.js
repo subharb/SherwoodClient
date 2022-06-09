@@ -2179,7 +2179,7 @@ export const listPatientsHospitalWard = [
         personalData:{
             name:"Peter",
             surnames:"Petrelli",
-            dateOfBirth:"1976/07/31",
+            birthdate:"1976/07/31",
             sex:"male",
         }
     },
@@ -2200,7 +2200,7 @@ export const listPatientsHospitalWard = [
         patient:{
             name:"John",
             surnames:"Travolta",
-            dateOfBirth:"31/07/1944",
+            birthdate:"31/07/1944",
             gender:"male",
         }
     },
@@ -2214,7 +2214,7 @@ export const listPatientsHospitalWard = [
         patient:{
             name:"Margaret",
             surnames:"Thatcher",
-            dateOfBirth:"11/02/1946",
+            birthdate:"11/02/1946",
             gender:"female",
         }
     },
@@ -2228,7 +2228,7 @@ export const listPatientsHospitalWard = [
         patient:{
             name:"Peter",
             surnames:"Petrelli",
-            dateOfBirth:"31/07/1976",
+            birthdate:"31/07/1976",
             gender:"male",
         }
     },
@@ -2241,7 +2241,7 @@ export const listPatientsHospitalWard = [
         patient:{
             name:"Peter",
             surnames:"Petrelli",
-            dateOfBirth:"31/07/1976",
+            birthdate:"31/07/1976",
             gender:"male",
         }
     },
@@ -2254,7 +2254,7 @@ export const listPatientsHospitalWard = [
         patient:{
             name:"Peter",
             surnames:"Petrelli",
-            dateOfBirth:"31/07/1976",
+            birthdate:"31/07/1976",
             gender:"male",
         }
     }

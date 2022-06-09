@@ -1,35 +1,75 @@
 import { Grid, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react"
-import { Translate } from "react-localize-redux";
-import { connect } from "react-redux";
-import { EnhancedTable } from "../../../components/general/EnhancedTable";
-import { IPatient } from "../../../constants/types";
-import { formatPatients } from "../../../utils";
+import { BillingInfo, IPatient } from "../../../constants/types";
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 import { HeaderDocument } from "./header";
+import SaveIcon from '@material-ui/icons/Save';
 
-
-interface Props{
+interface Props extends BillingInfo{
     size:"A4" | "ticket",
-    imageUrl:string,
-    address:string,
-    telephone:string,
-    email:string
+    name:string
 }
 export const Document:React.FC<Props> = (props) => {
+    const printRef = React.useRef<HTMLDivElement>(null);
+    
+    async function savePDF(){
+        const element = printRef.current;
+        if(element){
+
+            // const element = printRef.current;
+            // const canvas = await html2canvas(element);
+
+            // const data = canvas.toDataURL('image/jpg');
+            // const link = document.createElement('a');
+
+            // if (typeof link.download === 'string') {
+            // link.href = data;
+            // link.download = 'image.jpg';
+
+            // document.body.appendChild(link);
+            // link.click();
+            // document.body.removeChild(link);
+            // } else {
+            // window.open(data);
+            // }
+
+            const canvas = await html2canvas(element);
+            const data = canvas.toDataURL('image/png');
+
+            const pdf = new jsPDF();
+            const imgProperties = pdf.getImageProperties(data);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight =
+            (imgProperties.height * pdfWidth) / imgProperties.width;
+
+            pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(props.name+'.pdf');
+        }
+        else{
+            console.log("No ref")
+        }
+    }
     if(props.size === "A4"){
         return(
-            <Grid container xs={12} style={{width:"3508px"}}>
-                <Grid item xs={12} alignItems="flex-end">
-                    Print
+            <div style={{overflow:'scroll'}}>
+                
+                    <Grid item xs={12} style={{textAlign:'right'}}>
+                        <button onClick={savePDF}><SaveIcon /></button>
+                    </Grid>
+                <Grid container xs={12}>
+                    <div ref={printRef} style={{width:'700px', padding:'1rem'}}>
+                        <HeaderDocument size={props.size} imageUrl={props.imageUrl} currency={props.currency}
+                            telephone={props.telephone} address={props.address} email={props.email} 
+                            />
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                        {
+                            props.children
+                        }
+                        </Grid>   
+                    </div>
                 </Grid>
-                <HeaderDocument size={props.size} imageUrl={props.imageUrl} 
-                    telephone={props.telephone} address={props.address} email={props.email} 
-                    />
-                {
-                    props.children
-                }
-            </Grid>
-            
+            </div>
         )
     }
     else{

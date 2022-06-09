@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet';
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import styled, { withTheme } from "styled-components/macro";
-import { Box, Button, Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
+import { Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
 import { spacing } from "@material-ui/system";
 import Modal from '../../../components/general/modal';
 import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@material-ui/lab';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
-import { Bill, IPatient } from '../../../constants/types';
-
+import { Bill, BillingInfo, IPatient } from '../../../constants/types';
+import { Document } from '../Document';
 import { connect } from 'react-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { getBillsService } from '../../../services/billing';
@@ -25,6 +25,7 @@ interface PropsRedux{
     uuidInvestigation : string,
 
 }
+
 
 const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
     const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
@@ -57,12 +58,12 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
     }, [investigation]) 
     if(investigation){
         return <BillingLocalized patients={patients.data[investigation.uuid]} 
-                uuidInvestigation={investigation.uuid as string}
-                personalFields={investigation.personalFields}
-                currency={investigation.billingInfo.currency} 
-                bills={bills} loading={loading}
-                onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
-                />
+                    uuidInvestigation={investigation.uuid as string}
+                    personalFields={investigation.personalFields}
+                    billingInfo = {investigation.billingInfo}
+                    bills={bills} loading={loading} 
+                    onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
+                    />
     }
     else{
         return <Loader />;
@@ -84,17 +85,24 @@ interface Props extends LocalizeContextProps{
     patients:IPatient[],
     personalFields:[],
     uuidInvestigation:string,
-    currency: string,
+    billingInfo: BillingInfo,
     bills:Bill[];
     loading:boolean,
     onBillSuccesfullyCreated:(bill:Bill) => void,
 }
 
+export enum BillActions{
+    update = "update",
+    preview = "preview",
+    default = ""
+}
+
+
 const Billing:React.FC<Props> = (props) => {
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
-    
+    const [actionBill, setActionBill] = useState<BillActions>(BillActions.default);
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
     const [patientBill, setPatientBill] = useState<IPatient | null>(null);
 
@@ -121,7 +129,7 @@ const Billing:React.FC<Props> = (props) => {
         setCurrentBill(null);
         
     }
-    function billSelected(idBill:number){
+    function makeActionBill(idBill:number, action:BillActions){
         console.log(idBill);
         const tempBill = props.bills.find((bill)=>bill.id === idBill);
         
@@ -130,11 +138,13 @@ const Billing:React.FC<Props> = (props) => {
             if(patient){
                 tempBill.patientInvestigation = patient;
             }            
+            setActionBill(action);
             setShowModal(true);
             setCurrentBill(tempBill);
         }
         
     }
+
     function onCloseModal(){
         setShowModal(false);
         setCurrentBill(null);
@@ -163,8 +173,39 @@ const Billing:React.FC<Props> = (props) => {
                     { id: "totalPending", alignment: "left", label: <Translate id={`hospital.billing.bill.total_pending`} /> }
                 ]
             return <EnhancedTable headCells={headCells} rows={rows}  noSelectable
-                    actions={[{"type" : "edit", "func" : (index:number) => billSelected(index)},
-                            {"type" : "view", "func" : (index:number) => billSelected(index)}]} />
+                    actions={[{"type" : "edit", "func" : (index:number) => makeActionBill(index, BillActions.update)},
+                            {"type" : "view", "func" : (index:number) => makeActionBill(index, BillActions.preview)}]} />
+        }
+    }
+    function renderModal(){
+        if(actionBill === "update"){
+            return (
+               <Modal key="modal" size="lg" medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
+                   <BillForm patients={props.patients } personalFields={props.personalFields} 
+                        currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
+                        onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
+                        onCancelBill={onCancelBill} print={false}
+                        bill={currentBill} updatingBill = {currentBill !== null}
+                        locale={props.activeLanguage}
+                    />
+                </Modal>
+            )
+        }
+        else if(actionBill === "preview"){
+            return(
+                <Modal key="modal" medium size="sm" open={showModal} title={""} closeModal={() => onCloseModal()}>
+                    <Document address={props.billingInfo.address} imageUrl={props.billingInfo.imageUrl} currency={props.billingInfo.currency}
+                            email={props.billingInfo.email} size="A4" telephone={props.billingInfo.telephone} name={currentBill ? "Bill"+currentBill.id : ""} >
+                        <BillForm patients={props.patients } personalFields={props.personalFields} 
+                            currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
+                            onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
+                            onCancelBill={onCancelBill} print={true}
+                            bill={currentBill} updatingBill = {currentBill !== null}
+                            locale={props.activeLanguage}
+                            />
+                    </Document>
+                </Modal>
+            )
         }
     }
     return(
@@ -189,15 +230,11 @@ const Billing:React.FC<Props> = (props) => {
                         
                         
                 </Snackbar>
-            <Modal key="modal" medium open={showModal} title={!currentBill ? "Create bill" : "Bill Id:"+currentBill.id} closeModal={() => onCloseModal()}>
-                    <BillForm patients={props.patients } personalFields={props.personalFields} 
-                        currency={props.currency} uuidInvestigation={props.uuidInvestigation}
-                        onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
-                        onCancelBill={onCancelBill} 
-                        bill={currentBill} updatingBill = {currentBill !== null}
-                        locale={props.activeLanguage}
-                        />
-            </Modal>
+            
+                {
+                    renderModal()
+                }
+            
 			<Grid justify="space-between" direction='row'  container spacing={6}>
 				<Grid item xs={6}>
 					<Typography variant="h3" gutterBottom style={{ color: "white" }}>
