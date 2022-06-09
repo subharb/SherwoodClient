@@ -24,6 +24,7 @@ const TemplateFindPatient = (args) => <FindPatient {...args} />;
 
 
 const testPatient = listPatientsHospitalWard[0];
+
 export const Billing_Section = Template.bind({});
 Billing_Section.args = {
   patients : listDecryptedPatients,
@@ -37,6 +38,15 @@ export const Bill_Form = TemplateBillForm.bind({});
 Bill_Form.args = {
   patients : listDecryptedPatients,
   personalFields : personal_data_investigation1(),
+  locale: {code:"es"},
+  currency : "€"
+};
+
+export const Bill_Form_View = TemplateBillForm.bind({});
+Bill_Form_View.args = {
+  updatingBill:true,
+  bill: {...bills[0], patientInvestigation : testPatient},
+  locale: {code:"es"},
   currency : "€"
 };
 

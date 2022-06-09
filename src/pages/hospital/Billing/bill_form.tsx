@@ -331,7 +331,7 @@ export const BillForm:React.FC<Props> = (props) => {
             }
             if(items.length > 0){
                 let totalBill = calculateTotalBill(items);
-                rows.push({id : items.length, concept : <React.Fragment></React.Fragment>, 
+                rows.push({id : items.length, concept : <React.Fragment><Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography></React.Fragment>, 
                     //type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography> , 
                     amount:<Typography style={{fontWeight:'bold'}} >{totalBill +" "+props.currency}</Typography>,
                     delete : <React.Fragment></React.Fragment>,
