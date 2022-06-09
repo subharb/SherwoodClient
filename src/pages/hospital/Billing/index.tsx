@@ -180,7 +180,7 @@ const Billing:React.FC<Props> = (props) => {
     function renderModal(){
         if(actionBill === "update"){
             return (
-               <Modal key="modal" size="lg" medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
+               <Modal key="modal" fullWidth medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
                    <BillForm patients={props.patients } personalFields={props.personalFields} 
                         currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                         onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 

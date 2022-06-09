@@ -25,7 +25,7 @@ export default function Modal(props){
         } : paperStyles;
     
     return(
-        <Dialog className='modal' fullWidth disableEscapeKeyDown 
+        <Dialog className='modal' maxWidth="lg" fullWidth={props.fullWidth} disableEscapeKeyDown 
             PaperProps={{style : paperStyles}}
             open={props.open}
             onClose={props.closeModal}
@@ -57,6 +57,7 @@ Modal.propTypes = {
     isTransparent:PropTypes.bool,
     medium:PropTypes.bool,
     size:PropTypes.string,
+    fullWidth:PropTypes.bool,
     children:PropTypes.element,
     title: PropTypes.oneOfType([
         PropTypes.string.isRequired,

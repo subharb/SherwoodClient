@@ -212,7 +212,7 @@ export const BillForm:React.FC<Props> = (props) => {
     function renderCheckOrDate(color:"default" | "primary" | "secondary" | undefined, 
             value:boolean | string | undefined, index:number, fn: (index:number) => void){
         if (typeof value == "boolean" || value === null) {
-            return <Checkbox color={color} checked={value} onClick={() =>fn(index)} /> 
+            return <Checkbox color={color} checked={value} disabled={props.print} onClick={() =>fn(index)} /> 
         }
         else if(value){
             const dateObject =  new Date(value.replace(' ', 'T').replace(' ', 'Z'));
