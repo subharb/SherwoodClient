@@ -94,6 +94,7 @@ interface Props extends LocalizeContextProps{
 export enum BillActions{
     update = "update",
     preview = "preview",
+    create = "update",
     default = ""
 }
 
@@ -178,34 +179,37 @@ const Billing:React.FC<Props> = (props) => {
         }
     }
     function renderModal(){
-        if(actionBill === "update"){
-            return (
-               <Modal key="modal" fullWidth medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
-                   <BillForm patients={props.patients } personalFields={props.personalFields} 
-                        currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
-                        onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
-                        onCancelBill={onCancelBill} print={false}
-                        bill={currentBill} updatingBill = {currentBill !== null}
-                        locale={props.activeLanguage}
-                    />
-                </Modal>
-            )
-        }
-        else if(actionBill === "preview"){
-            return(
-                <Modal key="modal" medium size="sm" open={showModal} title={""} closeModal={() => onCloseModal()}>
-                    <Document address={props.billingInfo.address} imageUrl={props.billingInfo.imageUrl} currency={props.billingInfo.currency}
-                            email={props.billingInfo.email} size="A4" telephone={props.billingInfo.telephone} name={currentBill ? "Bill"+currentBill.id : ""} >
+        switch(actionBill){
+            case BillActions.update:
+            case BillActions.create:
+                return (
+                    <Modal key="modal" fullWidth medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
                         <BillForm patients={props.patients } personalFields={props.personalFields} 
-                            currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
-                            onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
-                            onCancelBill={onCancelBill} print={true}
-                            bill={currentBill} updatingBill = {currentBill !== null}
-                            locale={props.activeLanguage}
-                            />
-                    </Document>
-                </Modal>
-            )
+                             currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
+                             onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
+                             onCancelBill={onCancelBill} print={false}
+                             bill={currentBill} updatingBill = {currentBill !== null}
+                             locale={props.activeLanguage}
+                         />
+                     </Modal>
+                 )
+            case BillActions.preview:
+                return(
+                    <Modal key="modal" medium size="sm" open={showModal} title={""} closeModal={() => onCloseModal()}>
+                        <Document address={props.billingInfo.address} urlLogo={props.billingInfo.urlLogo} currency={props.billingInfo.currency}
+                                email={props.billingInfo.email} size="A4" telephone={props.billingInfo.telephone} name={currentBill ? "Bill"+currentBill.id : ""} >
+                            <BillForm patients={props.patients } personalFields={props.personalFields} 
+                                currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
+                                onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
+                                onCancelBill={onCancelBill} print={true}
+                                bill={currentBill} updatingBill = {currentBill !== null}
+                                locale={props.activeLanguage}
+                                />
+                        </Document>
+                    </Modal>
+                )
+            default:
+                return null;
         }
     }
     return(
@@ -243,6 +247,7 @@ const Billing:React.FC<Props> = (props) => {
                     <ButtonAdd disabled={showModal || props.loading} 
                         type="button" data-testid="add_bill" 
                         onClick={() => {
+                            setActionBill(BillActions.create);
                             setShowModal(true);
                         }} />				
 				</Grid>

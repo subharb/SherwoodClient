@@ -12,12 +12,13 @@ interface Props extends BillingInfo{
  
 }
 export const HeaderDocument:React.FC<Props> = (props) => {
+    
     if(props.size === "A4"){
         return(
             <Grid container xs={12}>
                 <Grid item style={{textAlign:'center', maxWidth:'300px'}}>
                     <Grid >
-                        <img src={props.imageUrl} width="80" alt="logo" />
+                        <img src={props.urlLogo}/>
                     </Grid>
                     <Grid>
                         <Typography variant="body2">{props.address}</Typography>
@@ -32,7 +33,7 @@ export const HeaderDocument:React.FC<Props> = (props) => {
                 
             </Grid>
             
-        )
+        ) 
     }
     else{
         return null;
