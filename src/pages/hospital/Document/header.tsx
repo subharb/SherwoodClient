@@ -18,7 +18,7 @@ export const HeaderDocument:React.FC<Props> = (props) => {
             <Grid container xs={12}>
                 <Grid item style={{textAlign:'center', maxWidth:'300px'}}>
                     <Grid >
-                        <img src={props.urlLogo}/>
+                        <img src={props.logoBlob}/>
                     </Grid>
                     <Grid>
                         <Typography variant="body2">{props.address}</Typography>

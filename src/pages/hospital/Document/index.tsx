@@ -13,26 +13,6 @@ interface Props extends BillingInfo{
 export const Document:React.FC<Props> = (props) => {
     const printRef = React.useRef<HTMLDivElement>(null);
     
-   function saveAs(blob:any, fileName:any){
-        var elem = window.document.createElement('a');
-        elem.href = blob
-        elem.download = fileName;
-        elem.setAttribute('style', 'display:none;');
-        
-        (document.body || document.documentElement).appendChild(elem);
-        if (typeof elem.click === 'function') {
-          elem.click();
-        } else {
-          elem.target = '_blank';
-          elem.dispatchEvent(new MouseEvent('click', {
-            view: window,
-            bubbles: true,
-            cancelable: true
-          }));
-        }
-        URL.revokeObjectURL(elem.href);
-        elem.remove()
-      }
     async function savePDF(){
         const element = printRef.current;
         if(element){
@@ -93,7 +73,7 @@ export const Document:React.FC<Props> = (props) => {
                     </Grid>
                 <Grid container xs={12}>
                     <div id="print" ref={printRef} style={{width:'700px', padding:'1rem'}}>
-                        <HeaderDocument size={props.size} urlLogo={props.urlLogo} currency={props.currency}
+                        <HeaderDocument size={props.size} logoBlob={props.logoBlob} currency={props.currency}
                             telephone={props.telephone} address={props.address} email={props.email} 
                             />
                         <Grid item xs={12} style={{paddingTop:'1rem'}}>
