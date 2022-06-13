@@ -394,7 +394,7 @@ const dashboardBillingRoutes = {
     icon: <MonetizationOnIcon />,
     badge: "",
     permissions : [PERMISSION.MEDICAL_READ],
-    functionalities:[FUNCTIONALITY.HOSPITALIZATION],
+    functionalities:[FUNCTIONALITY.BILLING],
     component: {
         path: HOSPITAL_BILLING,
         name: "Billing",
