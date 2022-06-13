@@ -251,7 +251,7 @@ export const BillForm:React.FC<Props> = (props) => {
             let rows:BillItemTable[] = items.map((val, index) => {
                 
                 const color = val.type !== 0 ? red[900] : "black";
-                const amountString = val.type !== 0 ? "- "+val.amount+" "+(val.type === 2 ? "%" : props.currency) : val.amount+" €";
+                const amountString = val.type !== 0 ? "- "+val.amount+" "+(val.type === 2 ? "%" : props.currency) : val.amount+" "+props.currency;
                 
                 return {id : index, 
                     concept :<Typography variant="body2" style={{color:color}}>{val.concept}</Typography>, 

@@ -163,15 +163,15 @@ const Billing:React.FC<Props> = (props) => {
                 return {
                     "id" : bill.id,
                     "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 
-                    "total" : bill.total,
-                    "totalPending" : bill.total - bill.totalPaid
+                    "total" : Number(bill.total),
+                    "totalPending" : Number(bill.total) - Number(bill.totalPaid)
                 }
             });
             const headCells = [
                     { id: "id", alignment: "left", label: "ID" },
                     { id: "patient", alignment: "left", label: <Translate id={`hospital.billing.bill.patient`} /> },
-                    { id: "total", alignment: "left", label: <Translate id={`hospital.billing.bill.total`} /> },
-                    { id: "totalPending", alignment: "left", label: <Translate id={`hospital.billing.bill.total_pending`} /> }
+                    { id: "total", alignment: "left", label: [<Translate id={`hospital.billing.bill.total`} />,"("+props.billingInfo.currency+")"] },
+                    { id: "totalPending", alignment: "left", label: [<Translate id={`hospital.billing.bill.total_pending`} />,"("+props.billingInfo.currency+")"] }
                 ]
             return <EnhancedTable headCells={headCells} rows={rows}  noSelectable
                     actions={[{"type" : "edit", "func" : (index:number) => makeActionBill(index, BillActions.update)},
