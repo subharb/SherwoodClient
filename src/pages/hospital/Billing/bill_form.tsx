@@ -73,15 +73,15 @@ export const BillForm:React.FC<Props> = (props) => {
             return(
                 <Grid container>
                     <Grid item xs={6}  >
-                        <Typography variant="body2"><Translate id="hospital.billing.bill.patient" />: {patient.personalData.name} {patient.personalData.surnames}</Typography> 
-                        <Typography variant="body2"><Translate id="investigation.create.personal_data.fields.birthdate" />: {dateToFullDateString(patient.personalData.birthdate, props.locale.code)}</Typography> 
-                        <Typography variant="body2"><Translate id="investigation.create.personal_data.fields.sex" />: {patient.personalData.sex}</Typography> 
+                        <Typography variant="body2"><span style={{fontWeight:'bold'}}><Translate id="hospital.billing.bill.patient" /></span>: {patient.personalData.name} {patient.personalData.surnames}</Typography> 
+                        <Typography  variant="body2"><span style={{fontWeight:'bold'}}><Translate id="investigation.create.personal_data.fields.birthdate" /></span>: {dateToFullDateString(patient.personalData.birthdate, props.locale.code)}</Typography> 
+                        <Typography variant="body2"><span style={{fontWeight:'bold'}}><Translate id="investigation.create.personal_data.fields.sex" /></span>: {patient.personalData.sex}</Typography> 
                     </Grid>
                     {
                         props.bill &&
                         <Grid item xs={6} style={{textAlign:'right'}} >
-                            <Typography variant="body2"><Translate id="hospital.billing.bill.num_bill" />: {props.bill.id}</Typography> 
-                            <Typography variant="body2"><Translate id="hospital.billing.bill.date" />: {fullDateFromPostgresString(props.locale.code, props.bill.createdAt)}</Typography> 
+                            <Typography variant="body2"><span style={{fontWeight:'bold'}}><Translate id="hospital.billing.bill.num_bill" /></span>: {props.bill.id}</Typography> 
+                            <Typography  variant="body2"><span style={{fontWeight:'bold'}}><Translate id="hospital.billing.bill.date" /></span>: {fullDateFromPostgresString(props.locale.code, props.bill.createdAt)}</Typography> 
                         </Grid>    
                     }
                 </Grid>
