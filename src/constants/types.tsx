@@ -135,5 +135,6 @@ export interface BillingInfo{
     currency:string,
     telephone:string,
     email:string,
-    logoBlob:string
+    logoBlob:string,
+    hospitalName:string
 }

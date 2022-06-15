@@ -73,7 +73,7 @@ export const Document:React.FC<Props> = (props) => {
                     </Grid>
                 <Grid container xs={12}>
                     <div id="print" ref={printRef} style={{width:'700px', padding:'1rem'}}>
-                        <HeaderDocument size={props.size} logoBlob={props.logoBlob} currency={props.currency}
+                        <HeaderDocument size={props.size} hospitalName={props.hospitalName} logoBlob={props.logoBlob} currency={props.currency}
                             telephone={props.telephone} address={props.address} email={props.email} 
                             />
                         <Grid item xs={12} style={{paddingTop:'1rem'}}>

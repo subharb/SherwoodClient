@@ -23,7 +23,7 @@ import {
 import TimelineIcon from '@material-ui/icons/Timeline';
 import FindInPageIcon from '@material-ui/icons/FindInPage';
 import GroupIcon from '@material-ui/icons/Group';
-import { Home as HomeIcon, Search as SearchPatientIcon, 
+import { Home as HomeIcon, Search as SearchPatientIcon, Hotel as HotelIcon,
     PersonAddSharp as AddPatientIcon, Image as ImageIcon,
     PeopleOutline as PeopleOutlineIcon,
     MonetizationOn as MonetizationOnIcon} from "@material-ui/icons";
@@ -376,7 +376,7 @@ const dashboardAdminDepartmentRoutes = {
 const dashboardMyDepartmentRoutes = {
     id: <Translate id="pages.hospital.inpatients" />,
     path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
-    icon: <PeopleOutlineIcon />,
+    icon: <HotelIcon />,
     badge: "",
     permissions : [PERMISSION.MEDICAL_READ],
     functionalities:[FUNCTIONALITY.HOSPITALIZATION],

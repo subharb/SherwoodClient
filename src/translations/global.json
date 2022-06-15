@@ -151,7 +151,7 @@
                 },
                 "department" : {
                     "title" : ["Add department", "Añadir Departamento", "Ajouter Department"],
-                    "name" : ["Name department", "Nombre departamento", "Nom department"]
+                    "name" : ["Name department", "Nombre departamento", "Nom du service"]
                 }
             }
         },
@@ -363,7 +363,7 @@
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
             },
             "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Patients hospitalisés"],
-            "admin-departments" : ["Admin. Departments", "Admin.Departamentos", "Gestion Départements"]
+            "admin-departments" : ["Admin. Departments", "Admin.Departamentos", "Gestion des services"]
         }
     },
     "dashboard":{

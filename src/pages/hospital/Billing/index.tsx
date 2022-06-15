@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { getBillsService } from '../../../services/billing';
 import Loader from '../../../components/Loader';
+import { fullDateFromPostgresString } from '../../../utils';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -58,7 +59,7 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
     }, [investigation]) 
     if(investigation){
         return <BillingLocalized patients={patients.data[investigation.uuid]} 
-                    uuidInvestigation={investigation.uuid as string}
+                    uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
                     personalFields={investigation.personalFields}
                     billingInfo = {investigation.billingInfo}
                     bills={bills} loading={loading} 
@@ -85,6 +86,7 @@ interface Props extends LocalizeContextProps{
     patients:IPatient[],
     personalFields:[],
     uuidInvestigation:string,
+    hospitalName:string,
     billingInfo: BillingInfo,
     bills:Bill[];
     loading:boolean,
@@ -164,16 +166,18 @@ const Billing:React.FC<Props> = (props) => {
                     "id" : bill.id,
                     "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 
                     "total" : Number(bill.total),
-                    "totalPending" : Number(bill.total) - Number(bill.totalPaid)
+                    "totalPending" : Number(bill.total) - Number(bill.totalPaid),
+                    "dateCreation" : fullDateFromPostgresString(props.activeLanguage.code, bill.createdAt)
                 }
             });
             const headCells = [
                     { id: "id", alignment: "left", label: "ID" },
                     { id: "patient", alignment: "left", label: <Translate id={`hospital.billing.bill.patient`} /> },
                     { id: "total", alignment: "left", label: [<Translate id={`hospital.billing.bill.total`} />,"("+props.billingInfo.currency+")"] },
-                    { id: "totalPending", alignment: "left", label: [<Translate id={`hospital.billing.bill.total_pending`} />,"("+props.billingInfo.currency+")"] }
+                    { id: "totalPending", alignment: "left", label: [<Translate id={`hospital.billing.bill.total_pending`} />,"("+props.billingInfo.currency+")"]},
+                    { id: "dateCreation" , alignment: "right",  label: [<Translate id={`hospital.billing.bill.date`} />] } 
                 ]
-            return <EnhancedTable headCells={headCells} rows={rows}  noSelectable
+            return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
                     actions={[{"type" : "edit", "func" : (index:number) => makeActionBill(index, BillActions.update)},
                             {"type" : "view", "func" : (index:number) => makeActionBill(index, BillActions.preview)}]} />
         }
@@ -196,7 +200,7 @@ const Billing:React.FC<Props> = (props) => {
             case BillActions.preview:
                 return(
                     <Modal key="modal" medium size="sm" open={showModal} title={""} closeModal={() => onCloseModal()}>
-                        <Document address={props.billingInfo.address} logoBlob={props.billingInfo.logoBlob} currency={props.billingInfo.currency}
+                        <Document address={props.billingInfo.address} hospitalName={props.hospitalName} logoBlob={props.billingInfo.logoBlob} currency={props.billingInfo.currency}
                                 email={props.billingInfo.email} size="A4" telephone={props.billingInfo.telephone} name={currentBill ? "Bill"+currentBill.id : ""} >
                             <BillForm patients={props.patients } personalFields={props.personalFields} 
                                 currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
@@ -254,7 +258,7 @@ const Billing:React.FC<Props> = (props) => {
 				
 			</Grid>
 			<Divider my={6} />
-            <Grid direction='row' container spacing={6} justify="center" style={{ color: "white" }}>
+            <Grid direction='row' justify="center" style={{ color: "white", padding:'1rem' }}>
                 {
                     renderBills()
                 }

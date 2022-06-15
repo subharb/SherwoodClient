@@ -30,6 +30,15 @@ interface Props{
     
 }
 
+const FactureHolder = styled.div<{hide:boolean}>`
+    margin-top:2rem;
+    text-align:center;
+    background-color:#e6e6e6;
+    padding:0.5rem;
+    color:#000;
+    font-weight:bold;
+    display:${props => props.hide ? 'none' : 'auto'};
+`;
 const GridContainer = styled(Grid)`
     flex-direction: column;
     @media (min-width: 768px) {
@@ -342,7 +351,10 @@ export const BillForm:React.FC<Props> = (props) => {
                 <div ref={printRef} >
                     <Grid container>
                         <Grid item xs={12}>
-                            <EnhancedTable noFooter noSelectable headCells={headCells} rows={rows} 
+                            <FactureHolder hide={!props.bill}>
+                                <Translate id="hospital.billing.bill.name" />
+                            </FactureHolder>
+                            <EnhancedTable noFooter noHeader noSelectable headCells={headCells} rows={rows} 
                                 />
                         </Grid>
                         <Grid item xs={12} style={{display: "flex",flexDirection:"column"}} >

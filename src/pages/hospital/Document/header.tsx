@@ -15,10 +15,13 @@ export const HeaderDocument:React.FC<Props> = (props) => {
     
     if(props.size === "A4"){
         return(
-            <Grid container xs={12}>
-                <Grid item style={{textAlign:'center', maxWidth:'300px'}}>
-                    <Grid >
-                        <img src={props.logoBlob}/>
+            <Grid container xs={12} style={{paddingBottom:'2rem'}}>
+                <Grid xs={6} item style={{textAlign:'center'}}>
+                    <img width="200" src={props.logoBlob}/>
+                </Grid>    
+                <Grid xs={6} style={{textAlign:'right'}}>
+                    <Grid>
+                        <Typography variant="body2">{props.hospitalName}</Typography>
                     </Grid>
                     <Grid>
                         <Typography variant="body2">{props.address}</Typography>
@@ -30,7 +33,6 @@ export const HeaderDocument:React.FC<Props> = (props) => {
                         <Typography variant="body2">{props.email}</Typography>
                     </Grid>
                 </Grid>   
-                
             </Grid>
             
         ) 

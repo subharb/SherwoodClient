@@ -441,8 +441,6 @@ return (
                 actions={actions}
                 noSelectable={noSelectable}
             />
-            
-            
             {
                 renderBody()
             }
@@ -466,47 +464,3 @@ return (
     </div>
 );
 }
-
-export function OrderList() {
-return (
-    <React.Fragment>
-    <Helmet title="Orders" />
-
-    <Grid justify="space-between" container spacing={24}>
-        <Grid item>
-        <Typography variant="h3" gutterBottom display="inline">
-            Orders
-        </Typography>
-
-        <Breadcrumbs aria-label="Breadcrumb" mt={2}>
-            <Link component={NavLink} exact to="/">
-            Dashboard
-            </Link>
-            <Link component={NavLink} exact to="/">
-            Pages
-            </Link>
-            <Typography>Orders</Typography>
-        </Breadcrumbs>
-        </Grid>
-        <Grid item>
-        <div>
-            <Button variant="contained" color="primary">
-            <AddIcon />
-            New Order
-            </Button>
-        </div>
-        </Grid>
-    </Grid>
-
-    <Divider my={6} />
-
-    <Grid container spacing={6}>
-        <Grid item xs={12}>
-        <EnhancedTable rows={rows} headCells={headCells} />
-        </Grid>
-    </Grid>
-    </React.Fragment>
-);
-}
-
- 
