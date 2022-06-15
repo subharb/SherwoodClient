@@ -133,7 +133,7 @@ export enum BillItemKeys{
 export interface BillingInfo{
     address:string,
     currency:string,
-    telephone:string,
+    phone:string,
     email:string,
     logoBlob:string,
     hospitalName:string

@@ -201,7 +201,7 @@ const Billing:React.FC<Props> = (props) => {
                 return(
                     <Modal key="modal" medium size="sm" open={showModal} title={""} closeModal={() => onCloseModal()}>
                         <Document address={props.billingInfo.address} hospitalName={props.hospitalName} logoBlob={props.billingInfo.logoBlob} currency={props.billingInfo.currency}
-                                email={props.billingInfo.email} size="A4" telephone={props.billingInfo.telephone} name={currentBill ? "Bill"+currentBill.id : ""} >
+                                email={props.billingInfo.email} size="A4" phone={props.billingInfo.phone} name={currentBill ? "Bill"+currentBill.id : ""} >
                             <BillForm patients={props.patients } personalFields={props.personalFields} 
                                 currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                                 onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 

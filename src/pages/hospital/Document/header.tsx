@@ -27,7 +27,7 @@ export const HeaderDocument:React.FC<Props> = (props) => {
                         <Typography variant="body2">{props.address}</Typography>
                     </Grid>
                     <Grid>
-                        <Typography variant="body2">{props.telephone}</Typography>
+                        <Typography variant="body2">{props.phone}</Typography>
                     </Grid>
                     <Grid>
                         <Typography variant="body2">{props.email}</Typography>
