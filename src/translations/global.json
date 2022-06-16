@@ -122,14 +122,14 @@
             
         },
         "departments" : {
-            "title" : ["Hospital Departments", "Departamentos", "Départements"],
+            "title" : ["Hospital Departments", "Departamentos", "Services"],
             "modal" : {
                 "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
             },
-            "department" : ["Departament", "Departamento", "Department"],
-            "departments" : ["Departaments", "Departamentos", "Departments"],
-            "users" : ["Users", "Usuarios", "utilisateurs"],
-            "inpatients" : ["Inpatients", "Pacientes hospitalizados", "patients hospitalisés"],
+            "department" : ["Departament", "Departamento", "Service"],
+            "departments" : ["Departaments", "Departamentos", "Services"],
+            "users" : ["Users", "Usuarios", "Personnel"],
+            "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Hospitalisation"],
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
             "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
             "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "Êtes-vous sûr de supprimer cette pièce ?"],
@@ -150,7 +150,7 @@
                     "female" : ["Female beds", "Camas para mujeres", "Lits pour femmes"]
                 },
                 "department" : {
-                    "title" : ["Add department", "Añadir Departamento", "Ajouter Department"],
+                    "title" : ["Add department", "Añadir Departamento", "Ajouter Service"],
                     "name" : ["Name department", "Nombre departamento", "Nom du service"]
                 }
             }
@@ -660,7 +660,7 @@
             "add_researcher" : ["Add user", "Añadir usuario", "Ajouter un utilisateur"],
             "edit_researcher" : ["Change user", "Modificar usuario", "Modifier un utilisateur"],
             "researchers" : ["Users", "Usuarios", "Utilisateurs"],
-            "current_researchers" : ["Current users", "Usuarios actuales", "Utilisateurs actuels"],
+            "current_researchers" : ["Current users", "Usuarios actuales", "Personnel actuel"],
             "new_researchers" : ["New users", "Nuevos Usuarios", "Nouveaux Utilisateurs"],
             "shared-by" : ["You were invited by: ", "Has sido invitado por: ", "Vous avez été invité par: "],
             "form" : {
@@ -687,7 +687,7 @@
                 "name" : ["Name", "Nombre", "Nom"],
                 "status" : ["Status", "Status", "Status"],
                 "permissions" : ["User type", "Tipo", "Type d'utilisateur"],
-                "department" : ["Department", "Departamento", "Departament"]
+                "department" : ["Department", "Departamento", "Service"]
             },
             "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],
             "confirm_dialog" : {
