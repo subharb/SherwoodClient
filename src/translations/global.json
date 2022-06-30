@@ -356,14 +356,14 @@
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "analytics" : ["Analytics", "Analytics", "Analytics"],
-            "user_mgmt" : ["User Managment", "Administración de usuarios", "Gestion des utilisateurs"],
+            "user_mgmt" : ["Users", "Usuarios", "Utilisateurs"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"],
             "confirm-patient" : {
                 "title" : ["Attention", "Atención", "Attention"],
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
             },
             "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Hospitalisation"],
-            "admin-departments" : ["Admin. Departments", "Admin.Departamentos", "Gestion des services"]
+            "admin-departments" : ["Departments", "Departamentos", "Gestion des services"]
         }
     },
     "dashboard":{
