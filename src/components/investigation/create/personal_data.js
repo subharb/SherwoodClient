@@ -29,8 +29,9 @@ class PersonalData extends Component{
             if(props.initialData && props.initialData.find(fi => fi.name === currentKey)){
                 const initField = props.initialData.find(fi => fi.name === currentKey);
             
-                personalField.required = initField.required;
-                personalField.order = initField.order;
+                // personalField.required = initField.required;
+                // personalField.order = initField.order;
+                personalField = {...initField}
                 selectedFields.push(personalField);
                 const initFieldIndex = customFields.findIndex(fi => fi.name === currentKey)
                 customFields.splice(initFieldIndex, 1);
