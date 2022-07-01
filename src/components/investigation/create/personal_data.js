@@ -20,7 +20,7 @@ class PersonalData extends Component{
 
         let availableFields = [];
         let selectedFields = [];
-        let customFields = [...props.initialData];
+        let customFields = props.initialData ? [...props.initialData] : [];
         const arrayKeys = Object.keys(PERSONAL_DATA_FIELDS);
         for(let i = 0; i < arrayKeys.length; i++){
             const currentKey = arrayKeys[i];
