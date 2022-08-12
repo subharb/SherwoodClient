@@ -491,7 +491,7 @@ function Patient(props) {
         ) 
     }
     else{
-        let years = patient.personalData ? yearsFromDate(patient.personalData.birthdate) : "Not Available";
+        let years = patient.personalData && patient.personalData.birthdate ? yearsFromDate(patient.personalData.birthdate) : "Not Available";
         //let stay = daysFromDate(props.dateIn);
         let isPatientHospitalized = staysPatient.length === 0 ? false : staysPatient[staysPatient.length -1].dateOut === null;
         return (
