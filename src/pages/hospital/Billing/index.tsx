@@ -14,7 +14,7 @@ import { Bill, BillingInfo, IPatient } from '../../../constants/types';
 import { Document } from '../Document';
 import { connect } from 'react-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { getBillsService } from '../../../services/billing';
+import { getBillablesService, getBillsService } from '../../../services/billing';
 import Loader from '../../../components/Loader';
 import { fullDateFromPostgresString } from '../../../utils';
 
@@ -108,6 +108,18 @@ const Billing:React.FC<Props> = (props) => {
     const [actionBill, setActionBill] = useState<BillActions>(BillActions.default);
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
     const [patientBill, setPatientBill] = useState<IPatient | null>(null);
+    const [billables, setBillables] = useState([]);
+
+    useEffect(() =>{
+       console.log(props.billingInfo);
+       async function getBillables(idBillingInfo:number){
+           const response = await getBillablesService(props.uuidInvestigation, idBillingInfo);
+           if(response.status === 200){
+
+           }
+       }
+       getBillables(props.billingInfo.id);
+    }, [props.billingInfo]);
 
     async function resetSnackBar(){
         setShowSnackbar({show:false});
@@ -235,8 +247,6 @@ const Billing:React.FC<Props> = (props) => {
                                 </Alert>
                             }
                         </div>
-                        
-                        
                 </Snackbar>
             
                 {

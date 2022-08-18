@@ -1,4 +1,4 @@
-import { Bill, BillItem } from "../constants/types";
+import { Bill, Billable, BillItem } from "../constants/types";
 import axios from "../utils/axios";
 
 export function createBillService(uuidInstitution:string, uuidPatient:string, billItems:BillItem[]):Promise<{status:number}> {
@@ -48,3 +48,19 @@ export function getBillsService(uuidInvestigation:string):Promise<{status:number
       });
   });
 }
+
+export function getBillablesService(uuidInvestigation:string, idBillingInfo:number):Promise<{status:number, billables:Billable[]}> {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(process.env.REACT_APP_API_URL+"/billing/investigation/"+uuidInvestigation+"/billables/"+idBillingInfo, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }

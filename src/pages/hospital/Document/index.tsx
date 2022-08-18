@@ -6,7 +6,7 @@ import { jsPDF } from 'jspdf';
 import { HeaderDocument } from "./header";
 import SaveIcon from '@material-ui/icons/Save';
 
-interface Props extends BillingInfo{
+interface Props extends Omit<BillingInfo, 'id'>  {
     size:"A4" | "ticket",
     name:string
 }

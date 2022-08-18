@@ -107,6 +107,14 @@ export interface Bill{
     createdAt:Date
 }
 
+export interface Billable{
+    id:number,
+    concept:string,
+    amount:number,
+    insurance:string,
+    type: number
+}
+
 export interface BillItem{
     concept:string,
     type:number,
@@ -131,6 +139,7 @@ export enum BillItemKeys{
 }
 
 export interface BillingInfo{
+    id:number,
     address:string,
     currency:string,
     phone:string,
