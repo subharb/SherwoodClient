@@ -422,7 +422,7 @@ class FieldSherwood extends PureComponent{
                         getOptionLabel={(option) => option.title}
                         style={{ width: 300 }}
                         renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
-               />
+                    />
                 );
             case "file" : 
                 return (

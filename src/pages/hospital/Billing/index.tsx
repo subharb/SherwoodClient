@@ -10,7 +10,7 @@ import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@material-ui/lab';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
-import { Bill, BillingInfo, IPatient } from '../../../constants/types';
+import { Bill, Billable, BillingInfo, IPatient } from '../../../constants/types';
 import { Document } from '../Document';
 import { connect } from 'react-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
@@ -108,14 +108,14 @@ const Billing:React.FC<Props> = (props) => {
     const [actionBill, setActionBill] = useState<BillActions>(BillActions.default);
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
     const [patientBill, setPatientBill] = useState<IPatient | null>(null);
-    const [billables, setBillables] = useState([]);
+    const [billables, setBillables] = useState<Billable[]>([]);
 
     useEffect(() =>{
        console.log(props.billingInfo);
        async function getBillables(idBillingInfo:number){
            const response = await getBillablesService(props.uuidInvestigation, idBillingInfo);
            if(response.status === 200){
-
+                setBillables(response.billables);
            }
        }
        getBillables(props.billingInfo.id);
@@ -203,10 +203,10 @@ const Billing:React.FC<Props> = (props) => {
                         <BillForm patients={props.patients } personalFields={props.personalFields} 
                              currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                              onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
-                             onCancelBill={onCancelBill} print={false}
+                             onCancelBill={onCancelBill} print={false} billables={billables}
                              bill={currentBill} updatingBill = {currentBill !== null}
                              locale={props.activeLanguage}
-                         />
+                        />
                      </Modal>
                  )
             case BillActions.preview:

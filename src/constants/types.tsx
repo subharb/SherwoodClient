@@ -111,7 +111,7 @@ export interface Billable{
     id:number,
     concept:string,
     amount:number,
-    insurance:string,
+    insurance:string | null,
     type: number
 }
 
