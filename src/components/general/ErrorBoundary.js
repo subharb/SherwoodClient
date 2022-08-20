@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { postErrorSlack } from '../../utils';
 
@@ -14,7 +15,8 @@ class ErrorBoundary extends Component {
     this.setState({ hasError: true });
     // You can also log the error to an error reporting service
     //logErrorToMyService(error, info);
-    postErrorSlack(this.props.location.pathname, error, info);
+    
+    postErrorSlack(this.props.location.pathname, error, info, this.props.investigations.currentInvestigation);
   }
 
   render() {
@@ -26,5 +28,11 @@ class ErrorBoundary extends Component {
   }
 }
 
-export default withRouter(ErrorBoundary);
+const mapStateToProps = (state) =>{
+    return {
+        investigations : state.investigations
+    }
+}
+
+export default withRouter(connect(mapStateToProps, null)(ErrorBoundary));
 

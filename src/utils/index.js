@@ -766,11 +766,11 @@ export function openStore(storeName){
     );
 }
 
-export function postErrorSlack(url, error, info){
+export function postErrorSlack(url, error, info, investigation){
     console.log("Enviamos el error a ", process.env.REACT_APP_SLACK_HOOK);
-    let location = "URL:"+window.location.href+url;
+    let location = "URL:"+window.location.href;
   
-    var text = location+" Error: "+error+ " Message:"+JSON.stringify(info);
+    var text = "Investigation: "+investigation.name+" uuid :"+investigation.uuid+" URL: "+location+" Error: "+error+ " Message:"+JSON.stringify(info);
 
     $.ajax({
         data: 'payload=' + JSON.stringify({
