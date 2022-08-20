@@ -10,7 +10,7 @@ import Loader from '../../../components/Loader';
 import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
-import { yearsFromDate, daysFromDate, numberRecordsSection } from '../../../utils';
+import { yearsFromDate, daysFromDate, numberRecordsSection, postErrorSlack } from '../../../utils';
 import FillDataCollection from '../FillDataCollection';
 import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
@@ -491,6 +491,10 @@ function Patient(props) {
         ) 
     }
     else{
+        if(!patient.personalData.birthdate){
+            //Para recibir más info si peta aqui
+            postErrorSlack("patient", {}, patient.personalData, props.investigations.currentInvestigation);
+        }
         let years = patient.personalData && patient.personalData.birthdate ? yearsFromDate(patient.personalData.birthdate) : "Not Available";
         //let stay = daysFromDate(props.dateIn);
         let isPatientHospitalized = staysPatient.length === 0 ? false : staysPatient[staysPatient.length -1].dateOut === null;
