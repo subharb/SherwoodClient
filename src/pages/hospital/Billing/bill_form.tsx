@@ -56,7 +56,7 @@ const GridBottom = styled(Grid) <{ hide: boolean }>`
     justify-content:end;
 `;
 
-const DEFAULT_CURRENT_ITEM = { concept: "", type: 0, amount: 0 }
+const DEFAULT_CURRENT_ITEM = { concept: "", type: -1, amount: 0 }
 
 const filter = createFilterOptions<BillableOption>();
 
@@ -67,8 +67,19 @@ export const BillForm: React.FC<Props> = (props) => {
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);
     const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
     const [errorBill, setErrorBill] = useState<ReactElement>();
+    const [billableSelected, setBillableSelected] = useState(false);
     const [loading, setLoading] = useState(false);
     const printRef = useRef<HTMLHeadingElement>(null);
+
+    useEffect(() => {
+        console.log("currentItem cambió", currentItem);
+        if(currentItem.concept !== DEFAULT_CURRENT_ITEM.concept 
+                && currentItem.amount !== DEFAULT_CURRENT_ITEM.amount 
+                && currentItem.type !== DEFAULT_CURRENT_ITEM.type){
+                    addCurrentItem();
+                }
+        
+    }, [currentItem]);
 
     function onPatientSelected(idPatient: number) {
         const findPatient = props.patients.find((patient) => patient.id === idPatient);
@@ -149,13 +160,30 @@ export const BillForm: React.FC<Props> = (props) => {
         const error = validateKeyItem(valueString, itemKey);
         updateStates(itemKey, error, valueString);
     }
-    function changeField(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, itemKey: BillItemKeys) {
-        const error = validateKeyItem(event.target.value, itemKey);
-        updateStates(itemKey, error, event.target.value);
+    function changeField(value:string, itemKey: BillItemKeys) {
+        const error = validateKeyItem(value, itemKey);
+        updateStates(itemKey, error, value);
     }
-    function billableSelected(billable:string, billableId?:number){
+    function onBillableSelected(billable:string, billableId?:number, index?:number){
         console.log(billable);
         console.log(billableId); 
+        if(!billableId){
+            updateStates(BillItemKeys.concept, "", billable);
+        }
+        else{
+            const billableSelected = props.billables?.find((billable) => billable.id === billableId);
+            if(billableSelected && index !== undefined){
+                // changeField(billableSelected.concept, BillItemKeys.concept);
+                // changeField(billableSelected.amount.toString(), BillItemKeys.amount);
+                // changeField(billableSelected.type.toString(), BillItemKeys.type);
+                setCurrentItem({
+                    concept :billableSelected.concept,
+                    amount : billableSelected.amount,
+                    type : billableSelected.type,
+                    billableId : billableId
+                });                
+            }
+        }
     }
     function helperText(itemType: BillItemKeys): null | ReactElement {
         return fieldErrors[itemType] ? <Translate id={`hospital.billing.item.error.${fieldErrors[itemType]}`} /> : null;
@@ -192,9 +220,10 @@ export const BillForm: React.FC<Props> = (props) => {
             setErrorBill(<Translate id="hospital.bill.error.positive" />);
         }
     }
-    function addITem(index: number) {
-        console.log(index);
+    function addCurrentItem() {
         let tempFieldErrors = { ...fieldErrors };
+        //Fuerzo el valor 0 para diferenciarlo del valor por defecto.
+        currentItem["type"] = 0;
         Object.keys(BillItemKeys).forEach((iKey) => {
             console.log(iKey as BillItemKeys);
             const iTemKey = iKey as BillItemKeys;
@@ -205,11 +234,7 @@ export const BillForm: React.FC<Props> = (props) => {
         }
         if (Object.values(tempFieldErrors).reduce((acc, val) => acc && (val === ""), true)) {
             let tempItems = [...items];
-            tempItems.push({
-                concept: currentItem[BillItemKeys.concept],
-                amount: currentItem[BillItemKeys.amount],
-                type: currentItem[BillItemKeys.type]
-            });
+            tempItems.push({...currentItem});
 
             setItems(tempItems);
             setAddingItem(false);
@@ -286,12 +311,12 @@ export const BillForm: React.FC<Props> = (props) => {
                         options={props.billables ? props.billables as BillableOption[] : []}
                         onChange={(event, newValue) => {
                             if (typeof newValue === 'string') {
-                                billableSelected(newValue);
+                                onBillableSelected(newValue);
                             } else if (newValue && newValue.inputValue) {
                               // Create a new value from the user input
-                                billableSelected(newValue.inputValue);
+                                onBillableSelected(newValue.inputValue);
                             } else if(newValue){
-                                billableSelected(newValue?.concept, newValue.id);
+                                onBillableSelected(newValue?.concept, newValue.id, rows.length - 1,);
                             }
                           }}
                           filterOptions={(options, params) => {
@@ -327,43 +352,17 @@ export const BillForm: React.FC<Props> = (props) => {
                         renderInput={(params) => 
                             <TextField {...params} label="Concept" error={fieldErrors.concept !== ""}
                                 helperText={helperText(BillItemKeys.concept)}
-                                onChange={(event) => changeField(event, BillItemKeys.concept)}
+                                onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
                                 variant="outlined" />
                             }
                     />,
-                    // <Autocomplete
-                    //     id="combo-box-demo"
-                    //     options={props.billables ? props.billables : []}
-                    //     getOptionLabel={(option) => option.concept}
-                    //     style={{ width: 300 }}
-                    //     renderInput={(params) => <TextField {...params} label="Combo box" variant="outlined" />}
-                    // />,
-                        // type :   <FormControl variant="outlined" fullWidth margin="dense" error={fieldErrors.type !== ""}>
-                        //             <InputLabel id="show_treatment">Type</InputLabel>
-                        //             <Select
-                        //                 labelId="show_treatment"
-                        //                 id="show_treatment"
-                        //                 label="type"
-                        //                 value={currentItem[BillItemKeys.type]}
-                        //                 onChange={(event:React.ChangeEvent<{
-                        //                     name?: string | undefined;
-                        //                     value: unknown;
-                        //                 }>) => changeSelect(event, BillItemKeys.type)}
-                        //                 >
-                        //                     {
-                        //                         Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
-                        //                             return isNaN(Number(key))
-                        //                         }).map(([key, value]) =>{
-                        //                             return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
-                        //                         }) 
-                        //                     }
-
-                        //             </Select>
-                        //         </FormControl>,
-                        amount: <TextField label="Amount" variant="outlined" helperText={helperText(BillItemKeys.amount)} error={fieldErrors.amount !== ""} type="text" onChange={(event) => changeField(event, BillItemKeys.amount)} />,
-                    delete: <IconButton onClick={() => addITem(rows.length - 1)}>
-                        <IconGenerator type="add" />
-                    </IconButton>
+                    amount: <TextField label="Amount" variant="outlined" 
+                                helperText={helperText(BillItemKeys.amount)} 
+                                error={fieldErrors.amount !== ""} type="text" 
+                                onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />,
+                    delete: <IconButton onClick={() => addCurrentItem()}>
+                                <IconGenerator type="add" />
+                            </IconButton>
                 }
                 rows.push(field)
             }

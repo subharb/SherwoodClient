@@ -118,7 +118,9 @@ const Billing:React.FC<Props> = (props) => {
                 setBillables(response.billables);
            }
        }
-       getBillables(props.billingInfo.id);
+       if(props.billingInfo){
+            getBillables(props.billingInfo.id);
+       }
     }, [props.billingInfo]);
 
     async function resetSnackBar(){
@@ -228,6 +230,7 @@ const Billing:React.FC<Props> = (props) => {
                 return null;
         }
     }
+    
     return(
         <React.Fragment>
 			<Helmet title="Billing Dashboard" />
@@ -254,25 +257,37 @@ const Billing:React.FC<Props> = (props) => {
                 }
             
 			<Grid justify="space-between" direction='row'  container spacing={6}>
-				<Grid item xs={6}>
+				<Grid item xs={12}>
 					<Typography variant="h3" gutterBottom style={{ color: "white" }}>
 						<Translate id="hospital.billing.title" />
 					</Typography>	
-                    <ButtonAdd disabled={showModal || props.loading} 
-                        type="button" data-testid="add_bill" 
-                        onClick={() => {
-                            setActionBill(BillActions.create);
-                            setShowModal(true);
-                        }} />				
+                    {!props.billingInfo ?  
+                        <Typography variant="body2" gutterBottom style={{ color: "white" }}>
+                            <Translate id="hospital.billing.no_billing_info" />
+                        </Typography>
+                        :
+                        <ButtonAdd disabled={showModal || props.loading} 
+                            type="button" data-testid="add_bill" 
+                            onClick={() => {
+                                setActionBill(BillActions.create);
+                                setShowModal(true);
+                            }} />	
+                    }
 				</Grid>
 				
 			</Grid>
-			<Divider my={6} />
-            <Grid direction='row' justify="center" style={{ color: "white", padding:'1rem' }}>
-                {
-                    renderBills()
-                }
-            </Grid>
+            { props.billingInfo &&
+                <>
+                    <Divider my={6} />
+                    <Grid direction='row' justify="center" style={{ color: "white", padding:'1rem' }}>
+                        {
+                            renderBills()
+                        }
+                    </Grid>
+                </>
+                
+            }
+			
         </React.Fragment>
     )
 }

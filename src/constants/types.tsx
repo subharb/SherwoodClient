@@ -116,6 +116,7 @@ export interface Billable{
 }
 
 export interface BillItem{
+    billableId?:number,
     concept:string,
     type:number,
     amount:number,
