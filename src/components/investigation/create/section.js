@@ -149,41 +149,33 @@ class Section extends Component{
         const title = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
         const saveText = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
         return (
-            <Grid container>
-              
-                <Grid item container xs={12}>
-                    <Card>
-                        <CardContent>
-                            <Grid item xs={12}>
-                                <Typography variant="subtitle1" color="textPrimary">
-                                    {
-                                        title
-                                    }
+            <Grid item container xs={12}>
+                
+                    <Grid item xs={12}>
+                        
+                        <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
+                            <Field type="text" name="name" fullWidth label="name" required={true} component={FieldSherwood} />
+                            <div>
+                                <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
+                            </div>
+                            <div style={{paddingTop:"40px"}}>
+                                <Typography variant="body2" color="textPrimary" component="span"> 
+                                    <Translate id="investigation.create.edc.add_field" />
                                 </Typography>
-                                <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
-                                    <Field type="text" name="name" fullWidth label="name" required={true} component={FieldSherwood} />
-                                    <div>
-                                        <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
-                                    </div>
-                                    <div style={{paddingTop:"40px"}}>
-                                    <Typography variant="body2" color="textPrimary" component="span"> 
-                                        <Translate id="investigation.create.edc.add_field" />
-                                    </Typography>
-                                        <AddField fields={FIELDS_FORM}
-                                            callBackForm={(field) => this.handleAddField(field)}/>
-                                    </div>  
-                                    { this.renderFields() }
-                                    <div style={{paddingTop:"40px"}}>
-                                        <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
-                                        <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
-                                            type="button">Cancel</ButtonCancel>
-                                    </div>
-                                </form>   
-                            </Grid>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                                    <AddField fields={FIELDS_FORM}
+                                        callBackForm={(field) => this.handleAddField(field)}/>
+                                </div>  
+                            { this.renderFields() }
+                            <div style={{paddingTop:"40px"}}>
+                                <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
+                                <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
+                                    type="button">Cancel</ButtonCancel>
+                            </div>
+                        </form>   
+                    </Grid>
+                
             </Grid>
+            
         )
     }   
     

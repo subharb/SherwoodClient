@@ -36,7 +36,7 @@ class DataCollection extends Component{
         super(props);
 
         this.addSection = this.addSection.bind(this);
-        this.renderNewSectionForm = this.renderNewSectionForm.bind(this);
+        this.renderNewSectionForm = this.renderSectionForm.bind(this);
         this.renderSections = this.renderSections.bind(this);
         this.closeNewSection = this.closeNewSection.bind(this);
         this.saveDataCollection = this.saveDataCollection.bind(this);
@@ -60,9 +60,9 @@ class DataCollection extends Component{
         this.setState(tempState);
     }
     renderSections(){
-        const AddButton= <ButtonAdd disabled={this.state.addingSection || Number.isInteger(this.state.editingIndexSection)} 
+        const AddButton = <div><ButtonAdd disabled={this.state.addingSection || Number.isInteger(this.state.editingIndexSection)} 
                             type="button" data-testid="add-sections" show={!this.state.addingSection}  
-                            onClick={this.addSection}></ButtonAdd>
+                            onClick={this.addSection}></ButtonAdd>Add Section</div>
         if(this.state.sections.length === 0){
             return (
             <Grid item xs={12}>
@@ -82,9 +82,12 @@ class DataCollection extends Component{
             return(
                 <Grid container item xs={12}>
                     <Grid item xs={12}>
+                        {AddButton}
+                    </Grid>
+                    <Grid item xs={12}>
                         <OrderableTable droppableId="sections"
                             onDragEnd={(dragDrop) => this.orderUpdate(dragDrop)} noSelectable
-                            titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  
+                            titleTable={<Translate id="investigation.create.edc.data_collections.sections" />}  
                             headCells={arrayHeader}
                             rows={this.state.sections.sort((a, b) => a.order - b.order ).map((section, index) => {
                                 let tempSection = {}
@@ -104,9 +107,7 @@ class DataCollection extends Component{
                             actions={[{"type" : "delete", "func" : (index) => this.deleteSection(index, "sections")}, {"type" : "edit", "func" : (index) => this.editSection(index, "sections")}]}
                             />
                     </Grid>
-                    <Grid item xs={12}>
-                        {AddButton}
-                    </Grid>                    
+                                        
                 </Grid>)
         }
     }
@@ -150,7 +151,7 @@ class DataCollection extends Component{
         tempState.editingIndexSection = false;
         this.setState(tempState);
     }
-    renderNewSectionForm(){
+    renderSectionForm(){
         const staticParams = {
             callBackNewSection:this.callBackNewSection,
             closeNewSection:this.closeNewSection
@@ -185,15 +186,40 @@ class DataCollection extends Component{
         }
     }
     render(){
-        
-        return ( 
+        if(Number.isInteger(this.state.editingIndexSection) || this.state.addingSection){
+            return (
                 <Grid style={{ padding: 20 }} container key="container" spacing={3}>
-                    {
-                        this.props.callBackData && 
-                        <Grid item xs={12}>
-                            <ButtonBack onClick={this.props.callBackStepBack} />
-                        </Grid>
-                    }
+                {
+                    this.props.callBackData && 
+                    <Grid item xs={12}>
+                        <ButtonBack onClick={this.closeNewSection} />
+                    </Grid>
+                }
+                    <Grid item xs={12}>
+                        <Typography variant="subtitle1" color="textPrimary">
+                            { Number.isInteger(this.state.editingIndexSection) ?
+                                <span>Editing {this.state.name} &gt; {this.state.sections[this.state.editingIndexSection].name}</span> : 
+                                "New Section"
+                            }
+                            
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            <Translate id="investigation.create.edc.data_collections.intro" />
+                        </Typography>
+                        { this.renderSectionForm() }
+                    </Grid>
+                </Grid>
+                )
+        }
+        else{
+            return ( 
+                <Grid style={{ padding: 20 }} container key="container" spacing={3}>
+                {
+                    this.props.callBackData && 
+                    <Grid item xs={12}>
+                        <ButtonBack onClick={this.props.callBackStepBack} />
+                    </Grid>
+                }
                 <Grid item xs={12}>
                     <Typography variant="subtitle1" color="textPrimary">
                         <Translate id="investigation.create.edc.data_collections.new"/>
@@ -204,11 +230,12 @@ class DataCollection extends Component{
                 </Grid>
                 
                 <Grid item xs={12}>
-                    <TextField label="name" name="name_data_collection" value={this.state.name} variant="outlined" onChange={this.changeName}/>    
+                    <TextField label="name" name="name_data_collection" 
+                        value={this.state.name} variant="outlined" onChange={this.changeName}/>    
                 </Grid>
                 
                 { this.renderSections() }
-                { this.renderNewSectionForm() }
+                
             
                 <Grid item xs={12}>
                     <ButtonSave id="data_collection" data-testid="save_data_collection" disabled={this.state.name.length === 0 || this.state.sections.length === 0} 
@@ -217,9 +244,9 @@ class DataCollection extends Component{
                     </ButtonSave>
                 </Grid>
             </Grid>
-        )
+            )
+        }
     }
-    
 }
 
 function validate(values){
@@ -235,8 +262,6 @@ function validate(values){
         }
     });
 
-
-    
     return errors;
 }
 
