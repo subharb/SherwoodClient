@@ -1,20 +1,17 @@
-import { Button, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core"
+import { Button, Checkbox, Grid, IconButton, TextField, Typography } from "@material-ui/core"
 import { red } from "@material-ui/core/colors"
-import { isThisYear, isToday } from "date-fns"
-import { string } from "prop-types"
 import React, { ReactElement, useEffect, useRef, useState } from "react"
 import { Language, Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { EnhancedTable } from "../../../components/general/EnhancedTable"
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
 import Loader from "../../../components/Loader"
-import { ActionsEnhancedTable, Bill, Billable, BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
+import { Bill, Billable, BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
 import { createBillService, updateBillService } from "../../../services/billing"
 import { calculateTotalBill } from "../../../utils/bill"
 import { FindPatient } from "./find_patient"
 
 import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils"
-import { textAlign } from "@material-ui/system"
 import { Autocomplete, createFilterOptions } from "@material-ui/lab"
 
 interface Props {
@@ -303,7 +300,7 @@ export const BillForm: React.FC<Props> = (props) => {
                 console.log(Object.keys(TYPE_BILL_ITEM));
                 let field: BillItemTable = {
                     id: rows.length - 1,
-                    concept: <Autocomplete
+                    concept: props.billables && props.billables.length > 0 ? <Autocomplete
                         id="concept"
                         selectOnFocus
                         clearOnBlur
@@ -326,7 +323,7 @@ export const BillForm: React.FC<Props> = (props) => {
                             if (params.inputValue !== '') {
                                 filtered.push({
                                     inputValue: params.inputValue,
-                                    concept: `Add "${params.inputValue}"`,
+                                    concept: params.inputValue,
                                     amount:0,
                                     type:0,
                                     insurance:null,
@@ -355,7 +352,10 @@ export const BillForm: React.FC<Props> = (props) => {
                                 onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
                                 variant="outlined" />
                             }
-                    />,
+                    /> : <TextField label="Concept" error={fieldErrors.concept !== ""}
+                            helperText={helperText(BillItemKeys.concept)}
+                            onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+                            variant="outlined" />,
                     amount: <TextField label="Amount" variant="outlined" 
                                 helperText={helperText(BillItemKeys.amount)} 
                                 error={fieldErrors.amount !== ""} type="text" 

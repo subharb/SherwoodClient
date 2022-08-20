@@ -203,6 +203,7 @@
                 "concept" : ["Concept", "Concepto", "Concept"],
                 "amount" : ["Amount", "Cantidad", "montant"],
                 "type" : ["Type", "Tipo", "Type"],
+                "select_item" : ["Select", "Select", "Seleccionar"],
                 "types" : {
                     "charge" : ["Charge", "Cargo", "Devoir"],
                     "discount_amount" : ["Amount Discount", "Cantidad descuento", "Remise quantité"],
