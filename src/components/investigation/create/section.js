@@ -152,18 +152,18 @@ class Section extends Component{
             <Grid item container xs={12}>
                 
                     <Grid item xs={12}>
-                        
                         <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
                             <Field type="text" name="name" fullWidth label="name" required={true} component={FieldSherwood} />
                             <div>
                                 <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
                             </div>
+                        </form>   
                             <div style={{paddingTop:"40px"}}>
                                 <Typography variant="body2" color="textPrimary" component="span"> 
                                     <Translate id="investigation.create.edc.add_field" />
                                 </Typography>
-                                    <AddField fields={FIELDS_FORM}
-                                        callBackForm={(field) => this.handleAddField(field)}/>
+                                <AddField fields={FIELDS_FORM}
+                                    callBackForm={(field) => this.handleAddField(field)}/>
                                 </div>  
                             { this.renderFields() }
                             <div style={{paddingTop:"40px"}}>
@@ -171,7 +171,7 @@ class Section extends Component{
                                 <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
                                     type="button">Cancel</ButtonCancel>
                             </div>
-                        </form>   
+                        
                     </Grid>
                 
             </Grid>
