@@ -109,7 +109,8 @@ class PersonalData extends Component{
     }
     render(){
         const rowsAvailable = this.state.availableFields.length === 0 ? [{ id :0, title : "no hay más campos disponibles"}] : this.state.availableFields.map((field, index) => { return { id :index, title : <Translate id={field.label} />}});
-        const rowsSelected = this.state.selectedFields.length === 0 ? [{ id :0, title : "Arrastra aquí", required:""}] : this.state.selectedFields.map((field, index) => {return { id :index, title : this.props.translate(field.label).includes("translationId") ? field.label : <Translate id={field.label} />, required:field.required}});
+        const rowsSelected = this.state.selectedFields.length === 0 ? [{ id :0, title : "Arrastra aquí", required:""}] : this.state.selectedFields.sort((fieldA, fieldB) => fieldA.order - fieldB.order).map((field, index) => {return { id :index, title : this.props.translate(field.label).includes("translationId") ? field.label : <Translate id={field.label} />, required:field.required}});
+        
         const headAvailable = [{ id:"title", alignment: "left", label: "name"} ];
         const headSelected = [{ id:"title", alignment: "left", label: "name"}, { id:"required", alignment: "left", label: "required"} ];
         return(    
