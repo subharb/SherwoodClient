@@ -302,10 +302,11 @@ export const BillForm: React.FC<Props> = (props) => {
                     id: rows.length - 1,
                     concept: props.billables && props.billables.length > 0 ? <Autocomplete
                         id="concept"
-                        selectOnFocus
-                        clearOnBlur
-                        handleHomeEndKeys
+                        freeSolo
                         options={props.billables ? props.billables as BillableOption[] : []}
+                        onInputChange={(event, value, reason) => {
+                            onBillableSelected(value);
+                        }}
                         onChange={(event, newValue) => {
                             if (typeof newValue === 'string') {
                                 onBillableSelected(newValue);
@@ -316,23 +317,7 @@ export const BillForm: React.FC<Props> = (props) => {
                                 onBillableSelected(newValue?.concept, newValue.id, rows.length - 1,);
                             }
                           }}
-                          filterOptions={(options, params) => {
-                            const filtered = filter(options, params);
-                    
-                            // Suggest the creation of a new value
-                            if (params.inputValue !== '') {
-                                filtered.push({
-                                    inputValue: params.inputValue,
-                                    concept: params.inputValue,
-                                    amount:0,
-                                    type:0,
-                                    insurance:null,
-                                    id:0
-                                });
-                            }
-                    
-                            return filtered;
-                          }}
+                        
                           getOptionLabel={(option) => {
                             // Value selected with enter, right from the input
                             if (typeof option === 'string') {
