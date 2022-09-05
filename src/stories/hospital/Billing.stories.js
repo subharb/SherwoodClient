@@ -4,6 +4,7 @@ import { BillForm } from '../../pages/hospital/Billing/bill_form'
 import { FindPatient } from '../../pages/hospital/Billing/find_patient'
 import { bills, listDecryptedPatients, listPatientsHospitalWard, personal_data_investigation1,} from "../example_data";
 import ProviderSherwood from '../../providerSherwood';
+import EditBillingInfoComponent from '../../pages/hospital/Billing/EditBillingInfo';
 
 export default {
   title: 'Hospital/Billing',
@@ -21,6 +22,7 @@ export default {
 const Template = (args) => <BillingLocalized {...args} />; 
 const TemplateBillForm = (args) => <BillForm {...args} />; 
 const TemplateFindPatient = (args) => <FindPatient {...args} />; 
+const TemplateEditBillingInfo = (args) => <EditBillingInfoComponent {...args} />; 
 
 
 const testPatient = listPatientsHospitalWard[0];
@@ -56,4 +58,12 @@ Find_Patient.args = {
     personalFields : personal_data_investigation1()
 };
 
+export const EditBillingInfo = TemplateEditBillingInfo.bind({});
+EditBillingInfo.args = {
+    billables : [{"id":1,"amount":"2000.00","type":0,"concept":"First visit Dr. Sena","insurance":null,"createdAt":"2022-08-19T05:09:42.394Z","updatedAt":new Date(),"deletedAt":null}],
+    billingInfo : {
+        currency : "EUR",
+    }
+
+};
 

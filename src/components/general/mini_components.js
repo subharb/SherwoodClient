@@ -308,8 +308,11 @@ export const ButtonView = (props) =>{
     //         {props.children}
     // </ButtonContinueStyles>
 }
+
 export const ButtonGreyBorderGrey = styled(ButtonGrey)`
     &&&{
         background: #E5E5E5;
         border: 5px solid #6F6C6D;
+    }
 `;
+

@@ -15,6 +15,7 @@ import { EnhancedTable } from '../../general/EnhancedTable';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import AddField from './add_field';
 import OrderableTable from '../../general/OrderableTable';
+import RemoteSubmitButton from '../../general/RemoteSubmitButton';
 
 const SECTION_FORM = {
     "name" : {
@@ -46,24 +47,12 @@ class Section extends Component{
         this.renderFields = this.renderFields.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.deleteField = this.deleteField.bind(this);
-        this.handleNewSection = this.handleNewSection.bind(this); 
-
+        
+        this.handleNewSection = this.handleNewSection.bind(this);
         const initialState = { addingField: false, fields : [] }
         this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
     }
-    handleNewSection(values){
-        console.log("handleNewSection: "+JSON.stringify(values));
-        if(this.state.fields.length === 0){
-            alert("Faltan campos");
-        }
-        else{
-            let newValues = Object.assign({}, values);
-            newValues.fields = [...this.state.fields];
-            console.log("handleNewSection:"+JSON.stringify(values));
-            newValues.repeats = values.hasOwnProperty("repeats") ? values.repeats : false;
-            this.props.callBackNewSection(newValues);
-        }
-    }
+
     deleteField(index){
         console.log("Delete Field", index);
         let tempState = {...this.state};
@@ -139,6 +128,23 @@ class Section extends Component{
             return null;
         }        
     }
+    handleNewSection(values){
+        console.log("handleNewSection: "+JSON.stringify(values));
+        if(this.state.fields.length === 0){
+            alert("Faltan campos");
+        }
+        else{
+            let newValues = Object.assign({}, values);
+            newValues.fields = [...this.state.fields];
+            console.log("handleNewSection:"+JSON.stringify(values));
+            newValues.repeats = values.hasOwnProperty("repeats") ? values.repeats : false;
+            this.props.callBackNewSection(newValues);
+        }
+    }
+    callBack(field){
+        this.toogleField(false);
+        this.props.callBackForm(field);
+    }
     componentDidMount(){
         if(this.props.initialData){
             console.log("Init Data");
@@ -149,36 +155,57 @@ class Section extends Component{
         const title = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
         const saveText = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
         return (
+            
             <Grid item container xs={12}>
-                
-                    <Grid item xs={12}>
-                        <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))}>
-                            <Field type="text" name="name" fullWidth label="name" required={true} component={FieldSherwood} />
-                            <div>
-                                <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
-                            </div>
-                        </form>   
-                            <div style={{paddingTop:"40px"}}>
-                                <Typography variant="body2" color="textPrimary" component="span"> 
-                                    <Translate id="investigation.create.edc.add_field" />
-                                </Typography>
-                                <AddField fields={FIELDS_FORM}
-                                    callBackForm={(field) => this.handleAddField(field)}/>
-                                </div>  
-                            { this.renderFields() }
-                            <div style={{paddingTop:"40px"}}>
-                                <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
-                                <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
-                                    type="button">Cancel</ButtonCancel>
-                            </div>
-                        
-                    </Grid>
-                
+                <Modal id="modal"
+                    open={this.state.addingField}
+                    closeModal={this.toogleField}
+                    title={<Translate id="investigation.create.edc.add_field" />}>
+                        <Form fields={FIELDS_FORM} fullWidth callBackForm={(field) => this.handleAddField(field)} 
+                            closeCallBack={this.toogleField} dataTestid="save-field" />
+                </Modal>
+                <Grid item xs={12}>
+                    <form onSubmit={this.props.handleSubmit(values => this.handleNewSection(values))} >
+                        <Field type="text" name="name" fullWidth label="name" required={true} component={FieldSherwood} />
+                        <div>
+                            <Field type="checkbox" name="repeats" label="repeats" component={FieldSherwood} />
+                        </div> 
+                        <div style={{paddingTop:"40px"}}>
+                            <Typography variant="body2" color="textPrimary" component="span"> 
+                                <Translate id="investigation.create.edc.add_field" />
+                            </Typography>
+                            <ButtonAdd type="button" data-testid="add-field" onClick={this.toogleField}
+                        show={true}>
+                            </ButtonAdd>  
+                        </div>  
+                        { this.renderFields() }
+                        <div style={{paddingTop:"40px"}}>
+                            <ButtonSave disabled={this.state.fields.length === 0} data-testid="add-section" type="submit">Add Section</ButtonSave>
+                            <ButtonCancel onClick={this.props.closeNewSection} data-testid="cancel-section" style={{marginLeft:'1rem'}}
+                                type="button">Cancel</ButtonCancel>                            
+                        </div>
+                    </form>  
+                </Grid>
             </Grid>
             
         )
     }   
     
+}
+
+function submit(values, dispatch, props){
+    console.log("Validate");
+    console.log("handleNewSection: "+JSON.stringify(values));
+    if(this.state.fields.length === 0){
+        alert("Faltan campos");
+    }
+    else{
+        let newValues = Object.assign({}, values);
+        newValues.fields = [...this.state.fields];
+        console.log("handleNewSection:"+JSON.stringify(values));
+        newValues.repeats = values.hasOwnProperty("repeats") ? values.repeats : false;
+        props.callBackNewSection(newValues);
+    }
 }
 
 function validate(values){
@@ -204,5 +231,6 @@ Section.propTypes = {
 
 export default withLocalize(reduxForm({
     validate : validate,
-    form : 'section'
+    form : 'section',
+    onSubmit: submit 
 })(Section))

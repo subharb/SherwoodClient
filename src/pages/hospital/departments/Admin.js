@@ -19,6 +19,7 @@ import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
 import { FUNCTIONALITY } from '../../../constants/types';
+import { a11yProps, TabPanel } from '../../components/Tabs';
 
 const DEPARTMENT_FORM = {
     "name":{
@@ -333,31 +334,7 @@ function Departments(props) {
         setWardToEdit(false);
         setWardToDelete(false);
     }
-    function a11yProps(index) {
-        return {
-          id: `simple-tab-${index}`,
-          'aria-controls': `simple-tabpanel-${index}`,
-        };
-    }
-    function TabPanel(props) {
-        const { children, value, index, ...other } = props;
-      
-        return (
-          <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-          >
-            {value === index && (
-              <Box p={3}>
-                <Typography>{children}</Typography>
-              </Box>
-            )}
-          </div>
-        );
-    }
+    
 
     async function resetSnackBar(){
         setShowSnackbar({show:false});
@@ -532,10 +509,7 @@ function Departments(props) {
                                 props.investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION) &&
                                 <Tab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
                             }
-                                
                             </Tabs>
-                            
-                            
                         </AppBar>
                     }
                     {

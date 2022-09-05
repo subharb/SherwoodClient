@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet';
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import styled, { withTheme } from "styled-components/macro";
-import { Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
+import { Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Tabs, Typography } from '@material-ui/core';
 import { spacing } from "@material-ui/system";
 import Modal from '../../../components/general/modal';
 import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@material-ui/lab';
-import { ButtonAdd } from '../../../components/general/mini_components';
+import { ButtonAdd, IconGenerator } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
 import { Bill, Billable, BillingInfo, IPatient } from '../../../constants/types';
 import { Document } from '../Document';
@@ -17,6 +17,8 @@ import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { getBillablesService, getBillsService } from '../../../services/billing';
 import Loader from '../../../components/Loader';
 import { fullDateFromPostgresString } from '../../../utils';
+import { TabsSherwood } from '../../components/Tabs';
+import EditBillingInfo  from './EditBillingInfo';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -104,11 +106,10 @@ export enum BillActions{
 const Billing:React.FC<Props> = (props) => {
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [showModal, setShowModal] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [actionBill, setActionBill] = useState<BillActions>(BillActions.default);
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
-    const [patientBill, setPatientBill] = useState<IPatient | null>(null);
     const [billables, setBillables] = useState<Billable[]>([]);
+    const [edit, setEdit] = useState(false);
 
     useEffect(() =>{
        console.log(props.billingInfo);
@@ -130,6 +131,9 @@ const Billing:React.FC<Props> = (props) => {
     function onCancelBill(){
         setShowModal(false);
         setCurrentBill(null);
+    }
+    function editBillingInfo(){
+        setEdit(true);
     }
     function onBillSuccesfullyCreated(bill:Bill){
         console.log(bill);
@@ -196,6 +200,24 @@ const Billing:React.FC<Props> = (props) => {
                             {"type" : "view", "func" : (index:number) => makeActionBill(index, BillActions.preview)}]} />
         }
     }
+    function renderCore(){
+        if(edit){
+            <EditBillingInfo billables={billables} billingInfo={props.billingInfo} />
+        }
+        else{
+            if(props.billingInfo){
+                <>
+                    <TabsSherwood name="Billing Info" 
+                        labels={["hospital.billing.bills", "hospital.billing.metrics"]} >
+                        {
+                            renderBills()
+                        }
+                        <Translate id=""></Translate>
+                    </TabsSherwood>
+                </>
+            }
+        }
+    }
     function renderModal(){
         switch(actionBill){
             case BillActions.update:
@@ -257,35 +279,40 @@ const Billing:React.FC<Props> = (props) => {
                 }
             
 			<Grid justify="space-between" direction='row'  container spacing={6}>
-				<Grid item xs={12}>
-					<Typography variant="h3" gutterBottom style={{ color: "white" }}>
-						<Translate id="hospital.billing.title" />
-					</Typography>	
-                    {!props.billingInfo ?  
-                        <Typography variant="body2" gutterBottom style={{ color: "white" }}>
-                            <Translate id="hospital.billing.no_billing_info" />
-                        </Typography>
-                        :
-                        <ButtonAdd disabled={showModal || props.loading} 
-                            type="button" data-testid="add_bill" 
-                            onClick={() => {
-                                setActionBill(BillActions.create);
-                                setShowModal(true);
-                            }} />	
+				<Grid item xs={12} container>
+                    <Grid item xs={6}>
+                        <Typography variant="h3" gutterBottom style={{ color: "white" }}>
+                            <Translate id="hospital.billing.title" />
+                        </Typography>	
+                        {!props.billingInfo ?  
+                            <Typography variant="body2" gutterBottom style={{ color: "white" }}>
+                                <Translate id="hospital.billing.no_billing_info" />
+                            </Typography>
+                            :
+                            <ButtonAdd disabled={showModal || props.loading || edit} 
+                                type="button" data-testid="add_bill" 
+                                onClick={() => {
+                                    setActionBill(BillActions.create);
+                                    setShowModal(true);
+                                }} />	
+                        }
+                    </Grid>
+					<Grid item xs={6} alignContent="flex-end">
+                    {
+                        <IconButton 
+                            onClick={(e) => {
+                                editBillingInfo();
+                            }}>
+                            <IconGenerator type="edit" />
+                        </IconButton>	
                     }
+                    </Grid>
+                   
 				</Grid>
 				
 			</Grid>
-            { props.billingInfo &&
-                <>
-                    <Divider my={6} />
-                    <Grid direction='row' justify="center" style={{ color: "white", padding:'1rem' }}>
-                        {
-                            renderBills()
-                        }
-                    </Grid>
-                </>
-                
+            {
+                renderCore()
             }
 			
         </React.Fragment>
