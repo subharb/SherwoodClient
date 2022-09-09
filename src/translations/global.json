@@ -200,6 +200,13 @@
             "no_bills" : ["Click the plus button to create your first bill", "Haga clic en el botón más para crear su primera factura", "Cliquez sur le bouton plus pour créer votre première facture"],
             "bills" : ["Bills", "Facturas", "Factures"],
             "metrics" : ["Metrics", "Métricas", "Metrics"],
+            "billing_info" : {
+                "logo" : ["Clinic/Hospital Logo", "Clinic/Hospital Logo", "Clinic/Hospital Logo"],
+                "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
+                "address" : ["Address", "Dirección", "Adresse"],
+                "currency" : ["Currency(ISO Code)", "Moneda(ISO Code)", "Devise(ISO Code)"],
+                "email":["Email", "Email", "Email"]
+            },
             "item" : {
                 "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],
                 "concept" : ["Concept", "Concepto", "Concept"],
