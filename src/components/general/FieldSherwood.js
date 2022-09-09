@@ -26,6 +26,7 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import File from './File';
 import { FieldWrapper } from './mini_components';
 import { Field, FieldArray } from 'redux-form'
+import FileBase64 from './FileBase64';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -95,6 +96,7 @@ class FieldSherwood extends PureComponent{
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.renderOptions = this.renderOptions.bind(this);
         this.renderOptionText = this.renderOptionText.bind(this);
+        this.imageBase64 = this.imageBase64.bind(this);
     }
 
     async componentDidMount(){
@@ -162,6 +164,9 @@ class FieldSherwood extends PureComponent{
     }
     imagesSelected(images){
         this.props.input.onChange(images);
+    }
+    imageBase64(imageBase64){
+        this.props.input.onChange(imageBase64);
     }
     renderOptionText(props){
         return <FieldWrapper noWrap = {this.props.fullWidth}>
@@ -432,6 +437,10 @@ class FieldSherwood extends PureComponent{
                             type={type} {...input} 
                             value={input.value} />
                     </FieldWrapper>
+                )
+            case "file_base64" : 
+                return (
+                    <FileBase64 label={labelString} callBackBase64={this.imageBase64} />
                 )
             case "edd":
             case "bmi":    

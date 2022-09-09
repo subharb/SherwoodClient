@@ -6,10 +6,11 @@ import styled from "styled-components"
 import { EnhancedTable } from "../../../components/general/EnhancedTable"
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
 import Loader from "../../../components/Loader"
-import { Bill, Billable, BillItem, BillItemKeys, BillItemTable, IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
-import { createBillService, updateBillService } from "../../../services/billing"
-import { calculateTotalBill } from "../../../utils/bill"
-import { FindPatient } from "./find_patient"
+import { IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
+import { Bill, Billable, BillItem, BillItemKeys, BillItemTable } from "./types";
+import { createBillService, updateBillService } from "../../../services/billing";
+import { calculateTotalBill } from "../../../utils/bill";
+import { FindPatient } from "./find_patient";
 
 import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils"
 import { Autocomplete, createFilterOptions } from "@material-ui/lab"

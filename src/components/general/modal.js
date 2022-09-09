@@ -10,7 +10,6 @@ import { Dialog,
 } from "@material-ui/core";
 import PropTypes from 'prop-types'; 
 import { Translate } from 'react-localize-redux';
-import Portal from './portal';
 
 export default function Modal(props){
     let paperStyles = props.medium ? {

@@ -295,6 +295,30 @@ export const CloseButton = (props) =>{
             </Button>
 }
 
+const CloseHolder = styled.div`
+    position:relative;
+    width: max-content;
+`;
+const CloseButtonHolder = styled.div`
+    position:absolute;
+    right:0px;
+    margin-top:-20px;
+    margin-right:-30px;
+`
+
+export const CloseFrame = (props) => {
+    return(
+        <CloseHolder>
+            <CloseButtonHolder>
+                <CloseButton onClick={props.onClick} />
+            </CloseButtonHolder>
+            {
+                props.children
+            }
+        </CloseHolder>
+    )
+}
+
 export const ButtonView = (props) =>{
     return  <Fab mx={2} size="small" color="secondary" aria-label="View" {...props} >
                 <RemoveRedEyeIcon />

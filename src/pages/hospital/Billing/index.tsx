@@ -18,9 +18,7 @@ import { getBillablesService, getBillsService } from '../../../services/billing'
 import Loader from '../../../components/Loader';
 import { fullDateFromPostgresString } from '../../../utils';
 import { TabsSherwood } from '../../components/Tabs';
-import EditBillingInfo  from './EditBillingInfo';
-
-const Divider = styled(MuiDivider)(spacing);
+import EditBillingInfo  from './EditBillables';
 
 interface PropsRedux{
     investigations:any,
@@ -28,7 +26,6 @@ interface PropsRedux{
     uuidInvestigation : string,
 
 }
-
 
 const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
     const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
@@ -66,12 +63,11 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
                     billingInfo = {investigation.billingInfo}
                     bills={bills} loading={loading} 
                     onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
-                    />
+                />
     }
     else{
         return <Loader />;
     }
-    
 }
 
 const mapStateToProps = (state:any) =>{
@@ -121,6 +117,9 @@ const Billing:React.FC<Props> = (props) => {
        }
        if(props.billingInfo){
             getBillables(props.billingInfo.id);
+       }
+       else{
+            setEdit(true);
        }
     }, [props.billingInfo]);
 
@@ -202,7 +201,7 @@ const Billing:React.FC<Props> = (props) => {
     }
     function renderCore(){
         if(edit){
-            <EditBillingInfo billables={billables} billingInfo={props.billingInfo} />
+            return <EditBillingInfo billables={billables} billingInfo={props.billingInfo} />
         }
         else{
             if(props.billingInfo){

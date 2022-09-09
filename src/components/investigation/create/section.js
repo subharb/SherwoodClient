@@ -7,15 +7,11 @@ import Form from '../../general/form';
 import { reduxForm, Field } from 'redux-form';
 import { ButtonAdd, ButtonSave, ButtonCancel  } from '../../general/mini_components';
 import { Grid,
-        Typography,
-        Card, CardContent
+        Typography
     } from "@material-ui/core";
 import PropTypes from 'prop-types';
-import { EnhancedTable } from '../../general/EnhancedTable';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import AddField from './add_field';
 import OrderableTable from '../../general/OrderableTable';
-import RemoteSubmitButton from '../../general/RemoteSubmitButton';
+
 
 const SECTION_FORM = {
     "name" : {
