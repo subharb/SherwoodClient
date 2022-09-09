@@ -54,11 +54,16 @@ export interface BillingInfo{
     hospitalName:string
 }
 export interface EditBillingInfoProps {
-    billables : Billable[],
-    billingInfo:BillingInfo
+    callbackUpdate : (values:any) => void
 }
+
 
 export interface EditBillablesProps {
     billables : Billable[],
-    billingInfo:BillingInfo
+    billingInfo:BillingInfo,
+    uuidInvestigation : string
+}
+
+export interface BillingInfoServiceResponse {
+    status:number, billingInfo:BillingInfo
 }

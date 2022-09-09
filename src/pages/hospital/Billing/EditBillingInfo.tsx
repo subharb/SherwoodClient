@@ -1,10 +1,10 @@
 import React from 'react';
 import Form from '../../../components/general/form';
-import { EditBillablesProps } from './types';
+import { EditBillablesProps, EditBillingInfoProps } from './types';
 
 const BILLING_INFO_FORM = {
     "logo" : {
-        required : true,
+        required : false,
         type:"file_base64",
         label:"hospital.billing.billing_info.logo",
         shortLabel: "hospital.billing.billing_info.logo",
@@ -40,9 +40,10 @@ const BILLING_INFO_FORM = {
     },
 }
 
-const EditBillingInfo: React.FC<EditBillablesProps> = ({  }) => {
+const EditBillingInfo: React.FC<EditBillingInfoProps> = ({ callbackUpdate }) => {
     function callBack(values:any){
         console.log(values);
+        callbackUpdate(values);
     }
     return (
         <Form fields={BILLING_INFO_FORM} fullWidth callBackForm={(field:any) => callBack(field)} 

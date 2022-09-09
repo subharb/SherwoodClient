@@ -121,7 +121,7 @@ class Form extends Component {
                 currentSection.push(
                     <div className="row" key={key}>
                         <Field
-                            name={this.props.fields[key].name}
+                            name={this.props.fields[key].name ? this.props.fields[key].name : key}
                             type={this.props.fields[key].type}
                             component={FieldSherwood}
                             key={key}

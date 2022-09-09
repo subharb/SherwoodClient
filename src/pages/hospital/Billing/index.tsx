@@ -10,7 +10,8 @@ import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@material-ui/lab';
 import { ButtonAdd, IconGenerator } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
-import { Bill, Billable, BillingInfo, IPatient } from '../../../constants/types';
+import {  IPatient } from '../../../constants/types';
+import { Bill, Billable, BillingInfo } from './types';
 import { Document } from '../Document';
 import { connect } from 'react-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
@@ -19,6 +20,7 @@ import Loader from '../../../components/Loader';
 import { fullDateFromPostgresString } from '../../../utils';
 import { TabsSherwood } from '../../components/Tabs';
 import EditBillingInfo  from './EditBillables';
+import EditBilling from './Edit';
 
 interface PropsRedux{
     investigations:any,
@@ -201,7 +203,7 @@ const Billing:React.FC<Props> = (props) => {
     }
     function renderCore(){
         if(edit){
-            return <EditBillingInfo billables={billables} billingInfo={props.billingInfo} />
+            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={billables} billingInfo={props.billingInfo} />
         }
         else{
             if(props.billingInfo){

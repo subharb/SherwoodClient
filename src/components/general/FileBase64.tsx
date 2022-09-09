@@ -1,18 +1,20 @@
 import { Grid, IconButton, Typography } from '@material-ui/core';
 import { PhotoCamera } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
+import { Translate } from 'react-localize-redux';
 import styled from 'styled-components';
 import props from '../../theme/props';
-import { CloseButton, CloseFrame } from './mini_components';
+import { CloseButton, CloseFrame, RedFormHelperText } from './mini_components';
 
 interface FileBase64Props {
     label : string,
+    error:boolean,
     callBackBase64 : (imgBase64:string) => void
 }
 
 
 
-export const FileBase64: React.FC<FileBase64Props> = ({ label, callBackBase64 }) => {
+export const FileBase64: React.FC<FileBase64Props> = ({ label, error, callBackBase64 }) => {
     const [imageSelected, setImageSelected] = useState("");
 
     function onFileSelected(event:any){
@@ -39,15 +41,27 @@ export const FileBase64: React.FC<FileBase64Props> = ({ label, callBackBase64 })
 
     if(imageSelected !== ""){
         return(
-            <CloseFrame onClick={resetField}>
-                <img  src={imageSelected} width="100" />
-            </CloseFrame>
+            <>
+                <Grid container xs={12}>
+                    <Grid item xs={12}> 
+                        <Typography variant="body2" gutterBottom>
+                            {label}
+                        </Typography>
+                    </Grid> 
+                    <Grid item xs={12} style={{paddingTop:'10px'}}>
+                        <CloseFrame onClick={resetField}>
+                            <img  src={imageSelected} width="100" alt="logo" />
+                        </CloseFrame>
+                    </Grid> 
+            </Grid>
+            </>
+            
         )
     }
     return (
         <>
             <div id="imgTest" ></div>
-            <Grid item xs={12}>
+            <Grid container xs={12}>
                 <Typography variant="body2" gutterBottom>
                     {label}
                 </Typography>
@@ -60,6 +74,14 @@ export const FileBase64: React.FC<FileBase64Props> = ({ label, callBackBase64 })
                     <PhotoCamera />
                 </IconButton>
             </label>
+            {
+                error &&
+                <Grid container xs={12}>
+                    <RedFormHelperText>
+                        <Translate id="general.field-required" />
+                    </RedFormHelperText>
+                </Grid>
+            }
         </>
     );
 };

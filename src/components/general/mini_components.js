@@ -30,7 +30,7 @@ import {
     Divider as MuiDivider,
     Fab as MuiFab,
     IconButton as MuiIconButton,
-    Typography, Box, Grid
+    Typography, Box, Grid, FormHelperText
   } from "@material-ui/core";  
 
 import { spacing } from "@material-ui/system";
@@ -304,6 +304,9 @@ const CloseButtonHolder = styled.div`
     right:0px;
     margin-top:-20px;
     margin-right:-30px;
+`
+export const RedFormHelperText = styled(FormHelperText)`
+  color:red;
 `
 
 export const CloseFrame = (props) => {

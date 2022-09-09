@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Modal from '../../../components/general/modal';
-import { EditBillingInfoProps } from './types';
+import { EditBillablesProps } from './types';
 
 
 
 // Componente que edita, añade y borra billables
-const EditBillables: React.FC<EditBillingInfoProps> = ({ billables, billingInfo }) => {
+const EditBillables: React.FC<EditBillablesProps> = ({ billables, billingInfo }) => {
     const [showModal, setShowModal] = useState(false);
 
     

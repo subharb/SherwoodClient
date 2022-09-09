@@ -3,7 +3,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
-import { ButtonAdd, ButtonCheck, ButtonDelete, ButtonEmptyCheck, DeleteHolder } from '../general/mini_components';
+import { ButtonAdd, ButtonCheck, ButtonDelete, ButtonEmptyCheck, DeleteHolder, RedFormHelperText } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
         Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider } from '@material-ui/core';
@@ -75,9 +75,7 @@ const sharedStyle = css`
     //     }
     // }
 `
-const RedFormHelperText = styled(FormHelperText)`
-  color:red;
-`
+
 
  
 export const TextFieldSherwood = styled(TextField)`
@@ -440,7 +438,7 @@ class FieldSherwood extends PureComponent{
                 )
             case "file_base64" : 
                 return (
-                    <FileBase64 label={labelString} callBackBase64={this.imageBase64} />
+                    <FileBase64 label={labelString} error={errorState} callBackBase64={this.imageBase64} />
                 )
             case "edd":
             case "bmi":    
