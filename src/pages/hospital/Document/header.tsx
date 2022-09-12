@@ -3,8 +3,9 @@ import React, { useState } from "react"
 import { Translate } from "react-localize-redux";
 import { connect } from "react-redux";
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
-import { BillingInfo, IPatient } from "../../../constants/types";
+
 import { formatPatients } from "../../../utils";
+import { BillingInfo } from "../Billing/types";
 
 
 interface Props extends Omit<BillingInfo, 'id'>{

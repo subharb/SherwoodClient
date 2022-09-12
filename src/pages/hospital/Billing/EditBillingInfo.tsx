@@ -1,52 +1,71 @@
 import React from 'react';
+import Billing from '.';
 import Form from '../../../components/general/form';
-import { EditBillablesProps, EditBillingInfoProps } from './types';
+import { BillingInfo, BillingInfoKeys, EditBillingInfoProps } from './types';
 
-const BILLING_INFO_FORM = {
-    "logo" : {
-        required : false,
-        type:"file_base64",
-        label:"hospital.billing.billing_info.logo",
+
+const BILLING_INFO_FORM: {[key in BillingInfoKeys]?: any} = {
+    "logoBlob": {
+        required: false,
+        type: "file_base64",
+        label: "hospital.billing.billing_info.logo",
         shortLabel: "hospital.billing.billing_info.logo",
-        validation : "textMin2"
+        validation: "textMin2"
     },
-    "address" : {
-        required : true,
-        type:"text",
-        label:"hospital.billing.billing_info.address",
+    "hospitalName": {
+        required: true,
+        type: "text",
+        label: "hospital.billing.billing_info.hospitalName",
+        shortLabel: "hospital.billing.billing_info.hospitalName",
+        validation: "textMin2"
+    },
+    "address": {
+        required: true,
+        type: "text",
+        label: "hospital.billing.billing_info.address",
         shortLabel: "hospital.billing.billing_info.address",
-        validation : "textMin2"
+        validation: "textMin2"
     },
-    "email" : {
-        required : true,
-        type:"text",
-        label:"hospital.billing.billing_info.email",
+    "email": {
+        required: true,
+        type: "text",
+        label: "hospital.billing.billing_info.email",
         shortLabel: "hospital.billing.billing_info.email",
-        validation : "textMin2"
+        validation: "textMin2"
     },
-    "phone" : {
-        required : true,
-        type:"text",
-        label:"hospital.billing.billing_info.phone",
+    "phone": {
+        required: true,
+        type: "text",
+        label: "hospital.billing.billing_info.phone",
         shortLabel: "hospital.billing.billing_info.phone",
-        validation : "textMin2"
+        validation: "textMin2"
     },
-    "currency" : {
-        required : true,
-        type:"text",
-        label:"hospital.billing.billing_info.currency",
+    "currency": {
+        required: true,
+        type: "text",
+        label: "hospital.billing.billing_info.currency",
         shortLabel: "hospital.billing.billing_info.currency",
-        validation : "textMin2"
-    },
+        validation: "textMin2"
+    }
 }
 
-const EditBillingInfo: React.FC<EditBillingInfoProps> = ({ callbackUpdate }) => {
+const EditBillingInfo: React.FC<EditBillingInfoProps> = ({ billingInfo, callbackUpdate }) => {
     function callBack(values:any){
         console.log(values);
         callbackUpdate(values);
     }
+    let initialData:{[key in BillingInfoKeys]?: any}={};
+    if(billingInfo){
+        for (let key in billingInfo) {
+            if (BILLING_INFO_FORM.hasOwnProperty(key)) {
+                let value = billingInfo[key as keyof BillingInfo];
+                initialData[key as keyof BillingInfo] = value;
+            }
+        }
+    }
+    const FIELDS = billingInfo ? billingInfo : BILLING_INFO_FORM 
     return (
-        <Form fields={BILLING_INFO_FORM} fullWidth callBackForm={(field:any) => callBack(field)} 
+        <Form fields={BILLING_INFO_FORM} initialData={initialData} fullWidth callBackForm={(field:any) => callBack(field)} 
             dataTestid="save-field" />
     );
 };

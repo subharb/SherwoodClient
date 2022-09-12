@@ -35,6 +35,9 @@ export default function reducer(state = initialState, action){
         case types.SELECT_INVESTIGATION:    
             newState.currentInvestigation = newState.data[action.selectedInvestigation];
             return newState;
+        case types.UPDATE_BILLING_INFO_SUCCESS:
+            newState.currentInvestigation.billing_info = action.payload;
+            return newState
         case types.AUTH_SIGN_OUT:
             newState = {...initialState};
             return newState;

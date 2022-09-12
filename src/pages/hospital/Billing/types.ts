@@ -53,8 +53,12 @@ export interface BillingInfo{
     logoBlob:string,
     hospitalName:string
 }
+
+export type BillingInfoKeys = "id" | "address" | "currency" | "phone" | "email" | "logoBlob" | "hospitalName";
+
 export interface EditBillingInfoProps {
     callbackUpdate : (values:any) => void
+    billingInfo:BillingInfo
 }
 
 

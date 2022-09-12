@@ -33,7 +33,7 @@ export function updateBillService(uuidInvestigation: string, billId: number, bil
     });
 }
 
-export function updateBillingInfo(uuidInvestigation: string, billingInfo: any):Promise<BillingInfoServiceResponse> {
+export function createUpdateBillingInfoService(uuidInvestigation: string, billingInfo: any):Promise<BillingInfoServiceResponse> {
     return new Promise((resolve, reject) => {
         axios
             .put(process.env.REACT_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billingInfo", billingInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })

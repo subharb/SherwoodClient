@@ -27,10 +27,14 @@ export const FileBase64: React.FC<FileBase64Props> = ({ label, error, callBackBa
         var fileReader = new FileReader();
 
         fileReader.onload = function(fileLoadedEvent) {
-            var srcData = fileLoadedEvent.target.result; // <--- data: base64
-
-            setImageSelected(srcData);
-            callBackBase64(srcData);
+            if(fileLoadedEvent && fileLoadedEvent.target){
+                var srcData = fileLoadedEvent.target.result?.toString(); // <--- data: base64
+                if(srcData){
+                    setImageSelected(srcData);
+                    callBackBase64(srcData);
+                }
+            }
+            
             
         }
         fileReader.readAsDataURL(fileToLoad);
@@ -66,7 +70,7 @@ export const FileBase64: React.FC<FileBase64Props> = ({ label, error, callBackBa
                     {label}
                 </Typography>
             </Grid>
-            <input accept="image/*,application/pdf,application/vnd.ms-excel" id="image" name="image" style={{display:'none'}} 
+            <input accept="image/*" id="image" name="image" style={{display:'none'}} 
                     type="file" 
                     onChange={(e) => onFileSelected(e)} />
             <label htmlFor="image">
