@@ -212,15 +212,17 @@ const Billing:React.FC<Props> = (props) => {
         }
         else{
             if(props.billingInfo){
-                <>
-                    <TabsSherwood name="Billing Info" 
-                        labels={["hospital.billing.bills", "hospital.billing.metrics"]} >
-                        {
-                            renderBills()
-                        }
-                        <Translate id=""></Translate>
-                    </TabsSherwood>
-                </>
+                return(
+                    <>
+                        <TabsSherwood name="Billing Info" 
+                            labels={["hospital.billing.bills", "hospital.billing.metrics"]} >
+                            {
+                                renderBills()
+                            }
+                            <Translate id=""></Translate>
+                        </TabsSherwood>
+                    </>
+                )
             }
         }
     }

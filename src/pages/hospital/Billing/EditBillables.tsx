@@ -18,9 +18,8 @@ const EditBillables: React.FC<EditBillablesProps> = ({ billables, billingInfo })
     function renderBillables(){
         const headCells = [
             { id: "id", alignment: "left", label: "ID" },
-            { id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item`} /> },
-            { id: "amount", alignment: "left", label: [<Translate id={`hospital.billing.amount`} />,"("+billingInfo.currency+")"] },
-            { id: "insurance", alignment: "left", label: [<Translate id={`hospital.billing.item.insurance`} />]},
+            { id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item.concept`} /> },
+            { id: "amount", alignment: "left", label: [<Translate id={`hospital.billing.item.amount`} />,"("+billingInfo.currency+")"] },
         ]
         const rows = billables.map(billable => {
             return {
