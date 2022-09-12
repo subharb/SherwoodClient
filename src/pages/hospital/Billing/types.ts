@@ -58,14 +58,18 @@ export type BillingInfoKeys = "id" | "address" | "currency" | "phone" | "email" 
 
 export interface EditBillingInfoProps {
     callbackUpdate : (values:any) => void
-    billingInfo:BillingInfo
+    
+    billingInfo:BillingInfo,
 }
-
 
 export interface EditBillablesProps {
     billables : Billable[],
     billingInfo:BillingInfo,
-    uuidInvestigation : string
+    uuidInvestigation : string,
+}
+
+export interface EditBillingProps extends EditBillablesProps, Omit<EditBillingInfoProps, 'callbackUpdate'> {
+    onBillingInfoSuccesfullyUpdated : () => void;
 }
 
 export interface BillingInfoServiceResponse {

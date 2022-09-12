@@ -30,7 +30,7 @@ export function createUpdateBillingInfo(uuidInvestigation, billingInfo) {
         .then((response) => {
           dispatch({
             type: types.UPDATE_BILLING_INFO_SUCCESS,
-            investigations: response.billingInfo,
+            billingInfo: response.billingInfo,
           });
         })
         .catch((error) => {

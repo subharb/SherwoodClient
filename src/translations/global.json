@@ -204,13 +204,21 @@
                 "title" : ["Billables", "Elementos de facturación", "Billables"]
             },
             "billing_info" : {
-                "title" : ["Billing Info", "Información de facturación", "Billing Info"],
+                "title" : ["Billing Info", "Información de facturación", "Détails de facturation"],
                 "hospitalName" : ["Clinic/Hospital Name", "Nombre del centro", "Nom du centre"],
                 "logo" : ["Clinic/Hospital Logo", "Clinic/Hospital Logo", "Clinic/Hospital Logo"],
                 "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
                 "address" : ["Address", "Dirección", "Adresse"],
                 "currency" : ["Currency(ISO Code)", "Moneda(ISO Code)", "Devise(ISO Code)"],
-                "email":["Email", "Email", "Email"]
+                "email":["Email", "Email", "Email"],
+                "success" : {
+                    "created" : ["Bill succesfully created", "Factura creada correctamente", "Facture créée avec succès"],
+                    "updated" : ["BillingInfo succesfully updated", "Información de facturación actualizada correctamente", "Détails de facturation mis à jour avec succès"]
+                },
+                "error" : {
+                    "create" : ["There was an error creating the bill, please try again","Hubo un error al crear la factura, inténtalo de nuevo", "Une erreur s'est produite lors de la création de la facture, veuillez réessayer"],
+                    "positive" : ["The total must be positive", "El total debe ser positivo", "Le total doit être positif"]
+                }
             },
             "item" : {
                 "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],

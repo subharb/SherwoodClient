@@ -31,7 +31,7 @@ const BILLING_INFO_FORM: {[key in BillingInfoKeys]?: any} = {
         type: "text",
         label: "hospital.billing.billing_info.email",
         shortLabel: "hospital.billing.billing_info.email",
-        validation: "textMin2"
+        validation: "validEmail"
     },
     "phone": {
         required: true,

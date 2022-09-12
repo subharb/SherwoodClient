@@ -201,9 +201,14 @@ const Billing:React.FC<Props> = (props) => {
                             {"type" : "view", "func" : (index:number) => makeActionBill(index, BillActions.preview)}]} />
         }
     }
+    function onBillingInfoSuccesfullyUpdated(){
+        //setEdit(false);
+        setShowSnackbar({message:"hospital.billing.billinfo.success.updated", show:true, severity:"success"});
+    }
     function renderCore(){
         if(edit){
-            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={billables} billingInfo={props.billingInfo} />
+            return <EditBilling onBillingInfoSuccesfullyUpdated={onBillingInfoSuccesfullyUpdated} 
+                uuidInvestigation={props.uuidInvestigation} billables={billables} billingInfo={props.billingInfo} />
         }
         else{
             if(props.billingInfo){
