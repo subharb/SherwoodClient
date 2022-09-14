@@ -201,7 +201,10 @@
             "bills" : ["Bills", "Facturas", "Factures"],
             "metrics" : ["Metrics", "Métricas", "Metrics"],
             "billables" : {
-                "title" : ["Billables", "Elementos de facturación", "Billables"]
+                "title" : ["Billables", "Elementos de facturación", "Billables"],
+                "success" : {
+                    "updated" : ["Billables succesfully updated", "Elementos de facturación actualizada correctamente", "Elements de facturation mis à jour avec succès"]
+                }
             },
             "billing_info" : {
                 "title" : ["Billing Info", "Información de facturación", "Détails de facturation"],

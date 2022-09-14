@@ -2,7 +2,7 @@ import * as types from "../../constants";
 import {
     fetchInvestigations as fetchInvestigationsService
 } from "../../services";
-import { createUpdateBillingInfoService } from "../../services/billing";
+import { createUpdateBillingInfoService, updateBillablesService } from "../../services/billing";
 
 export function fetchInvestigations() {
   return async (dispatch) => {
@@ -38,7 +38,25 @@ export function createUpdateBillingInfo(uuidInvestigation, billingInfo) {
           throw error;
         });
     };
-  }
+}
+
+export function updateBillables(uuidInvestigation, idBillingInfo, billables) {
+    return async (dispatch) => {
+      dispatch({ type: types.FETCH_INVESTIGATIONS_LOADING });
+  
+      return updateBillablesService(uuidInvestigation, idBillingInfo, billables)
+        .then((response) => {
+          dispatch({
+            type: types.UPDATE_BILLABLES_SUCCESS,
+            billables: response.billables,
+          });
+        })
+        .catch((error) => {
+          dispatch({ type: types.UPDATE_BILLABLES_ERROR });
+          throw error;
+        });
+    };
+}
 
 export function selectInvestigation(idInvestigation) {
     return async (dispatch) => {

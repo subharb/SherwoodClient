@@ -39,13 +39,10 @@ const GridContainer = styled(Grid)`
         min-width:400px;   
     }
 `
-
-
-
-
-
-export const BillForm: React.FC<Props> = (props) => {
+export const BillForm:React.FC<Props> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(props.bill ? props.bill.patientInvestigation : null);
+    const [loading, setLoading] = useState(false);
+    const [errorBill, setErrorBill] = useState<ReactElement | undefined>(undefined);
 
     function onPatientSelected(idPatient: number) {
         const findPatient = props.patients.find((patient) => patient.id === idPatient);
@@ -82,16 +79,38 @@ export const BillForm: React.FC<Props> = (props) => {
         }
     }
 
-    function renderItems(){
-        if(patient){
-            return <BillItems uuidPatient={patient?.uuid} 
-                currency={props.currency} print={props.print}
-                locale = {props.locale} bill={props.bill} billables={props.billables}
-                updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
-                onBillSuccesfullyCreated={props.onBillSuccesfullyCreated}
-                onCancelBill={props.onCancelBill} />
-        } 
+    async function onBillItemsValidated(items:BillItem[]){
+        setLoading(true);
+        let response: { status: number, bill?: Bill };
+        if (props.updatingBill && props.bill) {
+            response = await updateBillService(props.uuidInvestigation, props.bill.id, items);
+        }
+        else {
+            response = await createBillService(props.uuidInvestigation, patient!.uuid, items);
+        }
+
+        if (response.status === 200 && response.bill) {
+            props.onBillSuccesfullyCreated(response.bill);
+        }
+        else {
+            setErrorBill(<Translate id="hospital.bill.error.create" />);
+        }
+        setLoading(false);        
     }
+
+    function renderItems(){
+        if (loading) {
+            return <Loader />
+        }
+        if(patient){
+            return <BillItems uuidPatient={patient?.uuid} mode = 'bill'
+                        currency={props.currency} print={props.print}
+                        bill={props.bill} billables={props.billables ? props.billables : []}
+                        updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
+                        onBillItemsValidated={onBillItemsValidated} error={errorBill}
+                        onCancelBill={props.onCancelBill} />
+        } 
+    }          
     
     return (
         <GridContainer container xs={12} >

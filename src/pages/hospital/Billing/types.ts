@@ -54,11 +54,8 @@ export interface BillingInfo{
     hospitalName:string
 }
 
-export type BillingInfoKeys = "id" | "address" | "currency" | "phone" | "email" | "logoBlob" | "hospitalName";
-
 export interface EditBillingInfoProps {
     callbackUpdate : (values:any) => void
-    
     billingInfo:BillingInfo,
 }
 
@@ -66,12 +63,19 @@ export interface EditBillablesProps {
     billables : Billable[],
     billingInfo:BillingInfo,
     uuidInvestigation : string,
+    onBillablesCreated:(billItems:BillItem[]) =>void
 }
 
-export interface EditBillingProps extends EditBillablesProps, Omit<EditBillingInfoProps, 'callbackUpdate'> {
-    onBillingInfoSuccesfullyUpdated : () => void;
+export interface EditBillingProps extends Omit<EditBillablesProps, | 'onBillablesCreated' >, Omit<EditBillingInfoProps, 'callbackUpdate'> {
+    onBillingInfoSuccesfullyUpdated : (type:BillItemModes) => void;
 }
 
 export interface BillingInfoServiceResponse {
     status:number, billingInfo:BillingInfo
 }
+
+export interface BillablesServiceResponse {
+    status: number, billables: Billable[] 
+}
+
+export type BillItemModes = 'bill' | 'billable';

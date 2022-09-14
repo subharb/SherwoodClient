@@ -1,10 +1,10 @@
 import React from 'react';
 import Billing from '.';
 import Form from '../../../components/general/form';
-import { BillingInfo, BillingInfoKeys, EditBillingInfoProps } from './types';
+import { BillingInfo, EditBillingInfoProps } from './types';
 
 
-const BILLING_INFO_FORM: {[key in BillingInfoKeys]?: any} = {
+const BILLING_INFO_FORM: {[key in keyof BillingInfo]?: any} = {
     "logoBlob": {
         required: false,
         type: "file_base64",
@@ -54,7 +54,8 @@ const EditBillingInfo: React.FC<EditBillingInfoProps> = ({ billingInfo, callback
         console.log(values);
         callbackUpdate(values);
     }
-    let initialData:{[key in BillingInfoKeys]?: any}={};
+    
+    let initialData:{[key in keyof BillingInfo]?: any}={};
     if(billingInfo){
         for (let key in billingInfo) {
             if (BILLING_INFO_FORM.hasOwnProperty(key)) {
@@ -63,7 +64,7 @@ const EditBillingInfo: React.FC<EditBillingInfoProps> = ({ billingInfo, callback
             }
         }
     }
-    const FIELDS = billingInfo ? billingInfo : BILLING_INFO_FORM 
+    
     return (
         <Form fields={BILLING_INFO_FORM} initialData={initialData} fullWidth callBackForm={(field:any) => callBack(field)} 
             dataTestid="save-field" />

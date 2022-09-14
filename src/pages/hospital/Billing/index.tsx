@@ -11,15 +11,13 @@ import { Alert } from '@material-ui/lab';
 import { ButtonAdd, IconGenerator } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
 import {  IPatient } from '../../../constants/types';
-import { Bill, Billable, BillingInfo } from './types';
+import { Bill, Billable, BillingInfo, BillItemModes } from './types';
 import { Document } from '../Document';
 import { connect } from 'react-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { getBillablesService, getBillsService } from '../../../services/billing';
 import Loader from '../../../components/Loader';
 import { fullDateFromPostgresString } from '../../../utils';
-import { TabsSherwood } from '../../components/Tabs';
-import EditBillingInfo  from './EditBillables';
 import EditBilling from './Edit';
 
 interface PropsRedux{
@@ -201,27 +199,35 @@ const Billing:React.FC<Props> = (props) => {
                             {"type" : "view", "func" : (index:number) => makeActionBill(index, BillActions.preview)}]} />
         }
     }
-    function onBillingInfoSuccesfullyUpdated(){
+    function onBillingInfoSuccesfullyUpdated(type:BillItemModes){
         //setEdit(false);
-        setShowSnackbar({message:"hospital.billing.billinfo.success.updated", show:true, severity:"success"});
+        if(type === 'bill'){
+            setShowSnackbar({message:"hospital.billing.billing_info.success.updated", show:true, severity:"success"});
+        }
+        else{
+            setShowSnackbar({message:"hospital.billing.billables.success.updated", show:true, severity:"success"});
+        }
+        
     }
+    
     function renderCore(){
         if(edit){
-            return <EditBilling onBillingInfoSuccesfullyUpdated={onBillingInfoSuccesfullyUpdated} 
-                uuidInvestigation={props.uuidInvestigation} billables={billables} billingInfo={props.billingInfo} />
+            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={billables} 
+                        billingInfo={props.billingInfo} onBillingInfoSuccesfullyUpdated={(type:BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
         }
         else{
             if(props.billingInfo){
                 return(
-                    <>
-                        <TabsSherwood name="Billing Info" 
-                            labels={["hospital.billing.bills", "hospital.billing.metrics"]} >
-                            {
-                                renderBills()
-                            }
-                            <Translate id=""></Translate>
-                        </TabsSherwood>
-                    </>
+                    renderBills()
+                    // <>
+                    //     <TabsSherwood name="Billing Info" 
+                    //         labels={["hospital.billing.bills", "hospital.billing.metrics"]} >
+                    //         {
+                    //             renderBills()
+                    //         }
+                    //         <Translate id=""></Translate>
+                    //     </TabsSherwood>
+                    // </>
                 )
             }
         }
@@ -286,7 +292,7 @@ const Billing:React.FC<Props> = (props) => {
                     renderModal()
                 }
             
-			<Grid justify="space-between" direction='row'  container spacing={6}>
+			<Grid justify="space-between" direction='row' container spacing={6}>
 				<Grid item xs={12} container>
                     <Grid item xs={6}>
                         <Typography variant="h3" gutterBottom style={{ color: "white" }}>
@@ -305,7 +311,7 @@ const Billing:React.FC<Props> = (props) => {
                                 }} />	
                         }
                     </Grid>
-					<Grid item xs={6} alignContent="flex-end">
+					<Grid item xs={6} alignContent="flex-end"  >
                     {
                         <IconButton 
                             onClick={(e) => {
@@ -315,7 +321,6 @@ const Billing:React.FC<Props> = (props) => {
                         </IconButton>	
                     }
                     </Grid>
-                   
 				</Grid>
 				
 			</Grid>

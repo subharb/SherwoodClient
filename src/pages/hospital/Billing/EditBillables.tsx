@@ -1,36 +1,32 @@
-import React, { useState } from 'react';
+import { Box, Card } from '@material-ui/core';
+import React, { ReactElement, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Modal from '../../../components/general/modal';
-import { EditBillablesProps } from './types';
+import { BillItems } from './BillItems';
+import { BillItem, EditBillablesProps } from './types';
 
 
 
 // Componente que edita, añade y borra billables
-const EditBillables: React.FC<EditBillablesProps> = ({ billables, billingInfo }) => {
+const EditBillables: React.FC<EditBillablesProps> = ({ billables, uuidInvestigation, onBillablesCreated, billingInfo }) => {
     const [showModal, setShowModal] = useState(false);
-
+    const [errorBillables, setErrorBillables] = useState<ReactElement | undefined>(undefined);
     
     function removeBillable(index:number){
         console.log(index);
         setShowModal(true);
     }
+    
     function renderBillables(){
-        const headCells = [
-            { id: "id", alignment: "left", label: "ID" },
-            { id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item.concept`} /> },
-            { id: "amount", alignment: "left", label: [<Translate id={`hospital.billing.item.amount`} />,"("+billingInfo.currency+")"] },
-        ]
-        const rows = billables.map(billable => {
-            return {
-                id : billable.id,
-                concept : billable.concept,
-                amount : billable.amount,
-                insurance : billable.insurance
-            }
-        });
-    return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
-            actions={[{"type" : "delete", "func" : (index:number) => removeBillable(index)}]} />
+        return(
+            <Card>
+                <BillItems currency={billingInfo.currency} print={false} mode = 'billable'
+                    bill={null} billables={billables} uuidInvestigation={uuidInvestigation} updatingBill={false}
+                    onBillItemsValidated={onBillablesCreated} error={errorBillables}
+                    onCancelBill={() => console.log("Cancel")} />
+            </Card>
+        ) 
     }
     return (
         <>

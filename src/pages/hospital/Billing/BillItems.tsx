@@ -1,16 +1,13 @@
 import { Button, Checkbox, Grid, IconButton, TextField, Typography } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
-import { Translate } from "react-localize-redux";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components";
-import Loader from "../../../components/Loader";
 import { TYPE_BILL_ITEM } from "../../../constants/types";
-import { createBillService, updateBillService } from "../../../services/billing";
 import { calculateTotalBill } from "../../../utils/bill";
-import { Bill, Billable, BillItem, BillItemKeys, BillItemTable } from "./types";
+import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable } from "./types";
 import styled from "styled-components"
 import { Autocomplete } from "@material-ui/lab"
-import { createFilterOptions } from "@material-ui/lab";
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 
 const FactureHolder = styled.div<{ hide: boolean }>`
@@ -28,34 +25,36 @@ const GridBottom = styled(Grid) <{ hide: boolean }>`
     justify-content:end;
 `;
 
-interface BillItemsProps{
+interface BillItemsProps extends LocalizeContextProps{
     currency : string,
     print:boolean,
-    locale:any,
+    mode : BillItemModes,
     bill: Bill | null,
-    billables?: Billable[],
+    billables: Billable[],
     updatingBill:boolean,
     uuidInvestigation:string,
-    uuidPatient:string,
-    onBillSuccesfullyCreated : (bill:Bill) => void,
+    error:ReactElement | undefined,
+    uuidPatient?:string,
+    onBillItemsValidated : (items: BillItem[]) => void,
     onCancelBill: () => void
 }
 
 type BillableOption = Billable & {inputValue: string}
-const filter = createFilterOptions<BillableOption>();
+
 
 const DEFAULT_CURRENT_ITEM = { concept: "", type: -1, amount: 0 }
 
-export const BillItems:React.FC<BillItemsProps> = ({ uuidInvestigation, uuidPatient, 
-                                                    updatingBill, currency, print, locale, 
-                                                    bill, billables, onBillSuccesfullyCreated, onCancelBill }) => {
+const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
+                                                    updatingBill, currency, print,
+                                                    bill, billables, onBillItemsValidated, 
+                                                    onCancelBill }) => {
     const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
     const [addingItem, setAddingItem] = useState(false);
-    const [items, setItems] = useState<BillItem[]>(bill ? bill.billItems : []);
+    const [items, setItems] = useState<BillItem[]>(mode === 'billable' ? billables : []);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);    
-    const [errorBill, setErrorBill] = useState<ReactElement>();
+    const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
     const [billableSelected, setBillableSelected] = useState(false);
-    const [loading, setLoading] = useState(false);
+    
     const printRef = useRef<HTMLHeadingElement>(null);
 
     useEffect(() => {
@@ -142,29 +141,15 @@ export const BillItems:React.FC<BillItemsProps> = ({ uuidInvestigation, uuidPati
     }
     
     async function onClickContinue(items: BillItem[]) {
+       
         if (calculateTotalBill(items) > 0) {
-            setLoading(true);
-            let response: { status: number, bill?: Bill };
-            if (updatingBill && bill) {
-                response = await updateBillService(uuidInvestigation, bill.id, items);
-            }
-            else {
-                response = await createBillService(uuidInvestigation, uuidPatient, items);
-            }
-
-            if (response.status === 200 && response.bill) {
-                onBillSuccesfullyCreated(response.bill);
-            }
-            else {
-                setErrorBill(<Translate id="hospital.bill.error.create" />);
-            }
-            setLoading(false);
-            setAddingItem(false);
-            //onBillCreated(items);
+            onBillItemsValidated(items);
+            
         }
         else {
             setErrorBill(<Translate id="hospital.bill.error.positive" />);
         }
+        setAddingItem(false);
     }
     
     function usedItem(index: number) {
@@ -198,7 +183,7 @@ export const BillItems:React.FC<BillItemsProps> = ({ uuidInvestigation, uuidPati
         else if (value) {
             const dateObject = new Date(value.replace(' ', 'T').replace(' ', 'Z'));
             if (dateObject) {
-                return <React.Fragment>{dateObject.getDate() + " " + dateObject.toLocaleString(locale.code, { month: 'short', year: 'numeric' })}</React.Fragment>
+                return <React.Fragment>{dateObject.getDate() + " " + dateObject.toLocaleString(activeLanguage.code, { month: 'short', year: 'numeric' })}</React.Fragment>
             }
         }
     }
@@ -259,7 +244,7 @@ export const BillItems:React.FC<BillItemsProps> = ({ uuidInvestigation, uuidPati
             concept: billables && billables.length > 0 ? 
             <Autocomplete
                 freeSolo
-                options={billables ? billables as BillableOption[] : []}
+                options={mode === 'bill' &&  billables ? billables as BillableOption[] : []}
                 onInputChange={(event, value, reason) => {
                     onBillableSelected(value);
                 }}
@@ -323,7 +308,7 @@ export const BillItems:React.FC<BillItemsProps> = ({ uuidInvestigation, uuidPati
         }
         rows.push(field);
     }
-    if (items.length > 0) {
+    if (items.length > 0 && mode === 'bill') {
         let totalBill = calculateTotalBill(items);
         rows.push({
             id: items.length, concept: <React.Fragment><Typography style={{ fontWeight: 'bold' }} ><Translate id={`hospital.billing.bill.total`} /></Typography></React.Fragment>,
@@ -344,9 +329,7 @@ export const BillItems:React.FC<BillItemsProps> = ({ uuidInvestigation, uuidPati
         headCells.push({ id: "paid", alignment: "right", label: <React.Fragment>Paid</React.Fragment> });
         headCells.push({ id: "used", alignment: "right", label: <React.Fragment>Used</React.Fragment> });
     }
-    if (loading) {
-        return <Loader />
-    }
+   
     return (
         <div ref={printRef} >
             <Grid container>
@@ -366,10 +349,10 @@ export const BillItems:React.FC<BillItemsProps> = ({ uuidInvestigation, uuidPati
 
                     }
                     <GridBottom hide={print} item xs={12} >
-                        <Button disabled={loading} onClick={onCancelBill} data-testid="cancel-modal" color="primary">
+                        <Button onClick={onCancelBill} data-testid="cancel-modal" color="primary">
                             <Translate id="general.cancel" />
                         </Button>
-                        <Button disabled={loading || items.length === 0} onClick={() => onClickContinue(items)} data-testid="continue-modal" color="primary">
+                        <Button disabled={items.length === 0} onClick={() => onClickContinue(items)} data-testid="continue-modal" color="primary">
                             {renderTextOkButton()}
                         </Button>
                     </GridBottom>
@@ -378,5 +361,6 @@ export const BillItems:React.FC<BillItemsProps> = ({ uuidInvestigation, uuidPati
             </Grid>
         </div>
     )
-    
 }
+
+export const BillItems = withLocalize(BillItemsCore)

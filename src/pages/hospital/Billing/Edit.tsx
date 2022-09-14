@@ -2,19 +2,18 @@ import { number } from 'prop-types';
 import React, { useState } from 'react';
 import Loader from '../../../components/Loader';
 import { useDispatch, useSelector } from 'react-redux';
-import { createUpdateBillingInfo } from '../../../redux/actions/investigationsActions';
+import { createUpdateBillingInfo, updateBillables } from '../../../redux/actions/investigationsActions';
 import { createUpdateBillingInfoService } from '../../../services/billing';
 import props from '../../../theme/props';
 import { TabsSherwood } from '../../components/Tabs';
 import EditBillables from './EditBillables';
 import EditBillingInfo from './EditBillingInfo';
-import { EditBillingProps } from './types';
+import { BillItem, EditBillingProps } from './types';
 
 
 
 
 const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation, billingInfo, onBillingInfoSuccesfullyUpdated }) => {
-    const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const investigations = useSelector((state:any) => state.investigations);
 
@@ -22,8 +21,16 @@ const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation,
         await dispatch(
             createUpdateBillingInfo(uuidInvestigation, billingInfo)
         );
-        onBillingInfoSuccesfullyUpdated();
+        onBillingInfoSuccesfullyUpdated('bill');
     }
+    async function onBillablesCreated(billables:BillItem[]){
+        console.log(billables);
+        await dispatch(
+            updateBillables(uuidInvestigation, billingInfo.id, billables)
+        );
+        onBillingInfoSuccesfullyUpdated('billable');
+    }
+
     if(investigations.loading){
         return <Loader />
     }
@@ -31,14 +38,16 @@ const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation,
         return (
             <TabsSherwood name="Billing Info" 
                 labels={["hospital.billing.billing_info.title", "hospital.billing.billables.title"]} >
-                <EditBillingInfo billingInfo={{...investigations.currentInvestigation.billingInfo, hospitalName:investigations.currentInvestigation.name}} callbackUpdate={callbackUpdateBillingInfo} />
-                <EditBillables uuidInvestigation={uuidInvestigation} billables={billables} 
-                    billingInfo={billingInfo} />
+                <EditBillingInfo billingInfo={{...investigations.currentInvestigation.billingInfo, hospitalName:investigations.currentInvestigation.name}} 
+                    callbackUpdate={callbackUpdateBillingInfo} />
+                <EditBillables uuidInvestigation={uuidInvestigation} billables={billables}
+                    billingInfo={billingInfo} onBillablesCreated={onBillablesCreated} />
             </TabsSherwood>
         );
     }
     else{
-        return <EditBillingInfo billingInfo={{...investigations.currentInvestigation.billingInfo, hospitalName:investigations.currentInvestigation.name}} callbackUpdate={callbackUpdateBillingInfo}/>
+        return <EditBillingInfo billingInfo={{...investigations.currentInvestigation.billingInfo, hospitalName:investigations.currentInvestigation.name}} 
+                callbackUpdate={callbackUpdateBillingInfo}/>
     }
     
 };
