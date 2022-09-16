@@ -30,7 +30,7 @@ interface BillItemsProps extends LocalizeContextProps{
     print:boolean,
     mode : BillItemModes,
     bill: Bill | null,
-    billables: (Billable | BillItem)[],
+    billables: Billable[],
     updatingBill:boolean,
     uuidInvestigation:string,
     error:ReactElement | undefined,
@@ -50,7 +50,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                                                     onCancelBill }) => {
     const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
     const [addingItem, setAddingItem] = useState(false);
-    const [items, setItems] = useState<BillItem[]>(mode === 'billable' ? billables : []);
+    const [items, setItems] = useState<BillItem[]>(bill && mode === 'bill' ? bill.billItems : mode === 'billable' && billables ? billables : []);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
     const [billableSelected, setBillableSelected] = useState(false);

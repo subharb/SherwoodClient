@@ -40,6 +40,7 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
         }
         else{
             tempBills.push(bill);
+            tempBills.sort((billA, billB)  => billB.id - billA.id);
         }
         setBills(tempBills);
     }
