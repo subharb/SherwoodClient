@@ -12,7 +12,7 @@ export function a11yProps(index:number) {
 interface TabPanelProps{
     children:any,
     value:number,
-    index : number,
+    index : number
 
 }
 export function TabPanel(props:TabPanelProps) {
@@ -39,7 +39,8 @@ interface TabProps{
     name:string,
     children:ReactNode[],
     initTab?:number,
-    labels:string[]
+    labels:string[],
+    style:object
 }
 
 
@@ -53,7 +54,7 @@ export function TabsSherwood(props:TabProps){
     return (
         <>
         
-        <Tabs value={tabSelector} onChange={onTabChange} aria-label={props.name}>
+        <Tabs value={tabSelector} onChange={onTabChange} aria-label={props.name} {...props}>
             {
                 props.labels.map((label, index) => {
                     return <Tab label={<Translate id={label} />} {...a11yProps(index)} />;

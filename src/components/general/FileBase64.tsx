@@ -9,14 +9,19 @@ import { CloseButton, CloseFrame, RedFormHelperText } from './mini_components';
 interface FileBase64Props {
     label : string,
     error:boolean,
+    value:string,
     callBackBase64 : (imgBase64:string) => void
 }
 
 
 
-export const FileBase64: React.FC<FileBase64Props> = ({ label, error, callBackBase64 }) => {
+export const FileBase64: React.FC<FileBase64Props> = ({ label, error ,value , callBackBase64 }) => {
+    
     const [imageSelected, setImageSelected] = useState("");
 
+    useEffect(() => {
+        setImageSelected(value);
+    }, [value])
     function onFileSelected(event:any){
         // var tmppath = URL.createObjectURL(event.target.files[0]);
         // console.log(tmppath);
@@ -40,13 +45,14 @@ export const FileBase64: React.FC<FileBase64Props> = ({ label, error, callBackBa
         fileReader.readAsDataURL(fileToLoad);
     }
     function resetField(){
-        setImageSelected("");   
+        setImageSelected("");  
+        callBackBase64(""); 
     }
 
-    if(imageSelected !== ""){
+    if(imageSelected !== "" ){
         return(
             <>
-                <Grid container xs={12}>
+                <Grid container xs={12} style={{paddingBottom: '10px'}}>
                     <Grid item xs={12}> 
                         <Typography variant="body2" gutterBottom>
                             {label}

@@ -36,7 +36,7 @@ const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation,
     }
     if(billingInfo){
         return (
-            <TabsSherwood name="Billing Info" 
+            <TabsSherwood name="Billing Info" style={{  color: "white" }}
                 labels={["hospital.billing.billing_info.title", "hospital.billing.billables.title"]} >
                 <EditBillingInfo billingInfo={{...investigations.currentInvestigation.billingInfo, hospitalName:investigations.currentInvestigation.name}} 
                     callbackUpdate={callbackUpdateBillingInfo} />

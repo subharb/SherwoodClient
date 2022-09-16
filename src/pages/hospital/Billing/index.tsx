@@ -131,8 +131,8 @@ const Billing:React.FC<Props> = (props) => {
         setShowModal(false);
         setCurrentBill(null);
     }
-    function editBillingInfo(){
-        setEdit(true);
+    function toogleEditBillingInfo(){
+        setEdit(edit => !edit);
     }
     function onBillSuccesfullyCreated(bill:Bill){
         console.log(bill);
@@ -292,12 +292,20 @@ const Billing:React.FC<Props> = (props) => {
                     renderModal()
                 }
             
-			<Grid justify="space-between" direction='row' container spacing={6}>
+			<Grid justify="space-between" direction='row' container spacing={6} style={{  color: "white" }}>
 				<Grid item xs={12} container>
-                    <Grid item xs={6}>
-                        <Typography variant="h3" gutterBottom style={{ color: "white" }}>
-                            <Translate id="hospital.billing.title" />
-                        </Typography>	
+                    <Grid item xs={6} style={{paddingBottom:'1rem'}}>
+                        <div>
+                            <Typography variant="h3" gutterBottom style={{ color: "white", display:'inline-block' }}>
+                                <Translate id="hospital.billing.title" />
+                            </Typography>	
+                            <IconButton 
+                                onClick={(e) => {
+                                    toogleEditBillingInfo();
+                                }}>
+                                <IconGenerator style={{  color: "white" }} type={!edit ? "settings" : "back"} />
+                            </IconButton>
+                        </div>
                         {!props.billingInfo ?  
                             <Typography variant="body2" gutterBottom style={{ color: "white" }}>
                                 <Translate id="hospital.billing.no_billing_info" />
@@ -310,16 +318,6 @@ const Billing:React.FC<Props> = (props) => {
                                     setShowModal(true);
                                 }} />	
                         }
-                    </Grid>
-					<Grid item xs={6} alignContent="flex-end"  >
-                    {
-                        <IconButton 
-                            onClick={(e) => {
-                                editBillingInfo();
-                            }}>
-                            <IconGenerator type="edit" />
-                        </IconButton>	
-                    }
                     </Grid>
 				</Grid>
 				

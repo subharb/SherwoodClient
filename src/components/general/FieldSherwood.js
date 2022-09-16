@@ -438,7 +438,7 @@ class FieldSherwood extends PureComponent{
                 )
             case "file_base64" : 
                 return (
-                    <FileBase64 label={labelString} error={errorState} callBackBase64={this.imageBase64} />
+                    <FileBase64 label={labelString} error={errorState} value={input.value} callBackBase64={this.imageBase64} />
                 )
             case "edd":
             case "bmi":    
