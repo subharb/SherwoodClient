@@ -105,7 +105,7 @@ export const BillForm:React.FC<Props> = (props) => {
         if(patient){
             return <BillItems uuidPatient={patient?.uuid} mode = 'bill'
                         currency={props.currency} print={props.print}
-                        bill={props.bill} billables={props.billables ? props.billables : []}
+                        bill={props.bill} billables={props.bill?.billItems ? props.bill.billItems : props.billables ? props.billables : []}
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
                         onBillItemsValidated={onBillItemsValidated} error={errorBill}
                         onCancelBill={props.onCancelBill} />

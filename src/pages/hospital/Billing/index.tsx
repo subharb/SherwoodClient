@@ -255,7 +255,7 @@ const Billing:React.FC<Props> = (props) => {
                             <BillForm patients={props.patients } personalFields={props.personalFields} 
                                 currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                                 onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
-                                onCancelBill={onCancelBill} print={true}
+                                onCancelBill={onCancelBill} print={true} 
                                 bill={currentBill} updatingBill = {currentBill !== null}
                                 locale={props.activeLanguage}
                                 />

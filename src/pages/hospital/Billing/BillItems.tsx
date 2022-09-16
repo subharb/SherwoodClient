@@ -30,7 +30,7 @@ interface BillItemsProps extends LocalizeContextProps{
     print:boolean,
     mode : BillItemModes,
     bill: Bill | null,
-    billables: Billable[],
+    billables: (Billable | BillItem)[],
     updatingBill:boolean,
     uuidInvestigation:string,
     error:ReactElement | undefined,
