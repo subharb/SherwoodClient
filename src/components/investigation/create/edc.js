@@ -35,7 +35,7 @@ export default class EDC extends Component{
         super(props);
 
         this.toggleAddDataCollection = this.toggleAddDataCollection.bind(this);
-        this.renderNewDataCollectionForm = this.renderNewDataCollectionForm.bind(this);
+        //this.renderNewDataCollectionForm = this.renderNewDataCollectionForm.bind(this);
         this.renderDataCollections = this.renderDataCollections.bind(this);
         this.closeNewDataCollection = this.closeNewDataCollection.bind(this);
         this.submitData = this.submitData.bind(this);
@@ -147,23 +147,24 @@ export default class EDC extends Component{
         tempState.editingIndexDataCollection = false;
         this.setState(tempState);
     }
-    renderNewDataCollectionForm(){
-        const staticParams = {
-            callBackNewDataCollection:this.callBackNewDataCollection,
-            closeNewDataCollection:this.closeNewDataCollection
-        }
-        if(this.state.addingDataCollection){
-            return (<DataCollection {...staticParams} />);
-        }
-        else if(Number.isInteger(this.state.editingIndexDataCollection)){
-            return (<DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} 
-                        {...staticParams}
-                    />);
-        }
-        else{
-            return null;
-        }
-    }
+    // renderNewDataCollectionForm(){
+    //     console.log("renderNewDataCollectionForm");
+    //     const staticParams = {
+    //         callBackNewDataCollection:this.callBackNewDataCollection,
+    //         closeNewDataCollection:this.closeNewDataCollection
+    //     }
+    //     if(this.state.addingDataCollection){
+    //         return (<DataCollection {...staticParams} />);
+    //     }
+    //     else if(Number.isInteger(this.state.editingIndexDataCollection)){
+    //         return (<DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} 
+    //                     {...staticParams}
+    //                 />);
+    //     }
+    //     else{
+    //         return null;
+    //     }
+    // }
     submitData(){
         this.props.callBackData({surveys : this.state.surveys});
     }
@@ -176,7 +177,7 @@ export default class EDC extends Component{
         
         if(this.state.addingDataCollection){
             return <DataCollection initialData={this.state.surveys[this.state.editingIndexDataCollection]} 
-                    callBackData={this.callBackNewDataCollection} callBackStepBack={() => {this.toggleAddDataCollection()}}/>
+                        callBackData={this.callBackNewDataCollection} callBackStepBack={() => {this.toggleAddDataCollection()}}/>
         }
         else{
             return (

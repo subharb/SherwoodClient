@@ -20,7 +20,9 @@ import {
     ArrowBackIos as ArrowBackIosIcon,
     LocalHospital as HospitalIcon,
     Hotel as HotelIcon,
-    Undo as UndoIcon
+    Undo as UndoIcon,
+    Settings as SettingsIcon,
+    ArrowBack as ArrowBackIcon
   } from "@material-ui/icons";
   import {
     Button, Icon, IconButton,
@@ -30,7 +32,7 @@ import {
     Divider as MuiDivider,
     Fab as MuiFab,
     IconButton as MuiIconButton,
-    Typography, Box, Grid
+    Typography, Box, Grid, FormHelperText
   } from "@material-ui/core";  
 
 import { spacing } from "@material-ui/system";
@@ -44,11 +46,15 @@ export const IconGenerator = withTheme((props) => {
         case "delete":
             return <DeleteIcon style={{color:"red"}} fontSize={props.size ? props.size : "small"}/>
         case "edit":
-            return <EditIcon  style={{color:"black"}} fontSize={props.size ? props.size : "small"}/>
+            return <EditIcon  fontSize={props.size ? props.size : "small"}/>
         case "hospital":
             return <HotelIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
         case "undo":
-            return <UndoIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
+            return <UndoIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />    
+        case "settings":
+            return <SettingsIcon fontSize={props.size ? props.size : "small"} {...props}  />
+        case "back":
+            return <ArrowBackIcon fontSize={props.size ? props.size : "small"} {...props}  />
         default:
             return <AddIcon />
     }
@@ -295,6 +301,33 @@ export const CloseButton = (props) =>{
             </Button>
 }
 
+const CloseHolder = styled.div`
+    position:relative;
+    width: max-content;
+`;
+const CloseButtonHolder = styled.div`
+    position:absolute;
+    right:0px;
+    margin-top:-20px;
+    margin-right:-30px;
+`
+export const RedFormHelperText = styled(FormHelperText)`
+  color:red;
+`
+
+export const CloseFrame = (props) => {
+    return(
+        <CloseHolder>
+            <CloseButtonHolder>
+                <CloseButton onClick={props.onClick} />
+            </CloseButtonHolder>
+            {
+                props.children
+            }
+        </CloseHolder>
+    )
+}
+
 export const ButtonView = (props) =>{
     return  <Fab mx={2} size="small" color="secondary" aria-label="View" {...props} >
                 <RemoveRedEyeIcon />
@@ -308,8 +341,11 @@ export const ButtonView = (props) =>{
     //         {props.children}
     // </ButtonContinueStyles>
 }
+
 export const ButtonGreyBorderGrey = styled(ButtonGrey)`
     &&&{
         background: #E5E5E5;
         border: 5px solid #6F6C6D;
+    }
 `;
+

@@ -196,12 +196,39 @@
         },
         "billing" : {
             "title" : ["Billing", "Facturación", "Facturation"],
+            "no_billing_info" : ["Please send an email to customer.suppport@sherwood.science with your Logo and billing information", "Please send an email to customer.suppport@sherwood.science with your Logo and billing information", "Por favor, envíe un correo a customer.suppport@sherwood.science con su logo e información fiscal."],
             "no_bills" : ["Click the plus button to create your first bill", "Haga clic en el botón más para crear su primera factura", "Cliquez sur le bouton plus pour créer votre première facture"],
+            "bills" : ["Bills", "Facturas", "Factures"],
+            "metrics" : ["Metrics", "Métricas", "Metrics"],
+            "billables" : {
+                "title" : ["Billables", "Elementos de facturación", "Billables"],
+                "success" : {
+                    "updated" : ["Billables succesfully updated", "Elementos de facturación actualizada correctamente", "Elements de facturation mis à jour avec succès"]
+                }
+            },
+            "billing_info" : {
+                "title" : ["Billing Info", "Información de facturación", "Détails de facturation"],
+                "hospitalName" : ["Clinic/Hospital Name", "Nombre del centro", "Nom du centre"],
+                "logo" : ["Clinic/Hospital Logo", "Clinic/Hospital Logo", "Clinic/Hospital Logo"],
+                "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
+                "address" : ["Address", "Dirección", "Adresse"],
+                "currency" : ["Currency(ISO Code)", "Moneda(ISO Code)", "Devise(ISO Code)"],
+                "email":["Email", "Email", "Email"],
+                "success" : {
+                    "created" : ["Bill succesfully created", "Factura creada correctamente", "Facture créée avec succès"],
+                    "updated" : ["BillingInfo succesfully updated", "Información de facturación actualizada correctamente", "Détails de facturation mis à jour avec succès"]
+                },
+                "error" : {
+                    "create" : ["There was an error creating the bill, please try again","Hubo un error al crear la factura, inténtalo de nuevo", "Une erreur s'est produite lors de la création de la facture, veuillez réessayer"],
+                    "positive" : ["The total must be positive", "El total debe ser positivo", "Le total doit être positif"]
+                }
+            },
             "item" : {
                 "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],
                 "concept" : ["Concept", "Concepto", "Concept"],
                 "amount" : ["Amount", "Cantidad", "montant"],
                 "type" : ["Type", "Tipo", "Type"],
+                "select_item" : ["Select", "Select", "Seleccionar"],
                 "types" : {
                     "charge" : ["Charge", "Cargo", "Devoir"],
                     "discount_amount" : ["Amount Discount", "Cantidad descuento", "Remise quantité"],
@@ -751,6 +778,7 @@
         "errors" : {
             "error_email" : ["Email not valid", "Email no válido", "Email invalide"],
             "error_phone" : ["Phone not valid", "Teléfono no válido", "Téléphone non valide"],
+            "error_fileBase64" : ["Select a file", "Seleccione un archivo", "Sélectionner un fichier"],
             "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres", "Le mot de passe doit contenir au moins 7 caractères"],
             "error_length6" : ["It has to be at least 6 characters long","Debe tener al menos 6 caracteres", "Il doit comporter au moins 6 caractères"],
             "error_length2" : ["This field can't be empty","Debe tener al menos 2 caracteres", "Il doit comporter au moins 2 caractères"],

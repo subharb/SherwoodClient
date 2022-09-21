@@ -1,12 +1,13 @@
 import { Grid, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react"
-import { BillingInfo, IPatient } from "../../../constants/types";
+
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { HeaderDocument } from "./header";
 import SaveIcon from '@material-ui/icons/Save';
+import { BillingInfo } from "../Billing/types";
 
-interface Props extends BillingInfo{
+interface Props extends Omit<BillingInfo, 'id'>  {
     size:"A4" | "ticket",
     name:string
 }

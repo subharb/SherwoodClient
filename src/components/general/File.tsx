@@ -289,7 +289,6 @@ const File:React.FC<Props> = (props) => {
                             }
                              
                         }
-                   
                         if(file.buffer){
                             if(isImageType(file.type)){
                                 let buf = Buffer.from(file.buffer);

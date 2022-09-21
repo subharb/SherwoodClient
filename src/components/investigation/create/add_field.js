@@ -5,9 +5,11 @@ import { ButtonAdd } from '../../general/mini_components';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { FIELDS_FORM } from '../../../utils';
+import { usePortal } from '../../../hooks';
 
 function AddField(props) {
     const [addingField, setAddingField] = useState(false);
+    
 
     function callBack(field){
         setAddingField(false)
@@ -23,13 +25,14 @@ function AddField(props) {
         );
     }
     else{
-        return (<Modal
-                    open={true}
-                    closeModal={() => setAddingField(false)}
-                    title={<Translate id="investigation.create.edc.add_field" />}>
-                        <Form fields={props.fields} fullWidth callBackForm={(field) => callBack(field)} 
-                            closeCallBack={() => setAddingField(false)} dataTestid="save-field" />
-                </Modal>
+        return (
+            <Modal id="modal"
+                open={true}
+                closeModal={() => setAddingField(false)}
+                title={<Translate id="investigation.create.edc.add_field" />}>
+                    <Form fields={props.fields} fullWidth callBackForm={(field) => callBack(field)} 
+                        closeCallBack={() => setAddingField(false)} dataTestid="save-field" />
+            </Modal>
         );
     }
 }

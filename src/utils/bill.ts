@@ -1,4 +1,5 @@
-import { BillItem } from "../constants/types";
+import { BillItem } from "../pages/hospital/Billing/types";
+
 
 export function calculateTotalBill(items:BillItem[]){
     let amountSeparation = [0,0,0];

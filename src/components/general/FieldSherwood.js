@@ -3,7 +3,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
-import { ButtonAdd, ButtonCheck, ButtonDelete, ButtonEmptyCheck, DeleteHolder } from '../general/mini_components';
+import { ButtonAdd, ButtonCheck, ButtonDelete, ButtonEmptyCheck, DeleteHolder, RedFormHelperText } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
         Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider } from '@material-ui/core';
@@ -26,6 +26,7 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import File from './File';
 import { FieldWrapper } from './mini_components';
 import { Field, FieldArray } from 'redux-form'
+import FileBase64 from './FileBase64';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -74,9 +75,7 @@ const sharedStyle = css`
     //     }
     // }
 `
-const RedFormHelperText = styled(FormHelperText)`
-  color:red;
-`
+
 
  
 export const TextFieldSherwood = styled(TextField)`
@@ -95,6 +94,7 @@ class FieldSherwood extends PureComponent{
         this.handleRadioChange = this.handleRadioChange.bind(this);
         this.renderOptions = this.renderOptions.bind(this);
         this.renderOptionText = this.renderOptionText.bind(this);
+        this.imageBase64 = this.imageBase64.bind(this);
     }
 
     async componentDidMount(){
@@ -162,6 +162,9 @@ class FieldSherwood extends PureComponent{
     }
     imagesSelected(images){
         this.props.input.onChange(images);
+    }
+    imageBase64(imageBase64){
+        this.props.input.onChange(imageBase64);
     }
     renderOptionText(props){
         return <FieldWrapper noWrap = {this.props.fullWidth}>
@@ -422,7 +425,7 @@ class FieldSherwood extends PureComponent{
                         getOptionLabel={(option) => option.title}
                         style={{ width: 300 }}
                         renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
-               />
+                    />
                 );
             case "file" : 
                 return (
@@ -432,6 +435,10 @@ class FieldSherwood extends PureComponent{
                             type={type} {...input} 
                             value={input.value} />
                     </FieldWrapper>
+                )
+            case "file_base64" : 
+                return (
+                    <FileBase64 label={labelString} error={errorState} value={input.value} callBackBase64={this.imageBase64} />
                 )
             case "edd":
             case "bmi":    

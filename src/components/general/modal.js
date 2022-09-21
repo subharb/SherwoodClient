@@ -25,9 +25,11 @@ export default function Modal(props){
         } : paperStyles;
     
     return(
+        
         <Dialog className='modal' maxWidth="lg" fullWidth={props.fullWidth} disableEscapeKeyDown 
             PaperProps={{style : paperStyles}}
             open={props.open}
+            disablePortal={false}
             onClose={props.closeModal}
             aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
@@ -49,6 +51,7 @@ export default function Modal(props){
                 </DialogActions> 
             }
         </Dialog>
+        
     )
 }
 
