@@ -367,7 +367,7 @@ function Patient(props) {
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.currentInvestigation.uuid, uuidPatient));
         }
         async function fetchPatientsStay(){
-            await dispatch(getPatientStaysAction(uuidPatient));
+            await dispatch(getPatientStaysAction(props.investigations.currentInvestigation.uuid, uuidPatient));
         }
         if(props.investigations.data && (!props.patientsSubmissions.data || !props.patientsSubmissions.data.hasOwnProperty(uuidPatient))){
             fetchRecordsPatient();
@@ -405,7 +405,7 @@ function Patient(props) {
                         tempSub.uuidSurvey = val.uuid; 
                         tempSub.uuidResearcher = tempSub.researcher.uuid;
                         tempSub.typeSurvey = val.type; 
-                        const departmentName = tempSub.researcher.departments.length === 0 ? "" : " - "+tempSub.researcher.departments[0].name;
+                        const departmentName = !tempSub.surveyUnit ? "" : " - "+tempSub.surveyUnit;
                         tempSub.researcher = tempSub.researcher.name+" "+tempSub.researcher.surnames + departmentName;
 
                         return tempSub;

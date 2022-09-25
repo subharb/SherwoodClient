@@ -126,8 +126,8 @@
             "modal" : {
                 "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
             },
-            "department" : ["Departament", "Departamento", "Service"],
-            "departments" : ["Departaments", "Departamentos", "Services"],
+            "department" : ["Department", "Departamento", "Service"],
+            "departments" : ["Departments", "Departamentos", "Services"],
             "users" : ["Users", "Usuarios", "Personnel"],
             "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Hospitalisation"],
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],

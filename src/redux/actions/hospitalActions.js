@@ -210,11 +210,11 @@ export function createStayPatientAction(uuidInstitution, uuidDepartment, uuidWar
   };
 }
 
-export function getPatientStaysAction(uuidPatient) {
+export function getPatientStaysAction(uuidInvestigation, uuidPatient) {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
-    return getPatientStaysService(uuidPatient)
+    return getPatientStaysService(uuidInvestigation, uuidPatient)
       .then((response) => {
         dispatch({
           type: types.FETCH_PATIENT_STAYS,

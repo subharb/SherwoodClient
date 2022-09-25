@@ -619,10 +619,10 @@ export function getWardService(uuidInvestigation, uuidWard) {
   });
 }
 
-export function getPatientStaysService(uuidPatient) {
+export function getPatientStaysService(uuidInvestigation, uuidPatient) {
   return new Promise((resolve, reject) => {
     axios
-      .get(process.env.REACT_APP_API_URL+"/hospital/stays/"+uuidPatient, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+      .get(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/stays/"+uuidPatient, { headers: {"Authorization" : localStorage.getItem("jwt")} })
       .then((response) => {
         if (response.status === 200) {
           resolve(response.data);
