@@ -1,7 +1,7 @@
 import { Avatar, Grid, List, ListItem, FormControlLabel, Switch, Typography, Accordion, AccordionSummary, AccordionDetails, ListItemText } from '@material-ui/core';
 import React, { useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { IBed, IDepartment, IDepartmentServer, IResearcher, IWard, PERMISSION } from '../../../constants/types';
+import { IBed, IDepartment, IDepartmentServer, IResearcher, IUnit, IWard, PERMISSION } from '../../../constants/types';
 import { Translate } from 'react-localize-redux';
 import { WardFormEdit, WardFormModes, WardFormSelect } from './Ward/WardForm';
 import { ButtonAdd } from '../../../components/general/mini_components';
@@ -73,7 +73,7 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
     
     function renderDepartment(department:IDepartment){
         if(mode === DepartmentAccordionModes.Researchers){
-            const researchersDepartment = researchers.filter((res:IResearcher) => res.departments.find((dep:IDepartment) => dep.name === department.name));
+            const researchersDepartment = researchers.filter((res:IResearcher) => res.units.find((unit:IUnit) => unit.department.name === department.name));
             return (
                 <List component="nav" aria-label="main mailbox folders">
                 {

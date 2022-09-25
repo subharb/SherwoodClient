@@ -9,7 +9,7 @@ import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
 import { FieldWrapper } from '../components/general/mini_components';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDepartmentsInstitutionAction } from '../redux/actions/hospitalActions';
+import { getDepartmentsInvestigationAction } from '../redux/actions/hospitalActions';
 import { Color } from '@material-ui/lab';
 import { IDepartment } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
@@ -38,13 +38,13 @@ export function useDepartments(){
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        async function getDepartments(uuidInstitution:string){
+        async function getDepartments(uuidInvestigation:string){
             await dispatch(
-                getDepartmentsInstitutionAction(uuidInstitution)
+                getDepartmentsInvestigationAction(uuidInvestigation)
             ); 
         }
         if(investigations.data && investigations.currentInvestigation){
-            getDepartments(investigations.currentInvestigation.institution.uuid)
+            getDepartments(investigations.currentInvestigation.uuid)
         }
     }, [investigations])
 

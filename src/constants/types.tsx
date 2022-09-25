@@ -23,6 +23,13 @@ export interface IDepartment{
     wards:IWard[]
 }
 
+export interface IUnit{
+    uuid?:string,
+    id?:number,
+    name:string,
+    department:IDepartment
+}
+
 export interface IDepartmentServer extends IDepartment{
     uuid:string
 }
@@ -30,7 +37,7 @@ export interface IDepartmentServer extends IDepartment{
 export interface IResearcher{
     name:string,
     surnames:string,
-    departments:IDepartment[]
+    units:IUnit[]
 }
 
 export interface PersonalData{

@@ -2026,6 +2026,7 @@ export const investigation_server = () => {
     returnData.keyResearcherInvestigation = "U2FsdGVkX19vZ9QYZqVXUKngvq3aqfwxApSwtLB5hKMbmDXJQUwwfdt7mQMR9Wu8TxfOjwo0X3A4H7S2/WYfpw==";
     returnData.shareStatus = 2; 
     returnData.sharedResearchers = sharedResearchers;
+    returnData.functionalities = ["HOSPITALIZATION"]
     return returnData;
 }
 
@@ -2262,153 +2263,186 @@ export const listPatientsHospitalWard = [
 ]
 
 
-export const wardInfo = 
-{
-    "id": 6,
-    "uuid": "c949e026-f04a-44cd-80f6-dd9e667cc21c",
-    "name": "ICU Ward",
-    "department": {
-        "id": 1,
-        "uuid": "ef85866d-b465-4142-b45a-37214223ec25",
-        "code": "NEU",
-        "name": "Neurología",
-        "institution": {
-            "id": 1,
-            "uuid": "42cbc8b4-379e-4c9f-839b-88b38258e1e2",
-            "acr": "HBM",
-            "name": "Hospital Belako Mali"
-        }
-    },
-    "beds": [
-        {
-            "id": 85,
-            "name": "l",
-            "active": true,
-            "gender": 1,
-            "order": 11,
-            "empty" : false,
-            "stay": {
-                "id": 10,
-                "dateIn": "2021-10-28T08:19:25.399Z",
-                "dateOut": null,
-                "updatedAt": "2021-10-28T08:19:25.399Z",
-                "createdAt": "2021-10-28T08:19:25.399Z",
-                "patientInvestigation": {
-                    "id": 1241,
-                    "uuid": "dc4515d1-0555-4734-a6a4-5e4fbc27c6a4",
-                    "status": 0,
-                    "investigationId": 2,
-                    "patientId": 1241,
-                    "patientIdInvestigation": 0,
-                    "encryptedKeyUsed": 0,
-                    "keyPatientInvestigation": "U2FsdGVkX1+0FkH3e0F011GnnHaRbbhSXBulTK4dUPv8DZlgKOSzPIxqdqFClfDXiAAdQl5sZo5pMM7lmG8ysw=="
-                }
-            }
-        },
-        {
-            "id": 84,
-            "name": "k",
-            "active": true,
-            "gender": 0,
-            "order": 10,
-            "empty" : true
-        },
-        {
-            "id": 83,
-            "name": "j",
-            "active": true,
-            "gender": 0,
-            "order": 9,
-            "empty" : false
-        },
-        {
-            "id": 82,
-            "name": "i",
+export const wardInfo = {
+        "id": 4,
+        "uuid": "fa16edda-cb58-4a42-a0fe-4e55975b2d9b",
+        "name": "Neuro Ward",
+        "beds": [{
+            "id": 45,
+            "name": "1",
             "active": false,
+            "stays": [],
             "gender": 0,
-            "order": 8
-        },
-        {
-            "id": 81,
-            "name": "h",
-            "active": false,
-            "gender": 0,
-            "order": 7
-        },
-        {
-            "id": 80,
-            "name": "g",
+            "order": 0
+        }, {
+            "id": 46,
+            "name": "2",
             "active": true,
-            "gender": 0,
-            "order": 6
-        },
-        {
-            "id": 79,
-            "name": "f",
-            "active": true,
-            "gender": 0,
-            "order": 5
-        },
-        {
-            "id": 78,
-            "name": "e",
-            "active": true,
-            "gender": 0,
-            "order": 4
-        },
-        {
-            "id": 77,
-            "name": "d",
-            "active": true,
-            "gender": 0,
-            "order": 3
-        },
-        {
-            "id": 76,
-            "name": "c",
-            "active": true,
-            "gender": 0,
-            "order": 2
-        },
-        {
-            "id": 75,
-            "name": "b",
-            "active": true,
+            "stays": [],
             "gender": 0,
             "order": 1
-        },
-        {
-            "id": 74,
-            "name": "a",
+        }, {
+            "id": 47,
+            "name": "3",
             "active": true,
+            "stays": [],
             "gender": 0,
-            "order": 0,
-            "stay": {
-                "id": 10,
-                "dateIn": "2021-10-28T08:19:25.399Z",
-                "dateOut": null,
-                "updatedAt": "2021-10-28T08:19:25.399Z",
-                "createdAt": "2021-10-28T08:19:25.399Z",
-                "patientInvestigation": {
-                    "id": 1241,
-                    "uuid": "801952ca-66da-4410-8583-3faa6f460e03",
-                    "status": 0,
-                    "investigationId": 2,
-                    "patientId": 1241,
-                    "patientIdInvestigation": 0,
-                    "encryptedKeyUsed": 0,
-                    "keyPatientInvestigation": "U2FsdGVkX1+0FkH3e0F011GnnHaRbbhSXBulTK4dUPv8DZlgKOSzPIxqdqFClfDXiAAdQl5sZo5pMM7lmG8ysw=="
-                }
-            }
-        }
-    ]
+            "order": 2
+        }, {
+            "id": 66,
+            "name": "24",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 23
+        }, {
+            "id": 57,
+            "name": "15",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 14
+        }, {
+            "id": 64,
+            "name": "22",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 21
+        }, {
+            "id": 56,
+            "name": "14",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 13
+        }, {
+            "id": 65,
+            "name": "23",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 22
+        }, {
+            "id": 52,
+            "name": "8",
+            "active": true,
+            "stays": [],
+            "gender": 0,
+            "order": 7
+        }, {
+            "id": 55,
+            "name": "13",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 12
+        }, {
+            "id": 48,
+            "name": "4",
+            "active": true,
+            "stays": [],
+            "gender": 0,
+            "order": 3
+        }, {
+            "id": 62,
+            "name": "20",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 19
+        }, {
+            "id": 50,
+            "name": "6",
+            "active": true,
+            "stays": [],
+            "gender": 0,
+            "order": 5
+        }, {
+            "id": 51,
+            "name": "7",
+            "active": true,
+            "stays": [],
+            "gender": 0,
+            "order": 6
+        }, {
+            "id": 59,
+            "name": "17",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 16
+        }, {
+            "id": 54,
+            "name": "10",
+            "active": true,
+            "stays": [],
+            "gender": 0,
+            "order": 9
+        }, {
+            "id": 53,
+            "name": "9",
+            "active": true,
+            "stays": [],
+            "gender": 0,
+            "order": 8
+        }, {
+            "id": 44,
+            "name": "12",
+            "active": true,
+            "stays": [],
+            "gender": 0,
+            "order": 11
+        }, {
+            "id": 58,
+            "name": "16",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 15
+        }, {
+            "id": 49,
+            "name": "5",
+            "active": true,
+            "stays": [],
+            "gender": 0,
+            "order": 4
+        }, {
+            "id": 60,
+            "name": "18",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 17
+        }, {
+            "id": 43,
+            "name": "11",
+            "active": true,
+            "stays": [],
+            "gender": 0,
+            "order": 10
+        }, {
+            "id": 61,
+            "name": "19",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 18
+        }, {
+            "id": 63,
+            "name": "21",
+            "active": true,
+            "stays": [],
+            "gender": 1,
+            "order": 20
+        }]
 }
 
 
 export const departmentsInfo = [
         {
             "name" : "Neurologia",
-            "wards" : [wardInfo]
+            "wards" : [wardInfo], 
         },
         {
             "name" : "Cardiología",

@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { useHistory } from "react-router-dom";
-import { saveDepartmentAction, saveUpdateWardAction, assignDepartmentToResearcherAction, deleteWardAction } from '../../../redux/actions/hospitalActions';
+import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
@@ -138,7 +138,7 @@ function DepartmentsRouter(props){
     }
     
     async function editCallBack(uuid, department){       
-        await dispatch(assignDepartmentToResearcherAction(uuid, department));
+        await dispatch(assignUnitToResearcherAction(props.investigations.currentInvestigation.uuid, uuid, department));
         
     }
     async function deleteWardCallBack(uuidDepartmentAddWard, wardToDelete){
@@ -174,6 +174,7 @@ function Departments(props) {
     //const investigation = props.investigation.data && props.investigations.currentInvestigation ? props.investigations.currentInvestigation : null;
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [ addingDepartment, setAddingDepartment ] = useState(false);
+    const [ changingResearcherUnit, setChangingResearcherUnit ] = useState(false);
     const [ uuidDepartmentAddWard, setUuidDepartmentAddWard ] = useState(false);
     const [ wardToEdit, setWardToEdit ] = useState(false);
     const [ wardToDelete, setWardToDelete ] = useState(false);
@@ -188,17 +189,20 @@ function Departments(props) {
 
 
     const CHANGE_DEPARTMENT_FORM = {
-        "department":{
+        "unit":{
             required : true,
             type:"select",
-            name:"department",
+            name:"unit",
             label:"hospital.departments.department",
             shortLabel: "hospital.departments.department",
             validation : "notEmpty",
             defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
-            options:props.departments.map(dep =>{
-                return {"label" : dep.name, "value" :dep.uuid}
-            })
+            options:props.departments.reduce((previousValue, dep) => {
+                const unitsInfo = dep.units.map(unit =>{
+                    return {"label" : unit.name, "value" :unit.uuid}
+                })
+                return [...previousValue, ...unitsInfo]
+            }, [])
         }
     }
     
@@ -266,9 +270,10 @@ function Departments(props) {
     }
 
     
-    async function editCallBack(values){
+    async function changeResearcherUnit(values){
         console.log("Datos nuevos de researcher", values);
-        props.editCallBack(props.researchers[indexResearcherToEdit].uuid, values.department)
+        setChangingResearcherUnit(true);
+        props.editCallBack(props.researchers[indexResearcherToEdit].uuid, values.unit)
     }
     
     function renderResearchers(){
@@ -281,7 +286,7 @@ function Departments(props) {
                         </Box>
         }
         else{
-            const columnsTable = ["name", "department"];
+            const columnsTable = ["name", "units"];
             const arrayHeader = columnsTable.map(col => {
                 return { id: col, alignment: "left", label: <Translate id={`investigation.share.researcher.${col}`} /> }
             }) 
@@ -294,11 +299,11 @@ function Departments(props) {
                             let row = {
                                     id:idx,
                                     name : name, 
-                                    department: researcher.departments.map((dep, index) => {
+                                    units: researcher.units.map((unit, index) => {
                                         if(index === 0){
-                                            return dep.name
+                                            return unit.name
                                         }
-                                        return ", "+dep.name
+                                        return ", "+unit.name
                                     }),
                                     status : <StatusChip value={researcher.status}/>
                                 }
@@ -333,6 +338,7 @@ function Departments(props) {
         setUuidDepartmentAddWard(false);
         setWardToEdit(false);
         setWardToDelete(false);
+        setChangingResearcherUnit(false);
     }
     
 
@@ -341,7 +347,7 @@ function Departments(props) {
         props.resetError()
     }
     useEffect(()=>{
-        if(wardToDelete || uuidDepartmentAddWard || addingDepartment){
+        if(wardToDelete || uuidDepartmentAddWard || addingDepartment || changingResearcherUnit){
             setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
         }
         resetModal();
@@ -441,7 +447,7 @@ function Departments(props) {
                     } 
                     {
                         indexResearcherToEdit !== false &&
-                        <Form fields={CHANGE_DEPARTMENT_FORM} fullWidth callBackForm={editCallBack}
+                        <Form fields={CHANGE_DEPARTMENT_FORM} fullWidth callBackForm={changeResearcherUnit}
                             initialData={props.researchers[indexResearcherToEdit]} 
                             closeCallBack={() => resetModal()}/>
                     }

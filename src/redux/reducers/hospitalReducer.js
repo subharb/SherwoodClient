@@ -71,11 +71,13 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;
-        case types.ASSIGN_RESEARCHER_DEPARTMENT_SUCCESS:
+        case types.ASSIGN_RESEARCHER_UNIT_SUCCESS:
             const indexResearcher = newState.data.researchers.findIndex(res => res.uuid === action.uuidResearcher);
+            const copyResearchers = [...newState.data.researchers];
             if(indexResearcher !== -1){
-                newState.data.researchers[indexResearcher].departments = action.departments;
+                copyResearchers[indexResearcher].units = [...action.units];
             }
+            newState.data.researchers = [...copyResearchers];
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState; 

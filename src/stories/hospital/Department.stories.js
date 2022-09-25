@@ -5,6 +5,7 @@ import {  departmentsInfo, hospital, investigationsShowAll, investigation_server
 import ProviderSherwood from '../../providerSherwood';
 import DepartmentsAccordion from '../../pages/hospital/departments/DepartmentsAccordion';
 import { DepartmentLocalized } from '../../pages/hospital/departments/Admin';
+import { departments, researchers } from '../data/departmentsService';
 
 export default {
   title: 'Hospital/Departments',
@@ -31,9 +32,10 @@ DepartmentsWard.args = {
 
 export const DepartmentsHome = TemplateDepartments.bind({});
 DepartmentsHome.args = {
-    investigations:{data:investigationsShowAll, currentInvestigation: investigation_server()}, 
-    departments:hospital.departments,
-    researchers:hospital.researchers,
+    investigation:investigation_server(), 
+    departments:departments,
+    researchers:researchers,
+    admin : true,
     loading:false,
     selectWardCallBack:(uuid) => console.log("selectWard!"+uuid)
 

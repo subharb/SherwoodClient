@@ -1,14 +1,14 @@
 import * as types from "../../constants";
-import { assignDepartmentToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService, getPatientStaysService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
+import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
 
 
 
 
-export function getDepartmentsInstitutionAction(uuidInstitution) {
+export function getDepartmentsInvestigationAction(uuidInstitution) {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_HOSPITAL_LOADING });
   
-      return getDepartmentsInstitutionService(uuidInstitution)
+      return getDepartmentsInsvestigationService(uuidInstitution)
         .then((response) => {
           dispatch({
             type: types.FETCH_HOSPITAL_SUCCESS,
@@ -25,15 +25,15 @@ export function getDepartmentsInstitutionAction(uuidInstitution) {
 
 
 
-export function assignDepartmentToResearcherAction(uuidResearcher, uuidDepartment) {
+export function assignUnitToResearcherAction(uuidInvestigation, uuidResearcher, uuidDepartment) {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_HOSPITAL_LOADING });
   
-      return assignDepartmentToResearcherService(uuidResearcher, uuidDepartment)
+      return assignUnitToResearcherService(uuidInvestigation, uuidResearcher, uuidDepartment)
         .then((response) => {
           dispatch({
-            type: types.ASSIGN_RESEARCHER_DEPARTMENT_SUCCESS,
-            departments: response.departments,
+            type: types.ASSIGN_RESEARCHER_UNIT_SUCCESS,
+            units: response.units,
             uuidResearcher : uuidResearcher
           });
         })
