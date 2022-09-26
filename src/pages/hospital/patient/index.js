@@ -23,7 +23,7 @@ import ShowPatientRecords from '../../../components/investigation/show/single/sh
 
 import { useSnackBarState, useUpdateEffect } from '../../../hooks';
 import { fetchProfileInfo } from '../../../redux/actions/profileActions';
-import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
+import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
 import { PERMISSION } from '../../../constants/types';
@@ -32,6 +32,12 @@ const WhiteTypography = styled(Typography)`
     color:white;
     font-size: 1rem;
 `;
+
+const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social"};
+const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
+    newDict[TYPE_URL[key]] = parseInt(key);
+    return newDict
+}, {})
 
 function Patient(props) {
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
@@ -64,16 +70,19 @@ function Patient(props) {
     const isInitialMount = useRef(true);
     
     const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
-    const typeSurveys = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : (dataCollectionSelected.type === TYPE_IMAGE_SURVEY ? [TYPE_IMAGE_SURVEY] : [TYPE_LAB_SURVEY])) : (parameters.hasOwnProperty("typeTest") ? (parameters["typeTest"] === "images" ? [TYPE_IMAGE_SURVEY] : [TYPE_LAB_SURVEY]) : MEDICAL_SURVEYS);
-    const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typeSurveys.includes(sur.type)) : [];
+    const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
+    const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typesCurrentSurvey.includes(sur.type)) : [];
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const staysPatient = props.hospital.data.stays && props.hospital.data.stays[uuidPatient] ? props.hospital.data.stays[uuidPatient] : [];
-    const typSurveySelected = typeSurveys.length === 1 ? typeSurveys[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
+    const typSurveySelected = typesCurrentSurvey.length === 1 ? typesCurrentSurvey[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
-    
+    const typesSurvey = props.investigations.data ? props.investigations.currentInvestigation.surveys.map((survey) => {
+            return survey.type;
+    }) : [];
+
     let filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
-        return typeSurveys.includes(rec.typeSurvey)
+        return typesCurrentSurvey.includes(rec.typeSurvey)
     }) : [];
 
     if(typSurveySelected === TYPE_MEDICAL_SURVEY){
@@ -99,7 +108,7 @@ function Patient(props) {
         return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
     })
     
-    const translations = typeSurveys.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typeSurveys.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
+    const translations = typesCurrentSurvey.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typesCurrentSurvey.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
 
     function addRecord(){
         if(currentSurveys.length > 1 ){
@@ -107,7 +116,7 @@ function Patient(props) {
             setShowModal(true);
         }
         else{
-            const filterType = parameters.typeTest === "images" ? TYPE_IMAGE_SURVEY : TYPE_LAB_SURVEY;
+            const filterType = URL_TYPE[parameters.typeTest];
             const dataCollection = dataCollectionSelected ? dataCollectionSelected : currentSurveys.find(sur => sur.type === filterType);
 
             const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidDataCollection", dataCollection.uuid)
@@ -134,7 +143,7 @@ function Patient(props) {
         //
     }
     function goToTest(value){
-        const nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", value === 1 ? "images" : "lab")
+        const nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", TYPE_URL[value])
         history.push(nextUrl);
     }
 
@@ -255,23 +264,6 @@ function Patient(props) {
                 })
             ]
         }
-        // else if(indexSection === -1){
-            
-        //     return [
-        //         <Grid item xs={12} style={{textAlign:"center"}}>
-        //             <WhiteTypography variant="body2" gutterBottom>
-        //                 { dataCollectionSelected.name }:
-        //             </WhiteTypography>
-        //         </Grid>, 
-        //         dataCollectionSelected.sections.sort((a,b) => a.order - b.order).map((section, index) => {
-        //             return(
-        //                 <Grid item xs={12} style={{textAlign:"center"}}>
-        //                     <ButtonGreyBorderGrey data-testid={section.name} onClick={() => sectionSelect(index)}>{section.name}</ButtonGreyBorderGrey>
-        //                 </Grid>
-        //             )
-        //         })
-        //     ]
-        // }
     }
     function renderCore(){
         if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
@@ -578,10 +570,12 @@ function Patient(props) {
                         typeSurveySelected={typSurveySelected}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
-                        action={parameters} patientID={patient.id} personalData={patient.personalData} years={years}
+                        action={parameters} disabled={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} personalData={patient.personalData} years={years}
                         medicalNotesCallBack={() => backToRoot()} 
-                        testCallBack={() => goToTest(1)} 
-                        labCallBack={() => goToTest(2)}
+                        typeSurveysAvailable = { typesSurvey }
+                        testCallBack={() => goToTest(TYPE_IMAGE_SURVEY)} 
+                        labCallBack={() => goToTest(TYPE_LAB_SURVEY)}
+                        socialCallBack={() => goToTest(TYPE_SOCIAL_SURVEY)}
                         addRecordCallBack={addRecord}
                         hospitalize={ isPatientHospitalized ?  showConfirm : null }
                     />

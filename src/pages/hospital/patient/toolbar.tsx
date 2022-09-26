@@ -3,13 +3,14 @@ import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { ButtonAdd, IconGenerator, IconPatient } from "../../../components/general/mini_components"
 import { PersonalData } from "../../../constants/types"
-import {TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
+import {TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
 import iconNotes from "../../../img/icons/history.png";
 import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
 import iconNotesGreen from "../../../img/icons/history_green.png";
 import iconImagesGreen from "../../../img/icons/images_green.png";
 import iconLabGreen from "../../../img/icons/lab_green.png";
+import { disabledTransition } from "@dnd-kit/sortable/dist/hooks/defaults"
 
 interface Props{
     personalData:PersonalData,
@@ -18,11 +19,14 @@ interface Props{
     readMedicalPermission:boolean,
     writeMedicalPermission:boolean,
     action:any,
+    disabled:any,
+    typeSurveysAvailable:number[],
     typeSurveySelected:number,
     stay:any,
     medicalNotesCallBack:() =>void,
     editCallBack:() => void,
     labCallBack:() => void,
+    socialCallBack:() => void,
     testCallBack:() => void,
     addRecordCallBack: () => void,
     hospitalize?:() => void
@@ -40,10 +44,10 @@ const Container = styled(Grid)`
 `
 
 export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMedicalPermission,
-                                                writeMedicalPermission,
+                                                writeMedicalPermission, disabled, typeSurveysAvailable,
                                                 typeSurveySelected, action, years, 
                                                 addRecordCallBack, hospitalize, medicalNotesCallBack, 
-                                                editCallBack, labCallBack, testCallBack}) =>{
+                                                editCallBack, labCallBack, socialCallBack, testCallBack}) =>{
 
     return(
         <Container item container className="patient_toolbar" xs={12}>
@@ -113,6 +117,15 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                             <img src={typeSurveySelected === TYPE_LAB_SURVEY ? iconLabGreen : iconLab} alt="Lab" height="40" />
                         </Button>
                     </Grid>
+                    {
+                        typeSurveysAvailable.includes(TYPE_SOCIAL_SURVEY) && 
+                        <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                            <Button data-testid="social" onClick={() => socialCallBack()} >
+                                <img src={typeSurveySelected === TYPE_SOCIAL_SURVEY ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                            </Button>
+                        </Grid>
+                    }
+                    
 
                     <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
                         {
@@ -126,7 +139,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                     <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
                         {
                             writeMedicalPermission && 
-                            <ButtonAdd disabled={action && action === "fill"} data-testid="add-record" onClick={addRecordCallBack} />
+                            <ButtonAdd disabled={disabled} data-testid="add-record" onClick={addRecordCallBack} />
                         }
                         
                     </Grid>
