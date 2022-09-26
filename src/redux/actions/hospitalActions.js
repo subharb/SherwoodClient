@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, saveDepartmentInstitutionService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
+import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, saveDepartmentService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
 
 
 
@@ -48,7 +48,7 @@ export function saveDepartmentAction(uuidInstitution, department) {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_HOSPITAL_LOADING });
   
-      return saveDepartmentInstitutionService(uuidInstitution, department)
+      return saveDepartmentService(uuidInstitution, department)
         .then((response) => {
           dispatch({
             type: types.SAVE_DEPARTMENT_SUCCESS,

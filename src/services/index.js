@@ -454,7 +454,7 @@ export const assignUnitToResearcherService = datalogger((uuidInvestigation, uuid
     });
 });
 
-export const saveDepartmentInstitutionService = datalogger((uuidInvestigation, department) => {
+export const saveDepartmentService = datalogger((uuidInvestigation, department) => {
     return new Promise((resolve, reject) => {
       axios
         .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/department", department, { headers: {"Authorization" : localStorage.getItem("jwt")} })

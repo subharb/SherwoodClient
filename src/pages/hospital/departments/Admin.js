@@ -121,7 +121,7 @@ function DepartmentsRouter(props){
 
 
     async function saveDepartmentCallBack(department){
-        await dispatch(saveDepartmentAction(props.investigations.currentInvestigation.institution.uuid, department));
+        await dispatch(saveDepartmentAction(props.investigations.currentInvestigation.uuid, department));
     }
     async function addWardCallBack(wardInfo, uuidDepartmentAddWard){
         await dispatch(saveUpdateWardAction(props.investigations.currentInvestigation.institution.uuid, uuidDepartmentAddWard, wardInfo));
@@ -198,8 +198,10 @@ function Departments(props) {
             validation : "notEmpty",
             defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
             options:props.departments.reduce((previousValue, dep) => {
-                const unitsInfo = dep.units.map(unit =>{
-                    return {"label" : unit.name, "value" :unit.uuid}
+                const unitsInfo = dep.units.filter((unitF) => {
+                    return (indexResearcherToEdit !== false && !props.researchers[indexResearcherToEdit].units.find((unitRes) => unitF.uuid === unitRes.uuid))
+                }).map(unit =>{
+                        return {"label" : dep.name+" - "+unit.name, "value" :unit.uuid}
                 })
                 return [...previousValue, ...unitsInfo]
             }, [])
