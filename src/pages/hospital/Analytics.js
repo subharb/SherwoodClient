@@ -134,7 +134,7 @@ export function Analytics(props) {
 								}) 
 								setStatsFirstMonitoring(tempStats);
 							})
-			getStatsMostCommonDiagnosis(props.investigations.currentInvestigation.institution.uuid, startDate, endDate)
+			getStatsMostCommonDiagnosis(props.investigations.currentInvestigation.uuid, startDate, endDate)
 							.then(response => {
 								setMostCommonDiagnosis(Object.entries(response.stats).map(keyValue => {
 									return [keyValue[0], keyValue[1]]
