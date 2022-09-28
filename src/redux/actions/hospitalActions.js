@@ -62,11 +62,11 @@ export function saveDepartmentAction(uuidInstitution, department) {
     };
 }
 
-export function saveUpdateWardAction(uuidInstitution, uuidDepartment, ward) {
+export function saveUpdateWardAction(uuidInvestigation, uuidDepartment, ward) {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_HOSPITAL_LOADING });
   
-      return saveUpdateWardService(uuidInstitution, uuidDepartment, ward)
+      return saveUpdateWardService(uuidInvestigation, uuidDepartment, ward)
         .then((response) => {
           dispatch({
             type: types.SAVE_WARD_SUCCESS,

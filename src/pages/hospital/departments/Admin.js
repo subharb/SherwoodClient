@@ -124,7 +124,7 @@ function DepartmentsRouter(props){
         await dispatch(saveDepartmentAction(props.investigations.currentInvestigation.uuid, department));
     }
     async function addWardCallBack(wardInfo, uuidDepartmentAddWard){
-        await dispatch(saveUpdateWardAction(props.investigations.currentInvestigation.institution.uuid, uuidDepartmentAddWard, wardInfo));
+        await dispatch(saveUpdateWardAction(props.investigations.currentInvestigation.uuid, uuidDepartmentAddWard, wardInfo));
     }
     function settingsCallBack(ward){
         const nextUrl = HOSPITAL_WARD_SETTINGS_ROUTE.replace(":uuidWard", ward.uuid);
