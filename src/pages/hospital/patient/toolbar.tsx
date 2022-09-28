@@ -7,6 +7,7 @@ import {TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING
 import iconNotes from "../../../img/icons/history.png";
 import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
+import iconDS from "../../../img/icons/ds.png";
 import iconNotesGreen from "../../../img/icons/history_green.png";
 import iconImagesGreen from "../../../img/icons/images_green.png";
 import iconLabGreen from "../../../img/icons/lab_green.png";
@@ -121,7 +122,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                         typeSurveysAvailable.includes(TYPE_SOCIAL_SURVEY) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="social" onClick={() => socialCallBack()} >
-                                <img src={typeSurveySelected === TYPE_SOCIAL_SURVEY ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                                <img src={typeSurveySelected === TYPE_SOCIAL_SURVEY ? iconDS : iconDS} alt="Social" height="20" />
                             </Button>
                         </Grid>
                     }
