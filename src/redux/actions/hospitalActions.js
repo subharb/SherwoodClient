@@ -82,11 +82,11 @@ export function saveUpdateWardAction(uuidInvestigation, uuidDepartment, ward) {
     };
 }
 
-export function deleteWardAction(uuidInstitution, uuidDepartment, uuidWard) {
+export function deleteWardAction(uuidInvestigation, uuidDepartment, uuidWard) {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
-    return deleteWardService(uuidInstitution, uuidWard)
+    return deleteWardService(uuidInvestigation, uuidWard)
       .then((response) => {
         dispatch({
           type: types.DELETE_WARD_SUCCESS,
@@ -108,11 +108,11 @@ export function deleteWardAction(uuidInstitution, uuidDepartment, uuidWard) {
   };
 }
 
-export function updateBedAction(uuidInstitution, uuidDepartment, uuidWard, bedInfo) {
+export function updateBedAction(uuidInvestigation, uuidDepartment, uuidWard, bedInfo) {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
-    return updateBedService(uuidInstitution, bedInfo)
+    return updateBedService(uuidInvestigation, bedInfo)
       .then((response) => {
         dispatch({
           type: types.UPDATE_BED_WARD_SUCCESS,
@@ -128,11 +128,11 @@ export function updateBedAction(uuidInstitution, uuidDepartment, uuidWard, bedIn
   };
 }
 
-export function deleteBedAction(uuidInstitution, uuidDepartment, uuidWard, bedInfo) {
+export function deleteBedAction(uuidInvestigation, uuidDepartment, uuidWard, bedInfo) {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
-    return deleteBedService(uuidInstitution, bedInfo)
+    return deleteBedService(uuidInvestigation, bedInfo)
       .then((response) => {
         dispatch({
           type: types.DELETE_BED_WARD_SUCCESS,
@@ -149,11 +149,11 @@ export function deleteBedAction(uuidInstitution, uuidDepartment, uuidWard, bedIn
 }
 
 
-export function createBedAction(uuidInstitution, uuidDepartment, uuidWard, bedInfo) {
+export function createBedAction(uuidInvestigation, uuidDepartment, uuidWard, bedInfo) {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
-    return createBedService(uuidInstitution, uuidWard, bedInfo)
+    return createBedService(uuidInvestigation, uuidWard, bedInfo)
       .then((response) => {
         dispatch({
           type: types.CREATE_BED_WARD_SUCCESS,
@@ -169,11 +169,11 @@ export function createBedAction(uuidInstitution, uuidDepartment, uuidWard, bedIn
   };
 }
 
-export function updateOrderBedsAction(uuidInstitution, uuidDepartment, uuidWard, bedsReorder) {
+export function updateOrderBedsAction(uuidInvestigation, uuidDepartment, uuidWard, bedsReorder) {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
-    return updateOrderBedsService(uuidInstitution, uuidWard, bedsReorder)
+    return updateOrderBedsService(uuidInvestigation, uuidWard, bedsReorder)
       .then((response) => {
         dispatch({
           type: types.UPDATE_ORDER_BEDS_SUCCESS,
@@ -189,11 +189,11 @@ export function updateOrderBedsAction(uuidInstitution, uuidDepartment, uuidWard,
   };
 }
 
-export function createStayPatientAction(uuidInstitution, uuidDepartment, uuidWard, uuidPatient, idBed) {
+export function createStayPatientAction(uuidInvestigation, uuidDepartment, uuidWard, uuidPatient, idBed) {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
-    return createStayPatientService(uuidInstitution, idBed, uuidPatient)
+    return createStayPatientService(uuidInvestigation, idBed, uuidPatient)
       .then((response) => {
         dispatch({
           type: types.CREATE_STAY_SUCCESS,
@@ -230,11 +230,11 @@ export function getPatientStaysAction(uuidInvestigation, uuidPatient) {
   };
 }
 
-export function dischargePatientAction(uuidInstitution, uuidPatient) {
+export function dischargePatientAction(uuidInvestigation, uuidPatient) {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
-    return dischargePatientService(uuidInstitution, uuidPatient)
+    return dischargePatientService(uuidInvestigation, uuidPatient)
       .then((response) => {
         dispatch({
           type: types.FETCH_PATIENT_STAYS,

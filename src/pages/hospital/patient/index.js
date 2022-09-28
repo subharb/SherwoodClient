@@ -330,7 +330,7 @@ function Patient(props) {
         
     }
     async function makeDischarge(){
-        (await dispatch(dischargePatientAction(props.investigations.currentInvestigation.institution.uuid, uuidPatient)))
+        (await dispatch(dischargePatientAction(props.investigations.currentInvestigation.uuid, uuidPatient)))
     }
     function showConfirm(){
         setDischargeConfirm(true);

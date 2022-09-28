@@ -142,7 +142,7 @@ function DepartmentsRouter(props){
         
     }
     async function deleteWardCallBack(uuidDepartmentAddWard, wardToDelete){
-        await dispatch(deleteWardAction(props.investigations.currentInvestigation.institution.uuid, uuidDepartmentAddWard, wardToDelete.uuid));
+        await dispatch(deleteWardAction(props.investigations.currentInvestigation.uuid, uuidDepartmentAddWard, wardToDelete.uuid));
     }
     async function resetError(){
         await dispatch({

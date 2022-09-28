@@ -114,30 +114,30 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     async function editCallBack(bed:IBed){
         
         if(ward){
-            await(dispatch(updateBedAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, bed)))
+            await(dispatch(updateBedAction(investigations.currentInvestigation.uuid, uuidDepartment, ward.uuid, bed)))
         }        
     }
     async function deleteCallBack(bed:IBed){
         if(ward){
-            await(dispatch(deleteBedAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, bed)))
+            await(dispatch(deleteBedAction(investigations.currentInvestigation.uuid, uuidDepartment, ward.uuid, bed)))
         }
     }
     async function addCallBack(bed:IBed) {
         if(ward){
-            await(dispatch(createBedAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, bed)))
+            await(dispatch(createBedAction(investigations.currentInvestigation.uuid, uuidDepartment, ward.uuid, bed)))
         }
     }
     async function saveOrderCallBack(bedsReorder:IBed[]){
         console.log("Reorder",bedsReorder);
         if(ward){
-            await(dispatch(updateOrderBedsAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, bedsReorder)))
+            await(dispatch(updateOrderBedsAction(investigations.currentInvestigation.uuid, uuidDepartment, ward.uuid, bedsReorder)))
         }
     }
 
     async function assignBedPatientCallBack(bedAssigned:IBed){
         console.log("bedAssigned",bedAssigned);
         if(ward && patient){
-            await(dispatch(createStayPatientAction(investigations.currentInvestigation.institution.uuid, uuidDepartment, ward.uuid, patient.uuid, bedAssigned.id)))
+            await(dispatch(createStayPatientAction(investigations.currentInvestigation.uuid, uuidDepartment, ward.uuid, patient.uuid, bedAssigned.id)))
         }
     }
     
@@ -150,7 +150,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
             if(!ward && investigations.data){
                 const patient = props.patients.data[investigations.currentInvestigation.uuid].find((pat:IPatient) => pat.uuid === uuidPatient);
                 setPatient(patient);
-                const response = await(getWardService(investigations.currentInvestigation.institution.uuid, uuidWard))
+                const response = await(getWardService(investigations.currentInvestigation.uuid, uuidWard))
                 console.log(response);
                 setWard(response.ward);
                 setUuidDepartment(response.ward.department.uuid)
