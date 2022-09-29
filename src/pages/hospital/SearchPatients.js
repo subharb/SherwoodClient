@@ -103,7 +103,7 @@ function SearchPatients(props){
                             }
                         }
                         else{
-                            if(value !== "" && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
+                            if(value !== "" && patient.personalData[keyValue] && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
                                 result = false;
                             }
                         }

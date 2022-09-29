@@ -29,6 +29,7 @@ interface Props {
     settingsWardCallBack?: (ward:IWard, uuidDepartment:string) => void,
     editWardCallBack?: (ward:IWard, uuidDepartment:string, busyBeds:number) => void,
     deleteWardConfirmCallBack?: (ward:IWard, uuidDepartment:string) => void,
+    addUnit ?:(uuidDepartment:string)=> void,
     addWardCallBack?: (uuidDepartment:string) => void
 }
 
@@ -53,7 +54,7 @@ export const DepartmentsAccordionRedux:React.FC<PropsRedux> = (props) =>{
     else{
         return(
             <DepartmentsAccordionWards departments={departments} researchers={researchers} 
-                permissions={props.currentInvestigation.permissions}
+                permissions={props.currentInvestigation.permissions} addUnit={props.addUnit}
                 mode={DepartmentAccordionModes.WardSelection} selectWardCallBack={selectWardCallBack}
             />
         )
@@ -69,13 +70,20 @@ const DepartmentsAccordionWards:React.FC<PropsRedux> = ({departments, permission
     )
 }
 
-export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, uuidDepartmentAddWard, researchers, mode, selectWardCallBack, addWardCallBack, editWardCallBack, deleteWardConfirmCallBack, viewWardCallBack, settingsWardCallBack}) => {
+export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, uuidDepartmentAddWard, researchers, mode, 
+                                                        selectWardCallBack, addWardCallBack, addUnit, editWardCallBack, 
+                                                        deleteWardConfirmCallBack, viewWardCallBack, settingsWardCallBack}) => {
     
-    function renderDepartment(department:IDepartment){
+    function renderUnitOrDepartment(departmentOrUnit:IDepartment | IUnit){
         if(mode === DepartmentAccordionModes.Researchers){
-            const researchersDepartment = researchers.filter((res:IResearcher) => res.units.find((unit:IUnit) => unit.department.name === department.name));
+            const researchersDepartment = researchers.filter((res:IResearcher) => res.units.find((unit:IUnit) => unit.uuid === departmentOrUnit.uuid));
             return (
                 <List component="nav" aria-label="main mailbox folders">
+                    <ButtonAdd 
+                                type="button" data-testid="add_researcher" 
+                                onClick={() => {
+                                    addUnit(departmentOrUnit.uuid);
+                                }} />
                 {
                     (researchersDepartment.length > 0)&& 
                     researchersDepartment.map((res:IResearcher) => {
@@ -99,10 +107,10 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
             const AddWardButton = (addWardCallBack) ? <ButtonAdd disabled={uuidDepartmentAddWard} 
                                 type="button" data-testid="add_researcher" 
                                 onClick={() => {
-                                    addWardCallBack(department.uuid as string);
+                                    addWardCallBack(departmentOrUnit.uuid as string);
                                 }}></ButtonAdd> : null;
     
-                
+            const department:IDepartment = departmentOrUnit as IDepartment;
             const wardsDepartment = department.wards.length === 0 ? <ListItemText primary={<Translate id="hospital.departments.no-wards"></Translate>} /> : department.wards.map((ward:IWard, index:number) => {
                     const bedsInfo = {
                         total:ward.beds.length,
@@ -122,7 +130,7 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                         }
                     }
                     else{
-                        const uuidDepartment:string = department.uuid as string;
+                        const uuidDepartment:string = departmentOrUnit.uuid as string;
                         if(editWardCallBack && viewWardCallBack && settingsWardCallBack && deleteWardConfirmCallBack){
                             return (<WardFormEdit name={ward.name} beds={bedsInfo}     
                                         permissions={permissions}                                                         
@@ -164,30 +172,51 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
         }   
         
     }
+    function renderAccordion(){
+        let unitOrDeparments:(IUnit | IDepartment)[] = []
+        if(mode === DepartmentAccordionModes.Researchers){
+            
+            departments.sort((a,b) => a.name.localeCompare(b.name)).forEach((department) => {
+                department.units.forEach((unit) => {
+                    unitOrDeparments.push({
+                        name : department.name+" - "+unit.name,
+                        department:department,
+                        uuid : unit.uuid
+                    })
+                })
+            })
+        }
+        else{
+            unitOrDeparments = departments.sort((a,b) => a.name.localeCompare(b.name));
+        }
+        return (
+            unitOrDeparments.length > 0 &&
+            unitOrDeparments.map(department => {
+                return (
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                            >
+                            <Typography >{ department.name}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
+                                {
+                                    renderUnitOrDepartment(department)
+                                }
+                            
+                        </AccordionDetails>
+                    </Accordion>
+                )
+            })
+        )
+    }
     return(
         <div style={{width:'100%'}}>
             
             {
-                departments.length > 0 &&
-                departments.sort((a,b) => a.name.localeCompare(b.name)).map(department => {
-                    return (
-                        <Accordion>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                                >
-                                <Typography >{ department.name}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
-                                    {
-                                        renderDepartment(department)
-                                    }
-                                
-                            </AccordionDetails>
-                        </Accordion>
-                    )
-                })
+                renderAccordion()
             }
             {
                 departments.length === 0 &&

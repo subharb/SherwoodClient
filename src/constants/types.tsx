@@ -20,6 +20,7 @@ export interface IDepartment{
     uuid?:string,
     id?:number,
     name:string,
+    units:IUnit[],
     wards:IWard[]
 }
 

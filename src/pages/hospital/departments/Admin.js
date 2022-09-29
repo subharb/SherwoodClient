@@ -21,7 +21,7 @@ import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAcc
 import { FUNCTIONALITY } from '../../../constants/types';
 import { a11yProps, TabPanel } from '../../components/Tabs';
 
-const DEPARTMENT_FORM = {
+const UNIT_DEPARTMENT_FORM = {
     "name":{
         required : true,
         name:"name",
@@ -31,6 +31,7 @@ const DEPARTMENT_FORM = {
         validation : "textMin2"
     }
 }
+
 
 const WARD_FORM = {
     "name":{
@@ -180,7 +181,8 @@ function Departments(props) {
     const [ wardToDelete, setWardToDelete ] = useState(false);
     const [ showModal, setShowModal ] = useState(false);
     const [ showOptions, setShowOptions ] = useState(false);
-    
+    const [ departmentToAddUnit, setDepartmentToAddUnit ] = useState(false);
+
     //Sino es admin que salga el de in patients
     const [tabSelector, setTabSelector] = useState(props.admin ? 0 : 2);
     const [isLoadingDepartments, setIsLoadingDepartments] = useState(false);
@@ -267,11 +269,9 @@ function Departments(props) {
             setUuidDepartmentAddWard(uuidDepartment);
             setWardToDelete(ward);
             setShowModal(true);
-        }
-        
+        }        
     }
 
-    
     async function changeResearcherUnit(values){
         console.log("Datos nuevos de researcher", values);
         setChangingResearcherUnit(true);
@@ -332,6 +332,17 @@ function Departments(props) {
         setShowModal(true);
     }
     
+    function addingUnit(uuidDepartment){
+        setShowModal(true);
+        setDepartmentToAddUnit(uuidDepartment);
+    }
+
+    function addUnit(unit){
+        setDepartmentToAddUnit(false);
+        setIsLoadingDepartments(true);
+        props.saveUnitCallBack(unit, uuidDepartment)
+    }
+
     function resetModal(){
         setShowModal(false);
         setAddingDepartment(false);
@@ -343,7 +354,6 @@ function Departments(props) {
         setChangingResearcherUnit(false);
     }
     
-
     async function resetSnackBar(){
         setShowSnackbar({show:false});
         props.resetError()
@@ -402,7 +412,7 @@ function Departments(props) {
         return <Loader />
     }
     else if(!props.investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION) && !props.admin){
-        return "NO tiene nada que ver"
+        return "No tiene nada que ver"
     }
     return (
         <BoxBckgr color="text.primary" style={{color:"white"}}>
@@ -455,7 +465,13 @@ function Departments(props) {
                     }
                     {
                         addingDepartment &&
-                        <Form fields={DEPARTMENT_FORM} fullWidth callBackForm={addDepartment} 
+                        <Form fields={UNIT_DEPARTMENT_FORM} fullWidth callBackForm={addDepartment} 
+                            closeCallBack={() => resetModal()}/>
+                    }
+
+{
+                        departmentToAddUnit &&
+                        <Form fields={UNIT_DEPARTMENT_FORM} fullWidth callBackForm={addUnit} 
                             closeCallBack={() => resetModal()}/>
                     }
 
@@ -509,7 +525,7 @@ function Departments(props) {
                                 props.admin &&
                                 [
                                     <Tab label={<Translate id="hospital.departments.users" />} {...a11yProps(0)} />,
-                                    <Tab label={<Translate id="hospital.departments.departments" />} {...a11yProps(1)} />
+                                    <Tab label={<Translate id="hospital.departments.units" />} {...a11yProps(1)} />
                                 ]
                                 
                             }
@@ -538,7 +554,7 @@ function Departments(props) {
                             <TabPanel value={tabSelector} index={1} style={{width:'100%'}}>
                                 <DepartmentsAccordion mode={DepartmentAccordionModes.Researchers } researchers={props.researchers}
                                     departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
-                                    permissions={props.investigation.permissions}
+                                    permissions={props.investigation.permissions} addUnit={(uuidDepartment)=>addingUnit(uuidDepartment)}
                                 />
                             </TabPanel>
                         </React.Fragment>
