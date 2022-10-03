@@ -152,6 +152,9 @@
                 "unit" : {
                     "name" : ["Name Unit", "Nombre unidad", "Nom unit"]
                 },
+                "remove-researcher" : {
+                    "confirm" : ["Do you confirm you wish to remove %X from unit %Y?", "¿Confirma que desea quitar a %X de la unidad %Y?", "Voulez-vous vraiment supprimer %X du lecteur %Y?"]
+                },
                 "department" : {
                     "title" : ["Add department", "Añadir Departamento", "Ajouter Service"],
                     "name" : ["Name department", "Nombre departamento", "Nom du service"]

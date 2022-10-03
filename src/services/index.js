@@ -454,6 +454,22 @@ export const assignUnitToResearcherService = datalogger((uuidInvestigation, uuid
     });
 });
 
+export const removeUnitToResearcherService = datalogger((uuidInvestigation, uuidResearcher, uuidDepartment) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/unit/"+uuidDepartment+"/toresearcher", {uuidResearcher}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+});
+
 export const saveDepartmentService = datalogger((uuidInvestigation, department) => {
     return new Promise((resolve, reject) => {
       axios

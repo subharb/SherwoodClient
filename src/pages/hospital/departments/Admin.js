@@ -152,7 +152,9 @@ function DepartmentsRouter(props){
     }
     async function editCallBack(uuid, department){       
         await dispatch(assignUnitToResearcherAction(props.investigations.currentInvestigation.uuid, uuid, department));
-        
+    }
+    async function deleteReseacherFromUnitCallBack(researcherUnitDelete){       
+        await dispatch(removeResearcherFromUnitAction(props.investigations.currentInvestigation.uuid, researcherUnitDelete));
     }
     async function deleteWardCallBack(uuidDepartmentAddWard, wardToDelete){
         await dispatch(deleteWardAction(props.investigations.currentInvestigation.uuid, uuidDepartmentAddWard, wardToDelete.uuid));
@@ -168,7 +170,7 @@ function DepartmentsRouter(props){
                 addWardCallBack={addWardCallBack} settingsCallBack={settingsCallBack}
                 editCallBack={editCallBack} deleteWardCallBack={deleteWardCallBack}
                 viewWardCallBack={viewWardCallBack} saveUnitCallBack={saveUnitCallBack}
-                resetError={resetError}
+                resetError={resetError} deleteReseacherFromUnitCallBack={deleteReseacherFromUnitCallBack}
             />
 }
 
@@ -194,6 +196,7 @@ function Departments(props) {
     const [ showModal, setShowModal ] = useState(false);
     const [ showOptions, setShowOptions ] = useState(false);
     const [ departmentToAddUnit, setDepartmentToAddUnit ] = useState(false);
+    const [ confirmingDeleteUnitResearcher, setConfirmingDeleteUnitResearcher] = useState(false);
 
     //Sino es admin que salga el de in patients
     const [tabSelector, setTabSelector] = useState(props.admin ? 0 : 2);
@@ -219,6 +222,17 @@ function Departments(props) {
                 })
                 return [...previousValue, ...unitsInfo]
             }, [])
+        }
+    }
+
+    const REMOVE_RESEARCHER_FORM = {
+        "name":{
+            required : true,
+            name:"name",
+            type:"hidden",
+            label:props.translate("hospital.departments.forms.remove-researcher.confirm").replace("%X", confirmingDeleteUnitResearcher ? confirmingDeleteUnitResearcher.researcher.name+" "+confirmingDeleteUnitResearcher.researcher.surnames : ""),
+            shortLabel: "hospital.departments.forms.unit.name",
+            validation : "textMin2"
         }
     }
     
@@ -267,6 +281,11 @@ function Departments(props) {
         }
     }
 
+    function handleDeleteFromUnit(unitResearcher){
+        setShowModal(true);
+        setConfirmingDeleteUnitResearcher(unitResearcher);
+    }
+
     function deleteWardConfirm(ward, uuidDepartment){
         console.log("Borrar sala?");
         const hasPatients = ward.beds.reduce((acc, bed) => {
@@ -313,10 +332,7 @@ function Departments(props) {
                                     id:idx,
                                     name : name, 
                                     units: researcher.units.map((unit, index) => {
-                                        if(index === 0){
-                                            return unit.name
-                                        }
-                                        return ", "+unit.name
+                                        return <ColourChip size="small" label={unit.name} rgbcolor={green[500]} onDelete={() => handleDeleteFromUnit({unit, researcher})} />
                                     }),
                                     status : <StatusChip value={researcher.status}/>
                                 }
@@ -354,6 +370,10 @@ function Departments(props) {
         props.saveUnitCallBack(departmentToAddUnit, unit)
     }
 
+    function removeResearcherUnit(){
+        
+    }
+
     function resetModal(){
         setShowModal(false);
         setAddingDepartment(false);
@@ -369,6 +389,30 @@ function Departments(props) {
     async function resetSnackBar(){
         setShowSnackbar({show:false});
         props.resetError()
+    }
+
+    function renderModalRemoveResearcher(){
+        if(confirmingDeleteUnitResearcher){
+            const question = props.translate("hospital.departments.forms.remove-researcher.confirm").replace("%X", confirmingDeleteUnitResearcher ? confirmingDeleteUnitResearcher.researcher.name+" "+confirmingDeleteUnitResearcher.researcher.surnames : "").
+                                replace("%Y", confirmingDeleteUnitResearcher.unit.name);
+            return(
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Typography variant="h6" component="div" gutterBottom>
+                            {question}
+                        </Typography>                        
+                    </Grid>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                        <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                            <Translate id="general.cancel" />
+                        </ButtonCancel>
+                        <ButtonContinue onClick={() => props.deleteReseacherFromUnitCallBack(confirmingDeleteUnitResearcher)} data-testid="continue-modal" color="primary">
+                            <Translate id="general.continue" />
+                        </ButtonContinue>
+                    </Grid>
+                </Grid>
+            )
+        }           
     }
     useEffect(()=>{
         if(wardToDelete || uuidDepartmentAddWard || addingDepartment || changingResearcherUnit || departmentToAddUnit){
@@ -480,8 +524,10 @@ function Departments(props) {
                         <Form fields={DEPARTMENT_FORM} fullWidth callBackForm={addDepartment} 
                             closeCallBack={() => resetModal()}/>
                     }
-
-{
+                    {
+                        renderModalRemoveResearcher()
+                    }
+                    {
                         departmentToAddUnit &&
                         <Form fields={UNIT_FORM} fullWidth callBackForm={addUnit} 
                             closeCallBack={() => resetModal()}/>

@@ -62,6 +62,26 @@ export function assignUnitToResearcherAction(uuidInvestigation, uuidResearcher, 
     };
 }
 
+export function removeResearcherFromUnitAction(uuidInvestigation, researcherUnit) {
+    return async (dispatch) => {
+      dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+  
+      return removeUnitToResearcherService(uuidInvestigation, researcherUnit)
+        .then((response) => {
+          dispatch({
+            type: types.REMOVE_RESEARCHER_UNIT_SUCCESS,
+            units: response.units,
+            uuidResearcher : uuidResearcher
+          });
+        })
+        .catch((error) => {
+          dispatch({ type: types.HOSPITAL_ERROR });
+          throw error;
+        });
+    };
+}
+
+
 export function saveDepartmentAction(uuidInvestigation, department) {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_HOSPITAL_LOADING });

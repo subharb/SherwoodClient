@@ -74,11 +74,10 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                                                         selectWardCallBack, addWardCallBack, addUnitCallBack, editWardCallBack, 
                                                         deleteWardConfirmCallBack, viewWardCallBack, settingsWardCallBack}) => {
     
-    function renderUnitOrDepartment(department:IDepartment){
+    function renderDepartment(department:IDepartment){
         if(mode === DepartmentAccordionModes.Researchers){
             return (
                 <List component="nav" aria-label="main mailbox folders">
-                    
                     {
                         department.units.map((unit) => {
                             const researchersUnit = researchers.filter((res:IResearcher) => res.units.find((unitRes:IUnit) => unit.uuid === unitRes.uuid));
@@ -190,22 +189,7 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
         
     }
     function renderAccordion(){
-        let unitOrDeparments:IDepartment[] = []
-        // if(mode === DepartmentAccordionModes.Researchers){
-            
-        //     departments.sort((a,b) => a.name.localeCompare(b.name)).forEach((department) => {
-        //         department.units.forEach((unit) => {
-        //             unitOrDeparments.push({
-        //                 name : department.name+" - "+unit.name,
-        //                 department:department,
-        //                 uuid : unit.uuid
-        //             })
-        //         })
-        //     })
-        // }
-        // else{
-        //     unitOrDeparments = departments.sort((a,b) => a.name.localeCompare(b.name));
-        // }
+        let unitOrDeparments:IDepartment[] = [];
         unitOrDeparments = departments.sort((a,b) => a.name.localeCompare(b.name));
         return (
             unitOrDeparments.length > 0 &&
@@ -218,13 +202,13 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                             id="panel1a-header"
                             >
                             <Typography >{ department.name}
-                            <ButtonAdd 
-                            type="button" data-testid="add_researcher" 
-                            onClick={(addUnitCallBack) ? () => addUnitCallBack(department.uuid as string) : null} /></Typography>
+                                <ButtonAdd 
+                                type="button" data-testid="add_researcher" 
+                                onClick={(addUnitCallBack) ? () => addUnitCallBack(department.uuid as string) : null} /></Typography>
                         </AccordionSummary>
                         <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
                                 {
-                                    renderUnitOrDepartment(department)
+                                    renderDepartment(department)
                                 }
                             
                         </AccordionDetails>
