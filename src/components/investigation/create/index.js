@@ -156,7 +156,7 @@ export function NewInvestigation(props){
             component = <PersonalData initialData={props.initialState ? props.initialState.investigation.personalFields : investigation.personalFields } callBackStepBack = {stepBack}  callBackData={addData} />
             break;
         case 2: 
-            component = <EDC initialData={props.initialState ? {surveys : props.initialState.investigation.surveys} : investigation.surveys ? {surveys : investigation.surveys } : {surveys : [] }} callBackStepBack = {stepBack}  callBackData={addData} />
+            component = <EDC initialData={props.initialState ? {surveys : props.initialState.investigation.surveys, departments:props.initialState.investigation.departments} : investigation.surveys ? {surveys : investigation.surveys } : {surveys : [] }} callBackStepBack = {stepBack}  callBackData={addData} />
             break;
         case 3:
             component = <Summary initialData={ investigation } callBackStepBack = {stepBack} 

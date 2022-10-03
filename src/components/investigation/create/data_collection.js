@@ -7,7 +7,7 @@ import Section from './section';
 import { ButtonSave, ButtonAdd, ButtonBack, ButtonContinue } from '../../general/mini_components'; 
 import FieldSherwood from '../../general/FieldSherwood';
 import { reduxForm, Field, submit, FormSection } from 'redux-form';
-import { TextField, Grid, Container, Card, CardContent, Typography } from '@material-ui/core';
+import { TextField, Grid, Container, Card, CardContent, Typography, InputLabel, Select, MenuItem, FormControl } from '@material-ui/core';
 import { EnhancedTable } from '../../general/EnhancedTable';
 import OrderableTable from '../../general/OrderableTable';
 /**
@@ -41,8 +41,9 @@ class DataCollection extends Component{
         this.closeNewSection = this.closeNewSection.bind(this);
         this.saveDataCollection = this.saveDataCollection.bind(this);
         this.callBackNewSection = this.callBackNewSection.bind(this);
+        this.handleChangeUnit = this.handleChangeUnit.bind(this);
         this.changeName = this.changeName.bind(this);
-        const initialState = {name:"", sections: [], addingSection:false, editingIndexSection:false}
+        const initialState = {name:"", sections: [], addingSection:false, editingIndexSection:false, unit:props.initialData.unit ? props.initialData.unit.id : false}
         this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
     }
     changeName(e){
@@ -185,6 +186,44 @@ class DataCollection extends Component{
             this.props.initialize(this.props.initialData)
         }
     }
+    handleChangeUnit(event){
+        console.log(event.target.value);
+        const tempState = {...this.state};
+        tempState.unit = {id : event.target.value}
+        this.setState(tempState);
+    }
+    renderUnits(){
+        const units = [];
+        this.props.departments.forEach((dep) => dep.units.forEach((unit) => {
+            const unitInfo = {
+                name:dep.name+" - "+unit.name,
+                id:unit.id
+            }
+            units.push(unitInfo)
+        }));
+        return (
+            <Grid item xs={12}>
+                <FormControl >
+                    <InputLabel id="demo-simple-select-label">Unit: </InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={this.state.unit ? this.state.unit.id : false }
+                        label="Unit"
+                        onChange={this.handleChangeUnit}
+                    >
+                        <MenuItem value={false}>Sin especificar</MenuItem>
+                        {
+                            units.map((unit) => {
+                                return <MenuItem value={unit.id}>{unit.name}</MenuItem>
+                            })
+                        }
+                    </Select>
+                </FormControl>
+            </Grid>
+        )
+        
+    }
     render(){
         if(Number.isInteger(this.state.editingIndexSection) || this.state.addingSection){
             return (
@@ -233,6 +272,10 @@ class DataCollection extends Component{
                     <TextField label="name" name="name_data_collection" 
                         value={this.state.name} variant="outlined" onChange={this.changeName}/>    
                 </Grid>
+
+                {
+                    this.renderUnits()
+                }
                 
                 { this.renderSections() }
                 
