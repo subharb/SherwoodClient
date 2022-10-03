@@ -99,6 +99,16 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState; 
+        case types.REMOVE_RESEARCHER_UNIT_SUCCESS:
+            const indexResearcherRem = newState.data.researchers.findIndex(res => res.uuid === action.uuidResearcher);
+            const copyResearchersRem = [...newState.data.researchers];
+            if(indexResearcherRem !== -1){
+                copyResearchersRem[indexResearcherRem].units = [...action.units];
+            }
+            newState.data.researchers = [...copyResearchersRem];
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
+            return newState; 
         case types.CREATE_BED_WARD_SUCCESS:
             indexDepartment = findIndexDepartment(newState.data.departments, action.uuidDepartment);
             tempDepartments = [...newState.data.departments];

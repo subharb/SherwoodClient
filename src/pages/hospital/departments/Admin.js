@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { useHistory } from "react-router-dom";
-import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction } from '../../../redux/actions/hospitalActions';
+import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction, removeResearcherFromUnitAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
@@ -210,8 +210,8 @@ function Departments(props) {
             required : true,
             type:"select",
             name:"unit",
-            label:"hospital.departments.department",
-            shortLabel: "hospital.departments.department",
+            label:"hospital.departments.forms.unit.name",
+            shortLabel:"hospital.departments.forms.unit.name",
             validation : "notEmpty",
             defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
             options:props.departments.reduce((previousValue, dep) => {
@@ -370,10 +370,92 @@ function Departments(props) {
         props.saveUnitCallBack(departmentToAddUnit, unit)
     }
 
-    function removeResearcherUnit(){
+    function renderContentModal(){
+        if(wardToDelete){
+            return (
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Typography variant="h6" component="div" gutterBottom>
+                            <Translate id="hospital.departments.delete-ward-prompt" />
+                        </Typography>
+                        <Typography variant="body2" style={{fontWeight:'bold'}} component="div" gutterBottom>
+                            {wardToDelete.name}
+                        </Typography>
+                        
+                    </Grid>
+                    <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                        <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                            <Translate id="general.cancel" />
+                        </ButtonCancel>
+                        <ButtonContinue onClick={() => props.deleteWardCallBack(uuidDepartmentAddWard, wardToDelete)} data-testid="continue-modal" color="primary">
+                            <Translate id="general.continue" />
+                        </ButtonContinue>
+                    </Grid>
+                </Grid>
+            )
+        }
+        else if(indexResearcherToEdit !== false){
+            return (
+                <Form fields={CHANGE_DEPARTMENT_FORM} fullWidth callBackForm={changeResearcherUnit}
+                    initialData={props.researchers[indexResearcherToEdit]} 
+                    closeCallBack={() => resetModal()}/>
+            )
+        }
+        else if(addingDepartment){
+            return (
+                <Form fields={DEPARTMENT_FORM} fullWidth callBackForm={addDepartment} 
+                    closeCallBack={() => resetModal()}/>
+            )
+        }
+        else if(confirmingDeleteUnitResearcher){
+            const question = props.translate("hospital.departments.forms.remove-researcher.confirm").replace("%X", confirmingDeleteUnitResearcher ? confirmingDeleteUnitResearcher.researcher.name+" "+confirmingDeleteUnitResearcher.researcher.surnames : "").
+                                replace("%Y", confirmingDeleteUnitResearcher.unit.name);
+            return(
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Typography variant="h6" component="div" gutterBottom>
+                            {question}
+                        </Typography>                        
+                    </Grid>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                        <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                            <Translate id="general.cancel" />
+                        </ButtonCancel>
+                        <ButtonContinue onClick={() => props.deleteReseacherFromUnitCallBack(confirmingDeleteUnitResearcher)} data-testid="continue-modal" color="primary">
+                            <Translate id="general.continue" />
+                        </ButtonContinue>
+                    </Grid>
+                </Grid>
+            )
+        }   
+        else if(departmentToAddUnit){
+            return (
+                <Form fields={UNIT_FORM} fullWidth callBackForm={addUnit} 
+                    closeCallBack={() => resetModal()}/>
+            )
+        }
+        else if( (uuidDepartmentAddWard && !wardToDelete)){
+            return (
+                <Form fields={WARD_FORM} fullWidth callBackForm={addWardCallBack} 
+                    initialData={wardToEdit}
+                    closeCallBack={() => resetModal()}/>
+            )
+        }
+        else if(showOptions){
+            return (
+                <Grid container spacing={3} style={{textAlign:"center"}}>
+                    <Grid item xs={12}>
+                        <ButtonGrey onClick={()=> {
+                            setAddingDepartment(true);
+                            setShowOptions(false);
+                        }} data-testid="select-hospital" >Add Department</ButtonGrey>
+                    </Grid>
+                </Grid> 
+            )
+        }
+
         
     }
-
     function resetModal(){
         setShowModal(false);
         setAddingDepartment(false);
@@ -384,6 +466,7 @@ function Departments(props) {
         setWardToDelete(false);
         setChangingResearcherUnit(false);
         setAddingDepartment(false);
+        setConfirmingDeleteUnitResearcher(false);
     }
     
     async function resetSnackBar(){
@@ -415,7 +498,7 @@ function Departments(props) {
         }           
     }
     useEffect(()=>{
-        if(wardToDelete || uuidDepartmentAddWard || addingDepartment || changingResearcherUnit || departmentToAddUnit){
+        if(wardToDelete || uuidDepartmentAddWard || addingDepartment || changingResearcherUnit || departmentToAddUnit || confirmingDeleteUnitResearcher){
             setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
         }
         resetModal();
@@ -492,63 +575,7 @@ function Departments(props) {
             <Modal key="modal" open={showModal} closeModal={() => resetModal()}
                 title={addingDepartment ? props.translate("hospital.departments.modal.title") : indexResearcherToEdit !== false  ? props.translate("investigation.share.edit_researcher") : wardToDelete ? props.translate("pages.hospital.confirm-patient.title") : uuidDepartmentAddWard ? props.translate("hospital.departments.forms.ward.title") : props.translate("hospital.departments.modal.title")}>
                     {
-                        wardToDelete &&
-                        <Grid container>
-                             <Grid item xs={12}>
-                                <Typography variant="h6" component="div" gutterBottom>
-                                    <Translate id="hospital.departments.delete-ward-prompt" />
-                                </Typography>
-                                <Typography variant="body2" style={{fontWeight:'bold'}} component="div" gutterBottom>
-                                    {wardToDelete.name}
-                                </Typography>
-                                
-                             </Grid>
-                             <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                                <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
-                                    <Translate id="general.cancel" />
-                                </ButtonCancel>
-                                <ButtonContinue onClick={() => props.deleteWardCallBack(uuidDepartmentAddWard, wardToDelete)} data-testid="continue-modal" color="primary">
-                                    <Translate id="general.continue" />
-                                </ButtonContinue>
-                            </Grid>
-                        </Grid>
-                    } 
-                    {
-                        indexResearcherToEdit !== false &&
-                        <Form fields={CHANGE_DEPARTMENT_FORM} fullWidth callBackForm={changeResearcherUnit}
-                            initialData={props.researchers[indexResearcherToEdit]} 
-                            closeCallBack={() => resetModal()}/>
-                    }
-                    {
-                        addingDepartment &&
-                        <Form fields={DEPARTMENT_FORM} fullWidth callBackForm={addDepartment} 
-                            closeCallBack={() => resetModal()}/>
-                    }
-                    {
-                        renderModalRemoveResearcher()
-                    }
-                    {
-                        departmentToAddUnit &&
-                        <Form fields={UNIT_FORM} fullWidth callBackForm={addUnit} 
-                            closeCallBack={() => resetModal()}/>
-                    }
-
-                    {
-                        (uuidDepartmentAddWard && !wardToDelete) &&
-                        <Form fields={WARD_FORM} fullWidth callBackForm={addWardCallBack} 
-                            initialData={wardToEdit}
-                            closeCallBack={() => resetModal()}/>
-                    }
-                    {
-                        showOptions &&
-                        <Grid container spacing={3} style={{textAlign:"center"}}>
-                            <Grid item xs={12}>
-                                <ButtonGrey onClick={()=> {
-                                    setAddingDepartment(true);
-                                    setShowOptions(false);
-                                }} data-testid="select-hospital" >Add Department</ButtonGrey>
-                            </Grid>
-                        </Grid>                        
+                        renderContentModal()
                     }
             </Modal>
             <Grid container spacing={3}>
@@ -583,7 +610,7 @@ function Departments(props) {
                                 props.admin &&
                                 [
                                     <Tab label={<Translate id="hospital.departments.users" />} {...a11yProps(0)} />,
-                                    <Tab label={<Translate id="hospital.departments.units" />} {...a11yProps(1)} />
+                                    <Tab label={<Translate id="hospital.departments.departments" />} {...a11yProps(1)} />
                                 ]
                                 
                             }

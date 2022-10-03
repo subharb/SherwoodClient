@@ -454,10 +454,10 @@ export const assignUnitToResearcherService = datalogger((uuidInvestigation, uuid
     });
 });
 
-export const removeUnitToResearcherService = datalogger((uuidInvestigation, uuidResearcher, uuidDepartment) => {
+export const removeUnitToResearcherService = datalogger((uuidInvestigation, uuidResearcher, uuidUnit) => {
     return new Promise((resolve, reject) => {
       axios
-        .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/unit/"+uuidDepartment+"/toresearcher", {uuidResearcher}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .delete(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/unit/"+uuidUnit+"/removeresearcher/"+uuidResearcher, { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .then((response) => {
           if (response.status === 200) {
             resolve(response.data);

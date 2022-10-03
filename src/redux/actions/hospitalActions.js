@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
+import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
 
 
 
@@ -66,12 +66,12 @@ export function removeResearcherFromUnitAction(uuidInvestigation, researcherUnit
     return async (dispatch) => {
       dispatch({ type: types.FETCH_HOSPITAL_LOADING });
   
-      return removeUnitToResearcherService(uuidInvestigation, researcherUnit)
+      return removeUnitToResearcherService(uuidInvestigation, researcherUnit.researcher.uuid, researcherUnit.unit.uuid)
         .then((response) => {
           dispatch({
             type: types.REMOVE_RESEARCHER_UNIT_SUCCESS,
             units: response.units,
-            uuidResearcher : uuidResearcher
+            uuidResearcher : researcherUnit.researcher.uuid
           });
         })
         .catch((error) => {
