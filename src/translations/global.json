@@ -149,6 +149,9 @@
                     "male" : ["Male beds", "Camas para hombres", "Lits pour hommes"],
                     "female" : ["Female beds", "Camas para mujeres", "Lits pour femmes"]
                 },
+                "unit" : {
+                    "name" : ["Name Unit", "Nombre unidad", "Nom unit"]
+                },
                 "department" : {
                     "title" : ["Add department", "Añadir Departamento", "Ajouter Service"],
                     "name" : ["Name department", "Nombre departamento", "Nom du service"]

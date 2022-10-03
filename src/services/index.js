@@ -470,6 +470,22 @@ export const saveDepartmentService = datalogger((uuidInvestigation, department) 
     });
 });
 
+export const saveUnitService = datalogger((uuidInvestigation, uuidDepartment, unit) => {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/department/"+uuidDepartment, unit, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        .then((response) => {
+          if (response.status === 200) {
+            resolve(response.data);
+          }
+          reject(response.data);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+});
+
 export function saveUpdateWardService(uuidInvestigation, uuidDepartment, ward) {
     return new Promise((resolve, reject) => {
       axios

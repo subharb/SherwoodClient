@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, saveDepartmentService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
+import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
 
 
 
@@ -25,6 +25,24 @@ export function getDepartmentsInvestigationAction(uuidInstitution) {
 
 
 
+export function saveUnitAction(uuidInvestigation, uuidDepartment, unit) {
+    return async (dispatch) => {
+      dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+  
+      return saveUnitService(uuidInvestigation, uuidDepartment, unit)
+        .then((response) => {
+          dispatch({
+            type: types.SAVE_UNIT_SUCCESS,
+            unit: response.unit,
+          });
+        })
+        .catch((error) => {
+          dispatch({ type: types.HOSPITAL_ERROR });
+          throw error;
+        });
+    };
+}
+
 export function assignUnitToResearcherAction(uuidInvestigation, uuidResearcher, uuidDepartment) {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_HOSPITAL_LOADING });
@@ -44,11 +62,11 @@ export function assignUnitToResearcherAction(uuidInvestigation, uuidResearcher, 
     };
 }
 
-export function saveDepartmentAction(uuidInstitution, department) {
+export function saveDepartmentAction(uuidInvestigation, department) {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_HOSPITAL_LOADING });
   
-      return saveDepartmentService(uuidInstitution, department)
+      return saveDepartmentService(uuidInvestigation, department)
         .then((response) => {
           dispatch({
             type: types.SAVE_DEPARTMENT_SUCCESS,

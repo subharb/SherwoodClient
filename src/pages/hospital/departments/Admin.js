@@ -14,14 +14,14 @@ import styled from 'styled-components';
 import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { useHistory } from "react-router-dom";
-import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction } from '../../../redux/actions/hospitalActions';
+import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
 import { FUNCTIONALITY } from '../../../constants/types';
 import { a11yProps, TabPanel } from '../../components/Tabs';
 
-const UNIT_DEPARTMENT_FORM = {
+const DEPARTMENT_FORM = {
     "name":{
         required : true,
         name:"name",
@@ -32,6 +32,16 @@ const UNIT_DEPARTMENT_FORM = {
     }
 }
 
+const UNIT_FORM = {
+    "name":{
+        required : true,
+        name:"name",
+        type:"text",
+        label:"hospital.departments.forms.unit.name",
+        shortLabel: "hospital.departments.forms.unit.name",
+        validation : "textMin2"
+    }
+}
 
 const WARD_FORM = {
     "name":{
@@ -131,13 +141,15 @@ function DepartmentsRouter(props){
         const nextUrl = HOSPITAL_WARD_SETTINGS_ROUTE.replace(":uuidWard", ward.uuid);
         history.push(nextUrl);
     }
-    
-
     function viewWardCallBack(ward){
         const nextUrl = HOSPITAL_WARD_ROUTE.replace(":uuidWard", ward.uuid);
         history.push(nextUrl);
     }
     
+    async function saveUnitCallBack(uuidDepartment, unit){       
+        await dispatch(saveUnitAction(props.investigations.currentInvestigation.uuid, uuidDepartment, unit));
+        
+    }
     async function editCallBack(uuid, department){       
         await dispatch(assignUnitToResearcherAction(props.investigations.currentInvestigation.uuid, uuid, department));
         
@@ -155,7 +167,7 @@ function DepartmentsRouter(props){
                 saveDepartmentCallBack={saveDepartmentCallBack} 
                 addWardCallBack={addWardCallBack} settingsCallBack={settingsCallBack}
                 editCallBack={editCallBack} deleteWardCallBack={deleteWardCallBack}
-                viewWardCallBack={viewWardCallBack}
+                viewWardCallBack={viewWardCallBack} saveUnitCallBack={saveUnitCallBack}
                 resetError={resetError}
             />
 }
@@ -223,7 +235,6 @@ function Departments(props) {
     }
 
     function addWardCallBack(ward){
-        
         const wardInfo = {
             name:ward.name,
             beds:{
@@ -338,9 +349,9 @@ function Departments(props) {
     }
 
     function addUnit(unit){
-        setDepartmentToAddUnit(false);
+        //setDepartmentToAddUnit(false);
         setIsLoadingDepartments(true);
-        props.saveUnitCallBack(unit, uuidDepartment)
+        props.saveUnitCallBack(departmentToAddUnit, unit)
     }
 
     function resetModal(){
@@ -352,6 +363,7 @@ function Departments(props) {
         setWardToEdit(false);
         setWardToDelete(false);
         setChangingResearcherUnit(false);
+        setAddingDepartment(false);
     }
     
     async function resetSnackBar(){
@@ -359,7 +371,7 @@ function Departments(props) {
         props.resetError()
     }
     useEffect(()=>{
-        if(wardToDelete || uuidDepartmentAddWard || addingDepartment || changingResearcherUnit){
+        if(wardToDelete || uuidDepartmentAddWard || addingDepartment || changingResearcherUnit || departmentToAddUnit){
             setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
         }
         resetModal();
@@ -465,13 +477,13 @@ function Departments(props) {
                     }
                     {
                         addingDepartment &&
-                        <Form fields={UNIT_DEPARTMENT_FORM} fullWidth callBackForm={addDepartment} 
+                        <Form fields={DEPARTMENT_FORM} fullWidth callBackForm={addDepartment} 
                             closeCallBack={() => resetModal()}/>
                     }
 
 {
                         departmentToAddUnit &&
-                        <Form fields={UNIT_DEPARTMENT_FORM} fullWidth callBackForm={addUnit} 
+                        <Form fields={UNIT_FORM} fullWidth callBackForm={addUnit} 
                             closeCallBack={() => resetModal()}/>
                     }
 
@@ -554,7 +566,7 @@ function Departments(props) {
                             <TabPanel value={tabSelector} index={1} style={{width:'100%'}}>
                                 <DepartmentsAccordion mode={DepartmentAccordionModes.Researchers } researchers={props.researchers}
                                     departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
-                                    permissions={props.investigation.permissions} addUnit={(uuidDepartment)=>addingUnit(uuidDepartment)}
+                                    permissions={props.investigation.permissions} addUnitCallBack={(uuidDepartment)=>addingUnit(uuidDepartment)}
                                 />
                             </TabPanel>
                         </React.Fragment>

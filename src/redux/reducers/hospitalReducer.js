@@ -35,6 +35,7 @@ export default function reducer(state = initialState, action){
     let indexDepartment;
     let department;
     let indexWard;
+    let indexUnit;
     let ward;
     let bedIndex;
     let allPatientsStays = {};
@@ -50,6 +51,23 @@ export default function reducer(state = initialState, action){
             tempDepartments = [...newState.data.departments];
             tempDepartments.push(action.department);
 
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
+            return newState;
+        case types.SAVE_UNIT_SUCCESS:
+            tempDepartments = [...newState.data.departments];
+            indexDepartment = tempDepartments.findIndex(dep => dep.uuid === action.unit.department.uuid);
+            if(indexDepartment !== -1){
+                indexUnit = tempDepartments[indexDepartment].units.findIndex(unit => unit.uuid === action.unit.uuid);
+                if(indexUnit !== -1){
+                    tempDepartments[indexDepartment].units[indexUnit] = action.unit;
+                }
+                else{
+                    tempDepartments[indexDepartment].units.push(action.unit);
+                }
+                
+            }
             newState.data.departments = tempDepartments;
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
