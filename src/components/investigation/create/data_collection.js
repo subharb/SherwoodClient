@@ -10,6 +10,7 @@ import { reduxForm, Field, submit, FormSection } from 'redux-form';
 import { TextField, Grid, Container, Card, CardContent, Typography, InputLabel, Select, MenuItem, FormControl } from '@material-ui/core';
 import { EnhancedTable } from '../../general/EnhancedTable';
 import OrderableTable from '../../general/OrderableTable';
+import { TYPE_SURVEYS } from '../../../constants';
 /**
  * An EDC is a collection of sections
  */
@@ -42,8 +43,9 @@ class DataCollection extends Component{
         this.saveDataCollection = this.saveDataCollection.bind(this);
         this.callBackNewSection = this.callBackNewSection.bind(this);
         this.handleChangeUnit = this.handleChangeUnit.bind(this);
+        this.hangleChangeTypeSurvey = this.hangleChangeTypeSurvey.bind(this);
         this.changeName = this.changeName.bind(this);
-        const initialState = {name:"", sections: [], addingSection:false, editingIndexSection:false, unit:props.initialData.unit ? props.initialData.unit.id : false}
+        const initialState = {name:"", sections: [], addingSection:false, editingIndexSection:false, unit:props.initialData.unit ? props.initialData.unit.id : false, type : props.initialData.type}
         this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
     }
     changeName(e){
@@ -192,6 +194,12 @@ class DataCollection extends Component{
         tempState.unit = {id : event.target.value}
         this.setState(tempState);
     }
+    hangleChangeTypeSurvey(event){
+        console.log(event.target.value);
+        const tempState = {...this.state};
+        tempState.type =  event.target.value;
+        this.setState(tempState);
+    }
     renderUnits(){
         const units = [];
         this.props.departments.forEach((dep) => dep.units.forEach((unit) => {
@@ -222,7 +230,29 @@ class DataCollection extends Component{
                 </FormControl>
             </Grid>
         )
+    }
+    renderType(){
         
+        return (
+            <Grid item xs={12}>
+                <FormControl >
+                    <InputLabel id="demo-simple-select-label">Unit: </InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={this.state.type}
+                        label="Unit"
+                        onChange={this.hangleChangeTypeSurvey}
+                    >
+                        {
+                            TYPE_SURVEYS.map((typeSurvey) => {
+                                return <MenuItem value={typeSurvey.value}>{typeSurvey.name}</MenuItem>
+                            })
+                        }
+                    </Select>
+                </FormControl>
+            </Grid>
+        )
     }
     render(){
         if(Number.isInteger(this.state.editingIndexSection) || this.state.addingSection){
@@ -273,6 +303,9 @@ class DataCollection extends Component{
                         value={this.state.name} variant="outlined" onChange={this.changeName}/>    
                 </Grid>
 
+                {
+                    this.renderType()
+                }
                 {
                     this.renderUnits()
                 }

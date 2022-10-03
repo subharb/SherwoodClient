@@ -117,6 +117,10 @@ export const TYPE_MONITORING_VISIT_SURVEY = 4;
 export const TYPE_DISCHARGE_SURVEY = 5;
 export const TYPE_SOCIAL_SURVEY = 6;
 
+export const TYPE_SURVEYS = [{value:TYPE_MEDICAL_SURVEY, name:"Medical"}, {value:TYPE_IMAGE_SURVEY , name:"Images"}, {value:TYPE_LAB_SURVEY, name:"Laboratory"},
+                            {value:TYPE_FIRST_VISIT_SURVEY, name:"First Visit"}, {value:TYPE_MONITORING_VISIT_SURVEY, name:"Monitoring"},
+                            {value:TYPE_DISCHARGE_SURVEY, name:"Discharge"}, {value:TYPE_SOCIAL_SURVEY, name:"Social"}]
+
 export const MEDICAL_SURVEYS = [TYPE_MEDICAL_SURVEY,TYPE_FIRST_VISIT_SURVEY,TYPE_MONITORING_VISIT_SURVEY, TYPE_DISCHARGE_SURVEY];
 
 //PERMISSIONS
