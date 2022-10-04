@@ -81,6 +81,12 @@ const FIELDS_FORM = {
         options:[{"label" : "Option 1", "value" : "text"},
                 {"label": "Option 2", "value" : "number"},
                 {"label": "Option 3", "value" : "checkbox"},
+                {"label": "Option 4", "value" : "checkbox1"},
+                {"label": "Option 5", "value" : "checkbox2"},
+                {"label": "Option 6", "value" : "checkbox3"},
+                {"label": "Option 7", "value" : "checkbox4"},
+                {"label": "Option 8", "value" : "checkbox5"},
+                {"label": "Option 9", "value" : "checkbox6"},
         ]                             
     },
     "radio":{

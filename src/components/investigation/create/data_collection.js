@@ -236,7 +236,7 @@ class DataCollection extends Component{
         return (
             <Grid item xs={12}>
                 <FormControl >
-                    <InputLabel id="demo-simple-select-label">Unit: </InputLabel>
+                    <InputLabel id="demo-simple-select-label">Type: </InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"

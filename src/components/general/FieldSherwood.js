@@ -267,7 +267,7 @@ class FieldSherwood extends PureComponent{
                                 <InputLabel shrink={true}><Translate id="general.choose-options" /></InputLabel>
                             </Grid>
                             <Grid item  xs={12}>
-                                <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                <ButtonGroup color="primary" aria-label="outlined primary button group" style={{flexWrap: "wrap"}}>
                                     {optionButtons}
                                 </ButtonGroup>
                             </Grid>
