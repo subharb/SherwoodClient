@@ -120,15 +120,15 @@ class FieldSherwood extends PureComponent{
         this.props.input.onChange(value);
     }
     multiOptionSelected(value){
-        let tempValue = [value];
+        let tempValue = [{"multioption" : value}];
         if(this.props.input.value !== ""){
-            let index = this.props.input.value.indexOf(value);
+            let index = this.props.input.value.findIndex((option) => option.multioption === value);
             if (index !== -1){
                 tempValue = [...this.props.input.value];
                 tempValue.splice(index, 1);
             } 
             else{
-                tempValue = this.props.input.value.concat([value]);
+                tempValue = this.props.input.value.concat(tempValue);
             }
         }
         this.props.input.onChange(tempValue);
@@ -252,10 +252,10 @@ class FieldSherwood extends PureComponent{
 
             case "multioption" : 
                     const optionButtons = options.map(option => {
-                        if(input.value.includes(option.value)){
+                        if(input.value !== "" && input.value.find((selection) => selection.multioption === option.value)){
                             return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.label}</ButtonCheck>
                         }
-                        return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.label}</ButtonEmptyCheck>
+                        return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.label}</ButtonEmptyCheck> 
                     });
                     console.log("optionButtons",input.value);
                     return ([

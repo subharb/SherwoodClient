@@ -72,10 +72,13 @@ export default function ShowRecordsSection(props) {
         else if(valueRecord.surveyField.type === "file"){
             return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
         }
+        else if(valueRecord.surveyField.type === "multioption"){
+            return valueRecord.value.map((record) => record.multioption).join(", ");
+        }
         else if(isSmartField(valueRecord.surveyField.type)){
             return <SmartField type={valueRecord.surveyField.type} mode="show" 
-                initialState={{listElements:valueRecord.value}}
-                label={valueRecord.surveyField.label}  />
+                        initialState={{listElements:valueRecord.value}}
+                        label={valueRecord.surveyField.label}  />
         }
         else if(typeof valueRecord.value.getMonth === 'function' ){
             return(<React.Fragment>
