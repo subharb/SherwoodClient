@@ -9,11 +9,12 @@ import { TabsSherwood } from '../../components/Tabs';
 import EditBillables from './EditBillables';
 import EditBillingInfo from './EditBillingInfo';
 import { BillItem, EditBillingProps } from './types';
+import { withLocalize } from 'react-localize-redux';
 
 
 
 
-const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation, billingInfo, onBillingInfoSuccesfullyUpdated }) => {
+const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation, billingInfo, translate, onBillingInfoSuccesfullyUpdated }) => {
     const dispatch = useDispatch();
     const investigations = useSelector((state:any) => state.investigations);
 
@@ -37,7 +38,7 @@ const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation,
     if(billingInfo){
         return (
             <TabsSherwood name="Billing Info" style={{  color: "white" }}
-                labels={["hospital.billing.billing_info.title", "hospital.billing.billables.title"]} >
+                labels={[translate("hospital.billing.billing_info.title").toString(), translate("hospital.billing.billables.title").toString()]} >
                 <EditBillingInfo billingInfo={{...investigations.currentInvestigation.billingInfo, hospitalName:investigations.currentInvestigation.name}} 
                     callbackUpdate={callbackUpdateBillingInfo} />
                 <EditBillables uuidInvestigation={uuidInvestigation} billables={billables}
@@ -52,4 +53,4 @@ const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation,
     
 };
 
-export default EditBilling;
+export default withLocalize(EditBilling);

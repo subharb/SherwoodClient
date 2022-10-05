@@ -1,4 +1,5 @@
 import { ReactElement } from "react"
+import { LocalizeContextProps } from "react-localize-redux"
 import { IPatient } from "../../../constants/types"
 
 export interface Bill{
@@ -66,7 +67,7 @@ export interface EditBillablesProps {
     onBillablesCreated:(billItems:BillItem[]) =>void
 }
 
-export interface EditBillingProps extends Omit<EditBillablesProps, | 'onBillablesCreated' >, Omit<EditBillingInfoProps, 'callbackUpdate'> {
+export interface EditBillingProps extends LocalizeContextProps, Omit<EditBillablesProps, | 'onBillablesCreated' >, Omit<EditBillingInfoProps, 'callbackUpdate'> {
     onBillingInfoSuccesfullyUpdated : (type:BillItemModes) => void;
 }
 
