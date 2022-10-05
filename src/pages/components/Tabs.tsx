@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import { ReactNode, useState } from "react";
-import { Translate } from "react-localize-redux";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 
 
 export function a11yProps(index:number) {
@@ -53,21 +53,33 @@ export function TabsSherwood(props:TabProps){
 
     return (
         <>
-        
         <Tabs value={tabSelector} onChange={onTabChange} aria-label={props.name} {...props}>
             {
                 props.labels.map((label, index) => {
-                    return <Tab label={<Translate id={label} />} {...a11yProps(index)} />;
+                    
+                    return <Tab label={label} {...a11yProps(index)} />;
                 })
             }
         </Tabs>
         {
             props.children.map((child, index) => {
-                return(
-                    <TabPanel value={tabSelector} index={index} >
-                        {child}
-                    </TabPanel>
-                )
+                if(Array.isArray(child)){
+                    return child.map((child, subIndex) => {
+                        return(
+                            <TabPanel value={tabSelector} index={index+subIndex} >
+                                {child}
+                            </TabPanel>
+                        )
+                    }) 
+                }
+                else{
+                    return(
+                        <TabPanel value={tabSelector} index={index} >
+                            {child}
+                        </TabPanel>
+                    )
+                }   
+                
             }) 
         }
         </>

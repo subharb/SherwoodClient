@@ -255,6 +255,11 @@ export const ButtonSave = (props) =>{
     </ButtonContinueStyles>
 }
 
+export const WhiteTypography = styled(Typography)`
+    color:white;
+    font-size: 1rem;
+`;
+
 export const ButtonCheck = (props) =>{
     return <ButtonContinueStyles 
         variant="contained"

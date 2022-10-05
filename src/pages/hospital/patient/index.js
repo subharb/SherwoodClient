@@ -27,11 +27,8 @@ import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONA
 import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
 import { PERMISSION } from '../../../constants/types';
+import TabsSurveys from './TabsSurveys';
 
-const WhiteTypography = styled(Typography)`
-    color:white;
-    font-size: 1rem;
-`;
 
 const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social"};
 const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
@@ -247,21 +244,10 @@ function Patient(props) {
        }, 1000);
     
     }
-    function renderOptions(){
+    function renderSurveys(){
         if(!dataCollectionSelected){
             return [
-                <Grid item xs={6} style={{textAlign:"left"}}>
-                    <WhiteTypography variant="body2" gutterBottom>
-                        <Translate id="hospital.data-collections" />:
-                    </WhiteTypography>
-                </Grid>,
-                currentSurveys.sort((a,b) => a.order - b.order).map((dataCollection, index) => {
-                    return(
-                        <Grid item xs={12} style={{textAlign:"center"}}>
-                            <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => fillDataCollection(index)}>{dataCollection.name}</ButtonGreyBorderGrey>
-                        </Grid>
-                    )
-                })
+                <TabsSurveys surveys={currentSurveys} units={props.profile.info.units} />
             ]
         }
     }
@@ -515,11 +501,11 @@ function Patient(props) {
                         <CheckCircleOutlineSvg style={{ color: "green",fontSize: 80 }}/>
                     }
                     { showOptions && 
-                        <Grid container spacing={3} >
+                        <div >
                         {
-                            renderOptions()
+                            renderSurveys()
                         }
-                        </Grid>
+                        </div>
                     }
                     {
                         dischargeConfirm && 
