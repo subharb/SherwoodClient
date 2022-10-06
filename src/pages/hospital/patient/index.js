@@ -144,11 +144,11 @@ function Patient(props) {
         history.push(nextUrl);
     }
 
-    function fillDataCollection(indexCollection){
+    function fillDataCollection(uuidDataCollection){
         
 
         setSavedDataCollection(false);
-        const dataCollectionSelected = currentSurveys[indexCollection];
+        const dataCollectionSelected = currentSurveys.find((survey) => survey.uuid === uuidDataCollection);
 
         let isDisabled = false;
         // if(!dataCollectionSelected.repeats){
@@ -247,7 +247,7 @@ function Patient(props) {
     function renderSurveys(){
         if(!dataCollectionSelected){
             return [
-                <TabsSurveys surveys={currentSurveys} units={props.profile.info.units} />
+                <TabsSurveys surveys={currentSurveys} units={props.profile.info.units} surveySelectedCallback={(uuid) => fillDataCollection(uuid)} />
             ]
         }
     }

@@ -18,7 +18,7 @@ const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, surveySelecte
         const surveysInUnit = Object.values(surveysPerUnit).map((surveysInUnit) => <Grid container xs={12} style={{textAlign:"center"}}>{surveysInUnit.map((dataCollection, index) => {
             return(
                 <Grid item xs={12} style={{textAlign:"center"}}>
-                    <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => surveySelectedCallback(index)}>{dataCollection.name}</ButtonGreyBorderGrey>
+                    <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => surveySelectedCallback(dataCollection.uuid)}>{dataCollection.name}</ButtonGreyBorderGrey>
                 </Grid>
             )})
         }</Grid>)
@@ -32,7 +32,7 @@ const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, surveySelecte
         const buttonSurveys = surveys.sort((a,b) => a.order - b.order).map((dataCollection, index) => {
             return(
                 <Grid item xs={12} style={{textAlign:"center"}}>
-                    <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => surveySelectedCallback(index)}>{dataCollection.name}</ButtonGreyBorderGrey>
+                    <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => surveySelectedCallback(dataCollection.uuid)}>{dataCollection.name}</ButtonGreyBorderGrey>
                 </Grid>
             )
         });
