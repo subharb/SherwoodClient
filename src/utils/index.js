@@ -3,6 +3,7 @@ import { func } from "prop-types";
 import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import { Translate } from 'react-localize-redux';
+import { TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../constants';
 /**
  * Function that validates fields from anywhere in the app
  * 

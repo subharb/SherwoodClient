@@ -260,12 +260,12 @@ class FieldSherwood extends PureComponent{
                     console.log("optionButtons",input.value);
                     return ([
                         <Grid container style={{paddingTop:'0.5rem'}}>
-                            <Grid item  xs={12}>
-                                <InputLabel id={input.name}>{labelString}</InputLabel>
-                            </Grid>
-                            <Grid item  xs={12}>
-                                <InputLabel shrink={true}><Translate id="general.choose-options" /></InputLabel>
-                            </Grid>
+                            {
+                                !labelString.includes("general.") &&
+                                <Grid item  xs={12}>
+                                    <InputLabel id={input.name}>{labelString}</InputLabel>
+                                </Grid>
+                            }
                             <Grid item  xs={12}>
                                 <ButtonGroup color="primary" aria-label="outlined primary button group" style={{flexWrap: "wrap"}}>
                                     {optionButtons}

@@ -53,7 +53,8 @@ export function TabsSherwood(props:TabProps){
 
     return (
         <>
-        <Tabs value={tabSelector} onChange={onTabChange} aria-label={props.name} {...props}>
+        <Tabs value={tabSelector} onChange={onTabChange}  variant="scrollable"
+          scrollButtons="auto"   aria-label={props.name} {...props}>
             {
                 props.labels.map((label, index) => {
                     

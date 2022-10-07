@@ -105,7 +105,7 @@ function Patient(props) {
         return new Date(a.createdAt) < new Date(b.createdAt) ? 1 : -1
     })
     
-    const translations = typesCurrentSurvey.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typesCurrentSurvey.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : "laboratory"; 
+    const translations = typesCurrentSurvey.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typesCurrentSurvey.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : typesCurrentSurvey.includes(TYPE_LAB_SURVEY) ?  "laboratory" : "other"; 
 
     function addRecord(){
         if(currentSurveys.length > 1 ){

@@ -45,7 +45,7 @@ class DataCollection extends Component{
         this.handleChangeUnit = this.handleChangeUnit.bind(this);
         this.hangleChangeTypeSurvey = this.hangleChangeTypeSurvey.bind(this);
         this.changeName = this.changeName.bind(this);
-        const initialState = {name:"", sections: [], addingSection:false, editingIndexSection:false, unit:props.initialData.unit ? props.initialData.unit.id : false, type : props.initialData.type}
+        const initialState = {name:"", sections: [], addingSection:false, editingIndexSection:false, unit:props.initialData && props.initialData.unit ? props.initialData.unit.id : false, type : props.initialData && props.initialData.type}
         this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
     }
     changeName(e){

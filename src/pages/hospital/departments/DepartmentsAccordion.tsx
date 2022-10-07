@@ -127,7 +127,7 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                                     addWardCallBack(department.uuid as string);
                                 }}></ButtonAdd> : null;
     
-            const wardsDepartment = department.wards.length === 0 ? <ListItemText primary={<Translate id="hospital.departments.no-wards"></Translate>} /> : department.wards.map((ward:IWard, index:number) => {
+            const wardsDepartment = department.wards.length === 0 ? <ListItemText primary={<Translate id="hospital.departments.no-wards"></Translate>} /> : department.wards.sort((aWard, bWard) => aWard.name.localeCompare(bWard.name)).map((ward:IWard, index:number) => {
                     const bedsInfo = {
                         total:ward.beds.length,
                         male:ward.beds.filter((bed:IBed) => bed.gender === 0).length,

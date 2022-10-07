@@ -143,9 +143,9 @@
             "action-success" : ["Action performed successfully!", "Action performed successfully!", "Action effectuée avec succès !"],
             "forms" : {
                 "ward" : {
-                    "title" : ["Fill the ward details", "Complete los detalles de la sala", "Remplissez les détails de la paroisse"],
-                    "name" : ["Name ward", "Nombre sala", "Nom chambre"],
-                    "beds" : ["Number Beds", "Número camas", "Numero de lits"],
+                    "title" : ["Fill the ward details", "Complete los detalles de la sala", "Remplissez les détails de la salle d'hospitalisation"],
+                    "name" : ["Name ward", "Nombre sala", "Nom de la salle"],
+                    "beds" : ["Number Beds", "Número camas", "Nombre de lits"],
                     "male" : ["Male beds", "Camas para hombres", "Lits pour hommes"],
                     "female" : ["Female beds", "Camas para mujeres", "Lits pour femmes"]
                 },
@@ -369,7 +369,7 @@
             "home" : ["Home", "Home", "Accueil"],
             "search-patient" : {
                 "title" : ["Search Patient", "Buscar Paciente", "Recherche patient"],
-                "by-personal-details" : ["By Personal details", "Por datos personales", "Pour les données personnelles"],
+                "by-personal-details" : ["By Personal details", "Por datos personales", "Par les données personnelles"],
                 "by-diagnose" : ["By Diagnose", "Por diagnóstico", "Par diagnostic"],
                 "back-button" : ["Back to search", "Nueva búsqueda", "Nouvelle recherche"],
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
@@ -386,6 +386,9 @@
                 "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
                 "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie Medicale"],
                 "title" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie Médicale"]
+            },
+            "other" : {
+                "no-records" : ["No records available", "No hay registros", "Aucun enregistrement disponible"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "analytics" : ["Analytics", "Analytics", "Analytics"],
@@ -511,7 +514,7 @@
                     "surnames" : ["Surnames", "Apellidos", "Nom"],
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
-                    "health_id" : ["Health ID", "NHC", "Identifiant de santé"],
+                    "health_id" : ["Health ID", "NHC", "ID de santé"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
                     "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
@@ -525,7 +528,7 @@
                     "surnames" : ["Surnames", "Apellidos", "Nom"],
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
-                    "health_id" : ["Health ID", "NHC", "Identifiant de santé"],
+                    "health_id" : ["Health ID", "NHC", "ID de santé"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
                     "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],

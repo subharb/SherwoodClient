@@ -332,7 +332,7 @@ function Departments(props) {
                                     id:idx,
                                     name : name, 
                                     units: researcher.units.map((unit, index) => {
-                                        return <ColourChip size="small" label={unit.name} rgbcolor={green[500]} onDelete={() => handleDeleteFromUnit({unit, researcher})} />
+                                        return <ColourChip size="small" label={`${unit.department.name} - ${unit.name}`} rgbcolor={green[500]} onDelete={() => handleDeleteFromUnit({unit, researcher})} />
                                     }),
                                     status : <StatusChip value={researcher.status}/>
                                 }

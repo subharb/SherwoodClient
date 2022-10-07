@@ -55,7 +55,8 @@ const TabsSherwood:React.FC<Props> = (props) => {
     return(
         <React.Fragment>
             <Box style={{color:"white"}}>
-            <Tabs value={tabSelector} onChange={handleChange} aria-label="basic tabs example">
+            <Tabs value={tabSelector} onChange={handleChange} variant="scrollable"
+                scrollButtons="auto" aria-label="basic tabs example">
                 {
                     props.children.map((child, index) => {
                         return <Tab label={child.props.label} {...a11yProps(index)} />

@@ -3,7 +3,7 @@ import { EnhancedTable } from './EnhancedTable';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 function OrderableTable(props) {
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
 
     function handleChangePage(page){
         console.log(page);
