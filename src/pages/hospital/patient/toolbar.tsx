@@ -29,9 +29,11 @@ interface Props{
     editCallBack:() => void,
     labCallBack:() => void,
     socialCallBack:() => void,
+    shoeCallBack:() => void,
     testCallBack:() => void,
     addRecordCallBack: () => void,
-    hospitalize?:() => void
+    hospitalize?:() => void,
+    
     
 }
 
@@ -49,7 +51,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                                                 writeMedicalPermission, disabled, typeSurveysAvailable,
                                                 typeSurveySelected, action, years, 
                                                 addRecordCallBack, hospitalize, medicalNotesCallBack, 
-                                                editCallBack, labCallBack, socialCallBack, testCallBack}) =>{
+                                                editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack}) =>{
 
     return(
         <Container item container className="patient_toolbar" xs={12}>
@@ -130,7 +132,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                     {
                         typeSurveysAvailable.includes(TYPE_SHOE_SURVEY) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                            <Button data-testid="show" onClick={() => socialCallBack()} >
+                            <Button data-testid="show" onClick={() => shoeCallBack()} >
                                 <img src={typeSurveySelected === TYPE_SHOE_SURVEY ? iconShoe : iconShoe} alt="Social" height="40" />
                             </Button>
                         </Grid>

@@ -51,6 +51,8 @@ export function ShowInvestigation(props) {
         else{      
             
             return <PatientsTable patients={props.patients} 
+                        permissions = {currentInvestigation.permissions}
+                        functionalities = {currentInvestigation.functionalities}
                         personalFields={currentInvestigation.personalFields} 
                         addInfoPatientCallBack={(index) => selectPatient(index)}
                         showPatientCallBack={index => showPatient(index)} 
@@ -91,8 +93,9 @@ export function ShowInvestigation(props) {
             await dispatch(fetchSubmissionsInvestigationAction(props.uuid));    
         }
     }
-    function showPatient(index){
-        setPatientIndex(index);
+    function showPatient(id){
+        const selectedPatient = props.patients.findIndex(pat => pat.id === id);
+        setPatientIndex(selectedPatient);
         setShowForm(3);
         fetchSubmissionsInvestigation();
     }

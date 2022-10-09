@@ -30,7 +30,7 @@ import { PERMISSION } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
 
 
-const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social"};
+const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe"};
 const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
     newDict[TYPE_URL[key]] = parseInt(key);
     return newDict
@@ -562,6 +562,7 @@ function Patient(props) {
                         testCallBack={() => goToTest(TYPE_IMAGE_SURVEY)} 
                         labCallBack={() => goToTest(TYPE_LAB_SURVEY)}
                         socialCallBack={() => goToTest(TYPE_SOCIAL_SURVEY)}
+                        shoeCallBack={() => goToTest(types.TYPE_SHOE_SURVEY)}
                         addRecordCallBack={addRecord}
                         hospitalize={ isPatientHospitalized ?  showConfirm : null }
                     />
