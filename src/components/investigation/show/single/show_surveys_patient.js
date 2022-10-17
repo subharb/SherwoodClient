@@ -26,11 +26,11 @@ function ShowSurveys(props) {
     const [loading, setLoading] = useState(false);
     const [showSnackbar, setShowSnackbar] = useState(false);
     
-    function viewSurvey(index){
-        const submissionsSurvey = props.submissions.find(sur=>sur.uuid === props.surveys[index].uuid); 
-        if(submissionsSurvey){
+    function viewSurvey(uuidSurvey){
+        const submissionsSurveyIndex = props.submissions.findIndex(sur=>sur.uuid === uuidSurvey); 
+        if(submissionsSurveyIndex !== -1){
             props.updateLevel(1);
-            setIndexSurvey(index);
+            setIndexSurvey(submissionsSurveyIndex);
         }
         else{
             setShowSnackbar(true);
@@ -113,9 +113,9 @@ function ShowSurveys(props) {
                 else{
                     return (
                         <div className="row">
-                            <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  rows={props.surveys.map(survey => {return {name : survey.name}})}
+                            <EnhancedTable titleTable={<Translate id="investigation.create.edc.data_collections.title" />}  rows={props.surveys.map(survey => {return {id:survey.uuid, name : survey.name}})}
                                 headCells={[{ id: "name", alignment: "right", label: <Translate id={`investigation.create.personal_data.fields.name`} /> }]}
-                                actions={[{"type":"view", "func" : (indexSurvey) => viewSurvey(indexSurvey)}]}
+                                actions={[{"type":"view", "func" : (uuidSurvey) => viewSurvey(uuidSurvey)}]}
                                 
                             />
                         </div>)
@@ -191,7 +191,7 @@ function ShowSurveys(props) {
                 <Typography variant="subtitle1" color="textPrimary">
                     <Translate id="investigation.fill.survey.patient_name"/>: 
                     {
-                        props.patient.name+" "+props.patient.surnames
+                        props.patient.personalData.name+" "+props.patient.personalData.surnames
                     }
                 </Typography>  
             </Grid>

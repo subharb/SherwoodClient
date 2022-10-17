@@ -207,6 +207,7 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.textarea", "value" : "textarea"},
                 {"label": "investigation.create.edc.dropdown", "value" : "select"},
                 {"label": "investigation.create.edc.multioption", "value" : "multioption"},
+                {"label": "investigation.create.edc.autocomplete", "value" : "autocomplete"},
                 {"label": "investigation.create.edc.radio", "value" : "radio"},
                 {"label": "investigation.create.edc.evaluation", "value" : "evaluation"},
                 {"label": "investigation.create.edc.diagnosis", "value" : "ict"},
@@ -221,7 +222,7 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.bmi", "value" : "bmi"},
                 {"label": "investigation.create.edc.edd", "value" : "edd"}
         ],
-        activationValues : ["select", "multioption", "radio", "evaluation"],
+        activationValues : ["select", "multioption", "autocomplete", "radio", "evaluation"],
         activatedFields:[
             {
                 required : true,

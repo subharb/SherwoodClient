@@ -105,7 +105,9 @@ class FieldSherwood extends PureComponent{
                 this.setState({options : options});
             }
         }
-
+        else if(this.props.options){
+            this.setState({options : this.props.options});
+        }
     }
     // shouldComponentUpdate(nextProps, nextState){
     //     console.log("shouldComponentUpdate");
@@ -135,13 +137,7 @@ class FieldSherwood extends PureComponent{
         
     }
     autoCompleteChanged(value){
-        console.log("Este es el value "+value);
-        if(value.length > 4){
-            let tempState = {...this.state};
-            tempState.loading = true;
-            this.setState(tempState);
-
-        }
+        this.props.input.onChange(value);
         
     }
     diagnosesSelected(listDiagnoses){
@@ -419,10 +415,11 @@ class FieldSherwood extends PureComponent{
                     <Autocomplete
                         id={input.name}
                         options={this.state.options}
+                        freeSolo
                         onInputChange={(event, newValue) => {
                             this.autoCompleteChanged(newValue);
                           }}
-                        getOptionLabel={(option) => option.title}
+                        getOptionLabel={(option) => option.label}
                         style={{ width: 300 }}
                         renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
                     />

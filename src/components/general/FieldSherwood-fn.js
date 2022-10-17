@@ -340,7 +340,7 @@ function FieldSherwood(props) {
                         onInputChange={(event, newValue) => {
                             autoCompleteChanged(newValue);
                           }}
-                        getOptionLabel={(option) => option.title}
+                        getOptionLabel={(option) => {console.log(option);return option.label}}
                         style={{ width: 300 }}
                         renderInput={(params) => <TextField {...params} label={labelString} variant="outlined" />}
                />

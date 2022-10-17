@@ -599,6 +599,7 @@
                 "multioption" : ["Multioption", "Multiopción", "Multioption"],
                 "evaluation" : ["Evaluation", "Evaluación", "Evaluation"],
                 "radio" : ["Radio button", "Radio button", "Radio button"],
+                "autocomplete" : ["Autocomplete", "Autocomplete", "Autocomplete"],
                 "dropdown" : ["Dropdown", "Dropdown", "Dropdown"],
                 "type_date" : ["Date", "Fecha", "Date"], 
                 "choose" : ["Choose an option", "Elija una opción", "Choisir une option"],
