@@ -3,6 +3,7 @@ import Form from '../../components/general/form';
 import ICTSelectorGeneral from '../../components/general/SmartFields/ICT/index'
 import ProviderSherwood from '../../providerSherwood';
 import TreatmentCore from '../../components/general/SmartFields/SingleTreatmentSelector';
+import TreatmentHospital from '../../components/general/SmartFields/TreatmentHospital';
 
 const FIELD_TREATMENT = {
     "drug":{
@@ -222,6 +223,16 @@ const FIELD_EDD = {
     }
 }
 
+const FIELD_HT = {
+    "edd":{
+        required : false,
+        type:"hospital_treatment",
+        label:"Hospital Treatment",
+        shortLabel: "investigation.table.is_personal_data",
+        validation : "notEmpty"
+    }
+}
+
 export default {
     title: 'Basic Elements/Fields/Smart Fields',
     component: Form,
@@ -232,13 +243,14 @@ export default {
 };
 
 
-const Template = (args) => <Form {...args} country="fr" />
+const Template = (args) => <Form {...args} country="ml" />
 const TemplateICT = (args) => <ICTSelectorGeneral {...args}  />
 const TemplateAllergy = (args) => <Form {...args}  />
 const TemplateBackground = (args) => <Form {...args}  />
 const TemplateFamilyBackground = (args) => <Form {...args}  />
 const TemplateImage = (args) => <Form {...args}  />
 const TemplateTreatmentRaw = (args) => <TreatmentCore {...args}  />
+const TemplateHospitalizedRaw = (args) => <TreatmentHospital {...args}  country="ml"  />
 const TemplateBMI = (args) => <Form {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
@@ -345,6 +357,12 @@ BMIField.args = {
 export const EDDField = TemplateBMI.bind({});
 EDDField.args = {
     fields : FIELD_EDD, 
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
+};
+
+export const HospitalTreatmentField = TemplateHospitalizedRaw.bind({});
+HospitalTreatmentField.args = {
+    fields : FIELD_HT, 
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 

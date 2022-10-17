@@ -27,6 +27,7 @@ import File from './File';
 import { FieldWrapper } from './mini_components';
 import { Field, FieldArray } from 'redux-form'
 import FileBase64 from './FileBase64';
+import DrugSelector from './SmartFields/DrugSelector';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -140,6 +141,10 @@ class FieldSherwood extends PureComponent{
         this.props.input.onChange(value);
         
     }
+    drugSelected(drug){
+        console.log("Treatment Drug:", drug);
+        this.props.input.onChange(drug);
+    }
     diagnosesSelected(listDiagnoses){
         this.props.input.onChange(listDiagnoses);
     }
@@ -197,7 +202,7 @@ class FieldSherwood extends PureComponent{
         </Grid>;
     }
     render(){
-        const {input, label, meta, type, options, size, removeClass, validation, country, activationValues, activatedFields} = this.props;
+        const {input, label, meta, type, options, size, removeClass, validation, country, activationValues, activatedFields, params} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -245,7 +250,9 @@ class FieldSherwood extends PureComponent{
             // case "select":
             //     return <SelectField input={input} options={options} labelString={label} activatedFields={activatedFields} 
             //         activationValues={activationValues} onChange={(value) => this.selectChange(value)}/>
-
+            case "drug_selector" : 
+                return <DrugSelector error={errorState} freeSolo chemicalComponent={params.chemicalComponent} 
+                            drugSelected={(drug) => this.drugSelected(drug)} country={country} />
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value !== "" && input.value.find((selection) => selection.multioption === option.value)){

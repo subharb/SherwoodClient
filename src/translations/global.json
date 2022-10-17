@@ -795,7 +795,8 @@
             "error_length2" : ["This field can't be empty","Debe tener al menos 2 caracteres", "Il doit comporter au moins 2 caractères"],
             "error_not_empty" : ["This field can' be empty", "No debe estar vacío", "Il doit comporter au moins 2 caractères"],
             "error_not_same" : ["Fields have to be the same", "El valor de los campos tiene que ser igual", "Les champs doivent être les mêmes"],
-            "error_past_date" : ["You must choose a past date", "Debe seleccionar una fecha pasada", "Vous devez choisir une date passée"]
+            "error_past_date" : ["You must choose a past date", "Debe seleccionar una fecha pasada", "Vous devez choisir une date passée"],
+            "error_notnumber" : ["Insert a valid number", "Debe introducir un número", "Vous devez entrer un numero"]
 
         }
     },
