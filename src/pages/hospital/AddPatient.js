@@ -24,13 +24,15 @@ export function AddPatient(props) {
     let { uuidPatient } = useParams();
     
     const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
-    return <AddPatientComponent investigations={props.investigations} patient={patient} {...props} />
+    const patientsInvestigation = props.patients.data[props.investigations.currentInvestigation.uuid];
+    return <AddPatientComponent investigations={props.investigations} patient={patient} patientsInvestigation={patientsInvestigation} {...props} />
 }   
 
 export function AddPatientComponent(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [confirmPatient, setConfirmPatient] = useState(null);
+    const [lastPatient, setLastPatient] = useState(null);
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -57,9 +59,14 @@ export function AddPatientComponent(props) {
                 severity = "error";
             }
             setShowSnackbar({show:true, severity:severity, message : messageId});
+            setLastPatient(props.patientsInvestigation[props.patientsInvestigation.length -1])
         }
         
     }, [props.patients.loading])
+
+    function goToPatient(){
+        history.push(`/patient/${lastPatient.uuid}`);
+    }
     async function callBackSaveUpdate(patientData, rawPatientData){
         if(!props.patient){
             //Si es guardar, verifica si este paciente ya estaba
@@ -146,14 +153,24 @@ export function AddPatientComponent(props) {
                 horizontal: 'center',
                 }}
                 open={showSnackbar.show}
-                autoHideDuration={2000}
+                autoHideDuration={4000}
                 onClose={handleClose}>
                     {
-                            showSnackbar.message && 
-                            <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
-                                <Translate id={showSnackbar.message} />
-                            </Alert>
-                        }
+                        showSnackbar.message && 
+                        <>
+                        <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
+                            <Translate id={showSnackbar.message} />
+                            {
+                                showSnackbar.severity === "success" &&
+                                <Button onClick={goToPatient} size="small">
+                                    <Translate id="pages.hospital.go-to-patient" />
+                                </Button>
+                            }
+                            
+                        </Alert>
+                        
+                        </>
+                    }
                 </Snackbar>
             
             <Grid container spacing={3}>

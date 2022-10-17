@@ -391,6 +391,7 @@
                 "no-records" : ["No records available", "No hay registros", "Aucun enregistrement disponible"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
+            "go-to-patient" : ["View Patient", "Ver Paciente", "Voir le patient"],
             "analytics" : ["Analytics", "Analytics", "Analytics"],
             "user_mgmt" : ["Users", "Usuarios", "Utilisateurs"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"],
