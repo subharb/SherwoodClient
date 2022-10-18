@@ -93,7 +93,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                 break;
             case BillItemKeys.amount:
                 const amount = Number(value)
-                if (amount <= 0 || isNaN(amount)) {
+                if (amount < 0 || isNaN(amount)) {
                     error = "amount_negative";
                 }
                 break;
@@ -287,7 +287,6 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                         error={fieldErrors.amount !== ""} type="text" 
                         onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />,
             delete: <IconButton onClick={() => addCurrentItem()}>
-                        <IconGenerator type="add" />
                     </IconButton>
         }
         rows.push(field)

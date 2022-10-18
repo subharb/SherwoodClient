@@ -7,15 +7,19 @@ interface TreatmentHospitalProps {
 }
 
 const FORM_CONTINUE = {
-    "drug_selector":{
-        required : true,
-        type:"drug_selector",
-        label:"Drug Selector",
-        params : {
-            chemicalComponent : true
-        },
-        shortLabel: "investigation.table.is_personal_data",
-        validation : "notEmpty"
+    "perfusion":{
+        "required": true,
+        "encrypted": false,
+        "name": "perfusion",
+        "label": "perfusion",
+        "type": "select",
+        options:[
+            {"label" : "Salino", "value" : "salino"},
+            {"label" : "Glucosa", "value" : "glucosa"},
+            {"label" : "Dextrosa", "value" : "dextrosa"},
+            {"label" : "Otro", "value" : "otro"}
+        ],
+        "validation" : "notEmpty",
     },
     "volume":{
         required : true,
