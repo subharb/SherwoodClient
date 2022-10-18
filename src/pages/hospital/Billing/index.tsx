@@ -31,7 +31,7 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
     const [bills, setBills] = useState<Bill[]>([]);
     const [loading, setLoading] = useState(false);
 
-    const hasDiscounts = investigation.functionalities.find((func:string) => func === FUNCTIONALITY.BILLING_DISCOUNTS)
+    const hasDiscounts = investigation && investigation.billingInfo.params.hasOwnProperty("discounts");
     function onBillSuccesfullyCreated(bill:Bill){
         const tempBills = [...bills];
         const existingBillIndex = tempBills.findIndex((aBill) => bill.id === aBill.id);

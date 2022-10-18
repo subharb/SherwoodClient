@@ -310,6 +310,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                         error={fieldErrors.amount !== ""} type="text" 
                         onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />,
             delete: <IconButton onClick={() => addCurrentItem()}>
+                        <IconGenerator type="add" />
                     </IconButton>
         }
         rows.push(field)
