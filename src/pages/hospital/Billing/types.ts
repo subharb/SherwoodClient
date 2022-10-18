@@ -32,7 +32,7 @@ export interface BillItem{
 export interface BillItemTable{
     id:number,
     concept:ReactElement,
-    //type:ReactElement,
+    type?:ReactElement,
     amount:ReactElement,
     delete : JSX.Element,
     used?: JSX.Element,

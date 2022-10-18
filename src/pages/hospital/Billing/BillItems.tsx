@@ -1,4 +1,4 @@
-import { Button, Checkbox, Grid, IconButton, TextField, Typography } from "@material-ui/core";
+import { Button, Checkbox, Grid, IconButton, Select, TextField, Typography } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
@@ -34,6 +34,7 @@ interface BillItemsProps extends LocalizeContextProps{
     updatingBill:boolean,
     uuidInvestigation:string,
     error:ReactElement | undefined,
+    withDiscount:boolean,
     uuidPatient?:string,
     onBillItemsValidated : (items: BillItem[]) => void,
     onCancelBill: () => void
@@ -45,7 +46,7 @@ type BillableOption = Billable & {inputValue: string}
 const DEFAULT_CURRENT_ITEM = { concept: "", type: -1, amount: 0 }
 
 const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
-                                                    updatingBill, currency, print,
+                                                    updatingBill, currency, print, withDiscount,
                                                     bill, billables, onBillItemsValidated, 
                                                     onCancelBill }) => {
     const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
@@ -227,7 +228,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
         return {
             id: index,
             concept: <Typography variant="body2" style={{ color: color }}>{val.concept}</Typography>,
-            type: <Typography variant="body2" style={{ color: color }}><Translate id={`hospital.billing.item.types.${TYPE_BILL_ITEM[val.type].toLowerCase()}`} /></Typography>,
+            type: withDiscount ?  <Typography variant="body2" style={{ color: color }}><Translate id={`hospital.billing.item.types.${TYPE_BILL_ITEM[val.type].toLowerCase()}`} /></Typography> : undefined,
             amount: <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>,
             delete: <IconButton onClick={() => removeItem(index)}>
                 <IconGenerator type="delete" />
@@ -238,7 +239,6 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
     });
 
     if (addingItem) {
-        console.log(Object.keys(TYPE_BILL_ITEM));
         let field: BillItemTable = {
             id: rows.length - 1,
             concept: billables && billables.length > 0 ? 
@@ -282,6 +282,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                     helperText={helperText(BillItemKeys.concept)}
                     onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
                     variant="outlined" />,
+            type : withDiscount ? <Select></Select> : undefined,
             amount: <TextField label="Amount" variant="outlined" 
                         helperText={helperText(BillItemKeys.amount)} 
                         error={fieldErrors.amount !== ""} type="text" 
@@ -295,7 +296,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
         let field: BillItemTable = {
             id: rows.length - 1,
             concept: <React.Fragment></React.Fragment>,
-            //type :   <React.Fragment></React.Fragment>,
+            type :   <React.Fragment></React.Fragment>,
             amount: <React.Fragment></React.Fragment>,
             delete: <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem}
                 type="button" data-testid="add_bill"
@@ -311,7 +312,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
         let totalBill = calculateTotalBill(items);
         rows.push({
             id: items.length, concept: <React.Fragment><Typography style={{ fontWeight: 'bold' }} ><Translate id={`hospital.billing.bill.total`} /></Typography></React.Fragment>,
-            //type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography> , 
+            type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography> , 
             amount: <Typography style={{ fontWeight: 'bold' }} >{totalBill + " " + currency}</Typography>,
             delete: <React.Fragment></React.Fragment>,
         });
