@@ -90,7 +90,8 @@ export enum PERMISSION {
 
 export enum FUNCTIONALITY {
     HOSPITALIZATION = "HOSPITALIZATION",
-    BILLING = "BILLING"
+    BILLING = "BILLING",
+    BILLING_DISCOUNTS = "BILLING_DISCOUNTS"
 }
 
 export interface ActionsEnhancedTable{

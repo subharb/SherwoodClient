@@ -9,7 +9,7 @@ import { BillItem, EditBillablesProps } from './types';
 
 
 // Componente que edita, añade y borra billables
-const EditBillables: React.FC<EditBillablesProps> = ({ billables, uuidInvestigation, onBillablesCreated, billingInfo }) => {
+const EditBillables: React.FC<EditBillablesProps> = ({ billables, uuidInvestigation, withDiscount,  onBillablesCreated, billingInfo }) => {
     const [showModal, setShowModal] = useState(false);
     const [errorBillables, setErrorBillables] = useState<ReactElement | undefined>(undefined);
     
@@ -21,7 +21,7 @@ const EditBillables: React.FC<EditBillablesProps> = ({ billables, uuidInvestigat
     function renderBillables(){
         return(
             <Card>
-                <BillItems currency={billingInfo.currency} print={false} mode = 'billable'
+                <BillItems currency={billingInfo.currency} print={false} mode = 'billable' withDiscount={withDiscount}
                     bill={null} billables={billables} uuidInvestigation={uuidInvestigation} updatingBill={false}
                     onBillItemsValidated={onBillablesCreated} error={errorBillables}
                     onCancelBill={() => console.log("Cancel")} />

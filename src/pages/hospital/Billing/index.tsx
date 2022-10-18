@@ -10,7 +10,7 @@ import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@material-ui/lab';
 import { ButtonAdd, IconGenerator } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
-import {  IPatient } from '../../../constants/types';
+import {  FUNCTIONALITY, IPatient } from '../../../constants/types';
 import { Bill, Billable, BillingInfo, BillItemModes } from './types';
 import { Document } from '../Document';
 import { connect } from 'react-redux';
@@ -24,7 +24,6 @@ interface PropsRedux{
     investigations:any,
     patients:{data:any},
     uuidInvestigation : string,
-
 }
 
 const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
@@ -32,6 +31,7 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
     const [bills, setBills] = useState<Bill[]>([]);
     const [loading, setLoading] = useState(false);
 
+    const hasDiscounts = investigation.functionalities.find((func:string) => func === FUNCTIONALITY.BILLING_DISCOUNTS)
     function onBillSuccesfullyCreated(bill:Bill){
         const tempBills = [...bills];
         const existingBillIndex = tempBills.findIndex((aBill) => bill.id === aBill.id);
@@ -58,7 +58,7 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
         }
     }, [investigation]) 
     if(investigation){
-        return <BillingLocalized patients={patients.data[investigation.uuid]} 
+        return <BillingLocalized patients={patients.data[investigation.uuid]} withDiscount={hasDiscounts}
                     uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
                     personalFields={investigation.personalFields}
                     billingInfo = {investigation.billingInfo}
@@ -89,6 +89,7 @@ interface Props extends LocalizeContextProps{
     billingInfo: BillingInfo,
     bills:Bill[];
     loading:boolean,
+    withDiscount: boolean,
     onBillSuccesfullyCreated:(bill:Bill) => void,
 }
 
@@ -213,7 +214,7 @@ const Billing:React.FC<Props> = (props) => {
     
     function renderCore(){
         if(edit){
-            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={billables} 
+            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={billables} withDiscount={props.withDiscount}
                         billingInfo={props.billingInfo} onBillingInfoSuccesfullyUpdated={(type:BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
         }
         else{
@@ -239,7 +240,7 @@ const Billing:React.FC<Props> = (props) => {
             case BillActions.create:
                 return (
                     <Modal key="modal" fullWidth medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
-                        <BillForm patients={props.patients } personalFields={props.personalFields} 
+                        <BillForm patients={props.patients } personalFields={props.personalFields} withDiscount={props.withDiscount}
                              currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                              onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
                              onCancelBill={onCancelBill} print={false} billables={billables}
@@ -253,7 +254,7 @@ const Billing:React.FC<Props> = (props) => {
                     <Modal key="modal" medium size="sm" open={showModal} title={""} closeModal={() => onCloseModal()}>
                         <Document address={props.billingInfo.address} hospitalName={props.hospitalName} logoBlob={props.billingInfo.logoBlob} currency={props.billingInfo.currency}
                                 email={props.billingInfo.email} size="A4" phone={props.billingInfo.phone} name={currentBill ? "Bill"+currentBill.id : ""} >
-                            <BillForm patients={props.patients } personalFields={props.personalFields} 
+                            <BillForm patients={props.patients } personalFields={props.personalFields} withDiscount={props.withDiscount}
                                 currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                                 onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
                                 onCancelBill={onCancelBill} print={true} 

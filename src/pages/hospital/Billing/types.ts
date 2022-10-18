@@ -64,6 +64,7 @@ export interface EditBillablesProps {
     billables : Billable[],
     billingInfo:BillingInfo,
     uuidInvestigation : string,
+    withDiscount : boolean,
     onBillablesCreated:(billItems:BillItem[]) =>void
 }
 

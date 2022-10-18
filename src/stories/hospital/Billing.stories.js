@@ -42,7 +42,8 @@ Bill_Form.args = {
   patients : listDecryptedPatients,
   personalFields : personal_data_investigation1(),
   locale: {code:"es"},
-  currency : "€"
+  currency : "€",
+  withDiscount:true
 };
 
 export const Bill_Form_View = TemplateBillForm.bind({});

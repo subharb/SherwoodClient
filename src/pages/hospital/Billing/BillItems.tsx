@@ -1,4 +1,4 @@
-import { Button, Checkbox, Grid, IconButton, Select, TextField, Typography } from "@material-ui/core";
+import { Button, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
@@ -60,11 +60,11 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
 
     useEffect(() => {
         console.log("currentItem cambió", currentItem);
-        if(currentItem.concept !== DEFAULT_CURRENT_ITEM.concept 
-                && currentItem.amount !== DEFAULT_CURRENT_ITEM.amount 
-                && currentItem.type !== DEFAULT_CURRENT_ITEM.type){
-                    addCurrentItem();
-                }
+        // if(currentItem.concept !== DEFAULT_CURRENT_ITEM.concept 
+        //         && currentItem.amount !== DEFAULT_CURRENT_ITEM.amount 
+        //         && currentItem.type !== DEFAULT_CURRENT_ITEM.type){
+        //             addCurrentItem();
+        //         }
         
     }, [currentItem]);
 
@@ -104,7 +104,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
 
         return error;
     }
-    function changeSelect(event: React.ChangeEvent<{
+    function changeType(event: React.ChangeEvent<{
         name?: string | undefined;
         value: unknown;
     }>, itemKey: BillItemKeys) {
@@ -191,7 +191,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
     function addCurrentItem() {
         let tempFieldErrors = { ...fieldErrors };
         //Fuerzo el valor 0 para diferenciarlo del valor por defecto.
-        currentItem["type"] = 0;
+        //currentItem["type"] = 0;
         Object.keys(BillItemKeys).forEach((iKey) => {
             console.log(iKey as BillItemKeys);
             const iTemKey = iKey as BillItemKeys;
@@ -282,7 +282,29 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                     helperText={helperText(BillItemKeys.concept)}
                     onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
                     variant="outlined" />,
-            type : withDiscount ? <Select></Select> : undefined,
+            type : withDiscount ?  
+                    <FormControl variant="outlined" fullWidth margin="dense" error={fieldErrors.type !== ""}>
+                        <InputLabel id="show_treatment">Type</InputLabel>
+                        <Select
+                            labelId="show_treatment"
+                            id="show_treatment"
+                            label="type"
+                            value={currentItem[BillItemKeys.type]}
+                            onChange={(event:React.ChangeEvent<{
+                                name?: string | undefined;
+                                value: unknown;
+                            }>) => changeType(event, BillItemKeys.type)}
+                            >
+                                {
+                                    Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
+                                        return isNaN(Number(key))
+                                    }).map(([key, value]) =>{
+                                        return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
+                                    }) 
+                                }
+                            
+                        </Select>
+                    </FormControl> : undefined,
             amount: <TextField label="Amount" variant="outlined" 
                         helperText={helperText(BillItemKeys.amount)} 
                         error={fieldErrors.amount !== ""} type="text" 
@@ -296,7 +318,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
         let field: BillItemTable = {
             id: rows.length - 1,
             concept: <React.Fragment></React.Fragment>,
-            type :   <React.Fragment></React.Fragment>,
+            type :   withDiscount ? <React.Fragment></React.Fragment> : undefined,
             amount: <React.Fragment></React.Fragment>,
             delete: <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem}
                 type="button" data-testid="add_bill"
@@ -317,10 +339,12 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
             delete: <React.Fragment></React.Fragment>,
         });
     }
-    const headCells = [{ id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item.concept`} /> },
-    //{ id: "type", alignment: "left", label: <Translate id={`hospital.billing.item.type`} /> },
+    let  headCells = [{ id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item.concept`} /> },
     { id: "amount", alignment: "left", label: <Translate id={`hospital.billing.item.amount`} /> }
     ]
+    if(withDiscount){
+        headCells.splice(1, 0, { id: "type", alignment: "left", label: <Translate id={`hospital.billing.item.type`} /> });
+    }
 
     if (!updatingBill) {
         headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
