@@ -25,7 +25,7 @@ export interface BillItem{
     billableId?:number,
     concept:string,
     type:number,
-    amount:number,
+    amount:number | string,
     used?: boolean,
     paid?: boolean
 }

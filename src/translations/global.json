@@ -243,6 +243,7 @@
                 "error" : {
                     "concept_short" : ["Must have at 3 characters", "Debe tener al menos 3 caracteres", "Doit avoir 3 caractères"],
                     "amount_negative" : ["Must be positive", "Debe ser positivo", "Doit être positif"], 
+                    "valid_number" : ["Must be a number", "Debe ser un numero", "Doit être numero"], 
                     "amount_percent" : ["Must be lower than 100", "Debe ser menor a 100", "Doit être inférieur à 100"],
                     "type_not_selected" : ["Must select one", "Debe seleccionar uno", "Doit en sélectionner un"]
                 }

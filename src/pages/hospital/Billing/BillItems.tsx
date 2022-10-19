@@ -42,8 +42,10 @@ interface BillItemsProps extends LocalizeContextProps{
 
 type BillableOption = Billable & {inputValue: string}
 
-
-const DEFAULT_CURRENT_ITEM = { concept: "", type: -1, amount: 0 }
+const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
+    return isNaN(Number(key))
+})
+const DEFAULT_CURRENT_ITEM = { concept: "", type: -1, amount: "" }
 
 const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                                                     updatingBill, currency, print, withDiscount,
@@ -55,16 +57,16 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
     const [billableSelected, setBillableSelected] = useState(false);
+    const [itemAdded, setItemAdded] = useState(false);
     
     const printRef = useRef<HTMLHeadingElement>(null);
 
     useEffect(() => {
         console.log("currentItem cambió", currentItem);
-        // if(currentItem.concept !== DEFAULT_CURRENT_ITEM.concept 
-        //         && currentItem.amount !== DEFAULT_CURRENT_ITEM.amount 
-        //         && currentItem.type !== DEFAULT_CURRENT_ITEM.type){
-        //             addCurrentItem();
-        //         }
+        if(itemAdded){
+            addCurrentItem();
+        }
+        setItemAdded(false);
         
     }, [currentItem]);
 
@@ -76,9 +78,13 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
             case BillItemKeys.concept:
                 tempCurrentItem[itemKey] = value;
                 break;
-            case BillItemKeys.amount:
+            
             case BillItemKeys.type:
                 tempCurrentItem[itemKey] = Number(value);
+                break;
+            case BillItemKeys.amount:
+                tempCurrentItem[itemKey] = error === "" ? Number(value) : value;
+                break;
         }
         setFieldErrors(tempFieldErrors);
         setCurrentItem(tempCurrentItem);
@@ -94,8 +100,11 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                 break;
             case BillItemKeys.amount:
                 const amount = Number(value)
-                if (amount < 0 || isNaN(amount)) {
+                if (amount < 0) {
                     error = "amount_negative";
+                }
+                if (isNaN(amount)) {
+                    error = "valid_number";
                 }
                 break;
             case BillItemKeys.type:
@@ -133,7 +142,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                     amount : billableSelected.amount,
                     type : billableSelected.type,
                     billableId : billableId
-                });                
+                });  
+                setItemAdded(true);              
             }
         }
     }
@@ -296,8 +306,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                             }>) => changeType(event, BillItemKeys.type)}
                             >
                                 {
-                                    Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
-                                        return isNaN(Number(key))
+                                    TYPES_BILL_ITEM.filter((tupleItem)=>{
+                                        return tupleItem[1] === 0 || !items.find((item)=> item.type === tupleItem[1])
                                     }).map(([key, value]) =>{
                                         return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
                                     }) 
@@ -306,7 +316,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                         </Select>
                     </FormControl> : undefined,
             amount: <TextField label="Amount" variant="outlined" 
-                        helperText={helperText(BillItemKeys.amount)} 
+                        helperText={helperText(BillItemKeys.amount)} value={currentItem[BillItemKeys.amount]}
                         error={fieldErrors.amount !== ""} type="text" 
                         onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />,
             delete: <IconButton onClick={() => addCurrentItem()}>
