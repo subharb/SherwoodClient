@@ -80,10 +80,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                 break;
             
             case BillItemKeys.type:
-                tempCurrentItem[itemKey] = Number(value);
-                break;
             case BillItemKeys.amount:
-                tempCurrentItem[itemKey] = error === "" ? Number(value) : value;
+                tempCurrentItem[itemKey] = Number(value);
                 break;
         }
         setFieldErrors(tempFieldErrors);
@@ -316,7 +314,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                         </Select>
                     </FormControl> : undefined,
             amount: <TextField label="Amount" variant="outlined" 
-                        helperText={helperText(BillItemKeys.amount)} value={currentItem[BillItemKeys.amount]}
+                        helperText={helperText(BillItemKeys.amount)} 
                         error={fieldErrors.amount !== ""} type="text" 
                         onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />,
             delete: <IconButton onClick={() => addCurrentItem()}>
