@@ -7,20 +7,21 @@ import { green, red, orange, yellow, blue, amber, brown, cyan, deepOrange } from
 import { Box, Button, Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
 
 import { connect } from 'react-redux';
-import Loader from '../../components/Loader';
+import Loader from '../../../components/Loader';
 import { Translate, withLocalize } from 'react-localize-redux';
 
 
-import { ROUTE_401, ROUTE_404 } from '../../routes';
-import DoughnutChart from '../dashboards/Analytics/DoughnutChart';
+import { ROUTE_401, ROUTE_404 } from '../../../routes';
+import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components/macro";
-import { yearsFromDate } from '../../utils';
-import TimeTable from '../dashboards/Analytics/TimeTable';
-import { getStatsFirstMonitoring, getStatsMostCommonDiagnosis } from '../../services';
+import { yearsFromDate } from '../../../utils';
+import TimeTable from '../../dashboards/Analytics/TimeTable';
+import { getStatsFirstMonitoring, getStatsMostCommonDiagnosis } from '../../../services';
 import { spacing } from "@material-ui/system";
-import DatesSelector from '../dashboards/Analytics/DatesSelector';
-import { PERMISSION } from '../../constants/types';
-import SearchTable from '../dashboards/Analytics/SearchTable';
+import DatesSelector from '../../dashboards/Analytics/DatesSelector';
+import { PERMISSION } from '../../../constants/types';
+import SearchTable from '../../dashboards/Analytics/SearchTable';
+import HospitalStats from './HospitalStats';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -129,10 +130,7 @@ export function Analytics(props) {
 		async function getStats() {
 			getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate)
 							.then(response => {
-								const tempStats = response.stats.map(stat => {
-									return [stat.researcher.name + " " + stat.researcher.surnames, stat.firstVisit, stat.monitoringVisit]
-								}) 
-								setStatsFirstMonitoring(tempStats);
+								setStatsFirstMonitoring(response);
 							})
 			getStatsMostCommonDiagnosis(props.investigations.currentInvestigation.uuid, startDate, endDate)
 							.then(response => {
@@ -231,11 +229,7 @@ export function Analytics(props) {
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.BUSINESS_READ) &&
 					<Grid container item spacing={1}>
 						<Grid item xs={12} >
-							<TimeTable title={props.translate("hospital.analytics.graphs.activity.title")} loading={!statsFirstMonitoring}
-								header={[props.translate("hospital.analytics.graphs.activity.table-title"), props.translate("hospital.analytics.graphs.activity.first-visit"), props.translate("hospital.analytics.graphs.activity.followup-visit")]}
-								data={statsFirstMonitoring}
-								actionCallBack={(value) => changeDate(value)}
-							/>
+							<HospitalStats stats={statsFirstMonitoring} />
 						</Grid>
 					</Grid>
 				}

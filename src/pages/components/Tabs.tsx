@@ -40,7 +40,7 @@ interface TabProps{
     children:ReactNode[],
     initTab?:number,
     labels:string[],
-    style:object,
+    style?:object,
     tabChangeCallback?:(tabSelected:number)=>void
 }
 

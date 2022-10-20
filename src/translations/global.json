@@ -128,6 +128,7 @@
             },
             "department" : ["Department", "Departamento", "Service"],
             "departments" : ["Departments", "Departamentos", "Services"],
+            "unit" : ["Unit", "Unidad", "Service"],
             "users" : ["Users", "Usuarios", "Personnel"],
             "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Hospitalisation"],
             "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
@@ -232,13 +233,13 @@
             "item" : {
                 "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],
                 "concept" : ["Concept", "Concepto", "Concept"],
-                "amount" : ["Amount", "Cantidad", "montant"],
+                "amount" : ["Amount", "Cantidad", "Montant"],
                 "type" : ["Type", "Tipo", "Type"],
                 "select_item" : ["Select", "Select", "Seleccionar"],
                 "types" : {
-                    "charge" : ["Charge", "Cargo", "Devoir"],
-                    "discount_amount" : ["Amount Discount", "Cantidad descuento", "Remise quantité"],
-                    "discount_percent" : ["Discount %", "Descuento %", "Remise"]
+                    "charge" : ["Charge", "Cargo", "Frais"],
+                    "discount_amount" : ["Amount Discount", "Cantidad descuento", "Reduction (montant)"],
+                    "discount_percent" : ["Discount %", "Descuento %", "Reduction (%)"]
                 },
                 "error" : {
                     "concept_short" : ["Must have at 3 characters", "Debe tener al menos 3 caracteres", "Doit avoir 3 caractères"],
