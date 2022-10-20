@@ -39,7 +39,7 @@ const HospitalStats: React.FC<HospitalStatsProps> = ({ stats }) => {
         return <Loader />
     }
     
-    const headCells = [{ id: "researcher", alignment: "left", label: <Translate id={`hospital.doctor`} /> },
+    const headCells = [{ id: "researcher", alignment: "left", label: <Translate id={`hospital.staff`} /> },
                         { id: "unit", alignment: "left", label: <Translate id={`hospital.departments.unit`} /> },
                         { id: "firstVisit", alignment: "left", label: <Translate id={`hospital.analytics.graphs.activity.first-visit`} /> },
                         { id: "monitoringVisit", alignment: "left", label: <Translate id={`hospital.analytics.graphs.activity.followup-visit`} /> },

@@ -66,6 +66,7 @@
     },
     "hospital" : {
         "doctor" : ["Doctor", "Médico", "Médecin"],
+        "staff" : ["Staff", "Personal", "Staff"],
         "data-collection" : ["Form", "Formulario", "Forme"],
         "data-collections" : ["Surveys", "Encuestas", "Enquêtes"],
         "sections" : ["Sections", "Secciones", "Sections"],
