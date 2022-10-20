@@ -40,7 +40,8 @@ interface TabProps{
     children:ReactNode[],
     initTab?:number,
     labels:string[],
-    style:object
+    style:object,
+    tabChangeCallback?:(tabSelected:number)=>void
 }
 
 
@@ -48,13 +49,16 @@ export function TabsSherwood(props:TabProps){
     const [tabSelector, setTabSelector] = useState(props.initTab ? props.initTab : 0);
 
     function onTabChange(event: any, value: any){
-        setTabSelector(value)
+        setTabSelector(value);
+        if(props.tabChangeCallback){
+            props.tabChangeCallback(value)
+        }
     }
 
     return (
         <>
         <Tabs value={tabSelector} onChange={onTabChange}  variant="scrollable"
-          scrollButtons="auto"   aria-label={props.name} {...props}>
+          scrollButtons="auto"  aria-label={props.name} {...props}>
             {
                 props.labels.map((label, index) => {
                     

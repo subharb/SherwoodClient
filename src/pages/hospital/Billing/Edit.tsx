@@ -15,6 +15,7 @@ import { withLocalize } from 'react-localize-redux';
 
 
 const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation, billingInfo, withDiscount, translate, onBillingInfoSuccesfullyUpdated }) => {
+    const [tabSelected, setTabSelected] = useState(0);
     const dispatch = useDispatch();
     const investigations = useSelector((state:any) => state.investigations);
 
@@ -37,7 +38,8 @@ const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation,
     }
     if(billingInfo){
         return (
-            <TabsSherwood name="Billing Info" style={{  color: "white" }}
+            <TabsSherwood name="Billing Info" style={{  color: "white" }} tabChangeCallback={(tabSelected) => setTabSelected(tabSelected)}
+                initTab = {tabSelected}
                 labels={[translate("hospital.billing.billing_info.title").toString(), translate("hospital.billing.billables.title").toString()]} >
                 <EditBillingInfo billingInfo={{...investigations.currentInvestigation.billingInfo, hospitalName:investigations.currentInvestigation.name}} 
                     callbackUpdate={callbackUpdateBillingInfo} />
