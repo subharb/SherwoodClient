@@ -21,7 +21,7 @@ const EditBillables: React.FC<EditBillablesProps> = ({ billables, uuidInvestigat
     function renderBillables(){
         return(
             <Card>
-                <BillItems currency={billingInfo.currency} print={false} mode = 'billable' withDiscount={false}
+                <BillItems currency={billingInfo.currency} print={false} mode = 'billable' withDiscount={withDiscount}
                     bill={null} billables={billables} uuidInvestigation={uuidInvestigation} updatingBill={false}
                     onBillItemsValidated={onBillablesCreated} error={errorBillables}
                     onCancelBill={() => console.log("Cancel")} />
