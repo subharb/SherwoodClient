@@ -45,7 +45,7 @@ type BillableOption = Billable & {inputValue: string}
 const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
     return isNaN(Number(key))
 })
-const DEFAULT_CURRENT_ITEM = { concept: "", type: -1, amount: "" }
+const DEFAULT_CURRENT_ITEM = { concept: "", type:0, amount: "" }
 
 const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                                                     updatingBill, currency, print, withDiscount,
@@ -304,9 +304,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                             }>) => changeType(event, BillItemKeys.type)}
                             >
                                 {
-                                    TYPES_BILL_ITEM.filter((tupleItem)=>{
-                                        return tupleItem[1] === 0 || !items.find((item)=> item.type === tupleItem[1])
-                                    }).map(([key, value]) =>{
+                                    TYPES_BILL_ITEM.map(([key, value]) =>{
                                         return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
                                     }) 
                                 }

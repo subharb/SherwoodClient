@@ -52,6 +52,7 @@ export interface BillingInfo{
     phone:string,
     email:string,
     logoBlob:string,
+    billables:Billable[],
     hospitalName:string
 }
 

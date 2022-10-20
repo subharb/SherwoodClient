@@ -8,7 +8,7 @@ import { formatPatients } from "../../../utils";
 import { BillingInfo } from "../Billing/types";
 
 
-interface Props extends Omit<BillingInfo, 'id'>{
+interface Props extends Omit<BillingInfo, 'id' |  'billables'>{
     size:"A4" | "ticket",
  
 }

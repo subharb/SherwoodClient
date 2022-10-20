@@ -7,7 +7,7 @@ import { HeaderDocument } from "./header";
 import SaveIcon from '@material-ui/icons/Save';
 import { BillingInfo } from "../Billing/types";
 
-interface Props extends Omit<BillingInfo, 'id'>  {
+interface Props extends Omit<BillingInfo, 'id' | 'billables'>   {
     size:"A4" | "ticket",
     name:string
 }

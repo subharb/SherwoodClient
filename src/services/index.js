@@ -98,7 +98,7 @@ export const searchDrugComponentService = datalogger((searchText, country) => {
           })
           .catch(err => {console.log('Catch', err); reject(err);}); 
     });
-})
+});
 
 export const getStatsPerDiagnosisService = datalogger((uuidInstitution, icdCode, startDate, endDate) => {
   return new Promise((resolve, reject) => {

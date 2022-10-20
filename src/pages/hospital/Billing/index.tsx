@@ -13,12 +13,13 @@ import { BillForm } from './bill_form';
 import {  FUNCTIONALITY, IPatient } from '../../../constants/types';
 import { Bill, Billable, BillingInfo, BillItemModes } from './types';
 import { Document } from '../Document';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { getBillablesService, getBillsService } from '../../../services/billing';
 import Loader from '../../../components/Loader';
 import { fullDateFromPostgresString } from '../../../utils';
 import EditBilling from './Edit';
+import { getBillablesAction } from '../../../redux/actions/investigationsActions';
 
 interface PropsRedux{
     investigations:any,
@@ -87,6 +88,7 @@ interface Props extends LocalizeContextProps{
     uuidInvestigation:string,
     hospitalName:string,
     billingInfo: BillingInfo,
+    
     bills:Bill[];
     loading:boolean,
     withDiscount: boolean,
@@ -106,16 +108,13 @@ const Billing:React.FC<Props> = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [actionBill, setActionBill] = useState<BillActions>(BillActions.default);
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
-    const [billables, setBillables] = useState<Billable[]>([]);
     const [edit, setEdit] = useState(false);
-
+    const dispatch = useDispatch();
     useEffect(() =>{
        console.log(props.billingInfo);
        async function getBillables(idBillingInfo:number){
-           const response = await getBillablesService(props.uuidInvestigation, idBillingInfo);
-           if(response.status === 200){
-                setBillables(response.billables);
-           }
+        await dispatch(getBillablesAction(props.uuidInvestigation, idBillingInfo));
+           
        }
        if(props.billingInfo){
             getBillables(props.billingInfo.id);
@@ -214,7 +213,7 @@ const Billing:React.FC<Props> = (props) => {
     
     function renderCore(){
         if(edit){
-            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={billables} withDiscount={props.withDiscount}
+            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={props.billingInfo.billables} withDiscount={props.withDiscount}
                         billingInfo={props.billingInfo} onBillingInfoSuccesfullyUpdated={(type:BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
         }
         else{
@@ -243,7 +242,7 @@ const Billing:React.FC<Props> = (props) => {
                         <BillForm patients={props.patients } personalFields={props.personalFields} withDiscount={props.withDiscount}
                              currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                              onBillSuccesfullyCreated={(bill:Bill) => onBillSuccesfullyCreated(bill)} 
-                             onCancelBill={onCancelBill} print={false} billables={billables}
+                             onCancelBill={onCancelBill} print={false} billables={props.billingInfo.billables}
                              bill={currentBill} updatingBill = {currentBill !== null}
                              locale={props.activeLanguage}
                         />
