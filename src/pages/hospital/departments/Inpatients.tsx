@@ -91,7 +91,7 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
         if(!departments || departments.length === 0){
             return "You have no departments"
         }
-        return departments.map((department) => 
+        return departments.filter((department) => department.wards.length > 0).map((department) => 
             <div style={{paddingBottom:'1rem'}}>
                 <Typography variant="body2" gutterBottom display="inline">
                     { department.name }
