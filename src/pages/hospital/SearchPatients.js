@@ -103,7 +103,13 @@ function SearchPatients(props){
                             }
                         }
                         else{
-                            if(value !== "" && patient.personalData[keyValue] && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
+                            if(typeof value.getMonth === 'function'){
+                                const patientBirthday = patient.personalData[keyValue];
+                                result = patientBirthday.getFullYear() === value.getFullYear() &&
+                                            patientBirthday.getMonth() === value.getMonth() &&
+                                            patientBirthday.getDate() === value.getDate();
+                            }
+                            else if(value !== "" && patient.personalData[keyValue] && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
                                 result = false;
                             }
                         }
