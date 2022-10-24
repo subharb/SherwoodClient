@@ -21,13 +21,14 @@ import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDI
 
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
 
-import { useSnackBarState, useUpdateEffect } from '../../../hooks';
+import { useDepartments, useSnackBarState, useUpdateEffect } from '../../../hooks';
 import { fetchProfileInfo } from '../../../redux/actions/profileActions';
-import { MEDICAL_ACCESS, MEDICAL_READ, MEDICAL_SURVEYS, PERSONAL_ACCESS, PERSONAL_WRITE, TYPE_FIRST_VISIT_SURVEY, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
+import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
 import { PERMISSION } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
+
 
 
 const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe"};
@@ -50,7 +51,7 @@ function Patient(props) {
     const [indexDataCollection, setIndexDataCollection] = useState(-1);
     const [savedDataCollection, setSavedDataCollection] = useState(false);
     // const [indexSection, setIndexSection] = useState(-1);
-
+    const {departments, researchers} = useDepartments();
     
     const dispatch = useDispatch();
     let { uuidPatient } = useParams();
@@ -383,8 +384,21 @@ function Patient(props) {
                         tempSub.uuidSurvey = val.uuid; 
                         tempSub.uuidResearcher = tempSub.researcher.uuid;
                         tempSub.typeSurvey = val.type; 
-                        const departmentName = !tempSub.surveyUnit ? "" : " - "+tempSub.surveyUnit;
-                        tempSub.researcher = tempSub.researcher.name+" "+tempSub.researcher.surnames + departmentName;
+                        let departmentString = "";
+                        if(tempSub.uuidUnit){
+                            let department = null;
+                            let unit = null;
+                            departments.forEach((departmentSur) => {
+                                departmentSur.units.forEach((unitDe) => {
+                                    if(unitDe.uuid === tempSub.uuidUnit){
+                                        unit = unitDe;
+                                        department = departmentSur
+                                    }
+                                })
+                            })
+                            departmentString = department.name +": "+unit.name;
+                        }
+                        tempSub.researcher = tempSub.researcher.name+" "+tempSub.researcher.surnames +" - " +departmentString;
 
                         return tempSub;
                     })
