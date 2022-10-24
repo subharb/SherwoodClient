@@ -136,7 +136,7 @@
             "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
             "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "Êtes-vous sûr de supprimer cette pièce ?"],
             "no-my-departments" : ["You haven't been added any department, ask your administrator", "No se le ha agregado ningún departamento, pregunte a su administrador", "Vous n'avez été ajouté à aucun département, demandez à votre administrateur"],
-            "no-wards" : ["No current wards", "No hay salas en este departamento", "Il n'y a pas de chambres dans ce département"],
+            "no-wards" : ["No current wards", "No hay salas en este departamento", "Il n'y a pas de salles d'hospitalisation dans ce service"],
             "errors" : {
                 "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce département"],
                 "bad-configuration" : ["Doesn't match total number beds, check amount of female/male beds", "No coincide con el número total de camas, verifique la cantidad de camas femeninas / masculinas", "Ne correspond pas au nombre total de lits, vérifiez le nombre de lits pour femmes/hommes"]

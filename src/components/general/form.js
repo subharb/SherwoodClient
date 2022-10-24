@@ -127,6 +127,7 @@ class Form extends Component {
                             type={this.props.fields[key].type}
                             component={FieldSherwood}
                             key={key}
+                            hideTitle = { currentSection.length === 1 }
                             fullWidth={this.props.fullWidth}
                             country={this.props.country}
                             label={this.props.fields[key].label}

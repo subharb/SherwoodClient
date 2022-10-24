@@ -202,7 +202,7 @@ class FieldSherwood extends PureComponent{
         </Grid>;
     }
     render(){
-        const {input, label, meta, type, options, size, removeClass, validation, country, activationValues, activatedFields, params} = this.props;
+        const {input, label, meta, hideTitle, type, options, size, removeClass, validation, country, activationValues, activatedFields, params} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -419,9 +419,13 @@ class FieldSherwood extends PureComponent{
             case "textarea":
                 return(
                     <Box mt={3} mb={3} >
-                        <Typography variant="body2" gutterBottom>
-                            {labelString}: 
-                        </Typography>
+                        {
+                            !hideTitle &&
+                            <Typography variant="body2" gutterBottom>
+                                {labelString}: 
+                            </Typography>
+                        }
+                        
                         <QuillWrapper className={input.name} error={errorState}>
                             <ReactQuill style={{fontSize:'24px'}}
                                 {...input}
