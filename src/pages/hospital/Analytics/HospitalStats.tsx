@@ -79,7 +79,7 @@ const HospitalStats: React.FC<HospitalStatsProps> = ({ stats }) => {
         
        
         return (
-            <TabsSherwood name='Hospital Stats' labels={nameDepartments} >
+            <TabsSherwood name='Hospital Stats' style={{  color: "white" }} labels={nameDepartments} >
                 {
                     statsPerDepartment.map((statsDepartment) => {
                         return <EnhancedTable noHeader noSelectable={true} rows={statsDepartment} headCells={headCells} />

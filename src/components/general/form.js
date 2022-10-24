@@ -7,7 +7,8 @@ import { validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
 import { Grid, Paper, Typography } from '@material-ui/core';
-
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
  /**
  * Component that renders a form with the values passed by props
@@ -103,6 +104,7 @@ class Form extends Component {
         // }
     }
     renderFields(){
+        
         let fieldsMarkup = [];
         let currentSection = [];
         Object.keys(this.props.fields).map((key, index) => {

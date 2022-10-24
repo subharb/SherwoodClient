@@ -306,9 +306,33 @@ class FieldSherwood extends PureComponent{
                     errorText
                 ]);
             case "date":
-                const value = input.value ? input.value : "";
+                const value = input.value ? input.value : null;
                 return (
                     <FieldWrapper noWrap = {this.props.fullWidth}>
+                        <MuiPickersUtilsProvider  utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                                disableToolbar
+                                fullWidth
+                                inputVariant="outlined"
+                                variant="inline"
+                                format="dd/MM/yyyy"
+                                margin="normal"
+                                id="date-picker-inline"
+                                label={labelString}
+                                openTo="year"
+                                value={value}
+                                onChange={this.handleDateChange}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                                error={errorState} 
+                                helperText={errorString} 
+                                />
+                        </MuiPickersUtilsProvider>
+                    </FieldWrapper>
+                )
+                return (
+                    
                         <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
                             <KeyboardDatePicker
                             fullWidth
@@ -319,7 +343,7 @@ class FieldSherwood extends PureComponent{
                                 fill
                                 label={input.value ? "" : labelString}
                                 format="dd/MM/yyyy"
-                                
+                                variant="inline"
                                 value={value}
                                 defaultValue={value} 
                                 openTo="year"
@@ -332,9 +356,13 @@ class FieldSherwood extends PureComponent{
                                 }}
                                 error={errorState} 
                                 helperText={errorString} 
-                            />
+
+                            
+                            
+                          />
+                        
                         </MuiPickersUtilsProvider>
-                    </FieldWrapper>
+                  
                 );
             case "time":
                 return (
