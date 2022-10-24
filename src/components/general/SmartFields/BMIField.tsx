@@ -83,9 +83,9 @@ function BMIField(props: Props) {
 
     return(
         <Grid container spacing={3}>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <Typography variant="body2" component="span">{props.translate("hospital.bmi")}</Typography>
-            </Grid>
+            </Grid> */}
             {
                 !saved &&
                 <Grid item xs={12}>
