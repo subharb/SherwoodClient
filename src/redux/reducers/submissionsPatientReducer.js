@@ -51,14 +51,24 @@ export default function reducer(state = initialState, action){
                 }
                 else{
                     if(!action.submission.id){
-                        action.submission.id = tempDict.submissions[tempDict.submissions.length -1].id + 1;
+                        action.submission.id =  Math.floor(Math.random() * 10000);
+                        action.submission.offline = true;
+                    }
+                    if(action.meta.oldIdSubmission){
+                        const indexOldSub = tempDict.submissions.findIndex((sub) => {
+                            return sub.id === action.meta.oldIdSubmission
+                        })
+                        if(indexOldSub !== -1){
+                            tempDict.submissions.splice(indexOldSub, 1)
+                        }
                     }
                     tempDict.submissions.push(action.submission);
                 }
             }
             else{
                 if(!action.submission.id){
-                    action.submission.id = 1;
+                    action.submission.id = Math.floor(Math.random() * 10000);
+                    action.submission.offline = true;
                 }
                 tempDict = {
                     surveyName : action.meta.surveyName,
@@ -67,6 +77,7 @@ export default function reducer(state = initialState, action){
                     submissions:[action.submission]
                 }
             }
+            
             tempData[action.meta.uuidPatient][action.meta.surveyUUID] = tempDict;                   
             newState.loading = initialState.loading;
             newState.error = initialState.error;

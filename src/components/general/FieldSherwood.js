@@ -47,6 +47,9 @@ const QuillWrapper = styled.div`
   .ql-editor p{
       font-size:18px;
   }
+  .ql-editor ul, .ql-editor ol{
+    font-size:18px;
+}
 `;
 const EvaluateContainer = styled.div`
     display:flex;

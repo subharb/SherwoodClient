@@ -105,6 +105,7 @@ export const ALL_SMARTFIELDS_TYPES = ["ict", "allergy", "background", "family-ba
 
 //Offline
 export const UPDATE_RECORDS_LOADING = "UPDATE_RECORDS_LOADING";
+export const RESET_OFFLINE_NOTIFICATIONS = "RESET_OFFLINE_NOTIFICATIONS";
 
 //PROFILE
 export const FETCH_PROFILE_LOADING = "FETCH_PROFILE_LOADING";

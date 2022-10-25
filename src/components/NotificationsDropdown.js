@@ -96,7 +96,7 @@ function NotificationsDropdown(props) {
  
       return props.notifications.map(notification => {
             return(
-                <Notification
+                <Notification 
                   title={notification.title}
                   description={notification.description}
                   Icon={Server}
@@ -130,11 +130,14 @@ function NotificationsDropdown(props) {
           
         </NotificationHeader>
         <React.Fragment>
-          <List disablePadding>
-             { renderNotifications()}
-          </List>
-          
-          <Box p={1} display="flex" justifyContent="center">
+            <List disablePadding>
+                { renderNotifications()}
+            </List>
+            
+            <Box p={1} display="flex" justifyContent="center">
+                <button onClick={props.resendCallback}>Resend</button>    
+            </Box>
+          {/* <Box p={1} display="flex" justifyContent="center">
             {
               props.isOffline &&
               <Translate id="general.offline.description" />
@@ -143,7 +146,7 @@ function NotificationsDropdown(props) {
               (!props.isOffline && props.notifications.length > 0) &&
               <Translate id="general.offline-update.description" />
             }
-          </Box>
+          </Box> */}
         </React.Fragment>
       </Popover>
     </React.Fragment>

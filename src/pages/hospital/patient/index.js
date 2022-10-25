@@ -367,7 +367,7 @@ function Patient(props) {
         if(action === "fill"){
             setShowSnackbar({show:true, severity:"success", message : "hospital.patient.new-record"});
         }
-        if(dataCollectionSelected.type === types.TYPE_DISCHARGE_SURVEY){
+        if(dataCollectionSelected && dataCollectionSelected.type === types.TYPE_DISCHARGE_SURVEY){
             makeDischarge()
         }
         //Curso el alta del paciente si el ultimo registro es de un formulario de alta

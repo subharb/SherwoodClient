@@ -34,7 +34,7 @@ export function fetchSubmissionsPatientInvestigationAction(uuidInvestigation, uu
     };
 }
 
-export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, surveyUUID, surveyName, surveyType) {
+export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, surveyUUID, surveyName, surveyType, oldIdSubmission) {
     return async (dispatch) => {
       dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
   
@@ -43,7 +43,7 @@ export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPati
           dispatch({
             type: types.SAVE_SUBMISSIONS_PATIENT_SUCCESS,
             submission: response.submission,
-            meta:{uuidPatient, surveyUUID, surveyName, surveyType}
+            meta:{uuidPatient, surveyUUID, surveyName, surveyType, oldIdSubmission}
           });
         })
         .catch(function (error) {
@@ -95,6 +95,28 @@ export function updateSubmissionPatientAction(postObj, uuidInvestigation, uuidPa
          
         });
     };
+}
+
+export function resendOfflineRecords(offlineRecords, uuidInvestigation){
+    return async (dispatch) => {
+        let hasSentRecords = false;
+        Object.keys(offlineRecords.data).forEach((uuidPatient) => {
+            const surveysOffline = offlineRecords.data[uuidPatient]
+            Object.keys(surveysOffline).forEach((uuidSurvey) => {
+                const records = surveysOffline[uuidSurvey]; 
+                records.submissions.forEach(async(submission) => { 
+                    if(submission.offline){
+                        await dispatch( postSubmissionPatientAction(submission, uuidInvestigation, uuidPatient, uuidSurvey, records.surveyName, records.type, submission.id));
+                        dispatch({ type: types.RESET_OFFLINE_NOTIFICATIONS});
+                    }
+                })
+                
+            })
+        })
+        if(hasSentRecords){
+            
+        }
+    }
 }
 
 export function resetPatientsSubmissionsError() {
