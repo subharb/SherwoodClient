@@ -133,10 +133,12 @@ function NotificationsDropdown(props) {
             <List disablePadding>
                 { renderNotifications()}
             </List>
+            { props.notifications.length > 0 &&
+                <Box p={1} display="flex" justifyContent="center">
+                    <button onClick={props.resendCallback}>Resend</button>    
+                </Box>
+            }
             
-            <Box p={1} display="flex" justifyContent="center">
-                <button onClick={props.resendCallback}>Resend</button>    
-            </Box>
           {/* <Box p={1} display="flex" justifyContent="center">
             {
               props.isOffline &&
