@@ -204,7 +204,7 @@
         },
         "billing" : {
             "title" : ["Billing", "Facturación", "Facturation"],
-            "no_billing_info" : ["Please send an email to customer.suppport@sherwood.science with your Logo and billing information", "Please send an email to customer.suppport@sherwood.science with your Logo and billing information", "Por favor, envíe un correo a customer.suppport@sherwood.science con su logo e información fiscal."],
+            "no_billing_info" : ["Update your billing information", "Actualice la información de facturación", "Mettre à jour les informations de facturation."],
             "no_bills" : ["Click the plus button to create your first bill", "Haga clic en el botón más para crear su primera factura", "Cliquez sur le bouton plus pour créer votre première facture"],
             "bills" : ["Bills", "Facturas", "Factures"],
             "metrics" : ["Metrics", "Métricas", "Metrics"],
