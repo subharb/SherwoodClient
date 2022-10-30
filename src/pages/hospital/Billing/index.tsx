@@ -31,8 +31,8 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
     const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
     const [bills, setBills] = useState<Bill[]>([]);
     const [loading, setLoading] = useState(false);
-
-    const hasDiscounts = investigation && investigation.billingInfo.params.hasOwnProperty("discounts");
+ 
+    const hasDiscounts = investigation && investigation.billingInfo && investigation.billingInfo.params && investigation.billingInfo.params.hasOwnProperty("discounts");
     function onBillSuccesfullyCreated(bill:Bill){
         const tempBills = [...bills];
         const existingBillIndex = tempBills.findIndex((aBill) => bill.id === aBill.id);
@@ -213,7 +213,7 @@ const Billing:React.FC<Props> = (props) => {
     
     function renderCore(){
         if(edit){
-            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={props.billingInfo.billables} withDiscount={props.withDiscount}
+            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={props.billingInfo && props.billingInfo.billables ? props.billingInfo.billables : []} withDiscount={props.withDiscount}
                         billingInfo={props.billingInfo} onBillingInfoSuccesfullyUpdated={(type:BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
         }
         else{
