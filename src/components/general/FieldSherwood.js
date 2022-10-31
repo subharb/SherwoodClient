@@ -334,39 +334,6 @@ class FieldSherwood extends PureComponent{
                         </MuiPickersUtilsProvider>
                     </FieldWrapper>
                 )
-                return (
-                    
-                        <MuiPickersUtilsProvider key={input.name} utils={DateFnsUtils} id={input.name}>
-                            <KeyboardDatePicker
-                            fullWidth
-                                disableToolbar
-                                margin={this.typeMargin}
-                                id={input.name}
-                                inputVariant="outlined"
-                                fill
-                                label={input.value ? "" : labelString}
-                                format="dd/MM/yyyy"
-                                variant="inline"
-                                value={value}
-                                defaultValue={value} 
-                                openTo="year"
-                                onChange={this.handleDateChange}
-                                //onKeyDown={(e) => this.handleDateChange(e.target.value)}
-                                maxDate={validation === "pastDate" ? new Date() : undefined}
-                                emptyLabel={labelString}
-                                KeyboardButtonProps={{
-                                    'aria-label': 'change date',
-                                }}
-                                error={errorState} 
-                                helperText={errorString} 
-
-                            
-                            
-                          />
-                        
-                        </MuiPickersUtilsProvider>
-                  
-                );
             case "time":
                 return (
                     <FieldWrapper noWrap = {this.props.fullWidth}>

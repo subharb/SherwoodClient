@@ -78,7 +78,7 @@ import HomeSchedule from "../pages/hospital/HomeSchedule";
 
 import Patient from "../pages/hospital/patient";
 import SearchPatients from "../pages/hospital/SearchPatients";
-import TestsHome from "../pages/hospital/TestsHome";
+import TestsHome from "../pages/hospital/Service";
 import AddPatient from "../pages/hospital/AddPatient";
 import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";

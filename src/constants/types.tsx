@@ -41,6 +41,10 @@ export interface IResearcher{
     units:IUnit[]
 }
 
+export interface ISurvey{
+    uuid:string,
+    name:string
+}
 export interface PersonalData{
     name ?: string,
     email ?: string,

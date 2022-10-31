@@ -380,6 +380,25 @@
             "patient" : {
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
+            "services" : {
+                "edit" : {
+                    "new_service" : {
+                        "title" : ["Add new service", "Añadir nuevo servicio", "Ajouter un nouveau service"]
+                    }
+                },
+                "form" : {
+                    "service" : ["Service", "Servicio", "Service"],
+                    "price" : ["Price", "Precio", "Prix"],
+                    "external" : ["Is it an external service?", "¿Es un servicio externo?", "Est-ce un service externe?"],
+                    "survey" : ["Survey", "Formulario", "Formulaire"]
+
+                },
+                "list" : {
+                    "tchol" : ["Cholesterol Test", "Test Colesterol", "Cholesterol"],
+                    "tcrea" : ["Creatnine Test", "Test Creatinina", "Creatinine Test"],
+                    "themo" : ["Hemoglobin Test", "Test Hemoglobina", "Hémoglobine Test"]
+                }
+            },
             "laboratory":{
                 "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Aucun test de laboratoire"],
                 "name" : ["Laboratory", "Laboratorio", "Laboratoire"],

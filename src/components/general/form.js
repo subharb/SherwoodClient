@@ -107,6 +107,7 @@ class Form extends Component {
         
         let fieldsMarkup = [];
         let currentSection = [];
+        let pastInput = [];
         Object.keys(this.props.fields).map((key, index) => {
             if(this.props.fields[key].type !== "options"){
                 if(this.props.fields[key].type === "title_section"){
@@ -119,9 +120,8 @@ class Form extends Component {
                     }
                     currentSection = [];
                 }
-                
                 currentSection.push(
-                    <div className="row" key={key}>
+                    <Grid item xs={this.props.numberColumns === 2 ? 6 :12}>
                         <Field
                             name={this.props.fields[key].name ? this.props.fields[key].name : key}
                             type={this.props.fields[key].type}
@@ -137,14 +137,16 @@ class Form extends Component {
                         {
                             this.renderExtraFields(key)
                         }
-                    </div>
-                    
-                );
+                    </Grid>
+                    );
+                
                 
                 if(index === Object.keys(this.props.fields).length -1){
                     fieldsMarkup.push(
                         <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >
+                            <Grid container>
                             {currentSection}
+                            </Grid>
                         </Paper>
                     );
                 }

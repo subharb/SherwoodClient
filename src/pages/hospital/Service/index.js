@@ -1,23 +1,25 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
-import iconImages from "../../img/icons/images_white.png";
-import iconLab from "../../img/icons/lab_white.png";
-import { Box, Grid, Paper, Typography, Button } from '@material-ui/core';
-import Form  from '../../components/general/form';
+import iconImages from "../../../img/icons/images_white.png";
+import iconLab from "../../../img/icons/lab_white.png";
+import { Box, Grid, Paper, Typography, Button, IconButton } from '@material-ui/core';
+import Form  from '../../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom';
-import { EnhancedTable } from '../../components/general/EnhancedTable';
-import { HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_SUBMISSION, } from '../../routes';
-import Loader from '../../components/Loader';
+import { EnhancedTable } from '../../../components/general/EnhancedTable';
+import { HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_SUBMISSION, } from '../../../routes';
+import Loader from '../../../components/Loader';
 
 import {
     useLocation
   } from "react-router-dom";
 import { connect } from 'react-redux';
-import { fetchSubmissionsSurveyAction } from '../../redux/actions/submissionsActions';
-import { PERMISSION } from '../../constants/types';
+import { fetchSubmissionsSurveyAction } from '../../../redux/actions/submissionsActions';
+import { PERMISSION } from '../../../constants/types';
 import styled from 'styled-components';
+import { IconGenerator } from '../../../components/general/mini_components';
+import EditServices from './Edit';
 
 export function TestsHome(props){
     let location = useLocation();
@@ -37,6 +39,7 @@ const IconHolder = styled.div`
 
 export function TestsHomeComponent(props) {
     const [ surveyRecords, setSurveyRecords] = useState([]);
+    const [edit, setEdit] = useState(false);
     const [surveyTests, setSurveyTests] = useState(null);
     const [loading, setLoading] = useState(false);
     const history = useHistory();
@@ -53,24 +56,36 @@ export function TestsHomeComponent(props) {
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
+    function toogleEditLab(){
+        setEdit(edit => !edit);
+    }
     function renderCore(){
-        if(surveyRecords.length === 0){
-            return <Translate id={`pages.hospital.${translations[props.type]}.no-records`} />
+        if(edit){
+            return (
+                <EditServices typeService="lab" />
+            );
+
         }
         else{
-            const hasPersonalPermmissions = props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS);
-            const headerTable = hasPersonalPermmissions ?  [{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "patient", alignment: "left", label: <Translate id="investigation.create.personal_data.fields.name" />},
-            { id: "date", alignment: "left", label: "Date"}] : [{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "idPatient", alignment: "left", label: <Translate id="investigation.create.personal_data.fields.name" />},
-            { id: "date", alignment: "left", label: "Date"}]
-            return (<EnhancedTable noHeader noSelectable selectRow={(index) => goToSubmission(index)} 
-                rows={surveyRecords.map((record, index) => {
-                    const dateCreated = new Date(record.createdAt);
-                    return hasPersonalPermmissions ? {id : index, researcher : record.researcher, patient : `${record.patient.personalData.name} ${record.patient.personalData.surnames}`, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`} : 
-                    {id : index, researcher : record.researcher, idPatient : record.patient.id, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`}
-                    
-                })} headCells={headerTable} />
-            );
+            if(surveyRecords.length === 0){
+                return <Translate id={`pages.hospital.${translations[props.type]}.no-records`} />
+            }
+            else{
+                const hasPersonalPermmissions = props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS);
+                const headerTable = hasPersonalPermmissions ?  [{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "patient", alignment: "left", label: <Translate id="investigation.create.personal_data.fields.name" />},
+                { id: "date", alignment: "left", label: "Date"}] : [{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "idPatient", alignment: "left", label: <Translate id="investigation.create.personal_data.fields.name" />},
+                { id: "date", alignment: "left", label: "Date"}]
+                return (<EnhancedTable noHeader noSelectable selectRow={(index) => goToSubmission(index)} 
+                    rows={surveyRecords.map((record, index) => {
+                        const dateCreated = new Date(record.createdAt);
+                        return hasPersonalPermmissions ? {id : index, researcher : record.researcher, patient : `${record.patient.personalData.name} ${record.patient.personalData.surnames}`, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`} : 
+                        {id : index, researcher : record.researcher, idPatient : record.patient.id, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`}
+                        
+                    })} headCells={headerTable} />
+                );
+            } 
         }
+        
     }
     useEffect(() => {
         async function fetchRecordsPatient(){
@@ -121,17 +136,20 @@ export function TestsHomeComponent(props) {
         <React.Fragment>
             <Grid container spacing={6} >
                 <Grid container alignItems="center" alignContent="center" item xs={12}>
-                    
-                        <IconHolder>
-                            <img src={props.type === 1 ? iconImages : iconLab } alt="images" width="40" />
-                        </IconHolder>
-                        <div>
-                            <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
-                                <Translate id={`pages.hospital.${translations[props.type]}.title`} />
-                            </Typography>
-                        </div>
-                        
-                    
+                    <IconHolder>
+                        <img src={props.type === 1 ? iconImages : iconLab } alt="images" width="40" />
+                    </IconHolder>
+                    <div>
+                        <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
+                            <Translate id={`pages.hospital.${translations[props.type]}.title`} />
+                        </Typography>
+                        <IconButton 
+                            onClick={(e) => {
+                                toogleEditLab();
+                            }}>
+                            <IconGenerator style={{  color: "white" }} type={!edit ? "settings" : "back"} />
+                        </IconButton>
+                    </div>
                 </Grid>
                 <Grid item xs={12}>
                     {
