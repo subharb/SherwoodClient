@@ -384,7 +384,8 @@
                 "edit" : {
                     "new_service" : {
                         "title" : ["Add new service", "Añadir nuevo servicio", "Ajouter un nouveau service"]
-                    }
+                    },
+                    "no_services_remaining" : ["You have selected all services available, if you need more please contact customersupport@sherwood.science", "No quedan servicios disponibles, si necesita más por favor contacte con customersupport@sherwood.science", "Vous avez sélectionné tous les services disponibles, si vous en avez besoin, veuillez contacter ustomersupport@sherwood.science"]
                 },
                 "form" : {
                     "service" : ["Service", "Servicio", "Service"],

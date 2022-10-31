@@ -1,4 +1,7 @@
-import { Typography } from '@material-ui/core';
+import { Snackbar, Typography } from '@material-ui/core';
+import { Alert, Color } from '@material-ui/lab';
+import axios from 'axios';
+import { isArray } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import Form from '../../../components/general/form';
@@ -6,39 +9,88 @@ import { ButtonAdd } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
-import { IService } from './types';
+import { useSnackBarState } from '../../../hooks';
+import { IService, IServiceInvestigation } from './types';
 
 interface EditServicesProps {
-    serviceType: string;
+    serviceType: number;
+    uuidInvestigation: string;
+    surveys: ISurvey[];
 }
 
-const EditServices: React.FC<EditServicesProps> = ({ serviceType }) => {
+const EditServices: React.FC<EditServicesProps> = ({uuidInvestigation, serviceType, surveys }) => {
     const [loading, setLoading] = useState(false);
-    const [services, setServices] = useState(null);
-    const [surveys, setSurveys] = useState(null);
+    const [servicesGeneral, setServicesGeneral] = useState<null | IService[]>(null);
+    const [servicesInvestigation, setServicesInvestigation] = useState<null | IServiceInvestigation[]>(null);
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
     function saveService(serviceInvestigation:any){
-        
+        serviceInvestigation.external = serviceInvestigation.external ? 1 : 0;
+        console.log(serviceInvestigation);
+        setLoading(true);
+            axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/", serviceInvestigation, { headers: {"Authorization" : localStorage.getItem("jwt") }})
+            .then(response => {
+                if(response.status === 200){
+                    setShowSnackbar({show:true, severity:"success", message:"service.success"}); 
+                    if(isArray(servicesInvestigation)){
+                        setServicesInvestigation([...servicesInvestigation, response.data.serviceInvestigation]);
+                        
+                    }  
+                    else{
+                        setServicesInvestigation([response.data.serviceInvestigation]);
+                    }
+                }
+                
+                setLoading(false);
+            })
     }
+    useEffect(() => {
+        if(!servicesGeneral){
+            setLoading(true);
+            axios(process.env.REACT_APP_API_URL+"/hospital/servicesgeneral/"+serviceType, { headers: {"Authorization" : localStorage.getItem("jwt") }})
+            .then(response => {
+                setServicesGeneral(response.data.services);
+                setLoading(false);
+            })
+        }
+        if(!servicesInvestigation){
+            setLoading(true);
+            axios(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/services/", { headers: {"Authorization" : localStorage.getItem("jwt") }})
+            .then(response => {
+                setServicesInvestigation(response.data.servicesInvestigation);
+                setLoading(false);
+            })
+        }
+    }, []);
     return(
-        <EditServicesComponent services={services} surveys={surveys} serviceType={serviceType} loading={loading} 
-            callBackSaveService={saveService} />
+        <EditServicesComponent servicesGeneral={servicesGeneral} servicesInvestigation={servicesInvestigation} surveys={surveys} serviceType={serviceType} loading={loading} 
+            showSnackbar ={showSnackbar} callBackSaveService={saveService} />
     )
 }
 
-interface EditServicesComponentProps extends EditServicesProps{
+interface EditServicesComponentProps extends Omit<EditServicesProps, 'uuidInvestigation'> {
     loading: boolean;
-    services:IService[] | null;
-    surveys:ISurvey[] | null;
+    servicesGeneral:IService[] | null;
+    servicesInvestigation:IServiceInvestigation[] | null;
+    surveys:ISurvey[];
+    showSnackbar:{
+        show: boolean;
+        message?: string | undefined;
+        severity?: Color | undefined;
+    },
     callBackSaveService:(service:any) =>void
 }
 
-export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, surveys, loading, services }) => {
+export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, showSnackbar, surveys, loading, servicesGeneral, servicesInvestigation, callBackSaveService }) => {
     const [showModal, setShowModal] = React.useState(false);
     const [addingService, setAddingService] = React.useState(false);
     
     let formFields:{ [id: string] : any; }  = React.useMemo(() => {
         let tempDict:{ [id: string] : any; } = {};
-        const serviceOptions = services?.map((service) => {
+
+        const serviceOptions = servicesGeneral?.filter((service) =>{
+            return !servicesInvestigation?.some((serviceInvestigation) => serviceInvestigation.service.id === service.id);
+        }).map((service) => {
+
             return {
                 label: "pages.hospital.services.list."+service.code,
                 value: service.id,
@@ -50,8 +102,8 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                 value: survey.uuid,
             }
         })
-        tempDict["service"] = {
-            name: "service",
+        tempDict["serviceId"] = {
+            name: "serviceId",
             label: "pages.hospital.services.form.service",
             type: "select",
             required: true,
@@ -79,14 +131,16 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
             options: surveyOptions
         }
         return tempDict;
-    },[services]);
+    },[servicesGeneral, servicesInvestigation]);
 
-    function callBackForm(values:any){
-        console.log(values);
-        
-
+    useEffect(() => {
+        if(!loading){
+            setShowModal(false);
+        }
+    }, [loading])
+    if(loading){
+        return <Loader/>
     }
-
     return (
         <>  
             <Modal key="modal" medium 
@@ -99,13 +153,33 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                     }
                     {
                         !loading && addingService &&
-                        <>
-                            <Form fields={formFields} callBackForm = {(values:any) => callBackForm(values)} />
-                            {/* <Form numberColumns={2} fields={formFields} callBackForm = {(values:any) => callBackForm(values)} /> */}
+                        <>  
+                        {
+                            formFields.serviceId.options?.length === 0 &&
+                            <Translate id="pages.hospital.services.edit.no_services_remaining"/>
+                        }
+                        {   
+                            formFields.serviceId.options?.length > 0 &&
+                            <Form fields={formFields} callBackForm = {(values:any) => callBackSaveService(values)} />
+                           
+                        }
+                         {/* <Form numberColumns={2} fields={formFields} callBackForm = {(values:any) => callBackForm(values)} /> */}
                         </>
                     }
                     </>
             </Modal>
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+                }}
+                open={showSnackbar.show}
+                autoHideDuration={4000}
+                >
+                    <Alert severity={showSnackbar.severity}>
+                            <Translate id={showSnackbar.message} />                            
+                        </Alert>
+                </Snackbar>
             <Typography variant="body2" gutterBottom>
                 Gestione los servicios de su hospital desde aquí añadiendo o eliminando servicios.
             </Typography>

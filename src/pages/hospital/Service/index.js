@@ -20,6 +20,7 @@ import { PERMISSION } from '../../../constants/types';
 import styled from 'styled-components';
 import { IconGenerator } from '../../../components/general/mini_components';
 import EditServices from './Edit';
+import { ServiceType } from './types';
 
 export function TestsHome(props){
     let location = useLocation();
@@ -62,7 +63,8 @@ export function TestsHomeComponent(props) {
     function renderCore(){
         if(edit){
             return (
-                <EditServices typeService="lab" />
+                <EditServices serviceType={ServiceType.LABORATORY} uuidInvestigation={props.investigations.currentInvestigation.uuid} 
+                    surveys={props.investigations.currentInvestigation.surveys} />
             );
 
         }
