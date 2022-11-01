@@ -139,10 +139,10 @@ export function TestsHomeComponent(props) {
             <Grid container spacing={6} >
                 <Grid container alignItems="center" alignContent="center" item xs={12}>
                     <IconHolder>
-                        <img src={props.type === 1 ? iconImages : iconLab } alt="images" width="40" />
+                        <img src={props.type === 1 ? iconImages : iconLab } alt="images" width="20" />
                     </IconHolder>
                     <div>
-                        <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
+                        <Typography variant="h3" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
                             <Translate id={`pages.hospital.${translations[props.type]}.title`} />
                         </Typography>
                         <IconButton 

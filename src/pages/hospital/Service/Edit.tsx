@@ -1,15 +1,16 @@
-import { Snackbar, Typography } from '@material-ui/core';
+import { Grid, Snackbar, Typography } from '@material-ui/core';
 import { Alert, Color } from '@material-ui/lab';
 import axios from 'axios';
 import { isArray } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Translate } from 'react-localize-redux';
+import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Form from '../../../components/general/form';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
-import { useSnackBarState } from '../../../hooks';
+import { useSnackBarState, SnackbarType } from '../../../hooks';
 import { IService, IServiceInvestigation } from './types';
 
 interface EditServicesProps {
@@ -22,7 +23,7 @@ const EditServices: React.FC<EditServicesProps> = ({uuidInvestigation, serviceTy
     const [loading, setLoading] = useState(false);
     const [servicesGeneral, setServicesGeneral] = useState<null | IService[]>(null);
     const [servicesInvestigation, setServicesInvestigation] = useState<null | IServiceInvestigation[]>(null);
-    const [showSnackbar, setShowSnackbar] = useSnackBarState();
+    const [snackbar, setSnackbar] = useSnackBarState();
     function saveService(serviceInvestigation:any){
         serviceInvestigation.external = serviceInvestigation.external ? 1 : 0;
         console.log(serviceInvestigation);
@@ -30,7 +31,7 @@ const EditServices: React.FC<EditServicesProps> = ({uuidInvestigation, serviceTy
             axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/", serviceInvestigation, { headers: {"Authorization" : localStorage.getItem("jwt") }})
             .then(response => {
                 if(response.status === 200){
-                    setShowSnackbar({show:true, severity:"success", message:"service.success"}); 
+                    setSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"}); 
                     if(isArray(servicesInvestigation)){
                         setServicesInvestigation([...servicesInvestigation, response.data.serviceInvestigation]);
                         
@@ -38,6 +39,9 @@ const EditServices: React.FC<EditServicesProps> = ({uuidInvestigation, serviceTy
                     else{
                         setServicesInvestigation([response.data.serviceInvestigation]);
                     }
+                }
+                else{
+                    setSnackbar({show:true, severity:"error", message:"general.error"}); 
                 }
                 
                 setLoading(false);
@@ -63,7 +67,7 @@ const EditServices: React.FC<EditServicesProps> = ({uuidInvestigation, serviceTy
     }, []);
     return(
         <EditServicesComponent servicesGeneral={servicesGeneral} servicesInvestigation={servicesInvestigation} surveys={surveys} serviceType={serviceType} loading={loading} 
-            showSnackbar ={showSnackbar} callBackSaveService={saveService} />
+        snackbar ={snackbar} callBackSaveService={saveService} />
     )
 }
 
@@ -72,15 +76,11 @@ interface EditServicesComponentProps extends Omit<EditServicesProps, 'uuidInvest
     servicesGeneral:IService[] | null;
     servicesInvestigation:IServiceInvestigation[] | null;
     surveys:ISurvey[];
-    showSnackbar:{
-        show: boolean;
-        message?: string | undefined;
-        severity?: Color | undefined;
-    },
+    snackbar:SnackbarType,
     callBackSaveService:(service:any) =>void
 }
 
-export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, showSnackbar, surveys, loading, servicesGeneral, servicesInvestigation, callBackSaveService }) => {
+export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, snackbar, surveys, loading, servicesGeneral, servicesInvestigation, callBackSaveService }) => {
     const [showModal, setShowModal] = React.useState(false);
     const [addingService, setAddingService] = React.useState(false);
     
@@ -133,12 +133,35 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         return tempDict;
     },[servicesGeneral, servicesInvestigation]);
 
+    function renderCore(){
+        if(servicesInvestigation?.length === 0){
+            return(
+                <Typography variant="h6" component="h6">
+                    <Translate id="pages.hospital.services.noServices" />
+                </Typography>
+            )
+        }
+        else{
+            const rows = servicesInvestigation?.map((serviceInvestigation) => {
+                return {
+                    id: serviceInvestigation.service.id,
+                    name: serviceInvestigation.service.name,
+                    price: serviceInvestigation.billable ? serviceInvestigation.billable.amount : 0,
+                    external: serviceInvestigation.external,
+                    survey: serviceInvestigation.survey ? serviceInvestigation.survey.name : "",
+                }
+            });
+            const headCells = [{ id:"name", alignment: "left", label: "name"}, {id:"price", alignment: "left", label: "price"},
+                {id:"external", alignment: "left", label: "external"}, {id:"survey", alignment: "left", label: "survey"}];
+            return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}  />
+        }
+    }
     useEffect(() => {
         if(!loading){
             setShowModal(false);
         }
     }, [loading])
-    if(loading){
+    if(loading || !servicesGeneral || !servicesInvestigation){
         return <Loader/>
     }
     return (
@@ -163,7 +186,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                             <Form fields={formFields} callBackForm = {(values:any) => callBackSaveService(values)} />
                            
                         }
-                         {/* <Form numberColumns={2} fields={formFields} callBackForm = {(values:any) => callBackForm(values)} /> */}
+                         
                         </>
                     }
                     </>
@@ -173,24 +196,32 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                 vertical: 'top',
                 horizontal: 'center',
                 }}
-                open={showSnackbar.show}
+                open={snackbar.show}
                 autoHideDuration={4000}
                 >
-                    <Alert severity={showSnackbar.severity}>
-                            <Translate id={showSnackbar.message} />                            
+                    <Alert severity={snackbar.severity}>
+                            <Translate id={snackbar.message} />                            
                         </Alert>
                 </Snackbar>
-            <Typography variant="body2" gutterBottom>
-                Gestione los servicios de su hospital desde aquí añadiendo o eliminando servicios.
-            </Typography>
             <ButtonAdd disabled={showModal || loading} 
                 type="button" data-testid="add_service" 
                 onClick={() => {
                     setShowModal(true);
                     setAddingService(true);
                 }
-            } />	
-        </>
+            } />
+            <Typography variant="body2" gutterBottom>
+                Gestione los servicios de su hospital desde aquí añadiendo o eliminando servicios.
+            </Typography>
+            <Grid container style={{ padding: 20 }}>
+                <Grid item xs={12}>
+                {
+                    renderCore()
+                }
+                </Grid>
+            </Grid>
+            
+            </>
     );
 };
 

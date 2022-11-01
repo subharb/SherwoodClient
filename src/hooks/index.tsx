@@ -14,6 +14,12 @@ import { Color } from '@material-ui/lab';
 import { IDepartment } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
 
+export interface SnackbarType{
+    show: boolean;
+    message?: string | undefined;
+    severity?: Color | undefined;
+    
+}
 
 export function useSnackBarState(){
     const [showSnackbar, setShowSnackbar] = useState<{ show: boolean; message?: string; severity?: Color; }>({show : false});

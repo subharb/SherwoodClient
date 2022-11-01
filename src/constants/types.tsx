@@ -1,3 +1,4 @@
+import { Color } from "@material-ui/lab"
 import { ReactElement } from "react"
 
 export interface IBed{
@@ -34,6 +35,8 @@ export interface IUnit{
 export interface IDepartmentServer extends IDepartment{
     uuid:string
 }
+
+
 
 export interface IResearcher{
     name:string,

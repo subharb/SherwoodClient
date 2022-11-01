@@ -28,6 +28,7 @@ import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
 import { PERMISSION } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
+import RequestForm from '../Service/RequestForm';
 
 
 
@@ -50,6 +51,7 @@ function Patient(props) {
     const [indexMedicalNote, setIndexMedicalNote] = useState(null);
     const [indexDataCollection, setIndexDataCollection] = useState(-1);
     const [savedDataCollection, setSavedDataCollection] = useState(false);
+    const [showRequestType, setShowRequestType] = useState(-1);
     // const [indexSection, setIndexSection] = useState(-1);
     const {departments, researchers} = useDepartments();
     
@@ -112,6 +114,9 @@ function Patient(props) {
         if(currentSurveys.length > 1 ){
             setShowOptions(true);
             setShowModal(true);
+        }
+        else if(parameters.typeTest === "lab"){
+            setShowRequestType(0);
         }
         else{
             const filterType = URL_TYPE[parameters.typeTest];
@@ -253,9 +258,14 @@ function Patient(props) {
         }
     }
     function renderCore(){
-        if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
+        if (showRequestType === 0){
+            return (
+                <RequestForm />
+            )
+        }
+        else if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
             const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
-            if(savedDataCollection){
+            if(savedDataCollection){ 
                 return(
                     <Alert severity={showSnackbar.severity}>
                         <Translate id="hospital.patient.new-record" />

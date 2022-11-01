@@ -11,6 +11,10 @@ export interface IServiceInvestigation{
     type:number,
     code:string,
     service:IService,
+    price:number,
+    external:number,
+    survey:any,
+    billable:any
 }
 
 export enum ServiceType{
