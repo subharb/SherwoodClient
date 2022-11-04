@@ -21,6 +21,7 @@ import styled from 'styled-components';
 import { IconGenerator } from '../../../components/general/mini_components';
 import EditServices from './Edit';
 import { ServiceType } from './types';
+import RequestTable from './RequestTable';
 
 export function TestsHome(props){
     let location = useLocation();
@@ -69,6 +70,9 @@ export function TestsHomeComponent(props) {
 
         }
         else{
+            return <RequestTable serviceType={0} 
+                        uuidInvestigation={props.investigations.currentInvestigation.uuid}  />
+
             if(surveyRecords.length === 0){
                 return <Translate id={`pages.hospital.${translations[props.type]}.no-records`} />
             }
@@ -89,51 +93,50 @@ export function TestsHomeComponent(props) {
         }
         
     }
-    useEffect(() => {
-        async function fetchRecordsPatient(){
-            const survey = props.investigations.currentInvestigation.surveys.find(sur => sur.type === props.type);
-            setLoading(true);
-            await dispatch(fetchSubmissionsSurveyAction(props.investigations.currentInvestigation.uuid, survey.uuid));
-            setSurveyTests(survey);
-            setLoading(false);
-        }
-        if(props.investigations.currentInvestigation){
-            fetchRecordsPatient()
-        }
-    }, [props.investigations]);
+    // useEffect(() => {
+    //     async function fetchRecordsPatient(){
+    //         const survey = props.investigations.currentInvestigation.surveys.find(sur => sur.type === props.type);
+    //         setLoading(true);
+    //         await dispatch(fetchSubmissionsSurveyAction(props.investigations.currentInvestigation.uuid, survey.uuid));
+    //         setSurveyTests(survey);
+    //         setLoading(false);
+    //     }
+    //     if(props.investigations.currentInvestigation){
+    //         fetchRecordsPatient()
+    //     }
+    // }, [props.investigations]);
 
-    useEffect(() => {
-        if(submissionData.length > 0){
-            let tempSubmissions = submissionData.reduce((acc, val)=> {
-                let tempDict = {};
-                const researcher = val.researcher;
-                tempDict.researcher = researcher.name+" "+researcher.surnames;
-                tempDict.id = val.id;
-                const patient = patients.find(pat => pat.uuid === val.uuid_patient);
-                tempDict.patient = patient;
-                tempDict.createdAt = val.createdAt;
+    // useEffect(() => {
+    //     if(submissionData.length > 0){
+    //         let tempSubmissions = submissionData.reduce((acc, val)=> {
+    //             let tempDict = {};
+    //             const researcher = val.researcher;
+    //             tempDict.researcher = researcher.name+" "+researcher.surnames;
+    //             tempDict.id = val.id;
+    //             const patient = patients.find(pat => pat.uuid === val.uuid_patient);
+    //             tempDict.patient = patient;
+    //             tempDict.createdAt = val.createdAt;
 
-                return acc.concat(tempDict);
-            }, []);
-            tempSubmissions.sort((a, b) => {
-                const aDate = new Date(a.createdAt);
-                const bDate = new Date(b.createdAt);
-                if(aDate.getTime() > bDate.getTime()){
-                    return -1
-                }
-                else{
-                    return 1;
-                }
-            });
-            setSurveyRecords(tempSubmissions);
-        }
+    //             return acc.concat(tempDict);
+    //         }, []);
+    //         tempSubmissions.sort((a, b) => {
+    //             const aDate = new Date(a.createdAt);
+    //             const bDate = new Date(b.createdAt);
+    //             if(aDate.getTime() > bDate.getTime()){
+    //                 return -1
+    //             }
+    //             else{
+    //                 return 1;
+    //             }
+    //         });
+    //         setSurveyRecords(tempSubmissions);
+    //     }
         
-    }, [submissionData])
-
-    if(!props.submissions.data || loading){
-        return(<Loader />);
-    }
+    // }, [submissionData])
     
+    if(!props.investigations.currentInvestigation){
+        return <Loader />
+    }
     return (
         <React.Fragment>
             <Grid container spacing={6} >

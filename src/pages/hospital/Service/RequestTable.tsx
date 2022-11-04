@@ -61,7 +61,7 @@ const ServiceTypeToChip:React.FC<{type:RequestType}> = ({type}) =>  {
 
 interface RequestTableProps {
     serviceType:number,
-    uuidPatient:string,
+    uuidPatient?:string,
     uuidInvestigation:string,
 }
 
@@ -72,8 +72,16 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, u
     useEffect(() => {
         async function fetchData(){
             setLoading(true);
-            const response = await axios(`${process.env.REACT_APP_API_URL}/hospital/${uuidInvestigation}/requests/${uuidPatient}/${serviceType}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            let response;
+            if(uuidPatient){
+                response = await axios(`${process.env.REACT_APP_API_URL}/hospital/${uuidInvestigation}/requests/${uuidPatient}/${serviceType}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                    .catch(err => {console.log('Catch', err); return err;});
+            }
+            else{
+                response = await axios(`${process.env.REACT_APP_API_URL}/hospital/${uuidInvestigation}/requests/${serviceType}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;});
+            }
+            
             if(response.status === 200 && response.data){
                 setRequestsServiceInvestigation(response.data.requestsServiceInvestigation);
             }
@@ -95,12 +103,12 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, u
 
 export default RequestTable;
 
-interface RequestTableComponentProps extends Omit< RequestTableProps, 'uuidPatient' | 'serviceType' | 'uuidInvestigation' >{
+interface RequestTableComponentProps extends Omit< RequestTableProps, 'serviceType' | 'uuidInvestigation' >{
     requestsServiceInvestigation:IRequestServiceInvestigation[],
     loading:boolean,
 }
 
-export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ requestsServiceInvestigation, loading }) => {
+export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, requestsServiceInvestigation, loading }) => {
     if(loading){
         return <Loader />
     }
@@ -111,14 +119,19 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ re
             </div>
         )
     }
-    const headCells = [{id : 'researcher', label: 'Investigador', alignment:'left'},
+    let headCells = [{id : 'researcher', label: 'Investigador', alignment:'left'},
                     {id : 'status', label: 'Estado', alignment:'left'},
                     {id : 'type', label: 'Tipo', alignment:'left'},
                     {id : 'date', label: 'Fecha', alignment:'left'}];
+    if(!uuidPatient){
+        headCells.splice(1, 0, {id : 'patient', label: 'Patient', alignment:'left'})
+    } 
+    
     const rows = requestsServiceInvestigation.map((requestInvestigation) => {
         return {
             id: requestInvestigation.id,
             researcher: researcherFullName(requestInvestigation.request.researcher),
+            patient: requestInvestigation.patientInvestigation ? requestInvestigation.patientInvestigation.id : '',
             status: <RequestStatusToChip type={requestInvestigation.request.status} />,
             type : <ServiceTypeToChip type={requestInvestigation.serviceInvestigation.service.type} />, 
             date: dateAndTimeFromPostgresString("es", requestInvestigation.request.updatedAt),
