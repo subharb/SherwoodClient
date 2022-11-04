@@ -137,7 +137,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         if(servicesInvestigation?.length === 0){
             return(
                 <Typography variant="h6" component="h6">
-                    <Translate id="pages.hospital.services.noServices" />
+                    <Translate id="pages.hospital.services.no_services" />
                 </Typography>
             )
         }

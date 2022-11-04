@@ -6,7 +6,7 @@ import ProviderSherwood from '../../../providerSherwood';
 import Service from '../../../pages/hospital/Service';
 import { EditServicesComponent } from '../../../pages/hospital/Service/Edit';
 import RequestFormComponent from '../../../pages/hospital/Service/RequestForm';
-import RequestTableComponent from '../../../pages/hospital/Service/RequestTable';
+import { RequestTableComponent } from '../../../pages/hospital/Service/RequestTable';
 import { requestsServiceInvestigation, services, servicesInvestigation } from './data';
 
 

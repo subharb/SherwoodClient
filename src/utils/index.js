@@ -666,6 +666,17 @@ export function dateToFullDateString(date, localeCode){
         })
 }
 
+export function dateAndTimeFromPostgresString(localeCode, dateString){
+    const dateObject =  stringDatePostgresToDate(dateString);
+    return dateObject.toLocaleString(localeCode,{
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            })
+}
+
 export function fullDateFromPostgresString(localeCode, dateString){
     const dateObject =  stringDatePostgresToDate(dateString);
     return dateObject.toLocaleString(localeCode,{
@@ -677,6 +688,11 @@ export function fullDateFromPostgresString(localeCode, dateString){
 export function stringDatePostgresToDate(date){
     return new Date(date.replace(' ', 'T').replace(' ', 'Z'));
 }
+
+export function researcherFullName(researcher){
+    return researcher.name + " " + researcher.surnames;
+}
+
 export function formatPatients(patients, personalFields, code = 'es-ES'){
     const arrayPatients = patients.map(patient => {
         let tempRow = {};

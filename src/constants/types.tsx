@@ -111,3 +111,9 @@ export enum TYPE_BILL_ITEM {
     DISCOUNT_AMOUNT = 1,
     DISCOUNT_PERCENT = 2,
 }
+
+export enum SnackbarTypeSeverity {
+    SUCCESS = "success",
+    ERROR = "error",
+    WARNING = "warning",
+}

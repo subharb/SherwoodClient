@@ -5,19 +5,30 @@ import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';
 import Form from '../../../components/general/form';
 import Loader from '../../../components/Loader';
+import { SnackbarTypeSeverity } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
 import { IServiceInvestigation } from './types';
 
 interface RequestFormProps {
     serviceType: number;
     uuidPatient:string,
-    uuidInvestigation:string  
+    uuidInvestigation:string,
+    callBackRequestFinished:()=>void,  
 }
 
-const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uuidInvestigation }) => {
+const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uuidInvestigation, callBackRequestFinished }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackbar, setShowSnackbar] = useSnackBarState();
     const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(null);
+
+    function handleClose(){
+        setShowSnackbar({show:false});
+        callBackRequestFinished();
+        // if(snackbar.severity === SnackbarTypeSeverity.SUCCESS){
+        //     callBackRequestFinished();
+        // }
+        
+    }
     function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number) {
         setLoading(true);
         const postObject = {
@@ -29,12 +40,21 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uui
         .then(response => {
             if(response.status === 200){
                 setShowSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"});
+                
             }
             else{
                 setShowSnackbar({show:true, severity:"error", message:"general.error"});
             }
-            
+        })
+        .catch(error => {
+            console.log(error.response.data.errorCode);
+            let translateError = "general.error";
+            if(error.response.data.errorCode === 3){
+                translateError = "pages.hospital.services.error.previous_request";
+            }
             setLoading(false);
+            setShowSnackbar({show:true, severity:"error", message:translateError});
+          
         })
     }
     useEffect(() => {
@@ -47,20 +67,24 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uui
             })
         }
 
-    }, [])
+    }, []);
+
     return <RequestFormCore loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
-        callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(uuidPatient, servicesInvestigation, serviceType)} />;
+                handleCloseSnackBar={handleClose}
+                callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(uuidPatient, servicesInvestigation, serviceType)} />;
 }
+
 export default RequestForm;
 
-interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'serviceType' | 'uuidInvestigation' > {
+interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'serviceType' | 'uuidInvestigation' | 'callBackRequestFinished' > {
     loading: boolean;
     snackbar: SnackbarType;
     servicesInvestigation:IServiceInvestigation[],
+    handleCloseSnackBar:()=>void,
     callBackFormSubmitted:(serviceInvestigation:number[]) => void
 }
 
-export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, callBackFormSubmitted }) => {
+export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, callBackFormSubmitted, handleCloseSnackBar }) => {
     let formFields:{ [id: string] : any; }  = React.useMemo(() => {
         let tempDict:{ [id: string] : any; } = {};
         servicesInvestigation.forEach((serviceInvestigation) => {
@@ -73,6 +97,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         });
         return tempDict;
     }, [servicesInvestigation]);
+    
     function callBackForm(values:any){
         console.log("callBackForm", values);
         const serviceInvestigationIds = Object.keys(values).filter((key) => values[key] === true).map((key) => parseInt(key.split("_")[1]));
@@ -91,6 +116,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                 }}
                 open={snackbar.show}
                 autoHideDuration={4000}
+                onClose={handleCloseSnackBar}
                 >
                     <Alert severity={snackbar.severity}>
                             <Translate id={snackbar.message} />                            

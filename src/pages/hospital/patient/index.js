@@ -29,6 +29,7 @@ import { dischargePatientAction, getPatientStaysAction } from '../../../redux/ac
 import { PERMISSION } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
 import RequestForm from '../Service/RequestForm';
+import RequestCombo from '../Service/RequestCombo';
 
 
 
@@ -258,9 +259,11 @@ function Patient(props) {
         }
     }
     function renderCore(){
-        if (showRequestType === 0){
+
+        if (typSurveySelected === 2){
             return (
-                <RequestForm serviceType={showRequestType} uuidPatient={uuidPatient} 
+                <RequestCombo serviceType={0} uuidPatient={uuidPatient} 
+                    showForm={showRequestType === 0}
                     uuidInvestigation={props.investigations.currentInvestigation.uuid} />
             )
         }
