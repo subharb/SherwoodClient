@@ -396,6 +396,25 @@
                     "survey" : ["Survey", "Formulario", "Formulaire"]
 
                 },
+                "request_status" : {
+                    "PENDING" : ["Pending", "Pendiente", "Pendant"],
+                    "PENDING_PAYMENT" : ["Pending Payment", "Pendiente de Pago", "En attente de paiement"],
+                    "ACCEPTED" : ["Accepted", "Aceptado", "Accepté"],
+                    "CANCELLED" : ["Cancelled", "Cancelado", "Annulé"],
+                    "EXPIRED" : ["Expired", "Caducado", "Expiré"],
+                    "DENIED" : ["Denied", "Denegado", "Refusé"],
+                    "COMPLETED" : ["Completed", "Completado", "Terminé"],   
+                    "IN_PROGRESS" : ["In progress", "En progreso", "En cours"],
+                    "INCOMPLETE" : ["Incomplete", "Incompleto", "Incomplet"],
+                    "INCOMPLETE_ACCEPTED" : ["Incomplete Accepted", "Incompleto Aceptado", "Incomplet Accepté"]
+                },
+                "service_type": {
+                    "LABORATORY" : ["Laboratory", "Laboratorio", "Laboratoire"],
+                    "IMAGING" : ["Imaging", "Imagen", "Imagerie"],
+                    "SHOE" : ["Shoe", "Zapato", "Chaussure"],
+                    "PHARMACY" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                    "INTERCONSULT" : ["Interconsult", "Interconsulta", "Interconsultation"]
+                },
                 "list" : {
                     "tchol" : ["Cholesterol Test", "Test Colesterol", "Cholesterol"],
                     "tcrea" : ["Creatnine Test", "Test Creatinina", "Creatinine Test"],

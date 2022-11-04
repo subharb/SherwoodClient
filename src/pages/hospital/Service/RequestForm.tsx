@@ -1,7 +1,7 @@
 import { Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';
 import Form from '../../../components/general/form';
 import Loader from '../../../components/Loader';
@@ -11,32 +11,56 @@ import { IServiceInvestigation } from './types';
 interface RequestFormProps {
     serviceType: number;
     uuidPatient:string,
-    servicesInvestigation:IServiceInvestigation[],
-    callBackFormSubmitted:(serviceInvestigation:number[]) => void
+    uuidInvestigation:string  
 }
 
-const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, servicesInvestigation }) => {
+const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uuidInvestigation }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackbar, setShowSnackbar] = useSnackBarState();
+    const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(null);
     function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number) {
         setLoading(true);
-        axios.post(process.env.REACT_APP_API_URL+"/hospital/servicesgeneral/"+serviceType, { headers: {"Authorization" : localStorage.getItem("jwt") }})
+        const postObject = {
+            servicesInvestigationId: servicesInvestigation,
+            uuidPatientInvestigation:uuidPatient,
+            typeRequest:serviceType
+        }
+        axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/request", postObject, { headers: {"Authorization" : localStorage.getItem("jwt") }})
         .then(response => {
+            if(response.status === 200){
+                setShowSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"});
+            }
+            else{
+                setShowSnackbar({show:true, severity:"error", message:"general.error"});
+            }
             
             setLoading(false);
         })
     }
-    return <RequestFormCore loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation}
+    useEffect(() => {
+        if(!servicesInvestigation){
+            setLoading(true);
+            axios(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/services/"+serviceType, { headers: {"Authorization" : localStorage.getItem("jwt") }})
+            .then(response => {
+                setServicesInvestigation(response.data.servicesInvestigation);
+                setLoading(false);
+            })
+        }
+
+    }, [])
+    return <RequestFormCore loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
         callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(uuidPatient, servicesInvestigation, serviceType)} />;
 }
 export default RequestForm;
 
-interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'serviceType'> {
+interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'serviceType' | 'uuidInvestigation' > {
     loading: boolean;
     snackbar: SnackbarType;
+    servicesInvestigation:IServiceInvestigation[],
+    callBackFormSubmitted:(serviceInvestigation:number[]) => void
 }
 
-export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar }) => {
+export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, callBackFormSubmitted }) => {
     let formFields:{ [id: string] : any; }  = React.useMemo(() => {
         let tempDict:{ [id: string] : any; } = {};
         servicesInvestigation.forEach((serviceInvestigation) => {
@@ -51,6 +75,9 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
     }, [servicesInvestigation]);
     function callBackForm(values:any){
         console.log("callBackForm", values);
+        const serviceInvestigationIds = Object.keys(values).filter((key) => values[key] === true).map((key) => parseInt(key.split("_")[1]));
+        console.log("serviceInvestigationIds", serviceInvestigationIds);
+        callBackFormSubmitted(serviceInvestigationIds);
     }
     if(loading){
         return <Loader />;

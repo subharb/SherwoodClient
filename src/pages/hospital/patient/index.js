@@ -260,7 +260,8 @@ function Patient(props) {
     function renderCore(){
         if (showRequestType === 0){
             return (
-                <RequestForm />
+                <RequestForm serviceType={showRequestType} uuidPatient={uuidPatient} 
+                    uuidInvestigation={props.investigations.currentInvestigation.uuid} />
             )
         }
         else if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
