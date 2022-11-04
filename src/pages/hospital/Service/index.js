@@ -70,7 +70,12 @@ export function TestsHomeComponent(props) {
 
         }
         else{
-            return <RequestTable serviceType={0} 
+            return <RequestTable serviceType={0} encryptionData={{
+                encryptedKeyUsed : props.investigations.currentInvestigation.encryptedKeyUsed,
+                keyResearcherInvestigation: props.investigations.currentInvestigation.keyResearcherInvestigation,
+                permissions: props.investigations.currentInvestigation.permissions,
+                personalFields: props.investigations.currentInvestigation.personalFields 
+            }}
                         uuidInvestigation={props.investigations.currentInvestigation.uuid}  />
 
             if(surveyRecords.length === 0){

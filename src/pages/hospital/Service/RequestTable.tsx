@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Loader from '../../../components/Loader';
-import { dateAndTimeFromPostgresString, fullDateFromPostgresString, researcherFullName } from '../../../utils';
+import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, researcherFullName } from '../../../utils';
 import axios from '../../../utils/axios';
 import { ColourChip } from '../departments/Admin';
 import { IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
@@ -63,9 +63,15 @@ interface RequestTableProps {
     serviceType:number,
     uuidPatient?:string,
     uuidInvestigation:string,
+    encryptionData:{
+        encryptedKeyUsed:number,
+        keyResearcherInvestigation:string,
+        permissions:any[],
+        personalFields:any[],
+    }
 }
 
-const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, uuidInvestigation }) => {
+const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, uuidInvestigation, encryptionData}) => {
     const [requestsServiceInvestigation, setRequestsServiceInvestigation] = React.useState<IRequestServiceInvestigation[] | null>(null);
     const [loading, setLoading] = React.useState(false);
 
@@ -93,7 +99,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, u
 
     if(requestsServiceInvestigation && requestsServiceInvestigation.length > 0){
         return(
-            <RequestTableComponent loading={loading} requestsServiceInvestigation={requestsServiceInvestigation} />
+            <RequestTableComponent encryptionData={encryptionData}
+                loading={loading} requestsServiceInvestigation={requestsServiceInvestigation} />
         )
     }
     return (
@@ -108,7 +115,7 @@ interface RequestTableComponentProps extends Omit< RequestTableProps, 'serviceTy
     loading:boolean,
 }
 
-export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, requestsServiceInvestigation, loading }) => {
+export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, requestsServiceInvestigation, encryptionData, loading }) => {
     if(loading){
         return <Loader />
     }
@@ -131,7 +138,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         return {
             id: requestInvestigation.id,
             researcher: researcherFullName(requestInvestigation.request.researcher),
-            patient: requestInvestigation.patientInvestigation ? requestInvestigation.patientInvestigation.id : '',
+            patient: requestInvestigation.patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(requestInvestigation.patientInvestigation.personalData, encryptionData)) : requestInvestigation.patientInvestigation.id,
             status: <RequestStatusToChip type={requestInvestigation.request.status} />,
             type : <ServiceTypeToChip type={requestInvestigation.serviceInvestigation.service.type} />, 
             date: dateAndTimeFromPostgresString("es", requestInvestigation.request.updatedAt),

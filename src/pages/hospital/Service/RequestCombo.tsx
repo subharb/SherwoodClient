@@ -8,9 +8,16 @@ interface RequestComboProps {
     uuidPatient:string,
     uuidInvestigation:string,
     showForm:boolean,
+    encryptionData:{
+        encryptedKeyUsed:number,
+        keyResearcherInvestigation:string,
+        permissions:any[],
+        personalFields:any[],
+    }
+    
 }
 
-const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient, uuidInvestigation, showForm: showFormProps }) => {
+const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient, uuidInvestigation, showForm: showFormProps, encryptionData }) => {
     const [showForm, setShowForm] = React.useState(Boolean(showFormProps));
 
     useEffect(() => {
@@ -25,7 +32,8 @@ const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient, u
                 uuidInvestigation={uuidInvestigation} callBackRequestFinished={flipToRequestTable}/>
     }
     return (
-        <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} />
+        <RequestTable serviceType={serviceType} encryptionData={encryptionData}
+            uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} />
     );
 };
 

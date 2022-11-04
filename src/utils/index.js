@@ -630,6 +630,10 @@ export function decryptPatientsData(patientsData, investigation){
     return tempDecryptedData;
 }
 
+export function fullNamePatient(patientData){
+    return patientData.name + " " + patientData.surnames;
+}
+
 export function decryptSinglePatientData(patientPersonalData, investigation){
 
     let encryptedFields = {};
