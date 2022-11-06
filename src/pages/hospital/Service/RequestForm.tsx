@@ -100,7 +100,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
     
     function callBackForm(values:any){
         console.log("callBackForm", values);
-        const serviceInvestigationIds = Object.keys(values).filter((key) => values[key] === true).map((key) => parseInt(key.split("_")[1]));
+        const serviceInvestigationIds = Object.keys(values).filter((key) => values[key] === true).map((key) => parseInt(key));
         console.log("serviceInvestigationIds", serviceInvestigationIds);
         callBackFormSubmitted(serviceInvestigationIds);
     }

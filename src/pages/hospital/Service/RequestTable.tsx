@@ -1,12 +1,14 @@
 import { brown, green, orange, red, yellow } from '@material-ui/core/colors';
+import { ContactSupportOutlined } from '@material-ui/icons';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Loader from '../../../components/Loader';
+import { ISurvey } from '../../../constants/types';
 import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, researcherFullName } from '../../../utils';
 import axios from '../../../utils/axios';
 import { ColourChip } from '../departments/Admin';
-import { IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
+import { IRequest, IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
 
 const RequestStatusToChip:React.FC<{type:RequestStatus}> = ({type}) =>  {
         let colour = null
@@ -63,15 +65,17 @@ interface RequestTableProps {
     serviceType:number,
     uuidPatient?:string,
     uuidInvestigation:string,
+    showActions:boolean,
     encryptionData:{
         encryptedKeyUsed:number,
         keyResearcherInvestigation:string,
         permissions:any[],
         personalFields:any[],
-    }
+    },
+    callBackRequestEdit:(request:IRequestServiceInvestigation)=>void
 }
 
-const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, uuidInvestigation, encryptionData}) => {
+const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, uuidInvestigation, encryptionData, showActions, callBackRequestEdit: callBackSurveySelected}) => {
     const [requestsServiceInvestigation, setRequestsServiceInvestigation] = React.useState<IRequestServiceInvestigation[] | null>(null);
     const [loading, setLoading] = React.useState(false);
 
@@ -99,8 +103,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, u
 
     if(requestsServiceInvestigation && requestsServiceInvestigation.length > 0){
         return(
-            <RequestTableComponent encryptionData={encryptionData}
-                loading={loading} requestsServiceInvestigation={requestsServiceInvestigation} />
+            <RequestTableComponent encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
+                loading={loading} requestsServiceInvestigation={requestsServiceInvestigation} callBackRequestEdit={callBackSurveySelected}/>
         )
     }
     return (
@@ -113,9 +117,22 @@ export default RequestTable;
 interface RequestTableComponentProps extends Omit< RequestTableProps, 'serviceType' | 'uuidInvestigation' >{
     requestsServiceInvestigation:IRequestServiceInvestigation[],
     loading:boolean,
+    
 }
 
-export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, requestsServiceInvestigation, encryptionData, loading }) => {
+export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, requestsServiceInvestigation, 
+                                                                                showActions, encryptionData, loading, callBackRequestEdit }) => {
+    
+    function fillRequest(id:number){
+        const request = requestsServiceInvestigation.find((req) => req.id === id);
+        if(request && request.survey !== null){
+            console.log(request.survey.name);
+            callBackRequestEdit(request);
+        }
+        else{
+            console.log("No hay survey");
+        }
+    }
     if(loading){
         return <Loader />
     }
@@ -127,26 +144,35 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         )
     }
     let headCells = [{id : 'researcher', label: 'Investigador', alignment:'left'},
+                    {id : 'service', label: 'Service', alignment:'left'},
                     {id : 'status', label: 'Estado', alignment:'left'},
                     {id : 'type', label: 'Tipo', alignment:'left'},
                     {id : 'date', label: 'Fecha', alignment:'left'}];
     if(!uuidPatient){
+        headCells.splice(0, 0, {id : 'NHC', label: 'NHC', alignment:'left'})
         headCells.splice(1, 0, {id : 'patient', label: 'Patient', alignment:'left'})
     } 
     
     const rows = requestsServiceInvestigation.map((requestInvestigation) => {
         return {
             id: requestInvestigation.id,
-            researcher: researcherFullName(requestInvestigation.request.researcher),
-            patient: requestInvestigation.patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(requestInvestigation.patientInvestigation.personalData, encryptionData)) : requestInvestigation.patientInvestigation.id,
+            nhc: requestInvestigation.patientInvestigation.id,
+            service:requestInvestigation.serviceInvestigation.service.name,
+            patient:requestInvestigation.patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(requestInvestigation.patientInvestigation.personalData, encryptionData)) : requestInvestigation.patientInvestigation.id,
+            researcher: researcherFullName(requestInvestigation.request.researcher),            
             status: <RequestStatusToChip type={requestInvestigation.request.status} />,
             type : <ServiceTypeToChip type={requestInvestigation.serviceInvestigation.service.type} />, 
             date: dateAndTimeFromPostgresString("es", requestInvestigation.request.updatedAt),
         }
     })
+    let actions = null;
+    if(showActions){
+        actions = [{"type" : "edit", "func" : (id:number) => fillRequest(id)}]
+    }
+    
     return (
         <>
-          <EnhancedTable noHeader noSelectable rows={rows} headCells={headCells} />  
+          <EnhancedTable noHeader noSelectable rows={rows} headCells={headCells} actions={actions} />  
         </>
     );
 };

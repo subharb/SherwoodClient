@@ -3,7 +3,7 @@ import { red } from "@material-ui/core/colors";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components";
-import { TYPE_BILL_ITEM } from "../../../constants/types";
+import { TYPES_DISCOUNT, TYPE_BILL_ITEM } from "../../../constants/types";
 import { calculateTotalBill } from "../../../utils/bill";
 import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable } from "./types";
 import styled from "styled-components"
@@ -230,7 +230,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
     
     let rows: BillItemTable[] = items.map((val, index) => {
 
-        const color = val.type !== 0 ? red[900] : "black";
+        const color = TYPES_DISCOUNT.includes(val.type) ? red[900] : "black";
         const amountString = val.type !== 0 ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;
 
         return {
@@ -241,8 +241,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
             delete: <IconButton onClick={() => removeItem(index)}>
                 <IconGenerator type="delete" />
             </IconButton>,
-            used: val.type === 0 ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
-            paid: val.type === 0 ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
+            used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
+            paid: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
         }
     });
 

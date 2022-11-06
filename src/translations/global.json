@@ -240,7 +240,8 @@
                 "types" : {
                     "charge" : ["Charge", "Cargo", "Frais"],
                     "discount_amount" : ["Amount Discount", "Cantidad descuento", "Reduction (montant)"],
-                    "discount_percent" : ["Discount %", "Descuento %", "Reduction (%)"]
+                    "discount_percent" : ["Discount %", "Descuento %", "Reduction (%)"],
+                    "service" : ["Service", "Servicio", "Service"]
                 },
                 "error" : {
                     "concept_short" : ["Must have at 3 characters", "Debe tener al menos 3 caracteres", "Doit avoir 3 caractères"],

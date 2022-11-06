@@ -32,8 +32,8 @@ const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient, u
                 uuidInvestigation={uuidInvestigation} callBackRequestFinished={flipToRequestTable}/>
     }
     return (
-        <RequestTable serviceType={serviceType} encryptionData={encryptionData}
-            uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} />
+        <RequestTable serviceType={serviceType} encryptionData={encryptionData} showActions={false}
+            uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} callBackRequestEdit={() => console.log("callBackSurveySelected")} />
     );
 };
 

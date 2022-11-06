@@ -76,7 +76,9 @@ export const requestsServiceInvestigation = [{
             name:"Pedro",
             surnames:"Rodrigurez",
             uuid : "asdfasdfas"
-        }
+        },
+        createdAt: "2022-11-02T10:12:23.511Z",
+        updatedAt: "2022-11-04T17:22:23.511Z"
     },
     serviceInvestigation : servicesInvestigation[0],
     patientInvestigation:{
@@ -96,7 +98,9 @@ export const requestsServiceInvestigation = [{
             name:"Guillermo",
             surnames:"Suarez",
             uuid : "asdfasdfas"
-        }
+        },
+        createdAt: "2022-11-04T17:22:23.511Z",
+        updatedAt: "2022-11-08T18:42:33.511Z"
     },
     serviceInvestigation : servicesInvestigation[1],
     patientInvestigation:{

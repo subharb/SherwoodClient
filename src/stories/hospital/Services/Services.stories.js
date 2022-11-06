@@ -50,5 +50,7 @@ RequestForm.args = {
 
 export const RequestTable = TemplateRequestTable.bind({});
 RequestTable.args = {
+    loading:false,
+    showActions: true,
     requestsServiceInvestigation: requestsServiceInvestigation
 }

@@ -110,7 +110,10 @@ export enum TYPE_BILL_ITEM {
     CHARGE = 0,
     DISCOUNT_AMOUNT = 1,
     DISCOUNT_PERCENT = 2,
+    SERVICE = 3,
 }
+
+export const TYPES_DISCOUNT = [TYPE_BILL_ITEM.DISCOUNT_AMOUNT, TYPE_BILL_ITEM.DISCOUNT_PERCENT]
 
 export enum SnackbarTypeSeverity {
     SUCCESS = "success",

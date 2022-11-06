@@ -1,4 +1,4 @@
-import { IPatient, IResearcher } from "../../../constants/types"
+import { IPatient, IResearcher, ISurvey } from "../../../constants/types"
 
 export interface IService{
     id:number,
@@ -53,6 +53,7 @@ export interface IRequestServiceInvestigation{
     request:IRequest,
     patientInvestigation:IPatient,
     serviceInvestigation:IServiceInvestigation,
+    survey:ISurvey | null,
 }
 
 export enum ServiceType{
