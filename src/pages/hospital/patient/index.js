@@ -28,7 +28,6 @@ import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
 import { PERMISSION } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
-import RequestForm from '../Service/RequestForm';
 import RequestCombo from '../Service/RequestCombo';
 
 
@@ -216,38 +215,15 @@ function Patient(props) {
 
     async function saveRecord(data){
         //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
-        const postObj = {
-            uuid_survey:dataCollectionSelected.uuid, 
-            uuid_patient:uuidPatient,
-            id:idSubmission,
-            researcher: props.profile.info,
-            surveyRecords:[]
-        }
-        data.forEach(fieldData => {
-            //const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));
-            postObj.surveyRecords.push(fieldData);
-            
-        });
-       
-        
-        if(action === "update"){
-            await dispatch(updateSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, idSubmission));
-        }
-        else{
-            //setIndexSection(-1);
-            setShowOptions(true);
+        setShowOptions(true);
             setShowModal(true);
             setIndexMedicalNote(null);
             setSavedDataCollection(true);
-            console.log(data);
-            await dispatch(postSubmissionPatientAction(postObj, props.investigations.currentInvestigation.uuid, uuidPatient, dataCollectionSelected.uuid, dataCollectionSelected.name, dataCollectionSelected.type));
-
-            
-        }
 
         setTimeout(function(){
             const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient)
             history.push(nextUrl);
+
        }, 1000);
     
     }
@@ -263,7 +239,7 @@ function Patient(props) {
         if (typSurveySelected === 2){
             return (
                 <RequestCombo serviceType={0} uuidPatient={uuidPatient} 
-                    showForm={showRequestType === 0}
+                    showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}
                     uuidInvestigation={props.investigations.currentInvestigation.uuid} />
             )
         }
@@ -279,8 +255,9 @@ function Patient(props) {
             else{
                 return(
                     <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} 
-                        sectionSelected = {sectionSelected}
-                        patientId={props.patientId} investigation={props.investigations.currentInvestigation} 
+                        sectionSelected = {sectionSelected} uuidPatient={uuidPatient} researcher={props.profile.info} idSubmission={idSubmission}
+                        country={props.investigations.currentInvestigation.country}
+                        uuidInvestigation={props.investigations.currentInvestigation.uuid}
                         callBackDataCollection={(values) => saveRecord(values)}/>
                 )
             }

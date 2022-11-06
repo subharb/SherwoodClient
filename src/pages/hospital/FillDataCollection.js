@@ -4,8 +4,42 @@ import { BoxBckgr, IconPatient, ButtonAdd, CheckCircleOutlineSvg } from '../../c
 import SectionForm from '../../components/general/SectionForm';
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
+import { useDispatch, useSelector } from "react-redux";
+import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../../redux/actions/submissionsPatientActions';
 
 export default function FillDataCollection(props) {
+    const dispatch = useDispatch();
+
+    async function saveRecords(data){
+        const postObj = {
+            uuidSurvey:props.dataCollection.uuid, 
+            uuid_patient:props.uuidPatient,
+            id:props.idSubmission,
+            researcher: props.researcher,
+            surveyRecords:[]
+        }
+        data.forEach(fieldData => {
+            //const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));
+            postObj.surveyRecords.push(fieldData);
+            
+        });
+       
+        
+        if(props.idSubmission){
+            // Si hay initData, estamos actualizando
+            await dispatch(updateSubmissionPatientAction(postObj, props.uuidInvestigation, props.uuidPatient, props.dataCollection.uuid, props.dataCollection.name, props.idSubmission));
+        }
+        else{
+            //setIndexSection(-1);
+            
+            console.log(data);
+            await dispatch(postSubmissionPatientAction(postObj, props.uuidInvestigation, props.uuidPatient, props.dataCollection.uuid, props.dataCollection.name, props.dataCollection.type));
+
+            
+        }
+
+        props.callBackDataCollection()
+    }
         
     function renderSection(){
         
@@ -38,9 +72,9 @@ export default function FillDataCollection(props) {
         })      
         return(
             <SectionForm initData={props.initData} key={props.dataCollection.uuid} 
-                country={props.investigation.country}
+                country={props.country}
                 fields={fields} 
-                callBackSectionForm = {(values) => props.callBackDataCollection(values)}/>
+                callBackSectionForm = {(values) => saveRecords(values)}/>
         )
         
     }
@@ -48,11 +82,15 @@ export default function FillDataCollection(props) {
         <React.Fragment>
             <Grid container  spacing={3}>
                 <Grid item container xs={12} spacing={3} style={{color:"white", padding:"1rem"}}>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            {props.dataCollection.name}
-                        </Typography>
-                    </Grid>
+                    {
+                        !props.hideCollectionName && 
+                        <Grid item xs={12}>
+                            <Typography variant="subtitle1" gutterBottom>
+                                {props.dataCollection.name}
+                            </Typography>
+                        </Grid>
+                    }
+                    
                     <Grid item xs={12}>
                         {
                             renderSection()

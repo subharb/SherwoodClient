@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { ISurvey } from '../../../constants/types';
 import RequestForm from './RequestForm';
 import RequestTable from './RequestTable';
 import RequestTableComponent from './RequestTable';
@@ -8,6 +9,7 @@ interface RequestComboProps {
     uuidPatient:string,
     uuidInvestigation:string,
     showForm:boolean,
+    surveys:ISurvey[],
     encryptionData:{
         encryptedKeyUsed:number,
         keyResearcherInvestigation:string,
@@ -17,7 +19,7 @@ interface RequestComboProps {
     
 }
 
-const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient, uuidInvestigation, showForm: showFormProps, encryptionData }) => {
+const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient,surveys,  uuidInvestigation, showForm: showFormProps, encryptionData }) => {
     const [showForm, setShowForm] = React.useState(Boolean(showFormProps));
 
     useEffect(() => {
@@ -29,10 +31,11 @@ const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient, u
     }
     if(showForm){
         return <RequestForm serviceType={serviceType} uuidPatient={uuidPatient} 
-                uuidInvestigation={uuidInvestigation} callBackRequestFinished={flipToRequestTable}/>
+                    uuidInvestigation={uuidInvestigation} callBackRequestFinished={flipToRequestTable}/>
     }
     return (
         <RequestTable serviceType={serviceType} encryptionData={encryptionData} showActions={false}
+            surveys = {surveys} fillPending={false}
             uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} callBackRequestEdit={() => console.log("callBackSurveySelected")} />
     );
 };

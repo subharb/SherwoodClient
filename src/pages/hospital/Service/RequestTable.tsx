@@ -66,6 +66,8 @@ interface RequestTableProps {
     uuidPatient?:string,
     uuidInvestigation:string,
     showActions:boolean,
+    surveys:ISurvey[],
+    fillPending:boolean,
     encryptionData:{
         encryptedKeyUsed:number,
         keyResearcherInvestigation:string,
@@ -75,7 +77,10 @@ interface RequestTableProps {
     callBackRequestEdit:(request:IRequestServiceInvestigation)=>void
 }
 
-const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, uuidInvestigation, encryptionData, showActions, callBackRequestEdit: callBackSurveySelected}) => {
+const ACTIONABLE_REQUESTS = [RequestStatus.PENDING, RequestStatus.ACCEPTED, RequestStatus.COMPLETED];
+
+
+const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions, callBackRequestEdit: callBackSurveySelected}) => {
     const [requestsServiceInvestigation, setRequestsServiceInvestigation] = React.useState<IRequestServiceInvestigation[] | null>(null);
     const [loading, setLoading] = React.useState(false);
 
@@ -103,7 +108,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, uuidPatient, u
 
     if(requestsServiceInvestigation && requestsServiceInvestigation.length > 0){
         return(
-            <RequestTableComponent encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
+            <RequestTableComponent surveys={surveys}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
                 loading={loading} requestsServiceInvestigation={requestsServiceInvestigation} callBackRequestEdit={callBackSurveySelected}/>
         )
     }
@@ -120,18 +125,24 @@ interface RequestTableComponentProps extends Omit< RequestTableProps, 'serviceTy
     
 }
 
-export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, requestsServiceInvestigation, 
+export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, fillPending, surveys, requestsServiceInvestigation, 
                                                                                 showActions, encryptionData, loading, callBackRequestEdit }) => {
     
     function fillRequest(id:number){
-        const request = requestsServiceInvestigation.find((req) => req.id === id);
-        if(request && request.survey !== null){
-            console.log(request.survey.name);
-            callBackRequestEdit(request);
+        const requestService = requestsServiceInvestigation.find((req) => req.id === id);
+        if(requestService && ACTIONABLE_REQUESTS.includes(requestService.request.status)){
+            if(requestService.survey !== null){
+                console.log(requestService.survey.name);
+                callBackRequestEdit(requestService);
+            }
+            else{
+                console.log("No hay survey");
+            }
         }
         else{
-            console.log("No hay survey");
+            console.log("No hay nada que hacer con esa solicitud");
         }
+        
     }
     if(loading){
         return <Loader />
@@ -146,6 +157,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     let headCells = [{id : 'researcher', label: 'Investigador', alignment:'left'},
                     {id : 'service', label: 'Service', alignment:'left'},
                     {id : 'status', label: 'Estado', alignment:'left'},
+                    {id : 'unit', label: 'Unit', alignment:'left'},
                     {id : 'type', label: 'Tipo', alignment:'left'},
                     {id : 'date', label: 'Fecha', alignment:'left'}];
     if(!uuidPatient){
@@ -154,10 +166,17 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     } 
     
     const rows = requestsServiceInvestigation.map((requestInvestigation) => {
+        let survey = null
+        if(requestInvestigation.survey){
+            const aSurvey = requestInvestigation.survey as ISurvey;
+            survey = surveys.find((survey) => survey.uuid === aSurvey.uuid);
+        }
+         
         return {
             id: requestInvestigation.id,
             nhc: requestInvestigation.patientInvestigation.id,
             service:requestInvestigation.serviceInvestigation.service.name,
+            unit: survey && survey.unit ? survey.unit.name : "",
             patient:requestInvestigation.patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(requestInvestigation.patientInvestigation.personalData, encryptionData)) : requestInvestigation.patientInvestigation.id,
             researcher: researcherFullName(requestInvestigation.request.researcher),            
             status: <RequestStatusToChip type={requestInvestigation.request.status} />,
@@ -166,7 +185,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         }
     })
     let actions = null;
-    if(showActions){
+    if(showActions && fillRequest){
         actions = [{"type" : "edit", "func" : (id:number) => fillRequest(id)}]
     }
     

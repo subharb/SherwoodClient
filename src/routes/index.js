@@ -120,6 +120,7 @@ export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const HOSPITAL_LAB_FORM = "/lab/:uuidDataCollection/:uuidPatient";
+export const HOSPITAL_LAB_RESULT = "/lab/:idSubmission";
 export const ROUTE_401 = "/auth/401";
 export const HOSPITAL_BILLING = "/billing";
 export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
@@ -203,6 +204,12 @@ const hospitalRoutes = {
             name: "Hospital Lab",
             component: TestsHome
         },
+        {
+            path: HOSPITAL_LAB_RESULT,
+            name: "Hospital Lab",
+            component: TestsHome
+        },
+        
         {
             path: HOSPITAL_LAB,
             name: "Hospital Lab",

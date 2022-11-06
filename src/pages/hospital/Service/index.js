@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
 import iconImages from "../../../img/icons/images_white.png";
 import iconLab from "../../../img/icons/lab_white.png";
-import { Box, Grid, Paper, Typography, Button, IconButton } from '@material-ui/core';
+import { Box, Grid, Paper, Typography, Button, IconButton, Card } from '@material-ui/core';
 import Form  from '../../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { HOSPITAL_LAB_FORM, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_SUBMISSION, } from '../../../routes';
+import { HOSPITAL_LAB_FORM, HOSPITAL_LAB, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_LAB_RESULT, } from '../../../routes';
 import Loader from '../../../components/Loader';
 
 import {
@@ -20,9 +20,14 @@ import { PERMISSION } from '../../../constants/types';
 import styled from 'styled-components';
 import { IconGenerator } from '../../../components/general/mini_components';
 import EditServices from './Edit';
-import { ServiceType } from './types';
+import { RequestStatus, ServiceType } from './types';
 import RequestTable from './RequestTable';
 import FillDataCollection from '../FillDataCollection';
+import { fullNamePatient } from '../../../utils';
+import PatientInfo from '../../../components/PatientInfo';
+import { fetchProfileInfo } from '../../../redux/actions/profileActions';
+import axios from '../../../utils/axios';
+import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
 
 export function TestsHome(props){
     let location = useLocation();
@@ -44,30 +49,66 @@ const IconHolder = styled.div`
 export function TestsHomeComponent(props) {
     const [ surveyRecords, setSurveyRecords] = useState([]);
     const [edit, setEdit] = useState(false);
-    const [surveyTests, setSurveyTests] = useState(null);
+    const [dataCollectionSelected, setDataCollectionSelected] = useState(false);
+    const [patient, setPatient] = useState(null);
     const [loading, setLoading] = useState(false);
     const history = useHistory();
     const uuidDataCollection = props.parameters.uuidDataCollection;
-    const dataCollectionSelected = uuidDataCollection ? props.investigations.currentInvestigation.surveys.find((survey) => survey.uuid === uuidDataCollection) : null;
-
-    const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
-    const submissionData = props.submissions.data && surveyTests && props.investigations.currentInvestigation ? props.submissions.data[props.investigations.currentInvestigation.uuid][surveyTests.uuid].submissions : [];
+    const uuidPatient = props.parameters.uuidPatient;
+    const idSubmission = parseInt(props.parameters.idSubmission);
+    const [submissionData, setSubmissionData] = useState(null);
+   
     const dispatch = useDispatch(); 
     const translations = ["patient", "medical-imaging", "laboratory"];
 
-    function goToSubmission(index){
-        console.log(surveyRecords[index]);
-        const patient = surveyRecords[index].patient
-        const nextUrl = HOSPITAL_PATIENT_SUBMISSION.replace(":uuidPatient", patient.uuid).replace(":action", "show").replace(":idSubmission", surveyRecords[index].id);
-        console.log("Next url", nextUrl);
-        history.push(nextUrl);
-    }
+
+    useEffect(() => {
+        if(props.investigations.currentInvestigation){
+            setDataCollectionSelected(props.investigations.currentInvestigation.surveys.find((survey) => survey.uuid === uuidDataCollection));
+        }
+    }, [ props.investigations, uuidDataCollection]);
+
+    useEffect(() => {
+        async function fetchSubmission(){
+            setLoading(true);
+        
+            const response = await axios(`${process.env.REACT_APP_API_URL}/researcher/investigation/${props.investigations.currentInvestigation.uuid}/submission/${idSubmission}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                    .catch(err => {console.log('Catch', err); return err;});
+            if(response.status === 200){
+                setSubmissionData(response.data);
+            }
+            setLoading(false);
+        }
+        if(props.investigations.currentInvestigation){
+            setPatient(props.investigations.currentInvestigation.patientsPersonalData.find((patient) => patient.uuid === uuidPatient));
+            if(!props.profile.info){
+                dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
+            }
+            if(idSubmission){
+                fetchSubmission()
+            }
+        }
+    }, [ props.investigations, uuidPatient, idSubmission]);
+    
     function toogleEditLab(){
         setEdit(edit => !edit);
     }
-    function goToSurvey(request){
-        const nextUrl = HOSPITAL_LAB_FORM.replace(":uuidDataCollection", request.survey.uuid).replace(":uuidPatient", request.patientInvestigation.uuid)
-        history.push(nextUrl);
+    function accessRequest(requestService){
+        let nextUrl = null;
+        if(requestService.submissionPatient && requestService.request.status === RequestStatus.COMPLETED){
+            nextUrl = HOSPITAL_LAB_RESULT.replace(":idSubmission", requestService.submissionPatient.id);
+        }
+        else if(requestService.request.status === RequestStatus.PENDING){
+            nextUrl = HOSPITAL_LAB_FORM.replace(":uuidDataCollection", requestService.survey.uuid).replace(":uuidPatient", requestService.patientInvestigation.uuid)
+        }
+        
+        if(nextUrl){
+            history.push(nextUrl);
+        }
+        
+    }
+    function goToHomeTest(){
+        history.push(HOSPITAL_LAB);
     }
     function renderCore(){
         if(edit){
@@ -76,26 +117,46 @@ export function TestsHomeComponent(props) {
                     surveys={props.investigations.currentInvestigation.surveys} />
             );
         }
-        else if(uuidDataCollection){
-            return <FillDataCollection key={uuidDataCollection} dataCollection={dataCollectionSelected} 
-                        patientId={props.patientId} investigation={props.investigations.currentInvestigation} 
-                        callBackDataCollection={(values) => console.log(values)}/>
+        else if(submissionData && idSubmission){
+            const survey = props.investigations.currentInvestigation.surveys.find((survey) => survey.uuid === submissionData.submission.uuidSurvey);
+            return (
+                <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={survey} 
+                        mode="elements" callBackEditSubmission={() => console.log("Edit submission")} idSubmission={idSubmission}
+                        submissions={[submissionData.submission]} surveys={props.investigations.currentInvestigation.surveys} />
+            )
+        }
+        else if(dataCollectionSelected){
+            return (
+                <>
+                    <div style={{padding:'0.75rem'}}>
+                        <Card style={{padding:"1rem"}}>
+                            <PatientInfo personalData={patient.personalData} />
+                        </Card>
+                    </div>
+                    <FillDataCollection key={uuidDataCollection} dataCollection={dataCollectionSelected} 
+                        hideCollectionName={true}
+                        country={props.investigations.currentInvestigation.country} researcher={props.profile.info}
+                        uuidPatient={uuidPatient} uuidInvestigation={props.investigations.currentInvestigation.uuid}
+                        callBackDataCollection={goToHomeTest} />
+                </>
+            )
         }
         else{
-            return <RequestTable serviceType={0} showActions={true} callBackRequestEdit={(uuidSurvey) => goToSurvey(uuidSurvey)}
+            return <RequestTable serviceType={0} showActions={true} fillRequest={true} callBackRequestEdit={(uuidSurvey) => accessRequest(uuidSurvey)}
                         encryptionData={{
                             encryptedKeyUsed : props.investigations.currentInvestigation.encryptedKeyUsed,
                             keyResearcherInvestigation: props.investigations.currentInvestigation.keyResearcherInvestigation,
                             permissions: props.investigations.currentInvestigation.permissions,
                             personalFields: props.investigations.currentInvestigation.personalFields 
                         }}
+                        surveys={props.investigations.currentInvestigation.surveys}
                         uuidInvestigation={props.investigations.currentInvestigation.uuid}  />
 
         }
         
     }
     
-    if(!props.investigations.currentInvestigation){
+    if(!props.investigations.currentInvestigation || props.patientsSubmissions.loading || loading){
         return <Loader />
     }
     return (
@@ -131,7 +192,9 @@ const mapStateToProps = (state) =>{
     return {
         investigations:state.investigations,
         submissions:state.submissions,
-        patients:state.patients
+        patients:state.patients,
+        patientsSubmissions:state.patientsSubmissions,
+        profile:state.profile,
     }
 }
 

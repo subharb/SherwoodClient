@@ -40,6 +40,8 @@ export enum RequestStatus {
     INCOMPLETE_ACCEPTED = 9, //Pensada para farmacia
 }
 
+
+
 export enum RequestType {
     LABORATORY = 0,
     IMAGING = 1,
@@ -53,6 +55,7 @@ export interface IRequestServiceInvestigation{
     request:IRequest,
     patientInvestigation:IPatient,
     serviceInvestigation:IServiceInvestigation,
+    submissionPatient:any,
     survey:ISurvey | null,
 }
 

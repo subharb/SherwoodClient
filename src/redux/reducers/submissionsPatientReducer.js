@@ -1,3 +1,4 @@
+import _ from "lodash";
 import * as types from "../../constants";
 import { decryptPatientsData } from '../../utils'; 
 /**
@@ -42,8 +43,19 @@ export default function reducer(state = initialState, action){
             tempData = newState.data === initialState.data ? {} : newState.data;
             let tempDict = {};
             //Si se genera en offline, no hay id
-            
-            if(tempData[action.meta.uuidPatient].hasOwnProperty(action.meta.surveyUUID)){
+            if( _.isEmpty(tempData) ){
+                
+                tempDict = {};
+
+                tempDict["submissions"] = [action.submission];
+                tempData[action.meta.uuidPatient] = tempDict;
+
+                newState.data = tempData;
+                newState.loading = initialState.loading;
+                newState.error = initialState.error;
+                return newState;
+            }
+            else if(tempData[action.meta.uuidPatient].hasOwnProperty(action.meta.surveyUUID)){
                 tempDict = tempData[action.meta.uuidPatient][action.meta.surveyUUID];
                 if([types.UPDATE_SUBMISSIONS_PATIENT_OFFLINE, types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS].includes(action.type)){
                     const indexSub = tempDict.submissions.findIndex(sub => sub.id === action.meta.idSubmission);

@@ -4,11 +4,11 @@ import { ButtonBack, ButtonEdit, ButtonForward } from '../../../general/mini_com
 import { Card, Paper, Typography, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import { Alert } from "@material-ui/lab";
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
 import SmartField from '../../../general/SmartFields';
-import { getData, isSmartField } from '../../../../utils';
+import { dateToFullDateString, fullDateFromPostgresString, getData, isSmartField } from '../../../../utils';
 import { ALL_SMARTFIELDS_TYPES } from '../../../../constants';
 import { PERMISSION } from '../../../../constants/types';
 
@@ -28,7 +28,7 @@ const HeaderSection = styled.div`
     display:flex;
 
 `;
-export default function ShowRecordsSection(props) {
+function ShowRecordsSection(props) {
     //let [indexSubmission, setIndexSubmission ] = useState(0);
     let [error, setError] = useState(false);
 
@@ -93,6 +93,21 @@ export default function ShowRecordsSection(props) {
             </React.Fragment>
             );
         }   
+        else if(valueRecord.surveyField.type === "date"){
+            
+            return (
+                <React.Fragment>
+                    { props.section.fields.length > 1 &&
+                        <Typography variant="h6" color="textPrimary">
+                            {field.name}: 
+                        </Typography>
+                    }
+                    <Typography variant="body2" gutterBottom>
+                        { fullDateFromPostgresString( props.activeLanguage.code, valueRecord.value) }
+                    </Typography>
+                </React.Fragment>
+            )
+        }
         else{
             return(<React.Fragment>
                 { props.section.fields.length > 1 &&
@@ -189,3 +204,5 @@ ShowRecordsSection.propTypes = {
     section: PropTypes.object,
     submissions: PropTypes.array
 };
+
+export default withLocalize(ShowRecordsSection)
