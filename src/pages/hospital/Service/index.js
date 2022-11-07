@@ -96,10 +96,11 @@ export function TestsHomeComponent(props) {
     function accessRequest(requestService){
         let nextUrl = null;
         if(requestService.submissionPatient && requestService.request.status === RequestStatus.COMPLETED){
-            nextUrl = HOSPITAL_LAB_RESULT.replace(":idSubmission", requestService.submissionPatient.id);
+            nextUrl = HOSPITAL_LAB_RESULT.replace(":idSubmission", requestService.submissionPatient.id)
+                                        .replace(":uuidPatient", requestService.patientInvestigation.uuid);
         }
-        else if(requestService.request.status === RequestStatus.PENDING){
-            nextUrl = HOSPITAL_LAB_FORM.replace(":uuidDataCollection", requestService.survey.uuid).replace(":uuidPatient", requestService.patientInvestigation.uuid)
+        else if(requestService.request.status === RequestStatus.ACCEPTED){
+            nextUrl = HOSPITAL_LAB_FORM.replace(":uuidDataCollection", requestService.serviceInvestigation.survey.uuid).replace(":uuidPatient", requestService.patientInvestigation.uuid)
         }
         
         if(nextUrl){
@@ -120,9 +121,16 @@ export function TestsHomeComponent(props) {
         else if(submissionData && idSubmission){
             const survey = props.investigations.currentInvestigation.surveys.find((survey) => survey.uuid === submissionData.submission.uuidSurvey);
             return (
-                <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={survey} 
+                <>
+                    
+                        <Card style={{padding:"1rem"}}>
+                            <PatientInfo personalData={patient.personalData} />
+                        </Card>
+                    
+                    <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={survey} 
                         mode="elements" callBackEditSubmission={() => console.log("Edit submission")} idSubmission={idSubmission}
                         submissions={[submissionData.submission]} surveys={props.investigations.currentInvestigation.surveys} />
+                </>
             )
         }
         else if(dataCollectionSelected){

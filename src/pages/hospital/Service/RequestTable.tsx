@@ -5,7 +5,7 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
-import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, researcherFullName } from '../../../utils';
+import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, researcherFullName, stringDatePostgresToDate } from '../../../utils';
 import axios from '../../../utils/axios';
 import { ColourChip } from '../departments/Admin';
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
@@ -80,7 +80,7 @@ interface RequestTableProps {
 const ACTIONABLE_REQUESTS = [RequestStatus.PENDING, RequestStatus.ACCEPTED, RequestStatus.COMPLETED];
 
 
-const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions, callBackRequestEdit: callBackSurveySelected}) => {
+const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions,fillPending,  callBackRequestEdit: callBackSurveySelected}) => {
     const [requestsServiceInvestigation, setRequestsServiceInvestigation] = React.useState<IRequestServiceInvestigation[] | null>(null);
     const [loading, setLoading] = React.useState(false);
 
@@ -108,9 +108,12 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidP
 
     if(requestsServiceInvestigation && requestsServiceInvestigation.length > 0){
         return(
-            <RequestTableComponent surveys={surveys}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
+            <RequestTableComponent surveys={surveys} fillPending={fillPending}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
                 loading={loading} requestsServiceInvestigation={requestsServiceInvestigation} callBackRequestEdit={callBackSurveySelected}/>
         )
+    }
+    else if(!requestsServiceInvestigation){
+        return <Loader />
     }
     return (
         <Translate id="pages.hospital.services.no_requests" />
@@ -154,18 +157,19 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
             </div>
         )
     }
-    let headCells = [{id : 'researcher', label: 'Investigador', alignment:'left'},
+    let headCells = [{id : 'request_id', label: 'Request ID', alignment:'left'},
+                    {id : 'researcher', label: 'Investigador', alignment:'left'},
                     {id : 'service', label: 'Service', alignment:'left'},
                     {id : 'status', label: 'Estado', alignment:'left'},
                     {id : 'unit', label: 'Unit', alignment:'left'},
                     {id : 'type', label: 'Tipo', alignment:'left'},
                     {id : 'date', label: 'Fecha', alignment:'left'}];
     if(!uuidPatient){
-        headCells.splice(0, 0, {id : 'nhc', label: 'NHC', alignment:'left'})
-        headCells.splice(1, 0, {id : 'patient', label: 'Patient', alignment:'left'})
+        headCells.splice(1, 0, {id : 'nhc', label: 'NHC', alignment:'left'})
+        headCells.splice(2, 0, {id : 'patient', label: 'Patient', alignment:'left'})
     } 
     
-    const rows = requestsServiceInvestigation.map((requestInvestigation) => {
+    const rows = requestsServiceInvestigation.sort((reqA, reqB) => stringDatePostgresToDate(reqB.request.updatedAt).getMilliseconds() - stringDatePostgresToDate(reqA.request.updatedAt).getMilliseconds() ).map((requestInvestigation) => {
         let survey = null
         if(requestInvestigation.survey){
             const aSurvey = requestInvestigation.survey as ISurvey;
@@ -174,6 +178,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
          
         return {
             id: requestInvestigation.id,
+            request_id:requestInvestigation.id,
             nhc: requestInvestigation.patientInvestigation.id,
             service:requestInvestigation.serviceInvestigation.service.name,
             unit: survey && survey.unit ? survey.unit.name : "",
@@ -185,13 +190,10 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         }
     })
     let actions = null;
-    if(showActions && fillRequest){
-        actions = [{"type" : "edit", "func" : (id:number) => fillRequest(id)}]
-    }
     
     return (
         <>
-          <EnhancedTable noHeader noSelectable rows={rows} headCells={headCells} actions={actions} />  
+          <EnhancedTable  selectRow={(id:number) => fillRequest(id)} noHeader noSelectable rows={rows} headCells={headCells} actions={actions} />  
         </>
     );
 };

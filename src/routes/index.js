@@ -112,6 +112,7 @@ export const HOSPITAL_PATIENT = "/patient/:uuidPatient";
 export const HOSPITAL_PATIENT_SECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection/section/:uuidSection/:idSubmission?";
 export const HOSPITAL_PATIENT_DATACOLLECTION = "/patient/:uuidPatient/:action/data-collection/:uuidDataCollection";
 export const HOSPITAL_PATIENT_SUBMISSION = "/patient/:uuidPatient/:action/submission/:idSubmission";
+export const HOSPITAL_PATIENT_SINGLE_SUBMISSION = "/patient/:uuidPatient/:action/submission/:idSubmission/:single?";
 export const HOSPITAL_PATIENT_EDIT_PERSONAL_DATA = "/patient/:uuidPatient/edit/personal-data";
 export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note/:idMedicalNote";
 export const HOSPITAL_PATIENT_TESTS = "/patient/:uuidPatient/tests/:typeTest";
@@ -120,7 +121,7 @@ export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const HOSPITAL_LAB_FORM = "/lab/:uuidDataCollection/:uuidPatient";
-export const HOSPITAL_LAB_RESULT = "/lab/:idSubmission";
+export const HOSPITAL_LAB_RESULT = "/lab/result/:idSubmission/patient/:uuidPatient";
 export const ROUTE_401 = "/auth/401";
 export const HOSPITAL_BILLING = "/billing";
 export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
@@ -186,6 +187,11 @@ const hospitalRoutes = {
         },
         {
             path: HOSPITAL_PATIENT_SUBMISSION,
+            name: "Patient Submission",
+            component: Patient
+        },
+        {
+            path: HOSPITAL_PATIENT_SINGLE_SUBMISSION,
             name: "Patient Submission",
             component: Patient
         },

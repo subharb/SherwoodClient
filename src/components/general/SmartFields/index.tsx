@@ -87,7 +87,17 @@ export interface EDDType{
     "edd_last_period" : Date
 }
 
-export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType;
+export interface RequestLabType{
+    "request_lab" : string,
+    "request_id" : number
+}
+
+export interface RequestImageType{
+    "request_img" : string,
+    request_id: number
+}
+
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType | RequestLabType | RequestImageType;
 
 export interface Diagnosis{
     ict : string,
@@ -111,6 +121,7 @@ interface Props extends LocalizeContextProps {
     country:string,
     language?:string,
     uuidPatient?:string,
+    uuidSurvey?:string,
     uuidInvestigation?:string,
     initialState:{
         addingElements:boolean,
@@ -178,7 +189,7 @@ const SmartField:React.FC<Props> = (props) => {
                     
                 return valueDict
             })
-            if(props.mode === "form"){
+            if(props.mode === "form" && props.type !== "request_lab" && props.type !== "request_img"){
                 return <Grid item xs={12} spacing={3}>
                         <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
                             actions={[{"type" : "delete", "func" : (index:number) => removeElement(index)}]}
@@ -211,7 +222,7 @@ const SmartField:React.FC<Props> = (props) => {
     function renderSelector(){
         if(addingElements && props.mode === "form"){
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
-                cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, country:props.country, error:props.error, slaves:props.slaves,
+                cancel, language:props.language ? props.language : props.activeLanguage.code, country:props.country, error:props.error, slaves:props.slaves,
                 size:"small", elementSelected:(smartF:SmartFieldType) => elementSelected(smartF)}
             
             let smartField = null;
@@ -242,9 +253,10 @@ const SmartField:React.FC<Props> = (props) => {
                     break;
                 case "request_lab":
                 case "request_img":
-                    if(props.uuidPatient && props.uuidInvestigation){
+                    if(props.uuidPatient && props.uuidInvestigation && props.uuidSurvey){
                         const serviceType = props.type === "request_lab" ? 0 : 1;
-                        smartField = <RequestField serviceType={serviceType} uuidInvestigation={props.uuidInvestigation} 
+                        smartField = <RequestField cancel={cancel} serviceType={serviceType} uuidInvestigation={props.uuidInvestigation} 
+                                        uuidSurvey={props.uuidSurvey}
                                         uuidPatient={props.uuidPatient} {...propsSmartField} />
                     }
                     else{
@@ -257,14 +269,10 @@ const SmartField:React.FC<Props> = (props) => {
             }
             return(
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                    <Card variant="outlined">
-                        <CardContent>
-                            <Typography color="textSecondary" gutterBottom>
-                                <Translate id={`hospital.${props.type}`} />
-                            </Typography>
-                            { smartField }
-                        </CardContent>
-                    </Card>
+                    <Typography color="textSecondary" gutterBottom>
+                        <Translate id={`hospital.${props.type}`} />
+                    </Typography>
+                    { smartField }
                 </Grid>
             ) 
         }
@@ -298,21 +306,25 @@ const SmartField:React.FC<Props> = (props) => {
     }
     else{
         return (
-            <Grid container spacing={3}>
-                {
-                    (!addingElements && props.mode === "form" && !SINGLE_SMARTFIELDS.includes(props.type)) &&
-                    <Grid item xs={12}>
-                        <ButtonPlus onClick={() =>  setAddingElements(true)} />
-                        <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
-                    </Grid>
-                }
-                {
-                    renderSelector()
-                }
-                
-                {
-                    renderElements()
-                }
+            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                    <Card variant="outlined">
+                        <CardContent>
+                        {
+                            (!addingElements && props.mode === "form" && !SINGLE_SMARTFIELDS.includes(props.type)) &&
+                            <Grid item xs={12}>
+                                <ButtonPlus onClick={() =>  setAddingElements(true)} />
+                                <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
+                            </Grid>
+                        }
+                        {
+                            renderSelector()
+                        }
+                        
+                        {
+                            renderElements()
+                        }
+                        </CardContent>
+                </Card>
             </Grid>
         )
     }

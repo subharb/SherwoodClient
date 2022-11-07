@@ -5,7 +5,7 @@ import ProviderSherwood from '../../providerSherwood';
 import TreatmentCore from '../../components/general/SmartFields/SingleTreatmentSelector';
 import TreatmentHospital from '../../components/general/SmartFields/TreatmentHospital';
 import RequestField from '../../components/general/SmartFields/RequestField';
-import { servicesInvestigation } from '../hospital/Services/data';
+import { requestsServiceInvestigation, servicesInvestigation } from '../hospital/Services/data';
 
 const FIELD_TREATMENT = {
     "drug":{
@@ -373,6 +373,7 @@ export const RequestLabField = TemplateRequestRaw.bind({});
 RequestLabField.args = {
     serviceType:0,
     initServicesInvestigation:servicesInvestigation,
+    initRequestsServiceInvestigation:requestsServiceInvestigation,
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 

@@ -33,6 +33,77 @@ export const services = [{
     name: "Test Hemoglobina",
     type: 0,
 }]
+
+export const requestsServiceInvestigationService = [{
+		"request": {
+			
+			"type": 0,
+			"researcher": {
+				"id": 2,
+				"name": "Pedro ",
+				"surnames": "- Sherwood Staff",
+				"email": "pedro.cruz@ucl.ac.uk",
+				"phone": "774791468",
+				"createdAt": "2022-06-21T06:02:34.799Z",
+				"updatedAt": "2022-06-21T06:02:34.799Z",
+				"uuid": "9c6dd74a-2362-4a30-b826-10330f250c07"
+			},
+			"status": 1,
+			"deletedAt": null,
+			"id": 24,
+			"createdAt": "2022-11-07T13:11:05.406Z",
+			"updatedAt": "2022-11-07T13:11:05.406Z"
+		},
+		"serviceInvestigation": {
+			"id": 2,
+			"description": "",
+			"active": true,
+			"external": 0,
+		},
+		"patientInvestigation": {
+			"id": 4347,
+			"uuid": "f417f31f-d96d-40e8-a62a-68ed4e81506f",
+			"status": 0,
+			"investigationId": 46,
+			"patientId": 4347,
+			"patientIdInvestigation": 24,
+			"records": {}
+		},
+		"survey": {
+			"id": 322,
+			"uuid": "5e195cbe-a66c-4f52-9ea1-66b072442808",
+			"name": "Test de laboratoire",
+			"isActive": true,
+			"hasRecords": true,
+			"type": 2,
+			"order": 20
+		},
+		"billItem": {
+			"billable": {
+				"id": 19,
+				"amount": 500,
+				"type": 3,
+				"concept": "Test Colesterol",
+				"insurance": null,
+				"createdAt": "2022-11-06T15:20:07.851Z",
+				"updatedAt": "2022-11-06T15:20:07.851Z",
+				"deletedAt": null
+			},
+			"concept": "Test Colesterol",
+			"amount": 500,
+			"type": 3,
+			
+			"paid": null,
+			"used": null,
+			"deletedAt": null,
+			"id": 3127,
+			"createdAt": "2022-11-07T13:11:05.419Z",
+			"updatedAt": "2022-11-07T13:11:05.419Z"
+		},
+		"id": 24
+	}]
+
+
 export const servicesInvestigation = [{
     id: 34,
     service: {

@@ -205,7 +205,7 @@ class FieldSherwood extends PureComponent{
         </Grid>;
     }
     render(){
-        const {input, label, meta, hideTitle, type, options, size, removeClass, validation, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation} = this.props;
+        const {input, label, meta, hideTitle, type, options, size, removeClass, validation, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -459,7 +459,7 @@ class FieldSherwood extends PureComponent{
                 return(
                     <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                         variant="outlined" margin={this.typeMargin} error={errorState} country={country}
-                        uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation}
+                        uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} uuidSurvey={uuidSurvey}
                         helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
                         size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                     

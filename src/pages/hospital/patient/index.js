@@ -17,7 +17,7 @@ import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
-        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../../routes';
+        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../../routes';
 
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
 
@@ -29,6 +29,7 @@ import { dischargePatientAction, getPatientStaysAction } from '../../../redux/ac
 import { PERMISSION } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
 import RequestCombo from '../Service/RequestCombo';
+import RequestTable from '../Service/RequestTable';
 
 
 
@@ -61,6 +62,7 @@ function Patient(props) {
     let { uuidDataCollection } = useParams();
     
     let { action } = useParams();
+    let { single } = useParams();
     
     const parameters = useParams();
     const idSubmission = parameters["idSubmission"] ? parseInt(parameters["idSubmission"]) : parameters["idSubmission"];
@@ -110,13 +112,18 @@ function Patient(props) {
     
     const translations = typesCurrentSurvey.includes(TYPE_MEDICAL_SURVEY) ? "patient" : typesCurrentSurvey.includes(TYPE_IMAGE_SURVEY) ? "medical-imaging" : typesCurrentSurvey.includes(TYPE_LAB_SURVEY) ?  "laboratory" : "other"; 
 
+    function goToSubmissionUrl(uuidPatient, idSubmission){
+        const nextUrl = HOSPITAL_PATIENT_SINGLE_SUBMISSION.replace(":uuidPatient", uuidPatient)
+                .replace(":action", "show")
+                .replace(":single", "true")
+                .replace(":idSubmission", idSubmission);
+        history.push(nextUrl);
+    }
+
     function addRecord(){
         if(currentSurveys.length > 1 ){
             setShowOptions(true);
             setShowModal(true);
-        }
-        else if(parameters.typeTest === "lab"){
-            setShowRequestType(0);
         }
         else{
             const filterType = URL_TYPE[parameters.typeTest];
@@ -236,14 +243,6 @@ function Patient(props) {
     }
     function renderCore(){
 
-        // if (typSurveySelected === 2){
-        //     return (
-        //         <RequestCombo serviceType={0} uuidPatient={uuidPatient} 
-        //             showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}
-        //             uuidInvestigation={props.investigations.currentInvestigation.uuid} />
-        //     )
-        // }
-        // else 
         if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
             const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
             if(savedDataCollection){ 
@@ -264,13 +263,20 @@ function Patient(props) {
             }
             
         }
-        else if(filteredRecords.length === 0){
-            return <Translate id={`pages.hospital.${translations}.no-records`} />
-        }
         else if(idSubmission !== null && action === "show"){
             return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} 
-                        mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission}
+                        mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission} singleSubmission={single === 'true'}
                         submissions={filteredRecords.filter((record) => record.type !== "stay")} surveys={props.investigations.currentInvestigation.surveys} />
+        }
+        else if (typSurveySelected === 2){
+            return (
+                <RequestTable serviceType={0} uuidPatient={uuidPatient} 
+                    showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}
+                    uuidInvestigation={props.investigations.currentInvestigation.uuid} callBackRequestEdit={(req) => goToSubmissionUrl(req.patientInvestigation.uuid, req.submissionPatient.id)} />
+            )
+        }
+        else if(filteredRecords.length === 0){
+            return <Translate id={`pages.hospital.${translations}.no-records`} />
         }
         else{
             return(

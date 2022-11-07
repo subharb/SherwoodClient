@@ -140,7 +140,7 @@ export default function ShowPatientRecords(props) {
                 </Grid>
             }
             {
-                props.submissions.length > 1 &&
+                props.submissions.length > 1 && !props.singleSubmission &&
                 renderNavigation()
             }
             <Grid item xs={12}>

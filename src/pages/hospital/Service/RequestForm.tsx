@@ -14,12 +14,13 @@ interface RequestFormProps {
     serviceType: number;
     uuidPatient:string,
     uuidInvestigation:string,
+    uuidSurvey:string,
     initServicesInvestigation?: IServiceInvestigation[],
     cancel:() => void,
     callBackRequestFinished:(requestsService:IRequestServiceInvestigation[])=>void,  
 }
 
-const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uuidInvestigation, initServicesInvestigation, callBackRequestFinished, cancel }) => {
+const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, serviceType, uuidInvestigation, initServicesInvestigation, callBackRequestFinished, cancel }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackbar, setShowSnackbar] = useSnackBarState();
     const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(initServicesInvestigation ? initServicesInvestigation : null);
@@ -30,8 +31,6 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uui
         if(snackbar.severity === SnackbarTypeSeverity.SUCCESS && requestsServiceInvestigation !== null){
             callBackRequestFinished(requestsServiceInvestigation);
         }
-        
-        
     }
     useEffect(() => {
         if(requestsServiceInvestigation !== null){
@@ -44,7 +43,8 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uui
         const postObject = {
             servicesInvestigationId: servicesInvestigation,
             uuidPatientInvestigation:uuidPatient,
-            typeRequest:serviceType
+            typeRequest:serviceType,
+            uuidSurvey:uuidSurvey
         }
         axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/request", postObject, { headers: {"Authorization" : localStorage.getItem("jwt") }})
         .then(response => {
@@ -80,7 +80,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uui
     }, []);
 
     return <RequestFormCore loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
-                handleCloseSnackBar={handleClose} cancel={cancel}
+                handleCloseSnackBar={handleClose} cancel={cancel} uuidSurvey={uuidSurvey}
                 callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(uuidPatient, servicesInvestigation, serviceType)} />;
 }
 

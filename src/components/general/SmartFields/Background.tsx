@@ -7,7 +7,7 @@ import React, {useState} from 'react';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { ButtonAccept, ButtonCancel } from '../mini_components';
 import ICT from './ICT';
-import { PropsSmartField, Diagnosis, BackgroundType, SmartFieldType, PropsSmartFieldLocalized } from './index'
+import { Diagnosis, BackgroundType, SmartFieldType, PropsSmartFieldLocalized } from './index'
 
 type Props = {
 

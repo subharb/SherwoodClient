@@ -736,7 +736,7 @@ export function formatPatients(patients, personalFields, code = 'es-ES'){
 }
 
 export function isSmartField(type){
-    return ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular", "bmi", "edd"].includes(type);
+    return ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular", "bmi", "edd", "request_lab", "request_img"].includes(type);
 }
 
 export function getIndexedDB(){
