@@ -8,9 +8,11 @@ interface RequestFieldProps {
     initServicesInvestigation?: IServiceInvestigation[],
     uuidPatient:string,
     uuidInvestigation:string,
+    cancel:() => void,
 }
 
-const RequestField: React.FC<RequestFieldProps> = ({ serviceType, initServicesInvestigation, uuidPatient, uuidInvestigation, initRequestsServiceInvestigation }) => {
+const RequestField: React.FC<RequestFieldProps> = ({ serviceType, initServicesInvestigation, uuidPatient, uuidInvestigation, 
+                                                        initRequestsServiceInvestigation, cancel }) => {
     const [requestsServiceInvestigation, setRequestsServiceInvestigation] = React.useState<null | IRequestServiceInvestigation[]>(initRequestsServiceInvestigation ? initRequestsServiceInvestigation : null);
 
 
@@ -23,7 +25,7 @@ const RequestField: React.FC<RequestFieldProps> = ({ serviceType, initServicesIn
     return (
         <>
             <RequestForm uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} 
-                callBackRequestFinished={(reqs) => callBackRequestFinished(reqs)}
+                callBackRequestFinished={(reqs) => callBackRequestFinished(reqs)} cancel={cancel}
                 initServicesInvestigation={initServicesInvestigation} serviceType={serviceType} />
         </>
     );

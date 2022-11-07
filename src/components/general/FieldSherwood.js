@@ -459,7 +459,7 @@ class FieldSherwood extends PureComponent{
                 return(
                     <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                         variant="outlined" margin={this.typeMargin} error={errorState} country={country}
-                        uuidPatient={uuidPatient}
+                        uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation}
                         helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
                         size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                     

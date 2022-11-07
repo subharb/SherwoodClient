@@ -46,6 +46,7 @@ export default function SectionForm(props) {
 
     return (
         <Form fields={dictFields} initialData={initialData} country={props.country} 
+            uuidInvestigation={props.uuidInvestigation} uuidPatient={props.uuidPatient}
             submitText={Object.keys(initialData).length > 0 ? "general.update" : null}
             callBackForm = {(values) => callBackForm(values)}/>)
 }

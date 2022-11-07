@@ -271,7 +271,8 @@
             }
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
-        
+        "request_lab" : ["Request Lab", "Solicitar Laboratorio", "Demander un laboratoire"],
+        "request_img" : ["Request Imaging", "Solicitar prueba de imagen", "Demander une imagerie"],
         "frecuency" : ["Frequency", "Frecuencia", "Fréquence"],
         "treatment-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],
         "treatment_regular-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],

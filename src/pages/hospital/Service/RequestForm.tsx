@@ -1,9 +1,10 @@
-import { Snackbar, Typography } from '@material-ui/core';
+import { Checkbox, FormControlLabel, Grid, Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';
 import Form from '../../../components/general/form';
+import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_components';
 import Loader from '../../../components/Loader';
 import { SnackbarTypeSeverity } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
@@ -14,10 +15,11 @@ interface RequestFormProps {
     uuidPatient:string,
     uuidInvestigation:string,
     initServicesInvestigation?: IServiceInvestigation[],
+    cancel:() => void,
     callBackRequestFinished:(requestsService:IRequestServiceInvestigation[])=>void,  
 }
 
-const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uuidInvestigation, initServicesInvestigation, callBackRequestFinished }) => {
+const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uuidInvestigation, initServicesInvestigation, callBackRequestFinished, cancel }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackbar, setShowSnackbar] = useSnackBarState();
     const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(initServicesInvestigation ? initServicesInvestigation : null);
@@ -31,6 +33,12 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uui
         
         
     }
+    useEffect(() => {
+        if(requestsServiceInvestigation !== null){
+            callBackRequestFinished(requestsServiceInvestigation);
+        }
+    }, [requestsServiceInvestigation]);
+    
     function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number) {
         setLoading(true);
         const postObject = {
@@ -72,7 +80,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uui
     }, []);
 
     return <RequestFormCore loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
-                handleCloseSnackBar={handleClose}
+                handleCloseSnackBar={handleClose} cancel={cancel}
                 callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(uuidPatient, servicesInvestigation, serviceType)} />;
 }
 
@@ -86,23 +94,13 @@ interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 's
     callBackFormSubmitted:(serviceInvestigation:number[]) => void
 }
 
-export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, callBackFormSubmitted, handleCloseSnackBar }) => {
-    let formFields:{ [id: string] : any; }  = React.useMemo(() => {
-        let tempDict:{ [id: string] : any; } = {};
-        servicesInvestigation.forEach((serviceInvestigation) => {
-            tempDict["service_"+serviceInvestigation.id] = {
-                name: "service_"+serviceInvestigation.id,
-                label: "pages.hospital.services.list."+serviceInvestigation.service.code,
-                type: "checkbox",
-                required: false
-            }
-        });
-        return tempDict;
-    }, [servicesInvestigation]);
+export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
+    const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
+    const SERVICE_SEPARATOR = "service_";
     
-    function callBackForm(values:any){
-        console.log("callBackForm", values);
-        const serviceInvestigationIds = Object.keys(values).filter((key) => values[key] === true).map((key) => parseInt(key));
+    function callBackForm(){
+        console.log("callBackForm", servicesInvestigationSelected);
+        const serviceInvestigationIds = Object.keys(servicesInvestigationSelected).filter((key) => servicesInvestigationSelected[key] === true).map((key) => parseInt(key.replace(SERVICE_SEPARATOR, "")));
         console.log("serviceInvestigationIds", serviceInvestigationIds);
         callBackFormSubmitted(serviceInvestigationIds);
     }
@@ -125,7 +123,33 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                         </Alert>
                 </Snackbar>
             <Typography variant="h3" component="h6"><Translate id="pages.hospital.services.request" /></Typography>
-            <Form numberColumns={2} fields={formFields} callBackForm = {(values:any) => callBackForm(values)} />
+            <Grid container item xs={12} spacing={1}>
+            {
+                servicesInvestigation.length > 0 &&
+                servicesInvestigation.map((serviceInvestigation) => {
+                    return <Grid item xs={6}>
+                            <FormControlLabel
+                                control={<Checkbox checked={servicesInvestigationSelected[SERVICE_SEPARATOR+serviceInvestigation.id]} />}
+                                onChange={
+                                    (event) => {
+                                        setServicesInvestigationSelected({...servicesInvestigationSelected, ["service_"+serviceInvestigation.id]:event.target.checked});
+                                    }
+                                }
+                                label={<Translate id={`pages.hospital.services.list.${serviceInvestigation.service.code}`} />} 
+                            />
+                            </Grid>
+                })
+            }
+            </Grid>
+            <Grid container item xs={12} spacing={1}>
+                <Grid item>
+                    <ButtonAccept onClick={callBackForm}><Translate id="general.add" /></ButtonAccept> 
+                </Grid>
+                <Grid item>
+                    <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
+                </Grid>
+                
+            </Grid>
         </>
     );
 };
