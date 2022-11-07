@@ -55,6 +55,7 @@ export function TestsHomeComponent(props) {
     const history = useHistory();
     const uuidDataCollection = props.parameters.uuidDataCollection;
     const uuidPatient = props.parameters.uuidPatient;
+    const idRequest = props.parameters.idRequest;
     const idSubmission = parseInt(props.parameters.idSubmission);
     const [submissionData, setSubmissionData] = useState(null);
    
@@ -100,7 +101,9 @@ export function TestsHomeComponent(props) {
                                         .replace(":uuidPatient", requestService.patientInvestigation.uuid);
         }
         else if(requestService.request.status === RequestStatus.ACCEPTED){
-            nextUrl = HOSPITAL_LAB_FORM.replace(":uuidDataCollection", requestService.serviceInvestigation.survey.uuid).replace(":uuidPatient", requestService.patientInvestigation.uuid)
+            nextUrl = HOSPITAL_LAB_FORM.replace(":uuidDataCollection", requestService.serviceInvestigation.survey.uuid)
+                                        .replace(":uuidPatient", requestService.patientInvestigation.uuid)
+                                        .replace(":idRequest", requestService.id)
         }
         
         if(nextUrl){
@@ -142,7 +145,7 @@ export function TestsHomeComponent(props) {
                         </Card>
                     </div>
                     <FillDataCollection key={uuidDataCollection} dataCollection={dataCollectionSelected} 
-                        hideCollectionName={true}
+                        hideCollectionName={true} requestServiceId={idRequest}
                         country={props.investigations.currentInvestigation.country} researcher={props.profile.info}
                         uuidPatient={uuidPatient} uuidInvestigation={props.investigations.currentInvestigation.uuid}
                         callBackDataCollection={goToHomeTest} />

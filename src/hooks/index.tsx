@@ -80,11 +80,11 @@ export function useSelectSmartField(initialState:any, label:string, type:string,
                 <FormControl variant="outlined" fullWidth margin="dense" error={errorState}>
                     <InputLabel id="show_treatment">{label}</InputLabel>
                     <Select
-                    labelId="show_treatment"
-                    id="show_treatment"
-                    label={label}
-                    value={addSmartField}
-                    onChange={(event) => selectChanged(event)}
+                        labelId="show_treatment"
+                        id="show_treatment"
+                        label={label}
+                        value={addSmartField}
+                        onChange={(event) => selectChanged(event)}
                     >
                     { optionsArray }
                     </Select>

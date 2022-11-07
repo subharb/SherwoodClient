@@ -16,7 +16,8 @@ export default function FillDataCollection(props) {
             uuid_patient:props.uuidPatient,
             id:props.idSubmission,
             researcher: props.researcher,
-            surveyRecords:[]
+            surveyRecords:[],
+            requestServiceId: parseInt(props.requestServiceId),
         }
         data.forEach(fieldData => {
             //const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));

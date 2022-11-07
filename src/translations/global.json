@@ -44,7 +44,9 @@
             "ict" : ["Add diagnosis", "¿Añadir diagnóstico?", "Ajouter un diagnostic ?"],
             "allergy" : ["Select", "Seleccionar", "Pour sélectionner"],
             "treatment_regular" : ["Select", "Seleccionar", "Pour sélectionner"],
-            "treatment" : ["Select", "Seleccionar", "Pour sélectionner"]
+            "treatment" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "request_lab" : ["Do you wish to request a lab test?", "¿Desea solicitar un examen de laboratorio?", "Voulez-vous demander un test de laboratoire?"],
+            "request_img" : ["Do you wish to request an imaging test?", "¿Desea solicitar un examen de imagen?", "Voulez-vous demander un test d'imagerie?"]
         },
         "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"],
         "no-results" : ["No results", "Sin resultados", "Sans results"]

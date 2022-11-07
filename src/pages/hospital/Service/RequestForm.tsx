@@ -122,7 +122,6 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                             <Translate id={snackbar.message} />                            
                         </Alert>
                 </Snackbar>
-            <Typography variant="h3" component="h6"><Translate id="pages.hospital.services.request" /></Typography>
             <Grid container item xs={12} spacing={1}>
             {
                 servicesInvestigation.length > 0 &&
