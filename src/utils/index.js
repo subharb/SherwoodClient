@@ -220,7 +220,10 @@ export const FIELDS_FORM = {
                 {"label": "investigation.create.edc.separator", "value" : "separator"},
                 {"label": "investigation.create.edc.text_blob", "value" : "text_blob"},
                 {"label": "investigation.create.edc.bmi", "value" : "bmi"},
-                {"label": "investigation.create.edc.edd", "value" : "edd"}
+                {"label": "investigation.create.edc.edd", "value" : "edd"},
+                {"label": "investigation.create.edc.request_lab", "value" : "request_lab"},
+                {"label": "investigation.create.edc.request_img", "value" : "request_img"}
+
         ],
         activationValues : ["select", "multioption", "autocomplete", "radio", "evaluation"],
         activatedFields:[

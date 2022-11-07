@@ -7,26 +7,28 @@ import Form from '../../../components/general/form';
 import Loader from '../../../components/Loader';
 import { SnackbarTypeSeverity } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
-import { IServiceInvestigation } from './types';
+import { IRequestServiceInvestigation, IServiceInvestigation } from './types';
 
 interface RequestFormProps {
     serviceType: number;
     uuidPatient:string,
     uuidInvestigation:string,
-    callBackRequestFinished:()=>void,  
+    initServicesInvestigation?: IServiceInvestigation[],
+    callBackRequestFinished:(requestsService:IRequestServiceInvestigation[])=>void,  
 }
 
-const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uuidInvestigation, callBackRequestFinished }) => {
+const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uuidInvestigation, initServicesInvestigation, callBackRequestFinished }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackbar, setShowSnackbar] = useSnackBarState();
-    const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(null);
-
+    const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(initServicesInvestigation ? initServicesInvestigation : null);
+    const [requestsServiceInvestigation, setRequestsServiceInvestigation] = React.useState<null | IRequestServiceInvestigation[]>(null);
+    
     function handleClose(){
         setShowSnackbar({show:false});
-        callBackRequestFinished();
-        // if(snackbar.severity === SnackbarTypeSeverity.SUCCESS){
-        //     callBackRequestFinished();
-        // }
+        if(snackbar.severity === SnackbarTypeSeverity.SUCCESS && requestsServiceInvestigation !== null){
+            callBackRequestFinished(requestsServiceInvestigation);
+        }
+        
         
     }
     function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number) {
@@ -40,7 +42,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, serviceType, uui
         .then(response => {
             if(response.status === 200){
                 setShowSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"});
-                
+                setRequestsServiceInvestigation(response.data.requestsServiceInvestigation);
             }
             else{
                 setShowSnackbar({show:true, severity:"error", message:"general.error"});
@@ -89,7 +91,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         let tempDict:{ [id: string] : any; } = {};
         servicesInvestigation.forEach((serviceInvestigation) => {
             tempDict["service_"+serviceInvestigation.id] = {
-                name: serviceInvestigation.id,
+                name: "service_"+serviceInvestigation.id,
                 label: "pages.hospital.services.list."+serviceInvestigation.service.code,
                 type: "checkbox",
                 required: false

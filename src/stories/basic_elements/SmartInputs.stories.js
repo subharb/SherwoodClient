@@ -4,6 +4,8 @@ import ICTSelectorGeneral from '../../components/general/SmartFields/ICT/index'
 import ProviderSherwood from '../../providerSherwood';
 import TreatmentCore from '../../components/general/SmartFields/SingleTreatmentSelector';
 import TreatmentHospital from '../../components/general/SmartFields/TreatmentHospital';
+import RequestField from '../../components/general/SmartFields/RequestField';
+import { servicesInvestigation } from '../hospital/Services/data';
 
 const FIELD_TREATMENT = {
     "drug":{
@@ -251,6 +253,7 @@ const TemplateFamilyBackground = (args) => <Form {...args}  />
 const TemplateImage = (args) => <Form {...args}  />
 const TemplateTreatmentRaw = (args) => <TreatmentCore {...args}  />
 const TemplateHospitalizedRaw = (args) => <TreatmentHospital {...args}  country="ml"  />
+const TemplateRequestRaw = (args) => <RequestField {...args} />
 const TemplateBMI = (args) => <Form {...args}  />
 
 export const TreatmentEmpty = Template.bind({});
@@ -363,6 +366,13 @@ EDDField.args = {
 export const HospitalTreatmentField = TemplateHospitalizedRaw.bind({});
 HospitalTreatmentField.args = {
     fields : FIELD_HT, 
+    callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
+};
+
+export const RequestLabField = TemplateRequestRaw.bind({});
+RequestLabField.args = {
+    serviceType:0,
+    initServicesInvestigation:servicesInvestigation,
     callBackForm : (values) => console.log("Result",JSON.stringify(values)) 
 };
 

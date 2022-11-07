@@ -161,7 +161,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
                     {id : 'type', label: 'Tipo', alignment:'left'},
                     {id : 'date', label: 'Fecha', alignment:'left'}];
     if(!uuidPatient){
-        headCells.splice(0, 0, {id : 'NHC', label: 'NHC', alignment:'left'})
+        headCells.splice(0, 0, {id : 'nhc', label: 'NHC', alignment:'left'})
         headCells.splice(1, 0, {id : 'patient', label: 'Patient', alignment:'left'})
     } 
     

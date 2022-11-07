@@ -13,6 +13,7 @@ import SingleTreatmentSelector from './SingleTreatmentSelector';
 import BMIField from './BMIField';
 import EDDField from './EDDField';
 import { isInteger } from 'lodash';
+import RequestField from './RequestField';
 
 
 
@@ -109,6 +110,8 @@ interface Props extends LocalizeContextProps {
     mode : string,
     country:string,
     language?:string,
+    uuidPatient?:string,
+    uuidInvestigation?:string,
     initialState:{
         addingElements:boolean,
         listElements:Diagnosis[]
@@ -178,7 +181,7 @@ const SmartField:React.FC<Props> = (props) => {
             if(props.mode === "form"){
                 return <Grid item xs={12} spacing={3}>
                         <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
-                            actions={[{"type" : "delete", "func" : (index:number) => removeDiagnosis(index)}]}
+                            actions={[{"type" : "delete", "func" : (index:number) => removeElement(index)}]}
                             
                         />
                     </Grid>
@@ -194,16 +197,15 @@ const SmartField:React.FC<Props> = (props) => {
             }   
         }
     }
-    function removeDiagnosis(id:number){
+
+    function removeElement(id:number){
         setListElements(listElements.filter((item, index) => index !== id));
     }
+
     function elementSelected(diagnose:SmartFieldType){
         console.log(diagnose);
         setListElements(oldArray => [...oldArray, diagnose]);
         setAddingElements(false);
-    }
-    function addDiagnose(){
-        setAddingElements(true);
     }
    
     function renderSelector(){
@@ -238,6 +240,18 @@ const SmartField:React.FC<Props> = (props) => {
                 case "edd":
                     smartField = <EDDField {...propsSmartField} />
                     break;
+                case "request_lab":
+                case "request_img":
+                    if(props.uuidPatient && props.uuidInvestigation){
+                        const serviceType = props.type === "request_lab" ? 0 : 1;
+                        smartField = <RequestField serviceType={serviceType} uuidInvestigation={props.uuidInvestigation} 
+                                        uuidPatient={props.uuidPatient} {...propsSmartField} />
+                    }
+                    else{
+                        smartField = <div>Missing uuidPatient</div>
+                    }
+                    break;
+                
                 default:
                     smartField = "Smarfield not defined"
             }
@@ -288,7 +302,7 @@ const SmartField:React.FC<Props> = (props) => {
                 {
                     (!addingElements && props.mode === "form" && !SINGLE_SMARTFIELDS.includes(props.type)) &&
                     <Grid item xs={12}>
-                        <ButtonPlus onClick={addDiagnose} />
+                        <ButtonPlus onClick={() =>  setAddingElements(true)} />
                         <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
                     </Grid>
                 }

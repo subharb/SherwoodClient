@@ -32,7 +32,6 @@ function BMIField(props: Props) {
     function updateWeight(value:string){
         console.log(value);
         setWeight(value);
-        
     }
 
     function saveBMI(){

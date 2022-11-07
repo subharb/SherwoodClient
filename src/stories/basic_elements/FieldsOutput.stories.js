@@ -189,3 +189,12 @@ BMIOutput.args = {
     initialState : {listElements : [{bmi:31, bmi_height:"45", bmi_weight:"14"}
             ]}
 }
+
+export const RequestLab = TemplateSmartField.bind({});
+RequestLab.args = {
+    mode:"show", 
+    label:"BMI",
+    type: "request_lab",
+    initialState : {listElements : [{bmi:31, bmi_height:"45", bmi_weight:"14"}
+            ]}
+}

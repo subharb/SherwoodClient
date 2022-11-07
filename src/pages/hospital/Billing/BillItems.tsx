@@ -231,7 +231,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
     let rows: BillItemTable[] = items.map((val, index) => {
 
         const color = TYPES_DISCOUNT.includes(val.type) ? red[900] : "black";
-        const amountString = val.type !== 0 ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;
+        const amountString =  TYPES_DISCOUNT.includes(val.type) ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;
 
         return {
             id: index,

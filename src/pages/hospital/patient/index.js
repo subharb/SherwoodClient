@@ -236,14 +236,15 @@ function Patient(props) {
     }
     function renderCore(){
 
-        if (typSurveySelected === 2){
-            return (
-                <RequestCombo serviceType={0} uuidPatient={uuidPatient} 
-                    showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}
-                    uuidInvestigation={props.investigations.currentInvestigation.uuid} />
-            )
-        }
-        else if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
+        // if (typSurveySelected === 2){
+        //     return (
+        //         <RequestCombo serviceType={0} uuidPatient={uuidPatient} 
+        //             showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}
+        //             uuidInvestigation={props.investigations.currentInvestigation.uuid} />
+        //     )
+        // }
+        // else 
+        if(dataCollectionSelected !== null && (action === "fill" || action === "update")){
             const submission = action === "update" && idSubmission ? props.patientsSubmissions.data[uuidPatient][dataCollectionSelected.uuid].submissions.filter(sub => sub.id === idSubmission)[0] : null
             if(savedDataCollection){ 
                 return(
