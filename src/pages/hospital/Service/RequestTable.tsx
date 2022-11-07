@@ -1,4 +1,4 @@
-import { brown, green, orange, red, yellow } from '@material-ui/core/colors';
+import { blue, brown, green, orange, red, yellow } from '@material-ui/core/colors';
 import { ContactSupportOutlined } from '@material-ui/icons';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
@@ -20,6 +20,8 @@ const RequestStatusToChip:React.FC<{type:RequestStatus}> = ({type}) =>  {
                 colour = yellow[900];
                 break;
             case RequestStatus.ACCEPTED: 
+                colour = blue[900];
+                break;
             case RequestStatus.COMPLETED: 
             case RequestStatus.INCOMPLETE_ACCEPTED:
                 colour = green[700];            
