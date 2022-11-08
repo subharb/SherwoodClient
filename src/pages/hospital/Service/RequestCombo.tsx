@@ -10,6 +10,7 @@ interface RequestComboProps {
     uuidInvestigation:string,
     showForm:boolean,
     surveys:ISurvey[],
+    uuidSurvey:string,
     encryptionData:{
         encryptedKeyUsed:number,
         keyResearcherInvestigation:string,
@@ -19,7 +20,7 @@ interface RequestComboProps {
     
 }
 
-const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient,surveys,  uuidInvestigation, showForm: showFormProps, encryptionData }) => {
+const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient,surveys, uuidSurvey, uuidInvestigation, showForm: showFormProps, encryptionData }) => {
     const [showForm, setShowForm] = React.useState(Boolean(showFormProps));
 
     useEffect(() => {
@@ -30,7 +31,7 @@ const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient,su
         setShowForm(false);
     }
     if(showForm){
-        return <RequestForm serviceType={serviceType} uuidPatient={uuidPatient} 
+        return <RequestForm serviceType={serviceType} uuidPatient={uuidPatient} uuidSurvey={uuidSurvey}
                     uuidInvestigation={uuidInvestigation} callBackRequestFinished={flipToRequestTable}/>
     }
     return (

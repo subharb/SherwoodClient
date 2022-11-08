@@ -6,7 +6,7 @@ import { Alert } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import Loader from '../../../components/Loader';
-import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, ButtonGrey } from '../../../components/general/mini_components';
+import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, ButtonGrey, ColourChip } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Form from '../../../components/general/form';
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
@@ -77,15 +77,6 @@ const WARD_FORM = {
         validation : "number"
     }
 }
-
-
-export const ColourChip = styled(Chip)`
-  height: 20px;
-  padding: 4px 0;
-  font-size: 90%;
-  background-color: ${(props) => props.rgbcolor};
-  color: ${(props) => props.theme.palette.common.white};
-`;
 
 
 

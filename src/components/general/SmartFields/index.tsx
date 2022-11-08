@@ -26,7 +26,7 @@ export interface PropsSmartField {
     type:string,
     slaves?:object[],
     country?:string,
-    cancel?: boolean | (() => void),
+    cancel?: (() => void),
     elementSelected: (element:SmartFieldType) => void,
     error:boolean,
 }

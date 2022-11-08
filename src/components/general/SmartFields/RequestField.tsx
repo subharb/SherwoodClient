@@ -1,9 +1,9 @@
 import React from 'react';
 import RequestForm from '../../../pages/hospital/Service/RequestForm';
 import { IRequestServiceInvestigation, IServiceInvestigation } from '../../../pages/hospital/Service/types';
-import { PropsSmartFieldLocalized } from './index';
+import { PropsSmartField, PropsSmartFieldLocalized } from './index';
 
-interface RequestFieldProps extends PropsSmartFieldLocalized {
+interface RequestFieldProps extends PropsSmartField {
     serviceType:number,
     initRequestsServiceInvestigation?:IRequestServiceInvestigation[],
     initServicesInvestigation?: IServiceInvestigation[],

@@ -3,11 +3,12 @@ import { ContactSupportOutlined } from '@material-ui/icons';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
+import { ColourChip } from '../../../components/general/mini_components';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
 import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, researcherFullName, stringDatePostgresToDate } from '../../../utils';
 import axios from '../../../utils/axios';
-import { ColourChip } from '../departments/Admin';
+
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
 
 const RequestStatusToChip:React.FC<{type:RequestStatus}> = ({type}) =>  {

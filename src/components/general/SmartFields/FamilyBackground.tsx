@@ -43,7 +43,7 @@ function FamilyBackground(props: PropsSmartFieldLocalized) {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <ICT {...props} cancel={false} elementSelected={diagnoseSelected} error={error}/>
+                <ICT {...props} cancel={props.cancel} elementSelected={diagnoseSelected} error={error}/>
             </Grid>
             <Grid item xs={12}>
                 <TextField label={props.translate("hospital.family-relation")} variant="outlined" error={errorRelation}

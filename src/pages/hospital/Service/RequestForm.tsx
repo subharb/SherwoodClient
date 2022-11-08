@@ -16,7 +16,7 @@ interface RequestFormProps {
     uuidInvestigation:string,
     uuidSurvey:string,
     initServicesInvestigation?: IServiceInvestigation[],
-    cancel:() => void,
+    cancel?:() => void,
     callBackRequestFinished:(requestsService:IRequestServiceInvestigation[])=>void,  
 }
 
@@ -130,8 +130,8 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                             <FormControlLabel
                                 control={<Checkbox checked={servicesInvestigationSelected[SERVICE_SEPARATOR+serviceInvestigation.id]} />}
                                 onChange={
-                                    (event) => {
-                                        setServicesInvestigationSelected({...servicesInvestigationSelected, ["service_"+serviceInvestigation.id]:event.target.checked});
+                                    (event: React.ChangeEvent<{}>, checked: boolean) => {
+                                        setServicesInvestigationSelected({...servicesInvestigationSelected, ["service_"+serviceInvestigation.id]:checked});
                                     }
                                 }
                                 label={<Translate id={`pages.hospital.services.list.${serviceInvestigation.service.code}`} />} 
