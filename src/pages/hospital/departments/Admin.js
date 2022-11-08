@@ -6,7 +6,7 @@ import { Alert } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import Loader from '../../../components/Loader';
-import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, ButtonGrey, ColourChip } from '../../../components/general/mini_components';
+import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, ButtonGrey } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Form from '../../../components/general/form';
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
@@ -20,6 +20,7 @@ import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../rout
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
 import { FUNCTIONALITY } from '../../../constants/types';
 import { a11yProps, TabPanel } from '../../components/Tabs';
+import { ColourChip } from '../../../components/general/mini_components-ts';
 
 const DEPARTMENT_FORM = {
     "name":{

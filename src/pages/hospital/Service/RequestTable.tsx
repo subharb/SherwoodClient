@@ -3,7 +3,7 @@ import { ContactSupportOutlined } from '@material-ui/icons';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { ColourChip } from '../../../components/general/mini_components';
+import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
 import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, researcherFullName, stringDatePostgresToDate } from '../../../utils';
