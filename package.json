@@ -84,7 +84,7 @@
     "start": "react-scripts start",
     "start-hospital": "REACT_APP_PRODUCT=HOSPITAL react-scripts start --hospital",
     "build:research": "rm -r build-research/ && env-cmd -f .env.production.local react-scripts build && rsync -a build/ build-research/",
-    "build:beta:research": "rm -r build-beta-research/ &&env-cmd -f .env.beta-research react-scripts build && rsync -a build/ build-research/",
+    "build:beta:research": "env-cmd -f .env.beta-research react-scripts build && rm -r build-beta-research/ && rsync -a build/ build-research/",
     "build:beta:hospital": "env-cmd -f .env.beta-hospital react-scripts build && rm -r build-beta-hospital/ && rsync -a build/ build-beta-hospital/",
     "build:local:hospital": "rm -r build-beta-hospital/ && env-cmd -f .env.local-hospital react-scripts build && rsync -a build/ build-beta-hospital/",
     "build:hospital": "rm -r build-hospital/ && env-cmd -f .env.hospital react-scripts build && rsync -a build/ build-hospital/",
