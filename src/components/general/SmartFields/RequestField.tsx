@@ -1,11 +1,11 @@
 import React from 'react';
 import RequestForm from '../../../pages/hospital/Service/RequestForm';
-import { IRequestServiceInvestigation, IServiceInvestigation } from '../../../pages/hospital/Service/types';
+import { IRequestGroup, IRequestServiceInvestigation, IServiceInvestigation } from '../../../pages/hospital/Service/types';
 import { PropsSmartField, PropsSmartFieldLocalized } from './index';
 
 interface RequestFieldProps extends PropsSmartField {
     serviceType:number,
-    initRequestsServiceInvestigation?:IRequestServiceInvestigation[],
+    initRequestsServiceInvestigation?:IRequestGroup,
     initServicesInvestigation?: IServiceInvestigation[],
     uuidPatient:string,
     uuidSurvey:string,
@@ -15,22 +15,22 @@ interface RequestFieldProps extends PropsSmartField {
 
 const RequestField: React.FC<RequestFieldProps> = ({ serviceType, uuidSurvey, initServicesInvestigation, uuidPatient, uuidInvestigation, 
                                                         initRequestsServiceInvestigation, cancel, elementSelected }) => {
-    const [requestsServiceInvestigation, setRequestsServiceInvestigation] = React.useState<null | IRequestServiceInvestigation[]>(initRequestsServiceInvestigation ? initRequestsServiceInvestigation : null);
+    const [requestsServiceInvestigation, setRequestsServiceInvestigation] = React.useState<null | IRequestGroup>(initRequestsServiceInvestigation ? initRequestsServiceInvestigation : null);
 
 
-    function callBackRequestFinished(requestsServiceInvestigation:IRequestServiceInvestigation[]){
-        setRequestsServiceInvestigation(requestsServiceInvestigation);
-        requestsServiceInvestigation.forEach((req) => {
+    function callBackRequestFinished(requestGroup:IRequestGroup){
+        setRequestsServiceInvestigation(requestGroup);
+        requestGroup.requests.forEach((req) => {
             switch(serviceType){
                 case 0:
                     elementSelected({
-                        request_lab : req.serviceInvestigation.service.name,
+                        request_lab : req.requestServiceInvestigation.serviceInvestigation.service.name,
                         request_id : req.id,
                     });
                 break;
                 case 1:
                     elementSelected({
-                        request_img : req.serviceInvestigation.service.name,
+                        request_img : req.requestServiceInvestigation.serviceInvestigation.service.name,
                         request_id :req.id
                     });
             }

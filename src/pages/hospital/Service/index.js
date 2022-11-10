@@ -21,13 +21,14 @@ import styled from 'styled-components';
 import { IconGenerator } from '../../../components/general/mini_components';
 import EditServices from './Edit';
 import { RequestStatus, ServiceType } from './types';
-import RequestTable from './RequestTable';
+import RequestTable, { serviceToColor } from './RequestTable';
 import FillDataCollection from '../FillDataCollection';
-import { fullNamePatient } from '../../../utils';
+import { fullNamePatient, hasRequestGroupState } from '../../../utils';
 import PatientInfo from '../../../components/PatientInfo';
 import { fetchProfileInfo } from '../../../redux/actions/profileActions';
 import axios from '../../../utils/axios';
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
+import { ColourChip } from '../../../components/general/mini_components-ts';
 
 export function TestsHome(props){
     let location = useLocation();
@@ -45,6 +46,11 @@ const IconHolder = styled.div`
     padding-right:1rem;
     padding-left:1rem;
 `;
+
+const ChipContainer = styled.div`
+    display:inline;
+    margin-left:0.5rem;
+`
 
 export function TestsHomeComponent(props) {
     const [ surveyRecords, setSurveyRecords] = useState([]);
@@ -73,7 +79,7 @@ export function TestsHomeComponent(props) {
         async function fetchSubmission(){
             setLoading(true);
         
-            const response = await axios(`${process.env.REACT_APP_API_URL}/researcher/investigation/${props.investigations.currentInvestigation.uuid}/submission/${idSubmission}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            const response = await axios(`${process.env.REACT_APP_API_URL}/researcher/investigation/${props.investigations.currentInvestigation.uuid}/submission/${idSubmission}?findRequests=true`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                     .catch(err => {console.log('Catch', err); return err;});
             if(response.status === 200){
                 setSubmissionData(response.data);
@@ -94,16 +100,16 @@ export function TestsHomeComponent(props) {
     function toogleEditLab(){
         setEdit(edit => !edit);
     }
-    function accessRequest(requestService){
+    function accessRequest(requestGroup){
         let nextUrl = null;
-        if(requestService.submissionPatient && requestService.request.status === RequestStatus.COMPLETED){
-            nextUrl = HOSPITAL_LAB_RESULT.replace(":idSubmission", requestService.submissionPatient.id)
-                                        .replace(":uuidPatient", requestService.patientInvestigation.uuid);
+        if(requestGroup.submissionPatient && hasRequestGroupState(requestGroup, RequestStatus.COMPLETED)){
+            nextUrl = HOSPITAL_LAB_RESULT.replace(":idSubmission", requestGroup.submissionPatient.id)
+                                        .replace(":uuidPatient", requestGroup.requests[0].requestServiceInvestigation.patientInvestigation.uuid);
         }
-        else if(requestService.request.status === RequestStatus.ACCEPTED){
-            nextUrl = HOSPITAL_LAB_FORM.replace(":uuidDataCollection", requestService.serviceInvestigation.survey.uuid)
-                                        .replace(":uuidPatient", requestService.patientInvestigation.uuid)
-                                        .replace(":idRequest", requestService.id)
+        else if(hasRequestGroupState(requestGroup, RequestStatus.ACCEPTED)){
+            nextUrl = HOSPITAL_LAB_FORM.replace(":uuidDataCollection", requestGroup.requests[0].requestServiceInvestigation.serviceInvestigation.survey.uuid)
+                                        .replace(":uuidPatient", requestGroup.requests[0].requestServiceInvestigation.patientInvestigation.uuid)
+                                        .replace(":idRequest", requestGroup.id)
         }
         
         if(nextUrl){
@@ -124,12 +130,20 @@ export function TestsHomeComponent(props) {
         else if(submissionData && idSubmission){
             const survey = props.investigations.currentInvestigation.surveys.find((survey) => survey.uuid === submissionData.submission.uuidSurvey);
             return (
-                <>
-                    
-                        <Card style={{padding:"1rem"}}>
-                            <PatientInfo personalData={patient.personalData} />
-                        </Card>
-                    
+                <>  
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Card style={{padding:"1rem"}}>
+                                <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Request ID: </span>{submissionData.requestGroup.id}</Typography> </div>
+                                <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Requested Items: </span>{submissionData.requestGroup.requests.map((request) => <ChipContainer><ColourChip size="small" rgbcolor={serviceToColor(submissionData.requestGroup.type)} label={request.requestServiceInvestigation.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
+                            </Card>  
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Card style={{padding:"1rem"}}>
+                                <PatientInfo personalData={patient.personalData} uuidPatient={patient.uuid}/>
+                            </Card>
+                        </Grid>
+                    </Grid>
                     <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={survey} 
                         mode="elements" callBackEditSubmission={() => console.log("Edit submission")} idSubmission={idSubmission}
                         submissions={[submissionData.submission]} surveys={props.investigations.currentInvestigation.surveys} />

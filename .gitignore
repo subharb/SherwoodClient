@@ -12,6 +12,7 @@
 /build
 /build-hospital
 /build-beta-hospital
+/build-beta-research
 /build-research
 # misc
 .DS_Store

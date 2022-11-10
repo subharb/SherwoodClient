@@ -4,6 +4,7 @@
     "general" : {
         "yes" : ["Yes", "Si", "Oui"], 
         "no" : ["No", "No", "Non"], 
+        "patient" : ["Patient", "Paciente", "Patient"],
         "save" : ["Save", "Guardar", "Enregistrer"],
         "discard" : ["Discard", "Descartar", "Jeter"],
         "updating-records" : ["We are syncronizing the records, please hold on.", "Estamos actualizando los registros, por favor espere.", "Nous mettons à jour les enregistrements, veuillez patienter."],
@@ -388,6 +389,7 @@
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
             "services" : {
+                "description" : ["Admin the tests available at your hospital from here", "Gestione las pruebas de su hospital desde aquí añadiendo o eliminando tests.", "Gérez les tests disponibles dans votre hôpital ici en ajoutant des tests."],
                 "edit" : {
                     "new_service" : {
                         "title" : ["Add new service", "Añadir nuevo servicio", "Ajouter un nouveau service"]
@@ -405,9 +407,11 @@
                     "survey" : ["Survey", "Formulario", "Formulaire"]
 
                 },
+                "service" : ["Test", "Test", "Test"],
                 "error":{
                     "previous_request" : ["You have already made a request for this service for this patient", "Ya ha realizado una solicitud para este servicio para este paciente", "Vous avez déjà fait une demande pour ce service pour ce patient"]
                 },
+                "status" : ["Status", "Status", "Status"],
                 "request_status" : {
                     "PENDING" : ["Pending", "Pendiente", "Pendant"],
                     "PENDING_PAYMENT" : ["Pending Payment", "Pendiente de Pago", "En attente de paiement"],
@@ -420,6 +424,7 @@
                     "INCOMPLETE" : ["Incomplete", "Incompleto", "Incomplet"],
                     "INCOMPLETE_ACCEPTED" : ["Incomplete Accepted", "Incompleto Aceptado", "Incomplet Accepté"]
                 },
+                "type" : ["Type", "Tipo", "Type"],
                 "service_type": {
                     "LABORATORY" : ["Laboratory", "Laboratorio", "Laboratoire"],
                     "IMAGING" : ["Imaging", "Imagen", "Imagerie"],
@@ -427,16 +432,44 @@
                     "PHARMACY" : ["Pharmacy", "Farmacia", "Pharmacie"],
                     "INTERCONSULT" : ["Interconsult", "Interconsulta", "Interconsultation"]
                 },
-                "list" : {
-                    "tchol" : ["Cholesterol Test", "Test Colesterol", "Cholesterol"],
-                    "tcrea" : ["Creatnine Test", "Test Creatinina", "Creatinine Test"],
-                    "themo" : ["Hemoglobin Test", "Test Hemoglobina", "Hémoglobine Test"]
+                "tests": {
+                    "laboratory" : {
+                        "BQ001": ["Urea", "Urea", "Azotemia"],
+                        "BQ002": ["Calcium blood", "Calcio en sangre", "Calcémie"],
+                        "BQ003": ["Total cholesterol, LDL & HDL", "Colesterol total, LDL & HDL", "Cholestérol total, LDL & HDL"],
+                        "BQ004": ["Creatinine", "Creatinina", "Créatininémie"],
+                        "BQ005": ["T3", "T3", "Dosage T3"],
+                        "BQ006": ["T4", "T4", "Dosage T4"],
+                        "BQ007": ["TSH", "TSH", "Dosage TSH"],
+                        "BQ008": ["Blood glucose", "Glucemia", "Glycémie à jeun"],
+                        "BQ009": ["Electrolyte test", "Ionograma", "Ionogramme"],
+                        "BQ010": ["Magnesium", "Magnesio", "Magnesemie"],
+                        "BQ011": ["Phosphate", "Fosfato", "Phosphoremie"],
+                        "BQ012": ["C-reactive protein (CRP)", "Proteina C reactiva (PCR)", "Protéine C réactive (CRP)"],
+                        "BQ013": ["AST, ALT", "AST, ALT", "Transaminases"],
+                        "BQ014": ["Triglycerides", "Triglicéridos", "Triglycérides"],
+                        "BQ015": ["Uric acid", "Acido úrico", "Uricémie"],
+                        "HEM001": ["Hemoglobin electrophoresis", "Electroforesis de hemoblogina", "Electrophores Hemoglobine"],
+                        "HEM002": ["Fibrinogen", "Fibrinógeno", "Fibrinemie"],
+                        "HEM003": ["Blood group and Rh factor", "Grupo sanguíneo y factor Rh", "Groupage Sanguin et Facteur Rhésus (GSRh)"],
+                        "HEM004": ["Hemogram", "Hemograma", "Numération de formule sanguine (NFS)"],
+                        "HEM005": ["Prothrombin time (PT)", "Tiempo de protrombina (TP)", "Taux de prothrombine (TP)"],
+                        "HEM006": ["Partial thromboplastin time (PTT)", "Tiempo de cefalina (TPPA)", "Temps de céphaline kaolin (TCK)"],
+                        "HEM007": ["Erythrocyte Sedimentation Rate (ESR)", "Velocidad de sedimentación globular (VSG)", "Vitesse de sédimentation (VS)"],
+                        "MB001": ["HBsAg & anti-HBc", "HBsAg y anti-HBc", "Antigène HBs et Ac anti-HBc"],
+                        "MB002": ["AntiStreptoLysin O (ASLO)", "Acs Antiestreptolisina O (ASLO)", "AntiStreptoLysine O (ASLO)"],
+                        "MB003": ["GeneXpert", "GeneXpert", "GeneXpert"],
+                        "MB004": ["QBC Malaria test", "QBC Malaria test", "QBC Malaria test"],
+                        "MB005": ["HIV serology", "Serología VIH", "Serologie VIH"],
+                        "MB006": ["Emmel test", "Test de Emmel", "Test d'Emmel"]
+                    }
                 }
             },
             "laboratory":{
                 "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Aucun test de laboratoire"],
                 "name" : ["Laboratory", "Laboratorio", "Laboratoire"],
                 "title" : ["Laboratory", "Laboratorio", "Laboratoire"]
+                
             },
             "medical-imaging" : {
                 "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 

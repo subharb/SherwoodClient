@@ -90,9 +90,9 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         const serviceOptions = servicesGeneral?.filter((service) =>{
             return !servicesInvestigation?.some((serviceInvestigation) => serviceInvestigation.service.id === service.id);
         }).map((service) => {
-
+            const typeTestString = serviceType === 0 ? "laboratory" : "img"; 
             return {
-                label: "pages.hospital.services.list."+service.code,
+                label: `pages.hospital.services.tests.${typeTestString}.${service.code}`,
                 value: service.id,
             }
         })
@@ -211,7 +211,8 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                 }
             } />
             <Typography variant="body2" gutterBottom>
-                Gestione los servicios de su hospital desde aquí añadiendo o eliminando servicios.
+                <Translate id="pages.hospital.services.description" />
+                
             </Typography>
             <Grid container style={{ padding: 20 }}>
                 <Grid item xs={12}>

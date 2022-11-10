@@ -272,7 +272,7 @@ function Patient(props) {
             return (
                 <RequestTable serviceType={0} uuidPatient={uuidPatient} 
                     showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}
-                    uuidInvestigation={props.investigations.currentInvestigation.uuid} callBackRequestEdit={(req) => goToSubmissionUrl(req.patientInvestigation.uuid, req.submissionPatient.id)} />
+                    uuidInvestigation={props.investigations.currentInvestigation.uuid} callBackRequestEdit={(req) => goToSubmissionUrl(req.requests[0].requestServiceInvestigation.patientInvestigation.uuid, req.submissionPatient.id)} />
             )
         }
         else if(filteredRecords.length === 0){

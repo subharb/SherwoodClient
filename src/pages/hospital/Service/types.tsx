@@ -23,6 +23,7 @@ export interface IRequest{
     id:number,
     researcher:IResearcher,
     status : RequestStatus,
+    requestServiceInvestigation:IRequestServiceInvestigation,
     createdAt:string,
     updatedAt:string,
 }
@@ -55,8 +56,21 @@ export interface IRequestServiceInvestigation{
     request:IRequest,
     patientInvestigation:IPatient,
     serviceInvestigation:IServiceInvestigation,
-    submissionPatient:any,
     survey:ISurvey | null,
+}
+
+
+export interface IRequestGroup{
+    id:number,
+    request:IRequest,
+    submissionPatient:any,
+    type:number,
+    investigation:any,
+    researcher:IResearcher,
+    requests: IRequest[];
+    surveyRequest:ISurvey,
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export enum ServiceType{
