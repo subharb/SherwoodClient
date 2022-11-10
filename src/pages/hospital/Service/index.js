@@ -140,7 +140,7 @@ export function TestsHomeComponent(props) {
                         </Grid>
                         <Grid item xs={12}>
                             <Card style={{padding:"1rem"}}>
-                                <PatientInfo personalData={patient.personalData} uuidPatient={patient.uuid}/>
+                                <PatientInfo personalData={patient.personalData} uuidPatient={uuidPatient}/>
                             </Card>
                         </Grid>
                     </Grid>
@@ -155,7 +155,7 @@ export function TestsHomeComponent(props) {
                 <>
                     <div style={{padding:'0.75rem'}}>
                         <Card style={{padding:"1rem"}}>
-                            <PatientInfo personalData={patient.personalData} />
+                            <PatientInfo personalData={patient.personalData} uuidPatient={uuidPatient} />
                         </Card>
                     </div>
                     <FillDataCollection key={uuidDataCollection} dataCollection={dataCollectionSelected} 

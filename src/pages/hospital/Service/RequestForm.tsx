@@ -80,13 +80,13 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, servi
     }, []);
 
     return <RequestFormCore loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
-                handleCloseSnackBar={handleClose} cancel={cancel} uuidSurvey={uuidSurvey}
+                handleCloseSnackBar={handleClose} cancel={cancel} uuidSurvey={uuidSurvey} serviceType={serviceType}
                 callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(uuidPatient, servicesInvestigation, serviceType)} />;
 }
 
 export default RequestForm;
 
-interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'serviceType' | 'uuidInvestigation' | 'callBackRequestFinished' > {
+interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'uuidInvestigation' | 'callBackRequestFinished' > {
     loading: boolean;
     snackbar: SnackbarType;
     servicesInvestigation:IServiceInvestigation[],
@@ -94,7 +94,7 @@ interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 's
     callBackFormSubmitted:(serviceInvestigation:number[]) => void
 }
 
-export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
+export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
     const SERVICE_SEPARATOR = "service_";
     
@@ -126,6 +126,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
             {
                 servicesInvestigation.length > 0 &&
                 servicesInvestigation.map((serviceInvestigation) => {
+                    const typeTestString = serviceType === 0 ? "laboratory" : "img";
                     return <Grid item xs={6}>
                             <FormControlLabel
                                 control={<Checkbox checked={servicesInvestigationSelected[SERVICE_SEPARATOR+serviceInvestigation.id]} />}
@@ -134,7 +135,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                                         setServicesInvestigationSelected({...servicesInvestigationSelected, ["service_"+serviceInvestigation.id]:checked});
                                     }
                                 }
-                                label={<Translate id={`pages.hospital.services.list.${serviceInvestigation.service.code}`} />} 
+                                label={<Translate id={`pages.hospital.services.tests.${typeTestString}.${serviceInvestigation.service.code}`} />} 
                             />
                             </Grid>
                 })
