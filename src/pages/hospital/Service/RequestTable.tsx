@@ -9,15 +9,15 @@ import { ISurvey } from '../../../constants/types';
 import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, researcherFullName, stringDatePostgresToDate } from '../../../utils';
 import axios from '../../../utils/axios';
 
-import { IRequest, IRequestGroup, IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
+import { IRequest, IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
 
-const requestGroupStatus = (requestGroup:IRequestGroup) => {
+const requestGroupStatus = (request:IRequest) => {
     // Si una request es completada, el estado es completada. Si no, devuelvo los estados de las requests
-    if(requestGroup.requests.some(request => request.status === RequestStatus.COMPLETED)){
+    if(request.requestsServiceInvestigation.some(request => request.status === RequestStatus.COMPLETED)){
         return <RequestStatusToChip type={RequestStatus.COMPLETED} />
     }
     else{
-        return requestGroup.requests.map((req) => {
+        return request.requestsServiceInvestigation.map((req) => {
             return <RequestStatusToChip type={req.status} />
         }) 
     }
@@ -93,14 +93,14 @@ interface RequestTableProps {
         permissions:any[],
         personalFields:any[],
     },
-    callBackRequestEdit:(request:IRequestGroup)=>void
+    callBackRequestEdit:(request:IRequest)=>void
 }
 
 const ACTIONABLE_REQUESTS = [RequestStatus.PENDING, RequestStatus.ACCEPTED, RequestStatus.COMPLETED];
 
 
 const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions,fillPending,  callBackRequestEdit: callBackSurveySelected}) => {
-    const [requestsGroup, setRequestsGroup] = React.useState<IRequestGroup[] | null>(null);
+    const [requests, setRequests] = React.useState<IRequest[] | null>(null);
     const [loading, setLoading] = React.useState(false);
 
     useEffect(() => {
@@ -117,7 +117,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidP
             }
             
             if(response.status === 200 && response.data){
-                setRequestsGroup(response.data.requestsGroup);
+                setRequests(response.data.requests);
             }
             setLoading(false);
         }
@@ -125,13 +125,13 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidP
             
     }, [serviceType, uuidPatient]);
 
-    if(requestsGroup && requestsGroup.length > 0){
+    if(requests && requests.length > 0){
         return(
             <RequestTableComponent surveys={surveys} fillPending={fillPending}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
-                loading={loading} requestsGroup={requestsGroup} callBackRequestEdit={callBackSurveySelected}/>
+                loading={loading} requests={requests} callBackRequestEdit={callBackSurveySelected}/>
         )
     }
-    else if(!requestsGroup){
+    else if(!requests){
         return <Loader />
     }
     return (
@@ -142,23 +142,23 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidP
 export default RequestTable;
 
 interface RequestTableComponentProps extends Omit< RequestTableProps, 'serviceType' | 'uuidInvestigation' >{
-    requestsGroup:IRequestGroup[],
+    requests:IRequest[],
     loading:boolean,
     
 }
 
-export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, fillPending, surveys, requestsGroup, 
+export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, fillPending, surveys, requests, 
                                                                                 showActions, encryptionData, loading, callBackRequestEdit }) => {
     
     function fillRequest(id:number){
-        const requestGroup = requestsGroup.find((req) => req.id === id);
-        if(requestGroup){
+        const request = requests.find((req) => req.id === id);
+        if(request){
             const hasActionableRequests = ACTIONABLE_REQUESTS.filter(function(status) {
-                return requestGroup.requests.findIndex((req) => req.status === status) !== -1
+                return request.requestsServiceInvestigation.findIndex((req) => req.status === status) !== -1
             }).length > 0;
-            if(hasActionableRequests && requestGroup.requests[0].requestServiceInvestigation.survey !== null){
-                console.log(requestGroup.requests[0].requestServiceInvestigation.serviceInvestigation.survey.name);
-                callBackRequestEdit(requestGroup);
+            if(hasActionableRequests && request.requestsServiceInvestigation[0].survey !== null){
+                console.log(request.requestsServiceInvestigation[0].serviceInvestigation.survey.name);
+                callBackRequestEdit(request);
             }
             else{
                 console.log("No hay survey");
@@ -172,7 +172,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     if(loading){
         return <Loader />
     }
-    else if(requestsGroup.length === 0){
+    else if(requests.length === 0){
         return(
             <div className="text-center">
                 <h4>No hay solicitudes</h4>
@@ -191,23 +191,23 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         headCells.splice(2, 0, {id : 'patient', label: <Translate id="general.patient" />, alignment:'left'})
     } 
     
-    const rows = requestsGroup.sort((reqA, reqB) => stringDatePostgresToDate(reqB.updatedAt).getMilliseconds() - stringDatePostgresToDate(reqA.updatedAt).getMilliseconds() ).map((requestGroup) => {
+    const rows = requests.sort((reqA, reqB) => stringDatePostgresToDate(reqB.updatedAt).getMilliseconds() - stringDatePostgresToDate(reqA.updatedAt).getMilliseconds() ).map((request) => {
         let survey = null
-        if(requestGroup.requests[0].requestServiceInvestigation.survey){
-            const aSurvey = requestGroup.requests[0].requestServiceInvestigation.survey as ISurvey;
+        if(request.requestsServiceInvestigation[0].survey){
+            const aSurvey = request.requestsServiceInvestigation[0].survey as ISurvey;
             survey = surveys.find((survey) => survey.uuid === aSurvey.uuid);
         }
         
         return {
-            id: requestGroup.id,
-            nhc: requestGroup.requests[0].requestServiceInvestigation.patientInvestigation.id,
-            service:requestGroup.requests[0].requestServiceInvestigation.serviceInvestigation.service.name,
-            unit: requestGroup.surveyRequest && requestGroup.surveyRequest.unit ? requestGroup.surveyRequest.unit.name : "",
-            patient:requestGroup.requests[0].requestServiceInvestigation.patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(requestGroup.requests[0].requestServiceInvestigation.patientInvestigation.personalData, encryptionData)) : requestGroup.requests[0].requestServiceInvestigation.patientInvestigation.id,
-            researcher: researcherFullName(requestGroup.researcher),            
-            status: requestGroupStatus(requestGroup),
-            type : <ServiceTypeToChip type={requestGroup.requests[0].requestServiceInvestigation.serviceInvestigation.service.type} />, 
-            date: dateAndTimeFromPostgresString("es", requestGroup.updatedAt),
+            id: request.id,
+            nhc: request.requestsServiceInvestigation[0].patientInvestigation.id,
+            service: request.requestsServiceInvestigation[0].serviceInvestigation.service.name,
+            unit: request.surveyRequest && request.surveyRequest.unit ? request.surveyRequest.unit.name : "",
+            patient:request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id,
+            researcher: researcherFullName(request.researcher),            
+            status: requestGroupStatus(request),
+            type : <ServiceTypeToChip type={request.requestsServiceInvestigation[0].serviceInvestigation.service.type} />, 
+            date: dateAndTimeFromPostgresString("es", request.updatedAt),
         }
     })
     let actions = null;

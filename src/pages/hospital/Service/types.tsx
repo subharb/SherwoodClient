@@ -19,15 +19,6 @@ export interface IServiceInvestigation{
     billable:any
 }
 
-export interface IRequest{
-    id:number,
-    researcher:IResearcher,
-    status : RequestStatus,
-    requestServiceInvestigation:IRequestServiceInvestigation,
-    createdAt:string,
-    updatedAt:string,
-}
-
 export enum RequestStatus {
     PENDING = 0,
     PENDING_PAYMENT = 1,
@@ -54,20 +45,21 @@ export enum RequestType {
 export interface IRequestServiceInvestigation{
     id:number,
     request:IRequest,
+    status : RequestStatus,
     patientInvestigation:IPatient,
     serviceInvestigation:IServiceInvestigation,
     survey:ISurvey | null,
 }
 
 
-export interface IRequestGroup{
+export interface IRequest{
     id:number,
-    request:IRequest,
     submissionPatient:any,
     type:number,
+    status : RequestStatus,
     investigation:any,
     researcher:IResearcher,
-    requests: IRequest[];
+    requestsServiceInvestigation: IRequestServiceInvestigation[];
     surveyRequest:ISurvey,
     createdAt: Date;
     updatedAt: Date;

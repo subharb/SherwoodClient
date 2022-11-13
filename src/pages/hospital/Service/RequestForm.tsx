@@ -8,7 +8,7 @@ import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_com
 import Loader from '../../../components/Loader';
 import { SnackbarTypeSeverity } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
-import { IRequestGroup, IRequestServiceInvestigation, IServiceInvestigation } from './types';
+import { IRequest, IRequestServiceInvestigation, IServiceInvestigation } from './types';
 
 interface RequestFormProps {
     serviceType: number;
@@ -17,26 +17,26 @@ interface RequestFormProps {
     uuidSurvey:string,
     initServicesInvestigation?: IServiceInvestigation[],
     cancel?:() => void,
-    callBackRequestFinished:(requestsService:IRequestGroup)=>void,  
+    callBackRequestFinished:(requestsService:IRequest)=>void,  
 }
 
 const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, serviceType, uuidInvestigation, initServicesInvestigation, callBackRequestFinished, cancel }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackbar, setShowSnackbar] = useSnackBarState();
     const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(initServicesInvestigation ? initServicesInvestigation : null);
-    const [requestGroup, setRequestGroup] = React.useState<null | IRequestGroup>(null);
+    const [request, setRequest] = React.useState<null | IRequest>(null);
     
     function handleClose(){
         setShowSnackbar({show:false});
-        if(snackbar.severity === SnackbarTypeSeverity.SUCCESS && requestGroup !== null){
-            callBackRequestFinished(requestGroup);
+        if(snackbar.severity === SnackbarTypeSeverity.SUCCESS && request !== null){
+            callBackRequestFinished(request);
         }
     }
     useEffect(() => {
-        if(requestGroup !== null){
-            callBackRequestFinished(requestGroup);
+        if(request !== null){
+            callBackRequestFinished(request);
         }
-    }, [requestGroup]);
+    }, [request]);
     
     function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number) {
         setLoading(true);
@@ -50,7 +50,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, servi
         .then(response => {
             if(response.status === 200){
                 setShowSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"});
-                setRequestGroup(response.data.requestGroup);
+                setRequest(response.data.requestGroup);
             }
             else{
                 setShowSnackbar({show:true, severity:"error", message:"general.error"});
