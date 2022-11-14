@@ -36,7 +36,13 @@ export interface IDepartmentServer extends IDepartment{
     uuid:string
 }
 
-
+export interface IPersonalData{
+    name: string,
+    surnames: string,
+    birthdate: string,
+    sex: string,
+    health_id ?:string
+}
 
 export interface IResearcher{
     name:string,
@@ -81,7 +87,7 @@ export interface PersonalField{
 export interface IPatient{
     uuid:string,
     id:number,
-    personalData: PersonalData,
+    personalData: IPersonalData,
     dateCreated:Date
 }
 

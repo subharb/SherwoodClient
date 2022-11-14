@@ -1,8 +1,11 @@
 import { Typography } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Translate, withLocalize, LocalizeContextProps } from 'react-localize-redux';
+import { connect, connectAdvanced } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { IPatient, IPersonalData } from '../constants/types';
 import { HOSPITAL_PATIENT } from '../routes';
 import { dateToFullDateString } from '../utils';
 import { ColourChip } from './general/mini_components-ts';
@@ -11,20 +14,32 @@ import { ColourChip } from './general/mini_components-ts';
 
 interface PatientInfoProps extends LocalizeContextProps{
     uuidPatient: string;
-    personalData : {
-        name: string,
-        surnames: string,
-        birthdate: string,
-        sex: string
-    }
+    patientsPersonalData?: IPatient[];
 }
 
-const PatientInfo: React.FC<PatientInfoProps> = ({ personalData, activeLanguage, uuidPatient }) => {
+
+const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, patientsPersonalData }) => {
+    const [personalData, setPersonalData] = useState<IPersonalData | null>(null);
+   
     const history = useHistory();
     
     function goToPatient(){
         const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
         history.push(nextUrl);
+    }
+
+    useEffect(() => {
+        if(patientsPersonalData){
+            const patient = patientsPersonalData.find((patient) => patient.uuid === uuidPatient);
+            if(patient){
+                setPersonalData(patient.personalData);
+            }
+            
+        }
+    }, [uuidPatient])
+
+    if(!personalData){
+        return <Typography variant="h4">Patient not found</Typography>
     }
     return (
         <> 
@@ -35,4 +50,10 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ personalData, activeLanguage,
     );
 };
 
-export default withLocalize(PatientInfo);
+const mapStateToProps = (state:any) =>{
+    return {
+        patientsPersonalData:state.investigations.currentInvestigation ? state.investigations.currentInvestigation.patientsPersonalData : null
+    }
+}
+
+export default withLocalize(connect(mapStateToProps, null)(PatientInfo));
