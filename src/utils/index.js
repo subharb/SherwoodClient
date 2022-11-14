@@ -673,8 +673,8 @@ export function dateToFullDateString(date, localeCode){
         })
 }
 
-export function hasRequestGroupState(requestGroup, status){
-    return requestGroup.requests.findIndex((req) => req.status === status) !== -1
+export function hasRequestGroupState(request, status){
+    return request.requestsServiceInvestigation.findIndex((req) => req.status === status) !== -1
 }
 
 export function dateAndTimeFromPostgresString(localeCode, dateString){

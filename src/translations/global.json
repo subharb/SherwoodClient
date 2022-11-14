@@ -4,6 +4,7 @@
     "general" : {
         "yes" : ["Yes", "Si", "Oui"], 
         "no" : ["No", "No", "Non"], 
+        "several" : ["Several", "Varios", "Plusieurs"],
         "patient" : ["Patient", "Paciente", "Patient"],
         "save" : ["Save", "Guardar", "Enregistrer"],
         "discard" : ["Discard", "Descartar", "Jeter"],

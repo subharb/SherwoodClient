@@ -100,16 +100,14 @@ export function TestsHomeComponent(props) {
     function toogleEditLab(){
         setEdit(edit => !edit);
     }
-    function accessRequest(requestGroup){
+    function accessRequest(request){
         let nextUrl = null;
-        if(requestGroup.submissionPatient && hasRequestGroupState(requestGroup, RequestStatus.COMPLETED)){
-            nextUrl = HOSPITAL_LAB_RESULT.replace(":idSubmission", requestGroup.submissionPatient.id)
-                                        .replace(":uuidPatient", requestGroup.requests[0].requestServiceInvestigation.patientInvestigation.uuid);
+        if(request.submissionPatient && hasRequestGroupState(request, RequestStatus.COMPLETED)){
+            nextUrl = HOSPITAL_LAB_RESULT.replace(":idSubmission", request.submissionPatient.id)
+                                        .replace(":uuidPatient", request.requests[0].requestServiceInvestigation.patientInvestigation.uuid);
         }
-        else if(hasRequestGroupState(requestGroup, RequestStatus.ACCEPTED)){
-            nextUrl = HOSPITAL_LAB_FORM.replace(":uuidDataCollection", requestGroup.requests[0].requestServiceInvestigation.serviceInvestigation.survey.uuid)
-                                        .replace(":uuidPatient", requestGroup.requests[0].requestServiceInvestigation.patientInvestigation.uuid)
-                                        .replace(":idRequest", requestGroup.id)
+        else if(hasRequestGroupState(request, RequestStatus.ACCEPTED)){
+            nextUrl = HOSPITAL_LAB_FORM.replace(":idRequest", request.id)
         }
         
         if(nextUrl){

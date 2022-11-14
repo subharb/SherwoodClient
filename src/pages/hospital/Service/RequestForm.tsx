@@ -50,7 +50,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, servi
         .then(response => {
             if(response.status === 200){
                 setShowSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"});
-                setRequest(response.data.requestGroup);
+                setRequest(response.data.request);
             }
             else{
                 setShowSnackbar({show:true, severity:"error", message:"general.error"});

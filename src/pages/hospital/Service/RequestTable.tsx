@@ -157,7 +157,6 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
                 return request.requestsServiceInvestigation.findIndex((req) => req.status === status) !== -1
             }).length > 0;
             if(hasActionableRequests && request.requestsServiceInvestigation[0].survey !== null){
-                console.log(request.requestsServiceInvestigation[0].serviceInvestigation.survey.name);
                 callBackRequestEdit(request);
             }
             else{
@@ -187,11 +186,12 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
                     {id : 'date', label: <Translate id="general.date" />, alignment:'left'},
                     {id : 'status', label: <Translate id="pages.hospital.services.status" />, alignment:'left'},];
     if(!uuidPatient){
+        headCells.splice(headCells.findIndex((head) => head.id === 'type'), 1); 
         headCells.splice(1, 0, {id : 'nhc', label: <Translate id="investigation.create.personal_data.fields.health_id" />, alignment:'left'})
         headCells.splice(2, 0, {id : 'patient', label: <Translate id="general.patient" />, alignment:'left'})
     } 
     
-    const rows = requests.sort((reqA, reqB) => stringDatePostgresToDate(reqB.updatedAt).getMilliseconds() - stringDatePostgresToDate(reqA.updatedAt).getMilliseconds() ).map((request) => {
+    const rows = requests.sort((reqA, reqB) => stringDatePostgresToDate(reqB.updatedAt).getTime() - stringDatePostgresToDate(reqA.updatedAt).getTime() ).map((request) => {
         let survey = null
         if(request.requestsServiceInvestigation[0].survey){
             const aSurvey = request.requestsServiceInvestigation[0].survey as ISurvey;
@@ -201,11 +201,11 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         return {
             id: request.id,
             nhc: request.requestsServiceInvestigation[0].patientInvestigation.id,
-            service: request.requestsServiceInvestigation[0].serviceInvestigation.service.name,
+            service: request.requestsServiceInvestigation.length > 1 ? <ColourChip rgbcolor={serviceToColor(request.type)} label={<Translate id="general.several" />} /> : <ColourChip rgbcolor={serviceToColor(request.type)} label={request.requestsServiceInvestigation[0].serviceInvestigation.service.name} />,
             unit: request.surveyRequest && request.surveyRequest.unit ? request.surveyRequest.unit.name : "",
             patient:request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id,
             researcher: researcherFullName(request.researcher),            
-            status: requestGroupStatus(request),
+            status: <RequestStatusToChip type={request.status} />,
             type : <ServiceTypeToChip type={request.requestsServiceInvestigation[0].serviceInvestigation.service.type} />, 
             date: dateAndTimeFromPostgresString("es", request.updatedAt),
         }
