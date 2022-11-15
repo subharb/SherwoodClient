@@ -139,7 +139,11 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
 
     function renderCore(){
         if(Object.values(serviceCategories).length === 1){
-            return renderServiceForm()
+            return(
+                <Grid container item xs={12} spacing={1}>
+                    { renderServiceForm() }
+                </Grid>
+            )
         }
         else{
             return (

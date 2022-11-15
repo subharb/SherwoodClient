@@ -279,7 +279,7 @@ function Patient(props) {
                 </>)
         }
         else if (types.TYPE_SERVICE_SURVEY.includes(typeSurveySelected)){
-            const serviceType = typeSurveySelected === types.TYPE_FILL_LAB_SURVEY ? 0 : 1;
+            const serviceType = typeSurveySelected === types.TYPE_LAB_SURVEY ? 0 : 1;
             return (
                 <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} 
                     showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}

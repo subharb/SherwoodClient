@@ -35,10 +35,10 @@ export function TestsHome(props){
     let location = useLocation();
     const parameters = useParams();
     if(location.pathname.includes("/images")){
-        return <TestsHomeComponent type={1} parameters={parameters} {...props} />
+        return <TestsHomeComponent type={ServiceType.IMAGING} parameters={parameters} {...props} />
     }
     else if(location.pathname.includes("/lab")){
-        return <TestsHomeComponent type={2} parameters={parameters} {...props}/>
+        return <TestsHomeComponent type={ServiceType.LABORATORY} parameters={parameters} {...props}/>
     }
     else return null;
 }
@@ -88,7 +88,7 @@ export function TestsHomeComponent(props) {
     function renderCore(){
         if(edit){
             return (
-                <EditServices serviceType={ServiceType.LABORATORY} uuidInvestigation={props.investigations.currentInvestigation.uuid} 
+                <EditServices serviceType={props.type} uuidInvestigation={props.investigations.currentInvestigation.uuid} 
                     surveys={props.investigations.currentInvestigation.surveys} />
             );
         }
@@ -101,7 +101,7 @@ export function TestsHomeComponent(props) {
             )
         }
         else{
-            return <RequestTable serviceType={0} showActions={true} fillRequest={true} callBackRequestSelected={(uuidSurvey) => accessRequest(uuidSurvey)}
+            return <RequestTable serviceType={props.type} showActions={true} fillRequest={true} callBackRequestSelected={(uuidSurvey) => accessRequest(uuidSurvey)}
                         encryptionData={{
                             encryptedKeyUsed : props.investigations.currentInvestigation.encryptedKeyUsed,
                             keyResearcherInvestigation: props.investigations.currentInvestigation.keyResearcherInvestigation,
@@ -123,7 +123,7 @@ export function TestsHomeComponent(props) {
             <Grid container spacing={6} >
                 <Grid container alignItems="center" alignContent="center" item xs={12}>
                     <IconHolder>
-                        <img src={props.type === 1 ? iconImages : iconLab } alt="images" width="20" />
+                        <img src={props.type === ServiceType.IMAGING ? iconImages : iconLab } alt="images" width="20" />
                     </IconHolder>
                     <div>
                         <Typography variant="h3" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>

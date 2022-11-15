@@ -11,7 +11,7 @@ import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
-import { IService, IServiceInvestigation } from './types';
+import { IService, IServiceInvestigation, ServiceType } from './types';
 
 interface EditServicesProps {
     serviceType: number;
@@ -58,7 +58,7 @@ const EditServices: React.FC<EditServicesProps> = ({uuidInvestigation, serviceTy
         }
         if(!servicesInvestigation){
             setLoading(true);
-            axios(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/services/", { headers: {"Authorization" : localStorage.getItem("jwt") }})
+            axios(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/services/"+serviceType, { headers: {"Authorization" : localStorage.getItem("jwt") }})
             .then(response => {
                 setServicesInvestigation(response.data.servicesInvestigation);
                 setLoading(false);
@@ -90,7 +90,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         const serviceOptions = servicesGeneral?.filter((service) =>{
             return !servicesInvestigation?.some((serviceInvestigation) => serviceInvestigation.service.id === service.id);
         }).map((service) => {
-            const typeTestString = serviceType === 0 ? "laboratory" : "img"; 
+            const typeTestString = serviceType === ServiceType.LABORATORY ? "laboratory" : "img"; 
             return {
                 label: `pages.hospital.services.tests.${typeTestString}.${service.code}`,
                 value: service.id,
