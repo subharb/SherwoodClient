@@ -89,15 +89,16 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
             return survey.type === TYPE_FILL_LAB_SURVEY;
         })
         if(!survey){
-            return <Typography variant="h4">No se ha encontrado la encuesta de laboratorio</Typography>
+            return <Typography variant="h4">The request could not be found</Typography>
         }
         if(!editData && request?.submissionPatient && submissionData){
             // const survey = request.requestsServiceInvestigation.every((requestService) => requestService.survey !== null) ? ;
-            
+            const newSubmission = patientsSubmissions.data && patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid][survey.uuid] ?  patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid][survey.uuid].submissions.find((submission:any) => submission.id === request?.submissionPatient.id) : null;
+            const submissionDataLocal = newSubmission ? newSubmission : submissionData.submission;
             return (
                 <ShowPatientRecords permissions={permissions} survey={survey} forceEdit={request.status !== RequestStatus.COMPLETED}
                     mode="elements" callBackEditSubmission={() => setEditData(true)} idSubmission={request?.submissionPatient.id}
-                    submissions={[submissionData.submission]} surveys={surveys} />
+                    submissions={[submissionDataLocal]} surveys={surveys} />
             )
         }
         else{
@@ -120,7 +121,7 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
         }
     }
 
-    if((!request && loading) || (patientsSubmissions.loading)){
+    if((loading) || (patientsSubmissions.loading)){
         return <Loader />
     }
     else if(!request){
@@ -137,10 +138,10 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
                 autoHideDuration={4000}
                 onClose={handleCloseSnackBar}
                 >
-                    <Alert severity={snackbar.severity}>
-                            <Translate id={snackbar.message} />                            
-                        </Alert>
-                </Snackbar>
+                <Alert severity={snackbar.severity}>
+                        <Translate id={snackbar.message} />                            
+                    </Alert>
+            </Snackbar>
             <Grid container spacing={3}>
                 <RequestInfo request={request} />
                 <Grid item xs={12}>

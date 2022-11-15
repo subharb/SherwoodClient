@@ -85,6 +85,17 @@ const File:React.FC<Props> = (props) => {
         let newFilesSelected = [...filesSelected];
         newFilesSelected.splice(index, 1);
         setFilesSelected(newFilesSelected);
+        let remoteNames:PostFile[] = [];
+        for(let i = 0; i < newFilesSelected.length; i++){
+            const file = newFilesSelected[i];
+            const element:PostFile = {
+                file:file.remoteName as string,
+                file_type : file.type
+            }
+            remoteNames.push(element);
+        }
+        
+        props.imagesSelected(remoteNames);
     }
     function showFullSize(index:number){
         const file = filesSelected[index];
@@ -328,7 +339,7 @@ const File:React.FC<Props> = (props) => {
                         }
                         else{
                             return(
-                                <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                            
                                     <GridImage item xs={2}>
                                         {
                                             renderFileStatus(file.status, index)
@@ -336,7 +347,7 @@ const File:React.FC<Props> = (props) => {
                                         <OpacityLayer />
                                         <ImageFile src={LogoSherwood} width="100%" alt="Logo"/>
                                     </GridImage>
-                                </CloseFrame>
+                            
                             )
                         }
                         
