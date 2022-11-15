@@ -1,13 +1,14 @@
 import { Checkbox, FormControlLabel, Grid, Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Translate } from 'react-localize-redux';
 import Form from '../../../components/general/form';
 import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_components';
 import Loader from '../../../components/Loader';
 import { SnackbarTypeSeverity } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
+import { TabsSherwood } from '../../components/Tabs';
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation } from './types';
 
 interface RequestFormProps {
@@ -96,6 +97,17 @@ interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'u
 
 export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
+    const [categoryServiceSelected, setCategoryServiceSelected] = React.useState<string>("");
+    const serviceCategories = useMemo(() => {
+        let categories:{[id:string]:IServiceInvestigation[]} = {};
+        servicesInvestigation.forEach(serviceInvestigation => {
+            if(!categories[serviceInvestigation.service.category]){
+                categories[serviceInvestigation.service.category] = [];
+            }
+            categories[serviceInvestigation.service.category].push(serviceInvestigation);
+        });
+        return categories;
+    }, [servicesInvestigation]);
     const SERVICE_SEPARATOR = "service_";
     
     function callBackForm(){
@@ -103,6 +115,46 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         const serviceInvestigationIds = Object.keys(servicesInvestigationSelected).filter((key) => servicesInvestigationSelected[key] === true).map((key) => parseInt(key.replace(SERVICE_SEPARATOR, "")));
         console.log("serviceInvestigationIds", serviceInvestigationIds);
         callBackFormSubmitted(serviceInvestigationIds);
+    }
+
+    function renderServiceForm(category?:string){
+        const filterServicesInvestigation = category ? servicesInvestigation.filter((serviceInv) => serviceInv.service.category === category) : servicesInvestigation;
+        return(
+            filterServicesInvestigation.map((serviceInvestigation) => {
+                const typeTestString = serviceType === 0 ? "laboratory" : "img";
+                return <Grid item xs={6}>
+                        <FormControlLabel
+                            control={<Checkbox checked={servicesInvestigationSelected[SERVICE_SEPARATOR+serviceInvestigation.id]} />}
+                            onChange={
+                                (event: React.ChangeEvent<{}>, checked: boolean) => {
+                                    setServicesInvestigationSelected({...servicesInvestigationSelected, ["service_"+serviceInvestigation.id]:checked});
+                                }
+                            }
+                            label={<Translate id={`pages.hospital.services.tests.${typeTestString}.${serviceInvestigation.service.code}`} />} 
+                        />
+                        </Grid>
+            })
+        )
+    }
+
+    function renderCore(){
+        if(Object.values(serviceCategories).length === 1){
+            return renderServiceForm()
+        }
+        else{
+            return (
+                <TabsSherwood name="Billing Info"
+                    
+                    labels={Object.keys(serviceCategories).map((category)=> category)} >
+                        { Object.keys(serviceCategories).map((serviceCategory) => {
+                            return <Grid container item xs={12} spacing={1}>
+                                { renderServiceForm(serviceCategory) }
+                            </Grid>
+                        }) }
+                        <></>
+                </TabsSherwood>
+            ); 
+        }
     }
     if(loading){
         return <Loader />;
@@ -122,25 +174,11 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                             <Translate id={snackbar.message} />                            
                         </Alert>
                 </Snackbar>
-            <Grid container item xs={12} spacing={1}>
+            
             {
-                servicesInvestigation.length > 0 &&
-                servicesInvestigation.map((serviceInvestigation) => {
-                    const typeTestString = serviceType === 0 ? "laboratory" : "img";
-                    return <Grid item xs={6}>
-                            <FormControlLabel
-                                control={<Checkbox checked={servicesInvestigationSelected[SERVICE_SEPARATOR+serviceInvestigation.id]} />}
-                                onChange={
-                                    (event: React.ChangeEvent<{}>, checked: boolean) => {
-                                        setServicesInvestigationSelected({...servicesInvestigationSelected, ["service_"+serviceInvestigation.id]:checked});
-                                    }
-                                }
-                                label={<Translate id={`pages.hospital.services.tests.${typeTestString}.${serviceInvestigation.service.code}`} />} 
-                            />
-                            </Grid>
-                })
+                renderCore()
             }
-            </Grid>
+            
             <Grid container item xs={12} spacing={1}>
                 <Grid item>
                     <ButtonAccept onClick={callBackForm}><Translate id="general.add" /></ButtonAccept> 
