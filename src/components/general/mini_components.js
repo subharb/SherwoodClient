@@ -308,6 +308,7 @@ export const CloseButton = (props) =>{
 
 const CloseHolder = styled.div`
     position:relative;
+    display:inline-block;
     width: max-content;
 `;
 const CloseButtonHolder = styled.div`
@@ -315,6 +316,7 @@ const CloseButtonHolder = styled.div`
     right:0px;
     margin-top:-20px;
     margin-right:-30px;
+    display:${props => props.hide ? "none" : "block"};
 `
 export const RedFormHelperText = styled(FormHelperText)`
   color:red;
@@ -323,7 +325,7 @@ export const RedFormHelperText = styled(FormHelperText)`
 export const CloseFrame = (props) => {
     return(
         <CloseHolder>
-            <CloseButtonHolder>
+            <CloseButtonHolder hide={props.hide}>
                 <CloseButton onClick={props.onClick} />
             </CloseButtonHolder>
             {

@@ -435,12 +435,10 @@ class FieldSherwood extends PureComponent{
                 );
             case "file" : 
                 return (
-                    <FieldWrapper noWrap = {this.props.fullWidth}>
-                        <File label={labelString} mode="form"
-                            imagesSelected = {(images) => this.imagesSelected(images) }
-                            type={type} {...input} 
-                            value={input.value} />
-                    </FieldWrapper>
+                    <File label={labelString} mode="form"
+                        imagesSelected = {(images) => this.imagesSelected(images) }
+                        type={type} {...input} 
+                        value={input.value} />
                 )
             case "file_base64" : 
                 return (

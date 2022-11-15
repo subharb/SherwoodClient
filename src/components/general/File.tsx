@@ -10,6 +10,7 @@ import Modal from './modal';
 import LogoSherwood from '../../img/favicon-96x96.png';
 import PDFLogo from '../../img/pdf_logo.jpeg';
 import { isImageType } from '../../utils';
+import { CloseFrame } from './mini_components';
 
 enum UPLOAD_STATE{
     NOT_UPLOAD = 0,
@@ -56,12 +57,13 @@ const StatusLayer = styled.div`
 `;
 
 const GridImage = styled(Grid)`
-    display:flex;
+    display:inline-block;
     position:relative;
     align-items: center;
     justify-content: center;
     padding:0.5rem;
-    height:10rem;
+    max-height:10rem;
+    max-width: 10rem;
     overflow: hidden;
 `;
 
@@ -77,7 +79,13 @@ const File:React.FC<Props> = (props) => {
     const [bufferDataFile, setBufferDataFile] = useState("");
     const prevFilesSelected:FileUpload[] | undefined = usePrevious(filesSelected);
     const prevValue:FileUpload[] | undefined = usePrevious(props.value);
+    const [addingFile, setAddingFile] = useState(false);
 
+    function removeFile(index:number){
+        let newFilesSelected = [...filesSelected];
+        newFilesSelected.splice(index, 1);
+        setFilesSelected(newFilesSelected);
+    }
     function showFullSize(index:number){
         const file = filesSelected[index];
         if(file.buffer){
@@ -137,6 +145,7 @@ const File:React.FC<Props> = (props) => {
             
             tempFilesSelected.push({image:value, status:UPLOAD_STATE.LOADING, type:value[0].type});
             console.log(tempFilesSelected);
+            setAddingFile(true);
             setFilesSelected(tempFilesSelected);
             
         }
@@ -211,7 +220,8 @@ const File:React.FC<Props> = (props) => {
     }
     useEffect(()=>{
         async function changeFiles(){
-            if((props.value && props.value.length > 0) && filesSelected.length === props.value.length){
+            if((props.value && props.value.length > 0) && (filesSelected.length === props.value.length) && !addingFile){
+                // si es el mount inicial, me traigo los archivos
                 for(let i = 0; i < filesSelected.length; i++){
                     if(!((filesSelected[i].status === UPLOAD_STATE.OK) || (filesSelected[i].status === UPLOAD_STATE.ERROR))){
                         await getAndUpdate(i);
@@ -219,10 +229,11 @@ const File:React.FC<Props> = (props) => {
                 } 
             }
             else if(prevFilesSelected){
-                    if(prevFilesSelected.length < filesSelected.length){
+                    if(prevFilesSelected.length < filesSelected.length && addingFile){
                         //Mando la imagen al servidor
                         const lastIndex = filesSelected.length -1;
                         await uploadAndUpdate(lastIndex);
+                        setAddingFile(false);
                     }
                     else if(prevFilesSelected.length > filesSelected.length){
                         //Borro la imagen que falte
@@ -234,7 +245,7 @@ const File:React.FC<Props> = (props) => {
     }, [filesSelected]);
     useEffect(() =>{
         async function loadFiles(){
-            if(props.mode === "show" && typeof prevValue === "undefined" && props.value && props.value.length > 0 ){
+            if(typeof prevValue === "undefined" && props.value && props.value.length > 0 ){
                 const tempFiles:FileUpload[] = props.value.map(file => {
                     return {
                         remoteName:file.file,
@@ -261,31 +272,35 @@ const File:React.FC<Props> = (props) => {
                     {props.label}
                 </Typography>
             </Grid>
-            <Grid item container direction={'row'}  spacing={3} xs={12}>
+            <Grid className='files_container' item container direction={'row'}  spacing={3} xs={12}>
                 {
                     filesSelected.map((file, index) =>{
                         if(file.image){
                             if(file.type === "image/png" || file.type === "image/jpeg" || file.type === "image/jpg"){
                                 return(
-                                    <GridImage item xs={2}>
-                                        {
-                                            renderFileStatus(file.status, index)
-                                        }
-                                        <OpacityLayer />
-                                        
-                                        <ImageFile src={URL.createObjectURL(file.image[0])} alt="imagen" />
-                                    </GridImage>) 
+                                    <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                        <GridImage item>
+                                            {
+                                                renderFileStatus(file.status, index)
+                                            }
+                                            <OpacityLayer />
+                                            
+                                            <ImageFile src={URL.createObjectURL(file.image[0])} alt="imagen" />
+                                        </GridImage>
+                                    </CloseFrame>) 
                             }
                             else{
                                 return(
-                                    <GridImage item xs={2}>
-                                        {
-                                            renderFileStatus(file.status, index)
-                                        }
-                                        <OpacityLayer />
-                                        
-                                        <ImageFile src={PDFLogo} alt="pdf" />
-                                    </GridImage>) 
+                                    <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                        <GridImage>
+                                            {
+                                                renderFileStatus(file.status, index)
+                                            }
+                                            <OpacityLayer />
+                                            
+                                            <ImageFile src={PDFLogo} alt="pdf" />
+                                        </GridImage>
+                                    </CloseFrame>) 
                             }
                              
                         }
@@ -294,28 +309,34 @@ const File:React.FC<Props> = (props) => {
                                 let buf = Buffer.from(file.buffer);
                                 let base64 = buf.toString('base64');
                                 return(
-                                    <GridImage item xs={2}>
-                                        <ImageFile onClick={() => showFullSize(index)} src={`data:image/jpeg;base64, ${base64}`} alt=""/>
-                                    </GridImage>
+                                    <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                        <GridImage item xs={2}>
+                                            <ImageFile onClick={() => showFullSize(index)} src={`data:image/jpeg;base64, ${base64}`} alt=""/>
+                                        </GridImage>
+                                    </CloseFrame>
                                 )
                             }
                             else{
                                 return(
-                                    <GridImage item xs={2}>
-                                        <ImageFile onClick={() => downloadPDF(index)}  src={PDFLogo} alt="pdf" />
-                                    </GridImage>
+                                    <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                        <GridImage item xs={2}>
+                                            <ImageFile onClick={() => downloadPDF(index)}  src={PDFLogo} alt="pdf" />
+                                        </GridImage>
+                                    </CloseFrame>
                                 )
                             }
                         }
                         else{
                             return(
-                                <GridImage item xs={2}>
-                                    {
-                                        renderFileStatus(file.status, index)
-                                    }
-                                    <OpacityLayer />
-                                    <ImageFile src={LogoSherwood} width="100%" alt="Logo"/>
-                                </GridImage>
+                                <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                    <GridImage item xs={2}>
+                                        {
+                                            renderFileStatus(file.status, index)
+                                        }
+                                        <OpacityLayer />
+                                        <ImageFile src={LogoSherwood} width="100%" alt="Logo"/>
+                                    </GridImage>
+                                </CloseFrame>
                             )
                         }
                         
