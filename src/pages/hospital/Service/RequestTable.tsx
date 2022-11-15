@@ -14,40 +14,47 @@ import { IRequest, IRequestServiceInvestigation, IServiceInvestigation, RequestS
 const requestGroupStatus = (request:IRequest) => {
     // Si una request es completada, el estado es completada. Si no, devuelvo los estados de las requests
     if(request.requestsServiceInvestigation.some(request => request.status === RequestStatus.COMPLETED)){
-        return <RequestStatusToChip type={RequestStatus.COMPLETED} />
+        return <RequestStatusToChip status={RequestStatus.COMPLETED} />
     }
     else{
         return request.requestsServiceInvestigation.map((req) => {
-            return <RequestStatusToChip type={req.status} />
+            return <RequestStatusToChip status={req.status} />
         }) 
     }
     
 }
 
-const RequestStatusToChip:React.FC<{type:RequestStatus}> = ({type}) =>  {
-        let colour = null
-        let translation = RequestStatus[type]
-        switch(type){
-            case RequestStatus.PENDING:
-            case RequestStatus.PENDING_PAYMENT:
-            case RequestStatus.IN_PROGRESS:
-                colour = yellow[900];
-                break;
-            case RequestStatus.ACCEPTED: 
-                colour = blue[900];
-                break;
-            case RequestStatus.COMPLETED: 
-            case RequestStatus.INCOMPLETE_ACCEPTED:
-                colour = green[700];            
-                break;
-            case RequestStatus.CANCELED:
-            case RequestStatus.DENIED:
-            case RequestStatus.INCOMPLETE:
-                colour = red[100];            
-                break;            
-            default:
-                return <ColourChip size="small" label={<Translate id={`pages.hospital.services.request_status.${translation}`} />} rgbcolor={colour} />
-        }
+export const statusToColor = (status:RequestStatus) => {
+    let colour = null;
+    switch(status){
+        case RequestStatus.PENDING_APPROVAL:
+        case RequestStatus.PENDING_PAYMENT:
+        case RequestStatus.IN_PROGRESS:
+            colour = yellow[900];
+            break;
+        case RequestStatus.ACCEPTED: 
+            colour = blue[900];
+            break;
+        case RequestStatus.SOME_ACCEPTED:
+        case RequestStatus.INCOMPLETE_ACCEPTED:
+            colour = blue[600];
+            break;
+        case RequestStatus.COMPLETED: 
+            colour = green[700];            
+            break;
+        case RequestStatus.CANCELED:
+        case RequestStatus.DENIED:
+        case RequestStatus.INCOMPLETE:
+            colour = red[100];            
+            break;  
+    }
+    return colour;
+}
+
+export const RequestStatusToChip:React.FC<{status:RequestStatus}> = ({status}) =>  {
+        let colour = statusToColor(status);
+        let translation = RequestStatus[status]
+       
         return <ColourChip size="small" label={<Translate id={`pages.hospital.services.request_status.${translation}`}  />} rgbcolor={colour} />
 }
 
@@ -93,13 +100,13 @@ interface RequestTableProps {
         permissions:any[],
         personalFields:any[],
     },
-    callBackRequestEdit:(request:IRequest)=>void
+    callBackRequestSelected:(request:IRequest)=>void
 }
 
-const ACTIONABLE_REQUESTS = [RequestStatus.PENDING, RequestStatus.ACCEPTED, RequestStatus.COMPLETED];
+const ACTIONABLE_REQUESTS = [RequestStatus.PENDING_APPROVAL, RequestStatus.ACCEPTED, RequestStatus.COMPLETED];
 
 
-const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions,fillPending,  callBackRequestEdit: callBackSurveySelected}) => {
+const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions,fillPending,  callBackRequestSelected}) => {
     const [requests, setRequests] = React.useState<IRequest[] | null>(null);
     const [loading, setLoading] = React.useState(false);
 
@@ -128,7 +135,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidP
     if(requests && requests.length > 0){
         return(
             <RequestTableComponent surveys={surveys} fillPending={fillPending}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
-                loading={loading} requests={requests} callBackRequestEdit={callBackSurveySelected}/>
+                loading={loading} requests={requests} callBackRequestSelected={callBackRequestSelected}/>
         )
     }
     else if(!requests){
@@ -148,7 +155,7 @@ interface RequestTableComponentProps extends Omit< RequestTableProps, 'serviceTy
 }
 
 export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, fillPending, surveys, requests, 
-                                                                                showActions, encryptionData, loading, callBackRequestEdit }) => {
+                                                                                showActions, encryptionData, loading, callBackRequestSelected }) => {
     
     function fillRequest(id:number){
         const request = requests.find((req) => req.id === id);
@@ -157,7 +164,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
                 return request.requestsServiceInvestigation.findIndex((req) => req.status === status) !== -1
             }).length > 0;
             if(hasActionableRequests && request.requestsServiceInvestigation[0].survey !== null){
-                callBackRequestEdit(request);
+                callBackRequestSelected(request);
             }
             else{
                 console.log("No hay survey");
@@ -205,7 +212,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
             unit: request.surveyRequest && request.surveyRequest.unit ? request.surveyRequest.unit.name : "",
             patient:request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id,
             researcher: researcherFullName(request.researcher),            
-            status: <RequestStatusToChip type={request.status} />,
+            status: <RequestStatusToChip status={request.status} />,
             type : <ServiceTypeToChip type={request.requestsServiceInvestigation[0].serviceInvestigation.service.type} />, 
             date: dateAndTimeFromPostgresString("es", request.updatedAt),
         }

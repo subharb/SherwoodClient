@@ -10,15 +10,28 @@ import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../.
 export default function FillDataCollection(props) {
     const dispatch = useDispatch();
 
-    async function saveRecords(data){
-        const postObj = {
+    async function saveRecords(data, buttonSubmitted){
+        let postObj =  {
             uuidSurvey:props.dataCollection.uuid, 
             uuid_patient:props.uuidPatient,
             id:props.idSubmission,
             researcher: props.researcher,
-            surveyRecords:[],
-            requestServiceId: parseInt(props.requestServiceId),
+            surveyRecords:[]
         }
+        if(props.requestServiceId){
+            postObj = {
+                uuidSurvey:props.dataCollection.uuid, 
+                uuid_patient:props.uuidPatient,
+                id:props.idSubmission,
+                researcher: props.researcher,
+                surveyRecords:[],
+                requestInfo: {
+                    requestId:parseInt(props.requestServiceId), 
+                    completeRequest:buttonSubmitted === "button2"
+                },
+            }
+        }
+        
         data.forEach(fieldData => {
             //const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));
             postObj.surveyRecords.push(fieldData);
@@ -75,11 +88,12 @@ export default function FillDataCollection(props) {
             <SectionForm initData={props.initData} key={props.dataCollection.uuid} 
                 country={props.country} uuidInvestigation={props.uuidInvestigation}
                 fields={fields} uuidPatient={props.uuidPatient}
-                uuidSurvey = {props.dataCollection.uuid}
-                callBackSectionForm = {(values) => saveRecords(values)}/>
+                uuidSurvey = {props.dataCollection.uuid} alterSubmitButton={props.alterSubmitButton}
+                callBackSectionForm = {(values, buttonSubmitted) => saveRecords(values, buttonSubmitted)}/>
         )
         
     }
+    
     return (
         <React.Fragment>
             <Grid container  spacing={3}>
@@ -108,6 +122,15 @@ FillDataCollection.propTypes = {
     sectionSelected : PropTypes.object,
     /** Data Collection */
     dataCollection: PropTypes.object.isRequired,
+    hideCollectionName:PropTypes.bool,
+    requestServiceId:PropTypes.number,
+    country:PropTypes.string,
+    researcher:PropTypes.object,
+    uuidPatient:PropTypes.string,
+    uuidInvestigation:PropTypes.string,
+    initData:PropTypes.object,
+    alterSubmitButton:PropTypes.string,
+    idSubmission:PropTypes.number,
     /** Callback function from parent */
     callBackDataCollection: PropTypes.func.isRequired,
   };

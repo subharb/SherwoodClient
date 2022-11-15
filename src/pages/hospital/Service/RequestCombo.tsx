@@ -37,7 +37,7 @@ const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient,su
     return (
         <RequestTable serviceType={serviceType} encryptionData={encryptionData} showActions={false}
             surveys = {surveys} fillPending={false}
-            uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} callBackRequestEdit={() => console.log("callBackSurveySelected")} />
+            uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} callBackRequestSelected={() => console.log("callBackSurveySelected")} />
     );
 };
 

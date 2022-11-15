@@ -20,16 +20,17 @@ export interface IServiceInvestigation{
 }
 
 export enum RequestStatus {
-    PENDING = 0,
+    PENDING_APPROVAL = 0,
     PENDING_PAYMENT = 1,
     ACCEPTED = 2,
-    DENIED = 3,
-    CANCELED = 4,// Cancelado por el usuario
-    EXPIRED = 5,
-    COMPLETED = 6,
-    IN_PROGRESS = 7,
-    INCOMPLETE = 8,
-    INCOMPLETE_ACCEPTED = 9, //Pensada para farmacia
+    SOME_ACCEPTED = 3,
+    DENIED = 4,
+    CANCELED = 5,// Cancelado por el usuario
+    EXPIRED = 6,
+    COMPLETED = 7,
+    IN_PROGRESS = 8,
+    INCOMPLETE = 9,
+    INCOMPLETE_ACCEPTED = 10, //Pensada para farmacia
 }
 
 

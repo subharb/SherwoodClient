@@ -182,7 +182,7 @@ function ShowRecordsSection(props) {
                                     { props.section.name }
                                 </Typography>
                                 {
-                                    ((dateCreated.getTime() + 86400000 > new Date().getTime()) && props.uuidResearcher === getData("uuid")) && 
+                                    (props.forceEdit || ((dateCreated.getTime() + 86400000 > new Date().getTime()) && props.uuidResearcher === getData("uuid"))) && 
                                     <ButtonEdit onClick={() => editSection(props.section.uuid)} />
                                 }
                             </HeaderSection>

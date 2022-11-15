@@ -43,11 +43,11 @@ export default function reducer(state = initialState, action){
             tempData = newState.data === initialState.data ? {} : newState.data;
             let tempDict = {};
             //Si se genera en offline, no hay id
-            if( _.isEmpty(tempData) ){
+            if( _.isEmpty(tempData) || !tempData[action.meta.uuidPatient]){
                 
                 tempDict = {};
-
-                tempDict["submissions"] = [action.submission];
+                tempDict[action.meta.surveyUUID] = {};
+                tempDict[action.meta.surveyUUID]["submissions"] = [action.submission];
                 tempData[action.meta.uuidPatient] = tempDict;
 
                 newState.data = tempData;

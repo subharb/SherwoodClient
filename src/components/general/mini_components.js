@@ -139,7 +139,7 @@ export const ButtonCancelStyles = styled(BasicButtonStyles)`
     color:${props => props.theme.buttonCancel.color};
 `;
 export const ButtonContinueStyles = styled(BasicButtonStyles)`
-    background-color:${props => props.color === "secondary" ? props.theme.buttonContinue.secondary.background : props.theme.buttonContinue.primary.background}!important;
+    background-color:${props => props.color === "primary" ? props.theme.buttonContinue.primary.background :  props.color}!important;
     color:${props => props.color === "secondary" ? props.theme.buttonContinue.secondary.color : props.theme.buttonContinue.primary.color};
 `;
 export const ButtonIcon = styled(IconButton)`

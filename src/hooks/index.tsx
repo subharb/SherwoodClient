@@ -157,14 +157,11 @@ export function useSherwoodUser(){
  * @param {Array<any>} dependencies
  */
  export function useUpdateEffect(effect:() => void, dependencies:any = []) {
-    const isInitialMount = useRef(true);
-  
+    const didMount = useRef(false);
+
     useEffect(() => {
-      if (isInitialMount.current) {
-        isInitialMount.current = false;
-      } else {
-        effect();
-      }
+        if (didMount.current) effect();
+        else didMount.current = true;
     }, dependencies);
   }
 

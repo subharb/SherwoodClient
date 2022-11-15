@@ -51,62 +51,31 @@ const IconHolder = styled.div`
 
 
 export function TestsHomeComponent(props) {
-    const [ surveyRecords, setSurveyRecords] = useState([]);
     const [edit, setEdit] = useState(false);
-    const [dataCollectionSelected, setDataCollectionSelected] = useState(false);
-    const [patient, setPatient] = useState(null);
-    const [loading, setLoading] = useState(false);
     const history = useHistory();
-    const uuidDataCollection = props.parameters.uuidDataCollection;
-    const uuidPatient = props.parameters.uuidPatient;
     const idRequest = props.parameters.idRequest;
-    const idSubmission = parseInt(props.parameters.idSubmission);
-    const [submissionData, setSubmissionData] = useState(null);
    
     const dispatch = useDispatch(); 
     const translations = ["patient", "medical-imaging", "laboratory"];
 
 
     useEffect(() => {
-        if(props.investigations.currentInvestigation){
-            setDataCollectionSelected(props.investigations.currentInvestigation.surveys.find((survey) => survey.uuid === uuidDataCollection));
-        }
-    }, [ props.investigations, uuidDataCollection]);
-
-    useEffect(() => {
-        async function fetchSubmission(){
-            setLoading(true);
         
-            const response = await axios(`${process.env.REACT_APP_API_URL}/researcher/investigation/${props.investigations.currentInvestigation.uuid}/submission/${idSubmission}?findRequests=true`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-                    .catch(err => {console.log('Catch', err); return err;});
-            if(response.status === 200){
-                setSubmissionData(response.data);
-            }
-            setLoading(false);
-        }
         if(props.investigations.currentInvestigation){
-            setPatient(props.investigations.currentInvestigation.patientsPersonalData.find((patient) => patient.uuid === uuidPatient));
             if(!props.profile.info){
                 dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
             }
-            if(idSubmission){
-                fetchSubmission()
-            }
         }
-    }, [ props.investigations, uuidPatient, idSubmission]);
+    }, [ props.investigations]);
     
     function toogleEditLab(){
         setEdit(edit => !edit);
     }
     function accessRequest(request){
         let nextUrl = null;
-        if(request.submissionPatient && hasRequestGroupState(request, RequestStatus.COMPLETED)){
-            nextUrl = HOSPITAL_LAB_RESULT.replace(":idSubmission", request.submissionPatient.id)
-                                        .replace(":uuidPatient", request.requests[0].requestServiceInvestigation.patientInvestigation.uuid);
-        }
-        else if(hasRequestGroupState(request, RequestStatus.ACCEPTED)){
-            nextUrl = HOSPITAL_LAB_FORM.replace(":idRequest", request.id)
-        }
+        
+        nextUrl = HOSPITAL_LAB_FORM.replace(":idRequest", request.id)
+        
         
         if(nextUrl){
             history.push(nextUrl);
@@ -125,7 +94,10 @@ export function TestsHomeComponent(props) {
         }
         else if(idRequest){
             return (
-                <RequestSingle idRequest={idRequest} uuidInvestigation={props.investigations.currentInvestigation.uuid} />
+                <RequestSingle idRequest={idRequest} permissions={props.investigations.currentInvestigation.permissions}
+                    uuidInvestigation={props.investigations.currentInvestigation.uuid} researcher={props.researcher}
+                    country={props.investigations.currentInvestigation.country} requestSentCallBack={goToHomeTest}
+                    surveys={props.investigations.currentInvestigation.surveys}/>
             )
         }
         // else if(submissionData && idSubmission){
@@ -168,7 +140,7 @@ export function TestsHomeComponent(props) {
         //     )
         // }
         else{
-            return <RequestTable serviceType={0} showActions={true} fillRequest={true} callBackRequestEdit={(uuidSurvey) => accessRequest(uuidSurvey)}
+            return <RequestTable serviceType={0} showActions={true} fillRequest={true} callBackRequestSelected={(uuidSurvey) => accessRequest(uuidSurvey)}
                         encryptionData={{
                             encryptedKeyUsed : props.investigations.currentInvestigation.encryptedKeyUsed,
                             keyResearcherInvestigation: props.investigations.currentInvestigation.keyResearcherInvestigation,
@@ -182,7 +154,7 @@ export function TestsHomeComponent(props) {
         
     }
     
-    if(!props.investigations.currentInvestigation || props.patientsSubmissions.loading || loading){
+    if(!props.investigations.currentInvestigation){
         return <Loader />
     }
     return (
@@ -219,7 +191,6 @@ const mapStateToProps = (state) =>{
         investigations:state.investigations,
         submissions:state.submissions,
         patients:state.patients,
-        patientsSubmissions:state.patientsSubmissions,
         profile:state.profile,
     }
 }

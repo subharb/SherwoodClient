@@ -1,27 +1,42 @@
-import { Card, Grid, Typography } from '@material-ui/core';
+import { Card, Grid, Snackbar, Typography } from '@material-ui/core';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import PatientInfo from '../../../components/PatientInfo';
-import { serviceToColor } from './RequestTable';
-import { IRequest } from './types';
-import styled from 'styled-components';
+import { RequestStatusToChip, serviceToColor, statusToColor } from './RequestTable';
+import { IRequest, RequestStatus } from './types';
 
-const ChipContainer = styled.div`
-    display:inline;
-    margin-left:0.5rem;
-`
+import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
+import { TYPE_FILL_LAB_SURVEY } from '../../../constants';
+import { IResearcher, ISurvey, SnackbarTypeSeverity } from '../../../constants/types';
+import FillDataCollection from '../FillDataCollection';
+import { useSnackBarState, useUpdateEffect } from '../../../hooks';
+import { Alert } from '@material-ui/lab';
+import { Translate } from 'react-localize-redux';
+import { useSelector } from 'react-redux';
+import RequestInfo from './RequestInfo';
+
+
 
 interface RequestSingleProps {
     idRequest:number,
     uuidPatient:string,
     uuidInvestigation:string,
+    permissions:string[],
+    surveys:ISurvey[],
+    country:string,
+    researcher:IResearcher, 
+    requestSentCallBack:()=>void,
 }
 
-const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, uuidInvestigation }) => {
+const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uuidInvestigation, country, permissions, surveys, requestSentCallBack }) => {
     const [request, setRequest] = useState<IRequest | null>(null);
+    const patientsSubmissions = useSelector((state:any) => state.patientsSubmissions)
     const [loading, setLoading] = useState(false);
+    const [submissionData, setSubmissionData] = useState<{submission:any} | null>(null);
+    const [editData, setEditData] = useState(false);
+    const [snackbar, setShowSnackbar] = useSnackBarState();
 
     useEffect(() => {
         const fetchRequest = async () => {
@@ -38,7 +53,74 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, uuidInvestigat
         fetchRequest();
     }, [idRequest])
 
-    if(!request && loading){
+    useEffect(() => {
+        if(request && patientsSubmissions.loading === false){
+            setEditData(false);
+            if(patientsSubmissions.error){
+                setShowSnackbar({show:true, message:"general.error", severity:SnackbarTypeSeverity.ERROR});
+            }
+            else{
+                setShowSnackbar({show:true, severity:SnackbarTypeSeverity.SUCCESS, message:"pages.hospital.services.request.success"});
+            }
+        }
+        
+    }, [patientsSubmissions])
+
+    useEffect(() => {
+        async function fetchSubmission(){
+            setLoading(true);
+        
+            const response = await axios(`${process.env.REACT_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${request?.submissionPatient.id}?findRequests=true`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                    .catch(err => {console.log('Catch', err); return err;});
+            if(response.status === 200){
+                setSubmissionData(response.data);
+            }
+            setLoading(false);
+        }
+        if(request?.submissionPatient){
+            fetchSubmission();
+        }
+        
+    }, [request])
+
+   
+    function renderCore(){
+        const survey = surveys.find((survey) => {
+            return survey.type === TYPE_FILL_LAB_SURVEY;
+        })
+        if(!survey){
+            return <Typography variant="h4">No se ha encontrado la encuesta de laboratorio</Typography>
+        }
+        if(!editData && request?.submissionPatient && submissionData){
+            // const survey = request.requestsServiceInvestigation.every((requestService) => requestService.survey !== null) ? ;
+            
+            return (
+                <ShowPatientRecords permissions={permissions} survey={survey} forceEdit={request.status !== RequestStatus.COMPLETED}
+                    mode="elements" callBackEditSubmission={() => setEditData(true)} idSubmission={request?.submissionPatient.id}
+                    submissions={[submissionData.submission]} surveys={surveys} />
+            )
+        }
+        else{
+            return (
+                <FillDataCollection key={survey?.uuid} initData = {editData && submissionData ? submissionData.submission : null} dataCollection={survey} 
+                    hideCollectionName={true} requestServiceId={idRequest} idSubmission={submissionData ? submissionData.submission.id : null}
+                    country={country} researcher={researcher} alterSubmitButton={"pages.hospital.services.save_and_complete"}
+                    uuidPatient={request?.requestsServiceInvestigation[0].patientInvestigation.uuid} 
+                    uuidInvestigation={uuidInvestigation}
+                    callBackDataCollection={() => console.log("Data saved")} />
+                
+            )
+        }
+    }
+
+    function handleCloseSnackBar(){
+        setShowSnackbar({show:false});
+        if(snackbar.severity === SnackbarTypeSeverity.SUCCESS && request !== null){
+            requestSentCallBack();
+        }
+    }
+
+    if((!request && loading) || (patientsSubmissions.loading)){
         return <Loader />
     }
     else if(!request){
@@ -46,19 +128,30 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, uuidInvestigat
     }
     return (
         <>
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+                }}
+                open={snackbar.show}
+                autoHideDuration={4000}
+                onClose={handleCloseSnackBar}
+                >
+                    <Alert severity={snackbar.severity}>
+                            <Translate id={snackbar.message} />                            
+                        </Alert>
+                </Snackbar>
             <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Card style={{padding:"1rem"}}>
-                        <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Request ID: </span>{request.id}</Typography> </div>
-                        <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Requested Items: </span>{request.requestsServiceInvestigation.map((reqSer) => <ChipContainer><ColourChip size="small" rgbcolor={serviceToColor(request.type)} label={reqSer.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
-                    </Card>  
-                </Grid>
+                <RequestInfo request={request} />
                 <Grid item xs={12}>
                     <Card style={{padding:"1rem"}}>
                         <PatientInfo uuidPatient={request.requestsServiceInvestigation[0].patientInvestigation.uuid}/>
                     </Card>
                 </Grid>
             </Grid>
+            {
+                renderCore()
+            }
         </>
     );
 };

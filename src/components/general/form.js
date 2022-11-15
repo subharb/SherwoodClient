@@ -9,6 +9,7 @@ import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../com
 import { Grid, Paper, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { blue } from '@material-ui/core/colors';
 
  /**
  * Component that renders a form with the values passed by props
@@ -47,7 +48,7 @@ class Form extends Component {
             return undefined;
         }
     }
-    callBackForm(values){
+    callBackForm(values, buttonSubmitted){
         //Filtro los que sean undefined
         let tempValues = {}
         Object.keys(values).forEach(key => {
@@ -55,7 +56,7 @@ class Form extends Component {
                 tempValues[key] = values[key]
             }
         })
-        return this.props.callBackForm(tempValues);
+        return this.props.callBackForm(tempValues, buttonSubmitted);
     }
     componentDidMount(){
         //Busco el campo DefaultValue para inicializar el form con esos valores
@@ -162,7 +163,7 @@ class Form extends Component {
         const dataTestId = this.props.dataTestid ? "data-testid='"+this.props.dataTestid+"'": "";
         return(
             <div className="container">
-                <form data-testid="form" className="form-group" onSubmit={this.props.handleSubmit(values => {this.callBackForm(values)})}  >
+                <form data-testid="form" className="form-group"  >
                     {
                         this.renderFields()
                     }
@@ -188,9 +189,17 @@ class Form extends Component {
                         </Typography> 
                     }
                     <div style={{paddingTop:"1rem"}}>
-                        <ButtonContinue type="submit" data-testid={this.props.dataTestid} spaceright={1} >
+                        
+                        <ButtonContinue type="submit" data-testid={this.props.dataTestid} spaceright={1} onClick={this.props.handleSubmit(values => {this.callBackForm(values, "button1")})}>
                             { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}
                         </ButtonContinue>
+                        {
+                        this.props.alterSubmitButton &&
+                            <ButtonContinue color={blue[700]} type="submit" data-testid={this.props.dataTestid} spaceright={1}  onClick={this.props.handleSubmit(values => {this.callBackForm(values, "button2")})}>
+                                { this.props.translate(this.props.alterSubmitButton) }
+                            </ButtonContinue>
+                        }
+                        
                         {this.props.closeCallBack &&
                             <ButtonCancel data-testid="cancel" onClick={this.props.closeCallBack}>
                                 { this.props.cancelText ?  this.props.translate(this.props.cancelText) : this.props.translate("general.cancel")}

@@ -30,6 +30,7 @@ import { PERMISSION } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
 import RequestCombo from '../Service/RequestCombo';
 import RequestTable from '../Service/RequestTable';
+import RequestInfo, { RequestInfoWithFetch } from '../Service/RequestInfo';
 
 
 
@@ -256,7 +257,7 @@ function Patient(props) {
                 return(
                     <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} 
                         sectionSelected = {sectionSelected} uuidPatient={uuidPatient} researcher={props.profile.info} idSubmission={idSubmission}
-                        country={props.investigations.currentInvestigation.country}
+                        country={props.investigations.currentInvestigation.country} numberButtonsSubmit={2}
                         uuidInvestigation={props.investigations.currentInvestigation.uuid}
                         callBackDataCollection={(values) => saveRecord(values)}/>
                 )
@@ -264,15 +265,27 @@ function Patient(props) {
             
         }
         else if(idSubmission !== null && action === "show"){
-            return <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} 
+            const belongsToRequest = idSubmission && types.TYPE_FILL_SURVEY.includes(typSurveySelected);
+
+            return (
+                <>  
+                    {
+                        belongsToRequest &&
+                        <RequestInfoWithFetch idSubmission={idSubmission} uuidInvestigation={props.investigations.currentInvestigation.uuid} />
+                    }
+                    <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} 
                         mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission} singleSubmission={single === 'true'}
                         submissions={filteredRecords.filter((record) => record.type !== "stay")} surveys={props.investigations.currentInvestigation.surveys} />
+                </>)
         }
         else if (typSurveySelected === 2){
             return (
                 <RequestTable serviceType={0} uuidPatient={uuidPatient} 
                     showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}
-                    uuidInvestigation={props.investigations.currentInvestigation.uuid} callBackRequestEdit={(req) => goToSubmissionUrl(req.requests[0].requestServiceInvestigation.patientInvestigation.uuid, req.submissionPatient.id)} />
+                    uuidInvestigation={props.investigations.currentInvestigation.uuid} callBackRequestSelected={(req) => {
+                        console.log("REqeust", req);
+                        goToSubmissionUrl(req.requestsServiceInvestigation[0].patientInvestigation.uuid, req.submissionPatient.id)}
+                    } />
             )
         }
         else if(filteredRecords.length === 0){

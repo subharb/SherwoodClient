@@ -27,7 +27,7 @@ export default function SectionForm(props) {
         }
     });
 
-    function callBackForm(values){
+    function callBackForm(values, buttonSubmitted){
         let copyValues = Object.assign({}, values)
         const dataFields = [];
         Object.keys(values).forEach(key =>{
@@ -41,13 +41,13 @@ export default function SectionForm(props) {
                 });
             }
         })
-        props.callBackSectionForm(dataFields);
+        props.callBackSectionForm(dataFields, buttonSubmitted);
     }
 
     return (
         <Form fields={dictFields} initialData={initialData} country={props.country} 
-            uuidSurvey={props.uuidSurvey}
+            uuidSurvey={props.uuidSurvey} alterSubmitButton={props.alterSubmitButton}
             uuidInvestigation={props.uuidInvestigation} uuidPatient={props.uuidPatient}
             submitText={Object.keys(initialData).length > 0 ? "general.update" : null}
-            callBackForm = {(values) => callBackForm(values)}/>)
+            callBackForm = {(values, buttonSubmitted) => callBackForm(values, buttonSubmitted)}/>)
 }

@@ -397,9 +397,10 @@
                     },
                     "no_services_remaining" : ["You have selected all services available, if you need more please contact customersupport@sherwood.science", "No quedan servicios disponibles, si necesita más por favor contacte con customersupport@sherwood.science", "Vous avez sélectionné tous les services disponibles, si vous en avez besoin, veuillez contacter ustomersupport@sherwood.science"]
                 },
+                "save_and_complete" : ["Save and finish", "Guardar y finalizar", "Sauvegarder et terminer"],
                 "no_requests" : ["No requests available", "No hay solicitudes disponibles", "Aucune demande disponible"],
                 "no_services" : ["No services available", "No hay servicios disponibles", "Aucun service disponible"],
-                "request" : ["Request Services", "Solicitar Servicios", "Demander des services"],
+                
                 "success" : ["Service saved succesfully", "Servicio guardado correctamente", "Service enregistré avec succès"],
                 "form" : {
                     "service" : ["Service", "Servicio", "Service"],
@@ -412,11 +413,16 @@
                 "error":{
                     "previous_request" : ["You have already made a request for this service for this patient", "Ya ha realizado una solicitud para este servicio para este paciente", "Vous avez déjà fait une demande pour ce service pour ce patient"]
                 },
+                "request":{
+                    "title" : ["Request Services", "Solicitar Servicios", "Demander des services"],
+                    "success" : ["Request saved succesfully", "Solicitud guardada correctamente", "Demande enregistrée avec succès"]
+                },
                 "status" : ["Status", "Status", "Status"],
                 "request_status" : {
                     "PENDING" : ["Pending", "Pendiente", "Pendant"],
                     "PENDING_PAYMENT" : ["Pending Payment", "Pendiente de Pago", "En attente de paiement"],
                     "ACCEPTED" : ["Accepted", "Aceptado", "Accepté"],
+                    "SOME_ACCEPTED" : ["Some Accepted", "Algunos Aceptados", "Certains acceptés"],
                     "CANCELLED" : ["Cancelled", "Cancelado", "Annulé"],
                     "EXPIRED" : ["Expired", "Caducado", "Expiré"],
                     "DENIED" : ["Denied", "Denegado", "Refusé"],

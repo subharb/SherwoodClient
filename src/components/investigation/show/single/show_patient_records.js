@@ -46,8 +46,8 @@ export default function ShowPatientRecords(props) {
             const recordsSection = filterRecordsFromSection(props.submissions[indexSubmission], section.uuid);
 
             return(
-                <ShowRecordsSection permissions={props.permissions} indexSubmission={indexSubmission}
-                    callBackEditSubmission={(uuidSubmission, uuidSection) =>props.callBackEditSubmission(uuidSubmission, uuidSection)} 
+                <ShowRecordsSection permissions={props.permissions} indexSubmission={indexSubmission} forceEdit={props.forceEdit}
+                    callBackEditSubmission={(uuidSubmission, uuidSection) => props.callBackEditSubmission(uuidSubmission, uuidSection)} 
                     records={recordsSection} section={section} uuidResearcher = {props.submissions[indexSubmission].uuidResearcher}
                     idSubmission = {props.submissions[indexSubmission].id}
                     updatedAt={props.submissions[indexSubmission].updatedAt}/>
@@ -161,6 +161,11 @@ ShowPatientRecords.propTypes = {
      All Submissions Patient
     */
      submissions: PropTypes.array,
+     permissions: PropTypes.array,
+     callBackEditSubmission: PropTypes.func,
+     idSubmission: PropTypes.number,
+     surveys:PropTypes.array,
+     forceEdit:PropTypes.bool,
     /**
      Mostrar datos en modo tabla o modo elementos
     */
