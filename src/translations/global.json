@@ -390,7 +390,7 @@
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
             "services" : {
-                "description" : ["Admin the tests available at your hospital from here", "Gestione las pruebas de su hospital desde aquí añadiendo o eliminando tests.", "Gérez les tests disponibles dans votre hôpital ici en ajoutant des tests."],
+                "description" : ["Manage your hospital facilities by adding or deleting services.", "Gestione sus instalaciones añadiendo o eliminando servicios.", "Gérez vos installations en ajoutant ou supprimant des services"],
                 "edit" : {
                     "new_service" : {
                         "title" : ["Add new service", "Añadir nuevo servicio", "Ajouter un nouveau service"]

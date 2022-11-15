@@ -78,7 +78,7 @@ function Patient(props) {
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const staysPatient = props.hospital.data.stays && props.hospital.data.stays[uuidPatient] ? props.hospital.data.stays[uuidPatient] : [];
-    const typSurveySelected = typesCurrentSurvey.length === 1 ? typesCurrentSurvey[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
+    const typeSurveySelected = typesCurrentSurvey.length === 1 ? typesCurrentSurvey[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     const typesSurvey = props.investigations.data ? props.investigations.currentInvestigation.surveys.map((survey) => {
             return survey.type;
@@ -88,7 +88,7 @@ function Patient(props) {
         return typesCurrentSurvey.includes(rec.typeSurvey)
     }) : [];
 
-    if(typSurveySelected === TYPE_MEDICAL_SURVEY){
+    if(typeSurveySelected === TYPE_MEDICAL_SURVEY){
         staysPatient.forEach((stay) => {
             filteredRecords.push({
                 researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
@@ -265,7 +265,7 @@ function Patient(props) {
             
         }
         else if(idSubmission !== null && action === "show"){
-            const belongsToRequest = idSubmission && types.TYPE_FILL_SURVEY.includes(typSurveySelected);
+            const belongsToRequest = idSubmission && types.TYPE_FILL_SURVEY.includes(typeSurveySelected);
 
             return (
                 <>  
@@ -278,9 +278,10 @@ function Patient(props) {
                         submissions={filteredRecords.filter((record) => record.type !== "stay")} surveys={props.investigations.currentInvestigation.surveys} />
                 </>)
         }
-        else if (typSurveySelected === 2){
+        else if (types.TYPE_SERVICE_SURVEY.includes(typeSurveySelected)){
+            const serviceType = typeSurveySelected === types.TYPE_FILL_LAB_SURVEY ? 0 : 1;
             return (
-                <RequestTable serviceType={0} uuidPatient={uuidPatient} 
+                <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} 
                     showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}
                     uuidInvestigation={props.investigations.currentInvestigation.uuid} callBackRequestSelected={(req) => {
                         console.log("REqeust", req);
@@ -579,7 +580,7 @@ function Patient(props) {
                 </Modal>
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
-                        typeSurveySelected={typSurveySelected}
+                        typeSurveySelected={typeSurveySelected}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} disabled={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} personalData={patient.personalData} years={years}

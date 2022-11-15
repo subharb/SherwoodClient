@@ -100,45 +100,6 @@ export function TestsHomeComponent(props) {
                     surveys={props.investigations.currentInvestigation.surveys}/>
             )
         }
-        // else if(submissionData && idSubmission){
-        //     const survey = props.investigations.currentInvestigation.surveys.find((survey) => survey.uuid === submissionData.submission.uuidSurvey);
-        //     return (
-        //         <>  
-        //             <Grid container spacing={3}>
-        //                 <Grid item xs={12}>
-        //                     <Card style={{padding:"1rem"}}>
-        //                         <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Request ID: </span>{submissionData.requestGroup.id}</Typography> </div>
-        //                         <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Requested Items: </span>{submissionData.requestGroup.requests.map((request) => <ChipContainer><ColourChip size="small" rgbcolor={serviceToColor(submissionData.requestGroup.type)} label={request.requestServiceInvestigation.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
-        //                     </Card>  
-        //                 </Grid>
-        //                 <Grid item xs={12}>
-        //                     <Card style={{padding:"1rem"}}>
-        //                         <PatientInfo personalData={patient.personalData} uuidPatient={uuidPatient}/>
-        //                     </Card>
-        //                 </Grid>
-        //             </Grid>
-        //             <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={survey} 
-        //                 mode="elements" callBackEditSubmission={() => console.log("Edit submission")} idSubmission={idSubmission}
-        //                 submissions={[submissionData.submission]} surveys={props.investigations.currentInvestigation.surveys} />
-        //         </>
-        //     )
-        // }
-        // else if(dataCollectionSelected){
-        //     return (
-        //         <>
-        //             <div style={{padding:'0.75rem'}}>
-        //                 <Card style={{padding:"1rem"}}>
-        //                     <PatientInfo personalData={patient.personalData} uuidPatient={uuidPatient} />
-        //                 </Card>
-        //             </div>
-        //             <FillDataCollection key={uuidDataCollection} dataCollection={dataCollectionSelected} 
-        //                 hideCollectionName={true} requestServiceId={idRequest}
-        //                 country={props.investigations.currentInvestigation.country} researcher={props.profile.info}
-        //                 uuidPatient={uuidPatient} uuidInvestigation={props.investigations.currentInvestigation.uuid}
-        //                 callBackDataCollection={goToHomeTest} />
-        //         </>
-        //     )
-        // }
         else{
             return <RequestTable serviceType={0} showActions={true} fillRequest={true} callBackRequestSelected={(uuidSurvey) => accessRequest(uuidSurvey)}
                         encryptionData={{

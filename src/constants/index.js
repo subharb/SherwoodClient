@@ -128,6 +128,7 @@ export const TYPE_SURVEYS = [{value:TYPE_MEDICAL_SURVEY, name:"Medical"}, {value
                             {value:TYPE_DISCHARGE_SURVEY, name:"Discharge"}, {value:TYPE_SOCIAL_SURVEY, name:"Social"}, {value:TYPE_SHOE_SURVEY, name:"Shoe"},
                             {value:TYPE_FILL_LAB_SURVEY, name:"Fill Lab"}, {value:TYPE_FILL_IMG_SURVEY, name:"Fill IMG"}];
 
+export const TYPE_SERVICE_SURVEY = [TYPE_LAB_SURVEY, TYPE_IMAGE_SURVEY];
 export const TYPE_FILL_SURVEY = [TYPE_FILL_LAB_SURVEY, TYPE_FILL_IMG_SURVEY];
 export const LAB_SURVEYS = [TYPE_LAB_SURVEY, TYPE_FILL_LAB_SURVEY];
 export const IMG_SURVEYS = [TYPE_IMAGE_SURVEY, TYPE_FILL_IMG_SURVEY];
