@@ -1,11 +1,12 @@
 import { Card, Grid, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { RequestStatusToChip, statusToColor } from './RequestTable';
-import { IRequest } from './types';
+import { IRequest, IRequestServiceInvestigation, RequestStatus } from './types';
 import styled from 'styled-components';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import axios from '../../../utils/axios';
+import { Translate } from 'react-localize-redux';
 
 const ChipContainer = styled.div`
     display:inline;
@@ -58,12 +59,31 @@ interface RequestInfoProps {
 }
 
 const RequestInfo: React.FC<RequestInfoProps> = ({ request }) => {
+    let acceptedRequests:IRequestServiceInvestigation[] = [];
+    let otherStateRequests:IRequestServiceInvestigation[] = [];
+    if(request.status !== RequestStatus.COMPLETED){
+        acceptedRequests = request.requestsServiceInvestigation.filter(r => r.status === RequestStatus.ACCEPTED);
+        otherStateRequests = request.requestsServiceInvestigation.filter(r => r.status !== RequestStatus.ACCEPTED);
+    }
+    
     return (
         <Grid item xs={12}>
             <Card style={{padding:"1rem"}}>
-                <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Request ID: </span>{request.id}</Typography> </div>
-                <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Request Status: </span><RequestStatusToChip status={request.status} /></Typography> </div>
-                <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Requested Items: </span>{request.requestsServiceInvestigation.map((reqSer) => <ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={reqSer.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
+                <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.request_id" />: </span>{request.id}</Typography> </div>
+                <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.status" />: </span><RequestStatusToChip status={request.status} /></Typography> </div>
+                {
+                    request.status === RequestStatus.COMPLETED &&
+                    <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.completed" />: </span>{request.requestsServiceInvestigation.map((reqSer) => <ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={reqSer.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
+                }
+                {
+                    acceptedRequests.length > 0 &&
+                    <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.accepted" />: </span>{acceptedRequests.map((reqSer) => <ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={reqSer.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
+                }
+                {
+                    otherStateRequests.length > 0 &&
+                    <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.pending" />: </span>{otherStateRequests.map((reqSer) => <ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={reqSer.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
+                }
+                
             </Card>  
         </Grid>
     );

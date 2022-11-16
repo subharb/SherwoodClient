@@ -8,7 +8,7 @@ import { RequestStatusToChip, serviceToColor, statusToColor } from './RequestTab
 import { IRequest, RequestStatus } from './types';
 
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
-import { TYPE_FILL_LAB_SURVEY } from '../../../constants';
+import { TYPE_FILL_IMG_SURVEY, TYPE_FILL_LAB_SURVEY, TYPE_REQUEST_LAB } from '../../../constants';
 import { IResearcher, ISurvey, SnackbarTypeSeverity } from '../../../constants/types';
 import FillDataCollection from '../FillDataCollection';
 import { useSnackBarState, useUpdateEffect } from '../../../hooks';
@@ -86,10 +86,16 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
    
     function renderCore(){
         const survey = surveys.find((survey) => {
-            return survey.type === TYPE_FILL_LAB_SURVEY;
+            if(request?.type === TYPE_REQUEST_LAB){
+                return survey.type === TYPE_FILL_LAB_SURVEY;
+            }
+            else{
+                return survey.type === TYPE_FILL_IMG_SURVEY;
+            }
+            
         })
         if(!survey){
-            return <Typography variant="h4">The request could not be found</Typography>
+            return <Typography variant="h4">The survey could not be found</Typography>
         }
         if(!editData && request?.submissionPatient && submissionData){
             // const survey = request.requestsServiceInvestigation.every((requestService) => requestService.survey !== null) ? ;

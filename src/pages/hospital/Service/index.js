@@ -8,7 +8,7 @@ import Form  from '../../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { HOSPITAL_LAB_FORM, HOSPITAL_LAB, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_LAB_RESULT, } from '../../../routes';
+import { HOSPITAL_LAB_REQUEST, HOSPITAL_LAB, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_LAB_RESULT, HOSPITAL_IMAGING_REQUEST, } from '../../../routes';
 import Loader from '../../../components/Loader';
 
 import {
@@ -30,6 +30,12 @@ import axios from '../../../utils/axios';
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import RequestSingle from './RequestSingle';
+import { TYPE_REQUEST_LAB } from '../../../constants';
+
+const IconHolder = styled.div`
+    padding-right:1rem;
+    padding-left:1rem;
+`;
 
 export function TestsHome(props){
     let location = useLocation();
@@ -43,20 +49,13 @@ export function TestsHome(props){
     else return null;
 }
 
-const IconHolder = styled.div`
-    padding-right:1rem;
-    padding-left:1rem;
-`;
-
-
-
 export function TestsHomeComponent(props) {
     const [edit, setEdit] = useState(false);
     const history = useHistory();
     const idRequest = props.parameters.idRequest;
    
     const dispatch = useDispatch(); 
-    const translations = ["patient", "medical-imaging", "laboratory"];
+    const translations = [ "laboratory", "medical-imaging"];
 
 
     useEffect(() => {
@@ -74,7 +73,13 @@ export function TestsHomeComponent(props) {
     function accessRequest(request){
         let nextUrl = null;
         
-        nextUrl = HOSPITAL_LAB_FORM.replace(":idRequest", request.id)
+        if(props.type === TYPE_REQUEST_LAB){
+            nextUrl = HOSPITAL_LAB_REQUEST.replace(":idRequest", request.id)    
+        }
+        else{
+            nextUrl = HOSPITAL_IMAGING_REQUEST.replace(":idRequest", request.id)
+        }
+        
         
         
         if(nextUrl){

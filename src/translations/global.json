@@ -414,6 +414,11 @@
                     "previous_request" : ["You have already made a request for this service for this patient", "Ya ha realizado una solicitud para este servicio para este paciente", "Vous avez déjà fait une demande pour ce service pour ce patient"]
                 },
                 "request":{
+                    "request_id" : ["Request ID", "Solicitud ID", "Demande ID"],
+                    "status" : ["Request Status", "Estado de la solicitud", "Statut de la demande"],
+                    "accepted" : ["Accepted Items", "Pruebas aceptadas", "Items acceptés"],
+                    "pending" : ["Pending Items", "Pruebas pendientes", "Articles en attente"],
+                    "completed" : ["Completed Items", "Pruebas completadas", "Articles terminés"],
                     "title" : ["Request Services", "Solicitar Servicios", "Demander des services"],
                     "success" : ["Request saved succesfully", "Solicitud guardada correctamente", "Demande enregistrée avec succès"]
                 },
