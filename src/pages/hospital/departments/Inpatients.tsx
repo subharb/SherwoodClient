@@ -30,7 +30,7 @@ const InpatientsRedux:React.FC<PropsRedux> = ({investigations, loading, patients
         history.push(HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient));
     }
 
-    if(loading){
+    if(loading || !departments){
         return <Loader/>
     }
     return <InpatientsLocalized departments={departments} 
