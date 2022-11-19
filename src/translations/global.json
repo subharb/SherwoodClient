@@ -820,6 +820,7 @@
                 "BUSINESS_ASSISTANT" : ["Executive Assistant", "Asistente ejecutivo", "Business Assistant"],
                 "LAB_MANAGER" : ["Lab Manager", "Director de laboratorio", "Directeur de laboratoire"],
                 "LAB_ASSISTANT" : ["Lab technician ", "Técnico laboratorio ", "Technicien de laboratoire"],
+                "SOCIAL" : ["Social", "Social", "Social"],
                 "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {
