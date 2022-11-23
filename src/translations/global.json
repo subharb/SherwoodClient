@@ -389,6 +389,19 @@
             "patient" : {
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
+            "pharmacy" : {
+                "pharmacy_items" : {
+                    "name" : ["Name", "Nombre", "Nom"],
+                    "code" : ["Code", "Código", "Code"],
+                    "price" : ["Price", "Precio", "Prix"],
+                    "amount": ["Amount", "Cantidad", "Quantité"],
+                    "type" : ["Type", "Tipo", "Type"],
+                    "activePrinciple" : ["Active Principle", "Principio Activo", "Principe actif"],
+                    "unit" : ["Unit", "Unidad", "Unité"],
+                    "provider" : ["Provider", "Proveedor", "Fournisseur"],
+                    "threshold" : ["Threshold", "Umbral", "Seuil"]
+                }
+            },
             "services" : {
                 "description" : ["Manage your hospital facilities by adding or deleting services.", "Gestione sus instalaciones añadiendo o eliminando servicios.", "Gérez vos installations en ajoutant ou supprimant des services"],
                 "edit" : {
