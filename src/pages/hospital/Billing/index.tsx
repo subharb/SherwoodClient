@@ -17,7 +17,7 @@ import { connect, useDispatch } from 'react-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { getBillablesService, getBillsService } from '../../../services/billing';
 import Loader from '../../../components/Loader';
-import { fullDateFromPostgresString } from '../../../utils';
+import { fullDateFromPostgresString, hasDiscountsActive } from '../../../utils';
 import EditBilling from './Edit';
 import { getBillablesAction } from '../../../redux/actions/investigationsActions';
 
@@ -32,7 +32,7 @@ const BillingRedux:React.FC<PropsRedux> = ({investigations, patients}) => {
     const [bills, setBills] = useState<Bill[]>([]);
     const [loading, setLoading] = useState(false);
  
-    const hasDiscounts = investigation && investigation.billingInfo && investigation.billingInfo.params && investigation.billingInfo.params.hasOwnProperty("discounts");
+    const hasDiscounts = investigation && investigation.billingInfo && investigation.billingInfo.params && hasDiscountsActive(investigation.billingInfo.params, investigation.permissions);
     function onBillSuccesfullyCreated(bill:Bill){
         const tempBills = [...bills];
         const existingBillIndex = tempBills.findIndex((aBill) => bill.id === aBill.id);

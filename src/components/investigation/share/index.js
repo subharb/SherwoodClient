@@ -64,6 +64,9 @@ export const PermissionChip = withLocalize((props) => {
         case "DOCTOR": 
             colour = orange[700];            
             break;
+        case "SOCIAL": 
+            colour = orange[700];             
+            break;
         case "PRIVATE_DOCTOR": 
             colour = orange[100];            
             break;
@@ -95,7 +98,7 @@ export const PermissionChip = withLocalize((props) => {
             colour = red[500];            
             break;
         default:
-            return <ColourChip size="small" label={props.translate("investigation.share.roles.no-permissions")} rgbcolor={colour} />
+            return <ColourChip size="small" label={props.translate("investigation.share.roles.NO_PERMISSIONS")} rgbcolor={colour} />
     }
     return <ColourChip size="small" label={props.translate("investigation.share.roles."+role)} rgbcolor={colour} />
 })

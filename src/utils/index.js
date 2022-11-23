@@ -4,6 +4,7 @@ import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import { Translate } from 'react-localize-redux';
 import { TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../constants';
+import { PERMISSION } from '../constants/types';
 /**
  * Function that validates fields from anywhere in the app
  * 
@@ -675,6 +676,18 @@ export function dateToFullDateString(date, localeCode){
 
 export function hasRequestGroupState(request, status){
     return request.requestsServiceInvestigation.findIndex((req) => req.status === status) !== -1
+}
+
+export function hasDiscountsActive(params, permissions){
+    if(params.discounts && !params.permissionDiscount){
+        return true;
+    }
+    else if(params.discounts && params.permissionDiscount && permissions.includes(PERMISSION.MAKE_DISCOUNTS)){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 export function dateAndTimeFromPostgresString(localeCode, dateString){
