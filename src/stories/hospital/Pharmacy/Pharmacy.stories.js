@@ -4,6 +4,7 @@ import HomeSchedule from '../../../pages/hospital/HomeSchedule'
 import ProviderSherwood from '../../../providerSherwood';
 import InventoryPharmacy from '../../../pages/hospital/Pharmacy/Inventory';
 import { pharmacyItemsInit } from './data';
+import RequestForm from '../../../pages/hospital/Pharmacy/RequestForm';
 
 export default {
   title: 'Hospital/Pharmacy',
@@ -21,8 +22,16 @@ export default {
 };
 
 const Template = (args) => <InventoryPharmacy {...args} />; 
+const TemplateRequest = (args) => <RequestForm {...args} />; 
 
 export const Inventory = Template.bind({});
 Inventory.args = {
-    pharmacyItemsInit:pharmacyItemsInit
+    pharmacyItemsInit:pharmacyItemsInit,
+    saveInventoryCallBack:(items) => console.log(items)
+};
+
+export const Request = TemplateRequest.bind({});
+Request.args = {
+    pharmacyItemsInit:pharmacyItemsInit,
+    saveInventoryCallBack:(items) => console.log(items)
 };

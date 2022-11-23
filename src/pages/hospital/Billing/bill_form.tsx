@@ -7,7 +7,7 @@ import { EnhancedTable } from "../../../components/general/EnhancedTable"
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
 import Loader from "../../../components/Loader"
 import { IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
-import { Bill, Billable, BillItem, BillItemKeys, BillItemTable } from "./types";
+import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable } from "./types";
 import { createBillService, updateBillService } from "../../../services/billing";
 
 import { FindPatient } from "./find_patient";
@@ -104,7 +104,7 @@ export const BillForm:React.FC<Props> = (props) => {
             return <Loader />
         }
         if(patient){
-            return <BillItems uuidPatient={patient?.uuid} mode = 'bill'
+            return <BillItems uuidPatient={patient?.uuid} mode = {BillItemModes.BILL}
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
                         bill={props.bill} billables={props.billables ? props.billables : []}
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}

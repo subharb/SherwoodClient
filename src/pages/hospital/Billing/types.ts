@@ -81,4 +81,7 @@ export interface BillablesServiceResponse {
     status: number, billables: Billable[] 
 }
 
-export type BillItemModes = 'bill' | 'billable';
+export enum BillItemModes{
+    BILL = "bill",
+    BILLABLE = "billable"
+}

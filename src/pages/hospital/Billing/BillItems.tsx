@@ -53,7 +53,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                                                     onCancelBill }) => {
     const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
     const [addingItem, setAddingItem] = useState(false);
-    const [items, setItems] = useState<BillItem[]>(bill && mode === 'bill' ? bill.billItems : mode === 'billable' && billables ? billables : []);
+    const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : []);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
     const [billableSelected, setBillableSelected] = useState(false);

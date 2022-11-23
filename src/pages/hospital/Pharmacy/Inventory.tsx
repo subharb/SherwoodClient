@@ -7,6 +7,7 @@ import { Button } from '@material-ui/core';
 
 interface InventoryProps extends LocalizeContextProps {
     pharmacyItemsInit: IPharmacyItem[];
+    saveInventoryCallBack:(items:IPharmacyItem[])=>void
 }
 
 
@@ -22,7 +23,7 @@ const applyChangesToPeople = (
     return [...prevPharmacyItem];
   };
 
-const Inventory: React.FC<InventoryProps> = ({ pharmacyItemsInit, translate }) => {
+const Inventory: React.FC<InventoryProps> = ({ pharmacyItemsInit, translate, saveInventoryCallBack }) => {
    
 
     const getColumns = (): Column[] => [
@@ -76,6 +77,9 @@ const Inventory: React.FC<InventoryProps> = ({ pharmacyItemsInit, translate }) =
         setPharmacyItems((prevPeople) => applyChangesToPeople(changes, prevPeople)); 
       }; 
     
+    function saveInventory(){
+        saveInventoryCallBack(pharmacyItems);
+    }
 
     return(
         <>
@@ -83,7 +87,7 @@ const Inventory: React.FC<InventoryProps> = ({ pharmacyItemsInit, translate }) =
                 onCellsChanged={handleChanges} 
                 stickyTopRows={1}
                 />
-            <Button variant="contained" color="primary" onClick={() => console.log(pharmacyItems)}>Save</Button>
+            <Button variant="contained" color="primary" onClick={saveInventory}>Save</Button>
         </>);
 };
 
