@@ -241,6 +241,8 @@
                 "amount" : ["Amount", "Cantidad", "Montant"],
                 "type" : ["Type", "Tipo", "Type"],
                 "select_item" : ["Select", "Select", "Seleccionar"],
+                "drug" : ["Drug", "Medicamento", "Médicament"],
+                "quantity" : ["Quantity", "Cantidad", "Quantité"],
                 "types" : {
                     "charge" : ["Charge", "Cargo", "Frais"],
                     "discount_amount" : ["Amount Discount", "Cantidad descuento", "Reduction (montant)"],

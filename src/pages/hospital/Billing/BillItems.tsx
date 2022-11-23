@@ -52,17 +52,19 @@ type BillableOption = Billable & {inputValue: string}
 const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
     return isNaN(Number(key))
 })
-const DEFAULT_CURRENT_ITEM = { concept: "", type:0, amount: "" }
+
 
 const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
                                                     updatingBill, currency, print, withDiscount,
                                                     bill, billables, onBillItemsValidated, 
                                                     onCancelBill }) => {
     //const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
+    
     const initFieldErrors = columns.reduce((acc:{[id: string] : string}, column) => {
         acc[column.name] = "";
         return acc;
     }, {});
+    const DEFAULT_CURRENT_ITEM = initFieldErrors;
     const [fieldErrors, setFieldErrors] = useState(initFieldErrors);
     const [addingItem, setAddingItem] = useState(false);
     const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : []);
@@ -86,40 +88,45 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         let tempFieldErrors = { ...fieldErrors };
         tempFieldErrors[itemKey] = error;
         let tempCurrentItem = { ...currentItem };
-        switch (itemKey) {
-            case BillItemKeys.concept:
-                tempCurrentItem[itemKey] = value;
-                break;
-            
-            case BillItemKeys.type:
-            case BillItemKeys.amount:
-                tempCurrentItem[itemKey] = Number(value);
-                break;
+
+        const col = columns.find((col) => {
+            return col.name === itemKey
+        })
+        if(col){
+            tempCurrentItem[itemKey] = col.type === "number" ? Number(value) : value;
         }
+        
         setFieldErrors(tempFieldErrors);
         setCurrentItem(tempCurrentItem);
     }
     function validateKeyItem(value: string, itemKey: BillItemKeys) {
         let error = "";
-        switch (itemKey) {
-            case BillItemKeys.concept:
-                if (value.length < 3) {
-                    error = "concept_short";
-                }
-
-                break;
-            case BillItemKeys.amount:
-                const amount = Number(value)
-                if (amount < 0) {
-                    error = "amount_negative";
-                }
-                if (isNaN(amount)) {
-                    error = "valid_number";
-                }
-                break;
-            case BillItemKeys.type:
-            //
+        const col = columns.find((col) => {
+            return col.name === itemKey
+        })
+        if(col){
+            switch (col.type) {
+                case "autocomplete":
+                    if (value.length < 3) {
+                        error = "concept_short";
+                    }
+    
+                    break;
+                case "amount":
+                case "number":
+                    const amount = Number(value)
+                    if (amount < 0) {
+                        error = "amount_negative";
+                    }
+                    if (isNaN(amount)) {
+                        error = "valid_number";
+                    }
+                    break;
+                case BillItemKeys.type:
+                //
+            }
         }
+        
 
         return error;
     }
@@ -212,10 +219,10 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         let tempFieldErrors = { ...fieldErrors };
         //Fuerzo el valor 0 para diferenciarlo del valor por defecto.
         //currentItem["type"] = 0;
-        Object.keys(BillItemKeys).forEach((iKey) => {
-            console.log(iKey as BillItemKeys);
-            const iTemKey = iKey as BillItemKeys;
-            tempFieldErrors[iTemKey] = validateKeyItem(currentItem[iTemKey].toString(), iTemKey);
+        columns.forEach((col) => {
+            
+            
+            tempFieldErrors[col.name] = validateKeyItem(currentItem[col.name].toString(), col.name);
         })
         if (currentItem[BillItemKeys.type] === 2 && currentItem[BillItemKeys.amount] > 99) {
             tempFieldErrors[BillItemKeys.amount] = "amount_percent";
@@ -246,27 +253,21 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         
         let rowElement:{[id: string] : JSX.Element} = {}
         columns.forEach((col:Column) => {
-            if(val[col.name]){
+            if(col.type === "amount"){
+                rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
+            }
+            else{
                 rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
             }
+                
+            
         })
         return {...rowElement, id: index, used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
                 paid: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
                 delete: <IconButton onClick={() => removeItem(index)}>
                     <IconGenerator type="delete" />
-                </IconButton>,}
+                </IconButton>}
 
-        return {
-            id: index,
-            concept: <Typography variant="body2" style={{ color: color }}>{val.concept}</Typography>,
-            type: withDiscount ?  <Typography variant="body2" style={{ color: color }}><Translate id={`hospital.billing.item.types.${TYPE_BILL_ITEM[val.type].toLowerCase()}`} /></Typography> : undefined,
-            amount: <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>,
-            delete: <IconButton onClick={() => removeItem(index)}>
-                <IconGenerator type="delete" />
-            </IconButton>,
-            used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
-            paid: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
-        }
     });
 
     if (addingItem) {
@@ -278,7 +279,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     value = billables && billables.length > 0 ? 
                     <Autocomplete
                         freeSolo
-                        options={mode === 'bill' &&  billables ? billables as BillableOption[] : []}
+                        options={[BillItemModes.BILL, BillItemModes.GENERAL].includes(mode)  &&  billables ? billables as BillableOption[] : []}
                         onInputChange={(event, value, reason) => {
                             onBillableSelected(value);
                         }}
@@ -346,95 +347,32 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                         error={fieldErrors.amount !== ""} type="text" 
                         onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />   
                     break;
+                case "number":
+                    value = <TextField label={<Translate id={`hospital.billing.item.${col.name}`} />} variant="outlined" 
+                        helperText={helperText(BillItemKeys.amount)} 
+                        error={fieldErrors[col.name] !== ""} type="text" 
+                        onChange={(event) => changeField(event.target.value, col.name)} />   
+                    break;
            }
            field[col.name] = value;
         });
 
-        field = {...field, id: rows.length - 1}
-        // let field: BillItemTable = {
-        //     id: rows.length - 1,
-        //     concept: billables && billables.length > 0 ? 
-        //     <Autocomplete
-        //         freeSolo
-        //         options={mode === 'bill' &&  billables ? billables as BillableOption[] : []}
-        //         onInputChange={(event, value, reason) => {
-        //             onBillableSelected(value);
-        //         }}
-        //         onChange={(event, newValue) => {
-        //             if (typeof newValue === 'string') {
-        //                 onBillableSelected(newValue);
-        //             } else if (newValue && newValue.inputValue) {
-        //                 // Create a new value from the user input
-        //                 onBillableSelected(newValue.inputValue);
-        //             } else if(newValue){
-        //                 onBillableSelected(newValue?.concept, newValue.id, rows.length - 1,);
-        //             }
-        //             }}
-                
-        //             getOptionLabel={(option) => {
-        //             // Value selected with enter, right from the input
-        //             if (typeof option === 'string') {
-        //                 return option;
-        //             }
-        //             // Add "xxx" option created dynamically
-        //             if (option.inputValue) {
-        //                 return option.inputValue;
-        //             }
-        //             // Regular option
-        //             return option.concept;
-        //             }}
-        //         style={{ width: 300 }}
-        //         renderInput={(params:any) => 
-        //             <TextField {...params} label="Concept" error={fieldErrors.concept !== ""}
-        //                 helperText={helperText(BillItemKeys.concept)}
-        //                 onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
-        //                 variant="outlined" />
-        //             }
-        //     /> : <TextField label="Concept" error={fieldErrors.concept !== ""}
-        //             helperText={helperText(BillItemKeys.concept)}
-        //             onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
-        //             variant="outlined" />,
-        //     type : withDiscount ?  
-        //             <FormControl variant="outlined" fullWidth margin="dense" error={fieldErrors.type !== ""}>
-        //                 <InputLabel id="show_treatment">Type</InputLabel>
-        //                 <Select
-        //                     labelId="show_treatment"
-        //                     id="show_treatment"
-        //                     label="type"
-        //                     value={currentItem[BillItemKeys.type]}
-        //                     onChange={(event:React.ChangeEvent<{
-        //                         name?: string | undefined;
-        //                         value: unknown;
-        //                     }>) => changeType(event, BillItemKeys.type)}
-        //                     >
-        //                         {
-        //                             TYPES_BILL_ITEM.map(([key, value]) =>{
-        //                                 return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
-        //                             }) 
-        //                         }
-                            
-        //                 </Select>
-        //             </FormControl> : undefined,
-        //     amount: <TextField label="Amount" variant="outlined" 
-        //                 helperText={helperText(BillItemKeys.amount)} 
-        //                 error={fieldErrors.amount !== ""} type="text" 
-        //                 onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />,
-        //     delete: <IconButton onClick={() => addCurrentItem()}>
-        //                 <IconGenerator type="add" />
-        //             </IconButton>
-        // }
+        field = {...field, id: rows.length - 1, delete: <IconButton onClick={() => addCurrentItem()}>
+                         <IconGenerator type="add" />
+                     </IconButton>}
+        
         rows.push(field)
     }
     else if (!updatingBill) {
         let field: BillItemTable = {}
         columns.forEach((col:Column) => {
-            let value;
-            switch(col.type){
-                case "autocomplete":
-                case "amount":
-                    value = <React.Fragment></React.Fragment>
-                break;                
-           }
+            let value = <React.Fragment></React.Fragment>
+        //     switch(col.type){
+        //         case "autocomplete":
+        //         case "amount":
+        //             value = <React.Fragment></React.Fragment>
+        //         break;                
+        //    }
            field[col.name] = value;
         });
         field = {...field, delete: <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem}
@@ -446,7 +384,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
 
         rows.push(field);
     }
-    if (items.length > 0 && mode === 'bill') {
+    if (items.length > 0 && mode === BillItemModes.BILL) {
         let totalBill = calculateTotalBill(items);
         rows.push({
             id: items.length, concept: <React.Fragment><Typography style={{ fontWeight: 'bold' }} ><Translate id={`hospital.billing.bill.total`} /></Typography></React.Fragment>,
@@ -455,9 +393,13 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
             delete: <React.Fragment></React.Fragment>,
         });
     }
-    let  headCells = [{ id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item.concept`} /> },
-    { id: "amount", alignment: "left", label: <Translate id={`hospital.billing.item.amount`} /> }
-    ]
+    // let  headCells = [{ id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item.concept`} /> },
+    // { id: "amount", alignment: "left", label: <Translate id={`hospital.billing.item.amount`} /> }
+    // ]
+    let  headCells = columns.map((col) => {
+        return { id: col.name, alignment: "left", label: <Translate id={`hospital.billing.item.${col.name}`} />}
+    })
+
     if(withDiscount){
         headCells.splice(1, 0, { id: "type", alignment: "left", label: <Translate id={`hospital.billing.item.type`} /> });
     }
