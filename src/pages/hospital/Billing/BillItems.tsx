@@ -25,7 +25,14 @@ const GridBottom = styled(Grid) <{ hide: boolean }>`
     justify-content:end;
 `;
 
+interface Column{
+    name:string,
+    type:string,
+    validation:string
+}
+
 interface BillItemsProps extends LocalizeContextProps{
+    columns:Column[]
     currency : string,
     print:boolean,
     mode : BillItemModes,
@@ -47,11 +54,16 @@ const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
 })
 const DEFAULT_CURRENT_ITEM = { concept: "", type:0, amount: "" }
 
-const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
+const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
                                                     updatingBill, currency, print, withDiscount,
                                                     bill, billables, onBillItemsValidated, 
                                                     onCancelBill }) => {
-    const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
+    //const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
+    const initFieldErrors = columns.reduce((acc:{[id: string] : string}, column) => {
+        acc[column.name] = "";
+        return acc;
+    }, {});
+    const [fieldErrors, setFieldErrors] = useState(initFieldErrors);
     const [addingItem, setAddingItem] = useState(false);
     const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : []);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);    
@@ -226,12 +238,23 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
         setItems(tempItems);
         setErrorBill(undefined);
     }
-
     
     let rows: BillItemTable[] = items.map((val, index) => {
 
         const color = TYPES_DISCOUNT.includes(val.type) ? red[900] : "black";
         const amountString =  TYPES_DISCOUNT.includes(val.type) ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;
+        
+        let rowElement:{[id: string] : JSX.Element} = {}
+        columns.forEach((col:Column) => {
+            if(val[col.name]){
+                rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
+            }
+        })
+        return {...rowElement, id: index, used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
+                paid: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
+                delete: <IconButton onClick={() => removeItem(index)}>
+                    <IconGenerator type="delete" />
+                </IconButton>,}
 
         return {
             id: index,
@@ -247,50 +270,55 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
     });
 
     if (addingItem) {
-        let field: BillItemTable = {
-            id: rows.length - 1,
-            concept: billables && billables.length > 0 ? 
-            <Autocomplete
-                freeSolo
-                options={mode === 'bill' &&  billables ? billables as BillableOption[] : []}
-                onInputChange={(event, value, reason) => {
-                    onBillableSelected(value);
-                }}
-                onChange={(event, newValue) => {
-                    if (typeof newValue === 'string') {
-                        onBillableSelected(newValue);
-                    } else if (newValue && newValue.inputValue) {
-                        // Create a new value from the user input
-                        onBillableSelected(newValue.inputValue);
-                    } else if(newValue){
-                        onBillableSelected(newValue?.concept, newValue.id, rows.length - 1,);
-                    }
-                    }}
-                
-                    getOptionLabel={(option) => {
-                    // Value selected with enter, right from the input
-                    if (typeof option === 'string') {
-                        return option;
-                    }
-                    // Add "xxx" option created dynamically
-                    if (option.inputValue) {
-                        return option.inputValue;
-                    }
-                    // Regular option
-                    return option.concept;
-                    }}
-                style={{ width: 300 }}
-                renderInput={(params:any) => 
-                    <TextField {...params} label="Concept" error={fieldErrors.concept !== ""}
-                        helperText={helperText(BillItemKeys.concept)}
-                        onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
-                        variant="outlined" />
-                    }
-            /> : <TextField label="Concept" error={fieldErrors.concept !== ""}
-                    helperText={helperText(BillItemKeys.concept)}
-                    onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
-                    variant="outlined" />,
-            type : withDiscount ?  
+        let field: BillItemTable = {}
+        columns.forEach((col:Column) => {
+            let value;
+            switch(col.type){
+                case "autocomplete":
+                    value = billables && billables.length > 0 ? 
+                    <Autocomplete
+                        freeSolo
+                        options={mode === 'bill' &&  billables ? billables as BillableOption[] : []}
+                        onInputChange={(event, value, reason) => {
+                            onBillableSelected(value);
+                        }}
+                        onChange={(event, newValue) => {
+                            if (typeof newValue === 'string') {
+                                onBillableSelected(newValue);
+                            } else if (newValue && newValue.inputValue) {
+                                // Create a new value from the user input
+                                onBillableSelected(newValue.inputValue);
+                            } else if(newValue){
+                                onBillableSelected(newValue?.concept, newValue.id, rows.length - 1,);
+                            }
+                            }}
+                        
+                            getOptionLabel={(option) => {
+                            // Value selected with enter, right from the input
+                            if (typeof option === 'string') {
+                                return option;
+                            }
+                            // Add "xxx" option created dynamically
+                            if (option.inputValue) {
+                                return option.inputValue;
+                            }
+                            // Regular option
+                            return option.concept;
+                            }}
+                        style={{ width: 300 }}
+                        renderInput={(params:any) => 
+                            <TextField {...params} label="Concept" error={fieldErrors.concept !== ""}
+                                helperText={helperText(BillItemKeys.concept)}
+                                onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+                                variant="outlined" />
+                            }
+                    /> : <TextField label="Concept" error={fieldErrors.concept !== ""}
+                            helperText={helperText(BillItemKeys.concept)}
+                            onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+                            variant="outlined" />
+                break;
+                case "type":
+                    value = withDiscount ?  
                     <FormControl variant="outlined" fullWidth margin="dense" error={fieldErrors.type !== ""}>
                         <InputLabel id="show_treatment">Type</InputLabel>
                         <Select
@@ -310,31 +338,112 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ mode, error, activeLanguage,
                                 }
                             
                         </Select>
-                    </FormControl> : undefined,
-            amount: <TextField label="Amount" variant="outlined" 
+                    </FormControl> : undefined
+                break;
+                case "amount":
+                    value = <TextField label="Amount" variant="outlined" 
                         helperText={helperText(BillItemKeys.amount)} 
                         error={fieldErrors.amount !== ""} type="text" 
-                        onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />,
-            delete: <IconButton onClick={() => addCurrentItem()}>
-                        <IconGenerator type="add" />
-                    </IconButton>
-        }
+                        onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />   
+                    break;
+           }
+           field[col.name] = value;
+        });
+
+        field = {...field, id: rows.length - 1}
+        // let field: BillItemTable = {
+        //     id: rows.length - 1,
+        //     concept: billables && billables.length > 0 ? 
+        //     <Autocomplete
+        //         freeSolo
+        //         options={mode === 'bill' &&  billables ? billables as BillableOption[] : []}
+        //         onInputChange={(event, value, reason) => {
+        //             onBillableSelected(value);
+        //         }}
+        //         onChange={(event, newValue) => {
+        //             if (typeof newValue === 'string') {
+        //                 onBillableSelected(newValue);
+        //             } else if (newValue && newValue.inputValue) {
+        //                 // Create a new value from the user input
+        //                 onBillableSelected(newValue.inputValue);
+        //             } else if(newValue){
+        //                 onBillableSelected(newValue?.concept, newValue.id, rows.length - 1,);
+        //             }
+        //             }}
+                
+        //             getOptionLabel={(option) => {
+        //             // Value selected with enter, right from the input
+        //             if (typeof option === 'string') {
+        //                 return option;
+        //             }
+        //             // Add "xxx" option created dynamically
+        //             if (option.inputValue) {
+        //                 return option.inputValue;
+        //             }
+        //             // Regular option
+        //             return option.concept;
+        //             }}
+        //         style={{ width: 300 }}
+        //         renderInput={(params:any) => 
+        //             <TextField {...params} label="Concept" error={fieldErrors.concept !== ""}
+        //                 helperText={helperText(BillItemKeys.concept)}
+        //                 onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+        //                 variant="outlined" />
+        //             }
+        //     /> : <TextField label="Concept" error={fieldErrors.concept !== ""}
+        //             helperText={helperText(BillItemKeys.concept)}
+        //             onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+        //             variant="outlined" />,
+        //     type : withDiscount ?  
+        //             <FormControl variant="outlined" fullWidth margin="dense" error={fieldErrors.type !== ""}>
+        //                 <InputLabel id="show_treatment">Type</InputLabel>
+        //                 <Select
+        //                     labelId="show_treatment"
+        //                     id="show_treatment"
+        //                     label="type"
+        //                     value={currentItem[BillItemKeys.type]}
+        //                     onChange={(event:React.ChangeEvent<{
+        //                         name?: string | undefined;
+        //                         value: unknown;
+        //                     }>) => changeType(event, BillItemKeys.type)}
+        //                     >
+        //                         {
+        //                             TYPES_BILL_ITEM.map(([key, value]) =>{
+        //                                 return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
+        //                             }) 
+        //                         }
+                            
+        //                 </Select>
+        //             </FormControl> : undefined,
+        //     amount: <TextField label="Amount" variant="outlined" 
+        //                 helperText={helperText(BillItemKeys.amount)} 
+        //                 error={fieldErrors.amount !== ""} type="text" 
+        //                 onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />,
+        //     delete: <IconButton onClick={() => addCurrentItem()}>
+        //                 <IconGenerator type="add" />
+        //             </IconButton>
+        // }
         rows.push(field)
     }
     else if (!updatingBill) {
-        let field: BillItemTable = {
-            id: rows.length - 1,
-            concept: <React.Fragment></React.Fragment>,
-            type :   withDiscount ? <React.Fragment></React.Fragment> : undefined,
-            amount: <React.Fragment></React.Fragment>,
-            delete: <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem}
-                type="button" data-testid="add_bill"
-                onClick={() => {
-                    setErrorBill(undefined);
-                    setAddingItem(true)
-                }} /></React.Fragment>
+        let field: BillItemTable = {}
+        columns.forEach((col:Column) => {
+            let value;
+            switch(col.type){
+                case "autocomplete":
+                case "amount":
+                    value = <React.Fragment></React.Fragment>
+                break;                
+           }
+           field[col.name] = value;
+        });
+        field = {...field, delete: <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem}
+                        type="button" data-testid="add_bill"
+                        onClick={() => {
+                            setErrorBill(undefined);
+                            setAddingItem(true)
+                        }} /></React.Fragment>}
 
-        }
         rows.push(field);
     }
     if (items.length > 0 && mode === 'bill') {
