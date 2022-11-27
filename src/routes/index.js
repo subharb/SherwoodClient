@@ -425,7 +425,7 @@ const dashboardPharmacyCentralRoutes = {
     path: HOSPITAL_PHARMACY_CENTRAL_ROUTE,
     icon: <LocalPharmacyIcon />,
     badge: "",
-    permissions : [],
+    permissions : [PERMISSION.UPDATE_PHARMACY_CENTRAL, PERMISSION.MAKE_PHARMACY_REQUESTS, PERMISSION.MANAGE_PHARMACY_CENTRAL],
     functionalities:[FUNCTIONALITY.PHARMACY_CENTRAL],
     component: {
         path: HOSPITAL_PHARMACY_CENTRAL_ROUTE,

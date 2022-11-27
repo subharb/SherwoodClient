@@ -10,3 +10,10 @@ export interface IPharmacyItem{
     provider: string;
     threshold: number;
 }
+
+export type RequestPharmacyItem = Pick<IPharmacyItem, 'id' | 'amount' | 'name'>
+
+export interface IPharmacyRequest{
+    uuidDepartment:string, 
+    requestPharmacyItems:RequestPharmacyItem[]
+}

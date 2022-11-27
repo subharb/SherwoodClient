@@ -1,4 +1,4 @@
-import { FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
+import { Card, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
@@ -6,16 +6,16 @@ import { ButtonAdd, ButtonContinue, ButtonEdit } from '../../../components/gener
 import { IDepartment } from '../../../constants/types';
 import { BillItems } from '../Billing/BillItems';
 import { Billable, BillItem, BillItemModes } from '../Billing/types';
-import { IPharmacyItem } from './types';
+import { IPharmacyItem, IPharmacyRequest, RequestPharmacyItem } from './types';
 
 interface RequestFormProps {
     departments:IDepartment[],
     uuidInvestigation:string,
     pharmacyItemsInit:IPharmacyItem[],
-    makePharmacyRequestCallback:(request:{uuidDepartment:string, requestPharmacyItems:RequestPharmacyItem[]}) => void
+    makePharmacyRequestCallback:(request:IPharmacyRequest) => void
 }
 
-type RequestPharmacyItem = Pick<IPharmacyItem, 'id' | 'amount' | 'name'>
+
 
 const PHARMACY_ITEM_REQUEST_COLUMNS = [{name:"concept", type:"autocomplete", validation:""}, {name:"amount", type:"number", validation:""}];
 
@@ -37,7 +37,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
     function onBillItemsValidated(items:BillItem[]){
         const newRequestPharmacyItems:RequestPharmacyItem[] = items.map((item) => {
             return {
-                id: item.billableId,
+                id: item.id,
                 name: item.concept,
                 amount: item.amount as number
             }
@@ -76,7 +76,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
                         error={undefined} withDiscount={false} onBillItemsValidated={(items) => onBillItemsValidated(items)}
                         onCancelBill={() => setAddingPharmacyItems(false)}
                         uuidInvestigation={uuidInvestigation} />
-                        </Grid>
+                </Grid>
             ) 
         }
         else if(requestPharmacyItems.length === 0){
@@ -150,17 +150,23 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
         }
     }, [])
     return (
-        <Grid container spacing={3}>  
-            <Grid item xs={12}>
-                <Typography variant="h6">Request Form</Typography>
-            </Grid>
-            {
-                renderDepartmentSelector()
-            }
-            {
-                renderPharmcyItems()
-            }
-        </Grid>
+        <Card>
+            <CardContent>
+                <Grid container spacing={3}>  
+                    <Grid item xs={12}>
+                        <Typography variant="h6">Request Form</Typography>
+                    </Grid>
+                    {
+                        renderDepartmentSelector()
+                    }
+                    {
+                        renderPharmcyItems()
+                    }
+                </Grid>
+            </CardContent>
+        </Card>
+            
+          
     );
 };
 

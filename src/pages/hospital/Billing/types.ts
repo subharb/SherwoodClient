@@ -23,6 +23,7 @@ export interface Billable{
 }
 
 export interface BillItem{
+    id?:number
     billableId?:number,
     concept:string,
     type:number,

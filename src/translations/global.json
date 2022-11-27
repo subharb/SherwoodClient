@@ -842,6 +842,7 @@
                 "SOCIAL" : ["Social", "Social", "Social"],
                 "PHARMACY_MANAGER" : ["Pharmacy Manager", "Director de farmacia", "Directeur de pharmacie"],
                 "PHARMACY_ASSISTANT" : ["Pharmacy Assistant", "Asistente de farmacia", "Assistant de pharmacie"],
+                "MAJOR" : ["Major", "Mayor", "Major"],
                 "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {

@@ -14,7 +14,8 @@ import { ButtonAccept } from '../../../components/general/mini_components';
 interface InventoryProps {
     uuidInvestigation: string,
     idPharmacy: number,
-    typePharmacy: PharmacyType
+    typePharmacy: PharmacyType,
+    pharmacyItemsInit: IPharmacyItem[]
 }
 
 const DEFAULT_ROWS: IPharmacyItem = {
@@ -29,8 +30,8 @@ const DEFAULT_ROWS: IPharmacyItem = {
     activePrinciple: ""
 
 };
-const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, idPharmacy }) => {
-    const [pharmacyItems, setPharmacyItems] = React.useState<IPharmacyItem[] | null>(null);
+const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, idPharmacy, pharmacyItemsInit }) => {
+    const [pharmacyItems, setPharmacyItems] = React.useState<IPharmacyItem[] | null>(pharmacyItemsInit ? pharmacyItemsInit : []);
     const [loading, setLoading] = React.useState<boolean>(false);
 
     function updateInventory(pharmacyItems: IPharmacyItem[]) {
@@ -45,16 +46,7 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, 
                 setLoading(false);
             });
     }
-    useEffect(() => {
-        axios.get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/items", { headers: { "Authorization": localStorage.getItem("jwt") } })
-            .then((response) => {
-                if (response.status === 200) {
-                    setPharmacyItems(response.data.pharmacyItems);
-
-                }
-            })
-            .catch(err => { console.log('Catch', err); setPharmacyItems([]); });
-    }, []);
+    
 
     if (!pharmacyItems) {
         return <Loader />
