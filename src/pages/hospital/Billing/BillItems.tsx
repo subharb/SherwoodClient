@@ -39,7 +39,10 @@ interface BillItemsProps extends LocalizeContextProps{
     print:boolean,
     mode : BillItemModes,
     bill: Bill | null,
+    initItems:BillItem[],
     billables: Billable[],
+    showTotal:boolean,
+    repeatBillItems:boolean,
     updatingBill:boolean,
     uuidInvestigation:string,
     error:ReactElement | undefined,
@@ -58,7 +61,7 @@ const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
 
 const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
                                                     updatingBill, currency, print, withDiscount,
-                                                    bill, billables, onBillItemsValidated, 
+                                                    bill, billables, initItems, showTotal, repeatBillItems, onBillItemsValidated, 
                                                     onCancelBill }) => {
     //const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
     
@@ -69,7 +72,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     const DEFAULT_CURRENT_ITEM = initFieldErrors;
     const [fieldErrors, setFieldErrors] = useState(initFieldErrors);
     const [addingItem, setAddingItem] = useState(false);
-    const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : []);
+    //const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : [])
+    const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
     const [billableSelected, setBillableSelected] = useState(false);
@@ -97,7 +101,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         if(col){
             const key = itemKey.toString() as keyof BillItem;
             const valueState = col.type === "number" ? Number(value) : value;
-            if(tempCurrentItem[key]){
+            if(tempCurrentItem.hasOwnProperty(key)){
                 // @ts-ignore: Unreachable code error
                 tempCurrentItem[key] = valueState as string;
             }
@@ -178,7 +182,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     }
     
     async function onClickContinue(items: BillItem[]) {
-        if(mode !== BillItemModes.GENERAL){
+        if(bill){
             if (calculateTotalBill(items) > 0) {
                 onBillItemsValidated(items);
                 
@@ -237,7 +241,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         columns.forEach((col) => {
             
             const key = col.name.toString();
-            tempFieldErrors[col.name] = validateKeyItem(key.toString(), col.name);
+            const value = currentItem[key as keyof BillItem] as string;
+            tempFieldErrors[col.name] = validateKeyItem(value, col.name);
         })
         if (currentItem[BillItemKeys.type] === 2 && currentItem[BillItemKeys.amount] > 99) {
             tempFieldErrors[BillItemKeys.amount] = "amount_percent";
@@ -275,8 +280,6 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
             else{
                 rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
             }
-                
-            
         })
         return {...rowElement, id: index, used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
                 paid: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
@@ -295,7 +298,15 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     value = billables && billables.length > 0 ? 
                     <Autocomplete
                         freeSolo
-                        options={[BillItemModes.BILL, BillItemModes.GENERAL].includes(mode)  &&  billables ? billables as BillableOption[] : []}
+                        options={billables ? billables.filter((billable) => {
+                            if(!repeatBillItems){
+                                const itemSelected = items.find((item) => item.id === billable.id);
+                                return !itemSelected;
+                            }
+                            else{
+                                return billable
+                            }
+                        }) as BillableOption[] : []}
                         onInputChange={(event, value, reason) => {
                             onBillableSelected(value);
                         }}
@@ -404,7 +415,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
 
         rows.push(field);
     }
-    if (items.length > 0 && mode === BillItemModes.BILL) {
+    if (items.length > 0 && showTotal) {
         let totalBill = calculateTotalBill(items);
         rows.push({
             id: items.length, concept: <React.Fragment><Typography style={{ fontWeight: 'bold' }} ><Translate id={`hospital.billing.bill.total`} /></Typography></React.Fragment>,
@@ -451,6 +462,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                         </Grid>
 
                     }
+                    
                     <GridBottom hide={print} item xs={12} >
                         <Button onClick={onCancelBill} data-testid="cancel-modal" color="primary">
                             <Translate id="general.cancel" />

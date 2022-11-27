@@ -84,7 +84,9 @@ export interface BillablesServiceResponse {
 }
 
 export enum BillItemModes{
-    BILL = "bill",
-    BILLABLE = "billable",
-    GENERAL = "general"
+    SHOW = "SHOW",
+    EDIT = "EDIT",
+    // BILL = "bill",
+    // BILLABLE = "billable",
+    // GENERAL = "general"
 }

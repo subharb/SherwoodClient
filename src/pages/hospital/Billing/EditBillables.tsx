@@ -22,8 +22,9 @@ const EditBillables: React.FC<EditBillablesProps> = ({ billables, uuidInvestigat
         return(
             <Card>
                 <BillItems columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"amount", type:"amount", validation:""}]} 
-                    currency={billingInfo.currency} print={false} mode = {BillItemModes.BILLABLE} withDiscount={withDiscount}
-                    bill={null} billables={billables} uuidInvestigation={uuidInvestigation} updatingBill={false}
+                    currency={billingInfo.currency} print={false} mode = {BillItemModes.EDIT} withDiscount={withDiscount}
+                    repeatBillItems={true} showTotal={false}
+                    bill={null} billables={[]} initItems = {billables} uuidInvestigation={uuidInvestigation} updatingBill={false}
                     onBillItemsValidated={onBillablesCreated} error={errorBillables}
                     onCancelBill={() => console.log("Cancel")} />
             </Card>

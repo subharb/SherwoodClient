@@ -39,6 +39,7 @@ LoadExcel.args = {
 
 export const Request = TemplateRequest.bind({});
 Request.args = {
+    departments : [{uuid:"asdfasd", name:"Dermatologia"}, {uuid:"234324", name:"Neurologia"}],
     pharmacyItemsInit:pharmacyItemsInit,
-    saveInventoryCallBack:(items) => console.log(items)
+    makePharmacyRequestCallback:(request) => console.log(request)
 };

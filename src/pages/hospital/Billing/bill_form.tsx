@@ -105,7 +105,9 @@ export const BillForm:React.FC<Props> = (props) => {
         }
         if(patient){
             return <BillItems columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"amount", type:"amount", validation:""}]} 
-                        uuidPatient={patient?.uuid} mode = {BillItemModes.BILL}
+                        uuidPatient={patient?.uuid} mode = {BillItemModes.SHOW}
+                        initItems = {props.bill ? props.bill.billItems : []}
+                        repeatBillItems={true} showTotal={true}
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
                         bill={props.bill} billables={props.billables ? props.billables : []}
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
