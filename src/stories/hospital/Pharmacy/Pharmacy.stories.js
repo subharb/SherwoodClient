@@ -5,6 +5,7 @@ import ProviderSherwood from '../../../providerSherwood';
 import InventoryPharmacy from '../../../pages/hospital/Pharmacy/Inventory';
 import { pharmacyItemsInit } from './data';
 import RequestForm from '../../../pages/hospital/Pharmacy/RequestForm';
+import LoadExcelComponent from '../../../pages/hospital/Pharmacy/LoadExcel';
 
 export default {
   title: 'Hospital/Pharmacy',
@@ -23,11 +24,17 @@ export default {
 
 const Template = (args) => <InventoryPharmacy {...args} />; 
 const TemplateRequest = (args) => <RequestForm {...args} />; 
+const TemplateLoadExcel = (args) => <LoadExcelComponent {...args} />; 
 
 export const Inventory = Template.bind({});
 Inventory.args = {
     pharmacyItemsInit:pharmacyItemsInit,
     saveInventoryCallBack:(items) => console.log(items)
+};
+
+export const LoadExcel = TemplateLoadExcel.bind({});
+LoadExcel.args = {
+    
 };
 
 export const Request = TemplateRequest.bind({});

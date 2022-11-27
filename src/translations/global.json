@@ -392,6 +392,7 @@
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
             "pharmacy" : {
+                "title" : ["Pharmacy", "Farmacia", "Pharmacie"],
                 "pharmacy_items" : {
                     "name" : ["Name", "Nombre", "Nom"],
                     "code" : ["Code", "Código", "Code"],
@@ -402,6 +403,9 @@
                     "unit" : ["Unit", "Unidad", "Unité"],
                     "provider" : ["Provider", "Proveedor", "Fournisseur"],
                     "threshold" : ["Threshold", "Umbral", "Seuil"]
+                },
+                "inventory" : {
+                    "load_excel" : ["Select a excel from your computer", "Seleccione un excel de su ordenador", "Sélectionnez un excel de votre ordinateur"]
                 }
             },
             "services" : {
@@ -836,6 +840,8 @@
                 "LAB_MANAGER" : ["Lab Manager", "Director de laboratorio", "Directeur de laboratoire"],
                 "LAB_ASSISTANT" : ["Lab technician ", "Técnico laboratorio ", "Technicien de laboratoire"],
                 "SOCIAL" : ["Social", "Social", "Social"],
+                "PHARMACY_MANAGER" : ["Pharmacy Manager", "Director de farmacia", "Directeur de pharmacie"],
+                "PHARMACY_ASSISTANT" : ["Pharmacy Assistant", "Asistente de farmacia", "Assistant de pharmacie"],
                 "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {

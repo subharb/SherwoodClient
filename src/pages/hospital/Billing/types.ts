@@ -17,8 +17,9 @@ export interface Billable{
     id:number,
     concept:string,
     amount:number,
-    insurance:string | null,
-    type: number
+    insurance?:string,
+    type: number,
+    quantity?:number,
 }
 
 export interface BillItem{
@@ -42,7 +43,8 @@ export interface BillItemTable{
 export enum BillItemKeys{
     concept = "concept",
     amount = "amount",
-    type = "type"
+    type = "type",
+    quantity = "quantity",
 }
 
 export interface BillingInfo{

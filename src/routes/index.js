@@ -26,7 +26,8 @@ import GroupIcon from '@material-ui/icons/Group';
 import { Home as HomeIcon, Search as SearchPatientIcon, Hotel as HotelIcon,
     PersonAddSharp as AddPatientIcon, Image as ImageIcon,
     PeopleOutline as PeopleOutlineIcon,
-    MonetizationOn as MonetizationOnIcon} from "@material-ui/icons";
+    MonetizationOn as MonetizationOnIcon,
+    LocalPharmacy as LocalPharmacyIcon} from "@material-ui/icons";
 
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
@@ -84,6 +85,7 @@ import Analytics from "../pages/hospital/Analytics";
 import UserManagement from "../components/investigation/share";
 import Departments from  "../pages/hospital/departments/Admin";
 import InPatients from  "../pages/hospital/departments/Inpatients";
+import PharmacyCentral from  "../pages/hospital/Pharmacy";
 import Billing from  "../pages/hospital/Billing";
 import { WardLocalized, WardModes } from  "../pages/hospital/departments/Ward";
 import { FUNCTIONALITY, PERMISSION } from "../constants/types";
@@ -127,6 +129,7 @@ export const ROUTE_401 = "/auth/401";
 export const HOSPITAL_BILLING = "/billing";
 export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
 export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
+export const HOSPITAL_PHARMACY_CENTRAL_ROUTE = "/pharmacy/central";
 
 
 const hospitalRoutes = {
@@ -252,7 +255,11 @@ const hospitalRoutes = {
             name: "My Departments",
             component: () => <InPatients />,
         },
-        
+        {
+            path: HOSPITAL_PHARMACY_CENTRAL_ROUTE,
+            name: "Pharmacy Central",
+            component: () => <PharmacyCentral />,
+        },
         {
             path: HOSPITAL_WARD_ROUTE,
             name: "Ward",
@@ -409,6 +416,21 @@ const dashboardMyDepartmentRoutes = {
         path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
         name: "My Departments",
         component: () => <InPatients />
+    },
+    children: null
+}
+
+const dashboardPharmacyCentralRoutes = {
+    id: <Translate id="pages.hospital.pharmacy.title" />,
+    path: HOSPITAL_PHARMACY_CENTRAL_ROUTE,
+    icon: <LocalPharmacyIcon />,
+    badge: "",
+    permissions : [],
+    functionalities:[FUNCTIONALITY.PHARMACY_CENTRAL],
+    component: {
+        path: HOSPITAL_PHARMACY_CENTRAL_ROUTE,
+        name: "Pharmacy Central",
+        component: () => <PharmacyCentral />
     },
     children: null
 }
@@ -632,5 +654,6 @@ export const sidebarRoutesHospital = [
     dashboardUserMgmtRoutes,
     dashboardAdminDepartmentRoutes,
     dashboardMyDepartmentRoutes,
-    dashboardBillingRoutes
+    dashboardBillingRoutes,
+    dashboardPharmacyCentralRoutes
   ];

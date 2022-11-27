@@ -887,3 +887,12 @@ export const isToday = (someDate) => {
       someDate.getMonth() === today.getMonth() &&
       someDate.getFullYear() === today.getFullYear()
   }
+
+  export function hasDefaultValues(dict, defaultValues){
+    for(let key in defaultValues){
+        if(dict[key] === defaultValues[key]){
+            return true;
+        }
+    }
+    return false;
+  }

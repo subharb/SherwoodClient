@@ -11,6 +11,7 @@ interface RequestFormProps {
 }
 
 const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyItemsInit, departments }) => {
+    // @ts-ignore: Unreachable code error
     const billables:Billable[] = pharmacyItemsInit.map((pharmaItem) => {
         return{
             concept : pharmaItem.name,
@@ -19,10 +20,12 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
     })
     return (
         <>
-            <BillItems columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"quantity", type:"number", validation:""}]} 
+            <BillItems 
+                // @ts-ignore: Unreachable code error
+                columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"quantity", type:"number", validation:""}]} 
                 mode={BillItemModes.GENERAL} billables={billables}
                 currency="" print={false} bill={null} updatingBill={false}
-                error={undefined} withDiscount={false} onBillItemsValidated={() => console.log("Validated")}
+                error={undefined} withDiscount={false} onBillItemsValidated={(items) => console.log("Validated", items)}
                 onCancelBill={() => console.log("Cancelada")}
                 uuidInvestigation={uuidInvestigation} />
         </>

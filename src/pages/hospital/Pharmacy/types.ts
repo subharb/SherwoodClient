@@ -1,5 +1,5 @@
 export interface IPharmacyItem{
-    id:number,
+    id?:number,
     code: string;
     name: string;
     type: number;

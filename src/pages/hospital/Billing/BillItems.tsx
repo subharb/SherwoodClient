@@ -9,6 +9,8 @@ import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable } 
 import styled from "styled-components"
 import { Autocomplete } from "@material-ui/lab"
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
+import _ from "lodash";
+import { hasDefaultValues } from "../../../utils";
 
 const FactureHolder = styled.div<{ hide: boolean }>`
     margin-top:2rem;
@@ -26,7 +28,7 @@ const GridBottom = styled(Grid) <{ hide: boolean }>`
 `;
 
 interface Column{
-    name:string,
+    name:keyof BillItem,
     type:string,
     validation:string
 }
@@ -60,7 +62,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                                                     onCancelBill }) => {
     //const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
     
-    const initFieldErrors = columns.reduce((acc:{[id: string] : string}, column) => {
+    const initFieldErrors:any = columns.reduce((acc:{[id: string] : string}, column) => {
         acc[column.name] = "";
         return acc;
     }, {});
@@ -68,7 +70,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     const [fieldErrors, setFieldErrors] = useState(initFieldErrors);
     const [addingItem, setAddingItem] = useState(false);
     const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : []);
-    const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM);    
+    const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
     const [billableSelected, setBillableSelected] = useState(false);
     const [itemAdded, setItemAdded] = useState(false);
@@ -87,19 +89,25 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     function updateStates(itemKey: BillItemKeys, error: string, value: string) {
         let tempFieldErrors = { ...fieldErrors };
         tempFieldErrors[itemKey] = error;
-        let tempCurrentItem = { ...currentItem };
+        let tempCurrentItem:BillItem = { ...currentItem };
 
         const col = columns.find((col) => {
             return col.name === itemKey
         })
         if(col){
-            tempCurrentItem[itemKey] = col.type === "number" ? Number(value) : value;
+            const key = itemKey.toString() as keyof BillItem;
+            const valueState = col.type === "number" ? Number(value) : value;
+            if(tempCurrentItem[key]){
+                // @ts-ignore: Unreachable code error
+                tempCurrentItem[key] = valueState as string;
+            }
+            
         }
         
         setFieldErrors(tempFieldErrors);
         setCurrentItem(tempCurrentItem);
     }
-    function validateKeyItem(value: string, itemKey: BillItemKeys) {
+    function validateKeyItem(value: string, itemKey: string) {
         let error = "";
         const col = columns.find((col) => {
             return col.name === itemKey
@@ -154,13 +162,14 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                 // changeField(billableSelected.concept, BillItemKeys.concept);
                 // changeField(billableSelected.amount.toString(), BillItemKeys.amount);
                 // changeField(billableSelected.type.toString(), BillItemKeys.type);
-                setCurrentItem({
-                    concept :billableSelected.concept,
-                    amount : billableSelected.amount,
-                    type : billableSelected.type,
-                    billableId : billableId
-                });  
-                setItemAdded(true);              
+
+                const updatedItem = {...currentItem, ...billableSelected}
+                setCurrentItem(updatedItem);
+                
+                if(!hasDefaultValues(updatedItem, DEFAULT_CURRENT_ITEM)){
+                    setItemAdded(true);              
+                }
+                
             }
         }
     }
@@ -169,26 +178,32 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     }
     
     async function onClickContinue(items: BillItem[]) {
-       
-        if (calculateTotalBill(items) > 0) {
+        if(mode !== BillItemModes.GENERAL){
+            if (calculateTotalBill(items) > 0) {
+                onBillItemsValidated(items);
+                
+            }
+            else {
+                setErrorBill(<Translate id="hospital.bill.error.positive" />);
+            }
+        }
+        else{
             onBillItemsValidated(items);
-            
         }
-        else {
-            setErrorBill(<Translate id="hospital.bill.error.positive" />);
-        }
+        
         setAddingItem(false);
     }
     
     function usedItem(index: number) {
         console.log(index);
-        const tempItems = [...items];
+        const tempItems = [...items] as BillItem[];
+        
         tempItems[index].used = !tempItems[index].used;
         setItems(tempItems);
     }
     function paidItem(index: number) {
         console.log(index);
-        const tempItems = [...items];
+        const tempItems = [...items] as BillItem[];
         tempItems[index].paid = !tempItems[index].paid;
         setItems(tempItems);
     }
@@ -221,14 +236,15 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         //currentItem["type"] = 0;
         columns.forEach((col) => {
             
-            
-            tempFieldErrors[col.name] = validateKeyItem(currentItem[col.name].toString(), col.name);
+            const key = col.name.toString();
+            tempFieldErrors[col.name] = validateKeyItem(key.toString(), col.name);
         })
         if (currentItem[BillItemKeys.type] === 2 && currentItem[BillItemKeys.amount] > 99) {
             tempFieldErrors[BillItemKeys.amount] = "amount_percent";
         }
         if (Object.values(tempFieldErrors).reduce((acc, val) => acc && (val === ""), true)) {
             let tempItems = [...items];
+
             tempItems.push({...currentItem});
 
             setItems(tempItems);
@@ -268,10 +284,10 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     <IconGenerator type="delete" />
                 </IconButton>}
 
-    });
+    }) as BillItemTable[];
 
     if (addingItem) {
-        let field: BillItemTable = {}
+        let field:BillItemTable = {} as BillItemTable;
         columns.forEach((col:Column) => {
             let value;
             switch(col.type){
@@ -351,9 +367,11 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     value = <TextField label={<Translate id={`hospital.billing.item.${col.name}`} />} variant="outlined" 
                         helperText={helperText(BillItemKeys.amount)} 
                         error={fieldErrors[col.name] !== ""} type="text" 
+                        // @ts-ignore: Unreachable code error
                         onChange={(event) => changeField(event.target.value, col.name)} />   
                     break;
            }
+           // @ts-ignore: Unreachable code error
            field[col.name] = value;
         });
 
@@ -364,6 +382,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         rows.push(field)
     }
     else if (!updatingBill) {
+        // @ts-ignore: Unreachable code error
         let field: BillItemTable = {}
         columns.forEach((col:Column) => {
             let value = <React.Fragment></React.Fragment>
@@ -373,6 +392,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         //             value = <React.Fragment></React.Fragment>
         //         break;                
         //    }
+        // @ts-ignore: Unreachable code error
            field[col.name] = value;
         });
         field = {...field, delete: <React.Fragment><Translate id="hospital.billing.item.add_item" /> <ButtonAdd disabled={addingItem}
@@ -405,6 +425,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     }
 
     if (!updatingBill) {
+        // @ts-ignore: Unreachable code error
         headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
     }
     else {
