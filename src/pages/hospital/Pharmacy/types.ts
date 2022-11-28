@@ -4,14 +4,19 @@ export interface IPharmacyItem{
     name: string;
     type: number;
     activePrinciple: string;
-    amountRequested: number;
+    amount: number;
     price: number;
     unit: number;
     provider: string;
     threshold: number;
 }
 
-export type RequestPharmacyItem = Pick<IPharmacyItem, 'id' | 'amountRequested' | 'name'>
+export interface RequestPharmacyItem {
+    id:number
+    name:string,
+    amountRequested:number,
+    amountApproved:number,
+}
 
 export interface IPharmacyRequest{
     uuidDepartment:string, 

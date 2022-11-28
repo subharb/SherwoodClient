@@ -31,6 +31,19 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;
+        case types.UPDATE_REQUEST_PHARMACY_SUCCESS:
+            tempRequests = newState.data.requests ? [...newState.data.requests] : [];
+            const requestIndex = tempRequests.findIndex(aRequest => aRequest.id === action.request.id);
+            if(requestIndex !== -1){
+                tempRequests[requestIndex] = action.request;
+            }
+            else{
+                tempRequests.push(action.request);
+            }
+            newState.data.requests = tempRequests;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
+            return newState;
         case types.REQUESTS_LOADING:
             newState.loading = true;   
             return newState;

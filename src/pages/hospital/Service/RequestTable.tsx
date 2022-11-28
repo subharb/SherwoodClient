@@ -106,7 +106,7 @@ interface RequestTableProps {
 
 type RequestTablePharmacyProps = Pick<RequestTableProps, 'serviceType' | 'uuidInvestigation' | 'callBackRequestSelected'>
 
-const ACTIONABLE_REQUESTS = [RequestStatus.PENDING_APPROVAL, RequestStatus.ACCEPTED, RequestStatus.COMPLETED];
+const ACTIONABLE_REQUESTS = [RequestStatus.PENDING_APPROVAL, RequestStatus.ACCEPTED, RequestStatus.COMPLETED, RequestStatus.IN_PROGRESS];
 
 export const RequestTableService:React.FC<RequestTableProps> = ({serviceType, uuidPatient, uuidInvestigation, showActions, surveys, fillPending, encryptionData, callBackRequestSelected}) => {
     return <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} 
@@ -208,7 +208,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     if(serviceType === RequestType.PHARMACY){
         headCells = [
             { id: 'id', numeric: false, disablePadding: false, label: 'ID' },
-            { id: 'researcher', numeric: false, disablePadding: false, label: 'Fecha' },
+            {id : 'researcher', label: <Translate id="hospital.staff" />, alignment:'left'},
             {id : 'status', label: <Translate id="pages.hospital.services.status" />, alignment:'left'},
             {id : 'department', label: <Translate id="hospital.departments.department" />, alignment:'left'},
             {id : 'date', label: <Translate id="general.date" />, alignment:'left'},

@@ -9,8 +9,8 @@ import Loader from '../../../components/Loader';
 import { PHARMACY_CENTRAL_PERMISSIONS, PHARMACY_RELATED_PERMISSIONS } from '../../../constants';
 import { IUnit, PERMISSION } from '../../../constants/types';
 import { useDepartments, useProfileInfo, useSnackBarState } from '../../../hooks';
-import { makePharmacyRequestAction } from '../../../redux/actions/requestsActions';
-import { HOSPITAL_PHARMACY_REQUEST } from '../../../routes';
+import { makePharmacyRequestAction, updatePharmacyRequestAction } from '../../../redux/actions/requestsActions';
+import { HOSPITAL_PHARMACY_CENTRAL_ROUTE, HOSPITAL_PHARMACY_REQUEST } from '../../../routes';
 import { getDepartmentFromUnit, getUnitsResearcher } from '../../../utils';
 import SectionHeader from '../../components/SectionHeader';
 import RequestTable, { RequestTablePharmacy } from '../Service/RequestTable';
@@ -62,15 +62,23 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     }, [requests]);
 
     function navigateToRequest(request?:IRequest){
-        let goTorequest;
-        if(showSnackbar.severity === "success" && !request){
-            goTorequest = requests.data.requests[requests.data.requests.length - 1];
+        let nextUrl;
+        if(!idRequest){
+            let goTorequest;
+            if(showSnackbar.severity === "success" && !request){
+                goTorequest = requests.data.requests[requests.data.requests.length - 1];
+                
+            }
+            else if(request){
+                goTorequest = request;
+            }
+            nextUrl = HOSPITAL_PHARMACY_REQUEST.replace(":idRequest", goTorequest.id);      
+        }
+        else{
+            nextUrl = HOSPITAL_PHARMACY_CENTRAL_ROUTE;
             
         }
-        else if(request){
-            goTorequest = request;
-        }
-        const nextUrl = HOSPITAL_PHARMACY_REQUEST.replace(":idRequest", goTorequest.id)   
+        
         history.push(nextUrl);
 
         setShowSnackbar({show:false});
@@ -91,11 +99,24 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     function toogleEditLab(){
         setEdit(!edit);
     }
-   
+    
+    async function saveRequest(request:IRequest, approved:boolean){
+        console.log(request);
+        await dispatch(
+            updatePharmacyRequestAction(uuidInvestigation, idPharmacy, request, approved)
+        );
+        if(requests.error === null){
+            setShowSnackbar({show:true, message:"pages.hospital.pharmacy.success", severity:"success"});
+        }
+        else{
+            setShowSnackbar({show:true, message:"pages.hospital.pharmacy.error", severity:"error"});
+        }
+    }
+    
     function renderCore(){
-        if(idRequest){
+        if(idRequest && pharmacyItems){
             const pharmacyPermissions:PERMISSION[] = investigations.currentInvestigation.permissions.filter((permission:PERMISSION) => PHARMACY_RELATED_PERMISSIONS.includes(permission));
-            return <RequestSingle userPermissions={pharmacyPermissions} idRequest={idRequest}  />
+            return <RequestSingle pharmacyItems={pharmacyItems} userPermissions={pharmacyPermissions} idRequest={idRequest} saveRequestCallback={saveRequest} />
         }
         const canViewPharmacyCentral = investigations.currentInvestigation.permissions.some((value:PERMISSION) => PHARMACY_CENTRAL_PERMISSIONS.includes(value));
         if(canViewPharmacyCentral && pharmacyItems){

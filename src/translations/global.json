@@ -429,6 +429,7 @@
                     "no_services_remaining" : ["You have selected all services available, if you need more please contact customersupport@sherwood.science", "No quedan servicios disponibles, si necesita más por favor contacte con customersupport@sherwood.science", "Vous avez sélectionné tous les services disponibles, si vous en avez besoin, veuillez contacter ustomersupport@sherwood.science"]
                 },
                 "save_and_complete" : ["Save and finish", "Guardar y finalizar", "Sauvegarder et terminer"],
+                "save_changes" : ["Save changes", "Guardar cambios", "Sauvegarder les modifications"],
                 "no_requests" : ["No requests available", "No hay solicitudes disponibles", "Aucune demande disponible"],
                 "no_services" : ["No services available", "No hay servicios disponibles", "Aucun service disponible"],
                 
