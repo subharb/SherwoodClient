@@ -89,6 +89,7 @@ import PharmacyCentral from  "../pages/hospital/Pharmacy";
 import Billing from  "../pages/hospital/Billing";
 import { WardLocalized, WardModes } from  "../pages/hospital/departments/Ward";
 import { FUNCTIONALITY, PERMISSION } from "../constants/types";
+import Pharmacy from "../pages/hospital/Pharmacy";
 
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
@@ -123,6 +124,7 @@ export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const HOSPITAL_LAB_REQUEST = "/lab/request/:idRequest";
+export const HOSPITAL_PHARMACY_REQUEST = "/pharmacy/request/:idRequest";
 export const HOSPITAL_IMAGING_REQUEST = "/images/request/:idRequest";
 export const HOSPITAL_LAB_RESULT = "/lab/result/:idSubmission/patient/:uuidPatient";
 export const ROUTE_401 = "/auth/401";
@@ -213,6 +215,11 @@ const hospitalRoutes = {
             path: HOSPITAL_LAB_REQUEST,
             name: "Hospital Lab",
             component: TestsHome
+        },
+        {
+            path: HOSPITAL_PHARMACY_REQUEST,
+            name: "Hospital Pharmacy",
+            component: Pharmacy
         },
         {
             path: HOSPITAL_IMAGING_REQUEST,

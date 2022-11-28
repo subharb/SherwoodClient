@@ -393,6 +393,8 @@
             },
             "pharmacy" : {
                 "title" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                "success" : ["Request made successfully", "Solicitud realizada correctamente", "Demande effectuée avec succès"],
+                "error" : ["Error making request", "Error realizando la solicitud", "Erreur lors de la demande"],
                 "pharmacy_items" : {
                     "name" : ["Name", "Nombre", "Nom"],
                     "code" : ["Code", "Código", "Code"],
@@ -403,6 +405,14 @@
                     "unit" : ["Unit", "Unidad", "Unité"],
                     "provider" : ["Provider", "Proveedor", "Fournisseur"],
                     "threshold" : ["Threshold", "Umbral", "Seuil"]
+                },
+                "request" : {
+                    "table" : {
+                        "nameDrug" : ["Name", "Nombre", "Nom"],
+                        "status": ["Status", "Estado", "Statut"],
+                        "amountApproved" : ["Amount Approved", "Cantidad Aprobada", "Montant approuvé"],
+                        "amountRequested" : ["Amount Requested", "Cantidad Solicitada", "Montant demandé"]
+                    }
                 },
                 "inventory" : {
                     "load_excel" : ["Select a excel from your computer", "Seleccione un excel de su ordenador", "Sélectionnez un excel de votre ordinateur"]
@@ -444,6 +454,7 @@
                 "status" : ["Status", "Status", "Status"],
                 "request_status" : {
                     "PENDING" : ["Pending", "Pendiente", "Pendant"],
+                    "PENDING_APPROVAL" : ["Pending Approval", "Pendiente de Aprobación", "En attente d'approbation"],
                     "PENDING_PAYMENT" : ["Pending Payment", "Pendiente de Pago", "En attente de paiement"],
                     "ACCEPTED" : ["Accepted", "Aceptado", "Accepté"],
                     "SOME_ACCEPTED" : ["Some Accepted", "Algunos Aceptados", "Certains acceptés"],

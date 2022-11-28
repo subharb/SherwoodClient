@@ -17,7 +17,7 @@ interface RequestFormProps {
 
 
 
-const PHARMACY_ITEM_REQUEST_COLUMNS = [{name:"concept", type:"autocomplete", validation:""}, {name:"amount", type:"number", validation:""}];
+export const PHARMACY_ITEM_REQUEST_COLUMNS = [{name:"concept", type:"autocomplete", validation:""}, {name:"amount", type:"number", validation:""}];
 
 
 const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyItemsInit, departments, makePharmacyRequestCallback }) => {
@@ -39,7 +39,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
             return {
                 id: item.id,
                 name: item.concept,
-                amount: item.amount as number
+                amountRequested: item.amount as number
             }
         });
         setRequestPharmacyItems(newRequestPharmacyItems);
@@ -62,7 +62,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
             const pharmacyRequestItems:BillItem[] = requestPharmacyItems.map((pharmaItem) => {
                 return {
                     concept: pharmaItem.name,
-                    amount: pharmaItem.amount,
+                    amount: pharmaItem.amountRequested,
                 }
             });
             return(
@@ -93,7 +93,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
                 return {
                     id: item.id,
                     concept: item.name,
-                    amount: item.amount
+                    amount: item.amountRequested
                 }
             });
             return(

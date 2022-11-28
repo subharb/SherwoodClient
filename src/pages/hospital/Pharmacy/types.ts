@@ -4,14 +4,14 @@ export interface IPharmacyItem{
     name: string;
     type: number;
     activePrinciple: string;
-    amount: number;
+    amountRequested: number;
     price: number;
     unit: number;
     provider: string;
     threshold: number;
 }
 
-export type RequestPharmacyItem = Pick<IPharmacyItem, 'id' | 'amount' | 'name'>
+export type RequestPharmacyItem = Pick<IPharmacyItem, 'id' | 'amountRequested' | 'name'>
 
 export interface IPharmacyRequest{
     uuidDepartment:string, 

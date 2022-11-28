@@ -13,6 +13,7 @@ import { getDepartmentsInvestigationAction } from '../redux/actions/hospitalActi
 import { Color } from '@material-ui/lab';
 import { IDepartment } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
+import { IRequest } from '../pages/hospital/Service/types';
 
 export interface SnackbarType{
     show: boolean;
@@ -55,6 +56,33 @@ export function useDepartments(){
     }, [investigations])
 
     return { departments, researchers, investigations, loading}
+}
+
+export function useRequest(idRequest:number){
+    const investigations= useSelector((state:any) => state.investigations);
+    const [loadingRequest, setLoadingRequest] = useState(false);
+    const [request, setRequest] = useState<IRequest | null>(null);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const fetchRequest = async () => {
+            setLoadingRequest(true);
+            
+            const response = await axios(`${process.env.REACT_APP_API_URL}/hospital/${investigations.currentInvestigation.uuid}/request/${idRequest}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                    .catch(err => {console.log('Catch', err); return err;});
+            if(response.status === 200){
+                setRequest(response.data.request);
+            }
+            setLoadingRequest(false);
+        }
+        if(investigations.data && investigations.currentInvestigation){
+            fetchRequest();
+        }
+        
+    }, [idRequest, investigations])
+
+    return { request, loadingRequest}
 }
 
 export function useSelectSmartField(initialState:any, label:string, type:string, errorState:boolean, setAddingSmartField:(adding:boolean) => void){

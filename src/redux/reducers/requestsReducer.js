@@ -14,9 +14,7 @@ import { decryptPatientsData } from '../../utils';
     error: null
 }
  
-
 export default function reducer(state = initialState, action){
-    
     let newState = { ...state};
     let tempRequests;
     switch(action.type){
@@ -26,14 +24,16 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error;   
             return newState;
         case types.SAVE_REQUEST_PHARMACY_SUCCESS:
-            tempRequests = [...newState.data.departments];
+            tempRequests = newState.data.requests ? [...newState.data.requests] : [];
             tempRequests.push(action.request);
 
             newState.data.requests = tempRequests;
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;
-        
+        case types.REQUESTS_LOADING:
+            newState.loading = true;   
+            return newState;
         case types.REQUESTS_ERROR:
             newState.loading = initialState.loading;   
             newState.error = action.errorCode;                           

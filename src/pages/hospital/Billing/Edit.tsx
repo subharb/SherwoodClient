@@ -23,7 +23,7 @@ const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation,
         await dispatch(
             createUpdateBillingInfoAction(uuidInvestigation, billingInfo)
         );
-        onBillingInfoSuccesfullyUpdated(BillItemModes.BILL);
+        onBillingInfoSuccesfullyUpdated(BillItemModes.SHOW);
     }
     async function onBillablesCreated(billables:BillItem[]){
         console.log(billables);
