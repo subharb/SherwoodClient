@@ -412,7 +412,8 @@
                         "nameDrug" : ["Name", "Nombre", "Nom"],
                         "status": ["Status", "Estado", "Statut"],
                         "amountApproved" : ["Amount Approved", "Cantidad Aprobada", "Montant approuvé"],
-                        "amountRequested" : ["Amount Requested", "Cantidad Solicitada", "Montant demandé"]
+                        "amountRequested" : ["Amount Requested", "Cantidad Solicitada", "Montant demandé"],
+                        "actions" : ["Actions", "Acciones", "Actions"]
                     }
                 },
                 "inventory" : {

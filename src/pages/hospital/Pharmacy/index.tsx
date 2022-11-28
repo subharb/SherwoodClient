@@ -6,7 +6,7 @@ import { Translate } from 'react-localize-redux';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import Loader from '../../../components/Loader';
-import { PHARMACY_CENTRAL_PERMISSIONS } from '../../../constants';
+import { PHARMACY_CENTRAL_PERMISSIONS, PHARMACY_RELATED_PERMISSIONS } from '../../../constants';
 import { IUnit, PERMISSION } from '../../../constants/types';
 import { useDepartments, useProfileInfo, useSnackBarState } from '../../../hooks';
 import { makePharmacyRequestAction } from '../../../redux/actions/requestsActions';
@@ -94,9 +94,10 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
    
     function renderCore(){
         if(idRequest){
-            return <RequestSingle idRequest={idRequest}  />
+            const pharmacyPermissions:PERMISSION[] = investigations.currentInvestigation.permissions.filter((permission:PERMISSION) => PHARMACY_RELATED_PERMISSIONS.includes(permission));
+            return <RequestSingle userPermissions={pharmacyPermissions} idRequest={idRequest}  />
         }
-        const canViewPharmacyCentral = investigations.currentInvestigation.permissions.some((value:PERMISSION) => PHARMACY_CENTRAL_PERMISSIONS.includes(value)) > 0;
+        const canViewPharmacyCentral = investigations.currentInvestigation.permissions.some((value:PERMISSION) => PHARMACY_CENTRAL_PERMISSIONS.includes(value));
         if(canViewPharmacyCentral && pharmacyItems){
             return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>
             return <Inventory uuidInvestigation={investigations.currentInvestigation.uuid} pharmacyItemsInit={pharmacyItems}
