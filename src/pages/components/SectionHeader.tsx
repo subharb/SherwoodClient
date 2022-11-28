@@ -5,13 +5,14 @@ import iconLab from "../../img/icons/lab_white.png";
 import { ServiceType } from '../hospital/Service/types';
 import styled from 'styled-components';
 import { Translate } from 'react-localize-redux';
-import { IconGenerator } from '../../components/general/mini_components';
+import { ButtonAdd, IconGenerator } from '../../components/general/mini_components';
 import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
 
 interface SectionHeaderProps {
     section:string,
     edit:boolean,
-    editCallback:()=>void,
+    addCallback?:() => void,
+    editCallback?:()=>void,
 }
 
 const IconHolder = styled.div`
@@ -19,7 +20,7 @@ const IconHolder = styled.div`
     padding-left:1rem;
 `;
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, editCallback }) => {
+const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallback, editCallback }) => {
    
     function renderIcon(){
         switch(section){
@@ -42,13 +43,22 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, editCallba
             <Typography variant="h3" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
                 <Translate id={`pages.hospital.${section}.title`} />
             </Typography>
-            <IconButton 
-                onClick={(e) => {
-                    editCallback();
-                }}>
-                <IconGenerator style={{  color: "white" }} type={!edit ? "settings" : "back"} />
-            </IconButton>
+            {
+                editCallback && 
+                    <IconButton 
+                    onClick={(e) => {
+                        editCallback();
+                    }}>
+                    <IconGenerator style={{  color: "white" }} type={!edit ? "settings" : "back"} />
+                </IconButton>
+            }
+            
         </div>
+        {
+            addCallback &&
+            <ButtonAdd onClick={addCallback} />
+        }
+        
     </Grid>
     );
 };

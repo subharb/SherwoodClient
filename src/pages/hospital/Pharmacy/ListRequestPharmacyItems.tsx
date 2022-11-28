@@ -116,9 +116,12 @@ const ListPharmacyItems: React.FC<ListPharmacyItemsProps> = ({ action, userPermi
     const canUpdateRequests = userPermissions.filter((perm) => perm === PERMISSION.MANAGE_PHARMACY_CENTRAL || perm === PERMISSION.UPDATE_PHARMACY_CENTRAL).length > 0;
     const columns = ["nameDrug", "amountRequested", "amountApproved", "actions"];
     
-    if(action === RequestAction.MAKE){
+    if(action === RequestAction.MAKE && !completed){
         columns.splice(2, 1);
-        columns.splice(5, 1);
+        var index = columns.indexOf("actions");
+        if (index !== -1) {
+            columns.splice(index, 1);
+        }
     }
     if(completed){
         var index = columns.indexOf("actions");

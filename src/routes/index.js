@@ -125,6 +125,7 @@ export const HOSPITAL_USER_MGMT = "/users";
 export const HOSPITAL_LAB = "/lab";
 export const HOSPITAL_LAB_REQUEST = "/lab/request/:idRequest";
 export const HOSPITAL_PHARMACY_REQUEST = "/pharmacy/request/:idRequest";
+export const HOSPITAL_PHARMACY_REQUEST_NEW = "/pharmacy/request/new";
 export const HOSPITAL_IMAGING_REQUEST = "/images/request/:idRequest";
 export const HOSPITAL_LAB_RESULT = "/lab/result/:idSubmission/patient/:uuidPatient";
 export const ROUTE_401 = "/auth/401";

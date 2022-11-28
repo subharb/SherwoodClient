@@ -10,7 +10,7 @@ import { PHARMACY_CENTRAL_PERMISSIONS, PHARMACY_RELATED_PERMISSIONS } from '../.
 import { IUnit, PERMISSION } from '../../../constants/types';
 import { useDepartments, useProfileInfo, useSnackBarState } from '../../../hooks';
 import { makePharmacyRequestAction, updatePharmacyRequestAction } from '../../../redux/actions/requestsActions';
-import { HOSPITAL_PHARMACY_CENTRAL_ROUTE, HOSPITAL_PHARMACY_REQUEST } from '../../../routes';
+import { HOSPITAL_PHARMACY_CENTRAL_ROUTE, HOSPITAL_PHARMACY_REQUEST, HOSPITAL_PHARMACY_REQUEST_NEW } from '../../../routes';
 import { getDepartmentFromUnit, getUnitsResearcher } from '../../../utils';
 import SectionHeader from '../../components/SectionHeader';
 import RequestTable, { RequestTablePharmacy } from '../Service/RequestTable';
@@ -32,7 +32,7 @@ export enum PharmacyType{
 const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     const {departments, researchers} = useDepartments();
     const { profile, loadingProfile } = useProfileInfo();
-
+    const [showRequestForm, setShowRequestForm] = useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [edit, setEdit] = useState(false);
     const [pharmacyItems, setPharmacyItems] = React.useState<IPharmacyItem[] | null>(null);
@@ -113,11 +113,13 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
         }
     }
     
+    function navigateToAddRequest(){
+        setShowRequestForm(true);
+        history.push(HOSPITAL_PHARMACY_REQUEST_NEW);
+    }
+
     function renderCore(){
-        if(idRequest && pharmacyItems){
-            const pharmacyPermissions:PERMISSION[] = investigations.currentInvestigation.permissions.filter((permission:PERMISSION) => PHARMACY_RELATED_PERMISSIONS.includes(permission));
-            return <RequestSingle pharmacyItems={pharmacyItems} userPermissions={pharmacyPermissions} idRequest={idRequest} saveRequestCallback={saveRequest} />
-        }
+        
         const canViewPharmacyCentral = investigations.currentInvestigation.permissions.some((value:PERMISSION) => PHARMACY_CENTRAL_PERMISSIONS.includes(value));
         if(canViewPharmacyCentral && pharmacyItems){
             return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>
@@ -125,16 +127,26 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
                         typePharmacy={PharmacyType.CENTRAL} idPharmacy={investigations.currentInvestigation.pharmacy.id}
                          />
         }
+        if(!isNaN(idRequest) && pharmacyItems){
+            const pharmacyPermissions:PERMISSION[] = investigations.currentInvestigation.permissions.filter((permission:PERMISSION) => PHARMACY_RELATED_PERMISSIONS.includes(permission));
+            return <RequestSingle pharmacyItems={pharmacyItems} userPermissions={pharmacyPermissions} idRequest={idRequest} saveRequestCallback={saveRequest} />
+        }
         else if(departments && pharmacyItems){
             const units = getUnitsResearcher(profile.uuid, researchers);
             
             const departmentsResearcher = units.map((unit:IUnit) => {
                 return getDepartmentFromUnit(unit.uuid, departments);
             })
-            return(
-                <RequestForm uuidInvestigation={investigations.currentInvestigation.uuid} 
-                    departments={departmentsResearcher} pharmacyItemsInit={pharmacyItems} makePharmacyRequestCallback={(request) => makePharmacyRequest(request)}/>
-            )
+            if(idRequest === "new"){
+                return(
+                    <RequestForm uuidInvestigation={investigations.currentInvestigation.uuid} 
+                        departments={departmentsResearcher} pharmacyItemsInit={pharmacyItems} makePharmacyRequestCallback={(request) => makePharmacyRequest(request)}/>
+                )
+            }
+            else{
+                return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>
+            }
+            
         } 
     }
 
@@ -167,7 +179,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
                 </Snackbar>
                 <React.Fragment>
             <Grid container spacing={6} >
-                <SectionHeader section="pharmacy" edit={edit} editCallback={toogleEditLab} />
+                <SectionHeader section="pharmacy" edit={edit} editCallback={toogleEditLab} addCallback={navigateToAddRequest} />
                 <Grid item xs={12}>
                     {
                         renderCore()
