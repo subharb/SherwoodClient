@@ -7,11 +7,14 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import Loader from '../../../components/Loader';
 import { PHARMACY_CENTRAL_PERMISSIONS } from '../../../constants';
-import { PERMISSION } from '../../../constants/types';
-import { useDepartments, useSnackBarState } from '../../../hooks';
+import { IUnit, PERMISSION } from '../../../constants/types';
+import { useDepartments, useProfileInfo, useSnackBarState } from '../../../hooks';
 import { makePharmacyRequestAction } from '../../../redux/actions/requestsActions';
 import { HOSPITAL_PHARMACY_REQUEST } from '../../../routes';
+import { getDepartmentFromUnit, getUnitsResearcher } from '../../../utils';
 import SectionHeader from '../../components/SectionHeader';
+import RequestTable, { RequestTablePharmacy } from '../Service/RequestTable';
+import { IRequest } from '../Service/types';
 import Inventory from './Inventory';
 import RequestForm from './RequestForm';
 import RequestSingle from './RequestSingle';
@@ -28,6 +31,8 @@ export enum PharmacyType{
 
 const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     const {departments, researchers} = useDepartments();
+    const { profile, loadingProfile } = useProfileInfo();
+
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [edit, setEdit] = useState(false);
     const [pharmacyItems, setPharmacyItems] = React.useState<IPharmacyItem[] | null>(null);
@@ -56,12 +61,18 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
 
     }, [requests]);
 
-    function navigateToRequest(){
-        if(showSnackbar.severity === "success"){
-            const lastRequest = requests.data.requests[requests.data.requests.length - 1];
-            const nextUrl = HOSPITAL_PHARMACY_REQUEST.replace(":idRequest", lastRequest.id)   
-            history.push(nextUrl);
+    function navigateToRequest(request?:IRequest){
+        let goTorequest;
+        if(showSnackbar.severity === "success" && !request){
+            goTorequest = requests.data.requests[requests.data.requests.length - 1];
+            
         }
+        else if(request){
+            goTorequest = request;
+        }
+        const nextUrl = HOSPITAL_PHARMACY_REQUEST.replace(":idRequest", goTorequest.id)   
+        history.push(nextUrl);
+
         setShowSnackbar({show:false});
     }
 
@@ -80,26 +91,32 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     function toogleEditLab(){
         setEdit(!edit);
     }
-    
+   
     function renderCore(){
         if(idRequest){
             return <RequestSingle idRequest={idRequest}  />
         }
-        const canViewPharmacyCentral = investigations.currentInvestigation.permissions.filter((value:PERMISSION) => PHARMACY_CENTRAL_PERMISSIONS.includes(value)) > 0;
+        const canViewPharmacyCentral = investigations.currentInvestigation.permissions.some((value:PERMISSION) => PHARMACY_CENTRAL_PERMISSIONS.includes(value)) > 0;
         if(canViewPharmacyCentral && pharmacyItems){
+            return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>
             return <Inventory uuidInvestigation={investigations.currentInvestigation.uuid} pharmacyItemsInit={pharmacyItems}
                         typePharmacy={PharmacyType.CENTRAL} idPharmacy={investigations.currentInvestigation.pharmacy.id}
                          />
         }
         else if(departments && pharmacyItems){
+            const units = getUnitsResearcher(profile.uuid, researchers);
+            
+            const departmentsResearcher = units.map((unit:IUnit) => {
+                return getDepartmentFromUnit(unit.uuid, departments);
+            })
             return(
                 <RequestForm uuidInvestigation={investigations.currentInvestigation.uuid} 
-                    departments={departments} pharmacyItemsInit={pharmacyItems} makePharmacyRequestCallback={(request) => makePharmacyRequest(request)}/>
+                    departments={departmentsResearcher} pharmacyItemsInit={pharmacyItems} makePharmacyRequestCallback={(request) => makePharmacyRequest(request)}/>
             )
         } 
     }
 
-    if(!investigations.currentInvestigation || !departments || pharmacyItems === null || requests.loading){ 
+    if(!investigations.currentInvestigation || !departments || pharmacyItems === null || requests.loading || loadingProfile){ 
         return <Loader />
     }
     return (

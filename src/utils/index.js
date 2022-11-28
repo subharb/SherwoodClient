@@ -896,3 +896,24 @@ export const isToday = (someDate) => {
     }
     return false;
   }
+
+  export function getDepartmentFromUnit(uuidUnit, departments){
+    
+    if(departments){
+        const department = departments.find((department) =>{
+            return department.units.find((unit) => unit.uuid === uuidUnit);
+        });
+        if(department){
+            return department;
+        }
+    }
+    return "";
+}
+
+export function getUnitsResearcher(uuidResearcher, researchers){
+    const researcher = researchers.find((researcher) => researcher.uuid === uuidResearcher);
+    if(researcher){
+        return researcher.units;
+    }
+    return [];
+}

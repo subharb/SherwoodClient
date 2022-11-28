@@ -17,8 +17,5 @@ export function fetchProfileInfo(uuidInvestigation) {
             dispatch({ type: types.FETCH_PROFILE_ERROR });
             throw error;
       });
-    
-
-    
   };
 }

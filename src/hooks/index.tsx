@@ -14,6 +14,7 @@ import { Color } from '@material-ui/lab';
 import { IDepartment } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
 import { IRequest } from '../pages/hospital/Service/types';
+import { fetchProfileInfo } from '../redux/actions/profileActions';
 
 export interface SnackbarType{
     show: boolean;
@@ -35,6 +36,25 @@ export function useRouter(initValue:any){
 
     }
 }
+
+export function useProfileInfo(){
+    const investigations = useSelector((state:any) => state.investigations);
+    const profile = useSelector((state:any) => state.profile.info);
+    const loadingProfile = useSelector((state:any) => state.investigations.loading | state.profile.loading);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        
+        if(investigations.currentInvestigation){
+            if(!profile){
+                dispatch(fetchProfileInfo(investigations.currentInvestigation.uuid));
+            }
+        }
+    }, [ investigations]);
+
+    return { profile, loadingProfile }
+}
+
 
 export function useDepartments(){
     const investigations= useSelector((state:any) => state.investigations);

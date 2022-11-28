@@ -113,7 +113,6 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
     }
     function renderDepartmentSelector(){
         if(departments.length === 1){
-            setErrorDepartment(false);
             return(
                 <Grid item xs={12}>
                     {departments[0].name}
@@ -149,6 +148,27 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
             setUuidDepartment(departments[0].uuid as string);
         }
     }, [])
+
+    function renderCore(){
+        if(departments.length > 0){
+            return(
+                <>
+                {
+                    renderDepartmentSelector()
+                }
+                {
+                    renderPharmcyItems()
+                }
+                </>
+            )
+            
+        }
+        else{
+            return(
+                <Typography variant="body2"><Translate id="pages.hospital.pharmacy.no_departments" /></Typography>
+            )
+        }
+    }
     return (
         <Card>
             <CardContent>
@@ -157,16 +177,11 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
                         <Typography variant="h6">Request Form</Typography>
                     </Grid>
                     {
-                        renderDepartmentSelector()
-                    }
-                    {
-                        renderPharmcyItems()
+                        renderCore()
                     }
                 </Grid>
             </CardContent>
         </Card>
-            
-          
     );
 };
 

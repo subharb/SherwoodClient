@@ -406,6 +406,7 @@
                     "provider" : ["Provider", "Proveedor", "Fournisseur"],
                     "threshold" : ["Threshold", "Umbral", "Seuil"]
                 },
+                "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un département pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
                 "request" : {
                     "table" : {
                         "nameDrug" : ["Name", "Nombre", "Nom"],
