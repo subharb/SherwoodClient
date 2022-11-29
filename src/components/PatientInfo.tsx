@@ -19,7 +19,7 @@ interface PatientInfoProps extends LocalizeContextProps{
 
 
 const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, patientsPersonalData }) => {
-    const [personalData, setPersonalData] = useState<IPersonalData | null>(null);
+    const [patient, setPatient] = useState<IPatient | null>(null);
    
     const history = useHistory();
     
@@ -32,27 +32,32 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, 
         if(patientsPersonalData){
             const patient = patientsPersonalData.find((patient) => patient.uuid === uuidPatient);
             if(patient){
-                setPersonalData(patient.personalData);
+                setPatient(patient);
             }
             
         }
     }, [uuidPatient])
 
-    if(!personalData){
-        return <Typography variant="h4">Patient not found</Typography>
+    if(patient && !patient.personalData.name){
+        return <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.id" /></span>: {patient.id}</Typography>
     }
-    return (
-        <> 
-            { 
-                personalData.health_id &&
-                <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.health_id" /></span>: {personalData.health_id}</Typography>
-            }
-            
-            <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.patient" /></span>: {personalData.name} {personalData.surnames} &nbsp; <ColourChip rgbcolor={green[500]} label="Ver Paciente" onClick={goToPatient}/></Typography>
-            <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.birthdate" /></span>: {dateToFullDateString(personalData.birthdate, activeLanguage.code)}</Typography>
-            <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.sex" /></span>: {personalData.sex}</Typography>
-        </>
-    );
+    else if(patient && patient.personalData){
+        return (
+            <> 
+                { 
+                    patient.personalData.health_id &&
+                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.health_id" /></span>: {patient.personalData.health_id}</Typography>
+                }
+                
+                <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.patient" /></span>: {patient.personalData.name} {patient.personalData.surnames} &nbsp; <ColourChip rgbcolor={green[500]} label="Ver Paciente" onClick={goToPatient}/></Typography>
+                <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.birthdate" /></span>: {dateToFullDateString(patient.personalData.birthdate, activeLanguage.code)}</Typography>
+                <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.sex" /></span>: {patient.personalData.sex}</Typography>
+            </>
+        );
+    }
+    else{
+        return <Typography variant="body2"><span style={{ fontWeight: 'bold' }}>Patient not found</span></Typography>
+    }
 };
 
 const mapStateToProps = (state:any) =>{

@@ -19,83 +19,121 @@ interface EditServicesProps {
     surveys: ISurvey[];
 }
 
-const EditServices: React.FC<EditServicesProps> = ({uuidInvestigation, serviceType, surveys }) => {
+const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceType, surveys }) => {
     const [loading, setLoading] = useState(false);
     const [servicesGeneral, setServicesGeneral] = useState<null | IService[]>(null);
     const [servicesInvestigation, setServicesInvestigation] = useState<null | IServiceInvestigation[]>(null);
     const [snackbar, setSnackbar] = useSnackBarState();
-    function saveService(serviceInvestigation:any){
+
+    function saveService(serviceInvestigation: any, idServiceInvestigation: number) {
         serviceInvestigation.external = serviceInvestigation.external ? 1 : 0;
         console.log(serviceInvestigation);
         setLoading(true);
-            axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/", serviceInvestigation, { headers: {"Authorization" : localStorage.getItem("jwt") }})
-            .then(response => {
-                if(response.status === 200){
-                    setSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"}); 
-                    if(isArray(servicesInvestigation)){
-                        setServicesInvestigation([...servicesInvestigation, response.data.serviceInvestigation]);
-                        
-                    }  
-                    else{
-                        setServicesInvestigation([response.data.serviceInvestigation]);
+        if (idServiceInvestigation !== -1) {
+            axios.put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/" + idServiceInvestigation, serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+                .then((response) => {
+                    if (response.status === 200) {
+                        setSnackbar({ show: true, severity: "success", message: "pages.hospital.services.success" });
+                        if (isArray(servicesInvestigation)) {
+                            const updateServiceInvestigationIndex = servicesInvestigation.findIndex((serviceInvestigation) => {
+                                return serviceInvestigation.id === idServiceInvestigation;
+                            });
+                            servicesInvestigation[updateServiceInvestigationIndex] = response.data.serviceInvestigation;
+                            setServicesInvestigation([...servicesInvestigation]);
+
+                        }
+                        else {
+                            setServicesInvestigation([response.data.serviceInvestigation]);
+                        }
                     }
-                }
-                else{
-                    setSnackbar({show:true, severity:"error", message:"general.error"}); 
-                }
-                
-                setLoading(false);
-            })
+                    else {
+                        setSnackbar({ show: true, severity: "error", message: "general.error" });
+                    }
+
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    setSnackbar({ show: true, severity: "error", message: "pages.hospital.services.error" });
+                    setLoading(false);
+                })
+        }
+        else {
+            axios.post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/", serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+                .then(response => {
+                    if (response.status === 200) {
+                        setSnackbar({ show: true, severity: "success", message: "pages.hospital.services.success" });
+                        if (isArray(servicesInvestigation)) {
+                            setServicesInvestigation([...servicesInvestigation, response.data.serviceInvestigation]);
+
+                        }
+                        else {
+                            setServicesInvestigation([response.data.serviceInvestigation]);
+                        }
+                    }
+                    else {
+                        setSnackbar({ show: true, severity: "error", message: "general.error" });
+                    }
+
+                    setLoading(false);
+                })
+        }
+
     }
     useEffect(() => {
-        if(!servicesGeneral){
+        if (!servicesGeneral) {
             setLoading(true);
-            axios(process.env.REACT_APP_API_URL+"/hospital/servicesgeneral/"+serviceType, { headers: {"Authorization" : localStorage.getItem("jwt") }})
-            .then(response => {
-                setServicesGeneral(response.data.services);
-                setLoading(false);
-            })
+            axios(process.env.REACT_APP_API_URL + "/hospital/servicesgeneral/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
+                .then(response => {
+                    setServicesGeneral(response.data.services);
+                    setLoading(false);
+                })
         }
-        if(!servicesInvestigation){
+        if (!servicesInvestigation) {
             setLoading(true);
-            axios(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/services/"+serviceType, { headers: {"Authorization" : localStorage.getItem("jwt") }})
-            .then(response => {
-                setServicesInvestigation(response.data.servicesInvestigation);
-                setLoading(false);
-            })
+            axios(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/services/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
+                .then(response => {
+                    setServicesInvestigation(response.data.servicesInvestigation);
+                    setLoading(false);
+                })
         }
     }, []);
-    return(
-        <EditServicesComponent servicesGeneral={servicesGeneral} servicesInvestigation={servicesInvestigation} surveys={surveys} serviceType={serviceType} loading={loading} 
-        snackbar ={snackbar} callBackSaveService={saveService} />
+    return (
+        <EditServicesComponent servicesGeneral={servicesGeneral} servicesInvestigation={servicesInvestigation} surveys={surveys} serviceType={serviceType} loading={loading}
+            snackbar={snackbar} callBackSaveService={saveService} />
     )
 }
 
 interface EditServicesComponentProps extends Omit<EditServicesProps, 'uuidInvestigation'> {
     loading: boolean;
-    servicesGeneral:IService[] | null;
-    servicesInvestigation:IServiceInvestigation[] | null;
-    surveys:ISurvey[];
-    snackbar:SnackbarType,
-    callBackSaveService:(service:any) =>void
+    servicesGeneral: IService[] | null;
+    servicesInvestigation: IServiceInvestigation[] | null;
+    surveys: ISurvey[];
+    snackbar: SnackbarType,
+    callBackSaveService: (service: any, idServiceInv: number) => void
 }
 
-export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, snackbar, surveys, loading, servicesGeneral, servicesInvestigation, callBackSaveService }) => {
+export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, snackbar, surveys,
+    loading, servicesGeneral, servicesInvestigation, callBackSaveService }) => {
     const [showModal, setShowModal] = React.useState(false);
     const [addingService, setAddingService] = React.useState(false);
-    
-    let formFields:{ [id: string] : any; }  = React.useMemo(() => {
-        let tempDict:{ [id: string] : any; } = {};
+    const [editingService, setEditingService] = React.useState<{ [id: string]: any; } | null>(null);
 
-        const serviceOptions = servicesGeneral?.filter((service) =>{
+    let formFields: { [id: string]: any; } = React.useMemo(() => {
+        let tempDict: { [id: string]: any; } = {};
+
+        let serviceOptions = servicesGeneral?.filter((service) => {
+            if (editingService) {
+                return service.id === editingService.serviceId;
+            }
             return !servicesInvestigation?.some((serviceInvestigation) => serviceInvestigation.service.id === service.id);
         }).map((service) => {
-            const typeTestString = serviceType === ServiceType.LABORATORY ? "laboratory" : "img"; 
+            const typeTestString = serviceType === ServiceType.LABORATORY ? "laboratory" : "img";
             return {
                 label: `pages.hospital.services.tests.${typeTestString}.${service.code}`,
                 value: service.id,
             }
         })
+
         const surveyOptions = surveys?.map((survey) => {
             return {
                 label: survey.name,
@@ -108,7 +146,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
             type: "select",
             required: true,
             options: serviceOptions
-            
+
         }
         tempDict["external"] = {
             name: "external",
@@ -120,7 +158,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
             name: "price",
             label: "pages.hospital.services.form.price",
             type: "text",
-            validation:"number",
+            validation: "number",
             required: false
         }
         tempDict["survey"] = {
@@ -131,98 +169,115 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
             options: surveyOptions
         }
         return tempDict;
-    },[servicesGeneral, servicesInvestigation]);
+    }, [servicesGeneral, servicesInvestigation, editingService]);
 
-    function renderCore(){
-        if(servicesInvestigation?.length === 0){
-            return(
+    function editService(id: number) {
+        const service = servicesInvestigation?.find((serviceInvestigation) => serviceInvestigation.id === id);
+        if (service) {
+            const initialData = {
+                id: service.id,
+                serviceId: service.service.id,
+                external: service.external,
+                price: service?.billable ? service?.billable.price : 0,
+                survey: service.survey?.uuid
+            }
+            setEditingService(initialData);
+            setShowModal(true);
+            setAddingService(true);
+        }
+    }
+    function renderCore() {
+        if (servicesInvestigation?.length === 0) {
+            return (
                 <Typography variant="h6" component="h6">
                     <Translate id="pages.hospital.services.no_services" />
                 </Typography>
             )
         }
-        else{
+        else {
             const rows = servicesInvestigation?.map((serviceInvestigation) => {
                 return {
-                    id: serviceInvestigation.service.id,
+                    id: serviceInvestigation.id,
                     name: serviceInvestigation.service.name,
                     price: serviceInvestigation.billable ? serviceInvestigation.billable.amount : 0,
                     external: serviceInvestigation.external,
                     survey: serviceInvestigation.survey ? serviceInvestigation.survey.name : "",
                 }
             });
-            const headCells = [{ id:"name", alignment: "left", label: "name"}, {id:"price", alignment: "left", label: "price"},
-                {id:"external", alignment: "left", label: "external"}, {id:"survey", alignment: "left", label: "survey"}];
-            return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}  />
+            const headCells = [{ id: "name", alignment: "left", label: "name" }, { id: "price", alignment: "left", label: "price" },
+            { id: "external", alignment: "left", label: "external" }, { id: "survey", alignment: "left", label: "survey" }];
+            return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}
+                actions={[{ "type": "edit", "func": (id: number) => editService(id) }]} />
         }
     }
     useEffect(() => {
-        if(!loading){
+        if (!loading) {
             setShowModal(false);
         }
     }, [loading])
-    if(loading || !servicesGeneral || !servicesInvestigation){
-        return <Loader/>
+    if (loading || !servicesGeneral || !servicesInvestigation) {
+        return <Loader />
     }
     return (
-        <>  
-            <Modal key="modal" medium 
-                open={showModal} title={<Translate id="pages.hospital.services.edit.new_service.title" />} 
+        <>
+            <Modal key="modal" medium
+                open={showModal} title={<Translate id="pages.hospital.services.edit.new_service.title" />}
                 closeModal={() => setShowModal(false)}>
-                    <>
+                <>
                     {
                         loading &&
                         <Loader />
                     }
                     {
                         !loading && addingService &&
-                        <>  
-                        {
-                            formFields.serviceId.options?.length === 0 &&
-                            <Translate id="pages.hospital.services.edit.no_services_remaining"/>
-                        }
-                        {   
-                            formFields.serviceId.options?.length > 0 &&
-                            <Form fields={formFields} callBackForm = {(values:any) => callBackSaveService(values)} />
-                           
-                        }
-                         
+                        <>
+                            {
+                                formFields.serviceId.options?.length === 0 &&
+                                <Translate id="pages.hospital.services.edit.no_services_remaining" />
+                            }
+                            {
+                                formFields.serviceId.options?.length > 0 &&
+                                <Form fields={formFields} initialData={editingService}
+                                    callBackForm={(values: any) => callBackSaveService(values, editingService ? editingService.id : -1)} />
+
+                            }
+
                         </>
                     }
-                    </>
+                </>
             </Modal>
             <Snackbar
                 anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
+                    vertical: 'top',
+                    horizontal: 'center',
                 }}
                 open={snackbar.show}
                 autoHideDuration={4000}
-                >
-                    <Alert severity={snackbar.severity}>
-                            <Translate id={snackbar.message} />                            
-                        </Alert>
-                </Snackbar>
-            <ButtonAdd disabled={showModal || loading} 
-                type="button" data-testid="add_service" 
+            >
+                <Alert severity={snackbar.severity}>
+                    <Translate id={snackbar.message} />
+                </Alert>
+            </Snackbar>
+            <ButtonAdd disabled={showModal || loading}
+                type="button" data-testid="add_service"
                 onClick={() => {
                     setShowModal(true);
                     setAddingService(true);
                 }
-            } />
+                } />
             <Typography variant="body2" gutterBottom>
                 <Translate id="pages.hospital.services.description" />
-                
+
             </Typography>
             <Grid container style={{ padding: 20 }}>
                 <Grid item xs={12}>
-                {
-                    renderCore()
-                }
+                    {
+                        renderCore()
+                    }
                 </Grid>
             </Grid>
-            
-            </>
+
+        </>
     );
 };
 
