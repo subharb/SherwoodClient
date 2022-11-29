@@ -197,7 +197,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         else {
             const rows = servicesInvestigation?.map((serviceInvestigation) => {
                 return {
-                    id: serviceInvestigation.service.id,
+                    id: serviceInvestigation.id,
                     name: serviceInvestigation.service.name,
                     price: serviceInvestigation.billable ? serviceInvestigation.billable.amount : 0,
                     external: serviceInvestigation.external,
