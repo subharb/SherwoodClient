@@ -155,10 +155,14 @@ const InventoryCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItemsInit, l
     }
     // @ts-ignore: Unreachable code error
     return (
-        <>
-            <Spreadsheet data={data} onChange={setData} HeaderRowComponent />
-            <ButtonAccept color="primary" onClick={() => checkValidData(data)}>Save</ButtonAccept>
-        </>
+        <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <Spreadsheet data={data} onChange={setData} HeaderRowComponent />
+            </Grid>
+            <Grid item xs={12}>
+                <ButtonAccept color="primary" onClick={() => checkValidData(data)}>Save</ButtonAccept>
+            </Grid>
+        </Grid>
     );
 };
 

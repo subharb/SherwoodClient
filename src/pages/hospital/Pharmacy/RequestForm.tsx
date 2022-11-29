@@ -81,9 +81,9 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
         }
         else if(requestPharmacyItems.length === 0){
             return(
-                <>
-                    <Typography variant="body2">Select the elements of your request</Typography><ButtonAdd onClick={() => setAddingPharmacyItems(true)}/>
-                </>)
+                <Grid item xs={12}>
+                    <Typography variant="body2"><span><Translate id="pages.hospital.pharmacy.request.select_items" /><ButtonAdd onClick={() => setAddingPharmacyItems(true)}/></span></Typography>
+                </Grid>)
         }
         else{
             let  headCells = PHARMACY_ITEM_REQUEST_COLUMNS.map((col) => {
@@ -99,13 +99,13 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
             return(
                 <>
                     <Grid item xs={12}>
-                        <Typography variant="body2"><span>Edit pharmacy items</span><ButtonEdit onClick={() => setAddingPharmacyItems(true)}/></Typography>
+                        <Typography variant="body2"><span><Translate id="pages.hospital.pharmacy.request.edit_items_request" /></span><ButtonEdit onClick={() => setAddingPharmacyItems(true)}/></Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <EnhancedTable noFooter noHeader noSelectable headCells={headCells} rows={rows} />
                     </Grid>
-                        <Grid item xs={12}>
-                    <ButtonContinue onClick={validateRequest}>Make Request</ButtonContinue>
+                    <Grid item xs={12}>
+                        <ButtonContinue onClick={validateRequest}><Translate id="pages.hospital.pharmacy.request.make_request" /></ButtonContinue>
                     </Grid>
                 </>
                 )
@@ -115,7 +115,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
         if(departments.length === 1){
             return(
                 <Grid item xs={12}>
-                    {departments[0].name}
+                    Department: {departments[0].name}
                 </Grid>
             );
         }

@@ -4,13 +4,13 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loader from '../../../components/Loader';
 import { PHARMACY_CENTRAL_PERMISSIONS, PHARMACY_RELATED_PERMISSIONS } from '../../../constants';
-import { IUnit, PERMISSION } from '../../../constants/types';
+import { IDepartment, IUnit, PERMISSION } from '../../../constants/types';
 import { useDepartments, useProfileInfo, useSnackBarState } from '../../../hooks';
 import { makePharmacyRequestAction, updatePharmacyRequestAction } from '../../../redux/actions/requestsActions';
-import { HOSPITAL_PHARMACY_CENTRAL_ROUTE, HOSPITAL_PHARMACY_REQUEST, HOSPITAL_PHARMACY_REQUEST_NEW } from '../../../routes';
+import { HOSPITAL_PHARMACY_CENTRAL_ROUTE, HOSPITAL_PHARMACY_REQUEST, HOSPITAL_PHARMACY_REQUEST_INVENTORY, HOSPITAL_PHARMACY_REQUEST_NEW } from '../../../routes';
 import { getDepartmentFromUnit, getUnitsResearcher } from '../../../utils';
 import SectionHeader from '../../components/SectionHeader';
 import RequestTable, { RequestTablePharmacy } from '../Service/RequestTable';
@@ -39,9 +39,12 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     const history = useHistory();
     const parameters = useParams();
     const idRequest = parameters.idRequest;
+    const location = useLocation();
     const requests = useSelector((state:any) => state.requests);
     const dispatch = useDispatch();
 
+    const canViewPharmacyCentral = investigations.currentInvestigation ? investigations.currentInvestigation.permissions.some((value:PERMISSION) => PHARMACY_CENTRAL_PERMISSIONS.includes(value)) : false;
+    const canMakeRequests = investigations.currentInvestigation ? investigations.currentInvestigation.permissions.some((value:PERMISSION) => PERMISSION.MAKE_PHARMACY_REQUESTS === value) : false;
     const uuidInvestigation = investigations.currentInvestigation ? investigations.currentInvestigation.uuid : null;
     const idPharmacy = investigations.currentInvestigation ? investigations.currentInvestigation.pharmacy.id : null;
     useEffect(() => {
@@ -97,7 +100,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     }
 
     function toogleEditLab(){
-        setEdit(!edit);
+        history.push(HOSPITAL_PHARMACY_REQUEST_INVENTORY)
     }
     
     async function saveRequest(request:IRequest, approved:boolean){
@@ -119,28 +122,36 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     }
 
     function renderCore(){
-        
-        const canViewPharmacyCentral = investigations.currentInvestigation.permissions.some((value:PERMISSION) => PHARMACY_CENTRAL_PERMISSIONS.includes(value));
         if(canViewPharmacyCentral && pharmacyItems){
-            return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>
-            return <Inventory uuidInvestigation={investigations.currentInvestigation.uuid} pharmacyItemsInit={pharmacyItems}
+            if(location.pathname === HOSPITAL_PHARMACY_REQUEST_INVENTORY){
+                return <Inventory uuidInvestigation={investigations.currentInvestigation.uuid} pharmacyItemsInit={pharmacyItems}
                         typePharmacy={PharmacyType.CENTRAL} idPharmacy={investigations.currentInvestigation.pharmacy.id}
                          />
+            }
+            else if(location.pathname === HOSPITAL_PHARMACY_CENTRAL_ROUTE){
+                return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>
+            }
+            
+            
         }
         if(!isNaN(idRequest) && pharmacyItems){
             const pharmacyPermissions:PERMISSION[] = investigations.currentInvestigation.permissions.filter((permission:PERMISSION) => PHARMACY_RELATED_PERMISSIONS.includes(permission));
-            return <RequestSingle pharmacyItems={pharmacyItems} userPermissions={pharmacyPermissions} idRequest={idRequest} saveRequestCallback={saveRequest} />
+            return <RequestSingle pharmacyItems={pharmacyItems} userPermissions={pharmacyPermissions} 
+                    idRequest={idRequest} saveRequestCallback={saveRequest} />
         }
         else if(departments && pharmacyItems){
             const units = getUnitsResearcher(profile.uuid, researchers);
             
-            const departmentsResearcher = units.map((unit:IUnit) => {
-                return getDepartmentFromUnit(unit.uuid, departments);
+            const departmentsResearcher:{[key:string]:IDepartment} = {};
+            units.forEach((unit:IUnit) => {
+                const department = unit.department as IDepartment;
+                departmentsResearcher[department.uuid as string] = department;
             })
+
             if(idRequest === "new"){
                 return(
                     <RequestForm uuidInvestigation={investigations.currentInvestigation.uuid} 
-                        departments={departmentsResearcher} pharmacyItemsInit={pharmacyItems} makePharmacyRequestCallback={(request) => makePharmacyRequest(request)}/>
+                        departments={Object.values(departmentsResearcher)} pharmacyItemsInit={pharmacyItems} makePharmacyRequestCallback={(request) => makePharmacyRequest(request)}/>
                 )
             }
             else{
@@ -179,7 +190,8 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
                 </Snackbar>
                 <React.Fragment>
             <Grid container spacing={6} >
-                <SectionHeader section="pharmacy" edit={edit} editCallback={toogleEditLab} addCallback={navigateToAddRequest} />
+                <SectionHeader section="pharmacy" edit={edit} editCallback={canViewPharmacyCentral ? toogleEditLab : undefined} 
+                    addCallback={canMakeRequests ? navigateToAddRequest : undefined} />
                 <Grid item xs={12}>
                     {
                         renderCore()

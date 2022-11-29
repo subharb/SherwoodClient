@@ -126,13 +126,14 @@ export const HOSPITAL_LAB = "/lab";
 export const HOSPITAL_LAB_REQUEST = "/lab/request/:idRequest";
 export const HOSPITAL_PHARMACY_REQUEST = "/pharmacy/request/:idRequest";
 export const HOSPITAL_PHARMACY_REQUEST_NEW = "/pharmacy/request/new";
+export const HOSPITAL_PHARMACY_REQUEST_INVENTORY = "/pharmacy/inventory";
 export const HOSPITAL_IMAGING_REQUEST = "/images/request/:idRequest";
 export const HOSPITAL_LAB_RESULT = "/lab/result/:idSubmission/patient/:uuidPatient";
 export const ROUTE_401 = "/auth/401";
 export const HOSPITAL_BILLING = "/billing";
 export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
 export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
-export const HOSPITAL_PHARMACY_CENTRAL_ROUTE = "/pharmacy/central";
+export const HOSPITAL_PHARMACY_CENTRAL_ROUTE = "/pharmacy";
 
 
 const hospitalRoutes = {
@@ -219,6 +220,16 @@ const hospitalRoutes = {
         },
         {
             path: HOSPITAL_PHARMACY_REQUEST,
+            name: "Hospital Pharmacy",
+            component: Pharmacy
+        },
+        {
+            path: HOSPITAL_PHARMACY_REQUEST_NEW,
+            name: "Hospital Pharmacy",
+            component: Pharmacy
+        },
+        {
+            path: HOSPITAL_PHARMACY_REQUEST_INVENTORY,
             name: "Hospital Pharmacy",
             component: Pharmacy
         },

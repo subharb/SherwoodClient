@@ -406,6 +406,7 @@
                     "provider" : ["Provider", "Proveedor", "Fournisseur"],
                     "threshold" : ["Threshold", "Umbral", "Seuil"]
                 },
+                
                 "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un département pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
                 "request" : {
                     "table" : {
@@ -414,7 +415,10 @@
                         "amountApproved" : ["Amount Approved", "Cantidad Aprobada", "Montant approuvé"],
                         "amountRequested" : ["Amount Requested", "Cantidad Solicitada", "Montant demandé"],
                         "actions" : ["Actions", "Acciones", "Actions"]
-                    }
+                    },
+                    "select_items" : ["Select the elements of your request", "Seleccione los elementos de su solicitud", "Sélectionnez les éléments de votre demande"],
+                    "edit_items_request" : ["Edit Items Request", "Editar Solicitud", "Modifier la demande"],
+                    "make_request" : ["Make Request", "Realizar Solicitud", "Faire une demande"]
                 },
                 "inventory" : {
                     "load_excel" : ["Select a excel from your computer", "Seleccione un excel de su ordenador", "Sélectionnez un excel de votre ordinateur"]

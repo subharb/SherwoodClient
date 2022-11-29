@@ -45,7 +45,7 @@ interface IRequestPharmacyState extends IRequestPharmacy{
 
 const ListPharmacyItems: React.FC<ListPharmacyItemsProps> = ({ action, userPermissions, pharmacyItems, completed, statusRequest, requestsPharmacy, saveRequestCallback }) => {
     const [requestsPharmacyState, setRequestsPharmacyState] = React.useState<IRequestPharmacyState[]>(requestsPharmacy.map((req) => {
-        return {...req, amountApproved: req.amountApproved ? req.amountApproved : req.amountApproved, 
+        return {...req, amountApproved: req.amountApproved !== 0 ? req.amountApproved : req.amountRequested, 
                 edit:false, error:0, approved:false
             }
     }));
