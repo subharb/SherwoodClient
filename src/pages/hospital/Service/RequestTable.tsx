@@ -194,7 +194,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         }
         
     }
-    if(loading){
+    if(loading || !departments){
         return <Loader />
     }
     else if(requests.length === 0){
@@ -217,7 +217,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     else{
         headCells = [{id : 'id', label: 'Request ID', alignment:'left'},
                     {id : 'researcher', label: <Translate id="hospital.staff" />, alignment:'left'},
-                    {id : 'unit', label: <Translate id="hospital.departments.unit" />, alignment:'left'},
+                    {id : 'department', label: <Translate id="hospital.departments.department" />, alignment:'left'},
                     {id : 'service', label: <Translate id="pages.hospital.services.service" />, alignment:'left'},
                     {id : 'type', label: <Translate id="pages.hospital.services.type" />, alignment:'left'},
                     {id : 'date', label: <Translate id="general.date" />, alignment:'left'},
@@ -236,7 +236,8 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         //     const aSurvey = request.requestsServiceInvestigation[0].survey as ISurvey;
         //     survey = surveys.find((survey) => survey.uuid === aSurvey.uuid);
         // }
-        const department = getDepartmentFromUnit(request.unitRequest.uuid, departments);
+        const uuidUnit = request.unitRequest ? request.unitRequest.uuid : request.surveyRequest ? request.surveyRequest.uuid : "";
+        const department = getDepartmentFromUnit(uuidUnit, departments);
         return {
             id: request.id,
             nhc: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.id : "",
