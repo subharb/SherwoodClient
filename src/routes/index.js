@@ -671,8 +671,9 @@ export const sidebarRoutesHospital = [
     dashboardLabRoutes,
     dashboardAnalyticsRoutes,
     dashboardUserMgmtRoutes,
+    dashboardPharmacyCentralRoutes,
     dashboardAdminDepartmentRoutes,
     dashboardMyDepartmentRoutes,
     dashboardBillingRoutes,
-    dashboardPharmacyCentralRoutes
+    
   ];

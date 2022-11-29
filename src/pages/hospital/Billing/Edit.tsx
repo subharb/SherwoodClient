@@ -30,7 +30,7 @@ const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation,
         await dispatch(
             updateBillables(uuidInvestigation, billingInfo.id, billables)
         );
-        onBillingInfoSuccesfullyUpdated(BillItemModes.BILLABLE);
+        onBillingInfoSuccesfullyUpdated(BillItemModes.SHOW);
     }
 
     if(investigations.loading){

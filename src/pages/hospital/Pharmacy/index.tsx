@@ -37,8 +37,8 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     const [edit, setEdit] = useState(false);
     const [pharmacyItems, setPharmacyItems] = React.useState<IPharmacyItem[] | null>(null);
     const history = useHistory();
-    const parameters = useParams();
-    const idRequest = parameters.idRequest;
+    const parameters:{[key:string] : string} = useParams();
+    const idRequest = parseInt(parameters.idRequest);
     const location = useLocation();
     const requests = useSelector((state:any) => state.requests);
     const dispatch = useDispatch();
@@ -148,7 +148,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
                 departmentsResearcher[department.uuid as string] = department;
             })
 
-            if(idRequest === "new"){
+            if(location.pathname === HOSPITAL_PHARMACY_REQUEST_NEW){
                 return(
                     <RequestForm uuidInvestigation={investigations.currentInvestigation.uuid} 
                         departments={Object.values(departmentsResearcher)} pharmacyItemsInit={pharmacyItems} makePharmacyRequestCallback={(request) => makePharmacyRequest(request)}/>
@@ -173,7 +173,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
                 }}
                 open={showSnackbar.show}
                 autoHideDuration={4000}
-                onClose={navigateToRequest}>
+                onClose={() => navigateToRequest()}>
                     <div>
                     {
                         showSnackbar.message && 

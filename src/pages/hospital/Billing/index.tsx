@@ -202,7 +202,7 @@ const Billing:React.FC<Props> = (props) => {
     }
     function onBillingInfoSuccesfullyUpdated(type:BillItemModes){
         //setEdit(false);
-        if(type === 'bill'){
+        if(type === BillItemModes.SHOW){
             setShowSnackbar({message:"hospital.billing.billing_info.success.updated", show:true, severity:"success"});
         }
         else{

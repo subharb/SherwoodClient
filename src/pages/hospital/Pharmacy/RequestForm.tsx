@@ -23,8 +23,8 @@ export const PHARMACY_ITEM_REQUEST_COLUMNS = [{name:"concept", type:"autocomplet
 const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyItemsInit, departments, makePharmacyRequestCallback }) => {
     const [addingPharmacyItems, setAddingPharmacyItems] = React.useState<boolean>(false);
     const [uuidDepartment, setUuidDepartment] = React.useState<string | null>(null);
-    const [errorDepartment, setErrorDepartment] = React.useState<Boolean>(false);
-    const [errorPharmacyItems, setErrorPharmacyItems] = React.useState<Boolean>(false);
+    const [errorDepartment, setErrorDepartment] = React.useState<boolean>(false);
+    const [errorPharmacyItems, setErrorPharmacyItems] = React.useState<boolean>(false);
     const [requestPharmacyItems, setRequestPharmacyItems] = React.useState<RequestPharmacyItem[]>([]);
     // @ts-ignore: Unreachable code error
     const billables:Billable[] = pharmacyItemsInit.map((pharmaItem) => {
@@ -37,8 +37,9 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
     function onBillItemsValidated(items:BillItem[]){
         const newRequestPharmacyItems:RequestPharmacyItem[] = items.map((item) => {
             return {
-                id: item.id,
+                id: item.id as number,
                 name: item.concept,
+                amountApproved: 0,
                 amountRequested: item.amount as number
             }
         });
@@ -125,7 +126,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
             })
             return(
                 <Grid item xs={12}>
-                    <FormControl mt={3} style={{minWidth: 120}} fullWidth variant="outlined" error={errorDepartment} >
+                    <FormControl variant="outlined"  style={{width:"235px"}} error={errorDepartment} >
                     <InputLabel id="department">Seleccione el departamento</InputLabel>
                         <Select 
                             labelId="department"
