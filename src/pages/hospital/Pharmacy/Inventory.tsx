@@ -21,14 +21,13 @@ interface InventoryProps {
 const DEFAULT_ROWS: IPharmacyItem = {
     code: "",
     name: "",
-    price: 0,    
+    activePrinciple: "",
     amount: 0,
-    type: 0,
+    price: 0,
     unit: 0,
-    provider: "",
+    provider: "",     
+    type: 0,    
     threshold: 0,
-    activePrinciple: ""
-
 };
 const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, idPharmacy, pharmacyItemsInit }) => {
     const [pharmacyItems, setPharmacyItems] = React.useState<IPharmacyItem[] | null>(pharmacyItemsInit ? pharmacyItemsInit : []);
