@@ -2,7 +2,7 @@ import { Checkbox, FormControlLabel, Grid, Snackbar, Typography } from '@materia
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useMemo } from 'react';
-import { Translate } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import Form from '../../../components/general/form';
 import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_components';
 import Loader from '../../../components/Loader';
@@ -80,14 +80,14 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, servi
 
     }, []);
 
-    return <RequestFormCore loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
+    return <RequestFormCoreLocalized loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
                 handleCloseSnackBar={handleClose} cancel={cancel} uuidSurvey={uuidSurvey} serviceType={serviceType}
                 callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(uuidPatient, servicesInvestigation, serviceType)} />;
 }
 
 export default RequestForm;
 
-interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'uuidInvestigation' | 'callBackRequestFinished' > {
+interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'uuidInvestigation' | 'callBackRequestFinished' > , LocalizeContextProps {
     loading: boolean;
     snackbar: SnackbarType;
     servicesInvestigation:IServiceInvestigation[],
@@ -95,9 +95,8 @@ interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'u
     callBackFormSubmitted:(serviceInvestigation:number[]) => void
 }
 
-export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
+export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
-    const [categoryServiceSelected, setCategoryServiceSelected] = React.useState<string>("");
     const serviceCategories = useMemo(() => {
         let categories:{[id:string]:IServiceInvestigation[]} = {};
         servicesInvestigation.forEach(serviceInvestigation => {
@@ -108,6 +107,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         });
         return categories;
     }, [servicesInvestigation]);
+    const typeTestString = serviceType === 0 ? "laboratory" :"medical-imaging";
     const SERVICE_SEPARATOR = "service_";
     
     function callBackForm(){
@@ -121,7 +121,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         const filterServicesInvestigation = category ? servicesInvestigation.filter((serviceInv) => serviceInv.service.category === category) : servicesInvestigation;
         return(
             filterServicesInvestigation.map((serviceInvestigation) => {
-                const typeTestString = serviceType === 0 ? "laboratory" : "img";
+                
                 return <Grid item xs={6}>
                         <FormControlLabel
                             control={<Checkbox checked={servicesInvestigationSelected[SERVICE_SEPARATOR+serviceInvestigation.id]} />}
@@ -148,7 +148,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         else{
             return (
                 <TabsSherwood name="Requests"   
-                    labels={Object.keys(serviceCategories).map((category)=> category)} >
+                    labels={ Object.keys(serviceCategories).map((category)=> translate(`pages.hospital.${typeTestString}.category.${category.toLocaleLowerCase()}`).toString() )} >
                         { Object.keys(serviceCategories).map((serviceCategory) => {
                             return <Grid container item xs={12} spacing={1}>
                                 { renderServiceForm(serviceCategory) }
@@ -195,4 +195,4 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
     );
 };
 
-
+export const RequestFormCoreLocalized = withLocalize(RequestFormCore)

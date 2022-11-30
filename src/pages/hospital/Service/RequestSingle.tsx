@@ -115,7 +115,6 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
                     uuidPatient={request?.requestsServiceInvestigation[0].patientInvestigation.uuid} 
                     uuidInvestigation={uuidInvestigation}
                     callBackDataCollection={() => console.log("Data saved")} />
-                
             )
         }
     }
