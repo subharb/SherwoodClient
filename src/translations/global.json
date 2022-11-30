@@ -275,9 +275,9 @@
             }
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
-        "request_lab" : ["Request Lab", "Solicitar Laboratorio", "Demander un laboratoire"],
-        "request_lab-table" : ["Request Lab", "Solicitar Laboratorio", "Demander un laboratoire"],
-        "request_img" : ["Request Imaging", "Solicitar prueba de imagen", "Demander une imagerie"],
+        "request_lab" : ["Laboratory tests available", "Tests de laboratorio disponibles", "Tests de laboratoire disponibles"],
+        "request_lab-table" : ["Request Lab", "Peticiones de Laboratorio", "Demande de laboratoire"],
+        "request_img" : ["Image tests available", "Pruebas de imagen disponibles", "Tests d'image disponibles"],
         "request_img-table" : ["Request Imaging", "Solicitar Imagen", "Demander une imagerie"],
         "frecuency" : ["Frequency", "Frecuencia", "Fréquence"],
         "treatment-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],
@@ -413,6 +413,7 @@
                 "error":{
                     "previous_request" : ["You have already made a request for this service for this patient", "Ya ha realizado una solicitud para este servicio para este paciente", "Vous avez déjà fait une demande pour ce service pour ce patient"]
                 },
+                
                 "request":{
                     "request_id" : ["Request ID", "Solicitud ID", "Demande ID"],
                     "status" : ["Request Status", "Estado de la solicitud", "Statut de la demande"],
@@ -499,7 +500,7 @@
                             "MB012": ["Felix-Widal Test", "Test de Widal y Félix", "Test de Widal et Félix"],
                             "IMM001": ["Rheumatoid factor", "Factor reumatoide", "Facteur rhumatoïde"]
                     },
-                    "img":{
+                    "medical-imaging":{
                         "R001": ["Forearm left", "Antebrazo izq", "Avant-bras gauche"],
                         "R002": ["Forearm right", "Antebrazo dcho", "Avant-bras droit"],
                         "R003": ["Pelvis", "Pelvis", "Bassin"],
@@ -562,6 +563,12 @@
                 }
             },
             "laboratory":{
+                "category" : {
+                    "biochemistry" : ["Biochemistry", "Bioquímica", "Biochimie"],
+                    "hematology" : ["Hematology", "Hematología", "Hématologie"],
+                    "immunology" : ["Immunology", "Inmunología", "Immunologie"],
+                    "microbiology" : ["Microbiology", "Microbiología", "Microbiologie"]
+                },
                 "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Aucun test de laboratoire"],
                 "name" : ["Laboratory", "Laboratorio", "Laboratoire"],
                 "title" : ["Laboratory", "Laboratorio", "Laboratoire"]

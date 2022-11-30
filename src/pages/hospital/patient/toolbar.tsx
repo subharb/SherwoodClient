@@ -63,14 +63,14 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                 </Grid> */}
                 <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}
                     onClick={editCallBack} >
-                    <IconPatient gender={personalData ? personalData.sex : "undefined"} />
+                    <IconPatient gender={personalData.sex ? personalData.sex : "undefined"} />
                 </Grid>
             </Grid>
             <Grid item container xs={4}>
                 <Grid item xs={12}>
                     <Typography variant="body2" gutterBottom>
                         {
-                            personalData &&
+                            personalData.name &&
                             personalData.name+" "+personalData.surnames
                         }
                         {

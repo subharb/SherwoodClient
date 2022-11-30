@@ -108,7 +108,7 @@ enum DATE_FIELDS {"background-date", "treatment-start", "treatment-finish"};
 const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular", edd : "regular", edd_last_period:"regular"};
 
 const SINGLE_SMARTFIELDS = ["bmi", "edd"]
-export const INITIAL_SELECT = ["ict", "background", "treatment", "treatment_regular", "family-background", "allergy", "request_lab", "request_img"];
+export const INITIAL_SELECT = ["ict", "background", "treatment", "treatment_regular", "family-background", "allergy"];
 
 interface Props extends LocalizeContextProps {
     name : string,
@@ -193,16 +193,14 @@ const SmartField:React.FC<Props> = (props) => {
                 return <Grid item xs={12} spacing={3}>
                         <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
                             actions={[{"type" : "delete", "func" : (index:number) => removeElement(index)}]}
-                            
-                        />
+                            />
                     </Grid>
                     
             }
             else{
                 return (
                     <Grid item xs={12}>
-                        <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}     
-                    />
+                        <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} />
                     </Grid>
                 )
             }   
