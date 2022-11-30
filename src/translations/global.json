@@ -275,9 +275,9 @@
             }
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
-        "request_lab" : ["Request Lab", "Solicitar Laboratorio", "Demander un laboratoire"],
-        "request_lab-table" : ["Request Lab", "Solicitar Laboratorio", "Demander un laboratoire"],
-        "request_img" : ["Request Imaging", "Solicitar prueba de imagen", "Demander une imagerie"],
+        "request_lab" : ["Laboratory tests available", "Tests de laboratorio disponibles", "Tests de laboratoire disponibles"],
+        "request_lab-table" : ["Request Lab", "Peticiones de Laboratorio", "Demande de laboratoire"],
+        "request_img" : ["Image tests available", "Pruebas de imagen disponibles", "Tests d'image disponibles"],
         "request_img-table" : ["Request Imaging", "Solicitar Imagen", "Demander une imagerie"],
         "frecuency" : ["Frequency", "Frecuencia", "Fréquence"],
         "treatment-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],

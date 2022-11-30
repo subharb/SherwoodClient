@@ -193,16 +193,14 @@ const SmartField:React.FC<Props> = (props) => {
                 return <Grid item xs={12} spacing={3}>
                         <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
                             actions={[{"type" : "delete", "func" : (index:number) => removeElement(index)}]}
-                            
-                        />
+                            />
                     </Grid>
                     
             }
             else{
                 return (
                     <Grid item xs={12}>
-                        <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}     
-                    />
+                        <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} />
                     </Grid>
                 )
             }   

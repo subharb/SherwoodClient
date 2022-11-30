@@ -147,8 +147,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         }
         else{
             return (
-                <TabsSherwood name="Billing Info"
-                    
+                <TabsSherwood name="Requests"   
                     labels={Object.keys(serviceCategories).map((category)=> category)} >
                         { Object.keys(serviceCategories).map((serviceCategory) => {
                             return <Grid container item xs={12} spacing={1}>
