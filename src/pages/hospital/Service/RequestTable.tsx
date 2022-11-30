@@ -236,13 +236,13 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         //     const aSurvey = request.requestsServiceInvestigation[0].survey as ISurvey;
         //     survey = surveys.find((survey) => survey.uuid === aSurvey.uuid);
         // }
-        const uuidUnit = request.unitRequest ? request.unitRequest.uuid : request.surveyRequest ? request.surveyRequest.uuid : "";
+        const uuidUnit = request.unitRequest ? request.unitRequest.uuid : "";
         const department = getDepartmentFromUnit(uuidUnit, departments);
         return {
             id: request.id,
             nhc: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.id : "",
             service: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation.length > 1 ? <ColourChip rgbcolor={serviceToColor(request.type)} label={<Translate id="general.several" />} /> : <ColourChip rgbcolor={serviceToColor(request.type)} label={request.requestsServiceInvestigation[0].serviceInvestigation.service.name} /> : "",
-            unit: request.surveyRequest && request.surveyRequest.unit ? request.surveyRequest.unit.name : request.unitRequest ? request.unitRequest.name : "",
+            unit: request.unitRequest ? request.unitRequest.name : "",
             department:department ? department.name : "",
             patient:request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id : "",
             researcher: researcherFullName(request.researcher),            
