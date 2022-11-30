@@ -388,11 +388,9 @@ function renderBody(){
                             isDragDisabled={!props.droppableId}>
                             {
                                 (provided, snapshot)=>(
-                                    
                                     renderTableRow(isItemSelected, index, labelId, row, provided.draggableProps, provided.dragHandleProps, provided.innerRef)
                                 )
                             }
-                            
                         </Draggable>
                     ) : 
                     renderTableRow(isItemSelected, index, labelId, row, {}, {}, null)

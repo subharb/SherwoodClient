@@ -3,7 +3,7 @@ import { Alert, Color } from '@material-ui/lab';
 import axios from 'axios';
 import { isArray } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Translate } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Form from '../../../components/general/form';
 import { ButtonAdd } from '../../../components/general/mini_components';
@@ -98,12 +98,12 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
         }
     }, []);
     return (
-        <EditServicesComponent servicesGeneral={servicesGeneral} servicesInvestigation={servicesInvestigation} surveys={surveys} serviceType={serviceType} loading={loading}
+        <EditServicesLocalized servicesGeneral={servicesGeneral} servicesInvestigation={servicesInvestigation} surveys={surveys} serviceType={serviceType} loading={loading}
             snackbar={snackbar} callBackSaveService={saveService} />
     )
 }
 
-interface EditServicesComponentProps extends Omit<EditServicesProps, 'uuidInvestigation'> {
+interface EditServicesComponentProps extends Omit<EditServicesProps, 'uuidInvestigation'>, LocalizeContextProps {
     loading: boolean;
     servicesGeneral: IService[] | null;
     servicesInvestigation: IServiceInvestigation[] | null;
@@ -112,8 +112,8 @@ interface EditServicesComponentProps extends Omit<EditServicesProps, 'uuidInvest
     callBackSaveService: (service: any, idServiceInv: number) => void
 }
 
-export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, snackbar, surveys,
-    loading, servicesGeneral, servicesInvestigation, callBackSaveService }) => {
+const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, snackbar, surveys,
+    loading, servicesGeneral, servicesInvestigation, callBackSaveService, translate }) => {
     const [showModal, setShowModal] = React.useState(false);
     const [addingService, setAddingService] = React.useState(false);
     const [editingService, setEditingService] = React.useState<{ [id: string]: any; } | null>(null);
@@ -199,7 +199,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                 const typeTestString = serviceType === ServiceType.LABORATORY ? "laboratory" : "img";
                 return {
                     id: serviceInvestigation.id,
-                    name: <Translate id={`pages.hospital.services.tests.${typeTestString}.${serviceInvestigation.service.code}`} />,
+                    name: translate(`pages.hospital.services.tests.${typeTestString}.${serviceInvestigation.service.code}`),
                     price: serviceInvestigation.billable ? serviceInvestigation.billable.amount : 0,
                     external: serviceInvestigation.external,
                     survey: serviceInvestigation.survey ? serviceInvestigation.survey.name : "",
@@ -281,5 +281,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         </>
     );
 };
+
+export const EditServicesLocalized = withLocalize(EditServicesComponent)
 
 export default EditServices;
