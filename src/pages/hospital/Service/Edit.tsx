@@ -196,9 +196,10 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         }
         else {
             const rows = servicesInvestigation?.map((serviceInvestigation) => {
+                const typeTestString = serviceType === ServiceType.LABORATORY ? "laboratory" : "img";
                 return {
                     id: serviceInvestigation.id,
-                    name: serviceInvestigation.service.name,
+                    name: <Translate id={`pages.hospital.services.tests.${typeTestString}.${serviceInvestigation.service.code}`} />,
                     price: serviceInvestigation.billable ? serviceInvestigation.billable.amount : 0,
                     external: serviceInvestigation.external,
                     survey: serviceInvestigation.survey ? serviceInvestigation.survey.name : "",
