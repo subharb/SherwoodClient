@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { ReactGrid, Column, Row, CellChange, TextCell } from "@silevis/reactgrid";
 import "@silevis/reactgrid/styles.css";
 import { IPharmacyItem } from './types';
-import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
-import { Button, Grid } from '@material-ui/core';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
+import { Button, Grid, Snackbar } from '@material-ui/core';
 import Loader from '../../../components/Loader';
 import Pharmacy, { PharmacyType } from '.';
 import axios from 'axios';
 import Spreadsheet from "react-spreadsheet";
 import LoadExcel from './LoadExcel';
 import { ButtonAccept } from '../../../components/general/mini_components';
+import { useSnackBarState } from '../../../hooks';
+import { Alert, Color } from '@material-ui/lab';
 
 interface InventoryProps {
     uuidInvestigation: string,
@@ -32,17 +34,19 @@ const DEFAULT_ROWS: IPharmacyItem = {
 const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, idPharmacy, pharmacyItemsInit }) => {
     const [pharmacyItems, setPharmacyItems] = React.useState<IPharmacyItem[] | null>(pharmacyItemsInit ? pharmacyItemsInit : []);
     const [loading, setLoading] = React.useState<boolean>(false);
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
 
     function updateInventory(pharmacyItems: IPharmacyItem[]) {
         setLoading(true);
         axios.put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/items", pharmacyItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
-                setPharmacyItems(response.data.pharmacyItems);
+                //setPharmacyItems(response.data.pharmacyItems);
                 setLoading(false);
+                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.success", severity:"success"});
             })
             .catch((error) => {
                 console.log(error);
-                setLoading(false);
+                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.success", severity:"error"});
             });
     }
     
@@ -51,7 +55,7 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, 
         return <Loader />
     }
     else {
-        return <InventoryCoreLocalized loading={loading} pharmacyItemsInit={pharmacyItems} saveInventoryCallBack={(items) => updateInventory(items)} />
+        return <InventoryCoreLocalized showSnackbar={showSnackbar} loading={loading} pharmacyItemsInit={pharmacyItems} saveInventoryCallBack={(items) => updateInventory(items)} />
     }
 }
 
@@ -60,6 +64,11 @@ export default Inventory;
 interface InventoryLocalizedProps extends LocalizeContextProps {
     pharmacyItemsInit: IPharmacyItem[];
     loading: boolean;
+    showSnackbar:{
+        show: boolean;
+        message?: string | undefined;
+        severity?: Color | undefined;
+    },
     saveInventoryCallBack: (items: IPharmacyItem[]) => void
 }
 
@@ -88,7 +97,7 @@ const applyChangesToPeople = (
 //     }
 // }
 
-const InventoryCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItemsInit, loading, translate, saveInventoryCallBack }) => {
+const InventoryCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItemsInit, loading, showSnackbar,  translate, saveInventoryCallBack }) => {
     const headerRow =  Object.keys(DEFAULT_ROWS).map((col) => {
         return { value: col }
     })
@@ -154,16 +163,41 @@ const InventoryCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItemsInit, l
     }
     
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <Spreadsheet data={data} 
-                    // @ts-ignore: Unreachable code error
-                    onChange={setData} HeaderRowComponent />
+        <>
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+                }}
+                open={showSnackbar.show}
+                autoHideDuration={4000}
+                >
+                    <div>
+                    {
+                        showSnackbar.message && 
+                        <>
+                        {
+                            (showSnackbar.message && showSnackbar.severity) &&
+                            <Alert severity={showSnackbar.severity}>
+                                <Translate id={showSnackbar.message} />
+                            </Alert>
+                        }
+                        </>
+                    }
+                    </div>
+            </Snackbar>
+        
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Spreadsheet data={data} 
+                        // @ts-ignore: Unreachable code error
+                        onChange={setData} HeaderRowComponent />
+                </Grid>
+                <Grid item xs={12}>
+                    <ButtonAccept color="primary" onClick={() => checkValidData(data)}>Save</ButtonAccept>
+                </Grid>
             </Grid>
-            <Grid item xs={12}>
-                <ButtonAccept color="primary" onClick={() => checkValidData(data)}>Save</ButtonAccept>
-            </Grid>
-        </Grid>
+        </>
     );
 };
 

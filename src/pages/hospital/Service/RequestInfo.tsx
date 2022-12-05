@@ -49,9 +49,6 @@ export const RequestInfoWithFetch: React.FC<RequestInfoWithFetchProps> = ({ idSu
             <RequestInfo request={request} />
         )
     }
-    
-
-
 }
 
 interface RequestInfoProps {

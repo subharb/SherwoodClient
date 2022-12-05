@@ -277,6 +277,10 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
             if(col.type === "amount"){
                 rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
             }
+            else if(col.type === "type"){
+                const typeSelected = TYPES_BILL_ITEM[val.type][0] as string;
+                rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{<Translate id={`hospital.billing.item.types.${typeSelected.toLocaleLowerCase()}`} />}</Typography>
+            }
             else{
                 rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
             }
@@ -419,7 +423,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         let totalBill = calculateTotalBill(items);
         rows.push({
             id: items.length, concept: <React.Fragment><Typography style={{ fontWeight: 'bold' }} ><Translate id={`hospital.billing.bill.total`} /></Typography></React.Fragment>,
-            type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography> , 
+            type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>, 
             amount: <Typography style={{ fontWeight: 'bold' }} >{totalBill + " " + currency}</Typography>,
             delete: <React.Fragment></React.Fragment>,
         });
@@ -431,9 +435,9 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         return { id: col.name, alignment: "left", label: <Translate id={`hospital.billing.item.${col.name}`} />}
     })
 
-    if(withDiscount){
-        headCells.splice(1, 0, { id: "type", alignment: "left", label: <Translate id={`hospital.billing.item.type`} /> });
-    }
+    // if(withDiscount){
+    //     headCells.splice(1, 0, { id: "type", alignment: "left", label: <Translate id={`hospital.billing.item.type`} /> });
+    // }
 
     if (!updatingBill) {
         // @ts-ignore: Unreachable code error

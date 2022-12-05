@@ -70,7 +70,7 @@ const ListPharmacyItems: React.FC<ListPharmacyItemsProps> = ({ action, userPermi
     function validateRequest(approve:boolean){
         let error = false;
         setRequestsPharmacyState(requestsPharmacyState.map((item) => {
-            if(item.amountApproved <= 0 || !item.approved){
+            if(item.amountApproved < 0 || !item.approved){
                 error = true;
                 return {...item, error:1}
             }
