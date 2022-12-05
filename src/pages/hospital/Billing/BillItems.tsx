@@ -182,13 +182,14 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     }
     
     async function onClickContinue(items: BillItem[]) {
-        if(bill){
+        
+        if(filteredColumns.find((col) => col.name === BillItemKeys.amount)){
             if (calculateTotalBill(items) > 0) {
                 onBillItemsValidated(items);
                 
             }
             else {
-                setErrorBill(<Translate id="hospital.bill.error.positive" />);
+                setErrorBill(<Translate id="hospital.billing.billing_info.error.positive" />);
             }
         }
         else{
@@ -460,13 +461,12 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                 </Grid>
                 <Grid item xs={12} style={{ display: "flex", flexDirection: "column" }} >
                     {
-                        !errorBill &&
+                        errorBill &&
                         <Grid item xs={12} style={{ textAlign: "right", paddingTop: "10px" }}>
                             <Typography variant="body2" style={{ color: "red" }} >{errorBill}</Typography>
                         </Grid>
-
                     }
-                    
+                   
                     <GridBottom hide={print} item xs={12} >
                         <Button onClick={onCancelBill} data-testid="cancel-modal" color="primary">
                             <Translate id="general.cancel" />

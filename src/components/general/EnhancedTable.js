@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components/macro";
 import { NavLink } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -247,7 +247,8 @@ export function EnhancedTable(props) {
     const [orderBy, setOrderBy] = React.useState("customer");
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState( props.noPagination ? props.rows.length : 10);
+    const [rowsPerPage, setRowsPerPage] = React.useState( 10);
+    console.log("rowsPerPage", rowsPerPage);
     const {rows, headCells, actions, titleTable, noSelectable} = props;
 
     const handleRequestSort = (event, property) => {
@@ -264,6 +265,12 @@ export function EnhancedTable(props) {
         }
         setSelected([]);
     };
+
+    useEffect(() => {
+        if(props.noPagination){
+            setRowsPerPage(props.rows.length + 1);
+        }
+    }, [props.rows])
 
 const handleClick = (event, id) => {
     console.log("Pincho en la tabla"+id, event );
