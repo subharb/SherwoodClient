@@ -64,8 +64,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                                                     bill, billables, initItems, showTotal, repeatBillItems, onBillItemsValidated, 
                                                     onCancelBill }) => {
     //const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
-    
-    const initFieldErrors:any = columns.reduce((acc:{[id: string] : string}, column) => {
+    const filteredColumns = columns.filter(column => column.type !== "type" || withDiscount)
+    const initFieldErrors:any = filteredColumns.reduce((acc:{[id: string] : string}, column) => {
         acc[column.name] = "";
         return acc;
     }, {});
@@ -76,7 +76,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
-    const [billableSelected, setBillableSelected] = useState(false);
+    
     const [itemAdded, setItemAdded] = useState(false);
     
     const printRef = useRef<HTMLHeadingElement>(null);
@@ -95,7 +95,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         tempFieldErrors[itemKey] = error;
         let tempCurrentItem:BillItem = { ...currentItem };
 
-        const col = columns.find((col) => {
+        const col = filteredColumns.find((col) => {
             return col.name === itemKey
         })
         if(col){
@@ -113,7 +113,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     }
     function validateKeyItem(value: string, itemKey: string) {
         let error = "";
-        const col = columns.find((col) => {
+        const col = filteredColumns.find((col) => {
             return col.name === itemKey
         })
         if(col){
@@ -238,7 +238,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         let tempFieldErrors = { ...fieldErrors };
         //Fuerzo el valor 0 para diferenciarlo del valor por defecto.
         //currentItem["type"] = 0;
-        columns.forEach((col) => {
+        filteredColumns.forEach((col) => {
             
             const key = col.name.toString();
             const value = currentItem[key as keyof BillItem] as string;
@@ -273,7 +273,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         const amountString =  TYPES_DISCOUNT.includes(val.type) ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;
         
         let rowElement:{[id: string] : JSX.Element} = {}
-        columns.forEach((col:Column) => {
+        filteredColumns.forEach((col:Column) => {
             if(col.type === "amount"){
                 rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
             }
@@ -295,7 +295,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
 
     if (addingItem) {
         let field:BillItemTable = {} as BillItemTable;
-        columns.forEach((col:Column) => {
+        filteredColumns.forEach((col:Column) => {
             let value;
             switch(col.type){
                 case "autocomplete":
@@ -399,7 +399,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     else if (!updatingBill) {
         // @ts-ignore: Unreachable code error
         let field: BillItemTable = {}
-        columns.forEach((col:Column) => {
+        filteredColumns.forEach((col:Column) => {
             let value = <React.Fragment></React.Fragment>
         //     switch(col.type){
         //         case "autocomplete":
@@ -431,7 +431,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     // let  headCells = [{ id: "concept", alignment: "left", label: <Translate id={`hospital.billing.item.concept`} /> },
     // { id: "amount", alignment: "left", label: <Translate id={`hospital.billing.item.amount`} /> }
     // ]
-    let  headCells = columns.map((col) => {
+    let  headCells = filteredColumns.map((col) => {
         return { id: col.name, alignment: "left", label: <Translate id={`hospital.billing.item.${col.name}`} />}
     })
 
@@ -455,7 +455,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     <FactureHolder hide={!bill}>
                         <Translate id="hospital.billing.bill.name" />
                     </FactureHolder>
-                    <EnhancedTable noFooter noHeader noSelectable headCells={headCells} rows={rows}
+                    <EnhancedTable noFooter noHeader noPagination noSelectable headCells={headCells} rows={rows}
                     />
                 </Grid>
                 <Grid item xs={12} style={{ display: "flex", flexDirection: "column" }} >

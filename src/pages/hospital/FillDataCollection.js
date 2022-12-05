@@ -27,7 +27,7 @@ export default function FillDataCollection(props) {
                 surveyRecords:[],
                 requestInfo: {
                     requestId:parseInt(props.requestServiceId), 
-                    completeRequest:buttonSubmitted === "button1"
+                    completeRequest:buttonSubmitted === "button2"
                 },
             }
         }

@@ -247,7 +247,7 @@ export function EnhancedTable(props) {
     const [orderBy, setOrderBy] = React.useState("customer");
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState( props.noPagination ? props.rows.length : 10);
     const {rows, headCells, actions, titleTable, noSelectable} = props;
 
     const handleRequestSort = (event, property) => {
@@ -292,7 +292,7 @@ const handleChangePage = (event, newPage) => {
 };
 
 const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, 0));
     setPage(0);
 };
 

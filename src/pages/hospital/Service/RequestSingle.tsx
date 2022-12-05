@@ -19,7 +19,7 @@ import RequestInfo from './RequestInfo';
 
 
 
-interface RequestSingleProps {
+interface RequestSingleProps { 
     idRequest:number,
     uuidInvestigation:string,
     permissions:string[],

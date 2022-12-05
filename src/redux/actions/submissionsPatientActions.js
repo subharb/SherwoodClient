@@ -34,6 +34,36 @@ export function fetchSubmissionsPatientInvestigationAction(uuidInvestigation, uu
     };
 }
 
+// export function getSubmissionPatientAction(uuidInvestigation, idSubmission) {
+//     return async (dispatch) => {
+//       dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
+  
+//       return fetchRecordsPatientAllSurveysService(uuidInvestigation, idSubmission)
+//         .then((response) => {
+//           dispatch({
+//             type: types.FETCH_SINGLE_SUBMISSIONS_PATIENT_SUCCESS,
+//             surveys: response.surveys,
+//             meta:{idSubmission}
+//           });
+//         })
+//         .catch((error) => {
+//           if(!error.response){
+//             dispatch({
+//               type: types.FETCH_SUBMISSIONS_PATIENT_SUCCESS,
+//               surveys: [],
+//               meta:{uuidPatient}
+//             });
+//           }
+//           else{
+//               dispatch({ type: types.FETCH_SUBMISSIONS_PATIENT_ERROR });
+//               throw error;
+//           }
+          
+//         });
+//     };
+// }
+
+
 export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, surveyUUID, surveyName, surveyType, oldIdSubmission) {
     return async (dispatch) => {
       dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });

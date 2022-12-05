@@ -65,7 +65,8 @@ export function AddPatientComponent(props) {
     }, [props.patients.loading])
 
     function goToPatient(){
-        history.push(`/patient/${lastPatient.uuid}`);
+        const uuidPatient = props.patient ? props.patient.uuid : lastPatient.uuid;
+        history.push(`/patient/${uuidPatient}`);
     }
     async function callBackSaveUpdate(patientData, rawPatientData){
         if(!props.patient){
