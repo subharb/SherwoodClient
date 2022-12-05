@@ -186,10 +186,9 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                 <Grid item>
                     <ButtonAccept onClick={callBackForm}><Translate id="general.add" /></ButtonAccept> 
                 </Grid>
-                <Grid item>
+                {/* <Grid item>
                     <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
-                </Grid>
-                
+                </Grid> */}
             </Grid>
         </>
     );

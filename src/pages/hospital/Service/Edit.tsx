@@ -127,7 +127,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
             }
             return !servicesInvestigation?.some((serviceInvestigation) => serviceInvestigation.service.id === service.id);
         }).map((service) => {
-            const typeTestString = serviceType === ServiceType.LABORATORY ? "laboratory" : "img";
+            const typeTestString = serviceType === ServiceType.LABORATORY ? "laboratory" : "medical-imaging";
             return {
                 label: `pages.hospital.services.tests.${typeTestString}.${service.code}`,
                 value: service.id,

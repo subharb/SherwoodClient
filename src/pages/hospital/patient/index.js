@@ -387,7 +387,7 @@ function Patient(props) {
     }, [props.patientsSubmissions.nUpdatedRegisters]);
     
     useEffect(() => {
-        if(props.patientsSubmissions.data){
+        if(props.patientsSubmissions.data && departments){
             let tempSubmissions = []
             if(props.patientsSubmissions.data.hasOwnProperty(uuidPatient)){
                 Object.values(props.patientsSubmissions.data[uuidPatient]).forEach((val)=> {
@@ -444,7 +444,7 @@ function Patient(props) {
             setSurveyRecords(tempSubmissions);
         }
         
-    }, [props.patientsSubmissions])
+    }, [props.patientsSubmissions, departments])
 
     useEffect(() => {
         if(props.patientsSubmissions.error){
