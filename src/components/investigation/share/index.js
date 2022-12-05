@@ -13,7 +13,7 @@ import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { EnhancedTable } from "../../general/EnhancedTable";
 import styled from 'styled-components';
-import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
+import { yellow, green, blue, red, orange, purple } from "@material-ui/core/colors";
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
 import { getSharedResearchersService, saveResearcherPermissions } from '../../../services';
@@ -94,8 +94,17 @@ export const PermissionChip = withLocalize((props) => {
         case "SHERWOOD_STAFF": 
             colour = green[500];            
             break;
-        case "NO_PERMISSIONS": 
+        case "PHARMACY_MANAGER": 
+            colour = red[900];            
+            break;
+        case "PHARMACY_ASSITANT": 
+            colour = red[700];            
+            break;
+        case "MAJOR": 
             colour = red[500];            
+            break;
+        case "NO_PERMISSIONS": 
+            colour = purple[500];            
             break;
         default:
             return <ColourChip size="small" label={props.translate("investigation.share.roles.NO_PERMISSIONS")} rgbcolor={colour} />

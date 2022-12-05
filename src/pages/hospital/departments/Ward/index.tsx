@@ -160,7 +160,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     },[investigations])
 
     useEffect(() => {
-        if(departments.length > 0 && uuidDepartment){
+        if(departments && departments.length > 0 && uuidDepartment){
             const department = departments.find((depart:IDepartment) => depart.uuid === uuidDepartment);
             if(department){
                 const ward = department.wards.find((ward:IWard) => ward.uuid === uuidWard);

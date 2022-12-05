@@ -1,4 +1,4 @@
-import { Button, Checkbox, Grid, IconButton, TextField, Typography } from "@material-ui/core"
+import { Button, Checkbox, Grid, IconButton, Snackbar, TextField, Typography } from "@material-ui/core"
 import { red } from "@material-ui/core/colors"
 import React, { ReactElement, useEffect, useRef, useState } from "react"
 import { Language, Translate } from "react-localize-redux"
@@ -7,14 +7,15 @@ import { EnhancedTable } from "../../../components/general/EnhancedTable"
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
 import Loader from "../../../components/Loader"
 import { IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
-import { Bill, Billable, BillItem, BillItemKeys, BillItemTable } from "./types";
+import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable } from "./types";
 import { createBillService, updateBillService } from "../../../services/billing";
 
 import { FindPatient } from "./find_patient";
 
 import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils"
-import { Autocomplete, createFilterOptions } from "@material-ui/lab"
+import { Alert, Autocomplete, createFilterOptions } from "@material-ui/lab"
 import { BillItems } from "./BillItems"
+import { useSnackBarState } from "../../../hooks"
 
 interface Props {
     updatingBill: boolean,
@@ -44,6 +45,8 @@ export const BillForm:React.FC<Props> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(props.bill ? props.bill.patientInvestigation : null);
     const [loading, setLoading] = useState(false);
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(undefined);
+    const [currentItems, setCurrentItems] = useState<BillItem[]>([]);
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
 
     function onPatientSelected(idPatient: number) {
         const findPatient = props.patients.find((patient) => patient.id === idPatient);
@@ -81,22 +84,35 @@ export const BillForm:React.FC<Props> = (props) => {
     }
 
     async function onBillItemsValidated(items:BillItem[]){
-        setLoading(true);
-        let response: { status: number, bill?: Bill };
-        if (props.updatingBill && props.bill) {
-            response = await updateBillService(props.uuidInvestigation, props.bill.id, items);
-        }
-        else {
-            response = await createBillService(props.uuidInvestigation, patient!.uuid, items);
-        }
+        
+        try{
+            setLoading(true);
+            let response: { status: number, bill?: Bill };
+            if (props.updatingBill && props.bill) {
+                response = await updateBillService(props.uuidInvestigation, props.bill.id, items);
+            }
+            else {
+                response = await createBillService(props.uuidInvestigation, patient!.uuid, items);
+            }
 
-        if (response.status === 200 && response.bill) {
-            props.onBillSuccesfullyCreated(response.bill);
+            if (response.status === 200 && response.bill) {
+                props.onBillSuccesfullyCreated(response.bill);
+            }
+            else {
+                setCurrentItems(items);
+                setErrorBill(<Translate id="hospital.bill.error.create" />);
+            }
+            setLoading(false);        
         }
-        else {
-            setErrorBill(<Translate id="hospital.bill.error.create" />);
+        catch(error:any){
+            if(error.status === 401){
+                setCurrentItems(items);
+                setShowSnackbar({show:true, message: "hospital.billing.bill.error.permission", severity: 'error'});
+            }
+            
+            setLoading(false);
         }
-        setLoading(false);        
+        
     }
 
     function renderItems(){
@@ -104,12 +120,37 @@ export const BillForm:React.FC<Props> = (props) => {
             return <Loader />
         }
         if(patient){
-            return <BillItems uuidPatient={patient?.uuid} mode = 'bill'
+            return(
+                <>
+                     <Snackbar
+                        anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                        }}
+                        open={showSnackbar.show}
+                        autoHideDuration={2000}
+                        onClose={() => setShowSnackbar({show:false})}>
+                            <div>
+                                {
+                                    (showSnackbar.message && showSnackbar.severity) &&
+                                    <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
+                                        <Translate id={showSnackbar.message} />
+                                    </Alert>
+                                }
+                        </div>
+                    </Snackbar>
+                    <BillItems key="bill_items" columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"amount", type:"amount", validation:""}]} 
+                        uuidPatient={patient?.uuid} mode = {BillItemModes.SHOW}
+                        initItems = {props.bill ? props.bill.billItems : currentItems.length > 0 ? currentItems : []}
+                        repeatBillItems={true} showTotal={true}
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
                         bill={props.bill} billables={props.billables ? props.billables : []}
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
                         onBillItemsValidated={onBillItemsValidated} error={errorBill}
                         onCancelBill={props.onCancelBill} />
+                </>
+                
+            ) 
         } 
     }          
     

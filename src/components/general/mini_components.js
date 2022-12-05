@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css, withTheme } from 'styled-components';
 import icon_male from "../../img/icons/icon_male.svg";
 import { Link } from 'react-router-dom'
@@ -259,6 +259,24 @@ export const WhiteTypography = styled(Typography)`
     color:white;
     font-size: 1rem;
 `;
+
+const ButtonAction = styled.button`
+    background:transparent;
+    border:none;
+`;
+const CheckStyled = styled(CheckCircleOutlineIcon)`
+    color:${props => props.checked ? 'green' : 'grey'};
+`;
+
+
+export const ButtonCheck2 = (props) => {
+   
+    function buttonClick(){
+        
+        props.onClick();
+    }
+    return <ButtonAction onClick={buttonClick} ><CheckStyled checked={props.checked}/></ButtonAction>
+}
 
 export const ButtonCheck = (props) =>{
     return <ButtonContinueStyles 

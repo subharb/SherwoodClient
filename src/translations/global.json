@@ -241,6 +241,8 @@
                 "amount" : ["Amount", "Cantidad", "Montant"],
                 "type" : ["Type", "Tipo", "Type"],
                 "select_item" : ["Select", "Select", "Seleccionar"],
+                "drug" : ["Drug", "Medicamento", "Médicament"],
+                "quantity" : ["Quantity", "Cantidad", "Quantité"],
                 "types" : {
                     "charge" : ["Charge", "Cargo", "Frais"],
                     "discount_amount" : ["Amount Discount", "Cantidad descuento", "Reduction (montant)"],
@@ -269,6 +271,7 @@
                     "updated" : ["Bill succesfully updated", "Factura actualizada correctamente", "Facture mis à jour avec succès"]
                 },
                 "error" : {
+                    "permission" : ["You don't have permission to apply discounts", "No tienes permiso para aplicar descuentos", "Vous n'avez pas la permission d'appliquer des réductions"],
                     "create" : ["There was an error creating the bill, please try again","Hubo un error al crear la factura, inténtalo de nuevo", "Une erreur s'est produite lors de la création de la facture, veuillez réessayer"],
                     "positive" : ["The total must be positive", "El total debe ser positivo", "Le total doit être positif"]
                 }
@@ -389,6 +392,39 @@
             "patient" : {
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
+            "pharmacy" : {
+                "title" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                "success" : ["Request made successfully", "Solicitud realizada correctamente", "Demande effectuée avec succès"],
+                "error" : ["Error making request", "Error realizando la solicitud", "Erreur lors de la demande"],
+                "pharmacy_items" : {
+                    "name" : ["Name", "Nombre", "Nom"],
+                    "code" : ["Code", "Código", "Code"],
+                    "price" : ["Price", "Precio", "Prix"],
+                    "amount": ["Amount", "Cantidad", "Quantité"],
+                    "type" : ["Type", "Tipo", "Type"],
+                    "activePrinciple" : ["Active Principle", "Principio Activo", "Principe actif"],
+                    "unit" : ["Unit", "Unidad", "Unité"],
+                    "provider" : ["Provider", "Proveedor", "Fournisseur"],
+                    "threshold" : ["Threshold", "Umbral", "Seuil"]
+                },
+                
+                "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un département pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
+                "request" : {
+                    "table" : {
+                        "nameDrug" : ["Name", "Nombre", "Nom"],
+                        "status": ["Status", "Estado", "Statut"],
+                        "amountApproved" : ["Amount Approved", "Cantidad Aprobada", "Montant approuvé"],
+                        "amountRequested" : ["Amount Requested", "Cantidad Solicitada", "Montant demandé"],
+                        "actions" : ["Actions", "Acciones", "Actions"]
+                    },
+                    "select_items" : ["Select the elements of your request", "Seleccione los elementos de su solicitud", "Sélectionnez les éléments de votre demande"],
+                    "edit_items_request" : ["Edit Items Request", "Editar Solicitud", "Modifier la demande"],
+                    "make_request" : ["Make Request", "Realizar Solicitud", "Faire une demande"]
+                },
+                "inventory" : {
+                    "load_excel" : ["Select a excel from your computer", "Seleccione un excel de su ordenador", "Sélectionnez un excel de votre ordinateur"]
+                }
+            },
             "services" : {
                 "description" : ["Manage your hospital facilities by adding or deleting services.", "Gestione sus instalaciones añadiendo o eliminando servicios.", "Gérez vos installations en ajoutant ou supprimant des services"],
                 "edit" : {
@@ -398,6 +434,7 @@
                     "no_services_remaining" : ["You have selected all services available, if you need more please contact customersupport@sherwood.science", "No quedan servicios disponibles, si necesita más por favor contacte con customersupport@sherwood.science", "Vous avez sélectionné tous les services disponibles, si vous en avez besoin, veuillez contacter ustomersupport@sherwood.science"]
                 },
                 "save_and_complete" : ["Save and finish", "Guardar y finalizar", "Sauvegarder et terminer"],
+                "save_changes" : ["Save changes", "Guardar cambios", "Sauvegarder les modifications"],
                 "no_requests" : ["No requests available", "No hay solicitudes disponibles", "Aucune demande disponible"],
                 "no_services" : ["No services available", "No hay servicios disponibles", "Aucun service disponible"],
                 
@@ -426,6 +463,7 @@
                 "status" : ["Status", "Status", "Status"],
                 "request_status" : {
                     "PENDING" : ["Pending", "Pendiente", "Pendant"],
+                    "PENDING_APPROVAL" : ["Pending Approval", "Pendiente de Aprobación", "En attente d'approbation"],
                     "PENDING_PAYMENT" : ["Pending Payment", "Pendiente de Pago", "En attente de paiement"],
                     "ACCEPTED" : ["Accepted", "Aceptado", "Accepté"],
                     "SOME_ACCEPTED" : ["Some Accepted", "Algunos Aceptados", "Certains acceptés"],
@@ -913,6 +951,9 @@
                 "LAB_MANAGER" : ["Lab Manager", "Director de laboratorio", "Directeur de laboratoire"],
                 "LAB_ASSISTANT" : ["Lab technician ", "Técnico laboratorio ", "Technicien de laboratoire"],
                 "SOCIAL" : ["Social", "Social", "Social"],
+                "PHARMACY_MANAGER" : ["Pharmacy Manager", "Director de farmacia", "Directeur de pharmacie"],
+                "PHARMACY_ASSISTANT" : ["Pharmacy Assistant", "Asistente de farmacia", "Assistant de pharmacie"],
+                "MAJOR" : ["Major", "Mayor", "Major"],
                 "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {

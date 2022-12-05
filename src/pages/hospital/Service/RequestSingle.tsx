@@ -11,7 +11,7 @@ import ShowPatientRecords from '../../../components/investigation/show/single/sh
 import { TYPE_FILL_IMG_SURVEY, TYPE_FILL_LAB_SURVEY, TYPE_REQUEST_LAB } from '../../../constants';
 import { IResearcher, ISurvey, SnackbarTypeSeverity } from '../../../constants/types';
 import FillDataCollection from '../FillDataCollection';
-import { useSnackBarState, useUpdateEffect } from '../../../hooks';
+import { useRequest, useSnackBarState, useUpdateEffect } from '../../../hooks';
 import { Alert } from '@material-ui/lab';
 import { Translate } from 'react-localize-redux';
 import { useSelector } from 'react-redux';
@@ -19,9 +19,8 @@ import RequestInfo from './RequestInfo';
 
 
 
-interface RequestSingleProps {
+interface RequestSingleProps { 
     idRequest:number,
-    uuidPatient:string,
     uuidInvestigation:string,
     permissions:string[],
     surveys:ISurvey[],
@@ -31,27 +30,12 @@ interface RequestSingleProps {
 }
 
 const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uuidInvestigation, country, permissions, surveys, requestSentCallBack }) => {
-    const [request, setRequest] = useState<IRequest | null>(null);
+    const {request, loadingRequest} = useRequest(idRequest);
     const patientsSubmissions = useSelector((state:any) => state.patientsSubmissions)
     const [loading, setLoading] = useState(false);
     const [submissionData, setSubmissionData] = useState<{submission:any} | null>(null);
     const [editData, setEditData] = useState(false);
     const [snackbar, setShowSnackbar] = useSnackBarState();
-
-    useEffect(() => {
-        const fetchRequest = async () => {
-            setLoading(true);
-            
-            const response = await axios(`${process.env.REACT_APP_API_URL}/hospital/${uuidInvestigation}/request/${idRequest}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-                    .catch(err => {console.log('Catch', err); return err;});
-            if(response.status === 200){
-                setRequest(response.data.request);
-            }
-            setLoading(false);
-        }
-
-        fetchRequest();
-    }, [idRequest])
 
     useEffect(() => {
         if(request && patientsSubmissions.loading === false){
@@ -126,7 +110,7 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
         }
     }
 
-    if((loading) || (patientsSubmissions.loading)){
+    if(loading || loadingRequest || (patientsSubmissions.loading)){
         return <Loader />
     }
     else if(!request){

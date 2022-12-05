@@ -483,7 +483,7 @@ function Patient(props) {
             </BoxBckgr>
         )
     }
-    else if(props.investigations.loading || props.patientsSubmissions.loading || surveyRecords === null){
+    else if(props.investigations.loading || props.patientsSubmissions.loading || surveyRecords === null || !departments){
         return <Loader />
     }
     else if(!patient){

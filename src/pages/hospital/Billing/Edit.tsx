@@ -8,7 +8,7 @@ import props from '../../../theme/props';
 import { TabsSherwood } from '../../components/Tabs';
 import EditBillables from './EditBillables';
 import EditBillingInfo from './EditBillingInfo';
-import { BillItem, EditBillingProps } from './types';
+import { BillItem, BillItemModes, EditBillingProps } from './types';
 import { withLocalize } from 'react-localize-redux';
 
 
@@ -23,14 +23,14 @@ const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation,
         await dispatch(
             createUpdateBillingInfoAction(uuidInvestigation, billingInfo)
         );
-        onBillingInfoSuccesfullyUpdated('bill');
+        onBillingInfoSuccesfullyUpdated(BillItemModes.SHOW);
     }
     async function onBillablesCreated(billables:BillItem[]){
         console.log(billables);
         await dispatch(
             updateBillables(uuidInvestigation, billingInfo.id, billables)
         );
-        onBillingInfoSuccesfullyUpdated('billable');
+        onBillingInfoSuccesfullyUpdated(BillItemModes.SHOW);
     }
 
     if(investigations.loading){

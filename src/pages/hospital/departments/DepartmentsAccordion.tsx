@@ -48,7 +48,7 @@ export const DepartmentsAccordionRedux:React.FC<PropsRedux> = (props) =>{
         }
         
     }
-    if(loading){
+    if(loading || !departments){
         return <Loader />
     }
     else{

@@ -4,7 +4,7 @@ import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Modal from '../../../components/general/modal';
 import { BillItems } from './BillItems';
-import { BillItem, EditBillablesProps } from './types';
+import { BillItem, BillItemModes, EditBillablesProps } from './types';
 
 
 
@@ -21,8 +21,10 @@ const EditBillables: React.FC<EditBillablesProps> = ({ billables, uuidInvestigat
     function renderBillables(){
         return(
             <Card>
-                <BillItems currency={billingInfo.currency} print={false} mode = 'billable' withDiscount={withDiscount}
-                    bill={null} billables={billables} uuidInvestigation={uuidInvestigation} updatingBill={false}
+                <BillItems columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"amount", type:"amount", validation:""}]} 
+                    currency={billingInfo.currency} print={false} mode = {BillItemModes.EDIT} withDiscount={withDiscount}
+                    repeatBillItems={true} showTotal={false}
+                    bill={null} billables={[]} initItems = {billables} uuidInvestigation={uuidInvestigation} updatingBill={false}
                     onBillItemsValidated={onBillablesCreated} error={errorBillables}
                     onCancelBill={() => console.log("Cancel")} />
             </Card>

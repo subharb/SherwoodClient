@@ -9,6 +9,7 @@ import patientsSubmissions from "./submissionsPatientReducer";
 import offlineReducer from "./offlineReducer";
 import profileReducer from "./profileReducer";
 import hospitalReducer from "./hospitalReducer";
+import requestsReducer from "./requestsReducer";
 
 
 export const rootReducer = combineReducers({
@@ -21,5 +22,6 @@ export const rootReducer = combineReducers({
   offline: offlineReducer,
   profile: profileReducer,
   hospital: hospitalReducer,
+  requests:requestsReducer,
   form:formReducer
 });

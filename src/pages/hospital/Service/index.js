@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
-import iconImages from "../../../img/icons/images_white.png";
-import iconLab from "../../../img/icons/lab_white.png";
+
 import { Box, Grid, Paper, Typography, Button, IconButton, Card } from '@material-ui/core';
 import Form  from '../../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";
@@ -31,11 +30,9 @@ import ShowPatientRecords from '../../../components/investigation/show/single/sh
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import RequestSingle from './RequestSingle';
 import { TYPE_REQUEST_LAB } from '../../../constants';
+import SectionHeader from '../../components/SectionHeader';
 
-const IconHolder = styled.div`
-    padding-right:1rem;
-    padding-left:1rem;
-`;
+
 
 export function TestsHome(props){
     let location = useLocation();
@@ -106,7 +103,7 @@ export function TestsHomeComponent(props) {
             )
         }
         else{
-            return <RequestTable serviceType={props.type} showActions={true} fillRequest={true} callBackRequestSelected={(uuidSurvey) => accessRequest(uuidSurvey)}
+            return <RequestTable serviceType={props.type} showActions={true} fillRequest={true} callBackRequestSelected={(request) => accessRequest(request)}
                         encryptionData={{
                             encryptedKeyUsed : props.investigations.currentInvestigation.encryptedKeyUsed,
                             keyResearcherInvestigation: props.investigations.currentInvestigation.keyResearcherInvestigation,
@@ -126,22 +123,7 @@ export function TestsHomeComponent(props) {
     return (
         <React.Fragment>
             <Grid container spacing={6} >
-                <Grid container alignItems="center" alignContent="center" item xs={12}>
-                    <IconHolder>
-                        <img src={props.type === ServiceType.IMAGING ? iconImages : iconLab } alt="images" width="20" />
-                    </IconHolder>
-                    <div>
-                        <Typography variant="h3" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
-                            <Translate id={`pages.hospital.${translations[props.type]}.title`} />
-                        </Typography>
-                        <IconButton 
-                            onClick={(e) => {
-                                toogleEditLab();
-                            }}>
-                            <IconGenerator style={{  color: "white" }} type={!edit ? "settings" : "back"} />
-                        </IconButton>
-                    </div>
-                </Grid>
+                <SectionHeader section={translations[props.type]} edit={edit} editCallback={toogleEditLab} />
                 <Grid item xs={12}>
                     {
                         renderCore()

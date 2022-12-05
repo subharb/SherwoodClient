@@ -17,11 +17,13 @@ export interface Billable{
     id:number,
     concept:string,
     amount:number,
-    insurance:string | null,
-    type: number
+    insurance?:string,
+    type: number,
+    quantity?:number,
 }
 
 export interface BillItem{
+    id?:number
     billableId?:number,
     concept:string,
     type:number,
@@ -42,7 +44,8 @@ export interface BillItemTable{
 export enum BillItemKeys{
     concept = "concept",
     amount = "amount",
-    type = "type"
+    type = "type",
+    quantity = "quantity",
 }
 
 export interface BillingInfo{
@@ -81,4 +84,10 @@ export interface BillablesServiceResponse {
     status: number, billables: Billable[] 
 }
 
-export type BillItemModes = 'bill' | 'billable';
+export enum BillItemModes{
+    SHOW = "SHOW",
+    EDIT = "EDIT",
+    // BILL = "bill",
+    // BILLABLE = "billable",
+    // GENERAL = "general"
+}

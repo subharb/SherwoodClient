@@ -6,7 +6,8 @@ import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
-import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, researcherFullName, stringDatePostgresToDate } from '../../../utils';
+import { useDepartments } from '../../../hooks';
+import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, getDepartmentFromUnit, researcherFullName, stringDatePostgresToDate } from '../../../utils';
 import axios from '../../../utils/axios';
 
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
@@ -91,10 +92,10 @@ interface RequestTableProps {
     serviceType:number,
     uuidPatient?:string,
     uuidInvestigation:string,
-    showActions:boolean,
-    surveys:ISurvey[],
-    fillPending:boolean,
-    encryptionData:{
+    showActions?:boolean,
+    surveys?:ISurvey[],
+    fillPending?:boolean,
+    encryptionData?:{
         encryptedKeyUsed:number,
         keyResearcherInvestigation:string,
         permissions:any[],
@@ -103,8 +104,22 @@ interface RequestTableProps {
     callBackRequestSelected:(request:IRequest)=>void
 }
 
-const ACTIONABLE_REQUESTS = [RequestStatus.PENDING_APPROVAL, RequestStatus.ACCEPTED, RequestStatus.COMPLETED];
+type RequestTablePharmacyProps = Pick<RequestTableProps, 'serviceType' | 'uuidInvestigation' | 'callBackRequestSelected'>
 
+const ACTIONABLE_REQUESTS = [RequestStatus.PENDING_APPROVAL, RequestStatus.ACCEPTED, RequestStatus.COMPLETED, RequestStatus.IN_PROGRESS];
+
+export const RequestTableService:React.FC<RequestTableProps> = ({serviceType, uuidPatient, uuidInvestigation, showActions, surveys, fillPending, encryptionData, callBackRequestSelected}) => {
+    return <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} 
+                uuidInvestigation={uuidInvestigation} showActions={showActions} surveys={surveys} 
+                fillPending={fillPending} encryptionData={encryptionData} 
+                callBackRequestSelected={callBackRequestSelected} />
+}
+
+export const RequestTablePharmacy:React.FC<RequestTablePharmacyProps> = ({serviceType, uuidInvestigation, callBackRequestSelected}) => {
+    return <RequestTable serviceType={serviceType} 
+                uuidInvestigation={uuidInvestigation} 
+                callBackRequestSelected={callBackRequestSelected} />
+}
 
 const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions,fillPending,  callBackRequestSelected}) => {
     const [requests, setRequests] = React.useState<IRequest[] | null>(null);
@@ -134,7 +149,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidP
 
     if(requests && requests.length > 0){
         return(
-            <RequestTableComponent surveys={surveys} fillPending={fillPending}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
+            <RequestTableComponent serviceType={serviceType} surveys={surveys} fillPending={fillPending}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
                 loading={loading} requests={requests} callBackRequestSelected={callBackRequestSelected}/>
         )
     }
@@ -148,22 +163,26 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidP
 
 export default RequestTable;
 
-interface RequestTableComponentProps extends Omit< RequestTableProps, 'serviceType' | 'uuidInvestigation' >{
+interface RequestTableComponentProps extends Omit< RequestTableProps, 'uuidInvestigation' >{
     requests:IRequest[],
     loading:boolean,
     
 }
 
-export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, fillPending, surveys, requests, 
+export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, fillPending, surveys, requests, serviceType,
                                                                                 showActions, encryptionData, loading, callBackRequestSelected }) => {
+    const {departments} = useDepartments();                                                                                    
     
     function fillRequest(id:number){
         const request = requests.find((req) => req.id === id);
         if(request){
             const hasActionableRequests = ACTIONABLE_REQUESTS.filter(function(status) {
+                if(serviceType === RequestType.PHARMACY){
+                    return status === request.status
+                }
                 return request.requestsServiceInvestigation.findIndex((req) => req.status === status) !== -1
             }).length > 0;
-            if(hasActionableRequests && request.requestsServiceInvestigation[0].survey !== null){
+            if(hasActionableRequests){
                 callBackRequestSelected(request);
             }
             else{
@@ -175,7 +194,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         }
         
     }
-    if(loading){
+    if(loading || !departments){
         return <Loader />
     }
     else if(requests.length === 0){
@@ -185,35 +204,50 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
             </div>
         )
     }
-    let headCells = [{id : 'id', label: 'Request ID', alignment:'left'},
+    let headCells;
+    if(serviceType === RequestType.PHARMACY){
+        headCells = [
+            { id: 'id', numeric: false, disablePadding: false, label: 'ID' },
+            {id : 'researcher', label: <Translate id="hospital.staff" />, alignment:'left'},
+            {id : 'status', label: <Translate id="pages.hospital.services.status" />, alignment:'left'},
+            {id : 'department', label: <Translate id="hospital.departments.department" />, alignment:'left'},
+            {id : 'date', label: <Translate id="general.date" />, alignment:'left'},
+        ];
+    }
+    else{
+        headCells = [{id : 'id', label: 'Request ID', alignment:'left'},
                     {id : 'researcher', label: <Translate id="hospital.staff" />, alignment:'left'},
-                    {id : 'unit', label: <Translate id="hospital.departments.unit" />, alignment:'left'},
+                    {id : 'department', label: <Translate id="hospital.departments.department" />, alignment:'left'},
                     {id : 'service', label: <Translate id="pages.hospital.services.service" />, alignment:'left'},
                     {id : 'type', label: <Translate id="pages.hospital.services.type" />, alignment:'left'},
                     {id : 'date', label: <Translate id="general.date" />, alignment:'left'},
                     {id : 'status', label: <Translate id="pages.hospital.services.status" />, alignment:'left'},];
-    if(!uuidPatient){
-        headCells.splice(headCells.findIndex((head) => head.id === 'type'), 1); 
-        headCells.splice(1, 0, {id : 'nhc', label: <Translate id="investigation.create.personal_data.fields.health_id" />, alignment:'left'})
-        headCells.splice(2, 0, {id : 'patient', label: <Translate id="general.patient" />, alignment:'left'})
-    } 
+        if(!uuidPatient){
+            headCells.splice(headCells.findIndex((head) => head.id === 'type'), 1); 
+            headCells.splice(1, 0, {id : 'nhc', label: <Translate id="investigation.create.personal_data.fields.health_id" />, alignment:'left'})
+            headCells.splice(2, 0, {id : 'patient', label: <Translate id="general.patient" />, alignment:'left'})
+        }
+    }
+     
     
     const rows = requests.sort((reqA, reqB) => stringDatePostgresToDate(reqB.updatedAt).getTime() - stringDatePostgresToDate(reqA.updatedAt).getTime() ).map((request) => {
-        let survey = null
-        if(request.requestsServiceInvestigation[0].survey){
-            const aSurvey = request.requestsServiceInvestigation[0].survey as ISurvey;
-            survey = surveys.find((survey) => survey.uuid === aSurvey.uuid);
-        }
-        
+        // let survey = null
+        // if(request.requestsServiceInvestigation[0].survey){
+        //     const aSurvey = request.requestsServiceInvestigation[0].survey as ISurvey;
+        //     survey = surveys.find((survey) => survey.uuid === aSurvey.uuid);
+        // }
+        const uuidUnit = request.unitRequest ? request.unitRequest.uuid : "";
+        const department = getDepartmentFromUnit(uuidUnit, departments);
         return {
             id: request.id,
-            nhc: request.requestsServiceInvestigation[0].patientInvestigation.id,
-            service: request.requestsServiceInvestigation.length > 1 ? <ColourChip rgbcolor={serviceToColor(request.type)} label={<Translate id="general.several" />} /> : <ColourChip rgbcolor={serviceToColor(request.type)} label={request.requestsServiceInvestigation[0].serviceInvestigation.service.name} />,
-            unit: request.surveyRequest && request.surveyRequest.unit ? request.surveyRequest.unit.name : "",
-            patient:request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id,
+            nhc: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.id : "",
+            service: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation.length > 1 ? <ColourChip rgbcolor={serviceToColor(request.type)} label={<Translate id="general.several" />} /> : <ColourChip rgbcolor={serviceToColor(request.type)} label={request.requestsServiceInvestigation[0].serviceInvestigation.service.name} /> : "",
+            unit: request.unitRequest ? request.unitRequest.name : "",
+            department:department ? department.name : "",
+            patient:request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id : "",
             researcher: researcherFullName(request.researcher),            
             status: <RequestStatusToChip status={request.status} />,
-            type : <ServiceTypeToChip type={request.requestsServiceInvestigation[0].serviceInvestigation.service.type} />, 
+            type : request.requestsServiceInvestigation[0] ? <ServiceTypeToChip type={request.requestsServiceInvestigation[0].serviceInvestigation.service.type} /> : "", 
             date: dateAndTimeFromPostgresString("es", request.updatedAt),
         }
     })

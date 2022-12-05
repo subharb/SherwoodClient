@@ -341,6 +341,23 @@ export const updateRecordPatientService = datalogger((postObj, uuidInvestigation
     });
 });
 
+export const getSubmissionPatientService = datalogger((uuidInvestigation, idSubmission) => {
+    return new Promise((resolve, reject) => {
+        
+        axios.get(`${process.env.REACT_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${idSubmission}?findRequests=true`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            .then((response) => {
+                if(response.status === 200){
+                    resolve(response.data);
+                }
+                else{
+                    reject(response.data);
+                }
+            })
+            .catch(err => {console.log('Catch', err); reject(err);}); 
+
+    });
+});
+
 export const getPatientsFromId = datalogger((uuidInvestigation, patientId) => {
     return new Promise((resolve, reject) => {
         

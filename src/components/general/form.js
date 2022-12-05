@@ -195,7 +195,8 @@ class Form extends Component {
                         </ButtonContinue>
                         {
                         this.props.alterSubmitButton &&
-                            <ButtonContinue color={blue[700]} type="submit" data-testid={this.props.dataTestid} spaceright={1}  onClick={this.props.handleSubmit(values => {this.callBackForm(values, "button2")})}>
+                            <ButtonContinue color={blue[700]} type="submit" data-testid={this.props.dataTestid} spaceright={1} 
+                                onClick={this.props.handleSubmit(values => {this.callBackForm(values, "button2")})}>
                                 { this.props.translate(this.props.alterSubmitButton) }
                             </ButtonContinue>
                         }
