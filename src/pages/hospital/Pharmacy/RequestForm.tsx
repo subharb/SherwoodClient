@@ -17,7 +17,7 @@ interface RequestFormProps {
 
 
 
-export const PHARMACY_ITEM_REQUEST_COLUMNS = [{name:"concept", type:"autocomplete", validation:""}, {name:"amount", type:"number", validation:""}];
+export const PHARMACY_ITEM_REQUEST_COLUMNS = [{name:"concept", type:"autocomplete", validation:""}, {name:"amount", type:"number", validation:"pharmacyItem"}];
 
 
 const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyItemsInit, departments, makePharmacyRequestCallback }) => {
@@ -30,7 +30,8 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
     const billables:Billable[] = pharmacyItemsInit.map((pharmaItem) => {
         return{
             concept : pharmaItem.name,
-            id: pharmaItem.id
+            id: pharmaItem.id,
+            quantity:pharmaItem.amount
         }
     })
 
@@ -116,7 +117,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
         if(departments.length === 1){
             return(
                 <Grid item xs={12}>
-                    Department: {departments[0].name}
+                    <Translate id="investigation.share.researcher.department" />: {departments[0].name}
                 </Grid>
             );
         }
@@ -126,8 +127,8 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
             })
             return(
                 <Grid item xs={12}>
-                    <FormControl variant="outlined"  style={{width:"235px"}} error={errorDepartment} >
-                    <InputLabel id="department">Seleccione el departamento</InputLabel>
+                    <FormControl variant="outlined"  style={{minWidth: 220}} error={errorDepartment} >
+                    <InputLabel id="department"><Translate id="pages.hospital.pharmacy.request.select_department" /></InputLabel>
                         <Select 
                             labelId="department"
                             id="department"

@@ -888,14 +888,14 @@ export const isToday = (someDate) => {
       someDate.getFullYear() === today.getFullYear()
   }
 
-  export function hasDefaultValues(dict, defaultValues){
-    for(let key in defaultValues){
-        if(dict[key] === defaultValues[key]){
-            return true;
-        }
+export function hasDefaultValues(dict, defaultValues){
+for(let key in defaultValues){
+    if(dict[key] === defaultValues[key]){
+        return true;
     }
-    return false;
-  }
+}
+return false;
+}
 
   export function getDepartmentFromUnit(uuidUnit, departments){
     

@@ -254,7 +254,9 @@
                     "amount_negative" : ["Must be positive", "Debe ser positivo", "Doit être positif"], 
                     "valid_number" : ["Must be a number", "Debe ser un numero", "Doit être numero"], 
                     "amount_percent" : ["Must be lower than 100", "Debe ser menor a 100", "Doit être inférieur à 100"],
-                    "type_not_selected" : ["Must select one", "Debe seleccionar uno", "Doit en sélectionner un"]
+                    "type_not_selected" : ["Must select one", "Debe seleccionar uno", "Doit en sélectionner un"],
+                    "amount_exceeded" : ["Currently there's not enough stock", "Actualmente no hay suficiente stock", "Il n'y a pas assez de stock actuellement"],
+                    "amount_zero" : ["Must be greater than 0", "Debe ser mayor a 0", "Doit être supérieur à 0"]
                 }
             },
             "bill" : {
@@ -418,6 +420,7 @@
                         "amountRequested" : ["Amount Requested", "Cantidad Solicitada", "Montant demandé"],
                         "actions" : ["Actions", "Acciones", "Actions"]
                     },
+                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
                     "select_items" : ["Select the elements of your request", "Seleccione los elementos de su solicitud", "Sélectionnez les éléments de votre demande"],
                     "edit_items_request" : ["Edit Items Request", "Editar Solicitud", "Modifier la demande"],
                     "make_request" : ["Make Request", "Realizar Solicitud", "Faire une demande"]

@@ -26,7 +26,7 @@ interface RequestSingleProps {
     surveys:ISurvey[],
     country:string,
     researcher:IResearcher, 
-    requestSentCallBack:()=>void,
+    requestSentCallBack:(typeRequest:number)=>void,
 }
 
 const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uuidInvestigation, country, permissions, surveys, requestSentCallBack }) => {
@@ -82,8 +82,7 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
             return <Typography variant="h4">The survey could not be found</Typography>
         }
         if(!editData && request?.submissionPatient && submissionData){
-            // const survey = request.requestsServiceInvestigation.every((requestService) => requestService.survey !== null) ? ;
-            const newSubmission = patientsSubmissions.data && patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid][survey.uuid] ?  patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid][survey.uuid].submissions.find((submission:any) => submission.id === request?.submissionPatient.id) : null;
+            const newSubmission = patientsSubmissions.data && patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid] && patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid][survey.uuid] ?  patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid][survey.uuid].submissions.find((submission:any) => submission.id === request?.submissionPatient.id) : null;
             const submissionDataLocal = newSubmission ? newSubmission : submissionData.submission;
             return (
                 <ShowPatientRecords permissions={permissions} survey={survey} forceEdit={request.status !== RequestStatus.COMPLETED}
@@ -106,7 +105,7 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
     function handleCloseSnackBar(){
         setShowSnackbar({show:false});
         if(snackbar.severity === SnackbarTypeSeverity.SUCCESS && request !== null){
-            requestSentCallBack();
+            requestSentCallBack(request?.type);
         }
     }
 

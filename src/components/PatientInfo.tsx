@@ -49,7 +49,7 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, 
                     <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.health_id" /></span>: {patient.personalData.health_id}</Typography>
                 }
                 
-                <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.patient" /></span>: {patient.personalData.name} {patient.personalData.surnames} &nbsp; <ColourChip rgbcolor={green[500]} label="Ver Paciente" onClick={goToPatient}/></Typography>
+                <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.patient" /></span>: {patient.personalData.name} {patient.personalData.surnames} &nbsp; <ColourChip rgbcolor={green[500]} label={<Translate id="pages.hospital.go-to-patient" />} onClick={goToPatient}/></Typography>
                 <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.birthdate" /></span>: {dateToFullDateString(patient.personalData.birthdate, activeLanguage.code)}</Typography>
                 <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.sex" /></span>: {patient.personalData.sex}</Typography>
             </>

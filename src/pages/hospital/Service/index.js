@@ -7,7 +7,7 @@ import Form  from '../../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { HOSPITAL_LAB_REQUEST, HOSPITAL_LAB, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_LAB_RESULT, HOSPITAL_IMAGING_REQUEST, } from '../../../routes';
+import { HOSPITAL_LAB_REQUEST, HOSPITAL_LAB, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_LAB_RESULT, HOSPITAL_IMAGING_REQUEST, HOSPITAL_IMAGES, } from '../../../routes';
 import Loader from '../../../components/Loader';
 
 import {
@@ -84,8 +84,15 @@ export function TestsHomeComponent(props) {
         }
         
     }
-    function goToHomeTest(){
-        history.push(HOSPITAL_LAB);
+    function goToHomeTest(typeRequest){
+        if(typeRequest === TYPE_REQUEST_LAB){
+            history.push(HOSPITAL_LAB);
+        }
+        else{
+            history.push(HOSPITAL_IMAGES);
+        
+        }
+        
     }
     function renderCore(){
         if(edit){
@@ -98,7 +105,7 @@ export function TestsHomeComponent(props) {
             return (
                 <RequestSingle idRequest={idRequest} permissions={props.investigations.currentInvestigation.permissions}
                     uuidInvestigation={props.investigations.currentInvestigation.uuid} researcher={props.researcher}
-                    country={props.investigations.currentInvestigation.country} requestSentCallBack={goToHomeTest}
+                    country={props.investigations.currentInvestigation.country} requestSentCallBack={(typeRequest) => goToHomeTest(typeRequest)}
                     surveys={props.investigations.currentInvestigation.surveys}/>
             )
         }

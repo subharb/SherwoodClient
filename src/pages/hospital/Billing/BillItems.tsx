@@ -57,7 +57,7 @@ type BillableOption = Billable & {inputValue: string}
 const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
     return isNaN(Number(key))
 })
-
+// Si tiene una columan de tipo "amount" entonces se calcula el total y se valida la suma de todos los amounts sea mayor que 0
 
 const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
                                                     updatingBill, currency, print, withDiscount,
@@ -133,6 +133,15 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     if (isNaN(amount)) {
                         error = "valid_number";
                     }
+                    if(col.validation === "pharmacyItem"){
+                        const pharmacyItem = billables.find((item) => item.id === currentItem.id);
+                        if(pharmacyItem && amount > (pharmacyItem?.quantity as number)){
+                            error = "amount_exceeded";
+                        }
+                        else if(amount === 0){
+                            error = "amount_zero";
+                        }   
+                    }
                     break;
                 case BillItemKeys.type:
                 //
@@ -183,7 +192,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     
     async function onClickContinue(items: BillItem[]) {
         
-        if(filteredColumns.find((col) => col.name === BillItemKeys.amount)){
+        if(filteredColumns.find((col) => col.type === BillItemKeys.amount)){
             if (calculateTotalBill(items) > 0) {
                 onBillItemsValidated(items);
                 
