@@ -18,7 +18,7 @@ interface RequestFormProps {
     uuidSurvey:string,
     initServicesInvestigation?: IServiceInvestigation[],
     cancel?:() => void,
-    callBackRequestFinished:(requestsService:IRequest)=>void,  
+    callBackRequestFinished:(services:number[])=>void,  
 }
 
 const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, serviceType, uuidInvestigation, initServicesInvestigation, callBackRequestFinished, cancel }) => {
@@ -27,46 +27,47 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, servi
     const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(initServicesInvestigation ? initServicesInvestigation : null);
     const [request, setRequest] = React.useState<null | IRequest>(null);
     
-    function handleClose(){
-        setShowSnackbar({show:false});
-        if(snackbar.severity === SnackbarTypeSeverity.SUCCESS && request !== null){
-            callBackRequestFinished(request);
-        }
-    }
-    useEffect(() => {
-        if(request !== null){
-            callBackRequestFinished(request);
-        }
-    }, [request]);
+    // function handleClose(){
+    //     setShowSnackbar({show:false});
+    //     if(snackbar.severity === SnackbarTypeSeverity.SUCCESS && request !== null){
+    //         callBackRequestFinished(request);
+    //     }
+    // }
+    // useEffect(() => {
+    //     if(request !== null){
+    //         callBackRequestFinished(request);
+    //     }
+    // }, [request]);
     
-    function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number) {
-        setLoading(true);
-        const postObject = {
-            servicesInvestigationId: servicesInvestigation,
-            uuidPatientInvestigation:uuidPatient,
-            typeRequest:serviceType,
-            uuidSurvey:uuidSurvey
-        }
-        axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/request", postObject, { headers: {"Authorization" : localStorage.getItem("jwt") }})
-        .then(response => {
-            if(response.status === 200){
-                setShowSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"});
-                setRequest(response.data.request);
-            }
-            else{
-                setShowSnackbar({show:true, severity:"error", message:"general.error"});
-            }
-        })
-        .catch(error => {
-            console.log(error.response.data.errorCode);
-            let translateError = "general.error";
-            if(error.response.data.errorCode === 3){
-                translateError = "pages.hospital.services.error.previous_request";
-            }
-            setLoading(false);
-            setShowSnackbar({show:true, severity:"error", message:translateError});
+    function makeRequest(servicesInvestigation:number[]) {
+        callBackRequestFinished(servicesInvestigation);
+        // setLoading(true);
+        // const postObject = {
+        //     servicesInvestigationId: servicesInvestigation,
+        //     uuidPatientInvestigation:uuidPatient,
+        //     typeRequest:serviceType,
+        //     uuidSurvey:uuidSurvey
+        // }
+        // axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/request", postObject, { headers: {"Authorization" : localStorage.getItem("jwt") }})
+        // .then(response => {
+        //     if(response.status === 200){
+        //         setShowSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"});
+        //         setRequest(response.data.request);
+        //     }
+        //     else{
+        //         setShowSnackbar({show:true, severity:"error", message:"general.error"});
+        //     }
+        // })
+        // .catch(error => {
+        //     console.log(error.response.data.errorCode);
+        //     let translateError = "general.error";
+        //     if(error.response.data.errorCode === 3){
+        //         translateError = "pages.hospital.services.error.previous_request";
+        //     }
+        //     setLoading(false);
+        //     setShowSnackbar({show:true, severity:"error", message:translateError});
           
-        })
+        // })
     }
     useEffect(() => {
         if(!servicesInvestigation){
@@ -80,22 +81,20 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, servi
 
     }, []);
 
-    return <RequestFormCoreLocalized loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
-                handleCloseSnackBar={handleClose} cancel={cancel} uuidSurvey={uuidSurvey} serviceType={serviceType}
-                callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(uuidPatient, servicesInvestigation, serviceType)} />;
+    return <RequestFormCoreLocalized loading={loading} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
+                cancel={cancel} uuidSurvey={uuidSurvey} serviceType={serviceType}
+                callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(servicesInvestigation)} />;
 }
 
 export default RequestForm;
 
 interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'uuidInvestigation' | 'callBackRequestFinished' > , LocalizeContextProps {
     loading: boolean;
-    snackbar: SnackbarType;
-    servicesInvestigation:IServiceInvestigation[],
-    handleCloseSnackBar:()=>void,
+    servicesInvestigation:IServiceInvestigation[]
     callBackFormSubmitted:(serviceInvestigation:number[]) => void
 }
 
-export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
+export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, serviceType, translate, callBackFormSubmitted, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
     const serviceCategories = useMemo(() => {
         let categories:{[id:string]:IServiceInvestigation[]} = {};
@@ -163,21 +162,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         return <Loader />;
     }
     return (
-        <>  
-            <Snackbar
-                anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-                }}
-                open={snackbar.show}
-                autoHideDuration={4000}
-                onClose={handleCloseSnackBar}
-                >
-                    <Alert severity={snackbar.severity}>
-                            <Translate id={snackbar.message} />                            
-                        </Alert>
-                </Snackbar>
-            
+        <>             
             {
                 renderCore()
             }
