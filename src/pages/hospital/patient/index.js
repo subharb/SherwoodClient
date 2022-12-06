@@ -17,6 +17,7 @@ import { Alert } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
+        HOSPITAL_PATIENT_MAKE_TESTS,
         HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../../routes';
 
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
@@ -31,6 +32,7 @@ import TabsSurveys from './TabsSurveys';
 import RequestCombo from '../Service/RequestCombo';
 import RequestTable from '../Service/RequestTable';
 import RequestInfo, { RequestInfoWithFetch } from '../Service/RequestInfo';
+import RequestForm from '../Service/RequestForm';
 
 
 
@@ -127,12 +129,19 @@ function Patient(props) {
             setShowModal(true);
         }
         else{
-            const filterType = URL_TYPE[parameters.typeTest];
-            const dataCollection = dataCollectionSelected ? dataCollectionSelected : currentSurveys.find(sur => sur.type === filterType);
+            let nextUrl;
+            
+            if(["images", "lab"].includes(parameters.typeTest)){
+                nextUrl = HOSPITAL_PATIENT_MAKE_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", parameters.typeTest);
+            }
+            else{
+                const filterType = URL_TYPE[parameters.typeTest];    
+                const dataCollection = dataCollectionSelected ? dataCollectionSelected : currentSurveys.find(sur => sur.type === filterType);
 
-            const nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidDataCollection", dataCollection.uuid)
-                .replace(":uuidPatient", uuidPatient).replace(":action", "fill")
-                .replace(":idSubmission", "");
+                nextUrl = HOSPITAL_PATIENT_DATACOLLECTION.replace(":uuidDataCollection", dataCollection.uuid)
+                    .replace(":uuidPatient", uuidPatient).replace(":action", "fill")
+                    .replace(":idSubmission", "");
+            }
             history.push(nextUrl);
         }
     }
@@ -280,6 +289,9 @@ function Patient(props) {
         }
         else if (types.TYPE_SERVICE_SURVEY.includes(typeSurveySelected)){
             const serviceType = typeSurveySelected === types.TYPE_LAB_SURVEY ? 0 : 1;
+            if(HOSPITAL_PATIENT_MAKE_TESTS === props.match.path){
+                return <RequestForm />
+            }
             return (
                 <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} 
                     showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}

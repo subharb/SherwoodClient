@@ -119,6 +119,7 @@ export const HOSPITAL_PATIENT_SINGLE_SUBMISSION = "/patient/:uuidPatient/:action
 export const HOSPITAL_PATIENT_EDIT_PERSONAL_DATA = "/patient/:uuidPatient/edit/personal-data";
 export const HOSPITAL_PATIENT_MEDICAL_NOTE = "/patient/:uuidPatient/medical-note/:idMedicalNote";
 export const HOSPITAL_PATIENT_TESTS = "/patient/:uuidPatient/tests/:typeTest";
+export const HOSPITAL_PATIENT_MAKE_TESTS = "/patient/:uuidPatient/tests/:typeTest/request";
 export const HOSPITAL_IMAGES = "/images";
 export const HOSPITAL_ANALYTICS = "/analytics";
 export const HOSPITAL_USER_MGMT = "/users";
@@ -208,6 +209,12 @@ const hospitalRoutes = {
             name: "Patient Tests",
             component: Patient
         },
+        {
+            path: HOSPITAL_PATIENT_MAKE_TESTS,
+            name: "Patient Tests",
+            component: Patient
+        },
+        
         {
             path: HOSPITAL_IMAGES,
             name: "Hospital Images",

@@ -17,7 +17,7 @@ const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, surveySelecte
     function renderSurveysInUnit(surveysPerUnit:{[id: string] : any[]}){
         const surveysInUnit = Object.values(surveysPerUnit).map((surveysInUnit) => <Grid container xs={12} style={{textAlign:"center"}}>{surveysInUnit.map((dataCollection, index) => {
             return(
-                <Grid item xs={12} style={{textAlign:"center"}}>
+                <Grid item xs={12} style={{textAlign:"center", marginTop:"0.5rem"}}>
                     <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => surveySelectedCallback(dataCollection.uuid)}>{dataCollection.name}</ButtonGreyBorderGrey>
                 </Grid>
             )})
