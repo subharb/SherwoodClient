@@ -83,7 +83,7 @@ function Patient(props) {
         if(parameters.typeTest === "social" && survey.category === types.CATEGORY_SURVEY_SOCIAL){
             return true;
         }
-        if(!parameters.typeTest && survey.type === types.TYPE_MEDICAL_SURVEY){
+        if(!parameters.typeTest && MEDICAL_SURVEYS.includes(survey.type)){
             return true;
         }
         if(parameters.typeTest === "images" && survey.type === types.TYPE_IMAGE_SURVEY){
