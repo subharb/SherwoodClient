@@ -139,7 +139,7 @@ export const TYPE_SURVEYS = [{value:TYPE_MEDICAL_SURVEY, name:"Medical"}, {value
 export const CATEGORY_SURVEY_MEDICAL = 0;
 export const CATEGORY_SURVEY_SOCIAL = 1;
 export const CATEGORY_SURVEY_SHOE = 2;
-export const CATEGORY_SURVEYS = [{value:CATEGORY_SURVEY_MEDICAL, name:"Medical"}, {value:CATEGORY_SURVEY_SOCIAL, name:"Social"}, {value:CATEGORY_SURVEY_SHOE, name:"Shoe"}];
+export const CATEGORY_SURVEYS = [{value:CATEGORY_SURVEY_MEDICAL, name:"Medical"}, {value:CATEGORY_SURVEY_SOCIAL, name:"Social", url : "social"}, {value:CATEGORY_SURVEY_SHOE, name:"Shoe", url: "shoe"}];
 
 export const TYPE_REQUEST_LAB = 0;
 export const TYPE_REQUEST_IMG = 1;

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux';
 import * as types from "../../../constants";
@@ -76,14 +75,35 @@ function Patient(props) {
     
     const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
     const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
-    const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typesCurrentSurvey.includes(sur.type)) : [];
+    //const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typesCurrentSurvey.includes(sur.type)) : [];
+    const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter((survey) => {
+        if(parameters.typeTest === "shoe" && survey.category === types.CATEGORY_SURVEY_SHOE){
+            return true;
+        }
+        if(parameters.typeTest === "social" && survey.category === types.CATEGORY_SURVEY_SOCIAL){
+            return true;
+        }
+        if(!parameters.typeTest && survey.type === types.TYPE_MEDICAL_SURVEY){
+            return true;
+        }
+        if(parameters.typeTest === "images" && survey.type === types.TYPE_IMAGE_SURVEY){
+            return true;
+        }
+        if(parameters.typeTest === "lab" && survey.type === types.TYPE_LAB_SURVEY){
+            return true;
+        }
+    }) : [];
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const staysPatient = props.hospital.data.stays && props.hospital.data.stays[uuidPatient] ? props.hospital.data.stays[uuidPatient] : [];
     const typeSurveySelected = typesCurrentSurvey.length === 1 ? typesCurrentSurvey[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
+    const categorySurveySelected = dataCollectionSelected ? dataCollectionSelected.category : null;
     const sectionSelected = dataCollectionSelected && typeof uuidSection !== "undefined" ? dataCollectionSelected.sections.find(sec => sec.uuid === uuidSection) : null;
     const typesSurvey = props.investigations.data ? props.investigations.currentInvestigation.surveys.map((survey) => {
             return survey.type;
+    }) : [];
+    const categorySurveys = props.investigations.data ? props.investigations.currentInvestigation.surveys.map((survey) => {
+        return survey.category;
     }) : [];
 
     let filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
@@ -609,11 +629,13 @@ function Patient(props) {
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
                         typeSurveySelected={typeSurveySelected}
+                        categorySurveySelected = {categorySurveySelected}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} disabled={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} personalData={patient.personalData} years={years}
                         medicalNotesCallBack={() => backToRoot()} 
                         typeSurveysAvailable = { typesSurvey }
+                        categorySurveys = {categorySurveys}
                         testCallBack={() => goToTest(TYPE_IMAGE_SURVEY)} 
                         labCallBack={() => goToTest(TYPE_LAB_SURVEY)}
                         socialCallBack={() => goToTest(TYPE_SOCIAL_SURVEY)}
