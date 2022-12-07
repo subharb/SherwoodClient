@@ -295,7 +295,10 @@ const handleClick = (event, id) => {
 
 const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    props.changePageCallback(newPage)
+    if(typeof props.changePageCallback === 'function'){
+        props.changePageCallback(newPage)
+    }
+    
 };
 
 const handleChangeRowsPerPage = (event) => {

@@ -10,7 +10,7 @@ import Loader from '../../../components/Loader';
 import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
-import { yearsFromDate, daysFromDate, numberRecordsSection, postErrorSlack } from '../../../utils';
+import { yearsFromDate, daysFromDate, numberRecordsSection, postErrorSlack, getUnitsResearcher } from '../../../utils';
 import FillDataCollection from '../FillDataCollection';
 import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
@@ -219,6 +219,11 @@ function Patient(props) {
         }
         
     }
+    function cancelRequest(){
+        let nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", parameters.typeTest);
+        history.push(nextUrl);
+    }
+
     function goToSurveyUrl(uuidSurvey){
         const nextUrl = HOSPITAL_PATIENT_SUBMISSION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":idSubmission", uuidSurvey);
         console.log("Next url", nextUrl);
@@ -290,7 +295,18 @@ function Patient(props) {
         else if (types.TYPE_SERVICE_SURVEY.includes(typeSurveySelected)){
             const serviceType = typeSurveySelected === types.TYPE_LAB_SURVEY ? 0 : 1;
             if(HOSPITAL_PATIENT_MAKE_TESTS === props.match.path){
-                return <RequestForm />
+                const units = getUnitsResearcher(props.profile.info.uuid, researchers);
+            
+                const departmentsResearcher = {};
+                units.forEach((unit) => {
+                    const department = unit.department;
+                    departmentsResearcher[department.uuid] = department;
+                })
+                return <RequestForm serviceType={serviceType} uuidPatient={uuidPatient}  
+                            uuidInvestigation={props.investigations.currentInvestigation.uuid} 
+                            units = {units}
+                            cancel = {() => cancelRequest()}
+                            callBackRequestFinished={() => cancelRequest()}/>
             }
             return (
                 <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} 
@@ -495,7 +511,7 @@ function Patient(props) {
             </BoxBckgr>
         )
     }
-    else if(props.investigations.loading || props.patientsSubmissions.loading || surveyRecords === null || !departments){
+    else if(props.investigations.loading || props.patientsSubmissions.loading || props.profile.loading  || surveyRecords === null || !departments){
         return <Loader />
     }
     else if(!patient){

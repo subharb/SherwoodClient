@@ -131,8 +131,6 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
             else if(location.pathname === HOSPITAL_PHARMACY_CENTRAL_ROUTE){
                 return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>
             }
-            
-            
         }
         if(!isNaN(idRequest) && pharmacyItems){
             const pharmacyPermissions:PERMISSION[] = investigations.currentInvestigation.permissions.filter((permission:PERMISSION) => PHARMACY_RELATED_PERMISSIONS.includes(permission));
