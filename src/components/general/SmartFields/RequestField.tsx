@@ -42,10 +42,9 @@ const RequestField: React.FC<RequestFieldProps> = ({ serviceType, uuidSurvey, in
     }
     return (
         <>
-            <RequestForm uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} 
-                uuidSurvey={uuidSurvey} 
+            {/* <RequestForm uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} 
                 callBackRequestFinished={(reqs) => callBackRequestFinished(reqs)} cancel={cancel}
-                initServicesInvestigation={initServicesInvestigation} serviceType={serviceType} />
+                initServicesInvestigation={initServicesInvestigation} serviceType={serviceType} /> */}
         </>
     );
 };

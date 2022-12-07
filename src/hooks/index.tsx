@@ -5,13 +5,13 @@ import { fetchUser } from "../services/authService";
 import { decryptData, encryptData } from '../utils';
 import { useQuery } from 'react-query'
 import { SIGN_IN_ROUTE } from '../routes';
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { FormControl, Grid, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
 import { FieldWrapper } from '../components/general/mini_components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDepartmentsInvestigationAction } from '../redux/actions/hospitalActions';
 import { Color } from '@material-ui/lab';
-import { IDepartment } from '../constants/types';
+import { IDepartment, IUnit } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
 import { IRequest } from '../pages/hospital/Service/types';
 import { fetchProfileInfo } from '../redux/actions/profileActions';
@@ -260,3 +260,48 @@ export function useOffline(){
     return offline;
 }
 
+export function useUnitSelector(units:IUnit[]){
+    const [unitSelected, setUnitSelected] = React.useState<string | null>(null);
+    const [errorUnit, setErrorUnit] = React.useState(false);
+
+    useEffect(() => {
+        if(units.length === 1){
+            setUnitSelected(units[0].uuid as string);
+        }
+    }, [units])
+
+    function markAsErrorUnit(){
+        setErrorUnit(true);
+    }
+
+    function renderUnitSelector(){
+        if(units.length === 1){
+            return null;
+        }
+        else{
+            const optionsArray = units.map((unit) => {
+                return <MenuItem value={unit.uuid}>{unit.department.name} - {unit.name}</MenuItem>
+            })
+            return(
+                <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>
+                    <FormControl variant="outlined"  style={{minWidth: 220}} error={errorUnit} >
+                    <InputLabel id="unit"><Translate id="pages.hospital.pharmacy.request.select_unit" /></InputLabel>
+                        <Select 
+                            labelId="unit"
+                            id="unit"
+                            label="unit"
+                            value={unitSelected}
+                            onChange={(event) => {
+                                setErrorUnit(false);
+                                setUnitSelected(event.target.value as string)}}
+                        >
+                        { optionsArray }
+                        </Select>
+                    </FormControl>
+                </Grid>
+            )
+        }
+        
+    }
+    return {unitSelected, renderUnitSelector, markAsErrorUnit}
+}

@@ -19,6 +19,6 @@ export interface RequestPharmacyItem {
 }
 
 export interface IPharmacyRequest{
-    uuidDepartment:string, 
+    uuidUnit:string, 
     requestPharmacyItems:RequestPharmacyItem[]
 }

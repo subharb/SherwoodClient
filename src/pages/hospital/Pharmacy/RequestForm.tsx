@@ -3,13 +3,14 @@ import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { ButtonAdd, ButtonContinue, ButtonEdit } from '../../../components/general/mini_components';
-import { IDepartment } from '../../../constants/types';
+import { IDepartment, IUnit } from '../../../constants/types';
+import { useUnitSelector } from '../../../hooks';
 import { BillItems } from '../Billing/BillItems';
 import { Billable, BillItem, BillItemModes } from '../Billing/types';
 import { IPharmacyItem, IPharmacyRequest, RequestPharmacyItem } from './types';
 
 interface RequestFormProps {
-    departments:IDepartment[],
+    units:IUnit[],
     uuidInvestigation:string,
     pharmacyItemsInit:IPharmacyItem[],
     makePharmacyRequestCallback:(request:IPharmacyRequest) => void
@@ -20,11 +21,10 @@ interface RequestFormProps {
 export const PHARMACY_ITEM_REQUEST_COLUMNS = [{name:"concept", type:"autocomplete", validation:""}, {name:"amount", type:"number", validation:"pharmacyItem"}];
 
 
-const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyItemsInit, departments, makePharmacyRequestCallback }) => {
+const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyItemsInit, units, makePharmacyRequestCallback }) => {
     const [addingPharmacyItems, setAddingPharmacyItems] = React.useState<boolean>(false);
-    const [uuidDepartment, setUuidDepartment] = React.useState<string | null>(null);
-    const [errorDepartment, setErrorDepartment] = React.useState<boolean>(false);
-    const [errorPharmacyItems, setErrorPharmacyItems] = React.useState<boolean>(false);
+    const {unitSelected, renderUnitSelector, markAsErrorUnit} = useUnitSelector(units);
+    
     const [requestPharmacyItems, setRequestPharmacyItems] = React.useState<RequestPharmacyItem[]>([]);
     // @ts-ignore: Unreachable code error
     const billables:Billable[] = pharmacyItemsInit.map((pharmaItem) => {
@@ -48,15 +48,15 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
         setAddingPharmacyItems(false);
     }
     function validateRequest(){
-        if(uuidDepartment === null){
-            setErrorDepartment(true);
+        if(unitSelected === null){
+            markAsErrorUnit();
             return;
         }
         if(requestPharmacyItems.length === 0){
             alert("Add at least one item");
             return;
         }
-        makePharmacyRequestCallback({uuidDepartment, requestPharmacyItems});
+        makePharmacyRequestCallback({uuidUnit:unitSelected, requestPharmacyItems});
     }
     function renderPharmcyItems(){
         if(addingPharmacyItems){
@@ -113,50 +113,13 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
                 )
         }
     }
-    function renderDepartmentSelector(){
-        if(departments.length === 1){
-            return(
-                <Grid item xs={12}>
-                    <Translate id="investigation.share.researcher.department" />: {departments[0].name}
-                </Grid>
-            );
-        }
-        else{
-            const optionsArray = departments.map((department) => {
-                return <MenuItem value={department.uuid}>{department.name}</MenuItem>
-            })
-            return(
-                <Grid item xs={12}>
-                    <FormControl variant="outlined"  style={{minWidth: 220}} error={errorDepartment} >
-                    <InputLabel id="department"><Translate id="pages.hospital.pharmacy.request.select_department" /></InputLabel>
-                        <Select 
-                            labelId="department"
-                            id="department"
-                            label="department"
-                            value={uuidDepartment}
-                            onChange={(event) => {
-                                setErrorDepartment(false);
-                                setUuidDepartment(event.target.value as string)}}
-                        >
-                        { optionsArray }
-                        </Select>
-                    </FormControl>
-                </Grid>
-            )
-        }
-    }
-    useEffect(() =>{
-        if(departments.length === 1){
-            setUuidDepartment(departments[0].uuid as string);
-        }
-    }, [])
 
     function renderCore(){
-        if(departments.length > 0){
+        if(units.length > 0){
             return(
                 <>
                 {
-                    renderDepartmentSelector()
+                    renderUnitSelector()
                 }
                 {
                     renderPharmcyItems()

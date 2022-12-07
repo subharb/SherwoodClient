@@ -7,7 +7,7 @@ import Form from '../../../components/general/form';
 import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_components';
 import Loader from '../../../components/Loader';
 import { IDepartment, IUnit, SnackbarTypeSeverity } from '../../../constants/types';
-import { useSnackBarState, SnackbarType } from '../../../hooks';
+import { useSnackBarState, SnackbarType, useUnitSelector } from '../../../hooks';
 import { TabsSherwood } from '../../components/Tabs';
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation } from './types';
 
@@ -102,9 +102,8 @@ interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'u
 export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, units,
                                                                     translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
-    const [unitSelected, setUnitSelected] = React.useState<string | null>(null);
-    const [errorUnit, setErrorUnit] = React.useState(false);
     const [errorServices, setErrorServices] = React.useState(false);
+    const {unitSelected, renderUnitSelector, markAsErrorUnit} = useUnitSelector(units);
 
     const serviceCategories = useMemo(() => {
         let categories:{[id:string]:IServiceInvestigation[]} = {};
@@ -119,17 +118,12 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
     const typeTestString = serviceType === 0 ? "laboratory" :"medical-imaging";
     const SERVICE_SEPARATOR = "service_";
     
-    useEffect(() => {
-        if(units.length === 1){
-            setUnitSelected(units[0].uuid as string);
-        }
-    }, [units])
-
+  
     function callBackForm(){
         const serviceInvestigationIds = Object.keys(servicesInvestigationSelected).filter((key) => servicesInvestigationSelected[key] === true).map((key) => parseInt(key.replace(SERVICE_SEPARATOR, "")));
         if(unitSelected === null || serviceInvestigationIds.length === 0){
             if(unitSelected === null){
-                setErrorUnit(true);
+                markAsErrorUnit();
             }
             if(serviceInvestigationIds.length === 0){
                 setErrorServices(true);   
@@ -162,40 +156,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
             })
         )
     }
-    function renderUnitSelector(){
-        if(units.length === 1){
-            return null;
-            return(
-                <Grid item xs={12}>
-                    <Translate id="hospital.departments.unit" />: {units[0].name}
-                </Grid>
-            );
-        }
-        else{
-            const optionsArray = units.map((unit) => {
-                return <MenuItem value={unit.uuid}>{unit.department.name} - {unit.name}</MenuItem>
-            })
-            return(
-                <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>
-                    <FormControl variant="outlined"  style={{minWidth: 220}} error={errorUnit} >
-                    <InputLabel id="unit"><Translate id="pages.hospital.pharmacy.request.select_unit" /></InputLabel>
-                        <Select 
-                            labelId="unit"
-                            id="unit"
-                            label="unit"
-                            value={unitSelected}
-                            onChange={(event) => {
-                                setErrorUnit(false);
-                                setUnitSelected(event.target.value as string)}}
-                        >
-                        { optionsArray }
-                        </Select>
-                    </FormControl>
-                </Grid>
-            )
-        }
-        
-    }
+    
     function renderCore(){
         if(Object.values(serviceCategories).length === 1){
             return(

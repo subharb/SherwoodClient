@@ -149,7 +149,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
             if(location.pathname === HOSPITAL_PHARMACY_REQUEST_NEW){
                 return(
                     <RequestForm uuidInvestigation={investigations.currentInvestigation.uuid} 
-                        departments={Object.values(departmentsResearcher)} pharmacyItemsInit={pharmacyItems} makePharmacyRequestCallback={(request) => makePharmacyRequest(request)}/>
+                        units={units} pharmacyItemsInit={pharmacyItems} makePharmacyRequestCallback={(request) => makePharmacyRequest(request)}/>
                 )
             }
             else{
