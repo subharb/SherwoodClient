@@ -3,7 +3,7 @@ import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { ButtonAdd, IconGenerator, IconPatient } from "../../../components/general/mini_components"
 import { PersonalData } from "../../../constants/types"
-import {IMG_SURVEYS, LAB_SURVEYS, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
+import {CATEGORY_SURVEY_SHOE, CATEGORY_SURVEY_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
 import iconNotes from "../../../img/icons/history.png";
 import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
@@ -23,7 +23,9 @@ interface Props{
     action:any,
     disabled:any,
     typeSurveysAvailable:number[],
+    categorySurveys:number[],
     typeSurveySelected:number,
+    categorySurveySelected:number,
     stay:any,
     medicalNotesCallBack:() =>void,
     editCallBack:() => void,
@@ -49,7 +51,7 @@ const Container = styled(Grid)`
 
 export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMedicalPermission,
                                                 writeMedicalPermission, disabled, typeSurveysAvailable,
-                                                typeSurveySelected, action, years, 
+                                                typeSurveySelected, categorySurveys, categorySurveySelected, years, 
                                                 addRecordCallBack, hospitalize, medicalNotesCallBack, 
                                                 editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack}) =>{
 
@@ -122,18 +124,18 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                         </Button>
                     </Grid>
                     {
-                        typeSurveysAvailable.includes(TYPE_SOCIAL_SURVEY) && 
+                        categorySurveys.includes(CATEGORY_SURVEY_SOCIAL) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="social" onClick={() => socialCallBack()} >
-                                <img src={typeSurveySelected === TYPE_SOCIAL_SURVEY ? iconDS : iconDS} alt="Social" height="20" />
+                                <img src={categorySurveySelected === CATEGORY_SURVEY_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
                             </Button>
                         </Grid>
                     }
                     {
-                        typeSurveysAvailable.includes(TYPE_SHOE_SURVEY) && 
+                        categorySurveys.includes(CATEGORY_SURVEY_SHOE) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => shoeCallBack()} >
-                                <img src={typeSurveySelected === TYPE_SHOE_SURVEY ? iconShoe : iconShoe} alt="Social" height="40" />
+                                <img src={categorySurveySelected === CATEGORY_SURVEY_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
                             </Button>
                         </Grid>
                     }
