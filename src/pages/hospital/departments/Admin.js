@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import * as types from "../../../constants";
 import { connect, useDispatch } from 'react-redux';
 import { Typography, Grid, Box, Chip, AppBar, Tabs, Tab, Snackbar } from '@material-ui/core';
@@ -197,25 +197,32 @@ function Departments(props) {
     const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
 
 
-    const CHANGE_DEPARTMENT_FORM = {
-        "unit":{
-            required : true,
-            type:"select",
-            name:"unit",
-            label:"hospital.departments.forms.unit.name",
-            shortLabel:"hospital.departments.forms.unit.name",
-            validation : "notEmpty",
-            defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
-            options:props.departments.reduce((previousValue, dep) => {
-                const unitsInfo = dep.units.filter((unitF) => {
-                    return (indexResearcherToEdit !== false && !props.researchers[indexResearcherToEdit].units.find((unitRes) => unitF.uuid === unitRes.uuid))
-                }).map(unit =>{
-                        return {"label" : dep.name+" - "+unit.name, "value" :unit.uuid}
-                })
-                return [...previousValue, ...unitsInfo]
-            }, [])
+    const CHANGE_DEPARTMENT_FORM = useMemo(() => {
+        if(!props.departments){
+            return {}
         }
-    }
+        else{
+            return {
+                "unit":{
+                    required : true,
+                    type:"select",
+                    name:"unit",
+                    label:"hospital.departments.forms.unit.name",
+                    shortLabel:"hospital.departments.forms.unit.name",
+                    validation : "notEmpty",
+                    defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
+                    options:props.departments.reduce((previousValue, dep) => {
+                        const unitsInfo = dep.units.filter((unitF) => {
+                            return (indexResearcherToEdit !== false && !props.researchers[indexResearcherToEdit].units.find((unitRes) => unitF.uuid === unitRes.uuid))
+                        }).map(unit =>{
+                                return {"label" : dep.name+" - "+unit.name, "value" :unit.uuid}
+                        })
+                        return [...previousValue, ...unitsInfo]
+                    }, [])
+            }
+        }       
+        }
+    }, [props.departments, indexResearcherToEdit, props.researchers])
 
     const REMOVE_RESEARCHER_FORM = {
         "name":{
@@ -539,7 +546,7 @@ function Departments(props) {
     const handleChange = (event, newValue) => {
         setTabSelector(newValue);
     };
-    if(!props.investigation || props.loading){
+    if(!props.investigation || props.loading || !props.departments){
         return <Loader />
     }
     else if(!props.investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION) && !props.admin){
