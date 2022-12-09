@@ -312,8 +312,9 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                         <>
                             <Typography variant="body2" style={{fontWeight:'bold'}} gutterBottom><Translate id="pages.hospital.services.edit.delete_service.description" /></Typography>
                             <Translate id={`pages.hospital.services.tests.${fromServiceTypeToText(serviceType)}.${selectedService.code as string}`} />
-                            <div>
-                                <ButtonAccept onClick={confirmDelete}>Delete</ButtonAccept><ButtonCancel onClick={cancel}>Cancel</ButtonCancel>
+                            <div style={{paddingTop:'1rem'}}>
+                                <ButtonAccept onClick={confirmDelete}>Delete</ButtonAccept>
+                                <ButtonCancel style={{marginLeft:'1rem'}} onClick={cancel}>Cancel</ButtonCancel>
                             </div>
                         </>
                     }
