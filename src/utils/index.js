@@ -5,6 +5,7 @@ import mixpanel from 'mixpanel-browser';
 import { Translate } from 'react-localize-redux';
 import { TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../constants';
 import { PERMISSION } from '../constants/types';
+import { ServiceType } from '../pages/hospital/Service/types';
 /**
  * Function that validates fields from anywhere in the app
  * 
@@ -916,4 +917,8 @@ export function getUnitsResearcher(uuidResearcher, researchers){
         return researcher.units;
     }
     return [];
+}
+
+export function fromServiceTypeToText(serviceType){
+    return serviceType === ServiceType.LABORATORY ? "laboratory" : "medical-imaging"
 }

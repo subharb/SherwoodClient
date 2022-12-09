@@ -6,11 +6,12 @@ import React, { useEffect, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Form from '../../../components/general/form';
-import { ButtonAdd } from '../../../components/general/mini_components';
+import { ButtonAccept, ButtonAdd, ButtonCancel } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
+import { fromServiceTypeToText } from '../../../utils';
 import { IService, IServiceInvestigation, ServiceType } from './types';
 
 interface EditServicesProps {
@@ -24,6 +25,35 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
     const [servicesGeneral, setServicesGeneral] = useState<null | IService[]>(null);
     const [servicesInvestigation, setServicesInvestigation] = useState<null | IServiceInvestigation[]>(null);
     const [snackbar, setSnackbar] = useSnackBarState();
+
+    function deleteService(idServiceInvestigation:number){
+        console.log("delete service", idServiceInvestigation);
+        axios.delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/" + idServiceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if(response.status === 200) {
+                    setSnackbar({ show: true, severity: "success", message: "pages.hospital.services.success_removed" });
+                    if (isArray(servicesInvestigation)) {
+                        const removeServiceInvestigationIndex = servicesInvestigation.findIndex((serviceInvestigation) => {
+                            return serviceInvestigation.id === idServiceInvestigation;
+                        });
+                        servicesInvestigation.splice(removeServiceInvestigationIndex, 1);
+                        
+                        setServicesInvestigation([...servicesInvestigation]);
+
+                    }
+                    
+                }
+                else {
+                    setSnackbar({ show: true, severity: "error", message: "pages.hospital.services.error.delete_service" });
+                }
+
+                setLoading(false);
+            })
+            .catch((error) => {
+                setSnackbar({ show: true, severity: "error", message: "pages.hospital.services.error.delete_service" });
+                setLoading(false);
+            })
+    }
 
     function saveService(serviceInvestigation: any, idServiceInvestigation: number) {
         serviceInvestigation.external = serviceInvestigation.external ? 1 : 0;
@@ -99,7 +129,7 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
     }, []);
     return (
         <EditServicesComponent servicesGeneral={servicesGeneral} servicesInvestigation={servicesInvestigation} surveys={surveys} serviceType={serviceType} loading={loading}
-            snackbar={snackbar} callBackSaveService={saveService} />
+            snackbar={snackbar} setSnackbar={setSnackbar} callBackSaveService={saveService} callBackDeleteService={deleteService}/>
     )
 }
 
@@ -109,25 +139,28 @@ interface EditServicesComponentProps extends Omit<EditServicesProps, 'uuidInvest
     servicesInvestigation: IServiceInvestigation[] | null;
     surveys: ISurvey[];
     snackbar: SnackbarType,
-    callBackSaveService: (service: any, idServiceInv: number) => void
+    setSnackbar: (snackbar: SnackbarType) => void;
+    callBackSaveService: (service: any, idServiceInv: number) => void,
+    callBackDeleteService: (idServiceInv: number) => void
 }
 
 export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, snackbar, surveys,
-    loading, servicesGeneral, servicesInvestigation, callBackSaveService }) => {
+    loading, servicesGeneral, servicesInvestigation, setSnackbar, callBackSaveService, callBackDeleteService }) => {
     const [showModal, setShowModal] = React.useState(false);
     const [addingService, setAddingService] = React.useState(false);
-    const [editingService, setEditingService] = React.useState<{ [id: string]: any; } | null>(null);
+    const [selectedService, setSelectedService] = React.useState<{ [id: string]: any; } | null>(null);
+    const [removingService, setRemovingService] = React.useState<boolean>(false);
 
     let formFields: { [id: string]: any; } = React.useMemo(() => {
         let tempDict: { [id: string]: any; } = {};
 
         let serviceOptions = servicesGeneral?.filter((service) => {
-            if (editingService) {
-                return service.id === editingService.serviceId;
+            if (selectedService) {
+                return service.id === selectedService.serviceId;
             }
             return !servicesInvestigation?.some((serviceInvestigation) => serviceInvestigation.service.id === service.id);
         }).map((service) => {
-            const typeTestString = serviceType === ServiceType.LABORATORY ? "laboratory" : "medical-imaging";
+            const typeTestString = fromServiceTypeToText(serviceType);
             return {
                 label: `pages.hospital.services.tests.${typeTestString}.${service.code}`,
                 value: service.id,
@@ -169,7 +202,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
             options: surveyOptions
         }
         return tempDict;
-    }, [servicesGeneral, servicesInvestigation, editingService]);
+    }, [servicesGeneral, servicesInvestigation, selectedService]);
 
     function editService(id: number) {
         const service = servicesInvestigation?.find((serviceInvestigation) => serviceInvestigation.id === id);
@@ -181,10 +214,39 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                 price: service?.billable ? service?.billable.price : 0,
                 survey: service.survey?.uuid
             }
-            setEditingService(initialData);
+            setSelectedService(initialData);
             setShowModal(true);
             setAddingService(true);
         }
+    }
+    function deleteService(id:number){
+        const service = servicesInvestigation?.find((serviceInvestigation) => serviceInvestigation.id === id);
+        if (service) {
+            const initialData = {
+                id: service.id,
+                code : service.service.code,
+                serviceId: service.service.id,
+                external: service.external,
+                price: service?.billable ? service?.billable.price : 0,
+                survey: service.survey?.uuid
+            }
+            setSelectedService(initialData);
+        }
+        setShowModal(true);
+        setRemovingService(true);
+        setAddingService(false);
+    }
+    function confirmDelete(){
+        if(selectedService){
+            callBackDeleteService(selectedService.id);
+            setShowModal(false);
+            setRemovingService(false);
+        }
+    }
+    function cancel(){
+        setShowModal(false);
+        setRemovingService(false);
+        setSelectedService(null);
     }
     function renderCore() {
         if (servicesInvestigation?.length === 0) {
@@ -208,7 +270,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
             const headCells = [{ id: "name", alignment: "left", label: "name" }, { id: "price", alignment: "left", label: "price" },
             { id: "external", alignment: "left", label: "external" }, { id: "survey", alignment: "left", label: "survey" }];
             return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}
-                actions={[{ "type": "edit", "func": (id: number) => editService(id) }]} />
+                actions={[{ "type": "delete", "func": (id: number) => deleteService(id) }]} />
         }
     }
     useEffect(() => {
@@ -222,7 +284,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
     return (
         <>
             <Modal key="modal" medium
-                open={showModal} title={<Translate id="pages.hospital.services.edit.new_service.title" />}
+                open={showModal} title={<Translate id={`pages.hospital.services.edit.${addingService ? "new_service" : "delete_service"}.title`} />}
                 closeModal={() => setShowModal(false)}>
                 <>
                     {
@@ -238,11 +300,22 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                             }
                             {
                                 formFields.serviceId.options?.length > 0 &&
-                                <Form fields={formFields} initialData={editingService}
-                                    callBackForm={(values: any) => callBackSaveService(values, editingService ? editingService.id : -1)} />
+                                <Form fields={formFields} initialData={selectedService}
+                                    callBackForm={(values: any) => callBackSaveService(values, selectedService ? selectedService.id : -1)} />
 
                             }
 
+                        </>
+                    }
+                    {
+                        !loading && removingService && selectedService &&
+                        <>
+                            <Typography variant="body2" style={{fontWeight:'bold'}} gutterBottom><Translate id="pages.hospital.services.edit.delete_service.description" /></Typography>
+                            <Translate id={`pages.hospital.services.tests.${fromServiceTypeToText(serviceType)}.${selectedService.code as string}`} />
+                            <div style={{paddingTop:'1rem'}}>
+                                <ButtonAccept onClick={confirmDelete}>Delete</ButtonAccept>
+                                <ButtonCancel style={{marginLeft:'1rem'}} onClick={cancel}>Cancel</ButtonCancel>
+                            </div>
                         </>
                     }
                 </>
@@ -254,6 +327,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                 }}
                 open={snackbar.show}
                 autoHideDuration={4000}
+                onClose={() => setSnackbar({ show: false })}
             >
                 <Alert severity={snackbar.severity}>
                     <Translate id={snackbar.message} />
@@ -264,6 +338,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                 onClick={() => {
                     setShowModal(true);
                     setAddingService(true);
+                    setSelectedService(null);
                 }
                 } />
             <Typography variant="body2" gutterBottom>
