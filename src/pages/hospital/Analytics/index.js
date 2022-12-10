@@ -186,17 +186,20 @@ export function Analytics(props) {
 		<React.Fragment>
 			<Helmet title="Analytics Dashboard" />
 			<Grid justify="space-between" direction='row' container spacing={6}>
-				<Grid item xs={6}>
+				<Grid item xs={12}>
 					<Typography variant="h3" gutterBottom style={{ color: "white" }}>
 						Analytics Dashboard
 					</Typography>					
-                    <Grid item xs={12}>
-                        { renderDepartmentSelector() }
-                    </Grid>
 				</Grid>
-				<Grid item xs={6}>
-					<DatesSelector onCallBack={datesSelected} />
-				</Grid>
+				<Grid item container xs={12} style={{background:'white', padding:'1rem'}}>
+                        <Grid item xs={6}>
+                            { renderDepartmentSelector() }
+                        </Grid>
+                        <Grid item xs={6}>
+                            <DatesSelector onCallBack={datesSelected} />
+                        </Grid>
+                   
+                </Grid>
 			</Grid>
 			<Divider my={6} />
 			<Grid container spacing={6}>
@@ -236,7 +239,8 @@ export function Analytics(props) {
 							</Grid>
                             <Grid item xs={12}>
                                 <PatientsBarChart title={<Translate id="hospital.analytics.graphs.patients.title" />} 
-                                    patients={filteredPatients} departments={departments} statsPerDepartment = {patientsPerDepartment}/>
+                                    patients={filteredPatients} departments={departments} statsPerDepartment = {patientsPerDepartment}
+                                    departmentSelected={departments ? departments.find((dep) => dep.uuid === departmentSelected) : null} />
                             </Grid>
 						</Grid>
 					</Grid>

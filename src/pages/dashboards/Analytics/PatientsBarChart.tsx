@@ -15,7 +15,7 @@ const PatientsBarChart: React.FC<PatientsBarChartProps> = ({ departments, title,
         const orderedPatients = patients.sort((a,b) => a.dateCreated - b.dateCreated);
         const startDate = new Date(orderedPatients[0].dateCreated);
         const endDate = new Date(orderedPatients[orderedPatients.length - 1].dateCreated);
-        const numberMonths =  endDate.getMonth() - startDate.getMonth() + 12 * (endDate.getFullYear() - startDate.getFullYear())
+        const numberMonths =  endDate.getMonth() - startDate.getMonth() + 12 * (endDate.getFullYear() - startDate.getFullYear()) + 1;
         let months = [];
         for(let i = 0; i < numberMonths; i++){
             months.push(new Date(startDate.getFullYear(), startDate.getMonth() + i, 1));
@@ -23,6 +23,39 @@ const PatientsBarChart: React.FC<PatientsBarChartProps> = ({ departments, title,
         return months;
     }, [patients])
 
+    function seriesPerDepartment(currentDepartment:IDepartment){
+        
+        if(statsPerDepartment[currentDepartment.uuid as string]){
+            const patientIds = statsPerDepartment[currentDepartment.uuid as string];
+            let copyPatientsId = [...patientIds];
+            const patientsInDate = categories.map((month) => {
+                const patientsInPeriod = patientIds.filter((patientId) => {
+                    const findPatient = patients.find((patient) => patient.id === patientId);
+                    if(!findPatient){
+                        return false;
+                    }
+                    const patientDate = new Date(findPatient.dateCreated);
+                    return patientDate.getMonth() === month.getMonth() 
+                            && patientDate.getFullYear() === month.getFullYear();
+                })
+                copyPatientsId = copyPatientsId.filter( function( el ) {
+                    return patientsInPeriod.indexOf( el ) < 0;
+                  } );
+                return patientsInPeriod.length;
+               
+            })
+            return {
+                name: currentDepartment.name,
+                count: patientsInDate
+            }
+        }
+        else{
+            return {
+                name: currentDepartment.name,
+                count: categories.map(() => 0)
+            }
+        }
+    }
     const series = useMemo(() => {
         let tempSeries = [];
         if(!departments || !statsPerDepartment){
@@ -31,25 +64,15 @@ const PatientsBarChart: React.FC<PatientsBarChartProps> = ({ departments, title,
         if(!departmentSelected){
             for(let i = 0; i < departments.length; i++){
                 const currentDepartment = departments[i];
-                if(statsPerDepartment[currentDepartment.uuid as string]){
-                    const patientIds = statsPerDepartment[currentDepartment.uuid as string];
-                    const patientsInDate = categories.map((month) => {
-                        return patientIds.filter((patientId) => {
-                            const findPatient = patients.find((patient) => patient.id === patientId);
-                            const patientDate = new Date(findPatient.dateCreated);
-                            return patientDate.getMonth() === month.getMonth() 
-                                    && patientDate.getFullYear() === month.getFullYear();
-                        }).length;
-                    })
-                    tempSeries.push({
-                        name: currentDepartment.name,
-                        count: patientsInDate
-                    });
-                }
+                tempSeries.push(seriesPerDepartment(currentDepartment));
             }
             return tempSeries;
         }
-    }, [departmentSelected, departments, statsPerDepartment, categories]);
+        else{
+            return [seriesPerDepartment(departmentSelected)];
+        }
+    }, [patients]);
+    
     if(categories && series){
         return(
             <BarChart title={title} categories={categories} series={series} />
