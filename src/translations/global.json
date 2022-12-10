@@ -197,7 +197,11 @@
                     "table-title" : ["Doctor", "Médico", "Médecin"],
                     "first-visit" : ["First visit", "Primera visita", "Première visite"],
                     "followup-visit" : ["Follow up visit", "Visita de seguimiento", "Visite de suivi"]
+                },
+                "patients" : {
+                    "title" : ["Patients over time", "Pacientes a lo largo del tiempo", "Patients au fil du temps"]
                 }
+
             }
         },
         "notification": {

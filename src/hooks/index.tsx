@@ -15,6 +15,7 @@ import { IDepartment, IUnit } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
 import { IRequest } from '../pages/hospital/Service/types';
 import { fetchProfileInfo } from '../redux/actions/profileActions';
+import Loader from '../components/Loader';
 
 export interface SnackbarType{
     show: boolean;
@@ -304,4 +305,54 @@ export function useUnitSelector(units:IUnit[]){
         
     }
     return {unitSelected, renderUnitSelector, markAsErrorUnit}
+}
+
+export function useDeparmentsSelector(){
+    const { departments } = useDepartments();
+    const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(null);
+    const [errorDepartment, setErrorDepartment] = React.useState(false);
+
+    useEffect(() => {
+        if(departments && departments.length === 1){
+            setDepartmentSelected(departments[0].uuid as string);
+        }
+    }, [departments])
+
+    function markAsErrorUnit(){
+        setErrorDepartment(true);
+    }
+
+    function renderDepartmentSelector(){
+        if(!departments){
+            return <Loader />
+        }
+        if(departments.length === 1){
+            return null;
+        }
+        else{
+            const optionsArray = departments.map((department) => {
+                return <MenuItem value={department.uuid}>{department.name}</MenuItem>
+            })
+            return(
+                <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>
+                    <FormControl variant="outlined"  style={{minWidth: 220}} error={errorDepartment} >
+                    <InputLabel id="department"><Translate id="pages.hospital.pharmacy.request.select_department" /></InputLabel>
+                        <Select 
+                            labelId="department"
+                            id="department"
+                            label="department"
+                            value={departmentSelected}
+                            onChange={(event) => {
+                                setErrorDepartment(false);
+                                setDepartmentSelected(event.target.value as string)}}
+                        >
+                        { optionsArray }
+                        </Select>
+                    </FormControl>
+                </Grid>
+            )
+        }
+        
+    }
+    return { departmentSelected, renderDepartmentSelector, markAsErrorUnit, departments}
 }

@@ -5,149 +5,149 @@ import { datalogger } from "../utils";
 
 
 export const answerRequest = datalogger((uuidInvestigation, value, keyInvestigationResearcher) => {
-  return new Promise((resolve, reject) => {
-    const putObject= {answer:value, keyInvestigationResearcher:keyInvestigationResearcher}
-    axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+uuidInvestigation+'/answer', putObject, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-        .then((response) => {
-            if(response.status === 200){
-                resolve(response.data);
-            }
-            else{
-                reject(response.data);
-            }
-        })
-        .catch(err => {console.log('Catch', err); reject(err);}); 
-  });
+    return new Promise((resolve, reject) => {
+        const putObject = { answer: value, keyInvestigationResearcher: keyInvestigationResearcher }
+        axios.put(process.env.REACT_APP_API_URL + '/researcher/investigation/' + uuidInvestigation + '/answer', putObject, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
+    });
 });
 
 export const fetchInvestigations = datalogger(() => {
     return new Promise((resolve, reject) => {
-      
-      axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + '/researcher/investigation/all', { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 });
 
-export const fetchProfileService = datalogger( (uuidInvestigation) => {
+export const fetchProfileService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
-      
-      axios.get(process.env.REACT_APP_API_URL+'/researcher/profile/'+uuidInvestigation, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + '/researcher/profile/' + uuidInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 });
 
 export const fetchInvestigation = datalogger((uuid) => {
     return new Promise((resolve, reject) => {
-      
-        axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/'+uuid, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + '/' + localStorage.getItem("type") + '/investigation/' + uuid, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 })
 
-export const searchDrugService = datalogger((searchText, country) =>{
+export const searchDrugService = datalogger((searchText, country) => {
     return new Promise((resolve, reject) => {
-      
-        axios.get(process.env.REACT_APP_API_URL+'/hospital/search/drug/'+country+'/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + '/hospital/search/drug/' + country + '/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 })
 
 export const searchDrugComponentService = datalogger((searchText, country) => {
     return new Promise((resolve, reject) => {
-      
-        axios.get(process.env.REACT_APP_API_URL+'/hospital/search/component/'+country+'/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + '/hospital/search/component/' + country + '/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 });
 
 export const getStatsPerDiagnosisService = datalogger((uuidInstitution, icdCode, startDate, endDate) => {
-  return new Promise((resolve, reject) => {
-      axios.get(process.env.REACT_APP_API_URL+'/hospital/institution/'+uuidInstitution+'/stats/diagnosis/'+icdCode+'/startDate/'+startDate+'/endDate/'+endDate, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-        .then((response) => {
-            if(response.status === 200){
-                resolve(response.data);
-            }
-            else{
-                reject(response.data);
-            }
-        })
-        .catch(err => {console.log('Catch', err); reject(err);}); 
-  });
+    return new Promise((resolve, reject) => {
+        axios.get(process.env.REACT_APP_API_URL + '/hospital/institution/' + uuidInstitution + '/stats/diagnosis/' + icdCode + '/startDate/' + startDate + '/endDate/' + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
+    });
 })
 
 export const searchPatientByDiagnosis = datalogger((uuidInvestivation, ictCode) => {
-  return new Promise((resolve, reject) => {
-      axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/'+uuidInvestivation+'/patientsbydiagnose/'+ictCode, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-        .then((response) => {
-            if(response.status === 200){
-                resolve(response.data);
-            }
-            else{
-                reject(response.data);
-            }
-        })
-        .catch(err => {console.log('Catch', err); reject(err);}); 
-  });
+    return new Promise((resolve, reject) => {
+        axios.get(process.env.REACT_APP_API_URL + '/researcher/investigation/' + uuidInvestivation + '/patientsbydiagnose/' + ictCode, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
+    });
 })
 
-export const uploadFile = datalogger((file) =>{
+export const uploadFile = datalogger((file) => {
     const formData = new FormData();
 
     formData.append("files", file);
     return new Promise((resolve, reject) => {
         axios({
             method: 'post',
-            url: process.env.REACT_APP_API_URL+'/files',
+            url: process.env.REACT_APP_API_URL + '/files',
             data: formData,
-            headers: {"Authorization" : localStorage.getItem("jwt"), 'Content-Type': 'multipart/form-data' }
-            })
+            headers: { "Authorization": localStorage.getItem("jwt"), 'Content-Type': 'multipart/form-data' }
+        })
             .then(function (response) {
                 //handle success
                 console.log(response);
-                if(response.status === 200){
+                if (response.status === 200) {
                     resolve(response.data);
                 }
-                else{
+                else {
                     reject(response.data);
                 }
             })
@@ -159,545 +159,578 @@ export const uploadFile = datalogger((file) =>{
     });
 });
 
-export const getFile =datalogger((fileName) => {
- 
+export const getFile = datalogger((fileName) => {
+
     return new Promise((resolve, reject) => {
-        axios.get(process.env.REACT_APP_API_URL+'/files/'+fileName, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+        axios.get(process.env.REACT_APP_API_URL + '/files/' + fileName, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 });
 
 export const searchDiagnosticService = datalogger((searchText) => {
     return new Promise((resolve, reject) => {
-      
-        axios.get(process.env.REACT_APP_API_URL+'/hospital/search/diagnostic/'+searchText, { headers: {"Authorization" : localStorage.getItem("jwt")}})
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + '/hospital/search/diagnostic/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 })
 
 export const fetchRecordsPatientFromSurvey = datalogger((uuidInvestigation, patientUUID, surveyUUID) => {
     return new Promise((resolve, reject) => {
-      
-        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submission/"+patientUUID+"/survey/"+surveyUUID, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/submission/" + patientUUID + "/survey/" + surveyUUID, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 });
 
 export const fetchRecordsSurveysService = datalogger((uuidInvestigation, surveyUUID) => {
     return new Promise((resolve, reject) => {
-        
-        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/survey/"+surveyUUID+"/submissions", { headers: {"Authorization" : localStorage.getItem("jwt")} })
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/survey/" + surveyUUID + "/submissions", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 })
 
 
 export const fetchRecordsPatientAllSurveysService = datalogger((uuidInvestigation, patientUUID) => {
     return new Promise((resolve, reject) => {
-      
-        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patient/"+patientUUID+"/submissions", { headers: {"Authorization" : localStorage.getItem("jwt")} })
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient/" + patientUUID + "/submissions", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 })
 
 export const fetchSubmissionsAllPatientsInvestigationService = datalogger((uuidInvestigation, surveyUUID) => {
     return new Promise((resolve, reject) => {
-      
-        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submissions", { headers: {"Authorization" : localStorage.getItem("jwt")} })
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/submissions", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 });
 
 export const addPatient = datalogger((uuidInvestigation, patientData) => {
     return new Promise((resolve, reject) => {
-        axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patient", patientData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        axios.post(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient", patientData, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
-                if(response.status === 200){
+                if (response.status === 200) {
                     resolve(response.data);
                 }
-                else{
+                else {
                     reject(response.data);
                 }
             })
             .catch(err => {
-                console.log('Catch', err); 
+                console.log('Catch', err);
                 reject(err);
-            }); 
+            });
     })
 });
 
 export const updatePersonalDataPatientService = datalogger((uuidInvestigation, uuidPatient, patientData) => {
     return new Promise((resolve, reject) => {
-        axios.put(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patient/"+uuidPatient, patientData , { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        axios.put(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient/" + uuidPatient, patientData, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
-                if(response.status === 200){
+                if (response.status === 200) {
                     resolve(response.data);
                 }
-                else{
+                else {
                     reject(response.data);
                 }
             })
-            .catch(err => {console.log('Catch', err); reject(err);}); 
+            .catch(err => { console.log('Catch', err); reject(err); });
     })
 });
 
 export const getTokenWho = datalogger((lang) => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.REACT_APP_API_URL+"/hospital/token/who/"+lang, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        axios.get(process.env.REACT_APP_API_URL + "/hospital/token/who/" + lang, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
-                if(response.status === 200){
+                if (response.status === 200) {
                     resolve(response.data);
                 }
-                else{
+                else {
                     reject(response.data);
                 }
             })
-            .catch(err => {console.log('Catch', err); reject(err);}); 
+            .catch(err => { console.log('Catch', err); reject(err); });
     })
 });
 
 export const postRecordPatientService = datalogger((postObj, uuidInvestigation, patientId, surveyUUID) => {
     return new Promise((resolve, reject) => {
-        
-        axios.post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/submission/"+patientId+"/survey/"+surveyUUID, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch((error) => {
+
+        axios.post(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/submission/" + patientId + "/survey/" + surveyUUID, postObj, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch((error) => {
                 // console.log(error.response);
                 // console.log(error.response.data);
                 // console.log(error.response.status);
                 // console.log(error.response.headers);
-              console.log('Catch', error); reject(error);}); 
+                console.log('Catch', error); reject(error);
+            });
     });
 });
 
 export const updateRecordPatientService = datalogger((postObj, uuidInvestigation, patientId, surveyUUID, idSubmission) => {
     return new Promise((resolve, reject) => {
-        
-        axios.put(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patient/"+patientId+"/survey/"+surveyUUID+"/submission/"+idSubmission, postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.put(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient/" + patientId + "/survey/" + surveyUUID + "/submission/" + idSubmission, postObj, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 });
 
 export const getSubmissionPatientService = datalogger((uuidInvestigation, idSubmission) => {
     return new Promise((resolve, reject) => {
-        
-        axios.get(`${process.env.REACT_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${idSubmission}?findRequests=true`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+
+        axios.get(`${process.env.REACT_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${idSubmission}?findRequests=true`, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
-                if(response.status === 200){
+                if (response.status === 200) {
                     resolve(response.data);
                 }
-                else{
+                else {
                     reject(response.data);
                 }
             })
-            .catch(err => {console.log('Catch', err); reject(err);}); 
+            .catch(err => { console.log('Catch', err); reject(err); });
 
     });
 });
 
 export const getPatientsFromId = datalogger((uuidInvestigation, patientId) => {
     return new Promise((resolve, reject) => {
-        
-        axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/patientsfrom/"+patientId, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-          .then((response) => {
-              if(response.status === 200){
-                  resolve(response.data);
-              }
-              else{
-                  reject(response.data);
-              }
-          })
-          .catch(err => {console.log('Catch', err); reject(err);}); 
+
+        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patientsfrom/" + patientId, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
     });
 });
 
 export const resetPassword = datalogger((credentials) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post("/api/auth/reset-password", credentials)
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+    return new Promise((resolve, reject) => {
+        axios
+            .post("/api/auth/reset-password", credentials)
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
 });
 
 
 export const getStatsFirstMonitoring = datalogger((uuidInvestigation, startDate, endDate) => {
     return new Promise((resolve, reject) => {
-      axios
-        .get(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/startDate/"+startDate+"/endDate/"+endDate+"/firstmonitoring",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/startDate/" + startDate + "/endDate/" + endDate + "/firstmonitoring", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+});
+
+export const getPatientIdFromDepartment = datalogger((uuidInvestigation, uuidDepartment, startDate, endDate) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/stats/patients/department/" + uuidDepartment + "/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 });
 
 export const getStatsMostCommonDiagnosis = datalogger((uuidInvestigation, startDate, endDate) => {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/stats/most-common-ict/startDate/"+startDate+"/endDate/"+endDate,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/stats/most-common-ict/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+});
+
+export const getStatsPatientsPerDepartment = datalogger((uuidInvestigation, startDate, endDate) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/stats/patients/alldepartments/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
 });
 
 export const getSharedResearchersService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
-      axios
-        .get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/researchers",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/researchers", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 });
 
 export const getDepartmentsInstitutionService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
-      axios
-        .get(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/departments",  { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/departments", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 });
 
 export const assignUnitToResearcherService = datalogger((uuidInvestigation, uuidResearcher, uuidDepartment) => {
     return new Promise((resolve, reject) => {
-      axios
-        .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/unit/"+uuidDepartment+"/toresearcher", {uuidResearcher}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidDepartment + "/toresearcher", { uuidResearcher }, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 });
 
 export const removeUnitToResearcherService = datalogger((uuidInvestigation, uuidResearcher, uuidUnit) => {
     return new Promise((resolve, reject) => {
-      axios
-        .delete(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/unit/"+uuidUnit+"/removeresearcher/"+uuidResearcher, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidUnit + "/removeresearcher/" + uuidResearcher, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 });
 
 export const saveDepartmentService = datalogger((uuidInvestigation, department) => {
     return new Promise((resolve, reject) => {
-      axios
-        .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/department", department, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department", department, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 });
 
 export const saveUnitService = datalogger((uuidInvestigation, uuidDepartment, unit) => {
     return new Promise((resolve, reject) => {
-      axios
-        .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/department/"+uuidDepartment, unit, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/" + uuidDepartment, unit, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 });
 
 export function saveUpdateWardService(uuidInvestigation, uuidDepartment, ward) {
     return new Promise((resolve, reject) => {
-      axios
-        .put(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/department/"+uuidDepartment+"/ward", ward, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/" + uuidDepartment + "/ward", ward, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 }
 
 export function deleteWardService(uuidInvestigation, uuidWard) {
     return new Promise((resolve, reject) => {
-      axios
-        .delete(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/ward/"+uuidWard, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 }
 
 
 export function updateBedService(uuidInvestigation, bedInfo) {
     return new Promise((resolve, reject) => {
-      axios
-        .put(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/bed/"+bedInfo.id, bedInfo, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/bed/" + bedInfo.id, bedInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 }
 
 export function deleteBedService(uuidInvestigation, bedInfo) {
     return new Promise((resolve, reject) => {
-      axios
-        .delete(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/bed/"+bedInfo.id, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/bed/" + bedInfo.id, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 }
 
 export function createBedService(uuidInvestigation, uuidWard, bedInfo) {
     return new Promise((resolve, reject) => {
-      axios
-        .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/ward/"+uuidWard+"/bed", bedInfo, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard + "/bed", bedInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 }
 
 
 export function updateOrderBedsService(uuidInvestigation, uuidWard, bedsReorder) {
-  return new Promise((resolve, reject) => {
-    axios
-      .put(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/ward/"+uuidWard+"/beds", bedsReorder, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-} 
+    return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard + "/beds", bedsReorder, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 
 export function createStayPatientService(uuidInvestigation, idBed, uuidPatient) {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/bed/"+idBed+"/stay", {uuidPatient},{ headers: {"Authorization" : localStorage.getItem("jwt")} })
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        error.errorCode = 500;
-        reject(error);
-      });
-  });
-} 
+    return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/bed/" + idBed + "/stay", { uuidPatient }, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                error.errorCode = 500;
+                reject(error);
+            });
+    });
+}
 
 
 export function saveResearcherPermissions(uuidInvestigation, permissions) {
     return new Promise((resolve, reject) => {
-      axios
-        .post(process.env.REACT_APP_API_URL+"/researcher/investigation/"+uuidInvestigation+"/permissions", permissions, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-        .then((response) => {
-          if (response.status === 200) {
-            resolve(response.data);
-          }
-          reject(response.data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        axios
+            .post(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/permissions", permissions, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
     });
 }
 
 export function getWardService(uuidInvestigation, uuidWard) {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/ward/"+uuidWard, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
 }
 
 export function getPatientStaysService(uuidInvestigation, uuidPatient) {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/stays/"+uuidPatient, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/stays/" + uuidPatient, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
 }
 
 
 
 export function dischargePatientService(uuidInvestigation, uuidPatient) {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/discharge", {uuidPatient}, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-      .then((response) => {
-        if (response.status === 200) {
-          resolve(response.data);
-        }
-        reject(response.data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+    return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/discharge", { uuidPatient }, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
 }

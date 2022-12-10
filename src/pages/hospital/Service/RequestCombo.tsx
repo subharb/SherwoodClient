@@ -31,7 +31,7 @@ const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient,su
         setShowForm(false);
     }
     if(showForm){
-        return <RequestForm serviceType={serviceType} uuidPatient={uuidPatient} uuidSurvey={uuidSurvey}
+        return <RequestForm serviceType={serviceType} uuidPatient={uuidPatient} units={[]}
                     uuidInvestigation={uuidInvestigation} callBackRequestFinished={flipToRequestTable}/>
     }
     return (
