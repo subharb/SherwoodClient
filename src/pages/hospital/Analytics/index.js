@@ -149,7 +149,9 @@ export function Analytics(props) {
                 })
         }
         else{
-            setFilteredPatients(props.investigations.currentInvestigation.patientsPersonalData);
+            if(props.investigations.currentInvestigation){
+                setFilteredPatients(props.investigations.currentInvestigation.patientsPersonalData);
+            }
         }
         
     }, [departmentSelected]);
