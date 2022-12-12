@@ -249,22 +249,28 @@ export function Analytics(props) {
 						</Grid>
 					</Grid>
 				}
-				<Grid item xs={12}> 
-					<SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
-						uuidInstitution={props.investigations.currentInvestigation.institution.uuid}
-						startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
-						title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
-				</Grid>
-				<Grid item xs={12} lg={5} sm={6}> 
-					
-				</Grid>
-				<Grid item xs={12} >
-					<TimeTable title={props.translate("hospital.analytics.graphs.most-common-diagnosis.title")} loading={!mostCommonDiagnosis}
-						header={[props.translate("hospital.analytics.graphs.most-common-diagnosis.diagnostic"), props.translate("hospital.analytics.graphs.most-common-diagnosis.count")]}
-						data={mostCommonDiagnosis}
-						actionCallBack={(value) => changeDate(value)}
-					/>
-				</Grid>
+                {
+                    !departmentSelected &&
+                    <>
+                        <Grid item xs={12}> 
+                            <SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
+                                uuidInstitution={props.investigations.currentInvestigation.institution.uuid}
+                                startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
+                                title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
+                        </Grid>
+                        <Grid item xs={12} lg={5} sm={6}> 
+                            
+                        </Grid>
+                        <Grid item xs={12} >
+                            <TimeTable title={props.translate("hospital.analytics.graphs.most-common-diagnosis.title")} loading={!mostCommonDiagnosis}
+                                header={[props.translate("hospital.analytics.graphs.most-common-diagnosis.diagnostic"), props.translate("hospital.analytics.graphs.most-common-diagnosis.count")]}
+                                data={mostCommonDiagnosis}
+                                actionCallBack={(value) => changeDate(value)}
+                            />
+                        </Grid>
+                    </>
+                }
+				
 				{
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.BUSINESS_READ) &&
 					<Grid container item spacing={1}>
