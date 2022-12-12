@@ -9,8 +9,6 @@ import { Box, Button, Card, CardContent, Divider as MuiDivider, Grid, IconButton
 import { connect } from 'react-redux';
 import Loader from '../../../components/Loader';
 import { Translate, withLocalize } from 'react-localize-redux';
-
-
 import { ROUTE_401, ROUTE_404 } from '../../../routes';
 import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components/macro";
@@ -23,7 +21,6 @@ import { PERMISSION } from '../../../constants/types';
 import SearchTable from '../../dashboards/Analytics/SearchTable';
 import HospitalStats from './HospitalStats';
 import { useDeparmentsSelector } from '../../../hooks';
-import BarChart from '../../dashboards/Analytics/BarChart';
 import PatientsBarChart from '../../dashboards/Analytics/PatientsBarChart';
 
 const Divider = styled(MuiDivider)(spacing);
@@ -40,7 +37,7 @@ export function Analytics(props) {
 	const [filteredPatients, setFilteredPatients] = useState([]);
 	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
     const [patientsPerDepartment, setStatsPatientsPerDepartment] = useState(null);
-	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector();
+	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true);
 
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
 	
@@ -99,7 +96,8 @@ export function Analytics(props) {
 		setStartDate(dates[0].getTime());
 		setEndDate(dates[1].getTime());
 	}
-	function filterPatientsByDate(startDateFilter, endDateFilter){
+	
+    function filterPatientsByDate(startDateFilter, endDateFilter){
 		if(props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
 			const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
 				const dateCreated = new Date(patient.dateCreated);
@@ -109,6 +107,7 @@ export function Analytics(props) {
 			setFilteredPatients(tempFilterPatients);
 		}
 	}
+    
     useEffect(() => {
         let tempCountSex = {male : 0, female : 0};
         filteredPatients.forEach(patient => {
@@ -135,6 +134,7 @@ export function Analytics(props) {
         setCountAge(tempCountAge);
         setCountSex(tempCountSex);
     }, [filteredPatients]);
+    
     useEffect(() => {
         console.log("departmentSelected", departmentSelected);
         if(departmentSelected){
@@ -148,9 +148,13 @@ export function Analytics(props) {
                     }  
                 })
         }
+        else{
+            setFilteredPatients(props.investigations.currentInvestigation.patientsPersonalData);
+        }
         
     }, [departmentSelected]);
-	useEffect(() => {
+	
+    useEffect(() => {
 		async function getStats() {
 			getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate)
 							.then(response => {
@@ -265,7 +269,7 @@ export function Analytics(props) {
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.BUSINESS_READ) &&
 					<Grid container item spacing={1}>
 						<Grid item xs={12} >
-							<HospitalStats stats={statsFirstMonitoring} />
+							<HospitalStats stats={statsFirstMonitoring} departmentSelected={departmentSelected} />
 						</Grid>
 					</Grid>
 				}

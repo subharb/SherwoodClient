@@ -307,7 +307,7 @@ export function useUnitSelector(units:IUnit[]){
     return {unitSelected, renderUnitSelector, markAsErrorUnit}
 }
 
-export function useDeparmentsSelector(){
+export function useDeparmentsSelector(selectNoDepartment:boolean = false){
     const { departments } = useDepartments();
     const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(null);
     const [errorDepartment, setErrorDepartment] = React.useState(false);
@@ -317,6 +317,12 @@ export function useDeparmentsSelector(){
             setDepartmentSelected(departments[0].uuid as string);
         }
     }, [departments])
+
+    useEffect(() => {
+        if(departmentSelected === ""){
+            setDepartmentSelected(null);
+        }
+    }, [departmentSelected])
 
     function markAsErrorUnit(){
         setErrorDepartment(true);
@@ -330,9 +336,12 @@ export function useDeparmentsSelector(){
             return null;
         }
         else{
-            const optionsArray = departments.map((department) => {
+            let optionsArray = departments.map((department) => {
                 return <MenuItem value={department.uuid}>{department.name}</MenuItem>
             })
+            if(selectNoDepartment){
+                optionsArray = [<MenuItem value={""}><Translate id="pages.hospital.pharmacy.request.no_department" /></MenuItem>, ...optionsArray]
+            }
             return(
                 <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>
                     <FormControl variant="outlined"  style={{minWidth: 220}} error={errorDepartment} >

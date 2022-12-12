@@ -71,7 +71,7 @@ const PatientsBarChart: React.FC<PatientsBarChartProps> = ({ departments, title,
         else{
             return [seriesPerDepartment(departmentSelected)];
         }
-    }, [patients]);
+    }, [patients, statsPerDepartment]);
     
     if(categories && series){
         return(
