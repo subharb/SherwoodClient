@@ -7,7 +7,7 @@ import Form from '../../../components/general/form';
 import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_components';
 import Loader from '../../../components/Loader';
 import { IDepartment, IUnit, SnackbarTypeSeverity } from '../../../constants/types';
-import { useSnackBarState, SnackbarType, useUnitSelector } from '../../../hooks';
+import { useSnackBarState, SnackbarType, useUnitSelector, useDeparmentsSelector } from '../../../hooks';
 import { TabsSherwood } from '../../components/Tabs';
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation } from './types';
 
@@ -39,13 +39,13 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, units, serviceTy
         }
     }, [request]);
     
-    function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number, uuidUnit:string) {
+    function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number, uuidDepartment:string) {
         setLoading(true);
         const postObject = {
             servicesInvestigationId: servicesInvestigation,
             uuidPatientInvestigation:uuidPatient,
             typeRequest:serviceType,
-            uuidUnit:uuidUnit
+            uuidDepartment:uuidDepartment
         }
         axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/request", postObject, { headers: {"Authorization" : localStorage.getItem("jwt") }})
         .then(response => {
@@ -86,7 +86,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, units, serviceTy
     }
     return <RequestFormCoreLocalized loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
                 handleCloseSnackBar={handleClose} cancel={cancel} units={units} serviceType={serviceType}
-                callBackFormSubmitted={(servicesInvestigation:number[], uuidUnit:string) => makeRequest(uuidPatient, servicesInvestigation, serviceType, uuidUnit)} />;
+                callBackFormSubmitted={(servicesInvestigation:number[], uuidDepartment:string) => makeRequest(uuidPatient, servicesInvestigation, serviceType, uuidDepartment)} />;
 }
 
 export default RequestForm;
@@ -96,14 +96,14 @@ interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'u
     snackbar: SnackbarType;
     servicesInvestigation:IServiceInvestigation[],
     handleCloseSnackBar:()=>void,
-    callBackFormSubmitted:(serviceInvestigation:number[], uuidUnit:string) => void
+    callBackFormSubmitted:(serviceInvestigation:number[], uuidDepartment:string) => void
 }
 
 export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, units,
                                                                     translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
     const [errorServices, setErrorServices] = React.useState(false);
-    const {unitSelected, renderUnitSelector, markAsErrorUnit} = useUnitSelector(units);
+    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartment} = useDeparmentsSelector(false, true);
 
     const serviceCategories = useMemo(() => {
         let categories:{[id:string]:IServiceInvestigation[]} = {};
@@ -121,9 +121,9 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
   
     function callBackForm(){
         const serviceInvestigationIds = Object.keys(servicesInvestigationSelected).filter((key) => servicesInvestigationSelected[key] === true).map((key) => parseInt(key.replace(SERVICE_SEPARATOR, "")));
-        if(unitSelected === null || serviceInvestigationIds.length === 0){
-            if(unitSelected === null){
-                markAsErrorUnit();
+        if(departmentSelected === null || serviceInvestigationIds.length === 0){
+            if(departmentSelected === null){
+                markAsErrorDepartment();
             }
             if(serviceInvestigationIds.length === 0){
                 setErrorServices(true);   
@@ -134,7 +134,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         console.log("callBackForm", servicesInvestigationSelected);
         
         console.log("serviceInvestigationIds", serviceInvestigationIds);
-        callBackFormSubmitted(serviceInvestigationIds, unitSelected);
+        callBackFormSubmitted(serviceInvestigationIds, departmentSelected);
     }
 
     function renderServiceForm(category?:string){
@@ -203,7 +203,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                             <CardContent>
                                 <Typography variant="subtitle1" ><Translate id={`hospital.request_${["lab", "img"][serviceType]}`} /></Typography>
                                 {
-                                    renderUnitSelector()
+                                    renderDepartmentSelector()
                                 }
                                 {
                                     renderCore()

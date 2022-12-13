@@ -131,6 +131,7 @@
             "modal" : {
                 "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
             },
+            "all_departments" : ["All departments", "Todos los departamentos", "Tous les départements"],
             "department" : ["Department", "Departamento", "Service"],
             "departments" : ["Departments", "Departamentos", "Services"],
             "unit" : ["Unit", "Unidad", "Service"],

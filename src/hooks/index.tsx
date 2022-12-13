@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchUser } from "../services/authService";
-import { decryptData, encryptData } from '../utils';
+import { decryptData, encryptData, getCurrentResearcherUuid } from '../utils';
 import { useQuery } from 'react-query'
 import { SIGN_IN_ROUTE } from '../routes';
 import { FormControl, Grid, InputLabel, MenuItem, Select } from '@material-ui/core';
@@ -57,7 +58,7 @@ export function useProfileInfo(){
 }
 
 
-export function useDepartments(){
+export function useDepartments(researchersDepartmentsOnly:boolean = false){
     const investigations= useSelector((state:any) => state.investigations);
     const departments = useSelector((state:{hospital : {data: {departments : IDepartment[]}}}) => state.hospital.data.departments ? state.hospital.data.departments : null);
     const researchers = useSelector((state:any) => state.hospital.data.researchers ? state.hospital.data.researchers : []);
@@ -76,7 +77,23 @@ export function useDepartments(){
         }
     }, [investigations])
 
-    return { departments, researchers, investigations, loading}
+    let filteredDepartments = departments;
+    if(researchersDepartmentsOnly){
+        
+        const currentResearcherUuid = getCurrentResearcherUuid();
+        const currentResearcher = researchers.find((researcher:any) => researcher.uuid === currentResearcherUuid);
+        if(currentResearcher){
+            console.log(currentResearcher.units);
+            const tempDepartments:{[uuidDepartment :string]: IDepartment} = {};
+            currentResearcher.units.forEach((unit:IUnit) => {
+                tempDepartments[unit.department.uuid as string] = unit.department;
+            })
+            filteredDepartments = Object.values(tempDepartments);
+        }
+        
+    }
+
+    return { departments: filteredDepartments, researchers, investigations, loading}
 }
 
 export function useRequest(idRequest:number){
@@ -307,8 +324,8 @@ export function useUnitSelector(units:IUnit[]){
     return {unitSelected, renderUnitSelector, markAsErrorUnit}
 }
 
-export function useDeparmentsSelector(selectNoDepartment:boolean = false){
-    const { departments } = useDepartments();
+export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false){
+    const { departments } = useDepartments(researchersDepartmentsOnly);
     const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(null);
     const [errorDepartment, setErrorDepartment] = React.useState(false);
 
@@ -324,7 +341,7 @@ export function useDeparmentsSelector(selectNoDepartment:boolean = false){
         }
     }, [departmentSelected])
 
-    function markAsErrorUnit(){
+    function markAsErrorDepartment(){
         setErrorDepartment(true);
     }
 
@@ -340,7 +357,7 @@ export function useDeparmentsSelector(selectNoDepartment:boolean = false){
                 return <MenuItem value={department.uuid}>{department.name}</MenuItem>
             })
             if(selectNoDepartment){
-                optionsArray = [<MenuItem value={""}><Translate id="pages.hospital.pharmacy.request.no_department" /></MenuItem>, ...optionsArray]
+                optionsArray = [<MenuItem value={""}><Translate id="hospital.departments.all_departments" /></MenuItem>, ...optionsArray]
             }
             return(
                 <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>
@@ -363,5 +380,5 @@ export function useDeparmentsSelector(selectNoDepartment:boolean = false){
         }
         
     }
-    return { departmentSelected, renderDepartmentSelector, markAsErrorUnit, departments}
+    return { departmentSelected, renderDepartmentSelector, markAsErrorDepartment, departments}
 }

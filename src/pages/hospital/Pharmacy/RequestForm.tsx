@@ -4,7 +4,7 @@ import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { ButtonAdd, ButtonContinue, ButtonEdit } from '../../../components/general/mini_components';
 import { IDepartment, IUnit } from '../../../constants/types';
-import { useUnitSelector } from '../../../hooks';
+import { useDeparmentsSelector, useUnitSelector } from '../../../hooks';
 import { BillItems } from '../Billing/BillItems';
 import { Billable, BillItem, BillItemModes } from '../Billing/types';
 import { IPharmacyItem, IPharmacyRequest, RequestPharmacyItem } from './types';
@@ -23,7 +23,7 @@ export const PHARMACY_ITEM_REQUEST_COLUMNS = [{name:"concept", type:"autocomplet
 
 const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyItemsInit, units, makePharmacyRequestCallback }) => {
     const [addingPharmacyItems, setAddingPharmacyItems] = React.useState<boolean>(false);
-    const {unitSelected, renderUnitSelector, markAsErrorUnit} = useUnitSelector(units);
+    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartment} = useDeparmentsSelector(false, true);
     
     const [requestPharmacyItems, setRequestPharmacyItems] = React.useState<RequestPharmacyItem[]>([]);
     // @ts-ignore: Unreachable code error
@@ -48,15 +48,15 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
         setAddingPharmacyItems(false);
     }
     function validateRequest(){
-        if(unitSelected === null){
-            markAsErrorUnit();
+        if(departmentSelected === null){
+            markAsErrorDepartment();
             return;
         }
         if(requestPharmacyItems.length === 0){
             alert("Add at least one item");
             return;
         }
-        makePharmacyRequestCallback({uuidUnit:unitSelected, requestPharmacyItems});
+        makePharmacyRequestCallback({uuidDepartment:departmentSelected, requestPharmacyItems});
     }
     function renderPharmcyItems(){
         if(addingPharmacyItems){
@@ -119,7 +119,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
             return(
                 <>
                 {
-                    renderUnitSelector()
+                    renderDepartmentSelector()
                 }
                 {
                     renderPharmcyItems()
