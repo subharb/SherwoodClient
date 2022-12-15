@@ -1,6 +1,5 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import { ReactNode, useState } from "react";
-import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 
 
 export function a11yProps(index:number) {

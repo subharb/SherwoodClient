@@ -2,6 +2,7 @@ import { Box, Card } from '@material-ui/core';
 import React, { ReactElement, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
+import { TypographyThemed } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import { BillItems } from './BillItems';
 import { BillItem, BillItemModes, EditBillablesProps } from './types';
@@ -37,8 +38,10 @@ const EditBillables: React.FC<EditBillablesProps> = ({ billables, uuidInvestigat
                 closeModal={() => setShowModal(false)}>
                         <Translate id="" />
             </Modal>
+            <TypographyThemed variant='body2'>
             Billables are items that repeat on each bill. Add, edit or remove them here.
             If you delete a billable it will remain on past bills but it won't appear in new bills.
+            </TypographyThemed>
             {
                 renderBillables()
             }

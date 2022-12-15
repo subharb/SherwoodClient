@@ -64,7 +64,7 @@ function DatesSelector(props:Props){
                             
                         />
                         <Button variant="contained"
-                            color="secondary" 
+                            color="primary" 
                             onClick={showStartCalendar}><Translate id="general.startDate" />: {startDate.toLocaleDateString(props.activeLanguage.code)}</Button>
                     </Grid>
                     <Grid item >
@@ -85,7 +85,7 @@ function DatesSelector(props:Props){
                             }}
                         />
                         <Button variant="contained"
-                            color="secondary"
+                            color="primary" 
                             onClick={showEndCalendar}><Translate id="general.endDate" />: {endDate.toLocaleDateString()}</Button>
                     </Grid>
                 </Grid>

@@ -95,6 +95,8 @@ export function CustomThemeProvider(props){
         themeApp.sidebar.header.background = themeCustom.params.sidebar.background;
         themeApp.sidebar.footer.color = themeCustom.params.sidebar.color;
         themeApp.sidebar.footer.background = themeCustom.params.sidebar.background;
+        themeApp.buttonContinue.primary.background = themeCustom.params.nextButton.background;
+        themeApp.buttonContinue.primary.color = themeCustom.params.nextButton.color;
     }
     return (
         <MuiThemeProvider theme={themeApp}>

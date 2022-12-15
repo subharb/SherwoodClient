@@ -100,6 +100,11 @@ export const Divider = styled(MuiDivider)(spacing);
 
 const Fab = styled(MuiFab)(spacing);
 
+const FabThemed = styled(Fab)`
+    background-color:${props => props.theme.buttonContinue.primary.background};
+    color:${props => props.theme.buttonContinue.primary.color};
+`;
+
 export const DeleteHolder = styled.div`
     display: flex;
     color:#E16580;
@@ -131,7 +136,7 @@ export const IconPatient = (props) =>{
 const GreyButtonStyles = styled(Button)`
     &&&{
         background: #E5E5E5;
-        border: 3px solid #0F8678;
+        border: 3px solid ${props => props.theme.buttonContinue.primary.background};
         box-sizing: border-box;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         border-radius: 8px;
@@ -327,9 +332,9 @@ export const ButtonEmptyCheck = (props) =>{
 }
 
 export const ButtonAdd = (props) =>{
-    return  <Fab mx={2} size="small" color="secondary" aria-label="Add" {...props} >
+    return  <FabThemed mx={2} size="small" aria-label="Add" {...props} >
                 <AddIcon />
-            </Fab>
+            </FabThemed>
     // return <ButtonContinueStyles
     //     variant="contained"
     //     color="primary"
