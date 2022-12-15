@@ -371,7 +371,7 @@ function ShareInvestigation(props) {
         );
     }
     return (
-        <BoxBckgr color="text.primary" style={{color:"white"}}>
+        <BoxBckgr color="text.primary" >
             <Helmet title={props.translate("investigation.share.title")} />
             <Modal key="modal" open={addingResearcher || (indexResearcherToEdit !== false)} 
                 title={addingResearcher ? props.translate("investigation.share.add_researcher") : props.translate("investigation.share.edit_researcher")}>

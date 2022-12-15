@@ -5,6 +5,7 @@ import overrides from "./overrides";
 import breakpoints from "./breakpoints";
 import props from "./props";
 import shadows from "./shadows";
+import { useSelector } from "react-redux";
 
 const createTheme = (name) => {
     let themeConfig = variants.find((variant) => variant.name === name);

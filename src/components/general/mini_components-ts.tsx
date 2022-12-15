@@ -6,5 +6,5 @@ export const ColourChip = styled(Chip)<{rgbcolor:any}>`
     padding: 4px 0;
     font-size: 90%;
     background-color: ${(props) => props.rgbcolor};
-    color: ${(props) => props.theme.palette.common.white};
+    color: white;
 `;

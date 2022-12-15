@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ButtonAdd, ButtonSave } from './mini_components';
 import { LocalizeContextProps, LocalizedElement, LocalizedElementMap, Translate, withLocalize } from 'react-localize-redux';
 import {TextFieldSherwood} from "./FieldSherwood";
+import styled from 'styled-components';
 
 
 interface ITabPanel extends React.ReactElement{
@@ -13,6 +14,10 @@ interface Props extends LocalizeContextProps{
     defaultTab:number,
     children: ITabPanel[]
 }
+
+const BoxTabs = styled(Box)`
+    color:${props => props.theme.palette.primary.color};
+`;
 
 function a11yProps(index:number) {
     return {
@@ -54,7 +59,7 @@ const TabsSherwood:React.FC<Props> = (props) => {
     };
     return(
         <React.Fragment>
-            <Box style={{color:"white"}}>
+            <BoxTabs>
             <Tabs value={tabSelector} onChange={handleChange} variant="scrollable"
                 scrollButtons="auto" aria-label="basic tabs example">
                 {
@@ -63,7 +68,7 @@ const TabsSherwood:React.FC<Props> = (props) => {
                     })
                 }
             </Tabs>
-            </Box>
+            </BoxTabs>
             {
                 props.children.map((child, index) => {
                     return(

@@ -9,17 +9,17 @@ import pathLogo from '../img/logo_sherwood_web.png';
 import { spacing } from "@material-ui/system";
 import { getData } from '../utils';
 import {
-  Badge,
-  Box as MuiBox,
-  Chip,
-  Grid,
-  Avatar,
-  Collapse,
-  Drawer as MuiDrawer,
-  List as MuiList,
-  ListItem,
-  ListItemText,
-  Typography,
+    Badge,
+    Box as MuiBox,
+    Chip,
+    Grid,
+    Avatar,
+    Collapse,
+    Drawer as MuiDrawer,
+    List as MuiList,
+    ListItem,
+    ListItemText,
+    Typography,
 } from "@material-ui/core";
 
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
@@ -31,6 +31,7 @@ import { sidebarRoutes as routes } from "../routes/index";
 import { sidebarRoutesHospital as routesHospital } from "../routes/index";
 
 import { ReactComponent as Logo } from "../vendor/logo.svg";
+import { useSelector } from "react-redux";
 
 const LinkNoDecoration = styled(NavLink)`
     text-decoration:none;
@@ -125,7 +126,7 @@ const Category = styled(ListItem)`
 
   &.${(props) => props.activeClassName} {
     background-color: ${(props) =>
-    darken(0.03, props.theme.sidebar.background)};
+        darken(0.03, props.theme.sidebar.background)};
 
     span {
       color: ${(props) => props.theme.sidebar.color};
@@ -165,12 +166,12 @@ const Link = styled(ListItem)`
 
   &:hover {
     background-color: ${(props) =>
-    darken(0.015, props.theme.sidebar.background)};
+        darken(0.015, props.theme.sidebar.background)};
   }
 
   &.${(props) => props.activeClassName} {
     background-color: ${(props) =>
-    darken(0.03, props.theme.sidebar.background)};
+        darken(0.03, props.theme.sidebar.background)};
 
     span {
       color: ${(props) => props.theme.sidebar.color};
@@ -220,7 +221,7 @@ const SidebarSection = styled(Typography)`
 
 const SidebarFooter = styled.div`
   background-color: ${(props) =>
-    props.theme.sidebar.footer.background} !important;
+        props.theme.sidebar.footer.background} !important;
   padding: ${(props) => props.theme.spacing(2.75)}px
     ${(props) => props.theme.spacing(4)}px;
   border-right: 1px solid rgba(0, 0, 0, 0.12);
@@ -241,7 +242,7 @@ const SidebarFooterBadge = styled(Badge)`
   margin-right: ${(props) => props.theme.spacing(1)}px;
   span {
     background-color: ${(props) =>
-    props.theme.sidebar.footer.online.background};
+        props.theme.sidebar.footer.online.background};
     border: 1.5px solid ${(props) => props.theme.palette.common.white};
     height: 12px;
     width: 12px;
@@ -250,182 +251,194 @@ const SidebarFooterBadge = styled(Badge)`
 `;
 
 const SidebarCategory = ({
-  name,
-  icon,
-  classes,
-  isOpen,
-  isCollapsable,
-  badge,
-  ...rest
+    name,
+    icon,
+    classes,
+    isOpen,
+    isCollapsable,
+    badge,
+    ...rest
 }) => {
-  return (
-    <Category {...rest}>
-      {icon}
-      <CategoryText data-testid={name}>{name}</CategoryText>
-      {isCollapsable ? (
-        isOpen ? (
-          <CategoryIconMore />
-        ) : (
-          <CategoryIconLess />
-        )
-      ) : null}
-      {badge ? <CategoryBadge label={badge} /> : ""}
-    </Category>
-  );
+    return (
+        <Category {...rest}>
+            {icon}
+            <CategoryText data-testid={name}>{name}</CategoryText>
+            {isCollapsable ? (
+                isOpen ? (
+                    <CategoryIconMore />
+                ) : (
+                    <CategoryIconLess />
+                )
+            ) : null}
+            {badge ? <CategoryBadge label={badge} /> : ""}
+        </Category>
+    );
 };
 
 const SidebarLink = ({ name, to, badge, icon }) => {
-  return (
-    <Link
-      button
-      dense
-      component={NavLink}
-      exact
-      data-testid={name}
-      to={to}
-      activeClassName="active"
-    >
-      <LinkText>{name}</LinkText>
-      {badge ? <LinkBadge label={badge} /> : ""}
-    </Link>
-  );
+    return (
+        <Link
+            button
+            dense
+            component={NavLink}
+            exact
+            data-testid={name}
+            to={to}
+            activeClassName="active"
+        >
+            <LinkText>{name}</LinkText>
+            {badge ? <LinkBadge label={badge} /> : ""}
+        </Link>
+    );
 };
 
 const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) => {
-  const initOpenRoutes = () => {
-    /* Open collapse element that matches current url */
-    const pathName = location.pathname;
+    const investigations = useSelector((state) => state.investigations);
+    const billingInfo = investigations.currentInvestigation ? investigations.currentInvestigation.billingInfo : null;
 
-    let _routes = {};
+    const initOpenRoutes = () => {
+        /* Open collapse element that matches current url */
+        const pathName = location.pathname;
 
-    routes.forEach((route, index) => {
-      const isActive = pathName.indexOf(route.path) === 0;
-      const isOpen = route.open;
-      const isHome = route.containsHome && pathName === "/";
+        let _routes = {};
 
-      _routes = Object.assign({}, _routes, {
-        [index]: isActive || isOpen || isHome,
-      });
-    });
+        routes.forEach((route, index) => {
+            const isActive = pathName.indexOf(route.path) === 0;
+            const isOpen = route.open;
+            const isHome = route.containsHome && pathName === "/";
 
-    return _routes;
-  };
+            _routes = Object.assign({}, _routes, {
+                [index]: isActive || isOpen || isHome,
+            });
+        });
 
-  const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
-  const renderCategory = (category, index, openRoutes) => {
-    const hasPermission = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
-    const hasFunctionality = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.filter(value => category.functionalities.includes(value)).length > 0;
-    if((category.permissions.length === 0 || hasPermission) && (category.functionalities.length === 0 || hasFunctionality))
-    return category.children && category.icon ? (
-      <React.Fragment key={index}>
-        <SidebarCategory
-          isOpen={!openRoutes[index]}
-          isCollapsable={true}
-          name={category.id}
-          icon={category.icon}
-          button={true}
-          onClick={() => toggle(index)}
-        />
-  
-        <Collapse
-          in={openRoutes[index]}
-          timeout="auto"
-          unmountOnExit
-        >
-          {category.children.map((route, index) => (
-            <SidebarLink
-              key={index}
-              name={route.name}
-              to={route.path}
-              icon={route.icon}
-              badge={route.badge}
-            />
-          ))}
-        </Collapse>
-      </React.Fragment>
-    ) : category.icon ? (
-      <SidebarCategory
-        isCollapsable={false}
-        name={category.id}
-        to={category.path}
-        activeClassName="active"
-        component={NavLink}
-        icon={category.icon}
-        exact
-        button
-        badge={category.badge}
-      />
-    ) : null
-  }
+        return _routes;
+    };
 
-  const toggle = (index) => {
-    // Collapse all elements
-    Object.keys(openRoutes).forEach(
-      (item) =>
-        openRoutes[index] ||
+    const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
+    const renderCategory = (category, index, openRoutes) => {
+        const hasPermission = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
+        const hasFunctionality = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.filter(value => category.functionalities.includes(value)).length > 0;
+        if ((category.permissions.length === 0 || hasPermission) && (category.functionalities.length === 0 || hasFunctionality))
+            return category.children && category.icon ? (
+                <React.Fragment key={index}>
+                    <SidebarCategory
+                        isOpen={!openRoutes[index]}
+                        isCollapsable={true}
+                        name={category.id}
+                        icon={category.icon}
+                        button={true}
+                        onClick={() => toggle(index)}
+                    />
+
+                    <Collapse
+                        in={openRoutes[index]}
+                        timeout="auto"
+                        unmountOnExit
+                    >
+                        {category.children.map((route, index) => (
+                            <SidebarLink
+                                key={index}
+                                name={route.name}
+                                to={route.path}
+                                icon={route.icon}
+                                badge={route.badge}
+                            />
+                        ))}
+                    </Collapse>
+                </React.Fragment>
+            ) : category.icon ? (
+                <SidebarCategory
+                    isCollapsable={false}
+                    name={category.id}
+                    to={category.path}
+                    activeClassName="active"
+                    component={NavLink}
+                    icon={category.icon}
+                    exact
+                    button
+                    badge={category.badge}
+                />
+            ) : null
+    }
+    function renderLogo(){
+        if(billingInfo){
+            return <img src={billingInfo.logoBlob} alt={investigations.currentInvestigation.name} height="55" /> 
+        }
+        else{
+            return <img src={pathLogo} alt="Sherwood Science" height="55" /> 
+        }
+    }
+    const toggle = (index) => {
+        // Collapse all elements
+        Object.keys(openRoutes).forEach(
+            (item) =>
+                openRoutes[index] ||
+                setOpenRoutes((openRoutes) =>
+                    Object.assign({}, openRoutes, { [item]: false })
+                )
+        );
+
+        // Toggle selected element
         setOpenRoutes((openRoutes) =>
-          Object.assign({}, openRoutes, { [item]: false })
-        )
-    );
+            Object.assign({}, openRoutes, { [index]: !openRoutes[index] })
+        );
+    };
+    let appRoutes = routes;
+    if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
+        appRoutes = routesHospital;
+    }
+    return (
+        <Drawer variant="permanent" {...rest}>
+            <Brand component={NavLink} to="/" button>
+                <Box ml={1} pt={6}>
+                    {
+                        renderLogo()
+                    }
+                </Box>
+            </Brand>
+            <Scrollbar>
+                <List disablePadding>
+                    <Items>
+                        {appRoutes.map((category, index) => (
+                            <React.Fragment key={index}>
+                                {category.header ? (
+                                    <SidebarSection>{category.header}</SidebarSection>
+                                ) : null}
 
-    // Toggle selected element
-    setOpenRoutes((openRoutes) =>
-      Object.assign({}, openRoutes, { [index]: !openRoutes[index] })
-    );
-  };
-  let appRoutes = routes;
-  if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
-    appRoutes = routesHospital;
-  }
-  return (
-    <Drawer variant="permanent" {...rest}>
-      <Brand component={NavLink} to="/" button>
-        <Box ml={1} pt={6}>
-          <img src={pathLogo} alt="Sherwood Science" height="55" /> {"  "}
-        </Box>
-      </Brand>
-      <Scrollbar>
-        <List disablePadding>
-          <Items>
-            {appRoutes.map((category, index) => (
-              <React.Fragment key={index}>
-                {category.header ? (
-                  <SidebarSection>{category.header}</SidebarSection>
-                ) : null}
-                
-                { renderCategory(category, index, openRoutes)}
-              </React.Fragment>
-            ))}
-          </Items>
-        </List>
-      </Scrollbar>
-      <SidebarFooter>
-        <Grid container spacing={2}>
-          <Grid item>
-            <SidebarFooterBadge
-              overlap="circle"
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              variant="dot"
-            >
-              <Avatar
-                alt="Lucy Lavender"
-                src="/static/img/avatars/avatar-1.jpg"
-              />
-            </SidebarFooterBadge>
-          </Grid>
-          <Grid item>
-            <SidebarFooterText variant="body2">{getData("name") + " " + getData("surnames")}</SidebarFooterText>
-            {/* <SidebarFooterSubText variant="caption">
+                                {renderCategory(category, index, openRoutes)}
+                            </React.Fragment>
+                        ))}
+                    </Items>
+                </List>
+            </Scrollbar>
+            <SidebarFooter>
+                <Grid container spacing={2}>
+                    <Grid item>
+                        <SidebarFooterBadge
+                            overlap="circle"
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "right",
+                            }}
+                            variant="dot"
+                        >
+                            <Avatar
+                                alt="Lucy Lavender"
+                                src="/static/img/avatars/avatar-1.jpg"
+                            />
+                        </SidebarFooterBadge>
+                    </Grid>
+                    <Grid item>
+                        <SidebarFooterText variant="body2">{getData("name") + " " + getData("surnames")}</SidebarFooterText>
+                        {/* <SidebarFooterSubText variant="caption">
                         UX Designer
                     </SidebarFooterSubText> */}
-          </Grid>
-        </Grid>
-      </SidebarFooter>
-    </Drawer>
-  );
+                    </Grid>
+                </Grid>
+            </SidebarFooter>
+        </Drawer>
+    );
 };
 
 export default withRouter(Sidebar);

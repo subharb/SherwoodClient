@@ -7,7 +7,7 @@ import {
   jssPreset,
 } from "@material-ui/core/styles";
 
-import createTheme from "./theme";
+
 import Routes from "./routes/Routes";
 
 const jss = create({
@@ -16,7 +16,6 @@ const jss = create({
 });
 
 function App() {
-
   return (
     <Routes />
   );

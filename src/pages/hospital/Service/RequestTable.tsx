@@ -1,8 +1,10 @@
+import { Typography } from '@material-ui/core';
 import { blue, brown, green, orange, red, yellow } from '@material-ui/core/colors';
 import { ContactSupportOutlined } from '@material-ui/icons';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
+import { TypographyThemed } from '../../../components/general/mini_components';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
@@ -157,7 +159,10 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidP
         return <Loader />
     }
     return (
-        <Translate id="pages.hospital.services.no_requests" />
+        <TypographyThemed variant="body2">
+            <Translate id="pages.hospital.services.no_requests" />
+        </TypographyThemed>
+        
     )
 }
 

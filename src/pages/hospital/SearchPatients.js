@@ -11,7 +11,7 @@ import Loader from '../../components/Loader';
 
 import PatientsTable from '../../components/general/PatientsTable';
 
-import { ButtonBack, ButtonCancel, ButtonContinue } from '../../components/general/mini_components';
+import { ButtonBack, ButtonCancel, ButtonContinue, GridContainer } from '../../components/general/mini_components';
 import { connect } from 'react-redux';
 
 import { useDispatch } from "react-redux";
@@ -24,6 +24,7 @@ import { TabPanel } from '@material-ui/lab';
 import TabsSherwood from '../../components/general/TabsSherwood';
 import ICT from '../../components/general/SmartFields/ICT';
 import { searchPatientByDiagnosis } from '../../services';
+import styled from 'styled-components';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -33,6 +34,8 @@ const ID_FIELD = {
     label : "id",
     order: 0
 }
+
+
 
 function SearchPatients(props){
     const [valuesSearch, setValuesSearch] = useState(null);
@@ -299,12 +302,12 @@ export const SearchPatientsComponent = withLocalize((props) => {
                     
             </Modal>
             <Grid container spacing={2} >
-                <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
+                <GridContainer item xs={12}>
                     <SearchPatientIcon style={{fontSize:"2.5rem"}} />
                     <Typography variant="h1" gutterBottom display="inline" style={{marginBottom:"0px"}}>
                         <Translate id="pages.hospital.search-patient.title" />
                     </Typography>
-                </Grid>
+                </GridContainer>
                 
                 <Grid item xs={12}>
                     {

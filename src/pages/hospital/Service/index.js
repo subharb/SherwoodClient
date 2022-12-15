@@ -76,9 +76,6 @@ export function TestsHomeComponent(props) {
         else{
             nextUrl = HOSPITAL_IMAGING_REQUEST.replace(":idRequest", request.id)
         }
-        
-        
-        
         if(nextUrl){
             history.push(nextUrl);
         }

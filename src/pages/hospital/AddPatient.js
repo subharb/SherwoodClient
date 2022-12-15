@@ -9,7 +9,7 @@ import { savePatientAction, updatePatientAction } from '../../redux/actions/pati
 import { CloseIcon } from '@material-ui/data-grid';
 import Loader from '../../components/Loader';
 import { Translate } from 'react-localize-redux';
-import { BoxBckgr } from '../../components/general/mini_components';
+import { BoxBckgr, GridContainer } from '../../components/general/mini_components';
 import { useDispatch } from "react-redux";
 import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
@@ -24,7 +24,7 @@ export function AddPatient(props) {
     let { uuidPatient } = useParams();
     
     const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
-    const patientsInvestigation = props.patients.data[props.investigations.currentInvestigation.uuid];
+    const patientsInvestigation = props.investigations.currentInvestigation &&  props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     return <AddPatientComponent investigations={props.investigations} patient={patient} patientsInvestigation={patientsInvestigation} {...props} />
 }   
 
@@ -127,7 +127,7 @@ export function AddPatientComponent(props) {
         return <Loader />
     }
     return (
-        <BoxBckgr color="text.primary" style={{color:"white"}}>
+        <BoxBckgr color="text.primary">
             <Modal key="modal" open={confirmPatient} 
                 title={<Translate id="pages.hospital.confirm-patient.title" />}
                 closeModal={() => setConfirmPatient(null)}
@@ -175,7 +175,7 @@ export function AddPatientComponent(props) {
                 </Snackbar>
             
             <Grid container spacing={3}>
-                <Grid item xs={12} style={{display:"flex", justifyContent:"center", alignItems:"center", color:"white"}}>
+                <GridContainer item xs={12}>
                     {!props.patient &&
                         <PersonAddSharp style={{fontSize:"2.5rem"}} />
                     }
@@ -193,7 +193,7 @@ export function AddPatientComponent(props) {
                         <Translate id="pages.hospital.edit-patient" />
                     }
                     </Typography>
-                </Grid>
+                </GridContainer>
                 <Grid item xs={12}>
                     <Paper style={{padding:'1rem'}}>
                         <PersonalDataForm fields={ props.investigations.currentInvestigation.personalFields} hospital={true}

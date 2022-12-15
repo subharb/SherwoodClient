@@ -2,10 +2,9 @@ import { Grid, IconButton, Typography } from '@material-ui/core';
 import React from 'react';
 import iconImages from "../../img/icons/images_white.png";
 import iconLab from "../../img/icons/lab_white.png";
-import { ServiceType } from '../hospital/Service/types';
 import styled from 'styled-components';
 import { Translate } from 'react-localize-redux';
-import { ButtonAdd, IconGenerator } from '../../components/general/mini_components';
+import { BiotechIcon, ButtonAdd, IconGenerator } from '../../components/general/mini_components';
 import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
 
 interface SectionHeaderProps {
@@ -20,16 +19,20 @@ const IconHolder = styled.div`
     padding-left:1rem;
 `;
 
+const TypographyStyled = styled(Typography)`
+    color:${props => props.theme.palette.primary.color};
+`
+
 const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallback, editCallback }) => {
    
     function renderIcon(){
         switch(section){
             case "laboratory":
-                return <img src={iconLab } alt="images" width="20" />
+                return <IconGenerator type="biotech" />
             case "medical-imaging":
                 return <img src={iconImages } alt="images" width="20" />
             case "pharmacy":
-                return <LocalPharmacyIcon style={{color:"white"}} />
+                return <IconGenerator type="pharmacy" />
         }
     }
     return (
@@ -40,16 +43,16 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallbac
             }
         </IconHolder>
         <div>
-            <Typography variant="h3" gutterBottom display="inline" style={{marginBottom:"0px", color:"white"}}>
+            <TypographyStyled variant="h3" gutterBottom display="inline">
                 <Translate id={`pages.hospital.${section}.title`} />
-            </Typography>
+            </TypographyStyled>
             {
                 editCallback && 
                     <IconButton 
                     onClick={(e) => {
                         editCallback();
                     }}>
-                    <IconGenerator style={{  color: "white" }} type={!edit ? "settings" : "back"} />
+                    <IconGenerator type={!edit ? "settings" : "back"} />
                 </IconButton>
             }
             
