@@ -10,7 +10,7 @@ import { reduxForm, Field, submit, FormSection } from 'redux-form';
 import { TextField, Grid, Container, Card, CardContent, Typography, InputLabel, Select, MenuItem, FormControl } from '@material-ui/core';
 import { EnhancedTable } from '../../general/EnhancedTable';
 import OrderableTable from '../../general/OrderableTable';
-import { TYPE_SURVEYS } from '../../../constants';
+import { CATEGORY_SURVEYS, TYPE_SURVEYS } from '../../../constants';
 /**
  * An EDC is a collection of sections
  */
@@ -44,8 +44,9 @@ class DataCollection extends Component{
         this.callBackNewSection = this.callBackNewSection.bind(this);
         this.handleChangeUnit = this.handleChangeUnit.bind(this);
         this.hangleChangeTypeSurvey = this.hangleChangeTypeSurvey.bind(this);
+        this.hangleChangeCategorySurvey = this.hangleChangeCategorySurvey.bind(this);
         this.changeName = this.changeName.bind(this);
-        const initialState = {name:"", sections: [], addingSection:false, editingIndexSection:false, unit:props.initialData && props.initialData.unit ? props.initialData.unit.id : false, type : props.initialData && props.initialData.type}
+        const initialState = {name:"", sections: [], addingSection:false, editingIndexSection:false, unit:props.initialData && props.initialData.unit ? props.initialData.unit.id : false, type : props.initialData && props.initialData.type, category : props.initialData && props.initialData.category}
         this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
     }
     changeName(e){
@@ -200,6 +201,12 @@ class DataCollection extends Component{
         tempState.type =  event.target.value;
         this.setState(tempState);
     }
+    hangleChangeCategorySurvey(event){
+        console.log(event.target.value);
+        const tempState = {...this.state};
+        tempState.category =  event.target.value;
+        this.setState(tempState);
+    }
     renderUnits(){
         const units = [];
         this.props.departments.forEach((dep) => dep.units.forEach((unit) => {
@@ -234,14 +241,15 @@ class DataCollection extends Component{
     renderType(){
         
         return (
+            <>
             <Grid item xs={12}>
                 <FormControl >
-                    <InputLabel id="demo-simple-select-label">Type: </InputLabel>
+                    <InputLabel id="type_survey">Type: </InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId="type_survey"
+                        id="type_survey"
                         value={this.state.type}
-                        label="Unit"
+                        label="Type"
                         onChange={this.hangleChangeTypeSurvey}
                     >
                         {
@@ -252,6 +260,25 @@ class DataCollection extends Component{
                     </Select>
                 </FormControl>
             </Grid>
+            <Grid item xs={12}>
+                <FormControl >
+                    <InputLabel id="category_survey">Category: </InputLabel>
+                    <Select
+                        labelId="category_survey"
+                        id="category_survey"
+                        value={this.state.category}
+                        label="Category"
+                        onChange={this.hangleChangeCategorySurvey}
+                    >
+                        {
+                            CATEGORY_SURVEYS.map((categorySurvey) => {
+                                return <MenuItem value={categorySurvey.value}>{categorySurvey.name}</MenuItem>
+                            })
+                        }
+                    </Select>
+                </FormControl>
+            </Grid>
+            </>
         )
     }
     render(){

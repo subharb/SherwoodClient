@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import { func } from "prop-types";
+import jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import { Translate } from 'react-localize-redux';
@@ -848,6 +848,11 @@ export function formatData(dataBytes){
         return dataBytes+"B";
     }
       
+}
+
+export function getCurrentResearcherUuid(){
+    const payload = jwt.decode(localStorage.getItem("jwt"));
+    return payload.uuid;
 }
 
 export  function datalogger(wrapped){

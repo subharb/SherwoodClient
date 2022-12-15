@@ -17,7 +17,7 @@ const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, surveySelecte
     function renderSurveysInUnit(surveysPerUnit:{[id: string] : any[]}){
         const surveysInUnit = Object.values(surveysPerUnit).map((surveysInUnit) => <Grid container xs={12} style={{textAlign:"center"}}>{surveysInUnit.map((dataCollection, index) => {
             return(
-                <Grid item xs={12} style={{textAlign:"center"}}>
+                <Grid item xs={12} style={{textAlign:"center", marginTop:"0.5rem"}}>
                     <ButtonGreyBorderGrey data-testid={dataCollection.name} onClick={() => surveySelectedCallback(dataCollection.uuid)}>{dataCollection.name}</ButtonGreyBorderGrey>
                 </Grid>
             )})
@@ -43,6 +43,7 @@ const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, surveySelecte
         else{
             const surveysPerUnitDict:{[id: string] : any[]} = {};
             const unitsWithSurveys:IUnit[] = [];
+            
             units.forEach((unit) => {
                 const surveysInUnit = filteredSurveysWithUnit.filter((survey) => {
                     console.log(survey);
@@ -55,6 +56,18 @@ const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, surveySelecte
                 })
             const surveysPerUnit = renderSurveysInUnit(surveysPerUnitDict);
             
+            if(unitsWithSurveys.length === 1){
+                return renderSurveysInUnit(surveysPerUnitDict)
+            }
+            if(unitsWithSurveys.length === 0){
+                return filteredSurveysWithUnit.map((survey) => {
+                    return(
+                        <Grid item xs={12} style={{textAlign:"center", marginTop:"0.5rem"}}>
+                            <ButtonGreyBorderGrey data-testid={survey.name} onClick={() => surveySelectedCallback(survey.uuid)}>{survey.name}</ButtonGreyBorderGrey>
+                        </Grid>
+                    )
+                })
+            }
             return (
                 <div >
                     <TabsSherwood name="Billing Info" style={{  color: "white" }} 

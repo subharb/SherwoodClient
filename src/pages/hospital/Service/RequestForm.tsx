@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Grid, Snackbar, Typography } from '@material-ui/core';
+import { Card, CardContent, Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
 import React, { useEffect, useMemo } from 'react';
@@ -6,8 +6,8 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import Form from '../../../components/general/form';
 import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_components';
 import Loader from '../../../components/Loader';
-import { SnackbarTypeSeverity } from '../../../constants/types';
-import { useSnackBarState, SnackbarType } from '../../../hooks';
+import { IDepartment, IUnit, SnackbarTypeSeverity } from '../../../constants/types';
+import { useSnackBarState, SnackbarType, useUnitSelector, useDeparmentsSelector } from '../../../hooks';
 import { TabsSherwood } from '../../components/Tabs';
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation } from './types';
 
@@ -15,13 +15,13 @@ interface RequestFormProps {
     serviceType: number;
     uuidPatient:string,
     uuidInvestigation:string,
-    uuidSurvey:string,
+    units:IUnit[],
     initServicesInvestigation?: IServiceInvestigation[],
     cancel?:() => void,
     callBackRequestFinished:(requestsService:IRequest)=>void,  
 }
 
-const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, serviceType, uuidInvestigation, initServicesInvestigation, callBackRequestFinished, cancel }) => {
+const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, units, serviceType, uuidInvestigation, initServicesInvestigation, callBackRequestFinished, cancel }) => {
     const [loading, setLoading] = React.useState(false);
     const [snackbar, setShowSnackbar] = useSnackBarState();
     const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(initServicesInvestigation ? initServicesInvestigation : null);
@@ -39,13 +39,13 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, servi
         }
     }, [request]);
     
-    function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number) {
+    function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number, uuidDepartment:string) {
         setLoading(true);
         const postObject = {
             servicesInvestigationId: servicesInvestigation,
             uuidPatientInvestigation:uuidPatient,
             typeRequest:serviceType,
-            uuidSurvey:uuidSurvey
+            uuidDepartment:uuidDepartment
         }
         axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/request", postObject, { headers: {"Authorization" : localStorage.getItem("jwt") }})
         .then(response => {
@@ -79,10 +79,14 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient,uuidSurvey, servi
         }
 
     }, []);
-
+    if(!units || units.length === 0){
+        return(
+            <Typography variant="body2"><Translate id="pages.hospital.pharmacy.no_units" /></Typography>
+        )
+    }
     return <RequestFormCoreLocalized loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
-                handleCloseSnackBar={handleClose} cancel={cancel} uuidSurvey={uuidSurvey} serviceType={serviceType}
-                callBackFormSubmitted={(servicesInvestigation:number[]) => makeRequest(uuidPatient, servicesInvestigation, serviceType)} />;
+                handleCloseSnackBar={handleClose} cancel={cancel} units={units} serviceType={serviceType}
+                callBackFormSubmitted={(servicesInvestigation:number[], uuidDepartment:string) => makeRequest(uuidPatient, servicesInvestigation, serviceType, uuidDepartment)} />;
 }
 
 export default RequestForm;
@@ -92,11 +96,15 @@ interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'u
     snackbar: SnackbarType;
     servicesInvestigation:IServiceInvestigation[],
     handleCloseSnackBar:()=>void,
-    callBackFormSubmitted:(serviceInvestigation:number[]) => void
+    callBackFormSubmitted:(serviceInvestigation:number[], uuidDepartment:string) => void
 }
 
-export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
+export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, units,
+                                                                    translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
+    const [errorServices, setErrorServices] = React.useState(false);
+    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartment} = useDeparmentsSelector(false, true);
+
     const serviceCategories = useMemo(() => {
         let categories:{[id:string]:IServiceInvestigation[]} = {};
         servicesInvestigation.forEach(serviceInvestigation => {
@@ -110,11 +118,23 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
     const typeTestString = serviceType === 0 ? "laboratory" :"medical-imaging";
     const SERVICE_SEPARATOR = "service_";
     
+  
     function callBackForm(){
-        console.log("callBackForm", servicesInvestigationSelected);
         const serviceInvestigationIds = Object.keys(servicesInvestigationSelected).filter((key) => servicesInvestigationSelected[key] === true).map((key) => parseInt(key.replace(SERVICE_SEPARATOR, "")));
+        if(departmentSelected === null || serviceInvestigationIds.length === 0){
+            if(departmentSelected === null){
+                markAsErrorDepartment();
+            }
+            if(serviceInvestigationIds.length === 0){
+                setErrorServices(true);   
+            }
+            return;
+        }
+    
+        console.log("callBackForm", servicesInvestigationSelected);
+        
         console.log("serviceInvestigationIds", serviceInvestigationIds);
-        callBackFormSubmitted(serviceInvestigationIds);
+        callBackFormSubmitted(serviceInvestigationIds, departmentSelected);
     }
 
     function renderServiceForm(category?:string){
@@ -136,7 +156,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
             })
         )
     }
-
+    
     function renderCore(){
         if(Object.values(serviceCategories).length === 1){
             return(
@@ -177,18 +197,36 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                             <Translate id={snackbar.message} />                            
                         </Alert>
                 </Snackbar>
-            
-            {
-                renderCore()
-            }
-            
-            <Grid container item xs={12} spacing={1}>
-                <Grid item>
-                    <ButtonAccept onClick={callBackForm}><Translate id="general.add" /></ButtonAccept> 
+                <Grid container spacing={3}>
+                    <Grid xs={12} item>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="subtitle1" ><Translate id={`hospital.request_${["lab", "img"][serviceType]}`} /></Typography>
+                                {
+                                    renderDepartmentSelector()
+                                }
+                                {
+                                    renderCore()
+                                }
+                            </CardContent>
+                        </Card>
                 </Grid>
-                {/* <Grid item>
-                    <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
-                </Grid> */}
+                {
+                    errorServices &&
+                    <Grid item xs={12}>
+                        <Alert severity="error">
+                            <Translate id="pages.hospital.services.request.select_services" />
+                        </Alert>
+                    </Grid>
+                }
+                <Grid container item xs={12}>
+                    <Grid item>
+                        <ButtonAccept onClick={callBackForm}><Translate id="pages.hospital.services.request.make_request" /></ButtonAccept> 
+                    </Grid>
+                    <Grid item style={{marginLeft:"1rem"}}>
+                        <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>
+                    </Grid>
+                </Grid>   
             </Grid>
         </>
     );

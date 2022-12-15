@@ -25,13 +25,13 @@ const RequestField: React.FC<RequestFieldProps> = ({ serviceType, uuidSurvey, in
                 case 0:
                     elementSelected({
                         request_lab : requestServiceInvestigation.serviceInvestigation.service.name,
-                        request_id : requestServiceInvestigation.id,
+                        request_id : requestServiceInvestigation.serviceInvestigation.service.id,
                     });
                 break;
                 case 1:
                     elementSelected({
                         request_img : requestServiceInvestigation.serviceInvestigation.service.name,
-                        request_id :requestServiceInvestigation.id
+                        request_id : requestServiceInvestigation.serviceInvestigation.service.id
                     });
             }
         })
@@ -42,10 +42,9 @@ const RequestField: React.FC<RequestFieldProps> = ({ serviceType, uuidSurvey, in
     }
     return (
         <>
-            <RequestForm uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} 
-                uuidSurvey={uuidSurvey} 
+            {/* <RequestForm uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} 
                 callBackRequestFinished={(reqs) => callBackRequestFinished(reqs)} cancel={cancel}
-                initServicesInvestigation={initServicesInvestigation} serviceType={serviceType} />
+                initServicesInvestigation={initServicesInvestigation} serviceType={serviceType} /> */}
         </>
     );
 };

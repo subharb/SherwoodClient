@@ -4,29 +4,29 @@ import {  useHistory } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import PropTypes from 'prop-types';
 import { green, red, orange, yellow, blue, amber, brown, cyan, deepOrange } from "@material-ui/core/colors";
-import { Box, Button, Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
+import { Box, Button, Card, CardContent, Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
 
 import { connect } from 'react-redux';
 import Loader from '../../../components/Loader';
 import { Translate, withLocalize } from 'react-localize-redux';
-
-
 import { ROUTE_401, ROUTE_404 } from '../../../routes';
 import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components/macro";
 import { yearsFromDate } from '../../../utils';
 import TimeTable from '../../dashboards/Analytics/TimeTable';
-import { getStatsFirstMonitoring, getStatsMostCommonDiagnosis } from '../../../services';
+import { getPatientIdFromDepartment, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsPatientsPerDepartment } from '../../../services';
 import { spacing } from "@material-ui/system";
 import DatesSelector from '../../dashboards/Analytics/DatesSelector';
 import { PERMISSION } from '../../../constants/types';
 import SearchTable from '../../dashboards/Analytics/SearchTable';
 import HospitalStats from './HospitalStats';
+import { useDeparmentsSelector } from '../../../hooks';
+import PatientsBarChart from '../../dashboards/Analytics/PatientsBarChart';
 
 const Divider = styled(MuiDivider)(spacing);
 
 export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
-
+const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
 const COUNT_AGE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 export function Analytics(props) {
 	const history = useHistory();
@@ -36,7 +36,9 @@ export function Analytics(props) {
 	const [mostCommonDiagnosis, setMostCommonDiagnosis] = useState(null);
 	const [filteredPatients, setFilteredPatients] = useState([]);
 	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
-	
+    const [patientsPerDepartment, setStatsPatientsPerDepartment] = useState(null);
+	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true);
+
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
 	
 	function changeDate(value) {
@@ -88,45 +90,73 @@ export function Analytics(props) {
 		setStartDate(tempStartDate.getTime());
 		setEndDate(tempEndDate.getTime());
 	}
+    
 	function datesSelected(dates) {
 		console.log("We have dates", dates);
 		setStartDate(dates[0].getTime());
 		setEndDate(dates[1].getTime());
 	}
-	function filterPatientsByDate(startDateFilter, endDateFilter){
+	
+    function filterPatientsByDate(startDateFilter, endDateFilter){
 		if(props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
 			const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
 				const dateCreated = new Date(patient.dateCreated);
 				return startDateFilter < dateCreated.getTime() && endDateFilter > dateCreated.getTime();
 			})
-			let tempCountSex = {male : 0, female : 0};
-			tempFilterPatients.forEach(patient => {
-				
-				if (patient.personalData.sex.toLowerCase() === "male") {
-					tempCountSex.male++;
-				}
-				else {
-					tempCountSex.female++;
-				}
-				
-			})
-			let tempCountAge = [...COUNT_AGE];
-			tempFilterPatients.forEach(patient => {
-				const patientAge = yearsFromDate(patient.personalData.birthdate);
-				const indexAgeGroup = ageGroups.findIndex(range => range[0] <= patientAge && range[1] >= patientAge);
-				if (indexAgeGroup > -1) {
-					tempCountAge[indexAgeGroup]++;
-				}
-				else {
-					console.log(patient.personalData.birthdate);
-				}
-			})
-			setCountAge(tempCountAge);
-			setCountSex(tempCountSex);
+			
 			setFilteredPatients(tempFilterPatients);
 		}
 	}
-	useEffect(() => {
+    
+    useEffect(() => {
+        let tempCountSex = {male : 0, female : 0};
+        filteredPatients.forEach(patient => {
+            
+            if (patient.personalData.sex.toLowerCase() === "male") {
+                tempCountSex.male++;
+            }
+            else {
+                tempCountSex.female++;
+            }
+            
+        })
+        let tempCountAge = [...COUNT_AGE];
+        filteredPatients.forEach(patient => {
+            const patientAge = yearsFromDate(patient.personalData.birthdate);
+            const indexAgeGroup = ageGroups.findIndex(range => range[0] <= patientAge && range[1] >= patientAge);
+            if (indexAgeGroup > -1) {
+                tempCountAge[indexAgeGroup]++;
+            }
+            else {
+                console.log(patient.personalData.birthdate);
+            }
+        })
+        setCountAge(tempCountAge);
+        setCountSex(tempCountSex);
+    }, [filteredPatients]);
+    
+    useEffect(() => {
+        console.log("departmentSelected", departmentSelected);
+        if(departmentSelected){
+            getPatientIdFromDepartment(props.investigations.currentInvestigation.uuid, departmentSelected, startDate, endDate)
+                .then(response => {
+                    if(response.stats.patientIds){
+                        const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
+                            return response.stats.patientIds.includes(patient.id);
+                        })
+                        setFilteredPatients(tempFilterPatients);
+                    }  
+                })
+        }
+        else{
+            if(props.investigations.currentInvestigation){
+                setFilteredPatients(props.investigations.currentInvestigation.patientsPersonalData);
+            }
+        }
+        
+    }, [departmentSelected]);
+	
+    useEffect(() => {
 		async function getStats() {
 			getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate)
 							.then(response => {
@@ -138,6 +168,10 @@ export function Analytics(props) {
 									return [keyValue[0], keyValue[1]]
 								}));
 							})
+            getStatsPatientsPerDepartment(props.investigations.currentInvestigation.uuid, startDate, endDate)
+                            .then(response => {
+                                setStatsPatientsPerDepartment(response.stats);
+                            })
 			filterPatientsByDate(startDate, endDate);
 		}
 
@@ -154,20 +188,24 @@ export function Analytics(props) {
 		return <Loader />
 	}
 
-	const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
-	
 	return (
 		<React.Fragment>
 			<Helmet title="Analytics Dashboard" />
 			<Grid justify="space-between" direction='row' container spacing={6}>
-				<Grid item xs={6}>
+				<Grid item xs={12}>
 					<Typography variant="h3" gutterBottom style={{ color: "white" }}>
 						Analytics Dashboard
 					</Typography>					
 				</Grid>
-				<Grid item xs={6}>
-					<DatesSelector onCallBack={datesSelected} />
-				</Grid>
+				<Grid item container xs={12} style={{background:'white', padding:'1rem'}}>
+                        <Grid item xs={6}>
+                            { renderDepartmentSelector() }
+                        </Grid>
+                        <Grid item xs={6}>
+                            <DatesSelector onCallBack={datesSelected} />
+                        </Grid>
+                   
+                </Grid>
 			</Grid>
 			<Divider my={6} />
 			<Grid container spacing={6}>
@@ -205,31 +243,41 @@ export function Analytics(props) {
 										}
 									]} />
 							</Grid>
-								
+                            <Grid item xs={12}>
+                                <PatientsBarChart title={<Translate id="hospital.analytics.graphs.patients.title" />} 
+                                    patients={filteredPatients} departments={departments} statsPerDepartment = {patientsPerDepartment}
+                                    departmentSelected={departments ? departments.find((dep) => dep.uuid === departmentSelected) : null} />
+                            </Grid>
 						</Grid>
 					</Grid>
 				}
-				<Grid item xs={12}> 
-					<SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
-						uuidInstitution={props.investigations.currentInvestigation.institution.uuid}
-						startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
-						title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
-				</Grid>
-				<Grid item xs={12} lg={5} sm={6}> 
-					
-				</Grid>
-				<Grid item xs={12} >
-					<TimeTable title={props.translate("hospital.analytics.graphs.most-common-diagnosis.title")} loading={!mostCommonDiagnosis}
-						header={[props.translate("hospital.analytics.graphs.most-common-diagnosis.diagnostic"), props.translate("hospital.analytics.graphs.most-common-diagnosis.count")]}
-						data={mostCommonDiagnosis}
-						actionCallBack={(value) => changeDate(value)}
-					/>
-				</Grid>
+                {
+                    !departmentSelected &&
+                    <>
+                        <Grid item xs={12}> 
+                            <SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
+                                uuidInstitution={props.investigations.currentInvestigation.institution.uuid}
+                                startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
+                                title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
+                        </Grid>
+                        <Grid item xs={12} lg={5} sm={6}> 
+                            
+                        </Grid>
+                        <Grid item xs={12} >
+                            <TimeTable title={props.translate("hospital.analytics.graphs.most-common-diagnosis.title")} loading={!mostCommonDiagnosis}
+                                header={[props.translate("hospital.analytics.graphs.most-common-diagnosis.diagnostic"), props.translate("hospital.analytics.graphs.most-common-diagnosis.count")]}
+                                data={mostCommonDiagnosis}
+                                actionCallBack={(value) => changeDate(value)}
+                            />
+                        </Grid>
+                    </>
+                }
+				
 				{
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.BUSINESS_READ) &&
 					<Grid container item spacing={1}>
 						<Grid item xs={12} >
-							<HospitalStats stats={statsFirstMonitoring} />
+							<HospitalStats stats={statsFirstMonitoring} departmentSelected={departmentSelected} />
 						</Grid>
 					</Grid>
 				}

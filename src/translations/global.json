@@ -131,6 +131,7 @@
             "modal" : {
                 "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
             },
+            "all_departments" : ["All departments", "Todos los departamentos", "Tous les départements"],
             "department" : ["Department", "Departamento", "Service"],
             "departments" : ["Departments", "Departamentos", "Services"],
             "unit" : ["Unit", "Unidad", "Service"],
@@ -197,7 +198,11 @@
                     "table-title" : ["Doctor", "Médico", "Médecin"],
                     "first-visit" : ["First visit", "Primera visita", "Première visite"],
                     "followup-visit" : ["Follow up visit", "Visita de seguimiento", "Visite de suivi"]
+                },
+                "patients" : {
+                    "title" : ["Patients over time", "Pacientes a lo largo del tiempo", "Patients au fil du temps"]
                 }
+
             }
         },
         "notification": {
@@ -421,6 +426,7 @@
                         "actions" : ["Actions", "Acciones", "Actions"]
                     },
                     "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
+                    "select_unit" : ["Select unit", "Seleccione unidad", "Sélectionnez l'unité"],
                     "select_items" : ["Select the elements of your request", "Seleccione los elementos de su solicitud", "Sélectionnez les éléments de votre demande"],
                     "edit_items_request" : ["Edit Items Request", "Editar Solicitud", "Modifier la demande"],
                     "make_request" : ["Make Request", "Realizar Solicitud", "Faire une demande"]
@@ -467,7 +473,9 @@
                     "pending" : ["Pending Items", "Pruebas pendientes", "Articles en attente"],
                     "completed" : ["Completed Items", "Pruebas completadas", "Articles terminés"],
                     "title" : ["Request Services", "Solicitar Servicios", "Demander des services"],
-                    "success" : ["Request saved succesfully", "Solicitud guardada correctamente", "Demande enregistrée avec succès"]
+                    "success" : ["Request saved succesfully", "Solicitud guardada correctamente", "Demande enregistrée avec succès"],
+                    "make_request" : ["Make Request", "Realizar Solicitud", "Faire une demande"],
+                    "select_services" : ["Select the services you want to request", "Seleccione los servicios que desea solicitar", "Sélectionnez les services que vous souhaitez demander"]
                 },
                 "status" : ["Status", "Status", "Status"],
                 "request_status" : {

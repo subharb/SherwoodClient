@@ -1,4 +1,4 @@
-import { IPatient, IResearcher, ISurvey, IUnit } from "../../../constants/types"
+import { IDepartment, IPatient, IResearcher, ISurvey, IUnit } from "../../../constants/types"
 import { IPharmacyItem } from "../Pharmacy/types";
 
 export interface IService{
@@ -70,7 +70,7 @@ export interface IRequest{
     investigation:any,
     researcher:IResearcher,
     requestsPharmacy:IRequestPharmacy[],
-    unitRequest:IUnit,
+    departmentRequest:IDepartment,
     requestsServiceInvestigation: IRequestServiceInvestigation[];
     surveyRequest:ISurvey,
     createdAt: Date;

@@ -189,7 +189,7 @@ const SmartField:React.FC<Props> = (props) => {
                     
                 return valueDict
             })
-            if(props.mode === "form" && props.type !== "request_lab" && props.type !== "request_img"){
+            if(props.mode === "form"){
                 return <Grid item xs={12} spacing={3}>
                         <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
                             actions={[{"type" : "delete", "func" : (index:number) => removeElement(index)}]}

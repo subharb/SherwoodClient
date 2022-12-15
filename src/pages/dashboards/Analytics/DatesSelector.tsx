@@ -44,7 +44,7 @@ function DatesSelector(props:Props){
     return(
         
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                <Typography variant="h4" style={{color:'#FFF'}} gutterBottom  >Select dates: </Typography>
+                <Typography variant="h4" gutterBottom  >Select dates: </Typography>
                 <Grid container spacing={3}>    
                     <Grid item >                    
                         <KeyboardDatePicker

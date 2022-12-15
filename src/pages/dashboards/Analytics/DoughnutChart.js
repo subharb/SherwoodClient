@@ -146,7 +146,7 @@ function DoughnutChart({ theme, title, labels, datasets, table, innerInfo }) {
                         </TableCell>
                         <TableCell align="right">{datasets[0].data[index]}</TableCell>
                         <TableCell align="right">
-                          <ColourText color={datasets[0].backgroundColor[index]}>{datasets[0].percents[index]}%</ColourText>
+                          <ColourText color={datasets[0].backgroundColor[index]}>{isNaN(datasets[0].percents[index]) ? 0 : datasets[0].percents[index]}%</ColourText>
                         </TableCell>
                       </TableRow>
                     )

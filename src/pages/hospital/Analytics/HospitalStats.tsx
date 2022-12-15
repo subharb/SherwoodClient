@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core';
 import React from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
@@ -25,16 +26,18 @@ interface IStatUnit{
 }
 interface IStatDepartment{
     name:string,
+    uuid:string,
     units:IStatUnit
 }
 interface HospitalStatsProps {
+    departmentSelected:string,
     stats:{
         departments:IStatDepartment[],
         global:IStatValueResearcher[]
     }
 }
 
-const HospitalStats: React.FC<HospitalStatsProps> = ({ stats }) => {
+const HospitalStats: React.FC<HospitalStatsProps> = ({ stats, departmentSelected }) => {
     if(stats === null){
         return <Loader />
     }
@@ -71,8 +74,13 @@ const HospitalStats: React.FC<HospitalStatsProps> = ({ stats }) => {
    
 
     
-    if(stats.departments.length === 1){
-        return <EnhancedTable noHeader noSelectable={true} rows={statsPerDepartment[0]} headCells={headCells} />
+    if(stats.departments.length === 1 ||  departmentSelected){
+        const indexDepartment = !departmentSelected ? 0 : stats.departments.findIndex((department) => department.uuid === departmentSelected);
+        if(indexDepartment === -1){
+            return <Typography variant="body2" component="h2" style={{ color: "white" }}>No stats for this department</Typography>
+        }      
+
+        return <EnhancedTable noHeader noSelectable={true} rows={statsPerDepartment[indexDepartment]} headCells={headCells} />
     }
     else{
         const nameDepartments:string[] = stats.departments.map((department) => department.name);
