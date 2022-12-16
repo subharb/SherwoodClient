@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useMemo } from 'react';
 import { IDepartment } from '../../../constants/types';
 import BarChart from './BarChart';

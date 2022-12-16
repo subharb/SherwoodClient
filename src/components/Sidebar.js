@@ -32,6 +32,7 @@ import { sidebarRoutesHospital as routesHospital } from "../routes/index";
 
 import { ReactComponent as Logo } from "../vendor/logo.svg";
 import { useSelector } from "react-redux";
+import { FUNCTIONALITY } from "../constants/types";
 
 const LinkNoDecoration = styled(NavLink)`
     text-decoration:none;
@@ -295,7 +296,7 @@ const SidebarLink = ({ name, to, badge, icon }) => {
 const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) => {
     const investigations = useSelector((state) => state.investigations);
     const billingInfo = investigations.currentInvestigation ? investigations.currentInvestigation.billingInfo : null;
-
+    
     const initOpenRoutes = () => {
         /* Open collapse element that matches current url */
         const pathName = location.pathname;
@@ -319,6 +320,7 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
     const renderCategory = (category, index, openRoutes) => {
         const hasPermission = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
         const hasFunctionality = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.filter(value => category.functionalities.includes(value)).length > 0;
+        
         if ((category.permissions.length === 0 || hasPermission) && (category.functionalities.length === 0 || hasFunctionality))
             return category.children && category.icon ? (
                 <React.Fragment key={index}>
@@ -362,7 +364,8 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
             ) : null
     }
     function renderLogo(){
-        if(billingInfo){
+        const hasAesthetics = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.includes(FUNCTIONALITY.AESTHETICS);
+        if(billingInfo && hasAesthetics){
             return <img src={billingInfo.logoBlob} alt={investigations.currentInvestigation.name} height="55" /> 
         }
         else{

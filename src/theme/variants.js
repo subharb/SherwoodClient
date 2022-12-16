@@ -117,6 +117,7 @@ const hospitalVariant = merge(defaultVariant, {
         primary: {
             main: "#49CEBF",
             contrastText: "#FFF",
+            color: "#FFF"
         },
         secondary: {
             main: green[500],

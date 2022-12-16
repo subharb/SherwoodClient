@@ -50,7 +50,7 @@ function TabPanel(props: TabPanelProps) {
         )}
       </div>
     );
-  }
+}
 
 const TabsSherwood:React.FC<Props> = (props) => {
     const [tabSelector, setTabSelector] = useState(props.defaultTab ? props.defaultTab : 0);
@@ -60,14 +60,14 @@ const TabsSherwood:React.FC<Props> = (props) => {
     return(
         <React.Fragment>
             <BoxTabs>
-            <Tabs value={tabSelector} onChange={handleChange} variant="scrollable"
-                scrollButtons="auto" aria-label="basic tabs example">
-                {
-                    props.children.map((child, index) => {
-                        return <Tab label={child.props.label} {...a11yProps(index)} />
-                    })
-                }
-            </Tabs>
+                <Tabs value={tabSelector} onChange={handleChange} variant="scrollable"
+                    scrollButtons="auto" aria-label="basic tabs example">
+                    {
+                        props.children.map((child, index) => {
+                            return <Tab label={child.props.label} {...a11yProps(index)} />
+                        })
+                    }
+                </Tabs>
             </BoxTabs>
             {
                 props.children.map((child, index) => {

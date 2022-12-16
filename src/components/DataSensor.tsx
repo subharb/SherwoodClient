@@ -6,6 +6,7 @@ import { formatData, openStore } from '../utils';
 import NotificationsDropdown from './NotificationsDropdown';
 import { Translate } from 'react-localize-redux';
 import { IconButton, Tooltip, Typography } from '@material-ui/core';
+import styled from 'styled-components';
 
 interface Props{
     data:{
@@ -13,6 +14,10 @@ interface Props{
         date:Date
     }
 }
+
+const TooltipThemed = styled(Tooltip)`
+    color:black;
+`;
 
 export default function DataSensor(props: Props) {
     const [data, setData] = useState<string | null>("");
@@ -25,13 +30,13 @@ export default function DataSensor(props: Props) {
     }, []);
     return (
         <React.Fragment>
-            <Tooltip title="Datos consumidos día de hoy">
+            <TooltipThemed title="Datos consumidos día de hoy" color='primary'>
                 <IconButton color="inherit" >
                     <Typography variant="body2">
                         {data}
                     </Typography> 
                 </IconButton>
-            </Tooltip>
+            </TooltipThemed>
         </React.Fragment>)
 }
 

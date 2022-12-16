@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import styled, { withTheme } from "styled-components/macro";
 import Chart from 'react-apexcharts';
@@ -148,10 +149,12 @@ const BarChart = (props:BarChartProps) => {
             }
         })
     };
+    
     return (
         <Card>
             <CardHeader title={props.title} />
             <CardContent>
+                
                 <Chart
                     height="360"
                     type="area"

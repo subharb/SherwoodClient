@@ -5,69 +5,69 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import {
-  Tooltip,
-  Menu,
-  MenuItem,
-  IconButton as MuiIconButton,
+    Tooltip,
+    Menu,
+    MenuItem,
+    IconButton as MuiIconButton,
 } from "@material-ui/core";
 
 import { signOut } from "../redux/actions/authActions";
 
 const IconButton = styled(MuiIconButton)`
-  svg {
-    width: 22px;
-    height: 22px;
-  }
+    svg {
+        width: 22px;
+        height: 22px;
+    }
 `;
 
-  
+
 
 function UserDropdown() {
-  const [anchorMenu, setAnchorMenu] = React.useState(null);
-  const history = useHistory();
-  const dispatch = useDispatch();
-  
+    const [anchorMenu, setAnchorMenu] = React.useState(null);
+    const history = useHistory();
+    const dispatch = useDispatch();
 
-  const toggleMenu = (event) => {
-    setAnchorMenu(event.currentTarget);
-  };
 
-  const closeMenu = () => {
-    setAnchorMenu(null);
-  };
+    const toggleMenu = (event) => {
+        setAnchorMenu(event.currentTarget);
+    };
 
-  const handleSignOut = async () => {
-      localStorage.removeItem("jwt");
-      localStorage.removeItem("indexHospital");
-      history.push("/auth/sign-in");
-      dispatch(signOut());
-  };
+    const closeMenu = () => {
+        setAnchorMenu(null);
+    };
 
- 
+    const handleSignOut = async () => {
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("indexHospital");
+        history.push("/auth/sign-in");
+        dispatch(signOut());
+    };
 
-  return (
-    <React.Fragment>
-      <Tooltip data-testid="account" title="Account">
-        <IconButton
-          aria-owns={Boolean(anchorMenu) ? "menu-appbar" : undefined}
-          aria-haspopup="true"
-          onClick={toggleMenu}
-          color="inherit"
-        >
-          <Power />
-        </IconButton>
-      </Tooltip>
-      <Menu
-        id="menu-appbar"
-        anchorEl={anchorMenu}
-        open={Boolean(anchorMenu)}
-        onClose={closeMenu}
-      >
-        { <MenuItem onClick={closeMenu}>Profile</MenuItem> }
-        <MenuItem data-testid="log_out" onClick={handleSignOut}>Sign out</MenuItem>
-      </Menu>
-    </React.Fragment>
-  );
+
+
+    return (
+        <React.Fragment>
+            <Tooltip data-testid="account" title="Account">
+                <IconButton
+                    aria-owns={Boolean(anchorMenu) ? "menu-appbar" : undefined}
+                    aria-haspopup="true"
+                    onClick={toggleMenu}
+
+                >
+                    <Power />
+                </IconButton>
+            </Tooltip>
+            <Menu
+                id="menu-appbar"
+                anchorEl={anchorMenu}
+                open={Boolean(anchorMenu)}
+                onClose={closeMenu}
+            >
+                {<MenuItem onClick={closeMenu}>Profile</MenuItem>}
+                <MenuItem data-testid="log_out" onClick={handleSignOut}>Sign out</MenuItem>
+            </Menu>
+        </React.Fragment>
+    );
 }
 
 export default UserDropdown;
