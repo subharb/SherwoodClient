@@ -2561,6 +2561,196 @@ export const bills = [
             "billItems": [
                 {
                     "id": 1,
+                    "concept": "Primera consulta Dr. Rodriguez. ",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 2,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 3,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 4,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 5,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 6,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 7,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 8,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 9,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 10,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 11,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 12,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 13,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 14,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 15,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 16,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 17,
+                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 18,
+                    "concept": "Primera consulta Dr. Rodriguez",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 19,
+                    "concept": "Primera consulta Dr. Rodriguez",
+                    "type": 0,
+                    "amount": "100.00",
+                    "paid": null,
+                    "used": null,
+                    "createdAt": "2022-05-27T15:22:29.589Z",
+                    "updatedAt": "2022-05-27T15:22:29.614Z",
+                    "deletedAt": null
+                },{
+                    "id": 20,
                     "concept": "Primera consulta Dr. Rodriguez",
                     "type": 0,
                     "amount": "100.00",
@@ -2571,7 +2761,7 @@ export const bills = [
                     "deletedAt": null
                 },
                 {
-                    "id": 2,
+                    "id": 21,
                     "concept": "Descuento empadronamiento",
                     "type": 1,
                     "amount": "10.00",
@@ -2582,7 +2772,7 @@ export const bills = [
                     "deletedAt": null
                 },
                 {
-                    "id": 3,
+                    "id":22,
                     "concept": "Descuento aseguradora",
                     "type": 2,
                     "amount": "12.00",
