@@ -30,6 +30,31 @@ const DEPARTMENT_FORM = {
         label:"hospital.departments.forms.department.name",
         shortLabel: "hospital.departments.forms.department.name",
         validation : "textMin2"
+    },
+    "type":{
+        required : true,
+        name:"type",
+        type:"select",
+        label:"hospital.departments.forms.department.type",
+        shortLabel: "hospital.departments.forms.department.type",
+        options: [
+            {
+                value: "0",
+                label: "hospital.departments.forms.types.medical"
+            }, 
+            {
+                value: "1",
+                label: "hospital.departments.forms.types.pharmacy"
+            }, 
+            {
+                value: "2",
+                label: "hospital.departments.forms.types.social"
+            },
+            {
+                value: "3",
+                label: "hospital.departments.forms.types.shoes"
+            }
+        ]
     }
 }
 
@@ -646,7 +671,7 @@ function Departments(props) {
                     
                     <TabPanel value={tabSelector} index={2} style={{width:'100%'}}>
                         <DepartmentsAccordion mode={ props.admin ? DepartmentAccordionModes.Wards : DepartmentAccordionModes.WardSelection} researchers={props.researchers}
-                            departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
+                            departments={props.departments.filter((department)=> department.type === 0)} uuidDepartmentAddWard={uuidDepartmentAddWard}
                             permissions={props.investigation.permissions} 
                             editWardCallBack={editWard} deleteWardConfirmCallBack={deleteWardConfirm}
                             addWardCallBack={props.admin ? addWard : null} settingsWardCallBack={props.settingsCallBack}

@@ -120,6 +120,13 @@ export interface ActionsEnhancedTable{
     func: (index: number) => void
 }
 
+export enum DepartmentType{
+    MEDICAL = 0,
+    PHARMACY = 1,
+    SOCIAL = 2,
+    SHOE = 3,
+}
+
 export enum TYPE_BILL_ITEM {
     CHARGE = 0,
     DISCOUNT_AMOUNT = 1,

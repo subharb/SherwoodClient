@@ -162,9 +162,16 @@
                 "remove-researcher" : {
                     "confirm" : ["Do you confirm you wish to remove %X from unit %Y?", "¿Confirma que desea quitar a %X de la unidad %Y?", "Voulez-vous vraiment supprimer %X du lecteur %Y?"]
                 },
+                "types":{
+                    "medical" : ["Medical", "Médico", "Médical"],
+                    "pharmacy" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                    "social" : ["Social", "Social", "Social"],
+                    "shoes" : ["Shoes", "Calzado", "Cordonerie"]
+                },
                 "department" : {
                     "title" : ["Add department", "Añadir Departamento", "Ajouter Service"],
-                    "name" : ["Name department", "Nombre departamento", "Nom du service"]
+                    "name" : ["Name department", "Nombre departamento", "Nom du service"],
+                    "type" : ["Type", "Tipo", "Type"]
                 }
             }
         },
