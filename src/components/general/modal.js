@@ -6,10 +6,11 @@ import { Dialog,
     DialogTitle, 
     DialogContent,
     DialogContentText,
-    Button, TextField,DialogActions, Card, CardContent
+    Button, TextField,DialogActions, Card, CardContent, IconButton
 } from "@material-ui/core";
 import PropTypes from 'prop-types'; 
 import { Translate } from 'react-localize-redux';
+import { CloseIcon } from '@material-ui/data-grid';
 
 export default function Modal(props){
     let paperStyles = props.medium ? {
@@ -33,6 +34,12 @@ export default function Modal(props){
             onClose={props.closeModal}
             aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
+            {props.closeModal &&
+                    <IconButton style={{position:"absolute",right:"0px"}} onClick={props.closeModal}>
+                        <CloseIcon />
+                    </IconButton>
+                }
+            
             <DialogContent >
                 {props.children}
             </DialogContent>

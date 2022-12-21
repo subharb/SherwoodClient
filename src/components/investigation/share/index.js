@@ -160,16 +160,15 @@ function ShareInvestigation(props) {
     const [errorShare, setErrorShare] = useState(false);
     const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
     const [showingRoles, setShowingRoles] = useState(false);
-    const [researcherToDelete, setResearcherToDelete] = useState(false);
     const history = useHistory();
     
     function shareInvestigation(){
         setShowModal(true)
     }
     function cancelShare(){
+        console.log("Close modal");
         setShowModal(false);
     }
-    
     async function sendInvitations(){
         setShowModal(false);
         setIsLoadingShare(true);
@@ -324,6 +323,7 @@ function ShareInvestigation(props) {
         
         return(
             <Modal key="modal" open={ showModal } 
+                closeModal={cancelShare}
                 title={title}>
                     {
                         indexResearcherToEdit !== false &&
