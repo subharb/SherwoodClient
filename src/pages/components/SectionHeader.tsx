@@ -12,6 +12,7 @@ interface SectionHeaderProps {
     edit:boolean,
     addCallback?:() => void,
     editCallback?:()=>void,
+    infoCallback?:()=>void,
 }
 
 const IconHolder = styled.div`
@@ -23,7 +24,7 @@ const TypographyStyled = styled(Typography)`
     color:${props => props.theme.palette.primary.color};
 `
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallback, editCallback }) => {
+const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallback, editCallback, infoCallback }) => {
    
     function renderIcon(){
         switch(section){
@@ -33,10 +34,12 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallbac
                 return <img src={iconImages } alt="images" width="20" />
             case "pharmacy":
                 return <IconGenerator type="pharmacy" />
+            default:
+                return null;
         }
     }
     return (
-        <Grid container alignItems="center" alignContent="center" item xs={12}>
+        <>
         <IconHolder>
             {
                 renderIcon()
@@ -55,14 +58,23 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallbac
                     <IconGenerator type={!edit ? "settings" : "back"} />
                 </IconButton>
             }
+            {
+                infoCallback && 
+                    <IconButton 
+                    onClick={(e) => {
+                        infoCallback();
+                    }}>
+                    <IconGenerator type="info" />
+                </IconButton>
+            }
             
         </div>
         {
             addCallback &&
             <ButtonAdd onClick={addCallback} />
         }
-        
-    </Grid>
+    </>
+    
     );
 };
 

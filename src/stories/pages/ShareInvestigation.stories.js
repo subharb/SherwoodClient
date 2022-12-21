@@ -2,6 +2,7 @@ import React from 'react';
 import ShareInvestigation from '../../components/investigation/share'
 import { researchers_to_share, sharedResearchers, investigation_server } from '../example_data';
 import ProviderSherwood from '../../providerSherwood';
+import UserRoles from '../../components/investigation/share/UserRoles';
 
 export default {
     title: 'Pages/Share Investigation',
@@ -19,6 +20,7 @@ export default {
 };
 
 const Template = (args) => <ShareInvestigation {...args} />;
+const TemplateUserRoles = (args) => <UserRoles {...args} />;
 const uuidInvestigation = "00287041-3df4-438f-b60a-e1d85dbe25b9";
 
 
@@ -53,5 +55,6 @@ PreviousAndNewResearchers.args = {
     callBackData : (values) => {console.log("Callback EDC", JSON.stringify(values));alert(values)}
 };
 
+export const UserRolesComponent = TemplateUserRoles.bind({});
 
 

@@ -465,8 +465,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     <FactureHolder hide={!bill}>
                         <Translate id="hospital.billing.bill.name" />
                     </FactureHolder>
-                    <EnhancedTable noFooter noHeader noPagination noSelectable headCells={headCells} rows={rows}
-                    />
+                    <EnhancedTable noFooter noHeader noPagination noSelectable headCells={headCells} rows={rows} />
                 </Grid>
                 <Grid item xs={12} style={{ display: "flex", flexDirection: "column" }} >
                     {

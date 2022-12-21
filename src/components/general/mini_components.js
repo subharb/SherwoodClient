@@ -7,6 +7,7 @@ import icon_undefined from "../../img/icons/icon_undefined.svg";
 import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
 import {
     Add as AddIcon,
+    Info as InfoIcon,
     HighlightOff as CloseIcon,
     RemoveRedEye as RemoveRedEyeIcon,
     PanoramaFishEye as PanoramaFishEyeIcon,
@@ -60,6 +61,8 @@ export const IconGenerator = withTheme((props) => {
             return <LocalPharmacyIcon style={{color:props.theme.palette.primary.color }} />
         case "biotech":
             return <BiotechIcon fill={props.theme.palette.primary.color} />
+        case "info":
+            return <InfoIcon style={{color:props.theme.buttonContinue.primary.color }}  />
         default:
             return <AddIcon />
     }

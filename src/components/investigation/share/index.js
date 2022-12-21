@@ -19,6 +19,8 @@ import { useHistory } from "react-router-dom";
 import { getSharedResearchersService, saveResearcherPermissions } from '../../../services';
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { grayscale } from 'polished';
+import SectionHeader from '../../../pages/components/SectionHeader';
+import UserRoles from './UserRoles';
 
 
 const optionsPermissions = Object.keys(USER_ROLES).map(keyRole => {
@@ -152,23 +154,24 @@ function ShareInvestigation(props) {
     const [error, setError] = useState(null);
     const [ addingResearcher, setAddingResearcher ] = useState(false);
     const [ newResearchers, setNewResearchers ] = useState(props.initialState && props.initialState.newResearchers ? props.initialState.newResearchers : []);
-    const [showSendModal, setShowSendModal] = useState(false);
+    const [ showModal, setShowModal] = useState(false);
     const [ sharedResearchers, setSharedResearchers] = useState([]);
     const [isLoadingShare, setIsLoadingShare] = useState(false);
     const [errorShare, setErrorShare] = useState(false);
     const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
+    const [showingRoles, setShowingRoles] = useState(false);
     const [researcherToDelete, setResearcherToDelete] = useState(false);
     const history = useHistory();
     
     function shareInvestigation(){
-        setShowSendModal(true)
+        setShowModal(true)
     }
     function cancelShare(){
-        setShowSendModal(false);
+        setShowModal(false);
     }
     
     async function sendInvitations(){
-        setShowSendModal(false);
+        setShowModal(false);
         setIsLoadingShare(true);
         try{
             // const keyInvestigation = await generateKey();
@@ -220,7 +223,7 @@ function ShareInvestigation(props) {
         else{
             return ([
                 <Modal key="modal"
-                    open={showSendModal}
+                    open={showModal}
                     closeModal={cancelShare}
                     confirmAction={sendInvitations}
                     title={props.translate("investigation.share.confirm_dialog.title")}>
@@ -307,6 +310,39 @@ function ShareInvestigation(props) {
             </Grid>
         )
     }
+    function renderModal(){
+        let title;
+        if(addingResearcher){
+            title = props.translate("investigation.share.add_researcher");
+        }
+        else if(indexResearcherToEdit){
+            title =  props.translate("investigation.share.edit_researcher");
+        }
+        else{
+            title =  props.translate("investigation.share.info_roles");
+        }
+        
+        return(
+            <Modal key="modal" open={ showModal } 
+                title={title}>
+                    {
+                        indexResearcherToEdit !== false &&
+                        <Form fields={RESEARCHER_FORM} fullWidth callBackForm={editCallBack}
+                            initialData={sharedResearchers[indexResearcherToEdit]} 
+                            closeCallBack={() => setIndexResearcherToEdit(false)}/>
+                    }
+                    {
+                        addingResearcher &&
+                        <Form fields={RESEARCHER_FORM} fullWidth callBackForm={addResearcher} 
+                            closeCallBack={() => setAddingResearcher(false)}/>
+                    }
+                    {
+                        showingRoles &&
+                        <UserRoles />
+                    }
+            </Modal>
+        )
+    }
     function deleteAResearcher(index){
         console.log("confirm to delete", sharedResearchers[index]);
     }
@@ -332,33 +368,10 @@ function ShareInvestigation(props) {
         console.log(valuesForm);
         setIndexResearcherToEdit(index);
     }
-    // useEffect(() => {
-    //     async function fetchInvestigation(uuid){
-    //         setIsLoadingInvestigation(true);
-    //         const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/'+uuid, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-    //         if(request.status === 200){
-    //             setSharedResearchers(request.data.investigation.sharedResearchers);
-    //             setInvestigation(request.data.investigation);
-    //         }
-    //         else if(request.status === 401){
-    //             props.history.push({
-    //                 pathname: SIGN_IN_ROUTE,
-    //                 state: { 
-    //                     from: props.location.pathname
-    //                 }
-    //             })
-                
-    //         }
-    //         setIsLoadingInvestigation(false);
-    //     }
-    //     if(investigation === null){
-    //         fetchInvestigation(props.uuid);
-    //     }
-    //     else{
-    //         setIsLoadingInvestigation(false);
-    //     }
-        
-    // }, [])
+    function showInfo(){
+        setShowingRoles(true);
+        setShowModal(true);
+    }
 
     if(props.investigations.loading || isLoadingShare){
         return <Loader />
@@ -373,25 +386,13 @@ function ShareInvestigation(props) {
     return (
         <BoxBckgr color="text.primary" >
             <Helmet title={props.translate("investigation.share.title")} />
-            <Modal key="modal" open={addingResearcher || (indexResearcherToEdit !== false)} 
-                title={addingResearcher ? props.translate("investigation.share.add_researcher") : props.translate("investigation.share.edit_researcher")}>
-                    {
-                        indexResearcherToEdit !== false &&
-                        <Form fields={RESEARCHER_FORM} fullWidth callBackForm={editCallBack}
-                            initialData={sharedResearchers[indexResearcherToEdit]} 
-                            closeCallBack={() => setIndexResearcherToEdit(false)}/>
-                    }
-                    {
-                        addingResearcher &&
-                        <Form fields={RESEARCHER_FORM} fullWidth callBackForm={addResearcher} 
-                            closeCallBack={() => setAddingResearcher(false)}/>
-                    }
-            </Modal>
+            {
+                renderModal()
+            }
             <Grid container spacing={3}>
+                
                 <Grid item  xs={12}>
-                    <Typography variant="h3" gutterBottom display="inline">
-                        <Translate id="investigation.share.title" />
-                    </Typography>
+                    <SectionHeader section="users" infoCallback={showInfo} />
                 </Grid>
                 <Grid item container xs={12} spacing={3}>
                     <Grid item xs={12} >
