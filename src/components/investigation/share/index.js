@@ -117,7 +117,7 @@ export const PermissionChip = withLocalize((props) => {
 const StatusChip = withLocalize((props) => {
     switch(props.value.toString()){
         case "0":
-            return <ColourChip size="small" label={props.translate("investigation.share.status.pending")} rgbcolor={yellow[500]} />
+            return <ColourChip size="small" label={props.translate("investigation.share.status.pending")} rgbcolor={yellow[800]} />
         case "1": 
             return <ColourChip size="small" label={props.translate("investigation.share.status.denied")} rgbcolor={red[500]} />
         default:
@@ -165,9 +165,12 @@ function ShareInvestigation(props) {
     function shareInvestigation(){
         setShowModal(true)
     }
-    function cancelShare(){
+    function resetModal(){
         console.log("Close modal");
         setShowModal(false);
+        setIndexResearcherToEdit(false);
+        setAddingResearcher(false);
+        setShowingRoles(false);
     }
     async function sendInvitations(){
         setShowModal(false);
@@ -223,7 +226,7 @@ function ShareInvestigation(props) {
             return ([
                 <Modal key="modal"
                     open={showModal}
-                    closeModal={cancelShare}
+                    closeModal={resetModal}
                     confirmAction={sendInvitations}
                     title={props.translate("investigation.share.confirm_dialog.title")}>
                         <Typography variant="body2" gutterBottom>
@@ -268,7 +271,7 @@ function ShareInvestigation(props) {
         setNewResearchers(copyResearchers);
     }
     function addResearcher(researcher){
-        setAddingResearcher(false);
+        resetModal();
         setNewResearchers(array => [...array, researcher]);
     }
     function renderPrevResearchers(){
@@ -323,18 +326,18 @@ function ShareInvestigation(props) {
         
         return(
             <Modal key="modal" open={ showModal } 
-                closeModal={cancelShare}
+                closeModal={resetModal}
                 title={title}>
                     {
                         indexResearcherToEdit !== false &&
                         <Form fields={RESEARCHER_FORM} fullWidth callBackForm={editCallBack}
                             initialData={sharedResearchers[indexResearcherToEdit]} 
-                            closeCallBack={() => setIndexResearcherToEdit(false)}/>
+                            closeCallBack={resetModal}/>
                     }
                     {
                         addingResearcher &&
                         <Form fields={RESEARCHER_FORM} fullWidth callBackForm={addResearcher} 
-                            closeCallBack={() => setAddingResearcher(false)}/>
+                            closeCallBack={resetModal}/>
                     }
                     {
                         showingRoles &&
@@ -358,7 +361,7 @@ function ShareInvestigation(props) {
         let copySharedResearchers = [...sharedResearchers];
         copySharedResearchers[indexResearcherToEdit].permissions = response.sharedResearchers[0].permissions;
         setSharedResearchers(copySharedResearchers);
-        setIndexResearcherToEdit(false);
+        resetModal()
     }
     function editAResearcher(index){
         console.log("confirm to edit", sharedResearchers[index]);
@@ -367,6 +370,7 @@ function ShareInvestigation(props) {
         valuesForm["permissions"] = USER_ROLES[permissionsToRole(sharedResearchers[index]["permissions"])];
         console.log(valuesForm);
         setIndexResearcherToEdit(index);
+        setShowModal(true);
     }
     function showInfo(){
         setShowingRoles(true);
@@ -408,7 +412,10 @@ function ShareInvestigation(props) {
                             <Translate id="investigation.share.add_researcher" />
                             <ButtonAdd disabled={addingResearcher} 
                                 type="button" data-testid="add_researcher" 
-                                onClick={() => setAddingResearcher(true)}></ButtonAdd>
+                                onClick={() => {
+                                    setAddingResearcher(true);
+                                    setShowModal(true);
+                                }}></ButtonAdd>
                         </Typography>
                     </Grid>
                     {
