@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { useHistory } from "react-router-dom";
-import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction, removeResearcherFromUnitAction } from '../../../redux/actions/hospitalActions';
+import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction, removeResearcherFromUnitAction, editDepartmentAction, deleteDepartmentAction, deleteUnitAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
@@ -23,6 +23,14 @@ import { a11yProps, TabPanel } from '../../components/Tabs';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 
 const DEPARTMENT_FORM = {
+    "uuid" : {
+        required : false,
+        name:"uuid",
+        type:"hidden",
+        label:"hospital.departments.forms.department.name",
+        shortLabel: "hospital.departments.forms.department.name",
+        validation : "textMin2"
+    },
     "name":{
         required : true,
         name:"name",
@@ -147,12 +155,24 @@ function DepartmentsRouter(props){
     const dispatch = useDispatch();
     const history = useHistory();
 
-
+    async function editDepartmentCallBack(newDepartmentDetails){
+        await dispatch(editDepartmentAction(props.investigations.currentInvestigation.uuid, newDepartmentDetails));
+    }
+    async function deleteDepartmentCallBack(newDepartmentDetails){
+        await dispatch(deleteDepartmentAction(props.investigations.currentInvestigation.uuid, newDepartmentDetails));
+    }
     async function saveDepartmentCallBack(department){
         await dispatch(saveDepartmentAction(props.investigations.currentInvestigation.uuid, department));
     }
     async function addWardCallBack(wardInfo, uuidDepartmentAddWard){
         await dispatch(saveUpdateWardAction(props.investigations.currentInvestigation.uuid, uuidDepartmentAddWard, wardInfo));
+    }
+
+    async function deleteUnitCallBack(uuidUnit){
+        await dispatch(deleteUnitAction(props.investigations.currentInvestigation.uuid, uuidUnit));
+    }
+    async function editUnitCallBack(wardInfo, uuidDepartmentAddWard){
+        //await dispatch(saveUpdateWardAction(props.investigations.currentInvestigation.uuid, uuidDepartmentAddWard, wardInfo));
     }
     function settingsCallBack(ward){
         const nextUrl = HOSPITAL_WARD_SETTINGS_ROUTE.replace(":uuidWard", ward.uuid);
@@ -188,6 +208,8 @@ function DepartmentsRouter(props){
                 editCallBack={editCallBack} deleteWardCallBack={deleteWardCallBack}
                 viewWardCallBack={viewWardCallBack} saveUnitCallBack={saveUnitCallBack}
                 resetError={resetError} deleteReseacherFromUnitCallBack={deleteReseacherFromUnitCallBack}
+                editDepartmentCallBack={editDepartmentCallBack} deleteDepartmentCallBack={deleteDepartmentCallBack}
+                deleteUnitCallBack={deleteUnitCallBack} editUnitCallBack={editUnitCallBack}
             />
 }
 
@@ -206,8 +228,12 @@ function Departments(props) {
     //const investigation = props.investigation.data && props.investigations.currentInvestigation ? props.investigations.currentInvestigation : null;
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [ addingDepartment, setAddingDepartment ] = useState(false);
+    const [ editingDepartment, setEditingDepartment ] = useState(false);
+    const [ deletingDepartment, setDeletingDepartment ] = useState(false);
     const [ changingResearcherUnit, setChangingResearcherUnit ] = useState(false);
     const [ uuidDepartmentAddWard, setUuidDepartmentAddWard ] = useState(false);
+    const [ editingUnit, setEditingUnit ] = useState(false);
+    const [ deletingUnit, setDeletingUnit ] = useState(false);
     const [ wardToEdit, setWardToEdit ] = useState(false);
     const [ wardToDelete, setWardToDelete ] = useState(false);
     const [ showModal, setShowModal ] = useState(false);
@@ -261,10 +287,42 @@ function Departments(props) {
     }
     
     async function addDepartment(department){
-        setAddingDepartment(false);
+        resetModal();
         setIsLoadingDepartments(true);
         props.saveDepartmentCallBack(department)
+    }
 
+    function editDepartment(uuidDepartment){
+        setEditingDepartment(uuidDepartment);
+        setShowModal(true);
+    }
+
+    function deleteDepartment(department){
+        setDeletingDepartment(department);
+        setShowModal(true);
+    }
+
+    function deletedDepartment(){
+        resetModal();
+        props.deleteDepartmentCallBack(deletingDepartment);
+    }
+
+    function deletedUnit(){
+        resetModal();
+        props.deleteUnitCallBack(deletingUnit.uuid);
+    }
+
+    function editedDepartment(newDepartmentDetails){
+        console.log(newDepartmentDetails)
+        resetModal();
+        setIsLoadingDepartments(true);
+        props.editDepartmentCallBack(newDepartmentDetails);
+    }
+
+    function editedUnit(newUnitDetails){
+        resetModal();
+        setIsLoadingDepartments(true);
+        props.editDepartmentCallBack(newUnitDetails);
     }
 
     function addWard(uuidDepartment){
@@ -287,7 +345,10 @@ function Departments(props) {
         }
         props.addWardCallBack(wardInfo, uuidDepartmentAddWard);
     }
-
+    function editUnit(unit){
+        setEditingUnit(unit);
+        setShowModal(true);
+    }
     async function editWard(ward, uuidDepartment, editWardCallBack){
         if(editWardCallBack === 0){
             setUuidDepartmentAddWard(uuidDepartment);
@@ -308,6 +369,16 @@ function Departments(props) {
     function handleDeleteFromUnit(unitResearcher){
         setShowModal(true);
         setConfirmingDeleteUnitResearcher(unitResearcher);
+    }
+
+    function deleteUnitConfirm(unit, hasResearchers){
+        if(hasResearchers){
+            setShowSnackbar({show:true, severity: "warning", message : "hospital.departments.errors.has-researchers"});
+        }
+        else{
+            setDeletingUnit(unit);
+            setShowModal(true);
+        }
     }
 
     function deleteWardConfirm(ward, uuidDepartment){
@@ -431,6 +502,60 @@ function Departments(props) {
                     closeCallBack={() => resetModal()}/>
             )
         }
+        else if(editingDepartment){
+            return (
+                <Form fields={DEPARTMENT_FORM} fullWidth callBackForm={editedDepartment} 
+                    initialData={editingDepartment}
+                    closeCallBack={() => resetModal()}/>
+            )
+        }
+        else if(editingUnit){
+            return (
+                <Form fields={UNIT_FORM} fullWidth callBackForm={editedUnit} 
+                    initialData={editUnit}
+                    closeCallBack={() => resetModal()}/>
+            )
+        }
+        else if(deletingDepartment){
+            const question = props.translate("hospital.departments.forms.remove-department.confirm").replace("%X", deletingDepartment.name);
+            return(
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Typography variant="h6" component="div" gutterBottom>
+                            {question}
+                        </Typography>                        
+                    </Grid>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                        <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                            <Translate id="general.cancel" />
+                        </ButtonCancel>
+                        <ButtonContinue onClick={() => deletedDepartment(deletingDepartment)} data-testid="continue-modal" color="primary">
+                            <Translate id="general.continue" />
+                        </ButtonContinue>
+                    </Grid>
+                </Grid>
+            )
+        } 
+        else if(deletingUnit){
+            const question = props.translate("hospital.departments.forms.remove-unit.confirm").replace("%X", deletingUnit.name);
+            return(
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Typography variant="h6" component="div" gutterBottom>
+                            {question}
+                        </Typography>                        
+                    </Grid>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                        <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                            <Translate id="general.cancel" />
+                        </ButtonCancel>
+                        <ButtonContinue onClick={() => deletedUnit(deletingUnit)} data-testid="continue-modal" color="primary">
+                            <Translate id="general.continue" />
+                        </ButtonContinue>
+                    </Grid>
+                </Grid>
+            )
+        } 
         else if(confirmingDeleteUnitResearcher){
             const question = props.translate("hospital.departments.forms.remove-researcher.confirm").replace("%X", confirmingDeleteUnitResearcher ? confirmingDeleteUnitResearcher.researcher.name+" "+confirmingDeleteUnitResearcher.researcher.surnames : "").
                                 replace("%Y", confirmingDeleteUnitResearcher.unit.name);
@@ -489,8 +614,9 @@ function Departments(props) {
         setWardToEdit(false);
         setWardToDelete(false);
         setChangingResearcherUnit(false);
-        setAddingDepartment(false);
+        setEditingDepartment(false);
         setConfirmingDeleteUnitResearcher(false);
+        setDeletingUnit(false);
     }
     
     async function resetSnackBar(){
@@ -498,29 +624,6 @@ function Departments(props) {
         props.resetError()
     }
 
-    function renderModalRemoveResearcher(){
-        if(confirmingDeleteUnitResearcher){
-            const question = props.translate("hospital.departments.forms.remove-researcher.confirm").replace("%X", confirmingDeleteUnitResearcher ? confirmingDeleteUnitResearcher.researcher.name+" "+confirmingDeleteUnitResearcher.researcher.surnames : "").
-                                replace("%Y", confirmingDeleteUnitResearcher.unit.name);
-            return(
-                <Grid container>
-                    <Grid item xs={12}>
-                        <Typography variant="h6" component="div" gutterBottom>
-                            {question}
-                        </Typography>                        
-                    </Grid>
-                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                        <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
-                            <Translate id="general.cancel" />
-                        </ButtonCancel>
-                        <ButtonContinue onClick={() => props.deleteReseacherFromUnitCallBack(confirmingDeleteUnitResearcher)} data-testid="continue-modal" color="primary">
-                            <Translate id="general.continue" />
-                        </ButtonContinue>
-                    </Grid>
-                </Grid>
-            )
-        }           
-    }
     useEffect(()=>{
         if(wardToDelete || uuidDepartmentAddWard || addingDepartment || changingResearcherUnit || departmentToAddUnit || confirmingDeleteUnitResearcher){
             setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
@@ -664,6 +767,8 @@ function Departments(props) {
                                 <DepartmentsAccordion mode={DepartmentAccordionModes.Researchers } researchers={props.researchers}
                                     departments={props.departments} uuidDepartmentAddWard={uuidDepartmentAddWard}
                                     permissions={props.investigation.permissions} addUnitCallBack={(uuidDepartment)=>addingUnit(uuidDepartment)}
+                                    editDepartmentCallBack={editDepartment} deleteDepartmentCallBack={deleteDepartment}
+                                    editUnitCallBack={editUnit} deleteUnitCallBack={deleteUnitConfirm}
                                 />
                             </TabPanel>
                         </React.Fragment>

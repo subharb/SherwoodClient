@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteWardService, dischargePatientService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
+import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteDepartmentService, deleteUnitService, deleteWardService, dischargePatientService, editDepartmentService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
 
 
 
@@ -81,6 +81,41 @@ export function removeResearcherFromUnitAction(uuidInvestigation, researcherUnit
     };
 }
 
+export function editDepartmentAction(uuidInvestigation, department) {
+    return async (dispatch) => {
+      dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+  
+      return editDepartmentService(uuidInvestigation, department)
+        .then((response) => {
+          dispatch({
+            type: types.EDIT_DEPARTMENT_SUCCESS,
+            department: response.department,
+          });
+        })
+        .catch((error) => {
+          dispatch({ type: types.HOSPITAL_ERROR });
+          throw error;
+        });
+    };
+}
+
+export function deleteDepartmentAction(uuidInvestigation, department) {
+    return async (dispatch) => {
+      dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+  
+      return deleteDepartmentService(uuidInvestigation, department)
+        .then((response) => {
+          dispatch({
+            type: types.DELETE_DEPARTMENT_SUCCESS,
+            department: response.department,
+          });
+        })
+        .catch((error) => {
+          dispatch({ type: types.HOSPITAL_ERROR });
+          throw error;
+        });
+    };
+}
 
 export function saveDepartmentAction(uuidInvestigation, department) {
     return async (dispatch) => {
@@ -118,6 +153,25 @@ export function saveUpdateWardAction(uuidInvestigation, uuidDepartment, ward) {
           throw error;
         });
     };
+}
+
+export function deleteUnitAction(uuidInvestigation, uuidUnit){
+    return async (dispatch) => {
+        dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+    
+        return deleteUnitService(uuidInvestigation, uuidUnit)
+          .then((response) => {
+            dispatch({
+              type: types.DELETE_UNIT_SUCCESS,
+              uuidUnit:uuidUnit
+            });
+          })
+          .catch((error) => {
+            dispatch({ type: types.HOSPITAL_ERROR,
+                      errorCode:error.errorCode });
+            throw error;
+          });
+      };
 }
 
 export function deleteWardAction(uuidInvestigation, uuidDepartment, uuidWard) {

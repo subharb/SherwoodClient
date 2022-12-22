@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { SIGN_IN_ROUTE } from '../../../routes';
 import { connect } from 'react-redux';
-import { Card, CardContent, 
-        Typography, Grid, Box, Chip } from '@material-ui/core';
+import { Typography, Grid, Box, Chip } from '@material-ui/core';
 import { Alert } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
-import { decryptData, encryptData, generateKey } from '../../../utils';
+import { decryptData, encryptData } from '../../../utils';
 import Loader from '../../Loader';
 import { BoxBckgr, ButtonAdd, ButtonContinue } from '../../general/mini_components';
 import Modal from '../../general/modal';
@@ -18,7 +17,6 @@ import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
 import { getSharedResearchersService, saveResearcherPermissions } from '../../../services';
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
-import { grayscale } from 'polished';
 import SectionHeader from '../../../pages/components/SectionHeader';
 import UserRoles from './UserRoles';
 

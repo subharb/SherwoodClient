@@ -55,6 +55,40 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;
+        case types.EDIT_DEPARTMENT_SUCCESS:
+            tempDepartments = [...newState.data.departments];
+            const indexDepartement = tempDepartments.findIndex(dep => dep.uuid === action.department.uuid);
+            if(indexDepartement !== -1){
+                tempDepartments[indexDepartement] = action.department;
+            }
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
+            return newState;
+        case types.DELETE_DEPARTMENT_SUCCESS:
+            tempDepartments = [...newState.data.departments];
+            const indexDeleteDepartement = tempDepartments.findIndex(dep => dep.uuid === action.department.uuid);
+            if(indexDeleteDepartement !== -1){
+                tempDepartments.splice(indexDeleteDepartement, 1);
+            }
+            
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
+            return newState;
+        case types.DELETE_UNIT_SUCCESS:
+            tempDepartments = [...newState.data.departments];
+            for(let i = 0;i < tempDepartments.length;i++){
+                const indexDeleteUnit = tempDepartments[i].units.findIndex(unit => unit.uuid === action.uuidUnit);
+                if(indexDeleteUnit !== -1){
+                    tempDepartments[i].units.splice(indexDeleteUnit, 1);
+                }
+            }
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error;   
+            return newState;
+
         case types.SAVE_UNIT_SUCCESS:
             tempDepartments = [...newState.data.departments];
             indexDepartment = tempDepartments.findIndex(dep => dep.uuid === action.unit.department.uuid);

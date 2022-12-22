@@ -520,6 +520,40 @@ export const removeUnitToResearcherService = datalogger((uuidInvestigation, uuid
     });
 });
 
+
+
+export const deleteDepartmentService = datalogger((uuidInvestigation, department) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/"+department.uuid, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+});
+
+export const editDepartmentService = datalogger((uuidInvestigation, department) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/"+department.uuid, department, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+});
+
 export const saveDepartmentService = datalogger((uuidInvestigation, department) => {
     return new Promise((resolve, reject) => {
         axios
@@ -572,6 +606,22 @@ export function deleteWardService(uuidInvestigation, uuidWard) {
     return new Promise((resolve, reject) => {
         axios
             .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+export function deleteUnitService(uuidInvestigation, uuidUnit) {
+    return new Promise((resolve, reject) => {
+        axios
+            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidUnit, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

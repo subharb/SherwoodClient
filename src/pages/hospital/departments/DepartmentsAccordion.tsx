@@ -1,10 +1,10 @@
-import { Avatar, Grid, List, ListItem, FormControlLabel, Switch, Typography, Accordion, AccordionSummary, AccordionDetails, ListItemText } from '@material-ui/core';
+import { Avatar, Grid, List, ListItem, FormControlLabel, Switch, Typography, Accordion, AccordionSummary, AccordionDetails, ListItemText, IconButton } from '@material-ui/core';
 import React, { useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { IBed, IDepartment, IDepartmentServer, IResearcher, IUnit, IWard, PERMISSION } from '../../../constants/types';
 import { Translate } from 'react-localize-redux';
 import { WardFormEdit, WardFormModes, WardFormSelect } from './Ward/WardForm';
-import { ButtonAdd } from '../../../components/general/mini_components';
+import { ButtonAdd, IconGenerator } from '../../../components/general/mini_components';
 import { useDepartments } from '../../../hooks';
 import Loader from '../../../components/Loader';
 import { useHistory } from 'react-router-dom';
@@ -30,7 +30,11 @@ interface Props {
     editWardCallBack?: (ward:IWard, uuidDepartment:string, busyBeds:number) => void,
     deleteWardConfirmCallBack?: (ward:IWard, uuidDepartment:string) => void,
     addUnitCallBack?:(uuidDepartment:string)=> void,
-    addWardCallBack?: (uuidDepartment:string) => void
+    addWardCallBack?: (uuidDepartment:string) => void,
+    editDepartmentCallBack?: (department:IDepartment) => void
+    deleteDepartmentCallBack?: (department:IDepartment) => void,
+    deleteUnitCallBack?: (unit:IUnit, hasResearchers:boolean) => void,
+    editUnitCallBack?: (unit:IUnit) => void,
 }
 
 type PropsRedux = Omit<Props, "deleteCallBack" | "uuidDepartmentAddWard" | "viewWardCallBack" | "settingsWardCallBack" | "editWardCallBack" | "addWardCallBack">;
@@ -55,6 +59,7 @@ export const DepartmentsAccordionRedux:React.FC<PropsRedux> = (props) =>{
         return(
             <DepartmentsAccordionWards departments={departments} researchers={researchers} 
                 permissions={props.currentInvestigation.permissions} addUnitCallBack={props.addUnitCallBack}
+                editDepartmentCallBack = {props.editDepartmentCallBack} deleteDepartmentCallBack={props.deleteDepartmentCallBack}
                 mode={DepartmentAccordionModes.WardSelection} selectWardCallBack={selectWardCallBack}
             />
         )
@@ -72,7 +77,8 @@ const DepartmentsAccordionWards:React.FC<PropsRedux> = ({departments, permission
 
 export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, uuidDepartmentAddWard, researchers, mode, 
                                                         selectWardCallBack, addWardCallBack, addUnitCallBack, editWardCallBack, 
-                                                        deleteWardConfirmCallBack, viewWardCallBack, settingsWardCallBack}) => {
+                                                        deleteWardConfirmCallBack, viewWardCallBack, settingsWardCallBack, editDepartmentCallBack,
+                                                        deleteDepartmentCallBack, deleteUnitCallBack, editUnitCallBack}) => {
     
     function renderDepartment(department:IDepartment){
         if(mode === DepartmentAccordionModes.Researchers){
@@ -88,7 +94,24 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                                         aria-controls="panel1a-content"
                                         id="panel1a-header"
                                         >
-                                        <Typography >{ unit.name}</Typography>
+                                    <Typography >{ unit.name}  {
+                                    editUnitCallBack &&
+                                    <IconButton onClick={(e) => {
+                                        e.stopPropagation();
+                                        editUnitCallBack(unit);
+                                        }}>
+                                        <IconGenerator type="edit" />
+                                    </IconButton>
+                                }
+                            {
+                                deleteUnitCallBack &&
+                                <IconButton onClick={(e) => {
+                                    e.stopPropagation();
+                                    deleteUnitCallBack(unit, researchersUnit.length > 0);
+                                    }}>
+                                    <IconGenerator type="delete" />
+                                </IconButton>
+                            }</Typography>
                                     </AccordionSummary>
                                     <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
                                         <List component="nav" aria-label="main mailbox folders">
@@ -115,8 +138,6 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                             
                         })
                     }
-                    
-                
                 </List>
                 )
         }
@@ -202,9 +223,32 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                             id="panel1a-header"
                             >
                             <Typography >{ department.name}
+                            {
+                                addUnitCallBack &&
                                 <ButtonAdd 
-                                type="button" data-testid="add_researcher" 
-                                onClick={(addUnitCallBack) ? () => addUnitCallBack(department.uuid as string) : null} /></Typography>
+                                    type="button" data-testid="add_researcher" 
+                                    onClick={(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => { e.stopPropagation();addUnitCallBack(department.uuid as string) }} />
+                            }
+                            </Typography>
+                            {
+                                editDepartmentCallBack &&
+                                <IconButton onClick={(e) => {
+                                    e.stopPropagation();
+                                    editDepartmentCallBack(department);
+                                    }}>
+                                    <IconGenerator type="edit" />
+                                </IconButton>
+                            }
+                            {
+                                deleteDepartmentCallBack &&
+                                <IconButton onClick={(e) => {
+                                    e.stopPropagation();
+                                    deleteDepartmentCallBack(department);
+                                    }}>
+                                    <IconGenerator type="delete" />
+                                </IconButton>
+                            }
+                                
                         </AccordionSummary>
                         <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
                                 {
