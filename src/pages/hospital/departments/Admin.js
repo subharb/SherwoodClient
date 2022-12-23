@@ -617,6 +617,7 @@ function Departments(props) {
         setEditingDepartment(false);
         setConfirmingDeleteUnitResearcher(false);
         setDeletingUnit(false);
+        setDeletingDepartment(false);
     }
     
     async function resetSnackBar(){

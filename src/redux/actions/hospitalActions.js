@@ -107,7 +107,7 @@ export function deleteDepartmentAction(uuidInvestigation, department) {
         .then((response) => {
           dispatch({
             type: types.DELETE_DEPARTMENT_SUCCESS,
-            department: response.department,
+            department: department,
           });
         })
         .catch((error) => {
