@@ -29,6 +29,19 @@ function HomeSchedule(props) {
         }
     }, [props.investigations])
 
+    function renderLogoOrProfile(){
+        if(props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.AESTHETICS) &&
+            props.investigations.currentInvestigation.aesthetics.params.hasOwnProperty("squareLogo")){
+            return <img src={props.investigations.currentInvestigation.aesthetics.params.squareLogo} 
+                    alt="profile_picture" with="100%" />
+        }
+        else{
+            return <img src={photo_holder} alt="profile_picture" with="100%" />
+        }
+            
+        
+    }
+
     async function selectHospital(index){
         await dispatch(selectInvestigation(index));
         localStorage.setItem("indexHospital", index);
@@ -82,7 +95,9 @@ function HomeSchedule(props) {
                         
                     </Grid>
                     <Grid item xs={6} style={{display:"flex", justifyContent:"left", alignItems:"center"}}>
-                        <img src={photo_holder} alt="profile_picture" with="100%" />
+                        {
+                            renderLogoOrProfile()
+                        }
                     </Grid>
                     <Grid item container  spacing={3}>
                         {
@@ -145,7 +160,7 @@ function HomeSchedule(props) {
                         </Typography>
                     </Grid>
                     <Grid item xs={12} style={{textAlign:"center"}}>
-                        <img src={calendar_image} alt="profile_picture" with="100%" />
+                        <img src={photo_holder} alt="profile_picture" with="100%" />
                     </Grid>
                     {/* <Grid item xs={12} style={{textAlign:"center"}}>
                         <LinkPlain to={HOSPITAL_WARD_SETTINGS_ROUTE}>
