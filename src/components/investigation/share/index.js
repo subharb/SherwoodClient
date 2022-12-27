@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SIGN_IN_ROUTE } from '../../../routes';
 import { connect } from 'react-redux';
-import { Typography, Grid, Box, Chip } from '@material-ui/core';
+import { Typography, Grid, Box, Chip, Snackbar } from '@material-ui/core';
 import { Alert } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
@@ -19,6 +19,7 @@ import { getSharedResearchersService, saveResearcherPermissions } from '../../..
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import SectionHeader from '../../../pages/components/SectionHeader';
 import UserRoles from './UserRoles';
+import { useSnackBarState } from "../../../hooks"
 
 
 const optionsPermissions = Object.keys(USER_ROLES).map(keyRole => {
@@ -158,6 +159,7 @@ function ShareInvestigation(props) {
     const [errorShare, setErrorShare] = useState(false);
     const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
     const [showingRoles, setShowingRoles] = useState(false);
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const history = useHistory();
     
     function shareInvestigation(){
@@ -189,12 +191,12 @@ function ShareInvestigation(props) {
             const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.investigations.currentInvestigation.uuid+'/share', postObject, { headers: {"Authorization" : localStorage.getItem("jwt")} })
             
             if(request.status === 200){
-                console.log("Great");
                 setSharedResearchers(request.data.sharedResearchers);
                 setNewResearchers([]);
+                setShowSnackbar({show:true, message:"investigation.share.success", severity:"success"});
             }
             else{
-                setErrorShare(true);
+                setShowSnackbar({show:true, message:"investigation.share.error.already_invited", severity:"error"});
             }
         }
         catch(error){
@@ -378,19 +380,29 @@ function ShareInvestigation(props) {
     if(props.investigations.loading || isLoadingShare){
         return <Loader />
     }
-    else if(error || errorShare){
-        return (
-            <Alert mb={4} severity="error">
-                <Translate id="investigation.share.error.description" />
-            </Alert>
-        );
-    }
     return (
         <BoxBckgr color="text.primary" >
             <Helmet title={props.translate("investigation.share.title")} />
             {
                 renderModal()
             }
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+                }}
+                open={showSnackbar.show}
+                autoHideDuration={2000}
+                onClose={() => setShowSnackbar({show:false})}>
+                    <div>
+                        {
+                            (showSnackbar.message && showSnackbar.severity) &&
+                            <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
+                                <Translate id={showSnackbar.message} />
+                            </Alert>
+                        }
+                </div>
+            </Snackbar>
             <Grid container spacing={3}>
                 
                 <Grid item  xs={12}>

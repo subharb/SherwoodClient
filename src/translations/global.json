@@ -1021,8 +1021,10 @@
                                 "Un courriel sera envoyé aux adresses électroniques saisies avec une invitation à créer un compte utilisateur Sherwood. Une fois l'invitation acceptée, les utilisateurs auront accès aux données de l'hôpital ou du centre de santé. L'accès aux données médicales et personnelles ainsi qu'à d'autres fonctionnalités sera limité par le type de profil d'utilisateur (ceci peut être modifié ultérieurement)."
 				]
             },
+            "success" : ["The invitation has been sent successfully", "La invitación se ha enviado correctamente", "L'invitation a été envoyée avec succès"],
             "error" : {
                 "title" : ["Error", "Error", "Erreur"],
+                "already_invited" : ["This user has already been invited", "Este usuario ya ha sido invitado", "Cet utilisateur a déjà été invité"],
                 "description" : ["An error ocurred, please try again later", "Se ha producido un error, inténtelo de nuevo más tarde", "Une erreur s'est produite, veuillez réessayer plus tard"]
             },
             "share" : ["Send", "Enviar", "Envoyer"],
