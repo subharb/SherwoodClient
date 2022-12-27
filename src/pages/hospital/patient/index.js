@@ -632,10 +632,12 @@ function Patient(props) {
                         categorySurveySelected = {categorySurveySelected}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
-                        action={parameters} disabled={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} personalData={patient.personalData} years={years}
+                        action={parameters} disabled={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} 
+                        personalData={patient.personalData} years={years}
                         medicalNotesCallBack={() => backToRoot()} 
                         typeSurveysAvailable = { typesSurvey }
                         categorySurveys = {categorySurveys}
+                        unitsResearcher={props.profile.info.units}
                         testCallBack={() => goToTest(TYPE_IMAGE_SURVEY)} 
                         labCallBack={() => goToTest(TYPE_LAB_SURVEY)}
                         socialCallBack={() => goToTest(TYPE_SOCIAL_SURVEY)}
