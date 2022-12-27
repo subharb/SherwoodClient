@@ -33,7 +33,7 @@ function HomeSchedule(props) {
         if(props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.AESTHETICS) &&
             props.investigations.currentInvestigation.aesthetics.params.hasOwnProperty("squareLogo")){
             return <img src={props.investigations.currentInvestigation.aesthetics.params.squareLogo} 
-                    alt="profile_picture" with="100%" />
+                        alt="profile_picture" width="150" />
         }
         else{
             return <img src={photo_holder} alt="profile_picture" with="100%" />
