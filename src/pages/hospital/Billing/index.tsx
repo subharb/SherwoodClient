@@ -17,9 +17,13 @@ import Loader from '../../../components/Loader';
 import { hasDiscountsActive } from '../../../utils';
 import EditBilling from './Edit';
 import { getBillablesAction } from '../../../redux/actions/investigationsActions';
-import Bills from './Bills';
+
 import { useHistory, useParams } from 'react-router-dom';
 import BillsPatient from './BillsPatient';
+import { TabsSherwood } from '../../components/Tabs';
+import BillsTable from './BillsTable';
+
+import { FindPatient } from './find_patient';
 
 interface PropsRedux {
     investigations: any,
@@ -222,10 +226,16 @@ const Billing: React.FC<Props> = (props) => {
         else {
             if (props.billingInfo) {
                 return (
-                    <Bills bills={props.bills} billingInfo={props.billingInfo} loading={props.loading} personalFields={props.personalFields}
-                        patients={props.patients} activeLanguage={props.activeLanguage} makeActionBillCallBack={makeActionBill} 
-                        patientSelectedCallBack={(idPatient) => onPatientSelected(idPatient)}
-                        />
+                    <TabsSherwood name="Billing Info" style={{color: "white"}}
+                        labels={[props.translate("hospital.billing.all_bills").toString(), props.translate("hospital.billing.search_patient").toString()]} >
+                        <BillsTable patients={props.patients} currency={props.billingInfo.currency} bills={props.bills} languageCode={props.activeLanguage.code} 
+                            makeActionBillCallBack={makeActionBill}/>
+                        <FindPatient patients={props.patients}
+                            personalFields={props.personalFields}
+                            codeLanguage={props.activeLanguage.code}
+                            onPatientSelected={(idPatient) => onPatientSelected(idPatient)}
+                            />
+                    </TabsSherwood>
                 );
             }
         }

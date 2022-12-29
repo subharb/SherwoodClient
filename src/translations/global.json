@@ -237,6 +237,7 @@
                     "updated" : ["Billables succesfully updated", "Elementos de facturación actualizada correctamente", "Elements de facturation mis à jour avec succès"]
                 }
             },
+            "search_patient" : ["Search patient", "Buscar paciente", "Rechercher un patient"],
             "total_paid" : ["Total paid", "Total pagado", "Total payé"],
             "total_amount" : ["Total amount", "Monto total", "Montant total"],
             "billing_info" : {
