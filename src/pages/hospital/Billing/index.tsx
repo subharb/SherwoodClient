@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet';
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
-import styled, { withTheme } from "styled-components/macro";
-import { Card, CardContent, Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Tabs, Typography } from '@material-ui/core';
-import { spacing } from "@material-ui/system";
+import { Divider as MuiDivider, Grid, IconButton, Snackbar, Typography } from '@material-ui/core';
 import Modal from '../../../components/general/modal';
 import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@material-ui/lab';
@@ -19,8 +17,9 @@ import Loader from '../../../components/Loader';
 import { hasDiscountsActive } from '../../../utils';
 import EditBilling from './Edit';
 import { getBillablesAction } from '../../../redux/actions/investigationsActions';
-import AllBills from './AllBills';
+import Bills from './Bills';
 import { useHistory, useParams } from 'react-router-dom';
+import BillsPatient from './BillsPatient';
 
 interface PropsRedux {
     investigations: any,
@@ -77,7 +76,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
                     uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
                     personalFields={investigation.personalFields}
                     billingInfo={investigation.billingInfo}
-                    bills={bills} loading={loading}
+                    bills={bills} loading={loading} uuidPatient={uuidPatient}
                     onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
                     onPatientSelected={(uuid:string) => onPatientSelected(uuid)}
         />
@@ -103,7 +102,7 @@ interface Props extends LocalizeContextProps {
     uuidInvestigation: string,
     hospitalName: string,
     billingInfo: BillingInfo,
-
+    uuidPatient?:string,
     bills: Bill[];
     loading: boolean,
     withDiscount: boolean,
@@ -214,10 +213,16 @@ const Billing: React.FC<Props> = (props) => {
             return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={props.billingInfo && props.billingInfo.billables ? props.billingInfo.billables : []} withDiscount={props.withDiscount}
                 billingInfo={props.billingInfo} onBillingInfoSuccesfullyUpdated={(type: BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
         }
+        else if(props.uuidPatient){
+            const currentPatient = props.patients.find((patient) => patient.uuid === props.uuidPatient);
+            return <BillsPatient patient={currentPatient} uuidPatient={props.uuidPatient} bills={props.bills} 
+                        currency={props.billingInfo.currency} languageCode={props.activeLanguage.code}
+                        makeActionBillCallBack={makeActionBill}/>
+        }
         else {
             if (props.billingInfo) {
                 return (
-                    <AllBills bills={props.bills} billingInfo={props.billingInfo} loading={props.loading} personalFields={props.personalFields}
+                    <Bills bills={props.bills} billingInfo={props.billingInfo} loading={props.loading} personalFields={props.personalFields}
                         patients={props.patients} activeLanguage={props.activeLanguage} makeActionBillCallBack={makeActionBill} 
                         patientSelectedCallBack={(idPatient) => onPatientSelected(idPatient)}
                         />

@@ -5,9 +5,10 @@ import { BillActions } from '.';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Loader from '../../../components/Loader';
 import { fullDateFromPostgresString } from '../../../utils';
+import BillsTable from './BillsTable';
 import { FindPatient } from './find_patient';
 
-type AllBillsProps = {
+type BillsProps = {
     loading: boolean;
     bills: any[];
     patients: any[];
@@ -18,7 +19,7 @@ type AllBillsProps = {
     patientSelectedCallBack: (idPatient: number) => void;
 };
 
-const AllBills: React.FC<AllBillsProps> = ({ loading, bills, patients, billingInfo, personalFields, 
+const Bills: React.FC<BillsProps> = ({ loading, bills, patients, billingInfo, personalFields, 
                                                 activeLanguage, makeActionBillCallBack, patientSelectedCallBack }) => {
     const [showingBills, setShowingBills] = React.useState(true);
 
@@ -59,9 +60,8 @@ const AllBills: React.FC<AllBillsProps> = ({ loading, bills, patients, billingIn
                 <Grid item xs={12}>
                 {
                     showingBills &&
-                    <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
-                    actions={[{"type" : "edit", "func" : (index:number) => makeActionBillCallBack(index, BillActions.update)},
-                            {"type" : "view", "func" : (index:number) => makeActionBillCallBack(index, BillActions.preview)}]} />
+                    <BillsTable patients={patients} currency={billingInfo.currency} bills={bills} languageCode={activeLanguage.code} 
+                        makeActionBillCallBack={makeActionBillCallBack}/>
                 }
                 
                 </Grid>
@@ -72,4 +72,4 @@ const AllBills: React.FC<AllBillsProps> = ({ loading, bills, patients, billingIn
     
 };
 
-export default AllBills;
+export default Bills;
