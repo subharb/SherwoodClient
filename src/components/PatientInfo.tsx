@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 
 import React, { useEffect, useState } from 'react';
@@ -15,10 +15,13 @@ import { ColourChip } from './general/mini_components-ts';
 interface PatientInfoProps extends LocalizeContextProps{
     uuidPatient: string;
     patientsPersonalData?: IPatient[];
+    auxiliarInfo?:{
+        title: string;
+        value:number | string;
+    }[];
 }
 
-
-const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, patientsPersonalData }) => {
+const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, patientsPersonalData, auxiliarInfo }) => {
     const [patient, setPatient] = useState<IPatient | null>(null);
    
     const history = useHistory();
@@ -27,7 +30,24 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, 
         const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
         history.push(nextUrl);
     }
-
+    function renderAuxiliarInfo(){
+        if(auxiliarInfo){
+            return (
+                <Grid item xs={6}>
+                    {
+                        auxiliarInfo.map((info, index) => {
+                            return (
+                                <Typography key={index} variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id={info.title} /></span>: {info.value}</Typography>
+                            )
+                        })
+                    }
+                </Grid>
+            )
+        }
+        else{
+            return null;
+        }
+    }
     useEffect(() => {
         if(patientsPersonalData){
             const patient = patientsPersonalData.find((patient) => patient.uuid === uuidPatient);
@@ -43,16 +63,22 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, 
     }
     else if(patient && patient.personalData){
         return (
-            <> 
-                { 
-                    patient.personalData.health_id &&
-                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.health_id" /></span>: {patient.personalData.health_id}</Typography>
+            <Grid container spacing={1}>
+                <Grid item xs={6}>
+                    { 
+                        patient.personalData.health_id &&
+                        <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.health_id" /></span>: {patient.personalData.health_id}</Typography>
+                    }
+                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.patient" /></span>: {patient.personalData.name} {patient.personalData.surnames} &nbsp; <ColourChip rgbcolor={green[500]} label={<Translate id="pages.hospital.go-to-patient" />} onClick={goToPatient}/></Typography>
+                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.birthdate" /></span>: {dateToFullDateString(patient.personalData.birthdate, activeLanguage.code)}</Typography>
+                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.sex" /></span>: {patient.personalData.sex}</Typography>
+                </Grid>
+                {
+                    renderAuxiliarInfo()
                 }
-                
-                <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.patient" /></span>: {patient.personalData.name} {patient.personalData.surnames} &nbsp; <ColourChip rgbcolor={green[500]} label={<Translate id="pages.hospital.go-to-patient" />} onClick={goToPatient}/></Typography>
-                <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.birthdate" /></span>: {dateToFullDateString(patient.personalData.birthdate, activeLanguage.code)}</Typography>
-                <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.sex" /></span>: {patient.personalData.sex}</Typography>
-            </>
+                <Grid item xs={6}>
+                </Grid>
+            </Grid>
         );
     }
     else{
