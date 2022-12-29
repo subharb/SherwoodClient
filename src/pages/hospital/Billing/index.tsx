@@ -11,20 +11,16 @@ import { Alert } from '@material-ui/lab';
 import { ButtonAdd, IconGenerator } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
 import { FUNCTIONALITY, IPatient } from '../../../constants/types';
-import { Bill, Billable, BillingInfo, BillItemModes } from './types';
+import { Bill, BillingInfo, BillItemModes } from './types';
 import { Document } from '../Document';
 import { connect, useDispatch } from 'react-redux';
-import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { getBillablesService, getBillsService } from '../../../services/billing';
+import { getBillsPatientService, getBillsService } from '../../../services/billing';
 import Loader from '../../../components/Loader';
-import { fullDateFromPostgresString, hasDiscountsActive } from '../../../utils';
+import { hasDiscountsActive } from '../../../utils';
 import EditBilling from './Edit';
 import { getBillablesAction } from '../../../redux/actions/investigationsActions';
-import { TabsSherwood } from '../../components/Tabs';
 import AllBills from './AllBills';
-import FindPatientsBill from './FindPatientsBill';
-import { FindPatient } from './find_patient';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 interface PropsRedux {
     investigations: any,
@@ -37,6 +33,8 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
     const [bills, setBills] = useState<Bill[]>([]);
     const [loading, setLoading] = useState(false);
     const history = useHistory();
+    let uuidPatient = useParams<{uuidPatient?:string}>().uuidPatient;
+
 
     const hasDiscounts = investigation && investigation.billingInfo && investigation.billingInfo.params && hasDiscountsActive(investigation.billingInfo.params, investigation.permissions);
     function onBillSuccesfullyCreated(bill: Bill) {
@@ -57,7 +55,14 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
     useEffect(() => {
         async function getBills() {
             setLoading(true);
-            const response = await getBillsService(investigation.uuid);
+            let response;
+            if(!uuidPatient){
+                response = await getBillsService(investigation.uuid);
+            }
+            else{
+                response = await getBillsPatientService(investigation.uuid, uuidPatient);
+            }
+            
             if (response.status === 200) {
                 setBills(response.bills);
             }

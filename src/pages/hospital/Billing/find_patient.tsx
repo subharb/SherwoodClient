@@ -15,7 +15,7 @@ interface Props{
     selectingPatientCallBack?:(value:boolean) => void
 }
 export const FindPatient:React.FC<Props> = (props) => {
-    const [patientName, setPatientName] = useState<null | string>("");
+    const [patientName, setPatientName] = useState<string>("");
     
     function onChange(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>){
         console.log(event.target.value);

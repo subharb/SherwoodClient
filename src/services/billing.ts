@@ -82,6 +82,24 @@ export function getBillsService(uuidInvestigation: string): Promise<{ status: nu
     });
 }
 
+export function getBillsPatientService(uuidInvestigation: string, uuidPatient:string): Promise<{ status: number, bills: Bill[] }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bills/patient/"+uuidPatient, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+
+
 export function getBillablesService(uuidInvestigation: string, idBillingInfo: number): Promise<BillablesServiceResponse> {
     return new Promise((resolve, reject) => {
         axios

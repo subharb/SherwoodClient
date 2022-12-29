@@ -132,6 +132,7 @@ export const HOSPITAL_IMAGING_REQUEST = "/images/request/:idRequest";
 export const HOSPITAL_LAB_RESULT = "/lab/result/:idSubmission/patient/:uuidPatient";
 export const ROUTE_401 = "/auth/401";
 export const HOSPITAL_BILLING = "/billing";
+export const HOSPITAL_BILLING_PATIENT = "/billing/patient/:uuidPatient";
 export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
 export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
 export const HOSPITAL_PHARMACY_CENTRAL_ROUTE = "/pharmacy";
@@ -307,6 +308,12 @@ const hospitalRoutes = {
             name: "Billing",
             component: () =>  <Billing/>,
         },
+        {
+            path: HOSPITAL_BILLING_PATIENT,
+            name: "Billing",
+            component: () =>  <Billing/>,
+        },
+        
     ],
   };
 
