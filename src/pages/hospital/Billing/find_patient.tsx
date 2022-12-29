@@ -1,4 +1,4 @@
-import { TextField } from "@material-ui/core";
+import { Card, CardContent, Grid, TextField } from "@material-ui/core";
 import React, { useState } from "react"
 import { Translate } from "react-localize-redux";
 import { connect } from "react-redux";
@@ -9,18 +9,25 @@ import { formatPatients } from "../../../utils";
 
 interface Props{
     patients:IPatient[],
-    personalFields:[],
+    personalFields:any[],
     codeLanguage:string,
     onPatientSelected:(idPatient:number) => void,
+    selectingPatientCallBack?:(value:boolean) => void
 }
 export const FindPatient:React.FC<Props> = (props) => {
-    const [patientName, setPatientName] = useState<null | string>(null);
+    const [patientName, setPatientName] = useState<null | string>("");
+    
     function onChange(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>){
         console.log(event.target.value);
         setPatientName(event.target.value);
+        if(props.selectingPatientCallBack){
+            props.selectingPatientCallBack(event.target.value.length !== 0);
+        }
+        
     }
+    
     function renderResults(){
-        if(patientName !== null){
+        if(patientName !== ""){
             const filteredPatients:IPatient[] = props.patients.filter((patient) => {
                 const currentPatientData = patient.personalData;
                 const currentPatientFullName = currentPatientData.name+" "+currentPatientData.surnames;
@@ -45,11 +52,19 @@ export const FindPatient:React.FC<Props> = (props) => {
         
     }
     return(
-        <React.Fragment>
-            <TextField label="Search Patient" onChange={(event) => onChange(event) } />
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Card>
+                    <CardContent>
+                        <TextField label="Search Patient" onChange={(event) => onChange(event) } />
+                    </CardContent>
+                </Card>
+            </Grid>
+            <Grid item xs={12}>
             {
                 renderResults()
             }
-        </React.Fragment>
+            </Grid>
+        </Grid>
     )
 }
