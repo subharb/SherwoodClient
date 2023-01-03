@@ -398,7 +398,7 @@ const dashboardAnalyticsRoutes = {
     path: HOSPITAL_ANALYTICS,
     icon: <TimelineIcon />,
     badge: "",
-    permissions : [PERMISSION.BUSINESS_READ],
+    permissions : [PERMISSION.BUSINESS_READ, PERMISSION.ANALYTICS_DEPARTMENT],
     functionalities:[],
     component: {
         path: ADD_PATIENT_ROUTE,

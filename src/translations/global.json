@@ -214,7 +214,7 @@
                     "followup-visit" : ["Follow up visit", "Visita de seguimiento", "Visite de suivi"]
                 },
                 "patients" : {
-                    "title" : ["Patients over time", "Pacientes a lo largo del tiempo", "Patients au fil du temps"]
+                    "title" : ["Patients visits", "Visitas de pacientes", "Visites des patients"]
                 }
 
             }
@@ -991,6 +991,7 @@
                 "PHARMACY_MANAGER" : ["Pharmacy Manager", "Director de farmacia", "Directeur de pharmacie"],
                 "PHARMACY_ASSISTANT" : ["Pharmacy Assistant", "Asistente de farmacia", "Assistant de pharmacie"],
                 "MAJOR" : ["Major", "Mayor", "Major"],
+                "DEPARTMENT_HEAD" : ["Department Head", "Jefe de departamento", "Chef de département"],
                 "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {

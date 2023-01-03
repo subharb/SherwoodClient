@@ -17,7 +17,7 @@ import { LIST_COLORS } from '../../hospital/Analytics';
 interface Props extends LocalizeContextProps{
     label:string,
     title:string,
-    uuidInstitution:string,
+    uuidInvestigation:string,
     startDate:Date, 
     endDate:Date,
     locale:string
@@ -93,7 +93,7 @@ function SearchTable(props:Props){
     }
     function diagnoseSelectedCallBack(ict:any){
         setICT(ict);
-        getStatsPerDiagnosisService(props.uuidInstitution, ict["ict-code"], new Date(2020, 0, 1).getTime(), new Date().getTime())
+        getStatsPerDiagnosisService(props.uuidInvestigation, ict["ict-code"], new Date(2020, 0, 1).getTime(), new Date().getTime())
             .then(response => {
                 setStats(response.stats)
             })

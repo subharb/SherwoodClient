@@ -14,7 +14,7 @@ import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components/macro";
 import { yearsFromDate } from '../../../utils';
 import TimeTable from '../../dashboards/Analytics/TimeTable';
-import { getPatientIdFromDepartment, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsPatientsPerDepartment } from '../../../services';
+import { getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsPatientsPerDepartment } from '../../../services';
 import { spacing } from "@material-ui/system";
 import DatesSelector from '../../dashboards/Analytics/DatesSelector';
 import { PERMISSION } from '../../../constants/types';
@@ -35,9 +35,11 @@ export function Analytics(props) {
 	const [statsFirstMonitoring, setStatsFirstMonitoring] = useState(null);
 	const [mostCommonDiagnosis, setMostCommonDiagnosis] = useState(null);
 	const [filteredPatients, setFilteredPatients] = useState([]);
+    const [activityPatients, setActivityPatients] = useState([]);
 	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
     const [patientsPerDepartment, setStatsPatientsPerDepartment] = useState(null);
-	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true);
+    const onlyDepartmentsResearcher = props.investigations.currentInvestigation.permissions.includes(PERMISSION.ANALYTICS_DEPARTMENT);
+	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher);
 
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
 	
@@ -168,9 +170,9 @@ export function Analytics(props) {
 									return [keyValue[0], keyValue[1]]
 								}));
 							})
-            getStatsPatientsPerDepartment(props.investigations.currentInvestigation.uuid, startDate, endDate)
+            getStatsActivityService(props.investigations.currentInvestigation.uuid, startDate, endDate)
                             .then(response => {
-                                setStatsPatientsPerDepartment(response.stats);
+                                setActivityPatients(response.stats);
                             })
 			filterPatientsByDate(startDate, endDate);
 		}
@@ -183,7 +185,7 @@ export function Analytics(props) {
 	if (props.investigations.loading) {
 		return <Loader />
 	}
-	else if (!props.investigations.currentInvestigation.permissions.includes(PERMISSION.BUSINESS_READ)) {
+	else if (!props.investigations.currentInvestigation.permissions.filter((perm) => [PERMISSION.BUSINESS_READ, PERMISSION.ANALYTICS_DEPARTMENT].includes(perm)).length > 0){
 		history.push(ROUTE_401);
 		return <Loader />
 	}
@@ -245,7 +247,7 @@ export function Analytics(props) {
 							</Grid>
                             <Grid item xs={12}>
                                 <PatientsBarChart title={<Translate id="hospital.analytics.graphs.patients.title" />} 
-                                    patients={filteredPatients} departments={departments} statsPerDepartment = {patientsPerDepartment}
+                                    departments={departments} statsPerDepartment = {activityPatients}
                                     departmentSelected={departments ? departments.find((dep) => dep.uuid === departmentSelected) : null} />
                             </Grid>
 						</Grid>
@@ -256,7 +258,7 @@ export function Analytics(props) {
                     <>
                         <Grid item xs={12}> 
                             <SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
-                                uuidInstitution={props.investigations.currentInvestigation.institution.uuid}
+                                uuidInvestigation={props.investigations.currentInvestigation.uuid}
                                 startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
                                 title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
                         </Grid>

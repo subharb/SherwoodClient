@@ -11,21 +11,32 @@ interface PatientsBarChartProps {
     title:Element
 }
 const PatientsBarChart: React.FC<PatientsBarChartProps> = ({ departments, title, patients, departmentSelected, statsPerDepartment }) => {
+    // const categories = useMemo(() => {
+    //     if(patients.length === 0) return [];
+    //     const orderedPatients = patients.sort((a,b) => a.dateCreated - b.dateCreated);
+    //     const startDate = new Date(orderedPatients[0].dateCreated);
+    //     const endDate = new Date(orderedPatients[orderedPatients.length - 1].dateCreated);
+    //     const numberMonths =  endDate.getMonth() - startDate.getMonth() + 12 * (endDate.getFullYear() - startDate.getFullYear()) + 1;
+    //     let months = [];
+    //     for(let i = 0; i < numberMonths; i++){
+    //         months.push(new Date(startDate.getFullYear(), startDate.getMonth() + i, 1));
+    //     }
+    //     return months;
+    // }, [patients])
     const categories = useMemo(() => {
-        if(patients.length === 0) return [];
-        const orderedPatients = patients.sort((a,b) => a.dateCreated - b.dateCreated);
-        const startDate = new Date(orderedPatients[0].dateCreated);
-        const endDate = new Date(orderedPatients[orderedPatients.length - 1].dateCreated);
-        const numberMonths =  endDate.getMonth() - startDate.getMonth() + 12 * (endDate.getFullYear() - startDate.getFullYear()) + 1;
-        let months = [];
-        for(let i = 0; i < numberMonths; i++){
-            months.push(new Date(startDate.getFullYear(), startDate.getMonth() + i, 1));
-        }
-        return months;
-    }, [patients])
+        return Object.keys(statsPerDepartment).sort((a, b) => new Date(a) - new Date(b) );
+    }, [statsPerDepartment]);
 
     function seriesPerDepartment(currentDepartment:IDepartment){
         
+        const seriesDepartment = categories.map((key) => {
+            const countPatientsInDepartment = statsPerDepartment[key].filter((patient) => patient.department.uuid === currentDepartment.uuid).length;
+            return countPatientsInDepartment;
+        });
+        return {
+            name: currentDepartment.name,
+            count: seriesDepartment
+        };
         if(statsPerDepartment[currentDepartment.uuid as string]){
             const patientIds = statsPerDepartment[currentDepartment.uuid as string];
             let copyPatientsId = [...patientIds];

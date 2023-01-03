@@ -100,9 +100,9 @@ export const searchDrugComponentService = datalogger((searchText, country) => {
     });
 });
 
-export const getStatsPerDiagnosisService = datalogger((uuidInstitution, icdCode, startDate, endDate) => {
+export const getStatsPerDiagnosisService = datalogger((uuidInvestigation, icdCode, startDate, endDate) => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.REACT_APP_API_URL + '/hospital/institution/' + uuidInstitution + '/stats/diagnosis/' + icdCode + '/startDate/' + startDate + '/endDate/' + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(process.env.REACT_APP_API_URL + '/hospital/' + uuidInvestigation + '/stats/diagnosis/' + icdCode + '/startDate/' + startDate + '/endDate/' + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -440,10 +440,10 @@ export const getStatsMostCommonDiagnosis = datalogger((uuidInvestigation, startD
     });
 });
 
-export const getStatsPatientsPerDepartment = datalogger((uuidInvestigation, startDate, endDate) => {
+export const getStatsActivityService = datalogger((uuidInvestigation, startDate, endDate) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/stats/patients/alldepartments/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/stats/activity/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
