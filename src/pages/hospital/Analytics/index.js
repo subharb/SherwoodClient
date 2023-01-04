@@ -99,16 +99,16 @@ export function Analytics(props) {
 		setEndDate(dates[1].getTime());
 	}
 	
-    function filterPatientsByDate(startDateFilter, endDateFilter){
-		if(props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
-			const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
-				const dateCreated = new Date(patient.dateCreated);
-				return startDateFilter < dateCreated.getTime() && endDateFilter > dateCreated.getTime();
-			})
+    // function filterPatientsByDate(startDateFilter, endDateFilter){
+	// 	if(props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
+	// 		const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
+	// 			const dateCreated = new Date(patient.dateCreated);
+	// 			return startDateFilter < dateCreated.getTime() && endDateFilter > dateCreated.getTime();
+	// 		})
 			
-			setFilteredPatients(tempFilterPatients);
-		}
-	}
+	// 		setFilteredPatients(tempFilterPatients);
+	// 	}
+	// }
     
     useEffect(() => {
         let tempCountSex = {male : 0, female : 0};
@@ -157,6 +157,24 @@ export function Analytics(props) {
         }
         
     }, [departmentSelected]);
+
+    useEffect(() => {
+        let tempFilteredPatients = [];
+        for(let i = 0; i < Object.keys(activityPatients).length; i++){
+            const key = Object.keys(activityPatients)[i];
+            const patientsActivity = departmentSelected ? activityPatients[key].filter((patient) => {
+                return patient.department.uuid === departmentSelected;
+            }) : activityPatients[key];
+            
+            const patientsPersonalData = patientsActivity.map((patientAct) => {
+                const patientFound = props.investigations.currentInvestigation.patientsPersonalData.find((patient) => patient.id === patientAct.idPatientInvestigation);
+                return patientFound;
+            })
+            tempFilteredPatients = tempFilteredPatients.concat(patientsPersonalData);
+        }
+        setFilteredPatients(tempFilteredPatients);
+        
+    }, [activityPatients]);
 	
     useEffect(() => {
 		async function getStats() {
@@ -174,7 +192,7 @@ export function Analytics(props) {
                             .then(response => {
                                 setActivityPatients(response.stats);
                             })
-			filterPatientsByDate(startDate, endDate);
+			
 		}
 
 		if (props.investigations.currentInvestigation) {
