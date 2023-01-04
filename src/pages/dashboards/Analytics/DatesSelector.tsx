@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { Button, Button as MuiButton, Grid, Menu, MenuItem, Paper, Typography } from "@material-ui/core";
+import { Button, Button as MuiButton, FormControl, Grid, InputLabel, Menu, MenuItem, Paper, Select, Typography } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { formatDateByLocale } from '../../../utils';
+import { FieldWrapper } from '../../../components/general/mini_components';
 
 interface Props extends LocalizeContextProps{
     onCallBack:(dates:Date[]) => void 
@@ -15,7 +16,7 @@ function DatesSelector(props:Props){
     const [typeRange, setTypeRange] = React.useState(null);
     const [startDate, setStartDate] = React.useState(d);
     const [endDate, setEndDate] = React.useState(new Date());
-
+    const [timePeriod, setTimePeriod] = React.useState<null | number>(null);
     const [openStartDate, setOpenStartDate] = React.useState(false);
     const [openEndDate, setOpenEndDate] = React.useState(false);
 
@@ -30,7 +31,29 @@ function DatesSelector(props:Props){
             setEndDate(date)
         }
     };
+    function selectChanged(event:React.ChangeEvent<{
+        name?: string | undefined;
+        value: unknown;
+    }>){
+        console.log(event);
+        setTimePeriod(event.target.value as number);
+        switch(event.target.value){
+            case 0:
+                var d = new Date();
+                d.setDate(d.getDate() - 7);
+                setStartDate(d);
+                setEndDate(new Date());
+                break;
+            case 1:
+                var d = new Date();
+                d.setDate(d.getDate() - 30);
+                setStartDate(d);
+                setEndDate(new Date());
+                break;
+        }
 
+            
+    }
     function showStartCalendar(){
         setOpenStartDate(true);
     }
@@ -41,8 +64,8 @@ function DatesSelector(props:Props){
         props.onCallBack([startDate, endDate])
     }, [startDate, endDate])
     
-    return(
-        
+    function renderCustomDatesSelector(){
+        return (
             <MuiPickersUtilsProvider utils={DateFnsUtils} >
                 <Typography variant="h4" gutterBottom  >Select dates: </Typography>
                 <Grid container spacing={3}>    
@@ -90,7 +113,34 @@ function DatesSelector(props:Props){
                     </Grid>
                 </Grid>
             </MuiPickersUtilsProvider>
-        
+        )
+    }
+    
+    const optionsArray = [<MenuItem value={0}>Last week</MenuItem>, <MenuItem value={1}>Last month</MenuItem>, <MenuItem value={2}>Custom period</MenuItem>]
+    return(
+        <Grid container spacing={3}>
+            <Grid item xs={12}>
+                <Typography variant="h4" gutterBottom  >Current period: {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}</Typography>
+            </Grid>
+            <Grid item xs={12}> 
+                <FieldWrapper noWrap = {false}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel id="time_period">Select a period</InputLabel>
+                        <Select
+                            labelId="time_period"
+                            id="time_period"
+                            label="Select a period"
+                            onChange={(event) => selectChanged(event)}
+                        >
+                        { optionsArray }
+                        </Select>
+                    </FormControl>
+                </FieldWrapper>    
+                {
+                    timePeriod === 2 ? renderCustomDatesSelector() : null
+                } 
+            </Grid>
+        </Grid>
     )
         
 }
