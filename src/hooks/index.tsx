@@ -6,7 +6,7 @@ import { fetchUser } from "../services/authService";
 import { decryptData, encryptData, getCurrentResearcherUuid } from '../utils';
 import { useQuery } from 'react-query'
 import { SIGN_IN_ROUTE } from '../routes';
-import { FormControl, Grid, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
 import { FieldWrapper } from '../components/general/mini_components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -324,7 +324,7 @@ export function useUnitSelector(units:IUnit[]){
     return {unitSelected, renderUnitSelector, markAsErrorUnit}
 }
 
-export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false){
+export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false, noReturnIfOnlyOne:boolean = false){
     const { departments } = useDepartments(researchersDepartmentsOnly);
     const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(null);
     const [errorDepartment, setErrorDepartment] = React.useState(false);
@@ -349,8 +349,20 @@ export function useDeparmentsSelector(selectNoDepartment:boolean = false, resear
         if(!departments){
             return <Loader />
         }
-        if(departments.length === 1){
+        if(departments.length === 0){
             return null;
+        }
+        else if(departments.length === 1){
+            if(noReturnIfOnlyOne){
+                return null;
+            }
+            return(
+                <>
+                    <Typography variant="h4" gutterBottom>Department:</Typography>
+                    <Typography variant="h4" gutterBottom >{departments[0].name}</Typography>
+                </>
+            )
+            //return null;
         }
         else{
             let optionsArray = departments.map((department) => {

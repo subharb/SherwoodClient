@@ -39,7 +39,7 @@ export function Analytics(props) {
 	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
     const [patientsPerDepartment, setStatsPatientsPerDepartment] = useState(null);
     const onlyDepartmentsResearcher = props.investigations.currentInvestigation.permissions.includes(PERMISSION.ANALYTICS_DEPARTMENT);
-	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher);
+	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher, true);
 
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
 	
@@ -211,24 +211,23 @@ export function Analytics(props) {
 	return (
 		<React.Fragment>
 			<Helmet title="Analytics Dashboard" />
-			<Grid justify="space-between" direction='row' container spacing={6}>
-				<Grid item xs={12}>
-					<Typography variant="h3" gutterBottom style={{ color: "white" }}>
+			<Grid container spacing={6}>
+				<Grid item xs={12} style={{ color: "white" }}>
+					<Typography variant="h3" gutterBottom >
 						Analytics Dashboard
 					</Typography>					
 				</Grid>
-				<Grid item container xs={12} style={{background:'white', padding:'1rem'}}>
-                        <Grid item xs={6}>
-                            { renderDepartmentSelector() }
-                        </Grid>
-                        <Grid item xs={6}>
-                            <DatesSelector onCallBack={datesSelected} />
-                        </Grid>
-                   
+				<Grid spacing={3} item container xs={12} style={{background:'white', padding:'1rem'}}>
+                    <Grid item xs={6}>
+                        { renderDepartmentSelector() }
+                    </Grid>
+                    <Grid item xs={6}>
+                        <DatesSelector onCallBack={datesSelected} />
+                    </Grid>
                 </Grid>
 			</Grid>
-			<Divider my={6} />
-			<Grid container spacing={6}>
+
+			<Grid container spacing={6} style={{marginTop:'1rem'}}>
 				{
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) &&
 					<Grid item xs={12}>

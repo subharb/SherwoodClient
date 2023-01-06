@@ -39,7 +39,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, units, serviceTy
         }
     }, [request]);
     
-    function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number, uuidDepartment:string) {
+    function makeRequest(uuidPatient:string, servicesInvestigation:number[], serviceType:number, uuidDepartment:string | null) {
         setLoading(true);
         const postObject = {
             servicesInvestigationId: servicesInvestigation,
@@ -79,14 +79,14 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, units, serviceTy
         }
 
     }, []);
-    if(!units || units.length === 0){
-        return(
-            <Typography variant="body2"><Translate id="pages.hospital.pharmacy.no_units" /></Typography>
-        )
-    }
+    // if(!units || units.length === 0){
+    //     return(
+    //         <Typography variant="body2"><Translate id="pages.hospital.pharmacy.no_units" /></Typography>
+    //     )
+    // }
     return <RequestFormCoreLocalized loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
                 handleCloseSnackBar={handleClose} cancel={cancel} units={units} serviceType={serviceType}
-                callBackFormSubmitted={(servicesInvestigation:number[], uuidDepartment:string) => makeRequest(uuidPatient, servicesInvestigation, serviceType, uuidDepartment)} />;
+                callBackFormSubmitted={(servicesInvestigation:number[], uuidDepartment:string | null) => makeRequest(uuidPatient, servicesInvestigation, serviceType, uuidDepartment)} />;
 }
 
 export default RequestForm;
@@ -96,14 +96,14 @@ interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'u
     snackbar: SnackbarType;
     servicesInvestigation:IServiceInvestigation[],
     handleCloseSnackBar:()=>void,
-    callBackFormSubmitted:(serviceInvestigation:number[], uuidDepartment:string) => void
+    callBackFormSubmitted:(serviceInvestigation:number[], uuidDepartment:string | null) => void
 }
 
 export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, units,
                                                                     translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
     const [errorServices, setErrorServices] = React.useState(false);
-    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartment} = useDeparmentsSelector(false, true);
+    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartment} = useDeparmentsSelector(false, true, true);
 
     const serviceCategories = useMemo(() => {
         let categories:{[id:string]:IServiceInvestigation[]} = {};
@@ -121,7 +121,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
   
     function callBackForm(){
         const serviceInvestigationIds = Object.keys(servicesInvestigationSelected).filter((key) => servicesInvestigationSelected[key] === true).map((key) => parseInt(key.replace(SERVICE_SEPARATOR, "")));
-        if(departmentSelected === null || serviceInvestigationIds.length === 0){
+        if((departmentSelected === null && units.length > 0) || serviceInvestigationIds.length === 0){
             if(departmentSelected === null){
                 markAsErrorDepartment();
             }
