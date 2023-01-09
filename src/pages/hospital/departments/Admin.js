@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
 import { ALL_ROLES, USER_ROLES } from '../../../constants';
 import { useHistory } from "react-router-dom";
-import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction, removeResearcherFromUnitAction, editDepartmentAction, deleteDepartmentAction, deleteUnitAction } from '../../../redux/actions/hospitalActions';
+import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction, removeResearcherFromUnitAction, editDepartmentAction, deleteDepartmentAction, deleteUnitAction, editUnitAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
@@ -67,6 +67,14 @@ const DEPARTMENT_FORM = {
 }
 
 const UNIT_FORM = {
+    "uuid" : {
+        required : false,
+        name:"uuid",
+        type:"hidden",
+        label:"hospital.departments.forms.department.name",
+        shortLabel: "hospital.departments.forms.department.name",
+        validation : "textMin2"
+    },
     "name":{
         required : true,
         name:"name",
@@ -171,8 +179,8 @@ function DepartmentsRouter(props){
     async function deleteUnitCallBack(uuidUnit){
         await dispatch(deleteUnitAction(props.investigations.currentInvestigation.uuid, uuidUnit));
     }
-    async function editUnitCallBack(wardInfo, uuidDepartmentAddWard){
-        //await dispatch(saveUpdateWardAction(props.investigations.currentInvestigation.uuid, uuidDepartmentAddWard, wardInfo));
+    async function editUnitCallBack(editingUnit){
+        await dispatch(editUnitAction(props.investigations.currentInvestigation.uuid, editingUnit));
     }
     function settingsCallBack(ward){
         const nextUrl = HOSPITAL_WARD_SETTINGS_ROUTE.replace(":uuidWard", ward.uuid);
@@ -322,7 +330,7 @@ function Departments(props) {
     function editedUnit(newUnitDetails){
         resetModal();
         setIsLoadingDepartments(true);
-        props.editDepartmentCallBack(newUnitDetails);
+        props.editUnitCallBack(newUnitDetails);
     }
 
     function addWard(uuidDepartment){
@@ -512,7 +520,7 @@ function Departments(props) {
         else if(editingUnit){
             return (
                 <Form fields={UNIT_FORM} fullWidth callBackForm={editedUnit} 
-                    initialData={editUnit}
+                    initialData={editingUnit}
                     closeCallBack={() => resetModal()}/>
             )
         }
@@ -615,6 +623,7 @@ function Departments(props) {
         setWardToDelete(false);
         setChangingResearcherUnit(false);
         setEditingDepartment(false);
+        setEditingUnit(false);
         setConfirmingDeleteUnitResearcher(false);
         setDeletingUnit(false);
         setDeletingDepartment(false);

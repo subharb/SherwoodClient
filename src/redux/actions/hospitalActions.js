@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteDepartmentService, deleteUnitService, deleteWardService, dischargePatientService, editDepartmentService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
+import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteDepartmentService, deleteUnitService, deleteWardService, dischargePatientService, editDepartmentService, editUnitService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
 
 
 
@@ -23,13 +23,30 @@ export function getDepartmentsInvestigationAction(uuidInstitution) {
     };
 }
 
-
-
 export function saveUnitAction(uuidInvestigation, uuidDepartment, unit) {
     return async (dispatch) => {
       dispatch({ type: types.FETCH_HOSPITAL_LOADING });
   
       return saveUnitService(uuidInvestigation, uuidDepartment, unit)
+        .then((response) => {
+          dispatch({
+            type: types.SAVE_UNIT_SUCCESS,
+            unit: response.unit,
+          });
+        })
+        .catch((error) => {
+          dispatch({ type: types.HOSPITAL_ERROR });
+          throw error;
+        });
+    };
+}
+
+
+export function editUnitAction(uuidInvestigation, unit) {
+    return async (dispatch) => {
+      dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+  
+      return editUnitService(uuidInvestigation, unit.uuid, unit)
         .then((response) => {
           dispatch({
             type: types.SAVE_UNIT_SUCCESS,

@@ -106,6 +106,16 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;
+        // case types.EDIT_UNIT_SUCCESS:
+        //     tempDepartments = [...newState.data.departments];
+        //     const indexDepartement = tempDepartments.findIndex(dep => dep.uuid === action.department.uuid);
+        //     if(indexDepartement !== -1){
+        //         tempDepartments[indexDepartement] = action.department;
+        //     }
+        //     newState.data.departments = tempDepartments;
+        //     newState.loading = initialState.loading; 
+        //     newState.error = initialState.error;   
+        //     return newState;
         case types.SAVE_WARD_SUCCESS:
             tempDepartments = [...newState.data.departments];
             indexDepartment = tempDepartments.findIndex(dep => dep.uuid === action.uuidDepartment);
