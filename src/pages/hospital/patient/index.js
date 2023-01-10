@@ -107,7 +107,8 @@ function Patient(props) {
     }) : [];
 
     let filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
-        return typesCurrentSurvey.includes(rec.typeSurvey)
+        const survey = props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === rec.uuidSurvey);
+        return typesCurrentSurvey.includes(survey.type)
     }) : [];
 
     if(typeSurveySelected === TYPE_MEDICAL_SURVEY){
