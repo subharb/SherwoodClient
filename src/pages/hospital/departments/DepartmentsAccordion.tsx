@@ -41,7 +41,7 @@ type PropsRedux = Omit<Props, "deleteCallBack" | "uuidDepartmentAddWard" | "view
 
 
 export const DepartmentsAccordionRedux:React.FC<PropsRedux> = (props) =>{
-    const {departments, researchers, loading} = useDepartments();
+    const {departments, researchers, loadingDepartments} = useDepartments();
     const history = useHistory();
 
     function selectWardCallBack(ward:IWard){
@@ -52,7 +52,7 @@ export const DepartmentsAccordionRedux:React.FC<PropsRedux> = (props) =>{
         }
         
     }
-    if(loading || !departments){
+    if(loadingDepartments || !departments){
         return <Loader />
     }
     else{
