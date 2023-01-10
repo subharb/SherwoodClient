@@ -62,7 +62,9 @@ export function useDepartments(researchersDepartmentsOnly:boolean = false){
     const investigations= useSelector((state:any) => state.investigations);
     const departments = useSelector((state:{hospital : {data: {departments : IDepartment[]}}}) => state.hospital.data.departments ? state.hospital.data.departments : null);
     const researchers = useSelector((state:any) => state.hospital.data.researchers ? state.hospital.data.researchers : []);
-    const loading = useSelector((state:any) => state.hospital.loading | state.investigations.loading);
+    const hospitalLoading = useSelector((state:any) => state.hospital.loading);
+    const investigationsLoading = useSelector((state:any) => state.investigations.loading);
+    const loadingDepartments = useSelector((state:any) => state.hospital.loading || state.investigations.loading);
 
     const dispatch = useDispatch();
 
@@ -93,7 +95,7 @@ export function useDepartments(researchersDepartmentsOnly:boolean = false){
         
     }
 
-    return { departments: filteredDepartments, researchers, investigations, loading}
+    return { departments: filteredDepartments, researchers, investigations, loadingDepartments}
 }
 
 export function useRequest(idRequest:number){

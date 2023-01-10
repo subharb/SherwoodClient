@@ -56,7 +56,7 @@ function Patient(props) {
     const [savedDataCollection, setSavedDataCollection] = useState(false);
     const [showRequestType, setShowRequestType] = useState(-1);
     // const [indexSection, setIndexSection] = useState(-1);
-    const {departments, researchers} = useDepartments();
+    const {departments, researchers, loadingDepartments } = useDepartments();
     
     const dispatch = useDispatch();
     let { uuidPatient } = useParams();
@@ -300,7 +300,7 @@ function Patient(props) {
         }
         else if(idSubmission !== null && action === "show"){
             const belongsToRequest = idSubmission && types.TYPE_FILL_SURVEY.includes(typeSurveySelected);
-
+            const forceEdit = dataCollectionSelected.type === types.TYPE_EDITABLE_SURVEY
             return (
                 <>  
                     {
@@ -308,6 +308,7 @@ function Patient(props) {
                         <RequestInfoWithFetch idSubmission={idSubmission} uuidInvestigation={props.investigations.currentInvestigation.uuid} />
                     }
                     <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} 
+                        forceEdit={forceEdit}
                         mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission} singleSubmission={single === 'true'}
                         submissions={filteredRecords.filter((record) => record.type !== "stay")} surveys={props.investigations.currentInvestigation.surveys} />
                 </>)
@@ -531,7 +532,7 @@ function Patient(props) {
             </BoxBckgr>
         )
     }
-    else if(props.investigations.loading || props.patientsSubmissions.loading || props.profile.loading  || surveyRecords === null || !departments){
+    else if(props.investigations.loading || props.patientsSubmissions.loading || props.profile.loading  || surveyRecords === null || loadingDepartments){
         return <Loader />
     }
     else if(!patient){

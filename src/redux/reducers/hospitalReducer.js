@@ -215,7 +215,7 @@ export default function reducer(state = initialState, action){
             allPatientsStays[action.uuidPatient] = [...action.stays];
             newState.data["stays"] = {...allPatientsStays};
 
-            newState.loading = true;   
+            newState.loading = initialState.loading;   
             newState.error = initialState.error;  
             return newState;
         case types.FETCH_HOSPITAL_LOADING:
@@ -227,6 +227,7 @@ export default function reducer(state = initialState, action){
             newState.error = action.errorCode;                           
             return newState;
         case types.HOSPITAL_RESET_ERROR:
+            newState.loading = initialState.loading;   
             newState.error = initialState.error;
             return newState;
         default:
