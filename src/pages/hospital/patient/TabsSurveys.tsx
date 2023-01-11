@@ -1,18 +1,19 @@
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { Translate } from 'react-localize-redux';
 import { ButtonGreyBorderGrey, WhiteTypography } from '../../../components/general/mini_components';
 
-import { IUnit } from '../../../constants/types';
+import { IDepartment, IUnit } from '../../../constants/types';
 import { TabsSherwood } from '../../components/Tabs';
 
 interface TabsSurveysProps {
     surveys: any[],
     units:IUnit[],
+    departments:IDepartment[],
     surveySelectedCallback:(index:number) => void
 }
 
-const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, surveySelectedCallback }) => {
+const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, departments, surveySelectedCallback }) => {
     
     function renderSurveysInUnit(surveysPerUnit:{[id: string] : any[]}){
         const surveysInUnit = Object.values(surveysPerUnit).map((surveysInUnit) => <Grid container xs={12} style={{textAlign:"center"}}>{surveysInUnit.map((dataCollection, index) => {
@@ -77,6 +78,9 @@ const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, surveySelecte
                     </TabsSherwood>
             </div>)
         }
+    }
+    if(units.length === 0 && departments?.length > 0){
+        return <Typography variant="body2" style={{color:'white'}} gutterBottom>You have no departments assigned, please contact your administrator</Typography>
     }
     return (
         <>

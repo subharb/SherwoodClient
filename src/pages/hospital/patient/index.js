@@ -273,7 +273,8 @@ function Patient(props) {
     function renderSurveys(){
         if(!dataCollectionSelected){
             return [
-                <TabsSurveys surveys={currentSurveys} units={props.profile.info.units} surveySelectedCallback={(uuid) => fillDataCollection(uuid)} />
+                <TabsSurveys surveys={currentSurveys} units={props.profile.info.units} 
+                    departments={departments} surveySelectedCallback={(uuid) => fillDataCollection(uuid)} />
             ]
         }
     }
