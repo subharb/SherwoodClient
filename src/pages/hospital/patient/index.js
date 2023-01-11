@@ -459,7 +459,7 @@ function Patient(props) {
                                     }
                                 })
                             })
-                            departmentString = department.name +": "+unit.name;
+                            departmentString = department && unit ? department.name +": "+unit.name : "Department deleted";
                         }
                         tempSub.researcher = tempSub.researcher.name+" "+tempSub.researcher.surnames +" - " +departmentString;
 

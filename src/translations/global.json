@@ -991,7 +991,7 @@
                 "PHARMACY_MANAGER" : ["Pharmacy Manager", "Director de farmacia", "Directeur de pharmacie"],
                 "PHARMACY_ASSISTANT" : ["Pharmacy Assistant", "Asistente de farmacia", "Assistant de pharmacie"],
                 "MAJOR" : ["Major", "Mayor", "Major"],
-                "DEPARTMENT_HEAD" : ["Department Head", "Jefe de departamento", "Chef de département"],
+                "DEPARTMENT_HEAD" : ["Head of Department", "Jefe de departamento", "Chef de service"],
                 "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {
