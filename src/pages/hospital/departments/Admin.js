@@ -61,6 +61,10 @@ const DEPARTMENT_FORM = {
             {
                 value: "3",
                 label: "hospital.departments.forms.types.shoes"
+            },
+            {
+                value: "4",
+                label: "hospital.departments.forms.types.admin"
             }
         ]
     }

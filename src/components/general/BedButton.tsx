@@ -36,6 +36,7 @@ export const TypographyColorGender = styled(Typography)<{gender:string}>`
 export const GridHeaderPatient = styled(Grid)<{type:string}>`
     text-align:left;
     height:2rem;
+    color:#000;
     
     ${props => props.type === 'edit' && css`
         display:flex; 

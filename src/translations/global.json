@@ -173,7 +173,9 @@
                     "medical" : ["Medical", "Médico", "Médical"],
                     "pharmacy" : ["Pharmacy", "Farmacia", "Pharmacie"],
                     "social" : ["Social", "Social", "Social"],
-                    "shoes" : ["Shoes", "Calzado", "Cordonerie"]
+                    "shoes" : ["Shoes", "Calzado", "Cordonerie"],
+                    "admin" : ["Admin", "Administración", "Administration"]
+                    
                 },
                 "department" : {
                     "title" : ["Add department", "Añadir Departamento", "Ajouter Service"],
