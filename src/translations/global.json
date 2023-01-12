@@ -184,7 +184,15 @@
                 }
             }
         },
+        
         "analytics" : {
+            "date_selector" : {
+                "select_period" : ["Date Selector", "Selector de fecha", "Sélecteur de date"],
+                "last_week" : ["Last Week", "Última semana", "Semaine dernière"],
+                "last_month" : ["Last Month", "Último mes", "Mois dernier"],
+                "custom_period" : ["Custom Period", "Período personalizado", "Période personnalisée"],
+                "current_period" : ["Current Period", "Período actual", "Période actuelle"]
+            },
             "graphs" : {
                 "search-diagnose" : {
                     "title" : ["Search metric per Diagnose", "Búsqueda de estadistica por diagnóstico", "Recherche de statistiques par diagnostic"],
