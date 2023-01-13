@@ -1024,7 +1024,8 @@
                 "MAKE_DISCOUNTS" : ["Make discounts", "Hacer descuentos", "Faire des remises"],
                 "MANAGE_PHARMACY_CENTRAL" : ["Manage pharmacy central", "Administrar farmacia central", "Gérer la pharmacie centrale"],
                 "MAKE_PHARMACY_REQUESTS" : ["Make pharmacy requests", "Hacer pedidos de farmacia", "Faire des demandes de pharmacie"],
-                "UPDATE_PHARMACY_CENTRAL" : ["Update pharmacy central", "Actualizar farmacia central", "Mettre à jour la pharmacie centrale"]
+                "UPDATE_PHARMACY_CENTRAL" : ["Update pharmacy central", "Actualizar farmacia central", "Mettre à jour la pharmacie centrale"],
+                "ANALYTICS_DEPARTMENT" : ["View Department Stats", "Ver estadísticas de departamento", "Voir les statistiques du département"]
                 
             },
             "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],

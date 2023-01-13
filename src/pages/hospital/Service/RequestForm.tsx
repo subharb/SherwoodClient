@@ -99,7 +99,7 @@ interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'u
     callBackFormSubmitted:(serviceInvestigation:number[], uuidDepartment:string | null) => void
 }
 
-export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, units,
+export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, units, activeLanguage,
                                                                     translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
     const [errorServices, setErrorServices] = React.useState(false);
@@ -140,7 +140,11 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
     function renderServiceForm(category?:string){
         const filterServicesInvestigation = category ? servicesInvestigation.filter((serviceInv) => serviceInv.service.category === category) : servicesInvestigation;
         return(
-            filterServicesInvestigation.map((serviceInvestigation) => {
+            filterServicesInvestigation.sort((serviceA, serviceB) => {
+                const labelA = translate(`pages.hospital.services.tests.${typeTestString}.${serviceA.service.code}`).toString();
+                const labelB = translate(`pages.hospital.services.tests.${typeTestString}.${serviceB.service.code}`).toString();
+                return labelA.localeCompare(labelB, activeLanguage.code);
+            }).map((serviceInvestigation) => {
                 
                 return <Grid item xs={6}>
                         <FormControlLabel
