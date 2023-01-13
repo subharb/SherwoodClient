@@ -166,10 +166,14 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
             )
         }
         else{
+            const orderedLabels = Object.keys(serviceCategories).map((category)=> {return {
+                label : translate(`pages.hospital.${typeTestString}.category.${category.toLocaleLowerCase()}`).toString() ,
+                key: category
+            }}).sort((labelA, labelB) => labelA.label > labelB.label ? 1 : -1)
             return (
                 <TabsSherwood name="Requests"   
-                    labels={ Object.keys(serviceCategories).map((category)=> translate(`pages.hospital.${typeTestString}.category.${category.toLocaleLowerCase()}`).toString() )} >
-                        { Object.keys(serviceCategories).map((serviceCategory) => {
+                    labels={orderedLabels.map((orderedLabel) => orderedLabel.label) } >
+                        { orderedLabels.map((orderedLabel) => orderedLabel.key).map((serviceCategory) => {
                             return <Grid container item xs={12} spacing={1}>
                                 { renderServiceForm(serviceCategory) }
                             </Grid>
