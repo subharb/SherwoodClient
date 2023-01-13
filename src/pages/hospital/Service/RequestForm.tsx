@@ -173,7 +173,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
             const orderedLabels = Object.keys(serviceCategories).map((category)=> {return {
                 label : translate(`pages.hospital.${typeTestString}.category.${category.toLocaleLowerCase()}`).toString() ,
                 key: category
-            }}).sort((labelA, labelB) => labelA.label > labelB.label ? 1 : -1)
+            }}).sort((labelA, labelB) => labelA.label.localeCompare(labelB.label, activeLanguage.code))
             return (
                 <TabsSherwood name="Requests"   
                     labels={orderedLabels.map((orderedLabel) => orderedLabel.label) } >
