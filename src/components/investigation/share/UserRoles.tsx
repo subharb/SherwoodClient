@@ -1,8 +1,8 @@
 import React from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { PERMISSIONS_LIST, USER_ROLES } from '../../../constants';
-import { PERMISSION } from '../../../constants/types';
+
 import { EnhancedTable } from '../../general/EnhancedTable';
+import { PERMISSION, PERMISSIONS_LIST, USER_ROLES } from './user_roles';
 
 interface UserRolesProps extends LocalizeContextProps {
     

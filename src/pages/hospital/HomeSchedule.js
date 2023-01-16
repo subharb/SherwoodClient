@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
-        HOSPITAL_WARD_SETTINGS_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB, HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE, HOSPITAL_MY_DEPARTMENTS_ROUTE, HOSPITAL_ANALYTICS } from '../../routes';
+        HOSPITAL_WARD_SETTINGS_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB, HOSPITAL_MY_DEPARTMENTS_ROUTE, HOSPITAL_ANALYTICS } from '../../routes';
 import { ButtonGrey, BoxBckgr, LinkPlain } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
@@ -15,7 +15,8 @@ import { useDispatch } from "react-redux";
 import { Translate } from 'react-localize-redux';
 import { fetchProfileInfo } from '../../redux/actions/profileActions';
 import AllInvestigations from '../../components/investigation/show/all';
-import { FUNCTIONALITY, PERMISSION } from '../../constants/types';
+import { FUNCTIONALITY } from '../../constants/types';
+import { PERMISSION } from '../../components/investigation/share/user_roles';
 
 function HomeSchedule(props) {
     const [loading, setLoading] = useState(false);

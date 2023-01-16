@@ -3,22 +3,9 @@ import React from "react";
 import async from "../components/Async";
 
 import {
-  BookOpen,
   Briefcase,
-  Calendar as CalendarIcon,
-  CheckSquare,
-  CreditCard,
-  Grid,
-  Heart,
-  Layout,
-  List,
-  Map,
-  Monitor,
-  ShoppingCart,
-  PieChart,
   Sliders,
   Users,
-  User,
 } from "react-feather";
 import TimelineIcon from '@material-ui/icons/Timeline';
 import FindInPageIcon from '@material-ui/icons/FindInPage';
@@ -27,7 +14,9 @@ import { Home as HomeIcon, Search as SearchPatientIcon, Hotel as HotelIcon,
     PersonAddSharp as AddPatientIcon, Image as ImageIcon,
     PeopleOutline as PeopleOutlineIcon,
     MonetizationOn as MonetizationOnIcon,
-    LocalPharmacy as LocalPharmacyIcon} from "@material-ui/icons";
+    LocalPharmacy as LocalPharmacyIcon,
+    Today as TodayIcon
+    } from "@material-ui/icons";
 
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
@@ -38,37 +27,6 @@ import Page404 from "../pages/auth/Page404";
 import Page500 from "../pages/auth/Page500";
 import {Translate} from 'react-localize-redux';
 
-
-// // Guards
-// const AuthGuard = async(() => import("../components/AuthGuard"));
-
-// Auth components
-// const SignIn = async(() => import("../pages/auth/SignIn"));
-// const SignUp = async(() => import("../pages/auth/SignUp"));
-// const ResetPassword = async(() => import("../pages/auth/ResetPassword"));
-// const Page404 = async(() => import("../pages/auth/Page404"));
-// const Page500 = async(() => import("../pages/auth/Page500"));
-
-// // Components components
-// const Alerts = async(() => import("../pages/components/Alerts"));
-// const Avatars = async(() => import("../pages/components/Avatars"));
-// const Badges = async(() => import("../pages/components/Badges"));
-// const Buttons = async(() => import("../pages/components/Buttons"));
-// const Cards = async(() => import("../pages/components/Cards"));
-// const Chips = async(() => import("../pages/components/Chips"));
-// const Dialogs = async(() => import("../pages/components/Dialogs"));
-// const ExpPanels = async(() => import("../pages/components/ExpansionPanels"));
-// const Lists = async(() => import("../pages/components/Lists"));
-// const Menus = async(() => import("../pages/components/Menus"));
-// const Pagination = async(() => import("../pages/components/Pagination"));
-// const Progress = async(() => import("../pages/components/Progress"));
-// const Snackbars = async(() => import("../pages/components/Snackbars"));
-// const Tooltips = async(() => import("../pages/components/Tooltips"));
-
-// Dashboards components
-// import Default from "../pages/dashboards/Default";
-// import  Analytics from "../pages/dashboards/Analytics";
-// import SaaS from "../pages/dashboards/SaaS";
 import CreateInvestigation from "../components/investigation/create";
 
 import Investigations from "../components/investigation/show/all";
@@ -88,8 +46,10 @@ import InPatients from  "../pages/hospital/departments/Inpatients";
 import PharmacyCentral from  "../pages/hospital/Pharmacy";
 import Billing from  "../pages/hospital/Billing";
 import { WardLocalized, WardModes } from  "../pages/hospital/departments/Ward";
-import { FUNCTIONALITY, PERMISSION } from "../constants/types";
+import { FUNCTIONALITY } from "../constants/types";
 import Pharmacy from "../pages/hospital/Pharmacy";
+import Outpatients from "../pages/hospital/Outpatients";
+import { PERMISSION } from "../components/investigation/share/user_roles";
 
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
@@ -136,6 +96,7 @@ export const HOSPITAL_BILLING_PATIENT = "/billing/patient/:uuidPatient";
 export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
 export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
 export const HOSPITAL_PHARMACY_CENTRAL_ROUTE = "/pharmacy";
+export const HOSPITAL_OUTPATIENTS_ROUTE = "/outpatients";
 
 
 const hospitalRoutes = {
@@ -286,6 +247,11 @@ const hospitalRoutes = {
             path: HOSPITAL_PHARMACY_CENTRAL_ROUTE,
             name: "Pharmacy Central",
             component: () => <PharmacyCentral />,
+        },
+        {
+            path: HOSPITAL_OUTPATIENTS_ROUTE,
+            name: "Outpatients",
+            component: () => <Outpatients />,
         },
         {
             path: HOSPITAL_WARD_ROUTE,
@@ -464,6 +430,21 @@ const dashboardPharmacyCentralRoutes = {
         path: HOSPITAL_PHARMACY_CENTRAL_ROUTE,
         name: "Pharmacy Central",
         component: () => <PharmacyCentral />
+    },
+    children: null
+}
+
+const dashboardOutpatientsRoutes = {
+    id: <Translate id="pages.hospital.outpatients.title" />,
+    path: HOSPITAL_OUTPATIENTS_ROUTE,
+    icon: <TodayIcon />,
+    badge: "",
+    permissions : [PERMISSION.CREATE_APPOINTMENTS, PERMISSION.VISUALIZE_APPOINTMENTS],
+    functionalities:[FUNCTIONALITY.OUTPATIENTS],
+    component: {
+        path: HOSPITAL_OUTPATIENTS_ROUTE,
+        name: "Outpatients",
+        component: () => <Outpatients />
     },
     children: null
 }
@@ -686,6 +667,7 @@ export const sidebarRoutesHospital = [
     dashboardAnalyticsRoutes,
     dashboardUserMgmtRoutes,
     dashboardPharmacyCentralRoutes,
+    dashboardOutpatientsRoutes,
     dashboardAdminDepartmentRoutes,
     dashboardMyDepartmentRoutes,
     dashboardBillingRoutes,

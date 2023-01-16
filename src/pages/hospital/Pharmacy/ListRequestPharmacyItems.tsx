@@ -7,7 +7,8 @@ import { Translate } from 'react-localize-redux';
 import styled from 'styled-components';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { ButtonCheck2, ButtonContinue } from '../../../components/general/mini_components';
-import { PERMISSION } from '../../../constants/types';
+import { PERMISSION } from '../../../components/investigation/share/user_roles';
+
 import { RequestStatusToChip } from '../Service/RequestTable';
 import { IRequestPharmacy, RequestStatus } from '../Service/types';
 import { PHARMACY_ITEM_REQUEST_COLUMNS } from './RequestForm';

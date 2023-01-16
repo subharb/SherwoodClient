@@ -24,7 +24,8 @@ import {
     Hotel as HotelIcon,
     Undo as UndoIcon,
     Settings as SettingsIcon,
-    ArrowBack as ArrowBackIcon
+    ArrowBack as ArrowBackIcon,
+    Today
   } from "@material-ui/icons";
   import {
     Button, Icon, IconButton,
@@ -50,7 +51,9 @@ export const IconGenerator = withTheme((props) => {
         case "edit":
             return <EditIcon  fontSize={props.size ? props.size : "small"}/>
         case "hospital":
-            return <HotelIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
+            return <HotelIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"} />
+        case "appointment":
+            return <Today style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
         case "undo":
             return <UndoIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />    
         case "settings":

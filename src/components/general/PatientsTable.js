@@ -2,10 +2,9 @@ import React from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from './EnhancedTable';
 import PropTypes from 'prop-types';
-import { Link } from "react-router-dom";
-import { HOSPITAL_PATIENT } from '../../routes';
-import { FUNCTIONALITY, PERMISSION } from '../../constants/types';
+import { FUNCTIONALITY } from '../../constants/types';
 import { formatPatients } from '../../utils';
+import { PERMISSION } from '../investigation/share/user_roles';
 
 function PatientsTable(props) {
     
@@ -16,6 +15,9 @@ function PatientsTable(props) {
     let actions = [];
     if(props.permissions.includes(PERMISSION.MEDICAL_WRITE) && props.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION)){
         actions.push({"type" : "hospital", "func" : (index) => props.hospitalizePatientCallBack(index)})
+    }
+    if(props.permissions.includes(PERMISSION.CREATE_APPOINTMENTS) && props.functionalities.includes(FUNCTIONALITY.OUTPATIENTS)){
+        actions.push({"type" : "appointment", "func" : (index) => props.makeAppointmentPatientCallBack(index)})
     }
     return (
         <EnhancedTable noHeader noSelectable  titleTable={<Translate id="investigation.create.summary.patients" />} 

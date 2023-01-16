@@ -160,8 +160,8 @@ SearchPatients.propTypes = {
 export default connect(mapStateToProps, null)(SearchPatients)
 
 export const SearchPatientsComponent = withLocalize((props) => {
-    
-    const [patientHospitalizeIndex, setPatientHospitalizeIndex] = useState(-1);
+    const [actionPatient, setActionPatient] = useState(null);
+    const [patientAppointment, setPatientAppointment] = useState(null);
     const [patientHospitalized, setPatientHospitalized] = useState(null);
 
     function backToSearch(){
@@ -172,16 +172,94 @@ export const SearchPatientsComponent = withLocalize((props) => {
     }
     function hospitalizePatient(id){
         const findPatientIndex = props.patients.findIndex((pat) => pat.id === id);
-        setPatientHospitalizeIndex(findPatientIndex);
-        
+        //setPatientHospitalizeIndex(findPatientIndex);
+        setActionPatient({...actionPatient, patientIndex:findPatientIndex, action : "hospitalize"})
+    }
+
+    function makeAppointmentPatient(id){
+        const findPatientIndex = props.patients.findIndex((pat) => pat.id === id);
+        setActionPatient({...actionPatient, patientIndex:findPatientIndex, action:"outpatients"})
     }
     
-    function confirmHospitalization(){
-        setPatientHospitalized({...props.patients[patientHospitalizeIndex]});
+    function confirm(){
+        if(actionPatient.action === "hospitalize"){
+            setPatientHospitalized({...props.patients[actionPatient.patientIndex]});
+        }
+        else{
+            setPatientAppointment({...props.patients[actionPatient.patientIndex]});
+        }
+        setActionPatient(null);
     }
     function resetModal(){
-        console.log(patientHospitalizeIndex);
-        setPatientHospitalizeIndex(-1);
+        setPatientAppointment(null);
+        setPatientHospitalized(null);
+        setActionPatient(null);
+    }
+
+    function renderModal(){
+        if(actionPatient || patientAppointment || patientHospitalized){
+            const indexPatient = actionPatient ? actionPatient.patientIndex : null;
+            return (
+                <Modal key="modal" open={actionPatient || patientAppointment || patientHospitalized} 
+                    title={actionPatient ? <Translate id={`pages.hospital.${actionPatient.action}.confirm`}/> : <Translate id="hospital.inpatients.choose-ward" />} 
+                    closeModal={resetModal} >
+                        {
+                            (actionPatient)&&
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    {
+                                        props.patients[indexPatient].personalData.health_id &&
+                                        [
+                                            <Translate id="investigation.create.personal_data.fields.health_id" />, ",", props.patients[indexPatient].personalData.health_id
+                                        ]
+                                    }
+                                    {
+                                        !props.patients[indexPatient].personalData.health_id && 
+                                        <Typography variant="body2" >
+                                            <Translate id="investigation.create.personal_data.fields.uuid" />:{ props.patients[indexPatient]?.id}
+                                        </Typography>
+                                    }
+                                    <Typography variant="body2">
+                                        <Translate id="investigation.create.personal_data.fields.name" />: {props.patients[indexPatient].personalData.name}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        <Translate id="investigation.create.personal_data.fields.surnames" />: {props.patients[indexPatient].personalData.surnames}    
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        <Translate id="investigation.create.personal_data.fields.sex" />: {props.patients[indexPatient].personalData.sex === "Male" ? <Translate id="general.male" /> : <Translate id="general.female" />}    
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        <Translate id="investigation.create.personal_data.fields.birthdate" />: {props.patients[indexPatient].personalData.birthdate.toLocaleDateString()}    
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                        <Translate id="general.cancel" />
+                                    </ButtonCancel>
+                                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
+                                        <Translate id="general.continue" />
+                                    </ButtonContinue>
+                                </Grid>
+                            </Grid>
+                        }
+                        {
+                            patientHospitalized &&
+                            <DepartmentsAccordionRedux currentInvestigation={props.investigation} 
+                                uuidPatient={patientHospitalized.uuid} />
+                        }
+                        {
+                            patientAppointment &&
+                            <DepartmentsAccordionRedux currentInvestigation={props.investigation} 
+                                uuidPatient={patientAppointment.uuid} />
+                        }
+                        
+                </Modal>
+            )   
+        }
+        else{
+            return null;
+        }
+        
     }
 
     function renderCore(){
@@ -238,6 +316,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                                 personalFields={formSearch} permissions={props.permissions}
                                 functionalities={props.functionalities}
                                 showPatientCallBack={id => patientSelected(id)} 
+                                makeAppointmentPatientCallBack={(index) => makeAppointmentPatient(index)}
                                 hospitalizePatientCallBack={(index) => hospitalizePatient(index)} />
                         </Grid>
                         <Grid item xs={12}>
@@ -251,56 +330,9 @@ export const SearchPatientsComponent = withLocalize((props) => {
     
     return (
         <React.Fragment>
-            <Modal key="modal" open={patientHospitalizeIndex !== -1} 
-                title={!patientHospitalized ? <Translate id="hospital.inpatients.wish-hopitalize" /> : <Translate id="hospital.inpatients.choose-ward" />} 
-                closeModal={resetModal}
-                >
-                    {
-                        (patientHospitalizeIndex !== -1 && !patientHospitalized) &&
-                        <Grid container>
-                            <Grid item xs={12}>
-                                {
-                                    props.patients[patientHospitalizeIndex].personalData.health_id &&
-                                    [
-                                        <Translate id="investigation.create.personal_data.fields.health_id" />, ",", props.patients[patientHospitalizeIndex].personalData.health_id
-                                    ]
-                                }
-                                {
-                                    !props.patients[patientHospitalizeIndex].personalData.health_id && 
-                                    <Typography variant="body2" >
-                                        <Translate id="investigation.create.personal_data.fields.uuid" />:{ props.patients[patientHospitalizeIndex]?.id}
-                                    </Typography>
-                                }
-                                <Typography variant="body2">
-                                    <Translate id="investigation.create.personal_data.fields.name" />: {props.patients[patientHospitalizeIndex].personalData.name}
-                                </Typography>
-                                <Typography variant="body2">
-                                    <Translate id="investigation.create.personal_data.fields.surnames" />: {props.patients[patientHospitalizeIndex].personalData.surnames}    
-                                </Typography>
-                                <Typography variant="body2">
-                                    <Translate id="investigation.create.personal_data.fields.sex" />: {props.patients[patientHospitalizeIndex].personalData.sex === "Male" ? <Translate id="general.male" /> : <Translate id="general.female" />}    
-                                </Typography>
-                                <Typography variant="body2">
-                                    <Translate id="investigation.create.personal_data.fields.birthdate" />: {props.patients[patientHospitalizeIndex].personalData.birthdate.toLocaleDateString()}    
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                                <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
-                                    <Translate id="general.cancel" />
-                                </ButtonCancel>
-                                <ButtonContinue onClick={confirmHospitalization} data-testid="continue-modal" color="primary">
-                                    <Translate id="general.continue" />
-                                </ButtonContinue>
-                            </Grid>
-                        </Grid>
-                    }
-                    {
-                        patientHospitalized &&
-                        <DepartmentsAccordionRedux currentInvestigation={props.investigation} 
-                            uuidPatient={patientHospitalized.uuid} />
-                    }
-                    
-            </Modal>
+            {
+                renderModal()
+            }
             <Grid container spacing={2} >
                 <GridContainer item xs={12}>
                     <SearchPatientIcon style={{fontSize:"2.5rem"}} />

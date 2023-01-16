@@ -74,10 +74,7 @@
         "data-collection" : ["Form", "Formulario", "Forme"],
         "data-collections" : ["Surveys", "Encuestas", "Enquêtes"],
         "sections" : ["Sections", "Secciones", "Sections"],
-        "inpatients" : {
-            "wish-hopitalize" : ["Do you wish to hospitalize this patient?", "¿Desea hospitalizar a este paciente?", "Voulez-vous hospitaliser ce patient?"],
-            "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le département"]
-        },
+        
         "patient" : {
             "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
@@ -457,6 +454,10 @@
                     "load_excel" : ["Select a excel from your computer", "Seleccione un excel de su ordenador", "Sélectionnez un excel de votre ordinateur"]
                 }
             },
+            "outpatients" : {
+                "title" : ["Outpatients", "Consultas externas", "Consultations externes"],
+                "confirm" : ["Do you wish to make an appointment for this patient?", "¿Desea hacer una cita para este paciente?", "Voulez-vous prendre rendez-vous pour ce patient?"]
+            },
             "services" : {
                 "description" : ["Manage your hospital facilities by adding or deleting services.", "Gestione sus instalaciones añadiendo o eliminando servicios.", "Gérez vos installations en ajoutant ou supprimant des services"],
                 "edit" : {
@@ -668,7 +669,11 @@
                 "title" : ["Attention", "Atención", "Attention"],
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
             },
-            "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Hospitalisation"],
+            "inpatients" : {
+                "title" : ["Inpatients", "Pacientes ingresados", "Patients hospitalisés"],
+                "confirm" : ["Do you wish to hospitalize this patient?", "¿Desea hospitalizar a este paciente?", "Voulez-vous hospitaliser ce patient?"],
+                "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le département"]
+            },
             "admin-departments" : ["Departments", "Departamentos", "Gestion des services"]
         }
     },

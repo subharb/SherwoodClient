@@ -17,11 +17,12 @@ import TimeTable from '../../dashboards/Analytics/TimeTable';
 import { getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsPatientsPerDepartment } from '../../../services';
 import { spacing } from "@material-ui/system";
 import DatesSelector from '../../dashboards/Analytics/DatesSelector';
-import { PERMISSION } from '../../../constants/types';
+
 import SearchTable from '../../dashboards/Analytics/SearchTable';
 import HospitalStats from './HospitalStats';
 import { useDeparmentsSelector } from '../../../hooks';
 import PatientsBarChart from '../../dashboards/Analytics/PatientsBarChart';
+import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
 const Divider = styled(MuiDivider)(spacing);
 

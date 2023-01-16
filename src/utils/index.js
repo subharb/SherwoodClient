@@ -3,9 +3,8 @@ import jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
 import mixpanel from 'mixpanel-browser';
 import { Translate } from 'react-localize-redux';
-import { TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../constants';
-import { PERMISSION } from '../constants/types';
 import { ServiceType } from '../pages/hospital/Service/types';
+import { PERMISSION } from '../components/investigation/share/user_roles';
 /**
  * Function that validates fields from anywhere in the app
  * 

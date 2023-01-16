@@ -26,6 +26,17 @@ export interface IDepartment{
     wards:IWard[]
 }
 
+export interface IAgenda{
+    uuid:string,
+    name:string,
+    department:IDepartment,
+    daysWeek:string[],
+    slotsPerDay:number,
+    box:string,
+    turn: number[][],
+    
+}
+
 export interface IUnit{
     uuid?:string,
     id?:number,
@@ -93,21 +104,6 @@ export interface IPatient{
     dateCreated:Date
 }
 
-export enum PERMISSION {
-    MEDICAL_WRITE = "MEDICAL_WRITE",
-    MEDICAL_READ = "MEDICAL_READ",
-    PERSONAL_ACCESS = "PERSONAL_ACCESS",
-    BUSINESS_READ = "BUSINESS_READ",
-    BUSINESS_WRITE = "BUSINESS_WRITE",
-    SHARE_RESEARCHERS = "SHARE_RESEARCHERS",
-    EDIT_SUBMISSIONS = "EDIT_SUBMISSIONS",
-    EDIT_INVESTIGATION = "EDIT_INVESTIGATION",
-    MAKE_DISCOUNTS = "MAKE_DISCOUNTS",
-    MANAGE_PHARMACY_CENTRAL = "MANAGE_PHARMACY_CENTRAL",
-    MAKE_PHARMACY_REQUESTS = "MAKE_PHARMACY_REQUESTS",
-    UPDATE_PHARMACY_CENTRAL = "UPDATE_PHARMACY_CENTRAL",
-    ANALYTICS_DEPARTMENT = "ANALYTICS_DEPARTMENT"
-}
 
 export enum FUNCTIONALITY {
     HOSPITALIZATION = "HOSPITALIZATION",
@@ -115,6 +111,7 @@ export enum FUNCTIONALITY {
     BILLING_DISCOUNTS = "BILLING_DISCOUNTS",
     PHARMACY_CENTRAL = "PHARMACY_CENTRAL",
     AESTHETICS = "AESTHETICS",
+    OUTPATIENTS = "OUTPATIENTS",
 }
 
 export interface ActionsEnhancedTable{

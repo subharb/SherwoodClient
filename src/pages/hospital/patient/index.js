@@ -26,12 +26,13 @@ import { fetchProfileInfo } from '../../../redux/actions/profileActions';
 import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
-import { PERMISSION } from '../../../constants/types';
+
 import TabsSurveys from './TabsSurveys';
 import RequestCombo from '../Service/RequestCombo';
 import RequestTable from '../Service/RequestTable';
 import RequestInfo, { RequestInfoWithFetch } from '../Service/RequestInfo';
 import RequestForm from '../Service/RequestForm';
+import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
 
 

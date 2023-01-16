@@ -1,7 +1,7 @@
 import { Avatar, Grid, List, ListItem, FormControlLabel, Switch, Typography, Accordion, AccordionSummary, AccordionDetails, ListItemText, IconButton } from '@material-ui/core';
 import React, { useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { IBed, IDepartment, IDepartmentServer, IResearcher, IUnit, IWard, PERMISSION } from '../../../constants/types';
+import { IBed, IDepartment, IDepartmentServer, IResearcher, IUnit, IWard } from '../../../constants/types';
 import { Translate } from 'react-localize-redux';
 import { WardFormEdit, WardFormModes, WardFormSelect } from './Ward/WardForm';
 import { ButtonAdd, IconGenerator } from '../../../components/general/mini_components';
@@ -9,6 +9,7 @@ import { useDepartments } from '../../../hooks';
 import Loader from '../../../components/Loader';
 import { useHistory } from 'react-router-dom';
 import { HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE } from '../../../routes';
+import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
 export enum DepartmentAccordionModes {
     Researchers = "researchers",

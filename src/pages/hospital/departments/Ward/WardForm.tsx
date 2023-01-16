@@ -9,8 +9,9 @@ import { IconPatient } from '../../../../components/general/mini_components';
 import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
-import { PERMISSION } from '../../../../constants/types';
+
 import { Translate } from 'react-localize-redux';
+import { PERMISSION } from '../../../../components/investigation/share/user_roles';
 
 
 export enum WardFormModes {

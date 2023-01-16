@@ -14,11 +14,11 @@ import { useDispatch } from "react-redux";
 import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { Alert } from '@material-ui/lab';
-import { PERSONAL_ACCESS } from '../../constants';
 import { ROUTE_401, ROUTE_404 } from '../../routes';
 import { areSameBirthDates } from '../../utils';
 import Modal from '../../components/general/modal';
-import { PERMISSION } from '../../constants/types';
+import { PERMISSION } from '../../components/investigation/share/user_roles';
+
 
 export function AddPatient(props) {
     let { uuidPatient } = useParams();

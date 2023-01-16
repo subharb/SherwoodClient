@@ -5,9 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { PERMISSION, PHARMACY_CENTRAL_PERMISSIONS, PHARMACY_RELATED_PERMISSIONS } from '../../../components/investigation/share/user_roles';
 import Loader from '../../../components/Loader';
-import { PHARMACY_CENTRAL_PERMISSIONS, PHARMACY_RELATED_PERMISSIONS } from '../../../constants';
-import { IDepartment, IUnit, PERMISSION } from '../../../constants/types';
+
+import { IDepartment, IUnit } from '../../../constants/types';
 import { useDepartments, useProfileInfo, useSnackBarState } from '../../../hooks';
 import { makePharmacyRequestAction, updatePharmacyRequestAction } from '../../../redux/actions/requestsActions';
 import { HOSPITAL_PHARMACY_CENTRAL_ROUTE, HOSPITAL_PHARMACY_REQUEST, HOSPITAL_PHARMACY_REQUEST_INVENTORY, HOSPITAL_PHARMACY_REQUEST_NEW } from '../../../routes';

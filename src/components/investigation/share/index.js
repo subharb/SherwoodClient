@@ -16,10 +16,11 @@ import { yellow, green, blue, red, orange, purple } from "@material-ui/core/colo
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
 import { getSharedResearchersService, saveResearcherPermissions } from '../../../services';
-import { ALL_ROLES, USER_ROLES } from '../../../constants';
+
 import SectionHeader from '../../../pages/components/SectionHeader';
 import UserRoles from './UserRoles';
 import { useSnackBarState } from "../../../hooks"
+import { ALL_ROLES, USER_ROLES } from './user_roles';
 
 
 const optionsPermissions = Object.keys(USER_ROLES).map(keyRole => {

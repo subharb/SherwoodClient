@@ -12,7 +12,7 @@ import Form from '../../../components/general/form';
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import styled from 'styled-components';
 import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
-import { ALL_ROLES, USER_ROLES } from '../../../constants';
+
 import { useHistory } from "react-router-dom";
 import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction, removeResearcherFromUnitAction, editDepartmentAction, deleteDepartmentAction, deleteUnitAction, editUnitAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
@@ -21,6 +21,7 @@ import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAcc
 import { FUNCTIONALITY } from '../../../constants/types';
 import { a11yProps, TabPanel } from '../../components/Tabs';
 import { ColourChip } from '../../../components/general/mini_components-ts';
+import { ALL_ROLES, USER_ROLES } from '../../../components/investigation/share/user_roles';
 
 const DEPARTMENT_FORM = {
     "uuid" : {

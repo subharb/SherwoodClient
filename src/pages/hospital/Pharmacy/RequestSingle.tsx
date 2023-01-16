@@ -1,8 +1,7 @@
 import { Card, CardContent, Grid } from '@material-ui/core';
 import React from 'react';
+import { PERMISSION, PHARMACY_CENTRAL_PERMISSIONS } from '../../../components/investigation/share/user_roles';
 import Loader from '../../../components/Loader';
-import { PHARMACY_CENTRAL_PERMISSIONS } from '../../../constants';
-import { PERMISSION } from '../../../constants/types';
 import { useRequest } from '../../../hooks';
 import RequestInfo from '../Service/RequestInfo';
 import { IRequest, IRequestPharmacy, RequestStatus } from '../Service/types';
