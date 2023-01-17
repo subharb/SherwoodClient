@@ -31,10 +31,18 @@ export interface IAgenda{
     name:string,
     department:IDepartment,
     daysWeek:string[],
+    blockedDates:number[],
     slotsPerDay:number,
+    appointments: IAppointment[]
     box:string,
+    datesOccupancy:{[date:string]:number}
     turn: number[][],
-    
+}
+
+export interface IAppointment{
+    uuid:string,
+    startDateTime:number,
+    type:number,//0 first visit, 1 follow up
 }
 
 export interface IUnit{

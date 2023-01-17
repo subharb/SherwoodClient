@@ -1,8 +1,12 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from "@date-io/date-fns";
 import React, { useEffect, useState } from 'react';
 import { FieldWrapper } from '../../../components/general/mini_components';
 import PatientInfo from '../../../components/PatientInfo';
 import { IAgenda, IDepartment } from '../../../constants/types';
+import AppointmentDatePicker from './DatePicker';
+import { Grid } from '@mui/material';
 
 
 interface FormAppointmentProps {
@@ -25,7 +29,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentProps> = ({ uuidPatien
     const [errorState, setErrorState] = useState<{department:boolean, agenda:boolean, date:boolean}>({department:false, agenda:false, date:false});
     const [listAgendas, setListAgendas] = useState<IAgenda[]>([]); 
     const [agenda, setAgenda] = useState<IAgenda | null>(null);
-    const [date, setDate] = useState<Date | null>(null);
+    const [date, setDate] = useState<Date>(new Date());
 
     function renderDepartments(){
         if(departmentsWithAgenda.length === 0){
@@ -38,7 +42,12 @@ export const FormAppointmentCore: React.FC<FormAppointmentProps> = ({ uuidPatien
 
     function renderCalendar(){
         if(agenda){
-            
+            return (
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <AppointmentDatePicker availableDaysWeek = {agenda.daysWeek} blockedDates={agenda.blockedDates} 
+                        slotsPerDay={agenda.slotsPerDay} datesOccupancy={agenda.datesOccupancy} />
+                </MuiPickersUtilsProvider>
+            )
         }
     }
     function renderAgendas(){
@@ -69,6 +78,13 @@ export const FormAppointmentCore: React.FC<FormAppointmentProps> = ({ uuidPatien
         }
         
     }
+
+    useEffect(() => {
+        if(listAgendas.length === 1){
+            setAgenda(listAgendas[0]);
+        }
+    }, [listAgendas])
+
     useEffect(() => {
         if(department){
             const agendasFromDepartment = agendas.filter((agenda) => agenda.department.uuid === department.uuid);
@@ -86,17 +102,25 @@ export const FormAppointmentCore: React.FC<FormAppointmentProps> = ({ uuidPatien
         }
     }, [])
     return (
-        <>
-            <PatientInfo uuidPatient={uuidPatient} />
+        <Grid container spacing={1}>
+            <Grid item xs={12}>
+                <PatientInfo uuidPatient={uuidPatient} />
+            </Grid>
+            <Grid item xs={12}>
             {
                 renderDepartments()
             }
+            </Grid>
+            <Grid item xs={12}>
             {
                 renderAgendas()
             }
+            </Grid>
+            <Grid item xs={12}>
             {
                 renderCalendar()
             }
-        </>
+            </Grid>
+        </Grid>
     );
 };

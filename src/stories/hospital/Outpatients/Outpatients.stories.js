@@ -28,9 +28,19 @@ AppointmentFormNoDepartments.args = {
     agendas:[{
         name: "Pedriatrics",
         department:null,
-        daysWeek:["M"],
-        slotsPerDay:20,
+        daysWeek:["M", "T", "W", "R", "F"],
+        slotsPerDay:3,
         box: "A",
+        datesOccupancy:{
+            "2023-01-25": 1,
+            "2023-01-26": 2,
+            "2023-01-27": 3,
+        },
+        appointments:[{
+            startDateTime: 1674112966190,
+            type:0
+        }],
+        blockedDates:[1674112966190],
         turn:[[9,0], [14,30]]
     }]
 };
