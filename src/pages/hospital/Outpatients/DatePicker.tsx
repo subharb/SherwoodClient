@@ -4,31 +4,17 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { makeStyles, styled, ThemeProvider } from '@material-ui/styles';
 import { Grid, Paper } from '@mui/material';
 import React from 'react';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 
 
 
-interface AppointmentDatePickerProps {
+interface AppointmentDatePickerProps extends LocalizeContextProps{
     availableDaysWeek:string[];
     blockedDates:number[],
     slotsPerDay:number,
     datesOccupancy:{[date:string]:number}
 }
 
-const selectedDateStyle = {
-    MuiPickersDay:{daySelected:{
-        backgroundColor: 'green',
-    }}
-}
-
-const materialTheme = createMuiTheme({
-    overrides: {
-       '.MuiPickersDay': {
-            daySelected:{
-                xborderRadius: '0%'
-            }
-        },
-    },
-});
 const useStyles = makeStyles((theme) => ({
     dayWithDotContainer: {
         position: 'relative',
@@ -81,8 +67,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, blockedDates, slotsPerDay, datesOccupancy }) => {
-    const [selectedDate, setSelectedDate] = React.useState<MaterialUiPickersDate>(new Date());
+const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, blockedDates, slotsPerDay, datesOccupancy, translate }) => {
+    const [selectedDate, setSelectedDate] = React.useState<MaterialUiPickersDate>(null);
     const classes = useStyles();
 
     function occupancyLevel(date:MaterialUiPickersDate){
@@ -113,6 +99,8 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
     return (
         <>
             <DatePicker value={selectedDate} onChange={setSelectedDate} shouldDisableDate={(date) => isDisabledDate(date)}
+                emptyLabel={translate("pages.hospital.outpatients.select_date").toString()} label={selectedDate && translate("pages.hospital.outpatients.select_date").toString()}
+                inputVariant="outlined" disablePast={true}
                 renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
                     if(isDisabledDate(day) || !isInCurrentMonth){
                         return dayComponent;
@@ -137,4 +125,4 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
     );
 };
 
-export default AppointmentDatePicker;
+export default withLocalize(AppointmentDatePicker);

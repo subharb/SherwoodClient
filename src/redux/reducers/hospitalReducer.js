@@ -47,6 +47,11 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;
+        case types.FETCH_HOSPITAL_AGENDAS_SUCCESS:
+            newState.data.agendas = action.agendas;
+            newState.loading = initialState.loading;
+            newState.error = initialState.error;
+            return newState;
         case types.SAVE_DEPARTMENT_SUCCESS:
             tempDepartments = [...newState.data.departments];
             tempDepartments.push(action.department);

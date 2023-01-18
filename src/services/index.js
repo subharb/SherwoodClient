@@ -472,6 +472,24 @@ export const getSharedResearchersService = datalogger((uuidInvestigation) => {
     });
 });
 
+export const getAgendasInvestigationService = datalogger((uuidInvestigation) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+});
+
+
+
 export const getDepartmentsInstitutionService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
         axios

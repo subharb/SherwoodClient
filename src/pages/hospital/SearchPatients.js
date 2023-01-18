@@ -25,6 +25,7 @@ import TabsSherwood from '../../components/general/TabsSherwood';
 import ICT from '../../components/general/SmartFields/ICT';
 import { searchPatientByDiagnosis } from '../../services';
 import styled from 'styled-components';
+import FormAppointment from './Outpatients/FormAppointment';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -163,6 +164,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
     const [actionPatient, setActionPatient] = useState(null);
     const [patientAppointment, setPatientAppointment] = useState(null);
     const [patientHospitalized, setPatientHospitalized] = useState(null);
+    const [makeAppointmentAction, setMakeAppointmentAction] = useState(false);
 
     function backToSearch(){
         props.backToSearchCallBack()
@@ -176,9 +178,13 @@ export const SearchPatientsComponent = withLocalize((props) => {
         setActionPatient({...actionPatient, patientIndex:findPatientIndex, action : "hospitalize"})
     }
 
-    function makeAppointmentPatient(id){
+    function selectAppointmentPatient(id){
         const findPatientIndex = props.patients.findIndex((pat) => pat.id === id);
         setActionPatient({...actionPatient, patientIndex:findPatientIndex, action:"outpatients"})
+    }
+
+    function makeAppointmentPatient(){
+        setMakeAppointmentAction(true);
     }
     
     function confirm(){
@@ -201,6 +207,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
             const indexPatient = actionPatient ? actionPatient.patientIndex : null;
             return (
                 <Modal key="modal" open={actionPatient || patientAppointment || patientHospitalized} 
+                    
                     title={actionPatient ? <Translate id={`pages.hospital.${actionPatient.action}.confirm`}/> : <Translate id="hospital.inpatients.choose-ward" />} 
                     closeModal={resetModal} >
                         {
@@ -249,8 +256,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                         }
                         {
                             patientAppointment &&
-                            <DepartmentsAccordionRedux currentInvestigation={props.investigation} 
-                                uuidPatient={patientAppointment.uuid} />
+                            <FormAppointment uuidPatient={patientAppointment.uuid} makeAppointmentAction={makeAppointmentAction}/>
                         }
                         
                 </Modal>
@@ -316,7 +322,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                                 personalFields={formSearch} permissions={props.permissions}
                                 functionalities={props.functionalities}
                                 showPatientCallBack={id => patientSelected(id)} 
-                                makeAppointmentPatientCallBack={(index) => makeAppointmentPatient(index)}
+                                selectAppointmentPatientCallBack={(index) => selectAppointmentPatient(index)}
                                 hospitalizePatientCallBack={(index) => hospitalizePatient(index)} />
                         </Grid>
                         <Grid item xs={12}>

@@ -1,8 +1,24 @@
 import * as types from "../../constants";
-import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteDepartmentService, deleteUnitService, deleteWardService, dischargePatientService, editDepartmentService, editUnitService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
+import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteDepartmentService, deleteUnitService, deleteWardService, dischargePatientService, editDepartmentService, editUnitService, getAgendasInvestigationService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
 
 
-
+export function getAgendasInvestigationAction(uuidInvestigation) {
+    return async (dispatch) => {
+      dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+  
+      return getAgendasInvestigationService(uuidInvestigation)
+        .then((response) => {
+          dispatch({
+            type: types.FETCH_HOSPITAL_AGENDAS_SUCCESS,
+            agendas: response.agendas
+          });
+        })
+        .catch((error) => {
+          dispatch({ type: types.HOSPITAL_ERROR });
+          throw error;
+        });
+    };
+}
 
 export function getDepartmentsInvestigationAction(uuidInstitution) {
     return async (dispatch) => {

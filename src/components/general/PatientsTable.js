@@ -17,7 +17,7 @@ function PatientsTable(props) {
         actions.push({"type" : "hospital", "func" : (index) => props.hospitalizePatientCallBack(index)})
     }
     if(props.permissions.includes(PERMISSION.CREATE_APPOINTMENTS) && props.functionalities.includes(FUNCTIONALITY.OUTPATIENTS)){
-        actions.push({"type" : "appointment", "func" : (index) => props.makeAppointmentPatientCallBack(index)})
+        actions.push({"type" : "appointment", "func" : (index) => props.selectAppointmentPatientCallBack(index)})
     }
     return (
         <EnhancedTable noHeader noSelectable  titleTable={<Translate id="investigation.create.summary.patients" />} 
