@@ -685,7 +685,11 @@
             "medical-imaging" : {
                 "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
                 "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie Medicale"],
-                "title" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie Médicale"]
+                "title" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie Médicale"],
+                "category" : {
+                    "ultrasound" : ["Ultrasound", "Ecografía", "Échographie"],
+                    "x-ray" : ["X-rays", "Radiografías", "Radiographies"]
+                }
             },
             "other" : {
                 "no-records" : ["No records available", "No hay registros", "Aucun enregistrement disponible"]
