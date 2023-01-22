@@ -120,7 +120,7 @@ function DatesSelector(props:Props){
     return(
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Typography variant="h4" gutterBottom  ><Translate id="hospital.analytics.date_selector.current_period" />: {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}</Typography>
+                <Typography variant="h4" gutterBottom  ><Translate id="hospital.analytics.date_selector.current_period" />: {startDate.toLocaleDateString(props.activeLanguage.code)} - {endDate.toLocaleDateString(props.activeLanguage.code)}</Typography>
             </Grid>
             <Grid item xs={12}> 
                 <FieldWrapper noWrap = {false}>

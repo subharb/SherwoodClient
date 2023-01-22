@@ -33,12 +33,13 @@ export function Analytics(props) {
 	const [startDate, setStartDate] = useState(new Date(2020, 0, 1).getTime());
 	const [endDate, setEndDate] = useState(Date.now());
 	const [statsFirstMonitoring, setStatsFirstMonitoring] = useState(null);
+    const [loadingStatsFirstMonitoring, setLoadingStatsFirstMonitoring] = useState(false);
 	const [mostCommonDiagnosis, setMostCommonDiagnosis] = useState(null);
 	const [filteredPatients, setFilteredPatients] = useState([]);
     const [activityPatients, setActivityPatients] = useState([]);
 	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
     const [patientsPerDepartment, setStatsPatientsPerDepartment] = useState(null);
-    const onlyDepartmentsResearcher = props.investigations.currentInvestigation.permissions.includes(PERMISSION.ANALYTICS_DEPARTMENT);
+    const onlyDepartmentsResearcher = props.investigations.currentInvestigation && props.investigations.currentInvestigation.permissions.includes(PERMISSION.ANALYTICS_DEPARTMENT);
 	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher, true);
 
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
@@ -99,16 +100,33 @@ export function Analytics(props) {
 		setEndDate(dates[1].getTime());
 	}
 	
-    // function filterPatientsByDate(startDateFilter, endDateFilter){
-	// 	if(props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
-	// 		const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
-	// 			const dateCreated = new Date(patient.dateCreated);
-	// 			return startDateFilter < dateCreated.getTime() && endDateFilter > dateCreated.getTime();
-	// 		})
-			
-	// 		setFilteredPatients(tempFilterPatients);
-	// 	}
-	// }
+    function renderSelectors(){
+        if(departments === null){
+            return (
+                <Grid item xs={12}>
+                    <Loader />
+                </Grid>
+            )
+        }
+        if(departments.length === 1){
+            return (
+                <Grid item xs={12}>
+                    <DatesSelector onCallBack={datesSelected} />
+                </Grid>
+            )
+        }
+        return(
+            <>
+                <Grid item xs={6}>
+                    { renderDepartmentSelector() }
+                </Grid>
+                <Grid item xs={6}>
+                    <DatesSelector onCallBack={datesSelected} />
+                </Grid>
+            </>
+            
+        )
+    }
     
     useEffect(() => {
         let tempCountSex = {male : 0, female : 0};
@@ -178,9 +196,11 @@ export function Analytics(props) {
 	
     useEffect(() => {
 		async function getStats() {
+            setLoadingStatsFirstMonitoring(true);
 			getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate)
 							.then(response => {
 								setStatsFirstMonitoring(response);
+                                setLoadingStatsFirstMonitoring(false);
 							})
 			getStatsMostCommonDiagnosis(props.investigations.currentInvestigation.uuid, startDate, endDate)
 							.then(response => {
@@ -217,12 +237,9 @@ export function Analytics(props) {
 					</Typography>					
 				</Grid>
 				<Grid spacing={3} item container xs={12} style={{background:'white', padding:'1rem'}}>
-                    <Grid item xs={6}>
-                        { renderDepartmentSelector() }
-                    </Grid>
-                    <Grid item xs={6}>
-                        <DatesSelector onCallBack={datesSelected} />
-                    </Grid>
+                    {
+                        renderSelectors()
+                    }
                 </Grid>
 			</Grid>
 
@@ -290,11 +307,11 @@ export function Analytics(props) {
                         </Grid>
                     </>
                 }
-				
 				{
 					<Grid container item spacing={1}>
 						<Grid item xs={12} >
-							<HospitalStats stats={statsFirstMonitoring} departmentSelected={departmentSelected} />
+							<HospitalStats loading={loadingStatsFirstMonitoring} stats={statsFirstMonitoring} 
+                                departmentSelected={departmentSelected} />
 						</Grid>
 					</Grid>
 				}

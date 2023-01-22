@@ -809,8 +809,13 @@ export function openStore(storeName){
 export function postErrorSlack(url, error, info, investigation){
     console.log("Enviamos el error a ", process.env.REACT_APP_SLACK_HOOK);
     let location = "URL:"+window.location.href;
-  
-    var text = "Investigation: "+investigation.name+" uuid :"+investigation.uuid+" URL: "+location+" Error: "+error+ " Message:"+JSON.stringify(info);
+    
+    let basicText = " URL: "+location+" Error: "+error+ " Message:"+JSON.stringify(info);
+    let text = basicText;
+    if(investigation){
+        text = "Investigation: "+investigation.name+" uuid :"+investigation.uuid+basicText;
+    }
+    
 
     $.ajax({
         data: 'payload=' + JSON.stringify({

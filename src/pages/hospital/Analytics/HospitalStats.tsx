@@ -30,6 +30,7 @@ interface IStatDepartment{
     units:IStatUnit
 }
 interface HospitalStatsProps {
+    loading:boolean,
     departmentSelected:string,
     stats:{
         departments:IStatDepartment[],
@@ -37,7 +38,7 @@ interface HospitalStatsProps {
     }
 }
 
-const HospitalStats: React.FC<HospitalStatsProps> = ({ stats, departmentSelected }) => {
+const HospitalStats: React.FC<HospitalStatsProps> = ({ stats, departmentSelected, loading }) => {
     if(stats === null){
         return <Loader />
     }
@@ -72,9 +73,10 @@ const HospitalStats: React.FC<HospitalStatsProps> = ({ stats, departmentSelected
         return tempStatsUnit.flat();
     })
    
-
-    
-    if(stats.departments.length === 1 ||  departmentSelected){
+    if(loading){
+        return <Loader />
+    }
+    else if(stats.departments.length === 1 ||  departmentSelected){
         const indexDepartment = !departmentSelected ? 0 : stats.departments.findIndex((department) => department.uuid === departmentSelected);
         if(indexDepartment === -1){
             return <Typography variant="body2" component="h2" style={{ color: "white" }}>No stats for this department</Typography>
