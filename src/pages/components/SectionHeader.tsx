@@ -34,6 +34,8 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallbac
                 return <img src={iconImages } alt="images" width="20" />
             case "pharmacy":
                 return <IconGenerator type="pharmacy" />
+            case "shoe_shop":
+                return <IconGenerator type="shoe_shop" />
             default:
                 return null;
         }

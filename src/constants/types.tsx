@@ -115,6 +115,7 @@ export enum FUNCTIONALITY {
     BILLING_DISCOUNTS = "BILLING_DISCOUNTS",
     PHARMACY_CENTRAL = "PHARMACY_CENTRAL",
     AESTHETICS = "AESTHETICS",
+    SHOE_SHOP = "SHOE_SHOP",
 }
 
 export interface ActionsEnhancedTable{

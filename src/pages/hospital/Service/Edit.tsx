@@ -11,7 +11,7 @@ import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
-import { fromServiceTypeToText } from '../../../utils';
+import { fromServiceTypeToText, serviceTypeToTranslation } from '../../../utils';
 import { IService, IServiceInvestigation, ServiceType } from './types';
 
 interface EditServicesProps {
@@ -258,7 +258,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         }
         else {
             const rows = servicesInvestigation?.map((serviceInvestigation) => {
-                const typeTestString = serviceType === ServiceType.LABORATORY ? "laboratory" : "medical-imaging";
+                const typeTestString = serviceTypeToTranslation(serviceType);
                 return {
                     id: serviceInvestigation.id,
                     name: <Translate id={`pages.hospital.services.tests.${typeTestString}.${serviceInvestigation.service.code}`} />,
