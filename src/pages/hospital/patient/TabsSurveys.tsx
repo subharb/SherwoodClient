@@ -79,9 +79,9 @@ const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, departments, 
             </div>)
         }
     }
-    if(units.length === 0 && departments?.length > 0){
-        return <Typography variant="body2" style={{color:'white'}} gutterBottom>You have no departments assigned, please contact your administrator</Typography>
-    }
+    // if(units.length === 0 && departments?.length > 0){
+    //     return <Typography variant="body2" style={{color:'white'}} gutterBottom>You have no departments assigned, please contact your administrator</Typography>
+    // }
     return (
         <>
             <Grid item xs={6} style={{textAlign:"left"}}>

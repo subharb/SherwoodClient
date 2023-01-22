@@ -61,7 +61,7 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
 
     
     function renderWards(department:IDepartment){
-        return department.wards.map((ward:IWard) => {
+        return department.wards.sort((wardA, wardB) => wardA.name > wardB.name ? 1 : -1).map((ward:IWard) => {
             return(
                 <div style={{width:'100%', paddingTop:'0.5rem'}}>
                      <Accordion>

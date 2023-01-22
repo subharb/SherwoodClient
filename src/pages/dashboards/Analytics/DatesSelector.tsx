@@ -116,16 +116,16 @@ function DatesSelector(props:Props){
         )
     }
     
-    const optionsArray = [<MenuItem value={0}>Last week</MenuItem>, <MenuItem value={1}>Last month</MenuItem>, <MenuItem value={2}>Custom period</MenuItem>]
+    const optionsArray = [<MenuItem value={0}><Translate id="hospital.analytics.date_selector.last_week" /></MenuItem>, <MenuItem value={1}><Translate id="hospital.analytics.date_selector.last_month" /></MenuItem>, <MenuItem value={2}><Translate id="hospital.analytics.date_selector.custom_period" /></MenuItem>]
     return(
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Typography variant="h4" gutterBottom  >Current period: {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}</Typography>
+                <Typography variant="h4" gutterBottom  ><Translate id="hospital.analytics.date_selector.current_period" />: {startDate.toLocaleDateString(props.activeLanguage.code)} - {endDate.toLocaleDateString(props.activeLanguage.code)}</Typography>
             </Grid>
             <Grid item xs={12}> 
                 <FieldWrapper noWrap = {false}>
                     <FormControl fullWidth variant="outlined">
-                        <InputLabel id="time_period">Select a period</InputLabel>
+                        <InputLabel id="time_period"><Translate id="hospital.analytics.date_selector.select_period"/></InputLabel>
                         <Select
                             labelId="time_period"
                             id="time_period"

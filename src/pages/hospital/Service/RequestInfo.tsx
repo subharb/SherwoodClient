@@ -6,7 +6,8 @@ import styled from 'styled-components';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import axios from '../../../utils/axios';
-import { Translate } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
+import { fromServiceTypeToText } from '../../../utils';
 
 const ChipContainer = styled.div`
     display:inline;
@@ -46,22 +47,50 @@ export const RequestInfoWithFetch: React.FC<RequestInfoWithFetchProps> = ({ idSu
             return <Typography variant="h6">No request found</Typography>
         }
         return(
-            <RequestInfo request={request} />
+            <RequestInfoWithLocalize request={request} />
         )
     }
 }
 
-interface RequestInfoProps {
+interface RequestInfoProps extends LocalizeContextProps{
     request:IRequest
 }
 
-const RequestInfo: React.FC<RequestInfoProps> = ({ request }) => {
-    let acceptedRequests:IRequestServiceInvestigation[] = [];
-    let otherStateRequests:IRequestServiceInvestigation[] = [];
-    if(request.status !== RequestStatus.COMPLETED){
-        acceptedRequests = request.requestsServiceInvestigation.filter(r => r.status === RequestStatus.ACCEPTED);
-        otherStateRequests = request.requestsServiceInvestigation.filter(r => r.status !== RequestStatus.ACCEPTED);
+const RequestInfo: React.FC<RequestInfoProps> = ({ request, translate }) => {
+  
+    function renderServices(){
+        let completedRequests:IRequestServiceInvestigation[] = [];
+        let acceptedRequests:IRequestServiceInvestigation[] = [];
+        let otherStateRequests:IRequestServiceInvestigation[] = [];
+        if(request.status !== RequestStatus.COMPLETED){
+            acceptedRequests = request.requestsServiceInvestigation.filter(r => r.status === RequestStatus.ACCEPTED);
+            otherStateRequests = request.requestsServiceInvestigation.filter(r => r.status !== RequestStatus.ACCEPTED);
+        }
+        else{
+            completedRequests = request.requestsServiceInvestigation;
+        }
+
+        const allRequests = [completedRequests, acceptedRequests, otherStateRequests];
+        const infoRequests = [];
+        for(let i = 0; i < allRequests.length; i++){
+            if(allRequests[i].length > 0){
+                const statusString = i === 0 ? "completed" :  i === 1 ? "accepted" : "pending" ;
+                const requests = request.requestsServiceInvestigation.map((reqSer) =>{
+                    const serviceCode = reqSer.serviceInvestigation.service.code;
+                    const typeService = fromServiceTypeToText(reqSer.serviceInvestigation.service.type);
+                    return(<ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={translate(`pages.hospital.services.tests.${typeService}.${serviceCode}`)}/></ChipContainer>)})
+                infoRequests.push(<div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id={`pages.hospital.services.request.${statusString}`} />: </span>{requests}</Typography> </div>)
+            }
+        }
+        return(
+            <>
+                {infoRequests}
+            </>
+        )
+        
     }
+
+    
     
     return (
         <Grid item xs={12}>
@@ -69,16 +98,7 @@ const RequestInfo: React.FC<RequestInfoProps> = ({ request }) => {
                 <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.request_id" />: </span>{request.id}</Typography> </div>
                 <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.status" />: </span><RequestStatusToChip status={request.status} /></Typography> </div>
                 {
-                    request.status === RequestStatus.COMPLETED &&
-                    <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.completed" />: </span>{request.requestsServiceInvestigation.map((reqSer) => <ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={reqSer.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
-                }
-                {
-                    acceptedRequests.length > 0 &&
-                    <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.accepted" />: </span>{acceptedRequests.map((reqSer) => <ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={reqSer.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
-                }
-                {
-                    otherStateRequests.length > 0 &&
-                    <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.services.request.pending" />: </span>{otherStateRequests.map((reqSer) => <ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={reqSer.serviceInvestigation.service.name}/></ChipContainer>)}</Typography> </div>
+                    renderServices()
                 }
                 
             </Card>  
@@ -86,4 +106,5 @@ const RequestInfo: React.FC<RequestInfoProps> = ({ request }) => {
     );
 };
 
-export default RequestInfo;
+const RequestInfoWithLocalize = withLocalize(RequestInfo);
+export default RequestInfoWithLocalize;
