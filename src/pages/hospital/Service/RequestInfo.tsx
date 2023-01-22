@@ -7,7 +7,7 @@ import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import axios from '../../../utils/axios';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { fromServiceTypeToText } from '../../../utils';
+import { serviceTypeToTranslation } from '../../../utils';
 
 const ChipContainer = styled.div`
     display:inline;
@@ -77,7 +77,7 @@ const RequestInfo: React.FC<RequestInfoProps> = ({ request, translate }) => {
                 const statusString = i === 0 ? "completed" :  i === 1 ? "accepted" : "pending" ;
                 const requests = request.requestsServiceInvestigation.map((reqSer) =>{
                     const serviceCode = reqSer.serviceInvestigation.service.code;
-                    const typeService = fromServiceTypeToText(reqSer.serviceInvestigation.service.type);
+                    const typeService = serviceTypeToTranslation(reqSer.serviceInvestigation.service.type);
                     return(<ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={translate(`pages.hospital.services.tests.${typeService}.${serviceCode}`)}/></ChipContainer>)})
                 infoRequests.push(<div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id={`pages.hospital.services.request.${statusString}`} />: </span>{requests}</Typography> </div>)
             }

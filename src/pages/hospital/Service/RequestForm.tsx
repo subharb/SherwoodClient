@@ -8,6 +8,7 @@ import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_com
 import Loader from '../../../components/Loader';
 import { IDepartment, IUnit, SnackbarTypeSeverity } from '../../../constants/types';
 import { useSnackBarState, SnackbarType, useUnitSelector, useDeparmentsSelector } from '../../../hooks';
+import { serviceTypeToTranslation } from '../../../utils';
 import { TabsSherwood } from '../../components/Tabs';
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation } from './types';
 
@@ -115,7 +116,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         });
         return categories;
     }, [servicesInvestigation]);
-    const typeTestString = serviceType === 0 ? "laboratory" :"medical-imaging";
+    const typeTestString = serviceTypeToTranslation(serviceType);
     const SERVICE_SEPARATOR = "service_";
     
   
@@ -209,7 +210,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                     <Grid xs={12} item>
                         <Card>
                             <CardContent>
-                                <Typography variant="subtitle1" ><Translate id={`hospital.request_${["lab", "img"][serviceType]}`} /></Typography>
+                                <Typography variant="subtitle1" ><Translate id={`hospital.request.${serviceTypeToTranslation(serviceType)}`} /></Typography>
                                 {
                                     renderDepartmentSelector()
                                 }

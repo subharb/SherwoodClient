@@ -112,7 +112,7 @@ export function TestsHomeComponent(props) {
     }
     return (
         <React.Fragment>
-            <Grid container spacing={6} >
+            <Grid container spacing={3} >
                 <SectionHeader section={serviceTypeToTranslation(props.type)} edit={edit} editCallback={toogleEditLab} />
                 <Grid item xs={12}>
                     {

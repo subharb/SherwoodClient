@@ -315,10 +315,14 @@
             "title" : ["Shoe Shop", "Tienda de Zapatos", "Cordonerie"]
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
-        "request_lab" : ["Laboratory tests available", "Tests de laboratorio disponibles", "Tests de laboratoire disponibles"],
-        "request_lab-table" : ["Request Lab", "Peticiones de Laboratorio", "Demande de laboratoire"],
-        "request_img" : ["Image tests available", "Pruebas de imagen disponibles", "Tests d'image disponibles"],
-        "request_img-table" : ["Request Imaging", "Solicitar Imagen", "Demander une imagerie"],
+        "request" : {
+            "laboratory" : ["Laboratory tests available", "Tests de laboratorio disponibles", "Tests de laboratoire disponibles"],
+            "laboratory_table" : ["Request Lab", "Peticiones de Laboratorio", "Demande de laboratoire"],
+            "medical-imaging" : ["Image tests available", "Pruebas de imagen disponibles", "Tests d'image disponibles"],
+            "medical-imaging_table" : ["Request Imaging", "Solicitar Imagen", "Demander une imagerie"],
+            "shoe_shop" : ["Shoe Shop services", "Servicios de Zapatería", "Services de Cordonerie"],
+            "shoe_shop_table" : ["Requests Shoe Shop", "Solicitudes Zapatería", "Demander Cordonerie"]
+        },
         "frecuency" : ["Frequency", "Frecuencia", "Fréquence"],
         "treatment-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],
         "treatment_regular-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],
@@ -667,7 +671,11 @@
                         "R073": ["Third-trimester ultrasound", "Ecografía del tercer trimestre","Échographie 3ème trimestre"],
                         "R074": ["Neonatal cerebral ultrasound", "Ecografía transfotanelar","Échographie transfontanellaire"],
                         "R075": ["Carotid ultrasound", "Ecografía troncos supraaórticos","Échographie troncs supra aortiques"]
-                        }                        
+                    },
+                    "shoe_shop" : {
+                        "Z001": ["Microcellulose shoes", "Zapatos microcelulosa","Chaussures en microcellulose"],
+                        "Z002": ["Plastazote shoes", "Zapatos plastazote","Chaussures en plastazote"]
+                    }                       
                 }
             },
             "laboratory":{

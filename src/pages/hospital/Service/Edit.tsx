@@ -11,7 +11,7 @@ import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
-import { fromServiceTypeToText, serviceTypeToTranslation } from '../../../utils';
+import { serviceTypeToTranslation } from '../../../utils';
 import { IService, IServiceInvestigation, ServiceType } from './types';
 
 interface EditServicesProps {
@@ -160,7 +160,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
             }
             return !servicesInvestigation?.some((serviceInvestigation) => serviceInvestigation.service.id === service.id);
         }).map((service) => {
-            const typeTestString = fromServiceTypeToText(serviceType);
+            const typeTestString = serviceTypeToTranslation(serviceType);
             return {
                 label: `pages.hospital.services.tests.${typeTestString}.${service.code}`,
                 value: service.id,
@@ -311,7 +311,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                         !loading && removingService && selectedService &&
                         <>
                             <Typography variant="body2" style={{fontWeight:'bold'}} gutterBottom><Translate id="pages.hospital.services.edit.delete_service.description" /></Typography>
-                            <Translate id={`pages.hospital.services.tests.${fromServiceTypeToText(serviceType)}.${selectedService.code as string}`} />
+                            <Translate id={`pages.hospital.services.tests.${serviceTypeToTranslation(serviceType)}.${selectedService.code as string}`} />
                             <div style={{paddingTop:'1rem'}}>
                                 <ButtonAccept onClick={confirmDelete}>Delete</ButtonAccept>
                                 <ButtonCancel style={{marginLeft:'1rem'}} onClick={cancel}>Cancel</ButtonCancel>

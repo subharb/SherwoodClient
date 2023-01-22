@@ -929,5 +929,5 @@ export function serviceTypeToTranslation(serviceType){
         "1" : "medical-imaging" , 
         "3" : "shoe_shop"
     }
-    return typesService[serviceType];
+    return typesService[serviceType.toString()];
 }

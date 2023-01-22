@@ -16,8 +16,7 @@ interface SectionHeaderProps {
 }
 
 const IconHolder = styled.div`
-    padding-right:1rem;
-    padding-left:1rem;
+    padding:0.7rem 1rem;
 `;
 
 const TypographyStyled = styled(Typography)`

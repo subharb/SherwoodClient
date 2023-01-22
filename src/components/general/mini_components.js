@@ -24,7 +24,8 @@ import {
     Hotel as HotelIcon,
     Undo as UndoIcon,
     Settings as SettingsIcon,
-    ArrowBack as ArrowBackIcon
+    ArrowBack as ArrowBackIcon,
+    DirectionsRun
   } from "@material-ui/icons";
   import {
     Button, Icon, IconButton,
@@ -59,6 +60,8 @@ export const IconGenerator = withTheme((props) => {
             return <ArrowBackIcon fontSize={props.size ? props.size : "small"} {...props}  />
         case "pharmacy":
             return <LocalPharmacyIcon style={{color:props.theme.palette.primary.color }} />
+        case "shoe_shop":
+            return <DirectionsRun style={{color:props.theme.palette.primary.color }} />
         case "biotech":
             return <BiotechIcon fill={props.theme.palette.primary.color} />
         case "info":

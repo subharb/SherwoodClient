@@ -77,9 +77,9 @@ function Patient(props) {
     const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
     //const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typesCurrentSurvey.includes(sur.type)) : [];
     const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter((survey) => {
-        if(parameters.typeTest === "shoe" && survey.category === types.CATEGORY_SURVEY_SHOE){
-            return true;
-        }
+        // if(parameters.typeTest === "shoe" && survey.category === types.CATEGORY_SURVEY_SHOE){
+        //     return true;
+        // }
         if(parameters.typeTest === "social" && survey.category === types.CATEGORY_SURVEY_SOCIAL){
             return true;
         }
@@ -152,7 +152,7 @@ function Patient(props) {
         else{
             let nextUrl;
             
-            if(["images", "lab"].includes(parameters.typeTest)){
+            if(["images", "lab", "shoe"].includes(parameters.typeTest)){
                 nextUrl = HOSPITAL_PATIENT_MAKE_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", parameters.typeTest);
             }
             else{
@@ -316,7 +316,7 @@ function Patient(props) {
                 </>)
         }
         else if (types.TYPE_SERVICE_SURVEY.includes(typeSurveySelected)){
-            const serviceType = typeSurveySelected === types.TYPE_LAB_SURVEY ? 0 : 1;
+            const serviceType = typeSurveySelected === types.TYPE_LAB_SURVEY ? 0 : typeSurveySelected === types.TYPE_IMAGE_SURVEY ? 1 : 3;
             if(HOSPITAL_PATIENT_MAKE_TESTS === props.match.path){
                 const units = getUnitsResearcher(props.profile.info.uuid, researchers);
             
