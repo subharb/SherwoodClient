@@ -33,3 +33,19 @@ export function updateAppoinmentsService(uuidInvestigation: string, uuidAppointm
     });
 }
 
+export function getPatientsAppoinmentsService(uuidInvestigation: string, uuidPatient:string): Promise<{ status: number, appointments: IAppointment[] }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/patient/"+uuidPatient+"/appointments", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+

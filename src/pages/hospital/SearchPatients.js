@@ -26,6 +26,7 @@ import ICT from '../../components/general/SmartFields/ICT';
 import { searchPatientByDiagnosis } from '../../services';
 import styled from 'styled-components';
 import { FormMakeAppointment } from './Outpatients/FormAppointment';
+import PatientAppointmentInfo from './Outpatients/PatientAppointmentInfo';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -179,8 +180,10 @@ export const SearchPatientsComponent = withLocalize((props) => {
     }
 
     function selectAppointmentPatient(id){
+       
         const findPatientIndex = props.patients.findIndex((pat) => pat.id === id);
-        setActionPatient({...actionPatient, patientIndex:findPatientIndex, action:"outpatients"})
+        setPatientAppointment({...props.patients[findPatientIndex]});
+        
     }
 
     function makeAppointmentPatient(){
@@ -191,9 +194,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
         if(actionPatient.action === "hospitalize"){
             setPatientHospitalized({...props.patients[actionPatient.patientIndex]});
         }
-        else{
-            setPatientAppointment({...props.patients[actionPatient.patientIndex]});
-        }
+        
         setActionPatient(null);
     }
     function resetModal(){
@@ -211,7 +212,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                     title={actionPatient ? <Translate id={`pages.hospital.${actionPatient.action}.confirm`}/> : patientHospitalized ? <Translate id="pages.hospital.inpatients.choose-ward" /> : <Translate id="pages.hospital.outpatients.title" />} 
                     closeModal={resetModal} >
                         {
-                            (actionPatient)&&
+                            (actionPatient && actionPatient.actions === 'hospitalize')&&
                             <Grid container>
                                 <Grid item xs={12}>
                                     {
@@ -256,8 +257,8 @@ export const SearchPatientsComponent = withLocalize((props) => {
                         }
                         {
                             patientAppointment &&
-                            <FormMakeAppointment uuidInvestigation={props.investigation.uuid}  uuidPatient={patientAppointment.uuid} 
-                                makeAppointmentAction={makeAppointmentAction} appointmentMadeCallback={resetModal} />
+                            <PatientAppointmentInfo uuidInvestigation={props.investigation.uuid}  uuidPatient={patientAppointment.uuid} 
+                                appointmentMadeCallback={resetModal} /> 
                         }
                         
                 </Modal>

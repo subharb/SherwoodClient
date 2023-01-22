@@ -29,9 +29,10 @@ export interface IDepartment{
 export interface IAgenda{
     uuid:string,
     name:string,
-    department:IDepartment,
+    department?:IDepartment,
     daysWeek:string[],
     blockedDates:number[],
+    principalResearcher:{researcher:IResearcher},
     slotsPerDay:number,
     appointments: IAppointment[]
     box:string,
@@ -50,8 +51,10 @@ export interface IAppointment{
     startDateTime:number,
     patient:IPatient,
     order:number,
+    agenda:IAgenda,
     requestAppointment:IRequestAppointment,
     type:number,//0 first visit, 1 follow up
+    createdAt:number,
 }
 
 export interface IUnit{

@@ -75,7 +75,7 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
 
     useEffect(() => {
         if(agendas){
-            const departmentsWithAgenda = agendas.filter((agenda) => agenda.department !== null).map((agenda) => agenda.department);
+            const departmentsWithAgenda:IDepartment[] = agendas.filter((agenda) => agenda.department !== null).map((agenda) => agenda.department as IDepartment);
             setDepartmentsWithAgenda(departmentsWithAgenda);
         }
         
@@ -121,7 +121,8 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
 
 const mapStateToProps = (state:any) =>{
     return {
-        hospital:state.hospital
+        hospital:state.hospital, 
+        investigations:state.investigations
     }
 }
 
@@ -251,7 +252,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
 
     useEffect(() => {
         if(department){
-            const agendasFromDepartment = agendas.filter((agenda) => agenda.department.uuid === department.uuid);
+            const agendasFromDepartment = agendas.filter((agenda) => (agenda.department  as IDepartment).uuid === department.uuid);
             setListAgendas(agendasFromDepartment);
         }
     }, [department])
