@@ -203,11 +203,10 @@ export function Analytics(props) {
 	if (props.investigations.loading) {
 		return <Loader />
 	}
-	else if (!props.investigations.currentInvestigation.permissions.filter((perm) => [PERMISSION.BUSINESS_READ, PERMISSION.ANALYTICS_DEPARTMENT].includes(perm)).length > 0){
+	else if (props.investigations.currentInvestigation && !props.investigations.currentInvestigation.permissions.filter((perm) => [PERMISSION.BUSINESS_READ, PERMISSION.ANALYTICS_DEPARTMENT].includes(perm)).length > 0){
 		history.push(ROUTE_401);
 		return <Loader />
 	}
-
 	return (
 		<React.Fragment>
 			<Helmet title="Analytics Dashboard" />
@@ -293,7 +292,6 @@ export function Analytics(props) {
                 }
 				
 				{
-					props.investigations.currentInvestigation.permissions.includes(PERMISSION.BUSINESS_READ) &&
 					<Grid container item spacing={1}>
 						<Grid item xs={12} >
 							<HospitalStats stats={statsFirstMonitoring} departmentSelected={departmentSelected} />

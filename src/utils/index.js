@@ -109,7 +109,6 @@ export function fieldLevelmarkedCheckbox(value){
     return markedCheckbox(value) ? undefined : "investigation.errors.error_not_empty"
 }
 export function markedCheckbox(value){
-    console.log(value === true);
     return value === true;
 }
 
@@ -161,8 +160,6 @@ export function decryptData(ciphertext, key){
 
     var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
     var originalText = bytes.toString(CryptoJS.enc.Utf8);
-
-    console.log(originalText);
 
     return originalText;
 }
@@ -830,9 +827,6 @@ export function postErrorSlack(url, error, info, investigation){
 }
 
 export function areSameBirthDates(date1, date2){
-    console.log(`Years: ${date1.getFullYear()} - ${date2.getFullYear()}`);
-    console.log(`Months: ${date1.getMonth()} - ${date2.getMonth()}`);
-    console.log(`Days: ${date1.getDate()} - ${date2.getDate()}`);
     return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate()
 }
 
@@ -857,13 +851,11 @@ export function getCurrentResearcherUuid(){
 
 export  function datalogger(wrapped){
     return async function() {
-        console.log('Starting');
         const result = await wrapped.apply(this, arguments);
         const bytesDownloaded = Buffer.byteLength(JSON.stringify(result));
         let total = 0;
 
         const dateStored = new Date(localStorage.getItem("data_download_date"));
-        console.log(dateStored);
         if(localStorage.getItem("data_download_date") && new Date(localStorage.getItem("data_download_date")).toDateString() === new Date().toDateString()){
             total = parseInt(localStorage.getItem("data_download"));
         }
@@ -872,8 +864,6 @@ export  function datalogger(wrapped){
         }
         total += bytesDownloaded;
         localStorage.setItem("data_download", total);
-
-        console.log('Data Downloaded', formatData(total));
         return result;
       }
 }
