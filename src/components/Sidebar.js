@@ -7,6 +7,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import "../vendor/perfect-scrollbar.css";
 import pathLogo from '../img/logo_sherwood_web.png';
 import { spacing } from "@material-ui/system";
+import { useDepartments, useProfileInfo } from '../hooks';
 import { getData } from '../utils';
 import {
     Badge,
@@ -295,6 +296,7 @@ const SidebarLink = ({ name, to, badge, icon }) => {
 
 const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) => {
     const investigations = useSelector((state) => state.investigations);
+    const { profile } = useProfileInfo();
     const billingInfo = investigations.currentInvestigation ? investigations.currentInvestigation.billingInfo : null;
     
     const initOpenRoutes = () => {
@@ -318,10 +320,13 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
 
     const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
     const renderCategory = (category, index, openRoutes) => {
+        const hasCategory = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : profile === null || !category.categoryDepartment ? false : profile.units.filter((unit) => category.categoryDepartment.includes(unit.department.type)).length > 0;
         const hasPermission = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
         const hasFunctionality = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.filter(value => category.functionalities.includes(value)).length > 0;
         
-        if ((category.permissions.length === 0 || hasPermission) && (category.functionalities.length === 0 || hasFunctionality))
+        if ((category.permissions.length === 0 || hasPermission) && 
+            (category.functionalities.length === 0 || hasFunctionality) && 
+            ((!category.categoryDepartment) || hasCategory)) 
             return category.children && category.icon ? (
                 <React.Fragment key={index}>
                     <SidebarCategory

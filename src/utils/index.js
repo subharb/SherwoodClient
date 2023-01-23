@@ -919,10 +919,6 @@ export function getUnitsResearcher(uuidResearcher, researchers){
     return [];
 }
 
-export function fromServiceTypeToText(serviceType){
-    return serviceType === ServiceType.LABORATORY ? "laboratory" : "medical-imaging"
-}
-
 export function serviceTypeToTranslation(serviceType){
     const typesService = {
         "0" : "laboratory", 

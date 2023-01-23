@@ -80,7 +80,7 @@ function Patient(props) {
         // if(parameters.typeTest === "shoe" && survey.category === types.CATEGORY_SURVEY_SHOE){
         //     return true;
         // }
-        if(parameters.typeTest === "social" && survey.category === types.CATEGORY_SURVEY_SOCIAL){
+        if(parameters.typeTest === "social" && survey.category === types.CATEGORY_DEPARTMENT_SOCIAL){
             return true;
         }
         if(!parameters.typeTest && MEDICAL_SURVEYS.includes(survey.type)){

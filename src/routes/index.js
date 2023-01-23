@@ -27,7 +27,8 @@ import { Home as HomeIcon, Search as SearchPatientIcon, Hotel as HotelIcon,
     PersonAddSharp as AddPatientIcon, Image as ImageIcon,
     PeopleOutline as PeopleOutlineIcon,
     MonetizationOn as MonetizationOnIcon,
-    LocalPharmacy as LocalPharmacyIcon} from "@material-ui/icons";
+    LocalPharmacy as LocalPharmacyIcon,
+    DirectionsRun} from "@material-ui/icons";
 
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
@@ -90,6 +91,7 @@ import Billing from  "../pages/hospital/Billing";
 import { WardLocalized, WardModes } from  "../pages/hospital/departments/Ward";
 import { FUNCTIONALITY, PERMISSION } from "../constants/types";
 import Pharmacy from "../pages/hospital/Pharmacy";
+import { CATEGORY_DEPARTMENT_SHOE } from "../constants";
 
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
@@ -387,8 +389,9 @@ const dashboardLabRoutes = {
 const dashboardShoesRoutes = {
     id: <Translate id="hospital.shoe_shop.title" />,
     path: HOSPITAL_SHOES,
-    icon: <MonetizationOnIcon />,
+    icon: <DirectionsRun />,
     badge: "",
+    categoryDepartment:[CATEGORY_DEPARTMENT_SHOE],
     permissions : [],
     functionalities:[FUNCTIONALITY.SHOE_SHOP],
     component: {
