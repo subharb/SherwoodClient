@@ -5,7 +5,7 @@ import { makeStyles, styled, ThemeProvider } from '@material-ui/styles';
 import { Grid, Paper } from '@mui/material';
 import React from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { formatDateByLocale, getLocaleDateString } from '../../../utils';
+import { formatDateByLocale } from '../../../utils';
 
 
 

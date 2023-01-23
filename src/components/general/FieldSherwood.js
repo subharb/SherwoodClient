@@ -28,6 +28,7 @@ import { FieldWrapper } from './mini_components';
 import { Field, FieldArray } from 'redux-form'
 import FileBase64 from './FileBase64';
 import DrugSelector from './SmartFields/DrugSelector';
+import { formatDateByLocale } from '../../utils';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -205,7 +206,7 @@ class FieldSherwood extends PureComponent{
         </Grid>;
     }
     render(){
-        const {input, label, meta, hideTitle, type, options, size, removeClass, validation, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
+        const {input, label, meta, hideTitle, type, options, size, removeClass, validation, activeLanguage, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -318,7 +319,7 @@ class FieldSherwood extends PureComponent{
                                 fullWidth
                                 inputVariant="outlined"
                                 variant="inline"
-                                format="dd/MM/yyyy"
+                                format={formatDateByLocale(activeLanguage)}
                                 margin="normal"
                                 id="date-picker-inline"
                                 label={labelString}
