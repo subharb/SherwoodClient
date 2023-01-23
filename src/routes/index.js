@@ -15,8 +15,8 @@ import { Home as HomeIcon, Search as SearchPatientIcon, Hotel as HotelIcon,
     PeopleOutline as PeopleOutlineIcon,
     MonetizationOn as MonetizationOnIcon,
     LocalPharmacy as LocalPharmacyIcon,
-    Today as TodayIcon
-    } from "@material-ui/icons";
+    Today as TodayIcon,
+    DirectionsRun} from "@material-ui/icons";
 
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";
@@ -50,7 +50,7 @@ import { FUNCTIONALITY } from "../constants/types";
 import Pharmacy from "../pages/hospital/Pharmacy";
 import Outpatients from "../pages/hospital/Outpatients";
 import { PERMISSION } from "../components/investigation/share/user_roles";
-
+import { CATEGORY_DEPARTMENT_SHOE } from "../constants";
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
 export const SIGN_UP_ROUTE = "/auth/sign-up";
@@ -92,6 +92,7 @@ export const HOSPITAL_IMAGING_REQUEST = "/images/request/:idRequest";
 export const HOSPITAL_LAB_RESULT = "/lab/result/:idSubmission/patient/:uuidPatient";
 export const ROUTE_401 = "/auth/401";
 export const HOSPITAL_BILLING = "/billing";
+export const HOSPITAL_SHOES = "/shoes";
 export const HOSPITAL_BILLING_PATIENT = "/billing/patient/:uuidPatient";
 export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
 export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
@@ -219,6 +220,11 @@ const hospitalRoutes = {
             component: TestsHome
         },
         {
+            path: HOSPITAL_SHOES,
+            name: "Shoes",
+            component: TestsHome
+        },
+        {
             path: ROUTE_401,
             name: "401 Page",
             component: Page401,
@@ -278,7 +284,7 @@ const hospitalRoutes = {
             path: HOSPITAL_BILLING_PATIENT,
             name: "Billing",
             component: () =>  <Billing/>,
-        },
+        }
         
     ],
   };
@@ -339,6 +345,22 @@ const dashboardLabRoutes = {
     component: {
         path: HOSPITAL_LAB,
         name: "Laboratory",
+        component: TestsHome
+    },
+    children: null
+}
+
+const dashboardShoesRoutes = {
+    id: <Translate id="hospital.shoe_shop.title" />,
+    path: HOSPITAL_SHOES,
+    icon: <DirectionsRun />,
+    badge: "",
+    categoryDepartment:[CATEGORY_DEPARTMENT_SHOE],
+    permissions : [],
+    functionalities:[FUNCTIONALITY.SHOE_SHOP],
+    component: {
+        path: HOSPITAL_SHOES,
+        name: "Shoe Shop",
         component: TestsHome
     },
     children: null
@@ -664,6 +686,7 @@ export const sidebarRoutesHospital = [
     dashboardAddPatientRoutes,
     dashboardImagesRoutes,
     dashboardLabRoutes,
+    dashboardShoesRoutes,
     dashboardAnalyticsRoutes,
     dashboardUserMgmtRoutes,
     dashboardPharmacyCentralRoutes,

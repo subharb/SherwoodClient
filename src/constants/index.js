@@ -145,15 +145,15 @@ export const TYPE_SURVEYS = [{ value: TYPE_MEDICAL_SURVEY, name: "Medical" }, { 
 { value: TYPE_EDITABLE_SURVEY, name: "Editable" }];
 
 
-export const CATEGORY_SURVEY_MEDICAL = 0;
-export const CATEGORY_SURVEY_SOCIAL = 1;
-export const CATEGORY_SURVEY_SHOE = 2;
-export const CATEGORY_SURVEYS = [{ value: CATEGORY_SURVEY_MEDICAL, name: "Medical" }, { value: CATEGORY_SURVEY_SOCIAL, name: "Social", url: "social" }, { value: CATEGORY_SURVEY_SHOE, name: "Shoe", url: "shoe" }];
+export const CATEGORY_DEPARTMENT_MEDICAL = 0;
+export const CATEGORY_DEPARTMENT_SOCIAL = 1;
+export const CATEGORY_DEPARTMENT_SHOE = 3;
+export const CATEGORY_SURVEYS = [{ value: CATEGORY_DEPARTMENT_MEDICAL, name: "Medical" }, { value: CATEGORY_DEPARTMENT_SOCIAL, name: "Social", url: "social" }, { value: CATEGORY_DEPARTMENT_SHOE, name: "Shoe", url: "shoe" }];
 
 export const TYPE_REQUEST_LAB = 0;
 export const TYPE_REQUEST_IMG = 1;
 
-export const TYPE_SERVICE_SURVEY = [TYPE_LAB_SURVEY, TYPE_IMAGE_SURVEY];
+export const TYPE_SERVICE_SURVEY = [TYPE_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_SHOE_SURVEY];
 export const TYPE_FILL_SURVEY = [TYPE_FILL_LAB_SURVEY, TYPE_FILL_IMG_SURVEY];
 export const LAB_SURVEYS = [TYPE_LAB_SURVEY, TYPE_FILL_LAB_SURVEY];
 export const IMG_SURVEYS = [TYPE_IMAGE_SURVEY, TYPE_FILL_IMG_SURVEY];

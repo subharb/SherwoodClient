@@ -3,7 +3,7 @@ import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { ButtonAdd, IconGenerator, IconPatient } from "../../../components/general/mini_components"
 import { DepartmentType, IUnit, PersonalData } from "../../../constants/types"
-import {CATEGORY_SURVEY_SHOE, CATEGORY_SURVEY_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
+import {CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
 import iconNotes from "../../../img/icons/history.png";
 import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
@@ -136,18 +136,18 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                         </Button>
                     </Grid>
                     {
-                        isResearcherSocial && categorySurveys.includes(CATEGORY_SURVEY_SOCIAL) && 
+                        isResearcherSocial && categorySurveys.includes(CATEGORY_DEPARTMENT_SOCIAL) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="social" onClick={() => socialCallBack()} >
-                                <img src={categorySurveySelected === CATEGORY_SURVEY_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
+                                <img src={categorySurveySelected === CATEGORY_DEPARTMENT_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
                             </Button>
                         </Grid>
                     }
                     {
-                        isResearcherShoe && categorySurveys.includes(CATEGORY_SURVEY_SHOE) && 
+                        isResearcherShoe && categorySurveys.includes(CATEGORY_DEPARTMENT_SHOE) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => shoeCallBack()} >
-                                <img src={categorySurveySelected === CATEGORY_SURVEY_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
+                                <img src={categorySurveySelected === CATEGORY_DEPARTMENT_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
                             </Button>
                         </Grid>
                     }

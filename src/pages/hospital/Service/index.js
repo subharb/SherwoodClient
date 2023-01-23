@@ -14,36 +14,22 @@ import {
     useLocation
   } from "react-router-dom";
 import { connect } from 'react-redux';
-import { fetchSubmissionsSurveyAction } from '../../../redux/actions/submissionsActions';
-import { PERMISSION } from '../../../constants/types';
-import styled from 'styled-components';
-import { IconGenerator } from '../../../components/general/mini_components';
 import EditServices from './Edit';
 import { RequestStatus, ServiceType } from './types';
 import RequestTable, { serviceToColor } from './RequestTable';
-import FillDataCollection from '../FillDataCollection';
-import { fullNamePatient, hasRequestGroupState } from '../../../utils';
-import PatientInfo from '../../../components/PatientInfo';
 import { fetchProfileInfo } from '../../../redux/actions/profileActions';
-import axios from '../../../utils/axios';
-import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
-import { ColourChip } from '../../../components/general/mini_components-ts';
 import RequestSingle from './RequestSingle';
 import { TYPE_REQUEST_LAB } from '../../../constants';
 import SectionHeader from '../../components/SectionHeader';
+import { serviceTypeToTranslation } from '../../../utils';
 
 
 
 export function TestsHome(props){
     let location = useLocation();
     const parameters = useParams();
-    if(location.pathname.includes("/images")){
-        return <TestsHomeComponent type={ServiceType.IMAGING} parameters={parameters} {...props} />
-    }
-    else if(location.pathname.includes("/lab")){
-        return <TestsHomeComponent type={ServiceType.LABORATORY} parameters={parameters} {...props}/>
-    }
-    else return null;
+    const typeService = location.pathname.includes("/images") ? ServiceType.IMAGING : location.pathname.includes("/lab") ? ServiceType.LABORATORY : ServiceType.SHOE;
+    return <TestsHomeComponent type={typeService} parameters={parameters} {...props}/>
 }
 
 export function TestsHomeComponent(props) {
@@ -52,7 +38,7 @@ export function TestsHomeComponent(props) {
     const idRequest = props.parameters.idRequest;
    
     const dispatch = useDispatch(); 
-    const translations = [ "laboratory", "medical-imaging"];
+    
 
 
     useEffect(() => {
@@ -126,8 +112,8 @@ export function TestsHomeComponent(props) {
     }
     return (
         <React.Fragment>
-            <Grid container spacing={6} >
-                <SectionHeader section={translations[props.type]} edit={edit} editCallback={toogleEditLab} />
+            <Grid container spacing={3} >
+                <SectionHeader section={serviceTypeToTranslation(props.type)} edit={edit} editCallback={toogleEditLab} />
                 <Grid item xs={12}>
                     {
                         renderCore()

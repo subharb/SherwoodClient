@@ -79,5 +79,6 @@ export interface IRequest{
 
 export enum ServiceType{
     "LABORATORY" = 0,
-    "IMAGING" = 1,    
+    "IMAGING" = 1,  
+    "SHOE" = 3,
 }

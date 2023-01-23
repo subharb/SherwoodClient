@@ -26,7 +26,8 @@ import {
     Undo as UndoIcon,
     Settings as SettingsIcon,
     ArrowBack as ArrowBackIcon,
-    Today
+    Today,
+    DirectionsRun
   } from "@material-ui/icons";
   import {
     Button, Icon, IconButton,
@@ -65,6 +66,8 @@ export const IconGenerator = withTheme((props) => {
             return <LocalPharmacyIcon style={{color:props.theme.palette.primary.color }} />
         case "outpatients":
             return <TodayIcon style={{color:props.theme.palette.primary.color }} />
+        case "shoe_shop":
+            return <DirectionsRun style={{color:props.theme.palette.primary.color }} />
         case "biotech":
             return <BiotechIcon fill={props.theme.palette.primary.color} />
         case "info":

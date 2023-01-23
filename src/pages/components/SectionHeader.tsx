@@ -16,8 +16,7 @@ interface SectionHeaderProps {
 }
 
 const IconHolder = styled.div`
-    padding-right:1rem;
-    padding-left:1rem;
+    padding:0.7rem 1rem;
 `;
 
 const TypographyStyled = styled(Typography)`
@@ -36,6 +35,8 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallbac
                 return <IconGenerator type="pharmacy" />
             case "outpatients":
                 return <IconGenerator type="outpatients" />
+            case "shoe_shop":
+                return <IconGenerator type="shoe_shop" />
             default:
                 return null;
         }
