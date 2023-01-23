@@ -83,7 +83,7 @@ function Patient(props) {
         if(parameters.typeTest === "social" && survey.category === types.CATEGORY_DEPARTMENT_SOCIAL){
             return true;
         }
-        if(!parameters.typeTest && MEDICAL_SURVEYS.includes(survey.type)){
+        if(!parameters.typeTest && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
             return true;
         }
         if(parameters.typeTest === "images" && survey.type === types.TYPE_IMAGE_SURVEY){
@@ -107,8 +107,9 @@ function Patient(props) {
     }) : [];
 
     let filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
-        const survey = props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === rec.uuidSurvey);
-        return typesCurrentSurvey.includes(survey.type)
+        return currentSurveys.find((sur) => sur.uuid === rec.uuidSurvey) !== undefined;
+        // const survey = props.investigations.currentInvestigation.surveys.find(sur => currentSurveys sur.uuid === rec.uuidSurvey);
+        // return typesCurrentSurvey.includes(survey.type)
     }) : [];
 
     if(typeSurveySelected === TYPE_MEDICAL_SURVEY){
