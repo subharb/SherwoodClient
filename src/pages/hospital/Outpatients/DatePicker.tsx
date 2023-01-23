@@ -5,6 +5,7 @@ import { makeStyles, styled, ThemeProvider } from '@material-ui/styles';
 import { Grid, Paper } from '@mui/material';
 import React from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
+import { formatDateByLocale, getLocaleDateString } from '../../../utils';
 
 
 
@@ -68,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, blockedDates, slotsPerDay, datesOccupancy, onDateChangeCallback,  translate }) => {
+const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, blockedDates, slotsPerDay, activeLanguage,  datesOccupancy, onDateChangeCallback,  translate }) => {
     const [selectedDate, setSelectedDate] = React.useState<MaterialUiPickersDate>(null);
     const classes = useStyles();
 
@@ -106,7 +107,7 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
         <>
             <DatePicker value={selectedDate} onChange={onDateChange} shouldDisableDate={(date) => isDisabledDate(date)}
                 emptyLabel={translate("pages.hospital.outpatients.select_date").toString()} label={translate("pages.hospital.outpatients.select_date").toString()}
-                inputVariant="outlined" disablePast={true}
+                inputVariant="outlined" disablePast={true} format={formatDateByLocale(activeLanguage.code)}
                 renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
                     if(isDisabledDate(day) || !isInCurrentMonth){
                         return dayComponent;
