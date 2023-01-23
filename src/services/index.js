@@ -488,6 +488,26 @@ export const getAgendasInvestigationService = datalogger((uuidInvestigation) => 
     });
 });
 
+export const makeAppointmentService = datalogger((uuidInvestigation, uuidAgenda, uuidPatient, date) => {
+    const postObj = {
+        uuidPatient,
+        timestamp: date.getTime(),
+        type: 0
+    }
+    return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/appointment/agenda/"+uuidAgenda, postObj, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+});
 
 
 export const getDepartmentsInstitutionService = datalogger((uuidInvestigation) => {

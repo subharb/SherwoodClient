@@ -39,9 +39,18 @@ export interface IAgenda{
     turn: number[][],
 }
 
+export interface IRequestAppointment{
+    status:number,
+    type:number,
+}
+
 export interface IAppointment{
+    id:number,
     uuid:string,
     startDateTime:number,
+    patient:IPatient,
+    order:number,
+    requestAppointment:IRequestAppointment,
     type:number,//0 first visit, 1 follow up
 }
 
@@ -59,7 +68,7 @@ export interface IDepartmentServer extends IDepartment{
 export interface IPersonalData{
     name: string,
     surnames: string,
-    birthdate: string,
+    birthdate: Date,
     sex: string,
     health_id ?:string
 }
@@ -81,7 +90,7 @@ export interface PersonalData{
     email ?: string,
     phone ?: string,
     surnames ?: string,
-    birthdate ?: string,
+    birthdate ?: Date,
     health_id?:string,
     sex:string,   
 }

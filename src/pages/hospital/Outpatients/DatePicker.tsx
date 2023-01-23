@@ -12,6 +12,7 @@ interface AppointmentDatePickerProps extends LocalizeContextProps{
     availableDaysWeek:string[];
     blockedDates:number[],
     slotsPerDay:number,
+    onDateChangeCallback: (date:MaterialUiPickersDate) => void;
     datesOccupancy:{[date:string]:number}
 }
 
@@ -67,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, blockedDates, slotsPerDay, datesOccupancy, translate }) => {
+const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, blockedDates, slotsPerDay, datesOccupancy, onDateChangeCallback,  translate }) => {
     const [selectedDate, setSelectedDate] = React.useState<MaterialUiPickersDate>(null);
     const classes = useStyles();
 
@@ -96,10 +97,15 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
                     return isAnOfficeDay || isABlockDate;
     }
 
+    function onDateChange(date:MaterialUiPickersDate){
+        setSelectedDate(date);
+        onDateChangeCallback(date);
+    }
+
     return (
         <>
-            <DatePicker value={selectedDate} onChange={setSelectedDate} shouldDisableDate={(date) => isDisabledDate(date)}
-                emptyLabel={translate("pages.hospital.outpatients.select_date").toString()} label={selectedDate && translate("pages.hospital.outpatients.select_date").toString()}
+            <DatePicker value={selectedDate} onChange={onDateChange} shouldDisableDate={(date) => isDisabledDate(date)}
+                emptyLabel={translate("pages.hospital.outpatients.select_date").toString()} label={translate("pages.hospital.outpatients.select_date").toString()}
                 inputVariant="outlined" disablePast={true}
                 renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
                     if(isDisabledDate(day) || !isInCurrentMonth){

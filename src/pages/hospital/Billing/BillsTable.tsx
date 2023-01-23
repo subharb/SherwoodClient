@@ -14,7 +14,17 @@ type BillsTableProps = {
 
 const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, currency, makeActionBillCallBack }) => {
     const rows = bills.map((bill) => {
-        const patient = patients.sort((patA, patB) => patB.id - patA.id).find((patient) => patient.id === bill.patientInvestigation.id);
+        // if(!bill.patientInvestigation){
+        //     console.log("Patient not found for bill: ", bill);    
+        //     return {
+        //         "id" : bill.id,
+        //         "patient" : "error - "+bill.billItems[0].concept,
+        //         "total" : 0,
+        //         "totalPending" : 0,
+        //         "dateCreation" : 0
+        //     }
+        // }
+        const patient = patients.find((patient) => patient.id === bill.patientInvestigation.id);
         return {
             "id" : bill.id,
             "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 

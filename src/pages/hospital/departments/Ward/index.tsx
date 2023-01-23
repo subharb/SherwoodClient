@@ -37,6 +37,11 @@ export enum WardModes {
     View = "view"
 }
 
+export const BedButtonModes = {
+    ...WardModes,
+    Consult : "Consult"
+};
+
 const BED_FORM = {
     "id" : {
         required : true,
@@ -348,7 +353,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                 buttonBed = <BedButtonAssignBed name={bed.name} 
                                 patient={personalData}
                                 active={bed.active} 
-                                hasStay={hasStay}
+                                showPersonalData={hasStay}
                                 stayDays={stayDays}
                                 gender={sex} 
                                 onClickCallBack={() => assignBedPatient(bed)}
@@ -361,7 +366,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                             /> 
             break;
             case WardModes.View:
-                buttonBed = <BedButtonViewPatient patient={personalData} gender={gender} hasStay={hasStay}
+                buttonBed = <BedButtonViewPatient patient={personalData} gender={gender} showPersonalData={hasStay}
                                 active={bed.active} name={bed.name} stayDays={stayDays} age={ageYears}
                                 onClickCallBack={(  currentPatient && viewCallBack) ? () => viewCallBack(currentPatient.uuid) : undefined}
                             />

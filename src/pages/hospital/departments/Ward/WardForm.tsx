@@ -18,6 +18,7 @@ export enum WardFormModes {
     Edit = "edit",
     Select = "select"
 }
+
 interface Props {
     name:string,
     beds:{

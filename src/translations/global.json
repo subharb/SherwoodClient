@@ -457,7 +457,19 @@
             "outpatients" : {
                 "title" : ["Outpatients", "Consultas externas", "Consultations externes"],
                 "select_date" : ["Select date", "Seleccione fecha", "Sélectionnez la date"],
-                "confirm" : ["Do you wish to make an appointment for this patient?", "¿Desea hacer una cita para este paciente?", "Voulez-vous prendre rendez-vous pour ce patient?"]
+                "confirm" : ["Do you wish to make an appointment for this patient?", "¿Desea hacer una cita para este paciente?", "Voulez-vous prendre rendez-vous pour ce patient?"],
+                "checked_in_patients" : ["Checked in patients", "Pacientes en consulta", "Patients en consultation"],
+                "not_confirmed_patients" : ["Not confirmed patients", "Pacientes no confirmados", "Patients non confirmés"],
+                "no_appointments" : ["No appointments for this day", "No hay citas para este día", "Pas de rendez-vous pour ce jour"],
+                "appointment" : {
+                    "title" : ["Making appointment: ", "Haciendo cita: ", "Prendre rendez-vous: "],
+                    "error" : {
+                        "date_time" : ["Functionality not implemented yet"],
+                        "full_agenda" : ["The agenda is full for this day, please select another day", "La agenda está llena para este día, por favor seleccione otro día", "L'agenda est pleine pour ce jour, s'il vous plaît sélectionnez un autre jour"],
+                        "date_blocked" : ["The date selected is blocked, please select another day", "La fecha seleccionada está bloqueada, por favor seleccione otro día", "La date sélectionnée est bloquée, s'il vous plaît sélectionnez un autre jour"],
+                        "week_day_not_available" : ["The week day selected is not available, please select another day", "El día de la semana seleccionado no está disponible, por favor seleccione otro día", "Le jour de la semaine sélectionnée n'est pas disponible, s'il vous plaît sélectionnez un autre jour"]
+                    }
+                }
             },
             "services" : {
                 "description" : ["Manage your hospital facilities by adding or deleting services.", "Gestione sus instalaciones añadiendo o eliminando servicios.", "Gérez vos installations en ajoutant ou supprimant des services"],

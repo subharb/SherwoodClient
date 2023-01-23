@@ -4,6 +4,7 @@ import HomeSchedule from '../../../pages/hospital/HomeSchedule'
 import ProviderSherwood from '../../../providerSherwood';
 
 import {FormAppointmentCore} from '../../../pages/hospital/Outpatients/FormAppointment';
+import Outpatients from '../../../pages/hospital/Outpatients';
 
 export default {
   title: 'Hospital/Outpatients',
@@ -21,6 +22,7 @@ export default {
 };
 
 const Template = (args) => <FormAppointmentCore {...args} />; 
+const TemplateOutpatients = (args) => <Outpatients {...args} />; 
 
 export const AppointmentFormNoDepartments = Template.bind({});
 AppointmentFormNoDepartments.args = {
@@ -43,4 +45,8 @@ AppointmentFormNoDepartments.args = {
         blockedDates:[1674112966190],
         turn:[[9,0], [14,30]]
     }]
+};
+
+export const OutpatientsHome = TemplateOutpatients.bind({});
+OutpatientsHome.args = {
 };

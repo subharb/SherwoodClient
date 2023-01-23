@@ -25,7 +25,7 @@ import TabsSherwood from '../../components/general/TabsSherwood';
 import ICT from '../../components/general/SmartFields/ICT';
 import { searchPatientByDiagnosis } from '../../services';
 import styled from 'styled-components';
-import FormAppointment from './Outpatients/FormAppointment';
+import { FormMakeAppointment } from './Outpatients/FormAppointment';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -208,7 +208,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
             return (
                 <Modal key="modal" open={actionPatient || patientAppointment || patientHospitalized} 
                     
-                    title={actionPatient ? <Translate id={`pages.hospital.${actionPatient.action}.confirm`}/> : <Translate id="hospital.inpatients.choose-ward" />} 
+                    title={actionPatient ? <Translate id={`pages.hospital.${actionPatient.action}.confirm`}/> : patientHospitalized ? <Translate id="pages.hospital.inpatients.choose-ward" /> : <Translate id="pages.hospital.outpatients.title" />} 
                     closeModal={resetModal} >
                         {
                             (actionPatient)&&
@@ -256,7 +256,8 @@ export const SearchPatientsComponent = withLocalize((props) => {
                         }
                         {
                             patientAppointment &&
-                            <FormAppointment uuidPatient={patientAppointment.uuid} makeAppointmentAction={makeAppointmentAction}/>
+                            <FormMakeAppointment uuidInvestigation={props.investigation.uuid}  uuidPatient={patientAppointment.uuid} 
+                                makeAppointmentAction={makeAppointmentAction} appointmentMadeCallback={resetModal} />
                         }
                         
                 </Modal>

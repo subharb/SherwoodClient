@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
+import DateFnsUtils from "@date-io/date-fns";
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchUser } from "../services/authService";
 import { decryptData, encryptData, getCurrentResearcherUuid } from '../utils';
-import { useQuery } from 'react-query'
+import AppointmentDatePicker from '../pages/hospital/Outpatients/DatePicker';
 import { SIGN_IN_ROUTE } from '../routes';
 import { FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
 import { Translate } from 'react-localize-redux';
@@ -17,6 +17,8 @@ import { INITIAL_SELECT } from '../components/general/SmartFields';
 import { IRequest } from '../pages/hospital/Service/types';
 import { fetchProfileInfo } from '../redux/actions/profileActions';
 import Loader from '../components/Loader';
+import SelectField from '../components/general/SelectField';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 export interface SnackbarType{
     show: boolean;
@@ -28,7 +30,11 @@ export interface SnackbarType{
 export function useSnackBarState(){
     const [showSnackbar, setShowSnackbar] = useState<{ show: boolean; message?: string; severity?: Color; }>({show : false});
 
-    return [showSnackbar, setShowSnackbar] as const;
+    function handleCloseSnackbar(){
+        setShowSnackbar({show:false});
+    }
+
+    return [showSnackbar, setShowSnackbar, handleCloseSnackbar] as const;
 }
 
 export function useRouter(initValue:any){
@@ -56,6 +62,7 @@ export function useProfileInfo(){
 
     return { profile, loadingProfile }
 }
+
 
 export function useAgendas(){
     const investigations= useSelector((state:any) => state.investigations);
@@ -256,7 +263,7 @@ export function usePrevious(value:any){
     useEffect(() => {
       ref.current = value;
     });
-    return ref.current;
+    return ref.current as any;
 }
 
 export function useOffline(){
