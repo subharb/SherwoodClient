@@ -144,7 +144,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                         </Grid>
                     }
                     {
-                        isResearcherShoe && categorySurveys.includes(CATEGORY_DEPARTMENT_SHOE) && 
+                        isResearcherShoe && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => shoeCallBack()} >
                                 <img src={categorySurveySelected === CATEGORY_DEPARTMENT_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
