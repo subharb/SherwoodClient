@@ -484,6 +484,8 @@
                     "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
                     "show" : ["Show", "Mostrar", "Montrer"]
                 },
+                "no_permissions" : ["You don't have permissions to make appointments", "No tiene permisos para hacer citas", "Vous n'avez pas les autorisations pour prendre rendez-vous"],
+                "checkin_success" : ["Check in succeded", "Check in realizado correctamente", "Check in réussi"],
                 "appointment" : {
                     "title" : ["Making appointment: ", "Haciendo cita: ", "Prendre rendez-vous: "],
                     "error" : {

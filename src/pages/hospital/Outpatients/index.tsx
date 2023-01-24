@@ -1,7 +1,7 @@
 import { Grid, Paper, Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import React, { useEffect } from 'react';
-import { Translate } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { connect, useDispatch } from 'react-redux';
 import { BedButtonViewPatient, ButtonPatient } from '../../../components/general/BedButton';
 import { ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
@@ -17,11 +17,11 @@ import { RequestStatus } from '../Service/types';
 import { FormConsultAppointment } from './FormAppointment';
 import {useHistory, useParams} from 'react-router-dom';
 
-interface OutpatientsProps {
+interface OutpatientsProps extends LocalizeContextProps {
     investigations:any
 }
 
-const Outpatients: React.FC<OutpatientsProps> = ({ investigations }) => {
+const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) => {
     const [edit, setEdit] = React.useState(false);
     const [currentAppointments, setCurrentAppointments] = React.useState<IAppointment[]>([]);
     const [loadingAppointments, setLoadingAppointments] = React.useState(false);
@@ -149,14 +149,14 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations }) => {
                 if(indexAppointment !== -1){
                     currentAppointments[indexAppointment] = response.appointment;
                 }
-                setShowSnackbar({show:true, message:"Se ha confirmado el checkin del paciente", severity:"success"});
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.checkin_success", severity:"success"});
                 setLoadingSingleAppointment(false);
                 resetModal();
             })
             .catch(err => {
                 let message;
                 if(err.response.status === 401){
-                    message = "No tiene permisos para realizar esta acción";
+                    message = "pages.hospital.outpatients.no_permissions";
                 }
                 setShowSnackbar({show:true, message:message, severity:"error"});
                 setLoadingSingleAppointment(false);
@@ -175,7 +175,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations }) => {
             if(patient){
                 return (
                     <Modal key="modal" open={showModal} 
-                            title="Desea hacer checkin al paciente?"
+                            title={translate("pages.hospital.outpatients.confirm")}
                             closeModal={resetModal} >
                                 {
                                     (selectedAppointment) &&
@@ -290,4 +290,4 @@ const mapStateToProps = (state:any) => {
 	}
 }
 
-export default connect(mapStateToProps, null)(Outpatients);
+export default withLocalize(connect(mapStateToProps, null)(Outpatients));
