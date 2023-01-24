@@ -110,28 +110,28 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
         }
         const appointmentsPending = currentAppointments.filter((appointment) => [RequestStatus.PENDING_APPROVAL, RequestStatus.PENDING_PAYMENT].includes(appointment.requestAppointment.status) );
         if(appointmentsPending.length > 0){
-        appointmentsComponent.push( 
-            <>
-            <Grid item xs={12}>
-                <Typography variant="h6" component="h6" align="left"><Translate id="pages.hospital.outpatients.not_confirmed_patients" /></Typography>
-            </Grid>
-            <Grid container item xs={12}>
-                {
-                    appointmentsPending.map((appointment, index) => {
-                        const patient:IPatient = investigations.currentInvestigation.patientsPersonalData.find((pat:IPatient) => pat.uuid === appointment.patient.uuid);
-                        if(patient){
-                            return (
-                                <ButtonPatient patient={patient.personalData} 
-                                    onSelectPatient={() =>  clickOnAppointment(appointment.id)} checkMark={false} showPersonalData={true}
-                                    moneyIcon={appointment.requestAppointment.status === RequestStatus.PENDING_PAYMENT}
-                                    age={30}  active={appointment.requestAppointment.status === RequestStatus.ACCEPTED} 
-                                    gender={patient.personalData.sex} />
-                            ) 
-                        }
-                    })
-                }
-            </Grid>
-            </>)
+            appointmentsComponent.push( 
+                <>
+                <Grid item xs={12}>
+                    <Typography variant="h6" component="h6" align="left"><Translate id="pages.hospital.outpatients.not_confirmed_patients" /></Typography>
+                </Grid>
+                <Grid container item xs={12}>
+                    {
+                        appointmentsPending.map((appointment, index) => {
+                            const patient:IPatient = investigations.currentInvestigation.patientsPersonalData.find((pat:IPatient) => pat.uuid === appointment.patient.uuid);
+                            if(patient){
+                                return (
+                                    <ButtonPatient patient={patient.personalData} 
+                                        onSelectPatient={() =>  clickOnAppointment(appointment.id)} checkMark={false} showPersonalData={true}
+                                        moneyIcon={appointment.requestAppointment.status === RequestStatus.PENDING_PAYMENT}
+                                        age={30}  active={appointment.requestAppointment.status === RequestStatus.ACCEPTED} 
+                                        gender={patient.personalData.sex} />
+                                ) 
+                            }
+                        })
+                    }
+                </Grid>
+                </>)
         }
         return(
             <Grid container spacing={2}>

@@ -476,6 +476,7 @@
                 "checked_in_patients" : ["Checked in patients", "Pacientes en consulta", "Patients en consultation"],
                 "not_confirmed_patients" : ["Not confirmed patients", "Pacientes no confirmados", "Patients non confirmés"],
                 "no_appointments" : ["No appointments for this day", "No hay citas para este día", "Pas de rendez-vous pour ce jour"],
+                "no_appointments_patient" : ["No appointments for this patient", "No hay citas para este paciente", "Pas de rendez-vous pour ce patient"],
                 "table_patient_appointments" : {
                     "department" : ["Department", "Departamento", "Département"],
                     "doctor" : ["Doctor", "Doctor", "Docteur"],

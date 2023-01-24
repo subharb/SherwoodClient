@@ -4,6 +4,7 @@ import { Remove, RemoveCircleOutline } from '@material-ui/icons';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
+import { ButtonAdd } from '../../../components/general/mini_components';
 import PatientInfo from '../../../components/PatientInfo';
 import { IAppointment } from '../../../constants/types';
 import { getPatientsAppoinmentsService } from '../../../services/agenda';
@@ -96,7 +97,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
             if(patientsAppointments.length === 0){
                 return (
                     <Grid item xs={12}>
-                        <p>No tiene citas</p>
+                        <p><Translate id="pages.hospital.outpatients.no_appointments_patient" /></p>
                     </Grid>
                 );
             }
@@ -135,6 +136,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
             <Grid item xs={12}>
                 <PatientInfo uuidPatient={uuidPatient} />
             </Grid>
+            <ButtonAdd onClick={() => setCreateAppointment(true)} />
             {
                 renderAppointments()
             }
