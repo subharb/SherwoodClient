@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
 
@@ -19,9 +19,11 @@ import { RequestStatus, ServiceType } from './types';
 import RequestTable, { serviceToColor } from './RequestTable';
 import { fetchProfileInfo } from '../../../redux/actions/profileActions';
 import RequestSingle from './RequestSingle';
-import { TYPE_REQUEST_LAB } from '../../../constants';
+import { TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_REQUEST_LAB } from '../../../constants';
 import SectionHeader from '../../components/SectionHeader';
 import { serviceTypeToTranslation } from '../../../utils';
+import { FUNCTIONALITY } from '../../../constants/types';
+import ServiceRecords from './ServiceRecords';
 
 
 
@@ -38,7 +40,10 @@ export function TestsHomeComponent(props) {
     const idRequest = props.parameters.idRequest;
    
     const dispatch = useDispatch(); 
-    
+    const showRequests = useMemo(() => {
+        return props.investigations.currentInvestigation ? (([ServiceType.IMAGING, ServiceType.LABORATORY].includes(props.type) && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.REQUESTS))
+        ||(props.type === ServiceType.SHOE && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.SHOE_SHOP))) : false;
+    }, [props.investigations]);
 
 
     useEffect(() => {
@@ -78,31 +83,38 @@ export function TestsHomeComponent(props) {
         
     }
     function renderCore(){
-        if(edit){
-            return (
-                <EditServices serviceType={props.type} uuidInvestigation={props.investigations.currentInvestigation.uuid} 
-                    surveys={props.investigations.currentInvestigation.surveys} />
-            );
-        }
-        else if(idRequest){
-            return (
-                <RequestSingle idRequest={idRequest} permissions={props.investigations.currentInvestigation.permissions}
-                    uuidInvestigation={props.investigations.currentInvestigation.uuid} researcher={props.researcher}
-                    country={props.investigations.currentInvestigation.country} requestSentCallBack={(typeRequest) => goToHomeTest(typeRequest)}
-                    surveys={props.investigations.currentInvestigation.surveys}/>
-            )
+        
+        if(showRequests){
+            if(edit){
+                return (
+                    <EditServices serviceType={props.type} uuidInvestigation={props.investigations.currentInvestigation.uuid} 
+                        surveys={props.investigations.currentInvestigation.surveys} />
+                );
+            }
+            else if(idRequest){
+                return (
+                    <RequestSingle idRequest={idRequest} permissions={props.investigations.currentInvestigation.permissions}
+                        uuidInvestigation={props.investigations.currentInvestigation.uuid} researcher={props.researcher}
+                        country={props.investigations.currentInvestigation.country} requestSentCallBack={(typeRequest) => goToHomeTest(typeRequest)}
+                        surveys={props.investigations.currentInvestigation.surveys}/>
+                )
+            }
+            else{
+                return <RequestTable serviceType={props.type} showActions={true} fillRequest={true} callBackRequestSelected={(request) => accessRequest(request)}
+                            encryptionData={{
+                                encryptedKeyUsed : props.investigations.currentInvestigation.encryptedKeyUsed,
+                                keyResearcherInvestigation: props.investigations.currentInvestigation.keyResearcherInvestigation,
+                                permissions: props.investigations.currentInvestigation.permissions,
+                                personalFields: props.investigations.currentInvestigation.personalFields 
+                            }}
+                            surveys={props.investigations.currentInvestigation.surveys}
+                            uuidInvestigation={props.investigations.currentInvestigation.uuid}  />
+    
+            }
         }
         else{
-            return <RequestTable serviceType={props.type} showActions={true} fillRequest={true} callBackRequestSelected={(request) => accessRequest(request)}
-                        encryptionData={{
-                            encryptedKeyUsed : props.investigations.currentInvestigation.encryptedKeyUsed,
-                            keyResearcherInvestigation: props.investigations.currentInvestigation.keyResearcherInvestigation,
-                            permissions: props.investigations.currentInvestigation.permissions,
-                            personalFields: props.investigations.currentInvestigation.personalFields 
-                        }}
-                        surveys={props.investigations.currentInvestigation.surveys}
-                        uuidInvestigation={props.investigations.currentInvestigation.uuid}  />
-
+            return <ServiceRecords submissions={props.submissions} patients={props.patients} 
+                        investigations={props.investigations} type={props.type === ServiceType.IMAGING ? TYPE_IMAGE_SURVEY : TYPE_LAB_SURVEY} />
         }
         
     }
@@ -113,7 +125,7 @@ export function TestsHomeComponent(props) {
     return (
         <React.Fragment>
             <Grid container spacing={3} >
-                <SectionHeader section={serviceTypeToTranslation(props.type)} edit={edit} editCallback={toogleEditLab} />
+                <SectionHeader section={serviceTypeToTranslation(props.type)} edit={edit} editCallback={showRequests ? toogleEditLab : null} />
                 <Grid item xs={12}>
                     {
                         renderCore()

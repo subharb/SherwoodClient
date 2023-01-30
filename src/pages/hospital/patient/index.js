@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { connect } from 'react-redux';
 import * as types from "../../../constants";
 import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
@@ -106,11 +106,21 @@ function Patient(props) {
         return survey.category;
     }) : [];
 
-    let filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
-        return currentSurveys.find((sur) => sur.uuid === rec.uuidSurvey) !== undefined;
-        // const survey = props.investigations.currentInvestigation.surveys.find(sur => currentSurveys sur.uuid === rec.uuidSurvey);
-        // return typesCurrentSurvey.includes(survey.type)
-    }) : [];
+    let filteredRecords = useMemo(() => {
+        if(idSubmission && surveyRecords){
+            const currentSub = surveyRecords.find((rec) => rec.id === idSubmission);
+            if(currentSub){
+                return surveyRecords.filter(rec => {
+                    return props.investigations.currentInvestigation.surveys.find((sur) => sur.uuid === currentSub.uuidSurvey) !== undefined;
+                })
+            }
+        }
+        return surveyRecords ? surveyRecords.filter(rec => {
+            return currentSurveys.find((sur) => sur.uuid === rec.uuidSurvey) !== undefined;
+            // const survey = props.investigations.currentInvestigation.surveys.find(sur => currentSurveys sur.uuid === rec.uuidSurvey);
+            // return typesCurrentSurvey.includes(survey.type)
+        }) : [];
+    }, [currentSurveys, surveyRecords, idSubmission]);
 
     if(typeSurveySelected === TYPE_MEDICAL_SURVEY){
         staysPatient.forEach((stay) => {

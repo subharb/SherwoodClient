@@ -103,7 +103,10 @@ export default function reducer(state = initialState, action){
             newState.nUpdatedRegisters++ 
             
             return newState;
-
+        case types.SAVE_SUBMISSIONS_PATIENT_LOADING:
+            newState.loading = true;
+            newState.error = initialState.error;
+            return newState;
         case types.SAVE_SUBMISSIONS_PATIENT_ERROR:
             newState.loading = initialState.loading;
             newState.error = true;
