@@ -26,7 +26,7 @@ import { fetchProfileInfo } from '../../../redux/actions/profileActions';
 import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
-import { PERMISSION } from '../../../constants/types';
+import { FUNCTIONALITY, PERMISSION } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
 import RequestCombo from '../Service/RequestCombo';
 import RequestTable from '../Service/RequestTable';
@@ -153,7 +153,9 @@ function Patient(props) {
         else{
             let nextUrl;
             
-            if(["images", "lab", "shoe"].includes(parameters.typeTest)){
+            
+            if((["images", "lab"].includes(parameters.typeTest) && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.REQUESTS)) ||
+                (parameters.typeTest === 'shoe' && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.SHOE_SHOP))){
                 nextUrl = HOSPITAL_PATIENT_MAKE_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", parameters.typeTest);
             }
             else{
@@ -316,7 +318,8 @@ function Patient(props) {
                         submissions={filteredRecords.filter((record) => record.type !== "stay")} surveys={props.investigations.currentInvestigation.surveys} />
                 </>)
         }
-        else if (types.TYPE_SERVICE_SURVEY.includes(typeSurveySelected)){
+        else if ((types.TYPE_REQUEST_FUNC.includes(typeSurveySelected) &&  props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.REQUESTS))
+            || (typeSurveySelected === types.TYPE_SHOE_SURVEY && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.SHOE_SHOP))){
             const serviceType = typeSurveySelected === types.TYPE_LAB_SURVEY ? 0 : typeSurveySelected === types.TYPE_IMAGE_SURVEY ? 1 : 3;
             if(HOSPITAL_PATIENT_MAKE_TESTS === props.match.path){
                 const units = getUnitsResearcher(props.profile.info.uuid, researchers);
