@@ -642,7 +642,7 @@ function Patient(props) {
                             setDischargeConfirm(true);
                         }} data-testid="select-hospital" >Alta Hospitalaria</ButtonGrey>
                     }
-                </Modal>
+                </Modal> 
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
                         typeSurveySelected={typeSurveySelected}
