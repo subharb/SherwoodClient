@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { connect } from 'react-redux';
 import * as types from "../../../constants";
 import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
@@ -26,11 +26,10 @@ import { fetchProfileInfo } from '../../../redux/actions/profileActions';
 import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
-
+import { FUNCTIONALITY } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
-import RequestCombo from '../Service/RequestCombo';
 import RequestTable from '../Service/RequestTable';
-import RequestInfo, { RequestInfoWithFetch } from '../Service/RequestInfo';
+import { RequestInfoWithFetch } from '../Service/RequestInfo';
 import RequestForm from '../Service/RequestForm';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
@@ -107,11 +106,21 @@ function Patient(props) {
         return survey.category;
     }) : [];
 
-    let filteredRecords = surveyRecords ? surveyRecords.filter(rec => {
-        return currentSurveys.find((sur) => sur.uuid === rec.uuidSurvey) !== undefined;
-        // const survey = props.investigations.currentInvestigation.surveys.find(sur => currentSurveys sur.uuid === rec.uuidSurvey);
-        // return typesCurrentSurvey.includes(survey.type)
-    }) : [];
+    let filteredRecords = useMemo(() => {
+        if(idSubmission && surveyRecords){
+            const currentSub = surveyRecords.find((rec) => rec.id === idSubmission);
+            if(currentSub){
+                return surveyRecords.filter(rec => {
+                    return props.investigations.currentInvestigation.surveys.find((sur) => sur.uuid === currentSub.uuidSurvey) !== undefined;
+                })
+            }
+        }
+        return surveyRecords ? surveyRecords.filter(rec => {
+            return currentSurveys.find((sur) => sur.uuid === rec.uuidSurvey) !== undefined;
+            // const survey = props.investigations.currentInvestigation.surveys.find(sur => currentSurveys sur.uuid === rec.uuidSurvey);
+            // return typesCurrentSurvey.includes(survey.type)
+        }) : [];
+    }, [currentSurveys, surveyRecords, idSubmission]);
 
     if(typeSurveySelected === TYPE_MEDICAL_SURVEY){
         staysPatient.forEach((stay) => {
@@ -154,7 +163,9 @@ function Patient(props) {
         else{
             let nextUrl;
             
-            if(["images", "lab", "shoe"].includes(parameters.typeTest)){
+            
+            if((["images", "lab"].includes(parameters.typeTest) && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.REQUESTS)) ||
+                (parameters.typeTest === 'shoe' && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.SHOE_SHOP))){
                 nextUrl = HOSPITAL_PATIENT_MAKE_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", parameters.typeTest);
             }
             else{
@@ -317,7 +328,8 @@ function Patient(props) {
                         submissions={filteredRecords.filter((record) => record.type !== "stay")} surveys={props.investigations.currentInvestigation.surveys} />
                 </>)
         }
-        else if (types.TYPE_SERVICE_SURVEY.includes(typeSurveySelected)){
+        else if ((types.TYPE_REQUEST_FUNC.includes(typeSurveySelected) &&  props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.REQUESTS))
+            || (typeSurveySelected === types.TYPE_SHOE_SURVEY && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.SHOE_SHOP))){
             const serviceType = typeSurveySelected === types.TYPE_LAB_SURVEY ? 0 : typeSurveySelected === types.TYPE_IMAGE_SURVEY ? 1 : 3;
             if(HOSPITAL_PATIENT_MAKE_TESTS === props.match.path){
                 const units = getUnitsResearcher(props.profile.info.uuid, researchers);
@@ -630,7 +642,7 @@ function Patient(props) {
                             setDischargeConfirm(true);
                         }} data-testid="select-hospital" >Alta Hospitalaria</ButtonGrey>
                     }
-                </Modal>
+                </Modal> 
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
                         typeSurveySelected={typeSurveySelected}

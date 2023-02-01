@@ -18,7 +18,7 @@ export const HeaderDocument:React.FC<Props> = (props) => {
         return(
             <Grid container xs={12} style={{paddingBottom:'2rem'}}>
                 <Grid xs={6} item style={{textAlign:'center'}}>
-                    <img width="200" src={props.logoBlob} alt={props.hospitalName} />
+                    <img width="200" src={props.logoBlob} alt={props.hospitalName}/>
                 </Grid>    
                 <Grid xs={6} style={{textAlign:'right'}}>
                     <Grid>
