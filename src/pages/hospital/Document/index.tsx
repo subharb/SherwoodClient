@@ -6,6 +6,7 @@ import { jsPDF } from 'jspdf';
 import { HeaderDocument } from "./header";
 import SaveIcon from '@material-ui/icons/Save';
 import { BillingInfo } from "../Billing/types";
+import domtoimage from 'dom-to-image';
 
 interface Props extends Omit<BillingInfo, 'id' | 'billables'>   {
     size:"A4" | "ticket",
@@ -37,10 +38,12 @@ export const Document:React.FC<Props> = (props) => {
             // window.open(data);
             // }
 
+            const data = await domtoimage.toPng(element);
             const canvas = await html2canvas(element, {
                 useCORS: true
             });
-            const data = canvas.toDataURL('image/png');
+            console.log(canvas.outerHTML);
+            // const data = canvas.toDataURL('image/png');
 
             const pdf = new jsPDF();
             const imgProperties = pdf.getImageProperties(data);
@@ -69,9 +72,9 @@ export const Document:React.FC<Props> = (props) => {
         return(
             <div style={{overflow:'scroll'}}>
                 
-                    <Grid item xs={12} style={{textAlign:'right'}}>
-                        <button onClick={savePDF}><SaveIcon /></button>
-                    </Grid>
+                <Grid item xs={12} style={{textAlign:'right'}}>
+                    <button onClick={savePDF}><SaveIcon /></button>
+                </Grid>
                 <Grid container xs={12}>
                     <div id="print" ref={printRef} style={{width:'700px', padding:'1rem'}}>
                         <HeaderDocument size={props.size} hospitalName={props.hospitalName} logoBlob={props.logoBlob} currency={props.currency}
