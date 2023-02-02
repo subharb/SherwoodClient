@@ -69,7 +69,7 @@ export const IconGenerator = withTheme((props) => {
         case "shoe_shop":
             return <DirectionsRun style={{color:props.theme.palette.primary.color }} />
         case "biotech":
-            return <BiotechIcon fill={props.theme.palette.primary.color} />
+            return <BiotechIcon fill={props.theme.palette.primary.color} fontSize={props.size ? props.size : "small"}  />
         case "info":
             return <InfoIcon style={{color:props.theme.buttonContinue.primary.color }}  />
         default:

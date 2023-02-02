@@ -15,8 +15,13 @@ interface SectionHeaderProps {
     infoCallback?:()=>void,
 }
 
+const SectionContainer = styled.div`
+    display:flex;
+    padding:1rem;
+`;
+
 const IconHolder = styled.div`
-    padding:0.5rem 0 1rem 1rem;
+    xpadding:0.5rem 0 1rem 1rem;
 `;
 
 const TypographyStyled = styled(Typography)`
@@ -43,12 +48,14 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallbac
         }
     }
     return (
-        <>
-        <IconHolder>
-            {
-                renderIcon()
-            }
-        </IconHolder>
+        <SectionContainer>
+            
+                <IconHolder>
+                    {
+                        renderIcon()
+                    }
+                </IconHolder>
+        
         <div>
             <TypographyStyled variant="h3" gutterBottom display="inline">
                 <Translate id={`pages.hospital.${section}.title`} />
@@ -77,7 +84,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit, addCallbac
             addCallback &&
             <ButtonAdd onClick={addCallback} />
         }
-    </>
+    </SectionContainer>
     
     );
 };
