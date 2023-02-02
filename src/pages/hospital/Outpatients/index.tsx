@@ -16,6 +16,7 @@ import SectionHeader from '../../components/SectionHeader';
 import { RequestStatus } from '../Service/types';
 import { FormConsultAppointment } from './FormAppointment';
 import {useHistory, useParams} from 'react-router-dom';
+import { areSameDates } from '../../../utils';
 
 interface OutpatientsProps extends LocalizeContextProps {
     investigations:any
@@ -64,8 +65,15 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
                 }
             }
             else if(currentAppointment.requestAppointment.status === RequestStatus.PENDING_APPROVAL){
-                setSelectedAppointment(currentAppointment);
-                setShowModal(true);
+                if(areSameDates(new Date(currentAppointment.startDateTime), new Date())){
+                    setSelectedAppointment(currentAppointment);
+                    setShowModal(true);
+                }
+                else if(investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)){
+                    const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", currentAppointment.patient.uuid)
+                    console.log("Next url", nextUrl);
+                    history.push(nextUrl);
+                }
             }
         }
         
