@@ -7,7 +7,7 @@ import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Loader from '../../../components/Loader';
 import { fetchSubmissionsSurveyAction } from '../../../redux/actions/submissionsActions';
 import { HOSPITAL_PATIENT_SUBMISSION } from '../../../routes';
-import { PERMISSION } from '../../../constants/types';
+import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
 interface ServiceRecordsProps {
     submissions:any,

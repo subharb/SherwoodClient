@@ -3,7 +3,7 @@ import { DatePicker } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { makeStyles, styled, ThemeProvider } from '@material-ui/styles';
 import { Grid, Paper } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { formatDateByLocale } from '../../../utils';
 
@@ -13,6 +13,7 @@ interface AppointmentDatePickerProps extends LocalizeContextProps{
     availableDaysWeek:string[];
     blockedDates:number[],
     slotsPerDay:number,
+    autoCurrentDate?:boolean,
     onDateChangeCallback: (date:MaterialUiPickersDate) => void;
     datesOccupancy:{[date:string]:number}
 }
@@ -69,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, blockedDates, slotsPerDay, activeLanguage,  datesOccupancy, onDateChangeCallback,  translate }) => {
+const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, autoCurrentDate, blockedDates, slotsPerDay, activeLanguage,  datesOccupancy, onDateChangeCallback,  translate }) => {
     const [selectedDate, setSelectedDate] = React.useState<MaterialUiPickersDate>(null);
     const classes = useStyles();
 
@@ -103,11 +104,18 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
         onDateChangeCallback(date);
     }
 
+    useEffect(() => {
+        if(autoCurrentDate){
+            setSelectedDate(new Date());
+            onDateChangeCallback(new Date());
+        }
+    }, [])
+
     return (
         <>
             <DatePicker value={selectedDate} onChange={onDateChange} shouldDisableDate={(date) => isDisabledDate(date)}
                 emptyLabel={translate("pages.hospital.outpatients.select_date").toString()} label={translate("pages.hospital.outpatients.select_date").toString()}
-                inputVariant="outlined" disablePast={true} format={formatDateByLocale(activeLanguage.code)}
+                inputVariant="outlined" format={formatDateByLocale(activeLanguage.code)} autoOk={true}
                 renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
                     if(isDisabledDate(day) || !isInCurrentMonth){
                         return dayComponent;

@@ -184,7 +184,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
                                             {
                                                 patient.personalData.health_id &&
                                                 [
-                                                    <Translate id="investigation.create.personal_data.fields.health_id" />, ",", patient.personalData.health_id
+                                                    <Translate id="investigation.create.personal_data.fields.health_id" />, ":", patient.personalData.health_id
                                                 ]
                                             }
                                             {

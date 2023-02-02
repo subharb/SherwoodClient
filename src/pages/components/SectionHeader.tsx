@@ -16,10 +16,11 @@ interface SectionHeaderProps {
 }
 
 const IconHolder = styled.div`
-    padding:0.7rem 1rem;
+    padding:0.5rem 0 1rem 1rem;
 `;
 
 const TypographyStyled = styled(Typography)`
+    xpadding-top:2rem;
     color:${props => props.theme.palette.primary.color};
 `
 

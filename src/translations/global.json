@@ -472,7 +472,7 @@
             "outpatients" : {
                 "title" : ["Outpatients", "Consultas externas", "Consultations externes"],
                 "select_date" : ["Select date", "Seleccione fecha", "Sélectionnez la date"],
-                "confirm" : ["Do you wish to make an appointment for this patient?", "¿Desea hacer una cita para este paciente?", "Voulez-vous prendre rendez-vous pour ce patient?"],
+                "confirm" : ["Patient check-in", "Confirmar check-in", "Confirmer check-in"],
                 "checked_in_patients" : ["Checked in patients", "Pacientes en consulta", "Patients en consultation"],
                 "not_confirmed_patients" : ["Not confirmed patients", "Pacientes no confirmados", "Patients non confirmés"],
                 "no_appointments" : ["No appointments for this day", "No hay citas para este día", "Pas de rendez-vous pour ce jour"],
