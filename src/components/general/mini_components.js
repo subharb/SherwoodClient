@@ -46,7 +46,7 @@ export const IconGenerator = withTheme((props) => {
     switch(props.type){
         case "add":
             return <AddIcon style={{color:props.theme.buttonContinue.primary.background }} />
-        case "view":
+        case "view": 
             return <RemoveRedEyeIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}/>
         case "delete":
             return <DeleteIcon style={{color:"red"}} fontSize={props.size ? props.size : "small"}/>

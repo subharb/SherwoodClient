@@ -8,11 +8,11 @@ import { daysFromDate, sexStringToColor } from '../../utils';
 import { Translate } from 'react-localize-redux';
 import { CheckCircleIcon } from '@material-ui/data-grid';
 import { MonetizationOn } from '@material-ui/icons';
+import HotelIcon from '@material-ui/icons/Hotel';
 
-
-export const Container = styled("div")<{active?:boolean, genderBorder:boolean, genderColor:string}>`
-    width:8rem;
-    height:8rem;
+export const Container = styled("div")<{active?:boolean, genderColor:string}>`
+    width:10.6rem;
+    height:10rem;
     background: #FFFFFF;
     border: 2px solid #6F6C6D;
     box-sizing: border-box;
@@ -27,17 +27,22 @@ export const Container = styled("div")<{active?:boolean, genderBorder:boolean, g
     margin-top:1rem;
     padding:0.5rem;
     opacity:${props => props.active ? '1.0' : '0.7'};
-    box-shadow:${props => props.genderBorder ? props.genderColor+'  0px -0.55rem 0px inset' : 'none'};
 `;
 
-
+export const SmallTypography = styled(Typography)`
+    
+    && {
+        font-size:1rem;
+        // customise your styles here
+      }
+`;
 export const TypographyColorGender = styled(Typography)<{gender:string}>`
     color:${props => props.gender === "female" ? "#EE6658" : "#008187"}
 `;
 
 export const GridHeaderPatient = styled(Grid)<{type:string}>`
     text-align:left;
-    height:2rem;
+    xheight:2rem;
     color:#000;
     
     ${props => props.type === 'edit' && css`
@@ -129,43 +134,60 @@ const BedButton:React.FC<Props> = (props) => {
     const active = !props.active ? false : (props.mode === WardModes.AssignPatient && props.showPersonalData) ? true : (props.mode === WardModes.View && !props.showPersonalData) ? false : props.active;
     const patientName = props.patient ? props.patient.name+" "+props.patient.surnames : "" ;
     //const name = props.mode === WardModes.View && props.patient ? props.patient.name+" "+props.patient.surnames : props.name;  
-    const showIcon = !(props.patient)
+    const showIcon = props.patient;
     return (
-        <Container active={active} onClick={onClick} genderBorder={!showIcon} genderColor={sexStringToColor(props.gender)} >
+        <Container active={active} onClick={onClick} genderColor={sexStringToColor(props.gender)} >
             <Grid container xs={12}>
-                <GridHeaderPatient xs={12} type={props.mode} >
-                    <Typography variant="body2" style={{lineHeight:1}} component="div" gutterBottom>
-                        {props.name}
-                    </Typography>
-                    <Typography variant="body2" style={{lineHeight:1}} component="div" gutterBottom>
-                        {patientName}
-                    </Typography>
-                    
+                <GridHeaderPatient xs={12} type={props.mode} direction="column" >
                     {
-                        props.mode === "edit" &&
-                        <ButtonDelete onClick={(e:Event) => deleteAction(e)}  />
+                        props.name &&
+                        <div style={{display:"flex" , justifyContent:"space-between"}}>
+                            <div style={{display:"flex"}}>
+                            <SmallTypography variant="subtitle1" gutterBottom>
+                                {props.name}
+                            </SmallTypography>
+                            &nbsp;
+                            <HotelIcon/> 
+                            </div>
+                            {
+                                props.mode === "edit" &&
+                                <ButtonDelete onClick={(e:Event) => deleteAction(e)}  />
+                            }
+                        </div>
                     }
                     
+                    
+                    <Typography variant="body2" style={{lineHeight:1}} component="div" gutterBottom>
+                       {patientName}
+                    </Typography>
+                    
+                    
+                    
                 </GridHeaderPatient>
-                {
-                    (showIcon) &&
-                    <Grid xs={12} style={{textAlign:"center"}}>
-                        <IconPatient width="30" gender={props.gender} />
-                    </Grid>
-                }
-                {
-                    props.showPersonalData &&
-                    <Grid container item xs={12}>
-                        <Grid item xs={12}>
-                            <Typography variant="body2" component="div" gutterBottom style={{height:'1px', color:"darkblue"}} >
-                                {props.age} years
-                            </Typography>
+                <Grid xs={12} item container>
+                    {
+                        (showIcon) &&
+                        <Grid xs={4} style={{textAlign:"left"}}>
+                            <IconPatient width="30" gender={props.gender} />
                         </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body2" component="div" gutterBottom style={{height:'1px', color:"green"}} >
-                                {props.stayDays} <Translate id="hospital.time-unit-options.days" />
-                            </Typography>
-                        </Grid>
+                    }
+                    <Grid container item xs={8} style={{textAlign:"center"}}>
+                        { 
+                            props.age && 
+                            <Grid item xs={12}>
+                                <Typography variant="body2" component="div" gutterBottom style={{height:'1px', color:"darkblue"}} >
+                                    {props.age} years
+                                </Typography>
+                            </Grid>
+                        }
+                        {
+                            props.stayDays &&
+                            <Grid item xs={12}>
+                                <Typography variant="body2" component="div" gutterBottom style={{height:'1px', color:"green"}} >
+                                    {props.stayDays} <Translate id="hospital.time-unit-options.days" />
+                                </Typography>
+                            </Grid>
+                        }
                         {
                             props.checkMark &&
                             <Grid item xs={12}>
@@ -181,31 +203,9 @@ const BedButton:React.FC<Props> = (props) => {
                                     <MonetizationOn style={{fontSize:"1.2rem"}} />
                                 </Typography>
                             </Grid>
-                        }
+                        }   
                     </Grid>
-                }
-                {/* <Grid item xs={8} >
-                    <Grid xs={12} style={{textAlign:"center"}}>
-                        <Typography variant="body2" gutterBottom>
-                            {props.name} {props.surnames}
-                        </Typography>
-                    </Grid>
-                    <Grid xs={12} style={{textAlign:"center"}}>
-                        <Typography variant="body2" gutterBottom>
-                            {props.id}
-                        </Typography>
-                    </Grid>
-                    <Grid xs={12} style={{textAlign:"center"}}>
-                        <TypographyColorGender variant="body2" gutterBottom gender={props.gender}>
-                            {props.age}
-                        </TypographyColorGender>
-                    </Grid>
-                    <Grid xs={12} style={{textAlign:"center", color:"green"}}>
-                        <Typography variant="body2" gutterBottom>
-                            {props.stay}
-                        </Typography>
-                    </Grid>
-                </Grid> */}
+                </Grid>
             </Grid>
         </Container>
     )

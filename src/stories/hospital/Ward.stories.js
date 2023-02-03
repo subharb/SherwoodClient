@@ -54,6 +54,8 @@ BedView.args = {
     gender:"male",
     mode:"view",
     stay:3,
+    showPersonalData:true,
+    age:45,
     patient:patients_personal_data_decrypted()[0].personalData,
     onClick:() => console.log("Se hace click"),
     deleteCallBack:() => console.log("Delete!"),
