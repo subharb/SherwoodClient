@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {  useHistory } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import PropTypes from 'prop-types';
@@ -9,12 +9,12 @@ import { Box, Button, Card, CardContent, Divider as MuiDivider, Grid, IconButton
 import { connect } from 'react-redux';
 import Loader from '../../../components/Loader';
 import { Translate, withLocalize } from 'react-localize-redux';
-import { ROUTE_401, ROUTE_404 } from '../../../routes';
+import { ROUTE_401 } from '../../../routes';
 import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components/macro";
 import { yearsFromDate } from '../../../utils';
 import TimeTable from '../../dashboards/Analytics/TimeTable';
-import { getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsPatientsPerDepartment } from '../../../services';
+import { getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsOutpatients, getStatsPatientsPerDepartment } from '../../../services';
 import { spacing } from "@material-ui/system";
 import DatesSelector from '../../dashboards/Analytics/DatesSelector';
 
@@ -23,6 +23,7 @@ import HospitalStats from './HospitalStats';
 import { useDeparmentsSelector } from '../../../hooks';
 import PatientsBarChart from '../../dashboards/Analytics/PatientsBarChart';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
+import { FUNCTIONALITY } from '../../../constants/types';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -39,12 +40,16 @@ export function Analytics(props) {
 	const [filteredPatients, setFilteredPatients] = useState([]);
     const [activityPatients, setActivityPatients] = useState([]);
 	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
-    const [patientsPerDepartment, setStatsPatientsPerDepartment] = useState(null);
     const onlyDepartmentsResearcher = props.investigations.currentInvestigation && props.investigations.currentInvestigation.permissions.includes(PERMISSION.ANALYTICS_DEPARTMENT);
 	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher, true);
-
+    const [appointmentsPerDepartment, setAppointmentsPerDepartment] = useState(null);
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
 	
+    const outpatientsTotal = useMemo(() => {
+        if(appointmentsPerDepartment){
+            return Object.values(appointmentsPerDepartment).reduce((acc, curr) => acc + curr, 0);
+        }
+    }, appointmentsPerDepartment);
 	function changeDate(value) {
 		console.log("Date Changed!", value);
 		let tempStartDate = null;
@@ -213,6 +218,10 @@ export function Analytics(props) {
                             .then(response => {
                                 setActivityPatients(response.stats);
                             })
+            getStatsOutpatients(props.investigations.currentInvestigation.uuid, startDate, endDate)
+                .then(response => {
+                    setAppointmentsPerDepartment(response.stats);
+            })
 			
 		}
 
@@ -308,14 +317,33 @@ export function Analytics(props) {
                         </Grid>
                     </>
                 }
+				
+                <Grid container item spacing={1}>
+                    <Grid item xs={12} >
+                        <HospitalStats loading={loadingStatsFirstMonitoring} stats={statsFirstMonitoring} 
+                            departmentSelected={departmentSelected} />
+                    </Grid>
+                </Grid>
 				{
-					<Grid container item spacing={1}>
-						<Grid item xs={12} >
-							<HospitalStats loading={loadingStatsFirstMonitoring} stats={statsFirstMonitoring} 
-                                departmentSelected={departmentSelected} />
-						</Grid>
-					</Grid>
-				}
+                    (props.investigations.currentInvestigation && 
+                        props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && 
+                    <Grid container item spacing={1}>
+                        <DoughnutChart title={props.translate("hospital.analytics.graphs.appointments.title")} labels={Object.keys(appointmentsPerDepartment).map((uuidDepartment) => departments.find((dep) => dep.uuid === uuidDepartment).name)}
+                            table={{ title: props.translate("hospital.analytics.graphs.appointments.table-title"), columns: [props.translate("hospital.analytics.graphs.sex.count")] }}
+                            innerInfo={{ title: props.translate("hospital.analytics.graphs.appointments.title"), value: outpatientsTotal }}
+
+                            datasets={[
+                                {
+                                    data: Object.values(appointmentsPerDepartment),
+                                    percents: Object.values(appointmentsPerDepartment).map((count) => Math.round((count / outpatientsTotal) * 100)),
+                                    backgroundColor: [props.theme.palette.secondary.main, red[500]],
+                                    borderWidth: 5,
+                                    borderColor: props.theme.palette.background.paper,
+                                }
+                            ]} />
+                    </Grid>
+                }
+                
 
 			</Grid>
 		</React.Fragment>

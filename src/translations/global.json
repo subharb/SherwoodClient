@@ -222,6 +222,10 @@
                 },
                 "patients" : {
                     "title" : ["Patients visits", "Visitas de pacientes", "Visites des patients"]
+                },
+                "appointments" : {
+                    "title" : ["Appointment", "Cita", "Rendez-vous"],
+                    "table-title" : ["Department", "Departamento", "Département"]
                 }
 
             }
