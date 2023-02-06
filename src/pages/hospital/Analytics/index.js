@@ -45,11 +45,7 @@ export function Analytics(props) {
     const [appointmentsPerDepartment, setAppointmentsPerDepartment] = useState(null);
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
 	
-    const outpatientsTotal = useMemo(() => {
-        if(appointmentsPerDepartment){
-            return Object.values(appointmentsPerDepartment).reduce((acc, curr) => acc + curr, 0);
-        }
-    }, appointmentsPerDepartment);
+   
 	function changeDate(value) {
 		console.log("Date Changed!", value);
 		let tempStartDate = null;
@@ -342,6 +338,7 @@ export function Analytics(props) {
                                 }
                             ]} />
                     </Grid>
+                    <OutpatientsStats />
                 }
                 
 
