@@ -5,6 +5,9 @@ import ProviderSherwood from '../../../providerSherwood';
 
 import {FormAppointmentCore} from '../../../pages/hospital/Outpatients/FormAppointment';
 import Outpatients from '../../../pages/hospital/Outpatients';
+import EditOutpatientsLocalized from '../../../pages/hospital/Outpatients/Edit';
+import { boxes, departments, researchers } from '../../data/departmentsService';
+import { services } from '../Services/data';
 
 export default {
   title: 'Hospital/Outpatients',
@@ -23,6 +26,7 @@ export default {
 
 const Template = (args) => <FormAppointmentCore {...args} />; 
 const TemplateOutpatients = (args) => <Outpatients {...args} />; 
+const TemplateEditOutpatients = (args) => <EditOutpatientsLocalized {...args} />; 
 
 export const AppointmentFormNoDepartments = Template.bind({});
 AppointmentFormNoDepartments.args = {
@@ -48,5 +52,14 @@ AppointmentFormNoDepartments.args = {
 };
 
 export const OutpatientsHome = TemplateOutpatients.bind({});
-OutpatientsHome.args = {
+    OutpatientsHome.args = {
 };
+
+export const Edit = TemplateEditOutpatients.bind({});
+    Edit.args = {
+        departments:departments,
+        boxes:boxes,
+        researchers:researchers,
+        services:services
+};
+

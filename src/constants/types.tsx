@@ -26,6 +26,12 @@ export interface IDepartment{
     wards:IWard[]
 }
 
+export interface IBox{
+    uuid:string,
+    name:string,
+    type:number,
+}
+
 export interface IAgenda{
     uuid:string,
     name:string,
@@ -35,7 +41,7 @@ export interface IAgenda{
     principalResearcher:{researcher:IResearcher},
     slotsPerDay:number,
     appointments: IAppointment[]
-    box:string,
+    box:IBox | string,
     datesOccupancy:{[date:string]:number}
     turn: number[][],
 }
@@ -77,6 +83,7 @@ export interface IPersonalData{
 }
 
 export interface IResearcher{
+    uuid:string,
     name:string,
     surnames:string,
     units:IUnit[]

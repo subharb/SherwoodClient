@@ -24,6 +24,42 @@ export const departments =  [{
     }]
 }]
 
+// export const services = [
+    
+//     {
+//         "id": 172,
+//         "description": "",
+//         "active": true,
+//         "service": {
+//             "id": 134,
+//             "code": "C001",
+//             "name": "First Visit",
+//             "type": 2,
+//             "category": "Consultation"
+//         }
+//     },
+//     {
+//         "id": 173,
+//         "description": "",
+//         "active": true,
+//         "service": {
+//             "id": 134,
+//             "code": "C001",
+//             "name": "Follow up visit",
+//             "type": 2,
+//             "category": "Consultation"
+//         }
+//     }
+    
+// ]
+export const boxes = [{
+    "id": 1,
+    "uuid": "c8901350-2463-41e1-a515-98d41c7a497e",
+    "name": "Test Box",
+    "department": departments[0],
+    "type": 0,
+}]
+
 export const researchers = [{
     "name": "Pedro ",
     "uuid": "9c6dd74a-2362-4a30-b826-10330f250c07",
