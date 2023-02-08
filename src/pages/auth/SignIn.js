@@ -118,6 +118,9 @@ function SignIn() {
                 if(error.message === "Malformed UTF-8 data"){
                     postErrorSlack("signin", error.message+":"+values.email, "");
                 }
+                else{
+                    postErrorSlack("signin", "Error while sign in:"+values.email, "");
+                }
                 const message = error.message || "Wrong email or password. If you can't remember your password contact customersupport@sherwood.science";
 
                 setStatus({ success: false });

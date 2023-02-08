@@ -157,7 +157,7 @@ export function encryptData(data, key){
 
 export function decryptData(ciphertext, key){
 
-    var bytes  = CryptoJS.AES.decrypt("U2FsdGVkX1/nRhyd+75JA+sBHmfumg0nEWNZkvA0WZQp4HJtgVftIC7kkEFYNYwiC6UduuGs2oxRCtcafNqhlg==", key);
+    var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
     var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
     return originalText;
