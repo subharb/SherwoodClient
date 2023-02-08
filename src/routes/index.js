@@ -427,7 +427,7 @@ const dashboardAdminDepartmentRoutes = {
 }
 
 const dashboardMyDepartmentRoutes = {
-    id: <Translate id="pages.hospital.inpatients" />,
+    id: <Translate id="pages.hospital.inpatients.title" />,
     path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
     icon: <HotelIcon />,
     badge: "",
