@@ -21,13 +21,16 @@ const OutpatientsStatsLocalized: React.FC<OutpatientsStatsProps> = ({ functional
         return 0;
     }, [appointmentsPerDepartment]);
 
-    if( (functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && departments.length > 0 ) {
+    if( (functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && departments ) {
+        const labels = Object.keys(appointmentsPerDepartment).map((uuidDepartment) => {
+            const department = departments.find((department) => department.uuid === uuidDepartment);
+            return department ? department.name : '';
+        });
         return (
             <Grid container item spacing={1}>
-                <DoughnutChart title={translate("hospital.analytics.graphs.appointments.title")} labels={Object.keys(appointmentsPerDepartment).map((uuidDepartment) => departments.find((dep) => dep.uuid === uuidDepartment).name)}
+                <DoughnutChart title={translate("hospital.analytics.graphs.appointments.title")} labels={labels}
                     table={{ title: translate("hospital.analytics.graphs.appointments.table-title"), columns: [translate("hospital.analytics.graphs.sex.count")] }}
                     innerInfo={{ title: translate("hospital.analytics.graphs.appointments.title"), value: outpatientsTotal }}
-
                     datasets={[
                         {
                             data: Object.values(appointmentsPerDepartment),

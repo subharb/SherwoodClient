@@ -76,7 +76,6 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
                 }
             }
         }
-        
     }
 
     function renderAppointments(){

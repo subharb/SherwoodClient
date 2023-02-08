@@ -24,6 +24,7 @@ import { useDeparmentsSelector } from '../../../hooks';
 import PatientsBarChart from '../../dashboards/Analytics/PatientsBarChart';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import { FUNCTIONALITY } from '../../../constants/types';
+import OutpatientsStats from './OutpatientsStats';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -324,7 +325,7 @@ export function Analytics(props) {
                     (props.investigations.currentInvestigation && 
                         props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && 
                     <Grid container item spacing={1}>
-                        <DoughnutChart title={props.translate("hospital.analytics.graphs.appointments.title")} labels={Object.keys(appointmentsPerDepartment).map((uuidDepartment) => departments.find((dep) => dep.uuid === uuidDepartment).name)}
+                        {/* <DoughnutChart title={props.translate("hospital.analytics.graphs.appointments.title")} labels={Object.keys(appointmentsPerDepartment).map((uuidDepartment) => departments.find((dep) => dep.uuid === uuidDepartment).name)}
                             table={{ title: props.translate("hospital.analytics.graphs.appointments.table-title"), columns: [props.translate("hospital.analytics.graphs.sex.count")] }}
                             innerInfo={{ title: props.translate("hospital.analytics.graphs.appointments.title"), value: outpatientsTotal }}
 
@@ -336,9 +337,11 @@ export function Analytics(props) {
                                     borderWidth: 5,
                                     borderColor: props.theme.palette.background.paper,
                                 }
-                            ]} />
+                            ]} /> */}
+                        <OutpatientsStats functionalities={props.investigations.currentInvestigation.functionalities} 
+                            appointmentsPerDepartment={appointmentsPerDepartment} theme={props.theme} departments={departments} />
                     </Grid>
-                    <OutpatientsStats />
+                    
                 }
                 
 
