@@ -22,6 +22,7 @@ import {
 import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { Translate } from "react-localize-redux";
+import { postErrorSlack } from "../../utils";
 
 const Alert = styled(MuiAlert)(spacing);
 
@@ -106,7 +107,7 @@ function SignIn() {
             try {               
                 await signIn({ email: values.email, password: values.password}, "researcher");
                 const previousRoute = history.location.state && history.location.state.from;
-                if(typeof previousRoute === "undefined" || previousRoute === SIGN_UP_ROUTE || previousRoute == SIGN_IN_ROUTE){
+                if(typeof previousRoute === "undefined" || previousRoute === SIGN_UP_ROUTE || previousRoute === SIGN_IN_ROUTE){
                     history.push(ROOT_ROUTE)
                 }
                 else{
@@ -114,6 +115,9 @@ function SignIn() {
                 }
                 
             } catch (error) {
+                if(error.message === "Malformed UTF-8 data"){
+                    postErrorSlack("signin", error.message+":"+values.email, "");
+                }
                 const message = error.message || "Wrong email or password. If you can't remember your password contact customersupport@sherwood.science";
 
                 setStatus({ success: false });
