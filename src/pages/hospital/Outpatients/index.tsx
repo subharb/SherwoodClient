@@ -1,6 +1,6 @@
 import { Grid, Paper, Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { connect, useDispatch } from 'react-redux';
 import { BedButtonViewPatient, ButtonPatient } from '../../../components/general/BedButton';
@@ -17,6 +17,7 @@ import { RequestStatus } from '../Service/types';
 import { FormConsultAppointment } from './FormAppointment';
 import {useHistory, useParams} from 'react-router-dom';
 import { areSameDates } from '../../../utils';
+import EditOutpatients from './Edit';
 
 interface OutpatientsProps extends LocalizeContextProps {
     investigations:any
@@ -31,11 +32,16 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
     const [validData, setValidData] = React.useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [showModal, setShowModal] = React.useState(false);
-    const canEditOutPatients = false;
+    const canEditOutPatients = true; useMemo(() =>{
+        if(investigations.currentInvestigation){
+            return investigations.currentInvestigation.permissions.includes(PERMISSION.EDIT_OUTPATIENTS);
+        }
+        else return false;
+    }, [investigations.currentInvestigation])
 
     const history = useHistory();
 
-    function toogleEditLab(){
+    function toogleEdit(){
         setEdit(!edit);
     }
 
@@ -237,6 +243,11 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
         
     }
     function renderCore(){
+        if(edit){
+            return(
+                <EditOutpatients uuidInvestigation={investigations.currentInvestigation.uuid}  />
+            )
+        }
         return (
             <Paper>
                 <Grid container spacing={3}>
@@ -275,7 +286,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
                 </div>
             </Snackbar>
             <Grid container spacing={3} >
-                <SectionHeader section="outpatients" edit={edit} editCallback={canEditOutPatients ? toogleEditLab : undefined}  />
+                <SectionHeader section="outpatients" edit={edit} editCallback={canEditOutPatients ? toogleEdit : undefined}  />
                 <Grid item xs={12}>
                     {
                         renderCore()

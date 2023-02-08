@@ -51,7 +51,6 @@ export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPa
 
 const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInvestigation,  uuidPatient, mode, hospital, appointmentMadeCallback, infoAppointmentReadyCallback }) => {
     const {agendas, loadingAgendas} = useAgendas();
-    const [department, setDepartment] = useState<IDepartment | null>(null);
     const appointments =  useSelector((state:any) => state.hospital.data.appointments);
     const [departmentsWithAgenda, setDepartmentsWithAgenda] = useState<IDepartment[]>([]);
     const prevAppointments:IAppointment[] | null = usePrevious(hospital.data.appointments);
@@ -272,6 +271,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
             
         }
     }, [])
+    
     return (
         <>
             <Snackbar

@@ -495,7 +495,8 @@
                     "create" : ["Create Box", "Crear Box", "Créer une box"],
                     "name" : ["Name", "Nombre", "Nom"],
                     "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
-                    "no_department" : ["No department", "Sin departamento", "Pas de département"]
+                    "no_department" : ["No department", "Sin departamento", "Pas de département"],
+                    "success" : ["Box created successfully", "Box creada correctamente", "Box créée avec succès"]
                 },
                 "agenda":{
                     "create" : ["Create Agenda", "Crear Agenda", "Créer une agenda"],

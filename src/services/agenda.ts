@@ -1,6 +1,38 @@
 import axios from "axios";
-import { IAppointment } from "../constants/types";
+import { IAppointment, IBox } from "../constants/types";
 
+
+export function getBoxesService(uuidInvestigation: string): Promise<{ status: number, boxes: IBox[] }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/box/all", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+export function saveBoxService(uuidInvestigation: string, box:IBox): Promise<{ status: number, box: IBox }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .post(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/box", box, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 export function getAppoinmentsDateService(uuidInvestigation: string, uuidAgenda:string, date:Date): Promise<{ status: number, appointments: IAppointment[] }> {
     return new Promise((resolve, reject) => {
         axios

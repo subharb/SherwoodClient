@@ -82,6 +82,9 @@ export interface IPersonalData{
     health_id ?:string
 }
 
+export interface SnackbarType{ 
+    show: boolean; message?: string; severity?: Color; }
+
 export interface IResearcher{
     uuid:string,
     name:string,
