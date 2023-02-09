@@ -34,6 +34,7 @@ export default function reducer(state = initialState, action){
                 
                 let tempDecryptedData = [];
                 for(const patient of investigation.patientsPersonalData){
+                    console.log(patient);
                     patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
                     tempDecryptedData.push(patient);
                 }
@@ -54,6 +55,7 @@ export default function reducer(state = initialState, action){
         case types.SAVE_PATIENT_OFFLINE:
         case types.SAVE_PATIENT_SUCCESS:
             let newPatient = {...action.patient};
+            console.log(action.patient);
             newPatient.personalData = action.patient.personalData ? decryptSinglePatientData(action.patient.personalData, action.investigation) : null;
             if([types.UPDATE_PATIENT_SUCCESS, types.UPDATE_PATIENT_OFFLINE].includes(action.type)){
                 const indexPat = newState.data[action.investigation.uuid].findIndex(pat => pat.uuid === action.uuidPatient);

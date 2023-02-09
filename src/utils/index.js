@@ -647,9 +647,18 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
             const encryptedField = patientPersonalData.find(pData =>{
                 return pData.name === personalField.name;
             });
+            //console.log(personalField.name);
+            
             let decryptedValue = ""
             if(encryptedField){
-                decryptedValue = decryptData(encryptedField.value, keyInvestigation);
+                //console.log(encryptedField.value);
+                try{
+                    decryptedValue = decryptData(encryptedField.value, keyInvestigation);
+                }
+                catch(error){
+                    decryptedValue = "";
+                }
+                
                 if(encryptedField.type === "date"){
                     decryptedValue = new Date(parseInt(decryptedValue));
                 }
