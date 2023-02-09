@@ -5,7 +5,7 @@ import ProviderSherwood from '../../../providerSherwood';
 
 import {FormAppointmentCore} from '../../../pages/hospital/Outpatients/FormAppointment';
 import Outpatients from '../../../pages/hospital/Outpatients';
-import EditOutpatientsLocalized from '../../../pages/hospital/Outpatients/Edit';
+import EditOutpatientsLocalized from '../../../pages/hospital/Outpatients/EditOutpatients';
 import { boxes, departments, researchers } from '../../data/departmentsService';
 import { services } from '../Services/data';
 

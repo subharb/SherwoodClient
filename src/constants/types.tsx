@@ -30,6 +30,7 @@ export interface IBox{
     uuid:string,
     name:string,
     type:number,
+    department:IDepartment | null,
 }
 
 export interface IAgenda{
@@ -134,7 +135,12 @@ export interface IPatient{
     dateCreated:Date
 }
 
-
+export interface IOutpatientsInfo{
+    params: IOutpatientsParams,
+}
+export interface IOutpatientsParams {
+    type: "date" | "date_time"
+}
 export enum FUNCTIONALITY {
     HOSPITALIZATION = "HOSPITALIZATION",
     BILLING = "BILLING",

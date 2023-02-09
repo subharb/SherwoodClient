@@ -122,7 +122,9 @@ class Form extends Component {
                     currentSection = [];
                 }
                 currentSection.push(
-                    <Grid item xs={this.props.numberColumns === 2 ? 6 :12}>
+                    <Grid item xs={this.props.fields[key].numberColumnsXs ? this.props.fields[key].numberColumnsXs : 12} 
+                        lg={this.props.fields[key].numberColumnsLg ? this.props.fields[key].numberColumnsLg : 12} 
+                        style={{paddingLeft:"0.5rem"}} >
                         <Field
                             name={this.props.fields[key].name ? this.props.fields[key].name : key}
                             type={this.props.fields[key].type}
@@ -136,7 +138,7 @@ class Form extends Component {
                             country={this.props.country}
                             label={this.props.fields[key].label}
                             validate={[this.sherwoodValidation]}
-                            {...this.props.fields[key]}
+                            {...this.props.fields[key]} 
                         />
                         {
                             this.renderExtraFields(key)

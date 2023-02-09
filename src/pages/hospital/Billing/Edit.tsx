@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import Loader from '../../../components/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUpdateBillingInfoAction, updateBillables } from '../../../redux/actions/investigationsActions';
-import { createUpdateBillingInfoService } from '../../../services/billing';
-import props from '../../../theme/props';
 import { TabsSherwood } from '../../components/Tabs';
 import EditBillables from './EditBillables';
 import EditBillingInfo from './EditBillingInfo';

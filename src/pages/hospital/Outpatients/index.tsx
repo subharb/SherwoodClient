@@ -8,20 +8,20 @@ import { ButtonCancel, ButtonContinue } from '../../../components/general/mini_c
 import Modal from '../../../components/general/modal';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import Loader from '../../../components/Loader';
-import { IAgenda, IAppointment, IDepartment, IPatient, PersonalData } from '../../../constants/types';
+import { IAgenda, IAppointment, IDepartment, IOutpatientsInfo, IPatient, PersonalData } from '../../../constants/types';
 import { useSnackBarState } from '../../../hooks';
 import { HOSPITAL_PATIENT } from '../../../routes';
-import { getAppoinmentsDateService, updateAppoinmentsService } from '../../../services/agenda';
+import { getAppoinmentsDateService, getOutpatientsInfo, updateAppoinmentsService } from '../../../services/agenda';
 import SectionHeader from '../../components/SectionHeader';
 import { RequestStatus } from '../Service/types';
 import { FormConsultAppointment } from './FormAppointment';
 import {useHistory, useParams} from 'react-router-dom';
 import { areSameDates } from '../../../utils';
-import EditOutpatients from './Edit';
+import EditOutpatients from './EditOutpatients';
 
 interface OutpatientsProps extends LocalizeContextProps {
     investigations:any
-}
+} 
 
 const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) => {
     const [edit, setEdit] = React.useState(false);
@@ -32,6 +32,8 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
     const [validData, setValidData] = React.useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [showModal, setShowModal] = React.useState(false);
+    const [outpatientsInfo, setOutpatientsInfo] = React.useState<IOutpatientsInfo | null>(null);
+
     const canEditOutPatients = true; useMemo(() =>{
         if(investigations.currentInvestigation){
             return investigations.currentInvestigation.permissions.includes(PERMISSION.EDIT_OUTPATIENTS);
@@ -44,6 +46,20 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
     function toogleEdit(){
         setEdit(!edit);
     }
+
+    useEffect(() => {
+        if(investigations.currentInvestigation){
+            getOutpatientsInfo(investigations.currentInvestigation.uuid)
+            .then(response => {
+                setOutpatientsInfo(response.outpatientInfo);
+                setLoadingAppointments(false);
+            })
+            .catch(err => {
+                setLoadingAppointments(false);
+            })
+        }
+       
+    }, [investigations.currentInvestigation])
 
     async function getAppoinmentsDate(uuidAgenda:string, date:Date){
         console.log("getAppoinmentsDate", uuidAgenda, date);
@@ -245,7 +261,8 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
     function renderCore(){
         if(edit){
             return(
-                <EditOutpatients uuidInvestigation={investigations.currentInvestigation.uuid}  />
+                <EditOutpatients uuidInvestigation={investigations.currentInvestigation.uuid} 
+                    outpatientsInfo={outpatientsInfo} />
             )
         }
         return (

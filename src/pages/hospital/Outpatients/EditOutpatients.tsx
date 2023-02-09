@@ -7,24 +7,29 @@ import Form from '../../../components/general/form';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
-import { IAgenda, IBox, IDepartment, IResearcher, SnackbarType } from '../../../constants/types';
+import { IAgenda, IBox, IDepartment, IOutpatientsInfo, IResearcher, SnackbarType } from '../../../constants/types';
 import { useDepartments, useSnackBarState } from '../../../hooks';
-import { getBoxesService, saveBoxService } from '../../../services/agenda';
+import { getBoxesService, getServicesInvestigationService, saveAgendaService, saveBoxService } from '../../../services/agenda';
+import { researcherFullName } from '../../../utils';
 import Accordion2Levels, { MainElementType } from '../../components/Accordion2Levels';
+import { IService, IServiceInvestigation, ServiceType } from '../Service/types';
 
 
 interface EditProps {
-    uuidInvestigation:string
+    uuidInvestigation:string,
+    outpatientsInfo:IOutpatientsInfo | null,
     // boxes: IBox[],
     // researchers: IResearcher[],
     // services: any[],
 }
 
-const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation }) => {
-    const {departments} = useDepartments();
+const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsInfo }) => {
+    const {departments, researchers} = useDepartments();
     const [boxes, setBoxes] = React.useState<IBox[]>([]);
+    const [agendas, setAgendas] = React.useState<IAgenda[]>([]);
     const [loading, setLoading] = React.useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
+    const [services, setServices] = React.useState<IServiceInvestigation[]>([]);
 
     useEffect(() => {
         setLoading(true);
@@ -38,6 +43,20 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation }) => {
                 setShowSnackbar({show:true, message:err.message, severity:"error"})
             }) 
     }, [uuidInvestigation]);
+
+    useEffect(() => {
+        setLoading(true);
+        getServicesInvestigationService(uuidInvestigation, ServiceType.CONSULTATION )
+            .then(response => {
+                setServices(response.servicesInvestigation);
+                setLoading(false);
+            })
+            .catch(err => {
+                setLoading(false);
+                setShowSnackbar({show:true, message:err.message, severity:"error"})
+            }) 
+    }, [uuidInvestigation]);
+
     async function saveBox(box:IBox){
         setLoading(true);
         saveBoxService(uuidInvestigation, box)
@@ -51,47 +70,66 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation }) => {
                 setShowSnackbar({show:true, message:err.message, severity:"error"})
             }) 
     }
-    if(departments){
-        return <EditOutpatientsComponent setShowSnackbar={setShowSnackbar} showSnackbar={showSnackbar} loading={loading} departments={departments} boxes={boxes} researchers={[]} services={[]}
-            saveBoxCallback={saveBox}/>
+
+    async function saveAgenda(agenda:IAgenda){
+        setLoading(true);
+        saveAgendaService(uuidInvestigation, agenda)
+            .then(response => {
+                setAgendas([...agendas, response.agenda]);
+                setLoading(false);
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.box.success", severity:"success"})
+            })
+            .catch(err => {
+                setLoading(false);
+                setShowSnackbar({show:true, message:err.message, severity:"error"})
+            }) 
+    }
+
+    
+    if(departments && outpatientsInfo){
+        return <EditOutpatientsComponent setShowSnackbar={setShowSnackbar} showSnackbar={showSnackbar} 
+                    loading={loading} departments={departments} boxes={boxes} services={services} researchers={researchers}
+                    saveAgendaCallback={saveAgenda} outpatientsInfo={outpatientsInfo}
+                    saveBoxCallback={saveBox}/>
     }
     else{
         return <Loader />
     }    
-    
 }
 
 interface EditPropsComponent extends LocalizeContextProps {
     departments: IDepartment[],
     boxes: IBox[],
-    researchers: IResearcher[],
-    services: any[],
+    services: IServiceInvestigation[],
     loading:boolean,
+    researchers: IResearcher[],
     showSnackbar: SnackbarType,
+    outpatientsInfo: IOutpatientsInfo,
     setShowSnackbar: (snackbar: SnackbarType) => void,
-    saveBoxCallback: (box:IBox) => void,
+    saveBoxCallback: (box:IBox) => void
+    saveAgendaCallback: (agenda:IAgenda) => void
 }
 
-const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSnackbar, setShowSnackbar, departments, loading, researchers, services, translate, saveBoxCallback }) => {
+const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSnackbar, outpatientsInfo, setShowSnackbar, saveAgendaCallback, researchers, departments, loading, services, translate, saveBoxCallback }) => {
     const [addBox, setAddBox] = React.useState(false);
-    const [addAgenda, setAddAgenda] = React.useState(false);
+    const [addingAgenda, setAddingAgenda] = React.useState(false);
     const [modalInfo, setModalInfo] = React.useState({showModal: false, type:""});
-    
+    const [initDataAgenda, setInitDataAgenda] = React.useState({});
     const [agendas, setAgendas] = React.useState<IAgenda[]>([]);
-    
+    const [reseachersDepartment, setResearchersDepartment] = React.useState<IResearcher[]>([]);
+    let departmentOptions = departments.map((department) => {
+        return {
+            label: department.name,
+            value: department.uuid
+        }
+    })
+    departmentOptions.unshift({label: "pages.hospital.outpatients.box.no_department", value: "null"})
 
     const CREATE_BOX_FORM = useMemo(() => {
         if(!departments){
             return {}
         }
         else{
-            let departmentOptions = departments.map((department) => {
-                return {
-                    label: department.name,
-                    value: department.uuid
-                }
-            })
-            departmentOptions.unshift({label: "pages.hospital.outpatients.box.no_department", value: "null"})
             return {
                 "name":{
                     required : true,
@@ -124,7 +162,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
             return {}
         }
         else{
-            return {
+            const agendaForm =  {
                 "name":{
                     required : true,
                     name:"name",
@@ -133,25 +171,12 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     shortLabel: "general.name",
                     validation : "textMin2"
                 },
-                "box":{
-                    required : true,
-                    type:"select",
-                    name:"box",
-                    label:"pages.hospital.outpatients.box.title",
-                    shortLabel:"pages.hospital.outpatients.box.title",
-                    validation : "notEmpty",
-                    defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
-                    options:boxes.map((box) => {
-                        return {
-                            label: box.name,
-                            value: box.uuid
-                        }
-                    })
-                },
                 "durationFirstVisit":{
                     required : true,
                     name:"durationFirstVisit",
                     type:"text",
+                    numberColumnsLg:3,
+                    numberColumnsXs:3,
                     label:"pages.hospital.outpatients.agenda.duration",
                     shortLabel: "pages.hospital.outpatients.agenda.duration",
                     validation : "number"
@@ -160,9 +185,56 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     required : true,
                     name:"slotsPerDay",
                     type:"text",
+                    numberColumnsLg:3,
+                    numberColumnsXs:3,
                     label:"pages.hospital.outpatients.agenda.slotsPerDay",
                     shortLabel: "pages.hospital.outpatients.agenda.slotsPerDay",
                     validation : "number"
+                },
+                "turnStart":{
+                    required : true,
+                    name:"turnStart",
+                    type:"time",
+                    numberColumnsLg:3,
+                    numberColumnsXs:3,
+                    label:"pages.hospital.outpatients.agenda.turn_start",
+                    shortLabel: "pages.hospital.outpatients.agenda.turn_start",
+                    validation : "number"
+                },
+                "turnEnd":{
+                    required : true,
+                    name:"turnEnd",
+                    type:"time",
+                    numberColumnsLg:3,
+                    numberColumnsXs:3,
+                    label:"pages.hospital.outpatients.agenda.turn_end",
+                    shortLabel:"pages.hospital.outpatients.agenda.turn_end",
+                    validation : "number"
+                },
+                "daysWeek":{
+                    required : true,
+                    name:"daysWeek",
+                    type:"multioption",
+                    numberColumnsLg:12,
+                    numberColumnsXs:12,
+                    label:"pages.hospital.outpatients.agenda.week_days",
+                    shortLabel: "pages.hospital.outpatients.agenda.week_days",
+                    validation : "notEmpty",
+                    options:[{label:translate("general.week_days.monday"), value:"M"},{label:translate("general.week_days.tuesday"), value:"T"},
+                                {label:translate("general.week_days.wednesday"), value:"W"},{label:translate("general.week_days.thursday"), value:"R"},
+                                {label:translate("general.week_days.friday"), value:"F"},{label:translate("general.week_days.saturday"), value:"S"},
+                                {label:translate("general.week_days.sunday"), value:"U"}]
+                },
+                "department":{
+                    required : false,
+                    type:"select",
+                    name:"department",
+                    numberColumnsLg:6,
+                    numberColumnsXs:12,
+                    label:"pages.hospital.outpatients.box.select_department",
+                    shortLabel:"pages.hospital.outpatients.box.select_department",
+                    validation : "notEmpty",
+                    options:departmentOptions
                 },
                 "principalResearcher":{
                     required : true,
@@ -171,12 +243,20 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     label:"pages.hospital.outpatients.agenda.doctor",
                     shortLabel:"pages.hospital.outpatients.agenda.doctor",
                     validation : "notEmpty",
-                    options:researchers.map((box) => {
+                    options:reseachersDepartment.map((researcher) => {
                         return {
-                            label: box.name,
-                            value: box.uuid
+                            label: researcherFullName(researcher),
+                            value: researcher.uuid
                         }
                     })
+                },
+                "otherStaff" : {
+                    required : true,
+                    type:"hidden",
+                    name:"otherStaff",
+                    label:"pages.hospital.outpatients.agenda.service",
+                    shortLabel:"pages.hospital.outpatients.agenda.service",
+                    validation : "notEmpty",
                 },
                 "idServiceInvestigationFirstVisit":{
                     required : true,
@@ -187,26 +267,50 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     validation : "notEmpty",
                     options:services.map((service) => {
                         return {
-                            label: service.name,
+                            label: service.service.name,
                             value: service.id
                         }
                     })
-                },
-        }       
-           
+                }
+            }  
+            if(initDataAgenda.hasOwnProperty("department")){
+                agendaForm.department.type = "hidden";
+            }
+            if(outpatientsInfo.params.type === "date"){
+                // @ts-ignore: Unreachable code error
+                delete agendaForm["durationFirstVisit"];
+            }
+            return agendaForm;
         }
-    }, [boxes, researchers, services])
+    }, [boxes, researchers, services, reseachersDepartment, initDataAgenda])
     
     function saveBox(box:IBox){
         console.log(box);
         saveBoxCallback(box);
     }
-    function saveAgenda(agenda:IAgenda){
+    function saveAgenda(agenda:any){
         console.log(agenda);
+        const turnStart = [agenda.turnStart.getHours(), agenda.turnStart.getMinutes()]
+        const turnEnd = [agenda.turnEnd.getHours(), agenda.turnEnd.getMinutes()]
+        
+        const agendaPost:IAgenda = {...agenda};
+        agendaPost.turn = [turnStart, turnEnd];
+        saveAgendaCallback(agendaPost);
     }
 
     function resetModal(){
         setModalInfo({showModal: false, type:""});
+    }
+    function addAgenda(uuidBox:string){
+        const boxSelected = boxes.find((box) => box.uuid === uuidBox);
+        if(boxSelected && boxSelected.department !== null){
+            const uuidDepartmentBox = boxSelected.department.uuid;
+            const reseachersDepartment = researchers.filter((researcher) => researcher.units.filter((unit) => unit.department.uuid === uuidDepartmentBox).length > 0);
+            setResearchersDepartment(reseachersDepartment);
+            setInitDataAgenda({department: boxSelected.department.uuid, otherStaff:[]});
+            setModalInfo({showModal: true, type:"agenda"});
+        }
+        setModalInfo({showModal: true, type:"agenda"});
     }
     function renderModal(){
         if(!loading){
@@ -223,8 +327,8 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     {
                         modalInfo.type === "agenda" && 
                         <Form fields={CREATE_AGENDA_FORM} fullWidth callBackForm={saveAgenda}
-                            initialData={{type:0}} 
-                            closeCallBack={() => resetModal()}/>
+                            initialData={initDataAgenda} 
+                            closeCallBack={() => resetModal()}/> 
                     } 
                     </>      
                 </Modal>
@@ -260,11 +364,11 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
         })
         return (
             <>
-                Box: <ButtonAdd onClick={()=>setAddBox(true)} />
-                <Accordion2Levels orderedMainElements={elements} deleteMainElementCallBack={(uuid) => console.log(uuid)} 
-                    editSubElementCallBack={(uuid) => console.log(uuid)} checkCanDeleteMainElement={(uuid) => true} 
-                    deleteSubElementCallBack={(uuid) => console.log(uuid)} addSubElementCallBack={(uuid) => console.log(uuid)}
-                    editMainElementCallBack={(uuid) => console.log(uuid)} checkCanDeleteSubElement={(uuid) => true} />
+                Box: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
+                <Accordion2Levels orderedMainElements={elements} deleteMainElementCallBack={(uuid) => console.log("DELETE:"+uuid)} 
+                    editSubElementCallBack={(uuid) => console.log("EDIT SUB"+uuid)} checkCanDeleteMainElement={(uuid) => true} 
+                    deleteSubElementCallBack={(uuid) => console.log("DELETE SUB"+uuid)} addSubElementCallBack={(uuid) => addAgenda(uuid)}
+                    editMainElementCallBack={(uuid) => console.log("EDIT"+uuid)} checkCanDeleteSubElement={(uuid) => true} />
                     
             </>
         );
