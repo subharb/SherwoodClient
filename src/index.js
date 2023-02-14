@@ -7,18 +7,26 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import ProviderSherwood from './providerSherwood';
 import ErrorBoundary from "./components/general/ErrorBoundary";
 import mixpanel from 'mixpanel-browser';
-import * as Sentry from "@sentry/browser";
-import { Integrations } from "@sentry/tracing";
+import * as Sentry from "@sentry/react";
 
 let dsn = "https://4e273ea1b6e04f6cb8f483979eb3233a@o491166.ingest.sentry.io/5992676";
 if (process.env.NODE_ENV === 'production') {
     console.log = function () {};
-    dsn = "https://cf032c10a38f45309939fcf46fa7794f@o491166.ingest.sentry.io/5992674"
+    dsn = "https://1e889cc84edc4a2fa8fffba2173af28b@o491166.ingest.sentry.io/5556260"
 }
 
 Sentry.init({
     dsn: dsn,
-  });
+  
+    // This sets the sample rate to be 10%. You may want this to be 100% while
+    // in development and sample at a lower rate in production
+    replaysSessionSampleRate: 0.1,
+    // If the entire session is not sampled, use the below sample rate to sample
+    // sessions when an error occurs.
+    replaysOnErrorSampleRate: 1.0,
+  
+    integrations: [new Sentry.Replay()],
+});
 
 mixpanel.init(process.env.REACT_APP_MIXPANEL_TOKEN);
 // or with require() syntax:

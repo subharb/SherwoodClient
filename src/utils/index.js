@@ -152,15 +152,21 @@ export function encryptData(data, key){
     var KeyObj = CryptoJS.AES.encrypt(data, key);
     var ciphertext = KeyObj.toString();
     console.log(KeyObj);
+    console.log(ciphertext);
     return ciphertext;
 }
 
 export function decryptData(ciphertext, key){
+    try{
+        var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
+        var originalText = bytes.toString(CryptoJS.enc.Utf8);
 
-    var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
-    var originalText = bytes.toString(CryptoJS.enc.Utf8);
-
-    return originalText;
+        return originalText;
+    }
+    catch(e){
+        return "";
+    }
+    
 }
 
 export const isUserLoggedIn = () => localStorage.getItem("jwt");
@@ -652,12 +658,7 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
             let decryptedValue = ""
             if(encryptedField){
                 //console.log(encryptedField.value);
-                try{
-                    decryptedValue = decryptData(encryptedField.value, keyInvestigation);
-                }
-                catch(error){
-                    decryptedValue = "";
-                }
+                decryptedValue = decryptData(encryptedField.value, keyInvestigation);
                 
                 if(encryptedField.type === "date"){
                     decryptedValue = new Date(parseInt(decryptedValue));
