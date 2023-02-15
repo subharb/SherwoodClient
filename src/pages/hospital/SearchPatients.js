@@ -176,7 +176,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
     function hospitalizePatient(id){
         const findPatientIndex = props.patients.findIndex((pat) => pat.id === id);
         //setPatientHospitalizeIndex(findPatientIndex);
-        setActionPatient({...actionPatient, patientIndex:findPatientIndex, action : "hospitalize"})
+        setActionPatient({...actionPatient, patientIndex:findPatientIndex, action : "hospitalize", section: "inpatients"})
     }
 
     function selectAppointmentPatient(id){
@@ -209,10 +209,10 @@ export const SearchPatientsComponent = withLocalize((props) => {
             return (
                 <Modal key="modal" open={actionPatient || patientAppointment || patientHospitalized} 
                     
-                    title={actionPatient ? <Translate id={`pages.hospital.${actionPatient.action}.confirm`}/> : patientHospitalized ? <Translate id="pages.hospital.inpatients.choose-ward" /> : <Translate id="pages.hospital.outpatients.title" />} 
+                    title={actionPatient ? <Translate id={`pages.hospital.${actionPatient.section}.confirm`}/> : patientHospitalized ? <Translate id="pages.hospital.inpatients.choose-ward" /> : <Translate id="pages.hospital.outpatients.title" />} 
                     closeModal={resetModal} >
                         {
-                            (actionPatient && actionPatient.actions === 'hospitalize')&&
+                            (actionPatient && actionPatient.action === 'hospitalize')&&
                             <Grid container>
                                 <Grid item xs={12}>
                                     {
