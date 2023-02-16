@@ -176,7 +176,7 @@ const BedButton:React.FC<Props> = (props) => {
                             props.age && 
                             <Grid item xs={12}>
                                 <Typography variant="body2" component="div" gutterBottom style={{height:'1px', color:"darkblue"}} >
-                                    {props.age} years
+                                    {props.age} <Translate id="general.years" />
                                 </Typography>
                             </Grid>
                         }
