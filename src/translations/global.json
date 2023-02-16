@@ -13,6 +13,7 @@
             "saturday" : ["Saturday", "Sábado", "Samedi"],
             "sunday" : ["Sunday", "Domingo", "Dimanche"]
         },
+        "years" : ["years", "años", "ans"],
         "several" : ["Several", "Varios", "Plusieurs"],
         "patient" : ["Patient", "Paciente", "Patient"],
         "save" : ["Save", "Guardar", "Enregistrer"],
@@ -769,7 +770,7 @@
                 "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
             },
             "inpatients" : {
-                "title" : ["Inpatients", "Pacientes ingresados", "Patients hospitalisés"],
+                "title" : ["Inpatients", "Pacientes ingresados", "Hospitalisation"],
                 "confirm" : ["Do you wish to hospitalize this patient?", "¿Desea hospitalizar a este paciente?", "Voulez-vous hospitaliser ce patient?"],
                 "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le département"]
             },
