@@ -99,7 +99,7 @@ export function useDepartments(researchersDepartmentsOnly:boolean = false){
                 getDepartmentsInvestigationAction(uuidInvestigation)
             ); 
         }
-        if(!departments && investigations.data && investigations.currentInvestigation){
+        if(investigations.data && investigations.currentInvestigation){
             getDepartments(investigations.currentInvestigation.uuid)
         }
     }, [investigations])

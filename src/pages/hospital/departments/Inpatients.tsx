@@ -107,7 +107,7 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
                 <Grid item xs={12}>
                     <Grid item xs={6} >
                         <Typography variant="h3" gutterBottom display="inline">
-                            <Translate id="pages.hospital.inpatients" />
+                            <Translate id="pages.hospital.inpatients.title" />
                         </Typography>
                     </Grid>
                     <Grid item xs={12} >
