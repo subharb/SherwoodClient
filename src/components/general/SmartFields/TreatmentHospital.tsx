@@ -1,12 +1,14 @@
 import React from 'react';
 import props from '../../../theme/props';
 import Form from '../form';
+import FormTSFunc, { IForm } from '../formTSFunction';
+import FormTSCore from '../formTSFunction';
 
 interface TreatmentHospitalProps {
     country : string
 }
 
-const FORM_CONTINUE = {
+const FORM_CONTINUE:IForm = {
     "perfusion":{
         "required": true,
         "encrypted": false,
@@ -22,6 +24,7 @@ const FORM_CONTINUE = {
         "validation" : "notEmpty",
     },
     "volume":{
+        name:"volume",
         required : true,
         type:"text",
         label:"Volume(ml)",
@@ -29,6 +32,7 @@ const FORM_CONTINUE = {
         validation : "number"
     },
     "additive":{
+        name:"additive",
         required : false,
         type:"drug_selector",
         label:"Drug Selector",
@@ -55,6 +59,7 @@ const FORM_CONTINUE = {
         "validation" : "notEmpty",
     },
     "composition-liquid":{
+        name:"composition-liquid",
         required : true,
         type:"text",
         label:"mL/heure",
@@ -62,6 +67,7 @@ const FORM_CONTINUE = {
         validation : "number"
     },
     "composition-solid":{
+        name:"composition-solid",
         required : true,
         type:"text",
         label:"mg/heure",
@@ -69,6 +75,7 @@ const FORM_CONTINUE = {
         validation : "number"
     },
     "number-time":{
+        name:"number-time",
         required : true,
         type:"select",
         label:"hospital.number-elements",
@@ -114,6 +121,7 @@ const FORM_CONTINUE = {
         validation : "number"
     },
     "time-elements" : {
+        name:"time-elements",
         required : true,
         type:"select",
         label:"hospital.time-unit",
@@ -133,7 +141,7 @@ const FORM_CONTINUE = {
 const TreatmentHospital: React.FC<TreatmentHospitalProps> = ({ country }) => {
     return (
         <>
-            <Form fields={FORM_CONTINUE} country={country}/>
+            <FormTSFunc fields={FORM_CONTINUE} country={country}/>
         </>
     );
 };

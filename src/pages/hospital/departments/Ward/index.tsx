@@ -30,6 +30,7 @@ import { getWardService } from '../../../../services';
 import { Alert } from '@material-ui/lab';
 import { HOSPITAL_PATIENT } from '../../../../routes';
 import { sexNumberToString, yearsFromDate } from '../../../../utils';
+import FormTSFunc, { FormValues } from '../../../../components/general/formTSFunction';
 
 export enum WardModes {
     Edit = "edit",
@@ -265,15 +266,30 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         }
         
     }
-    function editCallBackForm(bed:IBed){
-        if(!checkNameBeds(bed) && editCallBack){
-            editCallBack(bed);
-            
+    function editCallBackForm(bed:FormValues){
+        const convertedBed: IBed = {
+            id: bed.id as number,
+            name: bed.name as string,
+            gender: bed.gender as number,
+            active: bed.active as boolean,
+            order: bed.order as number,
+        };
+    
+        if (!checkNameBeds(convertedBed) && editCallBack) {
+            editCallBack(convertedBed);
         }
+        
     }
-    function addCallBackForm(bed:IBed){
-        if(!checkNameBeds(bed) && addCallBack){
-            addCallBack(bed);
+    function addCallBackForm(bed:FormValues){
+        const convertedBed: IBed = {
+            id: bed.id as number,
+            name: bed.name as string,
+            gender: bed.gender as number,
+            active: bed.active as boolean,
+            order: bed.order as number,
+        };
+        if(!checkNameBeds(convertedBed) && addCallBack){
+            addCallBack(convertedBed);
             resetModal()
         }
     }
@@ -572,14 +588,14 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         <div>
                         {
                             bedToEdit &&
-                            <Form fields={BED_FORM} fullWidth callBackForm={editCallBackForm}
-                                initialData={bedToEdit} 
+                            <FormTSFunc fields={BED_FORM} fullWidth callBackForm={editCallBackForm}
+                                initialData={bedToEdit ? {...bedToEdit} as FormValues : undefined}
                                 closeCallBack={() => resetModal()}/>
                         }
                         {
                             addingBed &&
-                            <Form fields={BED_FORM} fullWidth callBackForm={addCallBackForm}   
-                                externalError ={showNameError ? "hospital.ward.name-bed-error" : null}                           
+                            <FormTSFunc fields={BED_FORM} fullWidth callBackForm={addCallBackForm}   
+                                externalError ={showNameError ? "hospital.ward.name-bed-error" : undefined}                           
                                 closeCallBack={() => resetModal()}/>
                         }
                         {

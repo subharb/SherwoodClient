@@ -11,6 +11,7 @@ import { PERMISSION } from '../components/investigation/share/user_roles';
  * @param {Object} field - Field to be validated
  * @param {string} field.value - The value of the input
  * @param {string} field.validation - The type of validations to be done
+ * @param {boolean} field.required - The type of validations to be done
  * 
  * @returns {Object}  - This object contains the result and the message
  * @returns {boolean} result - This object contains the result and the message

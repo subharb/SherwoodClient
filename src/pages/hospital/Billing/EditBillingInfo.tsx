@@ -1,6 +1,7 @@
 import React from 'react';
 import Billing from '.';
 import Form from '../../../components/general/form';
+import FormTSFunc from '../../../components/general/formTSFunction';
 import { BillingInfo, EditBillingInfoProps } from './types';
 
 
@@ -66,7 +67,7 @@ const EditBillingInfo: React.FC<EditBillingInfoProps> = ({ billingInfo, callback
     }
     
     return (
-        <Form fields={BILLING_INFO_FORM} initialData={initialData} fullWidth callBackForm={(field:any) => callBack(field)} 
+        <FormTSFunc fields={BILLING_INFO_FORM} initialData={initialData} fullWidth callBackForm={(field:any) => callBack(field)} 
             dataTestid="save-field" />
     );
 };

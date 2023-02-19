@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Form from '../../../components/general/form';
+import FormTSFunc from '../../../components/general/formTSFunction';
 import { ButtonAccept, ButtonAdd, ButtonCancel } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
@@ -148,7 +149,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
     loading, servicesGeneral, servicesInvestigation, setSnackbar, callBackSaveService, callBackDeleteService }) => {
     const [showModal, setShowModal] = React.useState(false);
     const [addingService, setAddingService] = React.useState(false);
-    const [selectedService, setSelectedService] = React.useState<{ [id: string]: any; } | null>(null);
+    const [selectedService, setSelectedService] = React.useState<{ [id: string]: any; } | undefined>(undefined);
     const [removingService, setRemovingService] = React.useState<boolean>(false);
 
     let formFields: { [id: string]: any; } = React.useMemo(() => {
@@ -246,7 +247,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
     function cancel(){
         setShowModal(false);
         setRemovingService(false);
-        setSelectedService(null);
+        setSelectedService(undefined);
     }
     function renderCore() {
         if (servicesInvestigation?.length === 0) {
@@ -300,7 +301,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                             }
                             {
                                 formFields.serviceId.options?.length > 0 &&
-                                <Form fields={formFields} initialData={selectedService}
+                                <FormTSFunc fields={formFields} initialData={selectedService}
                                     callBackForm={(values: any) => callBackSaveService(values, selectedService ? selectedService.id : -1)} />
 
                             }
@@ -338,7 +339,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
                 onClick={() => {
                     setShowModal(true);
                     setAddingService(true);
-                    setSelectedService(null);
+                    setSelectedService(undefined);
                 }
                 } />
             <Typography variant="body2" gutterBottom>
@@ -348,7 +349,7 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
             <Grid container style={{ padding: 20 }}>
                 <Grid item xs={12}>
                     {
-                        renderCore()
+                        renderCore() 
                     }
                 </Grid>
             </Grid>

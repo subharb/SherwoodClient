@@ -2,8 +2,7 @@ import { Grid, Paper, Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import React, { useEffect, useMemo } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { useDispatch } from 'react-redux';
-import Form from '../../../components/general/form';
+import FormTSFunc, { FieldProps } from '../../../components/general/formTSFunction';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
@@ -125,7 +124,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
     })
     departmentOptions.unshift({label: "pages.hospital.outpatients.box.no_department", value: "null"})
 
-    const CREATE_BOX_FORM = useMemo(() => {
+    const CREATE_BOX_FORM:{[key: string]: FieldProps} | {} = useMemo(() => {
         if(!departments){
             return {}
         }
@@ -157,7 +156,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
             }       
         }
     }, [departments])
-    const CREATE_AGENDA_FORM = useMemo(() => {
+    const CREATE_AGENDA_FORM:{[key: string]: FieldProps} | {} = useMemo(() => {
         if(!boxes){
             return {}
         }
@@ -191,26 +190,26 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     shortLabel: "pages.hospital.outpatients.agenda.slotsPerDay",
                     validation : "number"
                 },
-                "turnStart":{
-                    required : true,
-                    name:"turnStart",
-                    type:"time",
-                    numberColumnsLg:3,
-                    numberColumnsXs:3,
-                    label:"pages.hospital.outpatients.agenda.turn_start",
-                    shortLabel: "pages.hospital.outpatients.agenda.turn_start",
-                    validation : "number"
-                },
-                "turnEnd":{
-                    required : true,
-                    name:"turnEnd",
-                    type:"time",
-                    numberColumnsLg:3,
-                    numberColumnsXs:3,
-                    label:"pages.hospital.outpatients.agenda.turn_end",
-                    shortLabel:"pages.hospital.outpatients.agenda.turn_end",
-                    validation : "number"
-                },
+                // "turnStart":{
+                //     required : true,
+                //     name:"turnStart",
+                //     type:"time",
+                //     numberColumnsLg:3,
+                //     numberColumnsXs:3,
+                //     label:"pages.hospital.outpatients.agenda.turn_start",
+                //     shortLabel: "pages.hospital.outpatients.agenda.turn_start",
+                //     validation : "number"
+                // },
+                // "turnEnd":{
+                //     required : true,
+                //     name:"turnEnd",
+                //     type:"time",
+                //     numberColumnsLg:3,
+                //     numberColumnsXs:3,
+                //     label:"pages.hospital.outpatients.agenda.turn_end",
+                //     shortLabel:"pages.hospital.outpatients.agenda.turn_end",
+                //     validation : "number"
+                // },
                 "daysWeek":{
                     required : true,
                     name:"daysWeek",
@@ -234,6 +233,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     label:"pages.hospital.outpatients.box.select_department",
                     shortLabel:"pages.hospital.outpatients.box.select_department",
                     validation : "notEmpty",
+                    callBack: (value:string) => {console.log(value+"CALLBACK")},
                     options:departmentOptions
                 },
                 "principalResearcher":{
@@ -284,7 +284,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
         }
     }, [boxes, researchers, services, reseachersDepartment, initDataAgenda])
     
-    function saveBox(box:IBox){
+    function saveBox(box:any){
         console.log(box);
         saveBoxCallback(box);
     }
@@ -320,13 +320,13 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     <>
                     {
                         modalInfo.type === "box" && 
-                        <Form fields={CREATE_BOX_FORM} fullWidth callBackForm={saveBox}
+                        <FormTSFunc fields={CREATE_BOX_FORM} fullWidth callBackForm={saveBox}
                             initialData={{type:0}} 
                             closeCallBack={() => resetModal()}/>
                     }       
                     {
                         modalInfo.type === "agenda" && 
-                        <Form fields={CREATE_AGENDA_FORM} fullWidth callBackForm={saveAgenda}
+                        <FormTSFunc fields={CREATE_AGENDA_FORM} fullWidth={true} callBackForm={saveAgenda}
                             initialData={initDataAgenda} 
                             closeCallBack={() => resetModal()}/> 
                     } 
