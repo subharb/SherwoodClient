@@ -2,6 +2,7 @@ import { Grid, Paper, Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import React, { useEffect, useMemo } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
+import Form from '../../../components/general/form';
 import FormTSFunc, { FieldProps } from '../../../components/general/formTSFunction';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
@@ -190,26 +191,26 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     shortLabel: "pages.hospital.outpatients.agenda.slotsPerDay",
                     validation : "number"
                 },
-                // "turnStart":{
-                //     required : true,
-                //     name:"turnStart",
-                //     type:"time",
-                //     numberColumnsLg:3,
-                //     numberColumnsXs:3,
-                //     label:"pages.hospital.outpatients.agenda.turn_start",
-                //     shortLabel: "pages.hospital.outpatients.agenda.turn_start",
-                //     validation : "number"
-                // },
-                // "turnEnd":{
-                //     required : true,
-                //     name:"turnEnd",
-                //     type:"time",
-                //     numberColumnsLg:3,
-                //     numberColumnsXs:3,
-                //     label:"pages.hospital.outpatients.agenda.turn_end",
-                //     shortLabel:"pages.hospital.outpatients.agenda.turn_end",
-                //     validation : "number"
-                // },
+                "turnStart":{
+                    required : true,
+                    name:"turnStart",
+                    type:"time",
+                    numberColumnsLg:3,
+                    numberColumnsXs:3,
+                    label:"pages.hospital.outpatients.agenda.turn_start",
+                    shortLabel: "pages.hospital.outpatients.agenda.turn_start",
+                    validation : "number"
+                },
+                "turnEnd":{
+                    required : true,
+                    name:"turnEnd",
+                    type:"time",
+                    numberColumnsLg:3,
+                    numberColumnsXs:3,
+                    label:"pages.hospital.outpatients.agenda.turn_end",
+                    shortLabel:"pages.hospital.outpatients.agenda.turn_end",
+                    validation : "number"
+                },
                 "daysWeek":{
                     required : true,
                     name:"daysWeek",
@@ -233,7 +234,12 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     label:"pages.hospital.outpatients.box.select_department",
                     shortLabel:"pages.hospital.outpatients.box.select_department",
                     validation : "notEmpty",
-                    callBack: (value:string) => {console.log(value+"CALLBACK")},
+                    callBackOnChange: (uuidDepartment:string) => {
+                        console.log(uuidDepartment);
+                        const reseachersDepartment = researchers.filter((researcher) => researcher.units.filter((unit) => unit.department.uuid === uuidDepartment).length > 0);
+                        setResearchersDepartment(reseachersDepartment);
+
+                    },
                     options:departmentOptions
                 },
                 "principalResearcher":{
@@ -320,13 +326,13 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     <>
                     {
                         modalInfo.type === "box" && 
-                        <FormTSFunc fields={CREATE_BOX_FORM} fullWidth callBackForm={saveBox}
+                        <Form fields={CREATE_BOX_FORM} fullWidth callBackForm={saveBox}
                             initialData={{type:0}} 
                             closeCallBack={() => resetModal()}/>
                     }       
                     {
                         modalInfo.type === "agenda" && 
-                        <FormTSFunc fields={CREATE_AGENDA_FORM} fullWidth={true} callBackForm={saveAgenda}
+                        <Form fields={CREATE_AGENDA_FORM} fullWidth={true} callBackForm={saveAgenda}
                             initialData={initDataAgenda} 
                             closeCallBack={() => resetModal()}/> 
                     } 

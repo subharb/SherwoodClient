@@ -163,6 +163,7 @@ class FieldSherwood extends PureComponent{
         this.props.input.onChange(value);
     }
     selectChange(value){
+        console.log("Select Change", value);
         this.props.input.onChange(value);
     }
     imagesSelected(images){
@@ -238,10 +239,11 @@ class FieldSherwood extends PureComponent{
                         <FormControl mt={3} fullWidth variant="outlined"  margin={this.typeMargin} error={errorState} >
                             <InputLabel id={labelId}>{labelString}</InputLabel>
                             <Select
+                                {...input} 
                                 labelId={labelId}
                                 id={input.name}
                                 label={labelString}
-                                {...input} 
+                                onChange={(event) => this.selectChange(event.target.value)}
                             >
                             { optionsArray }
                             </Select>

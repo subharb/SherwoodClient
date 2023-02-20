@@ -58,19 +58,13 @@ class Form extends Component {
         })
         return this.props.callBackForm(tempValues, buttonSubmitted);
     }
-    componentDidUpdate(prevProps){
-        console.log("cambian props");
-        for(let i = 0; i < Object.keys(this.props.fields).length; i++){
-            const key = Object.keys(this.props.fields)[i];
-            
-            let field = this.props.fields[key];
-            
-            let prevField = prevProps.fields[key];
-            if(field.value !== prevField.value){
-                console.log("cambio valor", field.value);
-            }
+    componentDidUpdate(prevProps, prevState){
+        const changedField = Object.keys(this.props.fields).find(key => {
+            return this.props.formValues[key] !== prevProps.formValues[key];
+        });
+        if(this.props.fields[changedField] && this.props.fields[changedField].callBackOnChange){
+            this.props.fields[changedField].callBackOnChange(this.props.formValues[changedField]);
         }
-        
     }
     componentDidMount(){
         //Busco el campo DefaultValue para inicializar el form con esos valores
@@ -136,9 +130,7 @@ class Form extends Component {
                     currentSection = [];
                 }
                 currentSection.push(
-                    <Grid item xs={this.props.fields[key].numberColumnsXs ? this.props.fields[key].numberColumnsXs : 12} 
-                        lg={this.props.fields[key].numberColumnsLg ? this.props.fields[key].numberColumnsLg : 12} 
-                        style={{paddingLeft:"0.5rem"}} >
+                    <Grid item xs={this.props.numberColumns === 2 ? 6 :12}>
                         <Field
                             name={this.props.fields[key].name ? this.props.fields[key].name : key}
                             type={this.props.fields[key].type}
@@ -152,7 +144,7 @@ class Form extends Component {
                             country={this.props.country}
                             label={this.props.fields[key].label}
                             validate={[this.sherwoodValidation]}
-                            {...this.props.fields[key]} 
+                            {...this.props.fields[key]}
                         />
                         {
                             this.renderExtraFields(key)
@@ -261,10 +253,10 @@ function validate(values, props){
     //console.log(errors);
     return errors;
 }
-Form.propTypes = {
-    fields : PropTypes.object,
-    creating: PropTypes.bool
-}
+// Form.propTypes = {
+//     fields : PropTypes.object,
+//     creating: PropTypes.bool
+// }
 
 
 // // Decorate with redux-form
@@ -287,10 +279,19 @@ Form.propTypes = {
 //     }
 //   )(Form)
 
-const mapStateToProps = state => {
-    const formValues = formValueSelector('form')(state, 'name');
-    return { formValues };
-  };
+const selector = formValueSelector('form');
+
+const mapStateToProps = (state, ownProps) => {
+    const fields = ownProps.fields;
+    const formValues = {};
+    for(const fieldKey in fields){
+        formValues[fieldKey] = selector(state, fieldKey);
+    }
+    
+    return {
+        formValues
+    }
+};
 
   export default connect(mapStateToProps)(reduxForm({
     form: 'form', // a unique identifier for this form

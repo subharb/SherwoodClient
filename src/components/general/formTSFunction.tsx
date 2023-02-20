@@ -7,6 +7,7 @@ import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { usePrevious } from '../../hooks';
 import { validateField } from '../../utils';
 import FieldSherwood from './FieldSherwood';
+import Form from './form';
 import { ButtonCancel, ButtonContinue } from './mini_components';
 
 
@@ -61,17 +62,16 @@ export interface FormValues{
 }
 
 const FormTSFunc: React.FC<FormTSFuncProps> = (props) => {
-
-    return <EnhancedFormTS {...props} />
+    // @ts-ignore: Unreachable code error
+    return <Form {...props} />
 }
-
 
 export default FormTSFunc;
 
 const FormTSCore: React.FC<FormTSFuncCoreProps> = (props) => {
     const [state, setState] = React.useState<FormTSState>({showOptions:{}});
 
-    const prevProps:FormTSFuncCoreProps = usePrevious(props);
+    //const prevProps:FormTSFuncCoreProps = usePrevious(props);
     function sherwoodValidation(value:string, allValues:number, propsForm:any, key:string){
         if(props.fields[key]){
             const fieldValueCompare = props.fields[key].validationField ? value : props.fields[key].validationValue ? props.translate(props.fields[key].validationValue ? props.fields[key].validationValue as string : "") : null;
@@ -104,18 +104,18 @@ const FormTSCore: React.FC<FormTSFuncCoreProps> = (props) => {
         }
         
     }
-    useEffect(() => {
-        console.log("cambian props");
-        for(let i = 0; i < Object.keys(props.fields).length; i++){
-            const key = Object.keys(props.fields)[i];
+    // useEffect(() => {
+    //     console.log("cambian props");
+    //     for(let i = 0; i < Object.keys(props.fields).length; i++){
+    //         const key = Object.keys(props.fields)[i];
             
-            let field = props.fields[key];
+    //         let field = props.fields[key];
             
-            //let prevField = prevProps.fields[key];
+    //         //let prevField = prevProps.fields[key];
             
-        }
+    //     }
         
-    }, [props]);
+    // }, [props]);
     useEffect(() => {
         //Busco el campo DefaultValue para inicializar el form con esos valores
         let initData:FormValues = {};
@@ -186,8 +186,9 @@ const FormTSCore: React.FC<FormTSFuncCoreProps> = (props) => {
                     <Grid item xs={sizeXS}  lg={sizeLG} 
                         style={{paddingLeft:"0.5rem"}} >
                         <Field
-                            //name={props.fields[key].name ? props.fields[key].name : key}
-                            //type={props.fields[key].type}
+                            name={props.fields[key].name ? props.fields[key].name : key}
+                            type={props.fields[key].type}
+                            // @ts-ignore: Unreachable code error
                             component={FieldSherwood}
                             key={key}
                             uuidSurvey={props.uuidSurvey}
@@ -196,10 +197,10 @@ const FormTSCore: React.FC<FormTSFuncCoreProps> = (props) => {
                             hideTitle = { currentSection.length === 1 }
                             fullWidth={props.fullWidth}
                             country={props.country}
-                            //label={props.fields[key].label}
+                            label={props.fields[key].label}
                             validate={[sherwoodValidation]}
                             options = {props.fields[key].options}
-                            {...props.fields[key]}
+                            //{...props.fields[key]}
                         />
                         {
                             renderExtraFields(key)
@@ -276,12 +277,14 @@ const FormTSCore: React.FC<FormTSFuncCoreProps> = (props) => {
     
 };
 
+
+
 const enhance = compose<React.ComponentType>(
     reduxForm<FormValues, LocalizeContextProps>({
       form: 'form',
       // your other reduxForm options here
     }),
     withLocalize
-  );
+);
   
-const EnhancedFormTS = enhance(FormTSCore);
+const EnhancedFormTS = React.memo(enhance(FormTSCore));
