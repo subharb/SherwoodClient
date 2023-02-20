@@ -40,7 +40,8 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
             })
             .catch(err => {
                 setLoading(false);
-                setShowSnackbar({show:true, message:err.message, severity:"error"})
+                const message = err.errorCode !== undefined ? err.errorCode : err.message;
+                setShowSnackbar({show:true, message : err.message, severity:"error"})
             }) 
     }, [uuidInvestigation]);
 
@@ -81,7 +82,8 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
             })
             .catch(err => {
                 setLoading(false);
-                setShowSnackbar({show:true, message:err.message, severity:"error"})
+                const message = err.response.data.errorCode !== undefined ? "pages.hospital.outpatients.agenda.errors.error_"+err.response.data.errorCode : err.message;
+                setShowSnackbar({show:true, message:message, severity:"error"});
             }) 
     }
 
@@ -114,9 +116,10 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
     const [addBox, setAddBox] = React.useState(false);
     const [addingAgenda, setAddingAgenda] = React.useState(false);
     const [modalInfo, setModalInfo] = React.useState({showModal: false, type:""});
-    const [initDataAgenda, setInitDataAgenda] = React.useState({});
+    const [initDataAgenda, setInitDataAgenda] = React.useState({otherStaff:[]});
     const [agendas, setAgendas] = React.useState<IAgenda[]>([]);
     const [reseachersDepartment, setResearchersDepartment] = React.useState<IResearcher[]>([]);
+    const [prevDataAgenda, setPrevDataAgenda] = React.useState<IAgenda | null>(null);
     let departmentOptions = departments.map((department) => {
         return {
             label: department.name,
@@ -167,6 +170,8 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     required : true,
                     name:"name",
                     type:"text",
+                    numberColumnsLg:12,
+                    numberColumnsXs:12,
                     label:"general.name",
                     shortLabel: "general.name",
                     validation : "textMin2"
@@ -257,7 +262,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     })
                 },
                 "otherStaff" : {
-                    required : true,
+                    required : false,
                     type:"hidden",
                     name:"otherStaff",
                     label:"pages.hospital.outpatients.agenda.service",
@@ -301,6 +306,8 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
         
         const agendaPost:IAgenda = {...agenda};
         agendaPost.turn = [turnStart, turnEnd];
+        setPrevDataAgenda(agenda);
+        agendaPost.daysWeek = agenda.daysWeek.map((day:{multioption : string}) => day.multioption);
         saveAgendaCallback(agendaPost);
     }
 
@@ -333,7 +340,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, showSna
                     {
                         modalInfo.type === "agenda" && 
                         <Form fields={CREATE_AGENDA_FORM} fullWidth={true} callBackForm={saveAgenda}
-                            initialData={initDataAgenda} 
+                            initialData={prevDataAgenda ? prevDataAgenda : initDataAgenda} 
                             closeCallBack={() => resetModal()}/> 
                     } 
                     </>      
