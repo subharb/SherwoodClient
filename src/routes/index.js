@@ -98,6 +98,8 @@ export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
 export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
 export const HOSPITAL_PHARMACY_CENTRAL_ROUTE = "/pharmacy";
 export const HOSPITAL_OUTPATIENTS_ROUTE = "/outpatients";
+export const HOSPITAL_AGENDA_ROUTE = "/agenda/:uuidAgenda";
+export const HOSPITAL_EDIT_AGENDA_ROUTE = "/agenda/:uuidAgenda/edit";
 
 
 const hospitalRoutes = {
@@ -257,6 +259,16 @@ const hospitalRoutes = {
         {
             path: HOSPITAL_OUTPATIENTS_ROUTE,
             name: "Outpatients",
+            component: () => <Outpatients />,
+        },
+        {
+            path: HOSPITAL_AGENDA_ROUTE,
+            name: "Agenda",
+            component: () => <Outpatients />,
+        },
+        {
+            path: HOSPITAL_EDIT_AGENDA_ROUTE,
+            name: "Agenda",
             component: () => <Outpatients />,
         },
         {

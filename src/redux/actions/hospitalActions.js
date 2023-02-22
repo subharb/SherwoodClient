@@ -1,5 +1,6 @@
 import * as types from "../../constants";
 import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteDepartmentService, deleteUnitService, deleteWardService, dischargePatientService, editDepartmentService, editUnitService, getAgendasInvestigationService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, makeAppointmentService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
+import { saveAgendaService } from "../../services/agenda";
 
 
 export function getAgendasInvestigationAction(uuidInvestigation) {
@@ -11,6 +12,24 @@ export function getAgendasInvestigationAction(uuidInvestigation) {
                 dispatch({
                     type: types.FETCH_HOSPITAL_AGENDAS_SUCCESS,
                     agendas: response.agendas
+                });
+            })
+            .catch((error) => {
+                dispatch({ type: types.HOSPITAL_ERROR });
+                throw error;
+            });
+    };
+}
+
+export function saveAgendaInvestigationAction(uuidInvestigation) {
+    return async (dispatch) => {
+        dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+
+        return saveAgendaService(uuidInvestigation)
+            .then((response) => {
+                dispatch({
+                    type: types.FETCH_HOSPITAL_SUCCESS,
+                    agendas: response.agenda
                 });
             })
             .catch((error) => {
@@ -398,6 +417,16 @@ export function dischargePatientAction(uuidInvestigation, uuidPatient) {
             });
     };
 }
+
+export async function saveAgendaAction(agenda) {
+    return async (dispatch) => {
+        dispatch({ 
+            type: types.FETCH_HOSPITAL_SAVE_AGENDA_SUCCESS,
+            agenda,
+         })
+    }
+}
+
 
 
 

@@ -270,7 +270,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
                 <Grid container spacing={3}>
                     <Grid item xs={12} style={{padding:'2rem'}}>
                         <FormConsultAppointment uuidInvestigation={investigations.currentInvestigation.uuid} 
-                            infoAppointmentReadyCallback={getAppoinmentsDate} 
+                            showAllAgendas={true} infoAppointmentReadyCallback={getAppoinmentsDate} 
                             />
                     </Grid>
                 </Grid>

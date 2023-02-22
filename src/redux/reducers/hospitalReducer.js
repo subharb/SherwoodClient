@@ -1,3 +1,4 @@
+import { te } from "date-fns/locale";
 import * as types from "../../constants";
 import { decryptPatientsData } from '../../utils'; 
 /**
@@ -10,8 +11,8 @@ import { decryptPatientsData } from '../../utils';
     data: {
         researchers:null,
         departments:null,
-        agendas:[],
-        appointments:[],
+        agendas:null,
+        appointments:null,
         stays:null
     },
     loading: false,
@@ -40,6 +41,7 @@ export default function reducer(state = initialState, action){
     let indexUnit;
     let ward;
     let bedIndex;
+    let tempAgendas;
     let allPatientsStays = {};
     switch(action.type){
         case types.FETCH_HOSPITAL_SUCCESS:
@@ -54,8 +56,19 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading;
             newState.error = initialState.error;
             return newState;
+        case types.FETCH_HOSPITAL_SAVE_AGENDA_SUCCESS:
+            tempAgendas = [...newState.data.agendas];
+            tempAgendas.push(action.agenda);
+            newState.data.agendas = tempAgendas;
+            newState.loading = initialState.loading;
+            newState.error = initialState.error;
+            return newState;
         case types.FETCH_HOSPITAL_APPOINTMENT_SUCCESS:
-            const tempAppointments = [...newState.data.appointments];
+            let tempAppointments = [];
+            if(newState.data.appointments){
+                tempAppointments = [...newState.data.appointments];
+            }
+            
             tempAppointments.push(action.appointment);
             newState.data.appointments = tempAppointments;
 

@@ -4,6 +4,7 @@
     "general" : {
         "yes" : ["Yes", "Si", "Oui"], 
         "no" : ["No", "No", "Non"], 
+        "not_defined" : ["Not defined", "No definido", "Non défini"],
         "week_days" : {
             "monday" : ["Monday", "Lunes", "Lundi"],
             "tuesday" : ["Tuesday", "Martes", "Mardi"],
@@ -11,7 +12,15 @@
             "thursday" : ["Thursday", "Jueves", "Jeudi"],
             "friday" : ["Friday", "Viernes", "Vendredi"],
             "saturday" : ["Saturday", "Sábado", "Samedi"],
-            "sunday" : ["Sunday", "Domingo", "Dimanche"]
+            "sunday" : ["Sunday", "Domingo", "Dimanche"],
+            "M" : ["Monday", "Lunes", "Lundi"],
+            "T" : ["Tuesday", "Martes", "Mardi"],
+            "W" : ["Wednesday", "Miércoles", "Mercredi"],
+            "R" : ["Thursday", "Jueves", "Jeudi"],
+            "F" : ["Friday", "Viernes", "Vendredi"],
+            "S" : ["Saturday", "Sábado", "Samedi"],
+            "U" : ["Sunday", "Domingo", "Dimanche"]
+
         },
         "years" : ["years", "años", "ans"],
         "several" : ["Several", "Varios", "Plusieurs"],

@@ -28,7 +28,7 @@ export interface SnackbarType{
 }
 
 export function useSnackBarState(){
-    const [showSnackbar, setShowSnackbar] = useState<{ show: boolean; message?: string; severity?: Color; }>({show : false});
+    const [showSnackbar, setShowSnackbar] = useState<SnackbarType>({show : false});
 
     function handleCloseSnackbar(){
         setShowSnackbar({show:false});
@@ -76,7 +76,7 @@ export function useAgendas(){
                 getAgendasInvestigationAction(uuidInvestigation)
             ); 
         }
-        if(investigations.data && investigations.currentInvestigation){
+        if(investigations.data && investigations.currentInvestigation && !agendas){
             getAgendas(investigations.currentInvestigation.uuid)
         }
     }, [investigations])

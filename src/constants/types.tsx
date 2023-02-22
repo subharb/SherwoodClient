@@ -83,6 +83,11 @@ export interface IPersonalData{
     health_id ?:string
 }
 
+export enum OutpatientsVisualizationMode{
+    ADMIN = 0,
+    CONSULT = 1,
+}
+
 export interface SnackbarType{ 
     show: boolean; message?: string; severity?: Color; }
 
