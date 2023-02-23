@@ -10,7 +10,7 @@ import Loader from '../../../components/Loader';
 import { IAppointment, IPatient, OutpatientsVisualizationMode } from '../../../constants/types';
 import { SnackbarType, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_PATIENT } from '../../../routes';
-import { getAppoinmentsDateService, updateAppoinmentsService } from '../../../services/agenda';
+import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsService } from '../../../services/agenda';
 import { areSameDates, yearsFromDate } from '../../../utils';
 import { RequestStatus } from '../Service/types';
 
@@ -20,9 +20,10 @@ interface AppointmentsProps {
     uuidAgenda: string;
     dateSelected: Date;
     mode:OutpatientsVisualizationMode,
+    callbackAppointments?: (appointments:IAppointment[]) => void;
 }
 
-const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uuidAgenda, dateSelected, patientsPersonalData }) => {
+const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uuidAgenda, dateSelected, patientsPersonalData, callbackAppointments }) => {
     const [loadingAppointments, setLoadingAppointments] = React.useState(false);
     const [appointments, setAppointments] = React.useState<IAppointment[]>([]);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
@@ -42,7 +43,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
                 resetModal();
             })
             .catch(err => {
-                let message;
+                let message = "general.error";
                 if(err.response.status === 401){
                     message = "pages.hospital.outpatients.no_permissions";
                 }
@@ -57,7 +58,20 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
         resetModal();
     }
     function cancelAppointment(uuidAppointment:string){
-        
+        setLoadingAppointments(true);
+        cancelAppointmentService(uuidInvestigation, uuidAppointment)
+            .then(response => {
+                const indexAppointment = appointments.findIndex((appointment) => appointment.uuid === uuidAppointment);
+                if(indexAppointment !== -1){
+                    appointments.splice(indexAppointment, 1);
+                }
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.cancel_success", severity:"success"});
+                setLoadingAppointments(false);
+            })
+            .catch(err => {
+                setShowSnackbar({show:true, message:"general.error", severity:"error"});
+                setLoadingAppointments(false);
+            })
     }
     useEffect(() => {
         if(uuidAgenda && dateSelected){
@@ -71,6 +85,10 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
             .then(response => {
                 setAppointments(response.appointments);
                 setLoadingAppointments(false);
+                if(callbackAppointments){
+                    callbackAppointments(response.appointments);
+                }
+                
             })
             .catch(err => {
                 setLoadingAppointments(false);
@@ -114,7 +132,7 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
     const history = useHistory();
 
     useEffect(() => {
-        if(!showSnackbar.show){
+        if(showSnackbar.show && showSnackbar.severity === "success"){
             setShowModal({show:false});
         }
     }, [showSnackbar.show]);
@@ -244,28 +262,29 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
                 }
                 
             }
-            
-           
         }
     }
 
     if(loadingAppointments){
-        return <Loader />
+        return <Grid style={{padding:'1rem'}} item xs={12}><Loader /></Grid>
     }
+    let appointmentsComponent:JSX.Element[] = [];
     if(appointments.length === 0){
-        return(
-        <Typography variant="h6" component="h6" align="left">
-            <Translate id="pages.hospital.outpatients.no_appointments" />
-        </Typography>)
+        appointmentsComponent.push(
+            <Grid item xs={12}>
+                <Typography variant="h6" style={{fontWeight:"bold"}} component="h6" align="left">
+                    <Translate id="pages.hospital.outpatients.no_appointments" />
+                </Typography>
+            </Grid>)
     }
     const appointmentsConfirmed = appointments.filter((appointment) => [RequestStatus.ACCEPTED, RequestStatus.COMPLETED].includes(appointment.requestAppointment.status) );
     appointmentsConfirmed.sort((appA, appB) => appA.order - appB.order);
-    let appointmentsComponent:JSX.Element[] = [];
+    
     
     if(appointmentsConfirmed.length > 0){
         appointmentsComponent = [<>
             <Grid item xs={12}>
-                <Typography variant="h6" component="h6" align="left"><Translate id="pages.hospital.outpatients.checked_in_patients" /></Typography>
+                <Typography variant="h6" style={{fontWeight:"bold"}} component="h6" align="left"><Translate id="pages.hospital.outpatients.checked_in_patients" /></Typography>
             </Grid>
             <Grid container item xs={12}>
             {
@@ -292,7 +311,7 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
         appointmentsComponent.push( 
             <>
             <Grid item xs={12}>
-                <Typography variant="h6" component="h6" align="left"><Translate id="pages.hospital.outpatients.not_confirmed_patients" /></Typography>
+                <Typography variant="h6" style={{fontWeight:"bold"}}  component="h6" align="left"><Translate id="pages.hospital.outpatients.not_confirmed_patients" /></Typography>
             </Grid>
             <Grid container item xs={12}>
                 {
@@ -333,7 +352,7 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
                 </div>
             </Snackbar>
             {renderModal()}
-            <Grid container spacing={2}>
+            <Grid container spacing={2} style={{padding:'1rem'}}>
                 {appointmentsComponent}
             </Grid>
         </>

@@ -132,6 +132,22 @@ export function getAppoinmentsDateService(uuidInvestigation: string, uuidAgenda:
     });
 }
 
+export function cancelAppointmentService(uuidInvestigation: string, uuidAppointment:string): Promise<{ status: number, appointments: IAppointment[] }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/"+uuidAppointment+"/cancel", {},{ headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
 export function updateAppoinmentsService(uuidInvestigation: string, uuidAppointment:string): Promise<{ status: number, appointment: IAppointment }> {
     return new Promise((resolve, reject) => {
         axios

@@ -501,6 +501,16 @@
                     "CANCEL" : ["Cancel appointment", "Cancelar cita", "Annuler le rendez-vous"],
                     "ERROR_CANCEL" : ["Error", "Error", "Erreur"]
                 },
+                "single_agenda" : {
+                    "block" : {
+                        "title" : ["Block a date", "Bloquear una fecha", "Bloquer une date"],
+                        "message" : ["Are you sure you want to block this date?", "¿Está seguro de que desea bloquear esta fecha?", "Êtes-vous sûr de vouloir bloquer cette date?"]
+                    },
+                    "no_block" : {
+                        "title" : ["Warning", "Aviso", "Attention"],
+                        "message" : ["You can't block a date that has appointments", "No puede bloquear una fecha que tiene citas", "Vous ne pouvez pas bloquer une date qui a des rendez-vous"]
+                    }
+                },
                 "error_cancel" : ["Can't cancel a accepted appointment", "No se puede cancelar una cita aceptada", "Impossible d'annuler un rendez-vous accepté"],
                 "checked_in_patients" : ["Checked in patients", "Pacientes en consulta", "Patients en consultation"],
                 "not_confirmed_patients" : ["Not confirmed patients", "Pacientes no confirmados", "Patients non confirmés"],
@@ -538,6 +548,7 @@
                 },
                 "no_permissions" : ["You don't have permissions to make appointments", "No tiene permisos para hacer citas", "Vous n'avez pas les autorisations pour prendre rendez-vous"],
                 "checkin_success" : ["Check in succeded", "Check in realizado correctamente", "Check in réussi"],
+                "cancel_success" : ["Appointment cancelled succesfully", "Cita cancelada correctamente", "Rendez-vous annulé avec succès"],
                 "appointment" : {
                     "title" : ["Making appointment: ", "Haciendo cita: ", "Prendre rendez-vous: "],
                     "date" : ["Appointment date", "Fecha de la cita", "Date du rendez-vous"],

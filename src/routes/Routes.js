@@ -57,13 +57,13 @@ if(process.env.REACT_APP_PRODUCT === "HOSPITAL"){
             {childRoutes(DashboardLayout, hospitalLayoutRoutes)}
             {childRoutes(AuthLayout, authLayoutRoutes)} 
         
-        <Route
-            render={() => (
-            <AuthLayout>
-                <Page404 />
-            </AuthLayout>
-            )}
-        />
+            <Route
+                render={() => (
+                <AuthLayout>
+                    <Page404 />
+                </AuthLayout>
+                )}
+            />
         </Switch>
     
     );

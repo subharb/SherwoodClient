@@ -11,7 +11,7 @@ import Loader from '../../../components/Loader';
 import { IAgenda, IBox, IDepartment, IOutpatientsInfo, IResearcher, SnackbarType } from '../../../constants/types';
 import { useAgendas, useDepartments, useSnackBarState } from '../../../hooks';
 import { saveAgendaAction } from '../../../redux/actions/hospitalActions';
-import { HOSPITAL_AGENDA_ROUTE } from '../../../routes';
+import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from '../../../routes';
 import { getBoxesService, getServicesInvestigationService, saveAgendaService, saveBoxService } from '../../../services/agenda';
 import { researcherFullName } from '../../../utils';
 import Accordion2Levels, { MainElementType } from '../../components/Accordion2Levels';
@@ -385,7 +385,10 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                 <>
                     Box: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
                     <Accordion2Levels orderedMainElements={elements} deleteMainElementCallBack={(uuid) => console.log("DELETE:"+uuid)} 
-                        editSubElementCallBack={(uuid) => console.log("EDIT SUB"+uuid)} checkCanDeleteMainElement={(uuid) => true} 
+                        editSubElementCallBack={(uuid) =>{
+                            const nextUrl = HOSPITAL_ACTION_AGENDA_ROUTE.replace(":uuidAgenda", uuid).replace(":action", "edit")
+                            history.push(nextUrl);
+                        }} checkCanDeleteMainElement={(uuid) => true} 
                         deleteSubElementCallBack={(uuid) => console.log("DELETE SUB"+uuid)} addSubElementCallBack={(uuid) => addAgenda(uuid)}
                         viewSubElementCallBack={(uuid) => {
                             const nextUrl = HOSPITAL_AGENDA_ROUTE.replace(":uuidAgenda", uuid)

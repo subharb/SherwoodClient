@@ -265,11 +265,13 @@ const hospitalRoutes = {
         {
             path: HOSPITAL_AGENDA_ROUTE,
             name: "Agenda",
+            exact: true,
             component: () => <SingleAgenda  />,
         },
         {
             path: HOSPITAL_ACTION_AGENDA_ROUTE,
             name: "Agenda",
+            exact: true,
             component: () => <SingleAgenda  />,
         },
         {
