@@ -496,7 +496,12 @@
             "outpatients" : {
                 "title" : ["Outpatients", "Consultas externas", "Consultations externes"],
                 "select_date" : ["Select date", "Seleccione fecha", "Sélectionnez la date"],
-                "confirm" : ["Patient check-in", "Confirmar check-in", "Confirmer check-in"],
+                "confirm" : {
+                    "CHECKIN" : ["Patient check-in", "Confirmar check-in", "Confirmer check-in"],
+                    "CANCEL" : ["Cancel appointment", "Cancelar cita", "Annuler le rendez-vous"],
+                    "ERROR_CANCEL" : ["Error", "Error", "Erreur"]
+                },
+                "error_cancel" : ["Can't cancel a accepted appointment", "No se puede cancelar una cita aceptada", "Impossible d'annuler un rendez-vous accepté"],
                 "checked_in_patients" : ["Checked in patients", "Pacientes en consulta", "Patients en consultation"],
                 "not_confirmed_patients" : ["Not confirmed patients", "Pacientes no confirmados", "Patients non confirmés"],
                 "no_appointments" : ["No appointments for this day", "No hay citas para este día", "Pas de rendez-vous pour ce jour"],
@@ -534,6 +539,7 @@
                 "checkin_success" : ["Check in succeded", "Check in realizado correctamente", "Check in réussi"],
                 "appointment" : {
                     "title" : ["Making appointment: ", "Haciendo cita: ", "Prendre rendez-vous: "],
+                    "date" : ["Appointment date", "Fecha de la cita", "Date du rendez-vous"],
                     "error" : {
                         "date_time" : ["Functionality not implemented yet"],
                         "full_agenda" : ["The agenda is full for this day, please select another day", "La agenda está llena para este día, por favor seleccione otro día", "L'agenda est pleine pour ce jour, s'il vous plaît sélectionnez un autre jour"],

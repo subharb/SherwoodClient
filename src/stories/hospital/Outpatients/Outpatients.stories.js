@@ -73,7 +73,9 @@ export const Appointments = TemplateAppointments.bind({});
             show:false,
         },
         mode:0,
+        callbackCancelAppointment:()=>{console.log("Manda cancelar")},
         loadingAppointments:false,
+        loadingSingleAppointment:true,
         patientsPersonalData:[
             {
                 "id": 6016,

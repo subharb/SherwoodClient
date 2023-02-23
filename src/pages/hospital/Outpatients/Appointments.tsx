@@ -53,6 +53,9 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, pa
     function callbackResetModal(){
         resetModal();
     }
+    function cancelAppointment(uuidAppointment:string){
+        
+    }
     async function getAppoinmentsDate(uuidAgenda:string, date:Date){
         setLoadingAppointments(true);
         getAppoinmentsDateService(uuidInvestigation, uuidAgenda, date)
@@ -69,6 +72,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, pa
             loadingSingleAppointment={loadingSingleAppointment} showSnackbar={showSnackbar}
             callbackResetModal={callbackResetModal} mode={mode} patientsPersonalData={patientsPersonalData}
             callbackSetSnackbar={(showSnackbar:SnackbarType) => setShowSnackbar(showSnackbar)}
+            callbackCancelAppointment={(uuidAppointment) => cancelAppointment(uuidAppointment)}
             callbackUpdateAppointment={(uuidAppointment) => updateAppointment(uuidAppointment)}/>
     );
 };
@@ -84,24 +88,34 @@ interface AppointmentsCoreProps{
     mode:OutpatientsVisualizationMode,
     callbackSetSnackbar: (showSnackbar:SnackbarType) => void;
     callbackUpdateAppointment: (uuidAppointment: string) => void;
+    callbackCancelAppointment: (uuidAppointment: string) => void;
     callbackResetModal: () => void;
 }
 
+enum ModalAction{
+    CHECKIN = "CHECKIN",
+    CANCEL = "CANCEL",
+    ERROR_CANCEL = "ERROR_CANCEL"
+
+}
 export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppointments, loadingSingleAppointment, appointments, mode, showSnackbar,
-                                                                patientsPersonalData, callbackUpdateAppointment, callbackSetSnackbar }) => {
+                                                                patientsPersonalData, callbackUpdateAppointment, callbackSetSnackbar, callbackCancelAppointment }) => {
     const [selectedAppointment, setSelectedAppointment] = React.useState<IAppointment | null>(null);
-    const [showModal, setShowModal] = React.useState(false);
+    const [showModal, setShowModal] = React.useState<{show:boolean, action?:ModalAction}>({show:false});
     const history = useHistory();
 
 
     function resetModal(){
-        setShowModal(false);
+        setShowModal({show:false});
         setSelectedAppointment(null);
     }
 
     function confirm(){
-        if(selectedAppointment){
+        if(selectedAppointment && showModal.action === ModalAction.CHECKIN){
             callbackUpdateAppointment(selectedAppointment.uuid);
+        }
+        if(selectedAppointment && showModal.action === ModalAction.CANCEL){
+            callbackCancelAppointment(selectedAppointment.uuid);
         }
     }
 
@@ -110,12 +124,13 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
             const patient  = patientsPersonalData.find((pat:IPatient) => pat.uuid === selectedAppointment.patient.uuid);
             if(patient){
                 return (
-                    <Modal key="modal" open={showModal} 
-                            title={<Translate id="pages.hospital.outpatients.confirm" />}
+                    <Modal key="modal" open={showModal.show} 
+                            title={<Translate id={`pages.hospital.outpatients.confirm.${showModal.action}`} />}
                             closeModal={resetModal} >
+                                <Grid container>
                                 {
-                                    (selectedAppointment) &&
-                                    <Grid container>
+                                    (selectedAppointment && showModal.action !== ModalAction.ERROR_CANCEL) &&
+                                    
                                         <Grid item xs={12}>
                                             {
                                                 patient.personalData.health_id &&
@@ -141,7 +156,14 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
                                             <Typography variant="body2">
                                                 <Translate id="investigation.create.personal_data.fields.birthdate" />: {patient.personalData.birthdate.toLocaleDateString()}    
                                             </Typography>
-                                        </Grid>
+                                            {
+                                                showModal.action === ModalAction.CANCEL &&
+                                                <Typography variant="body2">
+                                                    <Translate id="pages.hospital.outpatients.appointment.date" />: {new Date(selectedAppointment.startDateTime).toLocaleDateString()}
+                                                </Typography>
+                                            }
+                                        
+                                        
                                         {
                                             !loadingSingleAppointment &&
                                             <Grid item xs={12} style={{paddingTop:'1rem'}}>
@@ -153,12 +175,20 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
                                                 </ButtonContinue>
                                             </Grid>
                                         }
-                                         {
+                                        {
                                             loadingSingleAppointment &&
                                             <Loader />
                                         }
-                                    </Grid>
-                                }                        
+                                        </Grid>
+                                }
+                                {
+                                    (selectedAppointment && showModal.action === ModalAction.ERROR_CANCEL) &&
+                                    <Typography variant="body2">
+                                            <Translate id="pages.hospital.outpatients.error_cancel" />
+                                    </Typography>
+                                }
+                                </Grid>
+                                        
                         </Modal>
                 )
             }
@@ -169,32 +199,37 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
         console.log("clickOnAppoitment", idAppointment); 
         const currentAppointment = appointments.find((app) => app.id === idAppointment);
         if(currentAppointment){
-            if(currentAppointment.requestAppointment.status === RequestStatus.ACCEPTED){
-                if(mode === OutpatientsVisualizationMode.CONSULT){
-                    const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", currentAppointment.patient.uuid)
-                    console.log("Next url", nextUrl);
-                    history.push(nextUrl);
-                    console.log("Cita aceptada, navegamos a la historia clinica del paciente");
-                }
-            }
-            else if(currentAppointment.requestAppointment.status === RequestStatus.PENDING_APPROVAL){
-                if(areSameDates(new Date(currentAppointment.startDateTime), new Date())){
+            if(mode === OutpatientsVisualizationMode.CONSULT){
+                if(currentAppointment.requestAppointment.status === RequestStatus.PENDING_APPROVAL 
+                    && areSameDates(new Date(currentAppointment.startDateTime), new Date())){
+                        
                     setSelectedAppointment(currentAppointment);
-                    setShowModal(true);
+                    setShowModal({show:true, action:ModalAction.CHECKIN});
                     console.log("Confirmamos si se quiere hacer checkin");
                 }
-                else if(mode === OutpatientsVisualizationMode.CONSULT){
+                else{
                     const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", currentAppointment.patient.uuid)
                     console.log("Next url", nextUrl);
                     history.push(nextUrl);
-                    console.log("Cita NO aceptada, navegamos a la historia clinica del paciente");
+                    console.log("Cita NO aceptada, navegamos a la historia clinica del paciente");    
                 }
-                else if(mode === OutpatientsVisualizationMode.ADMIN){
+                
+            }
+            else if(mode === OutpatientsVisualizationMode.ADMIN){
+                if(currentAppointment.requestAppointment.status === RequestStatus.PENDING_APPROVAL){
                     setSelectedAppointment(currentAppointment);
-                    setShowModal(true);
+                    setShowModal({show:true, action:ModalAction.CANCEL});
                     console.log("Preguntamos si quiere cancelar la cita");
                 }
+                else{
+                    setSelectedAppointment(currentAppointment);
+                    setShowModal({show:true, action:ModalAction.ERROR_CANCEL});
+                    console.log("No se puede cancelar una cita ya aceptada");
+                }
+                
             }
+            
+           
         }
     }
 
