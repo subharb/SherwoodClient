@@ -51,6 +51,7 @@ import Pharmacy from "../pages/hospital/Pharmacy";
 import Outpatients from "../pages/hospital/Outpatients";
 import { PERMISSION } from "../components/investigation/share/user_roles";
 import { CATEGORY_DEPARTMENT_SHOE } from "../constants";
+import SingleAgenda from "../pages/hospital/Outpatients/SingleAgenda";
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
 export const SIGN_UP_ROUTE = "/auth/sign-up";
@@ -99,7 +100,7 @@ export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
 export const HOSPITAL_PHARMACY_CENTRAL_ROUTE = "/pharmacy";
 export const HOSPITAL_OUTPATIENTS_ROUTE = "/outpatients";
 export const HOSPITAL_AGENDA_ROUTE = "/agenda/:uuidAgenda";
-export const HOSPITAL_EDIT_AGENDA_ROUTE = "/agenda/:uuidAgenda/edit";
+export const HOSPITAL_ACTION_AGENDA_ROUTE = "/agenda/:uuidAgenda/:action";
 
 
 const hospitalRoutes = {
@@ -264,12 +265,12 @@ const hospitalRoutes = {
         {
             path: HOSPITAL_AGENDA_ROUTE,
             name: "Agenda",
-            component: () => <Outpatients />,
+            component: () => <SingleAgenda  />,
         },
         {
-            path: HOSPITAL_EDIT_AGENDA_ROUTE,
+            path: HOSPITAL_ACTION_AGENDA_ROUTE,
             name: "Agenda",
-            component: () => <Outpatients />,
+            component: () => <SingleAgenda  />,
         },
         {
             path: HOSPITAL_WARD_ROUTE,

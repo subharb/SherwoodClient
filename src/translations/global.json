@@ -524,6 +524,7 @@
                 },
                 "agenda":{
                     "create" : ["Create Agenda", "Crear Agenda", "Créer une agenda"],
+                    "title" : ["Agenda", "Agenda", "Agenda"],
                     "duration" : ["Duration Visit(min.)", "Duración Consulta(min.)", "Durée de la visite(min.)"],
                     "slotsPerDay" : ["Slots per day", "Citas por día", "Visites par jour"],
                     "doctor" : ["Doctor", "Doctor", "Docteur"],

@@ -99,6 +99,22 @@ export function saveAgendaService(uuidInvestigation: string, agenda:IAgenda): Pr
     });
 }
 
+export function getAgendaService(uuidInvestigation: string, uuidAgenda:string): Promise<{ status: number, agenda: IAgenda }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/"+uuidAgenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
 
 export function getAppoinmentsDateService(uuidInvestigation: string, uuidAgenda:string, date:Date): Promise<{ status: number, appointments: IAppointment[] }> {
     return new Promise((resolve, reject) => {

@@ -1,6 +1,6 @@
 import { Grid, Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';
 import { useHistory } from 'react-router-dom';
 import { ButtonPatient } from '../../../components/general/BedButton';
@@ -17,10 +17,12 @@ import { RequestStatus } from '../Service/types';
 interface AppointmentsProps {
     uuidInvestigation: string;
     patientsPersonalData: IPatient[];
+    uuidAgenda: string;
+    dateSelected: Date;
     mode:OutpatientsVisualizationMode,
 }
 
-const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, patientsPersonalData }) => {
+const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uuidAgenda, dateSelected, patientsPersonalData }) => {
     const [loadingAppointments, setLoadingAppointments] = React.useState(false);
     const [appointments, setAppointments] = React.useState<IAppointment[]>([]);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
@@ -28,6 +30,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, pa
     const [showModal, setShowModal] = React.useState(false);
 
     function updateAppointment(uuidAppointment:string){
+        setLoadingSingleAppointment(true);
         updateAppoinmentsService(uuidInvestigation, uuidAppointment)
             .then(response => {
                 const indexAppointment = appointments.findIndex((appointment) => appointment.uuid === uuidAppointment);
@@ -56,6 +59,12 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, pa
     function cancelAppointment(uuidAppointment:string){
         
     }
+    useEffect(() => {
+        if(uuidAgenda && dateSelected){
+            getAppoinmentsDate(uuidAgenda, dateSelected)
+        }
+
+    }, [uuidAgenda, dateSelected])
     async function getAppoinmentsDate(uuidAgenda:string, date:Date){
         setLoadingAppointments(true);
         getAppoinmentsDateService(uuidInvestigation, uuidAgenda, date)
@@ -104,6 +113,11 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
     const [showModal, setShowModal] = React.useState<{show:boolean, action?:ModalAction}>({show:false});
     const history = useHistory();
 
+    useEffect(() => {
+        if(!showSnackbar.show){
+            setShowModal({show:false});
+        }
+    }, [showSnackbar.show]);
 
     function resetModal(){
         setShowModal({show:false});
@@ -177,7 +191,9 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
                                         }
                                         {
                                             loadingSingleAppointment &&
-                                            <Loader />
+                                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                                <Loader />
+                                            </Grid>
                                         }
                                         </Grid>
                                 }
