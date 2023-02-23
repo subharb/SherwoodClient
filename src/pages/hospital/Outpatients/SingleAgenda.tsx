@@ -1,5 +1,5 @@
 import DateFnsUtils from "@date-io/date-fns";
-import { Card, Grid, Typography } from '@material-ui/core';
+import { Card, Grid, Snackbar, Typography } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
@@ -9,13 +9,15 @@ import { ButtonCancel, ButtonContinue } from "../../../components/general/mini_c
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import Modal from "../../../components/general/modal";
 import Loader from '../../../components/Loader';
-import { IAgenda, IAppointment, IBox, IPatient, OutpatientsVisualizationMode } from '../../../constants/types';
+import { IAgenda, IAppointment, IBox, IPatient, OutpatientsVisualizationMode, SnackbarType } from '../../../constants/types';
 import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from "../../../routes";
-import { getAgendaService } from '../../../services/agenda';
+import { blockDateAgenda, freeDateAgenda, getAgendaService } from '../../../services/agenda';
 import {dateToFullDateString, researcherFullName} from '../../../utils';
 import SectionHeader from "../../components/SectionHeader";
 import Appointments from './Appointments';
 import AppointmentDatePicker  from './DatePicker';
+import { useSnackBarState } from '../../../hooks';
+import { Alert } from "@material-ui/lab";
 
 interface SingleAgendaProps {
     investigations:any
@@ -26,6 +28,7 @@ const SingleAgenda: React.FC<SingleAgendaProps> = ({ investigations }) => {
     const {action} = useParams<{action:string}>();
     const [agenda, setAgenda] = React.useState<IAgenda | null>(null);
     const [loadingAgenda, setLoadingAgenda] = React.useState(false);
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
 
     useEffect(() => {
         if(!agenda && uuidAgenda && investigations.currentInvestigation){
@@ -41,8 +44,35 @@ const SingleAgenda: React.FC<SingleAgendaProps> = ({ investigations }) => {
                 })
         }
     }, [investigations]);
-
-    if(!loadingAgenda && !agenda){
+    function unBlockDate(dateTS:number){
+        setLoadingAgenda(true);
+        freeDateAgenda(investigations.currentInvestigation.uuid, uuidAgenda, dateTS)
+            .then(response => {
+                setAgenda(response.agenda);
+                setLoadingAgenda(false);
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.single_agenda.date_un_blocked", severity:"success"})
+            })
+            .catch(err => {
+                console.log(err);
+                setLoadingAgenda(false);
+                setShowSnackbar({show:true, message:"general.error", severity:"error"})
+            })
+    }
+    function blockDate(dateTS:number){
+        setLoadingAgenda(true);
+        blockDateAgenda(investigations.currentInvestigation.uuid, uuidAgenda, dateTS)
+            .then(response => {
+                setAgenda(response.agenda);
+                setLoadingAgenda(false);
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.single_agenda.date_blocked", severity:"success"})
+            })
+            .catch(err => {
+                console.log(err);
+                setLoadingAgenda(false);
+                setShowSnackbar({show:true, message:"general.error", severity:"error"})
+            })
+    }
+    if(loadingAgenda || !agenda){
         return (
             <Loader />
         )
@@ -50,7 +80,8 @@ const SingleAgenda: React.FC<SingleAgendaProps> = ({ investigations }) => {
     else if(agenda){
         return (
             <SingleAgendaCore agenda={agenda} edit={action === "edit"} patientsPersonalData={investigations.currentInvestigation.patientsPersonalData} 
-                uuidInvestigation={investigations.currentInvestigation.uuid} />
+                uuidInvestigation={investigations.currentInvestigation.uuid} showSnackbar={showSnackbar} callbackUnBlockDate={unBlockDate}
+                callbackSetSnackbar={((snackbar:SnackbarType) => setShowSnackbar(snackbar))} callbackBlockDate={blockDate}/>
         );
     }
     else{
@@ -71,18 +102,39 @@ interface SingleAgendaCoreProps extends LocalizeContextProps {
     agenda: IAgenda,
     edit:boolean,
     patientsPersonalData:IPatient[],
-    uuidInvestigation:string
+    uuidInvestigation:string,
+    showSnackbar:SnackbarType,
+    callbackBlockDate:(date:number) => void
+    callbackSetSnackbar:(snackbar:SnackbarType) => void
+    callbackUnBlockDate:(date:number) => void
 }
 
-const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, edit, patientsPersonalData, uuidInvestigation, activeLanguage }) => { 
+const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, edit, patientsPersonalData, uuidInvestigation, 
+                                                                        showSnackbar, activeLanguage, callbackBlockDate, callbackUnBlockDate, callbackSetSnackbar }) => { 
     const [currentDate, setCurrentDate] = React.useState<Date | null>(null);
     const [showModal, setShowModal] = React.useState<{show:boolean, action?:string}>({show:false});
     const [currentAppointments, setCurrentAppointments] = React.useState<IAppointment[] | null>(null);
+    const [isBlockedDate, setIsBlockedDate] = React.useState(false);
     const history = useHistory();
 
     function onDateChange(date:Date | null){
-        setCurrentDate(date);
-        setCurrentAppointments(null);
+        if(date){
+            setCurrentDate(date);
+            setCurrentAppointments(null);
+            const blockedDate = new Date(date?.getTime());
+            blockedDate.setUTCHours(0,0,0,0);
+            blockedDate.setUTCMinutes(0,0,0);
+            if(agenda.blockedDates.find(date => date === blockedDate.getTime())){
+                setIsBlockedDate(true);
+            }
+        }
+        
+        
+    }
+    function unBlockCurrentDate(){
+        if(currentDate){
+            setShowModal({show:true, action:"un_block"})
+        }
     }
     function blockCurrentDate(){
         if(currentDate){
@@ -100,8 +152,9 @@ const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, ed
     function renderCalendar(){
         return(
             <div style={{paddingTop:'1rem'}}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <AppointmentDatePicker availableDaysWeek = {agenda.daysWeek} blockedDates={agenda.blockedDates} autoCurrentDate={true}
+                        selectBlockedDates={edit}
                         slotsPerDay={agenda.slotsPerDay} datesOccupancy={agenda.datesOccupancy} onDateChangeCallback={onDateChange} />
                 </MuiPickersUtilsProvider>
             </div>
@@ -112,6 +165,29 @@ const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, ed
     }
     function confirm(){
         console.log("Bloqueamos la fecha");
+        if(showModal.action === "block"){
+            callbackBlockDate(currentDate!.getTime())   
+        }
+        else if(showModal.action === "un_block"){
+            callbackUnBlockDate(currentDate!.getTime())   
+        }
+    }
+    function renderButtonToggleBlock(){
+        if(edit){
+            return(
+                <div style={{paddingTop:"1rem"}}>
+                {
+                    !isBlockedDate &&
+                    <ButtonCancel disabled={!currentAppointments} onClick={blockCurrentDate}>Block Date</ButtonCancel>
+                }
+                {
+                    isBlockedDate &&
+                    <ButtonContinue color="green" disabled={!currentAppointments} onClick={unBlockCurrentDate}>UnBlock Date</ButtonContinue>
+                }
+                </div>
+            )
+     
+        }
     }
     function renderAgendaInfo(){
         const box = agenda.box as IBox;
@@ -129,45 +205,79 @@ const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, ed
                     {
                         renderCalendar()
                     }
-                    <div style={{paddingTop:"1rem"}}>
-                        <ButtonCancel disabled={!currentAppointments} onClick={blockCurrentDate}>Block Date</ButtonCancel>
-                    </div>
+                    {
+                        renderButtonToggleBlock()
+                    }
                 </Card>  
             </Grid>
         )
     }
     return (
         <>
-        <Modal key="modal" open={showModal.show} 
-            title={<Translate id={`pages.hospital.outpatients.single_agenda.${showModal.action}.title`} />}
-            closeModal={resetModal} >
-                <Grid container>
-                    {
-                        showModal.action === "block" &&
-                        <>
+            <Snackbar
+                anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+                }}
+                open={showSnackbar.show}
+                autoHideDuration={2000}
+                onClose={() => callbackSetSnackbar({show:false})}>
+                    <div>
+                        {
+                            (showSnackbar.message && showSnackbar.severity) &&
+                            <Alert onClose={() => callbackSetSnackbar({show:false})} severity={showSnackbar.severity}>
+                                <Translate id={showSnackbar.message} />
+                            </Alert>
+                        }
+                </div>
+            </Snackbar>
+            <Modal key="modal" open={showModal.show} 
+                title={<Translate id={`pages.hospital.outpatients.single_agenda.${showModal.action}.title`} />}
+                closeModal={resetModal} >
+                    <Grid container>
+                        {
+                            showModal.action === "block" &&
+                            <>
+                                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                    <Translate id={`pages.hospital.outpatients.single_agenda.${showModal.action}.message`} /><br/>
+                                    {dateToFullDateString(currentDate, activeLanguage.code)}
+                                </Grid>
+                                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                        <Translate id="general.cancel" />
+                                    </ButtonCancel>
+                                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
+                                        <Translate id="general.continue" />
+                                    </ButtonContinue>
+                                </Grid>
+                            </>
+                        }
+                        {
+                            showModal.action === "un_block" &&
+                            <>
+                                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                    <Translate id={`pages.hospital.outpatients.single_agenda.${showModal.action}.message`} /><br/>
+                                    {dateToFullDateString(currentDate, activeLanguage.code)}
+                                </Grid>
+                                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                        <Translate id="general.cancel" />
+                                    </ButtonCancel>
+                                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
+                                        <Translate id="general.continue" />
+                                    </ButtonContinue>
+                                </Grid>
+                            </>
+                        }
+                        {   
+                            showModal.action === "no_block" &&
                             <Grid item xs={12} style={{paddingTop:'1rem'}}>
                                 <Translate id={`pages.hospital.outpatients.single_agenda.${showModal.action}.message`} />
-                                {dateToFullDateString(currentDate, activeLanguage.code)}
                             </Grid>
-                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                                <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
-                                    <Translate id="general.cancel" />
-                                </ButtonCancel>
-                                <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
-                                    <Translate id="general.continue" />
-                                </ButtonContinue>
-                            </Grid>
-                        </>
-                    }
-                    {   
-                        showModal.action === "no_block" &&
-                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                            <Translate id={`pages.hospital.outpatients.single_agenda.${showModal.action}.message`} />
-                        </Grid>
-                    }
-                    
-                </Grid>        
-        </Modal>
+                        }
+                        
+                    </Grid>        
+            </Modal>
             <SectionHeader alterTitle="pages.hospital.outpatients.agenda.title" section="agenda" 
                 edit={edit} editCallback={canEditAgenda() ? () => {
                     let nextUrl = HOSPITAL_AGENDA_ROUTE.replace(":uuidAgenda", agenda.uuid);
@@ -187,8 +297,6 @@ const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, ed
                     uuidInvestigation={uuidInvestigation} dateSelected={currentDate} 
                     callbackAppointments={(appointments)=> setCurrentAppointments(appointments)}/>
             }
-            
-            
         </>
     );
 };

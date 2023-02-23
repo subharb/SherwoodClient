@@ -115,6 +115,37 @@ export function getAgendaService(uuidInvestigation: string, uuidAgenda:string): 
     });
 }
 
+export function blockDateAgenda(uuidInvestigation: string, uuidAgenda:string, dateTS:number): Promise<{ status: number, agenda: IAgenda }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/agenda/"+uuidAgenda+"/blockdate/"+dateTS, {}, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+export function freeDateAgenda(uuidInvestigation: string, uuidAgenda:string, dateTS:number): Promise<{ status: number, agenda: IAgenda }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/agenda/"+uuidAgenda+"/freedate/"+dateTS, {}, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 
 export function getAppoinmentsDateService(uuidInvestigation: string, uuidAgenda:string, date:Date): Promise<{ status: number, appointments: IAppointment[] }> {
     return new Promise((resolve, reject) => {

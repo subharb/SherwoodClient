@@ -509,7 +509,13 @@
                     "no_block" : {
                         "title" : ["Warning", "Aviso", "Attention"],
                         "message" : ["You can't block a date that has appointments", "No puede bloquear una fecha que tiene citas", "Vous ne pouvez pas bloquer une date qui a des rendez-vous"]
-                    }
+                    },
+                    "un_block" : {
+                        "title" : ["Warning", "Aviso", "Attention"],
+                        "message" : ["Are you sure you want to make available this date?", "¿Está seguro de que desea hacer disponible esta fecha?", "Êtes-vous sûr de vouloir rendre cette date disponible?"]
+                    },
+                    "date_blocked" : ["Date blocked succesfully", "Fecha bloqueada correctamente", "Date bloquée avec succès"],
+                    "date_un_blocked" : ["Date freed succesfully", "Fecha liberada correctamente", "Date libérée avec succès"]
                 },
                 "error_cancel" : ["Can't cancel a accepted appointment", "No se puede cancelar una cita aceptada", "Impossible d'annuler un rendez-vous accepté"],
                 "checked_in_patients" : ["Checked in patients", "Pacientes en consulta", "Patients en consultation"],
