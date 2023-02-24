@@ -937,3 +937,12 @@ export function serviceTypeToTranslation(serviceType){
     }
     return typesService[serviceType.toString()];
 }
+
+export function turnsToSchedule(turn){
+    const date = new Date();
+    date.setHours(turn[0][0], turn[0][1], 0, 0);
+    let stringDate = date.toLocaleTimeString(undefined, {timeStyle:'short'});
+    date.setHours(turn[1][0], turn[1][1], 0, 0);
+    stringDate += " - "+date.toLocaleTimeString(undefined, {timeStyle:'short'});
+    return stringDate;
+}

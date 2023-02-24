@@ -12,7 +12,7 @@ import Loader from '../../../components/Loader';
 import { IAgenda, IAppointment, IBox, IPatient, OutpatientsVisualizationMode, SnackbarType } from '../../../constants/types';
 import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from "../../../routes";
 import { blockDateAgenda, freeDateAgenda, getAgendaService } from '../../../services/agenda';
-import {dateToFullDateString, researcherFullName} from '../../../utils';
+import {dateToFullDateString, researcherFullName, turnsToSchedule} from '../../../utils';
 import SectionHeader from "../../components/SectionHeader";
 import Appointments from './Appointments';
 import AppointmentDatePicker  from './DatePicker';
@@ -178,11 +178,15 @@ const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, ed
                 <div style={{paddingTop:"1rem"}}>
                 {
                     !isBlockedDate &&
-                    <ButtonCancel disabled={!currentAppointments} onClick={blockCurrentDate}>Block Date</ButtonCancel>
+                    <ButtonCancel disabled={!currentAppointments} onClick={blockCurrentDate}>
+                        <Translate id={`pages.hospital.outpatients.single_agenda.block.button`} />
+                    </ButtonCancel>
                 }
                 {
                     isBlockedDate &&
-                    <ButtonContinue color="green" disabled={!currentAppointments} onClick={unBlockCurrentDate}>UnBlock Date</ButtonContinue>
+                    <ButtonContinue color="green" disabled={!currentAppointments} onClick={unBlockCurrentDate}>
+                        <Translate id={`pages.hospital.outpatients.single_agenda.un_block.button`} />
+                    </ButtonContinue>
                 }
                 </div>
             )
@@ -202,6 +206,7 @@ const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, ed
                     <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.outpatients.agenda.week_days" />: </span>{agenda.daysWeek.map((day) => {
                         return <ColourChip size="small" label={<Translate id={`general.week_days.${day}`}  />} rgbcolor="#000" />
                     })}</Typography> </div>
+                    <div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="pages.hospital.outpatients.agenda.schedule" />: </span>{turnsToSchedule(agenda.turn)}</Typography> </div>
                     {
                         renderCalendar()
                     }
@@ -246,7 +251,7 @@ const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, ed
                                     <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                         <Translate id="general.cancel" />
                                     </ButtonCancel>
-                                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
+                                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="green">
                                         <Translate id="general.continue" />
                                     </ButtonContinue>
                                 </Grid>
@@ -263,7 +268,7 @@ const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, ed
                                     <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                         <Translate id="general.cancel" />
                                     </ButtonCancel>
-                                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
+                                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="green">
                                         <Translate id="general.continue" />
                                     </ButtonContinue>
                                 </Grid>

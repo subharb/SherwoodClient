@@ -77,7 +77,14 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
 
     useEffect(() => {
         if(agendas){
-            const departmentsWithAgenda:IDepartment[] = agendas.filter((agenda) => agenda.department !== null).map((agenda) => agenda.department as IDepartment);
+            const departmentsDict:{[uuidDepartment:string]:IDepartment} = {};
+            agendas.forEach((agenda) => {
+                if(agenda.department){
+                    const uuidDepartment = agenda.department.uuid as string;
+                    departmentsDict[uuidDepartment] = agenda.department;
+                }
+            });
+            const departmentsWithAgenda:IDepartment[] = Object.values(departmentsDict);
             setDepartmentsWithAgenda(departmentsWithAgenda);
         }
         

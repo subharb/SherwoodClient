@@ -411,7 +411,6 @@ export function dischargePatientAction(uuidInvestigation, uuidPatient) {
                 });
             })
             .catch((error) => {
-
                 dispatch({ ...error, type: types.HOSPITAL_ERROR });
                 throw error;
             });
@@ -422,13 +421,19 @@ export async function saveAgendaAction(agenda) {
     return async (dispatch) => {
         dispatch({ 
             type: types.FETCH_HOSPITAL_SAVE_AGENDA_SUCCESS,
-            agenda,
+            agenda:agenda
          })
     }
 }
 
-
-
+export async function deleteAgendaAction(uuidAgenda) {
+    return async (dispatch) => {
+        dispatch({ 
+            type: types.FETCH_HOSPITAL_DELETE_AGENDA_SUCCESS,
+            uuidAgenda:uuidAgenda
+         })
+    }
+}
 
 export async function resetHospitalAction() {
     return async (dispatch) => {

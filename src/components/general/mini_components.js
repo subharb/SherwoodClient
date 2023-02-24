@@ -59,7 +59,7 @@ export const IconGenerator = withTheme((props) => {
         case "undo":
             return <UndoIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />    
         case "settings":
-            return <SettingsIcon style={{color:props.theme.buttonContinue.primary.color }} fontSize={props.size ? props.size : "small"} {...props}  />
+            return <SettingsIcon style={{color:props.color ? props.color : props.theme.buttonContinue.primary.color }} fontSize={props.size ? props.size : "small"} {...props}  />
         case "back":
             return <ArrowBackIcon fontSize={props.size ? props.size : "small"} {...props}  />
         case "pharmacy":

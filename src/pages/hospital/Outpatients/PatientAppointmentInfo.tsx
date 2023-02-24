@@ -114,7 +114,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                     return {
                         id : appointment.id,
                         department: appointment.agenda.department ? appointment.agenda.department.name : "",
-                        doctor : appointment.agenda.principalResearcher.researcher.name,
+                        doctor : appointment.agenda.principalResearcher.name,
                         date : dateAndTimeFromPostgresString(activeLanguage.code, appointment.startDateTime),
                         turn : appointment.agenda.turn.map((turn) => turn[0]+":"+turn[1]).join(", "),
                         bookingDate : dateAndTimeFromPostgresString(activeLanguage.code, appointment.createdAt),

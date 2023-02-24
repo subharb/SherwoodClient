@@ -39,12 +39,13 @@ export interface IAgenda{
     department?:IDepartment,
     daysWeek:string[],
     blockedDates:number[],
-    principalResearcher:{researcher:IResearcher},
+    principalResearcher:IResearcher,
     slotsPerDay:number,
-    appointments: IAppointment[]
+    appointments?: IAppointment[]
     box:IBox | string,
     datesOccupancy:{[date:string]:number}
     turn: number[][],
+    serviceInvestigationFirstVisit:{id:number}
 }
 
 export interface IRequestAppointment{

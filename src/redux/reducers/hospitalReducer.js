@@ -57,8 +57,23 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error;
             return newState;
         case types.FETCH_HOSPITAL_SAVE_AGENDA_SUCCESS:
-            tempAgendas = [...newState.data.agendas];
+            if(!newState.data.agendas){
+                tempAgendas = [];
+            }
+            else{
+                tempAgendas = [...newState.data.agendas];
+            }
             tempAgendas.push(action.agenda);
+            newState.data.agendas = tempAgendas;
+            newState.loading = initialState.loading;
+            newState.error = initialState.error;
+            return newState;
+        case types.FETCH_HOSPITAL_DELETE_AGENDA_SUCCESS:
+            tempAgendas = [...newState.data.agendas];
+            const indexAgenda = tempAgendas.findIndex(agenda => agenda.uuid === action.uuidAgenda);
+            if(indexAgenda !== -1){
+                tempAgendas.splice(indexAgenda, 1);
+            }
             newState.data.agendas = tempAgendas;
             newState.loading = initialState.loading;
             newState.error = initialState.error;

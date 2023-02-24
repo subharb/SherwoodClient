@@ -7,17 +7,18 @@ import { Translate } from 'react-localize-redux';
 export type MainElementType = {name:string, uuid:string, subElements:any[]}
 interface Accordion2LevelsProps {
     orderedMainElements: MainElementType[];
-    addSubElementCallBack: (uuid:string) => void;
-    viewSubElementCallBack: (uuid:string) => void;
-    editMainElementCallBack:(uuid:string) => void;
-    editSubElementCallBack:(uuid:string) => void;
-    deleteMainElementCallBack:(uuid:string) => void;
-    deleteSubElementCallBack:(uuid:string) => void;
-    checkCanDeleteMainElement: (uuid:string) => boolean;
-    checkCanDeleteSubElement: (uuid:string) => boolean;
+    addSubElementCallBack?: (uuid:string) => void;
+    viewSubElementCallBack?: (uuid:string) => void;
+    editMainElementCallBack?:(uuid:string) => void;
+    editSubElementCallBack?:(uuid:string) => void;
+    deleteMainElementCallBack?:(uuid:string) => void;
+    deleteSubElementCallBack?:(uuid:string) => void;
+    checkCanDeleteMainElement?: (uuid:string) => boolean;
+    checkCanDeleteSubElement?: (uuid:string) => boolean;
+    configureSubElementCallBack?: (uuid:string) => void;
 }
 
-const Accordion2Levels: React.FC<Accordion2LevelsProps> = ({ orderedMainElements, addSubElementCallBack, viewSubElementCallBack, editSubElementCallBack, deleteMainElementCallBack, deleteSubElementCallBack, editMainElementCallBack }) => {
+const Accordion2Levels: React.FC<Accordion2LevelsProps> = ({ orderedMainElements, addSubElementCallBack, viewSubElementCallBack, configureSubElementCallBack, editSubElementCallBack, deleteMainElementCallBack, deleteSubElementCallBack, editMainElementCallBack }) => {
     
     let ordereredMainElements = orderedMainElements.sort((a,b) => a.name.localeCompare(b.name));
 
@@ -50,10 +51,20 @@ const Accordion2Levels: React.FC<Accordion2LevelsProps> = ({ orderedMainElements
                             }}>
                             <IconGenerator type="delete" />
                         </IconButton>
-                    }</Typography>
-                        </AccordionSummary>
-                    </Accordion>
-                    )
+                    }
+                    {
+                        configureSubElementCallBack &&
+                        <IconButton color='default' onClick={(e) => {
+                            e.stopPropagation();
+                            configureSubElementCallBack(subElement.uuid);
+                            }}>
+                            <IconGenerator color="#000" type="settings" />
+                        </IconButton>
+                    }
+                    </Typography>
+                    </AccordionSummary>
+                </Accordion>
+                )
                     
                 })
             )
@@ -62,39 +73,63 @@ const Accordion2Levels: React.FC<Accordion2LevelsProps> = ({ orderedMainElements
             return mainElement.subElements.map((subElement) => {
                 return (
                 <ListItem button>
-                    <ListItemText primary={`${subElement.name}`} onClick={() => viewSubElementCallBack(subElement.uuid)} /> 
-                        <IconButton onClick={(e) => {
-                                e.stopPropagation();
-                                viewSubElementCallBack(subElement.uuid);
-                            }}>
-                            <IconGenerator type="view" />
-                        </IconButton>
+                    <ListItemText primary={`${subElement.name}`} onClick={() =>viewSubElementCallBack ? viewSubElementCallBack(subElement.uuid) : undefined} /> 
+                        {
+                            viewSubElementCallBack &&
+                            <IconButton onClick={(e) => {
+                                    e.stopPropagation();
+                                    viewSubElementCallBack(subElement.uuid);
+                                }}>
+                                <IconGenerator type="view" />
+                            </IconButton>
+                        }
+                        
+                        {
+                            editSubElementCallBack &&
                             <IconButton onClick={(e) => {
                                 e.stopPropagation();
                                 editSubElementCallBack(subElement.uuid);
                             }}>
                             <IconGenerator type="edit" />
-                        </IconButton>
+                            </IconButton>
+                        }
+                        {
+                            deleteSubElementCallBack &&
                             <IconButton onClick={(e) => {
-                                e.stopPropagation();
-                                deleteSubElementCallBack(subElement.uuid);
-                            }}>
-                            <IconGenerator type="delete" />
-                        </IconButton>
+                                    e.stopPropagation();
+                                    deleteSubElementCallBack(subElement.uuid);
+                                }}>
+                                <IconGenerator type="delete" />
+                            </IconButton>
+                        }
+                        
+                        {
+                            configureSubElementCallBack &&
+                            <IconButton onClick={(e) => {
+                                    e.stopPropagation();
+                                    configureSubElementCallBack(subElement.uuid);
+                                }}>
+                                <IconGenerator color="#000"  type="settings" />
+                            </IconButton>
+                        }
+                        
                 </ListItem>)
                 }
             )
         }
     }
     function renderSubLevel(mainElement:MainElementType){
-        return (
-            <List component="nav" aria-label="main mailbox folders">
-                {
-                    renderSecondSubLevel(mainElement)
-                }
-            </List>
-            )
-        }
+        if(mainElement.subElements.length > 0){
+            return (
+                <List component="nav" aria-label="main mailbox folders">
+                    {
+                        renderSecondSubLevel(mainElement)
+                    }
+                </List>
+                )
+            }   
+    }
+    
     const accordionElements = ordereredMainElements.length > 0 &&
         ordereredMainElements.map(mainElement => {
             return (

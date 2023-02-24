@@ -83,6 +83,22 @@ export function saveBoxService(uuidInvestigation: string, box:IBox): Promise<{ s
     });
 }
 
+export function updateBoxService(uuidInvestigation: string, box:IBox): Promise<{ status: number, box: IBox }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/box/"+box.uuid, box, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
 export function saveAgendaService(uuidInvestigation: string, agenda:IAgenda): Promise<{ status: number, agenda: IAgenda }> {
     return new Promise((resolve, reject) => {
         axios
@@ -99,6 +115,53 @@ export function saveAgendaService(uuidInvestigation: string, agenda:IAgenda): Pr
     });
 }
 
+export function updateAgendaService(uuidInvestigation: string, agenda:IAgenda): Promise<{ status: number, agenda: IAgenda }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/"+agenda.uuid, agenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+export function deleteAgendaService(uuidInvestigation: string, uuidAgenda:string): Promise<{ status: number, agenda: IAgenda }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .delete(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation +"/"+uuidAgenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+export function deleteBoxService(uuidInvestigation: string, uuidBox:string): Promise<{ status: number, box: IBox }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .delete(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation +"/box/"+uuidBox, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 export function getAgendaService(uuidInvestigation: string, uuidAgenda:string): Promise<{ status: number, agenda: IAgenda }> {
     return new Promise((resolve, reject) => {
         axios

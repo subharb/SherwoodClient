@@ -22,7 +22,7 @@ const SectionContainer = styled.div`
 `;
 
 const IconHolder = styled.div`
-    xpadding:0.5rem 0 1rem 1rem;
+    padding:0.4rem 0 1rem 0rem;
 `;
 
 const TypographyStyled = styled(Typography)`

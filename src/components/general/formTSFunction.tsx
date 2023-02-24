@@ -58,7 +58,7 @@ export interface IForm{
 }
 
 export interface FormValues{
-    [key: string]: string | boolean | number | string[] | boolean[] | number[] | undefined
+    [key: string]: string | boolean | number | Date | string[] | boolean[] | number[] | undefined | { multioption: string; }[]
 }
 
 const FormTSFunc: React.FC<FormTSFuncProps> = (props) => {
