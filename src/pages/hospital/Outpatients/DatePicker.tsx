@@ -106,11 +106,22 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
         setSelectedDate(date);
         onDateChangeCallback(date);
     }
-
+    function findNextAvailableDate(){
+        for(let i = 0; i < 7; i++){
+            const nextAvailableDate = new Date();    
+            nextAvailableDate.setDate(nextAvailableDate.getDate() + i);
+            if(!isDisabledDate(nextAvailableDate)){
+                return nextAvailableDate;
+            }
+        }
+        return new Date();
+    }
     useEffect(() => {
         if(autoCurrentDate){
-            setSelectedDate(new Date());
-            onDateChangeCallback(new Date());
+            const nextAvailableDate = findNextAvailableDate();
+            setSelectedDate(nextAvailableDate);
+            onDateChangeCallback(nextAvailableDate);
+            return;
         }
     }, [])
 
