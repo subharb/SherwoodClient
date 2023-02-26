@@ -127,6 +127,9 @@ const SingleAgendaCoreLocalized: React.FC<SingleAgendaCoreProps> = ({ agenda, ed
             if(agenda.blockedDates.find(date => date === blockedDate.getTime())){
                 setIsBlockedDate(true);
             }
+            else{
+                setIsBlockedDate(false);
+            }
         }
         
         

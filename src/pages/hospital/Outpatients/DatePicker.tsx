@@ -107,7 +107,7 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
         onDateChangeCallback(date);
     }
     function findNextAvailableDate(){
-        for(let i = 0; i < 7; i++){
+        for(let i = 0; i < 60; i++){
             const nextAvailableDate = new Date();    
             nextAvailableDate.setDate(nextAvailableDate.getDate() + i);
             if(!isDisabledDate(nextAvailableDate)){
