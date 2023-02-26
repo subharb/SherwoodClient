@@ -417,22 +417,22 @@ export function dischargePatientAction(uuidInvestigation, uuidPatient) {
     };
 }
 
-export async function saveAgendaAction(agenda) {
+export function saveUpdateAgendaAction(agenda) {
     return async (dispatch) => {
-        dispatch({ 
-            type: types.FETCH_HOSPITAL_SAVE_AGENDA_SUCCESS,
+      dispatch({ 
+            type: types.FETCH_HOSPITAL_SAVE_UPDATE_AGENDA_SUCCESS,
             agenda:agenda
-         })
-    }
+      });
+    };
 }
 
-export async function deleteAgendaAction(uuidAgenda) {
+export function deleteAgendaAction(uuidAgenda) {
     return async (dispatch) => {
-        dispatch({ 
+      dispatch({ 
             type: types.FETCH_HOSPITAL_DELETE_AGENDA_SUCCESS,
             uuidAgenda:uuidAgenda
-         })
-    }
+      });
+    };
 }
 
 export async function resetHospitalAction() {

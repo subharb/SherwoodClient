@@ -12,7 +12,7 @@ import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { IAgenda, IBox, IDepartment, IOutpatientsInfo, IResearcher, SnackbarType } from '../../../constants/types';
 import { useAgendas, useDepartments, useSnackBarState } from '../../../hooks';
-import { deleteAgendaAction, saveAgendaAction } from '../../../redux/actions/hospitalActions';
+import { deleteAgendaAction, saveUpdateAgendaAction } from '../../../redux/actions/hospitalActions';
 import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from '../../../routes';
 import { deleteAgendaService, deleteBoxService, getBoxesService, getServicesInvestigationService, saveAgendaService, saveBoxService, updateAgendaService, updateBoxService } from '../../../services/agenda';
 import { researcherFullName } from '../../../utils';
@@ -98,7 +98,7 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
         setLoading(true);
         deleteAgendaService(uuidInvestigation, uuidAgenda)
             .then(async(response) => {
-                deleteAgendaAction(uuidAgenda)
+                await dispatch(deleteAgendaAction(uuidAgenda));
                 setLoading(false);
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.agenda.success.deleted", severity:"success"})
             })
@@ -130,7 +130,7 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
         setLoading(true);
         saveAgendaService(uuidInvestigation, agenda)
             .then(async(response) => {
-                saveAgendaAction(response.agenda)
+                await dispatch(saveUpdateAgendaAction(response.agenda));
                 setLoading(false);
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.agenda.success.saved", severity:"success"})
             })
@@ -145,9 +145,9 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
         setLoading(true);
         updateAgendaService(uuidInvestigation, agenda)
             .then(async(response) => {
-                saveAgendaAction(response.agenda)
+                await dispatch(saveUpdateAgendaAction(response.agenda));
                 setLoading(false);
-                setShowSnackbar({show:true, message:"pages.hospital.outpatients.agenda.success.saved", severity:"success"})
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.agenda.success.updated", severity:"success"})
             })
             .catch(err => {
                 setLoading(false);
@@ -189,13 +189,13 @@ interface EditPropsComponent extends LocalizeContextProps {
 }
 
 const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas, showSnackbar, outpatientsInfo, updateBoxCallback, callbackDeleteBox, callbackDeleteAgenda, setShowSnackbar, updateAgendaCallback, saveAgendaCallback, researchers, departments, loading, services, translate, saveBoxCallback }) => {
+    const initialBoxInfo = {type:0};
+    const initialAgendaInfo = {otherStaff:[]}
     const [deletedBox, setDeletedBox] = React.useState<IBox | null>(null);
-    const [addingAgenda, setAddingAgenda] = React.useState(false);
     const [modalInfo, setModalInfo] = React.useState({showModal: false, type:""});
-    const [initDataAgenda, setInitDataAgenda] = React.useState<FormValues>({otherStaff:[]});
-    const [initDataBox, setInitDataBox] = React.useState<FormValues>({type:0});
+    const [initDataAgenda, setInitDataAgenda] = React.useState<FormValues>(initialAgendaInfo);
+    const [initDataBox, setInitDataBox] = React.useState<FormValues>(initialBoxInfo);
     const [reseachersDepartment, setResearchersDepartment] = React.useState<IResearcher[]>([]);
-    const [prevDataAgenda, setPrevDataAgenda] = React.useState<IAgenda | null>(null);
     const [deletedAgenda, setDeletedAgenda] = React.useState<IAgenda | null>(null);
 
     const history = useHistory();
@@ -340,14 +340,14 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     },
                     options:departmentOptions
                 },
-               // "box":{
-                //     required : true,
-                //     type:"hidden",
-                //     name:"box",
-                //     label:"pages.hospital.outpatients.agenda.doctor",
-                //     shortLabel:"pages.hospital.outpatients.agenda.doctor",
-                //     validation : "notEmpty",
-                // },
+               "box":{
+                    required : true,
+                    type:"hidden",
+                    name:"box",
+                    label:"pages.hospital.outpatients.agenda.doctor",
+                    shortLabel:"pages.hospital.outpatients.agenda.doctor",
+                    validation : "notEmpty",
+                },
                 "principalResearcher":{
                     required : true,
                     type:"select",
@@ -409,7 +409,8 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     function deleteAgenda(uuidAgenda:string){
         const agenda = agendas!.find((agenda) => agenda.uuid === uuidAgenda);
         if(agenda){
-            if(!_.isEmpty(agenda.datesOccupancy)){
+            const futureAppointments = Object.keys(agenda.datesOccupancy).filter((date) => new Date(date) > new Date()).length > 0;
+            if(futureAppointments){
                 setModalInfo({showModal: true, type:"agenda_error_appointments"});
             }
             else{
@@ -427,7 +428,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         
         const agendaPost:IAgenda = {...agenda};
         agendaPost.turn = [turnStart, turnEnd];
-        setPrevDataAgenda(agenda);
+        setInitDataAgenda(agenda);
         agendaPost.daysWeek = agenda.daysWeek.map((day:{multioption : string}) => day.multioption);
         if(agenda.uuid){
             updateAgendaCallback(agendaPost);
@@ -504,7 +505,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     {
                         modalInfo.type === "agenda" && 
                         <Form fields={CREATE_AGENDA_FORM} fullWidth={true} callBackForm={saveAgenda}
-                            initialData={prevDataAgenda ? prevDataAgenda : initDataAgenda} 
+                            initialData={initDataAgenda} 
                             closeCallBack={() => resetModal()}/> 
                     } 
                     {
@@ -604,6 +605,8 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     useEffect(() => {
         if(showSnackbar.severity === "success"){
             resetModal();
+            setInitDataAgenda(initialAgendaInfo);
+            setInitDataBox(initialBoxInfo);
             setTimeout(() => {
                 setShowSnackbar({show:false});
             }, 2000);

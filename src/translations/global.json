@@ -557,7 +557,8 @@
                     "schedule" : ["Schedule", "Horario", "Horaire"],
                     "success" : {
                         "deleted" : ["Agenda removed succesfully", "Agenda eliminada correctamente", "Agenda supprimée avec succès"],
-                        "saved" : ["Agenda saved succesfully", "Agenda guardada correctamente", "Agenda enregistrée avec succès"]
+                        "saved" : ["Agenda saved succesfully", "Agenda guardada correctamente", "Agenda enregistrée avec succès"],
+                        "updated" : ["Agenda updated succesfully", "Agenda actualizada correctamente", "Agenda mise à jour avec succès"]
                     },
                     "errors" : {
                         "error_0" : ["Confict of agendas on this box", "Conflicto de agendas en esta sala", "Conflit d'agendas dans cette box"],
