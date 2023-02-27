@@ -160,7 +160,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         else if(departmentsWithAgenda.length === 1){
             return (
                 <>
-                    <Typography variant="h7">Department: </Typography>{departmentsWithAgenda[0].name}
+                    <Typography variant="body2">Department: </Typography>{departmentsWithAgenda[0].name}
                 </>)
         }
         else {
