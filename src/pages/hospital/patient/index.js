@@ -22,7 +22,7 @@ import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDI
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
 
 import { useDepartments, useSnackBarState, useUpdateEffect } from '../../../hooks';
-import { fetchProfileInfo } from '../../../redux/actions/profileActions';
+import { fetchProfileInfoAction } from '../../../redux/actions/profileActions';
 import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
@@ -434,7 +434,7 @@ function Patient(props) {
     
     useEffect(() => {
         if(!props.profile.info && props.investigations.currentInvestigation){
-            dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
+            dispatch(fetchProfileInfoAction(props.investigations.currentInvestigation.uuid));
         }
     }, [props.investigations])
     useUpdateEffect(() => {

@@ -2,7 +2,7 @@ import * as types from "../../constants";
 import { fetchProfileService } from "../../services";
 
 
-export function fetchProfileInfo(uuidInvestigation) {
+export function fetchProfileInfoAction(uuidInvestigation) {
   
   return async (dispatch) => {
     dispatch({ type: types.FETCH_PROFILE_LOADING });

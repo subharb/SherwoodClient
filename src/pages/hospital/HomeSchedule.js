@@ -1,7 +1,7 @@
 
 import React, {useEffect, useState} from 'react'
-import { useRouter } from '../../hooks';
-import { connect } from 'react-redux';
+import { useProfileInfo, useRouter } from '../../hooks';
+import { connect, useSelector } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
@@ -13,22 +13,22 @@ import Loader from '../../components/Loader';
 import {selectInvestigation} from '../../redux/actions/investigationsActions';
 import { useDispatch } from "react-redux";
 import { Translate } from 'react-localize-redux';
-import { fetchProfileInfo } from '../../redux/actions/profileActions';
+import { fetchProfileInfoAction } from '../../redux/actions/profileActions';
 import AllInvestigations from '../../components/investigation/show/all';
 import { FUNCTIONALITY } from '../../constants/types';
 import { PERMISSION } from '../../components/investigation/share/user_roles';
 
 function HomeSchedule(props) {
     const [loading, setLoading] = useState(false);
-  
+    const { profile } = useProfileInfo();
     const { pathname }= useRouter(props.initialState ? props.initialState.pathname : false);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if(props.investigations.currentInvestigation){
-            dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
-        }
-    }, [props.investigations])
+    // useEffect(() => {
+    //     if(props.investigations.currentInvestigation && !profile){
+    //         dispatch(fetchProfileInfoAction(props.investigations.currentInvestigation.uuid));
+    //     }
+    // }, [props.investigations])
 
     function renderLogoOrProfile(){
         if(props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.AESTHETICS) &&

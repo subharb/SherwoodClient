@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import EditServices from './Edit';
 import { RequestStatus, ServiceType } from './types';
 import RequestTable, { serviceToColor } from './RequestTable';
-import { fetchProfileInfo } from '../../../redux/actions/profileActions';
+import { fetchProfileInfoAction } from '../../../redux/actions/profileActions';
 import RequestSingle from './RequestSingle';
 import { TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_REQUEST_LAB } from '../../../constants';
 import SectionHeader from '../../components/SectionHeader';
@@ -50,7 +50,7 @@ export function TestsHomeComponent(props) {
         
         if(props.investigations.currentInvestigation){
             if(!props.profile.info){
-                dispatch(fetchProfileInfo(props.investigations.currentInvestigation.uuid));
+                dispatch(fetchProfileInfoAction(props.investigations.currentInvestigation.uuid));
             }
         }
     }, [ props.investigations]);
