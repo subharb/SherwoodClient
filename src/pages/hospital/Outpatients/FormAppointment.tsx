@@ -160,7 +160,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         else if(departmentsWithAgenda.length === 1){
             return (
                 <>
-                    <Typography variant="h6">Department: </Typography>{departmentsWithAgenda[0].name}
+                    <Typography variant="h7">Department: </Typography>{departmentsWithAgenda[0].name}
                 </>)
         }
         else {
@@ -180,6 +180,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                                 const department = departmentsWithAgenda.find((department) => department.uuid === uuidDepartment);
                                 if(department){
                                     setDepartment(department);
+                                    setAgenda(null)
                                 }
                             }}
                         >

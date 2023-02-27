@@ -536,6 +536,7 @@
                     "title" : ["Box", "Caja", "Boîte"],
                     "create" : ["Create Box", "Crear Box", "Créer une box"],
                     "name" : ["Name", "Nombre", "Nom"],
+                    "add_box" : ["Add Box", "Agregar Box", "Ajouter une box"],
                     "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
                     "no_department" : ["No department", "Sin departamento", "Pas de département"],
                     "success" : {

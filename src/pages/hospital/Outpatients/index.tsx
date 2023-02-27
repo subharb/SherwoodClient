@@ -12,13 +12,17 @@ import SectionHeader from '../../components/SectionHeader';
 import { FormConsultAppointment } from './FormAppointment';
 import EditOutpatients from './EditOutpatients';
 import Appointments from './Appointments';
+import { useHistory, useParams } from 'react-router-dom';
+import { HOSPITAL_OUTPATIENTS_EDIT_ROUTE, HOSPITAL_OUTPATIENTS_ROUTE } from '../../../routes';
 
 interface OutpatientsProps extends LocalizeContextProps {
     investigations:any
 } 
 
 const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) => {
-    const [edit, setEdit] = React.useState(false);
+    const {action} = useParams<{action:string}>();
+    const [edit, setEdit] = React.useState(action === 'edit');
+    const history = useHistory();
 
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     
@@ -34,7 +38,14 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
     }, [investigations.currentInvestigation])
 
     function toogleEdit(){
-        setEdit(!edit);
+        let nextUrl;
+        if(edit){
+            nextUrl = HOSPITAL_OUTPATIENTS_ROUTE;
+        }
+        else{
+            nextUrl = HOSPITAL_OUTPATIENTS_EDIT_ROUTE.replace(":action", "edit");
+        }
+        history.push(nextUrl);
     }
 
     useEffect(() => {
@@ -50,20 +61,6 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
         }
        
     }, [investigations.currentInvestigation])
-
-    // async function getAppoinmentsDate(uuidAgenda:string, date:Date){
-    //     console.log("getAppoinmentsDate", uuidAgenda, date);
-    //     setValidData(true);
-    //     setLoadingAppointments(true);
-    //     getAppoinmentsDateService(investigations.currentInvestigation.uuid, uuidAgenda, date)
-    //         .then(response => {
-    //             setCurrentAppointments(response.appointments);
-    //             setLoadingAppointments(false);
-    //         })
-    //         .catch(err => {
-    //             setLoadingAppointments(false);
-    //         })
-    // }
 
     function renderAppointments(){
         if(uuidAgenda && selectedDate){
@@ -90,7 +87,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
                         <Grid container spacing={3}>
                             <Grid item xs={12} style={{padding:'2rem'}}>
                                 <FormConsultAppointment uuidInvestigation={investigations.currentInvestigation.uuid} 
-                                    showAllAgendas={true} infoAppointmentReadyCallback={(uuidAgenda, date) => {
+                                    showAllAgendas={false} infoAppointmentReadyCallback={(uuidAgenda, date) => {
                                         setUuidAgenda(uuidAgenda);
                                         setSelectedDate(date);
                                     }} 

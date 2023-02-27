@@ -556,7 +556,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         if(boxes.length === 0){
             return (
                 <>
-                    Add your first box: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
+                    <Translate id="pages.hospital.outpatients.box.add_box" />: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
                 </>
             );
         }
@@ -578,7 +578,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             })
             return (
                 <>
-                    Box: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
+                    <Translate id="pages.hospital.outpatients.box.add_box" />: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
                     <Accordion2Levels orderedMainElements={elements} deleteMainElementCallBack={(uuid) => deleteBox(uuid)} 
                         editSubElementCallBack={(uuid) =>{
                             editAgenda(uuid)
