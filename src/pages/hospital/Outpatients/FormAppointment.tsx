@@ -219,7 +219,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         else if(listAgendas.length === 1){
             return(
                 <>
-                    <Typography variant="h6">Agenda: </Typography>{listAgendas[0].name}
+                    <Typography variant="body2">Agenda: </Typography>{listAgendas[0].name}
                 </>
             );
         }
