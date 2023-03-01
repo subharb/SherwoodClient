@@ -8,7 +8,7 @@ import { ButtonAdd } from '../../../components/general/mini_components';
 import PatientInfo from '../../../components/PatientInfo';
 import { IAppointment } from '../../../constants/types';
 import { getPatientsAppoinmentsService, cancelAppointmentService } from '../../../services/agenda';
-import { dateAndTimeFromPostgresString, stringDatePostgresToDate, turnsToSchedule } from '../../../utils';
+import { dateAndTimeFromPostgresString, researcherFullName, stringDatePostgresToDate, turnsToSchedule } from '../../../utils';
 import { RequestStatus } from '../Service/types';
 import { FormMakeAppointment } from './FormAppointment';
 
@@ -133,7 +133,8 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                     return {
                         id : appointment.id,
                         department: appointment.agenda.department ? appointment.agenda.department.name : "",
-                        doctor : appointment.agenda.principalResearcher.name,
+                        //@ts-ignore
+                        doctor : researcherFullName(appointment.agenda.principalResearcher.researcher),
                         date : dateAndTimeFromPostgresString(activeLanguage.code, appointment.startDateTime),
                         turn : turnsToSchedule(appointment.agenda.turn),
                         bookingDate : dateAndTimeFromPostgresString(activeLanguage.code, appointment.createdAt),

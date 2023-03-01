@@ -12,7 +12,7 @@ import { decryptPatientsData } from '../../utils';
         researchers:null,
         departments:null,
         agendas:null,
-        appointments:null,
+        //appointments:null,
         stays:null
     },
     loading: false,
@@ -84,18 +84,18 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading;
             newState.error = initialState.error;
             return newState;
-        case types.FETCH_HOSPITAL_APPOINTMENT_SUCCESS:
-            let tempAppointments = [];
-            if(newState.data.appointments){
-                tempAppointments = [...newState.data.appointments];
-            }
+        // case types.FETCH_HOSPITAL_APPOINTMENT_SUCCESS:
+        //     let tempAppointments = [];
+        //     if(newState.data.appointments){
+        //         tempAppointments = [...newState.data.appointments];
+        //     }
             
-            tempAppointments.push(action.appointment);
-            newState.data.appointments = tempAppointments;
+        //     tempAppointments.push(action.appointment);
+        //     newState.data.appointments = tempAppointments;
 
-            newState.loading = initialState.loading;
-            newState.error = initialState.error;
-            return newState;
+        //     newState.loading = initialState.loading;
+        //     newState.error = initialState.error;
+        //     return newState;
 
         case types.SAVE_DEPARTMENT_SUCCESS:
             tempDepartments = [...newState.data.departments];

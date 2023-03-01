@@ -575,6 +575,7 @@
                 "appointment" : {
                     "title" : ["Making appointment: ", "Haciendo cita: ", "Prendre rendez-vous: "],
                     "date" : ["Appointment date", "Fecha de la cita", "Date du rendez-vous"],
+                    "success" : ["Appointment created succesfully", "Cita creada correctamente", "Rendez-vous créé avec succès"],
                     "error" : {
                         "date_time" : ["Functionality not implemented yet"],
                         "full_agenda" : ["The agenda is full for this day, please select another day", "La agenda está llena para este día, por favor seleccione otro día", "L'agenda est pleine pour ce jour, s'il vous plaît sélectionnez un autre jour"],

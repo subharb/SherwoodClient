@@ -15,6 +15,7 @@ import { makeAppointmentAction } from '../../../redux/actions/hospitalActions';
 import { Alert } from '@material-ui/lab';
 import { isArray } from 'lodash';
 import AnimatedCheck from '../../../components/general/AnimatedCheck';
+import { makeAppointmentService } from '../../../services';
 
 
 interface FormAppointmentGeneralProps {
@@ -54,16 +55,32 @@ export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPa
 
 const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInvestigation,  uuidPatient, mode, hospital, showAllAgendas, appointmentMadeCallback, infoAppointmentReadyCallback }) => {
     const {agendas, loadingAgendas} = useAgendas();
-    const appointments =  useSelector((state:any) => state.hospital.data.appointments);
+    //const appointments =  useSelector((state:any) => state.hospital.data.appointments);
+    const [appointments, setAppointments] = useState<IAppointment[] | null>(null);
     const [departmentsWithAgenda, setDepartmentsWithAgenda] = useState<IDepartment[]>([]);
     const prevAppointments:IAppointment[] | null = usePrevious(hospital.data.appointments);
-    
+    const [appointmentCreated, setAppointmentCreated] = useState<boolean>(false);
+    const [error, setError] = useState<number>(-1);
+    const [loading, setLoading] = useState<boolean>(false);
+
     const dispatch = useDispatch();
 
     async function makeAppointment(uuidAgenda:string, date:Date){
-        await dispatch(
-            makeAppointmentAction(uuidInvestigation, uuidAgenda, uuidPatient, date)
-        ); 
+        setLoading(true);
+        setError(-1);
+        makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date)
+            .then((response) => {
+                const tempAppointments = appointments ? [...appointments] : [];
+                tempAppointments.push(response.appointment);
+                setAppointments(tempAppointments);
+                setAppointmentCreated(true);
+                setLoading(false);
+            })
+            .catch((error) => { 
+                setAppointmentCreated(false);
+                setError(error.errorCode);
+                setLoading(false);
+            });
     }
 
     function infoAppointmentReady(uuidAgenda:string, date:Date){
@@ -91,33 +108,36 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
     }, [agendas]);
 
     useEffect(() => {
-        if(isArray(prevAppointments) && prevAppointments.length < appointments.length && appointmentMadeCallback){
+        
+        if((!prevAppointments && isArray(appointments) && appointmentCreated && appointmentMadeCallback) || 
+            (isArray(prevAppointments) && isArray(appointments) && prevAppointments.length < appointments.length && appointmentMadeCallback)){
+            
             setTimeout(() => {
                 appointmentMadeCallback();
-            }, 2000);
-            
+            }, 2000);   
         }
-        
+    }, [appointments, appointmentCreated]);
 
-    }, [appointments]);
+    
 
     if(loadingAgendas || hospital.loading){
         return <Loader />
     }
-    else if(isArray(prevAppointments) && prevAppointments.length < appointments.length){
-        return(
-            <>
-                <Grid justifyContent={'center'} container>
-                    <AnimatedCheck />
-                </Grid>
-            </>
-        )
-    }
+    // else if(appointmentCreated){
+    //     return(
+    //         <>
+    //             <Grid justifyContent={'center'} container>
+    //                 <AnimatedCheck />
+    //             </Grid>
+    //         </>
+    //     )
+    // }
     else if(agendas !== null){
         return (
             <>
                 <FormAppointmentCore uuidPatient={uuidPatient} departmentsWithAgenda={departmentsWithAgenda} 
-                    error={hospital.error} mode={mode} showAllAgendas={showAllAgendas}
+                    error={error } mode={mode} showAllAgendas={showAllAgendas} loading={loading}
+                    appointmentCreated={appointmentCreated}
                     agendas={agendas} infoAppointmentCallback={infoAppointmentReady} />
             </>
         );
@@ -142,10 +162,12 @@ interface FormAppointmentCoreProps extends Omit<FormAppointmentGeneralProps, 'ma
     agendas:IAgenda[];
     error:number;
     showAllAgendas:boolean;
+    loading:boolean;
+    appointmentCreated:boolean;
     infoAppointmentCallback: (uuidAgenda:string, date:Date) => void;
 }
 
-export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPatient, showAllAgendas, departmentsWithAgenda, agendas, mode, error, infoAppointmentCallback }) => {
+export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPatient, loading, showAllAgendas, departmentsWithAgenda, agendas, mode, error,appointmentCreated, infoAppointmentCallback }) => {
     const [department, setDepartment] = useState<IDepartment | null>(null);
     const [errorState, setErrorState] = useState<{department:boolean, agenda:boolean, date:boolean}>({department:false, agenda:false, date:false});
     const [listAgendas, setListAgendas] = useState<IAgenda[]>([]); 
@@ -287,8 +309,11 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         else if(error === 3){
             setShowSnackbar({show:true, message:`${errorTranslationPath}.week_day_not_available`, severity:"error"});
         }
+        else if(appointmentCreated){
+            setShowSnackbar({show:true, message:`pages.hospital.outpatients.appointment.success`, severity:"success"});            
+        }
         
-    }, [error]);
+    }, [error, appointmentCreated]);
 
     useEffect(() => {
         if(listAgendas.length === 1){
@@ -321,6 +346,28 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
             
         }
     }, [])
+
+    function renderButtons(){
+        if(mode === "make" && !loading && !appointmentCreated){
+            return (
+                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                        <Translate id="general.cancel" />
+                    </ButtonCancel>
+                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
+                        <Translate id="general.continue" />
+                    </ButtonContinue>
+                </Grid>
+            )
+        }
+        else if(mode === "make" && loading){
+            return (
+            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                    <Loader />
+            </Grid>);
+        }
+        
+    }
     
     return (
         <>
@@ -329,7 +376,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                 vertical: 'top',
                 horizontal: 'center',
                 }}
-                open={error !== null}
+                open={showSnackbar.show}
                 autoHideDuration={4000}
                 onClose={handleCloseSnackbar}>
                    <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
@@ -360,16 +407,9 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                         renderCalendar()
                     }
                     </Grid>
+                    
                     {
-                        mode === "make" &&
-                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                            <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
-                                <Translate id="general.cancel" />
-                            </ButtonCancel>
-                            <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
-                                <Translate id="general.continue" />
-                            </ButtonContinue>
-                        </Grid>
+                        renderButtons()
                     }
                    
                 </Grid>
