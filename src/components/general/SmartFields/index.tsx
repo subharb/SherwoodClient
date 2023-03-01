@@ -14,6 +14,7 @@ import BMIField from './BMIField';
 import EDDField from './EDDField';
 import { isInteger } from 'lodash';
 import RequestField from './RequestField';
+import MedicalHistoryAI from './MedicalHistory';
 
 
 
@@ -121,6 +122,7 @@ interface Props extends LocalizeContextProps {
     country:string,
     language?:string,
     uuidPatient?:string,
+    formValues?:any,
     uuidSurvey?:string,
     uuidInvestigation?:string,
     initialState:{
@@ -245,6 +247,9 @@ const SmartField:React.FC<Props> = (props) => {
                     break;
                 case "bmi":
                     smartField = <BMIField {...propsSmartField} />
+                    break;
+                case "medical-history-ai":
+                    smartField = <MedicalHistoryAI {...propsSmartField} formValues={props.formValues} />
                     break;
                 case "edd":
                     smartField = <EDDField {...propsSmartField} />

@@ -31,6 +31,7 @@ export interface IBox{
     name:string,
     type:number,
     department:IDepartment | null,
+    createdAt?:Date,
 }
 
 export interface IAgenda{

@@ -317,15 +317,19 @@ const emptyRows =
         for(let i = 0; i < props.actions.length; i++){
             const action = props.actions[i];
             const func = action["func"];
-            buttonActions.push(
-                <IconButton data-testid={action.type} aria-label={action.type} 
-                    onClick={(e) => {
-                        func(row.id);
-                        e.stopPropagation();
-                    }}>
-                    <IconGenerator type={action.type} />
-                </IconButton>
-            );
+            const check = action["check"];
+            if(check === undefined || check(row)){
+                buttonActions.push(
+                    <IconButton data-testid={action.type} aria-label={action.type} 
+                        onClick={(e) => {
+                            func(row.id);
+                            e.stopPropagation();
+                        }}>
+                        <IconGenerator type={action.type} />
+                    </IconButton>
+                );
+            }
+            
         }
         return buttonActions;
         

@@ -3,7 +3,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import styled, {css} from 'styled-components';
-import { ButtonAdd, ButtonCheck, ButtonDelete, ButtonEmptyCheck, DeleteHolder, RedFormHelperText } from '../general/mini_components';
+import { ButtonAdd, ButtonCheck, ButtonContinue, ButtonDelete, ButtonEmptyCheck, DeleteHolder, RedFormHelperText } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
         Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider } from '@material-ui/core';
@@ -36,7 +36,7 @@ const FormControl = styled(FormControlSpacing)`
     min-width: 148px!important;
     xmargin-top:1rem!important;
 `;
-const QuillWrapper = styled.div`
+export const QuillWrapper = styled.div`
   .ql-editor {
     min-height: 200px;
 
@@ -457,6 +457,7 @@ class FieldSherwood extends PureComponent{
             case "treatment_regular" : 
             case "request_lab" : 
             case "request_img" : 
+            case "medical-history-ai":
                 return(
                     <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                         variant="outlined" margin={this.typeMargin} error={errorState} country={country}

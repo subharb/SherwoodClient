@@ -94,7 +94,9 @@
         "data-collection" : ["Form", "Formulario", "Forme"],
         "data-collections" : ["Surveys", "Encuestas", "Enquêtes"],
         "sections" : ["Sections", "Secciones", "Sections"],
-        
+        "medical-history-ai" : ["Medical History AI", "Historia Clínica AI", "Historique médical AI"],
+        "send_to_email" : ["Send to email", "Enviar por correo electrónico", "Envoyer par email"],
+        "generate_medical_history" : ["Generate Medical History", "Generar Historia Clínica", "Générer l'histoire médicale"],
         "patient" : {
             "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
@@ -1024,6 +1026,7 @@
                 "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
                 "textarea" : ["Texarea", "Texto largo", "Texarea"],
                 "multioption" : ["Multioption", "Multiopción", "Multioption"],
+                "medical-history-ai" : ["Medical History AI", "Historia Médica AI", "Historique médical AI"],
                 "evaluation" : ["Evaluation", "Evaluación", "Evaluation"],
                 "radio" : ["Radio button", "Radio button", "Radio button"],
                 "autocomplete" : ["Autocomplete", "Autocomplete", "Autocomplete"],

@@ -20,7 +20,7 @@ interface Accordion2LevelsProps {
 
 const Accordion2Levels: React.FC<Accordion2LevelsProps> = ({ orderedMainElements, addSubElementCallBack, viewSubElementCallBack, configureSubElementCallBack, editSubElementCallBack, deleteMainElementCallBack, deleteSubElementCallBack, editMainElementCallBack }) => {
     
-    let ordereredMainElements = orderedMainElements.sort((a,b) => a.name.localeCompare(b.name));
+    
 
     function renderSecondSubLevel(mainElement:MainElementType){
         if(mainElement.subElements[0].hasOwnProperty("subElements")){
@@ -130,8 +130,8 @@ const Accordion2Levels: React.FC<Accordion2LevelsProps> = ({ orderedMainElements
             }   
     }
     
-    const accordionElements = ordereredMainElements.length > 0 &&
-        ordereredMainElements.map(mainElement => {
+    const accordionElements = orderedMainElements.length > 0 &&
+        orderedMainElements.map(mainElement => {
             return (
                 <Accordion>
                     <AccordionSummary

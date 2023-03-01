@@ -561,7 +561,11 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             );
         }
         if(agendas !== null){
-            const elements:MainElementType[] = boxes.map((box) => {
+            const boxOrdered = boxes.sort((boxA, boxB) => { 
+                const dateA = new Date(boxA.createdAt as Date);
+                const dateB = new Date(boxB.createdAt as Date);
+                return dateA.getTime() - dateB.getTime()});
+            const elements:MainElementType[] = boxOrdered.map((box) => {
                 return {
                     name: box.name,
                     uuid: box.uuid,

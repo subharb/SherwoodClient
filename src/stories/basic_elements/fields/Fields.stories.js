@@ -133,6 +133,14 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
+    "medical-history-ai" : {
+        required : false,
+        type:"medical-history-ai",
+        name:"medical-history-ai",
+        label:"Medical History AI",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
     "bmi" : {
         required : false,
         type:"bmi",

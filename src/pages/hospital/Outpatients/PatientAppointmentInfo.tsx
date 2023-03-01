@@ -7,8 +7,8 @@ import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import PatientInfo from '../../../components/PatientInfo';
 import { IAppointment } from '../../../constants/types';
-import { getPatientsAppoinmentsService } from '../../../services/agenda';
-import { dateAndTimeFromPostgresString, stringDatePostgresToDate } from '../../../utils';
+import { getPatientsAppoinmentsService, cancelAppointmentService } from '../../../services/agenda';
+import { dateAndTimeFromPostgresString, stringDatePostgresToDate, turnsToSchedule } from '../../../utils';
 import { RequestStatus } from '../Service/types';
 import { FormMakeAppointment } from './FormAppointment';
 
@@ -42,11 +42,29 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
             })
     }, []);
 
+    function deleteAppointment(idAppointment:number){
+        setLoadingPatientsAppointments(true);
+        const appointmentToDelete = patientsAppointments.find(appointment => appointment.id === idAppointment);
+        if(appointmentToDelete){
+            cancelAppointmentService(uuidInvestigation, appointmentToDelete.uuid)
+            .then(response => {
+                const indexAppointment = patientsAppointments.findIndex((appointment) => appointment.uuid === appointmentToDelete.uuid);
+                if(indexAppointment !== -1){
+                    patientsAppointments.splice(indexAppointment, 1);
+                }
+                setLoadingPatientsAppointments(false);
+            })
+            .catch(err => {
+                setLoadingPatientsAppointments(false);
+            })
+        }
+    }
+
     return (
         <>
             <PatientAppointmentInfoLocalized uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} resetModal={resetModal}
                 appointmentMadeCallback={appointmentMadeCallback} patientsAppointments={patientsAppointments} 
-                loadingPatientsAppointments={loadingPatientsAppointments} />
+                loadingPatientsAppointments={loadingPatientsAppointments} deleteAppointmentCallback={(idAppointment:number) => deleteAppointment(idAppointment)} />
         </>
     );
 };
@@ -56,10 +74,11 @@ export default PatientAppointmentInfo;
 interface PatientAppointmentInfoCoreProps extends PatientAppointmentInfoProps, LocalizeContextProps {
     patientsAppointments:IAppointment[];
     loadingPatientsAppointments: boolean;
+    deleteAppointmentCallback: (id:number) => void;
 }
 
 const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({ uuidPatient, uuidInvestigation, activeLanguage, loadingPatientsAppointments, 
-                                                                                    patientsAppointments, appointmentMadeCallback }) => {
+                                                                                    patientsAppointments, appointmentMadeCallback, deleteAppointmentCallback }) => {
     const [createAppointment, setCreateAppointment] = React.useState<boolean>(false);
 
     function renderShowIcon(status:number, date:number){
@@ -116,14 +135,17 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                         department: appointment.agenda.department ? appointment.agenda.department.name : "",
                         doctor : appointment.agenda.principalResearcher.name,
                         date : dateAndTimeFromPostgresString(activeLanguage.code, appointment.startDateTime),
-                        turn : appointment.agenda.turn.map((turn) => turn[0]+":"+turn[1]).join(", "),
+                        turn : turnsToSchedule(appointment.agenda.turn),
                         bookingDate : dateAndTimeFromPostgresString(activeLanguage.code, appointment.createdAt),
                         show: renderShowIcon(appointment.requestAppointment.status, appointment.startDateTime),
+                        startDateTime : appointment.startDateTime
                     }
                 });
                 return(
                     <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
-                            actions={[{"type" : "delete", "func" : (index:number) => console.log(index)}]}
+                            actions={[{"type" : "delete", "check" : (row:any) => {
+                                return new Date(row.startDateTime) > new Date()
+                            }, "func" : (id:number) => deleteAppointmentCallback(id)}]}
                             />
                 )
             }
@@ -145,7 +167,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
     }
     return (
         <>
-            <FormMakeAppointment showAllAgendas={true} uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} 
+            <FormMakeAppointment showAllAgendas={false} uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} 
                 appointmentMadeCallback={appointmentMadeCallback} />
         </>
     );

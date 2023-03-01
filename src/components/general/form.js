@@ -146,6 +146,7 @@ class Form extends Component {
                             country={this.props.country}
                             label={this.props.fields[key].label}
                             validate={[this.sherwoodValidation]}
+                            formValues={this.props.formValues}
                             {...this.props.fields[key]}
                         />
                         {
