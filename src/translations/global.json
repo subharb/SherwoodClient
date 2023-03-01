@@ -530,7 +530,7 @@
                     "department" : ["Department", "Departamento", "Département"],
                     "doctor" : ["Doctor", "Doctor", "Docteur"],
                     "date" : ["Date", "Fecha", "Date"],
-                    "turn" : ["Turn", "Turno", "Tourner"],
+                    "turn" : ["Shift", "Turno", "Tourner"],
                     "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
                     "show" : ["Show", "Mostrar", "Montrer"]
                 },
@@ -554,8 +554,8 @@
                     "slotsPerDay" : ["Slots per day", "Citas por día", "Visites par jour"],
                     "doctor" : ["Doctor", "Doctor", "Docteur"],
                     "service" : ["Service", "Servicio", "Service"],
-                    "turn_start" : ["Turn start", "Inicio de turno", "Début du tour"],
-                    "turn_end" : ["Turn end", "Fin de turno", "Fin du tour"],
+                    "turn_start" : ["Shift start", "Inicio de turno", "Début du tour"],
+                    "turn_end" : ["Shift end", "Fin de turno", "Fin du tour"],
                     "week_days" : ["Week days", "Días de la semana", "Jours de la semaine"],
                     "schedule" : ["Schedule", "Horario", "Horaire"],
                     "success" : {

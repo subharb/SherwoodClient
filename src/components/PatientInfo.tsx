@@ -64,7 +64,7 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, 
     else if(patient && patient.personalData){
         return (
             <Grid container spacing={1}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     { 
                         patient.personalData.health_id &&
                         <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.health_id" /></span>: {patient.personalData.health_id}</Typography>
