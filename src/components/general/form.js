@@ -10,6 +10,7 @@ import { Grid, Paper, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { blue } from '@material-ui/core/colors';
+import { isObject } from 'lodash';
 
  /**
  * Component that renders a form with the values passed by props
@@ -26,6 +27,7 @@ class Form extends Component {
         this.renderFields= this.renderFields.bind(this);
         this.sherwoodValidation = this.sherwoodValidation.bind(this)
         
+        this.labelValues = {};
         //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
         this.state = {showOptions:{}}
     }
@@ -59,11 +61,20 @@ class Form extends Component {
         return this.props.callBackForm(tempValues, buttonSubmitted);
     }
     componentDidUpdate(prevProps, prevState){
+        console.log("formValues", this.props.formValues);
+        
         const changedField = Object.keys(this.props.fields).find(key => {
             return this.props.formValues[key] !== prevProps.formValues[key];
         });
         if(this.props.fields[changedField] && this.props.fields[changedField].callBackOnChange){
             this.props.fields[changedField].callBackOnChange(this.props.formValues[changedField]);
+        }
+        else if(this.props.fields[changedField]){
+            const value = isObject(this.props.formValues[changedField]) ? Object.values(this.props.formValues[changedField]).join(" ") : this.props.formValues[changedField];
+            this.labelValues[this.props.fields[changedField].id] = {
+                label : this.props.fields[changedField].label,
+                value : this.props.formValues[changedField]
+            }
         }
     }
     componentDidMount(){
@@ -146,7 +157,7 @@ class Form extends Component {
                             country={this.props.country}
                             label={this.props.fields[key].label}
                             validate={[this.sherwoodValidation]}
-                            formValues={this.props.formValues}
+                            formValues={this.labelValues}
                             {...this.props.fields[key]}
                         />
                         {

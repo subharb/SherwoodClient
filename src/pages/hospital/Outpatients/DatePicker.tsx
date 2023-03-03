@@ -95,11 +95,11 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
 
     function isDisabledDate(date:MaterialUiPickersDate, selectBlockedDates?:boolean){
         const isAnOfficeDay = !availableDaysWeek.includes(date!.toLocaleDateString("en-En", { weekday: 'narrow' }))
-                    const isABlockDate = !selectBlockedDates && blockedDates.some((blockedTS) => {
-                        const blockedDate = new Date(blockedTS);
-                        return blockedDate.toDateString() === date!.toDateString()
-                    })
-                    return isAnOfficeDay || isABlockDate;
+        const isABlockDate = !selectBlockedDates && blockedDates.some((blockedTS) => {
+            const blockedDate = new Date(blockedTS);
+            return blockedDate.toDateString() === date!.toDateString()
+        })
+        return isAnOfficeDay || isABlockDate;
     }
 
     function onDateChange(date:MaterialUiPickersDate){

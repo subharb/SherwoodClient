@@ -459,7 +459,7 @@ class FieldSherwood extends PureComponent{
             case "request_img" : 
             case "medical-history-ai":
                 return(
-                    <SmartField mode="form" label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
+                    <SmartField mode="form" formValues={this.props.formValues} label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                         variant="outlined" margin={this.typeMargin} error={errorState} country={country}
                         uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} uuidSurvey={uuidSurvey}
                         helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 

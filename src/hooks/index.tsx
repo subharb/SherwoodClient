@@ -100,7 +100,7 @@ export function useDepartments(researchersDepartmentsOnly:boolean = false){
                 getDepartmentsInvestigationAction(uuidInvestigation)
             ); 
         }
-        if(investigations.data && investigations.currentInvestigation){
+        if(investigations.data && investigations.currentInvestigation && departments === null){
             getDepartments(investigations.currentInvestigation.uuid)
         }
     }, [investigations])

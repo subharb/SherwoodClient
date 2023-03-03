@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Checkbox, FormControlLabel, Grid, Typography } from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
 import React from 'react';
 import { Translate } from 'react-localize-redux';
@@ -8,23 +8,30 @@ import { QuillWrapper } from '../FieldSherwood';
 import { ButtonCheck, ButtonContinue, ButtonSave } from '../mini_components';
 
 interface MedicalHistoryAIProps extends PropsSmartField {
-    formValues : any;
+    formValues : {[key:string]:{label:string,value:string}};
 }
 
 const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues }) => {
     const [generatedText, setGeneratedText] = React.useState<string | null>(null);
+    const [sendToEmail, setSendToEmail] = React.useState<boolean>(false);
     
+    function sendToOpenAI() {
+    
+        const prompt = Object.values(formValues).map((field) => field.label+":"+JSON.stringify(field.value)).join("");
+        console.log(prompt);
+    }
     return (
         <Box mt={3} mb={3} >
             <Grid container spacing={2} style={{paddingBottom:'1rem'}}>
                 <Grid xs={12}>
-                    <ButtonCheck onClick={() => console.log("medical history", formValues)}>
+                    <ButtonCheck onClick={() => sendToOpenAI()}>
                         <Translate id="hospital.generate_medical_history" />
                     </ButtonCheck>
                     &nbsp;
-                    <ButtonContinue color={blue[500]} onClick={() => console.log("enviar email")}>
-                        <Translate id="hospital.send_to_email" />
-                    </ButtonContinue>
+                    <FormControlLabel
+                        control={<Checkbox checked={sendToEmail} onChange={(event) => setSendToEmail(event.target.value !== "")} />}
+                        label={<Translate id="hospital.send_to_email" />}
+                    />
                 </Grid>
             </Grid>
             {
