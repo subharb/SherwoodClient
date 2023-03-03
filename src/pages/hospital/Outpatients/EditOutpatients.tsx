@@ -318,10 +318,10 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     label:"pages.hospital.outpatients.agenda.week_days",
                     shortLabel: "pages.hospital.outpatients.agenda.week_days",
                     validation : "notEmpty",
-                    options:[{label:translate("general.week_days.monday"), value:"M"},{label:translate("general.week_days.tuesday"), value:"T"},
-                                {label:translate("general.week_days.wednesday"), value:"W"},{label:translate("general.week_days.thursday"), value:"R"},
-                                {label:translate("general.week_days.friday"), value:"F"},{label:translate("general.week_days.saturday"), value:"S"},
-                                {label:translate("general.week_days.sunday"), value:"U"}]
+                    options:[{label:translate("general.week_days.monday"), value:"Mon"},{label:translate("general.week_days.tuesday"), value:"Tue"},
+                                {label:translate("general.week_days.wednesday"), value:"Wed"},{label:translate("general.week_days.thursday"), value:"Thu"},
+                                {label:translate("general.week_days.friday"), value:"Fri"},{label:translate("general.week_days.saturday"), value:"Sat"},
+                                {label:translate("general.week_days.sunday"), value:"Sun"}]
                 },
                 "department":{
                     required : false,
@@ -445,13 +445,14 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             const turnEnd = agendaSelected.turn[1];
             const reseachersDepartment = researchers.filter((researcher) => researcher.units.filter((unit) => unit.department.uuid === agendaSelected.department?.uuid).length > 0);
             setResearchersDepartment(reseachersDepartment);
-            
+            const box = agendaSelected.box as IBox;
             const agendaEdit:FormValues = {
                     uuid:agendaSelected.uuid,
                     name:agendaSelected.name, slotsPerDay:agendaSelected.slotsPerDay, department:agendaSelected.department?.uuid, 
                     daysWeek:agendaSelected.daysWeek.map((day) =>{return {"multioption" : day}}),
                     turnStart: new Date(0,0,0, turnStart[0], turnStart[1]), turnEnd: new Date(0,0,0, turnEnd[0], turnEnd[1]),
                     principalResearcher: agendaSelected.principalResearcher?.uuid,
+                    box: box!.uuid as string,
                     idServiceInvestigationFirstVisit : agendaSelected.serviceInvestigationFirstVisit.id,
                     otherStaff:[]
                 };
