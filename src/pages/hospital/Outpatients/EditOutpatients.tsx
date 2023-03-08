@@ -469,9 +469,16 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     }
     function deleteBox(uuidBox:string){
         const boxSelected = boxes.find((box) => box.uuid === uuidBox);
-        if(boxSelected){
-            setDeletedBox(boxSelected);
-            setModalInfo({showModal: true, type:"delete_box"});
+        if(boxSelected && agendas){
+            const hasAgendas = agendas?.filter((agenda) => (agenda.box as IBox).uuid === uuidBox).length > 0;
+            if(hasAgendas){
+                setDeletedBox(boxSelected);
+                setModalInfo({showModal: true, type:"delete_box_error"});
+            }
+            else{
+                setDeletedBox(boxSelected);
+                setModalInfo({showModal: true, type:"delete_box"});
+            }
         }
     }
     function resetModal(){
@@ -511,12 +518,12 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     } 
                     {
                         modalInfo.type === "agenda_error_appointments" && 
-                        <Typography variant="body1">You can't delete an agenda that has appointments, cancel them first.</Typography>
+                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.ERROR_DELETE_AGENDA" /></Typography>
                     } 
                     {
                         (modalInfo.type === "delete_agenda" && deletedAgenda) && 
                         <>
-                        <Typography variant="body1">Are you sure you want to delete this agenda?</Typography>
+                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.SURE_DELETE_AGENDA" /></Typography>
                         {deletedAgenda!.name}
                         <Grid item xs={12} style={{paddingTop:'1rem'}}>
                             <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
@@ -529,9 +536,13 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                         </>
                     } 
                     {
+                        modalInfo.type === "delete_box_error" && 
+                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.ERROR_DELETE_BOX" /></Typography>
+                    }
+                    {
                         (modalInfo.type === "delete_box" && deletedBox) && 
                         <>
-                        <Typography variant="body1">Are you sure you want to delete this box?</Typography>
+                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.SURE_DELETE_BOX" /></Typography>
                         {deletedBox!.name}
                         <Grid item xs={12} style={{paddingTop:'1rem'}}>
                             <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>

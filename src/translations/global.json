@@ -501,7 +501,11 @@
                 "confirm" : {
                     "CHECKIN" : ["Patient check-in", "Confirmar check-in", "Confirmer check-in"],
                     "CANCEL" : ["Cancel appointment", "Cancelar cita", "Annuler le rendez-vous"],
-                    "ERROR_CANCEL" : ["Error", "Error", "Erreur"]
+                    "ERROR_CANCEL" : ["Error", "Error", "Erreur"],
+                    "ERROR_DELETE_AGENDA" : ["You can't delete an agenda that has appointments, cancel them first.", "No puede eliminar una agenda que tiene citas, cáncelalas primero.", "Vous ne pouvez pas supprimer un agenda qui a des rendez-vous, annulez-les d'abord."],
+                    "SURE_DELETE_AGENDA" : ["Are you sure you want to delete this agenda?", "¿Está seguro de que desea eliminar esta agenda?", "Êtes-vous sûr de vouloir supprimer cet agenda?"],
+                    "SURE_DELETE_BOX" : ["Are you sure you want to delete this box?", "¿Está seguro de que desea eliminar esta caja?", "Êtes-vous sûr de vouloir supprimer cette boîte?"],
+                    "ERROR_DELETE_BOX" : ["You can't delete a box that has agendas, delete them first.", "No puede eliminar una caja que tiene agendas, elimínelas primero.", "Vous ne pouvez pas supprimer une boîte qui a des agendas, supprimez-les d'abord."]
                 },
                 "single_agenda" : {
                     "block" : {
