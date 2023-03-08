@@ -27,7 +27,9 @@ export interface PropsSmartField {
     type:string,
     slaves?:object[],
     country?:string,
+    template? : string,
     cancel?: (() => void),
+    updateElement?: (index:number, element:SmartFieldType) => void,
     elementSelected: (element:SmartFieldType) => void,
     error:boolean,
 }
@@ -98,7 +100,12 @@ export interface RequestImageType{
     request_id: number
 }
 
-export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType | RequestLabType | RequestImageType;
+export interface MedicalHistoryAIType{
+    medical_history_ai : string,
+    send_email: boolean
+}
+
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType | RequestLabType | RequestImageType | MedicalHistoryAIType;
 
 export interface Diagnosis{
     ict : string,
@@ -108,7 +115,8 @@ export interface Diagnosis{
 enum DATE_FIELDS {"background-date", "treatment-start", "treatment-finish"};
 const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular", edd : "regular", edd_last_period:"regular"};
 
-const SINGLE_SMARTFIELDS = ["bmi", "edd"]
+const NO_TABLE_FIELDS = ["medical_history_ai"];
+const SINGLE_SMARTFIELDS = ["bmi", "edd", "medical_history_ai"];
 export const INITIAL_SELECT = ["ict", "background", "treatment", "treatment_regular", "family-background", "allergy"];
 
 interface Props extends LocalizeContextProps {
@@ -122,6 +130,7 @@ interface Props extends LocalizeContextProps {
     country:string,
     language?:string,
     uuidPatient?:string,
+    template? : string,
     formValues?:any,
     uuidSurvey?:string,
     uuidInvestigation?:string,
@@ -129,6 +138,7 @@ interface Props extends LocalizeContextProps {
         addingElements:boolean,
         listElements:Diagnosis[]
     },
+    updateElement?: (index:number, element:SmartFieldType) => void,
     elementSelected: (treatments:SmartFieldType[] | boolean) => void
 }
 
@@ -148,7 +158,7 @@ const SmartField:React.FC<Props> = (props) => {
         }
     }
     function renderElements(){
-        if(listElements.length > 0 && !addingElements){
+        if(listElements.length > 0 && !addingElements && ! NO_TABLE_FIELDS.includes(props.type)){
             const headCells = [];//[{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
             
             const keys = Object.keys(listElements[0]);
@@ -213,6 +223,15 @@ const SmartField:React.FC<Props> = (props) => {
         setListElements(listElements.filter((item, index) => index !== id));
     }
 
+    function updateElement(id:number, element:SmartFieldType){
+        if(listElements.length > 0){
+            setListElements(listElements.map((item, index) => index === id ? element : item));
+        }
+        else{
+            setListElements([element]);
+        }
+    }
+
     function elementSelected(diagnose:SmartFieldType){
         console.log(diagnose);
         setListElements(oldArray => [...oldArray, diagnose]);
@@ -220,10 +239,11 @@ const SmartField:React.FC<Props> = (props) => {
     }
    
     function renderSelector(){
-        if(addingElements && props.mode === "form"){
+        if((addingElements && props.mode === "form") || NO_TABLE_FIELDS.includes(props.type)){
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
+                template : props.template,
                 cancel, language:props.language ? props.language : props.activeLanguage.code, country:props.country, error:props.error, slaves:props.slaves,
-                size:"small", elementSelected:(smartF:SmartFieldType) => elementSelected(smartF)}
+                size:"small", updateElement:(index:number, smartF:SmartFieldType) => updateElement(index, smartF) ,elementSelected:(smartF:SmartFieldType) => elementSelected(smartF)}
             
             let smartField = null;
             switch(props.type){
@@ -248,7 +268,7 @@ const SmartField:React.FC<Props> = (props) => {
                 case "bmi":
                     smartField = <BMIField {...propsSmartField} />
                     break;
-                case "medical-history-ai":
+                case "medical_history_ai":
                     smartField = <MedicalHistoryAI {...propsSmartField} formValues={props.formValues} />
                     break;
                 case "edd":
@@ -304,7 +324,7 @@ const SmartField:React.FC<Props> = (props) => {
         }
     }, [addElement]);
     
-    if(!addElement && listElements.length === 0){
+    if((!addElement && listElements.length === 0)){
         return renderSelect();
     }
     else{

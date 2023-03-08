@@ -34,10 +34,8 @@ export default function FillDataCollection(props) {
         
         data.forEach(fieldData => {
             //const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));
-            postObj.surveyRecords.push(fieldData);
-            
+            postObj.surveyRecords.push(fieldData); 
         });
-       
         
         if(props.idSubmission){
             // Si hay initData, estamos actualizando

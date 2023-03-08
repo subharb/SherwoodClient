@@ -4,8 +4,6 @@ import { Translate } from 'react-localize-redux';
 import { ButtonAdd } from '../../general/mini_components';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
-import { FIELDS_FORM } from '../../../utils';
-import { usePortal } from '../../../hooks';
 
 function AddField(props) {
     const [addingField, setAddingField] = useState(false);

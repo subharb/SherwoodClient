@@ -55,8 +55,9 @@ function ShowRecordsSection(props) {
                 }
             </React.Fragment>;
         }
-        if(field.type === "textarea"){
-            const parsedValue = valueRecord.value.replace('<h1>','').replace('</h1>','').replace('<h2>','').replace('</h2>','');;
+        if(field.type === "textarea" || field.type === "medical_history_ai"){
+            const value = field.type  === "medical_history_ai" ? valueRecord.value[0].medical_history_ai : valueRecord.value;
+            const parsedValue = value.replace('<h1>','').replace('</h1>','').replace('<h2>','').replace('</h2>','');;
             return(
             <React.Fragment>
                 {

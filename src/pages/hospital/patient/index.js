@@ -1,23 +1,21 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { connect } from 'react-redux';
 import * as types from "../../../constants";
-import { Grid, Typography, Paper, Snackbar, Button, IconButton } from '@material-ui/core';
+import { Grid, Typography, Snackbar } from '@material-ui/core';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../../../redux/actions/submissionsPatientActions';
 import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../../redux/actions/submissionsPatientActions';
 import Loader from '../../../components/Loader';
-import { BoxBckgr, IconPatient, ButtonAdd, ButtonGreyBorderGrey, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
+import { BoxBckgr, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
-import { yearsFromDate, daysFromDate, numberRecordsSection, postErrorSlack, getUnitsResearcher } from '../../../utils';
+import { yearsFromDate, postErrorSlack, getUnitsResearcher } from '../../../utils';
 import FillDataCollection from '../FillDataCollection';
 import { Translate } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components/macro";
+import { useDispatch } from "react-redux";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
         HOSPITAL_PATIENT_MAKE_TESTS,
-        HOSPITAL_PATIENT_MEDICAL_NOTE, HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../../routes';
+        HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../../routes';
 
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
 
@@ -32,7 +30,6 @@ import RequestTable from '../Service/RequestTable';
 import { RequestInfoWithFetch } from '../Service/RequestInfo';
 import RequestForm from '../Service/RequestForm';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
-
 
 
 const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe"};

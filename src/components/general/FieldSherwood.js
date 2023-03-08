@@ -206,8 +206,16 @@ class FieldSherwood extends PureComponent{
             {elements}
         </Grid>;
     }
+    renderExtraField(extraField){
+        if(extraField){
+            if(extraField.type === "option"){
+                return <FieldArray name={`${extraField.name}_options`} key={extraField.name} component={this.renderOptions} />
+            }
+        }
+        else return null;
+    }
     render(){
-        const {input, label, meta, hideTitle, type, options, size, removeClass, validation, activeLanguage, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
+        const {input, label, meta, hideTitle, type, options, size, removeClass, template,  validation, activeLanguage, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -230,7 +238,7 @@ class FieldSherwood extends PureComponent{
                 }
                 let extraField = null;
                 if(typeof activationValues !== "undefined" && activationValues.indexOf(input.value) !== -1){
-                    extraField = {...activatedFields[activationValues.indexOf(input.value)]}; 
+                    extraField = {...activatedFields[input.value]}; 
                 }
                 
                 const labelId = `${input.name}_label`;
@@ -249,8 +257,7 @@ class FieldSherwood extends PureComponent{
                             </Select>
                         </FormControl>
                     </FieldWrapper>,
-                        extraField ? <FieldArray name={`${input.name}_options`} key={input.name} component={this.renderOptions} />
-                                    : null
+                    this.renderExtraField(extraField)
                 ]
                 )
             // case "select":
@@ -457,10 +464,10 @@ class FieldSherwood extends PureComponent{
             case "treatment_regular" : 
             case "request_lab" : 
             case "request_img" : 
-            case "medical-history-ai":
+            case "medical_history_ai":
                 return(
                     <SmartField mode="form" formValues={this.props.formValues} label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
-                        variant="outlined" margin={this.typeMargin} error={errorState} country={country}
+                        variant="outlined" margin={this.typeMargin} error={errorState} country={country} template={template}
                         uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} uuidSurvey={uuidSurvey}
                         helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
                         size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />

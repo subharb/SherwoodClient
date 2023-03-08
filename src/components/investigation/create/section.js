@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
-import { validateField, FIELDS_FORM, isSmartField } from '../../../utils';
+import { validateField, isSmartField } from '../../../utils';
 import FieldSherwood from '../../general/FieldSherwood';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
@@ -43,12 +43,142 @@ class Section extends Component{
         this.renderFields = this.renderFields.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.deleteField = this.deleteField.bind(this);
-        
+        this.getFormSection = this.getFormSection.bind(this);
         this.handleNewSection = this.handleNewSection.bind(this);
-        const initialState = { addingField: false, fields : [] }
+        const initialState = { addingField: false, fields : [], showTextarea:false }
         this.state = props.initialData ? Object.assign({}, initialState, props.initialData) : initialState;
+        
     }
 
+    getFormSection(){
+
+        let FORM = {
+            "encrypted":{
+                name : "encrypted",
+                required : false,
+                type:"checkbox",
+                label:"investigation.create.edc.personal_info",
+                shortLabel: "investigation.table.is_personal_data",
+                validation : "notEmpty"
+            },
+            "required":{
+                name : "required",
+                required : false,
+                type:"checkbox",
+                label:"investigation.create.edc.required",
+                shortLabel: "investigation.table.required",
+                validation : "notEmpty"
+            },
+            "name" : {
+                name : "name",
+                required : true,
+                type:"text",
+                label:"investigation.create.edc.name_field",
+                shortLabel: "investigation.table.name",
+                validation : "textMin2"
+            },
+            "type" : {
+                name : "type",
+                required : true,
+                type:"select",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type",
+                defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
+                options:[{"label" : "investigation.create.edc.type_text", "value" : "text"},
+                        {"label": "investigation.create.edc.type_number", "value" : "number"},
+                        {"label": "investigation.create.edc.checkbox", "value" : "checkbox"}, 
+                        {"label": "investigation.create.edc.type_date", "value" : "date"},
+                        {"label": "investigation.create.edc.textarea", "value" : "textarea"},
+                        {"label": "investigation.create.edc.dropdown", "value" : "select"},
+                        {"label": "investigation.create.edc.multioption", "value" : "multioption"},
+                        {"label": "investigation.create.edc.autocomplete", "value" : "autocomplete"},
+                        {"label": "investigation.create.edc.radio", "value" : "radio"},
+                        {"label": "investigation.create.edc.evaluation", "value" : "evaluation"},
+                        {"label": "investigation.create.edc.diagnosis", "value" : "ict"},
+                        {"label": "investigation.create.edc.treatment", "value" : "treatment"},
+                        {"label": "investigation.create.edc.treatment_regular", "value" : "treatment_regular"},
+                        {"label": "investigation.create.edc.allergy", "value" : "allergy"},
+                        {"label": "investigation.create.edc.background", "value" : "background"},
+                        {"label": "investigation.create.edc.files", "value" : "file"},
+                        {"label": "investigation.create.edc.family-background", "value" : "family-background"},
+                        {"label": "investigation.create.edc.separator", "value" : "separator"},
+                        {"label": "investigation.create.edc.text_blob", "value" : "text_blob"},
+                        {"label": "investigation.create.edc.bmi", "value" : "bmi"},
+                        {"label": "investigation.create.edc.edd", "value" : "edd"},
+                        {"label": "investigation.create.edc.request_lab", "value" : "request_lab"},
+                        {"label": "investigation.create.edc.request_img", "value" : "request_img"},
+                        {"label": "investigation.create.edc.medical_history_ai", "value" : "medical_history_ai"},
+                ],
+                callBackOnChange: (optionSeleced) => {
+                    console.log("Call back on change", optionSeleced);
+                    if(optionSeleced === "medical_history_ai"){
+                        const tempState = {...this.state};
+                        this.setState({...tempState, showTextarea:true});
+                    }
+                },
+                activationValues : ["select", "multioption", "autocomplete", "radio", "evaluation"],
+                activatedFields:{
+                    "select" : {
+                        required : true,
+                        type:"options",
+                        validation : "notEmpty",
+                        label : "investigation.create.edc.choose",
+                        shortLabel: "investigation.table.type"
+                    },
+                    "multioption" : {
+                        required : true,
+                        type:"options",
+                        validation : "notEmpty",
+                        label : "investigation.create.edc.choose",
+                        shortLabel: "investigation.table.type"
+                    },
+                    "autocomplete" : {
+                        required : true,
+                        type:"options",
+                        validation : "notEmpty",
+                        label : "investigation.create.edc.choose",
+                        shortLabel: "investigation.table.type"
+                    },
+                    "radio" : {
+                        required : true,
+                        type:"options",
+                        validation : "notEmpty",
+                        label : "investigation.create.edc.choose",
+                        shortLabel: "investigation.table.type"
+                    },
+                    "evaluation" : {
+                        required : true,
+                        type:"options",
+                        validation : "notEmpty",
+                        label : "investigation.create.edc.choose",
+                        shortLabel: "investigation.table.type"
+                    }
+                }                                        
+            },
+            "label" : {
+                name : "label",
+                required : false,
+                type:"text",
+                label : "investigation.create.edc.question_field",
+                shortLabel: "investigation.table.question",
+                validation : "textMin2", 
+                size : "s6"
+            }
+        }
+        if(this.state.showTextarea){
+            FORM = {...FORM,
+                "template" : {
+                    required : true,
+                    type:"textarea",
+                    validation : "notEmpty",
+                    label : "investigation.create.edc.choose",
+                    shortLabel: "investigation.table.type"
+                }
+            }
+        }
+        return FORM;
+    }
     deleteField(index){
         console.log("Delete Field", index);
         let tempState = {...this.state};
@@ -88,6 +218,7 @@ class Section extends Component{
     }
     renderFields(){
         if(this.state.fields.length > 0){
+            const FIELDS_FORM = this.getFormSection();
             const arrayHeader = Object.keys(FIELDS_FORM).map(key => {
                 const value = FIELDS_FORM[key];
                 return { id: key, alignment: "right", label: <Translate id={value.shortLabel} /> }
@@ -150,6 +281,7 @@ class Section extends Component{
     render(){
         const title = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> :  <Translate id="investigation.create.edc.section.new" />
         const saveText = this.props.initialData ? <Translate id="investigation.create.edc.section.edit_section" /> : <Translate id="investigation.create.edc.section.add" />
+        const FIELDS_FORM = this.getFormSection();
         return (
             
             <Grid item container xs={12}>
@@ -230,3 +362,6 @@ export default withLocalize(reduxForm({
     form : 'section',
     onSubmit: submit 
 })(Section))
+
+
+
