@@ -18,6 +18,7 @@ import { deleteAgendaService, deleteBoxService, getBoxesService, getServicesInve
 import { researcherFullName } from '../../../utils';
 import Accordion2Levels, { MainElementType } from '../../components/Accordion2Levels';
 import { IService, IServiceInvestigation, ServiceType } from '../Service/types';
+import StartingOutpatients from './Starting';
 
 
 interface EditProps {
@@ -484,7 +485,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     function resetModal(){
         setModalInfo({showModal: false, type:""});
     }
-    function addAgenda(uuidBox:string){
+    function addAgenda(uuidBox?:string){
         const boxSelected = boxes.find((box) => box.uuid === uuidBox);
         if(boxSelected && boxSelected.department !== null){
             const uuidDepartmentBox = boxSelected.department.uuid;
@@ -565,11 +566,11 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         if(loading){
             return <Loader />
         }
-        if(boxes.length === 0){
+        if(boxes.length === 0 || services.length === 0){
             return (
-                <>
-                    <Translate id="pages.hospital.outpatients.box.add_box" />: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
-                </>
+                <StartingOutpatients hasBoxes={boxes.length > 0} hasServices={services.length > 0} 
+                    callbackAddBox={() => {console.log("lala");setModalInfo({showModal:true, type:"box"})}}
+                    callbackAddAgenda={addAgenda} callbackAddService={() => console.log("Service")}/>
             );
         }
         if(agendas !== null){

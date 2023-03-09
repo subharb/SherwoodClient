@@ -10,6 +10,7 @@ import { boxes, departments, researchers } from '../../data/departmentsService';
 import { services } from '../Services/data';
 import { SingleAgendaCore } from '../../../pages/hospital/Outpatients/SingleAgenda';
 import { AppointmentsCore } from '../../../pages/hospital/Outpatients/Appointments';
+import StartingOutpatients from '../../../pages/hospital/Outpatients/Starting';
 
 export default {
   title: 'Hospital/Outpatients',
@@ -31,6 +32,7 @@ const TemplateOutpatients = (args) => <Outpatients {...args} />;
 const TemplateEditOutpatients = (args) => <EditOutpatientsLocalized {...args} />; 
 const TemplateSingleAgenda = (args) => <SingleAgendaCore {...args} />; 
 const TemplateAppointments = (args) => <AppointmentsCore {...args} />; 
+const TemplateStarting = (args) => <StartingOutpatients {...args} />; 
 
 export const AppointmentFormNoDepartments = Template.bind({});
 AppointmentFormNoDepartments.args = {
@@ -194,4 +196,10 @@ export const SingleAgenda = TemplateSingleAgenda.bind({});
             },
             turn:[[9,0], [14,30]],
         }
+};
+
+export const Starting = TemplateStarting.bind({});
+    Starting.args = {
+        hasBoxes:true,
+        hasServices:true,
 };

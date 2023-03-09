@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import Loader from '../../../components/Loader';
 import { IOutpatientsInfo, OutpatientsVisualizationMode } from '../../../constants/types';
-import { useSnackBarState } from '../../../hooks';
+import { useAgendas, useSnackBarState } from '../../../hooks';
 import { getOutpatientsInfo } from '../../../services/agenda';
 import SectionHeader from '../../components/SectionHeader';
 import { FormConsultAppointment } from './FormAppointment';
@@ -23,7 +23,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
     const {action} = useParams<{action:string}>();
     const [edit, setEdit] = React.useState(action === 'edit');
     const history = useHistory();
-
+    const {agendas, loadingAgendas} = useAgendas();
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     
     const [outpatientsInfo, setOutpatientsInfo] = React.useState<IOutpatientsInfo | null>(null);
@@ -72,7 +72,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
     }
 
     function renderCore(){
-        if(edit){
+        if(edit || agendas?.length === 0){
             return(
                 <Grid item xs={12}>
                     <EditOutpatients uuidInvestigation={investigations.currentInvestigation.uuid} 
