@@ -11,10 +11,10 @@ import { ButtonAdd, ButtonCancel, ButtonContinue } from '../../../components/gen
 import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { IAgenda, IBox, IDepartment, IOutpatientsInfo, IResearcher, SnackbarType } from '../../../constants/types';
-import { useAgendas, useDepartments, useSnackBarState } from '../../../hooks';
+import { useAgendas, useDepartments, useServiceGeneral, useSnackBarState } from '../../../hooks';
 import { deleteAgendaAction, saveUpdateAgendaAction } from '../../../redux/actions/hospitalActions';
 import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from '../../../routes';
-import { deleteAgendaService, deleteBoxService, getBoxesService, getServicesInvestigationService, saveAgendaService, saveBoxService, updateAgendaService, updateBoxService } from '../../../services/agenda';
+import { deleteAgendaService, deleteBoxService, getBoxesService, getServiceGeneralService, getServicesInvestigationService, saveAgendaService, saveBoxService, saveServiceInvestigationService, updateAgendaService, updateBoxService } from '../../../services/agenda';
 import { researcherFullName } from '../../../utils';
 import Accordion2Levels, { MainElementType } from '../../components/Accordion2Levels';
 import { IService, IServiceInvestigation, ServiceType } from '../Service/types';
@@ -37,6 +37,7 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
     const [loading, setLoading] = React.useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [services, setServices] = React.useState<IServiceInvestigation[]>([]);
+    const {servicesGeneral} = useServiceGeneral(2);
 
     useEffect(() => {
         setLoading(true);
@@ -49,7 +50,8 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
                 setLoading(false);
                 const message = err.errorCode !== undefined ? err.errorCode : err.message;
                 setShowSnackbar({show:true, message : err.message, severity:"error"})
-            }) 
+            })
+           
     }, [uuidInvestigation]);
 
     useEffect(() => {
@@ -78,7 +80,19 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
                 setShowSnackbar({show:true, message:err.message, severity:"error"})
             }) 
     }
-
+    function saveService(service:IServiceInvestigation){
+        setLoading(true);
+        saveServiceInvestigationService(uuidInvestigation, service)
+            .then(response => {
+                setServices([...services, response.serviceInvestigation]);
+                setLoading(false);
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.box.success.saved", severity:"success"})
+            })
+            .catch(err => {
+                setLoading(false);
+                setShowSnackbar({show:true, message:err.message, severity:"error"})
+            }) 
+    }
     function updateBoxCallback(box:IBox){
         setLoading(true);
         updateBoxService(uuidInvestigation, box)
@@ -163,7 +177,7 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
                     loading={loading} departments={departments} boxes={boxes} services={services} researchers={researchers}
                     saveAgendaCallback={saveAgenda} outpatientsInfo={outpatientsInfo} callbackDeleteAgenda={deleteAgenda}
                     saveBoxCallback={saveBox} updateBoxCallback={updateBoxCallback} callbackDeleteBox={deleteBox}
-                    updateAgendaCallback={updateAgenda}
+                    updateAgendaCallback={updateAgenda} saveServiceCallback={saveService} servicesGeneral={servicesGeneral ? servicesGeneral : []}
                     />
     }
     else{
@@ -180,18 +194,25 @@ interface EditPropsComponent extends LocalizeContextProps {
     showSnackbar: SnackbarType,
     agendas: IAgenda[] | null,
     outpatientsInfo: IOutpatientsInfo,
+    servicesGeneral: IService[],
     setShowSnackbar: (snackbar: SnackbarType) => void,
     saveBoxCallback: (box:IBox) => void
     saveAgendaCallback: (agenda:IAgenda) => void,
     callbackDeleteAgenda: (uuidAgenda:string) => void,
     updateBoxCallback: (box:IBox) => void,
     callbackDeleteBox: (uuidBox:string) => void,
-    updateAgendaCallback: (agenda:IAgenda) => void
+    updateAgendaCallback: (agenda:IAgenda) => void,
+    saveServiceCallback: (service:IServiceInvestigation) => void
 }
 
-const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas, showSnackbar, outpatientsInfo, updateBoxCallback, callbackDeleteBox, callbackDeleteAgenda, setShowSnackbar, updateAgendaCallback, saveAgendaCallback, researchers, departments, loading, services, translate, saveBoxCallback }) => {
+const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas, showSnackbar, outpatientsInfo, 
+                                        updateBoxCallback, callbackDeleteBox, callbackDeleteAgenda, 
+                                        setShowSnackbar, updateAgendaCallback, saveAgendaCallback, servicesGeneral,
+                                        researchers, departments, loading, services, translate, 
+                                        saveBoxCallback, saveServiceCallback }) => {
     const initialBoxInfo = {type:0};
     const initialAgendaInfo = {otherStaff:[]}
+    const initialServiceInfo = {external:false}
     const [deletedBox, setDeletedBox] = React.useState<IBox | null>(null);
     const [modalInfo, setModalInfo] = React.useState({showModal: false, type:""});
     const [initDataAgenda, setInitDataAgenda] = React.useState<FormValues>(initialAgendaInfo);
@@ -209,8 +230,43 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     })
     departmentOptions.unshift({label: "pages.hospital.outpatients.box.no_department", value: "null"})
 
+    const CREATE_SERVICE: {[key: string]: FieldProps} | {}  = useMemo(() => {
+        return {
+            "name":{
+                required : true,
+                name:"name",
+                type:"text",
+                label:"pages.hospital.outpatients.service.name",
+                shortLabel: "pages.hospital.outpatients.service.name",
+                validation : "textMin2"
+            },
+        
+            "serviceId":{
+                required : false,
+                type:"select",
+                name:"serviceId",
+                label:"pages.hospital.outpatients.service.select_department",
+                shortLabel:"pages.hospital.outpatients.service.select_department",
+                validation : "notEmpty",
+                options:servicesGeneral.map((service) =>{
+                    console.log(service.id);
+                    return {
+                        label: service.name,
+                        value: service.id
+                    }
+                })
+            },
+            price:{
+                name: "price",
+                label: "pages.hospital.services.form.price",
+                type: "text",
+                validation: "number",
+                required: false
+            }
+        }
+    }, [services]); 
     const CREATE_BOX_FORM:{[key: string]: FieldProps} | {} = useMemo(() => {
-        if(!departments){
+        if(!services){
             return {}
         }
         else{
@@ -439,6 +495,14 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         }
         
     }
+    function saveService(service:any){
+        if(service.id){
+            //updateServiceCallback(service);
+        }
+        else{
+            saveServiceCallback(service);
+        }
+    }
     function editAgenda(uuidAgenda:string){
         const agendaSelected = agendas!.find((agenda) => agenda.uuid === uuidAgenda);
         if(agendaSelected){
@@ -518,6 +582,12 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                             closeCallBack={() => resetModal()}/> 
                     } 
                     {
+                        modalInfo.type === "service" && 
+                        <Form fields={CREATE_SERVICE} fullWidth={true} callBackForm={saveService}
+                            initialData={initialServiceInfo} 
+                            closeCallBack={() => resetModal()}/> 
+                    }
+                    {
                         modalInfo.type === "agenda_error_appointments" && 
                         <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.ERROR_DELETE_AGENDA" /></Typography>
                     } 
@@ -570,7 +640,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             return (
                 <StartingOutpatients hasBoxes={boxes.length > 0} hasServices={services.length > 0} 
                     callbackAddBox={() => {console.log("lala");setModalInfo({showModal:true, type:"box"})}}
-                    callbackAddAgenda={addAgenda} callbackAddService={() => console.log("Service")}/>
+                    callbackAddAgenda={addAgenda} callbackAddService={() => setModalInfo({showModal: true, type:"service"})}/>
             );
         }
         if(agendas !== null){

@@ -28,9 +28,11 @@ const StartingOutpatients: React.FC<StartingProps> = ({ hasBoxes, hasServices, c
 
     return (
         
-<>
-            <Typography variant='body2'>In order to start using outpatients you need to have the following elements set up:</Typography>
-            <div style={{width:'50%'}}>
+<>          <div style={{padding:'1rem'}}>
+                <Typography variant='body2'>In order to start using outpatients you need to have the following elements set up:</Typography>
+            </div>
+            
+            <div style={{width:'50%', padding:'1rem'}}>
                 <Card style={{padding : '1rem'}}>
                 
                     <RowElement>
@@ -56,7 +58,7 @@ const StartingOutpatients: React.FC<StartingProps> = ({ hasBoxes, hasServices, c
                             }
                         </ButtonContainer>
                         <ButtonContainer>
-                            <ButtonAdd onClick={callbackAddAgenda} />
+                            <ButtonAdd onClick={callbackAddService} />
                         </ButtonContainer>
                     </RowElement> 
                     <RowElement>

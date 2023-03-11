@@ -14,11 +14,12 @@ import { getAgendasInvestigationAction, getDepartmentsInvestigationAction } from
 import { Color } from '@material-ui/lab';
 import { IAgenda, IDepartment, IUnit } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
-import { IRequest } from '../pages/hospital/Service/types';
+import { IRequest, IService } from '../pages/hospital/Service/types';
 import { fetchProfileInfoAction } from '../redux/actions/profileActions';
 import Loader from '../components/Loader';
 import SelectField from '../components/general/SelectField';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { getServiceGeneralService } from '../services/agenda';
 
 export interface SnackbarType{
     show: boolean;
@@ -85,6 +86,26 @@ export function useAgendas(){
     return { agendas, loadingAgendas}
 }
 
+export function useServiceGeneral(serviceType:number){
+    const [servicesGeneral, setServicesGeneral] = useState<null | IService[]>(null);
+    const [loadingServicesGeneral, setLoadingServicesGeneral] = useState(false);
+    useEffect(() => {
+        
+            if (!servicesGeneral) {
+                setLoadingServicesGeneral(true);
+                getServiceGeneralService(2)
+                    .then(response => {
+                        setServicesGeneral(response.services);
+                        setLoadingServicesGeneral(true);
+                    })
+                    .catch(err => {
+                        setLoadingServicesGeneral(true);
+                    })
+            } 
+    }, []);
+
+    return { servicesGeneral, loadingServicesGeneral }
+}
 
 export function useDepartments(researchersDepartmentsOnly:boolean = false){
     const investigations= useSelector((state:any) => state.investigations);
