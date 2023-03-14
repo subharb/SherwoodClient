@@ -1,4 +1,4 @@
-import { Grid, Paper, Snackbar, Typography } from '@material-ui/core';
+import { Box, Grid, IconButton, ListItem, ListItemText, Paper, Snackbar, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import _ from 'lodash';
 import React, { useEffect, useMemo } from 'react';
@@ -7,8 +7,9 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Form from '../../../components/general/form';
 import FormTSFunc, { FieldProps, FormValues } from '../../../components/general/formTSFunction';
-import { ButtonAdd, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
+import { ButtonAdd, ButtonCancel, ButtonContinue, IconGenerator } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
+import { TabsSherwood } from '../../components/Tabs';
 import Loader from '../../../components/Loader';
 import { IAgenda, IBox, IDepartment, IOutpatientsInfo, IResearcher, SnackbarType } from '../../../constants/types';
 import { useAgendas, useDepartments, useServiceGeneral, useSnackBarState } from '../../../hooks';
@@ -19,6 +20,7 @@ import { researcherFullName } from '../../../utils';
 import Accordion2Levels, { MainElementType } from '../../components/Accordion2Levels';
 import { IService, IServiceInvestigation, ServiceType } from '../Service/types';
 import StartingOutpatients from './Starting';
+import { deleteServiceService } from '../../../services';
 
 
 interface EditProps {
@@ -90,7 +92,22 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
             })
             .catch(err => {
                 setLoading(false);
-                setShowSnackbar({show:true, message:err.message, severity:"error"})
+                setShowSnackbar({show:true, message:"general.error", severity:"error"})
+            }) 
+    }
+    function deleteService(idService:number){
+        setLoading(true);
+        deleteServiceService(uuidInvestigation, idService)
+            .then(response => {
+                const service = services.findIndex(s => s.id === idService);
+                services.splice(service, 1);
+                setServices([...services]);
+                setLoading(false);
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.box.success.deleted", severity:"success"})
+            })
+            .catch(err => {
+                setLoading(false);
+                setShowSnackbar({show:true, message:"general.error", severity:"error"})
             }) 
     }
     function updateBoxCallback(box:IBox){
@@ -178,6 +195,7 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
                     saveAgendaCallback={saveAgenda} outpatientsInfo={outpatientsInfo} callbackDeleteAgenda={deleteAgenda}
                     saveBoxCallback={saveBox} updateBoxCallback={updateBoxCallback} callbackDeleteBox={deleteBox}
                     updateAgendaCallback={updateAgenda} saveServiceCallback={saveService} servicesGeneral={servicesGeneral ? servicesGeneral : []}
+                    callbackDeleteService={deleteService}
                     />
     }
     else{
@@ -202,23 +220,26 @@ interface EditPropsComponent extends LocalizeContextProps {
     updateBoxCallback: (box:IBox) => void,
     callbackDeleteBox: (uuidBox:string) => void,
     updateAgendaCallback: (agenda:IAgenda) => void,
-    saveServiceCallback: (service:IServiceInvestigation) => void
+    saveServiceCallback: (service:IServiceInvestigation) => void,
+    callbackDeleteService: (idService:number) => void,
 }
 
 const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas, showSnackbar, outpatientsInfo, 
                                         updateBoxCallback, callbackDeleteBox, callbackDeleteAgenda, 
                                         setShowSnackbar, updateAgendaCallback, saveAgendaCallback, servicesGeneral,
                                         researchers, departments, loading, services, translate, 
-                                        saveBoxCallback, saveServiceCallback }) => {
+                                        saveBoxCallback, saveServiceCallback, callbackDeleteService }) => {
     const initialBoxInfo = {type:0};
     const initialAgendaInfo = {otherStaff:[]}
-    const initialServiceInfo = {external:false}
+    const initialServiceInfo = {external:0}
     const [deletedBox, setDeletedBox] = React.useState<IBox | null>(null);
     const [modalInfo, setModalInfo] = React.useState({showModal: false, type:""});
     const [initDataAgenda, setInitDataAgenda] = React.useState<FormValues>(initialAgendaInfo);
     const [initDataBox, setInitDataBox] = React.useState<FormValues>(initialBoxInfo);
+    const [initDataService, setInitDataService] = React.useState<FormValues>(initialServiceInfo);
     const [reseachersDepartment, setResearchersDepartment] = React.useState<IResearcher[]>([]);
     const [deletedAgenda, setDeletedAgenda] = React.useState<IAgenda | null>(null);
+    const [deletedService, setDeletedService] = React.useState<IService | null>(null);
 
     const history = useHistory();
 
@@ -232,21 +253,28 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
 
     const CREATE_SERVICE: {[key: string]: FieldProps} | {}  = useMemo(() => {
         return {
-            "name":{
+            "description":{
                 required : true,
-                name:"name",
+                name:"description",
                 type:"text",
                 label:"pages.hospital.outpatients.service.name",
                 shortLabel: "pages.hospital.outpatients.service.name",
                 validation : "textMin2"
             },
-        
+            "external":{
+                required : false,
+                name:"external",
+                type:"hidden",
+                label:"pages.hospital.outpatients.service.external",
+                shortLabel: "pages.hospital.outpatients.service.external",
+
+            },
             "serviceId":{
                 required : false,
                 type:"select",
                 name:"serviceId",
-                label:"pages.hospital.outpatients.service.select_department",
-                shortLabel:"pages.hospital.outpatients.service.select_department",
+                label:"pages.hospital.outpatients.service.type_service",
+                shortLabel:"pages.hospital.outpatients.service.type_service",
                 validation : "notEmpty",
                 options:servicesGeneral.map((service) =>{
                     console.log(service.id);
@@ -258,7 +286,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             },
             price:{
                 name: "price",
-                label: "pages.hospital.services.form.price",
+                label:"pages.hospital.outpatients.service.price",
                 type: "text",
                 validation: "number",
                 required: false
@@ -549,6 +577,22 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     function resetModal(){
         setModalInfo({showModal: false, type:""});
     }
+    function editService(idService:number){
+        const serviceSelected = services.find((service) => service.id === idService);
+        if(serviceSelected){
+            setInitDataService({...initDataService, id:serviceSelected.id, name: serviceSelected.description, price:serviceSelected.billable.amount});
+            setModalInfo({showModal: true, type:"service"});
+        }
+    }
+    function deleteService(idService:number){
+        const agendaWithService = agendas?.find((agenda) => agenda.serviceInvestigationFirstVisit.id === idService);
+        if(agendaWithService){
+            setModalInfo({showModal: true, type:"error_service_agenda"});
+        }
+        else{
+            setModalInfo({showModal: true, type:"delete_service_confirm"});            
+        }
+    }
     function addAgenda(uuidBox?:string){
         const boxSelected = boxes.find((box) => box.uuid === uuidBox);
         if(boxSelected && boxSelected.department !== null){
@@ -584,9 +628,27 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     {
                         modalInfo.type === "service" && 
                         <Form fields={CREATE_SERVICE} fullWidth={true} callBackForm={saveService}
-                            initialData={initialServiceInfo} 
+                            initialData={initDataService} 
                             closeCallBack={() => resetModal()}/> 
                     }
+                    {
+                        deletedService && modalInfo.type === "delete_service_confirm" && 
+                        <>
+                            <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.DELETE_SERVICE" /></Typography>
+                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                    <Translate id="general.cancel" />
+                                </ButtonCancel>
+                                <ButtonContinue onClick={ () => callbackDeleteService(deletedService.id)} data-testid="continue-modal" color="green">
+                                    <Translate id="general.continue" />
+                                </ButtonContinue>
+                            </Grid>
+                        </>
+                    }
+                    {
+                        modalInfo.type === "error_service_agenda" && 
+                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.ERROR_CANCEL" /></Typography>
+                    } 
                     {
                         modalInfo.type === "agenda_error_appointments" && 
                         <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.ERROR_DELETE_AGENDA" /></Typography>
@@ -594,16 +656,16 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     {
                         (modalInfo.type === "delete_agenda" && deletedAgenda) && 
                         <>
-                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.SURE_DELETE_AGENDA" /></Typography>
-                        {deletedAgenda!.name}
-                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                            <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
-                                <Translate id="general.cancel" />
-                            </ButtonCancel>
-                            <ButtonContinue onClick={() => callbackDeleteAgenda(deletedAgenda.uuid)} data-testid="continue-modal" color="green">
-                                <Translate id="general.continue" />
-                            </ButtonContinue>
-                        </Grid>
+                            <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.SURE_DELETE_AGENDA" /></Typography>
+                            {deletedAgenda!.name}
+                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                    <Translate id="general.cancel" />
+                                </ButtonCancel>
+                                <ButtonContinue onClick={() => callbackDeleteAgenda(deletedAgenda.uuid)} data-testid="continue-modal" color="green">
+                                    <Translate id="general.continue" />
+                                </ButtonContinue>
+                            </Grid>
                         </>
                     } 
                     {
@@ -631,6 +693,43 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             )
         }
         return null;
+    }
+    function renderServices(){
+        if(services.length > 0){
+            return (
+            <>
+                <Translate id="pages.hospital.outpatients.box.add_box" />: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"service"})} />
+                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                    {
+                        services.map((service) => {
+                            return (
+                                <ListItem button>
+                                    <ListItemText primary={`${service.description}`} /> 
+                                                                             
+                                        {
+                                            <IconButton onClick={(e) => {
+                                                e.stopPropagation();
+                                                editService(service.id);
+                                            }}>
+                                            <IconGenerator type="edit" />
+                                            </IconButton>
+                                        }
+                                        {
+                                            <IconButton onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    deleteService(service.id);
+                                                }}>
+                                                <IconGenerator type="delete" />
+                                            </IconButton>
+                                        }                                        
+                                </ListItem>)
+                        })
+                        
+                    }
+                </Grid>
+            </>
+            )
+        }
     }
     function renderCore(){
         if(loading){
@@ -664,26 +763,35 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                 }
             })
             return (
-                <>
-                    <Translate id="pages.hospital.outpatients.box.add_box" />: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
-                    <Accordion2Levels orderedMainElements={elements} deleteMainElementCallBack={(uuid) => deleteBox(uuid)} 
-                        editSubElementCallBack={(uuid) =>{
-                            editAgenda(uuid)
-                        }} 
-                        checkCanDeleteMainElement={(uuid) => true} 
-                        deleteSubElementCallBack={(uuid) => deleteAgenda(uuid)}
-                        addSubElementCallBack={(uuid) => addAgenda(uuid)}
-                        configureSubElementCallBack={(uuid) => {
-                            const nextUrl = HOSPITAL_ACTION_AGENDA_ROUTE.replace(":uuidAgenda", uuid).replace(":action", "edit")
-                            history.push(nextUrl);
-                        }}
-                        viewSubElementCallBack={(uuid) => {
-                            const nextUrl = HOSPITAL_AGENDA_ROUTE.replace(":uuidAgenda", uuid)
-                            history.push(nextUrl);
-                        }}
-                        editMainElementCallBack={(uuid) => editBox(uuid)} checkCanDeleteSubElement={(uuid) => true} />
-                        
-                </>
+                
+                <TabsSherwood name='Outpatients' style={{  color: "white" }} labels={[translate("pages.hospital.outpatients.sections.boxes_and_agendas").toString(), translate("pages.hospital.outpatients.sections.prices").toString()]} >
+                    <>
+                        <Translate id="pages.hospital.outpatients.box.add_box" />: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
+                        <Accordion2Levels orderedMainElements={elements} deleteMainElementCallBack={(uuid) => deleteBox(uuid)} 
+                            editSubElementCallBack={(uuid) =>{
+                                editAgenda(uuid)
+                            }} 
+                            checkCanDeleteMainElement={(uuid) => true} 
+                            deleteSubElementCallBack={(uuid) => deleteAgenda(uuid)}
+                            addSubElementCallBack={(uuid) => addAgenda(uuid)}
+                            configureSubElementCallBack={(uuid) => {
+                                const nextUrl = HOSPITAL_ACTION_AGENDA_ROUTE.replace(":uuidAgenda", uuid).replace(":action", "edit")
+                                history.push(nextUrl);
+                            }}
+                            viewSubElementCallBack={(uuid) => {
+                                const nextUrl = HOSPITAL_AGENDA_ROUTE.replace(":uuidAgenda", uuid)
+                                history.push(nextUrl);
+                            }}
+                            editMainElementCallBack={(uuid) => editBox(uuid)} checkCanDeleteSubElement={(uuid) => true} />
+                            
+                    </>
+                    <>
+                        {
+                            renderServices()
+                        }
+                    </>
+                </TabsSherwood>
+                    
             );
         }
         

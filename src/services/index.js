@@ -676,6 +676,21 @@ export function saveUpdateWardService(uuidInvestigation, uuidDepartment, ward) {
     });
 }
 
+export function deleteServiceService(uuidInvestigation, idServiceInvestigation) {
+    return new Promise((resolve, reject) => {
+        axios.delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/" + idServiceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        .then((response) => {
+            if (response.status === 200) {
+                resolve(response.data);
+            }
+            reject(response.data);
+        })
+        .catch((error) => {
+            reject(error);
+        });
+    });
+}
+
 export function deleteWardService(uuidInvestigation, uuidWard) {
     return new Promise((resolve, reject) => {
         axios

@@ -12,6 +12,7 @@ export interface IService{
 export interface IServiceInvestigation{
     id:number,
     name:string,
+    description:string,
     type:number,
     code:string,
     service:IService,
