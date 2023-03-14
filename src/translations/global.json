@@ -533,7 +533,7 @@
                 "table_patient_appointments" : {
                     "department" : ["Department", "Departamento", "Département"],
                     "doctor" : ["Doctor", "Doctor", "Docteur"],
-                    "date" : ["Date", "Fecha", "Date"],
+                    "date" : ["Date Appointment", "Fecha de cita", "Date de rendez-vous"],
                     "turn" : ["Shift", "Turno", "Tourner"],
                     "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
                     "show" : ["Show", "Mostrar", "Montrer"]
