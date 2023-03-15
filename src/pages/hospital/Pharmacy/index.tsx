@@ -126,8 +126,8 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
         if(canViewPharmacyCentral && pharmacyItems){
             if(location.pathname === HOSPITAL_PHARMACY_REQUEST_INVENTORY){
                 return <Inventory uuidInvestigation={investigations.currentInvestigation.uuid} pharmacyItemsInit={pharmacyItems}
-                        typePharmacy={PharmacyType.CENTRAL} idPharmacy={investigations.currentInvestigation.pharmacy.id}
-                         />
+                            typePharmacy={PharmacyType.CENTRAL} idPharmacy={investigations.currentInvestigation.pharmacy.id}
+                            />
             }
             else if(location.pathname === HOSPITAL_PHARMACY_CENTRAL_ROUTE){
                 return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>

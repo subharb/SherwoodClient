@@ -9,7 +9,7 @@ import axios from '../../../utils/axios';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { serviceTypeToTranslation } from '../../../utils';
 
-const ChipContainer = styled.div`
+export const ChipContainer = styled.div`
     display:inline;
     margin-left:0.5rem;
 `;

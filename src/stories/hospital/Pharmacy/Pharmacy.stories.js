@@ -2,7 +2,7 @@ import React from 'react';
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE } from '../../../routes';
 import HomeSchedule from '../../../pages/hospital/HomeSchedule'
 import ProviderSherwood from '../../../providerSherwood';
-import InventoryPharmacy from '../../../pages/hospital/Pharmacy/Inventory';
+import InventoryPharmacy, { InventoryComponentLocalized } from '../../../pages/hospital/Pharmacy/Inventory';
 import { pharmacyItemsInit } from './data';
 import RequestForm from '../../../pages/hospital/Pharmacy/RequestForm';
 import LoadExcelComponent from '../../../pages/hospital/Pharmacy/LoadExcel';
@@ -22,14 +22,16 @@ export default {
                 </ProviderSherwood>],
 };
 
-const Template = (args) => <InventoryPharmacy {...args} />; 
+const Template = (args) => <InventoryComponentLocalized {...args} />; 
 const TemplateRequest = (args) => <RequestForm {...args} />; 
 const TemplateLoadExcel = (args) => <LoadExcelComponent {...args} />; 
 
 export const Inventory = Template.bind({});
 Inventory.args = {
     pharmacyItemsInit:pharmacyItemsInit,
-    saveInventoryCallBack:(items) => console.log(items)
+    editAsExcel:true,
+    saveInventoryCallBack:(items) => console.log(items),
+    updateInventoryCallback:(items) => console.log(items)
 };
 
 export const LoadExcel = TemplateLoadExcel.bind({});

@@ -10,7 +10,7 @@ export const pharmacyItemsInit:IPharmacyItem[] = [
         amount : 500,
         price:11.50,
         unit:1,
-        provider:"Farmacia Lugo",
+        provider:"Farmacia Coruña",
         threshold:10
     },
     {
@@ -22,7 +22,7 @@ export const pharmacyItemsInit:IPharmacyItem[] = [
         amount : 500,
         price: 11.50,
         unit:1,
-        provider:"Farmacia Lugo",
+        provider:"Farmacia Luganes",
         threshold:10
     },
     {
@@ -31,7 +31,7 @@ export const pharmacyItemsInit:IPharmacyItem[] = [
         name: "Amoxicilina",
         type: 0,
         activePrinciple: "amox",
-        amount : 100,
+        amount : 9,
         price: 12.50,
         unit:1,
         provider:"Farmacia Lugo",

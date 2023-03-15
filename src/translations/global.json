@@ -464,6 +464,21 @@
                 "title" : ["Pharmacy", "Farmacia", "Pharmacie"],
                 "success" : ["Request made successfully", "Solicitud realizada correctamente", "Demande effectuée avec succès"],
                 "error" : ["Error making request", "Error realizando la solicitud", "Erreur lors de la demande"],
+                "modal" : {
+                    "title" : {
+                        "edit" : ["Edit", "Editar", "Modifier"],
+                        "delete" : ["Delete", "Eliminar", "Supprimer"]
+                    },
+                    "message" : {
+                        "edit" : ["Are you sure you want to edit this item?", "¿Está seguro que desea editar este elemento?", "Êtes-vous sûr de vouloir modifier cet élément?"],
+                        "delete" : ["Are you sure you want to delete this item?", "¿Está seguro que desea eliminar este elemento?", "Êtes-vous sûr de vouloir supprimer cet élément?"]
+                    }
+                    
+                },
+                "filter_box" : {
+                    "search_item" : ["Search item", "Buscar medicamento", "Rechercher un médicament"],
+                    "no_items" : ["No items found", "No se han encontrado medicamentos", "Aucun médicament trouvé"]
+                },
                 "pharmacy_items" : {
                     "name" : ["Name", "Nombre", "Nom"],
                     "code" : ["Code", "Código", "Code"],
@@ -473,7 +488,13 @@
                     "activePrinciple" : ["Active Principle", "Principio Activo", "Principe actif"],
                     "unit" : ["Unit", "Unidad", "Unité"],
                     "provider" : ["Provider", "Proveedor", "Fournisseur"],
-                    "threshold" : ["Threshold", "Umbral", "Seuil"]
+                    "threshold" : ["Threshold", "Umbral", "Seuil"],
+                    "status" : ["Status", "Estado", "Statut"],
+                    "status_values" : {
+                        "finished" : ["Finished", "Agotado", "Terminé"],
+                        "low" : ["Low", "Bajo", "Faible"],
+                        "normal" : ["Normal", "Normal", "Normal"]
+                    }
                 },
                 
                 "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un département pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
