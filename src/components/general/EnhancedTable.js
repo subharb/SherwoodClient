@@ -251,6 +251,10 @@ export function EnhancedTable(props) {
     console.log("rowsPerPage", rowsPerPage);
     const {rows, headCells, actions, titleTable, noSelectable} = props;
 
+    useEffect(() => {
+        setPage(props.currentPage);
+    }, [props.currentPage])
+
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         setOrder(isAsc ? "desc" : "asc");

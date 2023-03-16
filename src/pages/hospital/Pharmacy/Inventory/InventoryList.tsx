@@ -29,6 +29,7 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, l
     const [deleteItem, setDeleteItem] = React.useState<IPharmacyItem | null>(null);
     const [providerOptions, setProviderOptions] = React.useState<{value:string, label:string}[]>([]);
     const [providerFilter, setProviderFilter] = React.useState<string>("");
+    const [currentPage, setCurrentPage] = React.useState<number>(0);
 
     useEffect(() => {
         setFilteredItems(pharmacyItems.filter((item: IPharmacyItem) => {
@@ -36,8 +37,8 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, l
                 (finishedStatusFilter ? item.amount === 0 : true) && (lowStatusFilter ? item.amount < item.threshold : true) 
                 && (providerFilter !== "" ? item.provider === providerFilter : true))
         }));
-
-    }, [nameFilter, lowStatusFilter, providerFilter, pharmacyItems]);
+        setCurrentPage(0);
+    }, [nameFilter, lowStatusFilter, providerFilter, finishedStatusFilter, pharmacyItems]);
 
     useEffect(() => {
         if(showSnackbar.severity === "success"){
@@ -163,20 +164,33 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, l
     }
 
     function showDeleteItem(id: number){
-        setDeleteItem(pharmacyItems[id]);
-        setModalInfo({showModal: true, type:"delete"});
+        const findItem = pharmacyItems.find((item: IPharmacyItem) => item.id === id);
+        if(findItem){
+            setDeleteItem(findItem);
+            setModalInfo({showModal: true, type:"delete"});
+        }
     }
     function showEditItem(id: number){
-        setEditItem({...pharmacyItems[id]});
-        setModalInfo({showModal: true, type:"edit"});
+        const findItem = pharmacyItems.find((item: IPharmacyItem) => item.id === id);
+        if(findItem){
+            setEditItem({...findItem});
+            setModalInfo({showModal: true, type:"edit"});
+        } 
     }
     function filterItems(value: string){
         setNameFilter(value.toLocaleLowerCase());
     }
     function filterStatusLow(){
+        if(!lowStatusFilter){
+            setFinishedStatusFilter(false);
+        }
         setLowStatusFilter(!lowStatusFilter);
+        
     }
     function filterStatusFinished(){
+        if(!finishedStatusFilter){
+            setLowStatusFilter(false);
+        }
         setFinishedStatusFilter(!finishedStatusFilter);
     }
     function renderModal(){
@@ -220,7 +234,7 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, l
                         { id: "status", alignment: "left", label: <Translate id={`pages.hospital.pharmacy.pharmacy_items.status`} /> },
                 ];
         const rows = filteredItems.map((item, idx) => ({
-            id: idx,
+            id: item.id,
             code: item.code,
             name: item.name,
             activePrinciple: item.activePrinciple,
@@ -241,7 +255,9 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, l
         }
         return (
             <>
-                <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} actions={[{ "type": "delete", "func": (id: number) => showDeleteItem(id)}, { "type": "edit", "func": (id: number) => showEditItem(id) }]} />
+                <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
+                    currentPage={currentPage} changePageCallback={(page: number) => setCurrentPage(page)}
+                    actions={[{ "type": "delete", "func": (id: number) => showDeleteItem(id)}, { "type": "edit", "func": (id: number) => showEditItem(id) }]} />
             </>
         );
     }
