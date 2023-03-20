@@ -15,20 +15,23 @@ interface MedicalHistoryAIProps extends PropsSmartField {
     uuidInvestigation : string;
 }
 
-const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues,uuidInvestigation, type, template, updateElement }) => {
+const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues, uuidInvestigation, type, template, updateElement }) => {
     const [generatedText, setGeneratedText] = React.useState<string | null>(null);
     const [sendToEmail, setSendToEmail] = React.useState<boolean>(false);
     const [loading, setLoading] = React.useState<boolean>(false);
-    
+    const [openaiResponse, setOpenaiResponse] = React.useState<any>(null);
+
     useEffect(() => {
         if(template){
             actOnText();
         }
-    }, []);
+    }, [formValues]);
+
+
 
     function actOnText (){
         if(type === "medical_history_ai"){
-            sendToOpenAI();
+            prepareText();
         }
         else{
             replaceFields();
@@ -50,28 +53,35 @@ const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues,uuidInve
             });
         }
     }
-    function sendToOpenAI() {
+    function prepareText() {
         if(template && updateElement){  
             
             const valuesString = Object.values(formValues).map((field) => field.label+":"+JSON.stringify(field.value)).join(", ");
             console.log(valuesString);
-            const prompt = template+"\n"+valuesString;
+            const openAiString = openaiResponse ? openaiResponse : "";
+            const prompt = template+"\n"+valuesString+"\n"+openAiString;
             setGeneratedText(prompt);
-
-            axios.post(`${process.env.REACT_APP_API_URL }/researcher/investigation/${uuidInvestigation}/openai`, {prompt}, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        }
+    }
+    function sendTextToOpenAI(){
+        if(updateElement){
+            setLoading(true);
+            axios.post(`${process.env.REACT_APP_API_URL }/researcher/investigation/${uuidInvestigation}/openai`, {prompt:generatedText}, { headers: { "Authorization": localStorage.getItem("jwt") } })
                 .then((response) => {
-                        setGeneratedText(template+"\n"+valuesString+"\n"+response.data.choices[0].text);
+                        setGeneratedText(generatedText+"\n"+response.data.response.choices[0].text);
+                        setOpenaiResponse(response.data.response.choices[0].text);
                         updateElement(0, {
-                            medical_history : response.data.choices[0].text,
+                            medical_history : response.data.response.choices[0].text,
                             send_email : sendToEmail
                         });
+                        setLoading(false);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.log(error); 
+                    setLoading(false);
                 });
             
             }
-        
     }
     function renderCore(){
         if(loading){
@@ -108,7 +118,7 @@ const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues,uuidInve
                 <Grid xs={12}>
                     {
                         type !== "medical_history_template" &&
-                        <ButtonCheck disable={generatedText} onClick={() => actOnText()}>
+                        <ButtonCheck disable={generatedText} onClick={sendTextToOpenAI}>
                             <Translate id="hospital.generate_medical_history" />
                         </ButtonCheck>
                     }

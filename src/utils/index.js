@@ -718,7 +718,7 @@ export function openStore(storeName){
 }
 
 export function getValueField(field, value){
-    if(isObject(field)){
+    if(isObject(value)){
         if(field.type === "multioption"){
             return value.reduce((acc, curr) => acc + " " + curr.multioption, "");
         }

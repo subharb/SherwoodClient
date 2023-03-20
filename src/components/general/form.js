@@ -66,7 +66,7 @@ class Form extends Component {
         console.log("formValues", this.props.formValues);
         
         const changedField = Object.keys(this.props.fields).find((key, value) => {
-            if(EXCEPTION_FORM_VALUES.includes(value.type)){
+            if(EXCEPTION_FORM_VALUES.includes(this.props.fields[key].type)){
                 return false;
             }
             return this.props.formValues[key] !== prevProps.formValues[key];
@@ -163,7 +163,7 @@ class Form extends Component {
                             country={this.props.country}
                             label={this.props.fields[key].label}
                             validate={[this.sherwoodValidation]}
-                            formValues={this.labelValues}
+                            formValues={{...this.labelValues}}
                             {...this.props.fields[key]}
                         />
                         {
