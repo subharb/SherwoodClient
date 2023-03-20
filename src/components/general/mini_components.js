@@ -8,6 +8,7 @@ import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
 import {
     Add as AddIcon,
     Info as InfoIcon,
+    Image as ImageIcon,
     HighlightOff as CloseIcon,
     RemoveRedEye as RemoveRedEyeIcon,
     PanoramaFishEye as PanoramaFishEyeIcon,
@@ -59,7 +60,7 @@ export const IconGenerator = withTheme((props) => {
         case "undo":
             return <UndoIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />    
         case "settings":
-            return <SettingsIcon style={{color:props.color ? props.color : props.theme.buttonContinue.primary.color }} fontSize={props.size ? props.size : "small"} {...props}  />
+            return <SettingsIcon style={{color:props.color ? props.color : props.theme.buttonContinue.primary.background }} fontSize={props.size ? props.size : "small"} {...props}  />
         case "back":
             return <ArrowBackIcon fontSize={props.size ? props.size : "small"} {...props}  />
         case "pharmacy":
@@ -68,10 +69,12 @@ export const IconGenerator = withTheme((props) => {
             return <TodayIcon style={{color:props.theme.palette.primary.color }} />
         case "shoe_shop":
             return <DirectionsRun style={{color:props.theme.palette.primary.color }} />
+        case "image":
+            return <ImageIcon style={{color:props.theme.palette.primary.color }} />
         case "biotech":
             return <BiotechIcon fill={props.theme.palette.primary.color} fontSize={props.size ? props.size : "small"}  />
         case "info":
-            return <InfoIcon style={{color:props.theme.buttonContinue.primary.color }}  />
+            return <InfoIcon style={{color:props.color ? props.color : props.theme.buttonContinue.primary.background }}  />
         default:
             return <AddIcon />
     }
@@ -279,6 +282,10 @@ export const ButtonCancel = (props) =>{
     </ButtonCancelStyles>
 }
 
+export const TypographyStyled = styled(Typography)`
+    xpadding-top:2rem;
+    color:${props => props.theme.palette.primary.color};
+`
 
 export const ButtonSave = (props) =>{
     return <ButtonContinueStyles 

@@ -1,5 +1,6 @@
 import { te } from "date-fns/locale";
 import * as types from "../../constants";
+import { departments } from "../../stories/data/departmentsService";
 import { decryptPatientsData } from '../../utils'; 
 /**
  * Reducer that saves all the investigations loaded
@@ -226,7 +227,7 @@ export default function reducer(state = initialState, action){
             bedIndex = ward.beds.findIndex((bed) => bed.id === action.stay.bed.id);
             const tempBedsC = [...ward.beds];
             const tempBedC = {...tempBedsC[bedIndex]};
-            tempBedC.stay = {...action.stay};
+            tempBedC.stays = [{...action.stay}];
             tempBedsC[bedIndex] = {...tempBedC};
             ward.beds = [...tempBedsC];
             department.wards[indexWard] = {...ward};
@@ -235,7 +236,7 @@ export default function reducer(state = initialState, action){
             const patientStays = allPatientsStays.hasOwnProperty(action.stay.patientInvestigation.uuid) ? allPatientsStays[action.stay.patientInvestigation.uuid] : [];
             patientStays.push(action.stay);
             allPatientsStays[action.stay.patientInvestigation.uuid] = [...patientStays];
-            newState.data.stay = {...allPatientsStays};
+            newState.data.stays = {...allPatientsStays};
             newState.data.departments = tempDepartments;
             newState.loading = initialState.loading; 
             newState.error = initialState.error; 
@@ -308,7 +309,21 @@ export default function reducer(state = initialState, action){
             }
             allPatientsStays[action.uuidPatient] = [...action.stays];
             newState.data["stays"] = {...allPatientsStays};
-
+            tempDepartments = [...newState.data.departments]
+            tempDepartments.forEach((department) => {
+                department.wards.forEach((ward) => {
+                    ward.beds.forEach((bed) => {
+                        action.stays.forEach((stay) => {
+                            bed.stays.forEach((bedStay, index) => {
+                                if(stay.id === bedStay.id){
+                                    bed.stays[index] = {...stay};
+                                }
+                            })
+                        })
+                    })
+                })
+            });
+            newState.data.departments = tempDepartments;
             newState.loading = initialState.loading;   
             newState.error = initialState.error;  
             return newState;

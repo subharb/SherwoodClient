@@ -4,8 +4,9 @@ import iconImages from "../../img/icons/images_white.png";
 import iconLab from "../../img/icons/lab_white.png";
 import styled from 'styled-components';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { BiotechIcon, ButtonAdd, IconGenerator } from '../../components/general/mini_components';
+import { BiotechIcon, ButtonAdd, IconGenerator, TypographyStyled } from '../../components/general/mini_components';
 import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
+import { red } from '@material-ui/core/colors';
 
 interface SectionHeaderProps{
     section:string,
@@ -25,11 +26,6 @@ const IconHolder = styled.div`
     padding:0.4rem 0 1rem 0rem;
 `;
 
-const TypographyStyled = styled(Typography)`
-    xpadding-top:2rem;
-    color:${props => props.theme.palette.primary.color};
-`
-
 const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle, addCallback, editCallback, infoCallback }) => {
    
     function renderIcon(){
@@ -37,7 +33,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
             case "laboratory":
                 return <IconGenerator type="biotech" />
             case "medical-imaging":
-                return <img src={iconImages } alt="images" width="20" />
+                return <IconGenerator type="image" />
             case "pharmacy":
                 return <IconGenerator type="pharmacy" />
             case "agenda":

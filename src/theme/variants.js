@@ -120,7 +120,7 @@ const hospitalVariant = merge(defaultVariant, {
             color: "#FFF"
         },
         secondary: {
-            main: green[500],
+            main: red[500],
             contrastText: "#FFF",
         },
         background: {

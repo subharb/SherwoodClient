@@ -347,7 +347,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     }
     function renderBedButton(bed:IBed){
         let buttonBed = null;
-        const currentPatient = bed.stays.length > 0 && patients ? patients.find((pat:IPatient) => pat.uuid === bed.stays[0].patientInvestigation.uuid) : null;
+        const currentPatient = bed.stays.length > 0 && bed.stays[0].dateOut === null && patients ? patients.find((pat:IPatient) => pat.uuid === bed.stays[0].patientInvestigation.uuid) : null;
         const personalData = currentPatient ? currentPatient.personalData : null;
         const gender = personalData ? personalData.sex : sexNumberToString(bed.gender); 
                 
@@ -355,7 +355,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         let ageYears = null;
         let hasStay:boolean = false;
         let sex = "";
-        if(bed.stays.length > 0){
+        if(bed.stays.length > 0 && bed.stays[0].dateOut === null){
             var date1 = new Date(bed.stays[0].dateIn);
             var date2 = new Date();
             var Difference_In_Time = date2.getTime() - date1.getTime();

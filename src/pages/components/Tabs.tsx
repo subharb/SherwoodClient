@@ -1,5 +1,6 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import { ReactNode, useState } from "react";
+import styled from "styled-components";
 
 
 export function a11yProps(index:number) {
@@ -43,6 +44,17 @@ interface TabProps{
     tabChangeCallback?:(tabSelected:number)=>void
 }
 
+const CustomTab = styled(Tab)(({ theme }) => ({
+    color: theme.palette.primary.color, // set the color using the primary color from the theme
+    "&.MuiTab-textColorPrimary.Mui-selected": {
+        color: theme.palette.primary.color,// set the color of the selected tab using the secondary color from the theme
+    },
+    selected: {},
+    '&.PrivateTabIndicator-colorSecondary-144': {
+        backgroundColor: theme.palette.primary.color, // set the color of the indicator using the secondary color from the theme
+    },
+  }));
+
 
 export function TabsSherwood(props:TabProps){
     const [tabSelector, setTabSelector] = useState(props.initTab ? props.initTab : 0);
@@ -61,7 +73,7 @@ export function TabsSherwood(props:TabProps){
             {
                 props.labels.map((label, index) => {
                     
-                    return <Tab label={label} {...a11yProps(index)} />;
+                    return <CustomTab label={label} {...a11yProps(index)} />;
                 })
             }
         </Tabs>
