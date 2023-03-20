@@ -3,7 +3,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import FieldSherwood from './FieldSherwood';
-import { validateField } from '../../utils/index';
+import { getValueField, validateField } from '../../utils/index';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
 import { Grid, Paper, Typography } from '@material-ui/core';
@@ -19,6 +19,8 @@ import { isObject } from 'lodash';
  * @param Boolean creating - If we are creating a form
  * 
  */
+
+const EXCEPTION_FORM_VALUES = ["medical_history_ai", "medical_history_template", "medical_history_template_fill"];
 
 class Form extends Component {
     constructor(props){
@@ -63,17 +65,21 @@ class Form extends Component {
     componentDidUpdate(prevProps, prevState){
         console.log("formValues", this.props.formValues);
         
-        const changedField = Object.keys(this.props.fields).find(key => {
+        const changedField = Object.keys(this.props.fields).find((key, value) => {
+            if(EXCEPTION_FORM_VALUES.includes(value.type)){
+                return false;
+            }
             return this.props.formValues[key] !== prevProps.formValues[key];
         });
         if(this.props.fields[changedField] && this.props.fields[changedField].callBackOnChange){
             this.props.fields[changedField].callBackOnChange(this.props.formValues[changedField]);
         }
         else if(this.props.fields[changedField]){
-            const value = isObject(this.props.formValues[changedField]) ? Object.values(this.props.formValues[changedField]).join(" ") : this.props.formValues[changedField];
+
+            const value = getValueField(this.props.fields[changedField], this.props.formValues[changedField]);
             this.labelValues[this.props.fields[changedField].id] = {
                 label : this.props.fields[changedField].label,
-                value : this.props.formValues[changedField]
+                value : value
             }
         }
     }

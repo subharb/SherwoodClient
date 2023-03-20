@@ -4,6 +4,7 @@ import ProviderSherwood from '../../../providerSherwood';
 
 const FIELDS_FORM = {
     "autocomplete":{
+        id : "autocomplete",
         required : false,
         type:"autocomplete",
         name:"autocomplete",
@@ -12,6 +13,7 @@ const FIELDS_FORM = {
         validation : "notEmpty"
     },
     "checkbox":{
+        id : "checkbox",
         required : false,
         type:"checkbox",
         name:"checkbox",
@@ -20,6 +22,7 @@ const FIELDS_FORM = {
         validation : "notEmpty"
     },
     "text" : {
+        id : "text",
         required : false,
         type:"text",
         name:"text",
@@ -28,6 +31,7 @@ const FIELDS_FORM = {
         validation : "textMin2"
     },
     "select" : {
+        id : "select",
         required : false,
         type:"select",
         name:"select",
@@ -41,6 +45,7 @@ const FIELDS_FORM = {
         ]                             
     },
     "select-activate" : {
+        id : "select-activate",
         required : false,
         type:"select",
         name:"select-activate",
@@ -71,6 +76,7 @@ const FIELDS_FORM = {
                                         
     },
     "multioption" : {
+        id : "multioption",
         required : false,
         type:"multioption",
         name:"multioption",
@@ -90,6 +96,7 @@ const FIELDS_FORM = {
         ]                             
     },
     "radio":{
+        id : "radio",
         required : false,
         type:"radio",
         name:"radio",
@@ -101,6 +108,7 @@ const FIELDS_FORM = {
                 {"label": "Option 3", "value" : "checkbox"}]
     },
     "date" : {
+        id : "date",
         required : false,
         type:"date",
         name:"date",
@@ -109,6 +117,7 @@ const FIELDS_FORM = {
         validation : "textMin2"
     },
     "time" : {
+        id : "time",
         required : false,
         type:"time",
         name:"time",
@@ -117,6 +126,7 @@ const FIELDS_FORM = {
         validation : "textMin2"
     },
     "evaluation" : {
+        id : "evaluation",
         required : false,
         type:"evaluation",
         name:"evaluation",
@@ -126,6 +136,7 @@ const FIELDS_FORM = {
         options:[{value:3, label:3}, {value:7, label:7}]
     },
     "textarea" : {
+        id : "textarea",
         required : false,
         type:"textarea",
         name:"textarea",
@@ -134,14 +145,37 @@ const FIELDS_FORM = {
         validation : "textMin2"
     },
     "medical_history_ai" : {
+        id : "medical_history_ai",
         required : false,
         type:"medical_history_ai",
         name:"medical_history_ai",
         label:"Medical History AI",
         shortLabel: "investigation.table.name",
-        validation : "textMin2"
+        validation : "textMin2",
+        template : "template"
+    },
+    "medical_history_template" : {
+        id : "medical_history_template",
+        required : false,
+        type:"medical_history_template",
+        name:"template",
+        label:"Template",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2",
+        template : "template"
+    },
+    "medical_history_template_fill" : {
+        id : "medical_history_template_fill",
+        required : false,
+        type:"medical_history_template_fill",
+        name:"template_fill",
+        label:"Template with filled spaces",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2", 
+        template : "template"
     },
     "bmi" : {
+        id : "bmi",
         required : false,
         type:"bmi",
         name:"bmi",
@@ -150,6 +184,7 @@ const FIELDS_FORM = {
         validation : "textMin2"
     },
     "edd" : {
+        id : "edd",
         required : false,
         type:"edd",
         name:"edd",

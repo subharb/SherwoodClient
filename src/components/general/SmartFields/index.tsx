@@ -15,6 +15,7 @@ import EDDField from './EDDField';
 import { isInteger } from 'lodash';
 import RequestField from './RequestField';
 import MedicalHistoryAI from './MedicalHistory';
+import { MEDICAL_HISTORY_FIELDS } from '../../../constants';
 
 
 
@@ -100,12 +101,12 @@ export interface RequestImageType{
     request_id: number
 }
 
-export interface MedicalHistoryAIType{
-    medical_history_ai : string,
-    send_email: boolean
+export interface MedicalHistoryType{
+    medical_history : string,
+    send_email?: boolean
 }
 
-export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType | RequestLabType | RequestImageType | MedicalHistoryAIType;
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType | RequestLabType | RequestImageType | MedicalHistoryType;
 
 export interface Diagnosis{
     ict : string,
@@ -115,8 +116,8 @@ export interface Diagnosis{
 enum DATE_FIELDS {"background-date", "treatment-start", "treatment-finish"};
 const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular", edd : "regular", edd_last_period:"regular"};
 
-const NO_TABLE_FIELDS = ["medical_history_ai"];
-const SINGLE_SMARTFIELDS = ["bmi", "edd", "medical_history_ai"];
+const NO_TABLE_FIELDS = MEDICAL_HISTORY_FIELDS;
+const SINGLE_SMARTFIELDS = ["bmi", "edd", [...MEDICAL_HISTORY_FIELDS]];
 export const INITIAL_SELECT = ["ict", "background", "treatment", "treatment_regular", "family-background", "allergy"];
 
 interface Props extends LocalizeContextProps {
@@ -269,7 +270,9 @@ const SmartField:React.FC<Props> = (props) => {
                     smartField = <BMIField {...propsSmartField} />
                     break;
                 case "medical_history_ai":
-                    smartField = <MedicalHistoryAI {...propsSmartField} formValues={props.formValues} />
+                case "medical_history_template":
+                case "medical_history_template_fill":
+                    smartField = <MedicalHistoryAI {...propsSmartField} uuidInvestigation={props.uuidInvestigation as string} formValues={props.formValues} />
                     break;
                 case "edd":
                     smartField = <EDDField {...propsSmartField} />

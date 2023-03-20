@@ -9,7 +9,7 @@ import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
 import SmartField from '../../../general/SmartFields';
 import { dateToFullDateString, fullDateFromPostgresString, getData, isSmartField } from '../../../../utils';
-import { ALL_SMARTFIELDS_TYPES } from '../../../../constants';
+import { ALL_SMARTFIELDS_TYPES, MEDICAL_HISTORY_FIELDS } from '../../../../constants';
 import { PERMISSION } from '../../../../constants/types';
 
 /**
@@ -55,8 +55,8 @@ function ShowRecordsSection(props) {
                 }
             </React.Fragment>;
         }
-        if(field.type === "textarea" || field.type === "medical_history_ai"){
-            const value = field.type  === "medical_history_ai" ? valueRecord.value[0].medical_history_ai : valueRecord.value;
+        if(field.type === "textarea" || MEDICAL_HISTORY_FIELDS.includes(field.type)){
+            const value = MEDICAL_HISTORY_FIELDS.includes(field.type) ? valueRecord.value[0].medical_history : valueRecord.value;
             const parsedValue = value.replace('<h1>','').replace('</h1>','').replace('<h2>','').replace('</h2>','');;
             return(
             <React.Fragment>
