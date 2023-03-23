@@ -34,6 +34,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     const {departments, researchers} = useDepartments();
     const { profile, loadingProfile } = useProfileInfo();
     const [showRequestForm, setShowRequestForm] = useState(false);
+    const [showAddPharmacyItem, setShowAddPharmacyItem] = useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [edit, setEdit] = useState(false);
     const [pharmacyItems, setPharmacyItems] = React.useState<IPharmacyItem[] | null>(null);
@@ -122,10 +123,20 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
         history.push(HOSPITAL_PHARMACY_REQUEST_NEW);
     }
 
+    function addCallback(){
+        if(location.pathname === HOSPITAL_PHARMACY_REQUEST_INVENTORY){
+            setShowAddPharmacyItem(true);
+        }
+        else{
+            return canMakeRequests ? navigateToAddRequest() : undefined
+        }
+    }
+
     function renderCore(){
         if(canViewPharmacyCentral && pharmacyItems){
             if(location.pathname === HOSPITAL_PHARMACY_REQUEST_INVENTORY){
                 return <Inventory uuidInvestigation={investigations.currentInvestigation.uuid} pharmacyItemsInit={pharmacyItems}
+                            showAddPharmacyItem={showAddPharmacyItem} setShowAddPharmacyItem={setShowAddPharmacyItem}
                             typePharmacy={PharmacyType.CENTRAL} idPharmacy={investigations.currentInvestigation.pharmacy.id}
                             />
             }
@@ -190,7 +201,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
                 <React.Fragment>
             <Grid container spacing={6} >
                 <SectionHeader section="pharmacy" edit={edit} editCallback={canViewPharmacyCentral ? toogleEditLab : undefined} 
-                    addCallback={canMakeRequests ? navigateToAddRequest : undefined} />
+                    addCallback={addCallback} />
                 <Grid item xs={12}>
                     {
                         renderCore()

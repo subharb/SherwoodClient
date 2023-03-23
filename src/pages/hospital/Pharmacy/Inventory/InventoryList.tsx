@@ -1,12 +1,12 @@
 import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Snackbar, TextField, Typography } from '@material-ui/core';
 import { green, orange, red } from '@material-ui/core/colors';
 import { Alert } from '@material-ui/lab';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { InventoryLocalizedProps } from '.';
 import { EnhancedTable } from '../../../../components/general/EnhancedTable';
 import Form from '../../../../components/general/form';
-import { FormValues } from '../../../../components/general/formTSFunction';
+import { FormValues, IForm } from '../../../../components/general/formTSFunction';
 import { ButtonAccept, ButtonCancel, ButtonContinue, FieldWrapper } from '../../../../components/general/mini_components';
 import { ColourChip } from '../../../../components/general/mini_components-ts';
 
@@ -15,11 +15,7 @@ import Loader from '../../../../components/Loader';
 import { ChipContainer } from '../../Service/RequestInfo';
 import { IPharmacyItem } from '../types';
 
-interface InventoryListProps {
-    
-}
-
-const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, loading, showSnackbar, translate, updatePharmacyItemCallBack, deleteItemCallback: callbackDeleteItem }) => {
+const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, showAddPharmacyItem, loading, showSnackbar, translate, addPharmacyItemCallBack, updatePharmacyItemCallBack, deleteItemCallback: callbackDeleteItem }) => {
     const [filteredItems, setFilteredItems] = React.useState<IPharmacyItem[]>(pharmacyItems);
     const [lowStatusFilter, setLowStatusFilter] = React.useState<boolean>(false);
     const [finishedStatusFilter, setFinishedStatusFilter] = React.useState<boolean>(false);
@@ -47,6 +43,12 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, l
     }, [showSnackbar])
 
     useEffect(() => {
+        if(showAddPharmacyItem){
+            setModalInfo({showModal: true, type:"add"});
+        }
+    }, [showAddPharmacyItem])
+
+    useEffect(() => {
         // Set the option of a select from the providers of pharmacyItems but not repeated providers
         const providers = pharmacyItems.map((item: IPharmacyItem) => item.provider);
         const providersSet = new Set(providers);
@@ -56,112 +58,121 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, l
         
     }, [pharmacyItems])
 
-    const FORM_EDIT = {
-        "id" : {
+    const FORM_ADD = useMemo(() => {
+        return {
+            "code" : {
+                required : true,
+                name:"code",
+                type:"text",
+                numberColumnsLg:2,
+                numberColumnsXs:2,
+                label:"pages.hospital.pharmacy.pharmacy_items.code",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.code",
+                validation : "textMin2"
+            },
+            "name" : {
+                required : true,
+                name:"name",
+                type:"text",
+                numberColumnsLg:10,
+                numberColumnsXs:6,
+                label:"pages.hospital.pharmacy.pharmacy_items.name",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.name",
+                validation : "textMin2"
+            },         
+            "activePrinciple" : {
+                required : true,
+                name:"activePrinciple",
+                type:"text",
+                numberColumnsLg:6,
+                numberColumnsXs:6,
+                label:"pages.hospital.pharmacy.pharmacy_items.activePrinciple",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.activePrinciple",
+                validation : "textMin2"
+            },
+            "provider" : {
+                required : true,
+                name:"provider",
+                type:"text",
+                numberColumnsLg:6,
+                numberColumnsXs:6,
+                label:"pages.hospital.pharmacy.pharmacy_items.provider",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.provider",
+                validation : "textMin2"
+            },
+            "amount" : {
+                required : true,
+                name:"amount",
+                type:"text",
+                numberColumnsLg:3,
+                numberColumnsXs:3,
+                label:"pages.hospital.pharmacy.pharmacy_items.amount",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.amount",
+                validation : "number"
+            },
+            "price" : {
+                required : true,
+                name:"price",
+                type:"text",
+                numberColumnsLg:3,
+                numberColumnsXs:3,
+                label:"pages.hospital.pharmacy.pharmacy_items.price",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.price",
+                validation : "number"
+            },
+            "unit" : {
+                required : true,
+                name:"unit",
+                type:"text",
+                numberColumnsLg:3,
+                numberColumnsXs:3,
+                label:"pages.hospital.pharmacy.pharmacy_items.unit",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.unit",
+                validation : "textMin2"
+            },
+            "type" : {
+                required : false,
+                name:"type",
+                type:"text",
+                numberColumnsLg:3,
+                numberColumnsXs:3,
+                label:"pages.hospital.pharmacy.pharmacy_items.type",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.type",
+                validation : "textMin2"
+            },
+            
+           
+            "threshold" : {
+                required : true,
+                name:"threshold",
+                type:"text",
+                numberColumnsLg:6,
+                numberColumnsXs:6,
+                label:"pages.hospital.pharmacy.pharmacy_items.threshold",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.threshold",
+                validation : "number"
+            },
+        }
+    }, [])
+
+    const FORM_EDIT = useMemo(() => {
+        const tempEdit:IForm = {...FORM_ADD};
+        tempEdit.id =  {
             required : true,
             name:"id",
             type:"hidden",
             label:"pages.hospital.pharmacy.pharmacy_items.code",
             shortLabel: "pages.hospital.pharmacy.pharmacy_items.code",
             validation : "number"
-        },
-        "code" : {
-            required : true,
-            name:"code",
-            type:"text",
-            numberColumnsLg:2,
-            numberColumnsXs:2,
-            label:"pages.hospital.pharmacy.pharmacy_items.code",
-            shortLabel: "pages.hospital.pharmacy.pharmacy_items.code",
-            validation : "textMin2"
-        },
-        "name" : {
-            required : true,
-            name:"name",
-            type:"text",
-            numberColumnsLg:10,
-            numberColumnsXs:6,
-            label:"pages.hospital.pharmacy.pharmacy_items.name",
-            shortLabel: "pages.hospital.pharmacy.pharmacy_items.name",
-            validation : "textMin2"
-        },         
-        "activePrinciple" : {
-            required : true,
-            name:"activePrinciple",
-            type:"text",
-            numberColumnsLg:6,
-            numberColumnsXs:6,
-            label:"pages.hospital.pharmacy.pharmacy_items.activePrinciple",
-            shortLabel: "pages.hospital.pharmacy.pharmacy_items.activePrinciple",
-            validation : "textMin2"
-        },
-        "provider" : {
-            required : true,
-            name:"provider",
-            type:"text",
-            numberColumnsLg:6,
-            numberColumnsXs:6,
-            label:"pages.hospital.pharmacy.pharmacy_items.provider",
-            shortLabel: "pages.hospital.pharmacy.pharmacy_items.provider",
-            validation : "textMin2"
-        },
-        "amount" : {
-            required : true,
-            name:"amount",
-            type:"text",
-            numberColumnsLg:3,
-            numberColumnsXs:3,
-            label:"pages.hospital.pharmacy.pharmacy_items.amount",
-            shortLabel: "pages.hospital.pharmacy.pharmacy_items.amount",
-            validation : "number"
-        },
-        "price" : {
-            required : true,
-            name:"price",
-            type:"text",
-            numberColumnsLg:3,
-            numberColumnsXs:3,
-            label:"pages.hospital.pharmacy.pharmacy_items.price",
-            shortLabel: "pages.hospital.pharmacy.pharmacy_items.price",
-            validation : "number"
-        },
-        "unit" : {
-            required : true,
-            name:"unit",
-            type:"text",
-            numberColumnsLg:3,
-            numberColumnsXs:3,
-            label:"pages.hospital.pharmacy.pharmacy_items.unit",
-            shortLabel: "pages.hospital.pharmacy.pharmacy_items.unit",
-            validation : "textMin2"
-        },
-        "type" : {
-            required : false,
-            name:"type",
-            type:"text",
-            numberColumnsLg:3,
-            numberColumnsXs:3,
-            label:"pages.hospital.pharmacy.pharmacy_items.type",
-            shortLabel: "pages.hospital.pharmacy.pharmacy_items.type",
-            validation : "textMin2"
-        },
-        
-       
-        "threshold" : {
-            required : true,
-            name:"threshold",
-            type:"text",
-            numberColumnsLg:6,
-            numberColumnsXs:6,
-            label:"pages.hospital.pharmacy.pharmacy_items.threshold",
-            shortLabel: "pages.hospital.pharmacy.pharmacy_items.threshold",
-            validation : "number"
-        },
-    }
+        }
+        return tempEdit;
+    }, [FORM_ADD]);
     
     function resetModal(){
         setModalInfo({showModal: false, type:""});
     }
+
+
 
     function showDeleteItem(id: number){
         const findItem = pharmacyItems.find((item: IPharmacyItem) => item.id === id);
@@ -201,6 +212,13 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, l
             return(
                 <Form fullWidth={true} callBackForm={updatePharmacyItemCallBack}
                     initialData={editItem} fields = {FORM_EDIT}
+                    closeCallBack={() => resetModal()}/> 
+            )
+        }
+        else if( modalInfo.type === "add"){
+            return(
+                <Form fullWidth={true} callBackForm={addPharmacyItemCallBack}
+                    fields = {FORM_ADD}
                     closeCallBack={() => resetModal()}/> 
             )
         }

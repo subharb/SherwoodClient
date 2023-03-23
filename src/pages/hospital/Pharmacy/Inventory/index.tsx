@@ -12,13 +12,15 @@ import LoadExcel from '../LoadExcel';
 import { ButtonAccept } from '../../../../components/general/mini_components';
 import { useSnackBarState } from '../../../../hooks';
 import { Alert, Color } from '@material-ui/lab';
-import { InventoryExcel } from './InventoryExcel';
+import { InventoryExcel } from './InventoryExcel'; 
 import {InventoryList} from './InventoryList';
 
 interface InventoryProps {
     uuidInvestigation: string,
     idPharmacy: number,
     typePharmacy: PharmacyType,
+    showAddPharmacyItem: boolean,
+    setShowAddPharmacyItem: (show: boolean) => void,
     pharmacyItemsInit: IPharmacyItem[]
 }
 
@@ -33,7 +35,7 @@ export const DEFAULT_ROWS: IPharmacyItem = {
     type: 0,    
     threshold: 0,
 };
-const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, idPharmacy, pharmacyItemsInit }) => {
+const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, showAddPharmacyItem,  setShowAddPharmacyItem, idPharmacy, pharmacyItemsInit }) => {
     const [pharmacyItems, setPharmacyItems] = React.useState<IPharmacyItem[] | null>(pharmacyItemsInit ? pharmacyItemsInit : []);
     
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -49,7 +51,7 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, 
             })
             .catch((error) => {
                 console.log(error);
-                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.success", severity:"error"});
+                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.error", severity:"error"});
             });
     }
     function deleteItemCallback(id:number){
@@ -66,7 +68,23 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, 
             })
             .catch((error) => {
                 console.log(error);
-                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.success", severity:"error"});
+                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.error", severity:"error"});
+            });
+    }
+    function addPharmacyItem(pharmacyItem:IPharmacyItem){
+        setLoading(true);
+        axios.post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/item/", pharmacyItem, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                // update the pharmacyItems with the date returned by the server
+                const newPharmacyItem = pharmacyItems ? [...pharmacyItems, response.data.pharmacyItem] : [response.data.pharmacyItem];
+                setPharmacyItems(newPharmacyItem);
+                setShowAddPharmacyItem(false);
+                setLoading(false);
+                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.success", severity:"success"});
+            })
+            .catch((error) => {
+                console.log(error);
+                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.error", severity:"error"});
             });
     }
     function updatePharmacyItem(pharmacyItem:IPharmacyItem){
@@ -88,7 +106,7 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, 
             })
             .catch((error) => {
                 console.log(error);
-                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.success", severity:"error"});
+                setShowSnackbar({show:true, message:"pages.hospital.pharmacy.error", severity:"error"});
             });
     }
     
@@ -98,8 +116,10 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, typePharmacy, 
     }
     else {
         return <InventoryComponentLocalized editAsExcel={pharmacyItems.length === 0} 
+                    showAddPharmacyItem={showAddPharmacyItem}
                     showSnackbar={showSnackbar} loading={loading} pharmacyItems={pharmacyItems} saveInventoryCallBack={(items) => updateInventory(items)}
                     updatePharmacyItemCallBack={(item) => updatePharmacyItem(item)} deleteItemCallback={(id) => deleteItemCallback(id)}
+                    addPharmacyItemCallBack={(item) => addPharmacyItem(item)}
                  />
     }
 }
@@ -110,6 +130,7 @@ export interface InventoryLocalizedProps extends LocalizeContextProps {
     pharmacyItems: IPharmacyItem[];
     loading: boolean;
     editAsExcel?: boolean;
+    showAddPharmacyItem?: boolean;
     showSnackbar:{
         show: boolean;
         message?: string | undefined;
@@ -117,19 +138,20 @@ export interface InventoryLocalizedProps extends LocalizeContextProps {
     },
     saveInventoryCallBack?: (items: IPharmacyItem[]) => void,
     deleteItemCallback?: (id: number) => void,
-    updatePharmacyItemCallBack?: (item: IPharmacyItem) => void
+    updatePharmacyItemCallBack?: (item: IPharmacyItem) => void,
+    addPharmacyItemCallBack?: (item: IPharmacyItem) => void,
 }
 
-const InventoryComponent: React.FC<InventoryLocalizedProps> = ({ editAsExcel, pharmacyItems, loading, showSnackbar, updatePharmacyItemCallBack, saveInventoryCallBack, deleteItemCallback}) => {
+const InventoryComponent: React.FC<InventoryLocalizedProps> = ({ editAsExcel, showAddPharmacyItem, pharmacyItems, loading, showSnackbar, addPharmacyItemCallBack, updatePharmacyItemCallBack, saveInventoryCallBack, deleteItemCallback}) => {
     
     if(editAsExcel && saveInventoryCallBack){
         return <InventoryExcel  showSnackbar={showSnackbar} loading={loading} pharmacyItems={pharmacyItems} saveInventoryCallBack={ (items) => saveInventoryCallBack(items)} />
     }
-    else if(updatePharmacyItemCallBack && deleteItemCallback){
-        return <InventoryList pharmacyItems={pharmacyItems} showSnackbar={showSnackbar}  loading={loading} deleteItemCallback={(idPharmacyItem) => deleteItemCallback(idPharmacyItem)} updatePharmacyItemCallBack={ (items) => updatePharmacyItemCallBack(items)}  />
+    else if(updatePharmacyItemCallBack && deleteItemCallback && addPharmacyItemCallBack){
+        return <InventoryList pharmacyItems={pharmacyItems} showAddPharmacyItem={showAddPharmacyItem} addPharmacyItemCallBack={addPharmacyItemCallBack} showSnackbar={showSnackbar}  loading={loading} deleteItemCallback={(idPharmacyItem) => deleteItemCallback(idPharmacyItem)} updatePharmacyItemCallBack={ (items) => updatePharmacyItemCallBack(items)}  />
     }
     else{
-        return null
+        return null;
     }
 }
 

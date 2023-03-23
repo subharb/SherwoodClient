@@ -467,9 +467,11 @@
                 "modal" : {
                     "title" : {
                         "edit" : ["Edit", "Editar", "Modifier"],
-                        "delete" : ["Delete", "Eliminar", "Supprimer"]
+                        "delete" : ["Delete", "Eliminar", "Supprimer"],
+                        "add" : ["Add", "Añadir", "Ajouter"]
                     },
                     "message" : {
+                        "add" : ["Add pharmacy item", "Añadir medicamento", "Ajouter un médicament"],
                         "edit" : ["Are you sure you want to edit this item?", "¿Está seguro que desea editar este elemento?", "Êtes-vous sûr de vouloir modifier cet élément?"],
                         "delete" : ["Are you sure you want to delete this item?", "¿Está seguro que desea eliminar este elemento?", "Êtes-vous sûr de vouloir supprimer cet élément?"]
                     }
