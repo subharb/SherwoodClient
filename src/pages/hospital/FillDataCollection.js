@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Grid, Typography, Paper } from '@material-ui/core';
-import { BoxBckgr, IconPatient, ButtonAdd, CheckCircleOutlineSvg } from '../../components/general/mini_components';
+import { BoxBckgr, IconPatient, ButtonAdd, CheckCircleOutlineSvg, TypographyStyled } from '../../components/general/mini_components';
 import SectionForm from '../../components/general/SectionForm';
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
@@ -99,9 +99,9 @@ export default function FillDataCollection(props) {
                     {
                         !props.hideCollectionName && 
                         <Grid item xs={12}>
-                            <Typography variant="subtitle1" gutterBottom>
+                            <TypographyStyled variant="subtitle1" gutterBottom>
                                 {props.dataCollection.name}
-                            </Typography>
+                            </TypographyStyled>
                         </Grid>
                     }
                     
