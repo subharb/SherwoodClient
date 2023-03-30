@@ -4,19 +4,21 @@ import { isString } from 'lodash';
 import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';
 import ReactQuill from 'react-quill';
-import { PropsSmartField } from '.';
+import { PropsSmartField, SmartFieldType } from '.';
 import axios from '../../../utils/axios';
 import Loader from '../../Loader';
 import { QuillWrapper } from '../FieldSherwood';
 import { ButtonCheck, ButtonContinue, ButtonSave } from '../mini_components';
 
 interface MedicalHistoryAIProps extends PropsSmartField {
-    formValues : {[key:string]:{label:string,value:string}};
+    formValues : {[key:string]:{label:string,value:string | any[]}};
     uuidInvestigation : string;
+    listElements:SmartFieldType[]
 }
 
-const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues, uuidInvestigation, type, template, updateElement }) => {
+const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues, uuidInvestigation, listElements, type, template, updateElement }) => {
     const [generatedText, setGeneratedText] = React.useState<string | null>(null);
+    const [propmt, setPrompt] = React.useState<string | null>(null);
     const [sendToEmail, setSendToEmail] = React.useState<boolean>(false);
     const [loading, setLoading] = React.useState<boolean>(false);
     const [openaiResponse, setOpenaiResponse] = React.useState<any>(null);
@@ -42,37 +44,48 @@ const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues, uuidInv
 
             Object.values(formValues).forEach((field) => {
                 console.log(field.label+" found "+template?.search("$"+field.label+"$"));
-                template = template?.replace("$"+field.label+"$",field.value);
+                template = template?.replace("$"+field.label+"$",JSON.stringify(field.value));
             });
             const prompt = Object.values(formValues).map((field) => field.label+":"+JSON.stringify(field.value)).join("");
             console.log(prompt);
             setGeneratedText(template);
             updateElement(0, {
-                medical_history : template,
-                send_email : sendToEmail
+                medical_history_ai: template,
             });
         }
     }
     function prepareText() {
         if(template && updateElement){  
+            const valuesString = Object.values(formValues).map((field) => {
+                let value = field.value;
+                if(Array.isArray(field.value)){
+                    value = JSON.stringify(field.value);
+                }
+                return `"${field.label} : ${value}"`
+            }).join("; ");
+            let prompt = ""
+            if(template.includes("$FORM_DATA$")){
+                prompt = template.replace("$FORM_DATA$", +"\n"+valuesString);
+            }
+            else{
+                prompt = template+"\n"+valuesString;
+            }
             
-            const valuesString = Object.values(formValues).map((field) => field.label+":"+JSON.stringify(field.value)).join(", ");
             console.log(valuesString);
-            const openAiString = openaiResponse ? openaiResponse : "";
-            const prompt = template+"\n"+valuesString+"\n"+openAiString;
-            setGeneratedText(prompt);
+            
+            
+            setPrompt(prompt);
         }
     }
     function sendTextToOpenAI(){
         if(updateElement){
             setLoading(true);
-            axios.post(`${process.env.REACT_APP_API_URL }/researcher/investigation/${uuidInvestigation}/openai`, {prompt:generatedText}, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            axios.post(`${process.env.REACT_APP_API_URL }/researcher/investigation/${uuidInvestigation}/openai`, {prompt:propmt}, { headers: { "Authorization": localStorage.getItem("jwt") } })
                 .then((response) => {
-                        setGeneratedText(generatedText+"\n"+response.data.response.choices[0].text);
-                        setOpenaiResponse(response.data.response.choices[0].text);
+                        setGeneratedText(response.data.response.choices[0].text);
                         updateElement(0, {
-                            medical_history : response.data.response.choices[0].text,
-                            send_email : sendToEmail
+                            medical_history_ai : response.data.response.choices[0].text,
+                            "medical_history_ai-send_email" : sendToEmail
                         });
                         setLoading(false);
                 })
@@ -98,8 +111,8 @@ const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues, uuidInv
                             if (source === 'user' && updateElement) {
                                 setGeneratedText(newValue);
                                 updateElement(0, {
-                                    medical_history : newValue,
-                                    send_email : sendToEmail
+                                    "medical_history_ai" : newValue,
+                                    "medical_history_ai-send_email" : sendToEmail
                                 });
                             }
                         }}
@@ -131,8 +144,8 @@ const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues, uuidInv
                                 console.log(event.target.checked+"ll");
                                 if(updateElement){
                                     updateElement(0, {
-                                        medical_history : generatedText ? generatedText : "",
-                                        send_email : event.target.checked
+                                        medical_history_ai : generatedText ? generatedText : "",
+                                        "medical_history_ai-send_email" : event.target.checked
                                     });
                                 }
                                 

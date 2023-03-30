@@ -102,8 +102,8 @@ export interface RequestImageType{
 }
 
 export interface MedicalHistoryType{
-    medical_history : string,
-    send_email?: boolean
+    medical_history_ai : string,
+    "medical_history_ai-send_email"?: boolean
 }
 
 export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType | RequestLabType | RequestImageType | MedicalHistoryType;
@@ -117,7 +117,7 @@ enum DATE_FIELDS {"background-date", "treatment-start", "treatment-finish"};
 const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular", edd : "regular", edd_last_period:"regular"};
 
 const NO_TABLE_FIELDS = MEDICAL_HISTORY_FIELDS;
-const SINGLE_SMARTFIELDS = ["bmi", "edd", [...MEDICAL_HISTORY_FIELDS]];
+const SINGLE_SMARTFIELDS = ["bmi", "edd", ...MEDICAL_HISTORY_FIELDS];
 export const INITIAL_SELECT = ["ict", "background", "treatment", "treatment_regular", "family-background", "allergy"];
 
 interface Props extends LocalizeContextProps {
@@ -272,7 +272,7 @@ const SmartField:React.FC<Props> = (props) => {
                 case "medical_history_ai":
                 case "medical_history_template":
                 case "medical_history_template_fill":
-                    smartField = <MedicalHistoryAI {...propsSmartField} uuidInvestigation={props.uuidInvestigation as string} formValues={props.formValues} />
+                    smartField = <MedicalHistoryAI {...propsSmartField} listElements={listElements} uuidInvestigation={props.uuidInvestigation as string} formValues={props.formValues} />
                     break;
                 case "edd":
                     smartField = <EDDField {...propsSmartField} />
