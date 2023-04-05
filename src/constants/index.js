@@ -117,7 +117,8 @@ export const DIAGNOSIS_TYPE = "ict"
 export const SLAVES_TREATMENT = ["drug-code", "treatment-start", "treatment-finish", "treatment-posology"];
 export const SLAVES_DIAGNOSIS = ["ict-code"];
 
-export const ALL_SMARTFIELDS_TYPES = ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular", "multioption", "medical_history_ai"];
+export const MEDICAL_HISTORY_FIELDS = ["medical_history_ai", "medical_history_template", "medical_history_template_fill"];
+export const ALL_SMARTFIELDS_TYPES = ["ict", "allergy", "background", "family-background", "treatment", "treatment_regular", "multioption", [...MEDICAL_HISTORY_FIELDS]];
 
 //Offline
 export const UPDATE_RECORDS_LOADING = "UPDATE_RECORDS_LOADING";

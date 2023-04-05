@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import * as types from "../../../constants";
 import { connect, useDispatch } from 'react-redux';
-import { Typography, Grid, Box, Chip, AppBar, Tabs, Tab, Snackbar } from '@material-ui/core';
+import { Typography, Grid, Box, Chip, AppBar, Tabs, Tab, Snackbar, withStyles } from '@material-ui/core';
 import { Alert } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import Loader from '../../../components/Loader';
-import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, ButtonGrey } from '../../../components/general/mini_components';
+import { BoxBckgr, ButtonAdd, ButtonCancel, ButtonContinue, ButtonGrey, TypographyStyled } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Form from '../../../components/general/form';
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
@@ -233,6 +233,19 @@ const mapStateToProps = (state) =>{
         loading : state.hospital.loading || state.investigations.loading
     }
 }
+
+const CustomTab = styled(Tab)(({ theme }) => ({
+    color: theme.palette.primary.color, // set the color using the primary color from the theme
+    "&.MuiTab-textColorPrimary.Mui-selected": {
+        color: theme.palette.primary.color,// set the color of the selected tab using the secondary color from the theme
+    },
+    selected: {},
+    '&.PrivateTabIndicator-colorSecondary-144': {
+        backgroundColor: theme.palette.primary.color, // set the color of the indicator using the secondary color from the theme
+    },
+  }));
+  
+  
 
 export default connect(mapStateToProps, null)(DepartmentsRouter)
 
@@ -723,9 +736,9 @@ function Departments(props) {
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Grid item xs={6} >
-                        <Typography variant="h3" gutterBottom display="inline">
+                        <TypographyStyled variant="h3" gutterBottom display="inline">
                             <Translate id="hospital.departments.title" />
-                        </Typography>
+                        </TypographyStyled>
                         {
                             props.admin &&
                             <ButtonAdd disabled={addingDepartment} 
@@ -739,26 +752,26 @@ function Departments(props) {
                 </Grid>
                 <Grid item container xs={12} spacing={3}>
                     <Grid item xs={12} >
-                        <Typography gutterBottom variant="h5" component="h2">
+                        <TypographyStyled gutterBottom variant="h5" component="h2">
                             { props.investigation.name }
-                        </Typography>
+                        </TypographyStyled>
                     </Grid>
                     {
                         props.departments.length > 0 &&
 
                         <AppBar position="static">
-                            <Tabs value={tabSelector} onChange={handleChange} aria-label="simple tabs example">
+                            <Tabs textColor="primary" value={tabSelector} onChange={handleChange} aria-label="simple tabs example">
                             { 
                                 props.admin &&
                                 [
-                                    <Tab label={<Translate id="hospital.departments.users" />} {...a11yProps(0)} />,
-                                    <Tab label={<Translate id="hospital.departments.departments" />} {...a11yProps(1)} />
+                                    <CustomTab  label={<Translate id="hospital.departments.users" />} {...a11yProps(0)} />,
+                                    <CustomTab label={<Translate id="hospital.departments.departments" />} {...a11yProps(1)} />
                                 ]
                                 
                             }
                             {
                                 props.investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION) &&
-                                <Tab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
+                                <CustomTab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
                             }
                             </Tabs>
                         </AppBar>

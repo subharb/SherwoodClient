@@ -464,6 +464,23 @@
                 "title" : ["Pharmacy", "Farmacia", "Pharmacie"],
                 "success" : ["Request made successfully", "Solicitud realizada correctamente", "Demande effectuée avec succès"],
                 "error" : ["Error making request", "Error realizando la solicitud", "Erreur lors de la demande"],
+                "modal" : {
+                    "title" : {
+                        "edit" : ["Edit", "Editar", "Modifier"],
+                        "delete" : ["Delete", "Eliminar", "Supprimer"],
+                        "add" : ["Add", "Añadir", "Ajouter"]
+                    },
+                    "message" : {
+                        "add" : ["Add pharmacy item", "Añadir medicamento", "Ajouter un médicament"],
+                        "edit" : ["Are you sure you want to edit this item?", "¿Está seguro que desea editar este elemento?", "Êtes-vous sûr de vouloir modifier cet élément?"],
+                        "delete" : ["Are you sure you want to delete this item?", "¿Está seguro que desea eliminar este elemento?", "Êtes-vous sûr de vouloir supprimer cet élément?"]
+                    }
+                    
+                },
+                "filter_box" : {
+                    "search_item" : ["Search item", "Buscar medicamento", "Rechercher un médicament"],
+                    "no_items" : ["No items found", "No se han encontrado medicamentos", "Aucun médicament trouvé"]
+                },
                 "pharmacy_items" : {
                     "name" : ["Name", "Nombre", "Nom"],
                     "code" : ["Code", "Código", "Code"],
@@ -473,7 +490,13 @@
                     "activePrinciple" : ["Active Principle", "Principio Activo", "Principe actif"],
                     "unit" : ["Unit", "Unidad", "Unité"],
                     "provider" : ["Provider", "Proveedor", "Fournisseur"],
-                    "threshold" : ["Threshold", "Umbral", "Seuil"]
+                    "threshold" : ["Threshold", "Umbral", "Seuil"],
+                    "status" : ["Status", "Estado", "Statut"],
+                    "status_values" : {
+                        "finished" : ["Finished", "Agotado", "Terminé"],
+                        "low" : ["Low", "Bajo", "Faible"],
+                        "normal" : ["Normal", "Normal", "Normal"]
+                    }
                 },
                 
                 "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un département pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
@@ -502,11 +525,28 @@
                     "boxes_and_agendas" : ["Boxes and Agendas", "Cajas y agendas", "Boîtes et agendas"],
                     "prices" : ["Prices", "Precios", "Prix"]
                 },
+                "edit" : {
+                    "modal" : {
+                        "title" : {
+                            "box" : ["Create Box", "Crear Box", "Créer une box"],
+                            "box_edit" : ["Edit Box", "Editar Box", "Modifier la box"],
+                            "agenda" : ["Create Agenda", "Crear Agenda", "Créer une agenda"],
+                            "service" : ["Create Service", "Crear Servicio", "Créer un service"],
+                            "service_edit" : ["Edit Service", "Editar Servicio", "Modifier le service"],
+                            "delete_service_confirm" : ["Delete service", "Eliminar servicio", "Supprimer le service"],
+                            "error_service_agenda" : ["Error", "Error", "Erreur"],
+                            "agenda_error_appointments" : ["Error", "Error", "Erreur"],
+                            "delete_agenda" : ["Delete agenda", "Eliminar agenda", "Supprimer l'agenda"],
+                            "delete_box_error" : ["Error", "Error", "Erreur"],
+                            "delete_box" : ["Delete box", "Eliminar box", "Supprimer la box"]
+                        }
+                    }
+                },
                 "confirm" : {
                     "CHECKIN" : ["Patient check-in", "Confirmar check-in", "Confirmer check-in"],
                     "CANCEL" : ["Cancel appointment", "Cancelar cita", "Annuler le rendez-vous"],
                     "ERROR_CANCEL" : ["Error", "Error", "Erreur"],
-                    "DELETE_SERVICE" : ["Delete service", "Eliminar servicio", "Supprimer le service"],
+                    "DELETE_SERVICE" : ["Are you sure you want to delete the following service?", "¿Está seguro de que desea eliminar el siguiente servicio?", "Êtes-vous sûr de vouloir supprimer le service suivant?"],
                     "error_service_agenda" : ["You can't delete a service that is used in a agenda, first delete the agenda.", "No puede eliminar un servicio que está siendo usado en una agenda, primero elimine la agenda.", "Vous ne pouvez pas supprimer un service qui est utilisé dans un agenda, supprimez d'abord l'agenda."],
                     "ERROR_DELETE_AGENDA" : ["You can't delete an agenda that has appointments, cancel them first.", "No puede eliminar una agenda que tiene citas, cáncelalas primero.", "Vous ne pouvez pas supprimer un agenda qui a des rendez-vous, annulez-les d'abord."],
                     "SURE_DELETE_AGENDA" : ["Are you sure you want to delete this agenda?", "¿Está seguro de que desea eliminar esta agenda?", "Êtes-vous sûr de vouloir supprimer cet agenda?"],
@@ -539,14 +579,13 @@
                 "table_patient_appointments" : {
                     "department" : ["Department", "Departamento", "Département"],
                     "doctor" : ["Doctor", "Doctor", "Docteur"],
-                    "date" : ["Date", "Fecha", "Date"],
+                    "date" : ["Date Appointment", "Fecha de cita", "Date de rendez-vous"],
                     "turn" : ["Shift", "Turno", "Tourner"],
                     "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
                     "show" : ["Show", "Mostrar", "Montrer"]
                 },
                 "box":{
                     "title" : ["Box", "Caja", "Boîte"],
-                    "create" : ["Create Box", "Crear Box", "Créer une box"],
                     "name" : ["Name", "Nombre", "Nom"],
                     "add_box" : ["Add Box", "Agregar Box", "Ajouter une box"],
                     "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
@@ -558,7 +597,7 @@
                     }
                 },
                 "service":{
-                    "create" : ["Create Service", "Crear Servicio", "Créer un service"],
+                    
                     "title" : ["Service", "Servicio", "Service"],
                     "name" : ["Name", "Nombre", "Nom"],
                     "type_service" : ["Type Service", "Tipo de servicio", "Type de service"],
@@ -570,7 +609,7 @@
                     }
                 },
                 "agenda":{
-                    "create" : ["Create Agenda", "Crear Agenda", "Créer une agenda"],
+                    
                     "title" : ["Agenda", "Agenda", "Agenda"],
                     "duration" : ["Duration Visit(min.)", "Duración Consulta(min.)", "Durée de la visite(min.)"],
                     "slotsPerDay" : ["Slots per day", "Citas por día", "Visites par jour"],
@@ -604,6 +643,9 @@
                         "date_blocked" : ["The date selected is blocked, please select another day", "La fecha seleccionada está bloqueada, por favor seleccione otro día", "La date sélectionnée est bloquée, s'il vous plaît sélectionnez un autre jour"],
                         "week_day_not_available" : ["The week day selected is not available, please select another day", "El día de la semana seleccionado no está disponible, por favor seleccione otro día", "Le jour de la semaine sélectionnée n'est pas disponible, s'il vous plaît sélectionnez un autre jour"]
                     }
+                },
+                "form_appointment" : {
+                    "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"]
                 }
             },
             "shoe_shop":{
@@ -1050,6 +1092,8 @@
                 "textarea" : ["Texarea", "Texto largo", "Texarea"],
                 "multioption" : ["Multioption", "Multiopción", "Multioption"],
                 "medical_history_ai" : ["Medical History AI", "Historia Médica AI", "Historique médical AI"],
+                "medical_history_template" : ["Medical History Template", "Historia Médica de Plantilla", "Historique médical Modèle"],
+                "medical_history_template_fill" : ["Medical History Template AutoFill", "Historia Médica de Plantilla AutoFill", "Historique médical Modèle AutoFill"],
                 "evaluation" : ["Evaluation", "Evaluación", "Evaluation"],
                 "radio" : ["Radio button", "Radio button", "Radio button"],
                 "autocomplete" : ["Autocomplete", "Autocomplete", "Autocomplete"],

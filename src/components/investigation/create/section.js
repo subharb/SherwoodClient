@@ -11,6 +11,7 @@ import { Grid,
     } from "@material-ui/core";
 import PropTypes from 'prop-types';
 import OrderableTable from '../../general/OrderableTable';
+import { MEDICAL_HISTORY_FIELDS } from '../../../constants';
 
 
 const SECTION_FORM = {
@@ -109,10 +110,12 @@ class Section extends Component{
                         {"label": "investigation.create.edc.request_lab", "value" : "request_lab"},
                         {"label": "investigation.create.edc.request_img", "value" : "request_img"},
                         {"label": "investigation.create.edc.medical_history_ai", "value" : "medical_history_ai"},
+                        {"label": "investigation.create.edc.medical_history_template", "value" : "medical_history_template"},
+                        {"label": "investigation.create.edc.medical_history_template_fill", "value" : "medical_history_template_fill"},
                 ],
                 callBackOnChange: (optionSeleced) => {
                     console.log("Call back on change", optionSeleced);
-                    if(optionSeleced === "medical_history_ai"){
+                    if(MEDICAL_HISTORY_FIELDS.includes(optionSeleced)){
                         const tempState = {...this.state};
                         this.setState({...tempState, showTextarea:true});
                     }

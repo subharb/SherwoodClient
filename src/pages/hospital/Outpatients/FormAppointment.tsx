@@ -254,7 +254,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
             return (
                 <FieldWrapper noWrap ={null}>
                     <FormControl fullWidth variant="outlined" margin="dense" error={errorState.agenda} >
-                        <InputLabel id="agenda">Select Agenda</InputLabel>
+                        <InputLabel id="agenda"><Translate id="pages.hospital.outpatients.form_appointment.select_agenda" /></InputLabel>
                         <Select disabled={department === null && departmentsWithAgenda.length > 0}
                             labelId="agendas"
                             id="agendas"
@@ -290,7 +290,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         else if(!date){
             setErrorState({...errorState, date:true});
         }
-        if(department && agenda && date){
+        if(agenda && date){
             infoAppointmentCallback(agenda.uuid, date);
         }
     }

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { BoxBckgr } from '../../../components/general/mini_components';
+import { BoxBckgr, TypographyStyled } from '../../../components/general/mini_components';
 import Helmet from "react-helmet";
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { AccordionSummary, Accordion, Grid, Typography, AccordionDetails, List, ListItem, ListItemText } from '@material-ui/core';
@@ -93,9 +93,9 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
         }
         return departments.filter((department) => department.wards.length > 0).map((department) => 
             <div style={{paddingBottom:'1rem'}}>
-                <Typography variant="body2" gutterBottom display="inline">
+                <TypographyStyled variant="body2" gutterBottom display="inline">
                     { department.name }
-                </Typography>
+                </TypographyStyled>
                 { renderWards(department) }
             </div>
         );
@@ -106,9 +106,9 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Grid item xs={6} >
-                        <Typography variant="h3" gutterBottom display="inline">
+                        <TypographyStyled variant="h3" gutterBottom display="inline">
                             <Translate id="pages.hospital.inpatients.title" />
-                        </Typography>
+                        </TypographyStyled>
                     </Grid>
                     <Grid item xs={12} >
                         {

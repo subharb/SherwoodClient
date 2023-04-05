@@ -6,7 +6,7 @@ import { Divider as MuiDivider, Grid, IconButton, Snackbar, Typography } from '@
 import Modal from '../../../components/general/modal';
 import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@material-ui/lab';
-import { ButtonAdd, IconGenerator } from '../../../components/general/mini_components';
+import { ButtonAdd, IconGenerator, TypographyStyled } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
 import { FUNCTIONALITY, IPatient } from '../../../constants/types';
 import { Bill, BillingInfo, BillItemModes } from './types';
@@ -304,14 +304,14 @@ const Billing: React.FC<Props> = (props) => {
                 <Grid item xs={12} container>
                     <Grid item xs={6} style={{ paddingBottom: '1rem' }}>
                         <div>
-                            <Typography variant="h3" gutterBottom style={{ color: "white", display: 'inline-block' }}>
+                            <TypographyStyled variant="h3" gutterBottom style={{ display: 'inline-block' }}>
                                 <Translate id="hospital.billing.title" />
-                            </Typography>
+                            </TypographyStyled>
                             <IconButton
                                 onClick={(e) => {
                                     toogleEditBillingInfo();
                                 }}>
-                                <IconGenerator style={{ color: "white" }} type={!edit ? "settings" : "back"} />
+                                <IconGenerator type={!edit ? "settings" : "back"}  color="#fff"/>
                             </IconButton>
                         </div>
                         {!props.billingInfo ?

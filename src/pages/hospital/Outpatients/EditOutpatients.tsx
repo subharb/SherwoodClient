@@ -15,7 +15,7 @@ import { IAgenda, IBox, IDepartment, IOutpatientsInfo, IResearcher, SnackbarType
 import { useAgendas, useDepartments, useServiceGeneral, useSnackBarState } from '../../../hooks';
 import { deleteAgendaAction, saveUpdateAgendaAction } from '../../../redux/actions/hospitalActions';
 import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from '../../../routes';
-import { deleteAgendaService, deleteBoxService, getBoxesService, getServiceGeneralService, getServicesInvestigationService, saveAgendaService, saveBoxService, saveServiceInvestigationService, updateAgendaService, updateBoxService } from '../../../services/agenda';
+import { deleteAgendaService, deleteBoxService, getBoxesService, getServicesInvestigationService, saveAgendaService, saveBoxService, saveServiceInvestigationService, updateAgendaService, updateBoxService, updateServiceInvestigationService } from '../../../services/agenda';
 import { researcherFullName } from '../../../utils';
 import Accordion2Levels, { MainElementType } from '../../components/Accordion2Levels';
 import { IService, IServiceInvestigation, ServiceType } from '../Service/types';
@@ -82,6 +82,21 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
                 setShowSnackbar({show:true, message:err.message, severity:"error"})
             }) 
     }
+    function updateService(service:IServiceInvestigation){
+        setLoading(true);
+        updateServiceInvestigationService(uuidInvestigation, service)
+            .then(response => {
+                const service = services.findIndex(s => s.id === response.serviceInvestigation.id);
+                services[service] = response.serviceInvestigation;
+                setServices([...services]);
+                setLoading(false);
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.service.success.updated", severity:"success"})
+            })
+            .catch(err => {
+                setLoading(false);
+                setShowSnackbar({show:true, message:"general.error", severity:"error"})
+            })
+    }
     function saveService(service:IServiceInvestigation){
         setLoading(true);
         saveServiceInvestigationService(uuidInvestigation, service)
@@ -103,7 +118,7 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
                 services.splice(service, 1);
                 setServices([...services]);
                 setLoading(false);
-                setShowSnackbar({show:true, message:"pages.hospital.outpatients.box.success.deleted", severity:"success"})
+                setShowSnackbar({show:true, message:"pages.hospital.outpatients.service.success.deleted", severity:"success"})
             })
             .catch(err => {
                 setLoading(false);
@@ -195,7 +210,7 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
                     saveAgendaCallback={saveAgenda} outpatientsInfo={outpatientsInfo} callbackDeleteAgenda={deleteAgenda}
                     saveBoxCallback={saveBox} updateBoxCallback={updateBoxCallback} callbackDeleteBox={deleteBox}
                     updateAgendaCallback={updateAgenda} saveServiceCallback={saveService} servicesGeneral={servicesGeneral ? servicesGeneral : []}
-                    callbackDeleteService={deleteService}
+                    callbackDeleteService={deleteService} updateServiceCallback={updateService}
                     />
     }
     else{
@@ -220,6 +235,7 @@ interface EditPropsComponent extends LocalizeContextProps {
     updateBoxCallback: (box:IBox) => void,
     callbackDeleteBox: (uuidBox:string) => void,
     updateAgendaCallback: (agenda:IAgenda) => void,
+    updateServiceCallback: (service:IServiceInvestigation) => void,
     saveServiceCallback: (service:IServiceInvestigation) => void,
     callbackDeleteService: (idService:number) => void,
 }
@@ -228,7 +244,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                                         updateBoxCallback, callbackDeleteBox, callbackDeleteAgenda, 
                                         setShowSnackbar, updateAgendaCallback, saveAgendaCallback, servicesGeneral,
                                         researchers, departments, loading, services, translate, 
-                                        saveBoxCallback, saveServiceCallback, callbackDeleteService }) => {
+                                        saveBoxCallback, saveServiceCallback, updateServiceCallback, callbackDeleteService }) => {
     const initialBoxInfo = {type:0};
     const initialAgendaInfo = {otherStaff:[]}
     const initialServiceInfo = {external:0}
@@ -239,7 +255,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     const [initDataService, setInitDataService] = React.useState<FormValues>(initialServiceInfo);
     const [reseachersDepartment, setResearchersDepartment] = React.useState<IResearcher[]>([]);
     const [deletedAgenda, setDeletedAgenda] = React.useState<IAgenda | null>(null);
-    const [deletedService, setDeletedService] = React.useState<IService | null>(null);
+    const [deletedService, setDeletedService] = React.useState<IServiceInvestigation | null>(null);
 
     const history = useHistory();
 
@@ -253,6 +269,14 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
 
     const CREATE_SERVICE: {[key: string]: FieldProps} | {}  = useMemo(() => {
         return {
+            "id" : {
+                required : false,
+                name:"id",
+                type:"hidden",
+                label:"pages.hospital.outpatients.service.id",
+                shortLabel: "pages.hospital.outpatients.service.id",
+                validation : "notEmpty"
+            },
             "description":{
                 required : true,
                 name:"description",
@@ -419,8 +443,14 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     validation : "notEmpty",
                     callBackOnChange: (uuidDepartment:string) => {
                         console.log(uuidDepartment);
-                        const reseachersDepartment = researchers.filter((researcher) => researcher.units.filter((unit) => unit.department.uuid === uuidDepartment).length > 0);
-                        setResearchersDepartment(reseachersDepartment);
+                        if(uuidDepartment === "null"){
+                            setResearchersDepartment(researchers);
+                        }
+                        else{
+                            const reseachersDepartment = researchers.filter((researcher) => researcher.units.filter((unit) => unit.department.uuid === uuidDepartment).length > 0);
+                            setResearchersDepartment(reseachersDepartment);
+                        }
+                        
 
                     },
                     options:departmentOptions
@@ -525,7 +555,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     }
     function saveService(service:any){
         if(service.id){
-            //updateServiceCallback(service);
+            updateServiceCallback(service);
         }
         else{
             saveServiceCallback(service);
@@ -557,7 +587,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         const boxSelected = boxes.find((box) => box.uuid === uuidBox);
         if(boxSelected){
             setInitDataBox({...initDataBox, uuid:boxSelected.uuid, name: boxSelected.name, department:boxSelected.department ? boxSelected.department.uuid : undefined}, );
-            setModalInfo({showModal: true, type:"box"});
+            setModalInfo({showModal: true, type:"box_edit"});
         }
     }
     function deleteBox(uuidBox:string){
@@ -580,8 +610,8 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     function editService(idService:number){
         const serviceSelected = services.find((service) => service.id === idService);
         if(serviceSelected){
-            setInitDataService({...initDataService, id:serviceSelected.id, name: serviceSelected.description, price:serviceSelected.billable.amount});
-            setModalInfo({showModal: true, type:"service"});
+            setInitDataService({...initDataService, id:serviceSelected.id, serviceId: serviceSelected.service.id, description: serviceSelected.description, price:serviceSelected.billable ? serviceSelected.billable.amount : 0});
+            setModalInfo({showModal: true, type:"service_edit"});
         }
     }
     function deleteService(idService:number){
@@ -590,7 +620,11 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             setModalInfo({showModal: true, type:"error_service_agenda"});
         }
         else{
-            setModalInfo({showModal: true, type:"delete_service_confirm"});            
+            const serviceSelected = services.find((service) => service.id === idService);
+            if(serviceSelected){
+                setDeletedService(serviceSelected);
+                setModalInfo({showModal: true, type:"delete_service_confirm"});            
+            }
         }
     }
     function addAgenda(uuidBox?:string){
@@ -609,12 +643,13 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     }
     function renderModal(){
         if(!loading){
-            const title = modalInfo.type === "box" ? translate("pages.hospital.outpatients.box.create") : translate("pages.hospital.outpatients.agenda.create");
+            const title = translate(`pages.hospital.outpatients.edit.modal.title.${modalInfo.type}`)
+
             return(
                 <Modal key="modal" medium size="sm" open={modalInfo.showModal} title={title} closeModal={() => resetModal()}>
                     <>
                     {
-                        modalInfo.type === "box" && 
+                        (modalInfo.type === "box" || modalInfo.type === "box_edit") && 
                         <Form fields={CREATE_BOX_FORM} fullWidth callBackForm={saveBox}
                             initialData={initDataBox} 
                             closeCallBack={() => resetModal()}/>
@@ -626,7 +661,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                             closeCallBack={() => resetModal()}/> 
                     } 
                     {
-                        modalInfo.type === "service" && 
+                        (modalInfo.type === "service" || modalInfo.type === "service_edit") && 
                         <Form fields={CREATE_SERVICE} fullWidth={true} callBackForm={saveService}
                             initialData={initDataService} 
                             closeCallBack={() => resetModal()}/> 
@@ -635,6 +670,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                         deletedService && modalInfo.type === "delete_service_confirm" && 
                         <>
                             <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.DELETE_SERVICE" /></Typography>
+                            { deletedService.description }
                             <Grid item xs={12} style={{paddingTop:'1rem'}}>
                                 <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                     <Translate id="general.cancel" />
@@ -647,7 +683,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     }
                     {
                         modalInfo.type === "error_service_agenda" && 
-                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.ERROR_CANCEL" /></Typography>
+                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.error_service_agenda" /></Typography>
                     } 
                     {
                         modalInfo.type === "agenda_error_appointments" && 
@@ -698,7 +734,6 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         if(services.length > 0){
             return (
             <>
-                <Translate id="pages.hospital.outpatients.box.add_box" />: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"service"})} />
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
                     {
                         services.map((service) => {

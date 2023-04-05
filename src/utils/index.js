@@ -5,6 +5,7 @@ import mixpanel from 'mixpanel-browser';
 import { Translate } from 'react-localize-redux';
 import { ServiceType } from '../pages/hospital/Service/types';
 import { PERMISSION } from '../components/investigation/share/user_roles';
+import { isObject } from 'lodash';
 /**
  * Function that validates fields from anywhere in the app
  * 
@@ -714,6 +715,18 @@ export function openStore(storeName){
             };
           }
     );
+}
+
+export function getValueField(field, value){
+    if(isObject(value)){
+        if(field.type === "multioption"){
+            return value.reduce((acc, curr) => acc + " " + curr.multioption, "");
+        }
+    }
+    else{
+        return value
+    }
+    
 }
 
 export function postErrorSlack(url, error, info, investigation){

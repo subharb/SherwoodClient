@@ -4,8 +4,9 @@ import iconImages from "../../img/icons/images_white.png";
 import iconLab from "../../img/icons/lab_white.png";
 import styled from 'styled-components';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { BiotechIcon, ButtonAdd, IconGenerator } from '../../components/general/mini_components';
+import { BiotechIcon, ButtonAdd, IconGenerator, TypographyStyled } from '../../components/general/mini_components';
 import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
+import { red } from '@material-ui/core/colors';
 
 interface SectionHeaderProps{
     section:string,
@@ -25,19 +26,14 @@ const IconHolder = styled.div`
     padding:0.4rem 0 1rem 0rem;
 `;
 
-const TypographyStyled = styled(Typography)`
-    xpadding-top:2rem;
-    color:${props => props.theme.palette.primary.color};
-`
-
 const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle, addCallback, editCallback, infoCallback }) => {
    
     function renderIcon(){
         switch(section){
             case "laboratory":
-                return <IconGenerator type="biotech" />
+                return <IconGenerator type="biotech" color="#fff" />
             case "medical-imaging":
-                return <img src={iconImages } alt="images" width="20" />
+                return <IconGenerator type="image" />
             case "pharmacy":
                 return <IconGenerator type="pharmacy" />
             case "agenda":
@@ -69,7 +65,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
                     onClick={(e) => {
                         editCallback();
                     }}>
-                    <IconGenerator type={!edit ? "settings" : "back"} />
+                    <IconGenerator type={!edit ? "settings" : "back"} color="#fff" />
                 </IconButton>
             }
             {
@@ -78,7 +74,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
                     onClick={(e) => {
                         infoCallback();
                     }}>
-                    <IconGenerator type="info" />
+                    <IconGenerator type="info" color="#fff" />
                 </IconButton>
             }
             

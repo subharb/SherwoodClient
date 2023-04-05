@@ -42,6 +42,7 @@ Delete as DeleteIcon
 
 import { spacing } from "@material-ui/system";
 import { IconGenerator } from "./mini_components";
+import { isNumber } from "lodash";
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -250,6 +251,12 @@ export function EnhancedTable(props) {
     const [rowsPerPage, setRowsPerPage] = React.useState( 10);
     console.log("rowsPerPage", rowsPerPage);
     const {rows, headCells, actions, titleTable, noSelectable} = props;
+
+    useEffect(() => {
+        if(isNumber(props.currentPage)){
+            setPage(props.currentPage);
+        }
+    }, [props.currentPage])
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";

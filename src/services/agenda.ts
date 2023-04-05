@@ -97,6 +97,19 @@ export function saveServiceInvestigationService(uuidInvestigation: string, servi
     });
 }
     
+export function updateServiceInvestigationService(uuidInvestigation: string, serviceInvestigation:IServiceInvestigation): Promise<{ status: number, serviceInvestigation: IServiceInvestigation }> {
+    return new Promise((resolve, reject) => {
+        axios.put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/"+serviceInvestigation.id, serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } }).then((response) => {
+            if (response.status === 200) {
+                resolve(response.data);
+            }
+            reject(response.data); 
+        })
+        .catch((error) => {
+            reject(error);
+        });
+    });
+}
 
 export function saveBoxService(uuidInvestigation: string, box:IBox): Promise<{ status: number, box: IBox }> {
     return new Promise((resolve, reject) => {

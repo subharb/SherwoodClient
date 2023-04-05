@@ -25,6 +25,7 @@ import PatientsBarChart from '../../dashboards/Analytics/PatientsBarChart';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import { FUNCTIONALITY } from '../../../constants/types';
 import OutpatientsStats from './OutpatientsStats';
+import { TypographyStyled } from '../../../components/general/mini_components';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -239,9 +240,9 @@ export function Analytics(props) {
 			<Helmet title="Analytics Dashboard" />
 			<Grid container spacing={6}>
 				<Grid item xs={12} style={{ color: "white" }}>
-					<Typography variant="h3" gutterBottom >
+					<TypographyStyled variant="h3" gutterBottom >
 						Analytics Dashboard
-					</Typography>					
+					</TypographyStyled>					
 				</Grid>
 				<Grid spacing={3} item container xs={12} style={{background:'white', padding:'1rem'}}>
                     {

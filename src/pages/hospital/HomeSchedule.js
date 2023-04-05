@@ -6,7 +6,7 @@ import { Button, Grid, Typography, Box } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
         HOSPITAL_WARD_SETTINGS_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB, HOSPITAL_MY_DEPARTMENTS_ROUTE, HOSPITAL_ANALYTICS } from '../../routes';
-import { ButtonGrey, BoxBckgr, LinkPlain } from '../../components/general/mini_components';
+import { ButtonGrey, BoxBckgr, LinkPlain, TypographyStyled } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";
 import Loader from '../../components/Loader';
@@ -67,30 +67,30 @@ function HomeSchedule(props) {
                 <React.Fragment>
                     <Grid item xs={6} style={{display:"flex", flexDirection: "row-reverse"}}>
                         <Grid item xs={6} style={{display: 'flex',justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
-                            <Typography variant="body2" gutterBottom>
+                            <TypographyStyled variant="body2" gutterBottom>
                                 {props.investigations.currentInvestigation.name}
-                            </Typography>
-                            <Typography variant="body2" gutterBottom>
+                            </TypographyStyled>
+                            <TypographyStyled variant="body2" gutterBottom>
                                 {props.profile.info.name} {props.profile.info.surnames}
-                            </Typography>
+                            </TypographyStyled>
                             {
                                 props.profile.info.department &&
-                                <Typography variant="body2" gutterBottom>
+                                <TypographyStyled variant="body2" gutterBottom>
                                     {props.profile.info.department.name}
-                                </Typography>
+                                </TypographyStyled>
                             }
                             {
                                 props.profile.info.institution &&
-                                <Typography variant="body2" gutterBottom>
+                                <TypographyStyled variant="body2" gutterBottom>
                                     {props.profile.info.institution.name}
-                                </Typography>
+                                </TypographyStyled>
                             }
                         </Grid>                        
                         {props.profile.info.institution &&
                         <Grid item xs={6}>
-                            <Typography variant="body2" gutterBottom>
+                            <TypographyStyled variant="body2" gutterBottom>
                             {props.profile.info.institution.name}
-                            </Typography>
+                            </TypographyStyled>
                         </Grid>
                         }
                         
@@ -191,9 +191,9 @@ function HomeSchedule(props) {
             <BoxBckgr style={{ color:"white", padding:"1rem"}} color="text.primary">
                 <Grid container spacing={3}>
                     <Grid item  xs={12} style={{textAlign:"center"}}>
-                        <Typography variant="h1" gutterBottom display="inline" >
+                        <TypographyStyled variant="h1" gutterBottom display="inline" >
                             <Translate id="home" />
-                        </Typography>
+                        </TypographyStyled>
                     </Grid>
                     {
                         renderCore()
