@@ -30,7 +30,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
     const [uuidAgenda, setUuidAgenda] = React.useState<string | null>(null);
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
 
-    const canEditOutPatients = true; useMemo(() =>{
+    const canEditOutPatients = useMemo(() =>{
         if(investigations.currentInvestigation){
             return investigations.currentInvestigation.permissions.includes(PERMISSION.EDIT_OUTPATIENTS);
         }
@@ -61,6 +61,15 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
         }
        
     }, [investigations.currentInvestigation])
+
+    useEffect(() => {
+        if(investigations.currentInvestigation && edit){
+            if(!canEditOutPatients){
+                history.push(HOSPITAL_OUTPATIENTS_ROUTE);
+            }
+        }
+        
+    }, [edit, canEditOutPatients])
 
     function renderAppointments(){
         if(uuidAgenda && selectedDate){
@@ -104,7 +113,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
             </>
         );
     }
-    if( investigations.loading || !investigations.data){
+    if( investigations.loading || !investigations.data || loadingAgendas || !outpatientsInfo){
         return <Loader />
     }
     return (

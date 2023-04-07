@@ -37,6 +37,8 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
     const {agendas} = useAgendas();
     const dispatch = useDispatch();
     const [loading, setLoading] = React.useState(false);
+    const [loadingBoxes, setLoadingBoxes] = React.useState(false);
+    const [loadingServices, setLoadingServices] = React.useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [services, setServices] = React.useState<IServiceInvestigation[]>([]);
     const {servicesGeneral} = useServiceGeneral(2);
@@ -57,24 +59,24 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
     }, [uuidInvestigation]);
 
     useEffect(() => {
-        setLoading(true);
+        setLoadingServices(true);
         getServicesInvestigationService(uuidInvestigation, ServiceType.CONSULTATION )
             .then(response => {
                 setServices(response.servicesInvestigation);
-                setLoading(false);
+                setLoadingServices(false);
             })
             .catch(err => {
-                setLoading(false);
+                setLoadingServices(false);
                 setShowSnackbar({show:true, message:err.message, severity:"error"})
             }) 
     }, [uuidInvestigation]);
 
     async function saveBox(box:IBox){
-        setLoading(true);
+        setLoadingBoxes(true);
         saveBoxService(uuidInvestigation, box)
             .then(response => {
                 setBoxes([...boxes, response.box]);
-                setLoading(false);
+                setLoadingBoxes(false);
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.box.success.saved", severity:"success"})
             })
             .catch(err => {
@@ -83,60 +85,60 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
             }) 
     }
     function updateService(service:IServiceInvestigation){
-        setLoading(true);
+        setLoadingServices(true);
         updateServiceInvestigationService(uuidInvestigation, service)
             .then(response => {
                 const service = services.findIndex(s => s.id === response.serviceInvestigation.id);
                 services[service] = response.serviceInvestigation;
                 setServices([...services]);
-                setLoading(false);
+                setLoadingServices(false);
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.service.success.updated", severity:"success"})
             })
             .catch(err => {
-                setLoading(false);
+                setLoadingServices(false);
                 setShowSnackbar({show:true, message:"general.error", severity:"error"})
             })
     }
     function saveService(service:IServiceInvestigation){
-        setLoading(true);
+        setLoadingServices(true);
         saveServiceInvestigationService(uuidInvestigation, service)
             .then(response => {
                 setServices([...services, response.serviceInvestigation]);
-                setLoading(false);
+                setLoadingServices(false);
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.box.success.saved", severity:"success"})
             })
             .catch(err => {
-                setLoading(false);
+                setLoadingServices(false);
                 setShowSnackbar({show:true, message:"general.error", severity:"error"})
             }) 
     }
     function deleteService(idService:number){
-        setLoading(true);
+        setLoadingServices(true);
         deleteServiceService(uuidInvestigation, idService)
             .then(response => {
                 const service = services.findIndex(s => s.id === idService);
                 services.splice(service, 1);
                 setServices([...services]);
-                setLoading(false);
+                setLoadingServices(false);
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.service.success.deleted", severity:"success"})
             })
             .catch(err => {
-                setLoading(false);
+                setLoadingServices(false);
                 setShowSnackbar({show:true, message:"general.error", severity:"error"})
             }) 
     }
     function updateBoxCallback(box:IBox){
-        setLoading(true);
+        setLoadingBoxes(true);
         updateBoxService(uuidInvestigation, box)
             .then(response => {
                 const box = boxes.findIndex(b => b.uuid === response.box.uuid);
                 boxes[box] = response.box;
                 setBoxes([...boxes]);
-                setLoading(false);
+                setLoadingBoxes(false);
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.box.success.updated", severity:"success"})
             })
             .catch(err => {
-                setLoading(false);
+                setLoadingBoxes(false);
                 setShowSnackbar({show:true, message:err.message, severity:"error"})
             }) 
     }
@@ -157,17 +159,17 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
     }
 
     function deleteBox(uuidBox:string){
-        setLoading(true);
+        setLoadingBoxes(true);
         deleteBoxService(uuidInvestigation, uuidBox)
             .then(async(response) => {
                 const box = boxes.findIndex(b => b.uuid === uuidBox);
                 boxes.splice(box, 1);
                 setBoxes([...boxes]);
-                setLoading(false);
+                setLoadingBoxes(false);
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.box.success.deleted", severity:"success"})
             })
             .catch(err => {
-                setLoading(false);
+                setLoadingBoxes(false);
                 const message = err.response.data.errorCode !== undefined ? "pages.hospital.outpatients.box.errors.error_"+err.response.data.errorCode : err.message;
                 setShowSnackbar({show:true, message:message, severity:"error"});
             }) 
@@ -206,7 +208,8 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
     
     if(departments && outpatientsInfo){
         return <EditOutpatientsComponent setShowSnackbar={setShowSnackbar} showSnackbar={showSnackbar} agendas={agendas}
-                    loading={loading} departments={departments} boxes={boxes} services={services} researchers={researchers}
+                    loading={loading} loadingBoxes={loadingBoxes} loadingServices={loadingServices}
+                    departments={departments} boxes={boxes} services={services} researchers={researchers}                    
                     saveAgendaCallback={saveAgenda} outpatientsInfo={outpatientsInfo} callbackDeleteAgenda={deleteAgenda}
                     saveBoxCallback={saveBox} updateBoxCallback={updateBoxCallback} callbackDeleteBox={deleteBox}
                     updateAgendaCallback={updateAgenda} saveServiceCallback={saveService} servicesGeneral={servicesGeneral ? servicesGeneral : []}
@@ -223,6 +226,8 @@ interface EditPropsComponent extends LocalizeContextProps {
     boxes: IBox[],
     services: IServiceInvestigation[],
     loading:boolean,
+    loadingBoxes:boolean,
+    loadingServices:boolean,
     researchers: IResearcher[],
     showSnackbar: SnackbarType,
     agendas: IAgenda[] | null,
@@ -243,7 +248,7 @@ interface EditPropsComponent extends LocalizeContextProps {
 const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas, showSnackbar, outpatientsInfo, 
                                         updateBoxCallback, callbackDeleteBox, callbackDeleteAgenda, 
                                         setShowSnackbar, updateAgendaCallback, saveAgendaCallback, servicesGeneral,
-                                        researchers, departments, loading, services, translate, 
+                                        researchers, departments, loading, loadingBoxes, loadingServices, services, translate, 
                                         saveBoxCallback, saveServiceCallback, updateServiceCallback, callbackDeleteService }) => {
     const initialBoxInfo = {type:0};
     const initialAgendaInfo = {otherStaff:[]}
@@ -767,7 +772,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         }
     }
     function renderCore(){
-        if(loading){
+        if(loading || agendas === null || loadingBoxes || loadingServices){
             return <Loader />
         }
         if(boxes.length === 0 || services.length === 0){
