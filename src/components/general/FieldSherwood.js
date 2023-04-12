@@ -244,7 +244,7 @@ class FieldSherwood extends PureComponent{
                 const labelId = `${input.name}_label`;
                 return([
                     <FieldWrapper noWrap = {this.props.fullWidth}>
-                        <FormControl mt={3} fullWidth variant="outlined"  margin={this.typeMargin} error={errorState} >
+                        <FormControl  fullWidth variant="outlined"  margin={this.typeMargin} error={errorState} >
                             <InputLabel id={labelId}>{labelString}</InputLabel>
                             <Select
                                 {...input} 
