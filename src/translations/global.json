@@ -492,13 +492,80 @@
                     "provider" : ["Provider", "Proveedor", "Fournisseur"],
                     "threshold" : ["Threshold", "Umbral", "Seuil"],
                     "status" : ["Status", "Estado", "Statut"],
+                    "dossage_form" : ["Dossage Form", "Forma Farmacéutica", "Forme pharmaceutique"],
+                    "routes" : ["Routes", "Vías de administración", "Voies d'administration"],
+                    "category" : ["Category", "Categoría", "Catégorie"],
                     "status_values" : {
                         "finished" : ["Finished", "Agotado", "Terminé"],
                         "low" : ["Low", "Bajo", "Faible"],
                         "normal" : ["Normal", "Normal", "Normal"]
+                    },
+                    "options" : {
+                        "type": {
+                                "MED": ["Medications", "Médicaments", "Medicamentos"],
+                                "MDS": ["Medical Supplies", "Matériel médical", "Material médico"],
+                                "SGP": ["Surgical products", "Matériels chirurgicaux", "Material quirúrgico"],
+                                "PN": ["Parenteral Nutrition", "Nutrition parentérale"],
+                                "IMZ": ["Immunizing Agents", "Agents immunisants", "Vacunas"],
+                                "CMD": ["Compounded Medications", "Médicaments composés", "Fórmulas magistrales"]
+                        },                                            
+                        "dossage_form": {
+                            "TAB": ["Tablets", "Comprimés", "Comprimidos"],
+                            "CAP": ["Capsules", "Gélules", "Cápsulas"],
+                            "LIQ": ["Liquids (syrups, solutions, suspensions, elixirs)", "Liquides (sirops, solutions, suspensions, élixirs)", "Líquidos (jarabes, soluciones, suspensiones, elixires)"],
+                            "INJ": ["Injectables (vials, ampoules, prefilled syringes)", "Injectables (vials, ampoules, seringues pré-remplies)", "Inyectables (vials, ampollas, jeringas precargadas)"],
+                            "TOP": ["Topical (cream, gels, lotions, sprays, etc.)", "Topiques (crèmes, gels, lotions, sprays, etc.)", "Tópicos (cremas, geles, lociones, sprays, etc.)"],
+                            "INH": ["Inhalers", "Inhalateurs", "Inhaladores"],
+                            "SUP": ["Suppositories", "Suppositoires", "Supositorios"],
+                            "PAT": ["Patches", "Patchs", "Parches"],
+                            "EYE": ["Eye and ear drops", "Gouttes pour les yeux et oreilles", "Gotas para los ojos y los oídos"],
+                            "NAS": ["Nasal sprays", "Vaporisateurs nasaux", "Spray nasal"],
+                            "OTH": ["Others", "Autres produits", "Otros productos"]
+                        },                          
+                        "routes": {
+                            "PO": ["Oral (PO)", "Voie orale (PO)", "Via oral (PO)"],
+                            "TOP": ["Topical (T)", "Topique (T)", "Tópica (T)"],
+                            "INH": ["Inhalation (INH)", "Inhalation (INH)", "Inhalación (INH)"],
+                            "IV": ["Intravenous (IV)", "Intraveineuse (IV)", "Intravenosa (IV)"],
+                            "IM": ["Intramuscular (IM)", "Intramusculaire (IM)", "Intramuscular (IM)"],
+                            "SC": ["Subcutaneous (SC)", "Sous-cutanée (SC)", "Subcutánea (SC)"],
+                            "PR": ["Rectal (PR)", "Voie rectale (PR)", "Rectal (PR)"],
+                            "PV": ["Vaginal (PV)", "Vaginale (PV)", "Vaginal (PV)"],
+                            "NS": ["Nasal (NS)", "Nasal (NS)", "Nasal (NS)"],
+                            "OPH": ["Ophthalmic (OPH)", "Ophtalmique (OPH)", "Oftálmica (OPH)"],
+                            "OTH": ["Others", "Autres", "Otros"]
+                        },                                          
+                        "category": {
+                            "ALG": [    "Analgesics and Anti-inflammatory agents",    "Analgésicos y anti-inflamatorios",    "Analgésiques et anti-inflammatoires"  ],
+                            "ANE": ["Anesthetics", "Anesthésiques", "Anestésicos"],
+                            "ALL": ["Anti-allergic agents", "Antialérgicos", "Antiallergiques"],
+                            "HTN": ["Anti-hypertensive agents", "Antihipertensivos", "Antihypertenseurs"],
+                            "ARR": ["Anti-arrhythmics", "Antiarrítmicos", "Anti-arythmiques"],
+                            "ABX": ["Antibiotics", "Antibióticos", "Antibiotiques"],
+                            "ACG": [    "Anticoagulants and anti-platelets agents",    "Anticoagulantes y antiplaquetarios",    "Anticoagulants et antiplaquettaires"  ],
+                            "DPR": [    "Antidepressants and Anti-psychotic agents",    "Antidepresivos y antipsicóticos",    "Antidépresseurs et antipsychotiques"  ],
+                            "DBT": ["Anti-diabetic agents", "Antidiabéticos", "Antidiabétiques"],
+                            "EME": ["Anti-emetics", "Antieméticos", "Antiémétiques"],
+                            "EPL": ["Anti-epileptic agents", "Antiepilépticos", "Antiépileptiques"],
+                            "AFG": ["Anti-fungal agents", "Antifúngicos", "Antifongiques"],
+                            "MLR": ["Anti-malarial", "Antimaláricos", "Antipaludéens"],
+                            "ANEPC": [    "Anti-neoplastic (chemotherapy)",    "Antineoplásicos (quimioterapia)",    "Anti-néoplasiques (chimiothérapie)"  ],
+                            "PRK": ["Anti-Parkinson agents", "Antiparkinsonianos", "Antiparkinsoniens"],
+                            "ARV": ["Anti-retroviral", "Antirretrovirales", "Antirétroviraux"],
+                            "SPM": [    "Anti-spasmodics and Skeletal muscle relaxants",    "Antiespasmódicos y relajantes musculares",    "Antispasmodiques et myorelaxants"  ],
+                            "ULC": [    "Anti-ulcer agents and antacids",    "Antiulcerosos y antiácidos",    "Antiulcéreux et antiacides"  ],
+                            "AVR": ["Anti-virals", "Antivirales", "Antiviraux"],
+                            "BEN": [    "Benzodiazepines and Sedatives",    "Benzodiacepinas y sedantes",    "Benzodiazépines et sédatifs"  ],
+                            "BRN": [    "Bronchodilators and Expectorants",    "Broncodilatadores y expectorantes",    "Bronchodilatateurs et expectorants"  ],
+                            "DRT": ["Diuretics", "Diuréticos", "Diurétiques"],
+                            "HRM": ["Hormones", "Hormonas", "Hormones"],
+                            "INMUNO": ["Immunosuppressants", "Inmunosupresores", "Immunosuppresseurs"],
+                            "LAX": ["Laxatives", "Laxantes", "Laxatifs"],
+                            "VIT": ["Vitamins", "Vitaminas", "Vitamines"],
+                            "OTH": ["Others", "Otros", "Autres"]
                     }
+                }
                 },
-                
                 "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un département pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
                 "request" : {
                     "table" : {
