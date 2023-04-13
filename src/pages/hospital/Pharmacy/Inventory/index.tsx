@@ -116,7 +116,7 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, showAddPharmac
     }
     else {
         return <InventoryComponentLocalized editAsExcel={pharmacyItems.length === 0} 
-                    showAddPharmacyItem={showAddPharmacyItem}
+                    showAddPharmacyItem={showAddPharmacyItem} setShowAddPharmacyItem = {setShowAddPharmacyItem}
                     showSnackbar={showSnackbar} loading={loading} pharmacyItems={pharmacyItems} saveInventoryCallBack={(items) => updateInventory(items)}
                     updatePharmacyItemCallBack={(item) => updatePharmacyItem(item)} deleteItemCallback={(id) => deleteItemCallback(id)}
                     addPharmacyItemCallBack={(item) => addPharmacyItem(item)}
@@ -138,17 +138,19 @@ export interface InventoryLocalizedProps extends LocalizeContextProps {
     },
     saveInventoryCallBack?: (items: IPharmacyItem[]) => void,
     deleteItemCallback?: (id: number) => void,
+    setShowAddPharmacyItem?: (show: boolean) => void,
     updatePharmacyItemCallBack?: (item: IPharmacyItem) => void,
     addPharmacyItemCallBack?: (item: IPharmacyItem) => void,
 }
 
-const InventoryComponent: React.FC<InventoryLocalizedProps> = ({ editAsExcel, showAddPharmacyItem, pharmacyItems, loading, showSnackbar, addPharmacyItemCallBack, updatePharmacyItemCallBack, saveInventoryCallBack, deleteItemCallback}) => {
+const InventoryComponent: React.FC<InventoryLocalizedProps> = ({ editAsExcel, showAddPharmacyItem, pharmacyItems, loading, showSnackbar, setShowAddPharmacyItem, addPharmacyItemCallBack, updatePharmacyItemCallBack, saveInventoryCallBack, deleteItemCallback}) => {
     
     if(editAsExcel && saveInventoryCallBack){
         return <InventoryExcel  showSnackbar={showSnackbar} loading={loading} pharmacyItems={pharmacyItems} saveInventoryCallBack={ (items) => saveInventoryCallBack(items)} />
     }
-    else if(updatePharmacyItemCallBack && deleteItemCallback && addPharmacyItemCallBack){
-        return <InventoryList pharmacyItems={pharmacyItems} showAddPharmacyItem={showAddPharmacyItem} addPharmacyItemCallBack={addPharmacyItemCallBack} showSnackbar={showSnackbar}  loading={loading} deleteItemCallback={(idPharmacyItem) => deleteItemCallback(idPharmacyItem)} updatePharmacyItemCallBack={ (items) => updatePharmacyItemCallBack(items)}  />
+    else if(updatePharmacyItemCallBack && deleteItemCallback && addPharmacyItemCallBack && setShowAddPharmacyItem){
+        return <InventoryList pharmacyItems={pharmacyItems} showAddPharmacyItem={showAddPharmacyItem} addPharmacyItemCallBack={addPharmacyItemCallBack} 
+            setShowAddPharmacyItem = {setShowAddPharmacyItem} showSnackbar={showSnackbar}  loading={loading} deleteItemCallback={(idPharmacyItem) => deleteItemCallback(idPharmacyItem)} updatePharmacyItemCallBack={ (items) => updatePharmacyItemCallBack(items)}  />
     }
     else{
         return null;
