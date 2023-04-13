@@ -12,10 +12,11 @@ import { ColourChip } from '../../../../components/general/mini_components-ts';
 
 import Modal from '../../../../components/general/modal';
 import Loader from '../../../../components/Loader';
+import { translateOrderOptions } from '../../../../utils';
 import { ChipContainer } from '../../Service/RequestInfo';
 import { IPharmacyItem } from '../types';
 
-const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, showAddPharmacyItem, loading, showSnackbar, translate, addPharmacyItemCallBack, updatePharmacyItemCallBack, deleteItemCallback: callbackDeleteItem }) => {
+const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, showAddPharmacyItem, loading, showSnackbar,setShowAddPharmacyItem, translate, addPharmacyItemCallBack, updatePharmacyItemCallBack, deleteItemCallback: callbackDeleteItem }) => {
     const [filteredItems, setFilteredItems] = React.useState<IPharmacyItem[]>(pharmacyItems);
     const [lowStatusFilter, setLowStatusFilter] = React.useState<boolean>(false);
     const [finishedStatusFilter, setFinishedStatusFilter] = React.useState<boolean>(false);
@@ -90,16 +91,60 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
                 shortLabel: "pages.hospital.pharmacy.pharmacy_items.activePrinciple",
                 validation : "textMin2"
             },
-            "provider" : {
+            "category" : {
                 required : true,
-                name:"provider",
-                type:"text",
-                numberColumnsLg:6,
-                numberColumnsXs:6,
-                label:"pages.hospital.pharmacy.pharmacy_items.provider",
-                shortLabel: "pages.hospital.pharmacy.pharmacy_items.provider",
-                validation : "textMin2"
+                name:"category",
+                type:"select",
+                numberColumnsLg:3,
+                numberColumnsXs:3,
+                label:"pages.hospital.pharmacy.pharmacy_items.category",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.category",
+                validation : "textMin2",
+                options: translateOrderOptions([    {"value": "ALG", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ALG"},    {"value": "ANE", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ANE"},    {"value": "ALL", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ALL"},    {"value": "HTN", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.HTN"},    {"value": "ARR", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ARR"},    {"value": "ABX", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ABX"},    {"value": "ACG", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ACG"},    {"value": "DPR", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.DPR"},    {"value": "DBT", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.DBT"},    {"value": "EME", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.EME"},    {"value": "EPL", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.EPL"},    {"value": "AFG", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.AFG"},    {"value": "MLR", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.MLR"},    {"value": "ANEPC", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ANEPC"},    {"value": "PRK", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.PRK"},    {"value": "ARV", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ARV"},    {"value": "SPM", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.SPM"},    {"value": "ULC", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ULC"},    {"value": "AVR", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.AVR"},    {"value": "BEN", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.BEN"},    {"value": "BRN", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.BRN"},    {"value": "DRT", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.DRT"},    {"value": "HRM", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.HRM"},    {"value": "INMUNO", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.INMUNO"},    {"value": "LAX", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.LAX"},    {"value": "VIT", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.VIT"},    {"value": "OTH", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.OTH"}], "OTH", translate)
+                
+            }, 
+            "type" : {
+                required : true,
+                name:"type",
+                type:"select",
+                numberColumnsLg:3,
+                numberColumnsXs:3,
+                label:"pages.hospital.pharmacy.pharmacy_items.type",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.type",
+                validation : "textMin2",
+                options: translateOrderOptions([
+                    {value: "MED", label: "pages.hospital.pharmacy.pharmacy_items.options.type.MED"},
+                    {value: "MDS", label: "pages.hospital.pharmacy.pharmacy_items.options.type.MDS"},
+                    {value: "SGP", label: "pages.hospital.pharmacy.pharmacy_items.options.type.SGP"},
+                    {value: "PN", label: "pages.hospital.pharmacy.pharmacy_items.options.type.PN"},
+                    {value: "IMZ", label: "pages.hospital.pharmacy.pharmacy_items.options.type.IMZ"},
+                    {value: "CMD", label: "pages.hospital.pharmacy.pharmacy_items.options.type.CMD"},
+                ], "OTH", translate)
+                
+            }, 
+            "dossageForm" : {
+                required : true,
+                name:"dossageForm",
+                type:"select",
+                numberColumnsLg:3,
+                numberColumnsXs:3,
+                label:"pages.hospital.pharmacy.pharmacy_items.dossage_form",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.dossage_form",
+                validation : "textMin2",
+                options: translateOrderOptions([    {"value": "TAB", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.TAB"},    {"value": "CAP", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.CAP"},    {"value": "LIQ", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.LIQ"},    {"value": "INJ", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.INJ"},    {"value": "TOP", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.TOP"},    {"value": "INH", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.INH"},    {"value": "SUP", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.SUP"},    {"value": "PAT", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.PAT"},    {"value": "EYE", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.EYE"},    {"value": "NAS", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.NAS"},    {"value": "OTH", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.OTH"}], "OTH", translate)
             },
+            "routeAdmin" : {
+                required : true,
+                name:"routeAdmin",
+                type:"select",
+                numberColumnsLg:3,
+                numberColumnsXs:3,
+                label:"pages.hospital.pharmacy.pharmacy_items.routes",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.routes",
+                validation : "textMin2",
+                options: translateOrderOptions([    {"value": "PO", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.PO"},    {"value": "TOP", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.TOP"},    {"value": "INH", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.INH"},    {"value": "IV", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.IV"},    {"value": "IM", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.IM"},    {"value": "SC", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.SC"},    {"value": "PR", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.PR"},    {"value": "PV", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.PV"},    {"value": "NS", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.NS"},    {"value": "OPH", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.OPH"},    {"value": "OTH", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.OTH"}], "OTH", translate)
+                
+            },  
             "amount" : {
                 required : true,
                 name:"amount",
@@ -129,58 +174,7 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
                 label:"pages.hospital.pharmacy.pharmacy_items.unit",
                 shortLabel: "pages.hospital.pharmacy.pharmacy_items.unit",
                 validation : "textMin2"
-            },
-            "type" : {
-                required : true,
-                name:"type",
-                type:"select",
-                numberColumnsLg:3,
-                numberColumnsXs:3,
-                label:"pages.hospital.pharmacy.pharmacy_items.type",
-                shortLabel: "pages.hospital.pharmacy.pharmacy_items.type",
-                validation : "textMin2",
-                options: [
-                    {value: "MED", label: "pages.hospital.pharmacy.pharmacy_items.options.type.MED"},
-                    {value: "MDS", label: "pages.hospital.pharmacy.pharmacy_items.options.type.MDS"},
-                    {value: "SGP", label: "pages.hospital.pharmacy.pharmacy_items.options.type.SGP"},
-                    {value: "PN", label: "pages.hospital.pharmacy.pharmacy_items.options.type.PN"},
-                    {value: "IMZ", label: "pages.hospital.pharmacy.pharmacy_items.options.type.IMZ"},
-                    {value: "CMD", label: "pages.hospital.pharmacy.pharmacy_items.options.type.CMD"},
-                ]
-            }, 
-            "dossageForm" : {
-                required : true,
-                name:"dossageForm",
-                type:"select",
-                numberColumnsLg:3,
-                numberColumnsXs:3,
-                label:"pages.hospital.pharmacy.pharmacy_items.dossage_form",
-                shortLabel: "pages.hospital.pharmacy.pharmacy_items.dossage_form",
-                validation : "textMin2",
-                options: [    {"value": "TAB", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.TAB"},    {"value": "CAP", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.CAP"},    {"value": "LIQ", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.LIQ"},    {"value": "INJ", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.INJ"},    {"value": "TOP", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.TOP"},    {"value": "INH", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.INH"},    {"value": "SUP", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.SUP"},    {"value": "PAT", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.PAT"},    {"value": "EYE", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.EYE"},    {"value": "NAS", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.NAS"},    {"value": "OTH", "label": "pages.hospital.pharmacy.pharmacy_items.options.dossage_form.OTH"}]
-            },  
-            "routeAdmin" : {
-                required : true,
-                name:"routeAdmin",
-                type:"select",
-                numberColumnsLg:3,
-                numberColumnsXs:3,
-                label:"pages.hospital.pharmacy.pharmacy_items.routes",
-                shortLabel: "pages.hospital.pharmacy.pharmacy_items.routes",
-                validation : "textMin2",
-                options: [    {"value": "PO", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.PO"},    {"value": "TOP", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.TOP"},    {"value": "INH", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.INH"},    {"value": "IV", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.IV"},    {"value": "IM", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.IM"},    {"value": "SC", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.SC"},    {"value": "PR", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.PR"},    {"value": "PV", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.PV"},    {"value": "NS", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.NS"},    {"value": "OPH", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.OPH"},    {"value": "OTH", "label": "pages.hospital.pharmacy.pharmacy_items.options.routes.OTH"}]
-            },  
-            "category" : {
-                required : true,
-                name:"category",
-                type:"select",
-                numberColumnsLg:3,
-                numberColumnsXs:3,
-                label:"pages.hospital.pharmacy.pharmacy_items.category",
-                shortLabel: "pages.hospital.pharmacy.pharmacy_items.category",
-                validation : "textMin2",
-                options: [    {"value": "ALG", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ALG"},    {"value": "ANE", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ANE"},    {"value": "ALL", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ALL"},    {"value": "HTN", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.HTN"},    {"value": "ARR", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ARR"},    {"value": "ABX", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ABX"},    {"value": "ACG", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ACG"},    {"value": "DPR", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.DPR"},    {"value": "DBT", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.DBT"},    {"value": "EME", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.EME"},    {"value": "EPL", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.EPL"},    {"value": "AFG", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.AFG"},    {"value": "MLR", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.MLR"},    {"value": "ANEPC", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ANEPC"},    {"value": "PRK", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.PRK"},    {"value": "ARV", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ARV"},    {"value": "SPM", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.SPM"},    {"value": "ULC", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.ULC"},    {"value": "AVR", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.AVR"},    {"value": "BEN", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.BEN"},    {"value": "BRN", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.BRN"},    {"value": "DRT", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.DRT"},    {"value": "HRM", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.HRM"},    {"value": "INMUNO", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.INMUNO"},    {"value": "LAX", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.LAX"},    {"value": "VIT", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.VIT"},    {"value": "OTH", "label": "pages.hospital.pharmacy.pharmacy_items.options.category.OTH"}]
-            },       
+            },    
             "threshold" : {
                 required : true,
                 name:"threshold",
@@ -190,6 +184,16 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
                 label:"pages.hospital.pharmacy.pharmacy_items.threshold",
                 shortLabel: "pages.hospital.pharmacy.pharmacy_items.threshold",
                 validation : "number"
+            },
+            "provider" : {
+                required : true,
+                name:"provider",
+                type:"text",
+                numberColumnsLg:6,
+                numberColumnsXs:6,
+                label:"pages.hospital.pharmacy.pharmacy_items.provider",
+                shortLabel: "pages.hospital.pharmacy.pharmacy_items.provider",
+                validation : "textMin2"
             },
         }
     }, [])
@@ -209,6 +213,9 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
     
     function resetModal(){
         setModalInfo({showModal: false, type:""});
+        if(setShowAddPharmacyItem){
+            setShowAddPharmacyItem(false);
+        }
     }
 
     function showDeleteItem(id: number){
