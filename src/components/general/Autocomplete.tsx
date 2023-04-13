@@ -78,7 +78,7 @@ const AutocompleteSherwood = (props:Props) => {
                 {
                         props.freeSolo &&
                         <Grid item>
-                            <ButtonAccept color="secondary" onClick={saveField}><Translate id="general.add" /></ButtonAccept>
+                            <ButtonAccept onClick={saveField}><Translate id="general.add" /></ButtonAccept>
                         </Grid>
                 }                
             </Grid>
