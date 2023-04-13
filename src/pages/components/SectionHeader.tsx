@@ -1,14 +1,13 @@
-import { Grid, IconButton, Typography } from '@material-ui/core';
+import { Grid, IconButton, Theme } from '@material-ui/core';
 import React from 'react';
 import iconImages from "../../img/icons/images_white.png";
 import iconLab from "../../img/icons/lab_white.png";
-import styled from 'styled-components';
-import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { BiotechIcon, ButtonAdd, IconGenerator, TypographyStyled } from '../../components/general/mini_components';
-import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
-import { red } from '@material-ui/core/colors';
+import styled, { withTheme } from 'styled-components';
+import { Translate } from 'react-localize-redux';
+import { ButtonAdd, IconGenerator, TypographyStyled } from '../../components/general/mini_components';
 
-interface SectionHeaderProps{
+interface SectionHeaderProps {
+    theme:Theme,
     section:string,
     edit:boolean,
     alterTitle?:string,
@@ -26,12 +25,12 @@ const IconHolder = styled.div`
     padding:0.4rem 0 1rem 0rem;
 `;
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle, addCallback, editCallback, infoCallback }) => {
+const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle, theme, addCallback, editCallback, infoCallback }) => {
    
     function renderIcon(){
         switch(section){
             case "laboratory":
-                return <IconGenerator type="biotech" color="#fff" />
+                return <IconGenerator type="biotech" color={theme.palette.secondary.main} />
             case "medical-imaging":
                 return <IconGenerator type="image" />
             case "pharmacy":
@@ -65,7 +64,10 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
                     onClick={(e) => {
                         editCallback();
                     }}>
-                    <IconGenerator type={!edit ? "settings" : "back"} color="#fff" />
+
+                    <IconGenerator type={!edit ? "settings" : "back"}  
+                        //@ts-ignore
+                        color={theme.palette.primary.color} />
                 </IconButton>
             }
             {
@@ -74,7 +76,9 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
                     onClick={(e) => {
                         infoCallback();
                     }}>
-                    <IconGenerator type="info" color="#fff" />
+                    <IconGenerator type="info" 
+                        //@ts-ignore
+                        color={theme.palette.primary.color} />
                 </IconButton>
             }
             
@@ -88,4 +92,4 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
     );
 };
 
-export default SectionHeader;
+export default withTheme(SectionHeader);
