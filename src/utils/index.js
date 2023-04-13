@@ -859,3 +859,16 @@ export function turnsToSchedule(turn){
     stringDate += " - "+date.toLocaleTimeString(undefined, {timeStyle:'short'});
     return stringDate;
 }
+
+export function translateOrderOptions(options, orderValue, translate){
+    const translatedOptions = options.map((option) => {
+        return {value:option.value, label:translate(option.label).toString()}
+    }).sort((optionA, optionB) => optionA.label > optionB.label ? 1 : -1);
+    //Move the item with value "OTH" to the end of the list
+    const otherOption = translatedOptions.find((option) => option.value === orderValue);
+    if(otherOption){
+        translatedOptions.splice(translatedOptions.indexOf(otherOption), 1);
+        translatedOptions.push(otherOption);
+    }
+    return translatedOptions;
+}
