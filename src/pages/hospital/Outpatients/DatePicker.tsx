@@ -1,8 +1,6 @@
-import { Box, createMuiTheme } from '@material-ui/core';
 import { DatePicker } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { makeStyles, styled, ThemeProvider } from '@material-ui/styles';
-import { Grid, Paper } from '@mui/material';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { formatDateByLocale } from '../../../utils';
@@ -18,6 +16,7 @@ interface AppointmentDatePickerProps extends LocalizeContextProps{
     onDateChangeCallback: (date:MaterialUiPickersDate) => void;
     datesOccupancy:{[date:string]:number}
 }
+
 
 const useStyles = makeStyles((theme) => ({
     dayWithDotContainer: {
