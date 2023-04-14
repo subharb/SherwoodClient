@@ -108,7 +108,7 @@ export const GridContainer = styled(Grid)`
 `;
 
 export const BoxBckgr = styled(Box)`
-    background-color:${props => props.theme.palette.primary.main};
+    background-color:${props => props.theme.palette.background.default};
     min-height:100vh;
     color:${props => props.theme.palette.primary.color};
 `

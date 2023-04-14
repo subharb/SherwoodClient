@@ -563,7 +563,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
             )
         }
         return(
-            <BoxBckgr color="text.primary" style={{padding:'1rem'}}>
+            <BoxBckgr style={{padding:'1rem'}}>
                 <Snackbar
                     anchorOrigin={{
                     vertical: 'top',
@@ -643,7 +643,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         </div>
                 </Modal>
                 
-                <Typography variant="h3" gutterBottom display="inline" style={{color:"white"}}>
+                <Typography variant="h3" gutterBottom display="inline">
                     {ward.name}
                 </Typography>
                 

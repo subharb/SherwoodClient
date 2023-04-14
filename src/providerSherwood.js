@@ -21,9 +21,6 @@ import {
   jssPreset,
 } from "@material-ui/core/styles";
 import {
-    useQuery,
-    useMutation,
-    useQueryClient,
     QueryClient,
     QueryClientProvider,
   } from 'react-query'
@@ -86,7 +83,7 @@ export function CustomThemeProvider(props){
     if(themeCustom){
         console.log(themeCustom);
         themeApp.palette.background.default = themeCustom.params.primary.background;
-        themeApp.palette.primary.main = themeCustom.params.primary.background;
+        themeApp.palette.primary.main = themeCustom.params.primary.color;
         themeApp.palette.secondary.main = themeCustom.params.primary.color;
         themeApp.header.background = themeCustom.params.header ? themeCustom.params.header.background : themeCustom.params.primary.background;
         themeApp.palette.primary.color = themeCustom.params.primary.color;
@@ -97,7 +94,7 @@ export function CustomThemeProvider(props){
         themeApp.sidebar.footer.color = themeCustom.params.sidebar.color;
         themeApp.sidebar.footer.background = themeCustom.params.sidebar.background;
         themeApp.buttonContinue.primary.background = themeCustom.params.nextButton.background;
-        themeApp.buttonContinue.primary.color = themeCustom.params.nextButton.color;
+        themeApp.buttonContinue.primary.color = themeCustom.params.nextButton.color;        
     }
     return (
         <MuiThemeProvider theme={themeApp}>

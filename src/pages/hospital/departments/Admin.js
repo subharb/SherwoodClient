@@ -709,7 +709,7 @@ function Departments(props) {
         return "No tiene nada que ver"
     }
     return (
-        <BoxBckgr color="text.primary" style={{color:"white"}}>
+        <BoxBckgr>
             <Helmet title={props.translate("investigation.share.title")} />
             <Snackbar
                     anchorOrigin={{
@@ -759,8 +759,8 @@ function Departments(props) {
                     {
                         props.departments.length > 0 &&
 
-                        <AppBar position="static">
-                            <Tabs textColor="primary" value={tabSelector} onChange={handleChange} aria-label="simple tabs example">
+                        
+                            <Tabs textColor="primary" indicatorColor="primary" value={tabSelector} onChange={handleChange} aria-label="simple tabs example">
                             { 
                                 props.admin &&
                                 [
@@ -774,7 +774,7 @@ function Departments(props) {
                                 <CustomTab label={<Translate id="hospital.departments.inpatients" />} {...a11yProps(1)} />
                             }
                             </Tabs>
-                        </AppBar>
+                        
                     }
                     {
                         (!props.admin && props.departments.length === 0) &&

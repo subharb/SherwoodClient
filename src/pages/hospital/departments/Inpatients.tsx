@@ -101,7 +101,7 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
         );
     }
     return (
-        <BoxBckgr color="text.primary" style={{color:"white"}}>
+        <BoxBckgr>
             <Helmet title={titleHelmet} />
             <Grid container spacing={3}>
                 <Grid item xs={12}>
