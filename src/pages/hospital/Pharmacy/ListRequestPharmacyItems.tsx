@@ -76,7 +76,11 @@ const ListPharmacyItems: React.FC<ListPharmacyItemsProps> = ({ action, userPermi
                 return {...item, error:1}
             }
             const pharmacyItem = pharmacyItems.find((pharItem) => pharItem.id === item.pharmacyItem.id)
-            if(!pharmacyItem || item.amountApproved > pharmacyItem?.amount){
+            if(!pharmacyItem){
+                error = true;
+                return {...item, error:3, edit:true}
+            }
+            else if(item.amountApproved > pharmacyItem?.amount){
                 error = true;
                 return {...item, error:2, edit:true}
             }
@@ -108,10 +112,15 @@ const ListPharmacyItems: React.FC<ListPharmacyItemsProps> = ({ action, userPermi
     }
     function showErrorType(error:number, idItem:number){
         if(error === 1){
-            return <Translate id="pharmacy.error.amount"/>
+            return <Translate id="pages.hospital.pharmacy.listItems.error.amount"/>
         }
-        const pharmacyItem = pharmacyItems.find((pharItem) => pharItem.id === idItem)
-        return "MAX: " + pharmacyItem?.amount;
+        else if(error === 2){
+            const pharmacyItem = pharmacyItems.find((pharItem) => pharItem.id === idItem)
+            return "MAX: " + pharmacyItem?.amount;
+        }
+        else{
+            return <Translate id="pages.hospital.pharmacy.listItems.error.item"/>
+        }
     }
     const canApproveRequests = userPermissions.filter((perm) => perm === PERMISSION.MANAGE_PHARMACY_CENTRAL).length > 0;
     const canUpdateRequests = userPermissions.filter((perm) => perm === PERMISSION.MANAGE_PHARMACY_CENTRAL || perm === PERMISSION.UPDATE_PHARMACY_CENTRAL).length > 0;
