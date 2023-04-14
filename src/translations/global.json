@@ -464,6 +464,12 @@
                 "title" : ["Pharmacy", "Farmacia", "Pharmacie"],
                 "success" : ["Request made successfully", "Solicitud realizada correctamente", "Demande effectuée avec succès"],
                 "error" : ["Error making request", "Error realizando la solicitud", "Erreur lors de la demande"],
+                "listItems" : {
+                    "error" : {
+                        "amount" : ["There are't enough items in pharmacy", "No hay suficientes medicamentos en la farmacia", "Il n'y a pas assez de médicaments en pharmacie"],
+                        "item" : ["This item is not currently in the pharmacy", "Este medicamento no se encuentra actualmente en la farmacia", "Ce médicament n'est pas actuellement en pharmacie"]
+                    }
+                },
                 "modal" : {
                     "title" : {
                         "edit" : ["Edit", "Editar", "Modifier"],
