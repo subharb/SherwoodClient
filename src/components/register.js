@@ -167,7 +167,10 @@ class Register extends Component {
             let response = null
             
             if(this.props.typeUser === "researcher"){
-                response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/register', tempState.info)
+                const url = process.env.REACT_APP_API_URL+'/researcher/register';
+                const extraParameter = this.props.doesCreateInvestigation ? '?withInvestigation=true' : '';
+                
+                response = await axios.post(url+extraParameter, tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
             else if(this.props.typeUser === "patient" && typeof this.props.match.params.uuidPatient !== undefined){
