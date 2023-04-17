@@ -106,6 +106,8 @@
             "updated-record-offline" : ["Record updated Offline!", "Registro Actualizado Offline", "Fichier mis à jour Offline"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
+            "hospitalized-in-ward" : ["Hospitalized in ward %X", "Hospitalizado en la planta %X", "Hospitalisé en service %X"],
+            "discharged-from-ward" : ["Discharged from ward %X", "Dado de alta de la planta %X", "Congé de service %X"],
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"],
             "error" : {
@@ -502,7 +504,7 @@
                     "routes" : ["Routes", "Vías de administración", "Voies d'administration"],
                     "category" : ["Category", "Categoría", "Catégorie"],
                     "status_values" : {
-                        "finished" : ["Finished", "Agotado", "Terminé"],
+                        "finished" : ["Finished", "Agotado", "Complété"],
                         "low" : ["Low", "Bajo", "Faible"],
                         "normal" : ["Normal", "Normal", "Normal"]
                     },
@@ -760,7 +762,7 @@
                     "status" : ["Request Status", "Estado de la solicitud", "Statut de la demande"],
                     "accepted" : ["Accepted Items", "Pruebas aceptadas", "Items acceptés"],
                     "pending" : ["Pending Items", "Pruebas pendientes", "Articles en attente"],
-                    "completed" : ["Completed Items", "Pruebas completadas", "Articles terminés"],
+                    "completed" : ["Completed Items", "Pruebas completadas", "Articles complétés"],
                     "title" : ["Request Services", "Solicitar Servicios", "Demander des services"],
                     "success" : ["Request saved succesfully", "Solicitud guardada correctamente", "Demande enregistrée avec succès"],
                     "make_request" : ["Make Request", "Realizar Solicitud", "Faire une demande"],
@@ -776,7 +778,7 @@
                     "CANCELLED" : ["Cancelled", "Cancelado", "Annulé"],
                     "EXPIRED" : ["Expired", "Caducado", "Expiré"],
                     "DENIED" : ["Denied", "Denegado", "Refusé"],
-                    "COMPLETED" : ["Completed", "Completado", "Terminé"],   
+                    "COMPLETED" : ["Completed", "Completado", "Complété"],   
                     "IN_PROGRESS" : ["In progress", "En progreso", "En cours"],
                     "INCOMPLETE" : ["Incomplete", "Incompleto", "Incomplet"],
                     "INCOMPLETE_ACCEPTED" : ["Incomplete Accepted", "Incompleto Aceptado", "Incomplet Accepté"]
@@ -941,8 +943,8 @@
             },
             "medical-imaging" : {
                 "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
-                "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie Medicale"],
-                "title" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie Médicale"],
+                "name" : ["Imaging", "Pruebas de Imagen", "Imagerie Medicale"],
+                "title" : ["Imaging", "Pruebas de Imagen", "Imagerie Médicale"],
                 "category" : {
                     "ultrasound" : ["Ultrasound", "Ecografía", "Échographie"],
                     "x-ray" : ["X-rays", "Radiografías", "Radiographies"]

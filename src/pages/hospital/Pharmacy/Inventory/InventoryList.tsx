@@ -34,9 +34,11 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
                 (finishedStatusFilter ? item.amount === 0 : true) && (lowStatusFilter ? item.amount < item.threshold : true) 
                 && (providerFilter !== "" ? item.provider === providerFilter : true))
         }));
-        setCurrentPage(0);
+        
     }, [nameFilter, lowStatusFilter, providerFilter, finishedStatusFilter, pharmacyItems]);
-
+    useEffect(() => {
+        setCurrentPage(0);
+    }, [nameFilter, lowStatusFilter, providerFilter, finishedStatusFilter]);
     useEffect(() => {
         if(showSnackbar.severity === "success"){
             setModalInfo({showModal: false, type:""});
@@ -61,16 +63,6 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
 
     const FORM_ADD = useMemo(() => {
         return {
-            "code" : {
-                required : true,
-                name:"code",
-                type:"text",
-                numberColumnsLg:2,
-                numberColumnsXs:2,
-                label:"pages.hospital.pharmacy.pharmacy_items.code",
-                shortLabel: "pages.hospital.pharmacy.pharmacy_items.code",
-                validation : "textMin2"
-            },
             "name" : {
                 required : true,
                 name:"name",
@@ -285,7 +277,7 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
            
     }
     function renderTable(){
-        const headCells = [{ id: "code", alignment: "left", label: <Translate id={`pages.hospital.pharmacy.pharmacy_items.code`} /> },
+        const headCells = [
                         { id: "name", alignment: "left", label: <Translate id={`pages.hospital.pharmacy.pharmacy_items.name`} /> },
                         { id: "activePrinciple", alignment: "left", label: <Translate id={`pages.hospital.pharmacy.pharmacy_items.activePrinciple`} /> },
                         { id: "amount", alignment: "left", label: <Translate id={`pages.hospital.pharmacy.pharmacy_items.amount`} /> },
@@ -297,7 +289,6 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
                 ];
         const rows = filteredItems.map((item, idx) => ({
             id: item.id,
-            code: item.code,
             name: item.name,
             activePrinciple: item.activePrinciple,
             amount: item.amount,

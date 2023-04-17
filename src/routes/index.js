@@ -448,7 +448,7 @@ const dashboardAdminDepartmentRoutes = {
     children: null
 }
 
-const dashboardMyDepartmentRoutes = {
+const dashboardInpatientsRoutes = {
     id: <Translate id="pages.hospital.inpatients.title" />,
     path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
     icon: <HotelIcon />,
@@ -706,15 +706,14 @@ export const sidebarRoutesHospital = [
     dashboardHomeRoutes,
     dashboardSearchPatientRoutes,
     dashboardAddPatientRoutes,
-    dashboardImagesRoutes,
-    dashboardLabRoutes,
-    dashboardShoesRoutes,
-    dashboardAnalyticsRoutes,
-    dashboardUserMgmtRoutes,
-    dashboardPharmacyCentralRoutes,
     dashboardOutpatientsRoutes,
+    dashboardInpatientsRoutes,
+    dashboardLabRoutes,
+    dashboardImagesRoutes,
+    dashboardPharmacyCentralRoutes,
+    dashboardShoesRoutes,
+    dashboardUserMgmtRoutes,
     dashboardAdminDepartmentRoutes,
-    dashboardMyDepartmentRoutes,
     dashboardBillingRoutes,
-    
+    dashboardAnalyticsRoutes,
   ];

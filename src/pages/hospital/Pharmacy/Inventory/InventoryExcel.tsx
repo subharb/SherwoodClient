@@ -40,7 +40,7 @@ const InventoryExcelCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems: 
                     }
                     
                 })
-                if(currentPharmacyItem["code"]){
+                if(currentPharmacyItem["name"]){
                     pharmacyItems.push(currentPharmacyItem);
                 }
             }

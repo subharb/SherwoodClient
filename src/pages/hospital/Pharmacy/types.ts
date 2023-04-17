@@ -1,6 +1,5 @@
 export interface IPharmacyItem{
     id?:number,
-    code: string;
     name: string;
     type: number;
     activePrinciple: string;

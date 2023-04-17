@@ -328,7 +328,7 @@ class FieldSherwood extends PureComponent{
                                 fullWidth
                                 inputVariant="outlined"
                                 variant="inline"
-                                format={formatDateByLocale(activeLanguage)}
+                                format={formatDateByLocale(activeLanguage.code)}
                                 margin="normal"
                                 id="date-picker-inline"
                                 label={labelString}

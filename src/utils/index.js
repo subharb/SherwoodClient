@@ -633,11 +633,7 @@ export function formatPatients(patients, personalFields, code = 'es-ES'){
             if(patient.personalData){
                 let value = patient.personalData[pField.name];
                 if(pField.type === "date"){
-                    value = new Date(patient.personalData[pField.name]).toLocaleDateString(code, {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit'
-                        }).replace(/\./g, '/');
+                    value = new Date(patient.personalData[pField.name]).toLocaleDateString(code, { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\./g, '/');
                 }
                 if(pField.name === 'sex'){
                     value = <Translate id={`hospital.analytics.graphs.sex.${patient.personalData[pField.name].toLowerCase()}`} />

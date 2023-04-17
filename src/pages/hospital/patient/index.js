@@ -10,7 +10,7 @@ import Modal from '../../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
 import { yearsFromDate, postErrorSlack, getUnitsResearcher } from '../../../utils';
 import FillDataCollection from '../FillDataCollection';
-import { Translate } from 'react-localize-redux';
+import { Translate, withLocalize } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { useDispatch } from "react-redux";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
@@ -123,14 +123,14 @@ function Patient(props) {
         staysPatient.forEach((stay) => {
             filteredRecords.push({
                 researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
-                surveyName : "Hospitalized in "+stay.bed.ward.name,
+                surveyName : props.translate("hospital.patient.hospitalized-in-ward").toString().replace("%X", stay.bed.ward.name),
                 createdAt : stay.dateIn,
                 type:"stay"
             })
             if(stay.dateOut){
                 filteredRecords.push({
                     researcher : stay.checkoutResearcher.researcher.name +" "+stay.checkoutResearcher.researcher.surnames,
-                    surveyName : "Discharged from "+stay.bed.ward.name,
+                    surveyName : props.translate("hospital.patient.discharged-from-ward").toString().replace("%X", stay.bed.ward.name),
                     createdAt : stay.dateOut,
                     type:"stay"
                 })  
@@ -681,4 +681,4 @@ const mapStateToProps = (state) =>{
         hospital:state.hospital
     }
 }
-export default connect(mapStateToProps, null)(Patient)
+export default withLocalize(connect(mapStateToProps, null)(Patient))

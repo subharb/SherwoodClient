@@ -22,10 +22,9 @@ interface InventoryProps {
     showAddPharmacyItem: boolean,
     setShowAddPharmacyItem: (show: boolean) => void,
     pharmacyItemsInit: IPharmacyItem[]
-}
+} 
 
 export const DEFAULT_ROWS: IPharmacyItem = {
-    code: "",
     name: "",
     activePrinciple: "",
     amount: 0,

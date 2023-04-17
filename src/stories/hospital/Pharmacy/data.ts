@@ -3,7 +3,7 @@ import { IPharmacyItem } from "../../../pages/hospital/Pharmacy/types";
 export const pharmacyItemsInit:IPharmacyItem[] = [
     {
         id:89,
-        code: "AE01",
+        
         name: "Paracetamol",
         type: 0,
         activePrinciple: "IBUPROF",
@@ -15,7 +15,7 @@ export const pharmacyItemsInit:IPharmacyItem[] = [
     },
     {
         id:91,
-        code: "AE02",
+        
         name: "Biodramina",
         type: 0,
         activePrinciple: "Biodra",
@@ -27,7 +27,7 @@ export const pharmacyItemsInit:IPharmacyItem[] = [
     },
     {
         id:94,
-        code: "AE03",
+        
         name: "Amoxicilina",
         type: 0,
         activePrinciple: "amox",
