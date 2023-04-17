@@ -55,6 +55,7 @@ import SingleAgenda from "../pages/hospital/Outpatients/SingleAgenda";
 export const ROOT_ROUTE = "/";
 export const SIGN_IN_ROUTE = "/auth/sign-in";
 export const SIGN_UP_ROUTE = "/auth/sign-up";
+export const SIGN_UP_ROUTE_INVESTIGATION = "/auth/sign-up/new-investigation";
 export const SHARE_INVESTIGATION_ROUTE = "/investigation/share/:uuid";
 export const SHOW_INVESTIGATION_ROUTE = "/investigation/show/:uuid";
 export const EDIT_INVESTIGATION_ROUTE = "/investigation/edit/:uuid";
@@ -622,6 +623,11 @@ const authRoutes = {
       path: SIGN_UP_ROUTE,
       name: "Sign Up",
       component: SignUp,
+    },
+    {
+        path: SIGN_UP_ROUTE_INVESTIGATION,
+        name: "Sign Up",
+        component: () => <SignUp doesCreateInvestigation={true} />,
     },
     {
       path: "/auth/reset-password",
