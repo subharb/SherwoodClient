@@ -373,9 +373,9 @@ export function useUnitSelector(units:IUnit[]){
     return {unitSelected, renderUnitSelector, markAsErrorUnit}
 }
 
-export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false, noReturnIfOnlyOne:boolean = false){
+export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){
     const { departments } = useDepartments(researchersDepartmentsOnly);
-    const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(null);
+    const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(defaultValue ? defaultValue : null);
     const [errorDepartment, setErrorDepartment] = React.useState(false);
 
     useEffect(() => {
@@ -418,7 +418,7 @@ export function useDeparmentsSelector(selectNoDepartment:boolean = false, resear
                 return <MenuItem value={department.uuid}>{department.name}</MenuItem>
             })
             if(selectNoDepartment){
-                optionsArray = [<MenuItem value={""}><Translate id="hospital.departments.all_departments" /></MenuItem>, ...optionsArray]
+                optionsArray = [<MenuItem value={"all"}><Translate id="hospital.departments.all_departments" /></MenuItem>, ...optionsArray]
             }
             return(
                 <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>

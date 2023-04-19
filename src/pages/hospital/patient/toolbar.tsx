@@ -108,7 +108,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="body2" gutterBottom>
-                        {years} years
+                        {years} <Translate id="general.years" />
                     </Typography>
                 </Grid>
                 {/* <Grid item xs={12}>

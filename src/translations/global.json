@@ -594,7 +594,7 @@
                 }
             },
             "outpatients" : {
-                "title" : ["Outpatients", "Consultas externas", "Consultations externes"],
+                "title" : ["Outpatients", "Consultas externas", "Consultations"],
                 "select_date" : ["Select date", "Seleccione fecha", "Sélectionnez la date"],
                 "sections" : {
                     "boxes_and_agendas" : ["Boxes and Agendas", "Cajas y agendas", "Boîtes et agendas"],
@@ -943,8 +943,8 @@
             },
             "medical-imaging" : {
                 "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
-                "name" : ["Imaging", "Pruebas de Imagen", "Imagerie Medicale"],
-                "title" : ["Imaging", "Pruebas de Imagen", "Imagerie Médicale"],
+                "name" : ["Imaging", "Pruebas de Imagen", "Radiologie"],
+                "title" : ["Imaging", "Pruebas de Imagen", "Radiologie"],
                 "category" : {
                     "ultrasound" : ["Ultrasound", "Ecografía", "Échographie"],
                     "x-ray" : ["X-rays", "Radiografías", "Radiographies"]

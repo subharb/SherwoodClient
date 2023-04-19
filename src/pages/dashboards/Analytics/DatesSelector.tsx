@@ -12,9 +12,11 @@ interface Props extends LocalizeContextProps{
 }
 
 function DatesSelector(props:Props){
-    var d = new Date(2020, 0, 1);
+    const today = new Date();
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(today.getFullYear() - 1);
     const [typeRange, setTypeRange] = React.useState(null);
-    const [startDate, setStartDate] = React.useState(d);
+    const [startDate, setStartDate] = React.useState(oneYearAgo);
     const [endDate, setEndDate] = React.useState(new Date());
     const [timePeriod, setTimePeriod] = React.useState<null | number>(null);
     const [openStartDate, setOpenStartDate] = React.useState(false);

@@ -43,10 +43,10 @@ export function Analytics(props) {
     const [activityPatients, setActivityPatients] = useState([]);
 	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
     const onlyDepartmentsResearcher = props.investigations.currentInvestigation && props.investigations.currentInvestigation.permissions.includes(PERMISSION.ANALYTICS_DEPARTMENT);
-	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher, true);
+	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher, true, "all");
     const [appointmentsPerDepartment, setAppointmentsPerDepartment] = useState(null);
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
-	
+	const [loadingPatientsInfo, setLoadingPatientsInfo] = useState(false);
    
 	function changeDate(value) {
 		console.log("Date Changed!", value);
@@ -160,31 +160,27 @@ export function Analytics(props) {
     }, [filteredPatients]);
     
     useEffect(() => {
-        console.log("departmentSelected", departmentSelected);
-        if(departmentSelected){
+        if(departmentSelected && props.investigations.currentInvestigation){
+            setLoadingPatientsInfo(true);
             getPatientIdFromDepartment(props.investigations.currentInvestigation.uuid, departmentSelected, startDate, endDate)
                 .then(response => {
                     if(response.stats.patientIds){
                         const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
                             return response.stats.patientIds.includes(patient.id);
                         })
+                        setLoadingPatientsInfo(false);
                         setFilteredPatients(tempFilterPatients);
                     }  
                 })
         }
-        else{
-            if(props.investigations.currentInvestigation){
-                setFilteredPatients(props.investigations.currentInvestigation.patientsPersonalData);
-            }
-        }
         
-    }, [departmentSelected]);
+    }, [departmentSelected, props.investigations.currentInvestigation]);
 
     useEffect(() => {
         let tempFilteredPatients = [];
         for(let i = 0; i < Object.keys(activityPatients).length; i++){
             const key = Object.keys(activityPatients)[i];
-            const patientsActivity = departmentSelected ? activityPatients[key].filter((patient) => {
+            const patientsActivity = departmentSelected !== "all" ? activityPatients[key].filter((patient) => {
                 return patient.department.uuid === departmentSelected;
             }) : activityPatients[key];
             
@@ -228,30 +224,17 @@ export function Analytics(props) {
 		}
 	}, [startDate, endDate, props.investigations]);
 
-	if (props.investigations.loading) {
-		return <Loader />
-	}
-	else if (props.investigations.currentInvestigation && !props.investigations.currentInvestigation.permissions.filter((perm) => [PERMISSION.BUSINESS_READ, PERMISSION.ANALYTICS_DEPARTMENT].includes(perm)).length > 0){
-		history.push(ROUTE_401);
-		return <Loader />
-	}
-	return (
-		<React.Fragment>
-			<Helmet title="Analytics Dashboard" />
-			<Grid container spacing={6}>
-				<Grid item xs={12} style={{ color: "white" }}>
-					<TypographyStyled variant="h3" gutterBottom >
-						Analytics Dashboard
-					</TypographyStyled>					
-				</Grid>
-				<Grid spacing={3} item container xs={12} style={{background:'white', padding:'1rem'}}>
-                    {
-                        renderSelectors()
-                    }
-                </Grid>
-			</Grid>
-
-			<Grid container spacing={6} style={{marginTop:'1rem'}}>
+    function renderCore(){
+        if(loadingPatientsInfo){
+            return (
+                
+                    <Loader />
+                
+            )
+        }
+        else{
+            return(
+                <Grid container spacing={6} style={{marginTop:'1rem'}}>
 				{
 					props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) &&
 					<Grid item xs={12}>
@@ -265,7 +248,7 @@ export function Analytics(props) {
 										{
 											data: [countSex.male, countSex.female],
 											percents: [Math.round(countSex.male / (countSex.male + countSex.female) * 100), Math.round(countSex.female / (countSex.male + countSex.female) * 100)],
-											backgroundColor: [props.theme.palette.secondary.main, red[500]],
+											backgroundColor: ["#028186", "#ef6657"],
 											borderWidth: 5,
 											borderColor: props.theme.palette.background.paper,
 										}
@@ -347,6 +330,36 @@ export function Analytics(props) {
                 
 
 			</Grid>
+            )
+        }
+    }
+
+	if (props.investigations.loading) {
+		return <Loader />
+	}
+	else if (props.investigations.currentInvestigation && !props.investigations.currentInvestigation.permissions.filter((perm) => [PERMISSION.BUSINESS_READ, PERMISSION.ANALYTICS_DEPARTMENT].includes(perm)).length > 0){
+		history.push(ROUTE_401);
+		return <Loader />
+	}
+	return (
+		<React.Fragment>
+			<Helmet title="Analytics Dashboard" />
+			<Grid container spacing={6}>
+				<Grid item xs={12} style={{ color: "white" }}>
+					<TypographyStyled variant="h3" gutterBottom >
+						Analytics Dashboard
+					</TypographyStyled>					
+				</Grid>
+				<Grid spacing={3} item container xs={12} style={{background:'white', padding:'1rem'}}>
+                    {
+                        renderSelectors()
+                    }
+                </Grid>
+			</Grid>
+            {
+                renderCore()
+            }
+			
 		</React.Fragment>
 	)
 }
