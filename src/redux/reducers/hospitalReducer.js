@@ -309,7 +309,13 @@ export default function reducer(state = initialState, action){
             }
             allPatientsStays[action.uuidPatient] = [...action.stays];
             newState.data["stays"] = {...allPatientsStays};
-            tempDepartments = [...newState.data.departments]
+            if(newState.data.departments){
+                tempDepartments = [...newState.data.departments]
+            }
+            else{
+                tempDepartments = []
+            }
+            
             tempDepartments.forEach((department) => {
                 department.wards.forEach((ward) => {
                     ward.beds.forEach((bed) => {
