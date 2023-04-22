@@ -721,7 +721,8 @@
                     }
                 },
                 "form_appointment" : {
-                    "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"]
+                    "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"],
+                    "no_agenda_department" : ["Create an agenda for this department", "Cree una agenda para este departamento", "Créez un agenda pour ce département"]
                 }
             },
             "shoe_shop":{

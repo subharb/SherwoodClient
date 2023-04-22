@@ -269,7 +269,7 @@ class FieldSherwood extends PureComponent{
                             drugSelected={(drug) => this.drugSelected(drug)} country={country} />
             case "appointment" : 
                 return <AppointmentField uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} value={input.value}
-                            label={label}
+                            label={label} department={this.props.department}
                             appointmentSelected={(date) => this.props.input.onChange(date)} />
             case "multioption" : 
                     const optionButtons = options.map(option => {

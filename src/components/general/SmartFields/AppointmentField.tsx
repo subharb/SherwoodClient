@@ -1,7 +1,7 @@
 import { Card, CardContent, IconButton } from '@material-ui/core';
 import React from 'react';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
-import { IAppointment } from '../../../constants/types';
+import { IAppointment, IDepartment } from '../../../constants/types';
 import { FormMakeAppointment } from '../../../pages/hospital/Outpatients/FormAppointment';
 import { cancelAppointmentService } from '../../../services/agenda';
 import { stringDatePostgresToDate } from '../../../utils';
@@ -13,10 +13,11 @@ interface AppointmentFieldProps extends LocalizeContextProps{
     uuidInvestigation: string;
     value:string;
     label:string;
+    department:IDepartment;
     appointmentSelected:(date:number | null) => void
 }
 
-const AppointmentField: React.FC<AppointmentFieldProps> = ({ label,  uuidPatient, value, activeLanguage, uuidInvestigation, appointmentSelected }) => {
+const AppointmentField: React.FC<AppointmentFieldProps> = ({ label,  uuidPatient, value, department, activeLanguage, uuidInvestigation, appointmentSelected }) => {
     const [appointment, setAppointment] = React.useState<IAppointment | null>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -62,7 +63,7 @@ const AppointmentField: React.FC<AppointmentFieldProps> = ({ label,  uuidPatient
             <>
                 <FormMakeAppointment uuidPatient={uuidPatient} 
                     uuidInvestigation={uuidInvestigation} showAllAgendas={false}
-                    hidePatientInfo={true}
+                    hidePatientInfo={true} department={department}
                     appointmentMadeCallback={(date) => appointmentMadeCallback(date)} />
             </>
         );

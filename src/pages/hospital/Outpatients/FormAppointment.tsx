@@ -25,6 +25,7 @@ interface FormAppointmentGeneralProps {
     mode: 'make' | 'consult',
     hidePatientInfo?: boolean,
     showAllAgendas:boolean,
+    department?: IDepartment,
     appointmentMadeCallback?: (appointment:IAppointment) => void;
     infoAppointmentReadyCallback?:(uuidAgenda:string, date:Date) => void;
 }
@@ -32,6 +33,7 @@ interface FormAppointmentGeneralProps {
 interface FormMakeAppointmentProps {
     uuidPatient: string;
     uuidInvestigation:string,
+    department?: IDepartment,
     showAllAgendas:boolean,
     hidePatientInfo?: boolean,
     appointmentMadeCallback: (appointment:IAppointment) => void;
@@ -49,14 +51,14 @@ export const FormConsultAppointment: React.FC<FormConsultAppointmentProps> = ({ 
         infoAppointmentReadyCallback={infoAppointmentReadyCallback} />
 };
 
-export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, uuidInvestigation, hidePatientInfo, appointmentMadeCallback }) => {
+export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, department, uuidInvestigation, hidePatientInfo, appointmentMadeCallback }) => {
     
     return <FormAppointmentGeneralConnected showAllAgendas={showAllAgendas} uuidInvestigation={uuidInvestigation} uuidPatient={uuidPatient} mode='make'
-                hidePatientInfo={hidePatientInfo}
+                hidePatientInfo={hidePatientInfo} department={department}
                 appointmentMadeCallback={appointmentMadeCallback} />
 };
 
-const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInvestigation,  uuidPatient, mode, hospital, hidePatientInfo, showAllAgendas, appointmentMadeCallback, infoAppointmentReadyCallback }) => {
+const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInvestigation, department, uuidPatient, mode, hospital, hidePatientInfo, showAllAgendas, appointmentMadeCallback, infoAppointmentReadyCallback }) => {
     const {agendas, loadingAgendas} = useAgendas();
     //const appointments =  useSelector((state:any) => state.hospital.data.appointments);
     const [appointments, setAppointments] = useState<IAppointment[] | null>(null);
@@ -104,8 +106,16 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
                     departmentsDict[uuidDepartment] = agenda.department;
                 }
             });
-            const departmentsWithAgenda:IDepartment[] = Object.values(departmentsDict);
-            setDepartmentsWithAgenda(departmentsWithAgenda);
+            if(department){
+                if(departmentsDict[department.uuid as string]){
+                    setDepartmentsWithAgenda([department]);
+                }
+            }
+            else{
+                const departmentsWithAgenda:IDepartment[] = Object.values(departmentsDict);
+                setDepartmentsWithAgenda(departmentsWithAgenda);
+            }
+            
         }
         
     }, [agendas]);
@@ -181,7 +191,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
 
     function renderDepartments(){
         if(departmentsWithAgenda.length === 0){
-            return null;
+            return <Translate id="pages.hospital.outpatients.form_appointment.no_agenda_department" />
         }
         else if(departmentsWithAgenda.length === 1){
             return (
@@ -352,7 +362,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     }, [])
 
     function renderButtons(){
-        if(mode === "make" && !loading && !appointmentCreated){
+        if(mode === "make" && !loading && !appointmentCreated && departmentsWithAgenda.length > 0){
             return (
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
                     <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
