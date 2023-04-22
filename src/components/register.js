@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import { toggleLoading } from '../actions';
 import successImage from '../img/7893-confetti-cannons.gif';
 import { withRouter, Link } from 'react-router-dom';
+import Loader from './Loader';
 
 const SpanError = styled.span`
     color:red;
@@ -143,7 +144,7 @@ class Register extends Component {
         this.iv = null;
         this.sections = props.typeUser === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_generation"];
 
-        this.state = {selected:props.initialState ? props.initialState.selected : 0, info : {}, key : null, success : false, errorMessage : null}
+        this.state = {selected:props.initialState ? props.initialState.selected : 0, info : {}, key : null, success : false, errorMessage : null, loading:false}
 
         this.generateKey = this.generateKey.bind(this);
         this.saveData = this.saveData.bind(this);
@@ -154,6 +155,8 @@ class Register extends Component {
     }
     async saveData(data){
         let tempState = this.state;
+        tempState.loading = true;
+        this.setState(tempState);
         //Si es el último caso
         if(tempState.selected === this.sections.length -1){
             this.props.toggleLoading();
@@ -203,6 +206,7 @@ class Register extends Component {
             tempState.info = data;
             tempState.selected++;
         }
+        tempState.loading = false;
         this.setState(tempState);
 
     }
@@ -228,59 +232,64 @@ class Register extends Component {
         const currentSection  = this.sections[this.state.selected];
         
         let content = null;
-        //Si no es key_generation fase
-        if(this.sections[this.state.selected] !== "key_generation"){
-            content = <Form fields={forms[currentSection]} fullWidth
-                        callBackForm={this.saveData} 
-                        submitText={"investigation.show.accept_consents.continue"} />
+        if(this.state.loading){
+            return <Loader />
         }
         else{
-            if(this.sections[this.state.selected] === "key_generation" && this.state.key === null){
-                this.generateKey(); 
+            if(this.sections[this.state.selected] !== "key_generation"){
+                content = <Form fields={forms[currentSection]} fullWidth
+                            callBackForm={this.saveData} 
+                            submitText={"investigation.show.accept_consents.continue"} />
             }
-            content = [
-                <ParaKey><Translate id="register.common.key_generation.encription_key" />: { this.state.key }</ParaKey>, 
-                <Form fields={forms[currentSection]} fullWidth
-                    callBackForm={this.saveData}
-                    submitText={"register.common.create-account"} 
-                     />
-            ];
+            else{
+                if(this.sections[this.state.selected] === "key_generation" && this.state.key === null){
+                    this.generateKey(); 
+                }
+                content = [
+                    <ParaKey><Translate id="register.common.key_generation.encription_key" />: { this.state.key }</ParaKey>, 
+                    <Form fields={forms[currentSection]} fullWidth
+                        callBackForm={this.saveData}
+                        submitText={"register.common.create-account"} 
+                         />
+                ];
+            }
+    
+            return ([
+                <Modal key="modal" open={this.state.success} title={<Translate id="register.researcher.success.title" />}
+                    confirmAction={this.continue}>
+                    <SuccessContainer>
+                        <ImageSuccess src={successImage} width="200" alt="Success!" />
+                        <Typography variant="body2" gutterBottom>
+                            <Translate id={`register.researcher.success.description`} />
+                        </Typography>
+                    </SuccessContainer>
+                </Modal>
+                ,
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <StepsHolder>Steps : </StepsHolder><Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return this.props.translate("breadcrumb."+section)})} />    
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography style={{fontWeight:'900'}} variant="subtitle1" color="textPrimary">
+                            <Translate id={`register.${this.props.typeUser}.${currentSection}.title`} />
+                        </Typography>
+                        <Typography variant="body2" color="textPrimary">
+                            <Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} />
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} padding={1}>
+                        <PaperPadding>
+                            { content }
+                            {
+                                this.state.errorMessage && 
+                                <SpanError><Translate id={`register.${this.props.typeUser}.error.${this.state.errorMessage}`} /></SpanError>
+                            }
+                        </PaperPadding>
+                    </Grid>
+                </Grid>
+            ])
         }
-
-        return ([
-            <Modal key="modal" open={this.state.success} title={<Translate id="register.researcher.success.title" />}
-                confirmAction={this.continue}>
-                <SuccessContainer>
-                    <ImageSuccess src={successImage} width="200" alt="Success!" />
-                    <Typography variant="body2" gutterBottom>
-                        <Translate id={`register.researcher.success.description`} />
-                    </Typography>
-                </SuccessContainer>
-            </Modal>
-            ,
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <StepsHolder>Steps : </StepsHolder><Breadcrumb callBack={this.crumbSelected} selected={this.state.selected} stages={this.sections.map(section=>{return this.props.translate("breadcrumb."+section)})} />    
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography style={{fontWeight:'900'}} variant="subtitle1" color="textPrimary">
-                        <Translate id={`register.${this.props.typeUser}.${currentSection}.title`} />
-                    </Typography>
-                    <Typography variant="body2" color="textPrimary">
-                        <Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} />
-                    </Typography>
-                </Grid>
-                <Grid item xs={12} padding={1}>
-                    <PaperPadding>
-                        { content }
-                        {
-                            this.state.errorMessage && 
-                            <SpanError><Translate id={`register.${this.props.typeUser}.error.${this.state.errorMessage}`} /></SpanError>
-                        }
-                    </PaperPadding>
-                </Grid>
-            </Grid>
-        ])
+        
     }
 }
 
