@@ -49,13 +49,16 @@ const AppointmentField: React.FC<AppointmentFieldProps> = ({ label,  uuidPatient
             return(
                 <>
                     { label }: {date.toLocaleDateString(activeLanguage.code, { year: 'numeric', month: '2-digit', day: '2-digit' })}
-                    <IconButton 
-                        onClick={(e) => {
-                            deleteAppointment();
-                            e.stopPropagation();
-                        }}>
-                        <IconGenerator type="delete" />
-                    </IconButton>
+                    { appointment && 
+                        <IconButton 
+                            onClick={(e) => {
+                                deleteAppointment();
+                                e.stopPropagation();
+                            }}>
+                            
+                            <IconGenerator type="delete" />
+                        </IconButton>   
+                    }
                 </>
             )
         }

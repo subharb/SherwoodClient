@@ -595,7 +595,7 @@
                 }
             },
             "outpatients" : {
-                "title" : ["Outpatients", "Consultas externas", "Consultations externes"],
+                "title" : ["Outpatients", "Consultas externas", "Consultations"],
                 "select_date" : ["Select date", "Seleccione fecha", "Sélectionnez la date"],
                 "sections" : {
                     "boxes_and_agendas" : ["Boxes and Agendas", "Cajas y agendas", "Boîtes et agendas"],
@@ -999,8 +999,24 @@
             "personal_info" : {
                 "name" : ["Name", "Nombre", "Prenom"],
                 "surnames" : ["Surnames", "Apellidos", "Nom" ],
-                "surname" : ["Surname", "Apellido", "Nom"],
-                "country" : ["Country", "País", "Pays"]
+                "surname" : ["Surname", "Apellido", "Nom"]
+            },
+            "clinic" : {
+                "country" : ["Country", "País", "Pays"],
+                "type" : ["Type", "Tipo", "Type"],
+                "type_options" : {
+                    "single_doctor" : ["Single doctor Clinic", "Clínica de un solo doctor", "Clinique d'un seul médecin"],
+                    "clinic" : ["Clinic", "Clínica", "Clinique"],
+                    "health_centre" : ["Health Centre", "Centro de Salud", "Centre de santé"],
+                    "hospital" : ["Hospital", "Hospital", "Hôpital"]
+                },
+                "language" : ["What language do you want to use?", "¿Qué idioma desea utilizar?", "Quelle langue souhaitez-vous utiliser ?"],
+                "language_options" : {
+                    "english" : ["English", "Inglés", "Anglais"],
+                    "spanish" : ["Spanish", "Español", "Espagnol"],
+                    "french" : ["French", "Francés", "Français"]
+                }
+
             },
             "contact_info" : {
                 "email" : ["Email", "Email", "Email"],

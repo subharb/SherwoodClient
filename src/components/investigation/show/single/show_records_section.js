@@ -8,7 +8,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
 import SmartField from '../../../general/SmartFields';
-import { dateToFullDateString, fullDateFromPostgresString, getData, isSmartField } from '../../../../utils';
+import { dateToFullDateString, fullDateFromPostgresString, getData, isSmartField, stringDatePostgresToDate } from '../../../../utils';
 import { ALL_SMARTFIELDS_TYPES, MEDICAL_HISTORY_FIELDS } from '../../../../constants';
 import { PERMISSION } from '../../../../constants/types';
 
@@ -72,6 +72,18 @@ function ShowRecordsSection(props) {
         }
         else if(valueRecord.surveyField.type === "file"){
             return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
+        }
+        else if(valueRecord.surveyField.type === "appointment"){
+            const dateAppointment = stringDatePostgresToDate(valueRecord.value);
+            return (
+                <Typography variant="h6" color="textPrimary">
+                    {field.name}: {dateAppointment.toLocaleString(props.activeLanguage.code,{
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                        })}
+                </Typography>
+            )
         }
         else if(valueRecord.surveyField.type === "multioption"){
             return valueRecord.value.map((record) => record.multioption).join(", ");

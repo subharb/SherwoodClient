@@ -368,7 +368,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                     <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                         <Translate id="general.cancel" />
                     </ButtonCancel>
-                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
+                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="green">
                         <Translate id="general.continue" />
                     </ButtonContinue>
                 </Grid>
