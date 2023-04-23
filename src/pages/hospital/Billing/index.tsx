@@ -311,7 +311,7 @@ const Billing: React.FC<Props> = (props) => {
                                 onClick={(e) => {
                                     toogleEditBillingInfo();
                                 }}>
-                                <IconGenerator type={!edit ? "settings" : "back"}  color="#fff"/>
+                                <IconGenerator type={!edit ? "settings" : "back"}  color="primary"/>
                             </IconButton>
                         </div>
                         {!props.billingInfo ?
