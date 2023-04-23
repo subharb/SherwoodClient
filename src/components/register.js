@@ -64,21 +64,6 @@ const forms = {
             label:"register.common.personal_info.surnames",
             shortLabel: "register.common.personal_info.surnames",
             validation : "notEmpty"
-        },
-        "country" : {
-            name:"country",
-            required : true,
-            type:"select",
-            defaultOption:{"text" : "register.common.personal_info.country", "value" : ""},
-            options:[],
-            option : {
-                "value" : "id",
-                "text" : "code"
-            },
-            optionsUrl: process.env.REACT_APP_API_URL+"/countries",
-            label:"register.common.personal_info.country",
-            shortLabel: "register.common.personal_info.country",
-            validation : "notEmpty"
         }
     },
     "contact_info" : {
@@ -117,6 +102,52 @@ const forms = {
             validation : "equalTo",
             validationField: "password"
         },
+    },
+    "clinic" : {
+        "type" : {
+            name:"type",
+            required : true,
+            type:"select",
+            defaultOption:{"text" : "register.common.personal_info.type_options.single_doctor", "value" : 1},
+            options:[
+                {"text" : "register.common.personal_info.type_options.single_doctor", "value" : 1},
+                {"text" : "register.common.personal_info.type_options.clinic", "value" : 1},
+                {"text" : "register.common.personal_info.type_options.health_centre", "value" : 2},
+                {"text" : "register.common.personal_info.type_options.hospital", "value" : 2},
+            ],
+            label:"register.common.clinic.type",
+            shortLabel: "register.common.clinic.type",
+            validation : "notEmpty"
+        },
+        "language" : {
+            name:"language",
+            required : true,
+            type:"select",
+            defaultOption:{"text" : "register.common.personal_info.type_options.single_doctor", "value" : 1},
+            options:[
+                {"text" : "register.common.personal_info.language_options.english", "value" : "en"},
+                {"text" : "register.common.personal_info.language_options.spanish", "value" : "es"},
+                {"text" : "register.common.personal_info.language_options.french", "value" : "fr"}
+            ],
+            label:"register.common.clinic.type",
+            shortLabel: "register.common.clinic.type",
+            validation : "notEmpty"
+        },
+        "country" : {
+            name:"country",
+            required : true,
+            type:"select",
+            defaultOption:{"text" : "register.common.clinic.country", "value" : ""},
+            options:[],
+            option : {
+                "value" : "id",
+                "text" : "code"
+            },
+            optionsUrl: process.env.REACT_APP_API_URL+"/countries",
+            label:"register.common.personal_info.country",
+            shortLabel: "register.common.personal_info.country",
+            validation : "notEmpty"
+        }
     },
     "key_generation" : {
         "confirm":{
