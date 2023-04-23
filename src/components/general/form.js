@@ -156,6 +156,7 @@ class Form extends Component {
                             component={FieldSherwood}
                             key={key}
                             uuidSurvey={this.props.uuidSurvey}
+                            department={this.props.department}
                             uuidPatient={this.props.uuidPatient}
                             uuidInvestigation={this.props.uuidInvestigation}
                             hideTitle = { currentSection.length === 1 }

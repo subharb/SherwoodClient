@@ -94,6 +94,7 @@
         "data-collection" : ["Form", "Formulario", "Forme"],
         "data-collections" : ["Surveys", "Encuestas", "Enquêtes"],
         "sections" : ["Sections", "Secciones", "Sections"],
+        "appointment" : ["Next Appointment", "Próxima Cita", "Prochaine Rendez-Vous"],
         "medical_history_ai" : ["Medical History AI", "Historia Clínica AI", "Historique médical AI"],
         "send_to_email" : ["Send to email", "Enviar por correo electrónico", "Envoyer par email"],
         "generate_medical_history" : ["Generate Medical History", "Generar Historia Clínica", "Générer l'histoire médicale"],
@@ -720,7 +721,8 @@
                     }
                 },
                 "form_appointment" : {
-                    "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"]
+                    "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"],
+                    "no_agenda_department" : ["Create an agenda for this department", "Cree una agenda para este departamento", "Créez un agenda pour ce département"]
                 }
             },
             "shoe_shop":{
@@ -997,8 +999,24 @@
             "personal_info" : {
                 "name" : ["Name", "Nombre", "Prenom"],
                 "surnames" : ["Surnames", "Apellidos", "Nom" ],
-                "surname" : ["Surname", "Apellido", "Nom"],
-                "country" : ["Country", "País", "Pays"]
+                "surname" : ["Surname", "Apellido", "Nom"]
+            },
+            "clinic" : {
+                "country" : ["Country", "País", "Pays"],
+                "type" : ["Type", "Tipo", "Type"],
+                "type_options" : {
+                    "single_doctor" : ["Single doctor Clinic", "Clínica de un solo doctor", "Clinique d'un seul médecin"],
+                    "clinic" : ["Clinic", "Clínica", "Clinique"],
+                    "health_centre" : ["Health Centre", "Centro de Salud", "Centre de santé"],
+                    "hospital" : ["Hospital", "Hospital", "Hôpital"]
+                },
+                "language" : ["What language do you want to use?", "¿Qué idioma desea utilizar?", "Quelle langue souhaitez-vous utiliser ?"],
+                "language_options" : {
+                    "english" : ["English", "Inglés", "Anglais"],
+                    "spanish" : ["Spanish", "Español", "Espagnol"],
+                    "french" : ["French", "Francés", "Français"]
+                }
+
             },
             "contact_info" : {
                 "email" : ["Email", "Email", "Email"],
@@ -1169,6 +1187,7 @@
                 "medical_history_ai" : ["Medical History AI", "Historia Médica AI", "Historique médical AI"],
                 "medical_history_template" : ["Medical History Template", "Historia Médica de Plantilla", "Historique médical Modèle"],
                 "medical_history_template_fill" : ["Medical History Template AutoFill", "Historia Médica de Plantilla AutoFill", "Historique médical Modèle AutoFill"],
+                "appointment" : ["Appointment", "Cita", "Rendez-vous"],
                 "evaluation" : ["Evaluation", "Evaluación", "Evaluation"],
                 "radio" : ["Radio button", "Radio button", "Radio button"],
                 "autocomplete" : ["Autocomplete", "Autocomplete", "Autocomplete"],

@@ -85,7 +85,7 @@ export default function FillDataCollection(props) {
         return(
             <SectionForm initData={props.initData} key={props.dataCollection.uuid} 
                 country={props.country} uuidInvestigation={props.uuidInvestigation}
-                fields={fields} uuidPatient={props.uuidPatient}
+                fields={fields} uuidPatient={props.uuidPatient} department={props.department}
                 uuidSurvey = {props.dataCollection.uuid} alterSubmitButton={props.alterSubmitButton}
                 callBackSectionForm = {(values, buttonSubmitted) => saveRecords(values, buttonSubmitted)}/>
         )

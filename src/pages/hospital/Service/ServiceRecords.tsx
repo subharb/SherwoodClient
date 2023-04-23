@@ -91,7 +91,8 @@ const ServiceRecords: React.FC<ServiceRecordsProps> = ({ submissions, patients, 
         return (<EnhancedTable noHeader noSelectable selectRow={(index:number) => goToSubmission(index)} 
             rows={surveyRecords.map((record, index) => {
                 const dateCreated = new Date(record.createdAt);
-                return hasPersonalPermmissions ? {id : index, researcher : record.researcher, patient : `${record.patient.personalData.name} ${record.patient.personalData.surnames}`, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`} : 
+                const patientName = record.patient ? `${record.patient.personalData.name} ${record.patient.personalData.surnames}` : "";
+                return hasPersonalPermmissions ? {id : index, researcher : record.researcher, patient : patientName, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`} : 
                 {id : index, researcher : record.researcher, idPatient : record.patient.id, date : `${dateCreated.toLocaleDateString()} ${dateCreated.toLocaleTimeString()}`}
                 
             })} headCells={headerTable} />

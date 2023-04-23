@@ -29,6 +29,7 @@ import { Field, FieldArray } from 'redux-form'
 import FileBase64 from './FileBase64';
 import DrugSelector from './SmartFields/DrugSelector';
 import { formatDateByLocale } from '../../utils';
+import AppointmentField from './SmartFields/AppointmentField';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -266,6 +267,10 @@ class FieldSherwood extends PureComponent{
             case "drug_selector" : 
                 return <DrugSelector error={errorState} freeSolo chemicalComponent={params.chemicalComponent} 
                             drugSelected={(drug) => this.drugSelected(drug)} country={country} />
+            case "appointment" : 
+                return <AppointmentField uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} value={input.value}
+                            label={label} department={this.props.department}
+                            appointmentSelected={(date) => this.props.input.onChange(date)} />
             case "multioption" : 
                     const optionButtons = options.map(option => {
                         if(input.value !== "" && input.value.find((selection) => selection.multioption === option.value)){
@@ -455,6 +460,7 @@ class FieldSherwood extends PureComponent{
                     <FileBase64 label={labelString} error={errorState} value={input.value} callBackBase64={this.imageBase64} />
                 )
             case "edd":
+            case "appointment":
             case "bmi":    
             case "allergy":
             case "family-background":

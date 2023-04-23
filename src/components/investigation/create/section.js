@@ -112,6 +112,8 @@ class Section extends Component{
                         {"label": "investigation.create.edc.medical_history_ai", "value" : "medical_history_ai"},
                         {"label": "investigation.create.edc.medical_history_template", "value" : "medical_history_template"},
                         {"label": "investigation.create.edc.medical_history_template_fill", "value" : "medical_history_template_fill"},
+                        {"label": "investigation.create.edc.appointment", "value" : "appointment"},
+                        
                 ],
                 callBackOnChange: (optionSeleced) => {
                     console.log("Call back on change", optionSeleced);
