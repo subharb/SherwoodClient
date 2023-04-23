@@ -84,7 +84,7 @@ export function CustomThemeProvider(props){
         console.log(themeCustom);
         themeApp.palette.background.default = themeCustom.params.primary.background;
         themeApp.palette.primary.main = themeCustom.params.primary.color;
-        themeApp.palette.secondary.main = themeCustom.params.primary.color;
+        themeApp.palette.secondary.main = themeCustom.params.colorWhiteBackground ? themeCustom.params.colorWhiteBackground : themeCustom.params.primary.color;
         themeApp.header.background = themeCustom.params.header ? themeCustom.params.header.background : themeCustom.params.primary.background;
         themeApp.palette.primary.color = themeCustom.params.primary.color;
         themeApp.sidebar.background = themeCustom.params.sidebar.background;

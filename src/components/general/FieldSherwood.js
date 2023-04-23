@@ -216,7 +216,7 @@ class FieldSherwood extends PureComponent{
         else return null;
     }
     render(){
-        const {input, label, meta, hideTitle, type, options, size, removeClass, template,  validation, activeLanguage, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
+        const {input, color, label, meta, hideTitle, type, options, size, removeClass, template,  validation, activeLanguage, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
@@ -387,7 +387,7 @@ class FieldSherwood extends PureComponent{
                 return (
                     <Grid container style={{paddingTop:'0.5rem'}}>
                         <Grid item xs={12}>
-                            <InputLabel id={input.name}>{labelString}</InputLabel>
+                            <InputLabel color={color} id={input.name}>{labelString}</InputLabel>
                         </Grid>
                         <Grid item xs={12}>
                             <EvaluateContainer>
@@ -430,13 +430,14 @@ class FieldSherwood extends PureComponent{
                 return(
                     <Box mt={1}>
                         <TextFieldSherwood {...input}  type="password" variant="outlined"
-                            label={labelString} error={errorState} 
+                            label={labelString} error={errorState} color={color}
                             helperText={errorString} />
                     </Box>
                 )  
             case "autocomplete":
                 return(
                     <Autocomplete
+                        color={color}
                         id={input.name}
                         options={this.state.options}
                         freeSolo
@@ -452,12 +453,12 @@ class FieldSherwood extends PureComponent{
                 return (
                     <File label={labelString} mode="form"
                         imagesSelected = {(images) => this.imagesSelected(images) }
-                        type={type} {...input} 
+                        type={type} {...input} color={color}
                         value={input.value} />
                 )
             case "file_base64" : 
                 return (
-                    <FileBase64 label={labelString} error={errorState} value={input.value} callBackBase64={this.imageBase64} />
+                    <FileBase64  color={color} label={labelString} error={errorState} value={input.value} callBackBase64={this.imageBase64} />
                 )
             case "edd":
             case "appointment":
@@ -476,7 +477,7 @@ class FieldSherwood extends PureComponent{
                 return(
                     <SmartField mode="form" formValues={this.props.formValues} label={labelString} type={type}{...input} initialState={Array.isArray(input.value)  ? {listElements: input.value} : null} 
                         variant="outlined" margin={this.typeMargin} error={errorState} country={country} template={template}
-                        uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} uuidSurvey={uuidSurvey}
+                        uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} uuidSurvey={uuidSurvey} color={color}
                         helperText={errorString} resetDiagnose={this.resetDiagnose} typeMargin={this.typeMargin} 
                         size="small" slaves={this.props.slaves} elementSelected={(listDiagnoses) => this.diagnosesSelected(listDiagnoses)} />
                     
@@ -500,7 +501,7 @@ class FieldSherwood extends PureComponent{
                 return(
                     <FieldWrapper noWrap = {this.props.fullWidth}>
                         <TextFieldSherwood {...input} fullWidth variant="outlined" margin={this.typeMargin}
-                            label={labelString} error={errorState} size="small" 
+                            label={labelString} error={errorState} size="small" color={color}
                             helperText={errorString} />
                     </FieldWrapper>
                 )

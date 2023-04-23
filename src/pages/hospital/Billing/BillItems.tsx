@@ -350,12 +350,12 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                         style={{ width: 300 }}
                         renderInput={(params:any) => 
                             <TextField {...params} label="Concept" error={fieldErrors.concept !== ""}
-                                helperText={helperText(BillItemKeys.concept)}
+                                helperText={helperText(BillItemKeys.concept)} color="secondary"
                                 onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
                                 variant="outlined" />
                             }
                     /> : <TextField label="Concept" error={fieldErrors.concept !== ""}
-                            helperText={helperText(BillItemKeys.concept)}
+                            helperText={helperText(BillItemKeys.concept)} color="secondary"
                             onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
                             variant="outlined" />
                 break;
@@ -385,12 +385,14 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                 case "amount":
                     value = <TextField label="Amount" variant="outlined" 
                         helperText={helperText(BillItemKeys.amount)} 
+                        color="secondary"
                         error={fieldErrors.amount !== ""} type="text" 
                         onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />   
                     break;
                 case "number":
                     value = <TextField label={<Translate id={`hospital.billing.item.${col.name}`} />} variant="outlined" 
                         helperText={helperText(BillItemKeys.amount)} 
+                        color="secondary"
                         error={fieldErrors[col.name] !== ""} type="text" 
                         // @ts-ignore: Unreachable code error
                         onChange={(event) => changeField(event.target.value, col.name)} />   
@@ -400,9 +402,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
            field[col.name] = value;
         });
 
-        field = {...field, id: rows.length - 1, delete: <IconButton onClick={() => addCurrentItem()}>
-                         <IconGenerator type="add" />
-                     </IconButton>}
+        field = {...field, id: rows.length - 1, delete: <ButtonAdd  onClick={() => addCurrentItem()}></ButtonAdd >}
         
         rows.push(field)
     }
@@ -476,10 +476,11 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     }
                    
                     <GridBottom hide={print} item xs={12} >
-                        <Button onClick={onCancelBill} data-testid="cancel-modal" color="primary">
+                        <Button onClick={onCancelBill} data-testid="cancel-modal" color="secondary">
                             <Translate id="general.cancel" />
                         </Button>
-                        <Button disabled={items.length === 0} onClick={() => onClickContinue(items)} data-testid="continue-modal" color="primary">
+                        <Button disabled={items.length === 0} onClick={() => onClickContinue(items)} 
+                            data-testid="continue-modal" color="secondary">
                             {renderTextOkButton()}
                         </Button>
                     </GridBottom>

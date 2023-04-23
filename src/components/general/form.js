@@ -165,7 +165,9 @@ class Form extends Component {
                             label={this.props.fields[key].label}
                             validate={[this.sherwoodValidation]}
                             formValues={{...this.labelValues}}
+                            
                             {...this.props.fields[key]}
+                            color="secondary"
                         />
                         {
                             this.renderExtraFields(key)
