@@ -301,7 +301,8 @@ function Patient(props) {
             }
             else{
                 const units = getUnitsResearcher(props.profile.info.uuid, researchers);
-                const surveyDepartment = units.find((unit) => unit.uuid === dataCollectionSelected.unit.uuid).department;
+                const unitSurvey = units.find((unit) => unit.uuid === dataCollectionSelected.unit.uuid);
+                const surveyDepartment = unitSurvey ? units.find((unit) => unit.uuid === dataCollectionSelected.unit.uuid).department : null;
                 return(
                     <FillDataCollection initData = {submission} key={dataCollectionSelected.uuid} dataCollection={dataCollectionSelected} 
                         sectionSelected = {sectionSelected} uuidPatient={uuidPatient} researcher={props.profile.info} idSubmission={idSubmission}
