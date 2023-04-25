@@ -1306,7 +1306,7 @@
                 "ADMIN" : ["Administrator", "Administrador", "Administrateur"],
                 "NURSE" : ["Nurse", "Enfermería", "Infirmière"],
                 "NURSE_PRACTITIONER" : ["Nurse Practitioner", "Enfermera Practicante", "Infirmière Praticienne"],
-                "BUSINESS_MANAGER" : ["Executive director", "Director ejecutivo ", "Directeur général"],
+                "EXECUTIVE_DIRECTOR" : ["Executive director", "Director ejecutivo ", "Directeur général"],
                 "BUSINESS_ASSISTANT" : ["Executive Assistant", "Asistente ejecutivo", "Business Assistant"],
                 "LAB_MANAGER" : ["Lab Manager", "Director de laboratorio", "Directeur de laboratoire"],
                 "LAB_ASSISTANT" : ["Lab technician ", "Técnico laboratorio ", "Technicien de laboratoire"],
