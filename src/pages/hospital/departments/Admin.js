@@ -508,7 +508,7 @@ function Departments(props) {
                         <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                             <Translate id="general.cancel" />
                         </ButtonCancel>
-                        <ButtonContinue onClick={() => props.deleteWardCallBack(uuidDepartmentAddWard, wardToDelete)} data-testid="continue-modal" color="primary">
+                        <ButtonContinue onClick={() => props.deleteWardCallBack(uuidDepartmentAddWard, wardToDelete)} data-testid="continue-modal" color="green">
                             <Translate id="general.continue" />
                         </ButtonContinue>
                     </Grid>
