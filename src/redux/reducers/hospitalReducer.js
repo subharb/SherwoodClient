@@ -211,7 +211,9 @@ export default function reducer(state = initialState, action){
             indexWard = findIndexWard(department, action.uuidWard);
 
             ward = department.wards[indexWard];
-            ward.beds.push(action.bed);
+            let wardBeds = [...ward.beds];
+            wardBeds.push(action.bed);
+            ward.beds = [...wardBeds];
 
             newState.data.departments = [...tempDepartments];
             newState.loading = initialState.loading; 

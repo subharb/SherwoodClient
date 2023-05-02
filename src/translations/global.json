@@ -138,6 +138,8 @@
             "error" : {
                 "default" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
                 "bed-not-exist" : ["Bed does not exist, please refresh the page", "La cama no existe, refresque la página.", "Le lit n'existe pas, veuillez rafraîchir la page"],
+                "delete_busy_bed" : ["Can't delete busy bed", "No se puede borrar una cama ocupada", "Impossible de supprimer le lit occupé"],
+                
                 "bed-assigned" : ["This bed is already busy", "Esta cama ya esta ocupada", "Ce lit est déjà occupé"],
                 "bed-edit-assigned" : ["Can't change a busy bed", "No puede cambiar una cama ocupada", "Impossible de changer un lit occupé"],
                 "patient-not-exist" : ["patient does not exist", "El paciente no existe", "les patients n'existent pas"],

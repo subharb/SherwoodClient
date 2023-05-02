@@ -310,7 +310,7 @@ export function deleteBedAction(uuidInvestigation, uuidDepartment, uuidWard, bed
                 });
             })
             .catch((error) => {
-                dispatch({ type: types.HOSPITAL_ERROR });
+                dispatch({ type: types.HOSPITAL_ERROR, errorCode: error.errorCode });
                 throw error;
             });
     };
@@ -331,7 +331,7 @@ export function createBedAction(uuidInvestigation, uuidDepartment, uuidWard, bed
                 });
             })
             .catch((error) => {
-                dispatch({ type: types.HOSPITAL_ERROR });
+                dispatch({ type: types.HOSPITAL_ERROR, errorCode: error.errorCode });
                 throw error;
             });
     };

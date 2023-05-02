@@ -223,6 +223,15 @@ interface PropsView extends Omit<Props, "editCallBack" | "deleteCallBack" | "add
     
 }
 
+
+enum ModalAction{
+    ASSIGNED_BED_PATIENT = "ASSIGNED_BED_PATIENT",
+    DELETE_BED = "DELETE_BED",
+    EDIT_BED = "EDIT_BED",
+    ERROR_DELETE_BED = "ERROR_DELETE_BED",
+    ADD_BED = "ADD_BED"
+}
+
 export const WardView :React.FC<PropsView> = (props) => <Ward {...props} mode={WardModes.View}/>
 
 const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, patients, inModule,
@@ -236,7 +245,8 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     const [orderChanged, setOrderChanged] = useState(false);
     const [beds, setBeds] = useState<IBed[]>([]);
     const [draggedBedIndex, setDraggedBedIndex ] = useState(-1);
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = React.useState<{show:boolean, action?:ModalAction}>({show:false});
+
     const [bedToEdit, setBedToEdit] = useState<IBed | null>(null);
     const [bedToDelete, setBedToDelete] = useState<IBed | null>(null);
     const [bedToAssign, setBedToAssign] = useState<IBed | null>(null);
@@ -256,7 +266,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     function assignBedPatient(bed:IBed){
         console.log(bed);
         setBedToAssign(bed);
-        setShowModal(true);
+        setShowModal({show:true, action:ModalAction.ASSIGNED_BED_PATIENT});
     }
     
 
@@ -295,14 +305,14 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     }
 
     function resetModal(){
-        setShowModal(false);
+        setShowModal({show:false});
         setBedToEdit(null);
         setBedToDelete(null);
         setAddingBed(false);
     }
     function editBed(bed:IBed){
         if(bed.stays.length === 0){
-            setShowModal(true);
+            setShowModal({show:true, action:ModalAction.EDIT_BED});
             setBedToEdit(bed);
         }
         else{
@@ -310,9 +320,14 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         }
     }
     function deleteBed(bed:IBed){
+        if(bed.stays.filter((stay:any) => stay.dateOut === null).length === 0){
+            setBedToDelete(bed);
+            setShowModal({show:true, action:ModalAction.DELETE_BED});
+        }
+        else{
+            setShowSnackbar({show:true, severity: "warning", message : "hospital.ward.error.delete_busy_bed"});
+        }
         
-        setBedToDelete(bed);
-        setShowModal(true);
     }
     function deleteCallBackForm(){
         if(bedToDelete && deleteCallBack){
@@ -429,8 +444,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                                 type="button" data-testid="add_researcher" 
                                 onClick={() => {
                                     setAddingBed(true);
-                                    setShowModal(true);
-                                }} />
+                                    setShowModal({show:true, action:ModalAction.ADD_BED})}} />
                             
                         </Grid>
                     }
@@ -485,8 +499,9 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         
     }
     useEffect(()=>{
-        if(bedToAssign && error){
+        if(error){
             let messageSnackBar = "";
+            if(bedToAssign){
                 switch(error){
                     case 1:
                         messageSnackBar = "hospital.ward.error.bed-not-exist";
@@ -502,12 +517,22 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         break;
                     default:
                         messageSnackBar = "hospital.ward.error.default"
-                }
-                    
-                setShowSnackbar({show:true, severity: "error", message : messageSnackBar});
-            
+                }                
+            }
+            else if(bedToDelete){
+                switch(error){
+                    case 1:
+                        messageSnackBar = "hospital.ward.error.bed_is_busy";
+                        break;
+                    default:
+                        messageSnackBar = "hospital.ward.error.default"
+                }                
+            }
+            setShowSnackbar({show:true, severity: "error", message : messageSnackBar});
+            resetModal();
         }
-        resetModal();
+        
+        
     }, [error])
 
     useEffect(() =>{
@@ -583,7 +608,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         
                         
                 </Snackbar>
-                <Modal key="modal" open={showModal} closeModal={() => resetModal()}
+                <Modal key="modal" open={showModal.show} closeModal={() => resetModal()}
                     title={bedToEdit ? <Translate id="hospital.ward.edit-bed" /> : addingBed ? <Translate id="hospital.ward.add-bed" /> : bedToDelete ? <Translate id="hospital.ward.delete-bed" /> : null}>
                         <div>
                         {
@@ -595,7 +620,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         {
                             addingBed &&
                             <FormTSFunc fields={BED_FORM} fullWidth callBackForm={addCallBackForm}   
-                                externalError ={showNameError ? "hospital.ward.name-bed-error" : undefined}                           
+                                externalError ={showNameError ? "hospital.ward.error.name-bed-error" : undefined}                           
                                 closeCallBack={() => resetModal()}/>
                         }
                         {
@@ -610,10 +635,10 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                                     </Typography> 
                                 </Grid>
                                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="red" spaceright={1}>
                                         <Translate id="general.cancel" />
                                     </ButtonCancel>
-                                    <ButtonContinue onClick={deleteCallBackForm} data-testid="continue-modal" color="primary">
+                                    <ButtonContinue onClick={deleteCallBackForm} data-testid="continue-modal" color="green">
                                         <Translate id="general.continue" />
                                     </ButtonContinue>
                                 </Grid>

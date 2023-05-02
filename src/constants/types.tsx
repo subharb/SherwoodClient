@@ -10,6 +10,7 @@ export interface IBed{
     stays?:any
 }
 
+
 export interface IWard{
     uuid?:string,
     name:string,
