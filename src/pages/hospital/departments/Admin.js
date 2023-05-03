@@ -410,7 +410,7 @@ function Departments(props) {
     function deleteWardConfirm(ward, uuidDepartment){
         console.log("Borrar sala?");
         const hasPatients = ward.beds.reduce((acc, bed) => {
-            return acc || bed.stays.length > 0
+            return acc || bed.stays.filter((stay) => stay.dateOut === null).length > 0
         }, false)
         if(hasPatients){
           

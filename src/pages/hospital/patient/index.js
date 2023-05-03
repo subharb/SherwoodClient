@@ -630,7 +630,7 @@ function Patient(props) {
                                 <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                     <Translate id="general.cancel" />
                                 </ButtonCancel>
-                                <ButtonContinue onClick={() => discharge()} data-testid="continue-modal" color="primary">
+                                <ButtonContinue onClick={() => discharge()} data-testid="continue-modal" color="green">
                                     <Translate id="general.continue" />
                                 </ButtonContinue>
                             </Grid>

@@ -661,7 +661,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                                     <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                         <Translate id="general.cancel" />
                                     </ButtonCancel>
-                                    <ButtonContinue onClick={assignBedPatientConfirm} data-testid="continue-modal" color="primary">
+                                    <ButtonContinue onClick={assignBedPatientConfirm} data-testid="continue-modal" color="green">
                                         <Translate id="general.continue" />
                                     </ButtonContinue>
                                 </Grid>
