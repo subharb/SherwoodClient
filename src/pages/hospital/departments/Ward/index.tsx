@@ -362,7 +362,9 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     }
     function renderBedButton(bed:IBed){
         let buttonBed = null;
-        const currentPatient = bed.stays.length > 0 && bed.stays[0].dateOut === null && patients ? patients.find((pat:IPatient) => pat.uuid === bed.stays[0].patientInvestigation.uuid) : null;
+        const liveStays = bed.stays.filter((stay:any) => stay.dateOut === null);
+        const currentStay = liveStays.length > 0 ? liveStays[0] : null;
+        const currentPatient = currentStay && patients ? patients.find((pat:IPatient) => pat.uuid === currentStay.patientInvestigation.uuid) : null;
         const personalData = currentPatient ? currentPatient.personalData : null;
         const gender = personalData ? personalData.sex : sexNumberToString(bed.gender); 
                 
@@ -370,8 +372,8 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         let ageYears = null;
         let hasStay:boolean = false;
         let sex = "";
-        if(bed.stays.length > 0 && bed.stays[0].dateOut === null){
-            var date1 = new Date(bed.stays[0].dateIn);
+        if(currentStay){
+            var date1 = new Date(currentStay.dateIn);
             var date2 = new Date();
             var Difference_In_Time = date2.getTime() - date1.getTime();
             stayDays = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
@@ -393,7 +395,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
             case WardModes.Edit:
                 buttonBed = <BedButtonEdit name={bed.name} onClickCallBack={() => editBed(bed)}
                                 active={bed.active} deleteCallBack={() => deleteBed(bed)}
-                                gender={sexNumberToString(bed.gender)} 
+                                gender={sexNumberToString(bed.gender)} showPersonalData={hasStay} patient={personalData}
                             /> 
             break;
             case WardModes.View:

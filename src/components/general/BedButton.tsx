@@ -150,7 +150,7 @@ const BedButton:React.FC<Props> = (props) => {
                             <HotelIcon/> 
                             </div>
                             {
-                                props.mode === "edit" &&
+                                props.mode === "edit" && !props.showPersonalData &&
                                 <ButtonDelete onClick={(e:Event) => deleteAction(e)}  />
                             }
                         </div>
