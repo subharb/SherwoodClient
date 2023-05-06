@@ -121,10 +121,10 @@ export function Analytics(props) {
         }
         return(
             <>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     { renderDepartmentSelector() }
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <DatesSelector onCallBack={datesSelected} />
                 </Grid>
             </>
