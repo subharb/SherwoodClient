@@ -258,7 +258,7 @@ function validate(values, props){
     }
   
     Object.keys(dictFields).forEach(key => {
-        console.log(key+" : "+dictFields[key].validation+" "+values[key]);
+        //console.log(key+" : "+dictFields[key].validation+" "+values[key]);
         //Se puede comparar con otro valor del form si existe el campo validationField o con un valor que se pasa en validationValue
         const fieldValueCompare = dictFields[key].validationField ? values[dictFields[key].validationField] : dictFields[key].validationValue ? props.translate(dictFields[key].validationValue) : null;
         const valueField = dictFields[key].type === "textarea" && typeof values[key] !== "undefined" ? values[key].replace(/<[^>]+>/g, '') : values[key];

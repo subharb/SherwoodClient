@@ -30,6 +30,7 @@ import FileBase64 from './FileBase64';
 import DrugSelector from './SmartFields/DrugSelector';
 import { formatDateByLocale } from '../../utils';
 import AppointmentField from './SmartFields/AppointmentField';
+import Multioption from './Multioption';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -272,28 +273,8 @@ class FieldSherwood extends PureComponent{
                             label={label} department={this.props.department}
                             appointmentSelected={(date) => this.props.input.onChange(date)} />
             case "multioption" : 
-                    const optionButtons = options.map(option => {
-                        if(input.value !== "" && input.value.find((selection) => selection.multioption === option.value)){
-                            return <ButtonCheck onClick={() => this.multiOptionSelected(option.value)}>{option.label}</ButtonCheck>
-                        }
-                        return <ButtonEmptyCheck onClick={() => this.multiOptionSelected(option.value)}>{option.label}</ButtonEmptyCheck> 
-                    });
-                    console.log("optionButtons",input.value);
-                    return ([
-                        <Grid container style={{paddingTop:'0.5rem'}}>
-                            {
-                                !labelString.includes("general.") &&
-                                <Grid item  xs={12}>
-                                    <InputLabel id={input.name}>{labelString}</InputLabel>
-                                </Grid>
-                            }
-                            <Grid item  xs={12}>
-                                <ButtonGroup color="primary" aria-label="outlined primary button group" style={{flexWrap: "wrap"}}>
-                                    {optionButtons}
-                                </ButtonGroup>
-                            </Grid>
-                        </Grid>
-                    ]);
+                    return <Multioption mode="input" value={input.value} options={options} label={labelString} name={input.name} multiOptionSelected={this.multiOptionSelected} />
+                    
             case "radio":
                 return(
                     <Grid container style={{paddingTop:'0.5rem'}}>

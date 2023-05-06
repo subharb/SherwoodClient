@@ -11,6 +11,7 @@ import SmartField from '../../../general/SmartFields';
 import { dateToFullDateString, fullDateFromPostgresString, getData, isSmartField, stringDatePostgresToDate } from '../../../../utils';
 import { ALL_SMARTFIELDS_TYPES, MEDICAL_HISTORY_FIELDS } from '../../../../constants';
 import { PERMISSION } from '../../../../constants/types';
+import Multioption from '../../../general/Multioption';
 
 /**
  * Component that shows all the records/submissions of a section of a patient in a survey
@@ -86,7 +87,7 @@ function ShowRecordsSection(props) {
             )
         }
         else if(valueRecord.surveyField.type === "multioption"){
-            return valueRecord.value.map((record) => record.multioption).join(", ");
+            return (<Multioption mode="show" label= {field.name} options={field.options} value={valueRecord.value} />);
         }
         else if(isSmartField(valueRecord.surveyField.type)){
             return <SmartField type={valueRecord.surveyField.type} mode="show" 

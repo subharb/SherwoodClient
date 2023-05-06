@@ -260,7 +260,7 @@ function ShareInvestigation(props) {
                                 />
                         </Grid>
                         <Grid item xs={12} >
-                            <ButtonContinue onClick={shareInvestigation} data-testid="submit" spaceright={1} >
+                            <ButtonContinue onClick={shareInvestigation} data-testid="submit" color="green" spaceright={1} >
                                 <Translate id="investigation.share.share" />
                             </ButtonContinue>
                         </Grid>

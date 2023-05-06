@@ -609,7 +609,7 @@
                             "box" : ["Create Box", "Crear Box", "Créer une box"],
                             "box_edit" : ["Edit Box", "Editar Box", "Modifier la box"],
                             "agenda" : ["Create Agenda", "Crear Agenda", "Créer une agenda"],
-                            "service" : ["Create Service", "Crear Servicio", "Créer un service"],
+                            "service" : ["Create Precio", "Crear Precio", "Créer un prix"],
                             "service_edit" : ["Edit Service", "Editar Servicio", "Modifier le service"],
                             "delete_service_confirm" : ["Delete service", "Eliminar servicio", "Supprimer le service"],
                             "error_service_agenda" : ["Error", "Error", "Erreur"],

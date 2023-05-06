@@ -316,7 +316,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                 if(formSearch.length === 0){
                     formSearch.push(ID_FIELD);
                 } 
-                
+                console.log("Patients Results", props.patients);
                 return(
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
