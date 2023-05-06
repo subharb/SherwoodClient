@@ -11,7 +11,7 @@ import { MonetizationOn } from '@material-ui/icons';
 import HotelIcon from '@material-ui/icons/Hotel';
 
 export const Container = styled("div")<{active?:boolean, genderColor:string}>`
-    width:10.6rem;
+    width:10rem;
     height:10rem;
     background: #FFFFFF;
     border: 2px solid #6F6C6D;
@@ -23,10 +23,14 @@ export const Container = styled("div")<{active?:boolean, genderColor:string}>`
     align-content: center;
     flex-direction: column;
     text-align: center;
-    margin-left:1rem;
-    margin-top:1rem;
+    margin-right:1rem;
+    margin-bottom:1rem;
     padding:0.5rem;
     opacity:${props => props.active ? '1.0' : '0.7'};
+    @media (min-width: 768px) {
+        width:10.6rem;
+        height:10rem;
+      }
 `;
 
 export const SmallTypography = styled(Typography)`
