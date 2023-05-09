@@ -95,6 +95,7 @@ export const HOSPITAL_LAB_RESULT = "/lab/result/:idSubmission/patient/:uuidPatie
 export const ROUTE_401 = "/auth/401";
 export const HOSPITAL_BILLING = "/billing";
 export const HOSPITAL_SHOES = "/shoes";
+export const HOSPITAL_SHOES_REQUEST = "/shoes/request/:idRequest";
 export const HOSPITAL_BILLING_PATIENT = "/billing/patient/:uuidPatient";
 export const HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE = "/departments/settings";
 export const HOSPITAL_MY_DEPARTMENTS_ROUTE = "/departments";
@@ -193,6 +194,12 @@ const hospitalRoutes = {
             name: "Hospital Lab",
             component: TestsHome
         },
+        {
+            path: HOSPITAL_SHOES_REQUEST,
+            name: "Hospital Lab",
+            component: TestsHome
+        },
+        
         {
             path: HOSPITAL_PHARMACY_REQUEST,
             name: "Hospital Pharmacy",

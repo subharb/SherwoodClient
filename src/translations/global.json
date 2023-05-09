@@ -63,6 +63,7 @@
             "select" : ["Select", "Seleccionar", "Pour sélectionner"],
             "family-background" : ["Select", "Seleccionar", "Pour sélectionner"],
             "background" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "file" : ["Select files", "Seleccionar archivos", "Sélectionnez les fichiers"],
             "ict" : ["Add diagnosis", "¿Añadir diagnóstico?", "Ajouter un diagnostic ?"],
             "allergy" : ["Select", "Seleccionar", "Pour sélectionner"],
             "treatment_regular" : ["Select", "Seleccionar", "Pour sélectionner"],
@@ -98,6 +99,19 @@
         "medical_history_ai" : ["Medical History AI", "Historia Clínica AI", "Historique médical AI"],
         "send_to_email" : ["Send to email", "Enviar por correo electrónico", "Envoyer par email"],
         "generate_medical_history" : ["Generate Medical History", "Generar Historia Clínica", "Générer l'histoire médicale"],
+        "search_box" : {
+            "filter" : ["Filter", "Filtrar", "Filtrer"],
+            "filters" : {
+                "low" : ["Low", "Bajo", "Faible"],
+                "finished" : ["Finished", "Finalizado", "Completé"],
+                "completed" : ["Completed", "Completado", "Completé"],
+                "accepted" : ["Accepted", "Aceptado", "Accepté"],
+                "pending_payment" : ["Pending payment", "Pago pendiente", "Paiement en attente"],
+                "some_accepted" : ["Some accepted", "Algunos aceptados", "Certains acceptés"]
+            },
+            "all" : ["All", "Todos", "Tous"]
+
+        },
         "patient" : {
             "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],

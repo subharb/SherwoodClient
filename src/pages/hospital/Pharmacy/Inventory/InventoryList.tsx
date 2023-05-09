@@ -7,14 +7,14 @@ import { InventoryLocalizedProps } from '.';
 import { EnhancedTable } from '../../../../components/general/EnhancedTable';
 import Form from '../../../../components/general/form';
 import { FormValues, IForm } from '../../../../components/general/formTSFunction';
-import { ButtonAccept, ButtonCancel, ButtonContinue, FieldWrapper } from '../../../../components/general/mini_components';
+import { ButtonCancel, ButtonContinue } from '../../../../components/general/mini_components';
 import { ColourChip } from '../../../../components/general/mini_components-ts';
 
 import Modal from '../../../../components/general/modal';
 import Loader from '../../../../components/Loader';
 import { translateOrderOptions } from '../../../../utils';
-import { ChipContainer } from '../../Service/RequestInfo';
 import { IPharmacyItem } from '../types';
+import SearchBox from '../../../../components/general/SearchBox';
 
 const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, showAddPharmacyItem, loading, showSnackbar,setShowAddPharmacyItem, translate, addPharmacyItemCallBack, updatePharmacyItemCallBack, deleteItemCallback: callbackDeleteItem }) => {
     const [filteredItems, setFilteredItems] = React.useState<IPharmacyItem[]>(pharmacyItems);
@@ -57,6 +57,7 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
         const providersSet = new Set(providers);
         const providersArray = Array.from(providersSet);
         const providersOptions = providersArray.map((provider: string) => ({value: provider, label: provider}));
+        providersOptions.unshift({value: "", label: translate("hospital.search_box.all").toString()})
         setProviderOptions(providersOptions);
         
     }, [pharmacyItems])
@@ -348,41 +349,9 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
                     </div>
             </Snackbar>
             <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <Grid item xs={6}>
-                                    <TextField fullWidth onChange={(event) => filterItems(event.target.value)} variant="outlined" label={translate("pages.hospital.pharmacy.filter_box.search_item")} />
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={12} container alignItems='center'>
-                                <Grid item zeroMinWidth>
-                                    <Typography variant="body2" component="span">Filter:</Typography>
-                                    <ChipContainer><ColourChip clickable rgbcolor={orange[500]} onClick={filterStatusLow} label={translate("pages.hospital.pharmacy.pharmacy_items.status_values.low")}  /></ChipContainer> 
-                                    <ChipContainer><ColourChip clickable rgbcolor={red[500]} onClick={filterStatusFinished} label={translate("pages.hospital.pharmacy.pharmacy_items.status_values.finished")}  /></ChipContainer> 
-                                </Grid>
-                                <Grid xs={4} item  >
-                                    <div style={{paddingLeft:'1rem'}}>
-                                        <FormControl fullWidth variant="outlined" margin="dense"  >
-                                            <InputLabel id="provider">{providerFilter ? providerFilter : "Provider"}</InputLabel>
-                                                <Select
-                                                    labelId="provider"
-                                                    id="provider"
-                                                    label={providerFilter}
-                                                    onChange={(event) => setProviderFilter(event.target.value as string)}
-                                                >
-                                                { providerOptions.map((option) => {
-                                                    return <MenuItem value={option.value}>{option.label}</MenuItem>
-                                                }) }
-                                                </Select>
-                                        </FormControl>
-                                    </div>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                </Grid>
+                <SearchBox selectFilter={{value:providerFilter, options:providerOptions, callBack:setProviderFilter}} filterItems={[
+                        {label:"low", color:orange[500], callBack:filterStatusLow},{label:"finished", color:red[500], callBack:filterStatusFinished},
+                    ]} textField={{label:"pages.hospital.pharmacy.pharmacy_items.name", callBack:setNameFilter}} />
                 <Grid item xs={12}>
                     {
                         renderTable()

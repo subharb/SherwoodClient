@@ -1,13 +1,11 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import PropTypes from 'prop-types';
-import { Translate } from 'react-localize-redux';
 
 import { Box, Grid, Paper, Typography, Button, IconButton, Card } from '@material-ui/core';
-import Form  from '../../../components/general/form';
 import { useDispatch, useSelector } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom';
-import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { HOSPITAL_LAB_REQUEST, HOSPITAL_LAB, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_LAB_RESULT, HOSPITAL_IMAGING_REQUEST, HOSPITAL_IMAGES, } from '../../../routes';
+
+import { HOSPITAL_LAB_REQUEST, HOSPITAL_LAB, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_LAB_RESULT, HOSPITAL_IMAGING_REQUEST, HOSPITAL_IMAGES, HOSPITAL_SHOES_REQUEST, } from '../../../routes';
 import Loader from '../../../components/Loader';
 
 import {
@@ -64,8 +62,11 @@ export function TestsHomeComponent(props) {
         if(props.type === TYPE_REQUEST_LAB){
             nextUrl = HOSPITAL_LAB_REQUEST.replace(":idRequest", request.id)    
         }
-        else{
+        else if(props.type === ServiceType.IMAGING){
             nextUrl = HOSPITAL_IMAGING_REQUEST.replace(":idRequest", request.id)
+        }
+        else{
+            nextUrl = HOSPITAL_SHOES_REQUEST.replace(":idRequest", request.id)
         }
         if(nextUrl){
             history.push(nextUrl);

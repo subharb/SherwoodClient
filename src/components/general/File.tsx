@@ -256,7 +256,7 @@ const File:React.FC<Props> = (props) => {
     }, [filesSelected]);
     useEffect(() =>{
         async function loadFiles(){
-            if(typeof prevValue === "undefined" && props.value && props.value.length > 0 && props.mode === "show" ){
+            if(typeof prevValue === "undefined" && props.value && props.value.length > 0 && (props.mode === "show" || filesSelected.length === 0)){
                 const tempFiles:FileUpload[] = props.value.map(file => {
                     return {
                         remoteName:file.file,

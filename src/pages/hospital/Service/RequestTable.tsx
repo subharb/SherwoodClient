@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { blue, brown, green, orange, red, yellow } from '@material-ui/core/colors';
 import { ContactSupportOutlined } from '@material-ui/icons';
 import React, { useEffect } from 'react';
@@ -13,6 +13,7 @@ import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPo
 import axios from '../../../utils/axios';
 
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
+import SearchBox from '../../../components/general/SearchBox';
 
 const requestGroupStatus = (request:IRequest) => {
     // Si una request es completada, el estado es completada. Si no, devuelvo los estados de las requests
@@ -28,7 +29,7 @@ const requestGroupStatus = (request:IRequest) => {
 }
 
 export const statusToColor = (status:RequestStatus) => {
-    let colour = null;
+    let colour = "#000";
     switch(status){
         case RequestStatus.PENDING_APPROVAL:
         case RequestStatus.PENDING_PAYMENT:
@@ -174,10 +175,63 @@ interface RequestTableComponentProps extends Omit< RequestTableProps, 'uuidInves
     
 }
 
+interface Row {
+    id: number;
+    nhc: string | number;
+    service: string | JSX.Element;
+    department: string;
+    patient: string;
+    researcher: string;
+    status: JSX.Element;
+    type: string | JSX.Element;
+    date: string;
+}
 export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, fillPending, surveys, requests, serviceType,
                                                                                 showActions, encryptionData, loading, callBackRequestSelected }) => {
-    const {departments} = useDepartments();                                                                                    
     
+    
+    const {departments} = useDepartments();    
+    const [rows, setRows] = React.useState<Row[]>([]);
+    const [filteredRows, setFilteredRows] = React.useState<Row[]>([]);
+    const [patientName, setPatientName] = React.useState("");
+    const [statusFilter, setStatusFilter] = React.useState<RequestStatus | null>(null);
+
+    useEffect(() => {
+        setFilteredRows(rows.filter((row: Row) => {
+            return (row.patient!.toLocaleLowerCase().includes(patientName) && (statusFilter !== null ? row.status.props.status === statusFilter : true))
+                        
+        }));
+        
+    }, [patientName, statusFilter]);
+    
+    useEffect(() => {
+        const rows = requests.sort((reqA, reqB) => stringDatePostgresToDate(reqB.updatedAt).getTime() - stringDatePostgresToDate(reqA.updatedAt).getTime() ).map((request) => {            
+            return {
+                id: request.id,
+                nhc: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.id : "",
+                service: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation.length > 1 ? <ColourChip rgbcolor={serviceToColor(request.type)} label={<Translate id="general.several" />} /> : <ColourChip rgbcolor={serviceToColor(request.type)} label={request.requestsServiceInvestigation[0].serviceInvestigation.service.name} /> : "",
+                department:request.departmentRequest ? request.departmentRequest.name : "",
+                patient:request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id.toLocaleString() : "",
+                researcher: researcherFullName(request.researcher),            
+                status: <RequestStatusToChip status={request.status} />,
+                type : request.requestsServiceInvestigation[0] ? <ServiceTypeToChip type={request.requestsServiceInvestigation[0].serviceInvestigation.service.type} /> : "", 
+                date: dateAndTimeFromPostgresString("es", request.updatedAt),
+            }
+        })
+        setRows(rows);
+        setFilteredRows(rows);
+    }, [requests]);
+
+    function applyStatusFilter(status:RequestStatus){
+        if(status === statusFilter){
+            setStatusFilter(null);
+        }
+        else{
+            setStatusFilter(status);
+        }
+        
+    }
+
     function fillRequest(id:number){
         const request = requests.find((req) => req.id === id);
         if(request){
@@ -235,31 +289,20 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     }
      
     
-    const rows = requests.sort((reqA, reqB) => stringDatePostgresToDate(reqB.updatedAt).getTime() - stringDatePostgresToDate(reqA.updatedAt).getTime() ).map((request) => {
-        // let survey = null
-        // if(request.requestsServiceInvestigation[0].survey){
-        //     const aSurvey = request.requestsServiceInvestigation[0].survey as ISurvey;
-        //     survey = surveys.find((survey) => survey.uuid === aSurvey.uuid);
-        // }
-        
-        return {
-            id: request.id,
-            nhc: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.id : "",
-            service: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation.length > 1 ? <ColourChip rgbcolor={serviceToColor(request.type)} label={<Translate id="general.several" />} /> : <ColourChip rgbcolor={serviceToColor(request.type)} label={request.requestsServiceInvestigation[0].serviceInvestigation.service.name} /> : "",
-            
-            department:request.departmentRequest ? request.departmentRequest.name : "",
-            patient:request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id : "",
-            researcher: researcherFullName(request.researcher),            
-            status: <RequestStatusToChip status={request.status} />,
-            type : request.requestsServiceInvestigation[0] ? <ServiceTypeToChip type={request.requestsServiceInvestigation[0].serviceInvestigation.service.type} /> : "", 
-            date: dateAndTimeFromPostgresString("es", request.updatedAt),
-        }
-    })
+    
     let actions = null;
     
     return (
-        <>
-          <EnhancedTable  selectRow={(id:number) => fillRequest(id)} noHeader noSelectable rows={rows} headCells={headCells} actions={actions} />  
-        </>
+        <Grid container spacing={2}>
+            <SearchBox textField={{label:"general.patient", callBack:setPatientName}} filterItems={[
+                {label:"completed", color:statusToColor(RequestStatus.COMPLETED), callBack:() => applyStatusFilter(RequestStatus.COMPLETED)},
+                {label:"pending_payment", color:statusToColor(RequestStatus.PENDING_PAYMENT), callBack:() => applyStatusFilter(RequestStatus.PENDING_PAYMENT)},
+                {label:"accepted", color:statusToColor(RequestStatus.ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.ACCEPTED)},
+                {label:"some_accepted", color:statusToColor(RequestStatus.SOME_ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.SOME_ACCEPTED)},
+            ]} />
+            <Grid item xs={12}>
+                <EnhancedTable  selectRow={(id:number) => fillRequest(id)} noHeader noSelectable rows={filteredRows} headCells={headCells} actions={actions} />  
+            </Grid>
+        </Grid>
     );
 };
