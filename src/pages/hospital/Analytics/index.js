@@ -34,8 +34,8 @@ const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [6
 const COUNT_AGE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 export function Analytics(props) {
 	const history = useHistory();
-	const [startDate, setStartDate] = useState(new Date(2020, 0, 1).getTime());
-	const [endDate, setEndDate] = useState(Date.now());
+	const [startDate, setStartDate] = useState(null);
+	const [endDate, setEndDate] = useState(null);
 	const [statsFirstMonitoring, setStatsFirstMonitoring] = useState(null);
     const [loadingStatsFirstMonitoring, setLoadingStatsFirstMonitoring] = useState(false);
 	const [mostCommonDiagnosis, setMostCommonDiagnosis] = useState(null);
@@ -160,7 +160,7 @@ export function Analytics(props) {
     }, [filteredPatients]);
     
     useEffect(() => {
-        if(departmentSelected && props.investigations.currentInvestigation){
+        if(departmentSelected && props.investigations.currentInvestigation && startDate && endDate){
             setLoadingPatientsInfo(true);
             getPatientIdFromDepartment(props.investigations.currentInvestigation.uuid, departmentSelected, startDate, endDate)
                 .then(response => {
@@ -174,7 +174,7 @@ export function Analytics(props) {
                 })
         }
         
-    }, [departmentSelected, props.investigations.currentInvestigation]);
+    }, [departmentSelected, props.investigations.currentInvestigation, startDate , endDate]);
 
     useEffect(() => {
         let tempFilteredPatients = [];
@@ -219,10 +219,10 @@ export function Analytics(props) {
 			
 		}
 
-		if (props.investigations.currentInvestigation) {
+		if (props.investigations.currentInvestigation && startDate && endDate) {
 			getStats();
 		}
-	}, [startDate, endDate, props.investigations]);
+	}, [startDate, endDate, props.investigations.currentInvestigation]);
 
     function renderCore(){
         if(loadingPatientsInfo){
