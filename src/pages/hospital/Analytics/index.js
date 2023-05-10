@@ -278,16 +278,13 @@ export function Analytics(props) {
 					</Grid>
 				}
                 {
-                    !departmentSelected &&
+                    (!departmentSelected || departmentSelected === 'all' ) &&
                     <>
                         <Grid item xs={12}> 
                             <SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
                                 uuidInvestigation={props.investigations.currentInvestigation.uuid}
                                 startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
                                 title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
-                        </Grid>
-                        <Grid item xs={12} lg={5} sm={6}> 
-                            
                         </Grid>
                         <Grid item xs={12} >
                             <TimeTable title={props.translate("hospital.analytics.graphs.most-common-diagnosis.title")} loading={!mostCommonDiagnosis}
