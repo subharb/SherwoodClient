@@ -4,6 +4,7 @@
     "general" : {
         "yes" : ["Yes", "Si", "Oui"], 
         "no" : ["No", "No", "Non"], 
+        "total" : ["Total", "Total", "Total"],
         "not_defined" : ["Not defined", "No definido", "Non défini"],
         "week_days" : {
             "monday" : ["Monday", "Lunes", "Lundi"],

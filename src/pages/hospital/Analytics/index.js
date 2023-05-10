@@ -26,6 +26,7 @@ import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import { FUNCTIONALITY } from '../../../constants/types';
 import OutpatientsStats from './OutpatientsStats';
 import { TypographyStyled } from '../../../components/general/mini_components';
+import CommonDiagnosis from './CommonDiagnosis';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -204,9 +205,7 @@ export function Analytics(props) {
 							})
 			getStatsMostCommonDiagnosis(props.investigations.currentInvestigation.uuid, startDate, endDate)
 							.then(response => {
-								setMostCommonDiagnosis(Object.entries(response.stats).map(keyValue => {
-									return [keyValue[0], keyValue[1]]
-								}));
+								setMostCommonDiagnosis(response.stats);
 							})
             getStatsActivityService(props.investigations.currentInvestigation.uuid, startDate, endDate)
                             .then(response => {
@@ -287,11 +286,8 @@ export function Analytics(props) {
                                 title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
                         </Grid>
                         <Grid item xs={12} >
-                            <TimeTable title={props.translate("hospital.analytics.graphs.most-common-diagnosis.title")} loading={!mostCommonDiagnosis}
-                                header={[props.translate("hospital.analytics.graphs.most-common-diagnosis.diagnostic"), props.translate("hospital.analytics.graphs.most-common-diagnosis.count")]}
-                                data={mostCommonDiagnosis}
-                                actionCallBack={(value) => changeDate(value)}
-                            />
+                            <CommonDiagnosis patientsPersonalData={props.investigations.currentInvestigation.patientsPersonalData} 
+                                loading={mostCommonDiagnosis === null} data={mostCommonDiagnosis} />
                         </Grid>
                     </>
                 }

@@ -856,6 +856,21 @@ export function turnsToSchedule(turn){
     return stringDate;
 }
 
+export function countSexPatients(listPatients){
+    let tempCountSex = {male : 0, female : 0};
+    listPatients.forEach(patient => {
+            
+        if (patient.personalData.sex.toLowerCase() === "male") {
+            tempCountSex.male++;
+        }
+        else {
+            tempCountSex.female++;
+        }
+        
+    })
+    return tempCountSex;
+}
+
 export function translateOrderOptions(options, orderValue, translate){
     const translatedOptions = options.map((option) => {
         return {value:option.value, label:translate(option.label).toString()}
