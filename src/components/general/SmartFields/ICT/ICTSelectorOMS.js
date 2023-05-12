@@ -95,12 +95,11 @@ function ICTSelectorOMS(props){
         
     }, [show])
     
-    //const value = textDiagnose ? textDiagnose : props.value;
     const value = props.value ? props.value : textDiagnose;
     return ([
         <FieldWrapper>
             <div style={{display:'flex'}}>
-                <TextField key="ict-input" {...props} label={props.translate("hospital.select-ict")} value = {value}
+                <TextField key="ict-input" {...props} label={props.translate("hospital.select-ict")} value = {value} color="secondary"
                     inputProps={{className : "ctw-input", "data-ctw-ino" : "1"}} fullWidth onChange={(event) => onChange(event) } />
                 {
                     props.resetICTSelectorCallback && 

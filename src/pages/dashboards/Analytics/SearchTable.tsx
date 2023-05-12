@@ -109,8 +109,6 @@ function SearchTable(props:Props){
                   error={false} elementSelected={diagnoseSelectedCallBack}
                   resetICTSelectorCallback = {resetICTSelectorCallback}/>
               
-            
-            
             {
                 renderResults()
             }

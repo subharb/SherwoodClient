@@ -442,7 +442,6 @@ class FieldSherwood extends PureComponent{
                     <FileBase64  color={color} label={labelString} error={errorState} value={input.value} callBackBase64={this.imageBase64} />
                 )
             case "edd":
-            case "appointment":
             case "bmi":    
             case "allergy":
             case "family-background":
