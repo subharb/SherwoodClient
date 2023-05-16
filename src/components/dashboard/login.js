@@ -114,7 +114,7 @@ class Login extends Component {
                                     {this.state.error && 
                                         <div>Login Error</div>
                                     }
-                                    <ButtonContinue type="submit" disabled={this.state.loading}>Login</ButtonContinue>
+                                    <ButtonContinue type="submit"  disabled={this.state.loading}>Login</ButtonContinue>
                                 </form>
                             </div>
                         </div>

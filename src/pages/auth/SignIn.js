@@ -178,7 +178,7 @@ function SignIn() {
                     fullWidth
                     data-testid="continue"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     disabled={isSubmitting}
                 >
                 <Translate id="sign-in.sign-in" />
