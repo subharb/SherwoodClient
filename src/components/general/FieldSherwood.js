@@ -273,7 +273,7 @@ class FieldSherwood extends PureComponent{
                             label={label} department={this.props.department}
                             appointmentSelected={(date) => this.props.input.onChange(date)} />
             case "multioption" : 
-                    return <Multioption mode="input" value={input.value} options={options} label={labelString} name={input.name} multiOptionSelected={this.multiOptionSelected} />
+                    return <Multioption mode="input" color={color} value={input.value} options={options} label={labelString} name={input.name} multiOptionSelected={this.multiOptionSelected} />
                     
             case "radio":
                 return(

@@ -14,9 +14,9 @@ interface MultioptionProps {
 const Multioption: React.FC<MultioptionProps> = ({ label, mode, name, value, options, multiOptionSelected }) => {
     const optionButtons = options.map(option => {
         if(value.length > 0 &&  value.find((selection) => selection.multioption === option.value)){
-            return <ButtonCheck onClick={mode === "show" ?  undefined : () => multiOptionSelected(option.value)}>{option.label}</ButtonCheck>
+            return <ButtonCheck  onClick={mode === "show" ?  undefined : () => multiOptionSelected(option.value)}>{option.label}</ButtonCheck>
         }
-        return <ButtonEmptyCheck onClick={mode === "show" ? undefined : () => multiOptionSelected(option.value) }>{option.label}</ButtonEmptyCheck> 
+        return <ButtonEmptyCheck color="secondary" onClick={mode === "show" ? undefined : () => multiOptionSelected(option.value) }>{option.label}</ButtonEmptyCheck> 
     });
     console.log("optionButtons",value);
     return (
