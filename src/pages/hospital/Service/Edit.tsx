@@ -3,7 +3,7 @@ import { Alert, Color } from '@material-ui/lab';
 import axios from 'axios';
 import { isArray } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Translate } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Form from '../../../components/general/form';
 import FormTSFunc from '../../../components/general/formTSFunction';
@@ -129,7 +129,7 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
         }
     }, []);
     return (
-        <EditServicesComponent servicesGeneral={servicesGeneral} servicesInvestigation={servicesInvestigation} surveys={surveys} serviceType={serviceType} loading={loading}
+        <EditServicesLocalized servicesGeneral={servicesGeneral} servicesInvestigation={servicesInvestigation} surveys={surveys} serviceType={serviceType} loading={loading}
             snackbar={snackbar} setSnackbar={setSnackbar} callBackSaveService={saveService} callBackDeleteService={deleteService}/>
     )
 }
@@ -144,8 +144,9 @@ interface EditServicesComponentProps extends Omit<EditServicesProps, 'uuidInvest
     callBackSaveService: (service: any, idServiceInv: number) => void,
     callBackDeleteService: (idServiceInv: number) => void
 }
+interface EditServicesLocalizedProps extends EditServicesComponentProps, LocalizeContextProps {}
 
-export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ serviceType, snackbar, surveys,
+const EditServicesComponent: React.FC<EditServicesLocalizedProps> = ({ serviceType, snackbar, surveys, translate,
     loading, servicesGeneral, servicesInvestigation, setSnackbar, callBackSaveService, callBackDeleteService }) => {
     const [showModal, setShowModal] = React.useState(false);
     const [addingService, setAddingService] = React.useState(false);
@@ -163,12 +164,12 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         }).map((service) => {
             const typeTestString = serviceTypeToTranslation(serviceType);
             return {
-                label: `pages.hospital.services.tests.${typeTestString}.${service.code}`,
+                label: translate(`pages.hospital.services.tests.${typeTestString}.${service.code}`).toString(),
                 value: service.id,
             }
-        })
-
-        const surveyOptions = surveys?.map((survey) => {
+        }).sort((optionA, optionB) => optionA.label.localeCompare(optionB.label));
+        const typeSurvey = serviceType === 0 ? 2 : 1;
+        const surveyOptions = surveys?.filter((survey) => survey.type === typeSurvey).map((survey) => {
             return {
                 label: survey.name,
                 value: survey.uuid,
@@ -357,5 +358,6 @@ export const EditServicesComponent: React.FC<EditServicesComponentProps> = ({ se
         </>
     );
 };
+export const EditServicesLocalized = withLocalize(EditServicesComponent);
 
 export default EditServices;
