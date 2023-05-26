@@ -1355,8 +1355,11 @@
                 "MANAGE_PHARMACY_CENTRAL" : ["Manage pharmacy central", "Administrar farmacia central", "Gérer la pharmacie centrale"],
                 "MAKE_PHARMACY_REQUESTS" : ["Make pharmacy requests", "Hacer pedidos de farmacia", "Faire des demandes de pharmacie"],
                 "UPDATE_PHARMACY_CENTRAL" : ["Update pharmacy central", "Actualizar farmacia central", "Mettre à jour la pharmacie centrale"],
-                "ANALYTICS_DEPARTMENT" : ["View Department Stats", "Ver estadísticas de departamento", "Voir les statistiques du département"]
-                
+                "ANALYTICS_DEPARTMENT" : ["View Department Stats", "Ver estadísticas de departamento", "Voir les statistiques du département"],
+                "CREATE_APPOINTMENTS" : ["Create appointments", "Crear citas", "Créer des rendez-vous"],
+                "CANCEL_APPOINTMENTS" : ["Cancel appointments", "Cancelar citas", "Annuler les rendez-vous"],
+                "VISUALIZE_APPOINTMENTS" : ["Visualize appointments", "Visualizar citas", "Visualiser les rendez-vous"],
+                "EDIT_OUTPATIENTS" : ["Edit outpatients", "Editar pacientes externos", "Modifier les patients externes"]
             },
             "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],
             "confirm_dialog" : {
