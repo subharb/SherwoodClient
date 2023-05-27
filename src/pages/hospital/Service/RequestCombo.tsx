@@ -8,7 +8,7 @@ interface RequestComboProps {
     serviceType: number;
     uuidPatient:string,
     uuidInvestigation:string,
-    showForm:boolean,
+    showForm:boolean, 
     surveys:ISurvey[],
     uuidSurvey:string,
     encryptionData:{
@@ -35,8 +35,8 @@ const RequestCombo: React.FC<RequestComboProps> = ({ serviceType, uuidPatient,su
                     uuidInvestigation={uuidInvestigation} callBackRequestFinished={flipToRequestTable}/>
     }
     return (
-        <RequestTable serviceType={serviceType} encryptionData={encryptionData} showActions={false}
-            surveys = {surveys} fillPending={false}
+        <RequestTable searchFor="hospital.search_box.patient" serviceType={serviceType} encryptionData={encryptionData} showActions={false}
+            surveys = {surveys} fillPending={false} 
             uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} callBackRequestSelected={() => console.log("callBackSurveySelected")} />
     );
 };

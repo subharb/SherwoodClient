@@ -94,9 +94,11 @@ const ServiceTypeToChip:React.FC<{type:RequestType}> = ({type}) =>  {
 interface RequestTableProps {
     serviceType:number,
     uuidPatient?:string,
+    noSearchBox?:boolean,
     uuidInvestigation:string,
     showActions?:boolean,
     surveys?:ISurvey[],
+    searchFor:string,
     fillPending?:boolean,
     encryptionData?:{
         encryptedKeyUsed:number,
@@ -112,19 +114,19 @@ type RequestTablePharmacyProps = Pick<RequestTableProps, 'serviceType' | 'uuidIn
 const ACTIONABLE_REQUESTS = [RequestStatus.PENDING_APPROVAL, RequestStatus.ACCEPTED, RequestStatus.COMPLETED, RequestStatus.IN_PROGRESS];
 
 export const RequestTableService:React.FC<RequestTableProps> = ({serviceType, uuidPatient, uuidInvestigation, showActions, surveys, fillPending, encryptionData, callBackRequestSelected}) => {
-    return <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} 
+    return <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} searchFor="general.patient"
                 uuidInvestigation={uuidInvestigation} showActions={showActions} surveys={surveys} 
                 fillPending={fillPending} encryptionData={encryptionData} 
                 callBackRequestSelected={callBackRequestSelected} />
 }
 
 export const RequestTablePharmacy:React.FC<RequestTablePharmacyProps> = ({serviceType, uuidInvestigation, callBackRequestSelected}) => {
-    return <RequestTable serviceType={serviceType} 
+    return <RequestTable serviceType={serviceType} searchFor="hospital.search_box.staff"
                 uuidInvestigation={uuidInvestigation} 
                 callBackRequestSelected={callBackRequestSelected} />
 }
 
-const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions,fillPending,  callBackRequestSelected}) => {
+const RequestTable: React.FC<RequestTableProps> = ({ serviceType, searchFor, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions,fillPending,  callBackRequestSelected}) => {
     const [requests, setRequests] = React.useState<IRequest[] | null>(null);
     const [loading, setLoading] = React.useState(false);
 
@@ -152,7 +154,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, surveys, uuidP
 
     if(requests && requests.length > 0){
         return(
-            <RequestTableComponent serviceType={serviceType} surveys={surveys} fillPending={fillPending}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
+            <RequestTableComponent searchFor={searchFor} serviceType={serviceType} surveys={surveys} fillPending={fillPending}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
                 loading={loading} requests={requests} callBackRequestSelected={callBackRequestSelected}/>
         )
     }
@@ -186,23 +188,24 @@ interface Row {
     type: string | JSX.Element;
     date: string;
 }
-export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, fillPending, surveys, requests, serviceType,
-                                                                                showActions, encryptionData, loading, callBackRequestSelected }) => {
+export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uuidPatient, searchFor, requests, serviceType, noSearchBox,
+                                                                                encryptionData, loading, callBackRequestSelected }) => {
     
     
     const {departments} = useDepartments();    
     const [rows, setRows] = React.useState<Row[]>([]);
     const [filteredRows, setFilteredRows] = React.useState<Row[]>([]);
-    const [patientName, setPatientName] = React.useState("");
+    const [searchText, setSearchText] = React.useState("");
     const [statusFilter, setStatusFilter] = React.useState<RequestStatus | null>(null);
 
     useEffect(() => {
         setFilteredRows(rows.filter((row: Row) => {
-            return (row.patient!.toLocaleLowerCase().includes(patientName) && (statusFilter !== null ? row.status.props.status === statusFilter : true))
+            const searchItem = serviceType === RequestType.PHARMACY ? row.researcher : row.patient;
+            return (searchItem.toLocaleLowerCase().includes(searchText) && (statusFilter !== null ? row.status.props.status === statusFilter : true))
                         
         }));
         
-    }, [patientName, statusFilter]);
+    }, [searchText, statusFilter]);
     
     useEffect(() => {
         const rows = requests.sort((reqA, reqB) => stringDatePostgresToDate(reqB.updatedAt).getTime() - stringDatePostgresToDate(reqA.updatedAt).getTime() ).map((request) => {            
@@ -294,12 +297,16 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     
     return (
         <Grid container spacing={2}>
-            <SearchBox textField={{label:"general.patient", callBack:setPatientName}} filterItems={[
-                {label:"completed", color:statusToColor(RequestStatus.COMPLETED), callBack:() => applyStatusFilter(RequestStatus.COMPLETED)},
-                {label:"pending_payment", color:statusToColor(RequestStatus.PENDING_PAYMENT), callBack:() => applyStatusFilter(RequestStatus.PENDING_PAYMENT)},
-                {label:"accepted", color:statusToColor(RequestStatus.ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.ACCEPTED)},
-                {label:"some_accepted", color:statusToColor(RequestStatus.SOME_ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.SOME_ACCEPTED)},
-            ]} />
+            {
+                noSearchBox && 
+                <SearchBox textField={{label:searchFor, callBack:setSearchText}} filterItems={[
+                    {label:"completed", color:statusToColor(RequestStatus.COMPLETED), callBack:() => applyStatusFilter(RequestStatus.COMPLETED)},
+                    {label:"in_progress", color:statusToColor(RequestStatus.IN_PROGRESS), callBack:() => applyStatusFilter(RequestStatus.IN_PROGRESS)},
+                    {label:"accepted", color:statusToColor(RequestStatus.ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.ACCEPTED)},
+                    {label:"some_accepted", color:statusToColor(RequestStatus.SOME_ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.SOME_ACCEPTED)},
+                ]} />
+            }
+            
             <Grid item xs={12}>
                 <EnhancedTable  selectRow={(id:number) => fillRequest(id)} noHeader noSelectable rows={filteredRows} headCells={headCells} actions={actions} />  
             </Grid>

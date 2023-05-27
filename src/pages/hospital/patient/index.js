@@ -347,9 +347,9 @@ function Patient(props) {
             }
             return (
                 <RequestTable serviceType={serviceType} uuidPatient={uuidPatient} 
+                    searchFor="general.patient" noSearchBox
                     showForm={showRequestType === 0} surveys={props.investigations.currentInvestigation.surveys}
                     uuidInvestigation={props.investigations.currentInvestigation.uuid} callBackRequestSelected={(req) => {
-                        console.log("REqeust", req);
                         goToSubmissionUrl(req.requestsServiceInvestigation[0].patientInvestigation.uuid, req.submissionPatient.id)}
                     } />
             )

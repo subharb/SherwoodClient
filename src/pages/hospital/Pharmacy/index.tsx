@@ -165,7 +165,8 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
                 )
             }
             else{
-                return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>
+                return <RequestTablePharmacy serviceType={2} uuidInvestigation={uuidInvestigation} 
+                            callBackRequestSelected={(request:IRequest) => navigateToRequest(request)}/>
             }
             
         } 

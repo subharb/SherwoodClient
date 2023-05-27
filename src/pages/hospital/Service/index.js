@@ -101,7 +101,7 @@ export function TestsHomeComponent(props) {
                 )
             }
             else{
-                return <RequestTable serviceType={props.type} showActions={true} fillRequest={true} callBackRequestSelected={(request) => accessRequest(request)}
+                return <RequestTable searchFor='general.patient' serviceType={props.type} showActions={true} fillRequest={true} callBackRequestSelected={(request) => accessRequest(request)}
                             encryptionData={{
                                 encryptedKeyUsed : props.investigations.currentInvestigation.encryptedKeyUsed,
                                 keyResearcherInvestigation: props.investigations.currentInvestigation.keyResearcherInvestigation,

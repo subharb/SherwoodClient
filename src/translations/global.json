@@ -101,6 +101,8 @@
         "send_to_email" : ["Send to email", "Enviar por correo electrónico", "Envoyer par email"],
         "generate_medical_history" : ["Generate Medical History", "Generar Historia Clínica", "Générer l'histoire médicale"],
         "search_box" : {
+            "patients" : ["Search for patients", "Buscar pacientes", "Rechercher des patients"],
+            "staff" : ["Search for staff", "Buscar personal", "Rechercher du personnel"],
             "filter" : ["Filter", "Filtrar", "Filtrer"],
             "filters" : {
                 "low" : ["Low", "Bajo", "Faible"],
@@ -108,7 +110,8 @@
                 "completed" : ["Completed", "Completado", "Completé"],
                 "accepted" : ["Accepted", "Aceptado", "Accepté"],
                 "pending_payment" : ["Pending payment", "Pago pendiente", "Paiement en attente"],
-                "some_accepted" : ["Some accepted", "Algunos aceptados", "Certains acceptés"]
+                "some_accepted" : ["Some accepted", "Algunos aceptados", "Certains acceptés"],
+                "in_progress" : ["In progress", "En progreso", "En cours"]
             },
             "all" : ["All", "Todos", "Tous"]
 

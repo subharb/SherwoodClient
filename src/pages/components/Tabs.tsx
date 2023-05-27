@@ -45,15 +45,15 @@ interface TabProps{
 }
 
 const CustomTab = styled(Tab)(({ theme }) => ({
-    color: theme.palette.primary.color, // set the color using the primary color from the theme
-    "&.MuiTab-textColorPrimary.Mui-selected": {
-        color: theme.palette.primary.color,// set the color of the selected tab using the secondary color from the theme
+    color: theme.palette.secondary.color, // Set the color using the secondary color from the theme
+    "&.Mui-selected": {
+      color: theme.palette.secondary.main, // Set the color of the selected tab to red
     },
-    selected: {},
-    '&.PrivateTabIndicator-colorSecondary-144': {
-        backgroundColor: theme.palette.primary.color, // set the color of the indicator using the secondary color from the theme
+    "& .PrivateTabIndicator-colorSecondary": {
+      backgroundColor: theme.palette.secondary.main, // Set the color of the indicator using the secondary color from the theme
     },
   }));
+
 
 
 export function TabsSherwood(props:TabProps){
