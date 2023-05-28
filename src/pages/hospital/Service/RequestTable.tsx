@@ -126,7 +126,7 @@ export const RequestTablePharmacy:React.FC<RequestTablePharmacyProps> = ({servic
                 callBackRequestSelected={callBackRequestSelected} />
 }
 
-const RequestTable: React.FC<RequestTableProps> = ({ serviceType, searchFor, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions,fillPending,  callBackRequestSelected}) => {
+const RequestTable: React.FC<RequestTableProps> = ({ serviceType, searchFor, noSearchBox, surveys, uuidPatient, uuidInvestigation, encryptionData, showActions,fillPending,  callBackRequestSelected}) => {
     const [requests, setRequests] = React.useState<IRequest[] | null>(null);
     const [loading, setLoading] = React.useState(false);
 
@@ -154,7 +154,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, searchFor, sur
 
     if(requests && requests.length > 0){
         return(
-            <RequestTableComponent searchFor={searchFor} serviceType={serviceType} surveys={surveys} fillPending={fillPending}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
+            <RequestTableComponent searchFor={searchFor} noSearchBox={noSearchBox} serviceType={serviceType} surveys={surveys} fillPending={fillPending}  encryptionData={encryptionData} uuidPatient={uuidPatient} showActions={showActions}
                 loading={loading} requests={requests} callBackRequestSelected={callBackRequestSelected}/>
         )
     }
@@ -165,7 +165,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, searchFor, sur
         <TypographyThemed variant="body2">
             <Translate id="pages.hospital.services.no_requests" />
         </TypographyThemed>
-        
     )
 }
 
@@ -298,7 +297,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     return (
         <Grid container spacing={2}>
             {
-                noSearchBox && 
+                !noSearchBox && 
                 <SearchBox textField={{label:searchFor, callBack:setSearchText}} filterItems={[
                     {label:"completed", color:statusToColor(RequestStatus.COMPLETED), callBack:() => applyStatusFilter(RequestStatus.COMPLETED)},
                     {label:"in_progress", color:statusToColor(RequestStatus.IN_PROGRESS), callBack:() => applyStatusFilter(RequestStatus.IN_PROGRESS)},
