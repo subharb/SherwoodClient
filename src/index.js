@@ -8,11 +8,13 @@ import ProviderSherwood from './providerSherwood';
 import ErrorBoundary from "./components/general/ErrorBoundary";
 import mixpanel from 'mixpanel-browser';
 import * as Sentry from "@sentry/react";
+import LogRocket from 'logrocket';
 
 let dsn = "https://4e273ea1b6e04f6cb8f483979eb3233a@o491166.ingest.sentry.io/5992676";
 if (process.env.NODE_ENV === 'production') {
     console.log = function () {};
-    dsn = "https://1e889cc84edc4a2fa8fffba2173af28b@o491166.ingest.sentry.io/5556260"
+    dsn = "https://1e889cc84edc4a2fa8fffba2173af28b@o491166.ingest.sentry.io/5556260";
+    LogRocket.init('apd2q8/sherwood');
 }
 
 Sentry.init({

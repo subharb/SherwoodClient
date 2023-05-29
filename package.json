@@ -54,6 +54,7 @@
     "jspdf-autotable": "^3.5.28",
     "jss": "10.5.0",
     "lodash": "^4.17.21",
+    "logrocket": "^4.0.2",
     "material-ui-dropzone": "3.5.0",
     "materialize-css": "^1.0.0",
     "mixpanel-browser": "^2.41.0",
