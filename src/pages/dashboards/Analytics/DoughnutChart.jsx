@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { withTheme } from "styled-components/macro";
+import styled, { withTheme } from "styled-components";
 
 import { green, red, orange } from "@material-ui/core/colors";
 

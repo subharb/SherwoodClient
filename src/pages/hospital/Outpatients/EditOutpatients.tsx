@@ -16,7 +16,7 @@ import { useAgendas, useDepartments, useServiceGeneral, useSnackBarState } from 
 import { deleteAgendaAction, saveUpdateAgendaAction } from '../../../redux/actions/hospitalActions';
 import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from '../../../routes';
 import { deleteAgendaService, deleteBoxService, getBoxesService, getServicesInvestigationService, saveAgendaService, saveBoxService, saveServiceInvestigationService, updateAgendaService, updateBoxService, updateServiceInvestigationService } from '../../../services/agenda';
-import { researcherFullName } from '../../../utils';
+import { researcherFullName } from '../../../utils/index.jsx';
 import Accordion2Levels, { MainElementType } from '../../components/Accordion2Levels';
 import { IService, IServiceInvestigation, ServiceType } from '../Service/types';
 import StartingOutpatients from './Starting';

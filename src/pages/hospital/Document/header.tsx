@@ -4,7 +4,7 @@ import { Translate } from "react-localize-redux";
 import { connect } from "react-redux";
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 
-import { formatPatients } from "../../../utils";
+import { formatPatients } from "../../../utils/index.jsx";
 import { BillingInfo } from "../Billing/types";
 
 

@@ -2,7 +2,7 @@ import { connect, ConnectedProps } from 'react-redux'
 
 import React, { useEffect, useState } from 'react';
 import { useOffline } from '../hooks';
-import { formatData, openStore } from '../utils';
+import { formatData, openStore } from '../utils/index.jsx';
 import NotificationsDropdown from './NotificationsDropdown';
 import { Translate } from 'react-localize-redux';
 import { IconButton, Tooltip, Typography } from '@material-ui/core';

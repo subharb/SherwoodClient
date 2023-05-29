@@ -8,7 +8,7 @@ import { loginUser, toggleLoading } from '../../actions';
 import FieldSherwood  from '../general/FieldSherwood';
 import Header from '../general/header';
 import LoadingScreen from '../general/loading_screen';
-import { validateField, decryptData } from '../../utils';
+import { validateField, decryptData } from '../../utils/index.jsx';
 import { ButtonContinue } from '../../components/general/mini_components';
 import jwt from 'jsonwebtoken';
 

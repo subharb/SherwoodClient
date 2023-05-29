@@ -9,7 +9,7 @@ import { Check } from 'react-feather';
 import Modal from './modal';
 import LogoSherwood from '../../img/favicon-96x96.png';
 import PDFLogo from '../../img/pdf_logo.jpeg';
-import { isImageType } from '../../utils';
+import { isImageType } from '../../utils/index.jsx';
 import { CloseFrame } from './mini_components';
 
 enum UPLOAD_STATE{

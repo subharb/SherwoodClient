@@ -4,7 +4,7 @@ import { ButtonDelete, IconPatient } from './mini_components'
 import styled, { css } from 'styled-components';
 import { BedButtonModes, WardModes } from '../../pages/hospital/departments/Ward';
 import { IPatient, PersonalData } from '../../constants/types';
-import { daysFromDate, sexStringToColor } from '../../utils';
+import { daysFromDate, sexStringToColor } from '../../utils/index.jsx';
 import { Translate } from 'react-localize-redux';
 import { CheckCircleIcon } from '@material-ui/data-grid';
 import { MonetizationOn } from '@material-ui/icons';

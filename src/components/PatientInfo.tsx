@@ -7,7 +7,7 @@ import { connect, connectAdvanced } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { IPatient, IPersonalData } from '../constants/types';
 import { HOSPITAL_PATIENT } from '../routes';
-import { dateToFullDateString } from '../utils';
+import { dateToFullDateString } from '../utils/index.jsx';
 import { ColourChip } from './general/mini_components-ts';
 
 

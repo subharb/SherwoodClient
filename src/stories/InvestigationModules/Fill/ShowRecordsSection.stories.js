@@ -2,7 +2,7 @@ import React from 'react';
 import ShowRecordsPatient from '../../../components/investigation/show/single/show_records_section';
 import ProviderSherwood from '../../../providerSherwood';
 import { records_patient1, edc_data1, patient_data_decrypted1 } from '../../example_data';
-import { filterRecordsFromSubmissions } from '../../../utils';
+import { filterRecordsFromSubmissions } from '../../../utils/index.jsx';
 
 export default {
     title: 'Investigation/Fill/ShowRecordsPatientSection',

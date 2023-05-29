@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import styled, { createGlobalStyle } from "styled-components/macro";
+import styled, { createGlobalStyle } from "styled-components";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
 import Footer from "../components/Footer";
@@ -23,7 +23,7 @@ import Loader from '../components/Loader';
 //import { BroadcastChannel } from 'broadcast-channel';
 import { isWidthUp } from "@material-ui/core/withWidth";
 import { LoadingOverlay } from "@material-ui/data-grid";
-import { postErrorSlack } from "../utils";
+import { postErrorSlack } from "../utils/index.jsx";
 
 const drawerWidth = 258;
 

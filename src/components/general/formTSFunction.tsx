@@ -5,7 +5,7 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { compose } from 'redux';
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { usePrevious } from '../../hooks';
-import { validateField } from '../../utils';
+import { validateField } from '../../utils/index.jsx';
 import FieldSherwood from './FieldSherwood';
 import Form from './form';
 import { ButtonCancel, ButtonContinue } from './mini_components';

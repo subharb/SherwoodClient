@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { rgba } from "polished";
 import { NavLink, withRouter } from "react-router-dom";
 import { darken } from "polished";
@@ -8,7 +8,7 @@ import "../vendor/perfect-scrollbar.css";
 import pathLogo from '../img/logo_sherwood_web.png';
 import { spacing } from "@material-ui/system";
 import { useDepartments, useProfileInfo } from '../hooks';
-import { getData } from '../utils';
+import { getData } from '../utils/index.jsx';
 import {
     Badge,
     Box as MuiBox,
@@ -31,10 +31,11 @@ import { green } from "@material-ui/core/colors";
 import { sidebarRoutes as routes } from "../routes/index";
 import { sidebarRoutesHospital as routesHospital } from "../routes/index";
 
-import { ReactComponent as Logo } from "../vendor/logo.svg";
+
 import { useSelector } from "react-redux";
 import { FUNCTIONALITY } from "../constants/types";
 
+const Logo = styled.img``;
 const LinkNoDecoration = styled(NavLink)`
     text-decoration:none;
 `;

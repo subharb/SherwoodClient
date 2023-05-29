@@ -14,8 +14,8 @@ import { useDispatch } from "react-redux";
 import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
 import { Alert } from '@material-ui/lab';
-import { ROUTE_401, ROUTE_404 } from '../../routes';
-import { areSameDates } from '../../utils';
+import { ROUTE_401 } from '../../routes';
+import { areSameDates } from '../../utils/index.jsx';
 import Modal from '../../components/general/modal';
 import { PERMISSION } from '../../components/investigation/share/user_roles';
 

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from "react";
-import styled, { withTheme } from "styled-components/macro";
+import styled, { withTheme } from "styled-components";
 import Chart from 'react-apexcharts';
 import {
     Card as MuiCard,

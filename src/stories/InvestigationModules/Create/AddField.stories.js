@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from '../../../components/general/form'
 import ProviderSherwood from '../../../providerSherwood';
-import { FIELDS_FORM } from '../../../utils';
+import { FIELDS_FORM } from '../../../utils/index.jsx';
 export default {
     title: 'Investigation/Create/Form Field',
     component: Form,

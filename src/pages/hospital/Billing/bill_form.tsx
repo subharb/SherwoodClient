@@ -12,7 +12,7 @@ import { createBillService, updateBillService } from "../../../services/billing"
 
 import { FindPatient } from "./find_patient";
 
-import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils"
+import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils/index.jsx"
 import { Alert, Autocomplete, createFilterOptions } from "@material-ui/lab"
 import { BillItems } from "./BillItems"
 import { useSnackBarState } from "../../../hooks"

@@ -3,7 +3,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from './EnhancedTable';
 import PropTypes from 'prop-types';
 import { FUNCTIONALITY } from '../../constants/types';
-import { formatPatients } from '../../utils';
+import { formatPatients } from '../../utils/index.jsx';
 import { PERMISSION } from '../investigation/share/user_roles';
 
 function PatientsTable(props) {

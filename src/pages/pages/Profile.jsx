@@ -1,7 +1,7 @@
 import React from "react";
-import styled, { withTheme } from "styled-components/macro";
+import styled, { withTheme } from "styled-components";
 import { NavLink } from "react-router-dom";
-import { getData } from '../../utils';
+import { getData } from '../../utils/index.jsx';
 import Helmet from "react-helmet";
 
 import "../../vendor/roundedBarCharts";

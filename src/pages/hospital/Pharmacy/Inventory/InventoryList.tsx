@@ -12,7 +12,7 @@ import { ColourChip } from '../../../../components/general/mini_components-ts';
 
 import Modal from '../../../../components/general/modal';
 import Loader from '../../../../components/Loader';
-import { translateOrderOptions } from '../../../../utils';
+import { translateOrderOptions } from '../../../../utils/index.jsx';
 import { IPharmacyItem } from '../types';
 import SearchBox from '../../../../components/general/SearchBox';
 

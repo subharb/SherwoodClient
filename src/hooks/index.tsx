@@ -3,7 +3,7 @@ import axios from 'axios';
 import DateFnsUtils from "@date-io/date-fns";
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchUser } from "../services/authService";
-import { decryptData, encryptData, getCurrentResearcherUuid } from '../utils';
+import { decryptData, encryptData, getCurrentResearcherUuid } from '../utils/index.jsx';
 import AppointmentDatePicker from '../pages/hospital/Outpatients/DatePicker';
 import { SIGN_IN_ROUTE } from '../routes';
 import { FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';

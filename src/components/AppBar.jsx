@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { withTheme } from "styled-components/macro";
+import styled, { withTheme } from "styled-components";
 import { darken } from "polished";
 import { Search as SearchIcon } from "react-feather";
 import OfflineDropDown from './OfflineDropDown'

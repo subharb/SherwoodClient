@@ -8,7 +8,7 @@ import { ButtonAdd } from '../../../components/general/mini_components';
 import PatientInfo from '../../../components/PatientInfo';
 import { IAppointment } from '../../../constants/types';
 import { getPatientsAppoinmentsService, cancelAppointmentService } from '../../../services/agenda';
-import { dateAndTimeFromPostgresString, fullDateFromPostgresString, researcherFullName, stringDatePostgresToDate, turnsToSchedule } from '../../../utils';
+import { dateAndTimeFromPostgresString, fullDateFromPostgresString, researcherFullName, stringDatePostgresToDate, turnsToSchedule } from '../../../utils/index.jsx';
 import { RequestStatus } from '../Service/types';
 import { FormMakeAppointment } from './FormAppointment';
 

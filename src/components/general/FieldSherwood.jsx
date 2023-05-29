@@ -28,7 +28,7 @@ import { FieldWrapper } from './mini_components';
 import { Field, FieldArray } from 'redux-form'
 import FileBase64 from './FileBase64';
 import DrugSelector from './SmartFields/DrugSelector';
-import { formatDateByLocale } from '../../utils';
+import { formatDateByLocale } from '../../utils/index.jsx';
 import AppointmentField from './SmartFields/AppointmentField';
 import Multioption from './Multioption';
 

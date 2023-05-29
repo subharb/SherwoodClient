@@ -6,7 +6,7 @@ import ShowRecordsSection from './show_records_section';
 import ShowPatientRecords from './show_patient_records';
 import PropTypes from 'prop-types';
 import { fetchRecordsPatientFromSurvey } from '../../../../services';
-import { filterRecordsFromSubmissions } from '../../../../utils';
+import { filterRecordsFromSubmissions } from '../../../../utils/index.jsx';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';

@@ -12,7 +12,7 @@ import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
 import { useSnackBarState, SnackbarType } from '../../../hooks';
-import { serviceTypeToTranslation } from '../../../utils';
+import { serviceTypeToTranslation } from '../../../utils/index.jsx';
 import { IService, IServiceInvestigation, ServiceType } from './types';
 
 interface EditServicesProps {

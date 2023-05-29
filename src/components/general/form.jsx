@@ -3,7 +3,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux'
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import FieldSherwood from './FieldSherwood';
-import { getValueField, validateField } from '../../utils/index';
+import { getValueField, validateField } from '../../utils/index.jsx';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
 import { Grid, Paper, Typography } from '@material-ui/core';

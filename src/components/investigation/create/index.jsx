@@ -10,7 +10,7 @@ import axios from 'axios';
 import Breadcrumb from '../../general/breadcrumb';
 import EDC from './edc';
 import { Link } from '@material-ui/core';
-import { encryptData, generateKey } from '../../../utils';
+import { encryptData, generateKey } from '../../../utils/index.jsx';
 import { Card, CardContent, Typography, Grid } from '@material-ui/core';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
-import { Alert, Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, AutocompleteInputChangeReason } from '@material-ui/lab';
+import { Alert, Autocomplete } from '@material-ui/lab';
 import { searchDrugService } from '../../../services';
-import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import { ButtonAccept, ButtonCancel, FieldWrapper } from '../mini_components'; 
+import { Translate, withLocalize } from 'react-localize-redux';
+
+import { ButtonAccept, ButtonCancel } from '../mini_components'; 
 import DrugSelector from './DrugSelector';
 import {addMinutes} from 'date-fns'
 

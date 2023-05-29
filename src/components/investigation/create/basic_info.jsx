@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import styled from 'styled-components';
 import axios from 'axios';
-import { validateField } from '../../../utils';
+import { validateField } from '../../../utils/index.jsx';
 import Form from '../../general/form';
 import Modal from '../../general/modal';
 import { toggleLoading } from '../../../actions';

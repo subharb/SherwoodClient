@@ -2,7 +2,7 @@ import React from 'react';
 import { Translate } from 'react-localize-redux';
 import { BillActions } from '.';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { fullDateFromPostgresString } from '../../../utils';
+import { fullDateFromPostgresString } from '../../../utils/index.jsx';
 
 type BillsTableProps = {
     bills: any[];

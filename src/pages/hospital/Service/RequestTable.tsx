@@ -9,7 +9,7 @@ import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
 import { useDepartments } from '../../../hooks';
-import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, getDepartmentFromUnit, researcherFullName, stringDatePostgresToDate } from '../../../utils';
+import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, getDepartmentFromUnit, researcherFullName, stringDatePostgresToDate } from '../../../utils/index.jsx';
 import axios from '../../../utils/axios';
 
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';

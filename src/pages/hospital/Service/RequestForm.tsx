@@ -8,7 +8,7 @@ import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_com
 import Loader from '../../../components/Loader';
 import { IDepartment, IUnit, SnackbarTypeSeverity } from '../../../constants/types';
 import { useSnackBarState, SnackbarType, useUnitSelector, useDeparmentsSelector } from '../../../hooks';
-import { serviceTypeToTranslation } from '../../../utils';
+import { serviceTypeToTranslation } from '../../../utils/index.jsx';
 import { TabsSherwood } from '../../components/Tabs';
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation } from './types';
 

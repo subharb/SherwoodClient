@@ -12,7 +12,7 @@ import { IDepartment, IUnit } from '../../../constants/types';
 import { useDepartments, useProfileInfo, useSnackBarState } from '../../../hooks';
 import { makePharmacyRequestAction, updatePharmacyRequestAction } from '../../../redux/actions/requestsActions';
 import { HOSPITAL_PHARMACY_CENTRAL_ROUTE, HOSPITAL_PHARMACY_REQUEST, HOSPITAL_PHARMACY_REQUEST_INVENTORY, HOSPITAL_PHARMACY_REQUEST_NEW } from '../../../routes';
-import { getDepartmentFromUnit, getUnitsResearcher } from '../../../utils';
+import { getDepartmentFromUnit, getUnitsResearcher } from '../../../utils/index.jsx';
 import SectionHeader from '../../components/SectionHeader';
 import RequestTable, { RequestTablePharmacy } from '../Service/RequestTable';
 import { IRequest } from '../Service/types';

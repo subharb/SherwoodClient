@@ -11,10 +11,10 @@ import Loader from '../../../components/Loader';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { ROUTE_401 } from '../../../routes';
 import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
-import styled, { withTheme } from "styled-components/macro";
-import { yearsFromDate } from '../../../utils';
+import styled, { withTheme } from "styled-components";
+import { yearsFromDate } from '../../../utils/index.jsx';
 import TimeTable from '../../dashboards/Analytics/TimeTable';
-import { getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsOutpatients, getStatsPatientsPerDepartment } from '../../../services';
+import { getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsOutpatients } from '../../../services';
 import { spacing } from "@material-ui/system";
 import DatesSelector from '../../dashboards/Analytics/DatesSelector';
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-import { validateField, numberRecordsSection } from '../../../../utils/index';
-import { templateField } from '../../../../utils';
+import { validateField, numberRecordsSection } from '../../../../utils/index.jsx';
+import { templateField } from '../../../../utils/index.jsx';
 import SuccessComponent from '../../../general/success_component';
 import Modal from '../../../general/modal';
 import { ButtonContinue } from '../../../general/mini_components';

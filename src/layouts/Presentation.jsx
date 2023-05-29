@@ -2,7 +2,7 @@ import React from "react";
 import styled, {
   createGlobalStyle,
   ThemeProvider,
-} from "styled-components/macro";
+} from "styled-components";
 
 import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
 

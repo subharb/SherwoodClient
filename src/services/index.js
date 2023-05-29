@@ -1,7 +1,7 @@
 import axios from "../utils/axios";
 import jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
-import { datalogger } from "../utils";
+import { datalogger } from "../utils/index.jsx";
 
 
 export const answerRequest = datalogger((uuidInvestigation, value, keyInvestigationResearcher) => {

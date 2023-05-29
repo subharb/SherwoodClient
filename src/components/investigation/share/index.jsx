@@ -5,7 +5,7 @@ import { Typography, Grid, Box, Chip, Snackbar } from '@material-ui/core';
 import { Alert } from "@material-ui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
-import { decryptData, encryptData } from '../../../utils';
+import { decryptData, encryptData } from '../../../utils/index.jsx';
 import Loader from '../../Loader';
 import { BoxBckgr, ButtonAdd, ButtonContinue } from '../../general/mini_components';
 import Modal from '../../general/modal';

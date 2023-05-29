@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 //NO HACE FALTA; USO FORM
 import { reduxForm } from 'redux-form';
 import { Translate, withLocalize } from 'react-localize-redux';
-import { generateKey, encryptData } from '../../../utils';
+import { generateKey, encryptData } from '../../../utils/index.jsx';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { toggleLoading } from '../../../actions';

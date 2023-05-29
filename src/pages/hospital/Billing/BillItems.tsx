@@ -10,7 +10,7 @@ import styled from "styled-components"
 import { Autocomplete } from "@material-ui/lab"
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import _ from "lodash";
-import { hasDefaultValues } from "../../../utils";
+import { hasDefaultValues } from "../../../utils/index.jsx";
 
 const FactureHolder = styled.div<{ hide: boolean }>`
     margin-top:2rem;

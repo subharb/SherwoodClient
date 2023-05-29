@@ -4,7 +4,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { formatDateByLocale } from '../../../utils';
+import { formatDateByLocale } from '../../../utils/index.jsx';
 import { FieldWrapper } from '../../../components/general/mini_components';
 
 interface Props extends LocalizeContextProps{

@@ -14,7 +14,7 @@ import { Document } from '../Document';
 import { connect, useDispatch } from 'react-redux';
 import { getBillsPatientService, getBillsService } from '../../../services/billing';
 import Loader from '../../../components/Loader';
-import { hasDiscountsActive } from '../../../utils';
+import { hasDiscountsActive } from '../../../utils/index.jsx';
 import EditBilling from './Edit';
 import { getBillablesAction } from '../../../redux/actions/investigationsActions';
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import Form from '../../general/form';
-import { templateField } from '../../../utils';
+import { templateField } from '../../../utils/index.jsx';
 import SuccessComponent from '../../general/success_component';
 import Modal from '../../general/modal';
 import SurveyData from './survey_form';

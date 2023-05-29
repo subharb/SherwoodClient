@@ -4,7 +4,7 @@ import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { IAppointment, IDepartment } from '../../../constants/types';
 import { FormMakeAppointment } from '../../../pages/hospital/Outpatients/FormAppointment';
 import { cancelAppointmentService } from '../../../services/agenda';
-import { stringDatePostgresToDate } from '../../../utils';
+import { stringDatePostgresToDate } from '../../../utils/index.jsx';
 import Loader from '../../Loader';
 import { IconGenerator } from '../mini_components';
 

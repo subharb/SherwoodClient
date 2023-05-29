@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
-import { validateField, isSmartField } from '../../../utils';
+import { validateField, isSmartField } from '../../../utils/index.jsx';
 import FieldSherwood from '../../general/FieldSherwood';
 import Modal from '../../general/modal';
 import Form from '../../general/form';

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { css } from "styled-components/macro";
+import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "../redux/actions/themeActions";
 import { THEMES } from "../constants";

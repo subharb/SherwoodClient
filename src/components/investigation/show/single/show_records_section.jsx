@@ -8,9 +8,8 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
 import SmartField from '../../../general/SmartFields';
-import { dateToFullDateString, fullDateFromPostgresString, getData, isSmartField, stringDatePostgresToDate } from '../../../../utils';
+import { dateToFullDateString, fullDateFromPostgresString, getData, isSmartField, stringDatePostgresToDate } from '../../../../utils/index.jsx';
 import { ALL_SMARTFIELDS_TYPES, MEDICAL_HISTORY_FIELDS } from '../../../../constants';
-import { PERMISSION } from '../../../../constants/types';
 import Multioption from '../../../general/Multioption';
 
 /**

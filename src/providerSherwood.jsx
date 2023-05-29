@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
 import { LocalizeProvider } from "react-localize-redux";
 import { renderToStaticMarkup } from "react-dom/server";
 import globalTranslations from "./translations/global.json";
-import { createStore, applyMiddleware } from 'redux';
-import reducers from './redux/reducers';
-import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import createTheme from "./theme";
@@ -12,7 +8,7 @@ import Routes from "./routes/Routes";
 import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet";
 import DateFnsUtils from "@date-io/date-fns";
-import { ThemeProvider } from "styled-components/macro";
+import { ThemeProvider } from "styled-components";
 import { create } from "jss";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import {

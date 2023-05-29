@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { countSexPatients } from '../../../utils';
+import { countSexPatients } from '../../../utils/index.jsx';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { Translate } from 'react-localize-redux';
 

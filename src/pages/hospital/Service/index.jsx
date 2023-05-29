@@ -19,7 +19,7 @@ import { fetchProfileInfoAction } from '../../../redux/actions/profileActions';
 import RequestSingle from './RequestSingle';
 import { TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_REQUEST_LAB } from '../../../constants';
 import SectionHeader from '../../components/SectionHeader';
-import { serviceTypeToTranslation } from '../../../utils';
+import { serviceTypeToTranslation } from '../../../utils/index.jsx';
 import { FUNCTIONALITY } from '../../../constants/types';
 import ServiceRecords from './ServiceRecords';
 

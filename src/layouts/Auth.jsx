@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { createGlobalStyle } from "styled-components/macro";
+import styled, { createGlobalStyle } from "styled-components";
 import { CssBaseline } from "@material-ui/core";
 
 const GlobalStyle = createGlobalStyle`

@@ -7,7 +7,7 @@ import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import axios from '../../../utils/axios';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { serviceTypeToTranslation } from '../../../utils';
+import { serviceTypeToTranslation } from '../../../utils/index.jsx';
 
 export const ChipContainer = styled.div`
     display:inline;

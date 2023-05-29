@@ -8,20 +8,20 @@ import Loader from '../../../components/Loader';
 import { BoxBckgr, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
-import { yearsFromDate, postErrorSlack, getUnitsResearcher } from '../../../utils';
+import { yearsFromDate, postErrorSlack, getUnitsResearcher } from '../../../utils/index.jsx';
 import FillDataCollection from '../FillDataCollection';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { Alert } from "@material-ui/lab";
 import { useDispatch } from "react-redux";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
         HOSPITAL_PATIENT_MAKE_TESTS,
-        HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS, ROUTE_404 } from '../../../routes';
+        HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS } from '../../../routes';
 
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
 
 import { useDepartments, useSnackBarState, useUpdateEffect } from '../../../hooks';
 import { fetchProfileInfoAction } from '../../../redux/actions/profileActions';
-import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY } from '../../../constants';
+import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
 import { dischargePatientAction, getPatientStaysAction } from '../../../redux/actions/hospitalActions';
 import { FUNCTIONALITY } from '../../../constants/types';

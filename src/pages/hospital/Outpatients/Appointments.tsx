@@ -11,7 +11,7 @@ import { IAppointment, IPatient, OutpatientsVisualizationMode } from '../../../c
 import { SnackbarType, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_PATIENT } from '../../../routes';
 import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsService } from '../../../services/agenda';
-import { areSameDates, yearsFromDate } from '../../../utils';
+import { areSameDates, yearsFromDate } from '../../../utils/index.jsx';
 import { RequestStatus } from '../Service/types';
 
 interface AppointmentsProps {

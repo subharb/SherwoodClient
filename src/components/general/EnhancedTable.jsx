@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Helmet from "react-helmet";

@@ -2,7 +2,7 @@ import React, { useState} from "react";
 import { SIGN_IN_ROUTE, SIGN_UP_ROUTE, ROOT_ROUTE, SIGN_UP_ROUTE_INVESTIGATION } from '../../routes';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import * as Yup from "yup";
@@ -22,7 +22,7 @@ import {
 import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { Translate } from "react-localize-redux";
-import { postErrorSlack } from "../../utils";
+import { postErrorSlack } from "../../utils/index.jsx";
 
 const Alert = styled(MuiAlert)(spacing);
 

@@ -4,7 +4,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { formatDateByLocale } from '../../../utils';
+import { formatDateByLocale } from '../../../utils/index.jsx';
 import AutocompleteSherwood from '../../../components/general/Autocomplete';
 import ICTSelectorOMS from '../../../components/general/SmartFields/ICT/ICTSelectorOMS';
 import ICT from '../../../components/general/SmartFields/ICT';

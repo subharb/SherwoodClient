@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
-import { validateField } from '../../../utils';
+import { validateField } from '../../../utils/index.jsx';
 import Table from '../../general/table';
 import Section from './section';
 import { ButtonSave, ButtonAdd, ButtonBack, ButtonContinue } from '../../general/mini_components'; 

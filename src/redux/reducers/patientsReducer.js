@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { decryptPatientsData, decryptSinglePatientData } from '../../utils'; 
+import { decryptPatientsData, decryptSinglePatientData } from '../../utils/index.jsx'; 
 /**
  * Reducer that saves all the investigations loaded
  * @constructor

@@ -3,7 +3,7 @@ import { Alert } from "@material-ui/lab";
 import axios from 'axios';
 import ShowRecordsSection from './show_records_section';
 import { ButtonAdd, ButtonBack, ButtonForward } from '../../../general/mini_components';
-import { filterRecordsFromSection, filterRecordsFromSubmissions, numberRecordsSection } from '../../../../utils';
+import { filterRecordsFromSection, filterRecordsFromSubmissions, numberRecordsSection } from '../../../../utils/index.jsx';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../../general/EnhancedTable';

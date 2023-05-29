@@ -8,7 +8,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from './general/modal';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import Form from '../components/general/form';
-import { generateKey, encryptData, decryptData, isUserLoggedIn } from '../utils';
+import { generateKey, encryptData, decryptData, isUserLoggedIn } from '../utils/index.jsx';
 import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
 import { toggleLoading } from '../actions';

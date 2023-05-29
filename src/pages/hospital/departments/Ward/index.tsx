@@ -29,7 +29,7 @@ import { useDepartments, useSnackBarState } from '../../../../hooks';
 import { getWardService } from '../../../../services';
 import { Alert } from '@material-ui/lab';
 import { HOSPITAL_PATIENT } from '../../../../routes';
-import { sexNumberToString, yearsFromDate } from '../../../../utils';
+import { sexNumberToString, yearsFromDate } from '../../../../utils/index.jsx';
 import FormTSFunc, { FormValues } from '../../../../components/general/formTSFunction';
 
 export enum WardModes {

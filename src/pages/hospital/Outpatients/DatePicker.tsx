@@ -3,7 +3,7 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { makeStyles, styled, ThemeProvider } from '@material-ui/styles';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { formatDateByLocale } from '../../../utils';
+import { formatDateByLocale } from '../../../utils/index.jsx';
 
 
 

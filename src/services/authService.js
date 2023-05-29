@@ -1,5 +1,5 @@
 import axios from "../utils/axios";
-import { decryptData, saveData } from '../utils';
+import { decryptData, saveData } from '../utils/index.jsx';
 import jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
 
