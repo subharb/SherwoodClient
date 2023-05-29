@@ -93,7 +93,9 @@
     "react-error-overlay": "6.0.9"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
     "start-hospital": "REACT_APP_PRODUCT=HOSPITAL react-scripts start --hospital",
     "build:research": "env-cmd -f .env.production.local react-scripts build && rm -r build-research/ && rsync -a build/ build-research/",
     "build:beta:research": "env-cmd -f .env.beta-research react-scripts build && rm -r build-beta-research/ && rsync -a build/ build-beta-research/",
@@ -159,6 +161,7 @@
     "@types/react-router-dom": "^5.3.1",
     "@types/redux-form": "^8.3.5",
     "@types/styled-components": "^5.1.26",
+    "@vitejs/plugin-react": "^4.0.0",
     "cypress": "^6.6.0",
     "eslint-config-prettier": "6.15.0",
     "eslint-plugin-prettier": "3.3.0",
@@ -170,6 +173,7 @@
     "react-is": "^17.0.1",
     "react-test-renderer": "^16.13.1",
     "redux-devtools-extension": "2.13.8",
-    "redux-mock-store": "^1.5.4"
+    "redux-mock-store": "^1.5.4",
+    "vite": "^4.3.9"
   }
 }
