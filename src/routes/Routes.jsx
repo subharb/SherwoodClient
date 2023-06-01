@@ -51,7 +51,7 @@ const childRoutes = (Layout, routes) =>
   });
 
 let Routes;
-if(process.env.REACT_APP_PRODUCT === "HOSPITAL"){
+if(import.meta.env.VITE_APP_PRODUCT === "HOSPITAL"){
     Routes = () => (
         <Switch>
             {childRoutes(DashboardLayout, hospitalLayoutRoutes)}

@@ -10,7 +10,7 @@ export default ChildComponent => {
             const redirectUrl = localStorage.getItem('type') === null ?  "/researcher/login" :  "/"+localStorage.getItem('type')+"/login";
             if(localStorage.getItem("jwt") !==""){
                 console.log(localStorage.getItem('jwt'));
-                const request = await axios.get(process.env.REACT_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+                const request = await axios.get(import.meta.env.VITE_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
                 .catch(err => {console.log('Catch', err); return err;}); 
             
                 //Guardamos el token si la request fue exitosa

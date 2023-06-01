@@ -321,9 +321,9 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
 
     const [openRoutes, setOpenRoutes] = useState(() => initOpenRoutes());
     const renderCategory = (category, index, openRoutes) => {
-        const hasCategory = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : profile === null || !category.categoryDepartment ? false : profile.units.filter((unit) => category.categoryDepartment.includes(unit.department.type)).length > 0;
-        const hasPermission = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
-        const hasFunctionality = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.filter(value => category.functionalities.includes(value)).length > 0;
+        const hasCategory = import.meta.env.VITE_APP_PRODUCT !== 'HOSPITAL' ? true : profile === null || !category.categoryDepartment ? false : profile.units.filter((unit) => category.categoryDepartment.includes(unit.department.type)).length > 0;
+        const hasPermission = import.meta.env.VITE_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.permissions.filter(value => category.permissions.includes(value)).length > 0;
+        const hasFunctionality = import.meta.env.VITE_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.filter(value => category.functionalities.includes(value)).length > 0;
         
         if ((category.permissions.length === 0 || hasPermission) && 
             (category.functionalities.length === 0 || hasFunctionality) && 
@@ -370,7 +370,7 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
             ) : null
     }
     function renderLogo(){
-        const hasAesthetics = process.env.REACT_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.includes(FUNCTIONALITY.AESTHETICS);
+        const hasAesthetics = import.meta.env.VITE_APP_PRODUCT !== 'HOSPITAL' ? true : investigation.functionalities.includes(FUNCTIONALITY.AESTHETICS);
         if(billingInfo && hasAesthetics){
             return <img src={billingInfo.logoBlob} alt={investigations.currentInvestigation.name} height="55" /> 
         }
@@ -394,7 +394,7 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
         );
     };
     let appRoutes = routes;
-    if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
+    if (import.meta.env.VITE_APP_PRODUCT === "HOSPITAL") {
         appRoutes = routesHospital;
     }
     return (

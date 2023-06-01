@@ -4,7 +4,7 @@ import axios from "../utils/axios";
 export function createBillService(uuidInstitution: string, uuidPatient: string, billItems: BillItem[]): Promise<{ status: number }> {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/billing/investigation/" + uuidInstitution + "/bill/" + uuidPatient, billItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInstitution + "/bill/" + uuidPatient, billItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -20,7 +20,7 @@ export function createBillService(uuidInstitution: string, uuidPatient: string, 
 export function updateBillService(uuidInvestigation: string, billId: number, billItems: BillItem[]): Promise<{ status: number }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bill/" + billId, billItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bill/" + billId, billItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -36,7 +36,7 @@ export function updateBillService(uuidInvestigation: string, billId: number, bil
 export function createUpdateBillingInfoService(uuidInvestigation: string, billingInfo: any):Promise<BillingInfoServiceResponse> {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billingInfo", billingInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billingInfo", billingInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -52,7 +52,7 @@ export function createUpdateBillingInfoService(uuidInvestigation: string, billin
 export function updateBillablesService(uuidInvestigation: string, idBillingInfo:number, billables: BillItem[]):Promise<BillablesServiceResponse> {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billables/"+idBillingInfo, billables, 
+            .put(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billables/"+idBillingInfo, billables, 
                 { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
@@ -69,7 +69,7 @@ export function updateBillablesService(uuidInvestigation: string, idBillingInfo:
 export function getBillsService(uuidInvestigation: string): Promise<{ status: number, bills: Bill[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bills/", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bills/", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -85,7 +85,7 @@ export function getBillsService(uuidInvestigation: string): Promise<{ status: nu
 export function getBillsPatientService(uuidInvestigation: string, uuidPatient:string): Promise<{ status: number, bills: Bill[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bills/patient/"+uuidPatient, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bills/patient/"+uuidPatient, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -103,7 +103,7 @@ export function getBillsPatientService(uuidInvestigation: string, uuidPatient:st
 export function getBillablesService(uuidInvestigation: string, idBillingInfo: number): Promise<BillablesServiceResponse> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billables/" + idBillingInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billables/" + idBillingInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

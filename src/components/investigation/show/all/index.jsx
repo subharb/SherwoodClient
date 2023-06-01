@@ -23,7 +23,7 @@ function AllInvestigations(props){
             setIsLoading(true);
             //Desencriptamos la clave de la investigacion
             const investigation = investigations[index];
-            const keyRawInvestigation = decryptData(investigation.keyResearcherInvestigation , process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD);
+            const keyRawInvestigation = decryptData(investigation.keyResearcherInvestigation , import.meta.env.VITE_APP_DEFAULT_RESEARCH_PASSWORD);
             const keyInvestigationResearcher = encryptData(keyRawInvestigation, localStorage.getItem("rawKeyResearcher"));
             const testkeyRawInvestigation = decryptData(keyInvestigationResearcher, localStorage.getItem("rawKeyResearcher"));
             console.log(testkeyRawInvestigation);
@@ -32,7 +32,7 @@ function AllInvestigations(props){
             if(response.status === 200){
                 
                 if(value === 2){
-                    if (process.env.REACT_APP_PRODUCT === "HOSPITAL") {
+                    if (import.meta.env.VITE_APP_PRODUCT === "HOSPITAL") {
                         window.location.reload();
                     }
                     else{

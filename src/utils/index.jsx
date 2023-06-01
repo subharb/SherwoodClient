@@ -547,7 +547,7 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
 
     let encryptedFields = {};
     if(investigation.permissions !== 0){
-        const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
+        const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? import.meta.env.VITE_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
         
         const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
         
@@ -726,7 +726,7 @@ export function getValueField(field, value){
 }
 
 export function postErrorSlack(url, error, info, investigation){
-    console.log("Enviamos el error a ", process.env.REACT_APP_SLACK_HOOK);
+    console.log("Enviamos el error a ", import.meta.env.VITE_APP_SLACK_HOOK);
     let location = "URL:"+window.location.href;
     
     let basicText = " URL: "+location+" Error: "+error+ " Message:"+JSON.stringify(info);
@@ -743,7 +743,7 @@ export function postErrorSlack(url, error, info, investigation){
         dataType: 'json',
         processData: false,
         type: 'POST',
-        url: process.env.REACT_APP_SLACK_HOOK
+        url: import.meta.env.VITE_APP_SLACK_HOOK
     });
     mixpanel.track("Error", {
         "error" : error.stack ? error.stack : JSON.stringify(info)
@@ -770,13 +770,15 @@ export function formatData(dataBytes){
 
 export function getCurrentResearcherUuid(){
     const payload = jwt.decode(localStorage.getItem("jwt"));
-    return payload.uuid;
+    return payload.uuid; 
 }
 
 export  function datalogger(wrapped){
     return async function() {
         const result = await wrapped.apply(this, arguments);
-        const bytesDownloaded = Buffer.byteLength(JSON.stringify(result));
+        const encoder = new TextEncoder();
+        const byteArr = encoder.encode(JSON.stringify(result));
+        const bytesDownloaded = byteArr.length;
         let total = 0;
 
         const dateStored = new Date(localStorage.getItem("data_download_date"));

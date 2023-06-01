@@ -7,7 +7,7 @@ import { IService, IServiceInvestigation } from "../pages/hospital/Service/types
 export function getOutpatientsInfo(uuidInvestigation: string): Promise<{ status: number, outpatientInfo: IOutpatientsInfo }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/outpatientsinfo", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/outpatientsinfo", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -22,7 +22,7 @@ export function getOutpatientsInfo(uuidInvestigation: string): Promise<{ status:
 export function getReseachersFromDepartment(uuidInvestigation: string, uuidDepartment:string): Promise<{ status: number, researchers: IResearcher[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/box/all", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/box/all", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -38,7 +38,7 @@ export function getReseachersFromDepartment(uuidInvestigation: string, uuidDepar
 export function getServicesInvestigationService(uuidInvestigation: string, serviceType:number): Promise<{ status: number, servicesInvestigation: IServiceInvestigation[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/services/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/services/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -54,7 +54,7 @@ export function getServicesInvestigationService(uuidInvestigation: string, servi
 export function getBoxesService(uuidInvestigation: string): Promise<{ status: number, boxes: IBox[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/box/all", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/box/all", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -70,7 +70,7 @@ export function getBoxesService(uuidInvestigation: string): Promise<{ status: nu
 export function getServiceGeneralService(serviceType:number): Promise<{ status: number, services: IService[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/hospital/servicesgeneral/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/hospital/servicesgeneral/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -85,7 +85,7 @@ export function getServiceGeneralService(serviceType:number): Promise<{ status: 
 
 export function saveServiceInvestigationService(uuidInvestigation: string, serviceInvestigation:IServiceInvestigation): Promise<{ status: number, serviceInvestigation: IServiceInvestigation }> {
     return new Promise((resolve, reject) => {
-        axios.post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/", serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } }).then((response) => {
+        axios.post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/", serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } }).then((response) => {
             if (response.status === 200) {
                 resolve(response.data);
             }
@@ -99,7 +99,7 @@ export function saveServiceInvestigationService(uuidInvestigation: string, servi
     
 export function updateServiceInvestigationService(uuidInvestigation: string, serviceInvestigation:IServiceInvestigation): Promise<{ status: number, serviceInvestigation: IServiceInvestigation }> {
     return new Promise((resolve, reject) => {
-        axios.put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/"+serviceInvestigation.id, serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } }).then((response) => {
+        axios.put(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/"+serviceInvestigation.id, serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } }).then((response) => {
             if (response.status === 200) {
                 resolve(response.data);
             }
@@ -114,7 +114,7 @@ export function updateServiceInvestigationService(uuidInvestigation: string, ser
 export function saveBoxService(uuidInvestigation: string, box:IBox): Promise<{ status: number, box: IBox }> {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/box", box, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/box", box, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -130,7 +130,7 @@ export function saveBoxService(uuidInvestigation: string, box:IBox): Promise<{ s
 export function updateBoxService(uuidInvestigation: string, box:IBox): Promise<{ status: number, box: IBox }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/box/"+box.uuid, box, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/box/"+box.uuid, box, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -146,7 +146,7 @@ export function updateBoxService(uuidInvestigation: string, box:IBox): Promise<{
 export function saveAgendaService(uuidInvestigation: string, agenda:IAgenda): Promise<{ status: number, agenda: IAgenda }> {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation, agenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation, agenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -162,7 +162,7 @@ export function saveAgendaService(uuidInvestigation: string, agenda:IAgenda): Pr
 export function updateAgendaService(uuidInvestigation: string, agenda:IAgenda): Promise<{ status: number, agenda: IAgenda }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/"+agenda.uuid, agenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation+"/"+agenda.uuid, agenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -178,7 +178,7 @@ export function updateAgendaService(uuidInvestigation: string, agenda:IAgenda): 
 export function deleteAgendaService(uuidInvestigation: string, uuidAgenda:string): Promise<{ status: number, agenda: IAgenda }> {
     return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation +"/"+uuidAgenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .delete(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation +"/"+uuidAgenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -194,7 +194,7 @@ export function deleteAgendaService(uuidInvestigation: string, uuidAgenda:string
 export function deleteBoxService(uuidInvestigation: string, uuidBox:string): Promise<{ status: number, box: IBox }> {
     return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation +"/box/"+uuidBox, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .delete(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation +"/box/"+uuidBox, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -209,7 +209,7 @@ export function deleteBoxService(uuidInvestigation: string, uuidBox:string): Pro
 export function getAgendaService(uuidInvestigation: string, uuidAgenda:string): Promise<{ status: number, agenda: IAgenda }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/"+uuidAgenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation+"/"+uuidAgenda, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -225,7 +225,7 @@ export function getAgendaService(uuidInvestigation: string, uuidAgenda:string): 
 export function blockDateAgenda(uuidInvestigation: string, uuidAgenda:string, dateTS:number): Promise<{ status: number, agenda: IAgenda }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/agenda/"+uuidAgenda+"/blockdate/"+dateTS, {}, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation+"/agenda/"+uuidAgenda+"/blockdate/"+dateTS, {}, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -241,7 +241,7 @@ export function blockDateAgenda(uuidInvestigation: string, uuidAgenda:string, da
 export function freeDateAgenda(uuidInvestigation: string, uuidAgenda:string, dateTS:number): Promise<{ status: number, agenda: IAgenda }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/agenda/"+uuidAgenda+"/freedate/"+dateTS, {}, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation+"/agenda/"+uuidAgenda+"/freedate/"+dateTS, {}, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -257,7 +257,7 @@ export function freeDateAgenda(uuidInvestigation: string, uuidAgenda:string, dat
 export function getAppoinmentsDateService(uuidInvestigation: string, uuidAgenda:string, date:Date): Promise<{ status: number, appointments: IAppointment[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/agenda/"+uuidAgenda+"/date/"+date.getTime(), { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/agenda/"+uuidAgenda+"/date/"+date.getTime(), { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -273,7 +273,7 @@ export function getAppoinmentsDateService(uuidInvestigation: string, uuidAgenda:
 export function cancelAppointmentService(uuidInvestigation: string, uuidAppointment:string): Promise<{ status: number, appointments: IAppointment[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/"+uuidAppointment+"/cancel", {},{ headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/"+uuidAppointment+"/cancel", {},{ headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -289,7 +289,7 @@ export function cancelAppointmentService(uuidInvestigation: string, uuidAppointm
 export function updateAppoinmentsService(uuidInvestigation: string, uuidAppointment:string): Promise<{ status: number, appointment: IAppointment }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/"+uuidAppointment+"/showup", {}, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/"+uuidAppointment+"/showup", {}, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -305,7 +305,7 @@ export function updateAppoinmentsService(uuidInvestigation: string, uuidAppointm
 export function getPatientsAppoinmentsService(uuidInvestigation: string, uuidPatient:string): Promise<{ status: number, appointments: IAppointment[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation + "/patient/"+uuidPatient+"/appointments", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/patient/"+uuidPatient+"/appointments", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

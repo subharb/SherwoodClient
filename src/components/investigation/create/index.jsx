@@ -49,11 +49,11 @@ export function NewInvestigation(props){
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
         let response;
         if(props.hasOwnProperty("uuid")){
-            response = await axios.put(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.uuid, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            response = await axios.put(import.meta.env.VITE_APP_API_URL+'/researcher/investigation/'+props.uuid, investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;});
         }
         else{
-            response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            response = await axios.post(import.meta.env.VITE_APP_API_URL+'/researcher/investigation', investigationInfo,  { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
         }
         

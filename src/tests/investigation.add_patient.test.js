@@ -11,11 +11,11 @@ import { reducer as formReducer } from "redux-form";
 
 // const mockStore = configureStore();
 // const store = mockStore();
-
+ 
 // configure({adapter: new Adapter()});
 
 afterEach(cleanup);
-
+ 
 const renderWithRedux = (
     component,
     {

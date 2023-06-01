@@ -19,7 +19,7 @@ class Dashboard extends Component{
     }
 
     async componentDidMount(){  
-        const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+        const request = await axios.get(import.meta.env.VITE_APP_API_URL+'/'+localStorage.getItem("type")+'/investigation/all', { headers: {"Authorization" : localStorage.getItem("jwt")}})
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(request.status === 200){
             //redirec a /login

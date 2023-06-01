@@ -28,7 +28,7 @@ class SurveySections extends Component {
         this.saveSurvey = this.saveSurvey.bind(this);
     }
     async componentDidMount(){
-        const response = await axios.get(process.env.REACT_APP_API_URL+"/researcher/investigation/"+this.props.uuidInvestigation+"/record/"+this.props.patientId, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await axios.get(import.meta.env.VITE_APP_API_URL+"/researcher/investigation/"+this.props.uuidInvestigation+"/record/"+this.props.patientId, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
             this.setState({records:response.data.records});
@@ -39,7 +39,7 @@ class SurveySections extends Component {
         let postObj = {uuidPatient:values.uuidPatient};
         delete values.uuidPatient;
         postObj.record = values;
-        const response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation+'/survey', postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+        const response = await axios.post(import.meta.env.VITE_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation+'/survey', postObj, { headers: {"Authorization" : localStorage.getItem("jwt")} })
         .catch(err => {console.log('Catch', err); return err;}); 
 
         if(response.request.status === 200){

@@ -51,7 +51,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     const idPharmacy = investigations.currentInvestigation ? investigations.currentInvestigation.pharmacy.id : null;
     useEffect(() => {
         if(uuidInvestigation && idPharmacy ){
-            axios.get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/items", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            axios.get(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/items", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     setPharmacyItems(response.data.pharmacyItems);

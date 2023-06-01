@@ -42,7 +42,7 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, showAddPharmac
 
     function updateInventory(pharmacyItems: IPharmacyItem[]) {
         setLoading(true);
-        axios.put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/items", pharmacyItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.put(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/items", pharmacyItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 //setPharmacyItems(response.data.pharmacyItems);
                 setLoading(false);
@@ -55,7 +55,7 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, showAddPharmac
     }
     function deleteItemCallback(id:number){
         setLoading(true);
-        axios.delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/item/"+id, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.delete(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/item/"+id, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 //Remove from the list the item with the id
                 let newPharmacyItems = pharmacyItems ? pharmacyItems.filter((item) => {
@@ -72,7 +72,7 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, showAddPharmac
     }
     function addPharmacyItem(pharmacyItem:IPharmacyItem){
         setLoading(true);
-        axios.post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/item/", pharmacyItem, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/item/", pharmacyItem, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 // update the pharmacyItems with the date returned by the server
                 const newPharmacyItem = pharmacyItems ? [...pharmacyItems, response.data.pharmacyItem] : [response.data.pharmacyItem];
@@ -88,7 +88,7 @@ const Inventory: React.FC<InventoryProps> = ({ uuidInvestigation, showAddPharmac
     }
     function updatePharmacyItem(pharmacyItem:IPharmacyItem){
         setLoading(true);
-        axios.put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/item/"+pharmacyItem.id, pharmacyItem, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.put(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/item/"+pharmacyItem.id, pharmacyItem, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 // update the pharmacyItems with the date returned by the server
                 let newPharmacyItems = pharmacyItems ? pharmacyItems.map((item) => {

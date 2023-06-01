@@ -18,7 +18,7 @@ class Survey extends Component {
     }
     async componentDidMount(){
         //Traigo las preguntas del survey
-        const response = await axios.get(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation+'/survey')
+        const response = await axios.get(import.meta.env.VITE_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation+'/survey')
                             .catch(err => {console.log('Catch', err); return err;}); 
         if(response.request.status === 200){
             this.setState({survey : response.data });
@@ -29,7 +29,7 @@ class Survey extends Component {
         let postObj = {uuidPatient:values.uuidPatient};
         delete values.uuidPatient;
         postObj.record = values;
-        const response = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation+'/survey', postObj)
+        const response = await axios.post(import.meta.env.VITE_APP_API_URL+'/researcher/investigation/'+this.props.uuidInvestigation+'/survey', postObj)
         .catch(err => {console.log('Catch', err); return err;}); 
 
         if(response.request.status === 200){

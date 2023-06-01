@@ -48,7 +48,7 @@
 
       return true;
     },
-    createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
+    createHandlerBoundToURL(import.meta.env.PUBLIC_URL + '/index.html')
   );
 
   // An example runtime caching route for requests that aren't handled by the
@@ -183,7 +183,7 @@
 
   registerRoute(
     // Add in any other file extensions or routing criteria as needed.
-    ({ url }) => { console.log("Rutas GET "+process.env.REACT_APP_API_URL , url.origin); return url.origin === process.env.REACT_APP_API_URL }, // Customize this strategy as needed, e.g., by changing to CacheFirst.
+    ({ url }) => { console.log("Rutas GET "+import.meta.env.VITE_APP_API_URL , url.origin); return url.origin === import.meta.env.VITE_APP_API_URL }, // Customize this strategy as needed, e.g., by changing to CacheFirst.
     new NetworkFirst()
   );
 

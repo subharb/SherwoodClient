@@ -7,7 +7,7 @@ import { datalogger } from "../utils/index.jsx";
 export const answerRequest = datalogger((uuidInvestigation, value, keyInvestigationResearcher) => {
     return new Promise((resolve, reject) => {
         const putObject = { answer: value, keyInvestigationResearcher: keyInvestigationResearcher }
-        axios.put(process.env.REACT_APP_API_URL + '/researcher/investigation/' + uuidInvestigation + '/answer', putObject, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.put(import.meta.env.VITE_APP_API_URL + '/researcher/investigation/' + uuidInvestigation + '/answer', putObject, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -23,7 +23,7 @@ export const answerRequest = datalogger((uuidInvestigation, value, keyInvestigat
 export const fetchInvestigations = datalogger(() => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + '/researcher/investigation/all', { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/researcher/investigation/all', { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -39,7 +39,7 @@ export const fetchInvestigations = datalogger(() => {
 export const fetchProfileService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + '/researcher/profile/' + uuidInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/researcher/profile/' + uuidInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -55,7 +55,7 @@ export const fetchProfileService = datalogger((uuidInvestigation) => {
 export const fetchInvestigation = datalogger((uuid) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + '/' + localStorage.getItem("type") + '/investigation/' + uuid, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/' + localStorage.getItem("type") + '/investigation/' + uuid, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -71,7 +71,7 @@ export const fetchInvestigation = datalogger((uuid) => {
 export const searchDrugService = datalogger((searchText, country) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + '/hospital/search/drug/' + country + '/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/hospital/search/drug/' + country + '/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -87,7 +87,7 @@ export const searchDrugService = datalogger((searchText, country) => {
 export const searchDrugComponentService = datalogger((searchText, country) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + '/hospital/search/component/' + country + '/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/hospital/search/component/' + country + '/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -102,7 +102,7 @@ export const searchDrugComponentService = datalogger((searchText, country) => {
 
 export const getStatsPerDiagnosisService = datalogger((uuidInvestigation, icdCode, startDate, endDate) => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.REACT_APP_API_URL + '/analytics/' + uuidInvestigation + '/diagnosis/' + icdCode + '/startDate/' + startDate + '/endDate/' + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/analytics/' + uuidInvestigation + '/diagnosis/' + icdCode + '/startDate/' + startDate + '/endDate/' + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -117,7 +117,7 @@ export const getStatsPerDiagnosisService = datalogger((uuidInvestigation, icdCod
 
 export const searchPatientByDiagnosis = datalogger((uuidInvestivation, ictCode) => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.REACT_APP_API_URL + '/researcher/investigation/' + uuidInvestivation + '/patientsbydiagnose/' + ictCode, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/researcher/investigation/' + uuidInvestivation + '/patientsbydiagnose/' + ictCode, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -137,7 +137,7 @@ export const uploadFile = datalogger((file) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'post',
-            url: process.env.REACT_APP_API_URL + '/files',
+            url: import.meta.env.VITE_APP_API_URL + '/files',
             data: formData,
             headers: { "Authorization": localStorage.getItem("jwt"), 'Content-Type': 'multipart/form-data' }
         })
@@ -162,7 +162,7 @@ export const uploadFile = datalogger((file) => {
 export const getFile = datalogger((fileName) => {
 
     return new Promise((resolve, reject) => {
-        axios.get(process.env.REACT_APP_API_URL + '/files/' + fileName, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/files/' + fileName, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -178,7 +178,7 @@ export const getFile = datalogger((fileName) => {
 export const searchDiagnosticService = datalogger((searchText) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + '/hospital/search/diagnostic/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/hospital/search/diagnostic/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -194,7 +194,7 @@ export const searchDiagnosticService = datalogger((searchText) => {
 export const fetchRecordsPatientFromSurvey = datalogger((uuidInvestigation, patientUUID, surveyUUID) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/submission/" + patientUUID + "/survey/" + surveyUUID, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/submission/" + patientUUID + "/survey/" + surveyUUID, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -210,7 +210,7 @@ export const fetchRecordsPatientFromSurvey = datalogger((uuidInvestigation, pati
 export const fetchRecordsSurveysService = datalogger((uuidInvestigation, surveyUUID) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/survey/" + surveyUUID + "/submissions", { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/survey/" + surveyUUID + "/submissions", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -227,7 +227,7 @@ export const fetchRecordsSurveysService = datalogger((uuidInvestigation, surveyU
 export const fetchRecordsPatientAllSurveysService = datalogger((uuidInvestigation, patientUUID) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient/" + patientUUID + "/submissions", { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient/" + patientUUID + "/submissions", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -243,7 +243,7 @@ export const fetchRecordsPatientAllSurveysService = datalogger((uuidInvestigatio
 export const fetchSubmissionsAllPatientsInvestigationService = datalogger((uuidInvestigation, surveyUUID) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/submissions", { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/submissions", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -258,7 +258,7 @@ export const fetchSubmissionsAllPatientsInvestigationService = datalogger((uuidI
 
 export const addPatient = datalogger((uuidInvestigation, patientData) => {
     return new Promise((resolve, reject) => {
-        axios.post(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient", patientData, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.post(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient", patientData, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -276,7 +276,7 @@ export const addPatient = datalogger((uuidInvestigation, patientData) => {
 
 export const updatePersonalDataPatientService = datalogger((uuidInvestigation, uuidPatient, patientData) => {
     return new Promise((resolve, reject) => {
-        axios.put(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient/" + uuidPatient, patientData, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.put(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient/" + uuidPatient, patientData, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -291,7 +291,7 @@ export const updatePersonalDataPatientService = datalogger((uuidInvestigation, u
 
 export const getTokenWho = datalogger((lang) => {
     return new Promise((resolve, reject) => {
-        axios.get(process.env.REACT_APP_API_URL + "/hospital/token/who/" + lang, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + "/hospital/token/who/" + lang, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -307,7 +307,7 @@ export const getTokenWho = datalogger((lang) => {
 export const postRecordPatientService = datalogger((postObj, uuidInvestigation, patientId, surveyUUID) => {
     return new Promise((resolve, reject) => {
 
-        axios.post(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/submission/" + patientId + "/survey/" + surveyUUID, postObj, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.post(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/submission/" + patientId + "/survey/" + surveyUUID, postObj, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -329,7 +329,7 @@ export const postRecordPatientService = datalogger((postObj, uuidInvestigation, 
 export const updateRecordPatientService = datalogger((postObj, uuidInvestigation, patientId, surveyUUID, idSubmission) => {
     return new Promise((resolve, reject) => {
 
-        axios.put(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient/" + patientId + "/survey/" + surveyUUID + "/submission/" + idSubmission, postObj, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.put(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patient/" + patientId + "/survey/" + surveyUUID + "/submission/" + idSubmission, postObj, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -345,7 +345,7 @@ export const updateRecordPatientService = datalogger((postObj, uuidInvestigation
 export const getSubmissionPatientService = datalogger((uuidInvestigation, idSubmission) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(`${process.env.REACT_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${idSubmission}?findRequests=true`, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(`${import.meta.env.VITE_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${idSubmission}?findRequests=true`, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -362,7 +362,7 @@ export const getSubmissionPatientService = datalogger((uuidInvestigation, idSubm
 export const getPatientsFromId = datalogger((uuidInvestigation, patientId) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patientsfrom/" + patientId, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patientsfrom/" + patientId, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -395,7 +395,7 @@ export const resetPassword = datalogger((credentials) => {
 export const getStatsFirstMonitoring = datalogger((uuidInvestigation, startDate, endDate) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/analytics/" + uuidInvestigation + "/startDate/" + startDate + "/endDate/" + endDate + "/firstmonitoring", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/startDate/" + startDate + "/endDate/" + endDate + "/firstmonitoring", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -411,7 +411,7 @@ export const getStatsFirstMonitoring = datalogger((uuidInvestigation, startDate,
 export const getPatientIdFromDepartment = datalogger((uuidInvestigation, uuidDepartment, startDate, endDate) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/analytics/" + uuidInvestigation + "/patients/department/" + uuidDepartment + "/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/patients/department/" + uuidDepartment + "/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -427,7 +427,7 @@ export const getPatientIdFromDepartment = datalogger((uuidInvestigation, uuidDep
 export const getStatsMostCommonDiagnosis = datalogger((uuidInvestigation, startDate, endDate) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/analytics/" + uuidInvestigation + "/most-common-ict/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/most-common-ict/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -443,7 +443,7 @@ export const getStatsMostCommonDiagnosis = datalogger((uuidInvestigation, startD
 export const getStatsActivityService = datalogger((uuidInvestigation, startDate, endDate) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/analytics/" + uuidInvestigation + "/activity/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/activity/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -459,7 +459,7 @@ export const getStatsActivityService = datalogger((uuidInvestigation, startDate,
 export const getStatsOutpatients = datalogger((uuidInvestigation, startDate, endDate) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/analytics/" + uuidInvestigation + "/outpatients/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/outpatients/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -477,7 +477,7 @@ export const getStatsOutpatients = datalogger((uuidInvestigation, startDate, end
 export const getSharedResearchersService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/researchers", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/researchers", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -493,7 +493,7 @@ export const getSharedResearchersService = datalogger((uuidInvestigation) => {
 export const getAgendasInvestigationService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -514,7 +514,7 @@ export const makeAppointmentService = datalogger((uuidInvestigation, uuidAgenda,
     }
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/agenda/" + uuidInvestigation+"/appointment/agenda/"+uuidAgenda, postObj, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation+"/appointment/agenda/"+uuidAgenda, postObj, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -531,7 +531,7 @@ export const makeAppointmentService = datalogger((uuidInvestigation, uuidAgenda,
 export const getDepartmentsInstitutionService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/departments", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/departments", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -547,7 +547,7 @@ export const getDepartmentsInstitutionService = datalogger((uuidInvestigation) =
 export const assignUnitToResearcherService = datalogger((uuidInvestigation, uuidResearcher, uuidDepartment) => {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidDepartment + "/toresearcher", { uuidResearcher }, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidDepartment + "/toresearcher", { uuidResearcher }, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -563,7 +563,7 @@ export const assignUnitToResearcherService = datalogger((uuidInvestigation, uuid
 export const removeUnitToResearcherService = datalogger((uuidInvestigation, uuidResearcher, uuidUnit) => {
     return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidUnit + "/removeresearcher/" + uuidResearcher, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .delete(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidUnit + "/removeresearcher/" + uuidResearcher, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -581,7 +581,7 @@ export const removeUnitToResearcherService = datalogger((uuidInvestigation, uuid
 export const deleteDepartmentService = datalogger((uuidInvestigation, department) => {
     return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/"+department.uuid, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .delete(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/"+department.uuid, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -597,7 +597,7 @@ export const deleteDepartmentService = datalogger((uuidInvestigation, department
 export const editDepartmentService = datalogger((uuidInvestigation, department) => {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/"+department.uuid, department, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/"+department.uuid, department, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -613,7 +613,7 @@ export const editDepartmentService = datalogger((uuidInvestigation, department) 
 export const saveDepartmentService = datalogger((uuidInvestigation, department) => {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department", department, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/department", department, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -629,7 +629,7 @@ export const saveDepartmentService = datalogger((uuidInvestigation, department) 
 export const saveUnitService = datalogger((uuidInvestigation, uuidDepartment, unit) => {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/" + uuidDepartment, unit, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/" + uuidDepartment, unit, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -645,7 +645,7 @@ export const saveUnitService = datalogger((uuidInvestigation, uuidDepartment, un
 export const editUnitService = datalogger((uuidInvestigation, uuidUnit, unit) => {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidUnit, unit, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidUnit, unit, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -663,7 +663,7 @@ export const editUnitService = datalogger((uuidInvestigation, uuidUnit, unit) =>
 export function saveUpdateWardService(uuidInvestigation, uuidDepartment, ward) {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/" + uuidDepartment + "/ward", ward, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/department/" + uuidDepartment + "/ward", ward, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -678,7 +678,7 @@ export function saveUpdateWardService(uuidInvestigation, uuidDepartment, ward) {
 
 export function deleteServiceService(uuidInvestigation, idServiceInvestigation) {
     return new Promise((resolve, reject) => {
-        axios.delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/" + idServiceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.delete(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/" + idServiceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
         .then((response) => {
             if (response.status === 200) {
                 resolve(response.data);
@@ -694,7 +694,7 @@ export function deleteServiceService(uuidInvestigation, idServiceInvestigation) 
 export function deleteWardService(uuidInvestigation, uuidWard) {
     return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .delete(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -710,7 +710,7 @@ export function deleteWardService(uuidInvestigation, uuidWard) {
 export function deleteUnitService(uuidInvestigation, uuidUnit) {
     return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidUnit, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .delete(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/unit/" + uuidUnit, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -727,7 +727,7 @@ export function deleteUnitService(uuidInvestigation, uuidUnit) {
 export function updateBedService(uuidInvestigation, bedInfo) {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/bed/" + bedInfo.id, bedInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/bed/" + bedInfo.id, bedInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -743,7 +743,7 @@ export function updateBedService(uuidInvestigation, bedInfo) {
 export function deleteBedService(uuidInvestigation, bedInfo) {
     return new Promise((resolve, reject) => {
         axios
-            .delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/bed/" + bedInfo.id, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .delete(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/bed/" + bedInfo.id, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -759,7 +759,7 @@ export function deleteBedService(uuidInvestigation, bedInfo) {
 export function createBedService(uuidInvestigation, uuidWard, bedInfo) {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard + "/bed", bedInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard + "/bed", bedInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -776,7 +776,7 @@ export function createBedService(uuidInvestigation, uuidWard, bedInfo) {
 export function updateOrderBedsService(uuidInvestigation, uuidWard, bedsReorder) {
     return new Promise((resolve, reject) => {
         axios
-            .put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard + "/beds", bedsReorder, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard + "/beds", bedsReorder, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -793,7 +793,7 @@ export function updateOrderBedsService(uuidInvestigation, uuidWard, bedsReorder)
 export function createStayPatientService(uuidInvestigation, idBed, uuidPatient) {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/bed/" + idBed + "/stay", { uuidPatient }, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/bed/" + idBed + "/stay", { uuidPatient }, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -811,7 +811,7 @@ export function createStayPatientService(uuidInvestigation, idBed, uuidPatient) 
 export function saveResearcherPermissions(uuidInvestigation, permissions) {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/permissions", permissions, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/permissions", permissions, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -827,7 +827,7 @@ export function saveResearcherPermissions(uuidInvestigation, permissions) {
 export function getWardService(uuidInvestigation, uuidWard) {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/ward/" + uuidWard, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -843,7 +843,7 @@ export function getWardService(uuidInvestigation, uuidWard) {
 export function getPatientStaysService(uuidInvestigation, uuidPatient) {
     return new Promise((resolve, reject) => {
         axios
-            .get(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/stays/" + uuidPatient, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/stays/" + uuidPatient, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -861,7 +861,7 @@ export function getPatientStaysService(uuidInvestigation, uuidPatient) {
 export function dischargePatientService(uuidInvestigation, uuidPatient) {
     return new Promise((resolve, reject) => {
         axios
-            .post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/discharge", { uuidPatient }, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/discharge", { uuidPatient }, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

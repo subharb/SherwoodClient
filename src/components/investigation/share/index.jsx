@@ -186,13 +186,13 @@ function ShareInvestigation(props) {
 
             const rawKeyInvestigation = decryptData(investigation.keyResearcherInvestigation, localStorage.getItem("rawKeyResearcher"));
             const researchersWithKeys = newResearchers.map(researcher => {
-                researcher.keyResearcherInvestigation = encryptData(rawKeyInvestigation, process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD);
-                console.log(decryptData(researcher.keyResearcherInvestigation, process.env.REACT_APP_DEFAULT_RESEARCH_PASSWORD));
+                researcher.keyResearcherInvestigation = encryptData(rawKeyInvestigation, import.meta.env.VITE_APP_DEFAULT_RESEARCH_PASSWORD);
+                console.log(decryptData(researcher.keyResearcherInvestigation, import.meta.env.VITE_APP_DEFAULT_RESEARCH_PASSWORD));
                 return researcher;
             })
      
             const postObject = {listResearchers:researchersWithKeys};
-            const request = await axios.post(process.env.REACT_APP_API_URL+'/researcher/investigation/'+props.investigations.currentInvestigation.uuid+'/share', postObject, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            const request = await axios.post(import.meta.env.VITE_APP_API_URL+'/researcher/investigation/'+props.investigations.currentInvestigation.uuid+'/share', postObject, { headers: {"Authorization" : localStorage.getItem("jwt")} })
             
             if(request.status === 200){
                 setSharedResearchers(request.data.sharedResearchers);

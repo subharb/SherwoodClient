@@ -5,7 +5,7 @@ import CryptoJS from 'crypto-js';
 
 export function fetchUser(){
     return new Promise((resolve, reject) => {
-        axios.get(process.env.REACT_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+        axios.get(import.meta.env.VITE_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
             .then((response) => {
                 resolve(response.status === 200);
             })
@@ -19,7 +19,7 @@ export function signIn(credentials, typeUser) {
     console.log("Pass", credentials.password);
     credentials.password = CryptoJS.SHA256(credentials.password).toString(CryptoJS.enc.Base64) 
     console.log("Pass Encr", credentials.password);
-    axios.post(process.env.REACT_APP_API_URL+'/'+typeUser+'/login', credentials)
+    axios.post(import.meta.env.VITE_APP_API_URL+'/'+typeUser+'/login', credentials)
         .then((response) => {
             if(response.status === 200){
                 console.log("TOKEN: "+response.data.jwt);

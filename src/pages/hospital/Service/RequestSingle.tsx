@@ -54,7 +54,7 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
         async function fetchSubmission(){
             setLoading(true);
         
-            const response = await axios(`${process.env.REACT_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${request?.submissionPatient.id}?findRequests=true`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            const response = await axios(`${import.meta.env.VITE_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${request?.submissionPatient.id}?findRequests=true`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                     .catch(err => {console.log('Catch', err); return err;});
             if(response.status === 200){
                 setSubmissionData(response.data);

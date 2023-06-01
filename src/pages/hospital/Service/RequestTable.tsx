@@ -135,11 +135,11 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, searchFor, noS
             setLoading(true);
             let response;
             if(uuidPatient){
-                response = await axios(`${process.env.REACT_APP_API_URL}/hospital/${uuidInvestigation}/requests/${uuidPatient}/${serviceType}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                response = await axios(`${import.meta.env.VITE_APP_API_URL}/hospital/${uuidInvestigation}/requests/${uuidPatient}/${serviceType}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                     .catch(err => {console.log('Catch', err); return err;});
             }
             else{
-                response = await axios(`${process.env.REACT_APP_API_URL}/hospital/${uuidInvestigation}/requests/${serviceType}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+                response = await axios(`${import.meta.env.VITE_APP_API_URL}/hospital/${uuidInvestigation}/requests/${serviceType}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                 .catch(err => {console.log('Catch', err); return err;});
             }
             

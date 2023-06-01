@@ -41,7 +41,7 @@ axios.interceptors.response.use(function (response) {
  // Create a client
  const queryClient = new QueryClient()
 
-const themeApp = process.env.REACT_APP_PRODUCT === "HOSPITAL" ? createTheme("HOSPITAL") : createTheme("GREEN");
+const themeApp = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? createTheme("HOSPITAL") : createTheme("GREEN");
 function OtherProviders(props){
     return (
         <QueryClientProvider client={queryClient}>
@@ -104,7 +104,7 @@ export function CustomThemeProvider(props){
 }
 
 export default function ProviderSherwood(props){
-    const title = process.env.REACT_APP_PRODUCT === "HOSPITAL" ? "Hospital platform" : "Researcher platform"
+    const title = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? "Hospital platform" : "Researcher platform"
     return (
         <Provider store={store}>
             <Helmet

@@ -11,7 +11,7 @@ import { LOADING } from '../constants';
 */
 export const loginUser = (email, password) => async dispatch => {
     const postObj = {email:email, password:password};
-    const request = await axios.post(process.env.REACT_APP_API_URL+'/researchers/login', postObj)
+    const request = await axios.post(import.meta.env.VITE_APP_API_URL+'/researchers/login', postObj)
         .catch(err => console.log('Catch', err)); 
     
     //Guardamos el token si la request fue exitosa
@@ -31,7 +31,7 @@ export const loginUser = (email, password) => async dispatch => {
 // */
 // export const fetchInvestigation = (uuidInvestigation) => async dispatch => {
     
-//     const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem('type')+'/investigation/'+uuidInvestigation)
+//     const request = await axios.get(import.meta.env.VITE_APP_API_URL+'/'+localStorage.getItem('type')+'/investigation/'+uuidInvestigation)
        
     
 //     dispatch({

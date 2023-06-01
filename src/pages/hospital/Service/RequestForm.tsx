@@ -48,7 +48,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, units, serviceTy
             typeRequest:serviceType,
             uuidDepartment:uuidDepartment
         }
-        axios.post(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/request", postObject, { headers: {"Authorization" : localStorage.getItem("jwt") }})
+        axios.post(import.meta.env.VITE_APP_API_URL+"/hospital/"+uuidInvestigation+"/service/request", postObject, { headers: {"Authorization" : localStorage.getItem("jwt") }})
         .then(response => {
             if(response.status === 200){
                 setShowSnackbar({show:true, severity:"success", message:"pages.hospital.services.success"});
@@ -72,7 +72,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, units, serviceTy
     useEffect(() => {
         if(!servicesInvestigation){
             setLoading(true);
-            axios(process.env.REACT_APP_API_URL+"/hospital/"+uuidInvestigation+"/services/"+serviceType, { headers: {"Authorization" : localStorage.getItem("jwt") }})
+            axios(import.meta.env.VITE_APP_API_URL+"/hospital/"+uuidInvestigation+"/services/"+serviceType, { headers: {"Authorization" : localStorage.getItem("jwt") }})
             .then(response => {
                 setServicesInvestigation(response.data.servicesInvestigation);
                 setLoading(false);

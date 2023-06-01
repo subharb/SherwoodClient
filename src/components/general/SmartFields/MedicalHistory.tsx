@@ -80,7 +80,7 @@ const MedicalHistoryAI: React.FC<MedicalHistoryAIProps> = ({ formValues, uuidInv
     function sendTextToOpenAI(){
         if(updateElement){
             setLoading(true);
-            axios.post(`${process.env.REACT_APP_API_URL }/researcher/investigation/${uuidInvestigation}/openai`, {prompt:propmt}, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            axios.post(`${import.meta.env.VITE_APP_API_URL }/researcher/investigation/${uuidInvestigation}/openai`, {prompt:propmt}, { headers: { "Authorization": localStorage.getItem("jwt") } })
                 .then((response) => {
                         setGeneratedText(response.data.response.choices[0].text);
                         updateElement(0, {

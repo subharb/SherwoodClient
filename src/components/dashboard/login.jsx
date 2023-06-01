@@ -54,7 +54,7 @@ class Login extends Component {
     async loginUser(email, password) {
         const postObj = {email:email, password:password};
 
-        const request = await axios.post(process.env.REACT_APP_API_URL+'/'+this.props.match.params.type+'/login', postObj)
+        const request = await axios.post(import.meta.env.VITE_APP_API_URL+'/'+this.props.match.params.type+'/login', postObj)
             .catch(err => {console.log('Catch', err); return err;}); 
         
         //Guardamos el token si la request fue exitosa

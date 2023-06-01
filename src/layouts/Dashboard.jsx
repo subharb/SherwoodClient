@@ -159,7 +159,7 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
             </Alert>
         ) 
     }
-    const showSidebar = (investigations.data && investigations.currentInvestigation && process.env.REACT_APP_PRODUCT === 'HOSPITAL') || (process.env.REACT_APP_PRODUCT !== 'HOSPITAL')
+    const showSidebar = (investigations.data && investigations.currentInvestigation && import.meta.env.VITE_APP_PRODUCT === 'HOSPITAL') || (import.meta.env.VITE_APP_PRODUCT !== 'HOSPITAL')
     return (
       <React.Fragment>
         {

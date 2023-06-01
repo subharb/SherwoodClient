@@ -27,7 +27,7 @@ export const RequestInfoWithFetch: React.FC<RequestInfoWithFetchProps> = ({ idSu
         const fetchRequest = async () => {
             setLoading(true);
             
-            const response = await axios(`${process.env.REACT_APP_API_URL}/hospital/${uuidInvestigation}/request/submission/${idSubmission}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
+            const response = await axios(`${import.meta.env.VITE_APP_API_URL}/hospital/${uuidInvestigation}/request/submission/${idSubmission}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
                     .catch(err => {console.log('Catch', err); return err;});
             if(response.status === 200){
                 setRequest(response.data.request);

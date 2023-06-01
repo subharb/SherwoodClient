@@ -29,7 +29,7 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
 
     function deleteService(idServiceInvestigation:number){
         console.log("delete service", idServiceInvestigation);
-        axios.delete(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/" + idServiceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.delete(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/" + idServiceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if(response.status === 200) {
                     setSnackbar({ show: true, severity: "success", message: "pages.hospital.services.success_removed" });
@@ -61,7 +61,7 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
         console.log(serviceInvestigation);
         setLoading(true);
         if (idServiceInvestigation !== -1) {
-            axios.put(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/" + idServiceInvestigation, serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            axios.put(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/" + idServiceInvestigation, serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
                 .then((response) => {
                     if (response.status === 200) {
                         setSnackbar({ show: true, severity: "success", message: "pages.hospital.services.success" });
@@ -89,7 +89,7 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
                 })
         }
         else {
-            axios.post(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/", serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            axios.post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/", serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
                 .then(response => {
                     if (response.status === 200) {
                         setSnackbar({ show: true, severity: "success", message: "pages.hospital.services.success" });
@@ -113,7 +113,7 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
     useEffect(() => {
         if (!servicesGeneral) {
             setLoading(true);
-            axios(process.env.REACT_APP_API_URL + "/hospital/servicesgeneral/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            axios(import.meta.env.VITE_APP_API_URL + "/hospital/servicesgeneral/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
                 .then(response => {
                     setServicesGeneral(response.data.services);
                     setLoading(false);
@@ -121,7 +121,7 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
         }
         if (!servicesInvestigation) {
             setLoading(true);
-            axios(process.env.REACT_APP_API_URL + "/hospital/" + uuidInvestigation + "/services/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            axios(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/services/" + serviceType, { headers: { "Authorization": localStorage.getItem("jwt") } })
                 .then(response => {
                     setServicesInvestigation(response.data.servicesInvestigation);
                     setLoading(false);
