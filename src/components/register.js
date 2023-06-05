@@ -153,11 +153,9 @@ const forms = {
         "confirm":{
             name:"confirm",
             required : true,
-            type:"text",
+            type:"checkbox",
             label:"register.common.key_generation.confirm",
             shortLabel: "register.key_generation.confirm",
-            validation : "equalTo",
-            validationValue: "register.common.key_generation.confirm"
         },
         "policy":{
             name:"policy",
