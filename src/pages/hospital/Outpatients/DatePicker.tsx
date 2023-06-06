@@ -3,7 +3,7 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { makeStyles, styled, ThemeProvider } from '@material-ui/styles';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { formatDateByLocale } from '../../../utils';
+import { dateToString, formatDateByLocale } from '../../../utils';
 
 
 
@@ -77,7 +77,7 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
     const classes = useStyles();
 
     function occupancyLevel(date:MaterialUiPickersDate){
-        const dateString = date!.toISOString().split('T')[0]
+        const dateString = dateToString(date);
         if(datesOccupancy.hasOwnProperty(dateString)){
             if(slotsPerDay === datesOccupancy[dateString]){
                 return classes.fullDay;

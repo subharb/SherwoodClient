@@ -575,6 +575,15 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
     return encryptedFields;
 }
 
+export function dateToString(date){
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateString = `${year}-${month}-${day}`;
+
+    return dateString
+}
+
 export function dateToFullDateString(date, localeCode){
     return date.toLocaleString(localeCode,{
         year: 'numeric',
