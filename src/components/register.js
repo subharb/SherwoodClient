@@ -200,9 +200,9 @@ class Register extends Component {
             
             if(this.props.typeUser === "researcher"){
                 const url = process.env.REACT_APP_API_URL+'/researcher/register';
-                const extraParameter = this.props.doesCreateInvestigation ? '?withInvestigation=true' : '';
                 
-                response = await axios.post(url+extraParameter, tempState.info)
+                tempState.info.language = this.props.activeLanguage.code;
+                response = await axios.post(url, tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
             else if(this.props.typeUser === "patient" && typeof this.props.match.params.uuidPatient !== undefined){
@@ -318,7 +318,6 @@ class Register extends Component {
                 </Grid>
             ])
         }
-        
     }
 }
 
