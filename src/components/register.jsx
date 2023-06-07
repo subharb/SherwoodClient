@@ -203,7 +203,7 @@ class Register extends Component {
             if(this.props.typeUser === "researcher"){
                 const url = import.meta.env.VITE_APP_API_URL+'/researcher/register';
                 const extraParameter = this.props.doesCreateInvestigation ? '?withInvestigation=true' : '';
-                
+                tempState.info.language = this.props.activeLanguage.code;
                 response = await axios.post(url+extraParameter, tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
