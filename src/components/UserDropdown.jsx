@@ -9,7 +9,7 @@ import {
     Menu,
     MenuItem,
     IconButton as MuiIconButton,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { signOut } from "../redux/actions/authActions";
 

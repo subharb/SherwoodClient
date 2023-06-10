@@ -27,7 +27,7 @@ import {
     Toolbar,
     Tooltip,
     Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { green, orange, red } from "@material-ui/core/colors";
 

@@ -21,7 +21,7 @@ import {
     ListItem,
     ListItemText,
     Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 

@@ -17,7 +17,7 @@ import {
   Grid,
   Link,
   Typography as MuiTypography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { AvatarGroup as MuiAvatarGroup } from "@material-ui/lab";
 

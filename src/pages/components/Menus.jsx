@@ -21,7 +21,7 @@ import {
   ListItemText as MuiListItemText,
   Paper as MuiPaper,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import {
   Drafts as DraftsIcon,

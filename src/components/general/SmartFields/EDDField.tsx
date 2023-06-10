@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core"
+import { Grid, Typography } from "@mui/material"
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
 import { useState } from "react"
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux"

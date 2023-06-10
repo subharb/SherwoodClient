@@ -6,7 +6,7 @@ import {
   CardContent as MuiCardContent,
   CardHeader,
   IconButton,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { spacing } from "@material-ui/system";
 

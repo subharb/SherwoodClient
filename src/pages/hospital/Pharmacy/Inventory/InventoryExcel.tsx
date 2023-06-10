@@ -1,4 +1,4 @@
-import { Grid, Snackbar } from "@material-ui/core";
+import { Grid, Snackbar } from "@mui/material";
 import { Alert } from "@material-ui/lab";
 import { useEffect, useState } from "react";
 import { Translate, withLocalize } from "react-localize-redux";

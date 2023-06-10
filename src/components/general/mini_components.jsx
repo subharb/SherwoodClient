@@ -39,7 +39,7 @@ import {
     Fab as MuiFab,
     IconButton as MuiIconButton,
     Typography, Box, Grid, FormHelperText, FormControl, InputLabel, Select
-  } from "@material-ui/core";  
+  } from "@mui/material";  
 
 import { spacing } from "@material-ui/system";
 

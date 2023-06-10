@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Typography } from "@material-ui/core";
+import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { ReactNode, useState } from "react";
 import styled from "styled-components";
 

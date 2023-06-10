@@ -7,7 +7,7 @@ import {
   CardContent as MuiCardContent,
   Chip as MuiChip,
   Typography as MuiTypography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { rgba } from "polished";
 

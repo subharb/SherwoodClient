@@ -19,7 +19,7 @@ import {
   ListItem as MuiListItem,
   ListItemText as MuiListItemText,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import {
   BeachAccess as BeachAccessIcon,

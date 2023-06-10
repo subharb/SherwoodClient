@@ -7,7 +7,7 @@ import {
   Grid,
   Divider as MuiDivider,
   Typography as MuiTypography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { green, red } from "@material-ui/core/colors";
 

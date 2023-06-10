@@ -31,7 +31,7 @@ import {
   Switch,
   TextField,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { Add as AddIcon, Person as PersonIcon } from "@material-ui/icons";
 

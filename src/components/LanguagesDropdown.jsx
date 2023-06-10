@@ -6,7 +6,7 @@ import {
   Menu,
   MenuItem,
   IconButton as MuiIconButton,
-} from "@material-ui/core";
+} from "@mui/material";
 import { withLocalize } from "react-localize-redux";
 
 const IconButton = styled(MuiIconButton)`

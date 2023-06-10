@@ -20,7 +20,7 @@ import {
   Tooltip,
   Typography,
   Zoom,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { Add as AddIcon, Delete as DeleteIcon } from "@material-ui/icons";
 

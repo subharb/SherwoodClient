@@ -18,7 +18,7 @@ import {
   SvgIcon,
   Tooltip,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { Bell, Home, UserPlus, Server } from "react-feather";
 import { Translate } from "react-localize-redux";
 import { Update } from "@material-ui/icons";

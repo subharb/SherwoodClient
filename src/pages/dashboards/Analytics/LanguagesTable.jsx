@@ -12,7 +12,7 @@ import {
   TableHead,
   TableRow,
   LinearProgress as MuiLinearProgress,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { spacing } from "@material-ui/system";
 

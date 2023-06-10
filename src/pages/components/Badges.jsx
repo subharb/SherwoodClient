@@ -20,7 +20,7 @@ import {
   Tab,
   Tabs,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { Mail as MailIcon } from "@material-ui/icons";
 import { spacing } from "@material-ui/system";

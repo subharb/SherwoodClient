@@ -8,7 +8,7 @@ import { reduxForm, Field } from 'redux-form';
 import { ButtonAdd, ButtonSave, ButtonCancel  } from '../../general/mini_components';
 import { Grid,
         Typography
-    } from "@material-ui/core";
+    } from "@mui/material";
 import PropTypes from 'prop-types';
 import OrderableTable from '../../general/OrderableTable';
 import { MEDICAL_HISTORY_FIELDS } from '../../../constants';

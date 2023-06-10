@@ -18,7 +18,7 @@ import {
   Paper,
   TextField as MuiTextField,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { spacing } from "@material-ui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { Translate } from "react-localize-redux";

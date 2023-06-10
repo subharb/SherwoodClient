@@ -7,7 +7,7 @@ import { Dialog,
     DialogContent,
     DialogContentText,
     Button, TextField,DialogActions, Card, CardContent, IconButton
-} from "@material-ui/core";
+} from "@mui/material";
 import PropTypes from 'prop-types'; 
 import { Translate } from 'react-localize-redux';
 import { CloseIcon } from '@material-ui/data-grid';

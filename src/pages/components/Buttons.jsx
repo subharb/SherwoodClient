@@ -15,7 +15,7 @@ import {
   Fab as MuiFab,
   IconButton as MuiIconButton,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import {
   Add as AddIcon,

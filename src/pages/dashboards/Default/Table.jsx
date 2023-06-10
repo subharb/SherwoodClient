@@ -12,7 +12,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { red, green, orange } from "@material-ui/core/colors";
 

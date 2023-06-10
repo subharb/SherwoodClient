@@ -14,7 +14,7 @@ import {
   TableHead,
   TableRow as MuiTableRow,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { spacing } from "@material-ui/system";
 

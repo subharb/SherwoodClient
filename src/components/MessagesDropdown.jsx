@@ -15,7 +15,7 @@ import {
   Popover as MuiPopover,
   Tooltip,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import { MessageSquare } from "react-feather";
 
 const Popover = styled(MuiPopover)`

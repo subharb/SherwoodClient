@@ -18,7 +18,7 @@ import {
   withWidth,
   Typography,
   CircularProgress,
-} from "@material-ui/core";
+} from "@mui/material";
 import Loader from '../components/Loader';
 //import { BroadcastChannel } from 'broadcast-channel';
 import { isWidthUp } from "@material-ui/core/withWidth";

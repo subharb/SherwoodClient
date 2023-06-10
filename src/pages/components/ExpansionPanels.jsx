@@ -15,7 +15,7 @@ import {
   Card as MuiCard,
   Divider as MuiDivider,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
 

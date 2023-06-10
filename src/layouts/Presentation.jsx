@@ -4,7 +4,7 @@ import styled, {
   ThemeProvider,
 } from "styled-components";
 
-import { CssBaseline, MuiThemeProvider } from "@material-ui/core";
+import { CssBaseline, MuiThemeProvider } from "@mui/material";
 
 import { THEMES } from "../constants";
 import createTheme from "../theme";

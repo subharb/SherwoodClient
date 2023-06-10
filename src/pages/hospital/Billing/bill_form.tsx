@@ -1,4 +1,4 @@
-import { Button, Checkbox, Grid, IconButton, Snackbar, TextField, Typography } from "@material-ui/core"
+import { Button, Checkbox, Grid, IconButton, Snackbar, TextField, Typography } from "@mui/material"
 import { red } from "@material-ui/core/colors"
 import React, { ReactElement, useEffect, useRef, useState } from "react"
 import { Language, Translate } from "react-localize-redux"

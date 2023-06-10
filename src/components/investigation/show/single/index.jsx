@@ -9,7 +9,7 @@ import { savePatientAction } from '../../../../redux/actions/patientsActions';
 import { useDispatch } from "react-redux";
 import Loader from '../../../Loader';
 import { useHistory } from "react-router-dom";
-import { Button, Grid, IconButton, Snackbar, Typography } from "@material-ui/core";
+import { Button, Grid, IconButton, Snackbar, Typography } from "@mui/material";
 import { EnhancedTable } from '../../../general/EnhancedTable';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';

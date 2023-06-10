@@ -14,7 +14,7 @@ import {
   Grid,
   ListItem,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { Alert } from "@material-ui/lab";
 

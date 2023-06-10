@@ -7,7 +7,7 @@ import {
   List,
   ListItemText as MuiListItemText,
   ListItem as MuiListItem,
-} from "@material-ui/core";
+} from "@mui/material";
 
 const Wrapper = styled.div`
   padding: ${(props) => props.theme.spacing(1) / 4}px

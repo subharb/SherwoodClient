@@ -15,7 +15,7 @@ import {
   Card as MuiCard,
   Divider as MuiDivider,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { Close as CloseIcon } from "@material-ui/icons";
 

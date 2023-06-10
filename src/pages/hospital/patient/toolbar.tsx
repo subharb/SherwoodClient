@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@material-ui/core"
+import { Button, Grid, Typography } from "@mui/material"
 import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { ButtonAdd, IconGenerator, IconPatient } from "../../../components/general/mini_components"

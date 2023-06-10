@@ -12,7 +12,7 @@ import {
   Grid,
   Link,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { Pagination as MuiPagination } from "@material-ui/lab";
 

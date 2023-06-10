@@ -14,7 +14,7 @@ import {
   Chip as MuiChip,
   Divider as MuiDivider,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import {
   Done as DoneIcon,

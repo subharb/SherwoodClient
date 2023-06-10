@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Button as MuiButton, Menu, MenuItem } from "@material-ui/core";
+import { Button as MuiButton, Menu, MenuItem } from "@mui/material";
 
 import {
   Loop as LoopIcon,

@@ -15,7 +15,7 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import {
   Loop as LoopIcon,
