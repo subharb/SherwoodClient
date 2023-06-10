@@ -29,7 +29,7 @@ import {
     ArrowBack as ArrowBackIcon,
     Today,
     DirectionsRun
-  } from "@material-ui/icons";
+  } from "@mui/icons-material";
   import {
     Button, Icon, IconButton,
     Breadcrumbs as MuiBreadcrumbs,

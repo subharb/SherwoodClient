@@ -21,7 +21,7 @@ import {
   Assignment as AssignmentIcon,
   Folder as FolderIcon,
   Pageview as PageviewIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { spacing } from "@material-ui/system";
 
 const Card = styled(MuiCard)(spacing);

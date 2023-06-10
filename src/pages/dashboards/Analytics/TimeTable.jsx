@@ -20,7 +20,7 @@ import {
 import {
   Loop as LoopIcon,
   FilterList as FilterListIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import { red, green } from "@material-ui/core/colors";
 

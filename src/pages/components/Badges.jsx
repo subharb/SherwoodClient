@@ -22,7 +22,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Mail as MailIcon } from "@material-ui/icons";
+import { Mail as MailIcon } from "@mui/icons-material";
 import { spacing } from "@material-ui/system";
 
 const Card = styled(MuiCard)(spacing);

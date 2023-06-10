@@ -6,7 +6,7 @@ import { Button as MuiButton, Menu, MenuItem } from "@mui/material";
 import {
   Loop as LoopIcon,
   FilterList as FilterListIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 

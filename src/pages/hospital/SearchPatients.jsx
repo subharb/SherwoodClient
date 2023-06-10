@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
-import { Search as SearchPatientIcon } from "@material-ui/icons";
+import { Search as SearchPatientIcon } from "@mui/icons-material";
 import { Box, Grid, Paper, Typography, Button, Tabs, Tab } from '@material-ui/core';
 import Form  from '../../components/general/form';
 import {useHistory} from 'react-router-dom';

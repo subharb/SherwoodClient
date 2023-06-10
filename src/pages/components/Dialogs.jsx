@@ -33,7 +33,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Add as AddIcon, Person as PersonIcon } from "@material-ui/icons";
+import { Add as AddIcon, Person as PersonIcon } from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 

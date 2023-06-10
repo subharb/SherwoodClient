@@ -25,7 +25,7 @@ import {
   KeyboardVoice as KeyboardVoiceIcon,
   Navigation as NavigationIcon,
   Save as SaveIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 

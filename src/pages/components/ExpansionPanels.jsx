@@ -17,7 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
+import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 

@@ -18,7 +18,7 @@ import {
 
 import { Alert } from "@material-ui/lab";
 
-import { Palette as PaletteIcon } from "@material-ui/icons";
+import { Palette as PaletteIcon } from "@mui/icons-material";
 
 const DemoButton = styled.div`
   cursor: pointer;

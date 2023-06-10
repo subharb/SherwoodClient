@@ -38,7 +38,7 @@ FilterList as FilterListIcon,
 RemoveRedEye as RemoveRedEyeIcon,
 Edit as EditIcon,
 Delete as DeleteIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 import { IconGenerator } from "./mini_components";

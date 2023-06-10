@@ -20,7 +20,7 @@ import {
   Done as DoneIcon,
   Face as FaceIcon,
   TagFaces as TagFacesIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 

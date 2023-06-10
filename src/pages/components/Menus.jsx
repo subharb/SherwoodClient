@@ -27,7 +27,7 @@ import {
   Drafts as DraftsIcon,
   MoveToInbox as InboxIcon,
   Send as SendIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 

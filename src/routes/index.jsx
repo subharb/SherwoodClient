@@ -16,7 +16,7 @@ import { Home as HomeIcon, Search as SearchPatientIcon, Hotel as HotelIcon,
     MonetizationOn as MonetizationOnIcon,
     LocalPharmacy as LocalPharmacyIcon,
     Today as TodayIcon,
-    DirectionsRun} from "@material-ui/icons";
+    DirectionsRun} from "@mui/icons-material";
 
 import Profile from "../pages/pages/Profile";
 import  SignIn from "../pages/auth/SignIn";

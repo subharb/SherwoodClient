@@ -31,7 +31,7 @@ import {
   Work as WorkIcon,
   Send as SendIcon,
   StarBorder as StarBorderIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 

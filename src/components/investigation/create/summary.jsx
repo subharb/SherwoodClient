@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { ALL_INVESTIGATIONS_ROUTE } from '../../../routes';
 import {
     Edit as EditIcon,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import SuccessComponent from '../../../components/general/success_component';
 import { ButtonEdit, ButtonSave, ButtonBack } from '../../general/mini_components';

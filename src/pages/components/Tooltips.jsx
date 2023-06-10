@@ -22,7 +22,7 @@ import {
   Zoom,
 } from "@mui/material";
 
-import { Add as AddIcon, Delete as DeleteIcon } from "@material-ui/icons";
+import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 

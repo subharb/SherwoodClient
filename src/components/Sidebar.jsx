@@ -23,7 +23,7 @@ import {
     Typography,
 } from "@mui/material";
 
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 import { green } from "@material-ui/core/colors";
 

@@ -20,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Close as CloseIcon } from "@material-ui/icons";
+import { Close as CloseIcon } from "@mui/icons-material";
 
 import { spacing } from "@material-ui/system";
 

@@ -5,7 +5,7 @@ import { Button, Typography, Grid } from '@material-ui/core';
 import {
     ArrowBackIos as ArrowBackIosIcon,
     ArrowForwardIos as ArrowForwardIosIcon,
-  } from "@material-ui/icons";
+  } from "@mui/icons-material";
 import styled from 'styled-components';
 /**
  * 
