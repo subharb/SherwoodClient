@@ -11,7 +11,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import { yearsFromDate, postErrorSlack, getUnitsResearcher } from '../../../utils/index.jsx';
 import FillDataCollection from '../FillDataCollection';
 import { Translate, withLocalize } from 'react-localize-redux';
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import { useDispatch } from "react-redux";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
         HOSPITAL_PATIENT_MAKE_TESTS,

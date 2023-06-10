@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import * as types from "../../../constants";
 import { connect, useDispatch } from 'react-redux';
 import { Typography, Grid, Box, Chip, AppBar, Tabs, Tab, Snackbar, withStyles } from '@material-ui/core';
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import Loader from '../../../components/Loader';

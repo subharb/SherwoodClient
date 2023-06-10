@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import { SIGN_IN_ROUTE } from '../../../routes';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';

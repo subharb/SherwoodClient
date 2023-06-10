@@ -4,7 +4,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/AppBar";
 import Footer from "../components/Footer";
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import { Translate } from 'react-localize-redux';
 import { useSherwoodUser } from '../hooks';
 import { spacing } from "@mui/system";

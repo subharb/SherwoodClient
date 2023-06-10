@@ -1,5 +1,5 @@
 import { Grid, Snackbar } from "@mui/material";
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import { useEffect, useState } from "react";
 import { Translate, withLocalize } from "react-localize-redux";
 import { Spreadsheet } from "react-spreadsheet";

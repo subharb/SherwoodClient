@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ButtonBack, ButtonEdit, ButtonForward } from '../../../general/mini_components';
 import { Card, Paper, Typography, Grid } from '@material-ui/core';
 import styled from 'styled-components';
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';

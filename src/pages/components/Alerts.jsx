@@ -19,7 +19,7 @@ import {
 
 import { Close as CloseIcon } from "@mui/icons-material";
 
-import { Alert as MuiAlert, AlertTitle } from "@material-ui/lab";
+import { Alert as MuiAlert, AlertTitle } from "@mui/lab";
 
 import { spacing } from "@mui/system";
 

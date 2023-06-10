@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 
 import { Palette as PaletteIcon } from "@mui/icons-material";
 

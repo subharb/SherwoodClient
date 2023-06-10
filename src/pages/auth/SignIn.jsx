@@ -20,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import { spacing } from "@mui/system";
-import { Alert as MuiAlert } from "@material-ui/lab";
+import { Alert as MuiAlert } from "@mui/lab";
 import { Translate } from "react-localize-redux";
 import { postErrorSlack } from "../../utils/index.jsx";
 

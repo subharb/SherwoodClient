@@ -17,7 +17,7 @@ import SectionHeader from "../../components/SectionHeader";
 import Appointments from './Appointments';
 import AppointmentDatePicker  from './DatePicker';
 import { useSnackBarState } from '../../../hooks';
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 
 interface SingleAgendaProps {
     investigations:any

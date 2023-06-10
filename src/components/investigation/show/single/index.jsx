@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PersonalDataForm from './personal_data';
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import ShowAllRecordsSurvey from './show_all_records_survey';
 import { ButtonAdd, ButtonBack, Divider } from '../../../general/mini_components';
 import ShowSurveysPatient from './show_surveys_patient';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import axios from 'axios';
 import ShowRecordsSection from './show_records_section';
 import { ButtonAdd, ButtonBack, ButtonForward } from '../../../general/mini_components';

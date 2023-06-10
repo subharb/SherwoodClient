@@ -7,7 +7,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import Loader from '../../../Loader';
 import { decryptData, encryptData } from '../../../../utils/index.jsx';
 import { useHistory } from "react-router-dom";
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import { Grid, Typography } from '@material-ui/core';
 import { ButtonAdd } from "../../../general/mini_components";
 

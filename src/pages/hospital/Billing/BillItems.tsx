@@ -7,7 +7,7 @@ import { TYPES_DISCOUNT, TYPE_BILL_ITEM } from "../../../constants/types";
 import { calculateTotalBill } from "../../../utils/bill";
 import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable } from "./types";
 import styled from "styled-components"
-import { Autocomplete } from "@material-ui/lab"
+import { Autocomplete } from "@mui/lab"
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import _ from "lodash";
 import { hasDefaultValues } from "../../../utils/index.jsx";

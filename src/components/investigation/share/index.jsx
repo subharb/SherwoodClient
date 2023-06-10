@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { SIGN_IN_ROUTE } from '../../../routes';
 import { connect } from 'react-redux';
 import { Typography, Grid, Box, Chip, Snackbar } from '@material-ui/core';
-import { Alert } from "@material-ui/lab";
+import { Alert } from "@mui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import { decryptData, encryptData } from '../../../utils/index.jsx';

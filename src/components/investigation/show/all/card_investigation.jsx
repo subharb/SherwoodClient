@@ -19,7 +19,7 @@ import {
   Typography as MuiTypography,
 } from "@mui/material";
 
-import { AvatarGroup as MuiAvatarGroup } from "@material-ui/lab";
+import { AvatarGroup as MuiAvatarGroup } from "@mui/lab";
 
 import { red, green, orange, yellow } from "@material-ui/core/colors";
 

@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Pagination as MuiPagination } from "@material-ui/lab";
+import { Pagination as MuiPagination } from "@mui/lab";
 
 import { spacing } from "@mui/system";
 
