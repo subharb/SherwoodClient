@@ -15,7 +15,7 @@ import {
     IconButton,
     Link,
     Paper as MuiPaper,
-    RootRef,
+    
     Table,
     TableBody,
     TableCell,
@@ -395,7 +395,7 @@ function renderBody(){
         <Droppable droppableId={props.droppableId ? props.droppableId : "droppableId"}>
         {
             (provided, snapshot) =>(
-                <RootRef rootRef={provided.innerRef}>
+                
                 <TableBody>
                     
                 {stableSort(rows, getComparator(order, orderBy))
@@ -421,7 +421,7 @@ function renderBody(){
                 }
                 { provided.placeholder}
                 </TableBody>
-                </RootRef>
+                
             )
         }
     </Droppable>) : 

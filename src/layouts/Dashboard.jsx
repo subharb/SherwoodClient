@@ -15,7 +15,7 @@ import {
   Hidden,
   CssBaseline,
   Paper as MuiPaper,
-  withWidth,
+  
   Typography,
   CircularProgress,
 } from "@mui/material";
@@ -232,4 +232,4 @@ const mapStateToProps = (state) =>{
         offline: state.offline
     }
 }
-export default withWidth()(connect(mapStateToProps, mapDispatchToProps)(Dashboard));
+export default (connect(mapStateToProps, mapDispatchToProps)(Dashboard));
