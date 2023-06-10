@@ -6,7 +6,6 @@ import { ButtonCancel, ButtonContinue, FieldWrapper } from '../../../components/
 import PatientInfo from '../../../components/PatientInfo';
 import { IAgenda, IAppointment, IDepartment } from '../../../constants/types';
 import AppointmentDatePicker from './DatePicker';
-import { Grid, Typography } from '@mui/material';
 import { useAgendas, usePrevious, useSnackBarState } from '../../../hooks';
 import Loader from '../../../components/Loader';
 import { Translate } from 'react-localize-redux';
