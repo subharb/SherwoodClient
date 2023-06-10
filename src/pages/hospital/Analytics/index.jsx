@@ -15,7 +15,7 @@ import styled, { withTheme } from "styled-components";
 import { yearsFromDate } from '../../../utils/index.jsx';
 import TimeTable from '../../dashboards/Analytics/TimeTable';
 import { getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsOutpatients } from '../../../services';
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 import DatesSelector from '../../dashboards/Analytics/DatesSelector';
 
 import SearchTable from '../../dashboards/Analytics/SearchTable';

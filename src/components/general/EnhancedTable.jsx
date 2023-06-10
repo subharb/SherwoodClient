@@ -40,7 +40,7 @@ Edit as EditIcon,
 Delete as DeleteIcon
 } from "@mui/icons-material";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 import { IconGenerator } from "./mini_components";
 import { isNumber } from "lodash";
 

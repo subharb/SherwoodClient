@@ -41,7 +41,7 @@ import {
     Typography, Box, Grid, FormHelperText, FormControl, InputLabel, Select
   } from "@mui/material";  
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 export const IconGenerator = withTheme((props) => {
     switch(props.type){

@@ -24,7 +24,7 @@ import {
 
 import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 const Card = styled(MuiCard)(spacing);
 

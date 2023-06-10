@@ -11,7 +11,7 @@ import {
 
 import { rgba } from "polished";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 const Typography = styled(MuiTypography)(spacing);
 

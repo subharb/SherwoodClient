@@ -11,7 +11,7 @@ import {
 
 import { green, red } from "@material-ui/core/colors";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 import Actions from "./Actions";
 import BarChart from "./BarChart";

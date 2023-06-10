@@ -23,7 +23,7 @@ import { AvatarGroup as MuiAvatarGroup } from "@material-ui/lab";
 
 import { red, green, orange, yellow } from "@material-ui/core/colors";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 import { Translate } from "react-localize-redux";
 
 const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);

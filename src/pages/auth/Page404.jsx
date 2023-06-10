@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Helmet from "react-helmet";
 
 import { Button as MuiButton, Typography } from "@mui/material";
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 const Button = styled(MuiButton)(spacing);
 

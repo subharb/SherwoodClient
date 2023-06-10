@@ -21,7 +21,7 @@ import { Close as CloseIcon } from "@mui/icons-material";
 
 import { Alert as MuiAlert, AlertTitle } from "@material-ui/lab";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 const Card = styled(MuiCard)(spacing);
 

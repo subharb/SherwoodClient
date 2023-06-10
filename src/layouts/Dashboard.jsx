@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 import { Alert } from "@material-ui/lab";
 import { Translate } from 'react-localize-redux';
 import { useSherwoodUser } from '../hooks';
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 import { connect } from 'react-redux';
 import { fetchInvestigations } from '../redux/actions/investigationsActions';
 import { updateLoadingRecords } from '../redux/actions/offlineActions';

@@ -29,7 +29,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 import {
   Briefcase,

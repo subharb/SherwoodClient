@@ -7,7 +7,7 @@ import { ButtonCheck, ButtonEmptyCheck } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
         Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid } from '@material-ui/core';
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,

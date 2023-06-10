@@ -7,7 +7,7 @@ import {
   IconButton,
 } from "@mui/material";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 import { fade } from "@material-ui/core/styles/colorManipulator";
 

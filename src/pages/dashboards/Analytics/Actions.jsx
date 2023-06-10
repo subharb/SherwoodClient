@@ -8,7 +8,7 @@ import {
   FilterList as FilterListIcon,
 } from "@mui/icons-material";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 const Button = styled(MuiButton)(spacing);
 

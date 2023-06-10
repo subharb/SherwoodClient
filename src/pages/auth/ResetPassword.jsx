@@ -13,7 +13,7 @@ import {
   TextField as MuiTextField,
   Typography,
 } from "@mui/material";
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
 
 const Alert = styled(MuiAlert)(spacing);

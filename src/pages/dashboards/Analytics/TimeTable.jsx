@@ -24,7 +24,7 @@ import {
 
 import { red, green } from "@material-ui/core/colors";
 
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 
 import { MoreVertical } from "react-feather";
 import Actions from "./Actions";

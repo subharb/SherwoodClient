@@ -19,7 +19,7 @@ import {
   TextField as MuiTextField,
   Typography,
 } from "@mui/material";
-import { spacing } from "@material-ui/system";
+import { spacing } from "@mui/system";
 import { Alert as MuiAlert } from "@material-ui/lab";
 import { Translate } from "react-localize-redux";
 import { postErrorSlack } from "../../utils/index.jsx";
