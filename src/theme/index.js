@@ -1,4 +1,5 @@
-import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import {  responsiveFontSizes } from "@material-ui/core/styles";
+import { createTheme } from '@material-ui/core/styles'
 import variants from "./variants";
 import typography from "./typography";
 import overrides from "./overrides";
@@ -7,7 +8,7 @@ import props from "./props";
 import shadows from "./shadows";
 import { useSelector } from "react-redux";
 
-const createTheme = (name) => {
+const createMuiTheme = (name) => {
     let themeConfig = variants.find((variant) => variant.name === name);
 
     if (!themeConfig) {
@@ -15,7 +16,7 @@ const createTheme = (name) => {
         themeConfig = variants[0];
     }
 
-    return responsiveFontSizes(createMuiTheme(
+    return responsiveFontSizes(createTheme(
         {
         spacing: 4,
         breakpoints: breakpoints,
@@ -63,4 +64,4 @@ const createTheme = (name) => {
     ));
 };
 
-export default createTheme;
+export default createMuiTheme;

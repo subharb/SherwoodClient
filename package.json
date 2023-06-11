@@ -24,6 +24,7 @@
     "@material-ui/styles": "4.11.2",
     "@material-ui/system": "4.11.2",
     "@mui/icons-material": "^5.11.16",
+    "@mui/joy": "^5.0.0-alpha.83",
     "@mui/lab": "^5.0.0-alpha.133",
     "@mui/material": "^5.13.4",
     "@mui/styles": "^5.13.2",

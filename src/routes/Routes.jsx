@@ -8,7 +8,6 @@ import {
 
 import DashboardLayout from "../layouts/Dashboard";
 import AuthLayout from "../layouts/Auth";
-import PresentationLayout from "../layouts/Presentation";
 import Page404 from "../pages/auth/Page404";
 
 const childRoutes = (Layout, routes) =>

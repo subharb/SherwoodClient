@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { CircularProgress } from "@mui/material";
+import CircularProgress from '@mui/joy/CircularProgress';
+
 
 const Root = styled.div`
   justify-content: center;

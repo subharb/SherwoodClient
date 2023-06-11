@@ -7,8 +7,11 @@ import PatientInfo from '../../../components/PatientInfo';
 import { IAgenda, IAppointment, IDepartment } from '../../../constants/types';
 import AppointmentDatePicker from './DatePicker';
 import { useAgendas, usePrevious, useSnackBarState } from '../../../hooks';
+import Typography from '@mui/joy/Typography';
 import Loader from '../../../components/Loader';
 import { Translate } from 'react-localize-redux';
+import Grid from '@mui/joy/Grid';
+
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { makeAppointmentAction } from '../../../redux/actions/hospitalActions';
 import { Alert } from '@material-ui/lab';
