@@ -152,6 +152,7 @@ function SignIn() {
                     value={values.email}
                     error={Boolean(touched.email && errors.email)}
                     fullWidth
+                    variant="standard" 
                     helperText={touched.email && errors.email}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -161,6 +162,7 @@ function SignIn() {
                     type="password"
                     name="password"
                     label="Password"
+                    variant="standard" 
                     value={values.password}
                     error={Boolean(touched.password && errors.password)}
                     fullWidth

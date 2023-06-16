@@ -39,7 +39,7 @@ axios.interceptors.response.use(function (response) {
 // Create a client
 const queryClient = new QueryClient()
 
-const themeApp = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? createTheme(adaptV4Theme("HOSPITAL")) : createTheme(adaptV4Theme("GREEN"));
+const themeApp = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? createTheme("HOSPITAL") : createTheme("GREEN");
 function OtherProviders(props){
     return (
         <QueryClientProvider client={queryClient}>
