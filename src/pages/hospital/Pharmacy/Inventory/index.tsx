@@ -3,7 +3,7 @@ import { ReactGrid, Column, Row, CellChange, TextCell } from "@silevis/reactgrid
 import "@silevis/reactgrid/styles.css";
 import { IPharmacyItem } from '../types';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { Button, Grid, Snackbar } from '@material-ui/core';
+import { Button, Grid, Snackbar } from '@mui/material';
 import Loader from '../../../../components/Loader';
 import Pharmacy, { PharmacyType } from '..';
 import axios from 'axios';
@@ -11,8 +11,9 @@ import Spreadsheet from "react-spreadsheet";
 import LoadExcel from '../LoadExcel';
 import { ButtonAccept } from '../../../../components/general/mini_components';
 import { useSnackBarState } from '../../../../hooks';
-import { Alert, Color } from '@material-ui/lab';
-import { InventoryExcel } from './InventoryExcel'; 
+import { Alert } from '@mui/material';
+import { Color } from '@mui/lab';
+import { InventoryExcel } from './InventoryExcel';
 import {InventoryList} from './InventoryList';
 
 interface InventoryProps {
@@ -22,7 +23,7 @@ interface InventoryProps {
     showAddPharmacyItem: boolean,
     setShowAddPharmacyItem: (show: boolean) => void,
     pharmacyItemsInit: IPharmacyItem[]
-} 
+}
 
 export const DEFAULT_ROWS: IPharmacyItem = {
     name: "",

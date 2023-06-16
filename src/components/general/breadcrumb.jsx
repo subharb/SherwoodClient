@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { Translate } from 'react-localize-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Typography from '@material-ui/core/Typography';
-import { Link } from '@material-ui/core';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import makeStyles from '@mui/styles/makeStyles';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Typography from '@mui/material/Typography';
+import { Link } from '@mui/material';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 const useStyles = makeStyles((theme) => ({
     root: {

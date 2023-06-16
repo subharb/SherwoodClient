@@ -6,9 +6,9 @@ import { Helmet } from "react-helmet";
 
 import {
   CardContent,
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Grid,
   Link,
   Breadcrumbs as MuiBreadcrumbs,
@@ -39,35 +39,35 @@ function SimpleExpansionPanel() {
           a larger surface, such as a card.
         </Typography>
         <div>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Expansion Panel 1</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <Typography>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
                 eget.
               </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Expansion Panel 2</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <Typography>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
                 eget.
               </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel disabled>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion disabled>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Disabled Expansion Panel</Typography>
-            </ExpansionPanelSummary>
-          </ExpansionPanel>
+            </AccordionSummary>
+          </Accordion>
         </div>{" "}
       </CardContent>
     </Card>
@@ -89,75 +89,75 @@ function ControlledExpansionPanel() {
         </Typography>
         <Typography variant="body2" gutterBottom>
           Extend the default panel behavior to create an accordion with the
-          ExpansionPanel component.
+          Accordion component.
         </Typography>
         <div>
-          <ExpansionPanel
+          <Accordion
             expanded={expanded === "panel1"}
             onChange={handleChange("panel1")}
           >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>General settings</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <Typography>
                 Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
                 feugiat. Aliquam eget maximus est, id dignissim quam.
               </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
             expanded={expanded === "panel2"}
             onChange={handleChange("panel2")}
           >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Users</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <Typography>
                 Donec placerat, lectus sed mattis semper, neque lectus feugiat
                 lectus, varius pulvinar diam eros in elit. Pellentesque
                 convallis laoreet laoreet.
               </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
             expanded={expanded === "panel3"}
             onChange={handleChange("panel3")}
           >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Advanced settings</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <Typography>
                 Nunc vitae orci ultricies, auctor nunc in, volutpat nisl.
                 Integer sit amet egestas eros, vitae egestas augue. Duis vel est
                 augue.
               </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
             expanded={expanded === "panel4"}
             onChange={handleChange("panel4")}
           >
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Personal data</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
               <Typography>
                 Nunc vitae orci ultricies, auctor nunc in, volutpat nisl.
                 Integer sit amet egestas eros, vitae egestas augue. Duis vel est
                 augue.
               </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+            </AccordionDetails>
+          </Accordion>
         </div>{" "}
       </CardContent>
     </Card>
   );
 }
 
-function ExpansionPanels() {
+function Accordions() {
   return (
     <React.Fragment>
       <Helmet title="Expansion Panels" />
@@ -189,4 +189,4 @@ function ExpansionPanels() {
   );
 }
 
-export default ExpansionPanels;
+export default Accordions;

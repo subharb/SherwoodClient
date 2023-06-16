@@ -57,7 +57,7 @@ function LanguagesDropdown(props) {
           aria-haspopup="true"
           onClick={toggleMenu}
           color="inherit"
-        >
+          size="large">
         {
             renderCurrentLanguage()
         }

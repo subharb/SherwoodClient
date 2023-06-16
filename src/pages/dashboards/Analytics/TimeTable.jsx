@@ -22,7 +22,7 @@ import {
   FilterList as FilterListIcon,
 } from "@mui/icons-material";
 
-import { red, green } from "@material-ui/core/colors";
+import { red, green } from "@mui/material/colors";
 
 import { spacing } from "@mui/system";
 
@@ -42,7 +42,7 @@ const Chip = styled(MuiChip)`
 
 const TableWrapper = styled.div`
   overflow-y: auto;
-  max-width: calc(100vw - ${(props) => props.theme.spacing(12)}px);
+  max-width: calc(100vw - ${(props) => props.theme.spacing(12)});
 `;
 
 // Data
@@ -149,60 +149,64 @@ function TimeTable(props){
     }
     
   }
-  return(
-      <Card mb={3}>
-          <CardHeader
-            
-            action={
-              <React.Fragment>
-              <IconButton aria-label="settings" aria-owns={anchorEl ? "simple-menu" : undefined} onClick={handleClick}>
-                <FilterListIcon />
-              </IconButton>
-              <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={() => handleClose(false)}
-                >
-                  <MenuItem onClick={() => handleClose(0)}>Today</MenuItem>
-                  <MenuItem onClick={() => handleClose(1)}>Yesterday</MenuItem>
-                  <MenuItem onClick={() => handleClose(2)}>Last 7 days</MenuItem>
-                  <MenuItem onClick={() => handleClose(3)}>Last 30 days</MenuItem>
-                  <MenuItem onClick={() => handleClose(4)}>This month</MenuItem>
-                  <MenuItem onClick={() => handleClose(5)}>Last month</MenuItem>
-              </Menu>
-              </React.Fragment>
-            }
-            title={<Typography variant="h5"  style={{fontSize:'1.2rem'}}>{props.title}</Typography> }
-          />
+  return (
+    <Card mb={3}>
+        <CardHeader
+          
+          action={
+            <React.Fragment>
+            <IconButton
+              aria-label="settings"
+              aria-owns={anchorEl ? "simple-menu" : undefined}
+              onClick={handleClick}
+              size="large">
+              <FilterListIcon />
+            </IconButton>
+            <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={() => handleClose(false)}
+              >
+                <MenuItem onClick={() => handleClose(0)}>Today</MenuItem>
+                <MenuItem onClick={() => handleClose(1)}>Yesterday</MenuItem>
+                <MenuItem onClick={() => handleClose(2)}>Last 7 days</MenuItem>
+                <MenuItem onClick={() => handleClose(3)}>Last 30 days</MenuItem>
+                <MenuItem onClick={() => handleClose(4)}>This month</MenuItem>
+                <MenuItem onClick={() => handleClose(5)}>Last month</MenuItem>
+            </Menu>
+            </React.Fragment>
+          }
+          title={<Typography variant="h5"  style={{fontSize:'1.2rem'}}>{props.title}</Typography> }
+        />
 
-          <Paper>
-            {
-              props.loading &&
-              <Loader />
-            }
-            {
-              !props.loading &&
-              <TableWrapper>
+        <Paper>
+          {
+            props.loading &&
+            <Loader />
+          }
+          {
+            !props.loading &&
+            <TableWrapper>
 
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      { renderHeader()}
-                      
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {renderBodyTable()}
-                  </TableBody>
-                </Table>
-            </TableWrapper>
-            }
-            
-        </Paper>
-        
-        
-      </Card>
-  )}
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    { renderHeader()}
+                    
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {renderBodyTable()}
+                </TableBody>
+              </Table>
+          </TableWrapper>
+          }
+          
+      </Paper>
+      
+      
+    </Card>
+  );}
 
 export default TimeTable;

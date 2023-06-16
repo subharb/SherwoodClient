@@ -11,7 +11,7 @@ import {
 
 const Wrapper = styled.div`
   padding: ${(props) => props.theme.spacing(1) / 4}px
-    ${(props) => props.theme.spacing(4)}px;
+    ${(props) => props.theme.spacing(4)};
   background: ${(props) => props.theme.footer.background};
   position: relative;
 `;
@@ -19,8 +19,8 @@ const Wrapper = styled.div`
 const ListItem = styled(MuiListItem)`
   display: inline-block;
   width: auto;
-  padding-left: ${(props) => props.theme.spacing(2)}px;
-  padding-right: ${(props) => props.theme.spacing(2)}px;
+  padding-left: ${(props) => props.theme.spacing(2)};
+  padding-right: ${(props) => props.theme.spacing(2)};
   &,
   &:hover,
   &:active {
@@ -38,7 +38,7 @@ function Footer() {
   return (
     <Wrapper>
       <Grid container spacing={0}>
-        <Hidden smDown>
+        <Hidden mdDown>
           <Grid container item xs={12} md={6}>
             <List>
               <ListItem button={true} component="a" href="mailto:pedro@sherwood.science">
@@ -56,7 +56,7 @@ function Footer() {
             </List>
           </Grid>
         </Hidden>
-        <Grid container item xs={12} md={6} justify="flex-end">
+        <Grid container item xs={12} md={6} justifyContent="flex-end">
           <List>
             <ListItem button={true}>
               <ListItemText

@@ -1,4 +1,4 @@
-import { Box, Card } from '@material-ui/core';
+import { Box, Card } from '@mui/material';
 import React, { ReactElement, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';

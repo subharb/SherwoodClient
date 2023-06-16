@@ -1,13 +1,13 @@
-import { Avatar, Grid, List, ListItem, Paper, Typography } from '@material-ui/core';
+import { Avatar, Grid, List, ListItem, Paper, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import Loader from '../../../../components/Loader';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import SettingsIcon from '@material-ui/icons/Settings';
-import DeleteIcon from '@material-ui/icons/Delete';
-import HotelIcon from '@material-ui/icons/Hotel';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import SettingsIcon from '@mui/icons-material/Settings';
+import DeleteIcon from '@mui/icons-material/Delete';
+import HotelIcon from '@mui/icons-material/Hotel';
 import { IconPatient } from '../../../../components/general/mini_components';
-import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
-import EditIcon from '@material-ui/icons/Edit';
+import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
+import EditIcon from '@mui/icons-material/Edit';
 import styled from 'styled-components';
 
 import { Translate } from 'react-localize-redux';

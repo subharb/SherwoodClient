@@ -1,5 +1,6 @@
-import { Grid, Snackbar, Typography } from '@material-ui/core';
-import { Alert, Color } from '@material-ui/lab';
+import { Grid, Snackbar, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
+import { Color } from '@mui/lab';
 import axios from 'axios';
 import { isArray } from 'lodash';
 import React, { useEffect, useState } from 'react';

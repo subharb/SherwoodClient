@@ -1,5 +1,5 @@
-import { Box, Grid, IconButton, ListItem, ListItemText, Paper, Snackbar, Typography } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Box, Grid, IconButton, ListItem, ListItemText, Paper, Snackbar, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 import _ from 'lodash';
 import React, { useEffect, useMemo } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
@@ -737,8 +737,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
     }
     function renderServices(){
         if(services.length > 0){
-            return (
-            <>
+            return <>
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
                     {
                         services.map((service) => {
@@ -747,28 +746,32 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                                     <ListItemText primary={`${service.description}`} /> 
                                                                              
                                         {
-                                            <IconButton onClick={(e) => {
-                                                e.stopPropagation();
-                                                editService(service.id);
-                                            }}>
+                                            <IconButton
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    editService(service.id);
+                                                }}
+                                                size="large">
                                             <IconGenerator type="edit" />
                                             </IconButton>
                                         }
                                         {
-                                            <IconButton onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    deleteService(service.id);
-                                                }}>
+                                            <IconButton
+                                                onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        deleteService(service.id);
+                                                    }}
+                                                size="large">
                                                 <IconGenerator type="delete" />
                                             </IconButton>
                                         }                                        
-                                </ListItem>)
+                                </ListItem>
+                            );
                         })
                         
                     }
                 </Grid>
-            </>
-            )
+            </>;
         }
     }
     function renderCore(){

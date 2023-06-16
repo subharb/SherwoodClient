@@ -21,7 +21,7 @@ const Card = styled(MuiCard)(spacing);
 
 const CardContent = styled(MuiCardContent)`
   &:last-child {
-    padding-bottom: ${(props) => props.theme.spacing(4)}px;
+    padding-bottom: ${(props) => props.theme.spacing(4)};
   }
 `;
 
@@ -48,7 +48,7 @@ const BarChart = (props:BarChartProps) => {
     const theme = useTheme();
     const firstDatasetColor = theme.palette.secondary.main;
     const secondDatasetColor =
-        theme.palette.type === "dark"
+        theme.palette.mode === "dark"
             ? "rgba(255, 255, 255, 0.5)"
             : "rgba(0, 0, 0, 0.1)";
 

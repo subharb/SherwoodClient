@@ -1,4 +1,4 @@
-import { ButtonGroup, Grid, InputLabel } from '@material-ui/core';
+import { ButtonGroup, Grid, InputLabel } from '@mui/material';
 import React from 'react';
 import { ButtonCheck, ButtonEmptyCheck } from './mini_components';
 

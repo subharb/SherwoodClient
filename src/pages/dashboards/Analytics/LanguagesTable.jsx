@@ -22,7 +22,7 @@ const Card = styled(MuiCard)(spacing);
 
 const TableWrapper = styled.div`
   overflow-y: auto;
-  max-width: calc(100vw - ${(props) => props.theme.spacing(12)}px);
+  max-width: calc(100vw - ${(props) => props.theme.spacing(12)});
 `;
 
 const LinearProgress = styled(MuiLinearProgress)`
@@ -37,7 +37,7 @@ function LanguagesTable() {
     <Card mb={3}>
       <CardHeader
         action={
-          <IconButton aria-label="settings">
+          <IconButton aria-label="settings" size="large">
             <MoreVertical />
           </IconButton>
         }

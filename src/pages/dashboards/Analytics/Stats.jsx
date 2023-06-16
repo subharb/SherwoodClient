@@ -19,7 +19,7 @@ const CardContent = styled(MuiCardContent)`
   position: relative;
 
   &:last-child {
-    padding-bottom: ${(props) => props.theme.spacing(4)}px;
+    padding-bottom: ${(props) => props.theme.spacing(4)};
   }
 `;
 
@@ -32,11 +32,11 @@ const Chip = styled(MuiChip)`
   font-size: 85%;
   background-color: ${(props) => props.theme.palette.secondary.main};
   color: ${(props) => props.theme.palette.common.white};
-  margin-bottom: ${(props) => props.theme.spacing(4)}px;
+  margin-bottom: ${(props) => props.theme.spacing(4)};
 
   span {
-    padding-left: ${(props) => props.theme.spacing(2)}px;
-    padding-right: ${(props) => props.theme.spacing(2)}px;
+    padding-left: ${(props) => props.theme.spacing(2)};
+    padding-right: ${(props) => props.theme.spacing(2)};
   }
 `;
 
@@ -47,7 +47,7 @@ const Percentage = styled(MuiTypography)`
     background: ${(props) => rgba(props.percentagecolor, 0.1)};
     padding: 2px;
     border-radius: 3px;
-    margin-right: ${(props) => props.theme.spacing(2)}px;
+    margin-right: ${(props) => props.theme.spacing(2)};
   }
 `;
 

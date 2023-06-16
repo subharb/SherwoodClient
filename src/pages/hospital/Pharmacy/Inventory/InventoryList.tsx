@@ -1,6 +1,6 @@
-import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Snackbar, TextField, Typography } from '@material-ui/core';
-import { green, orange, red } from '@material-ui/core/colors';
-import { Alert } from '@material-ui/lab';
+import { Box, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Snackbar, TextField, Typography } from '@mui/material';
+import { green, orange, red } from '@mui/material/colors';
+import { Alert } from '@mui/material';
 import React, { useEffect, useMemo } from 'react';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { InventoryLocalizedProps } from '.';

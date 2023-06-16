@@ -1,5 +1,5 @@
-import { Grid, Theme } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+import { Grid, Theme } from '@mui/material';
+import { red } from '@mui/material/colors';
 import React, { useMemo } from 'react';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { ThemeProps, withTheme } from 'styled-components';

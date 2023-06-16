@@ -3,7 +3,7 @@ import ICTSelectorFR  from './ICTSelectorSherwood'
 import ICTSelectorOMS from './ICTSelectorOMS'
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { PropsSmartFieldLocalized, SmartFieldType } from '..';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { ButtonCancel } from '../../mini_components';
 import { useOffline } from '../../../../hooks';
 import { OfflineField } from '../OfflineField';

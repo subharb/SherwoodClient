@@ -11,7 +11,7 @@ import {
 
 import { spacing } from "@mui/system";
 
-import { green, red } from "@material-ui/core/colors";
+import { green, red } from "@mui/material/colors";
 
 import Actions from "./Actions";
 import BarChart from "./BarChart";
@@ -28,7 +28,7 @@ function Default() {
   return (
     <React.Fragment>
       <Helmet title="Default Dashboard" />
-      <Grid justify="space-between" container spacing={6}>
+      <Grid justifyContent="space-between" container spacing={6}>
         <Grid item>
           <Typography variant="h3" gutterBottom>
             Default Dashboard

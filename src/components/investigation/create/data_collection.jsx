@@ -7,7 +7,7 @@ import Section from './section';
 import { ButtonSave, ButtonAdd, ButtonBack, ButtonContinue } from '../../general/mini_components'; 
 import FieldSherwood from '../../general/FieldSherwood';
 import { reduxForm, Field, submit, FormSection } from 'redux-form';
-import { TextField, Grid, Container, Card, CardContent, Typography, InputLabel, Select, MenuItem, FormControl } from '@material-ui/core';
+import { TextField, Grid, Container, Card, CardContent, Typography, InputLabel, Select, MenuItem, FormControl } from '@mui/material';
 import { EnhancedTable } from '../../general/EnhancedTable';
 import OrderableTable from '../../general/OrderableTable';
 import { CATEGORY_SURVEYS, TYPE_SURVEYS } from '../../../constants';

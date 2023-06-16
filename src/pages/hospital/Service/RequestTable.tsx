@@ -1,6 +1,6 @@
-import { Grid, Typography } from '@material-ui/core';
-import { blue, brown, green, orange, red, yellow } from '@material-ui/core/colors';
-import { ContactSupportOutlined } from '@material-ui/icons';
+import { Grid, Typography } from '@mui/material';
+import { blue, brown, green, orange, red, yellow } from '@mui/material/colors';
+import { ContactSupportOutlined } from '@mui/icons-material';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';

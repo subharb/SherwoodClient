@@ -69,7 +69,7 @@ function CircularDeterminate() {
           Circular Determinate
         </Typography>
         <Paper mt={3}>
-          <CircularProgress variant="static" value={progress} />
+          <CircularProgress variant="determinate" value={progress} />
         </Paper>
       </CardContent>
     </Card>
@@ -84,11 +84,11 @@ function CircularStatic() {
           Circular Static
         </Typography>
         <Paper mt={3}>
-          <CircularProgress m={2} variant="static" value={5} />
-          <CircularProgress m={2} variant="static" value={25} />
-          <CircularProgress m={2} variant="static" value={50} />
-          <CircularProgress m={2} variant="static" value={75} />
-          <CircularProgress m={2} variant="static" value={100} />
+          <CircularProgress m={2} variant="determinate" value={5} />
+          <CircularProgress m={2} variant="determinate" value={25} />
+          <CircularProgress m={2} variant="determinate" value={50} />
+          <CircularProgress m={2} variant="determinate" value={75} />
+          <CircularProgress m={2} variant="determinate" value={100} />
         </Paper>
       </CardContent>
     </Card>

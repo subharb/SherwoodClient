@@ -1,6 +1,6 @@
-import { Avatar, Grid, List, ListItem, FormControlLabel, Switch, Typography, Accordion, AccordionSummary, AccordionDetails, ListItemText, IconButton } from '@material-ui/core';
+import { Avatar, Grid, List, ListItem, FormControlLabel, Switch, Typography, Accordion, AccordionSummary, AccordionDetails, ListItemText, IconButton } from '@mui/material';
 import React, { useState } from 'react';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { IBed, IDepartment, IDepartmentServer, IResearcher, IUnit, IWard } from '../../../constants/types';
 import { Translate } from 'react-localize-redux';
 import { WardFormEdit, WardFormModes, WardFormSelect } from './Ward/WardForm';
@@ -97,19 +97,23 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                                         >
                                     <Typography >{ unit.name}  {
                                     editUnitCallBack &&
-                                    <IconButton onClick={(e) => {
-                                        e.stopPropagation();
-                                        editUnitCallBack(unit);
-                                        }}>
+                                    <IconButton
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            editUnitCallBack(unit);
+                                            }}
+                                        size="large">
                                         <IconGenerator type="edit" />
                                     </IconButton>
                                 }
                             {
                                 deleteUnitCallBack &&
-                                <IconButton onClick={(e) => {
-                                    e.stopPropagation();
-                                    deleteUnitCallBack(unit, researchersUnit.length > 0);
-                                    }}>
+                                <IconButton
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        deleteUnitCallBack(unit, researchersUnit.length > 0);
+                                        }}
+                                    size="large">
                                     <IconGenerator type="delete" />
                                 </IconButton>
                             }</Typography>
@@ -135,12 +139,12 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
                                         </List>
                                     </AccordionDetails>
                                 </Accordion>
-                            )
+                            );
                             
                         })
                     }
                 </List>
-                )
+            );
         }
         else{
             const AddWardButton = (addWardCallBack) ? <ButtonAdd disabled={uuidDepartmentAddWard} 
@@ -214,54 +218,56 @@ export const DepartmentsAccordion:React.FC<Props> = ({departments, permissions, 
     function renderAccordion(){
         let unitOrDeparments:IDepartment[] = [];
         unitOrDeparments = departments.sort((a,b) => a.name.localeCompare(b.name));
-        return (
-            unitOrDeparments.length > 0 &&
-            unitOrDeparments.map(department => {
-                return (
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                            >
-                            <Typography >{ department.name}
-                            {
-                                addUnitCallBack &&
-                                <ButtonAdd 
-                                    type="button" data-testid="add_researcher" 
-                                    onClick={(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => { e.stopPropagation();addUnitCallBack(department.uuid as string) }} />
-                            }
-                            </Typography>
-                            {
-                                editDepartmentCallBack &&
-                                <IconButton onClick={(e) => {
+        return unitOrDeparments.length > 0 &&
+        unitOrDeparments.map(department => {
+            return (
+                <Accordion>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                        >
+                        <Typography >{ department.name}
+                        {
+                            addUnitCallBack &&
+                            <ButtonAdd 
+                                type="button" data-testid="add_researcher" 
+                                onClick={(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => { e.stopPropagation();addUnitCallBack(department.uuid as string) }} />
+                        }
+                        </Typography>
+                        {
+                            editDepartmentCallBack &&
+                            <IconButton
+                                onClick={(e) => {
                                     e.stopPropagation();
                                     editDepartmentCallBack(department);
-                                    }}>
-                                    <IconGenerator type="edit" />
-                                </IconButton>
-                            }
-                            {
-                                deleteDepartmentCallBack &&
-                                <IconButton onClick={(e) => {
+                                    }}
+                                size="large">
+                                <IconGenerator type="edit" />
+                            </IconButton>
+                        }
+                        {
+                            deleteDepartmentCallBack &&
+                            <IconButton
+                                onClick={(e) => {
                                     e.stopPropagation();
                                     deleteDepartmentCallBack(department);
-                                    }}>
-                                    <IconGenerator type="delete" />
-                                </IconButton>
-                            }
-                                
-                        </AccordionSummary>
-                        <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
-                                {
-                                    renderDepartment(department)
-                                }
+                                    }}
+                                size="large">
+                                <IconGenerator type="delete" />
+                            </IconButton>
+                        }
                             
-                        </AccordionDetails>
-                    </Accordion>
-                )
-            })
-        )
+                    </AccordionSummary>
+                    <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
+                            {
+                                renderDepartment(department)
+                            }
+                        
+                    </AccordionDetails>
+                </Accordion>
+            );
+        });
     }
     return(
         <div style={{width:'100%'}}>

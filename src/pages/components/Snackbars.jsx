@@ -262,23 +262,20 @@ function ConsecutiveSnackbars() {
             open={open}
             autoHideDuration={6000}
             onClose={handleClose}
-            onExited={handleExited}
             message={messageInfo ? messageInfo.message : undefined}
             action={
               <React.Fragment>
                 <Button color="secondary" size="small" onClick={handleClose}>
                   UNDO
                 </Button>
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  onClick={handleClose}
-                >
+                <IconButton aria-label="close" color="inherit" onClick={handleClose} size="large">
                   <CloseIcon />
                 </IconButton>
               </React.Fragment>
             }
-          />
+            TransitionProps={{
+              onExited: handleExited
+            }} />
         </Paper>
       </CardContent>
     </Card>

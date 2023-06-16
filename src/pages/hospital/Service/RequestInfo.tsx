@@ -1,4 +1,4 @@
-import { Card, Grid, Typography } from '@material-ui/core';
+import { Card, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { RequestStatusToChip, statusToColor } from './RequestTable';
 import { IRequest, IRequestServiceInvestigation, RequestStatus } from './types';

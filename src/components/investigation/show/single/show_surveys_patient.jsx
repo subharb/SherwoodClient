@@ -7,12 +7,12 @@ import ShowPatientRecords from './show_patient_records';
 import PropTypes from 'prop-types';
 import { fetchRecordsPatientFromSurvey } from '../../../../services';
 import { filterRecordsFromSubmissions } from '../../../../utils/index.jsx';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import { ButtonBack } from '../../../general/mini_components';
 import Form from '../../../general/form';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 
 /**
  * Componente que muestra los surveys de una investigación. Con botones para añadir información o visualizar

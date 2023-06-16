@@ -65,10 +65,10 @@ const Input = styled(InputBase)`
   width: 100%;
   > input {
     color: ${(props) => props.theme.header.search.color};
-    padding-top: ${(props) => props.theme.spacing(2.5)}px;
-    padding-right: ${(props) => props.theme.spacing(2.5)}px;
-    padding-bottom: ${(props) => props.theme.spacing(2.5)}px;
-    padding-left: ${(props) => props.theme.spacing(12)}px;
+    padding-top: ${(props) => props.theme.spacing(2.5)};
+    padding-right: ${(props) => props.theme.spacing(2.5)};
+    padding-bottom: ${(props) => props.theme.spacing(2.5)};
+    padding-left: ${(props) => props.theme.spacing(12)};
     width: 160px;
   }
 `;
@@ -85,7 +85,7 @@ const AppBarComponent = ({ onDrawerToggle }) => (
                 data-testid="menu-hamburguer"
                 aria-label="Open drawer"
                 onClick={onDrawerToggle}
-              >
+                size="large">
                 <MenuIcon />
               </IconButton>
             </Grid>

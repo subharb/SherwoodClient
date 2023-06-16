@@ -1,4 +1,4 @@
-import { Card, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
+import { Card, CardContent, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';

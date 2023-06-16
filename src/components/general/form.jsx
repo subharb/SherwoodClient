@@ -6,10 +6,10 @@ import FieldSherwood from './FieldSherwood';
 import { getValueField, validateField } from '../../utils/index.jsx';
 import PropTypes from 'prop-types';
 import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@mui/material';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { blue } from '@material-ui/core/colors';
+import { blue } from '@mui/material/colors';
 import { isObject } from 'lodash';
 
  /**

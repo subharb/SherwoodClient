@@ -1,5 +1,5 @@
-import { Grid, TextField, Typography } from '@material-ui/core';
-import { withStyles } from "@material-ui/core/styles";
+import { Grid, TextField, Typography } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import { useEffect } from 'react';
 import { useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';

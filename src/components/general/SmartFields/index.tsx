@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ICTSelectorOMS from './ICT/ICTSelectorOMS';
 import { ButtonDelete, ButtonPlus } from '../mini_components';
-import { Card, CardContent, Grid, PropTypes, Typography } from '@material-ui/core';
+import { Card, CardContent, Grid, PropTypes, Typography } from '@mui/material';
 import { useSelectSmartField, useUpdateEffect } from '../../../hooks';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../EnhancedTable';

@@ -1,4 +1,4 @@
-import { Grid, Snackbar, Typography } from '@material-ui/core';
+import { Grid, Snackbar, Typography } from '@mui/material';
 import { Alert } from "@mui/lab";
 import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';

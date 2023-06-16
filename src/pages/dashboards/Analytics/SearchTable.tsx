@@ -11,7 +11,7 @@ import ICT from '../../../components/general/SmartFields/ICT';
 import Loader from '../../../components/Loader';
 import { getStatsPerDiagnosisService } from '../../../services';
 import { Bar } from "react-chartjs-2";
-import { red } from '@material-ui/core/colors';
+import { red } from '@mui/material/colors';
 import { LIST_COLORS } from '../../hospital/Analytics';
 
 interface Props extends LocalizeContextProps{

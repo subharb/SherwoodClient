@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "../redux/actions/themeActions";
 import { THEMES } from "../constants";
-import { green, grey, indigo } from "@material-ui/core/colors";
+import { green, grey, indigo } from "@mui/material/colors";
 import { Link } from "react-router-dom";
 
 import {
@@ -83,8 +83,8 @@ const DemoTitle = styled(Typography)`
 
 const Fab = styled(MuiFab)`
   position: fixed;
-  right: ${(props) => props.theme.spacing(8)}px;
-  bottom: ${(props) => props.theme.spacing(8)}px;
+  right: ${(props) => props.theme.spacing(8)};
+  bottom: ${(props) => props.theme.spacing(8)};
   z-index: 1;
 `;
 
@@ -151,11 +151,9 @@ function Demos() {
           component={Link}
           to="/documentation/welcome"
           variant="outlined"
-          color="default"
           size="large"
           target="_blank"
-          fullWidth={true}
-        >
+          fullWidth={true}>
           Documentation
         </Button>
       </Box>

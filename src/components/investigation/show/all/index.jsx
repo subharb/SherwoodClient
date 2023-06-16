@@ -8,7 +8,7 @@ import Loader from '../../../Loader';
 import { decryptData, encryptData } from '../../../../utils/index.jsx';
 import { useHistory } from "react-router-dom";
 import { Alert } from "@mui/lab";
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import { ButtonAdd } from "../../../general/mini_components";
 
 function AllInvestigations(props){

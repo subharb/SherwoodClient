@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { deepOrange, deepPurple, green, pink } from "@material-ui/core/colors";
+import { deepOrange, deepPurple, green, pink } from "@mui/material/colors";
 
 import {
   Assignment as AssignmentIcon,
@@ -27,7 +27,7 @@ import { spacing } from "@mui/system";
 const Card = styled(MuiCard)(spacing);
 
 const Avatar = styled(MuiAvatar)`
-  margin-right: ${(props) => props.theme.spacing(2)}px;
+  margin-right: ${(props) => props.theme.spacing(2)};
 `;
 
 const BigAvatar = styled(Avatar)`
@@ -67,7 +67,7 @@ function ImageAvatars() {
           srcSet into the component.
         </Typography>
 
-        <Grid container justify="center" alignItems="center">
+        <Grid container justifyContent="center" alignItems="center">
           <Avatar alt="Remy Sharp" src="/static/img/avatars/avatar-1.jpg" />
           <BigAvatar alt="Remy Sharp" src="/static/img/avatars/avatar-1.jpg" />
         </Grid>
@@ -88,7 +88,7 @@ function LetterAvatars() {
           string as children.
         </Typography>
 
-        <Grid container justify="center" alignItems="center">
+        <Grid container justifyContent="center" alignItems="center">
           <Avatar>H</Avatar>
           <OrangeAvatar>N</OrangeAvatar>
           <PurpleAvatar>OP</PurpleAvatar>
@@ -109,7 +109,7 @@ function IconAvatars() {
           Icon avatars are created by passing an icon as children.
         </Typography>
 
-        <Grid container justify="center" alignItems="center">
+        <Grid container justifyContent="center" alignItems="center">
           <Avatar>
             <FolderIcon />
           </Avatar>

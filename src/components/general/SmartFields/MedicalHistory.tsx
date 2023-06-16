@@ -1,5 +1,5 @@
-import { Box, Checkbox, FormControlLabel, Grid, Typography } from '@material-ui/core';
-import { blue } from '@material-ui/core/colors';
+import { Box, Checkbox, FormControlLabel, Grid, Typography } from '@mui/material';
+import { blue } from '@mui/material/colors';
 import { isString } from 'lodash';
 import React, { useEffect } from 'react';
 import { Translate } from 'react-localize-redux';

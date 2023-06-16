@@ -25,7 +25,7 @@ const Card = styled(MuiCard)(spacing);
 const CardContent = styled(MuiCardContent)`
   &:last-child {
     padding-top: 0;
-    padding-bottom: ${(props) => props.theme.spacing(4)}px;
+    padding-bottom: ${(props) => props.theme.spacing(4)};
   }
 `;
 
@@ -35,7 +35,7 @@ function WorldMap({ theme }) {
     regionStyle: {
       initial: {
         fill:
-          theme.palette.type === "dark"
+          theme.palette.mode === "dark"
             ? "rgba(255, 255, 255, 0.3)"
             : "#e3eaef",
       },
@@ -105,7 +105,7 @@ function WorldMap({ theme }) {
     <Card mb={4}>
       <CardHeader
         action={
-          <IconButton aria-label="settings">
+          <IconButton aria-label="settings" size="large">
             <MoreVertical />
           </IconButton>
         }

@@ -1,4 +1,4 @@
-import { Card, CardContent, IconButton } from '@material-ui/core';
+import { Card, CardContent, IconButton } from '@mui/material';
 import React from 'react';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { IAppointment, IDepartment } from '../../../constants/types';
@@ -46,21 +46,20 @@ const AppointmentField: React.FC<AppointmentFieldProps> = ({ label,  uuidPatient
         }
         if(value){
             const date = stringDatePostgresToDate(value);
-            return(
-                <>
-                    { label }: {date.toLocaleDateString(activeLanguage.code, { year: 'numeric', month: '2-digit', day: '2-digit' })}
-                    { appointment && 
-                        <IconButton 
-                            onClick={(e) => {
-                                deleteAppointment();
-                                e.stopPropagation();
-                            }}>
-                            
-                            <IconGenerator type="delete" />
-                        </IconButton>   
-                    }
-                </>
-            )
+            return <>
+                { label }: {date.toLocaleDateString(activeLanguage.code, { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                { appointment && 
+                    <IconButton
+                        onClick={(e) => {
+                            deleteAppointment();
+                            e.stopPropagation();
+                        }}
+                        size="large">
+                        
+                        <IconGenerator type="delete" />
+                    </IconButton>   
+                }
+            </>;
         }
         return (
             <>

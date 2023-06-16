@@ -6,7 +6,7 @@ import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from './general/modal';
-import { Grid, Paper, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@mui/material';
 import Form from '../components/general/form';
 import { generateKey, encryptData, decryptData, isUserLoggedIn } from '../utils/index.jsx';
 import Breadcrumb from './general/breadcrumb';

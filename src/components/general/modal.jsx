@@ -25,8 +25,7 @@ export default function Modal(props){
         boxShadow: 'none',
         } : paperStyles;
     
-    return(
-        
+    return (
         <Dialog className='modal' maxWidth="lg" fullWidth={props.fullWidth} disableEscapeKeyDown 
             PaperProps={{style : paperStyles}}
             open={props.open}
@@ -35,7 +34,10 @@ export default function Modal(props){
             aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
             {props.closeModal &&
-                    <IconButton style={{position:"absolute",right:"0px"}} onClick={props.closeModal}>
+                    <IconButton
+                        style={{position:"absolute",right:"0px"}}
+                        onClick={props.closeModal}
+                        size="large">
                         <CloseIcon />
                     </IconButton>
                 }
@@ -58,8 +60,7 @@ export default function Modal(props){
                 </DialogActions> 
             }
         </Dialog>
-        
-    )
+    );
 }
 
 Modal.propTypes = {

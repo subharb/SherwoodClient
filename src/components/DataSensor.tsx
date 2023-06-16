@@ -5,7 +5,7 @@ import { useOffline } from '../hooks';
 import { formatData, openStore } from '../utils/index.jsx';
 import NotificationsDropdown from './NotificationsDropdown';
 import { Translate } from 'react-localize-redux';
-import { IconButton, Tooltip, Typography } from '@material-ui/core';
+import { IconButton, Tooltip, Typography } from '@mui/material';
 import styled from 'styled-components';
 
 interface Props{
@@ -31,13 +31,14 @@ export default function DataSensor(props: Props) {
     return (
         <React.Fragment>
             <TooltipThemed title="Datos consumidos día de hoy" color='primary'>
-                <IconButton color="inherit" >
+                <IconButton color="inherit" size="large">
                     <Typography variant="body2">
                         {data}
                     </Typography> 
                 </IconButton>
             </TooltipThemed>
-        </React.Fragment>)
+        </React.Fragment>
+    );
 }
 
 

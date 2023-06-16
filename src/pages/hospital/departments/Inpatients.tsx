@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import { BoxBckgr, TypographyStyled } from '../../../components/general/mini_components';
 import Helmet from "react-helmet";
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { AccordionSummary, Accordion, Grid, Typography, AccordionDetails, List, ListItem, ListItemText } from '@material-ui/core';
+import { AccordionSummary, Accordion, Grid, Typography, AccordionDetails, List, ListItem, ListItemText } from '@mui/material';
 import { useDepartments } from '../../../hooks';
 import Loader from '../../../components/Loader';
 import { connect } from 'react-redux';
 import { IDepartment, IPatient, IWard } from '../../../constants/types';
 import Ward, { WardModes, WardView } from './Ward';
-import { ExpandMore } from '@material-ui/icons';
+import { ExpandMore } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { HOSPITAL_PATIENT } from '../../../routes';
 

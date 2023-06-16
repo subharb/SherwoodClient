@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Box, Button, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
+import { Box, Button, Grid, IconButton, Paper, Snackbar, Typography } from '@mui/material';
 import PersonalDataForm from '../../components/investigation/show/single/personal_data';
 import { connect } from 'react-redux';
 import { savePatientAction, updatePatientAction } from '../../redux/actions/patientsActions';
@@ -11,9 +11,9 @@ import Loader from '../../components/Loader';
 import { Translate } from 'react-localize-redux';
 import { BoxBckgr, GridContainer } from '../../components/general/mini_components';
 import { useDispatch } from "react-redux";
-import { PersonAddSharp, EditOutlined } from '@material-ui/icons';
+import { PersonAddSharp, EditOutlined } from '@mui/icons-material';
 import { useSnackBarState, useUpdateEffect } from '../../hooks';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 import { ROUTE_401 } from '../../routes';
 import { areSameDates } from '../../utils/index.jsx';
 import Modal from '../../components/general/modal';
@@ -26,7 +26,7 @@ export function AddPatient(props) {
     const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const patientsInvestigation = props.investigations.currentInvestigation &&  props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     return <AddPatientComponent investigations={props.investigations} patient={patient} patientsInvestigation={patientsInvestigation} {...props} />
-}   
+}
 
 export function AddPatientComponent(props) {
     const [isLoading, setIsLoading] = useState(false);

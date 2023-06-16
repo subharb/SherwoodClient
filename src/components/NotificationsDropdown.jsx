@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import OfflineBoltIcon from '@material-ui/icons/OfflineBolt';
-import { green, red } from "@material-ui/core/colors";
+import OfflineBoltIcon from '@mui/icons-material/OfflineBolt';
+import { green, red } from "@mui/material/colors";
 
 import {
   Avatar as MuiAvatar,
@@ -108,7 +108,7 @@ function NotificationsDropdown(props) {
   return (
     <React.Fragment>
       <Tooltip title="Notifications">
-        <IconButton color="inherit" ref={ref} onClick={handleOpen}>
+        <IconButton color="inherit" ref={ref} onClick={handleOpen} size="large">
           <Indicator badgeContent={props.notifications.length}>
              { currentIcon() }
           </Indicator>

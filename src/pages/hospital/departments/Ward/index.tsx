@@ -1,4 +1,4 @@
-import { Avatar, Grid, List, Snackbar, FormControlLabel, Switch, Typography } from '@material-ui/core';
+import { Avatar, Grid, List, Snackbar, FormControlLabel, Switch, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import Loader from '../../../../components/Loader';
 
@@ -27,7 +27,7 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { createBedAction, createStayPatientAction, deleteBedAction, resetHospitalAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../../hooks';
 import { getWardService } from '../../../../services';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 import { HOSPITAL_PATIENT } from '../../../../routes';
 import { sexNumberToString, yearsFromDate } from '../../../../utils/index.jsx';
 import FormTSFunc, { FormValues } from '../../../../components/general/formTSFunction';
@@ -185,7 +185,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
                 saveOrderCallBack={saveOrderCallBack} addCallBack={addCallBack} goToPatientHistory={goToPatientHistory}
                 viewCallBack={viewCallBack}
             />
-}   
+}
 
 const mapStateToProps = (state:any) =>{
     return {

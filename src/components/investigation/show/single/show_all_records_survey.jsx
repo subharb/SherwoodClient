@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PatientRecords from './show_patient_records';
 import PropTypes from 'prop-types';
-import { Button, Typography, Grid } from '@material-ui/core';
+import { Button, Typography, Grid } from '@mui/material';
 import {
     ArrowBackIos as ArrowBackIosIcon,
     ArrowForwardIos as ArrowForwardIosIcon,

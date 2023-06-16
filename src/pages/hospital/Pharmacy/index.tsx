@@ -1,5 +1,5 @@
-import { Grid, Snackbar } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Grid, Snackbar } from '@mui/material';
+import { Alert } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Translate } from 'react-localize-redux';

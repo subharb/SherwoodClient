@@ -1,4 +1,4 @@
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Typography } from '@material-ui/core';
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { string } from 'prop-types';
 import React, { useState } from 'react';
 import { ButtonAdd, ButtonSave } from './mini_components';

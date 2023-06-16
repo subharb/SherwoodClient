@@ -23,10 +23,10 @@ const Alert = styled(MuiAlert)(spacing);
 const TextField = styled(MuiTextField)(spacing);
 
 const Wrapper = styled(Paper)`
-  padding: ${(props) => props.theme.spacing(6)}px;
+  padding: ${(props) => props.theme.spacing(6)};
 
   ${(props) => props.theme.breakpoints.up("md")} {
-    padding: ${(props) => props.theme.spacing(10)}px;
+    padding: ${(props) => props.theme.spacing(10)};
   }
 `;
 
@@ -36,22 +36,22 @@ function SignUp(props) {
   const history = useHistory();
 
   return (
-      <Wrapper>
-        <Grid container spacing={1}>
-            <Grid item xs={12} align = "center" justify = "center" alignItems = "center" >
-              <img src={pathLogo} alt="Sherwood Science" height="55" />
-            </Grid>
-            <Grid item xs={12}>
-                <Typography variant="h3" gutterBottom display="inline">
-                    Sign up!
-                </Typography>
-            </Grid>
-            <Grid item>
-                <Helmet title="Sign Up" />
-                <Register typeUser="researcher" {...props} />
-            </Grid>
-        </Grid>
-      </Wrapper>        
+    <Wrapper>
+      <Grid container spacing={1}>
+          <Grid item xs={12} align = "center" justifyContent = "center" alignItems = "center" >
+            <img src={pathLogo} alt="Sherwood Science" height="55" />
+          </Grid>
+          <Grid item xs={12}>
+              <Typography variant="h3" gutterBottom display="inline">
+                  Sign up!
+              </Typography>
+          </Grid>
+          <Grid item>
+              <Helmet title="Sign Up" />
+              <Register typeUser="researcher" {...props} />
+          </Grid>
+      </Grid>
+    </Wrapper>
   );
 }
 

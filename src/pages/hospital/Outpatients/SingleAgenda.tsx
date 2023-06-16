@@ -1,5 +1,5 @@
 import DateFnsUtils from "@date-io/date-fns";
-import { Card, Grid, Snackbar, Typography } from '@material-ui/core';
+import { Card, Grid, Snackbar, Typography } from '@mui/material';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';

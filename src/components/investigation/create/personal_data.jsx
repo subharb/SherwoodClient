@@ -5,7 +5,7 @@ import { validateField } from '../../../utils/index.jsx';
 import { Field, reduxForm } from 'redux-form'
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Component } from 'react';
-import { CardContent, Card, Grid, Typography } from '@material-ui/core';
+import { CardContent, Card, Grid, Typography } from '@mui/material';
 import { ButtonBack, ButtonContinue } from '../../general/mini_components';
 import { EnhancedTable } from '../../general/EnhancedTable';
 import AddField from './add_field';

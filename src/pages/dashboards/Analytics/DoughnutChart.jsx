@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { withTheme } from "styled-components";
 
-import { green, red, orange } from "@material-ui/core/colors";
+import { green, red, orange } from "@mui/material/colors";
 
 import {
   Card as MuiCard,
@@ -29,7 +29,7 @@ const Card = styled(MuiCard)(spacing);
 
 const CardContent = styled(MuiCardContent)`
   &:last-child {
-    padding-bottom: ${(props) => props.theme.spacing(2)}px;
+    padding-bottom: ${(props) => props.theme.spacing(2)};
   }
 `;
 
@@ -96,7 +96,7 @@ function DoughnutChart({ theme, title, labels, datasets, table, innerInfo }) {
     <Card mb={3}>
       <CardHeader
         action={
-          <IconButton aria-label="settings">
+          <IconButton aria-label="settings" size="large">
             <MoreVertical />
           </IconButton>
         }

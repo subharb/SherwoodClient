@@ -4,7 +4,7 @@ import '@whoicd/icd11ect/style.css';
 import { getTokenWho } from '../../../../services';
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField } from '@mui/material';
 import { FieldWrapper, IconGenerator } from '../../mini_components';
 import styled from 'styled-components';
 

@@ -1,5 +1,5 @@
-import { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
-import { PhotoCamera, Replay } from '@material-ui/icons';
+import { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { PhotoCamera, Replay } from '@mui/icons-material';
 import React, {SyntheticEvent, useEffect, useState} from 'react';
 import { uploadFile, getFile } from '../../services';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
@@ -270,7 +270,7 @@ const File:React.FC<Props> = (props) => {
         loadFiles();
     }, [props.value]);
     
-    return(
+    return (
         <Grid container>
             <Modal
                 open={showModal}
@@ -361,7 +361,7 @@ const File:React.FC<Props> = (props) => {
                             type="file" 
                             onChange={(e) => onFileSelected(e)} />
                         <label htmlFor="image">
-                            <IconButton color="primary" aria-label="upload picture" component="span">
+                            <IconButton color="primary" aria-label="upload picture" component="span" size="large">
                                 <PhotoCamera />
                             </IconButton>
                         </label>
@@ -370,8 +370,8 @@ const File:React.FC<Props> = (props) => {
                 
             </Grid>
             
-        </Grid>        
-    )
+        </Grid>
+    );
 }
 
 export default withLocalize(File);

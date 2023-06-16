@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { withTheme } from "styled-components";
 
-import { orange, green, red } from "@material-ui/core/colors";
+import { orange, green, red } from "@mui/material/colors";
 
 import {
   Card as MuiCard,
@@ -88,7 +88,7 @@ const DoughnutChart = ({ theme }) => {
     <Card mb={3}>
       <CardHeader
         action={
-          <IconButton aria-label="settings">
+          <IconButton aria-label="settings" size="large">
             <MoreVertical />
           </IconButton>
         }

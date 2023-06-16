@@ -3,7 +3,7 @@ import {useDroppable} from '@dnd-kit/core';
 import {useDraggable} from '@dnd-kit/core';
 import {CSS} from '@dnd-kit/utilities';
 import styled from 'styled-components';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import {createPortal} from 'react-dom';
 import {
   Announcements,

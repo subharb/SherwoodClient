@@ -1,5 +1,5 @@
-import { Grid, Typography } from '@material-ui/core';
-import { green } from '@material-ui/core/colors';
+import { Grid, Typography } from '@mui/material';
+import { green } from '@mui/material/colors';
 
 import React, { useEffect, useState } from 'react';
 import { Translate, withLocalize, LocalizeContextProps } from 'react-localize-redux';

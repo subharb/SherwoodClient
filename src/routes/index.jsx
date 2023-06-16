@@ -7,9 +7,9 @@ import {
   Sliders,
   Users,
 } from "react-feather";
-import TimelineIcon from '@material-ui/icons/Timeline';
-import FindInPageIcon from '@material-ui/icons/FindInPage';
-import GroupIcon from '@material-ui/icons/Group';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import FindInPageIcon from '@mui/icons-material/FindInPage';
+import GroupIcon from '@mui/icons-material/Group';
 import { Home as HomeIcon, Search as SearchPatientIcon, Hotel as HotelIcon,
     PersonAddSharp as AddPatientIcon, Image as ImageIcon,
     PeopleOutline as PeopleOutlineIcon,

@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@mui/material";
 
-import { red, green, orange } from "@material-ui/core/colors";
+import { red, green, orange } from "@mui/material/colors";
 
 import { spacing } from "@mui/system";
 
@@ -34,7 +34,7 @@ const Paper = styled(MuiPaper)(spacing);
 
 const TableWrapper = styled.div`
   overflow-y: auto;
-  max-width: calc(100vw - ${(props) => props.theme.spacing(12)}px);
+  max-width: calc(100vw - ${(props) => props.theme.spacing(12)});
 `;
 
 // Data
@@ -93,7 +93,7 @@ const DashboardTable = () => (
   <Card mb={6}>
     <CardHeader
       action={
-        <IconButton aria-label="settings">
+        <IconButton aria-label="settings" size="large">
           <MoreVertical />
         </IconButton>
       }

@@ -1,4 +1,4 @@
-import { Card, Grid, Snackbar, Typography } from '@material-ui/core';
+import { Card, Grid, Snackbar, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ColourChip } from '../../../components/general/mini_components-ts';
@@ -12,7 +12,7 @@ import { TYPE_FILL_IMG_SURVEY, TYPE_FILL_LAB_SURVEY, TYPE_REQUEST_LAB } from '..
 import { IResearcher, ISurvey, SnackbarTypeSeverity } from '../../../constants/types';
 import FillDataCollection from '../FillDataCollection';
 import { useRequest, useSnackBarState, useUpdateEffect } from '../../../hooks';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 import { Translate } from 'react-localize-redux';
 import { useSelector } from 'react-redux';
 import RequestInfo from './RequestInfo';

@@ -75,7 +75,7 @@ function MessagesDropdown() {
   return (
     <React.Fragment>
       <Tooltip title="Messages">
-        <IconButton color="inherit" ref={ref} onClick={handleOpen}>
+        <IconButton color="inherit" ref={ref} onClick={handleOpen} size="large">
           <Indicator badgeContent={3}>
             <MessageSquare />
           </Indicator>

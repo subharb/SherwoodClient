@@ -3,7 +3,7 @@ import { withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { ButtonEdit, ButtonDelete, ButtonAdd, ButtonView } from "./mini_components";
-import { Checkbox } from '@material-ui/core';
+import { Checkbox } from '@mui/material';
 import { Translate } from 'react-localize-redux';
 
 const CheckboxContainer = styled.div`

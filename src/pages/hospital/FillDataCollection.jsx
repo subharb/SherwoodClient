@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, Typography, Paper } from '@material-ui/core';
+import { Grid, Typography, Paper } from '@mui/material';
 import { BoxBckgr, IconPatient, ButtonAdd, CheckCircleOutlineSvg, TypographyStyled } from '../../components/general/mini_components';
 import SectionForm from '../../components/general/SectionForm';
 import PropTypes from 'prop-types';

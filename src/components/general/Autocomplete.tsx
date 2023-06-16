@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, TextField, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, TextField, Typography } from '@mui/material';
 
 import React, { useEffect, useState } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';

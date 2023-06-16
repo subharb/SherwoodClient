@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { ButtonAdd } from '../../general/mini_components';

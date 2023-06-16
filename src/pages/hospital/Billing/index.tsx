@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet';
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
-import { Divider as MuiDivider, Grid, IconButton, Snackbar, Typography } from '@material-ui/core';
+import { Divider as MuiDivider, Grid, IconButton, Snackbar, Typography } from '@mui/material';
 import Modal from '../../../components/general/modal';
 import { useSnackBarState } from '../../../hooks';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 import { ButtonAdd, IconGenerator, TypographyStyled } from '../../../components/general/mini_components';
 import { BillForm } from './bill_form';
 import { FUNCTIONALITY, IPatient } from '../../../constants/types';
@@ -300,7 +300,7 @@ const Billing: React.FC<Props> = (props) => {
                 renderModal()
             }
 
-            <Grid justify="space-between" direction='row' container spacing={6} style={{ color: "white" }}>
+            <Grid justifyContent="space-between" direction='row' container spacing={6} style={{ color: "white" }}>
                 <Grid item xs={12} container>
                     <Grid item xs={6} style={{ paddingBottom: '1rem' }}>
                         <div>
@@ -310,7 +310,8 @@ const Billing: React.FC<Props> = (props) => {
                             <IconButton
                                 onClick={(e) => {
                                     toogleEditBillingInfo();
-                                }}>
+                                }}
+                                size="large">
                                 <IconGenerator type={!edit ? "settings" : "back"}  color="primary"/>
                             </IconButton>
                         </div>
@@ -335,7 +336,7 @@ const Billing: React.FC<Props> = (props) => {
             }
 
         </React.Fragment>
-    )
+    );
 }
 
 export const BillingLocalized = withLocalize(Billing);

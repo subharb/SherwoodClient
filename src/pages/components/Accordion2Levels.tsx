@@ -1,6 +1,6 @@
-import { Accordion, AccordionDetails, AccordionSummary, Grid, IconButton, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Grid, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material';
 import React from 'react';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ButtonAdd, IconGenerator } from '../../components/general/mini_components';
 import { Translate } from 'react-localize-redux';
 
@@ -24,98 +24,112 @@ const Accordion2Levels: React.FC<Accordion2LevelsProps> = ({ orderedMainElements
 
     function renderSecondSubLevel(mainElement:MainElementType){
         if(mainElement.subElements[0].hasOwnProperty("subElements")){
-            return (
-                mainElement.subElements.map((subElement) => {
-                
-                    return (
-                        <Accordion>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                                >
-                            <Typography >{ subElement.name}  {
-                            editSubElementCallBack &&
-                            <IconButton onClick={(e) => {
+            return mainElement.subElements.map((subElement) => {
+            
+                return (
+                    <Accordion>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                            >
+                        <Typography >{ subElement.name}  {
+                        editSubElementCallBack &&
+                        <IconButton
+                            onClick={(e) => {
                                 e.stopPropagation();
                                 editSubElementCallBack(subElement);
-                                }}>
-                                <IconGenerator type="edit" />
-                            </IconButton>
-                        }
-                    {
-                        deleteSubElementCallBack &&
-                        <IconButton onClick={(e) => {
+                                }}
+                            size="large">
+                            <IconGenerator type="edit" />
+                        </IconButton>
+                    }
+                {
+                    deleteSubElementCallBack &&
+                    <IconButton
+                        onClick={(e) => {
                             e.stopPropagation();
                             deleteSubElementCallBack(subElement.uuid);
-                            }}>
-                            <IconGenerator type="delete" />
-                        </IconButton>
-                    }
-                    {
-                        configureSubElementCallBack &&
-                        <IconButton color='default' onClick={(e) => {
+                            }}
+                        size="large">
+                        <IconGenerator type="delete" />
+                    </IconButton>
+                }
+                {
+                    configureSubElementCallBack &&
+                    <IconButton
+                        color='default'
+                        onClick={(e) => {
                             e.stopPropagation();
                             configureSubElementCallBack(subElement.uuid);
-                            }}>
-                            <IconGenerator color="#000" type="settings" />
-                        </IconButton>
-                    }
-                    </Typography>
-                    </AccordionSummary>
-                </Accordion>
-                )
-                    
-                })
-            )
+                            }}
+                        size="large">
+                        <IconGenerator color="#000" type="settings" />
+                    </IconButton>
+                }
+                </Typography>
+                </AccordionSummary>
+            </Accordion>
+                );
+                
+            });
         }
         else{
             return mainElement.subElements.map((subElement) => {
                 return (
-                <ListItem button>
-                    <ListItemText primary={`${subElement.name}`} onClick={() =>viewSubElementCallBack ? viewSubElementCallBack(subElement.uuid) : undefined} /> 
-                        {
-                            viewSubElementCallBack &&
-                            <IconButton onClick={(e) => {
-                                    e.stopPropagation();
-                                    viewSubElementCallBack(subElement.uuid);
-                                }}>
-                                <IconGenerator type="view" />
-                            </IconButton>
-                        }
-                        
-                        {
-                            editSubElementCallBack &&
-                            <IconButton onClick={(e) => {
-                                e.stopPropagation();
-                                editSubElementCallBack(subElement.uuid);
-                            }}>
-                            <IconGenerator type="edit" />
-                            </IconButton>
-                        }
-                        {
-                            deleteSubElementCallBack &&
-                            <IconButton onClick={(e) => {
-                                    e.stopPropagation();
-                                    deleteSubElementCallBack(subElement.uuid);
-                                }}>
-                                <IconGenerator type="delete" />
-                            </IconButton>
-                        }
-                        
-                        {
-                            configureSubElementCallBack &&
-                            <IconButton onClick={(e) => {
-                                    e.stopPropagation();
-                                    configureSubElementCallBack(subElement.uuid);
-                                }}>
-                                <IconGenerator color="#000"  type="settings" />
-                            </IconButton>
-                        }
-                        
-                </ListItem>)
+                    <ListItem button>
+                        <ListItemText primary={`${subElement.name}`} onClick={() =>viewSubElementCallBack ? viewSubElementCallBack(subElement.uuid) : undefined} /> 
+                            {
+                                viewSubElementCallBack &&
+                                <IconButton
+                                    onClick={(e) => {
+                                            e.stopPropagation();
+                                            viewSubElementCallBack(subElement.uuid);
+                                        }}
+                                    size="large">
+                                    <IconGenerator type="view" />
+                                </IconButton>
+                            }
+                            
+                            {
+                                editSubElementCallBack &&
+                                <IconButton
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        editSubElementCallBack(subElement.uuid);
+                                    }}
+                                    size="large">
+                                <IconGenerator type="edit" />
+                                </IconButton>
+                            }
+                            {
+                                deleteSubElementCallBack &&
+                                <IconButton
+                                    onClick={(e) => {
+                                            e.stopPropagation();
+                                            deleteSubElementCallBack(subElement.uuid);
+                                        }}
+                                    size="large">
+                                    <IconGenerator type="delete" />
+                                </IconButton>
+                            }
+                            
+                            {
+                                configureSubElementCallBack &&
+                                <IconButton
+                                    onClick={(e) => {
+                                            e.stopPropagation();
+                                            configureSubElementCallBack(subElement.uuid);
+                                        }}
+                                    size="large">
+                                    <IconGenerator color="#000"  type="settings" />
+                                </IconButton>
+                            }
+                            
+                    </ListItem>
+                );
                 }
-            )
+            );
         }
     }
     function renderSubLevel(mainElement:MainElementType){
@@ -149,19 +163,23 @@ const Accordion2Levels: React.FC<Accordion2LevelsProps> = ({ orderedMainElements
                         </Typography>
                         {
                             editMainElementCallBack &&
-                            <IconButton onClick={(e) => {
-                                e.stopPropagation();
-                                editMainElementCallBack(mainElement.uuid);
-                                }}>
+                            <IconButton
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    editMainElementCallBack(mainElement.uuid);
+                                    }}
+                                size="large">
                                 <IconGenerator type="edit" />
                             </IconButton>
                         }
                         {
                             deleteMainElementCallBack &&
-                            <IconButton onClick={(e) => {
-                                e.stopPropagation();
-                                deleteMainElementCallBack(mainElement.uuid);
-                                }}>
+                            <IconButton
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    deleteMainElementCallBack(mainElement.uuid);
+                                    }}
+                                size="large">
                                 <IconGenerator type="delete" />
                             </IconButton>
                         }
@@ -174,7 +192,7 @@ const Accordion2Levels: React.FC<Accordion2LevelsProps> = ({ orderedMainElements
                         
                     </AccordionDetails>
                 </Accordion>
-            )
+            );
         })
     return (
         <>

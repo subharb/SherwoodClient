@@ -1,6 +1,6 @@
 // @flow
 import DateFnsUtils from '@date-io/date-fns';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField } from '@mui/material';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import React, {useState} from 'react';

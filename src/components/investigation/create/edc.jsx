@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Translate } from 'react-localize-redux';
-import { Grid, List, ListItem, ListItemIcon, ListItemText, RootRef, Typography } from '@material-ui/core';
+import { Grid, List, ListItem, ListItemIcon, ListItemText,  Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import Table from '../../general/table';
 import DataCollection from './data_collection';
 import { ButtonContinue, ButtonAdd, ButtonBack } from '../../general/mini_components';  
 import { EnhancedTable } from '../../general/EnhancedTable';
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import OrderableTable from '../../general/OrderableTable';
 /**

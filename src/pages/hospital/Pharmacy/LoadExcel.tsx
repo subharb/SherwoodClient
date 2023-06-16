@@ -1,4 +1,4 @@
-import { Grid, IconButton } from '@material-ui/core';
+import { Grid, IconButton } from '@mui/material';
 import React from 'react';
 import { Translate } from 'react-localize-redux';
 import { ButtonAccept } from '../../../components/general/mini_components';
@@ -41,7 +41,7 @@ const LoadExcel: React.FC<LoadExcelProps> = ({ callbackExcelReady }) => {
                     type="file" 
                     onChange={(e) => onFileSelected(e)} />
                 <label htmlFor="fileSelect">
-                    <IconButton color="primary" aria-label="upload excel" component="span">
+                    <IconButton color="primary" aria-label="upload excel" component="span" size="large">
                         <img src={ExcelLab} alt="Excel" width={40} />
                     </IconButton>
                 </label>

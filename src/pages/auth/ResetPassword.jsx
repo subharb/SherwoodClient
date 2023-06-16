@@ -21,10 +21,10 @@ const Alert = styled(MuiAlert)(spacing);
 const TextField = styled(MuiTextField)(spacing);
 
 const Wrapper = styled(Paper)`
-  padding: ${(props) => props.theme.spacing(6)}px;
+  padding: ${(props) => props.theme.spacing(6)};
 
   ${(props) => props.theme.breakpoints.up("md")} {
-    padding: ${(props) => props.theme.spacing(10)}px;
+    padding: ${(props) => props.theme.spacing(10)};
   }
 `;
 

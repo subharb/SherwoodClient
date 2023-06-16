@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import * as types from "../../../constants";
 import { connect, useDispatch } from 'react-redux';
-import { Typography, Grid, Box, Chip, AppBar, Tabs, Tab, Snackbar, withStyles } from '@material-ui/core';
+import { Typography, Grid, Box, Chip, AppBar, Tabs, Tab, Snackbar } from '@mui/material';
+import withStyles from '@mui/styles/withStyles';
 import { Alert } from "@mui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
@@ -11,7 +12,7 @@ import Modal from '../../../components/general/modal';
 import Form from '../../../components/general/form';
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import styled from 'styled-components';
-import { yellow, green, blue, red, orange } from "@material-ui/core/colors";
+import { yellow, green, blue, red, orange } from "@mui/material/colors";
 
 import { useHistory } from "react-router-dom";
 import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction, removeResearcherFromUnitAction, editDepartmentAction, deleteDepartmentAction, deleteUnitAction, editUnitAction } from '../../../redux/actions/hospitalActions';
@@ -244,8 +245,8 @@ const CustomTab = styled(Tab)(({ theme }) => ({
         backgroundColor: theme.palette.primary.color, // set the color of the indicator using the secondary color from the theme
     },
   }));
-  
-  
+
+
 
 export default connect(mapStateToProps, null)(DepartmentsRouter)
 

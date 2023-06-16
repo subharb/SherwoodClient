@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { withRouter } from 'react-router-dom';
-import { Typography, IconButton } from '@material-ui/core';
+import { Typography, IconButton } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from '../../general/modal';
@@ -73,7 +73,7 @@ class Summary extends Component {
         return Object.keys(this.props.initialData.basic_info).map(key =>{
                 const tagsFree = typeof this.props.initialData.basic_info[key] === "string" ? this.props.initialData.basic_info[key].replace(/<[^>]+>/g, '') : "<blank>";
                 return this.props.translate("investigation.create.edc."+key)+": "+tagsFree+", ";
-            })
+            });
         
     }
     renderPersonalData(){
@@ -83,7 +83,7 @@ class Summary extends Component {
         return arrayPersonalFields.join(",");
     }
     render() {
-        return([
+        return [
             <Modal key="modal2" open={this.props.resultSave === 1}  >
                 <SuccessComponent title="investigation.create.summary.success.title" 
                                 description="investigation.create.summary.success.description" 
@@ -93,7 +93,10 @@ class Summary extends Component {
             <React.Fragment>
                 <Typography variant="h6" gutterBottom display="inline">
                     <Translate id="investigation.create.steps.basic_info" ></Translate>
-                    <IconButton aria-label="edit" onClick={() => this.props.callBackToStep(0)} >
+                    <IconButton
+                        aria-label="edit"
+                        onClick={() => this.props.callBackToStep(0)}
+                        size="large">
                         <EditIcon />
                     </IconButton>    
                 </Typography>
@@ -104,7 +107,10 @@ class Summary extends Component {
                 </Typography>
                 <Typography variant="h6" gutterBottom display="inline">
                     <Translate id="investigation.create.steps.personal_data" ></Translate>
-                    <IconButton aria-label="edit" onClick={() => this.props.callBackToStep(1)} >
+                    <IconButton
+                        aria-label="edit"
+                        onClick={() => this.props.callBackToStep(1)}
+                        size="large">
                         <EditIcon />
                     </IconButton>  
                 </Typography>
@@ -115,7 +121,10 @@ class Summary extends Component {
                 </Typography>
                 <Typography variant="h6" gutterBottom display="inline">
                     <Translate id="investigation.create.steps.edc" ></Translate>
-                    <IconButton aria-label="edit" onClick={() => this.props.callBackToStep(2)} >
+                    <IconButton
+                        aria-label="edit"
+                        onClick={() => this.props.callBackToStep(2)}
+                        size="large">
                         <EditIcon />
                     </IconButton> 
                 </Typography>
@@ -131,8 +140,7 @@ class Summary extends Component {
                 <ButtonSave data-testid="publish-investigation" spaceright onClick={()=>this.props.callBackSave(true)} type="button" key="publish-investigation" id="publish-investigation" >{this.props.translate("investigation.create.save_and_publish")}</ButtonSave>
                 <ButtonSave data-testid="save-for-later-investigation" onClick={()=>this.props.callBackSave(false)} type="button" key="save-for-later-investigation" id="save-for-later-investigation" >{this.props.translate("investigation.create.save")}</ButtonSave>
             </React.Fragment>
-            ]
-        );
+            ];
     }
 }
 

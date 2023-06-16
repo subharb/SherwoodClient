@@ -1,5 +1,5 @@
-import { Grid, Paper, Snackbar } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Grid, Paper, Snackbar } from '@mui/material';
+import { Alert } from '@mui/material';
 import React, { useEffect, useMemo } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { connect } from 'react-redux';
@@ -17,7 +17,7 @@ import { HOSPITAL_OUTPATIENTS_EDIT_ROUTE, HOSPITAL_OUTPATIENTS_ROUTE } from '../
 
 interface OutpatientsProps extends LocalizeContextProps {
     investigations:any
-} 
+}
 
 const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) => {
     const {action} = useParams<{action:string}>();

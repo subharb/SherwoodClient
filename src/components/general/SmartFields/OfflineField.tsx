@@ -1,4 +1,4 @@
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { ButtonAccept } from '../mini_components';

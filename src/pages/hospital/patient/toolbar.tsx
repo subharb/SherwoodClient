@@ -67,7 +67,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
         return unitsResearcher.some(unit => unit.department.type === DepartmentType.SHOE)
     }, [unitsResearcher])
     
-    return(
+    return (
         <Container item container className="patient_toolbar" xs={12}>
             <Grid item container xs={3} >
                 {/* <Grid item xs={12}>
@@ -119,7 +119,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
             </Grid>
             {
                 readMedicalPermission &&
-                <Grid item container xs={5}  justify="center" alignItems="center">
+                <Grid item container xs={5}  justifyContent="center" alignItems="center">
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="medical-notes" onClick={() => medicalNotesCallBack()} >
                             <img src={typeSurveySelected === TYPE_MEDICAL_SURVEY ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
@@ -175,5 +175,5 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
             }
             
         </Container>
-    )
+    );
 }

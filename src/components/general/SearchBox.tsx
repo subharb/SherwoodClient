@@ -1,7 +1,7 @@
-import { FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, Typography } from '@material-ui/core';
+import { FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { ChipContainer } from '../../pages/hospital/Service/RequestInfo';
-import { orange, red } from '@material-ui/core/colors';
+import { orange, red } from '@mui/material/colors';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { ColourChip } from './mini_components-ts';
 

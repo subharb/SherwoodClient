@@ -1,5 +1,5 @@
-import { Card, CardContent, Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Snackbar, Typography } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Card, CardContent, Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Snackbar, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useMemo } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';

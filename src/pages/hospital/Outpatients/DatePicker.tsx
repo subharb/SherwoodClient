@@ -1,9 +1,18 @@
 import { DatePicker } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import { makeStyles, styled, ThemeProvider } from '@material-ui/styles';
+import { makeStyles, styled, ThemeProvider, Theme, StyledEngineProvider } from '@mui/styles';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { formatDateByLocale } from '../../../utils/index.jsx';
+
+
+
+
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
 
 
 

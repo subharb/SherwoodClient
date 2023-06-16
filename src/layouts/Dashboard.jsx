@@ -20,10 +20,11 @@ import {
   CircularProgress,
 } from "@mui/material";
 import Loader from '../components/Loader';
-//import { BroadcastChannel } from 'broadcast-channel';
-import { isWidthUp } from "@material-ui/core/withWidth";
 import { LoadingOverlay } from "@material-ui/data-grid";
 import { postErrorSlack } from "../utils/index.jsx";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 const drawerWidth = 258;
 
@@ -161,63 +162,63 @@ const Dashboard = ({ children, routes, width, investigations, offline }) => {
     }
     const showSidebar = (investigations.data && investigations.currentInvestigation && import.meta.env.VITE_APP_PRODUCT === 'HOSPITAL') || (import.meta.env.VITE_APP_PRODUCT !== 'HOSPITAL')
     return (
-      <React.Fragment>
-        {
-          offline.loading &&
-          <React.Fragment>
-              <LoadingScreen />
-              <LoadingMessage>
-                <LoadingContainer>
-                    <Typography variant="subtitle1" color="textPrimary">
-                        <Translate id="general.updating-records" />
-                    </Typography>
-                    <CircularProgress />  
-                </LoadingContainer>
-              </LoadingMessage>
-          </React.Fragment>
-        }
-          
-          <Root>
-              
-              <CssBaseline />
-              <GlobalStyle />
-              <Drawer>
-                  <Hidden mdUp implementation="js">
-                  {
-                      (showSidebar) &&
-                      <Sidebar
-                        routes={routes}
-                        PaperProps={{ style: { width: drawerWidth } }}
-                        variant="temporary"
-                        investigation={investigations.currentInvestigation}
-                        open={mobileOpen}
-                        onClose={handleDrawerToggle}
-                    />    
-                  }
-                  
-                  </Hidden>
-                  <Hidden smDown implementation="css">
-                  {
-                      (showSidebar) &&
-                      <Sidebar
+        <React.Fragment>
+          {
+            offline.loading &&
+            <React.Fragment>
+                <LoadingScreen />
+                <LoadingMessage>
+                  <LoadingContainer>
+                      <Typography variant="subtitle1" color="textPrimary">
+                          <Translate id="general.updating-records" />
+                      </Typography>
+                      <CircularProgress />  
+                  </LoadingContainer>
+                </LoadingMessage>
+            </React.Fragment>
+          }
+            
+            <Root>
+                
+                <CssBaseline />
+                <GlobalStyle />
+                <Drawer>
+                    <Hidden mdUp implementation="js">
+                    {
+                        (showSidebar) &&
+                        <Sidebar
                           routes={routes}
-                          investigation={investigations.currentInvestigation}
                           PaperProps={{ style: { width: drawerWidth } }}
-                      />
-                  }
-                  </Hidden>
-              </Drawer>
-              <AppContent>
-                  <Header onDrawerToggle={handleDrawerToggle} />
-                  <MainContent p={isWidthUp("lg", width) ? 12 : 0}>
-                  {children}
-                  </MainContent>
-                  <Footer />
-              </AppContent>
-              
-          </Root> 
-        </React.Fragment>
-  );
+                          variant="temporary"
+                          investigation={investigations.currentInvestigation}
+                          open={mobileOpen}
+                          onClose={handleDrawerToggle}
+                      />    
+                    }
+                    
+                    </Hidden>
+                    <Hidden mdDown implementation="css">
+                    {
+                        (showSidebar) &&
+                        <Sidebar
+                            routes={routes}
+                            investigation={investigations.currentInvestigation}
+                            PaperProps={{ style: { width: drawerWidth } }}
+                        />
+                    }
+                    </Hidden>
+                </Drawer>
+                <AppContent>
+                    <Header onDrawerToggle={handleDrawerToggle} />
+                    <MainContent p={isWidthUp("lg", width) ? 12 : 0}>
+                    {children}
+                    </MainContent>
+                    <Footer />
+                </AppContent>
+                
+            </Root> 
+          </React.Fragment>
+    );
 };
 
 const mapDispatchToProps = dispatch => {

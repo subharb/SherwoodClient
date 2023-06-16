@@ -1,5 +1,5 @@
 import { Button, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
-import { red } from "@material-ui/core/colors";
+import { red } from "@mui/material/colors";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components";
@@ -297,9 +297,9 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         })
         return {...rowElement, id: index, used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
                 paid: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
-                delete: <IconButton onClick={() => removeItem(index)}>
+                delete: <IconButton onClick={() => removeItem(index)} size="large">
                     <IconGenerator type="delete" />
-                </IconButton>}
+                </IconButton>};
 
     }) as BillItemTable[];
 

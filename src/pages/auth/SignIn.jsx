@@ -29,9 +29,9 @@ const Alert = styled(MuiAlert)(spacing);
 const TextField = styled(MuiTextField)(spacing);
 
 const Wrapper = styled(Paper)`
-    padding: ${(props) => props.theme.spacing(6)}px;
+    padding: ${(props) => props.theme.spacing(6)};
     ${(props) => props.theme.breakpoints.up("md")} {
-        padding: ${(props) => props.theme.spacing(10)}px;
+        padding: ${(props) => props.theme.spacing(10)};
     }
 `;
 
@@ -39,7 +39,7 @@ const BigAvatar = styled(Avatar)`
     width: 92px;
     height: 92px;
     text-align: center;
-    margin: 0 auto ${(props) => props.theme.spacing(5)}px;
+    margin: 0 auto ${(props) => props.theme.spacing(5)};
 `;
 
 function SignIn() {

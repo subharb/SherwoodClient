@@ -6,7 +6,7 @@ import styled, {css} from 'styled-components';
 import { ButtonAdd, ButtonCheck, ButtonContinue, ButtonDelete, ButtonEmptyCheck, DeleteHolder, RedFormHelperText } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
-        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider } from '@material-ui/core';
+        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider } from '@mui/material';
 import { spacing } from "@mui/system";
 import {
     MuiPickersUtilsProvider,
@@ -18,11 +18,11 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import DateFnsUtils from '@date-io/date-fns';
-import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete } from '@mui/material';
 import { change, registerField } from "redux-form";
 import SmartField from './SmartFields';
-import PanoramaFishEyeIcon from '@material-ui/icons/PanoramaFishEye';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import File from './File';
 import { FieldWrapper } from './mini_components';
 import { Field, FieldArray } from 'redux-form'
@@ -84,7 +84,7 @@ const sharedStyle = css`
 `
 
 
- 
+
 export const TextFieldSherwood = styled(TextField)`
     ${sharedStyle}
 `;

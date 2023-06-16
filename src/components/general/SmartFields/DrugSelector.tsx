@@ -1,5 +1,5 @@
-import { TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { TextField } from '@mui/material';
+import { Autocomplete } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { PropsSmartFieldLocalized, DrugType } from './index'

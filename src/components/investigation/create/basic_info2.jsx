@@ -3,7 +3,7 @@ import Form from '../../general/form';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { FIELDS_BASIC_INFO } from '../../../utils/index.jsx';
-import { Grid, Card, CardContent } from '@material-ui/core';
+import { Grid, Card, CardContent } from '@mui/material';
 
 export default class BasicInfo2 extends Component {
     

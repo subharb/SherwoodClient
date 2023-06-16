@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SIGN_IN_ROUTE } from '../../../routes';
 import { connect } from 'react-redux';
-import { Typography, Grid, Box, Chip, Snackbar } from '@material-ui/core';
+import { Typography, Grid, Box, Chip, Snackbar } from '@mui/material';
 import { Alert } from "@mui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
@@ -12,7 +12,7 @@ import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { EnhancedTable } from "../../general/EnhancedTable";
 import styled from 'styled-components';
-import { yellow, green, blue, red, orange, purple } from "@material-ui/core/colors";
+import { yellow, green, blue, red, orange, purple } from "@mui/material/colors";
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
 import { getSharedResearchersService, saveResearcherPermissions } from '../../../services';

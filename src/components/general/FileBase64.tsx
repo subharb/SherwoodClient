@@ -1,5 +1,5 @@
-import { Grid, IconButton, Typography } from '@material-ui/core';
-import { PhotoCamera } from '@material-ui/icons';
+import { Grid, IconButton, Typography } from '@mui/material';
+import { PhotoCamera } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import styled from 'styled-components';
@@ -68,32 +68,30 @@ export const FileBase64: React.FC<FileBase64Props> = ({ label, error ,value , ca
             
         )
     }
-    return (
-        <>
-            <div id="imgTest" ></div>
+    return <>
+        <div id="imgTest" ></div>
+        <Grid container xs={12}>
+            <Typography variant="body2" gutterBottom>
+                {label}
+            </Typography>
+        </Grid>
+        <input accept="image/*" id="image" name="image" style={{display:'none'}} 
+                type="file" 
+                onChange={(e) => onFileSelected(e)} />
+        <label htmlFor="image">
+            <IconButton color="primary" aria-label="upload picture" component="span" size="large">
+                <PhotoCamera />
+            </IconButton>
+        </label>
+        {
+            error &&
             <Grid container xs={12}>
-                <Typography variant="body2" gutterBottom>
-                    {label}
-                </Typography>
+                <RedFormHelperText>
+                    <Translate id="general.field-required" />
+                </RedFormHelperText>
             </Grid>
-            <input accept="image/*" id="image" name="image" style={{display:'none'}} 
-                    type="file" 
-                    onChange={(e) => onFileSelected(e)} />
-            <label htmlFor="image">
-                <IconButton color="primary" aria-label="upload picture" component="span">
-                    <PhotoCamera />
-                </IconButton>
-            </label>
-            {
-                error &&
-                <Grid container xs={12}>
-                    <RedFormHelperText>
-                        <Translate id="general.field-required" />
-                    </RedFormHelperText>
-                </Grid>
-            }
-        </>
-    );
+        }
+    </>;
 };
 
 export default FileBase64;

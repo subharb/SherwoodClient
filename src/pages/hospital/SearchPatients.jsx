@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { Search as SearchPatientIcon } from "@mui/icons-material";
-import { Box, Grid, Paper, Typography, Button, Tabs, Tab } from '@material-ui/core';
+import { Box, Grid, Paper, Typography, Button, Tabs, Tab } from '@mui/material';
 import Form  from '../../components/general/form';
 import {useHistory} from 'react-router-dom';
 import { HOSPITAL_PATIENT } from '../../routes';
@@ -19,7 +19,7 @@ import _ from 'lodash';
 import Modal from '../../components/general/modal';
 import { DepartmentsAccordionRedux } from './departments/DepartmentsAccordion';
 import { decryptSinglePatientData, yearsFromDate } from '../../utils/index.jsx';
-import { TabPanel } from '@material-ui/lab';
+import { TabPanel } from '@mui/lab';
 import TabsSherwood from '../../components/general/TabsSherwood';
 import ICT from '../../components/general/SmartFields/ICT';
 import { searchPatientByDiagnosis } from '../../services';

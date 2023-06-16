@@ -1,4 +1,4 @@
-import { Grid, IconButton, Theme } from '@material-ui/core';
+import { Grid, IconButton, Theme } from '@mui/material';
 import React from 'react';
 import iconImages from "../../img/icons/images_white.png";
 import iconLab from "../../img/icons/lab_white.png";
@@ -60,10 +60,11 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
             </TypographyStyled>
             {
                 editCallback && 
-                    <IconButton 
-                    onClick={(e) => {
-                        editCallback();
-                    }}>
+                    <IconButton
+                        onClick={(e) => {
+                            editCallback();
+                        }}
+                        size="large">
 
                     <IconGenerator type={!edit ? "settings" : "back"}  
                         //@ts-ignore
@@ -72,10 +73,11 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
             }
             {
                 infoCallback && 
-                    <IconButton 
-                    onClick={(e) => {
-                        infoCallback();
-                    }}>
+                    <IconButton
+                        onClick={(e) => {
+                            infoCallback();
+                        }}
+                        size="large">
                     <IconGenerator type="info" 
                         //@ts-ignore
                         color={theme.palette.primary.color} />
@@ -88,7 +90,6 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
             <ButtonAdd onClick={addCallback} />
         }
     </SectionContainer>
-    
     );
 };
 

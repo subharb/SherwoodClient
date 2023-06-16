@@ -10,12 +10,12 @@ import { spacing } from "@mui/system";
 const Button = styled(MuiButton)(spacing);
 
 const Wrapper = styled.div`
-  padding: ${(props) => props.theme.spacing(6)}px;
+  padding: ${(props) => props.theme.spacing(6)};
   text-align: center;
   background: transparent;
 
   ${(props) => props.theme.breakpoints.up("md")} {
-    padding: ${(props) => props.theme.spacing(10)}px;
+    padding: ${(props) => props.theme.spacing(10)};
   }
 `;
 

@@ -1,9 +1,9 @@
-import { Card, Grid, Typography } from '@material-ui/core';
+import { Card, Grid, Typography } from '@mui/material';
 import React from 'react';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import { IAgenda, IBox } from '../../../constants/types';
 import { IService } from '../Service/types';
-import CheckIcon from '@material-ui/icons/Check';
+import CheckIcon from '@mui/icons-material/Check';
 import styled from 'styled-components';
 
 interface StartingProps {

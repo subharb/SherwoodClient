@@ -3,8 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {  useHistory } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import PropTypes from 'prop-types';
-import { green, red, orange, yellow, blue, amber, brown, cyan, deepOrange } from "@material-ui/core/colors";
-import { Box, Button, Card, CardContent, Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@material-ui/core';
+import { green, red, orange, yellow, blue, amber, brown, cyan, deepOrange } from "@mui/material/colors";
+import { Box, Button, Card, CardContent, Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@mui/material';
 
 import { connect } from 'react-redux';
 import Loader from '../../../components/Loader';

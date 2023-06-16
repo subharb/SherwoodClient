@@ -7,7 +7,7 @@ import Helmet from "react-helmet";
 import "../../vendor/roundedBarCharts";
 import { Bar } from "react-chartjs-2";
 
-import { red, green, blue } from "@material-ui/core/colors";
+import { red, green, blue } from "@mui/material/colors";
 
 import {
   Avatar as MuiAvatar,
@@ -71,7 +71,7 @@ const Avatar = styled(MuiAvatar)`
 
 const AboutIcon = styled.span`
   display: flex;
-  padding-right: ${(props) => props.theme.spacing(2)}px;
+  padding-right: ${(props) => props.theme.spacing(2)};
 
   svg {
     width: 14px;
@@ -106,7 +106,7 @@ const ProductsChip = styled(Chip)`
 
 const TableWrapper = styled.div`
   overflow-y: auto;
-  max-width: calc(100vw - ${(props) => props.theme.spacing(12)}px);
+  max-width: calc(100vw - ${(props) => props.theme.spacing(12)});
 `;
 
 function Details() {

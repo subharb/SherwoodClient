@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ButtonBack, ButtonEdit, ButtonForward } from '../../../general/mini_components';
-import { Card, Paper, Typography, Grid } from '@material-ui/core';
+import { Card, Paper, Typography, Grid } from '@mui/material';
 import styled from 'styled-components';
 import { Alert } from "@mui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';

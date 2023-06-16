@@ -218,13 +218,13 @@ function ButtonSizes() {
           </Fab>
         </div>
         <div>
-          <IconButton mx={2} aria-label="Delete">
+          <IconButton mx={2} aria-label="Delete" size="large">
             <DeleteIcon fontSize="small" />
           </IconButton>
-          <IconButton mx={2} aria-label="Delete">
+          <IconButton mx={2} aria-label="Delete" size="large">
             <DeleteIcon />
           </IconButton>
-          <IconButton mx={2} aria-label="Delete">
+          <IconButton mx={2} aria-label="Delete" size="large">
             <DeleteIcon fontSize="large" />
           </IconButton>
         </div>
@@ -253,7 +253,7 @@ function IconButtons() {
           Edit
           <EditIcon />
         </Button>
-        <Button mr={2} variant="contained" color="default">
+        <Button mr={2} variant="contained">
           Upload
           <CloudUploadIcon />
         </Button>

@@ -1,7 +1,7 @@
-import { Grid, TextField } from '@material-ui/core';
-import { blue } from '@material-ui/core/colors';
-import { CheckCircle } from '@material-ui/icons';
-import Edit from '@material-ui/icons/Edit';
+import { Grid, TextField } from '@mui/material';
+import { blue } from '@mui/material/colors';
+import { CheckCircle } from '@mui/icons-material';
+import Edit from '@mui/icons-material/Edit';
 import React from 'react';
 import { Translate } from 'react-localize-redux';
 import styled from 'styled-components';

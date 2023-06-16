@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
-import { Alert, Autocomplete } from '@material-ui/lab';
+import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Alert, Autocomplete } from '@mui/material';
 import { searchDrugService } from '../../../services';
 import { Translate, withLocalize } from 'react-localize-redux';
 
-import { ButtonAccept, ButtonCancel } from '../mini_components'; 
+import { ButtonAccept, ButtonCancel } from '../mini_components';
 import DrugSelector from './DrugSelector';
 import {addMinutes} from 'date-fns'
 

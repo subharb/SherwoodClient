@@ -1,5 +1,5 @@
-import { Grid, GridSize, Paper, Typography } from '@material-ui/core';
-import { blue } from '@material-ui/core/colors';
+import { Grid, GridSize, Paper, Typography } from '@mui/material';
+import { blue } from '@mui/material/colors';
 import React, { ReactElement, useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { compose } from 'redux';

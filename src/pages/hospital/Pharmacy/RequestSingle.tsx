@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid } from '@material-ui/core';
+import { Card, CardContent, Grid } from '@mui/material';
 import React from 'react';
 import { PERMISSION, PHARMACY_CENTRAL_PERMISSIONS } from '../../../components/investigation/share/user_roles';
 import Loader from '../../../components/Loader';

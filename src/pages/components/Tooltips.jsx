@@ -51,7 +51,7 @@ function SimpleTooltips() {
         </Typography>
         <Paper mt={3}>
           <Tooltip title="Delete">
-            <IconButton aria-label="Delete" mr={2}>
+            <IconButton aria-label="Delete" mr={2} size="large">
               <DeleteIcon />
             </IconButton>
           </Tooltip>
@@ -79,7 +79,7 @@ function PositionedTooltips() {
           convey direction.
         </Typography>
         <Paper mt={3}>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <Grid item>
               <Tooltip title="Add" placement="top-start">
                 <Button variant="contained" color="secondary" m={1}>
@@ -98,7 +98,7 @@ function PositionedTooltips() {
               </Tooltip>
             </Grid>
           </Grid>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <Grid item xs={6}>
               <Tooltip title="Add" placement="left-start">
                 <Button variant="contained" color="secondary" m={1}>
@@ -149,7 +149,7 @@ function PositionedTooltips() {
               </Grid>
             </Grid>
           </Grid>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <Grid item>
               <Tooltip title="Add" placement="bottom-start">
                 <Button variant="contained" color="secondary" m={1}>

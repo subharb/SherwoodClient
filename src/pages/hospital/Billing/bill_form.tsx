@@ -1,5 +1,5 @@
 import { Button, Checkbox, Grid, IconButton, Snackbar, TextField, Typography } from "@mui/material"
-import { red } from "@material-ui/core/colors"
+import { red } from "@mui/material/colors"
 import React, { ReactElement, useEffect, useRef, useState } from "react"
 import { Language, Translate } from "react-localize-redux"
 import styled from "styled-components"

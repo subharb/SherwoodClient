@@ -21,7 +21,7 @@ import {
 
 import { AvatarGroup as MuiAvatarGroup } from "@mui/lab";
 
-import { red, green, orange, yellow } from "@material-ui/core/colors";
+import { red, green, orange, yellow } from "@mui/material/colors";
 
 import { spacing } from "@mui/system";
 import { Translate } from "react-localize-redux";
@@ -48,12 +48,12 @@ const Chip = styled(MuiChip)`
   font-size: 85%;
   background-color: ${(props) => props.rgbcolor};
   color: ${(props) => props.theme.palette.common.white};
-  margin-bottom: ${(props) => props.theme.spacing(4)}px;
+  margin-bottom: ${(props) => props.theme.spacing(4)};
   margin-right:1rem;
 `;
 
 const AvatarGroup = styled(MuiAvatarGroup)`
-  margin-left: ${(props) => props.theme.spacing(2)}px;
+  margin-left: ${(props) => props.theme.spacing(2)};
 `;
 
 export default function CardInvestigation({ image, title, description, status, shareStatus, uuid, hostResearcher, answerRequest, index, permissions }) {

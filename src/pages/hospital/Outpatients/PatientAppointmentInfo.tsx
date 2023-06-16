@@ -1,6 +1,6 @@
-import { CircularProgress, Grid, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, Typography } from '@mui/material';
 import { CheckCircleIcon } from '@material-ui/data-grid';
-import { Remove, RemoveCircleOutline } from '@material-ui/icons';
+import { Remove, RemoveCircleOutline } from '@mui/icons-material';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';

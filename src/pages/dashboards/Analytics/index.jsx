@@ -9,7 +9,7 @@ import {
   Typography as MuiTypography,
 } from "@mui/material";
 
-import { green, red } from "@material-ui/core/colors";
+import { green, red } from "@mui/material/colors";
 
 import { spacing } from "@mui/system";
 
@@ -29,7 +29,7 @@ function Analytics({ theme }) {
   return (
     <React.Fragment>
       <Helmet title="Analytics Dashboard" />
-      <Grid justify="space-between" container spacing={6}>
+      <Grid justifyContent="space-between" container spacing={6}>
         <Grid item>
           <Typography variant="h3" gutterBottom>
             Analytics Dashboard

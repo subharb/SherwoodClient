@@ -5,7 +5,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import {autoTable} from 'jspdf-autotable';
 import { HeaderDocument } from "./header";
-import SaveIcon from '@material-ui/icons/Save';
+import SaveIcon from '@mui/icons-material/Save';
 import { BillingInfo } from "../Billing/types";
 
 interface Props extends Omit<BillingInfo, 'id' | 'billables'>   {

@@ -52,8 +52,7 @@ function UserDropdown() {
                     aria-owns={Boolean(anchorMenu) ? "menu-appbar" : undefined}
                     aria-haspopup="true"
                     onClick={toggleMenu}
-
-                >
+                    size="large">
                     <Power />
                 </IconButton>
             </Tooltip>

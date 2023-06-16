@@ -1,4 +1,4 @@
-import { Card, Grid } from '@material-ui/core';
+import { Card, Grid } from '@mui/material';
 import React, { useMemo } from 'react';
 import { BillActions } from '.';
 import PatientInfo from '../../../components/PatientInfo';

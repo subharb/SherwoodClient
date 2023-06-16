@@ -1,4 +1,4 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Snackbar } from '@material-ui/core';
+import { Button, FormControl, InputLabel, MenuItem, Select, Snackbar } from '@mui/material';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import React, { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ import Grid from '@mui/joy/Grid';
 
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { makeAppointmentAction } from '../../../redux/actions/hospitalActions';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 import { isArray } from 'lodash';
 import AnimatedCheck from '../../../components/general/AnimatedCheck';
 import { makeAppointmentService } from '../../../services';

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useMemo} from 'react'
 import PropTypes from 'prop-types';
 
-import { Box, Grid, Paper, Typography, Button, IconButton, Card } from '@material-ui/core';
+import { Box, Grid, Paper, Typography, Button, IconButton, Card } from '@mui/material';
 import { useDispatch, useSelector } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom';
 

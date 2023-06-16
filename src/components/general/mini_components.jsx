@@ -4,7 +4,7 @@ import icon_male from "../../img/icons/icon_male.svg";
 import { Link } from 'react-router-dom'
 import icon_female from "../../img/icons/icon_female.svg";
 import icon_undefined from "../../img/icons/icon_undefined.svg";
-import LocalPharmacyIcon from '@material-ui/icons/LocalPharmacy';
+import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import {
     Add as AddIcon,
     Info as InfoIcon,

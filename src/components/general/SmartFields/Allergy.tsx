@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { AllergyType, DrugType, PropsSmartFieldLocalized } from './index';
 import DrugSelector from './DrugSelector';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { ButtonCancel } from '../mini_components';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 
 function Allergy(props: PropsSmartFieldLocalized) {
     const [drug, setDrug] = useState<DrugType | null>(null);

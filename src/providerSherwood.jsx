@@ -11,11 +11,9 @@ import DateFnsUtils from "@date-io/date-fns";
 import { ThemeProvider } from "styled-components";
 import { create } from "jss";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import {
-  StylesProvider,
-  ThemeProvider as MuiThemeProvider,
-  jssPreset,
-} from "@material-ui/core/styles";
+import { ThemeProvider as MuiThemeProvider, adaptV4Theme } from "@mui/material/styles";
+import StylesProvider from '@mui/styles/StylesProvider';
+import jssPreset from '@mui/styles/jssPreset';
 import {
     QueryClient,
     QueryClientProvider,
@@ -38,10 +36,10 @@ axios.interceptors.response.use(function (response) {
     return Promise.reject(error);
   });
 
- // Create a client
- const queryClient = new QueryClient()
+// Create a client
+const queryClient = new QueryClient()
 
-const themeApp = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? createTheme("HOSPITAL") : createTheme("GREEN");
+const themeApp = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? createTheme(adaptV4Theme("HOSPITAL")) : createTheme(adaptV4Theme("GREEN"));
 function OtherProviders(props){
     return (
         <QueryClientProvider client={queryClient}>
@@ -93,14 +91,15 @@ export function CustomThemeProvider(props){
         themeApp.buttonContinue.primary.color = themeCustom.params.nextButton.color;        
     }
     return (
-        <MuiThemeProvider theme={themeApp}>
-            <ThemeProvider theme={themeApp}>
-                {
-                    props.children
-                }
-            </ThemeProvider>
-        </MuiThemeProvider>
-    )
+        
+            <MuiThemeProvider theme={themeApp}>
+                <ThemeProvider theme={themeApp}>
+                    {
+                        props.children
+                    }
+                </ThemeProvider>
+            </MuiThemeProvider>
+    );
 }
 
 export default function ProviderSherwood(props){

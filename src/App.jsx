@@ -2,10 +2,10 @@ import React from "react";
 import { create } from "jss";
 
 
-import {
-  ThemeProvider as MuiThemeProvider,
-  jssPreset,
-} from "@material-ui/core/styles";
+import { ThemeProvider as MuiThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+
+
+import jssPreset from '@mui/styles/jssPreset';
 
 
 import Routes from "./routes/Routes";

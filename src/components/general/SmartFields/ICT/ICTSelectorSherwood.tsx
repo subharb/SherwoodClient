@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { searchDiagnosticService, searchDrugComponentService } from '../../../../services';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField } from '@mui/material';
 import { ButtonAccept, ButtonCancel } from '../../mini_components';
 import { AllergyType, BackgroundType, SmartFieldType, Diagnosis } from '../index';
-import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete } from '@mui/material';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { PropsIct } from '../index';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';

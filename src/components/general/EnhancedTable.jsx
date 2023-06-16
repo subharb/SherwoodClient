@@ -29,7 +29,7 @@ import {
     Typography,
 } from "@mui/material";
 
-import { green, orange, red } from "@material-ui/core/colors";
+import { green, orange, red } from "@mui/material/colors";
 
 import {
 Add as AddIcon,
@@ -227,13 +227,13 @@ return (
     <div>
         {numSelected > 0 ? (
         <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
+            <IconButton aria-label="Delete" size="large">
             <ArchiveIcon />
             </IconButton>
         </Tooltip>
         ) : noSelectable ? (
         <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
+            <IconButton aria-label="Filter list" size="large">
             <FilterListIcon />
             </IconButton>
         </Tooltip>
@@ -327,11 +327,14 @@ const emptyRows =
             const check = action["check"];
             if(check === undefined || check(row)){
                 buttonActions.push(
-                    <IconButton data-testid={action.type} aria-label={action.type} 
+                    <IconButton
+                        data-testid={action.type}
+                        aria-label={action.type}
                         onClick={(e) => {
                             func(row.id);
                             e.stopPropagation();
-                        }}>
+                        }}
+                        size="large">
                         <IconGenerator type={action.type} />
                     </IconButton>
                 );
@@ -477,8 +480,8 @@ return (
                 count={rows.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 />
         }
         
