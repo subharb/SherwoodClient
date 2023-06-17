@@ -52,8 +52,8 @@ const createMuiTheme = (name) => {
     primary : {
         background : "#35887D",
         color : "#FFF",
-    }
-    }, {
+    },
+    
     name: themeConfig.name,
     header: themeConfig.header,
     footer: themeConfig.footer,

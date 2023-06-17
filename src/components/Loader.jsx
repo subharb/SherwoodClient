@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import CircularProgress from '@mui/joy/CircularProgress';
+import { CircularProgress } from "@mui/material";
 
 
 const Root = styled.div`
@@ -14,7 +14,7 @@ const Root = styled.div`
 function Loader() {
   return (
     <Root>
-      <CircularProgress m={2} color="blue" />
+      <CircularProgress m={2} color="green" />
     </Root>
   );
 }

@@ -7,7 +7,7 @@ import PatientInfo from '../../../components/PatientInfo';
 import { IAgenda, IAppointment, IDepartment } from '../../../constants/types';
 import AppointmentDatePicker from './DatePicker';
 import { useAgendas, usePrevious, useSnackBarState } from '../../../hooks';
-import Typography from '@mui/joy/Typography';
+import Typography from '@mui/material/Typography';
 import Loader from '../../../components/Loader';
 import { Translate } from 'react-localize-redux';
 import Grid from '@mui/joy/Grid';

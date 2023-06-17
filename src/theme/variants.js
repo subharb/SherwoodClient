@@ -81,6 +81,10 @@ const greenVariant = merge(defaultVariant, {
             main: green[500],
             contrastText: "#FFF",
         },
+        green : {
+            main : green[500],
+            contrastText: "#FFF",
+        },
     },
     header: {
         indicator: {
@@ -121,6 +125,10 @@ const hospitalVariant = merge(defaultVariant, {
         },
         secondary: {
             main: green[500],
+            contrastText: "#FFF",
+        },
+        green : {
+            main : green[500],
             contrastText: "#FFF",
         },
         background: {

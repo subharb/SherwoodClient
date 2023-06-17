@@ -14,6 +14,8 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { ThemeProvider as MuiThemeProvider, adaptV4Theme } from "@mui/material/styles";
 import StylesProvider from '@mui/styles/StylesProvider';
 import jssPreset from '@mui/styles/jssPreset';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import {
     QueryClient,
     QueryClientProvider,
@@ -47,7 +49,7 @@ function OtherProviders(props){
                 <StylesProvider jss={jss}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <CustomThemeProvider theme={themeApp}>
-                        
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <LocalizeProvider initialize={{
                                 languages: [
                                 { name: "English", code: "en" },
@@ -62,7 +64,7 @@ function OtherProviders(props){
                             }}>
                                 { props.children }
                             </LocalizeProvider>
-                        
+                        </LocalizationProvider>
                     </CustomThemeProvider>
                     </MuiPickersUtilsProvider>
                 </StylesProvider>
