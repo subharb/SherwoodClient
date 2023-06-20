@@ -5,12 +5,9 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import FieldSherwood from './FieldSherwood';
 import { getValueField, validateField } from '../../utils/index.jsx';
 import PropTypes from 'prop-types';
-import { DeleteHolder, ButtonCancel, ButtonContinue, ButtonAdd } from '../../components/general/mini_components';
+import { ButtonCancel, ButtonContinue } from '../../components/general/mini_components';
 import { Grid, Paper, Typography } from '@mui/material';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import { blue } from '@mui/material/colors';
-import { isObject } from 'lodash';
+import { green } from '@mui/material/colors';
 
  /**
  * Component that renders a form with the values passed by props
@@ -221,12 +218,14 @@ class Form extends Component {
                     }
                     <div style={{paddingTop:"1rem"}}>
                         
-                        <ButtonContinue type="submit" color="green" data-testid={this.props.dataTestid} spaceright={1} onClick={this.props.handleSubmit(values => {this.callBackForm(values, "button1")})}>
+                        <ButtonContinue type="submit" colorRGB={green[500]} 
+                            data-testid={this.props.dataTestid} spaceright={1} 
+                            onClick={this.props.handleSubmit(values => {this.callBackForm(values, "button1")})}>
                             { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}
                         </ButtonContinue>
                         {
                         this.props.alterSubmitButton &&
-                            <ButtonContinue color={blue[700]} type="submit" data-testid={this.props.dataTestid} spaceright={1} 
+                            <ButtonContinue colorRGB={blue[700]} type="submit" data-testid={this.props.dataTestid} spaceright={1} 
                                 onClick={this.props.handleSubmit(values => {this.callBackForm(values, "button2")})}>
                                 { this.props.translate(this.props.alterSubmitButton) }
                             </ButtonContinue>

@@ -171,7 +171,7 @@ const ListPharmacyItems: React.FC<ListPharmacyItemsProps> = ({ action, userPermi
             }
             {
                 !completed && action === RequestAction.APPROVE && canUpdateRequests &&
-                <ButtonContinue style ={{marginLeft:'1rem'}}color={blue[700]} onClick={(() => validateRequest(false))}  >
+                <ButtonContinue style ={{marginLeft:'1rem'}} colorRGB={blue[700]} onClick={(() => validateRequest(false))}  >
                     <Translate id="pages.hospital.services.save_and_complete" />
                 </ButtonContinue>
             }

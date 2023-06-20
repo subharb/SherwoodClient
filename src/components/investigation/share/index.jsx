@@ -12,7 +12,7 @@ import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { EnhancedTable } from "../../general/EnhancedTable";
 import styled from 'styled-components';
-import { yellow, green, blue, red, orange, purple } from "@mui/material/colors";
+import { yellow, green, blue, red, orange, purple, grey } from "@mui/material/colors";
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
 import { getSharedResearchersService, saveResearcherPermissions } from '../../../services';
@@ -21,6 +21,7 @@ import SectionHeader from '../../../pages/components/SectionHeader';
 import UserRoles from './UserRoles';
 import { useSnackBarState } from "../../../hooks"
 import { ALL_ROLES, USER_ROLES } from './user_roles';
+import { ColourChip } from '../../general/mini_components-ts';
 
 
 const optionsPermissions = Object.keys(USER_ROLES).map(keyRole => {
@@ -48,17 +49,11 @@ const RESEARCHER_FORM = {
     },
 }
 
-export const ColourChip = styled(Chip)`
-  height: 20px;
-  padding: 4px 0;
-  font-size: 90%;
-  background-color: ${(props) => props.rgbcolor};
-  color: ${(props) => props.theme.palette.common.white};
-`;
+
 
 export const PermissionChip = withLocalize((props) => {
     const role = permissionsToRole(props.value);
-    let colour = null;
+    let colour = grey[500];
     switch(role){
         case "MEDICAL_DIRECTOR":
             colour = orange[900];
@@ -114,17 +109,17 @@ export const PermissionChip = withLocalize((props) => {
         default:
             return <ColourChip rgbcolor={colour}>{props.translate("investigation.share.roles.NO_PERMISSIONS")} </ColourChip>
     }
-    return <ColourChip size="small" label={props.translate("investigation.share.roles."+role)} rgbcolor={colour} />
+    return <ColourChip rgbcolor={colour}>{props.translate("investigation.share.roles."+role)}</ColourChip>
 })
 
 const StatusChip = withLocalize((props) => {
     switch(props.value.toString()){
         case "0":
-            return <ColourChip size="small" label={props.translate("investigation.share.status.pending")} rgbcolor={yellow[800]} />
+            return <ColourChip size="small" rgbcolor={yellow[800]}>{props.translate("investigation.share.status.pending")} </ColourChip>
         case "1": 
-            return <ColourChip size="small" label={props.translate("investigation.share.status.denied")} rgbcolor={red[500]} />
+            return <ColourChip size="small"rgbcolor={red[500]} >{props.translate("investigation.share.status.denied")} </ColourChip>
         default:
-            return <ColourChip size="small" label={props.translate("investigation.share.status.accepted")} rgbcolor={green[500]} />
+            return <ColourChip size="small" rgbcolor={green[500]}>{props.translate("investigation.share.status.accepted")} </ColourChip>
     }
     
 })

@@ -49,6 +49,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
     const canMakeRequests = investigations.currentInvestigation ? investigations.currentInvestigation.permissions.some((value:PERMISSION) => PERMISSION.MAKE_PHARMACY_REQUESTS === value) : false;
     const uuidInvestigation = investigations.currentInvestigation ? investigations.currentInvestigation.uuid : null;
     const idPharmacy = investigations.currentInvestigation ? investigations.currentInvestigation.pharmacy.id : null;
+    
     useEffect(() => {
         if(uuidInvestigation && idPharmacy ){
             axios.get(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/pharmacy/" + idPharmacy + "/items", { headers: { "Authorization": localStorage.getItem("jwt") } })

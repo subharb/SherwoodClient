@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import {ColourChip, PermissionChip} from "../../share";
+import { PermissionChip} from "../../share";
 
 import {
   Avatar, 
@@ -25,6 +25,7 @@ import { red, green, orange, yellow } from "@mui/material/colors";
 
 import { spacing } from "@mui/system";
 import { Translate } from "react-localize-redux";
+import { ColourChip } from "../../../general/mini_components-ts";
 
 const Breadcrumbs = styled(MuiBreadcrumbs)(spacing);
 
@@ -71,7 +72,7 @@ export default function CardInvestigation({ image, title, description, status, s
     }
     const chipStatus = () => {
         if(shareStatus === 0){
-            return <ColourChip label="Pending" rgbcolor={orange[500]} />
+            return <ColourChip rgbcolor={orange[500]}>Pending</ColourChip>
         } 
         else{
             return null;
