@@ -112,7 +112,7 @@ export const PermissionChip = withLocalize((props) => {
             colour = purple[500];            
             break;
         default:
-            return <ColourChip size="small" label={props.translate("investigation.share.roles.NO_PERMISSIONS")} rgbcolor={colour} />
+            return <ColourChip rgbcolor={colour}>{props.translate("investigation.share.roles.NO_PERMISSIONS")} </ColourChip>
     }
     return <ColourChip size="small" label={props.translate("investigation.share.roles."+role)} rgbcolor={colour} />
 })

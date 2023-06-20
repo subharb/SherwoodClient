@@ -59,7 +59,7 @@ export const RequestStatusToChip:React.FC<{status:RequestStatus}> = ({status}) =
         let colour = statusToColor(status);
         let translation = RequestStatus[status]
        
-        return <ColourChip size="small" label={<Translate id={`pages.hospital.services.request_status.${translation}`}  />} rgbcolor={colour} />
+        return <ColourChip rgbcolor={colour}><Translate id={`pages.hospital.services.request_status.${translation}`}  /></ColourChip>
 }
 
 export const serviceToColor = (type:RequestType) => {
@@ -87,7 +87,7 @@ export const serviceToColor = (type:RequestType) => {
 const ServiceTypeToChip:React.FC<{type:RequestType}> = ({type}) =>  {
     let colour = serviceToColor(type);
     let translation = RequestType[type];
-    return <ColourChip size="small" label={<Translate id={`pages.hospital.services.service_type.${translation}`}  />} rgbcolor={colour} />
+    return <ColourChip rgbcolor={colour}><Translate id={`pages.hospital.services.service_type.${translation}`}/></ColourChip>
 }
 
 
@@ -211,7 +211,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
             return {
                 id: request.id,
                 nhc: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.id : "",
-                service: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation.length > 1 ? <ColourChip rgbcolor={serviceToColor(request.type)} label={<Translate id="general.several" />} /> : <ColourChip rgbcolor={serviceToColor(request.type)} label={request.requestsServiceInvestigation[0].serviceInvestigation.service.name} /> : "",
+                service: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation.length > 1 ? <ColourChip rgbcolor={serviceToColor(request.type)}>{<Translate id="general.several" />} </ColourChip> : <ColourChip rgbcolor={serviceToColor(request.type)}>{request.requestsServiceInvestigation[0].serviceInvestigation.service.name} </ColourChip> : "",
                 department:request.departmentRequest ? request.departmentRequest.name : "",
                 patient:request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id.toLocaleString() : "",
                 researcher: researcherFullName(request.researcher),            
@@ -304,9 +304,9 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
                         {label:"in_progress", value: RequestStatus.IN_PROGRESS, color:statusToColor(RequestStatus.IN_PROGRESS), callBack:() => applyStatusFilter(RequestStatus.IN_PROGRESS)},
                         {label:"accepted", value:RequestStatus.ACCEPTED, color:statusToColor(RequestStatus.ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.ACCEPTED)},
                         {label:"some_accepted", value:RequestStatus.SOME_ACCEPTED, color:statusToColor(RequestStatus.SOME_ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.SOME_ACCEPTED)},
+                        {label:"pending_payment", value:RequestStatus.PENDING_PAYMENT, color:statusToColor(RequestStatus.PENDING_PAYMENT), callBack:() => applyStatusFilter(RequestStatus.PENDING_PAYMENT)},
                     ]} />
             }
-            
             <Grid item xs={12}>
                 <EnhancedTable  selectRow={(id:number) => fillRequest(id)} noHeader noSelectable rows={filteredRows} headCells={headCells} actions={actions} />  
             </Grid>

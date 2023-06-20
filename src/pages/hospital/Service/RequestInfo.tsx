@@ -78,7 +78,7 @@ const RequestInfo: React.FC<RequestInfoProps> = ({ request, translate }) => {
                 const requests = request.requestsServiceInvestigation.map((reqSer) =>{
                     const serviceCode = reqSer.serviceInvestigation.service.code;
                     const typeService = serviceTypeToTranslation(reqSer.serviceInvestigation.service.type);
-                    return(<ChipContainer><ColourChip size="small" rgbcolor={statusToColor(reqSer.status)} label={translate(`pages.hospital.services.tests.${typeService}.${serviceCode}`)}/></ChipContainer>)})
+                    return(<ChipContainer><ColourChip  rgbcolor={statusToColor(reqSer.status)}> aaa{translate(`pages.hospital.services.tests.${typeService}.${serviceCode}`)}</ColourChip></ChipContainer>)})
                 infoRequests.push(<div><Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id={`pages.hospital.services.request.${statusString}`} />: </span>{requests}</Typography> </div>)
             }
         }

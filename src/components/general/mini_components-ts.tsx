@@ -14,7 +14,6 @@ export const ColourChip = styled.button<{rgbcolor:any, selected:boolean}>`
     color: ${(props) => props.selected ? 'black' : 'white'};
     outline: ${(props) => '3px '+props.rgbcolor+' solid'};
     border:none;
-
 `;
 
 // export const ColourChip = (props:any) => {
