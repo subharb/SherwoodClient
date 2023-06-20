@@ -91,10 +91,10 @@ export function formatDateByLocale(locale){
     switch(locale){
         case "fr":
         case "es":
-            return "dd/MM/yyyy"
+            return "DD/MM/YYYY"
         case "en":
         default:
-            return "yyyy/MM/dd";
+            return "YYYY/MM/DD";
     }
 }
 

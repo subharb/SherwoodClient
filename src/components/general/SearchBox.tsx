@@ -6,19 +6,20 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { ColourChip } from './mini_components-ts';
 
 interface SearchBoxProps extends LocalizeContextProps{
+    activeFilters:number[],
     selectFilter?:{
         value: string;
         options :  { value: string; label: string; }[],
         callBack:(value:string) => void;
     }
-    filterItems:{label:string, color:string, callBack:() => void}[],
+    filterItems:{label:string, value:number, color:string, callBack:() => void}[],
     textField:{
         label:string,
         callBack:(value:string) => void;
     }    
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, translate, textField }) => {
+const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, activeFilters, translate, textField }) => {
     return (
         <>
             <Grid item xs={12}>
@@ -34,7 +35,11 @@ const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, transl
                                 <Typography variant="body2" component="span"><Translate id="hospital.search_box.filter" /></Typography>
                                 {
                                     filterItems.map((item) => {
-                                        return <ChipContainer><ColourChip clickable rgbcolor={item.color} onClick={item.callBack} label={translate(`hospital.search_box.filters.${item.label}`)}  /></ChipContainer>
+                                        const selected = activeFilters.includes(item.value);
+                                        return(<ChipContainer>
+                                                    <ColourChip rgbcolor={item.color} selected={selected} 
+                                                        onClick={item.callBack}>{translate(`hospital.search_box.filters.${item.label}`)}</ColourChip>
+                                                </ChipContainer>);
                                     })
                                 }
                             </Grid>

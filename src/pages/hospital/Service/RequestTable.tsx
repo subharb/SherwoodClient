@@ -231,7 +231,6 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         else{
             setStatusFilter(status);
         }
-        
     }
 
     function fillRequest(id:number){
@@ -298,12 +297,14 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
         <Grid container spacing={2}>
             {
                 !noSearchBox && 
-                <SearchBox textField={{label:searchFor, callBack:setSearchText}} filterItems={[
-                    {label:"completed", color:statusToColor(RequestStatus.COMPLETED), callBack:() => applyStatusFilter(RequestStatus.COMPLETED)},
-                    {label:"in_progress", color:statusToColor(RequestStatus.IN_PROGRESS), callBack:() => applyStatusFilter(RequestStatus.IN_PROGRESS)},
-                    {label:"accepted", color:statusToColor(RequestStatus.ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.ACCEPTED)},
-                    {label:"some_accepted", color:statusToColor(RequestStatus.SOME_ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.SOME_ACCEPTED)},
-                ]} />
+                <SearchBox textField={{label:searchFor, callBack:setSearchText}}
+                    activeFilters={!statusFilter ? [] : [statusFilter]}
+                    filterItems={[
+                        {label:"completed", value:RequestStatus.COMPLETED, color:statusToColor(RequestStatus.COMPLETED), callBack:() => applyStatusFilter(RequestStatus.COMPLETED)},
+                        {label:"in_progress", value: RequestStatus.IN_PROGRESS, color:statusToColor(RequestStatus.IN_PROGRESS), callBack:() => applyStatusFilter(RequestStatus.IN_PROGRESS)},
+                        {label:"accepted", value:RequestStatus.ACCEPTED, color:statusToColor(RequestStatus.ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.ACCEPTED)},
+                        {label:"some_accepted", value:RequestStatus.SOME_ACCEPTED, color:statusToColor(RequestStatus.SOME_ACCEPTED), callBack:() => applyStatusFilter(RequestStatus.SOME_ACCEPTED)},
+                    ]} />
             }
             
             <Grid item xs={12}>
