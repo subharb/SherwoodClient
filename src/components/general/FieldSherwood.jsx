@@ -8,7 +8,7 @@ import { Select, InputLabel, MenuItem, TextField,
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
         Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider } from '@mui/material';
 import { spacing } from "@mui/system";
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import 'date-fns';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -303,7 +303,14 @@ class FieldSherwood extends PureComponent{
             case "date":
                 const value = input.value ? input.value : null;
                 return (
-                    <MobileDatePicker value={value} label={labelString}
+                    <DatePicker value={value} label={labelString}
+                        format={formatDateByLocale(activeLanguage.code)}
+                        slotProps={{
+                            textField: {
+                              error: errorState,
+                              helperText: errorString,
+                            },
+                          }}
                         onChange={this.handleDateChange}/>
                         // <MuiPickersUtilsProvider  utils={DateFnsUtils}>
                         //     <KeyboardDatePicker

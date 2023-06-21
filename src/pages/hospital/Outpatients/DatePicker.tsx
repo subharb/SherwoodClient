@@ -110,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, autoCurrentDate, blockedDates,
+const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, autoCurrentDate, blockedDates, onClose,
     slotsPerDay, activeLanguage, datesOccupancy,
     selectBlockedDates, onDateChangeCallback, translate }) => {
     const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(null);
@@ -141,13 +141,11 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
         return isAnOfficeDay || isABlockDate;
     }
 
-    function onDateChange(date: Dayjs | null) {
-        console.log("Date selected: ", date?.format("DD/MM/YYYY"));
-        if(date){
-            console.log("Date selected: ", date.format("DD/MM/YYYY"));
-            setSelectedDate(date);
-            onDateChangeCallback(date);
-        }
+    function onAcceptDate() {
+        console.log("onAcceptDate")
+        if (selectedDate) {
+            onDateChangeCallback(selectedDate);
+        }        
     }
     function findNextAvailableDate() {
         for (let i = 0; i < 60; i++) {
@@ -199,17 +197,19 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
     }
     return (
         <>
-            <MobileDatePicker onClose={onDateChange} autoOk={true}
-            slots={{
-                day: CustomDay,
-                //actionBar: () => ['cancel', 'accept'],
-            }}
+            <MobileDatePicker autoOk={true} 
+                slots={{
+                    day: CustomDay,
+                    //actionBar: () => ['cancel', 'accept'],
+                }}
                 slotProps={{
                     day: {
                         day: false,
                         selected: false,
-                        onAccept: (date: Dayjs) => onDateChange(date), 
                     },
+                    actionBar: {
+                        onAccept: onAcceptDate
+                    }, 
                 }}
                 value={selectedDate} label={translate("pages.hospital.outpatients.select_date").toString()} shouldDisableDate={(date) => isDisabledDate(date.toDate(), selectBlockedDates)}
                 format={formatDateByLocale(activeLanguage.code)}
