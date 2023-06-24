@@ -21,7 +21,7 @@ interface AppointmentDatePickerProps extends LocalizeContextProps {
     slotsPerDay: number,
     autoCurrentDate?: boolean,
     selectBlockedDates?: boolean,
-    onDateChangeCallback: (date: Dayjs) => void;
+    onDateChangeCallback: (date: Date) => void;
     datesOccupancy: { [date: string]: number }
 }
 
@@ -144,7 +144,7 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
     function onAcceptDate() {
         console.log("onAcceptDate")
         if (selectedDate) {
-            onDateChangeCallback(selectedDate);
+            onDateChangeCallback(selectedDate.toDate());
         }        
     }
     function findNextAvailableDate() {
@@ -158,19 +158,19 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
                 return nextAvailableDate;
             }
         }
-        return new Date();
+        return dayjs();
     }
     useEffect(() => {
         if (autoCurrentDate) {
             const nextAvailableDate = findNextAvailableDate();
             setSelectedDate(dayjs(nextAvailableDate.valueOf()));
-            onDateChangeCallback(dayjs(nextAvailableDate.valueOf()));
+            onDateChangeCallback(nextAvailableDate.toDate());
             return;
         }
     }, [])
 
     const CustomDay = (props: typeof PickersDay) => {
-        const { day, today, outsideCurrentMonth,  } = props;
+        const { day, today, outsideCurrentMonth, onDaySelect } = props;
         const selected = day.toDate().getTime() === selectedDate?.toDate().getTime();
         
         const occupancyClass = occupancyLevel(day);
@@ -179,6 +179,7 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
         classesString = today ? classesString + " MuiPickersDay-today" : classesString;
         const handleDayClick = (date: Dayjs) => {
             setSelectedDate(date); // Update the selected date in state or perform any other logic
+            onDaySelect(day);
         };
 
         if(isDisabledDate(day.toDate()) || outsideCurrentMonth){
@@ -207,10 +208,9 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
                         day: false,
                         selected: false,
                     },
-                    actionBar: {
-                        onAccept: onAcceptDate
-                    }, 
+                    
                 }}
+                onAccept={onAcceptDate}
                 value={selectedDate} label={translate("pages.hospital.outpatients.select_date").toString()} shouldDisableDate={(date) => isDisabledDate(date.toDate(), selectBlockedDates)}
                 format={formatDateByLocale(activeLanguage.code)}
             />

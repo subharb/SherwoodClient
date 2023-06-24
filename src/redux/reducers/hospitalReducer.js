@@ -1,7 +1,6 @@
 import { te } from "date-fns/locale";
 import * as types from "../../constants";
-import { departments } from "../../stories/data/departmentsService";
-import { decryptPatientsData } from '../../utils/index.jsx'; 
+
 /**
  * Reducer that saves all the investigations loaded
  * @constructor
