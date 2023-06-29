@@ -156,22 +156,15 @@ export function AddPatientComponent(props) {
                 open={showSnackbar.show}
                 autoHideDuration={4000}
                 onClose={handleClose}>
-                    {
-                        showSnackbar.message && 
-                        <>
-                        <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
-                            <Translate id={showSnackbar.message} />
-                            {
-                                showSnackbar.severity === "success" &&
-                                <Button onClick={goToPatient} size="small">
-                                    <Translate id="pages.hospital.go-to-patient" />
-                                </Button>
-                            }
-                            
-                        </Alert>
-                        
-                        </>
-                    }
+                    <Alert severity={showSnackbar.severity}>
+                        <Translate id={showSnackbar.message} />
+                        {
+                            showSnackbar.severity === "success" &&
+                            <Button onClick={goToPatient} size="small">
+                                <Translate id="pages.hospital.go-to-patient" />
+                            </Button>
+                        }
+                    </Alert>
                 </Snackbar>
             
             <Grid container spacing={3}>
