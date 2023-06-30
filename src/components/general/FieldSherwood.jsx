@@ -27,6 +27,7 @@ import DrugSelector from './SmartFields/DrugSelector';
 import { formatDateByLocale } from '../../utils/index.jsx';
 import AppointmentField from './SmartFields/AppointmentField';
 import Multioption from './Multioption';
+import dayjs from 'dayjs';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -301,7 +302,8 @@ class FieldSherwood extends PureComponent{
                     errorText
                 ]);
             case "date":
-                const value = input.value ? input.value : null;
+                const value = input.value ? dayjs(input.value) : null;
+                
                 return (
                     <DatePicker value={value} label={labelString}
                         format={formatDateByLocale(activeLanguage.code)}
