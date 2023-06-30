@@ -8,12 +8,12 @@ export const ColourChip = styled.button<{rgbcolor:any, selected:boolean}>`
     xheight: 32px;
     white-space: nowrap;
     border-radius:6px;
-    padding: 0px 6px;
+    padding: 3px 6px;
     cursor: pointer;
     font-size: 0.875rem;
     background-color: ${(props) => props.selected ? 'white' : props.rgbcolor};
     color: ${(props) => props.selected ? 'black' : 'white'};
-    outline: ${(props) => '3px '+props.rgbcolor+' solid'};
+    #outline: ${(props) => '3px '+props.rgbcolor+' solid'};
     border:none;
 `;
 
