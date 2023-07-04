@@ -6,6 +6,7 @@
         "no" : ["No", "No", "Non"], 
         "total" : ["Total", "Total", "Total"],
         "not_defined" : ["Not defined", "No definido", "Non défini"],
+        "actions" : ["Actions", "Acciones", "Actions"],
         "week_days" : {
             "monday" : ["Monday", "Lunes", "Lundi"],
             "tuesday" : ["Tuesday", "Martes", "Mardi"],

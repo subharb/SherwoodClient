@@ -345,8 +345,7 @@ export const CheckCircleOutlineSvg = (props) => {
 }
 export const ButtonEmptyCheck = (props) =>{
     return <BasicButtonStyles 
-        variant="contained"
-        color="primary" 
+        variant="contained" 
         size="small"
         startIcon={<PanoramaFishEyeIcon />}
         {...props}

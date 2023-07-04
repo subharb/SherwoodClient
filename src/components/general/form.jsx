@@ -25,7 +25,7 @@ class Form extends Component {
 
         this.renderFields= this.renderFields.bind(this);
         this.sherwoodValidation = this.sherwoodValidation.bind(this)
-        
+        this.mounted = false;
         this.labelValues = {};
         //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
         this.state = {showOptions:{}}
@@ -97,6 +97,7 @@ class Form extends Component {
             }
             
         });
+        this.mounted = true;
         this.props.initialize(initData)
     }
     showOptions(key){
@@ -127,7 +128,9 @@ class Form extends Component {
         // }
     }
     renderFields(){
-        
+        if(!this.mounted){
+            return null;
+        }
         let fieldsMarkup = [];
         let currentSection = [];
         let pastInput = [];

@@ -28,6 +28,7 @@ import { formatDateByLocale } from '../../utils/index.jsx';
 import AppointmentField from './SmartFields/AppointmentField';
 import Multioption from './Multioption';
 import dayjs from 'dayjs';
+import { TimeField } from '@mui/x-date-pickers';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -307,6 +308,8 @@ class FieldSherwood extends PureComponent{
                 return (
                     <DatePicker value={value} label={labelString}
                         format={formatDateByLocale(activeLanguage.code)}
+                        size="small"
+                        margin={this.typeMargin}
                         slotProps={{
                             textField: {
                               error: errorState,
@@ -337,25 +340,35 @@ class FieldSherwood extends PureComponent{
                     
                 )
             case "time":
+                console.log("Time: "+input.value);
+                const valueTime = input.value ? dayjs(input.value) : null;
                 return (
-                    <FieldWrapper noWrap = {this.props.fullWidth}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <KeyboardTimePicker
-                                margin={this.typeMargin}
-                                size="small"
-                                inputVariant="outlined"
-                                id={input.name}
-                                label={labelString}
-                                value={input.value === "" ? new Date() : input.value}
-                                onChange={this.handleDateChange}
-                                KeyboardButtonProps={{
-                                    'aria-label': 'change time',
-                                }}
-                                error={errorState} 
-                                helperText={errorString}
-                            />
-                        </MuiPickersUtilsProvider>
-                    </FieldWrapper>
+                    <TimeField 
+                        defaultValue={valueTime} 
+                        onChange={this.handleDateChange}
+                        helperText={errorString}
+                        size="small"
+                        margin={this.typeMargin}
+                        label={labelString} />
+
+                    // <FieldWrapper noWrap = {this.props.fullWidth}>
+                    //     <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    //         <KeyboardTimePicker
+                    //             margin={this.typeMargin}
+                    //             size="small"
+                    //             inputVariant="outlined"
+                    //             id={input.name}
+                    //             label={labelString}
+                    //             value={input.value === "" ? new Date() : input.value}
+                    //             onChange={this.handleDateChange}
+                    //             KeyboardButtonProps={{
+                    //                 'aria-label': 'change time',
+                    //             }}
+                    //             error={errorState} 
+                    //             helperText={errorString}
+                    //         />
+                    //     </MuiPickersUtilsProvider>
+                    // </FieldWrapper>
                 )
             case "evaluation":
                 let arrayButtons = [];

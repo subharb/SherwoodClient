@@ -43,6 +43,7 @@ Delete as DeleteIcon
 import { spacing } from "@mui/system";
 import { IconGenerator } from "./mini_components";
 import { isNumber } from "lodash";
+import { Translate } from "react-localize-redux";
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -200,7 +201,7 @@ return (
         ))}
         {
             (props.actions && props.actions.length > 0) &&
-            <TableCell style={{fontWeight:"600"}} align="right">Actions</TableCell>
+            <TableCell style={{fontWeight:"600"}} align="right"><Translate id="general.actions"/></TableCell>
         } 
     </TableRow>
     </TableHead>
