@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import icon_female from "../../img/icons/icon_female.svg";
 import icon_undefined from "../../img/icons/icon_undefined.svg";
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
+import { green, blue } from '@mui/material/colors';
 import {
     Add as AddIcon,
     Info as InfoIcon,
@@ -270,6 +271,18 @@ export const ButtonAccept = (props) =>{
     >
         {props.children}
     </ButtonContinueStyles>
+}
+
+export const ButtonOk = (props) =>{
+    return <ButtonContinue 
+        variant="contained"
+        colorRGB={green[500]}
+        size="small"
+        {...props}
+        data-testid={props['data-testid'] ? props['data-testid'] : "continue"}
+    >
+        {props.children}
+    </ButtonContinue>
 }
 
 export const ButtonCancel = (props) =>{

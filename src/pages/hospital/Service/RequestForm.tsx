@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useMemo } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import Form from '../../../components/general/form';
-import { ButtonAccept, ButtonCancel } from '../../../components/general/mini_components';
+import { ButtonAccept, ButtonCancel, ButtonOk } from '../../../components/general/mini_components';
 import Loader from '../../../components/Loader';
 import { IDepartment, IUnit, SnackbarTypeSeverity } from '../../../constants/types';
 import { useSnackBarState, SnackbarType, useUnitSelector, useDeparmentsSelector } from '../../../hooks';
@@ -230,7 +230,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                 }
                 <Grid container item xs={12}>
                     <Grid item>
-                        <ButtonAccept onClick={callBackForm}><Translate id="pages.hospital.services.request.make_request" /></ButtonAccept> 
+                        <ButtonOk onClick={callBackForm}><Translate id="pages.hospital.services.request.make_request" /></ButtonOk> 
                     </Grid>
                     <Grid item style={{marginLeft:"1rem"}}>
                         <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>

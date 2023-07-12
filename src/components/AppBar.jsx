@@ -21,8 +21,8 @@ import UserDropdown from "./UserDropdown";
 import DataSensor from "./DataSensor";
 
 const AppBar = styled(MuiAppBar)`
-  background:${(props) => props.theme.header.background};
-  color: ${(props) => props.theme.header.color};
+  background:${(props) => props.theme.header.background}!important;
+  color: ${(props) => props.theme.header.color}!important;
 `;
 
 const IconButton = styled(MuiIconButton)`

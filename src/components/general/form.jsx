@@ -7,7 +7,7 @@ import { getValueField, validateField } from '../../utils/index.jsx';
 import PropTypes from 'prop-types';
 import { ButtonCancel, ButtonContinue } from '../../components/general/mini_components';
 import { Grid, Paper, Typography } from '@mui/material';
-import { green } from '@mui/material/colors';
+import { green, blue } from '@mui/material/colors';
 
  /**
  * Component that renders a form with the values passed by props
