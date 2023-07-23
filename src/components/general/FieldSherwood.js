@@ -424,7 +424,7 @@ class FieldSherwood extends PureComponent{
                 )
             case "password":
                 return(
-                    <Box mt={3} mb={3} >
+                    <Box mt={2} >
                         <FormControl variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">{labelString}</InputLabel>
                             <OutlinedInput {...input}  color="#000"

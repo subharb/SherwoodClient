@@ -220,7 +220,10 @@ class Form extends Component {
                         </Typography> 
                     }
                     <div style={{paddingTop:"1rem"}}>
-                        
+                        {
+                            this.props.customButton &&
+                            this.props.customButton
+                        }
                         <ButtonContinue type="submit" color="green" data-testid={this.props.dataTestid} spaceright={1} onClick={this.props.handleSubmit(values => {this.callBackForm(values, "button1")})}>
                             { this.props.submitText ?  this.props.translate(this.props.submitText) : this.props.translate("investigation.create.save")}
                         </ButtonContinue>
