@@ -1023,6 +1023,8 @@
                 "surname" : ["Surname", "Apellido", "Nom"]
             },
             "functionalities" : {
+                "basic" : ["Basic functionalities", "Funcionalidades básicas", "Fonctionnalités de base"],
+                "basic_explanation" : ["Basic funcionality includes outpatients, billing and clinical histories", "La funcionalidad básica incluye consultas externas, facturación e historias clínicas", "La fonctionnalité de base comprend les consultations externes, la facturation et les dossiers médicaux"],
                 "inpatients" : ["Inpatient module", "Módulo de hospitalización", "Module d'hospitalisation"],
                 "inpatients_explanation" : ["Creation of virtual hospital wards, as well as the admission, discharge and transfer of patients.", "Creación de salas de hospital virtual, así como el ingreso, alta y traslado de pacientes.", "Création de salles d'hôpital virtuelles, ainsi que l'admission, le congé et le transfert de patients."],
                 "pharmacy" : ["Pharmacy", "Farmacia", "Pharmacie"],

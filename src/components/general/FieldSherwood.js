@@ -307,10 +307,12 @@ class FieldSherwood extends PureComponent{
                 const classNameError = (meta.touched && meta.error) ? "error text" : "";
                 const className = removeClass ?  `col ${sizeCurrent}` : `col ${sizeCurrent}`
                 const errorText = errorState ? <RedFormHelperText><Translate id="general.field-required" /></RedFormHelperText> : "";
+                const checkboxValue = this.props.disabled ? this.props.defaultValue : input.value;
                 return([
                     <FormControlLabel
-                        control={<Checkbox checked={input.value} {...input} />}
+                        control={<Checkbox {...input} checked={checkboxValue} />}
                         label={labelString}
+                        disabled={this.props.disabled}
                     />,
                     this.props.explanation &&
                     <Typography className={classNameError} variant="caption" component="p">{this.props.translate(this.props.explanation)}</Typography>

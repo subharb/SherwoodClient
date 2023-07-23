@@ -104,6 +104,15 @@ const forms = {
         },
     },
     "functionalities" : {
+        "basic" : {
+            name:"basic",
+            required : false,
+            type:"checkbox",
+            disabled : true,
+            defaultValue : true,
+            label:"register.common.functionalities.basic",
+            explanation:"register.common.functionalities.basic_explanation",
+        },
         "inpatients" : {
             name:"inpatients",
             required : false,
