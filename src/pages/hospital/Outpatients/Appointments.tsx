@@ -9,7 +9,7 @@ import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { IAppointment, IPatient, OutpatientsVisualizationMode } from '../../../constants/types';
 import { SnackbarType, useSnackBarState } from '../../../hooks';
-import { HOSPITAL_PATIENT } from '../../../routes';
+import { HOSPITAL_PATIENT } from '../../../routes/urls';
 import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsService } from '../../../services/agenda';
 import { areSameDates, yearsFromDate } from '../../../utils/index.jsx';
 import { RequestStatus } from '../Service/types';

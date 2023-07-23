@@ -7,7 +7,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from '../../general/modal';
 import Table from '../../general/table';
 import styled from 'styled-components';
-import { ALL_INVESTIGATIONS_ROUTE } from '../../../routes';
+import { ALL_INVESTIGATIONS_ROUTE } from '../../../routes/urls';
 import {
     Edit as EditIcon,
 } from "@mui/icons-material";

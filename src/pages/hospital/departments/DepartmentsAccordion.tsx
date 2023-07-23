@@ -8,7 +8,7 @@ import { ButtonAdd, IconGenerator } from '../../../components/general/mini_compo
 import { useDepartments } from '../../../hooks';
 import Loader from '../../../components/Loader';
 import { useHistory } from 'react-router-dom';
-import { HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE } from '../../../routes';
+import { HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE } from '../../../routes/urls';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
 export enum DepartmentAccordionModes {

@@ -5,7 +5,7 @@ import { connect, useSelector } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@mui/material';
 import { useHistory, Link } from 'react-router-dom'
 import { MY_SCHEDULE_ROUTE, SEARCH_PATIENT_ROUTE, 
-        HOSPITAL_WARD_SETTINGS_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB, HOSPITAL_MY_DEPARTMENTS_ROUTE, HOSPITAL_ANALYTICS } from '../../routes';
+        HOSPITAL_WARD_SETTINGS_ROUTE, OUTPATIENTS_ROUTE, ADD_PATIENT_ROUTE, HOSPITAL_IMAGES, HOSPITAL_LAB, HOSPITAL_MY_DEPARTMENTS_ROUTE, HOSPITAL_ANALYTICS } from '../../routes/urls';
 import { ButtonGrey, BoxBckgr, LinkPlain, TypographyStyled } from '../../components/general/mini_components';
 import photo_holder from "../../img/photo_holder.svg";
 import calendar_image from "../../img/calendar.svg";

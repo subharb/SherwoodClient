@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Loader from '../../../components/Loader';
 import { fetchSubmissionsSurveyAction } from '../../../redux/actions/submissionsActions';
-import { HOSPITAL_PATIENT_SUBMISSION } from '../../../routes';
+import { HOSPITAL_PATIENT_SUBMISSION } from '../../../routes/urls';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
 interface ServiceRecordsProps {

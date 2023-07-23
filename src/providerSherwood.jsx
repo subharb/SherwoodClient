@@ -4,8 +4,7 @@ import globalTranslations from "./translations/global.json";
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import createTheme from "./theme";
-import Routes from "./routes/Routes";
-import { useSelector } from "react-redux";
+import { CustomThemeProvider } from "./themeProvider";
 import { Helmet } from "react-helmet";
 import DateFnsUtils from "@date-io/date-fns";
 import { ThemeProvider } from "styled-components";
@@ -41,14 +40,15 @@ axios.interceptors.response.use(function (response) {
 // Create a client
 const queryClient = new QueryClient()
 
-const themeApp = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? createTheme("HOSPITAL") : createTheme("GREEN");
+
 function OtherProviders(props){
+    
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <StylesProvider jss={jss}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <CustomThemeProvider theme={themeApp}>
+                    <CustomThemeProvider>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <LocalizeProvider initialize={{
                                 languages: [
@@ -73,36 +73,6 @@ function OtherProviders(props){
     );
 }
 
-export function CustomThemeProvider(props){
-    const investigations = useSelector((state) => state.investigations);
-    const themeCustom = investigations.currentInvestigation ? investigations.currentInvestigation.aesthetics : null;
-    if(themeCustom){
-        console.log(themeCustom);
-        themeApp.palette.background.default = themeCustom.params.primary.background;
-        themeApp.palette.primary.main = themeCustom.params.primary.color;
-        themeApp.palette.secondary.main = themeCustom.params.colorWhiteBackground ? themeCustom.params.colorWhiteBackground : themeCustom.params.primary.color;
-        themeApp.header.background = themeCustom.params.header ? themeCustom.params.header.background : themeCustom.params.primary.background;
-        themeApp.palette.primary.color = themeCustom.params.primary.color;
-        themeApp.sidebar.background = themeCustom.params.sidebar.background;
-        themeApp.sidebar.color = themeCustom.params.sidebar.color;
-        themeApp.sidebar.header.color = themeCustom.params.sidebar.color;
-        themeApp.sidebar.header.background = themeCustom.params.sidebar.background;
-        themeApp.sidebar.footer.color = themeCustom.params.sidebar.color;
-        themeApp.sidebar.footer.background = themeCustom.params.sidebar.background;
-        themeApp.buttonContinue.primary.background = themeCustom.params.nextButton.background;
-        themeApp.buttonContinue.primary.color = themeCustom.params.nextButton.color;        
-    }
-    return (
-        
-            <MuiThemeProvider theme={themeApp}>
-                <ThemeProvider theme={themeApp}>
-                    {
-                        props.children
-                    }
-                </ThemeProvider>
-            </MuiThemeProvider>
-    );
-}
 
 export default function ProviderSherwood(props){
     const title = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? "Hospital platform" : "Researcher platform"

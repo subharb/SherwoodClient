@@ -14,7 +14,7 @@ import Loader from '../../../components/Loader';
 import { IAgenda, IBox, IDepartment, IOutpatientsInfo, IResearcher, SnackbarType } from '../../../constants/types';
 import { useAgendas, useDepartments, useServiceGeneral, useSnackBarState } from '../../../hooks';
 import { deleteAgendaAction, saveUpdateAgendaAction } from '../../../redux/actions/hospitalActions';
-import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from '../../../routes';
+import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from '../../../routes/urls';
 import { deleteAgendaService, deleteBoxService, getBoxesService, getServicesInvestigationService, saveAgendaService, saveBoxService, saveServiceInvestigationService, updateAgendaService, updateBoxService, updateServiceInvestigationService } from '../../../services/agenda';
 import { researcherFullName } from '../../../utils/index.jsx';
 import Accordion2Levels, { MainElementType } from '../../components/Accordion2Levels';

@@ -11,7 +11,7 @@ import { IDepartment, IPatient, IWard } from '../../../constants/types';
 import Ward, { WardModes, WardView } from './Ward';
 import { ExpandMore } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
-import { HOSPITAL_PATIENT } from '../../../routes';
+import { HOSPITAL_PATIENT } from '../../../routes/urls';
 
 
 interface PropsRedux {

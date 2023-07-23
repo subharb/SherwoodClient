@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { SIGN_IN_ROUTE, SIGN_UP_ROUTE, ROOT_ROUTE, SIGN_UP_ROUTE_INVESTIGATION } from '../../routes';
+import { SIGN_IN_ROUTE, SIGN_UP_ROUTE, ROOT_ROUTE, SIGN_UP_ROUTE_INVESTIGATION } from '../../routes/urls';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";

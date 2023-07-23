@@ -10,7 +10,7 @@ import { ColourChip } from '../../../components/general/mini_components-ts';
 import Modal from "../../../components/general/modal";
 import Loader from '../../../components/Loader';
 import { IAgenda, IAppointment, IBox, IPatient, OutpatientsVisualizationMode, SnackbarType } from '../../../constants/types';
-import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from "../../../routes";
+import { HOSPITAL_ACTION_AGENDA_ROUTE, HOSPITAL_AGENDA_ROUTE } from "../../../routes/urls";
 import { blockDateAgenda, freeDateAgenda, getAgendaService } from '../../../services/agenda';
 import {dateToFullDateString, researcherFullName, turnsToSchedule} from '../../../utils/index.jsx';
 import SectionHeader from "../../components/SectionHeader";

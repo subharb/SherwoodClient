@@ -5,7 +5,7 @@ import { Box, Grid, Paper, Typography, Button, IconButton, Card } from '@mui/mat
 import { useDispatch, useSelector } from "react-redux";
 import {useHistory, useParams} from 'react-router-dom';
 
-import { HOSPITAL_LAB_REQUEST, HOSPITAL_LAB, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_LAB_RESULT, HOSPITAL_IMAGING_REQUEST, HOSPITAL_IMAGES, HOSPITAL_SHOES_REQUEST, } from '../../../routes';
+import { HOSPITAL_LAB_REQUEST, HOSPITAL_LAB, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_LAB_RESULT, HOSPITAL_IMAGING_REQUEST, HOSPITAL_IMAGES, HOSPITAL_SHOES_REQUEST, } from '../../../routes/urls';
 import Loader from '../../../components/Loader';
 
 import {

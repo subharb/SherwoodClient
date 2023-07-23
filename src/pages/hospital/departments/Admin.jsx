@@ -17,7 +17,7 @@ import { yellow, green, blue, red, orange } from "@mui/material/colors";
 import { useHistory } from "react-router-dom";
 import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction, removeResearcherFromUnitAction, editDepartmentAction, deleteDepartmentAction, deleteUnitAction, editUnitAction } from '../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../hooks';
-import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes';
+import { HOSPITAL_WARD_ROUTE, HOSPITAL_WARD_SETTINGS_ROUTE } from '../../../routes/urls';
 import { DepartmentAccordionModes, DepartmentsAccordion } from './DepartmentsAccordion';
 import { FUNCTIONALITY } from '../../../constants/types';
 import { a11yProps, TabPanel } from '../../components/Tabs';

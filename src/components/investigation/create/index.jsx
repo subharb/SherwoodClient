@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from "@mui/lab";
-import { SIGN_IN_ROUTE } from '../../../routes';
+import { SIGN_IN_ROUTE } from '../../../routes/urls';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import BasicInfo  from './basic_info2';

@@ -9,7 +9,7 @@ import { Box, Button, Card, CardContent, Divider as MuiDivider, Grid, IconButton
 import { connect } from 'react-redux';
 import Loader from '../../../components/Loader';
 import { Translate, withLocalize } from 'react-localize-redux';
-import { ROUTE_401 } from '../../../routes';
+import { ROUTE_401 } from '../../../routes/urls';
 import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components";
 import { yearsFromDate } from '../../../utils/index.jsx';

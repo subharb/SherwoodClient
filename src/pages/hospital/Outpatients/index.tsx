@@ -13,7 +13,7 @@ import { FormConsultAppointment } from './FormAppointment';
 import EditOutpatients from './EditOutpatients';
 import Appointments from './Appointments';
 import { useHistory, useParams } from 'react-router-dom';
-import { HOSPITAL_OUTPATIENTS_EDIT_ROUTE, HOSPITAL_OUTPATIENTS_ROUTE } from '../../../routes';
+import { HOSPITAL_OUTPATIENTS_EDIT_ROUTE, HOSPITAL_OUTPATIENTS_ROUTE } from '../../../routes/urls';
 
 interface OutpatientsProps extends LocalizeContextProps {
     investigations:any

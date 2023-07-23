@@ -15,7 +15,7 @@ import { Alert } from "@mui/lab";
 import { useDispatch } from "react-redux";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
         HOSPITAL_PATIENT_MAKE_TESTS,
-        HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS } from '../../../routes';
+        HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS } from '../../../routes/urls';
 
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
 

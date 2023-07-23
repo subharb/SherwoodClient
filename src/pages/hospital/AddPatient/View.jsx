@@ -1,41 +1,32 @@
 
-import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { Box, Button, Grid, IconButton, Paper, Snackbar, Typography } from '@mui/material';
-import PersonalDataForm from '../../components/investigation/show/single/personal_data';
-import { connect } from 'react-redux';
-import { savePatientAction, updatePatientAction } from '../../redux/actions/patientsActions';
-import { CloseIcon } from '@material-ui/data-grid';
-import Loader from '../../components/Loader';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Translate } from 'react-localize-redux';
-import { BoxBckgr, GridContainer } from '../../components/general/mini_components';
+import PropTypes from 'prop-types';
 import { useDispatch } from "react-redux";
 import { PersonAddSharp, EditOutlined } from '@mui/icons-material';
-import { useSnackBarState, useUpdateEffect } from '../../hooks';
+import { Button, Grid, Paper, Snackbar, Typography } from '@mui/material';
 import { Alert } from '@mui/material';
-import { ROUTE_401 } from '../../routes';
-import { areSameDates } from '../../utils/index.jsx';
-import Modal from '../../components/general/modal';
-import { PERMISSION } from '../../components/investigation/share/user_roles';
+import { useSnackBarState, useUpdateEffect } from '../../../hooks';
+import PersonalDataForm from '../../../components/investigation/show/single/personal_data';
+import { savePatientAction, updatePatientAction } from '../../../redux/actions/patientsActions';
+import Loader from '../../../components/Loader';
+import { BoxBckgr, GridContainer } from '../../../components/general/mini_components';
 
+import { ROUTE_401 } from '../../../routes/urls';
+import { areSameDates } from '../../../utils/index.jsx';
+import Modal from '../../../components/general/modal';
+import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
-export function AddPatient(props) {
-    let { uuidPatient } = useParams();
-    
-    const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
-    const patientsInvestigation = props.investigations.currentInvestigation &&  props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
-    return <AddPatientComponent investigations={props.investigations} patient={patient} patientsInvestigation={patientsInvestigation} {...props} />
-}
-
-export function AddPatientComponent(props) {
+function AddPatientComponent(props) {
+    console.log("AddPatientComponent", props);
     const [isLoading, setIsLoading] = useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [confirmPatient, setConfirmPatient] = useState(null);
     const [lastPatient, setLastPatient] = useState(null);
 
     const history = useHistory();
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
 
     function handleClose(){
         setShowSnackbar({show:false});
@@ -103,14 +94,14 @@ export function AddPatientComponent(props) {
         try{
             setIsLoading(true);
             
-            if(props.patient){
-                await dispatch( updatePatientAction(props.investigations.currentInvestigation, props.patient.uuid, patientData));
+            // if(props.patient){
+            //     await dispatch( updatePatientAction(props.investigations.currentInvestigation, props.patient.uuid, patientData));
                 
-            }
-            else{
-                await dispatch( savePatientAction(props.investigations.currentInvestigation, patientData));
+            // }
+            // else{
+            //     await dispatch( savePatientAction(props.investigations.currentInvestigation, patientData));
                 
-            }
+            // }
             setIsLoading(false);   
             setConfirmPatient(null);   
         }
@@ -119,13 +110,7 @@ export function AddPatientComponent(props) {
             setShowSnackbar({show:true, severity:"error", message : "hospital.patient.error"});
         }
     }
-    if(props.investigations.loading || isLoading){
-        return <Loader />
-    }
-    else if(!props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS)){
-        history.push(ROUTE_401);
-        return <Loader />
-    }
+    
     return (
         <BoxBckgr color="text.primary">
             <Modal key="modal" open={confirmPatient} 
@@ -189,8 +174,8 @@ export function AddPatientComponent(props) {
                 </GridContainer>
                 <Grid item xs={12}>
                     <Paper style={{padding:'1rem'}}>
-                        <PersonalDataForm fields={ props.investigations.currentInvestigation.personalFields} hospital={true}
-                            keyResearcherInvestigation={props.investigations.currentInvestigation.keyResearcherInvestigation}
+                        <PersonalDataForm fields={ props.personalFields} hospital={true}
+                            keyResearcherInvestigation={props.keyResearcherInvestigation}
                             submitText={props.patient ? "general.update" : null}
                             initialData={props.patient ? props.patient.personalData : null} 
                             callBackForm={(personalData, rawPersonalData) => callBackSaveUpdate(personalData, rawPersonalData)}/>
@@ -204,12 +189,6 @@ export function AddPatientComponent(props) {
 AddPatientComponent.propTypes = {
     investigations:PropTypes.object
 
-  };
+};
 
-const mapStateToProps = (state) =>{
-    return {
-        investigations : state.investigations,
-        patients:state.patients
-    }
-}
-export default connect(mapStateToProps, null)(AddPatient)
+export default AddPatientComponent;

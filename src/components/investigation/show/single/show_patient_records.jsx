@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../../general/EnhancedTable';
 import { fetchRecordsPatientFromSurvey } from '../../../../services';
 import { Card, CardContent, Typography, Grid, Paper } from '@mui/material';
-import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import Loader from '../../../Loader';
 
 /**

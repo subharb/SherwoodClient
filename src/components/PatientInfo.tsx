@@ -6,7 +6,7 @@ import { Translate, withLocalize, LocalizeContextProps } from 'react-localize-re
 import { connect, connectAdvanced } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { IPatient, IPersonalData } from '../constants/types';
-import { HOSPITAL_PATIENT } from '../routes';
+import { HOSPITAL_PATIENT } from '../routes/urls';
 import { dateToFullDateString } from '../utils/index.jsx';
 import { ColourChip } from './general/mini_components-ts';
 
