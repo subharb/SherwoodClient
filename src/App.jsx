@@ -1,14 +1,8 @@
 import React from "react";
 import { create } from "jss";
-
-
-import { ThemeProvider as MuiThemeProvider, StyledEngineProvider } from "@mui/material/styles";
-
-
 import jssPreset from '@mui/styles/jssPreset';
+import Routes from "./routes/RoutesProvider";
 
-
-import Routes from "./routes/Routes";
 
 const jss = create({
   ...jssPreset(),

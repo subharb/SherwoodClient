@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ButtonBack, ButtonEdit, ButtonForward } from '../../../general/mini_components';
-import { Card, Paper, Typography, Grid } from '@mui/material';
+import { ButtonEdit } from '../../../general/mini_components';
+import { Card, Typography, Grid } from '@mui/material';
 import styled from 'styled-components';
 import { Alert } from "@mui/lab";
 import { Translate, withLocalize } from 'react-localize-redux';
-import { HOSPITAL_PATIENT_SECTION } from '../../../../routes';
 import File from '../../../general/File';
 import SmartField from '../../../general/SmartFields';
-import { dateToFullDateString, fullDateFromPostgresString, getData, isSmartField, stringDatePostgresToDate } from '../../../../utils/index.jsx';
+import { fullDateFromPostgresString, getData, isSmartField, stringDatePostgresToDate } from '../../../../utils/index.jsx';
 import { ALL_SMARTFIELDS_TYPES, MEDICAL_HISTORY_FIELDS } from '../../../../constants';
 import Multioption from '../../../general/Multioption';
 

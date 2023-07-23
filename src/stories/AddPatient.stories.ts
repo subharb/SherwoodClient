@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import AddPatientComponent from '../pages/hospital/AddPatient/View';
 import Test  from '../pages/hospital/AddPatient/test';
+import { personal_data_investigation1 } from './example_data';
 
 const meta: Meta<typeof AddPatientComponent> = {
   title: 'Hospital/Add Patient',
@@ -24,6 +25,7 @@ export const LoggedIn: Story = {
     patients: {
       loading: false,
     },
+    personalFields: personal_data_investigation1()
   },
 };
 

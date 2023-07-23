@@ -5,14 +5,10 @@ import { Search as SearchPatientIcon } from "@mui/icons-material";
 import { Box, Grid, Paper, Typography, Button, Tabs, Tab } from '@mui/material';
 import Form  from '../../components/general/form';
 import {useHistory} from 'react-router-dom';
-import { HOSPITAL_PATIENT } from '../../routes';
 import Loader from '../../components/Loader';
-
 import PatientsTable from '../../components/general/PatientsTable';
-
 import { ButtonBack, ButtonCancel, ButtonContinue, GridContainer } from '../../components/general/mini_components';
 import { connect } from 'react-redux';
-
 import { useDispatch } from "react-redux";
 import { updatePatientsFromId } from '../../redux/actions/patientsActions';
 import _ from 'lodash';
@@ -26,6 +22,7 @@ import { searchPatientByDiagnosis } from '../../services';
 import styled from 'styled-components';
 import { FormMakeAppointment } from './Outpatients/FormAppointment';
 import PatientAppointmentInfo from './Outpatients/PatientAppointmentInfo';
+import { HOSPITAL_PATIENT } from '../../routes/urls';
 
 let personalFieldsForm = {};
 const ID_FIELD = {

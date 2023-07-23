@@ -3,20 +3,14 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
-import { useDispatch } from "react-redux";
 import { PersonAddSharp, EditOutlined } from '@mui/icons-material';
 import { Button, Grid, Paper, Snackbar, Typography } from '@mui/material';
 import { Alert } from '@mui/material';
 import { useSnackBarState, useUpdateEffect } from '../../../hooks';
 import PersonalDataForm from '../../../components/investigation/show/single/personal_data';
-import { savePatientAction, updatePatientAction } from '../../../redux/actions/patientsActions';
-import Loader from '../../../components/Loader';
 import { BoxBckgr, GridContainer } from '../../../components/general/mini_components';
-
-import { ROUTE_401 } from '../../../routes/urls';
 import { areSameDates } from '../../../utils/index.jsx';
 import Modal from '../../../components/general/modal';
-import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
 function AddPatientComponent(props) {
     console.log("AddPatientComponent", props);
