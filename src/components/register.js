@@ -103,50 +103,27 @@ const forms = {
             validationField: "password"
         },
     },
-    "clinic" : {
-        "type" : {
-            name:"type",
-            required : true,
-            type:"select",
-            defaultOption:{"text" : "register.common.personal_info.type_options.single_doctor", "value" : 1},
-            options:[
-                {"text" : "register.common.personal_info.type_options.single_doctor", "value" : 1},
-                {"text" : "register.common.personal_info.type_options.clinic", "value" : 1},
-                {"text" : "register.common.personal_info.type_options.health_centre", "value" : 2},
-                {"text" : "register.common.personal_info.type_options.hospital", "value" : 2},
-            ],
-            label:"register.common.clinic.type",
-            shortLabel: "register.common.clinic.type",
-            validation : "notEmpty"
+    "functionalities" : {
+        "inpatients" : {
+            name:"inpatients",
+            required : false,
+            type:"checkbox",
+            label:"register.common.functionalities.inpatients",
+            explanation:"register.common.functionalities.inpatients_explanation",
         },
-        "language" : {
-            name:"language",
-            required : true,
-            type:"select",
-            defaultOption:{"text" : "register.common.personal_info.type_options.single_doctor", "value" : 1},
-            options:[
-                {"text" : "register.common.personal_info.language_options.english", "value" : "en"},
-                {"text" : "register.common.personal_info.language_options.spanish", "value" : "es"},
-                {"text" : "register.common.personal_info.language_options.french", "value" : "fr"}
-            ],
-            label:"register.common.clinic.type",
-            shortLabel: "register.common.clinic.type",
-            validation : "notEmpty"
+        "pharmacy" : {
+            name:"pharmacy",
+            required : false,
+            type:"checkbox",
+            label:"register.common.functionalities.pharmacy",
+            explanation:"register.common.functionalities.pharmacy_explanation",
         },
-        "country" : {
-            name:"country",
-            required : true,
-            type:"select",
-            defaultOption:{"text" : "register.common.clinic.country", "value" : ""},
-            options:[],
-            option : {
-                "value" : "id",
-                "text" : "code"
-            },
-            optionsUrl: process.env.REACT_APP_API_URL+"/countries",
-            label:"register.common.personal_info.country",
-            shortLabel: "register.common.personal_info.country",
-            validation : "notEmpty"
+        "requests" : {
+            name:"requests",
+            required : false,
+            type:"checkbox",
+            label:"register.common.functionalities.requests",
+            explanation:"register.common.functionalities.requests_explanation",
         }
     },
     "key_generation" : {
@@ -171,7 +148,7 @@ class Register extends Component {
     constructor(props){
         super(props);
         this.iv = null;
-        this.sections = props.typeUser === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_generation"];
+        this.sections = props.typeUser === "researcher" ?  [ "personal_info", "contact_info", "functionalities", "password", "key_generation"] : ["password", "key_generation"];
 
         this.state = {selected:props.initialState ? props.initialState.selected : 0, info : {}, key : null, success : false, errorMessage : null, loading:false}
 

@@ -458,10 +458,11 @@
         }
     },
     "breadcrumb" : {
-        "password" : ["3", "3", "3"],
-        "key_generation": ["4", "4", "4"],
+        "password" : ["4", "4", "4"],
+        "key_generation": ["5", "5", "5"],
         "personal_info" : ["1", "1", "1"],
-        "contact_info" : ["2", "2", "2"]
+        "contact_info" : ["2", "2", "2"],
+        "functionalities" : ["3", "3", "3"]
     },
     "error" : {
         "not_login" : ["You need to sign in to access this resource", "Para acceder a este recurso necesita iniciar sesión", "Vous devez vous connecter pour accéder à cette ressource"]
@@ -1021,7 +1022,13 @@
                 "surnames" : ["Surnames", "Apellidos", "Nom" ],
                 "surname" : ["Surname", "Apellido", "Nom"]
             },
-            "clinic" : {
+            "functionalities" : {
+                "inpatients" : ["Inpatient module", "Módulo de hospitalización", "Module d'hospitalisation"],
+                "inpatients_explanation" : ["Creation of virtual hospital wards, as well as the admission, discharge and transfer of patients.", "Creación de salas de hospital virtual, así como el ingreso, alta y traslado de pacientes.", "Création de salles d'hôpital virtuelles, ainsi que l'admission, le congé et le transfert de patients."],
+                "pharmacy" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                "pharmacy_explanation" : ["This functionality allows you to manage the pharmacy, pharmacy requests and the stock", "Esta funcionalidad le permite gestionar la farmacia, las peticiones de farmacia y el stock", "Cette fonctionnalité vous permet de gérer la pharmacie, les demandes de pharmacie et le stock"],
+                "requests" : ["Laboratory and radiology", "Módulo de laboratorio y radiología", "Module de laboratoire et de radiologie"],
+                "requests_explanation" : ["Creation and management of the hospital pharmacy stock or drug repository for smaller centres. Management of pharmacy requests from hospital departments.", "Creación y gestión del stock de farmacia hospitalaria o depósito de medicamentos para centros más pequeños. Gestión de las peticiones de farmacia de los servicios hospitalarios.", "Création et gestion du stock de pharmacie hospitalière ou du dépôt de médicaments pour les centres plus petits. Gestion des demandes de pharmacie des services hospitaliers."],
                 "country" : ["Country", "País", "Pays"],
                 "type" : ["Type", "Tipo", "Type"],
                 "type_options" : {
@@ -1056,6 +1063,10 @@
             },
             "contact_info" : {
                 "title" : ["What are your contact details?", "¿Cúales son tus datos de contacto?","Quelles sont vos coordonnées ?"],
+                "explanation" : ["", "",""]
+            },
+            "functionalities" : {
+                "title" : ["What functionalities do you want to use?", "¿Qué funcionalidades quieres utilizar?","Quelles fonctionnalités souhaitez-vous utiliser ?"],
                 "explanation" : ["", "",""]
             },
             "password" : {
