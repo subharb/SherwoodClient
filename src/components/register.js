@@ -138,7 +138,7 @@ const forms = {
             name:"policy",
             required : true,
             type:"checkbox",
-            label:{label : "register.common.accept-policy", url : "https://hospital.sherwood.science/Sherwood_privacy_policy_.21July2021.pdf"},
+            label:{label : "register.common.accept-policy", url : "https://www.sherwood.science/privacy-policy"},
             shortLabel: "register.common.accept-policy",
             validation : "notEmpty"
         }

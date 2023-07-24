@@ -11,6 +11,7 @@ import {
   IconButton as MuiIconButton,
   Toolbar,
 } from "@material-ui/core";
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
 
 import { Menu as MenuIcon } from "@material-ui/icons";
 
@@ -92,10 +93,15 @@ const AppBarComponent = ({ onDrawerToggle }) => (
           </Hidden>
           <Grid item xs />
           <Grid item>
-              <DataSensor />
-              <OfflineDropDown />
-              <LanguagesDropdown />
-              <UserDropdown />
+                <a style={{color:"#000"}} href="https://www.sherwood.science/tutorial" target="blank">
+                    <IconButton color="inherit" >
+                        <VideoLibraryIcon />
+                    </IconButton>                
+                </a>                    
+                <DataSensor />
+                <OfflineDropDown />
+                <LanguagesDropdown />
+                <UserDropdown />
           </Grid>
         </Grid>
       </Toolbar>

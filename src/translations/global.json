@@ -1024,13 +1024,13 @@
             },
             "functionalities" : {
                 "basic" : ["Basic functionalities", "Funcionalidades básicas", "Fonctionnalités de base"],
-                "basic_explanation" : ["Basic funcionality includes outpatients, billing and clinical histories", "La funcionalidad básica incluye consultas externas, facturación e historias clínicas", "La fonctionnalité de base comprend les consultations externes, la facturation et les dossiers médicaux"],
+                "basic_explanation" : ["Basic funcionality includes electronic medical records, outpatient module and billing", "La funcionalidad básica incluye consultas externas, facturación e historias clínicas", "La fonctionnalité de base comprend les consultations externes, la facturation et les dossiers médicaux"],
                 "inpatients" : ["Inpatient module", "Módulo de hospitalización", "Module d'hospitalisation"],
                 "inpatients_explanation" : ["Creation of virtual hospital wards, as well as the admission, discharge and transfer of patients.", "Creación de salas de hospital virtual, así como el ingreso, alta y traslado de pacientes.", "Création de salles d'hôpital virtuelles, ainsi que l'admission, le congé et le transfert de patients."],
                 "pharmacy" : ["Pharmacy", "Farmacia", "Pharmacie"],
-                "pharmacy_explanation" : ["This functionality allows you to manage the pharmacy, pharmacy requests and the stock", "Esta funcionalidad le permite gestionar la farmacia, las peticiones de farmacia y el stock", "Cette fonctionnalité vous permet de gérer la pharmacie, les demandes de pharmacie et le stock"],
+                "pharmacy_explanation" : ["Pharmacy stock / inventory management", "Gestión de stock / inventario de farmacia", "Gestion des stocks / inventaire de pharmacie"],
                 "requests" : ["Laboratory and radiology", "Módulo de laboratorio y radiología", "Module de laboratoire et de radiologie"],
-                "requests_explanation" : ["Creation and management of laboratory and radiology requests, including the configuration of a personalised catalogue of available tests.", "Creación y gestión de peticiones de laboratorio y radiología, incluyendo la configuración de un catálogo personalizado de pruebas disponibles.", "Création et gestion des demandes de laboratoire et de radiologie, y compris la configuration d'un catalogue personnalisé des tests disponibles."],
+                "requests_explanation" : ["Creation and management of laboratory and radiology requests. Configuration of customized catalogue of available tests.", "Creación y gestión de peticiones de laboratorio y radiología, incluyendo la configuración de un catálogo personalizado de pruebas disponibles.", "Création et gestion des demandes de laboratoire et de radiologie, y compris la configuration d'un catalogue personnalisé des tests disponibles."],
                 "country" : ["Country", "País", "Pays"],
                 "type" : ["Type", "Tipo", "Type"],
                 "type_options" : {
