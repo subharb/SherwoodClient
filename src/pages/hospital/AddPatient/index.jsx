@@ -14,6 +14,7 @@ export function AddPatient(props) {
     const patient = uuidPatient && props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const patientsInvestigation = props.investigations.currentInvestigation &&  props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     return <AddPatientComponent personalFields={props.investigations.currentInvestigation.personalFields} 
+                insurances={props.investigations.currentInvestigation.insurances}
                 keyResearcherInvestigation = {props.investigations.currentInvestigation.keyResearcherInvestigation} investigations={props.investigations} patient={patient} patientsInvestigation={patientsInvestigation} {...props} />
 }
 

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
@@ -18,7 +18,21 @@ function AddPatientComponent(props) {
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [confirmPatient, setConfirmPatient] = useState(null);
     const [lastPatient, setLastPatient] = useState(null);
-
+    const currentFields = useMemo(() => {
+        const fields = props.personalFields;
+        if(props.investigations.insurances){
+            fields.push({
+                name:"insurance",
+                label:<Translate id="investigation.show.personal_data.insurance" />,
+                type:"select",
+                options:props.investigations.insurances.map((insurance) => {
+                    return {value:insurance.id, label:insurance.name}
+                })
+            })
+        }
+        return fields;
+    }, [props.personalFields]);
+    
     const history = useHistory();
     //const dispatch = useDispatch();
 
@@ -168,7 +182,7 @@ function AddPatientComponent(props) {
                 </GridContainer>
                 <Grid item xs={12}>
                     <Paper style={{padding:'1rem'}}>
-                        <PersonalDataForm fields={ props.personalFields} hospital={true}
+                        <PersonalDataForm fields={ currentFields } hospital={true}
                             keyResearcherInvestigation={props.keyResearcherInvestigation}
                             submitText={props.patient ? "general.update" : null}
                             initialData={props.patient ? props.patient.personalData : null} 

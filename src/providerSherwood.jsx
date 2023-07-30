@@ -10,7 +10,6 @@ import DateFnsUtils from "@date-io/date-fns";
 import { ThemeProvider } from "styled-components";
 import { create } from "jss";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { ThemeProvider as MuiThemeProvider, adaptV4Theme } from "@mui/material/styles";
 import StylesProvider from '@mui/styles/StylesProvider';
 import jssPreset from '@mui/styles/jssPreset';
 import { LocalizationProvider } from '@mui/x-date-pickers';

@@ -17,7 +17,7 @@ const meta: Meta<typeof AddPatientComponent> = {
 export default meta;
 type Story = StoryObj<typeof AddPatientComponent>;
 
-export const LoggedIn: Story = {
+export const Standard: Story = {
   args: {
     investigations: {
         loading: false,
@@ -28,5 +28,29 @@ export const LoggedIn: Story = {
     personalFields: personal_data_investigation1()
   },
 };
+
+export const WithInsurances: Story = {
+    args: {
+      investigations: {
+          loading: false,
+          insurances:[{
+            id: 1,
+            name: "Insurance 1",        
+          },{
+            id: 2,
+            name: "Insurance 2",
+          }, 
+          {
+            id: 3,
+            name: "Insurance 3",
+          }]
+      },
+      patients: {
+        loading: false,
+      },
+      
+      personalFields: personal_data_investigation1()
+    },
+  };
 
 export const LoggedOut: Story = {};
