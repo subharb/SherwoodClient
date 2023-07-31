@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { AddPatientComponent } from './View';
 import Loader from '../../../components/Loader';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import { ROUTE_401 } from '../../../routes/urls';
+import { updatePatientAction, savePatientAction } from '../../../redux/actions/patientsActions';
  // Assuming you have a Loader component defined somewhere
 
 interface Props {
@@ -17,6 +18,7 @@ export function AddPatient(props: Props) {
     const [isLoading, setIsLoading] = useState(false);
     const { uuidPatient } = useParams();
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const patient = useMemo(() => {
         return uuidPatient &&
@@ -39,8 +41,8 @@ export function AddPatient(props: Props) {
         try {
             setIsLoading(true);
 
-            if (props.patient) {
-                await dispatch(updatePatientAction(props.investigations.currentInvestigation, props.patient.uuid, patientData));
+            if (patient) {
+                await dispatch(updatePatientAction(props.investigations.currentInvestigation, patient.uuid, patientData));
 
             }
             else {
@@ -48,7 +50,7 @@ export function AddPatient(props: Props) {
 
             }
             setIsLoading(false);
-            setConfirmPatient(null);
+            
         }
         catch (error) {
             setIsLoading(true);
@@ -85,7 +87,6 @@ export function AddPatient(props: Props) {
             }}
                 callbackGoToPatient = {(uuidPatient) => history.push(`/patient/${uuidPatient}`)
             }
-      {...props}
         />
     );
 }
