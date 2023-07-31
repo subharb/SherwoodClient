@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import AddPatientComponent from '../pages/hospital/AddPatient/View';
+import { AddPatientComponent } from '../pages/hospital/AddPatient/View';
 import { personal_data_investigation1 } from './example_data';
 
 const meta: Meta<typeof AddPatientComponent> = {

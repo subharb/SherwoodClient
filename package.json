@@ -125,6 +125,7 @@
       "a",
       "p",
       "p",
+      "plugin:storybook/recommended",
       "plugin:storybook/recommended"
     ],
     "overrides": [
@@ -163,7 +164,7 @@
     "@storybook/addon-essentials": "^7.1.1",
     "@storybook/addon-interactions": "^7.1.1",
     "@storybook/addon-links": "^7.1.1",
-    "@storybook/addon-mdx-gfm": "^7.1.1",
+    "@storybook/addon-onboarding": "^1.0.8",
     "@storybook/blocks": "^7.1.1",
     "@storybook/react": "^7.1.1",
     "@storybook/react-vite": "^7.1.1",
@@ -184,6 +185,7 @@
     "cypress": "^6.6.0",
     "eslint-config-prettier": "6.15.0",
     "eslint-plugin-prettier": "3.3.0",
+    "eslint-plugin-storybook": "^0.6.13",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "miragejs": "^0.1.46",
     "msw": "^0.20.5",
