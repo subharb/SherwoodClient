@@ -153,6 +153,7 @@ export async function importKey(key){
 export function encryptData(data, key){
     var KeyObj = CryptoJS.AES.encrypt(data, key);
     var ciphertext = KeyObj.toString();
+    console.log("encryptData", data);
     console.log(KeyObj);
     console.log(ciphertext);
     return ciphertext;

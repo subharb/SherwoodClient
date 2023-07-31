@@ -13,11 +13,12 @@ import Modal from '../../../components/general/modal';
 interface Props {
   investigations: any; // Replace 'any' with the appropriate type
   patient: any; // Replace 'any' with the appropriate type
-  patientsInvestigation: any; // Replace 'any' with the appropriate type
+  patientsInvestigation: any[]; // Replace 'any' with the appropriate type
   personalFields: any; // Replace 'any' with the appropriate type
   keyResearcherInvestigation: any; // Replace 'any' with the appropriate type
   insurances:any,
   callbackGotoPatient: (uuidPatient:string) => void;
+  callbackSavePatient: (patientData:any) => void;
 }
 
 export function AddPatientComponent(props: Props) {
@@ -76,7 +77,7 @@ export function AddPatientComponent(props: Props) {
 async function callBackSaveUpdate(patientData:any, rawPatientData:any){
     if(!props.patient){
         //Si es guardar, verifica si este paciente ya estaba
-        const existingPatient = props.patients.data[props.investigations.currentInvestigation.uuid].find((pat) => {
+        const existingPatient = props.patientsInvestigation.find((pat) => {
             if(rawPatientData.hasOwnProperty("health_id") && pat.personalData["health_id"] === rawPatientData["health_id"]){
                 return true;
             }
@@ -102,7 +103,7 @@ async function callBackSaveUpdate(patientData:any, rawPatientData:any){
             return;
         }
     }
-    saveUpdatePatient(patientData)
+    props.callbackSavePatient(patientData)
 }
 
 
@@ -111,7 +112,7 @@ return (
         <Modal key="modal" open={confirmPatient} 
             title={<Translate id="pages.hospital.confirm-patient.title" />}
             closeModal={() => setConfirmPatient(null)}
-            confirmAction={() => saveUpdatePatient(confirmPatient.encryptedData)}>
+            confirmAction={() => props.callbackSavePatient(confirmPatient.encryptedData)}>
                 {
                     confirmPatient &&
                     [<Translate id="pages.hospital.confirm-patient.description" />,
@@ -178,7 +179,7 @@ return (
             </Grid>
         </Grid>
     </BoxBckgr>
-)
+    )
 }
 
 AddPatientComponent.propTypes = {

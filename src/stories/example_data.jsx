@@ -482,20 +482,7 @@ export const selected_personal_data = [{name : "name", type:"text", encrypted:tr
 
 export const personal_data_investigation1 = () => {
     return  [
-        {
-            "name": "email",
-            "type": "text",
-            "required": true,
-            "label": "investigation.create.personal_data.fields.email",
-            "encrypted": true
-        },
-        {
-            "name": "phone",
-            "type": "text",
-            "required": true,
-            "label": "investigation.create.personal_data.fields.phone",
-            "encrypted": true
-        },
+        
         {
             "name": "name",
             "type": "text",
@@ -512,15 +499,37 @@ export const personal_data_investigation1 = () => {
         },
         {
             "name": "sex",
-            "type": "text",
+            "type": "select",
             "required": true,
-            "label": "investigation.create.personal_data.fields.surname",
+            "label": "investigation.create.personal_data.fields.sex",
+            "options": [{
+                value:"Female",
+                label:"Female"
+            },
+            {
+                value:"Male",
+                label:"Male"
+            }],
             "encrypted": true
         },
         {
-            "name": "birthdate",
+            "name": "email",
             "type": "text",
-            "required": true,
+            "required": false,
+            "label": "investigation.create.personal_data.fields.email",
+            "encrypted": true
+        },
+        {
+            "name": "phone",
+            "type": "text",
+            "required": false,
+            "label": "investigation.create.personal_data.fields.phone",
+            "encrypted": true
+        },
+        {
+            "name": "health_id",
+            "type": "text",
+            "required": false,
             "label": "investigation.create.personal_data.fields.health_id",
             "encrypted": true
         }

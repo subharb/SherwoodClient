@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { AddPatientComponent } from './View';
@@ -17,6 +17,22 @@ export function AddPatient(props: Props) {
     const [isLoading, setIsLoading] = useState(false);
     const { uuidPatient } = useParams();
     const history = useHistory();
+
+    const patient = useMemo(() => {
+        return uuidPatient &&
+            props.investigations.data &&
+            props.patients.data
+            ? props.patients.data[props.investigations.currentInvestigation.uuid].find(
+                (pat: any) => pat.uuid === uuidPatient
+            )
+            : null;
+    }, [uuidPatient,props.investigations.data, props.patients.data] );
+        
+    const patientsInvestigation = useMemo(() => {
+        return props.investigations.currentInvestigation && props.patients.data
+            ? props.patients.data[props.investigations.currentInvestigation.uuid]
+            : [];
+    }, [uuidPatient, props.investigations.data, props.patients.data]);
 
     async function callbackSavePatient(patientData) {
 
@@ -43,7 +59,8 @@ export function AddPatient(props: Props) {
 
     if (isLoading || props.investigations.loading || props.isLoading) {
         return <Loader />;
-    } else if (
+    } 
+    else if (
         !props.investigations.currentInvestigation.permissions.includes(
             PERMISSION.PERSONAL_ACCESS
         )
@@ -51,20 +68,6 @@ export function AddPatient(props: Props) {
         history.push(ROUTE_401);
         return <Loader />;
     }
-
-    const patient =
-        uuidPatient &&
-            props.investigations.data &&
-            props.patients.data
-            ? props.patients.data[props.investigations.currentInvestigation.uuid].find(
-                (pat: any) => pat.uuid === uuidPatient
-            )
-            : null;
-
-    const patientsInvestigation =
-        props.investigations.currentInvestigation && props.patients.data
-            ? props.patients.data[props.investigations.currentInvestigation.uuid]
-            : [];
 
     return (
         <AddPatientComponent
