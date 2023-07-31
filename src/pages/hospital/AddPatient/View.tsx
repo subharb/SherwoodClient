@@ -35,6 +35,7 @@ export function AddPatientComponent(props: Props) {
         name: 'insurance',
         label: "hospital.patient.insurances.select",
         type: 'select',
+        encrypted:false,
         options: props.insurances.map((insurance: any) => {
           return { value: insurance.id, label: insurance.name };
         }),
