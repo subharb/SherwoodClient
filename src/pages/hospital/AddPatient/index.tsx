@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { AddPatientComponent } from './View';
-import { Loader } from './Loader'; // Assuming you have a Loader component defined somewhere
+import Loader from '../../../components/Loader';
+import { PERMISSION } from '../../../components/investigation/share/user_roles';
+import { ROUTE_401 } from '../../../routes/urls';
+ // Assuming you have a Loader component defined somewhere
 
 interface Props {
     investigations: any; // Replace 'any' with the appropriate type

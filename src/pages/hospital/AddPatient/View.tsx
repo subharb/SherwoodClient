@@ -20,7 +20,7 @@ interface Props {
   callbackGotoPatient: (uuidPatient:string) => void;
 }
 
-function AddPatientComponent(props: Props) {
+export function AddPatientComponent(props: Props) {
   console.log('AddPatientComponent', props);
   const [isLoading, setIsLoading] = useState(false);
   const [showSnackbar, setShowSnackbar] = useSnackBarState();
@@ -185,5 +185,3 @@ AddPatientComponent.propTypes = {
 investigations:PropTypes.object
 
 };
-
-export default AddPatientComponent;

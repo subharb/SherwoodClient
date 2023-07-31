@@ -8,7 +8,7 @@ export function CustomThemeProvider(props){
     const themeApp = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? createTheme("HOSPITAL") : createTheme("GREEN");
     const investigations = useSelector((state) => state.investigations);
     const themeCustom = investigations.currentInvestigation ? investigations.currentInvestigation.aesthetics : null;
-    if(themeCustom){    bbv
+    if(themeCustom){   
         console.log(themeCustom);
         themeApp.palette.background.default = themeCustom.params.primary.background;
         themeApp.palette.primary.main = themeCustom.params.primary.color;

@@ -14,7 +14,7 @@ const Root = styled.div`
 function Loader() {
   return (
     <Root>
-      <CircularProgress m={2} color="green" />
+      <CircularProgress m={2} color="primary" />
     </Root>
   );
 }
