@@ -27,11 +27,16 @@ export default function PersonalDataForm(props) {
         
         for (const key of Object.keys(data)) {
             let value = data[key];
-            if(typeof value.getMonth === 'function'){
-                value = value.getTime().toString();
+            const fieldForm = props.fields.find(field => field.name === key);
+             
+            if(fieldForm.encrypted !== false){
+                if(typeof value.getMonth === 'function'){
+                    value = value.getTime().toString();
+                }
+                value = encryptData(value.toString(), rawKeyInvestigation);
             }
             const field = form[key];
-            field.value = encryptData(value, rawKeyInvestigation);
+            field.value = value;
             encryptedData.push(field)  
         }
         
