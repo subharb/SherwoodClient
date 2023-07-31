@@ -130,6 +130,9 @@
             "discharged-from-ward" : ["Discharged from ward %X", "Dado de alta de la planta %X", "Congé de service %X"],
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"],
+            "insurances" : {
+                "select" : ["Select the patient's insurance", "Seleccione el seguro del paciente", "Sélectionnez l'assurance du patient"]
+            },
             "error" : {
                 "general" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
                 "patient-alredy-discharged" : ["This patient was already discharged, please refresh the clinical history", "Este paciente ya fue dado de alta, actualice la historia clínica", "Ce patient a déjà obtenu son congé, veuillez actualiser l'historique clinique"],
@@ -1250,6 +1253,7 @@
                 "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
                 "personal_data" : ["Provide a brief explanation as to why you need to collect personal data", "Proporcione una breve explicación de por qué necesita recopilar datos personales", "Expliquez brièvement pourquoi vous devez collecter des données personnelles"],
                 "email" : ["Email", "Email", "Email"]
+
             },
             "consent" : {
                 "title" : ["Add consent forms", "Añadir formularios de consentimiento informado", "Ajouter des formulaires de consentement éclairé"],

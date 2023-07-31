@@ -194,5 +194,6 @@
     "redux-mock-store": "^1.5.4",
     "storybook": "^7.0.20",
     "vite": "^4.3.9"
-  }
+  },
+  "packageManager": "yarn@3.6.1"
 }

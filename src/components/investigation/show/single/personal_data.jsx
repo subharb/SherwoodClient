@@ -2,7 +2,6 @@ import React from 'react'
 import {Translate} from 'react-localize-redux';
 import { PERSONAL_DATA_FIELDS, encryptData, decryptData, generateKey } from '../../../../utils/index.jsx';
 import Form from '../../../general/form';
-import jwt from 'jsonwebtoken';
 import { Grid, Typography } from '@mui/material';
 
 export default function PersonalDataForm(props) {

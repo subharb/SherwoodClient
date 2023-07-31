@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import AddPatientComponent from '../pages/hospital/AddPatient/View';
-import Test  from '../pages/hospital/AddPatient/test';
 import { personal_data_investigation1 } from './example_data';
 
 const meta: Meta<typeof AddPatientComponent> = {
@@ -33,19 +32,20 @@ export const WithInsurances: Story = {
     args: {
       investigations: {
           loading: false,
-          insurances:[{
-            id: 1,
-            name: "Insurance 1",        
-          },{
-            id: 2,
-            name: "Insurance 2",
-          }, 
-          {
-            id: 3,
-            name: "Insurance 3",
-          }]
       },
+      insurances:[{
+        id: 1,
+        name: "Insurance 1",        
+      },{
+        id: 2,
+        name: "Insurance 2",
+      }, 
+      {
+        id: 3,
+        name: "Insurance 3",
+      }],
       patients: {
+        data:[],
         loading: false,
       },
       
