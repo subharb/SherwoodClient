@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config'
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import react from '@vitejs/plugin-react';
+
 
 export default defineConfig(() => {
   return {
@@ -30,5 +31,6 @@ export default defineConfig(() => {
         //global: '({})',
         "process.env.TESS_ENV": process.env.ENV,
       },
+      
   };
 });
