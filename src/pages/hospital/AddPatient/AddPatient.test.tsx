@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import { AddPatientComponent } from './AddPatientComponent';
+import { AddPatientComponent } from './View';
 
 describe('AddPatientComponent', () => {
     const mockInvestigations = { loading: false, currentInvestigation: { permissions: [] } };
