@@ -34,6 +34,11 @@ export function AddPatient(props: Props) {
             : null;
     }, [uuidPatient,props.investigations.data, props.patients.data] );
         
+    function callbackGoToPatient(uuidPatient:string){
+        console.log("callbackGoToPatient", uuidPatient);
+        history.push(`/patient/${uuidPatient}`)
+    }
+    
     useEffect(() => {
         setPatientsInvestigation(currentInvestigation && props.patients.data
             ? props.patients.data[currentInvestigation.uuid]
@@ -104,8 +109,7 @@ export function AddPatient(props: Props) {
             callbackSavePatient={(patientData: any) => {
                 callbackSavePatient(patientData)
             }}
-                callbackGoToPatient = {(uuidPatient) => history.push(`/patient/${uuidPatient}`)
-            }
+            callbackGoToPatient = {(uuidPatient:string) => callbackGoToPatient(uuidPatient)}
         />
     );
 }

@@ -20,7 +20,7 @@ interface Props {
   insurances:any,
   addedPatient:boolean,
   error:number,
-  callbackGotoPatient: (uuidPatient:string) => void;
+  callbackGoToPatient: (uuidPatient:string) => void;
   callbackSavePatient: (patientData:any) => void;
 }
 
@@ -86,7 +86,7 @@ export function AddPatientComponent(props: Props) {
 
   function goToPatient(){
     const uuidPatient = props.patient ? props.patient.uuid : lastPatient.uuid;
-    props.callbackGotoPatient(uuidPatient)
+    props.callbackGoToPatient(uuidPatient)
 }
 async function callBackSaveUpdate(patientData:any, rawPatientData:any){
     if(!props.patient){
