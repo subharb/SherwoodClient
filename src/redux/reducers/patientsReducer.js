@@ -12,7 +12,7 @@ import { decryptPatientsData, decryptSinglePatientData } from '../../utils/index
     error: null
 }
 export default function reducer(state = initialState, action){
-    
+    let patientsData = null;
     let newState = { ...state};
     let tempInvestigations;
     switch(action.type){
@@ -56,22 +56,24 @@ export default function reducer(state = initialState, action){
         case types.SAVE_PATIENT_SUCCESS:
             let newPatient = {...action.patient};
             console.log(action.patient);
+            patientsData = {...newState.data};
             newPatient.personalData = action.patient.personalData ? decryptSinglePatientData(action.patient.personalData, action.investigation) : null;
             if([types.UPDATE_PATIENT_SUCCESS, types.UPDATE_PATIENT_OFFLINE].includes(action.type)){
                 const indexPat = newState.data[action.investigation.uuid].findIndex(pat => pat.uuid === action.uuidPatient);
-                newState.data[action.investigation.uuid][indexPat] = newPatient;
+                patientsData[action.investigation.uuid][indexPat] = newPatient;
             }
             else{
                 //Para los pacientes metido en offline
                 if(!newPatient.id){
-                    const maxiId =  newState.data[action.investigation.uuid].sort((a,b)=>b.id-a.id)[0].id;
+                    const maxiId =  patientsData[action.investigation.uuid].sort((a,b)=>b.id-a.id)[0].id;
                     newPatient.id = maxiId +1;
                 }
-                newState.data[action.investigation.uuid].push(newPatient);
+                patientsData[action.investigation.uuid].push(newPatient);
             }
 
             newState.loading = initialState.loading;
             newState.error = initialState.error;
+            newState.data = patientsData;
             if([types.SAVE_PATIENT_OFFLINE, types.UPDATE_PATIENT_OFFLINE].includes(action.type)){
                 newState.error = 2;//Saved but offline
             }

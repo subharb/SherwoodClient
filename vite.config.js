@@ -25,6 +25,17 @@ export default defineConfig(() => {
     alias: {
         stream: 'readable-stream',
     },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './src/tests/setup.js',
+        setupFilesAfterEnv: ['./src/tests/test-utils.js'],
+        //reporters: ['html'],
+        // browser: {
+        //     enabled: false,
+        //     name: 'chrome', // browser name is required
+        //   },
+      },
     define: {
         // By default, Vite doesn't include shims for NodeJS/
         // necessary for segment analytics lib to work

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { AddPatientComponent } from './View';
@@ -16,6 +16,7 @@ interface Props {
 
 export function AddPatient(props: Props) {
     const [isLoading, setIsLoading] = useState(false);
+    const [currentInvestigation, setCurrentInvestigation] = useState<any>({});
     const { uuidPatient } = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
@@ -31,10 +32,14 @@ export function AddPatient(props: Props) {
     }, [uuidPatient,props.investigations.data, props.patients.data] );
         
     const patientsInvestigation = useMemo(() => {
-        return props.investigations.currentInvestigation && props.patients.data
-            ? props.patients.data[props.investigations.currentInvestigation.uuid]
+        return currentInvestigation && props.patients.data
+            ? props.patients.data[currentInvestigation.uuid]
             : [];
-    }, [uuidPatient, props.investigations.data, props.patients.data]);
+    }, [uuidPatient, currentInvestigation, props.patients.data]);
+
+    useEffect(() => {
+        setCurrentInvestigation(props.investigations.currentInvestigation)
+    }, [props.investigations.data])
 
     async function callbackSavePatient(patientData) {
 
@@ -81,6 +86,7 @@ export function AddPatient(props: Props) {
             uuidPatient={uuidPatient}
             investigations={props.investigations}
             patient={patient}
+            error={props.patients.error}
             patientsInvestigation={patientsInvestigation}
             callbackSavePatient={(patientData: any) => {
                 callbackSavePatient(patientData)

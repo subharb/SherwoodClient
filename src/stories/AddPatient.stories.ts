@@ -46,6 +46,7 @@ export const WithInsurances: Story = {
         id: 3,
         name: "Insurance 3",
       }],
+      error:0,
       patientsInvestigation: [],
       patients: {
         data:[],

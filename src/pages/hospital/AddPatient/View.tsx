@@ -12,11 +12,13 @@ import Modal from '../../../components/general/modal';
 
 interface Props {
   investigations: any; // Replace 'any' with the appropriate type
+  patients:{loading:boolean, data:any[]}
   patient: any; // Replace 'any' with the appropriate type
   patientsInvestigation: any[]; // Replace 'any' with the appropriate type
   personalFields: any; // Replace 'any' with the appropriate type
   keyResearcherInvestigation: any; // Replace 'any' with the appropriate type
   insurances:any,
+  error:number,
   callbackGotoPatient: (uuidPatient:string) => void;
   callbackSavePatient: (patientData:any) => void;
 }
@@ -35,6 +37,7 @@ export function AddPatientComponent(props: Props) {
         name: 'insurance',
         label: "hospital.patient.insurances.select",
         type: 'select',
+        required: true,
         encrypted:false,
         options: props.insurances.map((insurance: any) => {
           return { value: insurance.id, label: insurance.name };
@@ -49,27 +52,27 @@ export function AddPatientComponent(props: Props) {
   }
 
   useUpdateEffect(() => {
-    if (!props.patients.loading) {
-      let messageId = '';
-      let severity = 'success';
-      if (props.patient) {
+    
+    let messageId = '';
+    let severity = 'success';
+    if (props.patient) {
         messageId = 'hospital.patient.updated-patient';
-      } else {
+    } else {
         messageId = 'hospital.patient.new-patient';
-      }
-      if (props.patients.error === 2) {
+    }
+    if (props.error === 2) {
         messageId += '-offline';
         severity = 'warning';
-      } else if (props.patients.error) {
+    } else if (props.error) {
         messageId = 'hospital.patient.error';
         severity = 'error';
-      }
-      setShowSnackbar({ show: true, severity: severity, message: messageId });
-      setLastPatient(
-        props.patientsInvestigation[props.patientsInvestigation.length - 1]
-      );
     }
-  }, [props.patients.loading]);
+    setShowSnackbar({ show: true, severity: severity, message: messageId });
+    setLastPatient(
+        props.patientsInvestigation[props.patientsInvestigation.length - 1]
+    );
+    
+  }, [props.patientsInvestigation, props.error]);
 
   function goToPatient(){
     const uuidPatient = props.patient ? props.patient.uuid : lastPatient.uuid;
@@ -107,7 +110,10 @@ async function callBackSaveUpdate(patientData:any, rawPatientData:any){
     props.callbackSavePatient(patientData)
 }
 
-
+if(props.personalFields.length === 0){
+    console.log("No ahy ")
+    return "No hay campos";
+}
 return (
     <BoxBckgr color="text.primary">
         <Modal key="modal" open={confirmPatient} 
