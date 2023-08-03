@@ -50,11 +50,11 @@ export default function Modal(props){
                 props.confirmAction &&
                 <DialogActions>
                     {props.closeModal &&
-                        <Button onClick={props.closeModal} data-testid="cancel-modal" color="green">
+                        <Button onClick={props.closeModal} data-testid="cancel-modal" color="primary">
                             <Translate id="general.cancel" />
                         </Button>
                     }
-                    <Button onClick={props.confirmAction} data-testid="continue-modal" color="green">
+                    <Button onClick={props.confirmAction} data-testid="continue-modal" color="primary">
                         <Translate id="general.continue" />
                     </Button>
                 </DialogActions> 

@@ -6,6 +6,7 @@ import Loader from '../../../components/Loader';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import { ROUTE_401 } from '../../../routes/urls';
 import { updatePatientAction, savePatientAction } from '../../../redux/actions/patientsActions';
+import { usePrevious } from '../../../hooks';
  // Assuming you have a Loader component defined somewhere
 
 interface Props {
@@ -17,6 +18,8 @@ interface Props {
 export function AddPatient(props: Props) {
     const [isLoading, setIsLoading] = useState(false);
     const [currentInvestigation, setCurrentInvestigation] = useState<any>({});
+    const [patientsInvestigation, setPatientsInvestigation] = useState([]);
+    const [addedPatient, setAddedPatient] = useState(false);
     const { uuidPatient } = useParams();
     const history = useHistory();
     const dispatch = useDispatch();
@@ -31,11 +34,11 @@ export function AddPatient(props: Props) {
             : null;
     }, [uuidPatient,props.investigations.data, props.patients.data] );
         
-    const patientsInvestigation = useMemo(() => {
-        return currentInvestigation && props.patients.data
+    useEffect(() => {
+        setPatientsInvestigation(currentInvestigation && props.patients.data
             ? props.patients.data[currentInvestigation.uuid]
-            : [];
-    }, [uuidPatient, currentInvestigation, props.patients.data]);
+            : []);
+    }, [currentInvestigation, props.patients.data])
 
     useEffect(() => {
         setCurrentInvestigation(props.investigations.currentInvestigation)
@@ -54,15 +57,24 @@ export function AddPatient(props: Props) {
                 await dispatch(savePatientAction(props.investigations.currentInvestigation, patientData));
 
             }
+            setAddedPatient(true);
             setIsLoading(false);
             
         }
         catch (error) {
-            setIsLoading(true);
-            setShowSnackbar({ show: true, severity: "error", message: "hospital.patient.error" });
+            setIsLoading(false);
         }
 
     }
+
+    useEffect(() => {
+        if(addedPatient){
+            setTimeout(() => {
+                setAddedPatient(false);
+            }, 3000);
+            
+        }
+    }, [addedPatient])
 
     if (isLoading || props.investigations.loading || props.isLoading) {
         return <Loader />;
@@ -86,6 +98,7 @@ export function AddPatient(props: Props) {
             uuidPatient={uuidPatient}
             investigations={props.investigations}
             patient={patient}
+            addedPatient = {addedPatient}
             error={props.patients.error}
             patientsInvestigation={patientsInvestigation}
             callbackSavePatient={(patientData: any) => {

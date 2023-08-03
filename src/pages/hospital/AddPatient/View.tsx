@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { PersonAddSharp, EditOutlined } from '@mui/icons-material';
 import { Button, Grid, Paper, Snackbar, Typography } from '@mui/material';
 import { Alert } from '@mui/material';
-import { useSnackBarState, useUpdateEffect } from '../../../hooks';
+import { usePrevious, useSnackBarState, useUpdateEffect } from '../../../hooks';
 import PersonalDataForm from '../../../components/investigation/show/single/personal_data';
 import { BoxBckgr, GridContainer } from '../../../components/general/mini_components';
 import { areSameDates } from '../../../utils/index.jsx';
@@ -18,6 +18,7 @@ interface Props {
   personalFields: any; // Replace 'any' with the appropriate type
   keyResearcherInvestigation: any; // Replace 'any' with the appropriate type
   insurances:any,
+  addedPatient:boolean,
   error:number,
   callbackGotoPatient: (uuidPatient:string) => void;
   callbackSavePatient: (patientData:any) => void;
@@ -27,6 +28,7 @@ export function AddPatientComponent(props: Props) {
   console.log('AddPatientComponent', props);
   const [isLoading, setIsLoading] = useState(false);
   const [showSnackbar, setShowSnackbar] = useSnackBarState();
+  
   const [confirmPatient, setConfirmPatient] = useState<any | null>(null);
   const [lastPatient, setLastPatient] = useState<any | null>(null);
   const currentFields = useMemo(() => {
@@ -51,28 +53,36 @@ export function AddPatientComponent(props: Props) {
     setShowSnackbar({ show: false });
   }
 
-  useUpdateEffect(() => {
-    
-    let messageId = '';
-    let severity = 'success';
-    if (props.patient) {
-        messageId = 'hospital.patient.updated-patient';
-    } else {
-        messageId = 'hospital.patient.new-patient';
+  useEffect(() => {
+        console.log("Han cambiado los pacientes");
+        if(props.addedPatient){
+            let messageId = '';
+            if (props.patient) {
+                messageId = 'hospital.patient.updated-patient';
+            } else {
+                messageId = 'hospital.patient.new-patient';
+            }
+            setShowSnackbar({ show: true, severity: 'success', message: messageId });
+            setLastPatient(
+                props.patientsInvestigation[props.patientsInvestigation.length - 1]
+            );
+        }
+  }, [props.addedPatient])
+  useEffect(() => {
+    if(props.error !== null){
+        let messageId = '';
+        let severity = 'error';
+        
+        if (props.error === 2) {
+            messageId += '-offline';
+            severity = 'warning';
+        } else if (props.error) {
+            messageId = 'hospital.patient.error';
+            severity = 'error';
+        }
+        setShowSnackbar({ show: true, severity: severity, message: messageId });
     }
-    if (props.error === 2) {
-        messageId += '-offline';
-        severity = 'warning';
-    } else if (props.error) {
-        messageId = 'hospital.patient.error';
-        severity = 'error';
-    }
-    setShowSnackbar({ show: true, severity: severity, message: messageId });
-    setLastPatient(
-        props.patientsInvestigation[props.patientsInvestigation.length - 1]
-    );
-    
-  }, [props.patientsInvestigation, props.error]);
+  }, [props.error]);
 
   function goToPatient(){
     const uuidPatient = props.patient ? props.patient.uuid : lastPatient.uuid;
@@ -110,10 +120,6 @@ async function callBackSaveUpdate(patientData:any, rawPatientData:any){
     props.callbackSavePatient(patientData)
 }
 
-if(props.personalFields.length === 0){
-    console.log("No ahy ")
-    return "No hay campos";
-}
 return (
     <BoxBckgr color="text.primary">
         <Modal key="modal" open={confirmPatient} 
