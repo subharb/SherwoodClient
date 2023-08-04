@@ -560,13 +560,16 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
             
             let decryptedValue = ""
             if(encryptedField){
-                //console.log(encryptedField.value);
-                decryptedValue = decryptData(encryptedField.value, keyInvestigation);
+                if(encryptedField.encrypted === true){
+                    decryptedValue = decryptData(encryptedField.value, keyInvestigation);
                 
-                if(encryptedField.type === "date"){
-                    decryptedValue = new Date(parseInt(decryptedValue));
+                    if(encryptedField.type === "date"){
+                        decryptedValue = new Date(parseInt(decryptedValue));
+                    }
                 }
-                
+                else{
+                    decryptedValue = encryptedField.value;
+                }
             }
             
             encryptedFields[personalField.name] = decryptedValue; 

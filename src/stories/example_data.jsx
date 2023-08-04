@@ -536,6 +536,33 @@ export const personal_data_investigation1 = () => {
     ]
 }
 
+export const personal_data_with_insurances = () => {
+    const personalFields = personal_data_investigation1();
+    personalFields.push({
+        "name": "insurance",
+        "type": "select",
+        "required": true,
+        "label": "hospital.patient.insurances.select",
+        "validation": "",
+        "encrypted": false,
+        "options": [
+            {
+                "value": 1,
+                "label": "Insurance Test 1 B"
+            },
+            {
+                "value": 2,
+                "label": "Insurance Test 2"
+            },
+            {
+                "value": 3,
+                "label": "Insurance Test 3 B"
+            }
+        ]
+    })
+    return personalFields;
+}
+
 export const patient_data1 = () => {
     return {"name" : "U2FsdGVkX1/549BkU0hFEEe6ybHCAQQIvDp3hBvXtzThHXRa3Q001yNHplsrPNc9", 
             "surname" : "U2FsdGVkX19gyeNwfNSi23TYseiCWwqe0C0A4mwfEVc=", 

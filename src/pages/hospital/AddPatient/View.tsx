@@ -17,7 +17,6 @@ interface Props {
   patientsInvestigation: any[]; // Replace 'any' with the appropriate type
   personalFields: any; // Replace 'any' with the appropriate type
   keyResearcherInvestigation: any; // Replace 'any' with the appropriate type
-  insurances:any,
   addedPatient:boolean,
   error:number,
   callbackGoToPatient: (uuidPatient:string) => void;
@@ -31,23 +30,7 @@ export function AddPatientComponent(props: Props) {
   
   const [confirmPatient, setConfirmPatient] = useState<any | null>(null);
   const [lastPatient, setLastPatient] = useState<any | null>(null);
-  const currentFields = useMemo(() => {
-    console.log("Use memo");
-    const fields = [...props.personalFields];
-    if (props.insurances) {
-      fields.push({
-        name: 'insurance',
-        label: "hospital.patient.insurances.select",
-        type: 'select',
-        required: true,
-        encrypted:false,
-        options: props.insurances.map((insurance: any) => {
-          return { value: insurance.id, label: insurance.name };
-        }),
-      });
-    }
-    return fields;
-  }, [props.personalFields]);
+
 
   function handleClose() {
     setShowSnackbar({ show: false });
@@ -183,7 +166,7 @@ return (
             </GridContainer>
             <Grid item xs={12}>
                 <Paper style={{padding:'1rem'}}>
-                    <PersonalDataForm fields={ currentFields } hospital={true}
+                    <PersonalDataForm fields={ props.personalFields } hospital={true}
                         keyResearcherInvestigation={props.keyResearcherInvestigation}
                         submitText={props.patient ? "general.update" : null}
                         initialData={props.patient ? props.patient.personalData : null} 

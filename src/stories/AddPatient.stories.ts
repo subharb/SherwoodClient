@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { AddPatientComponent } from '../pages/hospital/AddPatient/View';
-import { getInvestigation, personal_data_investigation1 } from './example_data';
+import { getInvestigation, personal_data_investigation1, personal_data_with_insurances } from './example_data';
 import {keyInvestigation} from '../../.storybook/preview'
 
 const meta: Meta<typeof AddPatientComponent> = {
@@ -35,17 +35,6 @@ export const WithInsurances: Story = {
           loading: false,
           currentInvestigation:getInvestigation.investigation
       },
-      insurances:[{
-        id: 1,
-        name: "Insurance 1",        
-      },{
-        id: 2,
-        name: "Insurance 2",
-      }, 
-      {
-        id: 3,
-        name: "Insurance 3",
-      }],
       error:0,
       patientsInvestigation: [],
       patients: {
@@ -56,7 +45,7 @@ export const WithInsurances: Story = {
         console.log("Save Patient", data);
       },
       keyResearcherInvestigation:keyInvestigation,
-      personalFields: personal_data_investigation1()
+      personalFields: personal_data_with_insurances()
     },
   };
 

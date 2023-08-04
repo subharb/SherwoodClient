@@ -76,20 +76,32 @@ describe('AddPatientComponent', () => {
             "required": false,
             "label": "investigation.create.personal_data.fields.health_id",
             "encrypted": true
+        },
+        {
+            "name": "insurance",
+            "type": "select",
+            "required": true,
+            "label": "hospital.insurance",
+            "validation": "",
+            "encrypted": false,
+            "options": [
+                {
+                    "value": 1,
+                    "label": "Insurance Test 1 B"
+                },
+                {
+                    "value": 2,
+                    "label": "Insurance Test 2"
+                },
+                {
+                    "value": 3,
+                    "label": "Insurance Test 3 B"
+                }
+            ]
         }
     ];
     const mockKeyResearcherInvestigation = {};
-    const mockInsurances = [{
-        id: 1,
-        name: "Insurance 1",        
-      },{
-        id: 2,
-        name: "Insurance 2",
-      }, 
-      {
-        id: 3,
-        name: "Insurance 3",
-      }];
+    
     const mockSavePatientFunction = vi.fn();
 
     const mockFieldValues = [{"label" : "Name", "value" : "David"}, {"label" : "Surname", "value" : "Shaikh"},
@@ -107,7 +119,6 @@ describe('AddPatientComponent', () => {
                     patientsInvestigation={mockPatientsInvestigation}
                     personalFields={mockPersonalFields}
                     keyResearcherInvestigation={mockKeyResearcherInvestigation}
-                    insurances={mockInsurances}
                     callbackGotoPatient={() => console.log("Go to patient")}
                     callbackSavePatient={() => console.log("Save to patient")}
                 />
