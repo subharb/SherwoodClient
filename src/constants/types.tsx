@@ -84,7 +84,8 @@ export interface IPersonalData{
     surnames: string,
     birthdate: Date,
     sex: string,
-    health_id ?:string
+    health_id ?:string,
+    insurance:number
 }
 
 export enum OutpatientsVisualizationMode{

@@ -13,9 +13,11 @@ import { createBillService, updateBillService } from "../../../services/billing"
 import { FindPatient } from "./find_patient";
 
 import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils/index.jsx"
-import { Alert, Autocomplete, createFilterOptions } from "@mui/lab"
+import { Alert, Autocomplete } from "@mui/lab"
 import { BillItems } from "./BillItems"
 import { useSnackBarState } from "../../../hooks"
+import { useDispatch } from "react-redux"
+import { getBillablesAction } from "../../../redux/actions/investigationsActions"
 
 interface Props {
     updatingBill: boolean,
@@ -23,6 +25,7 @@ interface Props {
     personalFields: [],
     currency: string,
     uuidInvestigation: string,
+    idBillingInfo:number,
     bill: Bill | null,
     locale: Language,
     billables?:Billable[],
@@ -47,6 +50,20 @@ export const BillForm:React.FC<Props> = (props) => {
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(undefined);
     const [currentItems, setCurrentItems] = useState<BillItem[]>([]);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+    async function getBillables() {
+        console.log(patient);
+        const insuranceId = patient?.personalData.insurance ? patient.personalData.insurance : null;
+        await dispatch(getBillablesAction(props.uuidInvestigation, props.idBillingInfo, insuranceId));
+    }
+    if (patient) {
+        getBillables();
+    }
+    
+    }, [patient]);
 
     function onPatientSelected(idPatient: number) {
         const findPatient = props.patients.find((patient) => patient.id === idPatient);
@@ -143,6 +160,7 @@ export const BillForm:React.FC<Props> = (props) => {
                         uuidPatient={patient?.uuid} mode = {BillItemModes.SHOW}
                         initItems = {props.bill ? props.bill.billItems : currentItems.length > 0 ? currentItems : []}
                         repeatBillItems={true} showTotal={true}
+                        
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
                         bill={props.bill} billables={props.billables ? props.billables : []}
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}

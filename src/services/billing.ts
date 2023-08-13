@@ -100,10 +100,10 @@ export function getBillsPatientService(uuidInvestigation: string, uuidPatient:st
 
 
 
-export function getBillablesService(uuidInvestigation: string, idBillingInfo: number): Promise<BillablesServiceResponse> {
+export function getBillablesService(uuidInvestigation: string, idBillingInfo: number, idInsurance:number): Promise<BillablesServiceResponse> {
     return new Promise((resolve, reject) => {
         axios
-            .get(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billables/" + idBillingInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billables/" + idBillingInfo + "/insurance/"+idInsurance, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

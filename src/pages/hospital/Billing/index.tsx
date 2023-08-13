@@ -128,21 +128,7 @@ const Billing: React.FC<Props> = (props) => {
     const [actionBill, setActionBill] = useState<BillActions>(BillActions.default);
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
     const [edit, setEdit] = useState(false);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        console.log(props.billingInfo);
-        async function getBillables(idBillingInfo: number) {
-            await dispatch(getBillablesAction(props.uuidInvestigation, idBillingInfo));
-
-        }
-        if (props.billingInfo) {
-            getBillables(props.billingInfo.id);
-        }
-        else {
-            setEdit(true);
-        }
-    }, [props.billingInfo]);
+    
 
     async function resetSnackBar() {
         setShowSnackbar({ show: false });
@@ -206,7 +192,6 @@ const Billing: React.FC<Props> = (props) => {
         if (findPatient) {
             props.onPatientSelected(findPatient.uuid);
         }
-        
     }
 
     function renderCore() {
@@ -251,6 +236,7 @@ const Billing: React.FC<Props> = (props) => {
                             onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
                             onCancelBill={onCancelBill} print={false} billables={props.billingInfo.billables}
                             bill={currentBill} updatingBill={currentBill !== null}
+                            idBillingInfo={props.billingInfo.id}
                             locale={props.activeLanguage}
                         />
                     </Modal>
@@ -264,6 +250,7 @@ const Billing: React.FC<Props> = (props) => {
                                 currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                                 onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
                                 onCancelBill={onCancelBill} print={true}
+                                idBillingInfo={props.billingInfo.id}
                                 bill={currentBill} updatingBill={currentBill !== null}
                                 locale={props.activeLanguage}
                             />
