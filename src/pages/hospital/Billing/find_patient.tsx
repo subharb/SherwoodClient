@@ -50,7 +50,7 @@ export const FindPatient:React.FC<Props> = (props) => {
                     
                 const rows = formatPatients(filteredPatients, props.personalFields, props.codeLanguage)
                 return(
-                    <EnhancedTable  noSelectable noFooter rows={rows} headCells={headCells} selectRow={(idPatient:number)=> props.onPatientSelected(idPatient)} />
+                    <EnhancedTable noHeader noSelectable noFooter rows={rows} headCells={headCells} selectRow={(idPatient:number)=> props.onPatientSelected(idPatient)} />
                 )
             }
         }
