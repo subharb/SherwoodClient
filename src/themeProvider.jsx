@@ -1,4 +1,4 @@
-import { MuiThemeProvider } from "@material-ui/core";
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import createTheme from "./theme";
@@ -6,6 +6,7 @@ import createTheme from "./theme";
 
 export function CustomThemeProvider(props){
     const themeApp = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? createTheme("HOSPITAL") : createTheme("GREEN");
+    
     const investigations = useSelector((state) => state.investigations);
     const themeCustom = investigations.currentInvestigation ? investigations.currentInvestigation.aesthetics : null;
     if(themeCustom){   
@@ -24,6 +25,7 @@ export function CustomThemeProvider(props){
         themeApp.buttonContinue.primary.background = themeCustom.params.nextButton.background;
         themeApp.buttonContinue.primary.color = themeCustom.params.nextButton.color;        
     }
+
     return (
         
             <MuiThemeProvider theme={themeApp}>

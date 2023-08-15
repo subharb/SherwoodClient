@@ -6,7 +6,6 @@ import overrides from "./overrides";
 import breakpoints from "./breakpoints";
 import props from "./props";
 import shadows from "./shadows";
-import { useSelector } from "react-redux";
 
 const createMuiTheme = (name) => {
     let themeConfig = variants.find((variant) => variant.name === name);
@@ -16,49 +15,48 @@ const createMuiTheme = (name) => {
         themeConfig = variants[0];
     }
 
-    return responsiveFontSizes(createTheme(adaptV4Theme({
-    spacing: 4,
-    breakpoints: breakpoints,
-    overrides: overrides,
-    props: props,
-    typography: typography,
-    shadows: shadows,
-    palette: themeConfig.palette,
-    buttonContinue : {
-        primary: {
-            background : "#48bb78",
+    return responsiveFontSizes(createTheme({
+        spacing: 4,
+        breakpoints: breakpoints,
+        overrides: overrides,
+        props: props,
+        typography: typography,
+        shadows: shadows,
+        palette: themeConfig.palette,
+        buttonContinue : {
+            primary: {
+                background : "#48bb78",
+                color : "#FFF"
+            },
+            secondary: {
+                background : "#ccc",
+                color : "#FFF"
+            }
+            
+        },
+        buttonCancel: {
+            background : "#e53e3e",
             color : "#FFF"
         },
-        secondary: {
-            background : "#ccc",
+        buttonOther: {
+            background : "goldenrod",
             color : "#FFF"
-        }
-        
-    },
-    buttonCancel: {
-        background : "#e53e3e",
-        color : "#FFF"
-    },
-    buttonOther: {
-        background : "goldenrod",
-        color : "#FFF"
-    },
-    error : {
-        color : "#e53e3e",
-    },
-    edit : {
-        color : "#81e6d9",
-    },
-    primary : {
-        background : "#35887D",
-        color : "#FFF",
-    },
-    
-    name: themeConfig.name,
-    header: themeConfig.header,
-    footer: themeConfig.footer,
-    sidebar: themeConfig.sidebar,
-    })));
+        },
+        error : {
+            color : "#e53e3e",
+        },
+        edit : {
+            color : "#81e6d9",
+        },
+        primary : {
+            background : "#35887D",
+            color : "#FFF",
+        },
+        name: themeConfig.name,
+        header: themeConfig.header,
+        footer: themeConfig.footer,
+        sidebar: themeConfig.sidebar,
+    }));
 };
 
 export default createMuiTheme;
