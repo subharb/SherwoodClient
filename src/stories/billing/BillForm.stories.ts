@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
-import { getInvestigation, personal_data_investigation1, personal_data_with_insurances } from './example_data';
-import {keyInvestigation} from '../../.storybook/preview'
+import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, personal_data_with_insurances } from '../example_data';
 import { BillForm } from '../../pages/hospital/Billing/bill_form';
 
 const meta: Meta<typeof BillForm> = {
@@ -20,13 +18,21 @@ type Story = StoryObj<typeof BillForm>;
 
 export const Standard: Story = {
   args: {
-    investigations: {
-        loading: false,
-    },
-    patients: {
-      loading: false,
-    },
-    personalFields: personal_data_investigation1()
+    updatingBill: false,
+    patients: patients_personal_data_decrypted(),
+    personalFields: personal_data_investigation1(),
+    currency:"CFA",
+    uuidInvestigation: getInvestigation.investigation.uuid,
+    idBillingInfo:1,
+    locale:{
+        name: "French",
+        code: "fr",
+        active: true
+      },
+    bill:null,
+    billables:[],
+    onCancelBill: () => {console.log("Cancel bill")},
+    onBillSuccesfullyCreated: () => {console.log("Bill created")},
   },
 };
 

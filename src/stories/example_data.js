@@ -1278,7 +1278,8 @@ export const patients_personal_data_decrypted = () => {
                     "surnames" : "Petrelli Jimenez",
                     "birthdate" : "1987/08/21",
                     "sex" : "male"
-                }
+                },
+            "dateCreated" : "2022-09-28T10:29:17.276Z",
             
         },{
             "id" : 68,
@@ -1291,7 +1292,8 @@ export const patients_personal_data_decrypted = () => {
                     "surnames" : "Trump Cruz",
                     "birthdate" : "1947/01/11",
                     "sex" : "female"
-                }
+                },
+            "dateCreated" : "2022-09-28T10:29:17.276Z",
         },
         {
             "id" : 67,
@@ -1302,7 +1304,8 @@ export const patients_personal_data_decrypted = () => {
                 "name" : "Jessie",
                 "surnames" : "Jones",
                 "birthdate" : "1976/03/09"
-            }
+            },
+            "dateCreated" : "2022-09-28T10:29:17.276Z",
         }
     ]
 }
