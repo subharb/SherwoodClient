@@ -1,19 +1,16 @@
-import { Button, Checkbox, Grid, IconButton, Snackbar, TextField, Typography } from "@mui/material"
-import { red } from "@mui/material/colors"
-import React, { ReactElement, useEffect, useRef, useState } from "react"
+import { Button, Grid, Snackbar, TextField, Typography } from "@mui/material"
+import React, { ReactElement, useEffect, useState } from "react"
 import { Language, Translate } from "react-localize-redux"
 import styled from "styled-components"
-import { EnhancedTable } from "../../../components/general/EnhancedTable"
-import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components"
 import Loader from "../../../components/Loader"
-import { IPatient, TYPE_BILL_ITEM } from "../../../constants/types"
-import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable } from "./types";
+import { IPatient } from "../../../constants/types"
+import { Bill, Billable, BillableCombo, BillItem, BillItemModes } from "./types";
 import { createBillService, updateBillService } from "../../../services/billing";
-
+import { Autocomplete } from "@mui/lab"
 import { FindPatient } from "./find_patient";
 
 import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils/index.jsx"
-import { Alert, Autocomplete } from "@mui/lab"
+import { Alert } from "@mui/lab"
 import { BillItems } from "./BillItems"
 import { useSnackBarState } from "../../../hooks"
 import { useDispatch } from "react-redux"
@@ -30,12 +27,12 @@ interface Props {
     locale: Language,
     billables?:Billable[],
     print: boolean,
+    billableCombos:BillableCombo[],
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
     onCancelBill: () => void
 
 }
-
 
 const GridContainer = styled(Grid)`
     flex-direction: column;
@@ -47,6 +44,7 @@ const GridContainer = styled(Grid)`
 export const BillForm:React.FC<Props> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(props.bill ? props.bill.patientInvestigation : null);
     const [loading, setLoading] = useState(false);
+    const [comboSelected, setComboSelected] = useState<BillableCombo | null>(null);
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(undefined);
     const [currentItems, setCurrentItems] = useState<BillItem[]>([]);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
@@ -65,12 +63,70 @@ export const BillForm:React.FC<Props> = (props) => {
     
     }, [patient]);
 
+    function addBillablesCombo(){
+        console.log("addBillablesCombo", comboSelected?.billables);
+    }
+
     function onPatientSelected(idPatient: number) {
         const findPatient = props.patients.find((patient) => patient.id === idPatient);
         if (findPatient) {
             setPatient(findPatient);
         }
         console.log(findPatient);
+    }
+
+    function selectCombo(comboSelected:BillableCombo | null){
+        if(comboSelected === null){
+            return;
+        }
+        const comboFound = props.billableCombos.find((combo) => combo.id === comboSelected.id);
+        if(comboFound){
+            console.log("comboFound", comboFound.billables);
+            setComboSelected(comboSelected);
+        }
+    }
+
+    function renderRightSide(){
+        if(props.bill){
+            return (
+                <Grid item xs={6} style={{ textAlign: 'right' }} >
+                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.num_bill" /></span>: {props.bill.id}</Typography>
+                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.date" /></span>: {fullDateFromPostgresString(props.locale.code, props.bill.createdAt)}</Typography>
+                </Grid>
+            )
+        }
+        else if(props.billableCombos.length > 0){
+            return(
+                <Grid item xs={6} style={{ paddingTop: '1rem' }} >
+                    <Autocomplete
+                        options={props.billableCombos}
+                        onInputChange={(event, value, reason) => {
+                            console.log("onInputChange",value);
+                        }}
+                        onChange={(event, newValue) => {
+                            console.log("onchange", newValue);
+                            selectCombo(newValue);
+                            }
+                        }
+                        getOptionLabel={(option) => {
+                            return option.name;
+                        }}
+                        style={{ width: 300 }}
+                        renderInput={(params:any) => 
+                            <TextField {...params} label="Concept" error={false}
+                                helperText={null} color="secondary"
+                                //onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+                                variant="outlined" />
+                            }
+                    />
+                    {
+                        comboSelected &&
+                        <Button variant="contained" color="primary" onClick={() => addBillablesCombo()}>Add Billables</Button>
+                    }
+                    
+                </Grid>
+            )
+        }
     }
     function renderPatient() {
         if (!patient) {
@@ -88,11 +144,7 @@ export const BillForm:React.FC<Props> = (props) => {
                         <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.sex" /></span>: {patient.personalData.sex}</Typography>
                     </Grid>
                     {
-                        props.bill &&
-                        <Grid item xs={6} style={{ textAlign: 'right' }} >
-                            <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.num_bill" /></span>: {props.bill.id}</Typography>
-                            <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.date" /></span>: {fullDateFromPostgresString(props.locale.code, props.bill.createdAt)}</Typography>
-                        </Grid>
+                        renderRightSide()
                     }
                 </Grid>
 
@@ -160,7 +212,7 @@ export const BillForm:React.FC<Props> = (props) => {
                         uuidPatient={patient?.uuid} mode = {BillItemModes.SHOW}
                         initItems = {props.bill ? props.bill.billItems : currentItems.length > 0 ? currentItems : []}
                         repeatBillItems={true} showTotal={true}
-                        
+                        //billablesViaCombo={billablesViaCombo}
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
                         bill={props.bill} billables={props.billables ? props.billables : []}
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
@@ -173,13 +225,13 @@ export const BillForm:React.FC<Props> = (props) => {
     }          
     
     return (
-        <GridContainer container xs={12} >
+        <Grid container xs={12} >
             {
                 renderPatient()
             }
             {
                 renderItems()
             }
-        </GridContainer>
+        </Grid>
     )
 }

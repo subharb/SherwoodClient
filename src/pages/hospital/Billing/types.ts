@@ -22,6 +22,12 @@ export interface Billable{
     quantity?:number,
 }
 
+export interface BillableCombo{
+    id:number,
+    name:string,
+    billables:Billable[]
+}
+
 export interface BillItem{
     id?:number
     billableId?:number,

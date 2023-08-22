@@ -237,6 +237,7 @@ const Billing: React.FC<Props> = (props) => {
                             onCancelBill={onCancelBill} print={false} billables={props.billingInfo.billables}
                             bill={currentBill} updatingBill={currentBill !== null}
                             idBillingInfo={props.billingInfo.id}
+                            billableCombos={[]}
                             locale={props.activeLanguage}
                         />
                     </Modal>
@@ -251,6 +252,7 @@ const Billing: React.FC<Props> = (props) => {
                                 onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
                                 onCancelBill={onCancelBill} print={true}
                                 idBillingInfo={props.billingInfo.id}
+                                billableCombos={[]}
                                 bill={currentBill} updatingBill={currentBill !== null}
                                 locale={props.activeLanguage}
                             />

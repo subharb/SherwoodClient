@@ -11,6 +11,8 @@ import { Autocomplete } from "@mui/lab"
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import _ from "lodash";
 import { hasDefaultValues } from "../../../utils/index.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { saveBillingItems } from "../../../redux/actions/billingActions";
 
 const FactureHolder = styled.div<{ hide: boolean }>`
     margin-top:2rem;
@@ -57,13 +59,13 @@ type BillableOption = Billable & {inputValue: string}
 const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
     return isNaN(Number(key))
 })
-// Si tiene una columan de tipo "amount" entonces se calcula el total y se valida la suma de todos los amounts sea mayor que 0
+// Si tiene una columna de tipo "amount" entonces se calcula el total y se valida la suma de todos los amounts sea mayor que 0
 
 const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
                                                     updatingBill, currency, print, withDiscount,
                                                     bill, billables, initItems, showTotal, repeatBillItems, onBillItemsValidated, 
                                                     onCancelBill }) => {
-    //const [fieldErrors, setFieldErrors] = useState({ "concept": "", "type": "", "amount": "" });
+    const dispatch = useDispatch();
     const filteredColumns = columns.filter(column => column.type !== "type" || withDiscount)
     const initFieldErrors:any = filteredColumns.reduce((acc:{[id: string] : string}, column) => {
         acc[column.name] = "";
@@ -73,7 +75,10 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     const [fieldErrors, setFieldErrors] = useState(initFieldErrors);
     const [addingItem, setAddingItem] = useState(false);
     //const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : [])
-    const [items, setItems] = useState<BillItem[]>(initItems);
+    const items  = useSelector((state:any) => {
+        console.log(state);
+        return state.billing.data.billItems ? state.billing.data.billItems : []});
+    //const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
     
@@ -208,21 +213,21 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         setAddingItem(false);
     }
     
-    function usedItem(index: number) {
+    async function usedItem(index: number) {
         console.log(index);
         const tempItems = [...items] as BillItem[];
         
         tempItems[index].used = !tempItems[index].used;
-        setItems(tempItems);
+        await dispatch(saveBillingItems(tempItems));
+        
     }
-    function paidItem(index: number) {
+    async function paidItem(index: number) {
         console.log(index);
         const tempItems = [...items] as BillItem[];
         tempItems[index].paid = !tempItems[index].paid;
-        setItems(tempItems);
+        await dispatch(saveBillingItems(tempItems));
     }
    
-
     function renderTextOkButton() {
         if (updatingBill) {
             return <Translate id="hospital.billing.bill.update" />
@@ -244,7 +249,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
             }
         }
     }
-    function addCurrentItem() {
+
+    async function addCurrentItem() {
         let tempFieldErrors = { ...fieldErrors };
         //Fuerzo el valor 0 para diferenciarlo del valor por defecto.
         //currentItem["type"] = 0;
@@ -254,7 +260,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
             const value = currentItem[key as keyof BillItem] as string;
             tempFieldErrors[col.name] = validateKeyItem(value, col.name);
         })
-        if (currentItem[BillItemKeys.type] === 2 && currentItem[BillItemKeys.amount] > 99) {
+        if (currentItem[BillItemKeys.type] === 2 &&  parseInt(currentItem[BillItemKeys.amount].toString()) > 99) {
             tempFieldErrors[BillItemKeys.amount] = "amount_percent";
         }
         if (Object.values(tempFieldErrors).reduce((acc, val) => acc && (val === ""), true)) {
@@ -262,22 +268,22 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
 
             tempItems.push({...currentItem});
 
-            setItems(tempItems);
+            await dispatch(saveBillingItems(tempItems))
             setAddingItem(false);
             setCurrentItem(DEFAULT_CURRENT_ITEM);
         }
         setErrorBill(undefined);
         setFieldErrors(tempFieldErrors);
     }
-    function removeItem(index: number) {
+    async function removeItem(index: number) {
         console.log("Borrar " + index);
         const tempItems = [...items];
         tempItems.splice(index, 1);
-        setItems(tempItems);
+        await dispatch(saveBillingItems(tempItems));
         setErrorBill(undefined);
     }
     
-    let rows: BillItemTable[] = items.map((val, index) => {
+    let rows: BillItemTable[] = items.map((val:BillItemTable, index:number) => {
 
         const color = TYPES_DISCOUNT.includes(val.type) ? red[900] : "black";
         const amountString =  TYPES_DISCOUNT.includes(val.type) ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;

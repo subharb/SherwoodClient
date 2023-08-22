@@ -2831,4 +2831,31 @@ export const bills = [
                 "patientIdInvestigation": 930
             }
         }
-    ]
+]
+
+export const billables = [
+    {
+        "id": 1,
+        "concept": "Primera consulta Dr. Rodriguez",
+        "type" : 0,
+        "amount": 100
+    },
+    {
+        "id": 2,
+        "concept": "Primera consulta Dr. Jimenez",   
+        "type" : 0,
+        "amount": 90
+    },
+    {
+        "id": 3,
+        "concept": "Consulta seguimiento Dr. Rodriguez",
+        "type" : 0,
+        "amount": 70
+    },
+    {
+        "id": 4,
+        "concept": "Consulta seguimiento Dr. Jimenez",
+        "type" : 0,
+        "amount": 80
+    },
+]
