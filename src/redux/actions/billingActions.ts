@@ -13,6 +13,15 @@ export function saveBillingItems(billItems:BillItem[]) {
     };
 }
 
+export function pushBillingItems(billItems:BillItem[]) {
+    return async (dispatch:any) => {
+      dispatch({ 
+            type: types.PUSH_BILL_ITEMS,
+            billItems:billItems
+      });
+    };
+}
+
 export function initializeBilling(newState:any) {
     return async (dispatch:any) => {
       dispatch({ 

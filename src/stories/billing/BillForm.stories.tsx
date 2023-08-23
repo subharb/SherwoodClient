@@ -78,7 +78,28 @@ export const Standard: Story = {
     (Story) =>  (<ProviderSherwood initStore={
         [{
             type: types.INITIALIZE_BILLING,
-            payload: {billItems:[
+            payload: {
+                billableCombos:[{
+                    id:1,
+                    name: "Combo 1",
+                    billables:[
+                        billables[0],
+                        billables[1],
+                        billables[2],
+                    ]
+                },
+                {
+                    id:2,
+                    name: "Combo 2",
+                    billables:[
+                        billables[0],
+                        billables[1],
+                        billables[2],
+                        billables[3],
+                    ]
+                }
+            ],
+                billItems:[
                 {
                     amount : "12", concept: "test"
                 }

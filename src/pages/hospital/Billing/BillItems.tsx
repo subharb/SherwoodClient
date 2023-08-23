@@ -245,7 +245,11 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         else if (value) {
             const dateObject = new Date(value.replace(' ', 'T').replace(' ', 'Z'));
             if (dateObject) {
-                return <React.Fragment>{dateObject.getDate() + " " + dateObject.toLocaleString(activeLanguage.code, { month: 'short', year: 'numeric' })}</React.Fragment>
+                return <>
+                    {
+                        dateObject.getDate() + " " + dateObject.toLocaleString(activeLanguage.code, { month: 'short', year: 'numeric' })
+                    }
+                </>
             }
         }
     }

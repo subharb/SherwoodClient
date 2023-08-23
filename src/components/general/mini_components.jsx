@@ -371,14 +371,6 @@ export const ButtonAdd = (props) =>{
     return  <FabThemed mx={2} size="small" aria-label="Add" {...props} >
                 <AddIcon />
             </FabThemed>
-    // return <ButtonContinueStyles
-    //     variant="contained"
-    //     color="primary"
-    //     size="small"
-    //     startIcon={<SaveIcon />}
-    //      >
-    //         {props.children}
-    // </ButtonContinueStyles>
 }
 
 export const CloseButton = (props) =>{

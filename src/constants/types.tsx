@@ -1,5 +1,20 @@
 import { Color } from "@mui/lab"
-import { ReactElement } from "react"
+import { BillingReducer } from "../redux/reducers/billingReducer"
+
+export interface ReduxStore{
+    themeReducer : any
+  authReducer : any
+  investigations: any,
+  submissions: any,
+  patients: any,
+  patientsSubmissions: any,
+  offline: any,
+  profile: any,
+  hospital: any,
+  requests:any,
+  billing: BillingReducer,
+  form:any
+}
 
 export interface IBed{
     id:number,

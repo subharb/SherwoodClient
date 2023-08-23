@@ -3,7 +3,7 @@ import React, { ReactElement, useEffect, useState } from "react"
 import { Language, Translate } from "react-localize-redux"
 import styled from "styled-components"
 import Loader from "../../../components/Loader"
-import { IPatient } from "../../../constants/types"
+import { IPatient, ReduxStore } from "../../../constants/types"
 import { Bill, Billable, BillableCombo, BillItem, BillItemModes } from "./types";
 import { createBillService, updateBillService } from "../../../services/billing";
 import { Autocomplete } from "@mui/lab"
@@ -13,8 +13,10 @@ import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils
 import { Alert } from "@mui/lab"
 import { BillItems } from "./BillItems"
 import { useSnackBarState } from "../../../hooks"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { getBillablesAction } from "../../../redux/actions/investigationsActions"
+import { ButtonAdd, ButtonPlus } from "../../../components/general/mini_components"
+import { pushBillingItems } from "../../../redux/actions/billingActions"
 
 interface Props {
     updatingBill: boolean,
@@ -27,7 +29,7 @@ interface Props {
     locale: Language,
     billables?:Billable[],
     print: boolean,
-    billableCombos:BillableCombo[],
+    
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
     onCancelBill: () => void
@@ -48,23 +50,32 @@ export const BillForm:React.FC<Props> = (props) => {
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(undefined);
     const [currentItems, setCurrentItems] = useState<BillItem[]>([]);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
+    const billableCombos = useSelector((state:ReduxStore) => state.billing.data.billableCombos ? state.billing.data.billableCombos : []);
     const dispatch = useDispatch();
 
     useEffect(() => {
-
-    async function getBillables() {
-        console.log(patient);
-        const insuranceId = patient?.personalData.insurance ? patient.personalData.insurance : null;
-        await dispatch(getBillablesAction(props.uuidInvestigation, props.idBillingInfo, insuranceId));
-    }
-    if (patient) {
-        getBillables();
-    }
+        async function getBillables() {
+            console.log(patient);
+            const insuranceId = patient?.personalData.insurance ? patient.personalData.insurance : null;
+            await dispatch(getBillablesAction(props.uuidInvestigation, props.idBillingInfo, insuranceId));
+        }
+        if (patient) {
+            getBillables();
+        }
     
     }, [patient]);
 
-    function addBillablesCombo(){
+    async function addBillablesCombo(){
         console.log("addBillablesCombo", comboSelected?.billables);
+        if(comboSelected){
+            const newItems:BillItem[] = [];
+            comboSelected.billables.forEach((billable) => {
+                newItems.push(billable)
+            })
+            
+            await dispatch(pushBillingItems(newItems));
+        }
+        setComboSelected(null);
     }
 
     function onPatientSelected(idPatient: number) {
@@ -79,7 +90,7 @@ export const BillForm:React.FC<Props> = (props) => {
         if(comboSelected === null){
             return;
         }
-        const comboFound = props.billableCombos.find((combo) => combo.id === comboSelected.id);
+        const comboFound = billableCombos.find((combo) => combo.id === comboSelected.id);
         if(comboFound){
             console.log("comboFound", comboFound.billables);
             setComboSelected(comboSelected);
@@ -95,11 +106,12 @@ export const BillForm:React.FC<Props> = (props) => {
                 </Grid>
             )
         }
-        else if(props.billableCombos.length > 0){
+        else if(billableCombos.length > 0){
             return(
-                <Grid item xs={6} style={{ paddingTop: '1rem' }} >
+                <Grid container item xs={6}  style={{ display:'flex', paddingTop: '1rem' }} >
                     <Autocomplete
-                        options={props.billableCombos}
+                        value={comboSelected}
+                        options={billableCombos}
                         onInputChange={(event, value, reason) => {
                             console.log("onInputChange",value);
                         }}
@@ -121,7 +133,7 @@ export const BillForm:React.FC<Props> = (props) => {
                     />
                     {
                         comboSelected &&
-                        <Button variant="contained" color="primary" onClick={() => addBillablesCombo()}>Add Billables</Button>
+                        <ButtonAdd style={{marginTop:'0.5rem'}} onClick={() => addBillablesCombo()} />
                     }
                     
                 </Grid>

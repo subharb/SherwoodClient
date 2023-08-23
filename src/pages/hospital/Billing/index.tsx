@@ -314,7 +314,7 @@ const Billing: React.FC<Props> = (props) => {
                                 onClick={() => {
                                     setActionBill(BillActions.create);
                                     setShowModal(true);
-                                }} />
+                            }} />
                         }
                     </Grid>
                 </Grid>
