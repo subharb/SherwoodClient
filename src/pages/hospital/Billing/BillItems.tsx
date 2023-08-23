@@ -63,7 +63,7 @@ const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
 
 const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
                                                     updatingBill, currency, print, withDiscount,
-                                                    bill, billables, initItems, showTotal, repeatBillItems, onBillItemsValidated, 
+                                                    bill, initItems, showTotal, repeatBillItems, onBillItemsValidated, 
                                                     onCancelBill }) => {
     const dispatch = useDispatch();
     const filteredColumns = columns.filter(column => column.type !== "type" || withDiscount)
@@ -78,6 +78,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     const items  = useSelector((state:any) => {
         console.log(state.billing.data.billItems);
         return state.billing.data.billItems ? state.billing.data.billItems : []});
+    const billables = useSelector((state:any) => state.billing.data.billables ? state.billing.data.billables : []);
     //const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);

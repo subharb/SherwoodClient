@@ -16,7 +16,7 @@ import { useSnackBarState } from "../../../hooks"
 import { useDispatch, useSelector } from "react-redux"
 import { getBillablesAction } from "../../../redux/actions/investigationsActions"
 import { ButtonAdd, ButtonPlus } from "../../../components/general/mini_components"
-import { pushBillingItems } from "../../../redux/actions/billingActions"
+import { pushBillables, pushBillingItems } from "../../../redux/actions/billingActions"
 
 interface Props {
     updatingBill: boolean,
@@ -27,9 +27,7 @@ interface Props {
     idBillingInfo:number,
     bill: Bill | null,
     locale: Language,
-    billables?:Billable[],
     print: boolean,
-    
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
     onCancelBill: () => void
@@ -68,12 +66,8 @@ export const BillForm:React.FC<Props> = (props) => {
     async function addBillablesCombo(){
         console.log("addBillablesCombo", comboSelected?.billables);
         if(comboSelected){
-            const newItems:BillItem[] = [];
-            comboSelected.billables.forEach((billable) => {
-                newItems.push(billable)
-            })
-            
-            await dispatch(pushBillingItems(newItems));
+            const newItems:BillItem[] = [];           
+            await dispatch(pushBillables(comboSelected.billables));
         }
         setComboSelected(null);
     }
@@ -226,7 +220,7 @@ export const BillForm:React.FC<Props> = (props) => {
                         repeatBillItems={true} showTotal={true}
                         //billablesViaCombo={billablesViaCombo}
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
-                        bill={props.bill} billables={props.billables ? props.billables : []}
+                        bill={props.bill} 
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
                         onBillItemsValidated={onBillItemsValidated} error={errorBill}
                         onCancelBill={props.onCancelBill} />

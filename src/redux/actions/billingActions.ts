@@ -22,6 +22,17 @@ export function pushBillingItems(billItems:BillItem[]) {
     };
 }
 
+export function pushBillables(billables:{id:number}[]) {
+    return async (dispatch:any) => {
+      dispatch({ 
+            type: types.PUSH_BILLABLES,
+            billablesId:billables
+      });
+    };
+}
+
+
+
 export function initializeBilling(newState:any) {
     return async (dispatch:any) => {
       dispatch({ 

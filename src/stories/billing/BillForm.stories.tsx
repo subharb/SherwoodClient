@@ -39,26 +39,6 @@ type Story = StoryObj<typeof BillForm>;
 export const Standard: Story = {
   args: {
     updatingBill: false,
-    billableCombos:[{
-            id:1,
-            name: "Combo 1",
-            billables:[
-                billables[0],
-                billables[1],
-                billables[2],
-            ]
-        },
-        {
-            id:2,
-            name: "Combo 2",
-            billables:[
-                billables[0],
-                billables[1],
-                billables[2],
-                billables[3],
-            ]
-        }
-    ],
     patients: patients_personal_data_decrypted(),
     personalFields: personal_data_investigation1(),
     currency:"CFA",
@@ -70,7 +50,6 @@ export const Standard: Story = {
         active: true
       },
     bill:null,
-    billables:billables,
     onCancelBill: () => {console.log("Cancel bill")},
     onBillSuccesfullyCreated: () => {console.log("Bill created")},
   },
@@ -83,27 +62,24 @@ export const Standard: Story = {
                     id:1,
                     name: "Combo 1",
                     billables:[
-                        billables[0],
-                        billables[1],
-                        billables[2],
+                        {id : billables[0].id},
+                        { id : billables[1].id },
+                        { id : billables[2].id },
                     ]
                 },
                 {
                     id:2,
                     name: "Combo 2",
                     billables:[
-                        billables[0],
-                        billables[1],
-                        billables[2],
-                        billables[3],
+                        { id : billables[0].id },
+                        { id : billables[1].id },
+                        { id : billables[2].id },
+                        { id : billables[3].id },
                     ]
                 }
             ],
-                billItems:[
-                {
-                    amount : "12", concept: "test"
-                }
-            ]}
+            billables: billables,
+        }
         }]
     }> <Story /> </ProviderSherwood>),
   ],

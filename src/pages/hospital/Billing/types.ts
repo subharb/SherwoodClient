@@ -25,7 +25,7 @@ export interface Billable{
 export interface BillableCombo{
     id:number,
     name:string,
-    billables:Billable[]
+    billables:{id:number}[]
 }
 
 export interface BillItem{
