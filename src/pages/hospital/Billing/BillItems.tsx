@@ -76,7 +76,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     const [addingItem, setAddingItem] = useState(false);
     //const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : [])
     const items  = useSelector((state:any) => {
-        console.log(state);
+        console.log(state.billing.data.billItems);
         return state.billing.data.billItems ? state.billing.data.billItems : []});
     //const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    

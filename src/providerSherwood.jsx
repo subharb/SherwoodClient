@@ -75,6 +75,11 @@ function OtherProviders(props){
 
 export default function ProviderSherwood(props){
     const title = import.meta.env.VITE_APP_PRODUCT === "HOSPITAL" ? "Hospital platform" : "Researcher platform"
+    if (props.initStore) {
+        props.initStore.map((initObject) => {
+            store.dispatch({ type: initObject.type, payload: initObject.payload })
+        })
+    }
     return (
         <Provider store={store}>
             <Helmet

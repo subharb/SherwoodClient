@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from "redux-thunk";
+import ProviderSherwood from '../../providerSherwood';
+import * as types from "../../constants";
 
 const composeEnhancers = composeWithDevTools({});
 
@@ -73,7 +75,16 @@ export const Standard: Story = {
     onBillSuccesfullyCreated: () => {console.log("Bill created")},
   },
   decorators: [
-    (Story) =>  (<Provider store={store}> <Story /> </Provider>),
+    (Story) =>  (<ProviderSherwood initStore={
+        [{
+            type: types.INITIALIZE_BILLING,
+            payload: {billItems:[
+                {
+                    amount : "12", concept: "test"
+                }
+            ]}
+        }]
+    }> <Story /> </ProviderSherwood>),
   ],
 };
 

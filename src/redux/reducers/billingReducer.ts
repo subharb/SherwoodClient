@@ -26,10 +26,9 @@ export interface BillingReducer{
 }
  
 export default function reducer(state:BillingReducer = initialState, action:any){
-    
+    console.log("BillingReducer",state);
+    console.log("BillingReducer",action);
     let newState = { ...state};
-    
-    let tempBillItems;
 
     switch(action.type){
         case types.SAVE_BILL_ITEMS:
@@ -38,7 +37,9 @@ export default function reducer(state:BillingReducer = initialState, action:any)
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;
-        
+        case types.INITIALIZE_BILLING:
+            newState.data = action.payload;
+            return newState;
         default:
             return state;
     }
