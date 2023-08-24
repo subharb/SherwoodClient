@@ -470,8 +470,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     }
    
     return (
-        <div ref={printRef} >
-            <Grid container>
+        <div style={{width:'100%'}} ref={printRef} >
+            <Grid container item>
                 <Grid item xs={12}>
                     <FactureHolder hide={!bill}>
                         <Translate id="hospital.billing.bill.name" />

@@ -16,7 +16,7 @@ import { useSnackBarState } from "../../../hooks"
 import { useDispatch, useSelector } from "react-redux"
 import { getBillablesAction } from "../../../redux/actions/investigationsActions"
 import { ButtonAdd, ButtonPlus } from "../../../components/general/mini_components"
-import { pushBillables, pushBillingItems } from "../../../redux/actions/billingActions"
+import { pushBillables, pushBillingItems, resetBillItems, saveBillingItems } from "../../../redux/actions/billingActions"
 
 interface Props {
     updatingBill: boolean,
@@ -62,6 +62,15 @@ export const BillForm:React.FC<Props> = (props) => {
         }
     
     }, [patient]);
+
+    useEffect(() => {
+        if(props.bill?.billItems){
+            dispatch(saveBillingItems(props.bill.billItems));
+        }
+        else{
+            dispatch(resetBillItems());
+        }
+    }, [props.bill]);
 
     async function addBillablesCombo(){
         console.log("addBillablesCombo", comboSelected?.billables);
@@ -224,9 +233,8 @@ export const BillForm:React.FC<Props> = (props) => {
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
                         onBillItemsValidated={onBillItemsValidated} error={errorBill}
                         onCancelBill={props.onCancelBill} />
-                </>
-                
-            ) 
+                    </>
+                ) 
         } 
     }          
     

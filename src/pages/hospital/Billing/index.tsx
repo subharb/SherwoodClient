@@ -7,7 +7,7 @@ import Modal from '../../../components/general/modal';
 import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@mui/material';
 import { ButtonAdd, IconGenerator, TypographyStyled } from '../../../components/general/mini_components';
-import { BillForm } from './bill_form';
+import { BillForm } from './BillForm';
 import { FUNCTIONALITY, IPatient } from '../../../constants/types';
 import { Bill, BillingInfo, BillItemModes } from './types';
 import { Document } from '../Document';
@@ -18,12 +18,14 @@ import { hasDiscountsActive } from '../../../utils/index.jsx';
 import EditBilling from './Edit';
 import { getBillablesAction } from '../../../redux/actions/investigationsActions';
 
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import BillsPatient from './BillsPatient';
 import { TabsSherwood } from '../../components/Tabs';
 import BillsTable from './BillsTable';
 
 import { FindPatient } from './find_patient';
+import { HOSPITAL_BILLING, HOSPITAL_BILLING_CREATE_BILL } from '../../../routes/urls';
+import { resetBillItems } from '../../../redux/actions/billingActions';
 
 interface PropsRedux {
     investigations: any,
@@ -35,11 +37,18 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
     const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
     const [bills, setBills] = useState<Bill[]>([]);
     const [loading, setLoading] = useState(false);
+    const location = useLocation();
     const history = useHistory();
     let uuidPatient = useParams<{uuidPatient?:string}>().uuidPatient;
 
+    const section = location.pathname === HOSPITAL_BILLING_CREATE_BILL ? "create_bill" : uuidPatient ? "patient" : "billing";
 
     const hasDiscounts = investigation && investigation.billingInfo && investigation.billingInfo.params && hasDiscountsActive(investigation.billingInfo.params, investigation.permissions);
+    
+    function navigateToHomeBilling(){
+        history.push(HOSPITAL_BILLING);
+    }
+
     function onBillSuccesfullyCreated(bill: Bill) {
         const tempBills = [...bills];
         const existingBillIndex = tempBills.findIndex((aBill) => bill.id === aBill.id);
@@ -54,6 +63,12 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
     }
     function onPatientSelected(uuid:string){
         history.push(`/billing/patient/${uuid}`);
+    }
+    function onCancelBill() {
+        if(location.pathname !== HOSPITAL_BILLING){
+            history.push(HOSPITAL_BILLING);
+        }
+        
     }
     useEffect(() => {
         async function getBills() {
@@ -80,9 +95,13 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
                     uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
                     personalFields={investigation.personalFields}
                     billingInfo={investigation.billingInfo}
+                    section={section}
                     bills={bills} loading={loading} uuidPatient={uuidPatient}
                     onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
+                    onCreateBill={() => history.push(HOSPITAL_BILLING_CREATE_BILL)}
                     onPatientSelected={(uuid:string) => onPatientSelected(uuid)}
+                    navigateToHomeBilling={navigateToHomeBilling}
+                    onCancelBill={onCancelBill}
         />
     }
     else {
@@ -109,15 +128,19 @@ interface Props extends LocalizeContextProps {
     uuidPatient?:string,
     bills: Bill[];
     loading: boolean,
+    section: "create_bill" | "billing" | "patient",
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
     onPatientSelected: (uuid:string) => void
+    onCreateBill: () => void,
+    onCancelBill: () => void,
+    navigateToHomeBilling: () => void,
 }
 
 export enum BillActions {
     update = "update",
     preview = "preview",
-    create = "update",
+    create = "create",
     default = ""
 }
 
@@ -125,33 +148,36 @@ export enum BillActions {
 const Billing: React.FC<Props> = (props) => {
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [showModal, setShowModal] = useState(false);
-    const [actionBill, setActionBill] = useState<BillActions>(BillActions.default);
+    const [actionBill, setActionBill] = useState<BillActions>(props.section === "create_bill" ? BillActions.create : BillActions.default);
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
     const [edit, setEdit] = useState(false);
-    
+    const dispatch = useDispatch();
 
     async function resetSnackBar() {
         setShowSnackbar({ show: false });
-
+        if(actionBill === BillActions.create){
+            props.navigateToHomeBilling();
+        }
     }
-    function onCancelBill() {
+    async function onCancelBill() {
         setShowModal(false);
         setCurrentBill(null);
+        await dispatch(resetBillItems());
+        props.onCancelBill();
     }
+    
     function toogleEditBillingInfo() {
         setEdit(edit => !edit);
     }
-    function onBillSuccesfullyCreated(bill: Bill) {
-        console.log(bill);
-        setShowModal(false);
 
+    async function onBillSuccesfullyCreated(bill: Bill) {
         if (currentBill) {
             setShowSnackbar({ message: "hospital.billing.bill.success.updated", show: true, severity: "success" });
-
         }
         else {
             setShowSnackbar({ message: "hospital.billing.bill.success.created", show: true, severity: "success" });
         }
+        await dispatch(resetBillItems());
         props.onBillSuccesfullyCreated(bill);
         setCurrentBill(null);
 
@@ -172,9 +198,10 @@ const Billing: React.FC<Props> = (props) => {
 
     }
 
-    function onCloseModal() {
+    async function onCloseModal() {
         setShowModal(false);
         setCurrentBill(null);
+        
     }
 
     function onBillingInfoSuccesfullyUpdated(type: BillItemModes) {
@@ -202,44 +229,59 @@ const Billing: React.FC<Props> = (props) => {
             return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={props.billingInfo && props.billingInfo.billables ? props.billingInfo.billables : []} withDiscount={props.withDiscount}
                 billingInfo={props.billingInfo} onBillingInfoSuccesfullyUpdated={(type: BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
         }
-        else if(props.uuidPatient){
+        else if(props.section === "patient" && props.uuidPatient){
             const currentPatient = props.patients.find((patient) => patient.uuid === props.uuidPatient);
-            return <BillsPatient patient={currentPatient} uuidPatient={props.uuidPatient} bills={props.bills} 
+            return(<>
+                        { renderBillForm() }
+                        <BillsPatient patient={currentPatient} uuidPatient={props.uuidPatient} bills={props.bills} 
                         currency={props.billingInfo.currency} languageCode={props.activeLanguage.code}
                         makeActionBillCallBack={makeActionBill}/>
+            </>)
         }
         else {
             if (props.billingInfo) {
+                if(actionBill === BillActions.create){
+                    return renderBillForm();
+                }
                 return (
-                    <TabsSherwood name="Billing Info" style={{color: "white"}}
-                        labels={[props.translate("hospital.billing.all_bills").toString(), props.translate("hospital.billing.search_patient").toString()]} >
-                        <BillsTable patients={props.patients} currency={props.billingInfo.currency} bills={props.bills} languageCode={props.activeLanguage.code} 
-                            makeActionBillCallBack={makeActionBill}/>
-                        <FindPatient patients={props.patients}
-                            personalFields={props.personalFields}
-                            codeLanguage={props.activeLanguage.code}
-                            onPatientSelected={(idPatient) => onPatientSelected(idPatient)}
-                            />
-                    </TabsSherwood>
+                    <>
+                        { renderBillForm() }
+                        <TabsSherwood name="Billing Info" style={{color: "white"}}
+                            labels={[props.translate("hospital.billing.all_bills").toString(), props.translate("hospital.billing.search_patient").toString()]} >
+                            <BillsTable patients={props.patients} currency={props.billingInfo.currency} bills={props.bills} languageCode={props.activeLanguage.code} 
+                                makeActionBillCallBack={makeActionBill}/>
+                            <FindPatient patients={props.patients}
+                                personalFields={props.personalFields}
+                                codeLanguage={props.activeLanguage.code}
+                                onPatientSelected={(idPatient) => onPatientSelected(idPatient)}
+                                />
+                        </TabsSherwood>
+                    </>
                 );
             }
         }
     }
-    function renderModal() {
+    function renderBillForm() {
         switch (actionBill) {
             case BillActions.update:
             case BillActions.create:
+                const billFormComponent = <BillForm patients={props.patients} personalFields={props.personalFields} withDiscount={props.withDiscount}
+                                            currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
+                                            onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
+                                            onCancelBill={onCancelBill} print={false}
+                                            bill={currentBill} updatingBill={currentBill !== null}
+                                            idBillingInfo={props.billingInfo.id}
+                                            locale={props.activeLanguage}
+                                        />
+                if(actionBill === BillActions.create){
+                    return(
+                        billFormComponent
+                    )
+                }
+                
                 return (
                     <Modal key="modal" fullWidth medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
-                        <BillForm patients={props.patients} personalFields={props.personalFields} withDiscount={props.withDiscount}
-                            currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
-                            onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
-                            onCancelBill={onCancelBill} print={false} billables={props.billingInfo.billables}
-                            bill={currentBill} updatingBill={currentBill !== null}
-                            idBillingInfo={props.billingInfo.id}
-                            billableCombos={[]}
-                            locale={props.activeLanguage}
-                        />
+                        { billFormComponent }
                     </Modal>
                 )
             case BillActions.preview:
@@ -252,7 +294,6 @@ const Billing: React.FC<Props> = (props) => {
                                 onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
                                 onCancelBill={onCancelBill} print={true}
                                 idBillingInfo={props.billingInfo.id}
-                                billableCombos={[]}
                                 bill={currentBill} updatingBill={currentBill !== null}
                                 locale={props.activeLanguage}
                             />
@@ -265,7 +306,7 @@ const Billing: React.FC<Props> = (props) => {
     }
 
     return (
-        <React.Fragment>
+        <>
             <Helmet title="Billing Dashboard" />
             <Snackbar
                 anchorOrigin={{
@@ -285,9 +326,9 @@ const Billing: React.FC<Props> = (props) => {
                 </div>
             </Snackbar>
 
-            {
+            {/* {
                 renderModal()
-            }
+            } */}
 
             <Grid justifyContent="space-between" direction='row' container spacing={6} style={{ color: "white" }}>
                 <Grid item xs={12} container>
@@ -309,12 +350,9 @@ const Billing: React.FC<Props> = (props) => {
                                 <Translate id="hospital.billing.no_billing_info" />
                             </Typography>
                             :
-                            <ButtonAdd disabled={showModal || props.loading || edit}
+                            <ButtonAdd disabled={props.section === "create_bill" || props.loading || edit}
                                 type="button" data-testid="add_bill"
-                                onClick={() => {
-                                    setActionBill(BillActions.create);
-                                    setShowModal(true);
-                            }} />
+                                onClick={props.onCreateBill} />
                         }
                     </Grid>
                 </Grid>
@@ -324,7 +362,7 @@ const Billing: React.FC<Props> = (props) => {
                 renderCore()
             }
 
-        </React.Fragment>
+        </>
     );
 }
 

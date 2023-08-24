@@ -31,7 +31,13 @@ export function pushBillables(billables:{id:number}[]) {
     };
 }
 
-
+export function resetBillItems() {
+    return async (dispatch:any) => {
+      dispatch({ 
+            type: types.RESET_BILL_ITEMS
+      });
+    };
+}
 
 export function initializeBilling(newState:any) {
     return async (dispatch:any) => {

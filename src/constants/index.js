@@ -43,6 +43,7 @@ export const SAVE_BILL_ITEMS = "SAVE_BILL_ITEMS";
 export const INITIALIZE_BILLING = "INITIALIZE_BILLING";
 export const PUSH_BILL_ITEMS = "PUSH_BILL_ITEMS";
 export const PUSH_BILLABLES = "PUSH_BILLABLES";
+export const RESET_BILL_ITEMS = "RESET_BILL_ITEMS";
 
 
 //Patients

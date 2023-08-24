@@ -104,7 +104,8 @@ import {
     HOSPITAL_OUTPATIENTS_ROUTE,
     HOSPITAL_OUTPATIENTS_EDIT_ROUTE,
     HOSPITAL_AGENDA_ROUTE,
-    HOSPITAL_ACTION_AGENDA_ROUTE
+    HOSPITAL_ACTION_AGENDA_ROUTE,
+    HOSPITAL_BILLING_CREATE_BILL
   } from './urls';
   
 
@@ -313,6 +314,12 @@ const hospitalRoutes = {
             name: "Billing",
             component: () =>  <Billing/>,
         },
+        {
+            path: HOSPITAL_BILLING_CREATE_BILL,
+            name: "Billing create bill",
+            component: () =>  <Billing/>,
+        },
+        
         {
             path: HOSPITAL_BILLING_PATIENT,
             name: "Billing",

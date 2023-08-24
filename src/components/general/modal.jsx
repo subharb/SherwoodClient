@@ -10,7 +10,7 @@ import { Dialog,
 } from "@mui/material";
 import PropTypes from 'prop-types'; 
 import { Translate } from 'react-localize-redux';
-import { CloseIcon } from '@material-ui/data-grid';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function Modal(props){
     let paperStyles = props.medium ? {

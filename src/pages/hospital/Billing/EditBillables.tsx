@@ -1,4 +1,4 @@
-import { Box, Card } from '@mui/material';
+import { Box, Card, Typography } from '@mui/material';
 import React, { ReactElement, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
@@ -38,10 +38,10 @@ const EditBillables: React.FC<EditBillablesProps> = ({ billables, uuidInvestigat
                 closeModal={() => setShowModal(false)}>
                         <Translate id="" />
             </Modal>
-            <TypographyThemed variant='body2'>
-            Billables are items that repeat on each bill. Add, edit or remove them here.
-            If you delete a billable it will remain on past bills but it won't appear in new bills.
-            </TypographyThemed>
+            <Typography variant='body2'>
+                Billables are items that repeat on each bill. Add, edit or remove them here.
+                If you delete a billable it will remain on past bills but it won't appear in new bills.
+            </Typography>
             {
                 renderBillables()
             }
