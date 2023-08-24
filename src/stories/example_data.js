@@ -2838,7 +2838,7 @@ export const billables = [
         "id": 1,
         "concept": "Primera consulta Dr. Rodriguez",
         "type" : 0,
-        "amount": 100
+        "amount": 100,
     },
     {
         "id": 2,
@@ -2857,5 +2857,19 @@ export const billables = [
         "concept": "Consulta seguimiento Dr. Jimenez",
         "type" : 0,
         "amount": 80
+    },
+    {
+        "id": 5,
+        "concept": "Cirugía maxiolofacial",
+        "type" : 0,
+        "amount": 100,
+        "relatedBillables" : [6]
+    },
+    {
+        "id": 6,
+        "concept": "Anestesia",
+        "type" : 0,
+        "amount": 10,
+        "relatedBillables" : []
     },
 ]

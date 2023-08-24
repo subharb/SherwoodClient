@@ -78,7 +78,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     const items  = useSelector((state:any) => {
         console.log(state.billing.data.billItems);
         return state.billing.data.billItems ? state.billing.data.billItems : []});
-    const billables = useSelector((state:any) => state.billing.data.billables ? state.billing.data.billables : []);
+    const billables:Billable[] = useSelector((state:any) => state.billing.data.billables ? state.billing.data.billables : []);
     //const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
@@ -272,6 +272,14 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
             let tempItems = [...items];
 
             tempItems.push({...currentItem});
+            if(currentItem.relatedBillables && currentItem.relatedBillables.length > 0){
+                for(let i = 0; i < currentItem.relatedBillables.length; i++){
+                    const billable:Billable | undefined = billables.find((billable) => billable.id === currentItem?.relatedBillables[i]);
+                    if(billable){
+                        tempItems.push({...billable});
+                    }
+                }
+            }
 
             await dispatch(saveBillingItems(tempItems))
             setAddingItem(false);
