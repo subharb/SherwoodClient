@@ -13,6 +13,9 @@ import _ from "lodash";
 import { hasDefaultValues } from "../../../utils/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { saveBillingItems } from "../../../redux/actions/billingActions";
+import Modal from "../../../components/general/modal";
+import Form from "../../../components/general/form";
+import FillSurvey from "../FillSurvey";
 
 const FactureHolder = styled.div<{ hide: boolean }>`
     margin-top:2rem;
@@ -50,6 +53,7 @@ interface BillItemsProps extends LocalizeContextProps{
     error:ReactElement | undefined,
     withDiscount:boolean,
     uuidPatient?:string,
+    surveyAdditionalInfo:any,
     onBillItemsValidated : (items: BillItem[]) => void,
     onCancelBill: () => void
 }
@@ -63,9 +67,12 @@ const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
 
 const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
                                                     updatingBill, currency, print, withDiscount,
+                                                    surveyAdditionalInfo, uuidInvestigation,
+                                                    uuidPatient,
                                                     bill, initItems, showTotal, repeatBillItems, onBillItemsValidated, 
                                                     onCancelBill }) => {
     const dispatch = useDispatch();
+    const [showModal, setShowModal] = useState(false);
     const filteredColumns = columns.filter(column => column.type !== "type" || withDiscount)
     const initFieldErrors:any = filteredColumns.reduce((acc:{[id: string] : string}, column) => {
         acc[column.name] = "";
@@ -253,6 +260,10 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                 </>
             }
         }
+    }
+
+    function onCloseModal(){
+        setShowModal(false);
     }
 
     async function addCurrentItem() {
@@ -479,6 +490,13 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
    
     return (
         <div style={{width:'100%'}} ref={printRef} >
+            <Modal key="modal" fullWidth medium open={showModal} title="Request Discount" closeModal={() => onCloseModal()}>
+                <FillSurvey uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
+                    country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
+                    uuidPatient={uuidPatient!} 
+                    callBackDataCollectionSaved = {() => console.log("Data Saved")}/>
+            </Modal>
+
             <Grid container item>
                 <Grid item xs={12}>
                     <FactureHolder hide={!bill}>

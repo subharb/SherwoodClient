@@ -28,6 +28,7 @@ interface Props {
     bill: Bill | null,
     locale: Language,
     print: boolean,
+    surveyAdditionalInfo?: any,
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
     onCancelBill: () => void

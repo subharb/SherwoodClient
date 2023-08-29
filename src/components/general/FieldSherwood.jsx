@@ -13,9 +13,7 @@ import 'date-fns';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
-import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@mui/material';
-import { change, registerField } from "redux-form";
 import SmartField from './SmartFields';
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
@@ -317,26 +315,6 @@ class FieldSherwood extends PureComponent{
                             },
                           }}
                         onChange={this.handleDateChange}/>
-                        // <MuiPickersUtilsProvider  utils={DateFnsUtils}>
-                        //     <KeyboardDatePicker
-                        //         disableToolbar
-                        //         fullWidth
-                        //         inputVariant="outlined"
-                        //         variant="inline"
-                        //         format={formatDateByLocale(activeLanguage.code)}
-                        //         margin="normal"
-                        //         id="date-picker-inline"
-                        //         label={labelString}
-                        //         openTo="year"
-                        //         value={value}
-                        //         onChange={this.handleDateChange}
-                        //         KeyboardButtonProps={{
-                        //             'aria-label': 'change date',
-                        //         }}
-                        //         error={errorState} 
-                        //         helperText={errorString} 
-                        //         />
-                        // </MuiPickersUtilsProvider>
                     
                 )
             case "time":

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, billables } from '../example_data';
+import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, billables, edc_data1 } from '../example_data';
 import { BillForm } from '../../pages/hospital/Billing/BillForm';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
@@ -44,6 +44,8 @@ export const Standard: Story = {
     currency:"CFA",
     uuidInvestigation: getInvestigation.investigation.uuid,
     idBillingInfo:1,
+    withDiscount: true,
+    surveyAdditionalInfo:edc_data1().surveys[1],
     locale:{
         name: "French",
         code: "fr",

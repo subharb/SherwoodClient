@@ -329,6 +329,7 @@
                     "charge" : ["Charge", "Cargo", "Frais"],
                     "discount_amount" : ["Amount Discount", "Cantidad descuento", "Reduction (montant)"],
                     "discount_percent" : ["Discount %", "Descuento %", "Reduction (%)"],
+                    "discount_additional_info" : ["Discount Request", "Solicitud de descuento", "Demande de réduction"],
                     "service" : ["Service", "Servicio", "Service"]
                 },
                 "error" : {
