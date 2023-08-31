@@ -325,12 +325,13 @@
                 "select_item" : ["Select", "Select", "Seleccionar"],
                 "drug" : ["Drug", "Medicamento", "Médicament"],
                 "quantity" : ["Quantity", "Cantidad", "Quantité"],
+                "additional_info" : ["Additional Info", "Información adicional", "Informations supplémentaires"],
                 "types" : {
                     "charge" : ["Charge", "Cargo", "Frais"],
                     "discount_amount" : ["Amount Discount", "Cantidad descuento", "Reduction (montant)"],
                     "discount_percent" : ["Discount %", "Descuento %", "Reduction (%)"],
-                    "discount_additional_info" : ["Discount Request", "Solicitud de descuento", "Demande de réduction"],
-                    "service" : ["Service", "Servicio", "Service"]
+                    "service" : ["Service", "Servicio", "Service"],
+                    "discount_additional_info" : ["Discount Request", "Solicitud de descuento", "Demande de réduction"]
                 },
                 "error" : {
                     "concept_short" : ["Must have at 3 characters", "Debe tener al menos 3 caracteres", "Doit avoir 3 caractères"],

@@ -284,6 +284,9 @@ export function usePrevious(value:any){
     useEffect(() => {
       ref.current = value;
     });
+    if(ref.current === undefined){
+        return value;
+    }
     return ref.current as any;
 }
 

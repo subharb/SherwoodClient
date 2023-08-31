@@ -8,7 +8,7 @@ import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@mui/material';
 import { ButtonAdd, IconGenerator, TypographyStyled } from '../../../components/general/mini_components';
 import { BillForm } from './BillForm';
-import { FUNCTIONALITY, IPatient } from '../../../constants/types';
+import { FUNCTIONALITY, IPatient, ISurvey } from '../../../constants/types';
 import { Bill, BillingInfo, BillItemModes } from './types';
 import { Document } from '../Document';
 import { connect, useDispatch } from 'react-redux';
@@ -26,6 +26,7 @@ import BillsTable from './BillsTable';
 import { FindPatient } from './find_patient';
 import { HOSPITAL_BILLING, HOSPITAL_BILLING_CREATE_BILL } from '../../../routes/urls';
 import { resetBillItems } from '../../../redux/actions/billingActions';
+import { TYPE_ADDITIONAL_INFO_SURVEY } from '../../../constants';
 
 interface PropsRedux {
     investigations: any,
@@ -91,11 +92,12 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
         }
     }, [investigation])
     if (investigation) {
+        const surveyAdditionalInfo:ISurvey | undefined = investigation.surveys.find((survey: any) => survey.type === TYPE_ADDITIONAL_INFO_SURVEY);
         return <BillingLocalized patients={patients.data[investigation.uuid]} withDiscount={hasDiscounts}
                     uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
                     personalFields={investigation.personalFields}
                     billingInfo={investigation.billingInfo}
-                    section={section}
+                    section={section} surveyAdditionalInfo={surveyAdditionalInfo}
                     bills={bills} loading={loading} uuidPatient={uuidPatient}
                     onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
                     onCreateBill={() => history.push(HOSPITAL_BILLING_CREATE_BILL)}
@@ -128,6 +130,7 @@ interface Props extends LocalizeContextProps {
     uuidPatient?:string,
     bills: Bill[];
     loading: boolean,
+    surveyAdditionalInfo?: ISurvey,
     section: "create_bill" | "billing" | "patient",
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
@@ -270,7 +273,7 @@ const Billing: React.FC<Props> = (props) => {
                                             onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
                                             onCancelBill={onCancelBill} print={false}
                                             bill={currentBill} updatingBill={currentBill !== null}
-                                            idBillingInfo={props.billingInfo.id}
+                                            idBillingInfo={props.billingInfo.id} surveyAdditionalInfo={props.surveyAdditionalInfo}
                                             locale={props.activeLanguage}
                                         />
                 if(actionBill === BillActions.create){

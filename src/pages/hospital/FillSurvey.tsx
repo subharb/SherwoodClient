@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SectionForm from '../../components/general/SectionForm';
 import { IDepartment } from '../../constants/types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postSubmissionPatientAction, updateSubmissionPatientAction } from '../../redux/actions/submissionsPatientActions';
+import Loader from '../../components/Loader';
+import { usePrevious } from '../../hooks';
 
 interface FillSurveyProps {
     idSubmission?:number,
@@ -13,19 +15,28 @@ interface FillSurveyProps {
     country:string,
     uuidInvestigation:string,
     uuidPatient:string,
-    researcher:any,
     requestServiceId?:string,
     nameSurvey?:string,
     typeSurvey?:string,
     department?:IDepartment,
     alterSubmitButton?: (button:JSX.Element) => JSX.Element,
-    callBackDataCollectionSaved: () => void
+    callBackDataCollectionSaved: (data:any) => void
 }
 
 const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections, initData, 
-                                                idSubmission, researcher, requestServiceId, nameSurvey,
+                                                idSubmission, requestServiceId, nameSurvey,
                                                 country, uuidInvestigation, uuidPatient, department, typeSurvey,
                                                 alterSubmitButton, callBackDataCollectionSaved }) => {
+    const [loading, setLoading] = React.useState(false);
+
+    const submissionsSurvey = useSelector((state:any) => {
+        console.log(state);
+        if(state.patientsSubmissions.data && state.patientsSubmissions.data[uuidPatient] && state.patientsSubmissions.data[uuidPatient][uuid]){
+            return state.patientsSubmissions.data[uuidPatient][uuid].submissions
+        }
+        return [];
+        });
+    const prevSubmissionsSurvey = usePrevious(submissionsSurvey);
     const dispatch = useDispatch();
 
     let fields:any[] = [];
@@ -37,12 +48,21 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
         sectionsSurvey = sections;
     }
 
-    async function saveRecords(data, buttonSubmitted){
+    useEffect(() => {
+        const oldSubmissions = !prevSubmissionsSurvey ? [] : prevSubmissionsSurvey;
+        if(submissionsSurvey.length !== oldSubmissions.length){
+            const lastSubmission = submissionsSurvey[submissionsSurvey.length - 1];
+            callBackDataCollectionSaved(lastSubmission);
+        }
+    }, [submissionsSurvey]);
+
+    async function saveRecords(data:any, buttonSubmitted:string){
+        setLoading(true);
         let postObj:{
             uuidSurvey: string;
             uuid_patient: string;
             id: number | undefined;
-            surveyRecords: never[];
+            surveyRecords: {[key:string]:string}[];
             requestInfo?: {
                 requestId: number;
                 completeRequest: boolean;
@@ -66,7 +86,7 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
             }
         }
         
-        data.forEach(fieldData => {
+        data.forEach((fieldData:any) => {
             //const sectionField = dataCollectionSelected.sections.find(section => section.fields.find(aField => aField.id === fieldData.surveyField.id));
             postObj.surveyRecords.push(fieldData); 
         });
@@ -83,8 +103,8 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
 
             
         }
-
-        callBackDataCollectionSaved()
+        setLoading(false);
+        
     }
     
     sectionsSurvey.sort((a,b) => a.order - b.order)
@@ -105,6 +125,9 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
             });
             fields = fields.concat(sectionFields);
     })      
+    if(loading){
+        return <Loader />
+    }
     return(
         <SectionForm initData={initData} key={uuid} 
             country={country} uuidInvestigation={uuidInvestigation}

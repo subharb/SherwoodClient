@@ -12,7 +12,7 @@ import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import _ from "lodash";
 import { hasDefaultValues } from "../../../utils/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { saveBillingItems } from "../../../redux/actions/billingActions";
+import { pushBillingItems, saveBillingItems } from "../../../redux/actions/billingActions";
 import Modal from "../../../components/general/modal";
 import Form from "../../../components/general/form";
 import FillSurvey from "../FillSurvey";
@@ -69,7 +69,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                                                     updatingBill, currency, print, withDiscount,
                                                     surveyAdditionalInfo, uuidInvestigation,
                                                     uuidPatient,
-                                                    bill, initItems, showTotal, repeatBillItems, onBillItemsValidated, 
+                                                    bill, translate, showTotal, repeatBillItems, onBillItemsValidated, 
                                                     onCancelBill }) => {
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
@@ -118,7 +118,6 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                 // @ts-ignore: Unreachable code error
                 tempCurrentItem[key] = valueState as string;
             }
-            
         }
         
         setFieldErrors(tempFieldErrors);
@@ -166,11 +165,15 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     }
     function changeType(event: React.ChangeEvent<{
         name?: string | undefined;
-        value: unknown;
+        value: string;
     }>, itemKey: BillItemKeys) {
-        const valueString = event.target.value as string;
+        const valueString = event.target.value.toString() as string;
         const error = validateKeyItem(valueString, itemKey);
         updateStates(itemKey, error, valueString);
+        if(valueString === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO.toString()){
+            console.log("show nomdal");
+            setShowModal(true);
+        }
     }
     function changeField(value:string, itemKey: BillItemKeys) {
         const error = validateKeyItem(value, itemKey);
@@ -264,6 +267,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
 
     function onCloseModal(){
         setShowModal(false);
+        updateStates(BillItemKeys.type, "", "");
     }
 
     async function addCurrentItem() {
@@ -404,7 +408,12 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                             }>) => changeType(event, BillItemKeys.type)}
                             >
                                 {
-                                    TYPES_BILL_ITEM.map(([key, value]) =>{
+                                    TYPES_BILL_ITEM.filter(([key, value]) => {
+                                        if(value === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO && !surveyAdditionalInfo){
+                                            return false;
+                                        }
+                                        return true;
+                                    }).map(([key, value]) =>{
                                         return <MenuItem value={value}><Translate id={`hospital.billing.item.types.${key.toLowerCase()}`} /></MenuItem>
                                     }) 
                                 }
@@ -490,12 +499,29 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
    
     return (
         <div style={{width:'100%'}} ref={printRef} >
-            <Modal key="modal" fullWidth medium open={showModal} title="Request Discount" closeModal={() => onCloseModal()}>
-                <FillSurvey uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
-                    country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
-                    uuidPatient={uuidPatient!} 
-                    callBackDataCollectionSaved = {() => console.log("Data Saved")}/>
-            </Modal>
+            {
+                surveyAdditionalInfo && 
+                <Modal key="modal" fullWidth medium open={showModal} title="Request Discount" closeModal={() => onCloseModal()}>
+                    <FillSurvey uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
+                        country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
+                        uuidPatient={uuidPatient!} 
+                        callBackDataCollectionSaved = {async (data) => {
+                            console.log("Data Saved", data);
+                            const amount = data.surveyRecords.find((record:any) => record.surveyField.name === "amount").value;
+                            const additionalItem:BillItem = {
+                                concept: translate(`hospital.billing.item.additional_info`).toString(),
+                                type: TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
+                                amount: amount,
+                                additionalInfoId: data.id,
+                            }
+                            await dispatch(pushBillingItems([additionalItem]))
+                            setCurrentItem(DEFAULT_CURRENT_ITEM);
+                            setShowModal(false);
+                        }
+                        }/>
+                </Modal>
+            }
+            
 
             <Grid container item>
                 <Grid item xs={12}>

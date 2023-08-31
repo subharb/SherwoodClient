@@ -112,7 +112,7 @@ export const BillForm:React.FC<Props> = (props) => {
         }
         else if(billableCombos.length > 0){
             return(
-                <Grid container item xs={6}  style={{ display:'flex', paddingTop: '1rem' }} >
+                <Grid container item xs={6} style={{ display:'flex', paddingTop: '1rem' }} >
                     <Autocomplete
                         value={comboSelected}
                         options={billableCombos}
@@ -228,7 +228,7 @@ export const BillForm:React.FC<Props> = (props) => {
                         uuidPatient={patient?.uuid} mode = {BillItemModes.SHOW}
                         initItems = {props.bill ? props.bill.billItems : currentItems.length > 0 ? currentItems : []}
                         repeatBillItems={true} showTotal={true}
-                        //billablesViaCombo={billablesViaCombo}
+                        surveyAdditionalInfo={props.surveyAdditionalInfo}
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
                         bill={props.bill} 
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
@@ -240,7 +240,7 @@ export const BillForm:React.FC<Props> = (props) => {
     }          
     
     return (
-        <Grid container xs={12} >
+        <Grid container >
             {
                 renderPatient()
             }

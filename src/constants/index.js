@@ -145,12 +145,13 @@ export const TYPE_SHOE_SURVEY = 7;
 export const TYPE_FILL_LAB_SURVEY = 8;
 export const TYPE_FILL_IMG_SURVEY = 9;
 export const TYPE_EDITABLE_SURVEY = 10;
+export const TYPE_ADDITIONAL_INFO_SURVEY = 11;
 
 export const TYPE_SURVEYS = [{ value: TYPE_MEDICAL_SURVEY, name: "Medical" }, { value: TYPE_IMAGE_SURVEY, name: "Images" }, { value: TYPE_LAB_SURVEY, name: "Laboratory" },
 { value: TYPE_FIRST_VISIT_SURVEY, name: "First Visit" }, { value: TYPE_MONITORING_VISIT_SURVEY, name: "Monitoring" },
 { value: TYPE_DISCHARGE_SURVEY, name: "Discharge" }, { value: TYPE_SOCIAL_SURVEY, name: "Social" }, { value: TYPE_SHOE_SURVEY, name: "Shoe" },
 { value: TYPE_FILL_LAB_SURVEY, name: "Fill Lab" }, { value: TYPE_FILL_IMG_SURVEY, name: "Fill IMG" },
-{ value: TYPE_EDITABLE_SURVEY, name: "Editable" }];
+{ value: TYPE_EDITABLE_SURVEY, name: "Editable" }, { value: TYPE_ADDITIONAL_INFO_SURVEY, name: "Additional Info" }];
 
 
 export const CATEGORY_DEPARTMENT_MEDICAL = 0;

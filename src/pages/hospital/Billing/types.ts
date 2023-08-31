@@ -33,6 +33,7 @@ export interface BillItem{
     billableId?:number,
     concept:string,
     type:number,
+    additionalInfoId?:number,
     relatedBillables?:number[],
     amount:number | string,
     used?: boolean,

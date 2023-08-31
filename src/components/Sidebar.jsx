@@ -425,7 +425,7 @@ const Sidebar = ({ classes, staticContext, location, investigation, ...rest }) =
                 <Grid container spacing={2}>
                     <Grid item>
                         <SidebarFooterBadge
-                            overlap="circle"
+                            overlap="circular"
                             anchorOrigin={{
                                 vertical: "bottom",
                                 horizontal: "right",

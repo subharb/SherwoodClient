@@ -42,6 +42,7 @@ export default function reducer(state = initialState, action){
         case types.SAVE_SUBMISSIONS_PATIENT_SUCCESS:
             tempData = newState.data === initialState.data ? {} : newState.data;
             let tempDict = {};
+            let tempSubmissions = [];
             //Si se genera en offline, no hay id
             if( _.isEmpty(tempData) || !tempData[action.meta.uuidPatient]){
                 
@@ -56,10 +57,11 @@ export default function reducer(state = initialState, action){
                 return newState;
             }
             else if(tempData[action.meta.uuidPatient].hasOwnProperty(action.meta.surveyUUID)){
-                tempDict = tempData[action.meta.uuidPatient][action.meta.surveyUUID];
+                tempDict = {...tempData[action.meta.uuidPatient][action.meta.surveyUUID]};
+                tempSubmissions = [...tempDict.submissions];
                 if([types.UPDATE_SUBMISSIONS_PATIENT_OFFLINE, types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS].includes(action.type)){
                     const indexSub = tempDict.submissions.findIndex(sub => sub.id === action.meta.idSubmission);
-                    tempDict.submissions[indexSub] = action.submission;
+                    tempSubmissions[indexSub] = action.submission;
                 }
                 else{
                     if(!action.submission.id){
@@ -67,14 +69,14 @@ export default function reducer(state = initialState, action){
                         action.submission.offline = true;
                     }
                     if(action.meta.oldIdSubmission){
-                        const indexOldSub = tempDict.submissions.findIndex((sub) => {
+                        const indexOldSub = tempSubmissions.findIndex((sub) => {
                             return sub.id === action.meta.oldIdSubmission
                         })
                         if(indexOldSub !== -1){
-                            tempDict.submissions.splice(indexOldSub, 1)
+                            tempSubmissions.splice(indexOldSub, 1)
                         }
                     }
-                    tempDict.submissions.push(action.submission);
+                    tempSubmissions.push(action.submission);
                 }
             }
             else{
@@ -86,9 +88,10 @@ export default function reducer(state = initialState, action){
                     surveyName : action.meta.surveyName,
                     uuid : action.meta.surveyUUID,
                     type : action.meta.surveyType,
-                    submissions:[action.submission]
+                    submissions:[...action.submission]
                 }
             }
+            tempDict.submissions = tempSubmissions;
             
             tempData[action.meta.uuidPatient][action.meta.surveyUUID] = tempDict;                   
             newState.loading = initialState.loading;
