@@ -342,10 +342,10 @@ export const updateRecordPatientService = datalogger((postObj, uuidInvestigation
     });
 });
 
-export const getSubmissionPatientService = datalogger((uuidInvestigation, idSubmission) => {
+export const getSubmissionPatientService = datalogger((uuidInvestigation, idSubmission, withRequests) => {
+    const queryString = withRequests ? "?findRequests=true" : "";
     return new Promise((resolve, reject) => {
-
-        axios.get(`${import.meta.env.VITE_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${idSubmission}?findRequests=true`, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(`${import.meta.env.VITE_APP_API_URL}/researcher/investigation/${uuidInvestigation}/submission/${idSubmission}${queryString}`, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

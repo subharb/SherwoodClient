@@ -10,6 +10,7 @@ import { EnhancedTable } from '../../../general/EnhancedTable';
 import { fetchRecordsPatientFromSurvey } from '../../../../services';
 import { Card, CardContent, Typography, Grid, Paper } from '@mui/material';
 import Loader from '../../../Loader';
+import ShowSubmissionPatient from '../../../../pages/hospital/ShowSingleSubmissionPatient';
 
 /**
  * Component in charge of showing records of a given patient in a survey
@@ -39,19 +40,7 @@ export default function ShowPatientRecords(props) {
     }
     function renderSubmissionsSection(){    
         
-        const currentSurvey = props.surveys.find(sur => sur.uuid === props.submissions[indexSubmission].uuidSurvey);
-        return Object.values(currentSurvey.sections).sort((a,b) => a.order - b.order).map(section => {
-        // const patientSubmissions = props.submissions.filter(sub=>sub.patient.uuid === props.patient.uuid);
-            const recordsSection = filterRecordsFromSection(props.submissions[indexSubmission], section.uuid);
-
-            return(
-                <ShowRecordsSection permissions={props.permissions} indexSubmission={indexSubmission} forceEdit={props.forceEdit}
-                    callBackEditSubmission={(uuidSubmission, uuidSection) => props.callBackEditSubmission(uuidSubmission, uuidSection)} 
-                    records={recordsSection} section={section} uuidResearcher = {props.submissions[indexSubmission].uuidResearcher}
-                    idSubmission = {props.submissions[indexSubmission].id}
-                    updatedAt={props.submissions[indexSubmission].updatedAt}/>
-            )
-        });
+        
         
         
     }
@@ -102,7 +91,9 @@ export default function ShowPatientRecords(props) {
             else{
                 return(
                 <div style={{paddingTop:"0.6rem"}}>
-                    { renderSubmissionsSection() }
+                    <ShowSubmissionPatient surveys={props.surveys} 
+                        forceEdit={props.forceEdit} submission={props.submissions[indexSubmission]} 
+                        callBackEditSubmission={(uuidSubmission, uuidSection) => callBackEditSubmission(uuidSubmission, uuidSection)}  /> 
                 </div> )
             }
         }

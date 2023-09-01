@@ -122,7 +122,32 @@ export interface ISurvey{
     uuid:string,
     name:string,
     unit:IUnit,
-    type:number
+    type:number,
+    order:number,
+    category:number,
+    isActive:boolean,
+    sections: ISection[],
+}
+export interface ISection{
+    id:number,
+    uuid:string,
+    name:string,
+    order:number,
+    fields: IField[],
+}
+export interface IField{
+    id:number,
+    name:string,
+    type:string,
+    label:string,
+    required:boolean,
+    order:number,
+    encrypted:boolean,
+    validation:string,
+    options:OptionField[],
+    isActive:boolean,
+    extraField:null | IField,
+
 }
 export interface PersonalData{
     name ?: string,

@@ -35,6 +35,7 @@ function ShowRecordsSection(props) {
     
         props.callBackEditSubmission(props.idSubmission, uuidSection);
     }
+
     function renderValue(valueRecord, field){
         if(!valueRecord || !valueRecord.value){
             return <React.Fragment>
@@ -214,7 +215,14 @@ function ShowRecordsSection(props) {
 
 ShowRecordsSection.propTypes = {
     section: PropTypes.object,
-    submissions: PropTypes.array
+    submissions: PropTypes.array,
+    forceEdit: PropTypes.bool,
+    callBackEditSubmission: PropTypes.func,
+    records: PropTypes.array,
+    section: PropTypes.object,
+    uuidResearcher: PropTypes.string,
+    idSubmission: PropTypes.number,
+    updatedAt: PropTypes.string,
 };
 
 export default withLocalize(ShowRecordsSection)
