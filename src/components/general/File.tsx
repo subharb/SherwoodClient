@@ -76,11 +76,19 @@ const ImageFile = styled.img`
 const File:React.FC<Props> = (props) => {
     const [filesSelected, setFilesSelected] = useState<FileUpload[]>([]);
     const [showModal, setShowModal] = useState(false);
-    const [bufferDataFile, setBufferDataFile] = useState("");
+    const [localImage, setLocalImage] = useState("");
     const prevFilesSelected:FileUpload[] | undefined = usePrevious(filesSelected);
     const prevValue:FileUpload[] | undefined = usePrevious(props.value);
     const [addingFile, setAddingFile] = useState(false);
 
+    function dataToImageUrl(data:string){
+        const uint8Array = new Uint8Array(data);
+
+        // Create a Blob from the Uint8Array with the appropriate MIME type
+        const blob = new Blob([uint8Array], { type: 'image/jpeg' }); // Adjust the type as needed
+        
+        return URL.createObjectURL(blob);
+    }
     function removeFile(index:number){
         let newFilesSelected = [...filesSelected];
         newFilesSelected.splice(index, 1);
@@ -99,10 +107,8 @@ const File:React.FC<Props> = (props) => {
     }
     function showFullSize(index:number){
         const file = filesSelected[index];
-        if(file.buffer){
-            let buf = Buffer.from(file.buffer);
-            let base64 = buf.toString('base64');
-            setBufferDataFile(base64);
+        if(file.buffer){            
+            setLocalImage(dataToImageUrl(file.buffer.data));
             setShowModal(true);
         }
         
@@ -111,12 +117,10 @@ const File:React.FC<Props> = (props) => {
         console.log("El archivo es el ", indexPDF);
 
         const dataBuffer = filesSelected[indexPDF].buffer;
-        if(dataBuffer){
-            let buf = Buffer.from(dataBuffer);
-        
+        if(dataBuffer){        
             const link = document.createElement('a');
             // create a blobURI pointing to our Blob
-            const arr = new Uint8Array(buf);
+            const arr = new Uint8Array(dataBuffer.data);
             const blob = new Blob([arr], { type: 'application/pdf' });
             link.href = URL.createObjectURL(blob);
             link.download = filesSelected[indexPDF].remoteName as string;
@@ -182,8 +186,7 @@ const File:React.FC<Props> = (props) => {
             else{
                 return false;
             }
-            
-            
+
         }
         catch(err){
             console.log(err);
@@ -272,11 +275,11 @@ const File:React.FC<Props> = (props) => {
     
     return (
         <Grid container>
-            <Modal
+            <Modal 
                 open={showModal}
                 closeModal={() => setShowModal(false)}
                 >
-                <ImageFile src={`data:image/jpeg;base64, ${bufferDataFile}`} width="100%" alt="Logo"/>
+                <ImageFile src={localImage} width="100%" alt="Logo"/>
             </Modal>
             <Grid item xs={12}>
                 <Typography variant="body2" gutterBottom>
@@ -317,12 +320,15 @@ const File:React.FC<Props> = (props) => {
                         }
                         if(file.buffer){
                             if(isImageType(file.type)){
-                                let buf = Buffer.from(file.buffer);
-                                let base64 = buf.toString('base64');
+                                const dataUrl = dataToImageUrl(file.buffer.data)
+
+                                // Create a data URL
+                                //const dataUrl = `data:image/jpeg;base64,${base64String}`; // Change the format as needed
+                            
                                 return(
                                     <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
                                         <GridImage item xs={2}>
-                                            <ImageFile onClick={() => showFullSize(index)} src={`data:image/jpeg;base64, ${base64}`} alt=""/>
+                                            <ImageFile onClick={() => showFullSize(index)} src={dataUrl} alt=""/>
                                         </GridImage>
                                     </CloseFrame>
                                 )

@@ -36,7 +36,7 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
         }
         return [];
         });
-    const prevSubmissionsSurvey = usePrevious(submissionsSurvey);
+    const prevSubmissionsSurvey = usePrevious(submissionsSurvey, true);
     const dispatch = useDispatch();
 
     let fields:any[] = [];
@@ -96,12 +96,7 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
             await dispatch(updateSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, uuid, nameSurvey, idSubmission));
         }
         else{
-            //setIndexSection(-1);
-            
-            console.log(data);
             await dispatch(postSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, uuid, nameSurvey, typeSurvey));
-
-            
         }
         setLoading(false);
         
@@ -110,8 +105,7 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
     sectionsSurvey.sort((a,b) => a.order - b.order)
         .forEach((section, index) =>{
             let  sectionFields = [...section.fields.sort((a:any,b:any) => a.order - b.order)]
-            
-            
+    
             if((sectionFields.length === 1 || sectionFields[0].label === section.name)&& sectionFields[0].type !== "textarea"){
                 sectionFields[0].label = `general.default-label.${sectionFields[0].type}`
             }

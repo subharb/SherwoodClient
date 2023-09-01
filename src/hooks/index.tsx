@@ -279,12 +279,12 @@ export function useSherwoodUser(){
     }, dependencies);
   }
 
-export function usePrevious(value:any){
+export function usePrevious(value:any, withInitial?:boolean){
     const ref = useRef();
     useEffect(() => {
       ref.current = value;
     });
-    if(ref.current === undefined){
+    if(ref.current === undefined && withInitial){
         return value;
     }
     return ref.current as any;
