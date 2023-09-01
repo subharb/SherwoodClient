@@ -89,7 +89,7 @@ class FieldSherwood extends PureComponent{
     constructor(props){
         super(props);
         this.typeMargin = "dense";//dense, none;
-        this.state = {options : [], date : new Date(), loading:false}
+        this.state = {options : [], date : new Date(), loading:false, showPassword:false}
 
         this.multiOptionSelected = this.multiOptionSelected.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -124,6 +124,15 @@ class FieldSherwood extends PureComponent{
     
         this.props.input.onChange(value);
     }
+    handleClickShowPassword = () => {
+        const tempState = {...this.state};
+        this.setState({ ...tempState, showPassword: !tempState.showPassword });
+      };
+    
+    handleMouseDownPassword = (event) => {
+        event.preventDefault();
+      };
+
     multiOptionSelected(value){
         let tempValue = [{"multioption" : value}];
         if(this.props.input.value !== ""){
@@ -298,6 +307,9 @@ class FieldSherwood extends PureComponent{
                         control={<Checkbox checked={input.value} {...input} />}
                         label={labelString}
                     />,
+                    this.props.explanation &&
+                    <Typography className={classNameError} variant="caption" component="p">{this.props.translate(this.props.explanation)}</Typography>
+                    ,
                     errorText
                 ]);
             case "date":
@@ -406,10 +418,28 @@ class FieldSherwood extends PureComponent{
                 )
             case "password":
                 return(
-                    <Box mt={1}>
-                        <TextFieldSherwood {...input}  type="password" variant="outlined"
-                            label={labelString} error={errorState} color={color}
-                            helperText={errorString} />
+                    <Box mt={2}>
+                        <FormControl variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-password">{labelString}</InputLabel>
+                            <OutlinedInput {...input}  color="#000"
+                                type={this.state.showPassword ? 'text' : 'password'}
+                                label={labelString} error={errorState} 
+                                helperText={errorString}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={this.handleClickShowPassword}
+                                        onMouseDown={this.handleMouseDownPassword}
+                                    >
+                                        {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                    </InputAdornment>
+                                } />
+                            <FormHelperText error id="accountId-error">
+                                {errorString}
+                            </FormHelperText>
+                        </FormControl>
                     </Box>
                 )  
             case "autocomplete":

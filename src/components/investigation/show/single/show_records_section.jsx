@@ -220,7 +220,6 @@ ShowRecordsSection.propTypes = {
     forceEdit: PropTypes.bool,
     callBackEditSubmission: PropTypes.func,
     records: PropTypes.array,
-    section: PropTypes.object,
     uuidResearcher: PropTypes.string,
     idSubmission: PropTypes.number,
     updatedAt: PropTypes.string,

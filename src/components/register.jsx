@@ -8,13 +8,14 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import Modal from './general/modal';
 import { Grid, Paper, Typography } from '@mui/material';
 import Form from '../components/general/form';
-import { generateKey, encryptData, decryptData, isUserLoggedIn } from '../utils/index.jsx';
+import { generateKey, encryptData, decryptData, isUserLoggedIn } from '../utils';
 import Breadcrumb from './general/breadcrumb';
 import styled from 'styled-components';
 import { toggleLoading } from '../actions';
 import successImage from '../img/7893-confetti-cannons.gif';
 import { withRouter, Link } from 'react-router-dom';
 import Loader from './Loader';
+import { ButtonBack, ButtonContinue } from './general/mini_components';
 
 const SpanError = styled.span`
     color:red;
@@ -64,9 +65,7 @@ const forms = {
             label:"register.common.personal_info.surnames",
             shortLabel: "register.common.personal_info.surnames",
             validation : "notEmpty"
-        }
-    },
-    "contact_info" : {
+        },
         "email":{
             name:"email",
             required : true,
@@ -74,14 +73,6 @@ const forms = {
             label:"register.common.contact_info.email",
             shortLabel: "register.common.contact_info.email",
             validation : "validEmail"
-        },
-        "phone" : {
-            name:"phone",
-            required : true,
-            type:"text",
-            label:"register.common.contact_info.phone",
-            shortLabel: "register.common.contact_info.phone",
-            validation : "validPhone"
         },
     },
     "password" : {
@@ -103,67 +94,51 @@ const forms = {
             validationField: "password"
         },
     },
-    "clinic" : {
-        "type" : {
-            name:"type",
-            required : true,
-            type:"select",
-            defaultOption:{"text" : "register.common.personal_info.type_options.single_doctor", "value" : 1},
-            options:[
-                {"text" : "register.common.personal_info.type_options.single_doctor", "value" : 1},
-                {"text" : "register.common.personal_info.type_options.clinic", "value" : 1},
-                {"text" : "register.common.personal_info.type_options.health_centre", "value" : 2},
-                {"text" : "register.common.personal_info.type_options.hospital", "value" : 2},
-            ],
-            label:"register.common.clinic.type",
-            shortLabel: "register.common.clinic.type",
-            validation : "notEmpty"
+    "functionalities" : {
+        "basic" : {
+            name:"basic",
+            required : false,
+            type:"checkbox",
+            disabled : true,
+            defaultValue : true,
+            label:"register.common.functionalities.basic",
+            explanation:"register.common.functionalities.basic_explanation",
         },
-        "language" : {
-            name:"language",
-            required : true,
-            type:"select",
-            defaultOption:{"text" : "register.common.personal_info.type_options.single_doctor", "value" : 1},
-            options:[
-                {"text" : "register.common.personal_info.language_options.english", "value" : "en"},
-                {"text" : "register.common.personal_info.language_options.spanish", "value" : "es"},
-                {"text" : "register.common.personal_info.language_options.french", "value" : "fr"}
-            ],
-            label:"register.common.clinic.type",
-            shortLabel: "register.common.clinic.type",
-            validation : "notEmpty"
+        "inpatients" : {
+            name:"inpatients",
+            required : false,
+            type:"checkbox",
+            label:"register.common.functionalities.inpatients",
+            explanation:"register.common.functionalities.inpatients_explanation",
         },
-        "country" : {
-            name:"country",
-            required : true,
-            type:"select",
-            defaultOption:{"text" : "register.common.clinic.country", "value" : ""},
-            options:[],
-            option : {
-                "value" : "id",
-                "text" : "code"
-            },
-            optionsUrl: import.meta.env.VITE_APP_API_URL+"/countries",
-            label:"register.common.personal_info.country",
-            shortLabel: "register.common.personal_info.country",
-            validation : "notEmpty"
+        "pharmacy" : {
+            name:"pharmacy",
+            required : false,
+            type:"checkbox",
+            label:"register.common.functionalities.pharmacy",
+            explanation:"register.common.functionalities.pharmacy_explanation",
+        },
+        "requests" : {
+            name:"requests",
+            required : false,
+            type:"checkbox",
+            label:"register.common.functionalities.requests",
+            explanation:"register.common.functionalities.requests_explanation",
         }
     },
     "key_generation" : {
         "confirm":{
             name:"confirm",
             required : true,
-            type:"text",
+            type:"checkbox",
             label:"register.common.key_generation.confirm",
             shortLabel: "register.key_generation.confirm",
-            validation : "equalTo",
-            validationValue: "register.common.key_generation.confirm"
         },
         "policy":{
             name:"policy",
             required : true,
             type:"checkbox",
-            label:{label : "register.common.accept-policy", url : "https://hospital.sherwood.science/Sherwood_privacy_policy_.21July2021.pdf"},
+            label:{label : "register.common.accept-policy", url : "https://www.sherwood.science/privacy-policy"},
             shortLabel: "register.common.accept-policy",
             validation : "notEmpty"
         }
@@ -173,7 +148,7 @@ class Register extends Component {
     constructor(props){
         super(props);
         this.iv = null;
-        this.sections = props.typeUser === "researcher" ?  ["personal_info", "contact_info", "password", "key_generation"] : ["password", "key_generation"];
+        this.sections = props.typeUser === "researcher" ?  [ "personal_info", "functionalities", "password", "key_generation"] : ["password", "key_generation"];
 
         this.state = {selected:props.initialState ? props.initialState.selected : 0, info : {}, key : null, success : false, errorMessage : null, loading:false}
 
@@ -183,6 +158,12 @@ class Register extends Component {
     }
     crumbSelected(index){
         console.log(`Index selected ${index}`); 
+    }
+    backStep(){
+        this.setState({selected:this.state.selected - 1});
+    }
+    componentDidMount(){
+        this.generateKey(); 
     }
     async saveData(data){
         let tempState = this.state;
@@ -201,14 +182,14 @@ class Register extends Component {
             let response = null
             
             if(this.props.typeUser === "researcher"){
-                const url = import.meta.env.VITE_APP_API_URL+'/researcher/register';
-                const extraParameter = this.props.doesCreateInvestigation ? '?withInvestigation=true' : '';
+                const url = process.env.REACT_APP_API_URL+'/researcher/register';
+                
                 tempState.info.language = this.props.activeLanguage.code;
-                response = await axios.post(url+extraParameter, tempState.info)
+                response = await axios.post(url, tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
             else if(this.props.typeUser === "patient" && typeof this.props.match.params.uuidPatient !== undefined){
-                response = await axios.put(import.meta.env.VITE_APP_API_URL+'/patient/register/'+this.props.match.params.uuidPatient, tempState.info)
+                response = await axios.put(process.env.REACT_APP_API_URL+'/patient/register/'+this.props.match.params.uuidPatient, tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
             else{
@@ -245,8 +226,11 @@ class Register extends Component {
         
         const researcherKey = await generateKey();
         console.log("researcherKey", researcherKey);
-        this.setState({key:researcherKey});
+        let tempState = {...this.state};
+        tempState.key = researcherKey;
+        this.setState(tempState);
     }
+
     continue(){
         console.log("Success!");
         this.setState({success : false});
@@ -262,29 +246,27 @@ class Register extends Component {
         console.log("Register!");
         const currentSection  = this.sections[this.state.selected];
         
-        let content = null;
+        let content = [];
         if(this.state.loading){
             return <Loader />
         }
         else{
-            if(this.sections[this.state.selected] !== "key_generation"){
-                content = <Form fields={forms[currentSection]} fullWidth
-                            callBackForm={this.saveData} 
-                            submitText={"investigation.show.accept_consents.continue"} />
-            }
-            else{
-                if(this.sections[this.state.selected] === "key_generation" && this.state.key === null){
-                    this.generateKey(); 
-                }
+            const buttonBack = this.state.selected > 0 ? <ButtonBack spaceright onClick={()=>this.backStep()}>Back</ButtonBack>: null;
+            
+            if(this.sections[this.state.selected] === "key_generation"){
+                                
                 content = [
                     <ParaKey><Translate id="register.common.key_generation.encription_key" />: { this.state.key }</ParaKey>, 
-                    <Form fields={forms[currentSection]} fullWidth
-                        callBackForm={this.saveData}
-                        submitText={"register.common.create-account"} 
-                         />
+                    
                 ];
             }
-    
+
+            content.push(<Form fields={forms[currentSection]} fullWidth
+                            key="form"
+                            initialData={this.state.info}
+                            callBackForm={this.saveData} 
+                            customButton={buttonBack}
+                            submitText={"investigation.show.accept_consents.continue"} />);
             return ([
                 <Modal key="modal" open={this.state.success} title={<Translate id="register.researcher.success.title" />}
                     confirmAction={this.continue}>
@@ -305,7 +287,7 @@ class Register extends Component {
                             <Translate id={`register.${this.props.typeUser}.${currentSection}.title`} />
                         </Typography>
                         <Typography variant="body2" color="textPrimary">
-                            <Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`} />
+                            <Translate id={`register.${this.props.typeUser}.${currentSection}.explanation`}  options={{renderInnerHtml: true}}/>
                         </Typography>
                     </Grid>
                     <Grid item xs={12} padding={1}>
@@ -320,7 +302,6 @@ class Register extends Component {
                 </Grid>
             ])
         }
-        
     }
 }
 

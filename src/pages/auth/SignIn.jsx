@@ -18,20 +18,27 @@ import {
   Paper,
   TextField as MuiTextField,
   Typography,
-} from "@mui/material";
-import { spacing } from "@mui/system";
-import { Alert as MuiAlert } from "@mui/lab";
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  Input,
+} from "@material-ui/core";
+import { spacing } from "@material-ui/system";
+import { Alert as MuiAlert } from "@material-ui/lab";
 import { Translate } from "react-localize-redux";
-import { postErrorSlack } from "../../utils/index.jsx";
+import { postErrorSlack } from "../../utils";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 const Alert = styled(MuiAlert)(spacing);
 
 const TextField = styled(MuiTextField)(spacing);
 
 const Wrapper = styled(Paper)`
-    padding: ${(props) => props.theme.spacing(6)};
+    padding: ${(props) => props.theme.spacing(6)}px;
     ${(props) => props.theme.breakpoints.up("md")} {
-        padding: ${(props) => props.theme.spacing(10)};
+        padding: ${(props) => props.theme.spacing(10)}px;
     }
 `;
 
@@ -39,7 +46,7 @@ const BigAvatar = styled(Avatar)`
     width: 92px;
     height: 92px;
     text-align: center;
-    margin: 0 auto ${(props) => props.theme.spacing(5)};
+    margin: 0 auto ${(props) => props.theme.spacing(5)}px;
 `;
 
 function SignIn() {
@@ -47,11 +54,19 @@ function SignIn() {
     const dispatch = useDispatch();
     const history = useHistory();
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const avatarUrl = localStorage.getItem("avatar");
     const researcherName = localStorage.getItem("researcherName");
     const researcherEmail = localStorage.getItem("researcherEmail");
     
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
 
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
     return (
         <Wrapper>
             <Helmet title="Sign In" />
@@ -152,17 +167,15 @@ function SignIn() {
                     value={values.email}
                     error={Boolean(touched.email && errors.email)}
                     fullWidth
-                    variant="standard" 
                     helperText={touched.email && errors.email}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     my={2}
                 />
-                <TextField
+                {/* <TextField
                     type="password"
                     name="password"
                     label="Password"
-                    variant="standard" 
                     value={values.password}
                     error={Boolean(touched.password && errors.password)}
                     fullWidth
@@ -170,7 +183,29 @@ function SignIn() {
                     onBlur={handleBlur}
                     onChange={handleChange}
                     my={2}
-                />
+                /> */}
+                <FormControl  fullWidth>
+                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                    <Input value={values.password} 
+                        name="password"
+                        type={showPassword ? 'text' : 'password'}
+                        error={Boolean(touched.password && errors.password)}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        helperText={touched.password && errors.password}
+                        endAdornment={
+                            <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                            >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                            </InputAdornment>
+                        } />
+                </FormControl>
+                    
                 <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
                     label={<Translate id="sign-in.remember-me" />}

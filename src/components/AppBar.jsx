@@ -12,7 +12,7 @@ import {
   Toolbar,
 } from "@mui/material";
 
-import { Menu as MenuIcon } from "@mui/icons-material";
+import { Menu as MenuIcon, VideoLibrary as VideoLibraryIcon } from "@mui/icons-material";
 
 import NotificationsDropdown from "./NotificationsDropdown";
 import MessagesDropdown from "./MessagesDropdown";
@@ -21,8 +21,8 @@ import UserDropdown from "./UserDropdown";
 import DataSensor from "./DataSensor";
 
 const AppBar = styled(MuiAppBar)`
-  background:${(props) => props.theme.header.background}!important;
-  color: ${(props) => props.theme.header.color}!important;
+  background:${(props) => props.theme.header.background};
+  color: ${(props) => props.theme.header.color};
 `;
 
 const IconButton = styled(MuiIconButton)`
@@ -65,10 +65,10 @@ const Input = styled(InputBase)`
   width: 100%;
   > input {
     color: ${(props) => props.theme.header.search.color};
-    padding-top: ${(props) => props.theme.spacing(2.5)};
-    padding-right: ${(props) => props.theme.spacing(2.5)};
-    padding-bottom: ${(props) => props.theme.spacing(2.5)};
-    padding-left: ${(props) => props.theme.spacing(12)};
+    padding-top: ${(props) => props.theme.spacing(2.5)}px;
+    padding-right: ${(props) => props.theme.spacing(2.5)}px;
+    padding-bottom: ${(props) => props.theme.spacing(2.5)}px;
+    padding-left: ${(props) => props.theme.spacing(12)}px;
     width: 160px;
   }
 `;
@@ -85,17 +85,22 @@ const AppBarComponent = ({ onDrawerToggle }) => (
                 data-testid="menu-hamburguer"
                 aria-label="Open drawer"
                 onClick={onDrawerToggle}
-                size="large">
+              >
                 <MenuIcon />
               </IconButton>
             </Grid>
           </Hidden>
           <Grid item xs />
           <Grid item>
-              <DataSensor />
-              <OfflineDropDown />
-              <LanguagesDropdown />
-              <UserDropdown />
+                <a style={{color:"#000"}} href="https://www.sherwood.science/tutorial" target="blank">
+                    <IconButton color="inherit" >
+                        <VideoLibraryIcon />
+                    </IconButton>                
+                </a>                    
+                <DataSensor />
+                <OfflineDropDown />
+                <LanguagesDropdown />
+                <UserDropdown />
           </Grid>
         </Grid>
       </Toolbar>
