@@ -32,13 +32,13 @@ import {
 import { green, orange, red } from "@mui/material/colors";
 
 import {
-Add as AddIcon,
-Archive as ArchiveIcon,
-FilterList as FilterListIcon,
-RemoveRedEye as RemoveRedEyeIcon,
-Edit as EditIcon,
-Delete as DeleteIcon
-} from "@mui/icons-material";
+    Add as AddIcon,
+    Archive as ArchiveIcon,
+    FilterList as FilterListIcon,
+    RemoveRedEye as RemoveRedEyeIcon,
+    Edit as EditIcon,
+    Delete as DeleteIcon
+    } from "@mui/icons-material";
 
 import { spacing } from "@mui/system";
 import { IconGenerator } from "./mini_components";

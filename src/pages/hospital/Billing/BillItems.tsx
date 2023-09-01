@@ -16,6 +16,7 @@ import { pushBillingItems, saveBillingItems } from "../../../redux/actions/billi
 import Modal from "../../../components/general/modal";
 import Form from "../../../components/general/form";
 import FillSurvey from "../FillSurvey";
+import ShowSingleSubmissionPatient from "../ShowSingleSubmissionPatient";
 
 const FactureHolder = styled.div<{ hide: boolean }>`
     margin-top:2rem;
@@ -73,7 +74,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                                                     onCancelBill }) => {
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
-    const filteredColumns = columns.filter(column => column.type !== "type" || withDiscount)
+    const [showAdditionalInfoID, setShowAdditionalInfoID] = useState(-1);
+    const filteredColumns:Column[] = columns.filter((column:Column) => column.type !== "type" || withDiscount)
     const initFieldErrors:any = filteredColumns.reduce((acc:{[id: string] : string}, column) => {
         acc[column.name] = "";
         return acc;
@@ -265,6 +267,34 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         }
     }
 
+    function renderContentModal(){
+        if(showAdditionalInfoID !== -1){
+            return <ShowSingleSubmissionPatient surveys={[surveyAdditionalInfo]} forceEdit={false}
+                        idSubmission={showAdditionalInfoID}
+                        callBackEditSubmission={() => console.log("nada")}  />
+        }
+        else{
+
+            return <FillSurvey uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
+                        country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
+                        uuidPatient={uuidPatient!} 
+                        callBackDataCollectionSaved = {async (data) => {
+                            console.log("Data Saved", data);
+                            const amount = data.surveyRecords.find((record:any) => record.surveyField.name === "amount").value;
+                            const additionalItem:BillItem = {
+                                concept: translate(`hospital.billing.item.additional_info`).toString(),
+                                type: TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
+                                amount: amount,
+                                additionalInfoId: data.id,
+                            }
+                            await dispatch(pushBillingItems([additionalItem]))
+                            setCurrentItem(DEFAULT_CURRENT_ITEM);
+                            setShowModal(false);
+                        }
+                        }/>
+            
+        }
+    }
     function onCloseModal(){
         setShowModal(false);
         updateStates(BillItemKeys.type, "", "");
@@ -326,7 +356,25 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                 rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{<Translate id={`hospital.billing.item.types.${typeSelected.toLocaleLowerCase()}`} />}</Typography>
             }
             else{
-                rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
+                const plainName = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
+                let nameItem = plainName;
+                if(val.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO){
+                    nameItem = (
+                    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        {plainName}
+                        <IconButton
+                            onClick={(e) => {
+                                setShowModal(true);
+                                setShowAdditionalInfoID(val.additionalInfo.id) 
+                                e.stopPropagation();
+                                
+                            }}
+                            size="large">
+                            <IconGenerator type="view" />
+                        </IconButton> 
+                    </div>)
+                }
+                rowElement[col.name] = nameItem
             }
         })
         return {...rowElement, id: index, used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
@@ -450,12 +498,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         let field: BillItemTable = {}
         filteredColumns.forEach((col:Column) => {
             let value = <React.Fragment></React.Fragment>
-        //     switch(col.type){
-        //         case "autocomplete":
-        //         case "amount":
-        //             value = <React.Fragment></React.Fragment>
-        //         break;                
-        //    }
+
         // @ts-ignore: Unreachable code error
            field[col.name] = value;
         });
@@ -471,7 +514,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     if (items.length > 0 && showTotal) {
         let totalBill = calculateTotalBill(items);
         rows.push({
-            id: items.length, concept: <React.Fragment><Typography style={{ fontWeight: 'bold' }} ><Translate id={`hospital.billing.bill.total`} /></Typography></React.Fragment>,
+            id: items.length, concept: <React.Fragment></React.Fragment>,
             type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>, 
             amount: <Typography style={{ fontWeight: 'bold' }} >{totalBill + " " + currency}</Typography>,
             delete: <React.Fragment></React.Fragment>,
@@ -499,30 +542,12 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
    
     return (
         <div style={{width:'100%'}} ref={printRef} >
+            <Modal key="modal" fullWidth medium open={showModal} title="Request Discount" closeModal={() => onCloseModal()}>
             {
-                surveyAdditionalInfo && 
-                <Modal key="modal" fullWidth medium open={showModal} title="Request Discount" closeModal={() => onCloseModal()}>
-                    <FillSurvey uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
-                        country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
-                        uuidPatient={uuidPatient!} 
-                        callBackDataCollectionSaved = {async (data) => {
-                            console.log("Data Saved", data);
-                            const amount = data.surveyRecords.find((record:any) => record.surveyField.name === "amount").value;
-                            const additionalItem:BillItem = {
-                                concept: translate(`hospital.billing.item.additional_info`).toString(),
-                                type: TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
-                                amount: amount,
-                                additionalInfoId: data.id,
-                            }
-                            await dispatch(pushBillingItems([additionalItem]))
-                            setCurrentItem(DEFAULT_CURRENT_ITEM);
-                            setShowModal(false);
-                        }
-                        }/>
-                </Modal>
+                renderContentModal()
             }
-            
-
+            </Modal>
+        
             <Grid container item>
                 <Grid item xs={12}>
                     <FactureHolder hide={!bill}>

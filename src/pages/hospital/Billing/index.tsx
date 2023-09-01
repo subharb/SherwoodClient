@@ -294,6 +294,7 @@ const Billing: React.FC<Props> = (props) => {
                             email={props.billingInfo.email} size="A4" phone={props.billingInfo.phone} name={currentBill ? "Bill" + currentBill.id : ""} >
                             <BillForm patients={props.patients} personalFields={props.personalFields} withDiscount={props.withDiscount}
                                 currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
+                                surveyAdditionalInfo={props.surveyAdditionalInfo}
                                 onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
                                 onCancelBill={onCancelBill} print={true}
                                 idBillingInfo={props.billingInfo.id}

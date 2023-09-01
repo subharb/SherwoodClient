@@ -19,7 +19,7 @@ const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ sur
     const uuidInvestigation = useSelector((state:any) => state.investigations.currentInvestigation.uuid);
     
     const [submisionLocal, setSubmissionLocal] = React.useState<any>(null);
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(idSubmission && !submisionLocal);
 
     const submissionCached = useMemo(() => {
         if(submission){
@@ -31,17 +31,19 @@ const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ sur
     useEffect(() => {
         async function getSubmission() {
             setLoading(true);
-            await getSubmissionPatientService(uuidInvestigation, idSubmission, false);
+            const sub = await getSubmissionPatientService(uuidInvestigation, idSubmission, false);
+            setSubmissionLocal(sub.submission);
+            setLoading(false);
         }
         if(idSubmission && !submission){
             getSubmission();   
         }    
     }, [idSubmission, submission]);
     
-    if(idSubmission && !submission){
+    if(loading){
         return <Loader />
     }
-    return <ShowSingleSubmissionPatientView surveys={surveys} forceEdit={forceEdit} submission={submissionCached} 
+    return <ShowSingleSubmissionPatientView surveys={surveys} forceEdit={forceEdit} submission={submisionLocal} 
                 callBackEditSubmission={(uuidSubmission:string, uuidSection:string) => callBackEditSubmission(uuidSubmission, uuidSection)}  />
 };
 const ShowSingleSubmissionPatientView: React.FC<ShowSubmissionPatientProps> = ({ surveys, forceEdit, callBackEditSubmission, submission }) => {

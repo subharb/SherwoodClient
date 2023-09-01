@@ -71,7 +71,8 @@ function ShowRecordsSection(props) {
             );
         }
         else if(valueRecord.surveyField.type === "file"){
-            return <File key={valueRecord.id} mode="show" value={valueRecord.value} />
+            return <File key={valueRecord.id} mode="show" value={valueRecord.value}
+                    label={field.name}  />
         }
         else if(valueRecord.surveyField.type === "appointment"){
             const dateAppointment = stringDatePostgresToDate(valueRecord.value);
