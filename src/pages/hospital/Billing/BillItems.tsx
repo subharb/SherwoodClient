@@ -273,7 +273,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                         idSubmission={showAdditionalInfoID}
                         callBackEditSubmission={() => console.log("nada")}  />
         }
-        else{
+        else if(surveyAdditionalInfo){
 
             return <FillSurvey uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
                         country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
@@ -514,8 +514,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     if (items.length > 0 && showTotal) {
         let totalBill = calculateTotalBill(items);
         rows.push({
-            id: items.length, concept: <React.Fragment></React.Fragment>,
-            type : <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>, 
+            id: items.length, concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>,
+            type : <></>, 
             amount: <Typography style={{ fontWeight: 'bold' }} >{totalBill + " " + currency}</Typography>,
             delete: <React.Fragment></React.Fragment>,
         });
@@ -564,11 +564,11 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     }
                    
                     <GridBottom hide={print} item xs={12} >
-                        <Button onClick={onCancelBill} data-testid="cancel-modal" color="secondary">
+                        <Button onClick={onCancelBill} data-testid="cancel-modal">
                             <Translate id="general.cancel" />
                         </Button>
                         <Button disabled={items.length === 0} onClick={() => onClickContinue(items)} 
-                            data-testid="continue-modal" color="secondary">
+                            data-testid="continue-modal">
                             {renderTextOkButton()}
                         </Button>
                     </GridBottom>

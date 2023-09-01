@@ -25,7 +25,7 @@ interface PostFile{
 }
 interface FileUpload{
     image?:FileList, 
-    buffer?:string,
+    buffer?:{data:ArrayBufferLike, type:string},
     type:string,
     status:UPLOAD_STATE, 
     remoteName?:string
@@ -81,7 +81,7 @@ const File:React.FC<Props> = (props) => {
     const prevValue:FileUpload[] | undefined = usePrevious(props.value);
     const [addingFile, setAddingFile] = useState(false);
 
-    function dataToImageUrl(data:string){
+    function dataToImageUrl(data:ArrayBufferLike){
         const uint8Array = new Uint8Array(data);
 
         // Create a Blob from the Uint8Array with the appropriate MIME type
