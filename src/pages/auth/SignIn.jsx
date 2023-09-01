@@ -11,34 +11,34 @@ import { signIn } from "../../services/authService";
 import pathLogo from '../../img/logo_sherwood_web.png';
 
 import {
-  Avatar,
-  Checkbox,
-  FormControlLabel,
-  Button,
-  Paper,
-  TextField as MuiTextField,
-  Typography,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
-  Input,
-} from "@material-ui/core";
-import { spacing } from "@material-ui/system";
-import { Alert as MuiAlert } from "@material-ui/lab";
+    Avatar,
+    Checkbox,
+    FormControlLabel,
+    Button,
+    Paper,
+    TextField as MuiTextField,
+    Typography,
+    FormControl,
+    InputLabel,
+    OutlinedInput,
+    InputAdornment,
+    IconButton,
+    Input,
+} from "@mui/material";
+import { spacing } from "@mui/system";
+import { Alert as MuiAlert } from "@mui/lab";
 import { Translate } from "react-localize-redux";
-import { postErrorSlack } from "../../utils";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { postErrorSlack } from "../../utils/index.jsx";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Alert = styled(MuiAlert)(spacing);
 
 const TextField = styled(MuiTextField)(spacing);
 
 const Wrapper = styled(Paper)`
-    padding: ${(props) => props.theme.spacing(6)}px;
+    padding: ${(props) => props.theme.spacing(6)};
     ${(props) => props.theme.breakpoints.up("md")} {
-        padding: ${(props) => props.theme.spacing(10)}px;
+        padding: ${(props) => props.theme.spacing(10)};
     }
 `;
 
@@ -165,26 +165,17 @@ function SignIn() {
                     name="email"
                     label="Email Address"
                     value={values.email}
+                    variant="standard"
                     error={Boolean(touched.email && errors.email)}
                     fullWidth
                     helperText={touched.email && errors.email}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    my={2}
+                    
                 />
-                {/* <TextField
-                    type="password"
-                    name="password"
-                    label="Password"
-                    value={values.password}
-                    error={Boolean(touched.password && errors.password)}
-                    fullWidth
-                    helperText={touched.password && errors.password}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    my={2}
-                /> */}
-                <FormControl  fullWidth>
+                <br/>
+                <br/>
+                <FormControl fullWidth>
                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                     <Input value={values.password} 
                         name="password"
