@@ -45,6 +45,7 @@ const GridContainer = styled(Grid)`
 export const BillForm:React.FC<Props> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(props.bill ? props.bill.patientInvestigation : null);
     const [loading, setLoading] = useState(false);
+    const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);
     const [comboSelected, setComboSelected] = useState<BillableCombo | null>(null);
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(undefined);
     const [currentItems, setCurrentItems] = useState<BillItem[]>([]);
@@ -153,7 +154,7 @@ export const BillForm:React.FC<Props> = (props) => {
         }
         else {
             return (
-                <Grid container>
+                <Grid container paddingBottom={'1rem'}>
                     <Grid item xs={6}  >
                         <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.patient" /></span>: {patient.personalData.name} {patient.personalData.surnames}</Typography>
                         <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.birthdate" /></span>: {dateToFullDateString(patient.personalData.birthdate, props.locale.code)}</Typography>
@@ -201,8 +202,12 @@ export const BillForm:React.FC<Props> = (props) => {
     }
 
     function renderItems(){
-        if (loading) {
-            return <Loader />
+        if (loading || loadingBillables) {
+            return (<Grid container >
+                        <Grid item xs={12}>
+                            <Loader />
+                        </Grid>
+                    </Grid>)
         }
         if(patient){
             return(

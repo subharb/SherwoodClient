@@ -1,6 +1,7 @@
 import { te } from "date-fns/locale";
 import * as types from "../../constants";
 import { BillItem, Billable, BillableCombo } from "../../pages/hospital/Billing/types";
+import { t } from "vitest/dist/types-198fd1d9";
 /**
  * Reducer that saves all the investigations loaded
  * @constructor
@@ -36,6 +37,10 @@ export default function reducer(state:BillingReducer = initialState, action:any)
     let currentBillables;
 
     switch(action.type){
+        case types.FETCH_BILLING_LOADING:
+            newState.loading = true;
+            newState.error = null;
+            return newState;
         case types.SAVE_BILL_ITEMS:
             newState.data.billItems = [...action.billItems]
             newState.loading = initialState.loading; 
@@ -58,6 +63,11 @@ export default function reducer(state:BillingReducer = initialState, action:any)
             newState.loading = false; 
             newState.error = null; 
             return newState;     
+        case types.GET_BILLABLE_COMBO_SUCCESS:
+            newState.data.billableCombos = action.billableCombos;
+            newState.loading = false;
+            newState.error = null;
+            return newState;
         case types.PUSH_BILLABLES:
             currentBillItems = newState.data.billItems ? newState.data.billItems : [];
             currentBillables = newState.data.billables ? newState.data.billables : [];

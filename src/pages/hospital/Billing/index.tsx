@@ -25,7 +25,7 @@ import BillsTable from './BillsTable';
 
 import { FindPatient } from './find_patient';
 import { HOSPITAL_BILLING, HOSPITAL_BILLING_CREATE_BILL } from '../../../routes/urls';
-import { resetBillItems } from '../../../redux/actions/billingActions';
+import { getBillableComboAction, resetBillItems } from '../../../redux/actions/billingActions';
 import { TYPE_ADDITIONAL_INFO_SURVEY } from '../../../constants';
 
 interface PropsRedux {
@@ -46,6 +46,8 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
 
     const hasDiscounts = investigation && investigation.billingInfo && investigation.billingInfo.params && hasDiscountsActive(investigation.billingInfo.params, investigation.permissions);
     
+    const dispatch = useDispatch();
+
     function navigateToHomeBilling(){
         history.push(HOSPITAL_BILLING);
     }
@@ -90,7 +92,15 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
         if (investigation) {
             getBills();
         }
-    }, [investigation])
+    }, [investigation]);
+
+    useEffect(() => {
+        if(section === "create_bill" && investigation){
+            dispatch(getBillableComboAction(investigation.uuid, investigation.billingInfo.id));
+        }
+
+        }, [section, investigation])
+
     if (investigation) {
         const surveyAdditionalInfo:ISurvey | undefined = investigation.surveys.find((survey: any) => survey.type === TYPE_ADDITIONAL_INFO_SURVEY);
         return <BillingLocalized patients={patients.data[investigation.uuid]} withDiscount={hasDiscounts}

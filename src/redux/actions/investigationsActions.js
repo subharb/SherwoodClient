@@ -60,7 +60,7 @@ export function updateBillables(uuidInvestigation, idBillingInfo, billables) {
 
 export function getBillablesAction(uuidInvestigation, idBillingInfo, idInsurance){
     return async (dispatch) => {
-        dispatch({ type: types.FETCH_INVESTIGATIONS_LOADING });
+        dispatch({ type: types.FETCH_BILLING_LOADING });
         return getBillablesService(uuidInvestigation, idBillingInfo, idInsurance)
             .then((response) => {
                 dispatch({

@@ -1,5 +1,6 @@
 import * as types from "../../constants";
 import { BillItem } from "../../pages/hospital/Billing/types";
+import { getBillableComboService } from "../../services/billing";
 
 
 export function saveBillingItems(billItems:BillItem[]) {
@@ -36,6 +37,25 @@ export function resetBillItems() {
       dispatch({ 
             type: types.RESET_BILL_ITEMS
       });
+    };
+}
+
+
+
+export function getBillableComboAction(uuidInvestigation:string, idBillingInfo:number){
+    return async (dispatch:any ) => {
+        dispatch({ type: types.FETCH_BILLING_LOADING });
+        return getBillableComboService(uuidInvestigation, idBillingInfo)
+            .then((response:any) => {
+                dispatch({
+                    type: types.GET_BILLABLE_COMBO_SUCCESS,
+                    billableCombos: response.billableCombos,
+                });
+            })
+            .catch((error:any) => {
+                dispatch({ type: types.GET_BILLABLES_ERROR });
+                throw error;
+            });
     };
 }
 

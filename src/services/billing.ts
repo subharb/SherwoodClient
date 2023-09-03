@@ -115,3 +115,19 @@ export function getBillablesService(uuidInvestigation: string, idBillingInfo: nu
             });
     });
 }
+
+export function getBillableComboService(uuidInvestigation: string, idBillingInfo: number): Promise<BillablesServiceResponse> {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billablecombo/" + idBillingInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
