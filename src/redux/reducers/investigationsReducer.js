@@ -39,13 +39,7 @@ export default function reducer(state = initialState, action){
             newState.currentInvestigation.billingInfo = action.billingInfo;
             newState.loading = false; 
             newState.error = null; 
-            return newState
-        case types.GET_BILLABLES_SUCCESS:
-        case types.UPDATE_BILLABLES_SUCCESS:
-            newState.currentInvestigation.billingInfo.billables = action.billables;
-            newState.loading = false; 
-            newState.error = null; 
-            return newState;            
+            return newState       
         case types.AUTH_SIGN_OUT:
             newState = {...initialState};
             return newState;

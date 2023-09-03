@@ -52,6 +52,12 @@ export default function reducer(state:BillingReducer = initialState, action:any)
             newState.loading = initialState.loading;
             newState.error = initialState.error;
             return newState;
+        case types.GET_BILLABLES_SUCCESS:
+        case types.UPDATE_BILLABLES_SUCCESS:
+            newState.data.billables = action.billables;
+            newState.loading = false; 
+            newState.error = null; 
+            return newState;     
         case types.PUSH_BILLABLES:
             currentBillItems = newState.data.billItems ? newState.data.billItems : [];
             currentBillables = newState.data.billables ? newState.data.billables : [];

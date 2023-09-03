@@ -96,7 +96,6 @@ export function AddPatient(props: Props) {
     return (
         <AddPatientComponent
             personalFields={props.investigations.currentInvestigation.personalFields}
-            insurances={props.investigations.currentInvestigation.insurances}
             keyResearcherInvestigation={
                 props.investigations.currentInvestigation.keyResearcherInvestigation
             }

@@ -402,7 +402,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                             else{
                                 return billable
                             }
-                        }) as BillableOption[] : []}
+                        }).sort((a,b) => a.concept > b.concept ? 1 : -1 ) as BillableOption[] : []} 
                         onInputChange={(event, value, reason) => {
                             onBillableSelected(value);
                         }}
