@@ -19,6 +19,7 @@ import Loader from '../components/Loader';
 import SelectField from '../components/general/SelectField';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { getServiceGeneralService } from '../services/agenda';
+import { isArray, isObject } from 'lodash';
 
 export interface SnackbarType{
     show: boolean;
@@ -285,7 +286,14 @@ export function usePrevious(value:any, withInitial?:boolean){
       ref.current = value;
     });
     if(ref.current === undefined && withInitial){
+        if(isArray(value)){
+            return [...value];
+        }
+        else if(isObject(value)){
+            return {...value};
+        }
         return value;
+        
     }
     return ref.current as any;
 }

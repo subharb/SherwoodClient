@@ -20,13 +20,14 @@ interface FillSurveyProps {
     typeSurvey?:string,
     department?:IDepartment,
     alterSubmitButton?: (button:JSX.Element) => JSX.Element,
-    callBackDataCollectionSaved: (data:any) => void
+    callBackDataCollectionSaved?: () => void
+    callBackDataCollectionSavedWithData?:(data:any) => void
 }
 
 const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections, initData, 
                                                 idSubmission, requestServiceId, nameSurvey,
                                                 country, uuidInvestigation, uuidPatient, department, typeSurvey,
-                                                alterSubmitButton, callBackDataCollectionSaved }) => {
+                                                alterSubmitButton, callBackDataCollectionSaved, callBackDataCollectionSavedWithData }) => {
     const [loading, setLoading] = React.useState(false);
 
     const submissionsSurvey = useSelector((state:any) => {
@@ -50,11 +51,15 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
 
     useEffect(() => {
         const oldSubmissions = !prevSubmissionsSurvey ? [] : prevSubmissionsSurvey;
-        if(submissionsSurvey.length !== oldSubmissions.length){
+        if(submissionsSurvey.length !== oldSubmissions.length && callBackDataCollectionSavedWithData){
             const lastSubmission = submissionsSurvey[submissionsSurvey.length - 1];
-            callBackDataCollectionSaved(lastSubmission);
+            callBackDataCollectionSavedWithData(lastSubmission);
         }
     }, [submissionsSurvey]);
+
+    useEffect(() => {
+        console.log("FillSurvey");
+    }, []);
 
     async function saveRecords(data:any, buttonSubmitted:string){
         setLoading(true);
@@ -98,6 +103,10 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
         else{
             await dispatch(postSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, uuid, nameSurvey, typeSurvey));
         }
+        if(callBackDataCollectionSaved){
+            callBackDataCollectionSaved();
+        }
+        
         setLoading(false);
         
     }
@@ -123,7 +132,7 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
         return <Loader />
     }
     return(
-        <SectionForm initData={initData} key={uuid} 
+        <SectionForm key={uuid} initData={initData}
             country={country} uuidInvestigation={uuidInvestigation}
             fields={fields} uuidPatient={uuidPatient} department={department}
             uuidSurvey = {uuid} alterSubmitButton={alterSubmitButton}

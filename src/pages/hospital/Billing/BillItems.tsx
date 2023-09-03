@@ -278,7 +278,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
             return <FillSurvey uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
                         country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
                         uuidPatient={uuidPatient!} 
-                        callBackDataCollectionSaved = {async (data) => {
+                        callBackDataCollectionSavedWithData = {async (data) => {
                             console.log("Data Saved", data);
                             const amount = data.surveyRecords.find((record:any) => record.surveyField.name === "amount").value;
                             const additionalItem:BillItem = {

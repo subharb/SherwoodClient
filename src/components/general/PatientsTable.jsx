@@ -8,7 +8,7 @@ import { PERMISSION } from '../investigation/share/user_roles';
 
 function PatientsTable(props) {
     
-    const rows = formatPatients(props.patients, props.personalFields, props.activeLanguage.code);
+    const rows = formatPatients(props.patients, props.personalFields, props.activeLanguage.code, props.insurances);
     const headCells = props.personalFields.map(pField => {
         return { id: pField.name, alignment: "left", label: !props.translate(`investigation.create.personal_data.short-fields.${pField.name}`).includes("Missing") ? props.translate(`investigation.create.personal_data.short-fields.${pField.name}`) : pField.label }
     }) 

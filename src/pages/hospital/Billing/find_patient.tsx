@@ -32,7 +32,7 @@ export const FindPatient:React.FC<Props> = (props) => {
                 const currentPatientData = patient.personalData;
                 const currentPatientFullName = currentPatientData.name+" "+currentPatientData.surnames;
                 return currentPatientFullName.toLocaleLowerCase().includes(patientName.toLocaleLowerCase());
-            });
+            }).sort((a,b) => a.dateCreated > b.dateCreated ? -1 : 1);
     
             if(filteredPatients.length === 0){
                 return "No patients match the criteria"

@@ -12,7 +12,7 @@ export default function FillDataCollection(props) {
     
     return (
         <React.Fragment>
-            <Grid container  spacing={3}>
+            <Grid container spacing={3}>
                 <Grid item container xs={12} spacing={3} style={{color:"white", padding:"1rem"}}>
                     {
                         !props.hideCollectionName && 

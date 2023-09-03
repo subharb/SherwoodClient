@@ -630,7 +630,7 @@ export function researcherFullName(researcher){
     return researcher.name + " " + researcher.surnames;
 }
 
-export function formatPatients(patients, personalFields, code = 'es-ES'){
+export function formatPatients(patients, personalFields, code = 'es-ES', insurances = []){
     const arrayPatients = patients.map(patient => {
         let tempRow = {};
         for(const pField of personalFields){
@@ -641,6 +641,16 @@ export function formatPatients(patients, personalFields, code = 'es-ES'){
                 }
                 if(pField.name === 'sex'){
                     value = <Translate id={`hospital.analytics.graphs.sex.${patient.personalData[pField.name].toLowerCase()}`} />
+                }
+                if(pField.name === 'insurance'){
+                    const insurance = insurances.find(insurance => insurance.id === parseInt(patient.personalData[pField.name]));
+                    if(insurance){
+                        value = insurance.name;
+                    }
+                    else{
+                        value = "";
+                    }
+                    
                 }
                 tempRow[pField.name] = value;
             }

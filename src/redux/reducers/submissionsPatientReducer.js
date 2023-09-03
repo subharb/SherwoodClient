@@ -81,17 +81,17 @@ export default function reducer(state = initialState, action){
             }
             else{
                 if(!action.submission.id){
-                    action.submission.id = Math.floor(Math.random() * 10000);
+                    action.submission.id = Math.floor(Math.random() * 10000 );
                     action.submission.offline = true;
                 }
                 tempDict = {
                     surveyName : action.meta.surveyName,
                     uuid : action.meta.surveyUUID,
                     type : action.meta.surveyType,
-                    submissions:[...action.submission]
                 }
+                tempSubmissions.push(action.submission);
             }
-            tempDict.submissions = tempSubmissions;
+            tempDict.submissions = tempSubmissions; 
             
             tempData[action.meta.uuidPatient][action.meta.surveyUUID] = tempDict;                   
             newState.loading = initialState.loading;

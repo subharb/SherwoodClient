@@ -40,7 +40,7 @@ function SearchPatients(props){
     const [showResults, setShowResults] = useState(false);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [patientsDiagnoseLoading, setPatientsDiagnoseLoading] = useState(false);
-
+    const insurances = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.insurances : [];
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     const dispatch = useDispatch();
     const history = useHistory();
@@ -130,14 +130,15 @@ function SearchPatients(props){
     return(
         <React.Fragment>
             <SearchPatientsComponent showResults={showResults} 
-                        patients={filteredPatients} investigation={props.investigations.currentInvestigation}
-                        personalFields={props.investigations.currentInvestigation.personalFields}
-                        permissions={props.investigations.currentInvestigation.permissions}
-                        functionalities={props.investigations.currentInvestigation.functionalities}
-                        searchPatientCallBack={searchPatientCallBack}
-                        backToSearchCallBack={backToSearchCallBack} 
-                        patientSelectedCallBack={patientSelectedCallBack}
-                        diagnoseSelectedCallBack={diagnoseSelectedCallBack}
+                patients={filteredPatients} investigation={props.investigations.currentInvestigation}
+                personalFields={props.investigations.currentInvestigation.personalFields}
+                permissions={props.investigations.currentInvestigation.permissions}
+                functionalities={props.investigations.currentInvestigation.functionalities}
+                insurances={insurances}
+                searchPatientCallBack={searchPatientCallBack}
+                backToSearchCallBack={backToSearchCallBack} 
+                patientSelectedCallBack={patientSelectedCallBack}
+                diagnoseSelectedCallBack={diagnoseSelectedCallBack}
                     />
         </React.Fragment>                          
     )
@@ -319,6 +320,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                             <PatientsTable patients={props.patients} 
                                 personalFields={formSearch} permissions={props.permissions}
                                 functionalities={props.functionalities}
+                                insurances={props.insurances ? props.insurances : []}
                                 showPatientCallBack={id => patientSelected(id)} 
                                 selectAppointmentPatientCallBack={(index) => selectAppointmentPatient(index)}
                                 hospitalizePatientCallBack={(index) => hospitalizePatient(index)} />
