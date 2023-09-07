@@ -27,7 +27,7 @@ export default function FillDataCollection(props) {
                         {
                             <FillSurvey uuid={props.dataCollection.uuid} sections={props.dataCollection.sections} 
                                 sectionSelected={props.sectionSelected} idSubmission={props.idSubmission} nameSurvey={props.dataCollection.name}
-                                typeSurvey={props.dataCollection.type} 
+                                typeSurvey={props.dataCollection.type} requestServiceId={props.requestServiceId}
                                 initData={props.initData} country={props.country} uuidInvestigation={props.uuidInvestigation}
                                 uuidPatient={props.uuidPatient} department={props.department} alterSubmitButton={props.alterSubmitButton}
                                 callBackDataCollectionSaved={props.callBackDataCollection}/>

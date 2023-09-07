@@ -10,7 +10,7 @@ import { EnhancedTable } from '../../../general/EnhancedTable';
 import { fetchRecordsPatientFromSurvey } from '../../../../services';
 import { Card, CardContent, Typography, Grid, Paper } from '@mui/material';
 import Loader from '../../../Loader';
-import ShowSubmissionPatient from '../../../../pages/hospital/ShowSingleSubmissionPatient';
+import ShowSingleSubmissionPatient from '../../../../pages/hospital/ShowSingleSubmissionPatient';
 
 /**
  * Component in charge of showing records of a given patient in a survey
@@ -91,7 +91,7 @@ export default function ShowPatientRecords(props) {
             else{
                 return(
                 <div style={{paddingTop:"0.6rem"}}>
-                    <ShowSubmissionPatient surveys={props.surveys} 
+                    <ShowSingleSubmissionPatient surveys={props.surveys} 
                         forceEdit={props.forceEdit} submission={props.submissions[indexSubmission]} 
                         callBackEditSubmission={(uuidSubmission, uuidSection) => callBackEditSubmission(uuidSubmission, uuidSection)}  /> 
                 </div> )

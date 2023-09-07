@@ -43,7 +43,7 @@ const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ sur
     if(loading){
         return <Loader />
     }
-    return <ShowSingleSubmissionPatientView surveys={surveys} forceEdit={forceEdit} submission={submisionLocal} 
+    return <ShowSingleSubmissionPatientView surveys={surveys} forceEdit={forceEdit} submission={submissionCached} 
                 callBackEditSubmission={(uuidSubmission:string, uuidSection:string) => callBackEditSubmission(uuidSubmission, uuidSection)}  />
 };
 const ShowSingleSubmissionPatientView: React.FC<ShowSubmissionPatientProps> = ({ surveys, forceEdit, callBackEditSubmission, submission }) => {
