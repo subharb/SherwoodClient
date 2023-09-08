@@ -190,9 +190,10 @@ const Billing: React.FC<Props> = (props) => {
         else {
             setShowSnackbar({ message: "hospital.billing.bill.success.created", show: true, severity: "success" });
         }
-        await dispatch(resetBillItems());
+        //await dispatch(resetBillItems());
+        onCloseModal();
         props.onBillSuccesfullyCreated(bill);
-        setCurrentBill(null);
+        //setCurrentBill(null);
 
     }
     function makeActionBill(idBill: number, action: BillActions) {
@@ -344,7 +345,7 @@ const Billing: React.FC<Props> = (props) => {
                 renderModal()
             } */}
 
-            <Grid justifyContent="space-between" direction='row' container spacing={6} style={{ color: "white" }}>
+            <Grid justifyContent="space-between" direction='row' container padding={2} style={{ color: "white" }}>
                 <Grid item xs={12} container>
                     <Grid item xs={6} style={{ paddingBottom: '1rem' }}>
                         <div>

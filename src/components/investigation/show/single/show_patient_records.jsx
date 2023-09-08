@@ -93,7 +93,7 @@ export default function ShowPatientRecords(props) {
                 <div style={{paddingTop:"0.6rem"}}>
                     <ShowSingleSubmissionPatient surveys={props.surveys} 
                         forceEdit={props.forceEdit} submission={props.submissions[indexSubmission]} 
-                        callBackEditSubmission={(uuidSubmission, uuidSection) => callBackEditSubmission(uuidSubmission, uuidSection)}  /> 
+                        callBackEditSubmission={(uuidSubmission, uuidSection) => props.callBackEditSubmission(uuidSubmission, uuidSection)}  /> 
                 </div> )
             }
         }

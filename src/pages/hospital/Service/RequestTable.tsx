@@ -200,7 +200,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     useEffect(() => {
         setFilteredRows(rows.filter((row: Row) => {
             const searchItem = serviceType === RequestType.PHARMACY ? row.researcher : row.patient;
-            return (searchItem.toLocaleLowerCase().includes(searchText) && (statusFilter !== null ? row.status.props.status === statusFilter : true))
+            return (searchItem.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()) && (statusFilter !== null ? row.status.props.status === statusFilter : true))
                         
         }));
         

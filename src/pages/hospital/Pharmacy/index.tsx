@@ -201,7 +201,7 @@ const PharmacyHome: React.FC<PharmacyHomeProps> = ({ investigations }) => {
                     </div>
                 </Snackbar>
                 <React.Fragment>
-            <Grid container spacing={6} >
+            <Grid container  >
                 <SectionHeader section="pharmacy" edit={edit} editCallback={canViewPharmacyCentral ? toogleEditLab : undefined} 
                     addCallback={addCallback} />
                 <Grid item xs={12}>

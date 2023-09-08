@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import * as types from "../../../constants";
 import { connect, useDispatch } from 'react-redux';
-import { Typography, Grid, Box, Chip, AppBar, Tabs, Tab, Snackbar } from '@mui/material';
-import withStyles from '@mui/styles/withStyles';
-import { Alert } from "@mui/lab";
+import { Typography, Grid, Box, Alert, AppBar, Tabs, Tab, Snackbar } from '@mui/material';
 import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import Loader from '../../../components/Loader';
@@ -12,7 +10,7 @@ import Modal from '../../../components/general/modal';
 import Form from '../../../components/general/form';
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import styled from 'styled-components';
-import { yellow, green, blue, red, orange } from "@mui/material/colors";
+import { yellow, green, red } from "@mui/material/colors";
 
 import { useHistory } from "react-router-dom";
 import { saveDepartmentAction, saveUpdateWardAction, assignUnitToResearcherAction, deleteWardAction, saveUnitAction, removeResearcherFromUnitAction, editDepartmentAction, deleteDepartmentAction, deleteUnitAction, editUnitAction } from '../../../redux/actions/hospitalActions';
@@ -131,11 +129,11 @@ const WARD_FORM = {
 const StatusChip = withLocalize((props) => {
     switch(props.value.toString()){
         case "0":
-            return <ColourChip size="small" label={props.translate("investigation.share.status.pending")} rgbcolor={yellow[500]} />
+            return <ColourChip size="small" rgbcolor={yellow[500]}>{props.translate("investigation.share.status.pending")}</ColourChip>
         case "1": 
-            return <ColourChip size="small" label={props.translate("investigation.share.status.denied")} rgbcolor={red[500]} />
+            return <ColourChip size="small" rgbcolor={red[500]}>{props.translate("investigation.share.status.denied")} </ColourChip>
         default:
-            return <ColourChip size="small" label={props.translate("investigation.share.status.accepted")} rgbcolor={green[500]} />
+            return <ColourChip size="small" rgbcolor={green[500]}>{props.translate("investigation.share.status.accepted")}</ColourChip>
     }
     
 })
@@ -454,7 +452,7 @@ function Departments(props) {
                                     id:idx,
                                     name : name, 
                                     units: researcher.units.map((unit, index) => {
-                                        return <ColourChip size="small" label={`${unit.department.name} - ${unit.name}`} rgbcolor={green[500]} onDelete={() => handleDeleteFromUnit({unit, researcher})} />
+                                        return <ColourChip size="small" rgbcolor={green[500]} onDelete={() => handleDeleteFromUnit({unit, researcher})} label={`${unit.department.name} - ${unit.name}`}/>
                                     }),
                                     status : <StatusChip value={researcher.status}/>
                                 }
@@ -506,7 +504,7 @@ function Departments(props) {
                         
                     </Grid>
                     <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                        <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                        <ButtonCancel onClick={resetModal} data-testid="cancel-modal"  spaceright={1}>
                             <Translate id="general.cancel" />
                         </ButtonCancel>
                         <ButtonContinue onClick={() => props.deleteWardCallBack(uuidDepartmentAddWard, wardToDelete)} data-testid="continue-modal" color="green">
@@ -734,7 +732,7 @@ function Departments(props) {
                         renderContentModal()
                     }
             </Modal>
-            <Grid container spacing={3}>
+            <Grid container padding={2}>
                 <Grid item xs={12}>
                     <Grid item xs={6} >
                         <TypographyStyled variant="h3" gutterBottom display="inline">
