@@ -108,8 +108,11 @@ function Patient(props) {
             const currentSub = surveyRecords.find((rec) => rec.id === idSubmission);
             if(currentSub){
                 return surveyRecords.filter(rec => {
-                    return props.investigations.currentInvestigation.surveys.find((sur) => sur.uuid === currentSub.uuidSurvey) !== undefined;
-                })
+                    return currentSub.typeSurvey === rec.typeSurvey;
+                });
+                // return surveyRecords.filter(rec => {
+                //     return props.investigations.currentInvestigation.surveys.find((sur) => sur.uuid === currentSub.uuidSurvey) !== undefined;
+                // })
             }
         }
         return surveyRecords ? surveyRecords.filter(rec => {

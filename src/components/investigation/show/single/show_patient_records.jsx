@@ -38,12 +38,7 @@ export default function ShowPatientRecords(props) {
             { name : section.name, register : registers}
         )
     }
-    function renderSubmissionsSection(){    
-        
-        
-        
-        
-    }
+    
     function renderNavigation(){
         const dateCurrentSubmission = new Date(props.submissions[indexSubmission].updatedAt)
         return (
