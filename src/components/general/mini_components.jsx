@@ -96,7 +96,7 @@ export const FieldWrapper = (props) => {
     }
     else{
         return (
-            <Grid item xs={12} sm={7} lg={4}>
+            <Grid item xs={12} sm={7} lg={4} {...props}>
                 {props.children}
             </Grid>
         )

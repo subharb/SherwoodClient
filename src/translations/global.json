@@ -39,6 +39,7 @@
         "back" : ["Back", "Atrás", "Returner"],
         "add" : ["Add", "Añadir", "Ajouter"],
         "male" : ["Male", "Masculino", "Homme"],
+        "close" : ["Close", "Cerrar", "Fermer"],
         "female" : ["Female", "Femenino", "Femme"],
         "undetermined" : ["Undetermined", "Indeterminado", "Indéterminé"],
         "any" : ["Any", "Indiferente", "Indifférent"],

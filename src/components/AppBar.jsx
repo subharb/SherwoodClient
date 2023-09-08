@@ -12,7 +12,7 @@ import {
   Toolbar,
 } from "@mui/material";
 
-import { Menu as MenuIcon, VideoLibrary as VideoLibraryIcon } from "@mui/icons-material";
+import { Menu as MenuIcon, Slideshow } from "@mui/icons-material";
 
 import NotificationsDropdown from "./NotificationsDropdown";
 import MessagesDropdown from "./MessagesDropdown";
@@ -21,8 +21,8 @@ import UserDropdown from "./UserDropdown";
 import DataSensor from "./DataSensor";
 
 const AppBar = styled(MuiAppBar)`
-  background:${(props) => props.theme.header.background};
-  color: ${(props) => props.theme.header.color};
+  background:${(props) => props.theme.header.background}!important;
+  color: ${(props) => props.theme.header.color}!important;
 `;
 
 const IconButton = styled(MuiIconButton)`
@@ -94,7 +94,7 @@ const AppBarComponent = ({ onDrawerToggle }) => (
           <Grid item>
                 <a style={{color:"#000"}} href="https://www.sherwood.science/tutorial" target="blank">
                     <IconButton color="inherit" >
-                        <VideoLibraryIcon />
+                        <Slideshow />
                     </IconButton>                
                 </a>                    
                 <DataSensor />

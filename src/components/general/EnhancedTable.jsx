@@ -155,57 +155,59 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort, 
-    headCells
-} = props;
-const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-};
+    const {
+        onSelectAllClick,
+        order,
+        orderBy,
+        disableOrder,
+        numSelected,
+        rowCount,
+        onRequestSort, 
+        headCells
+    } = props;
+    const createSortHandler = (property) => (event) => {
+        onRequestSort(event, property);
+    };
 
-return (
-    <TableHead style={{fontWeight:'600'}}>
-    <TableRow> 
-        {!props.noSelectable &&
-            <TableCell padding="checkbox">
-                <Checkbox
-                    indeterminate={numSelected > 0 && numSelected < rowCount}
-                    checked={rowCount > 0 && numSelected === rowCount}
-                    onChange={onSelectAllClick}
-                    inputProps={{ "aria-label": "select all" }}
-                />
-            </TableCell>
-        }
-        {headCells.map((headCell) => (
-        <TableCell
-            key={headCell.id}
-            align={headCell.alignment}
-            padding={headCell.disablePadding ? "none" : "default"}
-            sortDirection={orderBy === headCell.id ? order : false}
-            
-        >
-            <TableSortLabel
-            active={orderBy === headCell.id}
-            direction={orderBy === headCell.id ? order : "asc"}
-            onClick={createSortHandler(headCell.id)}
-            style={{fontWeight:"600"}}
+    return (
+        <TableHead style={{fontWeight:'600'}}>
+        <TableRow> 
+            {!props.noSelectable &&
+                <TableCell padding="checkbox">
+                    <Checkbox
+                        indeterminate={numSelected > 0 && numSelected < rowCount}
+                        checked={rowCount > 0 && numSelected === rowCount}
+                        onChange={onSelectAllClick}
+                        inputProps={{ "aria-label": "select all" }}
+                    />
+                </TableCell>
+            }
+            {headCells.map((headCell) => (
+            <TableCell
+                key={headCell.id}
+                align={headCell.alignment}
+                padding={headCell.disablePadding ? "none" : "default"}
+                sortDirection={orderBy === headCell.id ? order : false}
+                
             >
-            {headCell.label}
-            </TableSortLabel>
-        </TableCell>
-        ))}
-        {
-            (props.actions && props.actions.length > 0) &&
-            <TableCell style={{fontWeight:"600"}} align="right"><Translate id="general.actions"/></TableCell>
-        } 
-    </TableRow>
-    </TableHead>
-);
+                <TableSortLabel
+                active={disableOrder ? false : orderBy === headCell.id }
+                hideSortIcon={disableOrder}
+                direction={disableOrder ? "" : orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+                style={{fontWeight:"600"}}
+                >
+                {headCell.label}
+                </TableSortLabel>
+            </TableCell>
+            ))}
+            {
+                (props.actions && props.actions.length > 0) &&
+                <TableCell style={{fontWeight:"600"}} align="right"><Translate id="general.actions"/></TableCell>
+            } 
+        </TableRow>
+        </TableHead>
+    );
 }
 
 let EnhancedTableToolbar = (props) => {
@@ -395,6 +397,7 @@ function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dra
     )
 }
 function renderBody(){
+    console.log("props.disableOrder", props.disableOrder);
     return props.droppableId ? (
         <Droppable droppableId={props.droppableId ? props.droppableId : "droppableId"}>
         {
@@ -459,6 +462,7 @@ return (
             <EnhancedTableHead
                 numSelected={selected.length}
                 order={order}
+                disableOrder={props.disableOrder}
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}

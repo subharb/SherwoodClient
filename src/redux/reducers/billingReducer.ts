@@ -29,8 +29,7 @@ export interface BillingReducer{
 }
  
 export default function reducer(state:BillingReducer = initialState, action:any){
-    console.log("BillingReducer",state);
-    console.log("BillingReducer",action);
+
     let newState = { ...state};
 
     let currentBillItems;

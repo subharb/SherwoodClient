@@ -553,7 +553,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     <FactureHolder hide={!bill}>
                         <Translate id="hospital.billing.bill.name" />
                     </FactureHolder>
-                    <EnhancedTable noFooter noHeader noPagination noSelectable headCells={headCells} rows={rows} />
+                    <EnhancedTable noFooter noHeader noPagination noSelectable disableOrder headCells={headCells} rows={rows} />
                 </Grid>
                 <Grid item xs={12} style={{ display: "flex", flexDirection: "column" }} >
                     {
@@ -565,7 +565,9 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                    
                     <GridBottom hide={print} item xs={12} >
                         <Button onClick={onCancelBill} data-testid="cancel-modal">
-                            <Translate id="general.cancel" />
+                            {
+                                updatingBill ? <Translate id="general.cancel" /> : <Translate id="general.cancel" />
+                            }
                         </Button>
                         <Button disabled={items.length === 0} onClick={() => onClickContinue(items)} 
                             data-testid="continue-modal">
