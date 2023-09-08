@@ -72,7 +72,7 @@ export default function CardInvestigation({ image, title, description, status, s
     }
     const chipStatus = () => {
         if(shareStatus === 0){
-            return <ColourChip rgbcolor={orange[500]}>Pending</ColourChip>
+            return <ColourChip rgbcolor={orange[500]} label="Pending"/>
         } 
         else{
             return null;

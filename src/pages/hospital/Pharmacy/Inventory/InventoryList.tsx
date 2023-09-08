@@ -297,7 +297,7 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
             unit: item.unit,
             provider: item.provider,
             type: item.type,
-            status: item.amount === 0 ? <ColourChip rgbcolor={red[500]} >{translate("pages.hospital.pharmacy.pharmacy_items.status_values.finished")}</ColourChip>  : item.amount < item.threshold ? <ColourChip rgbcolor={orange[500]}>{translate("pages.hospital.pharmacy.pharmacy_items.status_values.low")}</ColourChip> : <ColourChip rgbcolor={green[500]}>{translate("pages.hospital.pharmacy.pharmacy_items.status_values.normal")}</ColourChip>,
+            status: item.amount === 0 ? <ColourChip rgbcolor={red[500]} label={translate("pages.hospital.pharmacy.pharmacy_items.status_values.finished")}/>  : item.amount < item.threshold ? <ColourChip rgbcolor={orange[500]} label={translate("pages.hospital.pharmacy.pharmacy_items.status_values.low")}/> : <ColourChip rgbcolor={green[500]} label={translate("pages.hospital.pharmacy.pharmacy_items.status_values.normal")}/>,
         }));
         if(filteredItems.length === 0){
             return (

@@ -1,7 +1,7 @@
 import { Card, Grid, Snackbar, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { ColourChip } from '../../../components/general/mini_components-ts';
+
 import Loader from '../../../components/Loader';
 import PatientInfo from '../../../components/PatientInfo';
 import { RequestStatusToChip, serviceToColor, statusToColor } from './RequestTable';

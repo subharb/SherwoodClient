@@ -38,7 +38,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, active
                                         const selected = activeFilters.includes(item.value);
                                         return(<ChipContainer>
                                                     <ColourChip rgbcolor={item.color} selected={selected} 
-                                                        onClick={item.callBack}>{translate(`hospital.search_box.filters.${item.label}`)}</ColourChip>
+                                                        onClick={item.callBack} label={translate(`hospital.search_box.filters.${item.label}`)}/>
                                                 </ChipContainer>);
                                     })
                                 }

@@ -129,11 +129,11 @@ const WARD_FORM = {
 const StatusChip = withLocalize((props) => {
     switch(props.value.toString()){
         case "0":
-            return <ColourChip size="small" rgbcolor={yellow[500]}>{props.translate("investigation.share.status.pending")}</ColourChip>
+            return <ColourChip size="small" rgbcolor={yellow[500]} label={props.translate("investigation.share.status.pending")}/>
         case "1": 
-            return <ColourChip size="small" rgbcolor={red[500]}>{props.translate("investigation.share.status.denied")} </ColourChip>
+            return <ColourChip size="small" rgbcolor={red[500]} label={props.translate("investigation.share.status.denied")} />
         default:
-            return <ColourChip size="small" rgbcolor={green[500]}>{props.translate("investigation.share.status.accepted")}</ColourChip>
+            return <ColourChip size="small" rgbcolor={green[500]} label={props.translate("investigation.share.status.accepted")} />
     }
     
 })

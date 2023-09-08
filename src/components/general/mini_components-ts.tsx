@@ -10,15 +10,13 @@ interface CustomChipProps extends ChipProps {
 export const ColourChip = styled(Chip)<CustomChipProps>`
     display: inline-block;
     align-items: center;
-    xheight: 32px;
-    white-space: nowrap;
-    border-radius:6px;
-    padding: 3px 6px;
+    height: 22px!important;
+    white-space: nowrap;  
+    padding: 1px!important;
     cursor: pointer;
-    font-size: 0.875rem;
+    font-size: 0.875rem!important;
     background-color: ${(props) => props.selected ? 'white' : props.rgbcolor}!important;
     color: ${(props) => props.selected ? 'black' : 'white'}!important;
-    #outline: ${(props) => '3px '+props.rgbcolor+' solid'};
     border:none;
 `;
 
