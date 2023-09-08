@@ -29,13 +29,13 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
                                                 country, uuidInvestigation, uuidPatient, department, typeSurvey,
                                                 alterSubmitButton, callBackDataCollectionSaved, callBackDataCollectionSavedWithData }) => {
     const [loading, setLoading] = React.useState(false);
-
+    const emptyArray:any[] = [];                                                    
     const submissionsSurvey = useSelector((state:any) => {
         console.log(state);
         if(state.patientsSubmissions.data && state.patientsSubmissions.data[uuidPatient] && state.patientsSubmissions.data[uuidPatient][uuid]){
             return state.patientsSubmissions.data[uuidPatient][uuid].submissions
         }
-        return [];
+        return emptyArray;
         });
     const prevSubmissionsSurvey = usePrevious(submissionsSurvey, true);
     const dispatch = useDispatch();

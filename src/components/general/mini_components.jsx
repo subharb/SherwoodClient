@@ -121,7 +121,7 @@ export const Divider = styled(MuiDivider)(spacing);
 const Fab = styled(MuiFab)(spacing);
 
 const FabThemed = styled(Fab)`
-    background-color:${props => props.theme.buttonContinue.primary.background}!important;
+    background-color: ${props => (props.disabled ? 'gray' : props.theme.palette.primary.color)}!important;
     color:${props => props.theme.buttonContinue.primary.color}!important;
 `;
 

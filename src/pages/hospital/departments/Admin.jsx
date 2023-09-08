@@ -741,6 +741,7 @@ function Departments(props) {
                         {
                             props.admin &&
                             <ButtonAdd disabled={addingDepartment} 
+                                color="primary"
                                 type="button" data-testid="add_researcher" 
                                 onClick={() => {
                                     setShowModal(true);
