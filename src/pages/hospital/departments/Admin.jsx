@@ -733,14 +733,14 @@ function Departments(props) {
                     }
             </Modal>
             <Grid container padding={2}>
-                <Grid item xs={12}>
+                <Grid container item xs={12} justifyContent="space-between" >
                     <Grid item xs={6} >
                         <TypographyStyled variant="h3" gutterBottom display="inline">
                             <Translate id="hospital.departments.title" />
                         </TypographyStyled>
                         {
                             props.admin &&
-                            <ButtonAdd disabled={addingDepartment} 
+                            <ButtonAdd disabled={addingDepartment} style={{marginLeft:'0.5rem'}}
                                 color="primary"
                                 type="button" data-testid="add_researcher" 
                                 onClick={() => {

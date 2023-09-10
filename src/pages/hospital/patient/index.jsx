@@ -5,7 +5,7 @@ import { Grid, Typography, Snackbar } from '@mui/material';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../../redux/actions/submissionsPatientActions';
 import Loader from '../../../components/Loader';
-import { BoxBckgr, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
+import { BoxBckgr, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue, TypographyStyled } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
 import { yearsFromDate, postErrorSlack, getUnitsResearcher } from '../../../utils/index.jsx';
@@ -270,14 +270,18 @@ function Patient(props) {
     }
 
     async function saveRecord(data){
-        //No iteramos por secciones porque en modo hospital se supone que solo habrá una sección
+        // Save record solo gestiona el callback de social y medical, el resto son componentes y se gestionan de otra forma.
+        let nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
+        if(dataCollectionSelected && dataCollectionSelected.category === types.CATEGORY_DEPARTMENT_SOCIAL){
+            nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", "social" )
+            
+        }
         setShowOptions(true);
-            setShowModal(true);
-            setIndexMedicalNote(null);
-            setSavedDataCollection(true);
+        setShowModal(true);
+        setIndexMedicalNote(null);
+        setSavedDataCollection(true);
 
         setTimeout(function(){
-            const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient)
             history.push(nextUrl);
 
        }, 1000);
@@ -358,7 +362,9 @@ function Patient(props) {
             )
         }
         else if(filteredRecords.length === 0){
-            return <Translate id={`pages.hospital.${translations}.no-records`} />
+            return <TypographyStyled>
+                        <Translate id={`pages.hospital.${translations}.no-records`} />
+                    </TypographyStyled>
         }
         else{
             return(

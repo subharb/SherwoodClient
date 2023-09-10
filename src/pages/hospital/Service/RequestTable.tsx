@@ -4,7 +4,7 @@ import { ContactSupportOutlined } from '@mui/icons-material';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { TypographyThemed } from '../../../components/general/mini_components';
+import { TypographyStyled } from '../../../components/general/mini_components';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
@@ -162,9 +162,9 @@ const RequestTable: React.FC<RequestTableProps> = ({ serviceType, searchFor, noS
         return <Loader />
     }
     return (
-        <TypographyThemed variant="body2">
+        <TypographyStyled variant="body2">
             <Translate id="pages.hospital.services.no_requests" />
-        </TypographyThemed>
+        </TypographyStyled>
     )
 }
 

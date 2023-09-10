@@ -71,6 +71,7 @@
             "allergy" : ["Select", "Seleccionar", "Pour sélectionner"],
             "treatment_regular" : ["Select", "Seleccionar", "Pour sélectionner"],
             "treatment" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "appointment" : ["Date", "Fecha", "Date"],
             "request_lab" : ["Do you wish to request a lab test?", "¿Desea solicitar un examen de laboratorio?", "Voulez-vous demander un test de laboratoire?"],
             "request_img" : ["Do you wish to request an imaging test?", "¿Desea solicitar un examen de imagen?", "Voulez-vous demander un test d'imagerie?"]
         },

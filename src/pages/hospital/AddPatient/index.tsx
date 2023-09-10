@@ -56,6 +56,7 @@ export function AddPatient(props: Props) {
 
             if (patient) {
                 await dispatch(updatePatientAction(props.investigations.currentInvestigation, patient.uuid, patientData));
+                history.goBack();
 
             }
             else {

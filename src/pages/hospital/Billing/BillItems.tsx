@@ -566,7 +566,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     <GridBottom hide={print} item xs={12} >
                         <Button onClick={onCancelBill} data-testid="cancel-modal">
                             {
-                                updatingBill ? <Translate id="general.cancel" /> : <Translate id="general.cancel" />
+                                updatingBill ? <Translate id="general.close" /> : <Translate id="general.cancel" />
                             }
                         </Button>
                         <Button disabled={items.length === 0} onClick={() => onClickContinue(items)} 

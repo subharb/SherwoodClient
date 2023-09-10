@@ -319,10 +319,6 @@ export const WhiteTypography = styled(Typography)`
     font-size: 1rem;
 `;
 
-export const TypographyThemed = styled(Typography)`
-    color:${props => props.theme.primary.color};
-`
-
 const ButtonAction = styled.button`
     background:transparent;
     border:none;
@@ -382,6 +378,7 @@ export const CloseButton = (props) =>{
 const CloseHolder = styled.div`
     position:relative;
     display:inline-block;
+    margin-top:1rem;
     width: max-content;
 `;
 const CloseButtonHolder = styled.div`

@@ -1,8 +1,6 @@
 import { Box, Card, Typography } from '@mui/material';
 import React, { ReactElement, useState } from 'react';
 import { Translate } from 'react-localize-redux';
-import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { TypographyThemed } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import { BillItems } from './BillItems';
 import { BillItem, BillItemModes, EditBillablesProps } from './types';

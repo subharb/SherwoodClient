@@ -225,7 +225,8 @@ class FieldSherwood extends PureComponent{
         const {input, color, label, meta, hideTitle, type, options, size, removeClass, template,  validation, activeLanguage, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
-        const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";
+        const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";     
+        
         const labelString = label.hasOwnProperty("url") ? <a target="_blank" without rel="noreferrer" href={label.url} >{this.props.translate(label.label)}</a> : this.props.translate(label).indexOf("Missing translationId:") !== -1 ?  label : this.props.translate(label);
         switch(type){
             case "select":
@@ -275,7 +276,7 @@ class FieldSherwood extends PureComponent{
                             drugSelected={(drug) => this.drugSelected(drug)} country={country} />
             case "appointment" : 
                 return <AppointmentField uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} value={input.value}
-                            label={label} department={this.props.department}
+                            label={labelString} department={this.props.department}
                             appointmentSelected={(date) => this.props.input.onChange(date)} />
             case "multioption" : 
                     return <Multioption mode="input" color={color} value={input.value} options={options} label={labelString} name={input.name} multiOptionSelected={this.multiOptionSelected} />

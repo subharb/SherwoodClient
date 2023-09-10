@@ -5,7 +5,7 @@ import { ISurvey } from '../../constants/types';
 import Loader from '../../components/Loader';
 import { getSubmissionPatientService } from '../../services';
 import { useSelector } from 'react-redux';
-import { get } from 'lodash';
+import { get, isNumber } from 'lodash';
 
 interface ShowSubmissionPatientProps {
     surveys:ISurvey[],
@@ -19,14 +19,14 @@ const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ sur
     const uuidInvestigation = useSelector((state:any) => state.investigations.currentInvestigation.uuid);
     
     const [submisionLocal, setSubmissionLocal] = React.useState<any>(null);
-    const [loading, setLoading] = React.useState(idSubmission && !submisionLocal);
-
+    const [loading, setLoading] = React.useState(isNumber(idSubmission));
+    
     const submissionCached = useMemo(() => {
         if(submission){
             return submission;
         }
         return submisionLocal;
-    }, [submission]);
+    }, [submission, submisionLocal]);
     
     useEffect(() => {
         async function getSubmission() {
