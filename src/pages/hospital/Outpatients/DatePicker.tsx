@@ -212,7 +212,7 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
                 }}
                 defaultValue={dayjs()}
                 onAccept={onAcceptDate}
-                 label={translate("pages.hospital.outpatients.select_date").toString()} shouldDisableDate={(date) => isDisabledDate(date.toDate(), selectBlockedDates)}
+                label={translate("pages.hospital.outpatients.select_date").toString()} shouldDisableDate={(date) => isDisabledDate(date.toDate(), selectBlockedDates)}
                 format={formatDateByLocale(activeLanguage.code)}
             />
             {/* <DatePicker value={selectedDate} onChange={onDateChange} shouldDisableDate={(date) => isDisabledDate(date, selectBlockedDates)}

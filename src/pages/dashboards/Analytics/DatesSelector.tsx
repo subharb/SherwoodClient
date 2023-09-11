@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import { Button, Button as MuiButton, FormControl, Grid, InputLabel, Menu, MenuItem, Paper, Select, Typography } from "@mui/material";
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
+import { Button, Button as MuiButton, FormControl, Grid, InputLabel, Menu, MenuItem, Paper, Select, Typography, SelectChangeEvent } from "@mui/material";
+
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { formatDateByLocale } from '../../../utils/index.jsx';
 import { FieldWrapper } from '../../../components/general/mini_components';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import dayjs from 'dayjs';
 
 interface Props extends LocalizeContextProps{
     onCallBack:(dates:Date[]) => void 
@@ -13,33 +15,38 @@ interface Props extends LocalizeContextProps{
 
 function DatesSelector(props:Props){
     const today = new Date();
-    const oneYearAgo = new Date();
-    oneYearAgo.setFullYear(today.getFullYear() - 1);
+    const oneYearAgo = dayjs(today).subtract(1, 'year').toDate();
+    const oneWeekAgo = dayjs(today).subtract(1, 'week').toDate()
+    
     const [typeRange, setTypeRange] = React.useState(null);
-    const [startDate, setStartDate] = React.useState(oneYearAgo);
+    const [startDate, setStartDate] = React.useState(oneWeekAgo);
     const [endDate, setEndDate] = React.useState(new Date());
+    // Para separar la logica de cuando se seleccionan de los selectores
+    const [startDateCustom, setStartDateCustom] = React.useState(oneYearAgo);
+    const [endDateCustom, setEndDateCustom] = React.useState(new Date());
+    
     const [timePeriod, setTimePeriod] = React.useState<null | number>(null);
     const [openStartDate, setOpenStartDate] = React.useState(false);
     const [openEndDate, setOpenEndDate] = React.useState(false);
 
-    function handleStartDateChange(date:MaterialUiPickersDate){
+    function handleStartDateChange(date:dayjs.Dayjs | null){
         if(date){
-            setStartDate(date)
+            setStartDateCustom(date.toDate())
+            setOpenStartDate(false);
         }
     };
 
-    function handleEndDateChange(date:MaterialUiPickersDate){
+    function handleEndDateChange(date:dayjs.Dayjs | null){
         if(date){
-            setEndDate(date)
+            setEndDateCustom(date.toDate());
+            setOpenEndDate(false);
         }
     };
-    function selectChanged(event:React.ChangeEvent<{
-        name?: string | undefined;
-        value: unknown;
-    }>){
+    function selectChanged(event:SelectChangeEvent){
         console.log(event);
-        setTimePeriod(event.target.value as number);
-        switch(event.target.value){
+        const valueInt = parseInt(event.target.value);
+        setTimePeriod(valueInt);
+        switch(valueInt){
             case 0:
                 var d = new Date();
                 d.setDate(d.getDate() - 7);
@@ -52,69 +59,64 @@ function DatesSelector(props:Props){
                 setStartDate(d);
                 setEndDate(new Date());
                 break;
-        }
-
-            
+        }    
     }
+
+    useEffect(() =>{
+        props.onCallBack([startDate, endDate])
+    }, [startDate, endDate])
+    
+
     function showStartCalendar(){
         setOpenStartDate(true);
     }
     function showEndCalendar(){
         setOpenEndDate(true);
     }
-    useEffect(() =>{
-        props.onCallBack([startDate, endDate])
-    }, [startDate, endDate])
-    
+
     function renderCustomDatesSelector(){
         return (
-            <MuiPickersUtilsProvider utils={DateFnsUtils} >
+            <>
                 <Typography variant="h4" gutterBottom  >Select dates: </Typography>
                 <Grid container spacing={3}>    
-                    <Grid item >                    
-                        <KeyboardDatePicker
-                            margin="normal"
-                            open={openStartDate}
-                            onClose={() => setOpenStartDate(false)}
-                            id="date-picker-dialog-start"
-                            label="Start Date"
-                            format={formatDateByLocale(props.activeLanguage.code)}
-                            value={startDate}
-                            maxDate = {endDate}
-                            onChange={handleStartDateChange}
-                            style={{display : 'none'}}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date'
-                            }}
-                            
+                    <Grid item >     
+                    <DatePicker  label="Start Date"
+                        defaultValue={dayjs(startDateCustom)}
+                        format={formatDateByLocale(props.activeLanguage.code)}
+                        maxDate = {dayjs(endDateCustom)}
+                        //style={{display : 'none'}}
+                        onChange={handleStartDateChange} 
+                        slotProps={{
+                            textField: {
+                                hidden: true,
+                                
+                            },
+                        }}
+                        
                         />
-                        <Button variant="contained"
-                            color="primary" 
-                            onClick={showStartCalendar}><Translate id="general.startDate" />: {startDate.toLocaleDateString(props.activeLanguage.code)}</Button>
+                        
                     </Grid>
                     <Grid item >
-                        <KeyboardDatePicker
-                            margin="normal"
-                            id="date-picker-dialog-end"
-                            open={openEndDate}
-                            onClose={() => setOpenEndDate(false)}
-                            label="End Date"
-                            format="MM/dd/yyyy"
-                            value={endDate}
-                            minDate={startDate}
-                            maxDate = {new Date()}
-                            style={{display : 'none'}}
-                            onChange={handleEndDateChange}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                        />
+                        <DatePicker label="End Date"
+                            defaultValue={dayjs(endDateCustom)}
+                            format={formatDateByLocale(props.activeLanguage.code)}
+                            minDate={dayjs(startDateCustom)}
+                            maxDate = {dayjs()}
+                            //style={{display : 'none'}}
+                            onChange={handleEndDateChange} 
+                            />
+                    </Grid>
+                    <Grid item >
                         <Button variant="contained"
-                            color="primary" 
-                            onClick={showEndCalendar}><Translate id="general.endDate" />: {endDate.toLocaleDateString()}</Button>
+                                color="primary" 
+                                onClick={() => {
+                                    setStartDate(startDateCustom);
+                                    setEndDateCustom(endDateCustom);
+                                }}>Apply Changes</Button>   
+                        
                     </Grid>
                 </Grid>
-            </MuiPickersUtilsProvider>
+            </>
         )
     }
     

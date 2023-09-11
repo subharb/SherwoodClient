@@ -317,19 +317,20 @@ class FieldSherwood extends PureComponent{
                 const value = input.value ? dayjs(input.value) : null;
                 
                 return (
-                    <FieldWrapper noWrap = {this.props.fullWidth} style={{paddingTop:'0.5rem'}} >
-                    <DatePicker value={value} label={labelString}
-                        format={formatDateByLocale(activeLanguage.code)}
-                        size="small"
-                        margin={this.typeMargin}
-                        slotProps={{
-                            textField: {
-                                fullWidth: true,
-                                error: errorState,
-                                helperText: errorString,
-                            },
-                          }}
-                        onChange={this.handleDateChange}/>
+                    <FieldWrapper noWrap = {this.props.fullWidth} 
+                        style={{paddingTop:'0.5rem'}} >
+                        <DatePicker value={value} label={labelString}
+                            format={formatDateByLocale(activeLanguage.code)}
+                            size="small"
+                            margin={this.typeMargin}
+                            slotProps={{
+                                textField: {
+                                    fullWidth: true,
+                                    error: errorState,
+                                    helperText: errorString,
+                                },
+                            }}
+                            onChange={this.handleDateChange}/>
                     </FieldWrapper>
                     
                 )
