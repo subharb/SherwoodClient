@@ -114,7 +114,8 @@
                 "accepted" : ["Accepted", "Aceptado", "Accepté"],
                 "pending_payment" : ["Pending payment", "Pago pendiente", "Paiement en attente"],
                 "some_accepted" : ["Some accepted", "Algunos aceptados", "Certains acceptés"],
-                "in_progress" : ["In progress", "En progreso", "En cours"]
+                "in_progress" : ["In progress", "En progreso", "En cours"],
+                "paid" : ["Paid", "Pagado", "Payé"]
             },
             "all" : ["All", "Todos", "Tous"]
 

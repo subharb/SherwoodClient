@@ -260,16 +260,8 @@ const Billing: React.FC<Props> = (props) => {
                 return (
                     <>
                         { renderBillForm() }
-                        <TabsSherwood name="Billing Info" style={{color: "white"}}
-                            labels={[props.translate("hospital.billing.all_bills").toString(), props.translate("hospital.billing.search_patient").toString()]} >
-                            <BillsTable patients={props.patients} currency={props.billingInfo.currency} bills={props.bills} languageCode={props.activeLanguage.code} 
+                        <BillsTable patients={props.patients} currency={props.billingInfo.currency} bills={props.bills} languageCode={props.activeLanguage.code} 
                                 makeActionBillCallBack={makeActionBill}/>
-                            <FindPatient patients={props.patients}
-                                personalFields={props.personalFields}
-                                codeLanguage={props.activeLanguage.code}
-                                onPatientSelected={(idPatient) => onPatientSelected(idPatient)}
-                                />
-                        </TabsSherwood>
                     </>
                 );
             }

@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 interface CustomChipProps extends ChipProps {
     // Define any additional props or styles here
-    rgbcolor:any, selected?:boolean
+    rgbcolor:any, active?:boolean
   }
 
 export const ColourChip = styled(Chip)<CustomChipProps>`
@@ -15,8 +15,9 @@ export const ColourChip = styled(Chip)<CustomChipProps>`
     padding: 1px!important;
     cursor: pointer;
     font-size: 0.875rem!important;
-    background-color: ${(props) => props.selected ? 'white' : props.rgbcolor}!important;
-    color: ${(props) => props.selected ? 'black' : 'white'}!important;
+    background-color: ${(props) => props.rgbcolor}!important;
+    opacity: ${(props) => props.active ? '0.5' : '1'}!important;
+    color: white!important;
     border:none;
 `;
 

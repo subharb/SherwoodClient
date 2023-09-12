@@ -130,7 +130,7 @@ export const BillForm:React.FC<Props> = (props) => {
                         }}
                         style={{ width: 300 }}
                         renderInput={(params:any) => 
-                            <TextField {...params} label="Concept" error={false}
+                            <TextField {...params} label="Select combo" error={false}
                                 helperText={null} color="secondary"
                                 //onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
                                 variant="outlined" />

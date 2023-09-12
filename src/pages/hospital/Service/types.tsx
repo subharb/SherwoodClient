@@ -36,6 +36,10 @@ export enum RequestStatus {
     INCOMPLETE_ACCEPTED = 10, //Pensada para farmacia
 }
 
+export enum BillStatus {
+    PAID = 0,
+    PENDING_PAYMENT = 1,
+}
 
 
 export enum RequestType {
