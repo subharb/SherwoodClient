@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet';
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
-import { Divider as MuiDivider, Grid, IconButton, Snackbar, Typography } from '@mui/material';
+import { Grid, IconButton, Snackbar, Typography } from '@mui/material';
 import Modal from '../../../components/general/modal';
 import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@mui/material';
@@ -16,14 +16,10 @@ import { getBillsPatientService, getBillsService } from '../../../services/billi
 import Loader from '../../../components/Loader';
 import { hasDiscountsActive } from '../../../utils/index.jsx';
 import EditBilling from './Edit';
-import { getBillablesAction } from '../../../redux/actions/investigationsActions';
-
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import BillsPatient from './BillsPatient';
-import { TabsSherwood } from '../../components/Tabs';
 import BillsTable from './BillsTable';
 
-import { FindPatient } from './find_patient';
 import { HOSPITAL_BILLING, HOSPITAL_BILLING_CREATE_BILL } from '../../../routes/urls';
 import { getBillableComboAction, resetBillItems } from '../../../redux/actions/billingActions';
 import { TYPE_ADDITIONAL_INFO_SURVEY } from '../../../constants';

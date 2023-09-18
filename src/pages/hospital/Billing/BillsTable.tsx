@@ -96,11 +96,11 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         <Grid container spacing={2}>
             <Grid item xs={12}>
                 <SearchBox textField={{label:"hospital.billing.search_patient", callBack:callbackNameTyped}}
-                                    activeFilters={statusFilter}
-                                    filterItems={[
-                                        {label:"paid", value:BillStatus.PAID, color:statusToColor(BillStatus.PAID), callBack:() => applyStatusFilter(BillStatus.PAID)},
-                                        {label:"pending_payment", value:BillStatus.PENDING_PAYMENT, color:statusToColor(BillStatus.PENDING_PAYMENT), callBack:() => applyStatusFilter(BillStatus.PENDING_PAYMENT)},
-                                    ]} />
+                    activeFilters={statusFilter}
+                    filterItems={[
+                        {label:"paid", value:BillStatus.PAID, color:statusToColor(BillStatus.PAID), callBack:() => applyStatusFilter(BillStatus.PAID)},
+                        {label:"pending_payment", value:BillStatus.PENDING_PAYMENT, color:statusToColor(BillStatus.PENDING_PAYMENT), callBack:() => applyStatusFilter(BillStatus.PENDING_PAYMENT)},
+                    ]} />
             </Grid>
             <Grid item xs={12}>
                 <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable

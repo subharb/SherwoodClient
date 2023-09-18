@@ -195,12 +195,12 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     const [rows, setRows] = React.useState<Row[]>([]);
     const [filteredRows, setFilteredRows] = React.useState<Row[]>([]);
     const [searchText, setSearchText] = React.useState("");
-    const [statusFilter, setStatusFilter] = React.useState<RequestStatus | null>(null);
+    const [statusFilter, setStatusFilter] = React.useState<RequestStatus[]>([]);
 
     useEffect(() => {
         setFilteredRows(rows.filter((row: Row) => {
             const searchItem = serviceType === RequestType.PHARMACY ? row.researcher : row.patient;
-            return (searchItem.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()) && (statusFilter !== null ? row.status.props.status === statusFilter : true))
+            return (searchItem.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()) && (statusFilter.includes(row.status.props.status)))
                         
         }));
         
@@ -225,11 +225,19 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
     }, [requests]);
 
     function applyStatusFilter(status:RequestStatus){
-        if(status === statusFilter){
-            setStatusFilter(null);
+        if(statusFilter && statusFilter.includes(status)){
+            if(statusFilter.length === 1){
+                setStatusFilter([]);
+            }
+            else{
+                setStatusFilter(statusFilter.filter((s) => s !== status));
+            }
+        }
+        else if(statusFilter){
+            setStatusFilter([...statusFilter, status]);
         }
         else{
-            setStatusFilter(status);
+            setStatusFilter([status]);
         }
     }
 
@@ -298,7 +306,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
             {
                 !noSearchBox && 
                 <SearchBox textField={{label:searchFor, callBack:setSearchText}}
-                    activeFilters={!statusFilter ? [] : [statusFilter]}
+                    activeFilters={statusFilter}
                     filterItems={[
                         {label:"completed", value:RequestStatus.COMPLETED, color:statusToColor(RequestStatus.COMPLETED), callBack:() => applyStatusFilter(RequestStatus.COMPLETED)},
                         {label:"in_progress", value: RequestStatus.IN_PROGRESS, color:statusToColor(RequestStatus.IN_PROGRESS), callBack:() => applyStatusFilter(RequestStatus.IN_PROGRESS)},

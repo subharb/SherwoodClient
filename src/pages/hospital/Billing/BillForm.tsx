@@ -7,7 +7,7 @@ import { IPatient, ReduxStore } from "../../../constants/types"
 import { Bill, Billable, BillableCombo, BillItem, BillItemModes } from "./types";
 import { createBillService, updateBillService } from "../../../services/billing";
 import { Autocomplete } from "@mui/lab"
-import { FindPatient } from "./find_patient";
+
 
 import { dateToFullDateString, fullDateFromPostgresString } from "../../../utils/index.jsx"
 import { Alert } from "@mui/lab"
@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getBillablesAction } from "../../../redux/actions/investigationsActions"
 import { ButtonAdd, ButtonPlus } from "../../../components/general/mini_components"
 import { pushBillables, pushBillingItems, resetBillItems, saveBillingItems } from "../../../redux/actions/billingActions"
+import { FindPatient } from "./find_patient"
 
 interface Props {
     updatingBill: boolean,

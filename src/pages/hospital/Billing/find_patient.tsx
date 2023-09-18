@@ -5,10 +5,6 @@ import { connect } from "react-redux";
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import { IPatient } from "../../../constants/types";
 import { formatPatients } from "../../../utils/index.jsx";
-import SearchBox from "../../../components/general/SearchBox";
-import { BillStatus } from "../Service/types";
-import { green, red } from "@mui/material/colors";
-
 
 
 interface Props{
@@ -18,50 +14,20 @@ interface Props{
     onPatientSelected:(idPatient:number) => void,
     selectingPatientCallBack?:(value:boolean) => void
 }
-
-export const statusToColor = (status:BillStatus) => {
-    let colour = "#000";
-    switch(status){
-        case BillStatus.PAID:
-            colour = green[900];
-            break;
-        case BillStatus.PENDING_PAYMENT: 
-            colour = red[900];
-            break;
-    }
-    return colour;
-}
-
 export const FindPatient:React.FC<Props> = (props) => {
     const [patientName, setPatientName] = useState<string>("");
-    const [statusFilter, setStatusFilter] = useState<BillStatus[]>([]);
-    function callbackNameTyped(name:string){
-        setPatientName(name);
+    
+    function onChange(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>){
+        console.log(event.target.value);
+        setPatientName(event.target.value);
         if(props.selectingPatientCallBack){
-            props.selectingPatientCallBack(name.length !== 0);
+            props.selectingPatientCallBack(event.target.value.length !== 0);
         }
         
     }
-    function applyStatusFilter(status:BillStatus){
-        if(statusFilter && statusFilter.includes(status)){
-            if(statusFilter.length === 1){
-                setStatusFilter([]);
-            }
-            else{
-                setStatusFilter(statusFilter.filter((s) => s !== status));
-            }
-        }
-        else if(statusFilter){
-            setStatusFilter([...statusFilter, status]);
-        }
-        else{
-            setStatusFilter([status]);
-        }
-        
-    }
-
+    
     function renderResults(){
-        
+        if(patientName !== ""){
             const filteredPatients:IPatient[] = props.patients.filter((patient) => {
                 const currentPatientData = patient.personalData;
                 const currentPatientFullName = currentPatientData.name+" "+currentPatientData.surnames;
@@ -87,7 +53,7 @@ export const FindPatient:React.FC<Props> = (props) => {
                     <EnhancedTable noHeader noSelectable noFooter rows={rows} headCells={headCells} selectRow={(idPatient:number)=> props.onPatientSelected(idPatient)} />
                 )
             }
-        
+        }
         
     }
     return(
@@ -95,13 +61,7 @@ export const FindPatient:React.FC<Props> = (props) => {
             <Grid item xs={12}>
                 <Card>
                     <CardContent>
-                        <SearchBox textField={{label:"hospital.billing.search_patient", callBack:callbackNameTyped}}
-                            activeFilters={statusFilter}
-                            filterItems={[
-                                {label:"paid", value:BillStatus.PAID, color:statusToColor(BillStatus.PAID), callBack:() => applyStatusFilter(BillStatus.PAID)},
-                                {label:"pending_payment", value:BillStatus.PENDING_PAYMENT, color:statusToColor(BillStatus.PENDING_PAYMENT), callBack:() => applyStatusFilter(BillStatus.PENDING_PAYMENT)},
-                            ]} />
-                        
+                        <TextField label="Search Patient" color="secondary" onChange={(event) => onChange(event) } />
                     </CardContent>
                 </Card>
             </Grid>

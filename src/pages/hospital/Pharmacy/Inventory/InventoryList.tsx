@@ -349,8 +349,9 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
                     </div>
             </Snackbar>
             <Grid container spacing={2}>
-                <SearchBox selectFilter={{value:providerFilter, options:providerOptions, callBack:setProviderFilter}} filterItems={[
-                        {label:"low", color:orange[500], callBack:filterStatusLow},{label:"finished", color:red[500], callBack:filterStatusFinished},
+                <SearchBox selectFilter={{value:providerFilter, options:providerOptions, callBack:setProviderFilter}} 
+                    filterItems={[
+                        {label:"low", color:orange[500], value:0, callBack:filterStatusLow},{label:"finished", value:1, color:red[500], callBack:filterStatusFinished},
                     ]} textField={{label:"pages.hospital.pharmacy.pharmacy_items.name", callBack:setNameFilter}} />
                 <Grid item xs={12}>
                     {
