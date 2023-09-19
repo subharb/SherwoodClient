@@ -26,7 +26,7 @@ interface Props{
     unitsResearcher:IUnit[],
     typeSurveysAvailable:number[],
     categorySurveys:number[],
-    typeSurveySelected:number,
+    typeSurveySelected:string,
     categorySurveySelected:number,
     stay:any,
     medicalNotesCallBack:() =>void,
@@ -122,24 +122,24 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                 <Grid item container xs={5}  justifyContent="center" alignItems="center">
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="medical-notes" onClick={() => medicalNotesCallBack()} >
-                            <img src={typeSurveySelected === TYPE_MEDICAL_SURVEY ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
+                            <img src={typeSurveySelected === "medical" ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
                         </Button>
                     </Grid>
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="images" onClick={() => testCallBack()} >
-                            <img src={IMG_SURVEYS.includes(typeSurveySelected)  ? iconImagesGreen : iconImages} alt="Images" height="40" />
+                            <img src={typeSurveySelected === "images"  ? iconImagesGreen : iconImages} alt="Images" height="40" />
                         </Button>
                     </Grid>
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="lab" onClick={() => labCallBack()} >
-                            <img src={LAB_SURVEYS.includes(typeSurveySelected)  ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                            <img src={typeSurveySelected === "lab"  ? iconLabGreen : iconLab} alt="Lab" height="40" />
                         </Button>
                     </Grid>
                     {
                         isResearcherSocial && categorySurveys.includes(CATEGORY_DEPARTMENT_SOCIAL) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="social" onClick={() => socialCallBack()} >
-                                <img src={categorySurveySelected === CATEGORY_DEPARTMENT_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
+                                <img src={typeSurveySelected === "social" ? iconDS : iconDS} alt="Social" height="20" />
                             </Button>
                         </Grid>
                     }

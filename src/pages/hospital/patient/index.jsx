@@ -80,7 +80,7 @@ function Patient(props) {
         if(parameters.typeTest === "social" && survey.category === types.CATEGORY_DEPARTMENT_SOCIAL){
             return true;
         }
-        if(!parameters.typeTest && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
+        if((!parameters.typeTest || parameters.typeTest === "medical") && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
             return true;
         }
         if(parameters.typeTest === "images" && survey.type === types.TYPE_IMAGE_SURVEY){
@@ -106,9 +106,9 @@ function Patient(props) {
     let filteredRecords = useMemo(() => {
         if(idSubmission && surveyRecords){
             const currentSub = surveyRecords.find((rec) => rec.id === idSubmission);
-            if(currentSub){
+            if(currentSub && currentSurveys){
                 return surveyRecords.filter(rec => {
-                    return currentSub.typeSurvey === rec.typeSurvey;
+                    return currentSurveys.some((sur) => sur.uuid === rec.uuidSurvey);
                 });
                 // return surveyRecords.filter(rec => {
                 //     return props.investigations.currentInvestigation.surveys.find((sur) => sur.uuid === currentSub.uuidSurvey) !== undefined;
@@ -150,8 +150,8 @@ function Patient(props) {
     function goToSubmissionUrl(uuidPatient, idSubmission){
         const nextUrl = HOSPITAL_PATIENT_SINGLE_SUBMISSION.replace(":uuidPatient", uuidPatient)
                 .replace(":action", "show")
-                .replace(":single", "true")
-                .replace(":idSubmission", idSubmission);
+                .replace(":idSubmission", idSubmission)
+                .replace(":typeTest", parameters.typeTest);
         history.push(nextUrl);
     }
 
@@ -202,8 +202,6 @@ function Patient(props) {
     }
 
     function fillDataCollection(uuidDataCollection){
-        
-
         setSavedDataCollection(false);
         const dataCollectionSelected = currentSurveys.find((survey) => survey.uuid === uuidDataCollection);
 
@@ -259,7 +257,10 @@ function Patient(props) {
     }
 
     function goToSurveyUrl(uuidSurvey){
-        const nextUrl = HOSPITAL_PATIENT_SUBMISSION.replace(":uuidPatient", uuidPatient).replace(":action", "show").replace(":idSubmission", uuidSurvey);
+        const nextUrl = HOSPITAL_PATIENT_SUBMISSION.replace(":uuidPatient", uuidPatient)
+                            .replace(":action", "show")
+                            .replace(":idSubmission", uuidSurvey)
+                            .replace(":typeTest", parameters.typeTest ? parameters.typeTest : "medical");
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
@@ -322,17 +323,19 @@ function Patient(props) {
         }
         else if(idSubmission !== null && action === "show"){
             const belongsToRequest = idSubmission && types.TYPE_FILL_SURVEY.includes(typeSurveySelected);
-            const forceEdit = dataCollectionSelected.type === types.TYPE_EDITABLE_SURVEY
+            const forceEdit =  dataCollectionSelected.type === types.TYPE_EDITABLE_SURVEY
             return (
                 <>  
                     {
                         belongsToRequest &&
                         <RequestInfoWithFetch idSubmission={idSubmission} uuidInvestigation={props.investigations.currentInvestigation.uuid} />
                     }
-                    <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} survey={dataCollectionSelected} 
-                        forceEdit={forceEdit}
-                        mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission} singleSubmission={single === 'true'}
-                        submissions={filteredRecords.filter((record) => record.type !== "stay")} surveys={props.investigations.currentInvestigation.surveys} />
+                    <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} 
+                        forceEdit={forceEdit} survey={dataCollectionSelected} 
+                        mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission} 
+                        singleSubmission={single === 'true'}
+                        submissions={filteredRecords.filter((record) => record.type !== "stay")} 
+                        surveys={props.investigations.currentInvestigation.surveys} />
                 </>)
         }
         else if ((types.TYPE_REQUEST_FUNC.includes(typeSurveySelected) &&  props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.REQUESTS))
@@ -653,7 +656,8 @@ function Patient(props) {
                 </Modal> 
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
-                        typeSurveySelected={typeSurveySelected}
+                        typeSurveySelected={parameters.typeTest ? parameters.typeTest : "medical" }
+
                         categorySurveySelected = {categorySurveySelected}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
