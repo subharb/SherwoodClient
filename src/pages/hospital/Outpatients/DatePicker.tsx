@@ -1,7 +1,7 @@
 import { DatePicker } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { makeStyles, styled, ThemeProvider, Theme } from '@mui/styles';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { formatDateByLocale } from '../../../utils/index.jsx';
 import { Dayjs } from 'dayjs';
@@ -110,10 +110,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, autoCurrentDate, blockedDates, onClose,
-    slotsPerDay, activeLanguage, datesOccupancy,
-    selectBlockedDates, onDateChangeCallback, translate }) => {
-    const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(null);
+const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ availableDaysWeek, autoCurrentDate, blockedDates,
+                                                                        slotsPerDay, activeLanguage, datesOccupancy,
+                                                                        selectBlockedDates, onDateChangeCallback, translate }) => {
+    const nextAvailableDate = useMemo(() =>{
+        return findNextAvailableDate();
+    },[]);
+    const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(autoCurrentDate ? nextAvailableDate.startOf('day') : null);
     const classes = useStyles();
 
     function occupancyLevel(date: MaterialUiPickersDate) {
@@ -161,10 +164,8 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
         return dayjs();
     }
     useEffect(() => {
-        if (autoCurrentDate) {
-            const nextAvailableDate = findNextAvailableDate();
-            setSelectedDate(dayjs(nextAvailableDate.valueOf()));
-            onDateChangeCallback(nextAvailableDate.toDate());
+        if (autoCurrentDate && selectedDate) {
+            onDateChangeCallback(selectedDate?.toDate());
             return;
         }
     }, [])
@@ -210,7 +211,7 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
                     },
                     
                 }}
-                defaultValue={dayjs()}
+                defaultValue={selectedDate}
                 onAccept={onAcceptDate}
                 label={translate("pages.hospital.outpatients.select_date").toString()} shouldDisableDate={(date) => isDisabledDate(date.toDate(), selectBlockedDates)}
                 format={formatDateByLocale(activeLanguage.code)}
