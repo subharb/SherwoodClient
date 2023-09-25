@@ -472,31 +472,6 @@
         "personal_info" : ["1", "1", "1"],
         "functionalities" : ["2", "2", "2"]
     },    
-    "functionalities" : {
-        "basic" : ["Basic functionalities", "Funcionalidades básicas", "Fonctionnalités de base"],
-        "basic_explanation" : ["Basic funcionality includes electronic medical records, outpatient module and billing", "La funcionalidad básica incluye consultas externas, facturación e historias clínicas", "La fonctionnalité de base comprend les consultations externes, la facturation et les dossiers médicaux"],
-        "inpatients" : ["Inpatient module", "Módulo de hospitalización", "Module d'hospitalisation"],
-        "inpatients_explanation" : ["Creation of virtual hospital wards, as well as the admission, discharge and transfer of patients.", "Creación de salas de hospital virtual, así como el ingreso, alta y traslado de pacientes.", "Création de salles d'hôpital virtuelles, ainsi que l'admission, le congé et le transfert de patients."],
-        "pharmacy" : ["Pharmacy", "Farmacia", "Pharmacie"],
-        "pharmacy_explanation" : ["Pharmacy stock / inventory management", "Gestión de stock / inventario de farmacia", "Gestion des stocks / inventaire de pharmacie"],
-        "requests" : ["Laboratory and radiology", "Módulo de laboratorio y radiología", "Module de laboratoire et de radiologie"],
-        "requests_explanation" : ["Creation and management of laboratory and radiology requests. Configuration of customized catalogue of available tests.", "Creación y gestión de peticiones de laboratorio y radiología, incluyendo la configuración de un catálogo personalizado de pruebas disponibles.", "Création et gestion des demandes de laboratoire et de radiologie, y compris la configuration d'un catalogue personnalisé des tests disponibles."],
-        "country" : ["Country", "País", "Pays"],
-        "type" : ["Type", "Tipo", "Type"],
-        "type_options" : {
-            "single_doctor" : ["Single doctor Clinic", "Clínica de un solo doctor", "Clinique d'un seul médecin"],
-            "clinic" : ["Clinic", "Clínica", "Clinique"],
-            "health_centre" : ["Health Centre", "Centro de Salud", "Centre de santé"],
-            "hospital" : ["Hospital", "Hospital", "Hôpital"]
-        },
-        "language" : ["What language do you want to use?", "¿Qué idioma desea utilizar?", "Quelle langue souhaitez-vous utiliser ?"],
-        "language_options" : {
-            "english" : ["English", "Inglés", "Anglais"],
-            "spanish" : ["Spanish", "Español", "Espagnol"],
-            "french" : ["French", "Francés", "Français"]
-        }
-
-    },
     "error" : {
         "not_login" : ["You need to sign in to access this resource", "Para acceder a este recurso necesita iniciar sesión", "Vous devez vous connecter pour accéder à cette ressource"]
     },
@@ -1046,6 +1021,31 @@
     },
     "register" : {
         "common" : {
+            "functionalities" : {
+                "basic" : ["Basic functionalities", "Funcionalidades básicas", "Fonctionnalités de base"],
+                "basic_explanation" : ["Basic funcionality includes electronic medical records, outpatient module and billing", "La funcionalidad básica incluye consultas externas, facturación e historias clínicas", "La fonctionnalité de base comprend les consultations externes, la facturation et les dossiers médicaux"],
+                "inpatients" : ["Inpatient module", "Módulo de hospitalización", "Module d'hospitalisation"],
+                "inpatients_explanation" : ["Creation of virtual hospital wards, as well as the admission, discharge and transfer of patients.", "Creación de salas de hospital virtual, así como el ingreso, alta y traslado de pacientes.", "Création de salles d'hôpital virtuelles, ainsi que l'admission, le congé et le transfert de patients."],
+                "pharmacy" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                "pharmacy_explanation" : ["Pharmacy stock / inventory management", "Gestión de stock / inventario de farmacia", "Gestion des stocks / inventaire de pharmacie"],
+                "requests" : ["Laboratory and radiology", "Módulo de laboratorio y radiología", "Module de laboratoire et de radiologie"],
+                "requests_explanation" : ["Creation and management of laboratory and radiology requests. Configuration of customized catalogue of available tests.", "Creación y gestión de peticiones de laboratorio y radiología, incluyendo la configuración de un catálogo personalizado de pruebas disponibles.", "Création et gestion des demandes de laboratoire et de radiologie, y compris la configuration d'un catalogue personnalisé des tests disponibles."],
+                "country" : ["Country", "País", "Pays"],
+                "type" : ["Type", "Tipo", "Type"],
+                "type_options" : {
+                    "single_doctor" : ["Single doctor Clinic", "Clínica de un solo doctor", "Clinique d'un seul médecin"],
+                    "clinic" : ["Clinic", "Clínica", "Clinique"],
+                    "health_centre" : ["Health Centre", "Centro de Salud", "Centre de santé"],
+                    "hospital" : ["Hospital", "Hospital", "Hôpital"]
+                },
+                "language" : ["What language do you want to use?", "¿Qué idioma desea utilizar?", "Quelle langue souhaitez-vous utiliser ?"],
+                "language_options" : {
+                    "english" : ["English", "Inglés", "Anglais"],
+                    "spanish" : ["Spanish", "Español", "Espagnol"],
+                    "french" : ["French", "Francés", "Français"]
+                }
+        
+            },
             "password" : {
                 "password" : ["Password", "Contraseña", "Mot de passe"],
                 "repeat_password" : ["Repeat Password", "Repetir Contraseña", "Répéter le mot de passe"]
@@ -1090,6 +1090,10 @@
             },
             "contact_info" : {
                 "title" : ["What are your contact details?", "¿Cúales son tus datos de contacto?","Quelles sont vos coordonnées ?"],
+                "explanation" : ["", "",""]
+            },
+            "functionalities" : {
+                "title" : ["What functionalities do you want to use?", "¿Qué funcionalidades quieres utilizar?","Quelles fonctionnalités souhaitez-vous utiliser ?"],
                 "explanation" : ["", "",""]
             },
             "password" : {

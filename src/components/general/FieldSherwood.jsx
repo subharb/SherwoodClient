@@ -6,7 +6,7 @@ import styled, {css} from 'styled-components';
 import { ButtonAdd, ButtonCheck, ButtonContinue, ButtonDelete, ButtonEmptyCheck, DeleteHolder, RedFormHelperText } from '../general/mini_components';
 import { Select, InputLabel, MenuItem, TextField, 
         FormControlLabel, Checkbox, ButtonGroup, IconButton, 
-        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider } from '@mui/material';
+        Icon, Box, FormControl as MuiFormControl, Typography, FormHelperText, FormLabel, RadioGroup, Radio, Grid, Divider, OutlinedInput, InputAdornment, Input } from '@mui/material';
 import { spacing } from "@mui/system";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import 'date-fns';
@@ -27,6 +27,7 @@ import AppointmentField from './SmartFields/AppointmentField';
 import Multioption from './Multioption';
 import dayjs from 'dayjs';
 import { TimeField } from '@mui/x-date-pickers';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const FormControlSpacing = styled(MuiFormControl)(spacing);
 
@@ -311,7 +312,9 @@ class FieldSherwood extends PureComponent{
                     this.props.explanation &&
                     <Typography className={classNameError} variant="caption" component="p">{this.props.translate(this.props.explanation)}</Typography>
                     ,
-                    errorText
+                    <FormHelperText error id="accountId-error">
+                        {errorString}
+                    </FormHelperText>
                 ]);
             case "date":
                 const value = input.value ? dayjs(input.value) : null;
@@ -423,29 +426,35 @@ class FieldSherwood extends PureComponent{
                 )
             case "password":
                 return(
-                    <Box mt={2}>
-                        <FormControl variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-password">{labelString}</InputLabel>
-                            <OutlinedInput {...input}  color="#000"
-                                type={this.state.showPassword ? 'text' : 'password'}
-                                label={labelString} error={errorState} 
-                                helperText={errorString}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={this.handleClickShowPassword}
-                                        onMouseDown={this.handleMouseDownPassword}
-                                    >
-                                        {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                    </InputAdornment>
-                                } />
-                            <FormHelperText error id="accountId-error">
-                                {errorString}
-                            </FormHelperText>
-                        </FormControl>
+                    <Box mt={1}>
+                        <TextFieldSherwood {...input}  type="password" variant="outlined"
+                            label={labelString} error={errorState} color={color}
+                            helperText={errorString} />
                     </Box>
+                    // <Box mt={2}>
+                    //     <FormControl variant="outlined">
+                    //         <InputLabel htmlFor="outlined-adornment-password">{labelString}</InputLabel>
+                    //         <OutlinedInput {...input}  
+                    //             color="inherit"
+                    //             type={this.state.showPassword ? 'text' : 'password'}
+                    //             label={labelString} error={errorState} 
+                    //             helperText={errorString}
+                    //             endAdornment={
+                    //                 <InputAdornment position="end">
+                    //                 <IconButton
+                    //                     aria-label="toggle password visibility"
+                    //                     onClick={this.handleClickShowPassword}
+                    //                     onMouseDown={this.handleMouseDownPassword}
+                    //                 >
+                    //                     {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                    //                 </IconButton>
+                    //                 </InputAdornment>
+                    //             } />
+                    //         <FormHelperText error id="accountId-error">
+                    //             {errorString}
+                    //         </FormHelperText>
+                    //     </FormControl>
+                    // </Box>
                 )  
             case "autocomplete":
                 return(
