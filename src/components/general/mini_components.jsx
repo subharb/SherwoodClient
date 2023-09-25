@@ -253,6 +253,7 @@ export const ButtonContinue = (props) =>{
             variant="contained"
             color={props.color ? props.color : "primary"}
             size="small"
+            colorRGB={green[500]}
             endIcon={<SendIcon />}
             {...props}
             data-testid={props['data-testid'] ? props['data-testid'] : "continue"}

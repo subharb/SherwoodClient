@@ -18,6 +18,7 @@ import { Alert } from '@mui/material';
 import { isArray } from 'lodash';
 import AnimatedCheck from '../../../components/general/AnimatedCheck';
 import { makeAppointmentService } from '../../../services';
+import { green } from '@mui/material/colors';
 
 
 interface FormAppointmentGeneralProps {
@@ -367,10 +368,10 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         if(mode === "make" && !loading && !appointmentCreated && departmentsWithAgenda.length > 0){
             return (
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal"  spaceright={1}>
                         <Translate id="general.cancel" />
                     </ButtonCancel>
-                    <ButtonContinue onClick={confirm} data-testid="continue-modal" color="green">
+                    <ButtonContinue onClick={confirm} data-testid="continue-modal"  >
                         <Translate id="general.continue" />
                     </ButtonContinue>
                 </Grid>
