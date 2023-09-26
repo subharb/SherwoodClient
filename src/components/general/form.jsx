@@ -32,7 +32,7 @@ class Form extends Component {
     }
     sherwoodValidation(value, allValues, propsForm, key){
         if(this.props.fields[key]){
-            const fieldValueCompare = this.props.fields[key].validationField ? value : this.props.fields[key].validationValue ? this.props.translate(this.props.fields[key].validationValue) : null;
+            const fieldValueCompare = this.props.fields[key].validationField ? allValues[this.props.fields[key].validationField] : this.props.fields[key].validationValue ? this.props.translate(this.props.fields[key].validationValue) : null;
             const valueField = this.props.fields[key].type === "textarea" && typeof value !== "undefined" ? value.replace(/<[^>]+>/g, '') : value;
             const validationFunc = this.props.fields[key].validation ? this.props.fields[key].validation : "notEmpty";
             const validation = validateField({  

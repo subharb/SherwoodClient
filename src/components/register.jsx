@@ -182,14 +182,14 @@ class Register extends Component {
             let response = null
             
             if(this.props.typeUser === "researcher"){
-                const url = process.env.REACT_APP_API_URL+'/researcher/register';
+                const url = import.meta.env.VITE_APP_API_URL+'/researcher/register';
                 
                 tempState.info.language = this.props.activeLanguage.code;
                 response = await axios.post(url, tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
             else if(this.props.typeUser === "patient" && typeof this.props.match.params.uuidPatient !== undefined){
-                response = await axios.put(process.env.REACT_APP_API_URL+'/patient/register/'+this.props.match.params.uuidPatient, tempState.info)
+                response = await axios.put(import.meta.env.VITE_APP_API_URL+'/patient/register/'+this.props.match.params.uuidPatient, tempState.info)
                             .catch(err => {console.log('Catch', err); return err;}); 
             }
             else{
