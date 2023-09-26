@@ -426,35 +426,31 @@ class FieldSherwood extends PureComponent{
                 )
             case "password":
                 return(
-                    <Box mt={1}>
-                        <TextFieldSherwood {...input}  type="password" variant="outlined"
-                            label={labelString} error={errorState} color={color}
-                            helperText={errorString} />
+                    
+                    <Box mt={2}>
+                        <FormControl variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-password">{labelString}</InputLabel>
+                            <OutlinedInput {...input}  
+                                color="primary"
+                                type={this.state.showPassword ? 'text' : 'password'}
+                                label={labelString} error={errorState} 
+                                helperText={errorString}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={this.handleClickShowPassword}
+                                        onMouseDown={this.handleMouseDownPassword}
+                                    >
+                                        {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                    </InputAdornment>
+                                } />
+                            <FormHelperText error id="accountId-error">
+                                {errorString}
+                            </FormHelperText>
+                        </FormControl>
                     </Box>
-                    // <Box mt={2}>
-                    //     <FormControl variant="outlined">
-                    //         <InputLabel htmlFor="outlined-adornment-password">{labelString}</InputLabel>
-                    //         <OutlinedInput {...input}  
-                    //             color="inherit"
-                    //             type={this.state.showPassword ? 'text' : 'password'}
-                    //             label={labelString} error={errorState} 
-                    //             helperText={errorString}
-                    //             endAdornment={
-                    //                 <InputAdornment position="end">
-                    //                 <IconButton
-                    //                     aria-label="toggle password visibility"
-                    //                     onClick={this.handleClickShowPassword}
-                    //                     onMouseDown={this.handleMouseDownPassword}
-                    //                 >
-                    //                     {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                    //                 </IconButton>
-                    //                 </InputAdornment>
-                    //             } />
-                    //         <FormHelperText error id="accountId-error">
-                    //             {errorString}
-                    //         </FormHelperText>
-                    //     </FormControl>
-                    // </Box>
                 )  
             case "autocomplete":
                 return(
