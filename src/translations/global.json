@@ -110,6 +110,7 @@
             "filters" : {
                 "low" : ["Low", "Bajo", "Faible"],
                 "finished" : ["Finished", "Finalizado", "Completé"],
+                "normal" : ["Normal", "Normal", "Normal"],
                 "completed" : ["Completed", "Completado", "Completé"],
                 "accepted" : ["Accepted", "Aceptado", "Accepté"],
                 "pending_payment" : ["Pending payment", "Pago pendiente", "Paiement en attente"],

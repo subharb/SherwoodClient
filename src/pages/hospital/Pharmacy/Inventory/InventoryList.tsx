@@ -16,10 +16,15 @@ import { translateOrderOptions } from '../../../../utils/index.jsx';
 import { IPharmacyItem } from '../types';
 import SearchBox from '../../../../components/general/SearchBox';
 
+export enum InventoryStatus {
+    FINISHED = 0,
+    LOW = 1,
+    NORMAL = 2,
+}
+
 const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, showAddPharmacyItem, loading, showSnackbar,setShowAddPharmacyItem, translate, addPharmacyItemCallBack, updatePharmacyItemCallBack, deleteItemCallback: callbackDeleteItem }) => {
     const [filteredItems, setFilteredItems] = React.useState<IPharmacyItem[]>(pharmacyItems);
-    const [lowStatusFilter, setLowStatusFilter] = React.useState<boolean>(false);
-    const [finishedStatusFilter, setFinishedStatusFilter] = React.useState<boolean>(false);
+    const [statusFilter, setStatusFilter] = React.useState<number[]>([]);
     const [nameFilter, setNameFilter] = React.useState<string>("");
     const [modalInfo, setModalInfo] = React.useState({showModal: false, type:""});
     const [editItem, setEditItem] = React.useState<FormValues>({});
@@ -29,16 +34,56 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
     const [currentPage, setCurrentPage] = React.useState<number>(0);
 
     useEffect(() => {
-        setFilteredItems(pharmacyItems.filter((item: IPharmacyItem) => {
-            return (item.name.toLocaleLowerCase().includes(nameFilter) &&
-                (finishedStatusFilter ? item.amount === 0 : true) && (lowStatusFilter ? item.amount < item.threshold : true) 
-                && (providerFilter !== "" ? item.provider === providerFilter : true))
-        }));
+        // setFilteredItems(pharmacyItems.filter((item: IPharmacyItem) => {
+        //     return (item.name.toLocaleLowerCase().includes(nameFilter) &&
+        //         (statusFilter.includes(InventoryStatus.FINISHED) ? item.amount === 0 : true) && (statusFilter.includes(InventoryStatus.LOW) ? item.amount < item.threshold : true) 
+        //         && (providerFilter !== "" ? item.provider === providerFilter : true))
+
+        // }));
+        let shouldBeFiltered = pharmacyItems.length === 0 && statusFilter.length === 0;
+        const activeNameFilter = nameFilter !== "";
+        let matchNameFilter = false;
+        const filteredItems = pharmacyItems.filter((item: IPharmacyItem) => {
+            if(!activeNameFilter && !providerFilter && statusFilter.length === 0){
+                return true;
+            }
+
+            if(activeNameFilter){
+                matchNameFilter = item.name.toLocaleLowerCase().includes(nameFilter.toLocaleLowerCase());
+                shouldBeFiltered = matchNameFilter;
+            }
+
+            if(providerFilter){
+                shouldBeFiltered = activeNameFilter ? item.provider === providerFilter && matchNameFilter : item.provider === providerFilter;
+            }
+            const prevFilters = shouldBeFiltered;
+            const activePrevFilters = activeNameFilter || providerFilter !== "";
+            if(statusFilter.length > 0){
+                let statusFiltered = false;
+                if(statusFilter.includes(InventoryStatus.LOW)){
+                    shouldBeFiltered = activePrevFilters ? prevFilters && ( item.amount < item.threshold && item.amount !== 0) : (item.amount < item.threshold && item.amount !== 0);
+                    statusFiltered = shouldBeFiltered;
+                }
+                if(!statusFiltered && statusFilter.includes(InventoryStatus.FINISHED)){
+                    shouldBeFiltered = activePrevFilters ? prevFilters && item.amount === 0 : item.amount === 0;
+                    statusFiltered = shouldBeFiltered;
+                }
+                if(!statusFiltered && statusFilter.includes(InventoryStatus.NORMAL)){
+                    shouldBeFiltered = activePrevFilters ? prevFilters && ( item.amount > item.threshold) : item.amount > item.threshold;
+                    statusFiltered = shouldBeFiltered;
+                }
+            }
+            return shouldBeFiltered;
+        });
         
-    }, [nameFilter, lowStatusFilter, providerFilter, finishedStatusFilter, pharmacyItems]);
+        setFilteredItems(filteredItems);
+
+    }, [nameFilter, statusFilter, providerFilter, pharmacyItems]);
+    
     useEffect(() => {
         setCurrentPage(0);
-    }, [nameFilter, lowStatusFilter, providerFilter, finishedStatusFilter]);
+    }, [nameFilter, statusFilter, providerFilter]);
+    
     useEffect(() => {
         if(showSnackbar.severity === "success"){
             setModalInfo({showModal: false, type:""});
@@ -228,19 +273,26 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
     function filterItems(value: string){
         setNameFilter(value.toLocaleLowerCase());
     }
-    function filterStatusLow(){
-        if(!lowStatusFilter){
-            setFinishedStatusFilter(false);
+    
+
+    function applyStatusFilter(status:InventoryStatus){
+        if(statusFilter && statusFilter.includes(status)){
+            if(statusFilter.length === 1){
+                setStatusFilter([]);
+            }
+            else{
+                setStatusFilter(statusFilter.filter((s) => s !== status));
+            }
         }
-        setLowStatusFilter(!lowStatusFilter);
+        else if(statusFilter){
+            setStatusFilter([...statusFilter, status]);
+        }
+        else{
+            setStatusFilter([status]);
+        }
         
     }
-    function filterStatusFinished(){
-        if(!finishedStatusFilter){
-            setLowStatusFilter(false);
-        }
-        setFinishedStatusFilter(!finishedStatusFilter);
-    }
+
     function renderModal(){
         if(loading){
             return <div style={{width:'20rem', display:'flex', justifyContent:'center'}}><Loader /></div>
@@ -349,9 +401,13 @@ const InventoryListCore: React.FC<InventoryLocalizedProps> = ({ pharmacyItems, s
                     </div>
             </Snackbar>
             <Grid container spacing={2}>
-                <SearchBox selectFilter={{value:providerFilter, options:providerOptions, callBack:setProviderFilter}} 
+                <SearchBox 
+                    selectFilter={{value:providerFilter, options:providerOptions, callBack:setProviderFilter}} 
+                    activeFilters={statusFilter}
                     filterItems={[
-                        {label:"low", color:orange[500], value:0, callBack:filterStatusLow},{label:"finished", value:1, color:red[500], callBack:filterStatusFinished},
+                        {label:"low", color:orange[500], value:InventoryStatus.LOW, callBack:() => applyStatusFilter(InventoryStatus.LOW)}, 
+                        {label:"normal", color:green[500], value:InventoryStatus.NORMAL, callBack:() => applyStatusFilter(InventoryStatus.NORMAL)},
+                        {label:"finished", value:InventoryStatus.FINISHED, color:red[500], callBack:() =>applyStatusFilter(InventoryStatus.FINISHED)},
                     ]} textField={{label:"pages.hospital.pharmacy.pharmacy_items.name", callBack:setNameFilter}} />
                 <Grid item xs={12}>
                     {
