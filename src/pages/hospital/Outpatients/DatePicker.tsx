@@ -7,7 +7,7 @@ import { formatDateByLocale } from '../../../utils/index.jsx';
 import { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { TextField } from '@mui/material';
+import moment from 'moment';
 import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 
 declare module '@mui/styles/defaultTheme' {
@@ -119,20 +119,25 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
     const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(autoCurrentDate ? nextAvailableDate.startOf('day') : null);
     const classes = useStyles();
 
-    function occupancyLevel(date: MaterialUiPickersDate) {
-        const dateString = date!.toISOString().split('T')[0]
-        if (datesOccupancy.hasOwnProperty(dateString)) {
-            if (slotsPerDay === datesOccupancy[dateString]) {
-                return classes.fullDay;
+    function occupancyLevel(date: Dayjs) {
+        if(date){
+            const momentObj = moment(date.toDate().getTime());
+            const dateString = momentObj.format('YYYY-MM-DD');
+            
+            if (datesOccupancy.hasOwnProperty(dateString)) {
+                if (slotsPerDay === datesOccupancy[dateString]) {
+                    return classes.fullDay;
+                }
+                else {
+                    const percent = datesOccupancy[dateString] / slotsPerDay;
+                    return percent < 0.3 ? classes.freeDay : percent < 0.6 ? classes.halfBusyDay : classes.veryBusyDay;
+                }
             }
             else {
-                const percent = datesOccupancy[dateString] / slotsPerDay;
-                return percent < 0.3 ? classes.freeDay : percent < 0.6 ? classes.halfBusyDay : classes.veryBusyDay;
+                return classes.freeDay;
             }
         }
-        else {
-            return classes.freeDay;
-        }
+        
     }
 
     function isDisabledDate(date: MaterialUiPickersDate, selectBlockedDates?: boolean) {
