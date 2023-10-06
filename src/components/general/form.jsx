@@ -114,18 +114,16 @@ class Form extends Component {
     renderExtraFields(key){
         //Un field que habilita la aparición de otro field
        
-        // const {input, activationValues, activatedFields} = {...this.props.fields[key]};
+        const {input, activationValues, activatedFields} = {...this.props.fields[key]};
 
-        // if(activationValues && activatedFields){
+        if(activationValues && activatedFields){
+                return (
+                    <div className="container">
+                        <FieldArray name={`${key}_options`} key={key} component={this.renderOptions} />
+                    </div>
+                )
             
-            
-        //         return (
-        //             <div className="container">
-        //                 <FieldArray name={`${key}_options`} key={key} component={this.renderOptions} />
-        //             </div>
-        //         )
-            
-        // }
+        }
     }
     renderFields(){
         if(!this.mounted){
