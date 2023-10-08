@@ -110,16 +110,52 @@ class Form extends Component {
         tempState.showOptions[key] = false;
         this.setState(tempState);
     }
+
+    renderOptions = ({ fields, meta: { error } }) => (
+        <ul>
+          <li>
+            <button type="button" onClick={() => fields.push()}>
+              Add Option
+            </button>
+          </li>
+          {fields.map((option, index) => (
+            <li key={index}>
+              <button
+                onClick={() => fields.remove(index)}
+              >Delete</button>
+              <Field
+                name={option}
+                type="text"
+                component={this.renderOption}
+                label={`Option #${index + 1}`}
+              />
+            </li>
+          ))}
+          {error && <li className="error">{error}</li>}
+        </ul>
+    )
     
+    renderOption = ({ input, label, type, meta: { touched, error } }) => (
+        <div>
+            <label>{label}</label>
+            <div>
+            <input {...input} type={type} placeholder={label} />
+            {touched && error && <span>{error}</span>}
+            </div>
+        </div>
+    )
+
     renderExtraFields(key){
         //Un field que habilita la aparición de otro field
        
-        const {input, activationValues, activatedFields} = {...this.props.fields[key]};
+        const {activationValues, activatedFields} = {...this.props.fields[key]};
+        const value = this.props.formValues[key];
 
-        if(activationValues && activatedFields){
+        if(activatedFields && activationValues && activationValues.includes(value)){
+                const activatedField = {...activatedFields[value]};
                 return (
                     <div className="container">
-                        <FieldArray name={`${key}_options`} key={key} component={this.renderOptions} />
+                        <FieldArray name={`${key}_options`} label={activatedField.label} key={key} component={this.renderOptions} />
                     </div>
                 )
             

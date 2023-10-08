@@ -441,8 +441,8 @@ export const FIELDS_BASIC_INFO = {
             ],
         value: "",
         activationValues : ["2"],
-        activatedFields:[
-            {
+        activatedFields:{
+            "2" : {
                 required : true,
                 name : "reference_number",
                 type:"text",
@@ -450,7 +450,7 @@ export const FIELDS_BASIC_INFO = {
                 validation : "textMin2",
                 value: ""
             }
-        ]
+        }
     },
     
 }
