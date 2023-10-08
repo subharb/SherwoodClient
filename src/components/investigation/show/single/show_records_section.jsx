@@ -78,7 +78,7 @@ function ShowRecordsSection(props) {
             const dateAppointment = stringDatePostgresToDate(valueRecord.value);
             return (
                 <Typography variant="h6" color="textPrimary">
-                    {field.name}: {dateAppointment.toLocaleString(props.activeLanguage.code,{
+                    <Translate id="general.date" />: {dateAppointment.toLocaleString(props.activeLanguage.code,{
                         year: 'numeric',
                         month: '2-digit',
                         day: '2-digit'

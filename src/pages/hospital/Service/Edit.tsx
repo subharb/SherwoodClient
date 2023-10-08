@@ -1,6 +1,5 @@
 import { Grid, Snackbar, Typography } from '@mui/material';
 import { Alert } from '@mui/material';
-import { Color } from '@mui/lab';
 import axios from 'axios';
 import { isArray } from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -92,6 +91,7 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
         else {
             axios.post(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/service/", serviceInvestigation, { headers: { "Authorization": localStorage.getItem("jwt") } })
                 .then(response => {
+                    setLoading(false);
                     if (response.status === 200) {
                         setSnackbar({ show: true, severity: "success", message: "pages.hospital.services.success" });
                         if (isArray(servicesInvestigation)) {
@@ -105,8 +105,6 @@ const EditServices: React.FC<EditServicesProps> = ({ uuidInvestigation, serviceT
                     else {
                         setSnackbar({ show: true, severity: "error", message: "general.error" });
                     }
-
-                    setLoading(false);
                 })
         }
 
@@ -278,9 +276,14 @@ const EditServicesComponent: React.FC<EditServicesLocalizedProps> = ({ serviceTy
     }
     useEffect(() => {
         if (!loading) {
-            setShowModal(false);
+            //Set time out before closing modal to avoid flickering
+            setTimeout(() => {
+                setShowModal(false);
+            }, 0);
+            
         }
-    }, [loading])
+    }, [loading]);
+
     if (loading || !servicesGeneral || !servicesInvestigation) {
         return <Loader />
     }
