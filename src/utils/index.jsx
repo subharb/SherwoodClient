@@ -212,36 +212,36 @@ export const PERSONAL_FIELDS_FORM = {
                 {"label": "investigation.create.edc.evaluation", "value" : "evaluation"}
         ],
         activationValues : ["select", "multioption", "radio", "evaluation"],
-        activatedFields:[
-            {
+        activatedFields:{
+            "select" : {
                 required : true,
                 type:"options",
                 validation : "notEmpty",
                 label : "investigation.create.edc.choose",
                 shortLabel: "investigation.table.type"
             },
-            {
-                required : true,
-                type:"options",
-                validation : "notEmpty",
-                label : "investigation.create.edc.choose",
-                shortLabel: "investigation.table.type"
-            }, 
-            {
+            "multioption" : {
                 required : true,
                 type:"options",
                 validation : "notEmpty",
                 label : "investigation.create.edc.choose",
                 shortLabel: "investigation.table.type"
             },
-            {
+            "radio" : {
                 required : true,
-                type:"min_max",
+                type:"options",
                 validation : "notEmpty",
                 label : "investigation.create.edc.choose",
                 shortLabel: "investigation.table.type"
-            }]
-                                        
+            },
+            "evaluation" : {
+                required : true,
+                type:"options",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type"
+            }
+        }                                        
     },
     "label" : {
         name:"label",
@@ -439,18 +439,7 @@ export const FIELDS_BASIC_INFO = {
                 {"label" : "investigation.create.edc.reference_number_state_type.pending", "value" : 1},
                 {"label" : "investigation.create.edc.reference_number_state_type.approved", "value" : 2},
             ],
-        value: "",
-        activationValues : ["2"],
-        activatedFields:{
-            "2" : {
-                required : true,
-                name : "reference_number",
-                type:"text",
-                label:"investigation.create.edc.reference_number",
-                validation : "textMin2",
-                value: ""
-            }
-        }
+        value: ""
     },
     
 }

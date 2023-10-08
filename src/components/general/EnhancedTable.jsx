@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import Helmet from "react-helmet";
 
 import {
     Box,
@@ -359,19 +357,18 @@ function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dra
             onClick={props.selectRow ? () => props.selectRow( row.id) : null}
             {...draggableProps}
             {...dragHandleProps}
-            innerRef={innerRef}
-        >
-            
-            {
-                !noSelectable &&
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        checked={isItemSelected}
-                        inputProps={{ "aria-labelledby": labelId }}
-                        onClick={(event) => handleClick(event, row.id)}
-                    />
-                </TableCell>
-            }
+            ref={ innerRef }
+        >   
+        {
+            !noSelectable &&
+            <TableCell padding="checkbox">
+                <Checkbox
+                    checked={isItemSelected}
+                    inputProps={{ "aria-labelledby": labelId }}
+                    onClick={(event) => handleClick(event, row.id)}
+                />
+            </TableCell>
+        }
             
             {
                 headCells.map(headCell =>{
@@ -403,7 +400,8 @@ function renderBody(){
         {
             (provided, snapshot) =>(
                 
-                <TableBody>
+                <TableBody {...provided.draggableProps}
+                    ref={provided.innerRef}>
                     
                 {stableSort(rows, getComparator(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -412,7 +410,8 @@ function renderBody(){
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return props.droppableId ? (
-                        <Draggable draggableId={`item-${props.droppableId}-${row.id}`} index={index}
+                        <Draggable key={row.id} draggableId={`item-${props.droppableId}-${row.id}`} 
+                            index={index}
                             isDragDisabled={!props.droppableId}>
                             {
                                 (provided, snapshot)=>(
