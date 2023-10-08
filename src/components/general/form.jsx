@@ -5,7 +5,7 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import FieldSherwood from './FieldSherwood';
 import { getValueField, validateField } from '../../utils/index.jsx';
 import PropTypes from 'prop-types';
-import { ButtonCancel, ButtonContinue } from '../../components/general/mini_components';
+import { ButtonAdd, ButtonCancel, ButtonContinue, ButtonDelete } from '../../components/general/mini_components';
 import { Grid, Paper, Typography } from '@mui/material';
 import { green, blue } from '@mui/material/colors';
 
@@ -111,21 +111,18 @@ class Form extends Component {
         this.setState(tempState);
     }
 
-    renderOptions = ({ fields, meta: { error } }) => (
+    renderOptions = ({ fields, activatedField, meta: { error } }) => (
         <ul>
           <li>
-            <button type="button" onClick={() => fields.push()}>
-              Add Option
-            </button>
+            <ButtonAdd type="button" onClick={() => fields.push()} />
           </li>
           {fields.map((option, index) => (
             <li key={index}>
-              <button
-                onClick={() => fields.remove(index)}
-              >Delete</button>
+              <ButtonDelete
+                onClick={() => fields.remove(index)} />
               <Field
                 name={option}
-                type="text"
+                type={activatedField.type}
                 component={this.renderOption}
                 label={`Option #${index + 1}`}
               />
@@ -135,11 +132,11 @@ class Form extends Component {
         </ul>
     )
     
-    renderOption = ({ input, label, type, meta: { touched, error } }) => (
+    renderOption = ({label, type, input, meta:{error, touched}}) => (
         <div>
             <label>{label}</label>
             <div>
-            <input {...input} type={type} placeholder={label} />
+            <input {...input} type={type} value={input.value} placeholder={label} />
             {touched && error && <span>{error}</span>}
             </div>
         </div>
@@ -155,7 +152,8 @@ class Form extends Component {
                 const activatedField = {...activatedFields[value]};
                 return (
                     <div className="container">
-                        <FieldArray name={`${key}_options`} label={activatedField.label} key={key} component={this.renderOptions} />
+                        <FieldArray name={`${key}_options`} activatedField={activatedField}
+                            label={activatedField.label} key={key} component={this.renderOptions} />
                     </div>
                 )
             
