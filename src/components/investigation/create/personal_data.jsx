@@ -1,7 +1,6 @@
 import React from 'react'
 import { Translate, withLocalize } from 'react-localize-redux';
 import { isSmartField, PERSONAL_DATA_FIELDS, PERSONAL_FIELDS_FORM } from '../../../utils/index.jsx';
-import { validateField } from '../../../utils/index.jsx';
 import { Field, reduxForm } from 'redux-form'
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Component } from 'react';
