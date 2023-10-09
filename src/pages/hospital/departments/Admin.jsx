@@ -655,7 +655,9 @@ function Departments(props) {
         if(wardToDelete || uuidDepartmentAddWard || addingDepartment || changingResearcherUnit || departmentToAddUnit || confirmingDeleteUnitResearcher){
             setShowSnackbar({show:true, severity: "success", message : "hospital.departments.action-success"});
         }
-        resetModal();
+        setTimeout(() => {
+            resetModal();
+        }, 0);
     }, [props.departments, props.researchers])
 
     useEffect(()=>{
