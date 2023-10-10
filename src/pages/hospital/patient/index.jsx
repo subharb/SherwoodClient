@@ -151,7 +151,8 @@ function Patient(props) {
         const nextUrl = HOSPITAL_PATIENT_SINGLE_SUBMISSION.replace(":uuidPatient", uuidPatient)
                 .replace(":action", "show")
                 .replace(":idSubmission", idSubmission)
-                .replace(":typeTest", parameters.typeTest);
+                .replace(":typeTest", parameters.typeTest)
+                .replace(":single", true);
         history.push(nextUrl);
     }
 
