@@ -83,10 +83,10 @@ function Patient(props) {
         if((!parameters.typeTest || parameters.typeTest === "medical") && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
             return true;
         }
-        if(parameters.typeTest === "images" && survey.type === types.TYPE_IMAGE_SURVEY){
+        if(parameters.typeTest === "images" && [types.TYPE_FILL_IMG_SURVEY, types.TYPE_IMAGE_SURVEY].includes(survey.type)){
             return true;
         }
-        if(parameters.typeTest === "lab" && survey.type === types.TYPE_LAB_SURVEY){
+        if(parameters.typeTest === "lab" && [types.TYPE_FILL_LAB_SURVEY, types.TYPE_FILL_LAB_SURVEY].includes(survey.type)){
             return true;
         }
     }) : [];
@@ -106,7 +106,7 @@ function Patient(props) {
     let filteredRecords = useMemo(() => {
         if(idSubmission && surveyRecords){
             const currentSub = surveyRecords.find((rec) => rec.id === idSubmission);
-            if(currentSub && currentSurveys){
+            if(currentSub && currentSurveys.length > 0){
                 return surveyRecords.filter(rec => {
                     return currentSurveys.some((sur) => sur.uuid === rec.uuidSurvey);
                 });
@@ -151,8 +151,7 @@ function Patient(props) {
         const nextUrl = HOSPITAL_PATIENT_SINGLE_SUBMISSION.replace(":uuidPatient", uuidPatient)
                 .replace(":action", "show")
                 .replace(":idSubmission", idSubmission)
-                .replace(":typeTest", parameters.typeTest)
-                .replace(":single", true);
+                .replace(":typeTest", parameters.typeTest);
         history.push(nextUrl);
     }
 
@@ -327,10 +326,10 @@ function Patient(props) {
             const forceEdit =  dataCollectionSelected.type === types.TYPE_EDITABLE_SURVEY
             return (
                 <>  
-                    {
+                    {/* {
                         belongsToRequest &&
                         <RequestInfoWithFetch idSubmission={idSubmission} uuidInvestigation={props.investigations.currentInvestigation.uuid} />
-                    }
+                    } */}
                     <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} 
                         forceEdit={forceEdit} survey={dataCollectionSelected} 
                         mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission} 

@@ -8578,6 +8578,15 @@
 "netmask@^2.0.2":
   "version" "2.0.2"
 
+"nice-napi@^1.0.2":
+  "version" "1.0.2"
+  dependencies:
+    "node-addon-api" "^3.0.0"
+    "node-gyp-build" "^4.2.2"
+
+"node-addon-api@^3.0.0":
+  "version" "3.2.1"
+
 "node-dir@^0.1.10", "node-dir@^0.1.17":
   "version" "0.1.17"
   dependencies:
@@ -8613,6 +8622,9 @@
     "data-uri-to-buffer" "^4.0.0"
     "fetch-blob" "^3.1.4"
     "formdata-polyfill" "^4.0.10"
+
+"node-gyp-build@^4.2.2":
+  "version" "4.6.0"
 
 "node-gyp@^9.0.0", "node-gyp@^9.4.0":
   "version" "9.4.0"
