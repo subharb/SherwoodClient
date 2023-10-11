@@ -499,7 +499,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     validation : "notEmpty",
                     options:services.map((service) => {
                         return {
-                            label: service.service.name,
+                            label: service.service.name +" - " +service.description,
                             value: service.id
                         }
                     })
@@ -742,8 +742,8 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     {
                         services.map((service) => {
                             return (
-                                <ListItem button>
-                                    <ListItemText primary={`${service.description}`} /> 
+                                <ListItem style={{backgroundColor:'white'}} >
+                                    <ListItemText primary={`${service.description}`} color='primary' /> 
                                                                              
                                         {
                                             <IconButton

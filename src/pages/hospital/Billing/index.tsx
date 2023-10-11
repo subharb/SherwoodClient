@@ -345,13 +345,13 @@ const Billing: React.FC<Props> = (props) => {
                                     toogleEditBillingInfo();
                                 }}
                                 size="large">
-                                <IconGenerator type={!edit ? "settings" : "back"}  color="primary"/>
+                                <IconGenerator type={!edit ? "settings" : "back"} />
                             </IconButton>
                         </div>
                         {!props.billingInfo ?
-                            <Typography variant="body2" gutterBottom style={{ color: "white" }}>
+                            <TypographyStyled variant="body2" gutterBottom >
                                 <Translate id="hospital.billing.no_billing_info" />
-                            </Typography>
+                            </TypographyStyled>
                             :
                             <ButtonAdd disabled={props.section === "create_bill" || props.loading || edit}
                                 type="button" data-testid="add_bill"

@@ -9,6 +9,21 @@ export function a11yProps(index:number) {
       'aria-controls': `simple-tabpanel-${index}`,
     };
 }
+
+const TabsStyled = styled(Tabs)(({ theme }) => ({
+    "& .MuiTabs-indicator": {
+        backgroundColor: theme.palette.primary.color,
+    },
+    "& .MuiTab-root": {
+        color: theme.palette.primary.color,
+        "&.Mui-selected": {
+            color: theme.palette.primary.color,
+        },
+        "&:hover": {
+            color: theme.palette.primary.color,
+        },
+    }
+}));
 interface TabPanelProps{
     children:any,
     value:number,
@@ -68,7 +83,8 @@ export function TabsSherwood(props:TabProps){
 
     return (
         <>
-        <Tabs value={tabSelector} onChange={onTabChange} variant="scrollable"
+        <TabsStyled value={tabSelector} onChange={onTabChange} variant="scrollable"
+            
             scrollButtons="auto"  aria-label={props.name} {...props}>
             {
                 props.labels.map((label, index) => {
@@ -76,7 +92,7 @@ export function TabsSherwood(props:TabProps){
                     return <CustomTab label={label} {...a11yProps(index)} />;
                 })
             }
-        </Tabs>
+        </TabsStyled>
         {
             props.children.map((child, index) => {
                 if(Array.isArray(child)){
