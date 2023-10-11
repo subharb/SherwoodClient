@@ -333,7 +333,7 @@ function Patient(props) {
                     <ShowPatientRecords permissions={props.investigations.currentInvestigation.permissions} 
                         forceEdit={forceEdit} survey={dataCollectionSelected} 
                         mode="elements" callBackEditSubmission={callBackEditSubmission} idSubmission={idSubmission} 
-                        singleSubmission={single === 'true'}
+                        singleSubmission={single === 'true'} uuidInvestigation={props.investigations.currentInvestigation.uuid}
                         submissions={filteredRecords.filter((record) => record.type !== "stay")} 
                         surveys={props.investigations.currentInvestigation.surveys} />
                 </>)

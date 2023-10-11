@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from "@mui/lab";
-import axios from 'axios';
-import ShowRecordsSection from './show_records_section';
+import * as types from "../../../../constants";
 import { ButtonAdd, ButtonBack, ButtonForward } from '../../../general/mini_components';
 import { filterRecordsFromSection, filterRecordsFromSubmissions, numberRecordsSection } from '../../../../utils/index.jsx';
 import { Translate } from 'react-localize-redux';
@@ -11,6 +10,7 @@ import { fetchRecordsPatientFromSurvey } from '../../../../services';
 import { Card, CardContent, Typography, Grid, Paper } from '@mui/material';
 import Loader from '../../../Loader';
 import ShowSingleSubmissionPatient from '../../../../pages/hospital/ShowSingleSubmissionPatient';
+import { RequestInfoWithFetch } from '../../../../pages/hospital/Service/RequestInfo';
 
 /**
  * Component in charge of showing records of a given patient in a survey
@@ -84,10 +84,16 @@ export default function ShowPatientRecords(props) {
                 }
             }
             else{
+                const submission = props.submissions[indexSubmission];
+                const belongsToRequest = submission && types.TYPE_FILL_SURVEY.includes(submission.typeSurvey);
                 return(
                 <div style={{paddingTop:"0.6rem"}}>
+                    {
+                        belongsToRequest &&
+                        <RequestInfoWithFetch key={submission.id} idSubmission={submission.id} uuidInvestigation={props.uuidInvestigation} />
+                    }
                     <ShowSingleSubmissionPatient surveys={props.surveys} 
-                        forceEdit={props.forceEdit} submission={props.submissions[indexSubmission]} 
+                        forceEdit={props.forceEdit} submission={submission} 
                         callBackEditSubmission={(uuidSubmission, uuidSection) => props.callBackEditSubmission(uuidSubmission, uuidSection)}  /> 
                 </div> )
             }
