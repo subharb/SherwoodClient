@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import TimelineIcon from '@mui/icons-material/Timeline';
 import styled, { css, withTheme } from 'styled-components';
 import icon_male from "../../img/icons/icon_male.svg";
 import { Link } from 'react-router-dom'
@@ -23,6 +23,7 @@ import {
     ArrowForwardIos as ArrowForwardIosIcon,
     ArrowBackIos as ArrowBackIosIcon,
     LocalHospital as HospitalIcon,
+    MonetizationOn as MonetizationOnIcon,
     Today as TodayIcon,
     Hotel as HotelIcon,
     Undo as UndoIcon,
@@ -78,6 +79,10 @@ export const IconGenerator = withTheme((props) => {
             return <BiotechIcon fill={props.theme.palette.primary.color} fontSize={props.size ? props.size : "small"}  />
         case "info":
             return <InfoIcon style={{color:props.color ? props.color : props.theme.buttonContinue.primary.background }}  />
+        case "analytics":
+            return <TimelineIcon />
+        case "billing":
+            return <MonetizationOnIcon />
         default:
             return <AddIcon />
     }

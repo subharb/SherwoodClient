@@ -490,6 +490,9 @@
             "patient" : {
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
+            "billing" : {
+                "title" : ["Billing", "Facturación", "Facturation"]
+            },
             "users":{
                 "title" : ["User Managment", "Gestión de usuarios", "Gestion des utilisateurs"]
             },

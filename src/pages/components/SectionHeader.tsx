@@ -22,7 +22,7 @@ const SectionContainer = styled.div`
 `;
 
 const IconHolder = styled.div`
-    padding:0.4rem 0 1rem 0rem;
+    padding:0rem 0.5rem;
 `;
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle, theme, addCallback, editCallback, infoCallback }) => {
@@ -40,6 +40,10 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
                 return <IconGenerator type="outpatients" />
             case "shoe_shop":
                 return <IconGenerator type="shoe_shop" />
+            case "analytics":
+                return <IconGenerator type="analytics" />
+            case "billing":
+                return <IconGenerator type="billing" />
             default:
                 return null;
         }
@@ -49,18 +53,18 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
         <SectionContainer>
             <Grid container alignItems="center" >
                 <Grid item>
+                <IconHolder>
                 {
                     renderIcon()
                 }
+                </IconHolder>
                 </Grid>
                 <Grid item>
                     <TypographyStyled variant="h3" gutterBottom display="inline">
                         <Translate id={titlePath} />
                     </TypographyStyled>
                 </Grid>
-            </Grid>
-            <div>
-            {
+                {
                 editCallback && 
                     <IconButton
                         onClick={(e) => {
@@ -85,8 +89,8 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
                         color={theme.palette.primary.color} />
                 </IconButton>
             }
-            
-        </div>
+            </Grid>
+       
         {
             addCallback &&
             <ButtonAdd onClick={addCallback} />

@@ -23,6 +23,7 @@ import BillsTable from './BillsTable';
 import { HOSPITAL_BILLING, HOSPITAL_BILLING_CREATE_BILL } from '../../../routes/urls';
 import { getBillableComboAction, resetBillItems } from '../../../redux/actions/billingActions';
 import { TYPE_ADDITIONAL_INFO_SURVEY } from '../../../constants';
+import SectionHeader from '../../components/SectionHeader';
 
 interface PropsRedux {
     investigations: any,
@@ -336,18 +337,9 @@ const Billing: React.FC<Props> = (props) => {
             <Grid justifyContent="space-between" direction='row' container padding={2} style={{ color: "white" }}>
                 <Grid item xs={12} container>
                     <Grid item xs={6} style={{ paddingBottom: '1rem' }}>
-                        <div>
-                            <TypographyStyled variant="h3" gutterBottom style={{ display: 'inline-block' }}>
-                                <Translate id="hospital.billing.title" />
-                            </TypographyStyled>
-                            <IconButton
-                                onClick={(e) => {
-                                    toogleEditBillingInfo();
-                                }}
-                                size="large">
-                                <IconGenerator type={!edit ? "settings" : "back"} />
-                            </IconButton>
-                        </div>
+                        <SectionHeader section="billing" edit={edit} 
+                            editCallback={toogleEditBillingInfo}  />
+                        
                         {!props.billingInfo ?
                             <TypographyStyled variant="body2" gutterBottom >
                                 <Translate id="hospital.billing.no_billing_info" />
