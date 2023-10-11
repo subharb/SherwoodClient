@@ -47,17 +47,19 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
     const titlePath = alterTitle ? alterTitle : `pages.hospital.${section}.title`;
     return (
         <SectionContainer>
-            
-                <IconHolder>
-                    {
-                        renderIcon()
-                    }
-                </IconHolder>
-        
-        <div>
-            <TypographyStyled variant="h3" gutterBottom display="inline">
-                <Translate id={titlePath} />
-            </TypographyStyled>
+            <Grid container alignItems="center" >
+                <Grid item>
+                {
+                    renderIcon()
+                }
+                </Grid>
+                <Grid item>
+                    <TypographyStyled variant="h3" gutterBottom display="inline">
+                        <Translate id={titlePath} />
+                    </TypographyStyled>
+                </Grid>
+            </Grid>
+            <div>
             {
                 editCallback && 
                     <IconButton

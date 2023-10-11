@@ -159,7 +159,7 @@ const Billing: React.FC<Props> = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [actionBill, setActionBill] = useState<BillActions>(props.section === "create_bill" ? BillActions.create : BillActions.default);
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
-    const [edit, setEdit] = useState(false);
+    const [edit, setEdit] = useState(!props.billingInfo);
     const dispatch = useDispatch();
 
     async function resetSnackBar() {

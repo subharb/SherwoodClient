@@ -234,8 +234,8 @@
                 }
             }
         },
-        
         "analytics" : {
+            "title" : ["Analytics", "Analítica", "Analytique"],
             "date_selector" : {
                 "select_period" : ["Date Selector", "Selector de fecha", "Sélecteur de date"],
                 "last_week" : ["Last Week", "Última semana", "Semaine dernière"],
@@ -987,7 +987,9 @@
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "go-to-patient" : ["View Patient", "Ver Paciente", "Voir le dossier"],
-            "analytics" : ["Analytics", "Analytics", "Analytics"],
+            "analytics" : {
+                "title" : ["Analytics", "Analítica", "Analytique"]
+            },
             "user_mgmt" : ["Users", "Usuarios", "Utilisateurs"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"],
             "confirm-patient" : {

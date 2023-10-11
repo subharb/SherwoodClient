@@ -422,7 +422,7 @@ const dashboardAddPatientRoutes = {
 }
 
 const dashboardAnalyticsRoutes = {
-    id: <Translate id="pages.hospital.analytics" />,
+    id: <Translate id="pages.hospital.analytics.title" />,
     path: HOSPITAL_ANALYTICS,
     icon: <TimelineIcon />,
     badge: "",

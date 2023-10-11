@@ -27,6 +27,7 @@ import { FUNCTIONALITY } from '../../../constants/types';
 import OutpatientsStats from './OutpatientsStats';
 import { TypographyStyled } from '../../../components/general/mini_components';
 import CommonDiagnosis from './CommonDiagnosis';
+import SectionHeader from '../../components/SectionHeader';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -339,9 +340,8 @@ export function Analytics(props) {
 			<Helmet title="Analytics Dashboard" />
 			<Grid container spacing={6}>
 				<Grid item xs={12} style={{ color: "white" }}>
-					<TypographyStyled variant="h3" gutterBottom >
-						Analytics Dashboard
-					</TypographyStyled>					
+                    <SectionHeader section="analytics"  />
+									
 				</Grid>
 				<Grid spacing={3} item container xs={12} style={{background:'white', padding:'1rem'}}>
                     {

@@ -6,7 +6,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import Helmet from "react-helmet";
 import { decryptData, encryptData } from '../../../utils/index.jsx';
 import Loader from '../../Loader';
-import { BoxBckgr, ButtonAdd, ButtonContinue } from '../../general/mini_components';
+import { BoxBckgr, ButtonAdd, ButtonContinue, TypographyStyled } from '../../general/mini_components';
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { EnhancedTable } from "../../general/EnhancedTable";
@@ -276,9 +276,9 @@ function ShareInvestigation(props) {
         let content = null;
         if(sharedResearchers.length === 0){
             content = <Box mt={3}>
-                            <Typography variant="body2" component="div" gutterBottom>
+                            <TypographyStyled variant="body2" component="div" gutterBottom>
                                 <Translate id="investigation.share.no_researchers_added" />
-                            </Typography>
+                            </TypographyStyled>
                         </Box>
         }
         else{
@@ -402,21 +402,18 @@ function ShareInvestigation(props) {
                 </div>
             </Snackbar>
             <Grid container spacing={3}>
-                
-                <Grid item  xs={12}>
-                    <SectionHeader section="users" infoCallback={showInfo} />
-                </Grid>
+                <SectionHeader section="users" infoCallback={showInfo} />
                 <Grid item container xs={12} spacing={3}>
                     <Grid item xs={12} >
-                        <Typography gutterBottom variant="h5" component="h2">
+                        <TypographyStyled gutterBottom variant="h5" component="h2">
                             { investigation.name }
-                        </Typography>
+                        </TypographyStyled>
                     </Grid>
                     {
                         renderPrevResearchers()
                     }
                     <Grid item xs={12} >
-                        <Typography variant="body2" component="div" gutterBottom>
+                        <TypographyStyled variant="body2" component="div" gutterBottom>
                             <Translate id="investigation.share.add_researcher" />
                             <ButtonAdd disabled={addingResearcher} 
                                 type="button" data-testid="add_researcher" 
@@ -424,7 +421,7 @@ function ShareInvestigation(props) {
                                     setAddingResearcher(true);
                                     setShowModal(true);
                                 }}></ButtonAdd>
-                        </Typography>
+                        </TypographyStyled>
                     </Grid>
                     {
                         renderNewResearchers()
