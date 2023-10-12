@@ -80,9 +80,9 @@ export const IconGenerator = withTheme((props) => {
         case "info":
             return <InfoIcon style={{color:props.color ? props.color : props.theme.buttonContinue.primary.background }}  />
         case "analytics":
-            return <TimelineIcon />
+            return <TimelineIcon style={{color : props.theme.buttonContinue.primary.background }}   />
         case "billing":
-            return <MonetizationOnIcon />
+            return <MonetizationOnIcon style={{color : props.theme.buttonContinue.primary.background }}  />
         default:
             return <AddIcon />
     }
