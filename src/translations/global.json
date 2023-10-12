@@ -7,6 +7,8 @@
         "total" : ["Total", "Total", "Total"],
         "not_defined" : ["Not defined", "No definido", "Non défini"],
         "actions" : ["Actions", "Acciones", "Actions"],
+        "paid" : ["Paid", "Pagado", "Payé"],
+        "used" : ["Used", "Usado", "Utilisé"],
         "week_days" : {
             "monday" : ["Monday", "Lunes", "Lundi"],
             "tuesday" : ["Tuesday", "Martes", "Mardi"],

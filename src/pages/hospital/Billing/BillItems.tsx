@@ -213,7 +213,6 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         if(filteredColumns.find((col) => col.type === BillItemKeys.amount)){
             if (calculateTotalBill(items) > 0) {
                 onBillItemsValidated(items);
-                
             }
             else {
                 setErrorBill(<Translate id="hospital.billing.billing_info.error.positive" />);
@@ -536,8 +535,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
     }
     else {
-        headCells.push({ id: "paid", alignment: "right", label: <React.Fragment>Paid</React.Fragment> });
-        headCells.push({ id: "used", alignment: "right", label: <React.Fragment>Used</React.Fragment> });
+        headCells.push({ id: "paid", alignment: "right", label: <React.Fragment><Translate id="general.paid" /></React.Fragment> });
+        headCells.push({ id: "used", alignment: "right", label: <React.Fragment><Translate id="general.used" /></React.Fragment> });
     }
    
     return (

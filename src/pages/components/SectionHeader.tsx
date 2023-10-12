@@ -1,7 +1,5 @@
 import { Grid, IconButton, Theme } from '@mui/material';
 import React from 'react';
-import iconImages from "../../img/icons/images_white.png";
-import iconLab from "../../img/icons/lab_white.png";
 import styled, { withTheme } from 'styled-components';
 import { Translate } from 'react-localize-redux';
 import { ButtonAdd, IconGenerator, TypographyStyled } from '../../components/general/mini_components';
@@ -18,7 +16,7 @@ interface SectionHeaderProps {
 
 const SectionContainer = styled.div`
     display:flex;
-    padding:1rem;
+    xpadding:1rem;
 `;
 
 const IconHolder = styled.div`
