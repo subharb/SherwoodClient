@@ -116,6 +116,7 @@ export const BillForm:React.FC<Props> = (props) => {
             return(
                 <Grid container item xs={6} style={{ display:'flex', paddingTop: '1rem' }} >
                     <Autocomplete
+                        disabled={loadingBillables}
                         value={comboSelected}
                         options={billableCombos}
                         onInputChange={(event, value, reason) => {
