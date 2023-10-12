@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { Search as SearchPatientIcon } from "@mui/icons-material";
-import { Box, Grid, Paper, Typography, Button, Tabs, Tab } from '@mui/material';
+import { Box, Grid, Paper, Typography, Button} from '@mui/material';
 import Form  from '../../components/general/form';
 import {useHistory} from 'react-router-dom';
 import Loader from '../../components/Loader';
@@ -15,14 +15,11 @@ import _ from 'lodash';
 import Modal from '../../components/general/modal';
 import { DepartmentsAccordionRedux } from './departments/DepartmentsAccordion';
 import { decryptSinglePatientData, yearsFromDate } from '../../utils/index.jsx';
-import { TabPanel } from '@mui/lab';
-import TabsSherwood from '../../components/general/TabsSherwood';
 import ICT from '../../components/general/SmartFields/ICT';
 import { searchPatientByDiagnosis } from '../../services';
-import styled from 'styled-components';
-import { FormMakeAppointment } from './Outpatients/FormAppointment';
 import PatientAppointmentInfo from './Outpatients/PatientAppointmentInfo';
 import { HOSPITAL_PATIENT } from '../../routes/urls';
+import { TabsSherwood } from '../components/Tabs';
 
 let personalFieldsForm = {};
 const ID_FIELD = {
@@ -32,8 +29,6 @@ const ID_FIELD = {
     label : "id",
     order: 0
 }
-
-
 
 function SearchPatients(props){
     const [valuesSearch, setValuesSearch] = useState(null);
@@ -280,7 +275,8 @@ export const SearchPatientsComponent = withLocalize((props) => {
             }      
             
             return (
-                <TabsSherwood defaultTab={0}>
+                <TabsSherwood initTab={0} name="Search Patients" 
+                    labels={[<Translate id="pages.hospital.search-patient.by-personal-details" />, <Translate id="pages.hospital.search-patient.by-diagnose" />]} >
                     <Box label={<Translate id="pages.hospital.search-patient.by-personal-details" />}>
                         <Paper style={{padding:'1rem', margin:'1rem'}}>
                             <Translate id="pages.hospital.search-patient.note" />

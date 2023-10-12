@@ -140,7 +140,7 @@ function HomeSchedule(props) {
                             investigation.permissions.includes(PERMISSION.BUSINESS_READ) &&
                             <Grid item xs={12} style={{textAlign:"center"}}>
                                 <LinkPlain to={HOSPITAL_ANALYTICS}>
-                                    <ButtonGrey data-testid="analytcs" ><Translate id="pages.hospital.analytics" /></ButtonGrey>
+                                    <ButtonGrey data-testid="analytcs" ><Translate id="pages.hospital.analytics.title" /></ButtonGrey>
                                 </LinkPlain>
                             </Grid>
                             

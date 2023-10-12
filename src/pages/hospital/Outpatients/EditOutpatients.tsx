@@ -26,12 +26,13 @@ import { deleteServiceService } from '../../../services';
 interface EditProps {
     uuidInvestigation:string,
     outpatientsInfo:IOutpatientsInfo | null,
+    billingInfo:any,
     // boxes: IBox[],
     // researchers: IResearcher[],
     // services: any[],
 }
 
-const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsInfo }) => {
+const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsInfo, billingInfo }) => {
     const {departments, researchers} = useDepartments();
     const [boxes, setBoxes] = React.useState<IBox[]>([]);
     const {agendas} = useAgendas();
@@ -209,6 +210,7 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
     if(departments && outpatientsInfo){
         return <EditOutpatientsComponent setShowSnackbar={setShowSnackbar} showSnackbar={showSnackbar} agendas={agendas}
                     loading={loading} loadingBoxes={loadingBoxes} loadingServices={loadingServices}
+                    billingInfo={billingInfo}
                     departments={departments} boxes={boxes} services={services} researchers={researchers}                    
                     saveAgendaCallback={saveAgenda} outpatientsInfo={outpatientsInfo} callbackDeleteAgenda={deleteAgenda}
                     saveBoxCallback={saveBox} updateBoxCallback={updateBoxCallback} callbackDeleteBox={deleteBox}
@@ -224,6 +226,7 @@ const EditOutpatients: React.FC<EditProps> = ({ uuidInvestigation, outpatientsIn
 interface EditPropsComponent extends LocalizeContextProps {
     departments: IDepartment[],
     boxes: IBox[],
+    billingInfo:any,
     services: IServiceInvestigation[],
     loading:boolean,
     loadingBoxes:boolean,
@@ -245,7 +248,7 @@ interface EditPropsComponent extends LocalizeContextProps {
     callbackDeleteService: (idService:number) => void,
 }
 
-const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas, showSnackbar, outpatientsInfo, 
+const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas, showSnackbar, outpatientsInfo, billingInfo,
                                         updateBoxCallback, callbackDeleteBox, callbackDeleteAgenda, 
                                         setShowSnackbar, updateAgendaCallback, saveAgendaCallback, servicesGeneral,
                                         researchers, departments, loading, loadingBoxes, loadingServices, services, translate, 
@@ -781,7 +784,8 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         if(boxes.length === 0 || services.length === 0){
             return (
                 <StartingOutpatients hasBoxes={boxes.length > 0} hasServices={services.length > 0} 
-                    callbackAddBox={() => {console.log("lala");setModalInfo({showModal:true, type:"box"})}}
+                    hasBillingInfo={billingInfo}
+                    callbackAddBox={() => {setModalInfo({showModal:true, type:"box"})}}
                     callbackAddAgenda={addAgenda} callbackAddService={() => setModalInfo({showModal: true, type:"service"})}/>
             );
         }

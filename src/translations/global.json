@@ -75,6 +75,7 @@
             "request_lab" : ["Do you wish to request a lab test?", "¿Desea solicitar un examen de laboratorio?", "Voulez-vous demander un test de laboratoire?"],
             "request_img" : ["Do you wish to request an imaging test?", "¿Desea solicitar un examen de imagen?", "Voulez-vous demander un test d'imagerie?"]
         },
+        "here" : ["here", "aquí", "ici"],
         "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"],
         "no-results" : ["No results", "Sin resultados", "Sans results"]
     },
@@ -635,6 +636,15 @@
                     "prices" : ["Prices", "Precios", "Prix"]
                 },
                 "edit" : {
+                    "no_billing" : ["In order to start using outpatients you need to have the billing information set up. Please go to the billing section and fill the information ", "Para empezar a usar consultas externas necesita tener la información de facturación configurada, puede hacerlo ", "Pour commencer à utiliser les consultations externes, vous devez avoir les informations de facturation configurées. Vous pouvez le faire "],
+                    "first_setup":{
+                        "title" : ["In order to start using outpatients you need to have the following elements set up:", "Para empezar a usar consultas externas necesita tener los siguientes elementos configurados:", "Pour commencer à utiliser les consultations externes, vous devez avoir les éléments suivants configurés:"],
+                        "explanation" : {
+                            "box" : ["Box is the physical space in your facility where the practice will take place", "El box es el espacio físico en su centro donde se realizará la práctica", "La boîte est l'espace physique dans votre établissement où la pratique aura lieu"],
+                            "service" : ["Service is the type of service you will provide in the box(first visit or follow up visit) and the price associated with it", "El servicio es el tipo de servicio que proporcionará en la caja y el precio asociado a él", "Le service est le type de service que vous fournirez dans la boîte et le prix associé"],
+                            "agenda" : ["Agenda is the schedule of the box, you can have multiple agendas for the same box", "La agenda es el horario de la caja, puede tener varias agendas para la misma caja", "L'agenda est l'horaire de la boîte, vous pouvez avoir plusieurs agendas pour la même boîte"]
+                        }
+                    },                    
                     "modal" : {
                         "title" : {
                             "box" : ["Create Box", "Crear Box", "Créer une box"],
@@ -755,7 +765,7 @@
                 },
                 "form_appointment" : {
                     "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"],
-                    "no_agenda_department" : ["Create an agenda for this department", "Cree una agenda para este departamento", "Créez un agenda pour ce département"]
+                    "no_agenda_department" : ["First you need to create an agenda for this department", "Primero necesita crear una agenda para este departamento", "Vous devez d'abord créer un agenda pour ce département"]
                 }
             },
             "shoe_shop":{

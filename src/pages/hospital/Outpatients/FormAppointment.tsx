@@ -19,6 +19,8 @@ import { isArray } from 'lodash';
 import AnimatedCheck from '../../../components/general/AnimatedCheck';
 import { makeAppointmentService } from '../../../services';
 import { green } from '@mui/material/colors';
+import { Link } from 'react-router-dom';
+import { HOSPITAL_OUTPATIENTS_ROUTE } from '../../../routes/urls';
 
 
 interface FormAppointmentGeneralProps {
@@ -194,7 +196,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
 
     function renderDepartments(){
         if(departmentsWithAgenda.length === 0){
-            return <Translate id="pages.hospital.outpatients.form_appointment.no_agenda_department" />
+            return  [<Translate id="pages.hospital.outpatients.form_appointment.no_agenda_department" />," ",<Link to={HOSPITAL_OUTPATIENTS_ROUTE}><Translate id="general.here" /></Link>]
         }
         else if(departmentsWithAgenda.length === 1){
             return (

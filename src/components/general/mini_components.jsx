@@ -200,6 +200,15 @@ export const ButtonIcon = styled(IconButton)`
 export const LinkPlain = styled(Link)`
     text-decoration:none;
 `
+export const LinkStyled = styled(Link)`
+    color:${props => props.theme.palette.primary.color};
+    font-weight: 600;
+    cursor:pointer;
+`;
+
+export const ListStyled = styled.ul`
+    color:${props => props.theme.palette.primary.color};
+    `;
 
 
 export const ButtonGrey = (props) => {

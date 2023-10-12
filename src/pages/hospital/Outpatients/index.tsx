@@ -85,6 +85,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
             return(
                 <Grid item xs={12}>
                     <EditOutpatients uuidInvestigation={investigations.currentInvestigation.uuid} 
+                        billingInfo={investigations.currentInvestigation.billingInfo}
                         outpatientsInfo={outpatientsInfo} />
                 </Grid>
             )
