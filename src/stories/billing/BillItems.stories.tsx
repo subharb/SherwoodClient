@@ -1,18 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, billables, edc_data1 } from '../example_data';
-import { BillForm } from '../../pages/hospital/Billing/BillForm';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from "redux-thunk";
 import ProviderSherwood from '../../providerSherwood';
 import * as types from "../../constants";
+import { BillItems } from '../../pages/hospital/Billing/BillItems';
 
 const composeEnhancers = composeWithDevTools({});
 
-const meta: Meta<typeof BillForm> = {
+const meta: Meta<typeof BillItems> = {
   title: 'Hospital/Billing',
-  component: BillForm,
+  component: BillItems,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -34,26 +34,22 @@ const rootReducer = (state = {
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 export default meta;
-type Story = StoryObj<typeof BillForm>;
+type Story = StoryObj<typeof BillItems>;
 
-export const CreateBill: Story = {
+export const BillItemsT: Story = {
   args: {
     updatingBill: false,
-    patients: patients_personal_data_decrypted(),
-    personalFields: personal_data_investigation1(),
+    columns : [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"amount", type:"amount", validation:""}], 
+    uuidPatient:"",
+    initItems:[],
+    repeatBillItems:true, showTotal:true,
     currency:"CFA",
     uuidInvestigation: getInvestigation.investigation.uuid,
-    idBillingInfo:1,
     withDiscount: true,
     surveyAdditionalInfo:edc_data1().surveys[1],
-    locale:{
-        name: "French",
-        code: "fr",
-        active: true
-      },
     bill:null,
+    onBillItemsValidated: () => {console.log("Bill validated")},
     onCancelBill: () => {console.log("Cancel bill")},
-    onBillSuccesfullyCreated: () => {console.log("Bill created")},
   },
   decorators: [
     (Story) =>  (<ProviderSherwood initStore={
