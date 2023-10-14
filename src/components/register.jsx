@@ -74,6 +74,14 @@ const forms = {
             shortLabel: "register.common.contact_info.email",
             validation : "validEmail"
         },
+        "phone":{
+            name:"phone",
+            required : true,
+            type:"text",
+            label:"register.common.contact_info.phone",
+            shortLabel: "register.common.contact_info.phone",
+            validation : "validPhone"
+        },
     },
     "password" : {
         "password":{
