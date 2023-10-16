@@ -82,6 +82,21 @@ const forms = {
             shortLabel: "register.common.contact_info.phone",
             validation : "validPhone"
         },
+        "country" : {
+            name:"country",
+            required : true,
+            type:"select",
+            defaultOption:{"text" : "register.common.clinic.country", "value" : ""},
+            options:[],
+            option : {
+                "value" : "id",
+                "text" : "code"
+            },
+            optionsUrl: import.meta.env.VITE_APP_API_URL+"/countries",
+            label:"register.common.clinic.country",
+            shortLabel: "register.common.clinic.country",
+            validation : "notEmpty"
+        }
     },
     "password" : {
         "password":{
