@@ -10,8 +10,8 @@ import mixpanel from 'mixpanel-browser';
 import * as Sentry from "@sentry/react";
 
 
-let dsn = "https://4e273ea1b6e04f6cb8f483979eb3233a@o491166.ingest.sentry.io/5992676";
-if (import.meta.env.NODE_ENV === 'production') {
+let dsn = "";//"https://4e273ea1b6e04f6cb8f483979eb3233a@o491166.ingest.sentry.io/5992676";
+if (import.meta.env.PROD) {
     console.log = function () {};
     dsn = "https://1e889cc84edc4a2fa8fffba2173af28b@o491166.ingest.sentry.io/5556260";
     //LogRocket.init('apd2q8/sherwood');
@@ -22,7 +22,7 @@ Sentry.init({
   
     // This sets the sample rate to be 10%. You may want this to be 100% while
     // in development and sample at a lower rate in production
-    replaysSessionSampleRate: 0.1,
+    replaysSessionSampleRate: 1.0,
     // If the entire session is not sampled, use the below sample rate to sample
     // sessions when an error occurs.
     replaysOnErrorSampleRate: 1.0,
