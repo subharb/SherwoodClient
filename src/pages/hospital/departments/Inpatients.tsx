@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { BoxBckgr, TypographyStyled } from '../../../components/general/mini_components';
+import { BoxBckgr, LinkStyled, TypographyStyled } from '../../../components/general/mini_components';
 import Helmet from "react-helmet";
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { AccordionSummary, Accordion, Grid, Typography, AccordionDetails, List, ListItem, ListItemText } from '@mui/material';
@@ -11,7 +11,7 @@ import { IDepartment, IPatient, IWard } from '../../../constants/types';
 import Ward, { WardModes, WardView } from './Ward';
 import { ExpandMore } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
-import { HOSPITAL_PATIENT } from '../../../routes/urls';
+import { HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE, HOSPITAL_PATIENT } from '../../../routes/urls';
 
 
 interface PropsRedux {
@@ -89,7 +89,7 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
     }
     function renderCore(){
         if(!departments || departments.length === 0){
-            return "You have no departments"
+            return [<TypographyStyled variant="body2" ><Translate id="pages.hospital.inpatients.no-departments" /><LinkStyled to={HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE}><Translate id="general.here" /></LinkStyled></TypographyStyled>]
         }
         return departments.filter((department) => department.wards.length > 0).map((department) => 
             <div style={{paddingBottom:'1rem'}}>

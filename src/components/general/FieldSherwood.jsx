@@ -223,7 +223,7 @@ class FieldSherwood extends PureComponent{
         else return null;
     }
     render(){
-        const {input, color, label, meta, hideTitle, type, options, size, removeClass, template,  validation, activeLanguage, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
+        const {input, color, label, meta, hideTitle, type, options, size, removeClass, template,  defaultValue, disabled, activeLanguage, country, activationValues, activatedFields, params, uuidPatient, uuidInvestigation, uuidSurvey} = this.props;
         const sizeCurrent = size ? size : "s12";
         const errorState = (meta.touched && meta.error) ? true : false;
         const errorString = meta.error && errorState ? this.props.translate(meta.error) : "";     
@@ -301,12 +301,13 @@ class FieldSherwood extends PureComponent{
                 
             case "checkbox":
                 console.log("Value checkbox: "+input.name+" "+input.value);
+                const valueChecked = meta.touched ? input.value : defaultValue;
                 const classNameError = (meta.touched && meta.error) ? "error text" : "";
                 const className = removeClass ?  `col ${sizeCurrent}` : `col ${sizeCurrent}`
                 const errorText = errorState ? <RedFormHelperText><Translate id="general.field-required" /></RedFormHelperText> : "";
                 return([
                     <FormControlLabel
-                        control={<Checkbox checked={input.value} {...input} />}
+                        control={<Checkbox  {...input} checked={valueChecked} disabled={disabled} />}
                         label={labelString}
                     />,
                     this.props.explanation &&

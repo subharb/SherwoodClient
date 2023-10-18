@@ -1013,6 +1013,7 @@
             },
             "inpatients" : {
                 "title" : ["Inpatients", "Pacientes ingresados", "Hospitalisation"],
+                "no-departments" : ["You have no departments. Please create them ", "No tiene departamentos. Por favor, cree uno ", "Vous n'avez pas de départements. Veuillez les créer "],
                 "confirm" : ["Do you wish to hospitalize this patient?", "¿Desea hospitalizar a este paciente?", "Voulez-vous hospitaliser ce patient?"],
                 "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le département"]
             },
