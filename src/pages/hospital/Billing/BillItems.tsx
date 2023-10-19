@@ -431,12 +431,12 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                         renderInput={(params:any) => 
                             <TextField {...params} label="Concept" error={fieldErrors.concept !== ""}
                                 helperText={helperText(BillItemKeys.concept)} color="secondary"
-                                onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+                                onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => changeField(event.target.value, BillItemKeys.concept)}
                                 variant="outlined" />
                             }
                     /> : <TextField label="Concept" error={fieldErrors.concept !== ""}
                             helperText={helperText(BillItemKeys.concept)} color="secondary"
-                            onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+                            onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => changeField(event.target.value, BillItemKeys.concept)}
                             variant="outlined" />
                 break;
                 case "type":
@@ -472,15 +472,14 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                         helperText={helperText(BillItemKeys.amount)} 
                         color="secondary"
                         error={fieldErrors.amount !== ""} type="text" 
-                        onChange={(event) => changeField(event.target.value, BillItemKeys.amount)} />   
+                        onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => changeField(event.target.value, BillItemKeys.amount)} />   
                     break;
                 case "number":
                     value = <TextField label={<Translate id={`hospital.billing.item.${col.name}`} />} variant="outlined" 
                         helperText={helperText(BillItemKeys.amount)} 
                         color="secondary"
                         error={fieldErrors[col.name] !== ""} type="text" 
-                        // @ts-ignore: Unreachable code error
-                        onChange={(event) => changeField(event.target.value, col.name)} />   
+                        onChange={(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => changeField(event.target.value, col.name)} />   
                     break;
            }
            // @ts-ignore: Unreachable code error

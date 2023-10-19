@@ -7,6 +7,7 @@ import thunk from "redux-thunk";
 import ProviderSherwood from '../../providerSherwood';
 import * as types from "../../constants";
 import { BillItems } from '../../pages/hospital/Billing/BillItems';
+import { TYPE_BILL_ITEM } from '../../constants/types';
 
 const composeEnhancers = composeWithDevTools({});
 
@@ -39,7 +40,7 @@ type Story = StoryObj<typeof BillItems>;
 export const BillItemsT: Story = {
   args: {
     updatingBill: false,
-    columns : [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"amount", type:"amount", validation:""}], 
+    columns : [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"amount", type:"amount", validation:""}], 
     uuidPatient:"",
     initItems:[],
     repeatBillItems:true, showTotal:true,
@@ -56,27 +57,34 @@ export const BillItemsT: Story = {
         [{
             type: types.INITIALIZE_BILLING,
             payload: {
-                billableCombos:[{
-                    id:1,
-                    name: "Combo 1",
-                    billables:[
-                        {id : billables[0].id},
-                        { id : billables[1].id },
-                        { id : billables[2].id },
-                    ]
+                billItems:[{
+                    concept:"Item 1",
+                    type:TYPE_BILL_ITEM.CHARGE,
+                    quantity:2,
+                    amount:200,
+                    
                 },
                 {
-                    id:2,
-                    name: "Combo 2",
-                    billables:[
-                        { id : billables[0].id },
-                        { id : billables[1].id },
-                        { id : billables[2].id },
-                        { id : billables[3].id },
-                    ]
-                }
-            ],
-            billables: billables,
+                    concept:"Item 2",
+                    type:TYPE_BILL_ITEM.CHARGE,
+                    quantity:3,
+                    amount:400,
+                    
+                },
+                {
+                    concept:"Descuento 1",
+                    type:TYPE_BILL_ITEM.DISCOUNT_AMOUNT,
+                    quantity:1,
+                    amount:20,
+                    
+                },
+                {
+                    concept:"Descuento 2 %",
+                    type:TYPE_BILL_ITEM.DISCOUNT_PERCENT,
+                    quantity:1,
+                    amount:10,
+                    
+                },]
         }
         }]
     }> <Story /> </ProviderSherwood>),
