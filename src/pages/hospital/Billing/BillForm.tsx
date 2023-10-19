@@ -241,7 +241,7 @@ export const BillForm:React.FC<Props> = (props) => {
                         bill={props.bill} 
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
                         onBillItemsValidated={onBillItemsValidated} error={errorBill}
-                        onCancelBill={props.onCancelBill} />
+                        onCancelBill={props.onCancelBill}  />
                     </>
                 ) 
         } 

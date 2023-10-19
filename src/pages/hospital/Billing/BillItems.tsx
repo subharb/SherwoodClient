@@ -39,14 +39,13 @@ interface Column{
     validation:string
 }
 
-interface BillItemsProps extends LocalizeContextProps{
+export interface BillItemsProps extends LocalizeContextProps{
     columns:Column[]
     currency : string,
     print:boolean,
     mode : BillItemModes,
     bill: Bill | null,
     initItems:BillItem[],
-    billables: Billable[],
     showTotal:boolean,
     repeatBillItems:boolean,
     updatingBill:boolean,
