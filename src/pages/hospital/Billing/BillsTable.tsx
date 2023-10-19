@@ -7,6 +7,7 @@ import SearchBox from '../../../components/general/SearchBox';
 import { BillStatus } from '../Service/types';
 import { green, red } from '@mui/material/colors';
 import { Grid } from '@mui/material';
+import { ColourChip } from '../../../components/general/mini_components-ts';
 
 type BillsTableProps = {
     bills: any[];
@@ -40,8 +41,9 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
             return {
                 "id" : bill.id,
                 "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 
-                "total" : Number(bill.total),
-                "totalPending" : Number(bill.total) - Number(bill.totalPaid),
+                "total" : new Intl.NumberFormat(languageCode).format(Number(bill.total)),
+                "statusPayment" : (Number(bill.total) - Number(bill.totalPaid)) > 0 ? <ColourChip rgbcolor={green[900]} label={<Translate id="hospital.billing.bill.paid" />}/> : <ColourChip rgbcolor={red[900]} label={<Translate id="hospital.billing.bill.pending" />}/> ,
+                                                                                        
                 "dateCreation" : fullDateFromPostgresString(languageCode, bill.createdAt)
             }
         })}, [bills, patients, languageCode]);
@@ -89,7 +91,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
             { id: "id", alignment: "left", label: "ID" },
             { id: "patient", alignment: "left", label: <Translate id={`hospital.billing.bill.patient`} /> },
             { id: "total", alignment: "left", label: [<Translate id={`hospital.billing.bill.total`} />,"("+currency+")"] },
-            { id: "totalPending", alignment: "left", label: [<Translate id={`hospital.billing.bill.total_pending`} />,"("+currency+")"]},
+            { id: "statusPayment", alignment: "left", label: [<Translate id={`hospital.billing.bill.paid`} />]},
             { id: "dateCreation" , alignment: "right",  label: [<Translate id={`hospital.billing.bill.date`} />] } 
         ]
     return (
