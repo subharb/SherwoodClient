@@ -5,10 +5,11 @@ import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { fullDateFromPostgresString } from '../../../utils/index.jsx';
 import SearchBox from '../../../components/general/SearchBox';
 import { BillStatus } from '../Service/types';
-import { green, red } from '@mui/material/colors';
+import { green, red, yellow } from '@mui/material/colors';
 import { Grid } from '@mui/material';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import { TabsSherwood } from '../../components/Tabs';
+import { DocumentStatus, DocumentType } from './types';
 
 type BillsTableProps = {
     bills: any[];
@@ -38,13 +39,13 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
     const [statusFilter, setStatusFilter] = useState<BillStatus[]>([]);
     const billsPatients = useMemo(() => {
         return bills.map((bill) => {
-
-            const patient = patients.find((patient) => patient.id === bill.patientInvestigation.id);
+            const patient = patients.find((patient) => patient.id === bill.idPatientInvestigation);
             return {
                 "id" : bill.id,
                 "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 
                 "total" : new Intl.NumberFormat(languageCode).format(Number(bill.total)),
-                "status" : bill.status === 0 ? <ColourChip rgbcolor={green[900]} label={<Translate id="hospital.billing.bill.draft" />}/> : (Number(bill.total) - Number(bill.totalPaid)) > 0 ? <ColourChip rgbcolor={green[900]} label={<Translate id="hospital.billing.bill.paid" />}/> : <ColourChip rgbcolor={red[900]} label={<Translate id="hospital.billing.bill.pending" />}/> ,                                                          
+                "status" : renderStatus(bill.status, bill.type, hasBudgets, (Number(bill.total) - Number(bill.totalPaid)) > 0),
+                "paid" : (Number(bill.total) - Number(bill.totalPaid)) === 0,
                 "dateCreation" : fullDateFromPostgresString(languageCode, bill.createdAt)
             }
         })}, [bills, patients, languageCode]);
@@ -52,6 +53,35 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         setPatientName(name);        
     }
 
+    function renderStatus(billStatus:DocumentStatus, billType:DocumentType, hasBudgets:boolean, isPaid:boolean){
+        let listChips = [];
+        if(billStatus === DocumentStatus.DRAFT){
+            listChips.push(<ColourChip rgbcolor={yellow[900]} label={<Translate id="hospital.billing.bill.draft" />}/>);
+        }
+        else{
+            listChips.push(<ColourChip rgbcolor={red[900]} label={<Translate id="hospital.billing.bill.closed" />}/>);
+        }
+        if(hasBudgets){
+            switch(billType){
+                case DocumentType.BUDGET:
+                    listChips.push(<ColourChip rgbcolor={yellow[900]} label={<Translate id="hospital.billing.bill.types.budget" />}/>);                                                         
+                    break;
+                case DocumentType.INVOICE:
+                    listChips.push(<ColourChip rgbcolor={green[900]} label={<Translate id="hospital.billing.bill.types.invoice" />}/>);                                                         
+                    break;
+                case DocumentType.SUMMARY:
+                    listChips.push(<ColourChip rgbcolor={green[900]} label={<Translate id="hospital.billing.bill.types.summary" />}/>);                                                         
+                    break;
+            }
+            
+        }
+        if(billStatus === DocumentStatus.CLOSED && billType === DocumentType.INVOICE){
+            const chipPaid = isPaid ? <ColourChip rgbcolor={green[900]} label={<Translate id="general.paid" />}/> : <ColourChip rgbcolor={red[900]} label={<Translate id="hospital.billing.bill.pending" />}/>;                                                         
+            listChips.push(chipPaid);
+        }
+        
+        return listChips;
+    }
     function renderCore(){
         const rows = billsPatients.filter((bill) => {
             let shouldBeFiltered = patientName.length === 0 && statusFilter.length === 0;
@@ -63,10 +93,10 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
             }
             if(statusFilter.length > 0){
                 if(statusFilter.includes(BillStatus.PAID)){
-                    shouldBeFiltered = activeNameFilter ? matchNameFilter && bill.totalPending === 0 : bill.totalPending === 0;
+                    shouldBeFiltered = activeNameFilter ? matchNameFilter && bill.paid : bill.paid;
                 }
                 if(statusFilter.includes(BillStatus.PENDING_PAYMENT)){
-                    shouldBeFiltered = activeNameFilter ? matchNameFilter && bill.totalPending > 0 : bill.totalPending > 0;
+                    shouldBeFiltered = activeNameFilter ? matchNameFilter && !bill.paid : !bill.paid;
                 }
             }
             return shouldBeFiltered;
@@ -79,21 +109,9 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
                 { id: "dateCreation" , alignment: "right",  label: [<Translate id={`hospital.billing.bill.date`} />] } 
         ];
 
-        if(!hasBudgets){
-            return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
+        return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
                         actions={[{"type" : "edit", "func" : (index:number) => makeActionBillCallBack(index, BillActions.update)},
                                 {"type" : "view", "func" : (index:number) => makeActionBillCallBack(index, BillActions.preview)}]} />
-        }
-        else{
-            return <TabsSherwood labels={[<Translate id="hospital.billing.bill.name" />, <Translate id="hospital.billing.budget" />, <Translate id="hospital.billing.summary" />]} >
-                    <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
-                        actions={[{"type" : "edit", "func" : (index:number) => makeActionBillCallBack(index, BillActions.update)},
-                                {"type" : "view", "func" : (index:number) => makeActionBillCallBack(index, BillActions.preview)}]} />
-                    <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
-                        actions={[{"type" : "edit", "func" : (index:number) => makeActionBillCallBack(index, BillActions.update)},
-                                {"type" : "view", "func" : (index:number) => makeActionBillCallBack(index, BillActions.preview)}]} />
-                </TabsSherwood>
-        }
     }
 
     function applyStatusFilter(status:BillStatus){

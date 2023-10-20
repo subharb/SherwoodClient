@@ -1,3 +1,5 @@
+import { DocumentStatus, DocumentType } from "../pages/hospital/Billing/types"
+
 export const edc_data1 = () => {
     return {
         "surveys": [
@@ -2589,248 +2591,221 @@ export const listDecryptedPatients = [
     }
 ]
 
-export const bills = [
-        {
-            "id": 10,
-            "total": "79.20",
-            "totalPaid": "0.00",
-            "createdAt": "2022-05-27T15:22:29.614Z",
-            "updatedAt": "2022-05-27T15:22:29.614Z",
-            "deletedAt": null,
-            "billItems": [
-                {
-                    "id": 1,
-                    "concept": "Primera consulta Dr. Rodriguez. ",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 2,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 3,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 4,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 5,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 6,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 7,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 8,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 9,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 10,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 11,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 12,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 13,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 14,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 15,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 16,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 17,
-                    "concept": "Primera consulta Dr. Rodriguez. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 18,
-                    "concept": "Primera consulta Dr. Rodriguez",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 19,
-                    "concept": "Primera consulta Dr. Rodriguez",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },{
-                    "id": 20,
-                    "concept": "Primera consulta Dr. Rodriguez",
-                    "type": 0,
-                    "amount": "100.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.589Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },
-                {
-                    "id": 21,
-                    "concept": "Descuento empadronamiento",
-                    "type": 1,
-                    "amount": "10.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.603Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                },
-                {
-                    "id":22,
-                    "concept": "Descuento aseguradora",
-                    "type": 2,
-                    "amount": "12.00",
-                    "paid": null,
-                    "used": null,
-                    "createdAt": "2022-05-27T15:22:29.608Z",
-                    "updatedAt": "2022-05-27T15:22:29.614Z",
-                    "deletedAt": null
-                }
-            ],
-            "patientInvestigation": {
-                "id": 930,
-                "uuid": "8af62a69-4532-4293-b470-f23424e180e8",
-                "status": 0,
-                "investigationId": 2,
-                "patientId": 1219,
-                "patientIdInvestigation": 930
+export const bills = [{
+        "id": 57,
+        "uuid": "02545aee-c08f-434c-a124-b19609edd031",
+        "type": DocumentType.INVOICE,
+        "status": DocumentStatus.CLOSED,
+        "billItems": [
+            {
+                "id": 3627,
+                "concept": "test reduction",
+                "quantity": 1,
+                "type": 1,
+                "amount": 100000,
+            },
+            {
+                "id": 3625,
+                "concept": "AMOS",
+                "quantity": 1,
+                "type": 3,
+                "amount": 90000,
+            },
+            {
+                "id": 3626,
+                "concept": "Anesthésie générale",
+                "quantity": 1,
+                "type": 3,
+                "amount": 75000,
             }
-        }
+        ],
+        "total": 65000,
+        "totalPaid": 165000,
+        "idPatientInvestigation": 65,
+        "createdAt": "2023-09-22T16:13:07.311Z",
+    },
+    {
+        "id": 56,
+        "uuid": "08eabdd3-8da9-428d-8a5e-5136fae4dc77",
+        "type": 2,
+        "status": 1,
+        "billItems": [
+            {
+                "id": 3624,
+                "concept": "Endobutton + vis d'interférence",
+                "quantity": 1,
+                "type": 3,
+                "amount": 325000,
+                "paid": "2023-09-22T10:30:51.855Z",
+                "used": null,
+                "createdAt": "2023-09-11T14:37:18.842Z",
+                "updatedAt": "2023-09-22T09:30:51.858Z",
+                "deletedAt": null,
+                "additionalInfo": null
+            },
+            {
+                "id": 3619,
+                "concept": "Kit",
+                "quantity": 1,
+                "type": 3,
+                "amount": 50000,
+                "paid": "2023-09-22T10:30:51.883Z",
+                "used": null,
+                "createdAt": "2023-09-11T14:37:18.801Z",
+                "updatedAt": "2023-09-22T09:30:51.886Z",
+                "deletedAt": null,
+                "additionalInfo": null
+            },
+            {
+                "id": 3620,
+                "concept": "Bloc opératoire",
+                "quantity": 1,
+                "type": 3,
+                "amount": 50000,
+                "paid": "2023-09-22T10:30:51.890Z",
+                "used": null,
+                "createdAt": "2023-09-11T14:37:18.807Z",
+                "updatedAt": "2023-09-22T09:30:51.892Z",
+                "deletedAt": null,
+                "additionalInfo": null
+            },
+            {
+                "id": 3622,
+                "concept": "Forfait soins locaux",
+                "quantity": 1,
+                "type": 3,
+                "amount": 28000,
+                "paid": "2023-09-22T10:30:51.870Z",
+                "used": null,
+                "createdAt": "2023-09-11T14:37:18.830Z",
+                "updatedAt": "2023-09-22T09:30:51.872Z",
+                "deletedAt": null,
+                "additionalInfo": null
+            },
+            {
+                "id": 3618,
+                "concept": "VPA",
+                "quantity": 1,
+                "type": 3,
+                "amount": 10000,
+                "paid": "2023-09-22T10:30:51.897Z",
+                "used": "2023-09-19T17:09:48.708Z",
+                "createdAt": "2023-09-11T14:37:18.796Z",
+                "updatedAt": "2023-09-22T09:30:51.899Z",
+                "deletedAt": null,
+                "additionalInfo": null
+            },
+            {
+                "id": 3617,
+                "concept": "Anesthésie générale",
+                "quantity": 1,
+                "type": 3,
+                "amount": 75000,
+                "paid": "2023-09-22T10:30:51.833Z",
+                "used": null,
+                "createdAt": "2023-09-11T14:37:18.772Z",
+                "updatedAt": "2023-09-22T09:30:51.837Z",
+                "deletedAt": null,
+                "additionalInfo": null
+            },
+            {
+                "id": 3623,
+                "concept": "DIDT / Ligamentoplastie",
+                "quantity": 1,
+                "type": 3,
+                "amount": 150000,
+                "paid": "2023-09-22T10:30:51.863Z",
+                "used": null,
+                "createdAt": "2023-09-11T14:37:18.836Z",
+                "updatedAt": "2023-09-22T09:30:51.865Z",
+                "deletedAt": null,
+                "additionalInfo": null
+            },
+            {
+                "id": 3621,
+                "concept": "Forfait bilan",
+                "quantity": 1,
+                "type": 3,
+                "amount": 30000,
+                "paid": "2023-09-22T10:30:51.877Z",
+                "used": null,
+                "createdAt": "2023-09-11T14:37:18.813Z",
+                "updatedAt": "2023-09-22T09:30:51.879Z",
+                "deletedAt": null,
+                "additionalInfo": null
+            }
+        ],
+        "total": 718000,
+        "totalPaid": 718000,
+        "createdAt": "2023-09-11T14:37:18.864Z",
+        "updatedAt": "2023-09-22T09:30:51.912Z",
+        "idPatientInvestigation": 68
+    },
+    {
+        "id" : 58,
+        "uuid": "02545aee-c08f-434c-a124-b19609edd031",
+        "type": DocumentType.BUDGET,
+        "status": DocumentStatus.DRAFT,
+        "billItems": [
+            {
+                "id": 3627,
+                "concept": "test reduction",
+                "quantity": 1,
+                "type": 1,
+                "amount": 100000,
+            },
+            {
+                "id": 3625,
+                "concept": "AMOS",
+                "quantity": 1,
+                "type": 3,
+                "amount": 90000,
+            },
+            {
+                "id": 3626,
+                "concept": "Anesthésie générale",
+                "quantity": 1,
+                "type": 3,
+                "amount": 75000,
+            }
+        ],
+        "total": 65000,
+        "totalPaid": 165000,
+        "idPatientInvestigation": 65,
+        "createdAt": "2023-09-22T16:13:07.311Z",
+    },{
+        "id" : 59,
+        "uuid": "02545aee-c08f-434c-a124-b19609edd031",
+        "type": DocumentType.SUMMARY,
+        "status": DocumentStatus.CLOSED,
+        "billItems": [
+            {
+                "id": 3627,
+                "concept": "test reduction",
+                "quantity": 1,
+                "type": 1,
+                "amount": 100000,
+            },
+            {
+                "id": 3625,
+                "concept": "AMOS",
+                "quantity": 1,
+                "type": 3,
+                "amount": 90000,
+            },
+            {
+                "id": 3626,
+                "concept": "Anesthésie générale",
+                "quantity": 1,
+                "type": 3,
+                "amount": 75000,
+            }
+        ],
+        "total": 65000,
+        "totalPaid": 165000,
+        "idPatientInvestigation": 65,
+        "createdAt": "2023-09-22T16:13:07.311Z",
+    }
 ]
 
 export const billables = [

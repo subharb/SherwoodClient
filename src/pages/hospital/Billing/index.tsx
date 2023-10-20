@@ -257,7 +257,8 @@ const Billing: React.FC<Props> = (props) => {
                 return (
                     <>
                         { renderBillForm() }
-                        <BillsTable hasBudgets={Boolean(props.billingInfo.params.budgets)} patients={props.patients} currency={props.billingInfo.currency} bills={props.bills} languageCode={props.activeLanguage.code} 
+                        <BillsTable hasBudgets={Boolean(props.billingInfo.params.budgets)} patients={props.patients} currency={props.billingInfo.currency} 
+                            bills={props.bills} languageCode={props.activeLanguage.code} 
                                 makeActionBillCallBack={makeActionBill}/>
                     </>
                 );

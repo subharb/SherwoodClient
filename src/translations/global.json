@@ -357,10 +357,16 @@
                 "num_bill" : ["#Bill", "Nº Factura", "Nº Facture"],
                 "total" : ["Total", "Total", "Total"],
                 "status" : ["Status", "Estado", "Statut"],
+                "type" : ["Type", "Tipo", "Type"],
+                "types" : {
+                    "invoice" : ["Invoice", "Factura", "Facture"],
+                    "budget" : ["Budget", "Presupuesto", "Budget"],
+                    "summary" : ["Summary", "Resumen", "Résumé"]
+                },
                 "pending" : ["Pending", "Pendiente", "En attente"],
                 "draft" : ["Draft", "Borrador", "Brouillon"],
+                "closed" : ["Closed", "Cerrada", "Fermé"],
                 "patient" : ["Patient", "Paciente","Patient"],
-
                 "save" : ["Save", "Guardar", "Enregistrer"],
                 "update" : ["Update", "Actualizar", "Mettre à jour"],
                 "date" : ["Date", "Fecha", "Date"],

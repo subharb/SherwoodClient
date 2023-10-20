@@ -76,6 +76,17 @@ export interface BillingInfoParams {
     budgets?:boolean,
 }
 
+export enum DocumentType{
+    BUDGET = 0,
+    SUMMARY = 1,
+    INVOICE = 2,
+}
+
+export enum DocumentStatus{
+    DRAFT = 0,
+    CLOSED = 1,
+}
+
 export interface EditBillingInfoProps {
     callbackUpdate : (values:any) => void
     billingInfo:BillingInfo,
