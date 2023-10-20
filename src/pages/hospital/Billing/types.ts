@@ -65,7 +65,15 @@ export interface BillingInfo{
     email:string,
     logoBlob:string,
     billables:Billable[],
-    hospitalName:string
+    hospitalName:string,
+    params:BillingInfoParams,
+}
+
+export interface BillingInfoParams {
+    permissionDiscount?:boolean,
+    discounts?:boolean,
+    insurances?:boolean,
+    budgets?:boolean,
 }
 
 export interface EditBillingInfoProps {

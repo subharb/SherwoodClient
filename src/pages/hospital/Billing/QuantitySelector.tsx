@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
         fontSize: '1.5rem!important',
         backgroundColor: theme.buttonContinue.primary.background,
         borderRadius:'50%',
-        color:theme.buttonContinue.primary.color,
+        color: theme.buttonContinue.primary.color,
         
     }
   }));

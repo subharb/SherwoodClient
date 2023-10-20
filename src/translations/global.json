@@ -304,6 +304,8 @@
                     "updated" : ["Billables succesfully updated", "Elementos de facturación actualizada correctamente", "Elements de facturation mis à jour avec succès"]
                 }
             },
+            "budget" : ["Budget", "Presupuesto", "Budget"], 
+            "summary" : ["Summary", "Resumen", "Résumé"],
             "search_patient" : ["Search patient", "Buscar paciente", "Rechercher un patient"],
             "total_paid" : ["Total paid", "Total pagado", "Total payé"],
             "total_amount" : ["Total amount", "Monto total", "Montant total"],
@@ -354,9 +356,11 @@
                 "name" : ["Bill", "Factura", "Facture"],
                 "num_bill" : ["#Bill", "Nº Factura", "Nº Facture"],
                 "total" : ["Total", "Total", "Total"],
-                "paid" : ["Paid", "Pagado", "Payé"],
+                "status" : ["Status", "Estado", "Statut"],
                 "pending" : ["Pending", "Pendiente", "En attente"],
+                "draft" : ["Draft", "Borrador", "Brouillon"],
                 "patient" : ["Patient", "Paciente","Patient"],
+
                 "save" : ["Save", "Guardar", "Enregistrer"],
                 "update" : ["Update", "Actualizar", "Mettre à jour"],
                 "date" : ["Date", "Fecha", "Date"],
