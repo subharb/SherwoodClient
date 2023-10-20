@@ -113,6 +113,7 @@ const greenVariant = merge(defaultVariant, {
             background: "#FFF",
         },
     },
+
 });
 
 const hospitalVariant = merge(defaultVariant, {

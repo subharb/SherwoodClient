@@ -17,6 +17,7 @@ import Modal from "../../../components/general/modal";
 import Form from "../../../components/general/form";
 import FillSurvey from "../FillSurvey";
 import ShowSingleSubmissionPatient from "../ShowSingleSubmissionPatient";
+import QuantitySelector from "./QuantitySelector";
 
 const FactureHolder = styled.div<{ hide: boolean }>`
     margin-top:2rem;
@@ -124,6 +125,16 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         setFieldErrors(tempFieldErrors);
         setCurrentItem(tempCurrentItem);
     }
+
+    function updateQuantityBillItem(index:number, quantity:number){
+        const tempItems = [...items];
+        const error = validateKeyItem(quantity.toString(), "quantity");
+        if(error === ""){
+            tempItems[index].quantity = quantity;
+            dispatch(saveBillingItems(tempItems));
+        }
+    }
+
     function validateKeyItem(value: string, itemKey: string) {
         let error = "";
         const col = filteredColumns.find((col) => {
@@ -193,7 +204,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                 // changeField(billableSelected.amount.toString(), BillItemKeys.amount);
                 // changeField(billableSelected.type.toString(), BillItemKeys.type);
 
-                const updatedItem = {...currentItem, ...billableSelected}
+                const updatedItem = {...currentItem, ...billableSelected, quantity : 1}
                 setCurrentItem(updatedItem);
                 
                 if(!hasDefaultValues(updatedItem, DEFAULT_CURRENT_ITEM)){
@@ -298,93 +309,59 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         updateStates(BillItemKeys.type, "", "");
     }
 
-    async function addCurrentItem() {
-        let tempFieldErrors = { ...fieldErrors };
-        //Fuerzo el valor 0 para diferenciarlo del valor por defecto.
-        //currentItem["type"] = 0;
-        filteredColumns.forEach((col) => {
+    function renderInsertedBillItems() {
+        let rows: BillItemTable[] = items.map((val:BillItemTable, index:number) => {
+
+            const color = TYPES_DISCOUNT.includes(parseInt(val.type)) ? red[900] : "black";
+            const amountString =  TYPES_DISCOUNT.includes(val.type) ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;
             
-            const key = col.name.toString();
-            const value = currentItem[key as keyof BillItem] as string;
-            tempFieldErrors[col.name] = validateKeyItem(value, col.name);
-        })
-        if (currentItem[BillItemKeys.type] === 2 &&  parseInt(currentItem[BillItemKeys.amount].toString()) > 99) {
-            tempFieldErrors[BillItemKeys.amount] = "amount_percent";
-        }
-        if (Object.values(tempFieldErrors).reduce((acc, val) => acc && (val === ""), true)) {
-            let tempItems = [...items];
-
-            tempItems.push({...currentItem});
-            if(currentItem.relatedBillables && currentItem.relatedBillables.length > 0){
-                for(let i = 0; i < currentItem.relatedBillables.length; i++){
-                    const billable:Billable | undefined = billables.find((billable) => billable.id === currentItem?.relatedBillables[i]);
-                    if(billable){
-                        tempItems.push({...billable});
+            let rowElement:{[id: string] : JSX.Element} = {}
+            filteredColumns.forEach((col:Column) => {
+                if(col.type === "amount"){
+                    rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
+                }
+                else if(col.type === "type"){
+                    const typeSelected = TYPES_BILL_ITEM[val.type][0] as string;
+                    rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{<Translate id={`hospital.billing.item.types.${typeSelected.toLocaleLowerCase()}`} />}</Typography>
+                }
+                else if(col.type === "number" && !updatingBill){
+                    rowElement[col.name] = <QuantitySelector quantity={val[col.name] as number} onQuantityChange={(q) => updateQuantityBillItem(index, q)} />
+                }
+                else{
+                    const plainName = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
+                    let nameItem = plainName;
+                    if(val.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO){
+                        nameItem = (
+                        <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                            {plainName}
+                            <IconButton
+                                onClick={(e) => {
+                                    setShowModal(true);
+                                    setShowAdditionalInfoID(val.additionalInfo.id) 
+                                    e.stopPropagation();
+                                    
+                                }}
+                                size="large">
+                                <IconGenerator type="view" />
+                            </IconButton> 
+                        </div>)
                     }
+                    rowElement[col.name] = nameItem
                 }
-            }
-
-            await dispatch(saveBillingItems(tempItems))
-            setAddingItem(false);
-            setCurrentItem(DEFAULT_CURRENT_ITEM);
-        }
-        setErrorBill(undefined);
-        setFieldErrors(tempFieldErrors);
-    }
-    async function removeItem(index: number) {
-        console.log("Borrar " + index);
-        const tempItems = [...items];
-        tempItems.splice(index, 1);
-        await dispatch(saveBillingItems(tempItems));
-        setErrorBill(undefined);
-    }
+            })
+            return {...rowElement, id: index, used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
+                    paid: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
+                    delete: <IconButton onClick={() => removeItem(index)} size="large">
+                        <IconGenerator type="delete" />
+                    </IconButton>};
     
-    let rows: BillItemTable[] = items.map((val:BillItemTable, index:number) => {
+        }) as BillItemTable[];
 
-        const color = TYPES_DISCOUNT.includes(parseInt(val.type)) ? red[900] : "black";
-        const amountString =  TYPES_DISCOUNT.includes(val.type) ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;
-        
-        let rowElement:{[id: string] : JSX.Element} = {}
-        filteredColumns.forEach((col:Column) => {
-            if(col.type === "amount"){
-                rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
-            }
-            else if(col.type === "type"){
-                const typeSelected = TYPES_BILL_ITEM[val.type][0] as string;
-                rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{<Translate id={`hospital.billing.item.types.${typeSelected.toLocaleLowerCase()}`} />}</Typography>
-            }
-            else{
-                const plainName = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
-                let nameItem = plainName;
-                if(val.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO){
-                    nameItem = (
-                    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
-                        {plainName}
-                        <IconButton
-                            onClick={(e) => {
-                                setShowModal(true);
-                                setShowAdditionalInfoID(val.additionalInfo.id) 
-                                e.stopPropagation();
-                                
-                            }}
-                            size="large">
-                            <IconGenerator type="view" />
-                        </IconButton> 
-                    </div>)
-                }
-                rowElement[col.name] = nameItem
-            }
-        })
-        return {...rowElement, id: index, used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
-                paid: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
-                delete: <IconButton onClick={() => removeItem(index)} size="large">
-                    <IconGenerator type="delete" />
-                </IconButton>};
+        return rows;
+    }
 
-    }) as BillItemTable[];
-
-    if (addingItem) {
-        let field:BillItemTable = {} as BillItemTable;
+    function renderRowAddItem(){
+        let row:BillItemTable = {} as BillItemTable;
         filteredColumns.forEach((col:Column) => {
             let value;
             switch(col.type){
@@ -483,12 +460,59 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     break;
            }
            // @ts-ignore: Unreachable code error
-           field[col.name] = value;
+           row[col.name] = value;
         });
 
-        field = {...field, id: rows.length - 1, delete: <ButtonAdd  onClick={() => addCurrentItem()}></ButtonAdd >}
-        
-        rows.push(field)
+        row = {...row, id: rows.length - 1, delete: <ButtonAdd  onClick={() => addCurrentItem()}></ButtonAdd >}
+        return row;
+    }
+
+    async function addCurrentItem() {
+        let tempFieldErrors = { ...fieldErrors };
+        //Fuerzo el valor 0 para diferenciarlo del valor por defecto.
+        //currentItem["type"] = 0;
+        filteredColumns.forEach((col) => {
+            
+            const key = col.name.toString();
+            const value = currentItem[key as keyof BillItem] as string;
+            tempFieldErrors[col.name] = validateKeyItem(value, col.name);
+        })
+        if (currentItem[BillItemKeys.type] === 2 &&  parseInt(currentItem[BillItemKeys.amount].toString()) > 99) {
+            tempFieldErrors[BillItemKeys.amount] = "amount_percent";
+        }
+        if (Object.values(tempFieldErrors).reduce((acc, val) => acc && (val === ""), true)) {
+            let tempItems = [...items];
+
+            tempItems.push({...currentItem});
+            if(currentItem.relatedBillables && currentItem.relatedBillables.length > 0){
+                for(let i = 0; i < currentItem.relatedBillables.length; i++){
+                    const billable:Billable | undefined = billables.find((billable) => billable.id === currentItem?.relatedBillables[i]);
+                    if(billable){
+                        tempItems.push({...billable, quantity:1});
+                    }
+                }
+            }
+
+            await dispatch(saveBillingItems(tempItems))
+            setAddingItem(false);
+            setCurrentItem(DEFAULT_CURRENT_ITEM);
+        }
+        setErrorBill(undefined);
+        setFieldErrors(tempFieldErrors);
+    }
+    async function removeItem(index: number) {
+        console.log("Borrar " + index);
+        const tempItems = [...items];
+        tempItems.splice(index, 1);
+        await dispatch(saveBillingItems(tempItems));
+        setErrorBill(undefined);
+    }
+    
+    const rows = renderInsertedBillItems();
+
+    if (addingItem) {
+        const rowAddItem = renderRowAddItem();
+        rows.push(rowAddItem)
     }
     else if (!updatingBill) {
         // @ts-ignore: Unreachable code error
@@ -513,7 +537,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         rows.push({
             id: items.length, concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>,
             type : <></>, 
-            amount: <Typography style={{ fontWeight: 'bold' }} >{totalBill + " " + currency}</Typography>,
+            amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{totalBill + " " + currency}</Typography>,
             delete: <React.Fragment></React.Fragment>,
         });
     }

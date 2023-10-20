@@ -232,7 +232,7 @@ export const BillForm:React.FC<Props> = (props) => {
                                 }
                         </div>
                     </Snackbar>
-                    <BillItems key="bill_items" columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"amount", type:"amount", validation:""}]} 
+                    <BillItems key="bill_items" columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"amount", type:"amount", validation:""}]} 
                         uuidPatient={patient?.uuid} mode = {BillItemModes.SHOW}
                         initItems = {props.bill ? props.bill.billItems : currentItems.length > 0 ? currentItems : []}
                         repeatBillItems={true} showTotal={true}
