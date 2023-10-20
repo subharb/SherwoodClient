@@ -66,7 +66,7 @@ const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
 })
 // Si tiene una columna de tipo "amount" entonces se calcula el total y se valida la suma de todos los amounts sea mayor que 0
 
-const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
+const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage, pdf,
                                                     updatingBill, currency, print, withDiscount,
                                                     surveyAdditionalInfo, uuidInvestigation,
                                                     uuidPatient,
@@ -571,7 +571,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         
             <Grid container item>
                 <Grid item xs={12}>
-                    <FactureHolder hide={!bill}>
+                    <FactureHolder hide={!print}>
                         <Translate id="hospital.billing.bill.name" />
                     </FactureHolder>
                     <EnhancedTable noFooter noHeader noPagination noSelectable disableOrder headCells={headCells} rows={rows} />

@@ -10,6 +10,8 @@ import { Grid } from '@mui/material';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import { TabsSherwood } from '../../components/Tabs';
 import { DocumentStatus, DocumentType } from './types';
+import { HOSPITAL_BILLING_VIEW_DOCUMENT } from '../../../routes/urls';
+import { useHistory } from 'react-router-dom';
 
 type BillsTableProps = {
     bills: any[];
@@ -37,6 +39,7 @@ export const statusToColor = (status:BillStatus) => {
 const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, currency, hasBudgets, makeActionBillCallBack }) => {
     const [patientName, setPatientName] = useState<string>("");
     const [statusFilter, setStatusFilter] = useState<BillStatus[]>([]);
+    const history = useHistory();
     const billsPatients = useMemo(() => {
         return bills.map((bill) => {
             const patient = patients.find((patient) => patient.id === bill.idPatientInvestigation);
@@ -110,8 +113,9 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         ];
 
         return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
-                        actions={[{"type" : "edit", "func" : (index:number) => makeActionBillCallBack(index, BillActions.update)},
-                                {"type" : "view", "func" : (index:number) => makeActionBillCallBack(index, BillActions.preview)}]} />
+                        actions={[{"type" : "edit", "func" : (id:number) => makeActionBillCallBack(id, BillActions.update)},
+                                {"type" : "view", "func" : (id:number) => history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":idDocument", id.toString()))}]} 
+                                />
     }
 
     function applyStatusFilter(status:BillStatus){

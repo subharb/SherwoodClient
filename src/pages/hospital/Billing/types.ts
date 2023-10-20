@@ -4,8 +4,10 @@ import { IPatient } from "../../../constants/types"
 
 export interface Bill{
     id:number,
-    patientInvestigation:IPatient,
+    idPatientInvestigation:number,
     billItems:BillItem[],
+    type:DocumentType,
+    status:DocumentStatus,
     paid:null | Date,
     used: null | Date,
     total:number,

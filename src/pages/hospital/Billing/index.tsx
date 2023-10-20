@@ -9,7 +9,7 @@ import { Alert } from '@mui/material';
 import { ButtonAdd, IconGenerator, TypographyStyled } from '../../../components/general/mini_components';
 import { BillForm } from './BillForm';
 import { FUNCTIONALITY, IPatient, ISurvey } from '../../../constants/types';
-import { Bill, BillingInfo, BillItemModes } from './types';
+import { Bill, BillingInfo, BillItemModes, DocumentStatus } from './types';
 import { Document } from '../Document';
 import { connect, useDispatch } from 'react-redux';
 import { getBillsPatientService, getBillsService } from '../../../services/billing';
@@ -20,7 +20,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom';
 import BillsPatient from './BillsPatient';
 import BillsTable from './BillsTable';
 
-import { HOSPITAL_BILLING, HOSPITAL_BILLING_CREATE_BILL } from '../../../routes/urls';
+import { HOSPITAL_BILLING, HOSPITAL_BILLING_CREATE_BILL, HOSPITAL_BILLING_VIEW_DOCUMENT } from '../../../routes/urls';
 import { getBillableComboAction, resetBillItems } from '../../../redux/actions/billingActions';
 import { TYPE_ADDITIONAL_INFO_SURVEY } from '../../../constants';
 import SectionHeader from '../../components/SectionHeader';
@@ -38,8 +38,9 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
     const location = useLocation();
     const history = useHistory();
     let uuidPatient = useParams<{uuidPatient?:string}>().uuidPatient;
+    let idDocument = useParams<{idDocument?:string}>().idDocument;
 
-    const section = location.pathname === HOSPITAL_BILLING_CREATE_BILL ? "create_bill" : uuidPatient ? "patient" : "billing";
+    const section = location.pathname === HOSPITAL_BILLING_CREATE_BILL ? "create_bill" : uuidPatient ? "patient" : idDocument ? "view" : "billing";
 
     const hasDiscounts = investigation && investigation.billingInfo && investigation.billingInfo.params && hasDiscountsActive(investigation.billingInfo.params, investigation.permissions);
     
@@ -103,7 +104,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
         return <BillingLocalized patients={patients.data[investigation.uuid]} withDiscount={hasDiscounts}
                     uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
                     personalFields={investigation.personalFields}
-                    billingInfo={investigation.billingInfo}
+                    billingInfo={investigation.billingInfo} idDocument={Number(idDocument)}
                     section={section} surveyAdditionalInfo={surveyAdditionalInfo}
                     bills={bills} loading={loading} uuidPatient={uuidPatient}
                     onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
@@ -138,7 +139,8 @@ interface Props extends LocalizeContextProps {
     bills: Bill[];
     loading: boolean,
     surveyAdditionalInfo?: ISurvey,
-    section: "create_bill" | "billing" | "patient",
+    section: "create_bill" | "billing" | "patient" | "view",
+    idDocument?: number,
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
     onPatientSelected: (uuid:string) => void
@@ -151,6 +153,7 @@ export enum BillActions {
     update = "update",
     preview = "preview",
     create = "create",
+    view = "view",
     default = ""
 }
 
@@ -162,6 +165,17 @@ const Billing: React.FC<Props> = (props) => {
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
     const [edit, setEdit] = useState(!props.billingInfo);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (props.idDocument && props.section === "view") {
+            const findBill = props.bills.find((bill) => bill.id === props.idDocument);
+            if (findBill) {
+                setActionBill(BillActions.view);
+                setCurrentBill(findBill);
+            }
+        }
+
+    }, [props.idDocument, props.bills]);
 
     async function resetSnackBar() {
         setShowSnackbar({ show: false });
@@ -198,13 +212,12 @@ const Billing: React.FC<Props> = (props) => {
         const tempBill = props.bills.find((bill) => bill.id === idBill);
 
         if (tempBill) {
-            const patient = props.patients.find((patient) => patient.id === tempBill.patientInvestigation.id);
+            const patient = props.patients.find((patient) => patient.id === tempBill.idPatientInvestigation);
             if (patient) {
-                tempBill.patientInvestigation = patient;
+                setActionBill(action);
+                setShowModal(true);
+                setCurrentBill(tempBill);
             }
-            setActionBill(action);
-            setShowModal(true);
-            setCurrentBill(tempBill);
         }
 
     }
@@ -249,6 +262,9 @@ const Billing: React.FC<Props> = (props) => {
                             makeActionBillCallBack={makeActionBill}/>
             </>)
         }
+        else if(props.section === BillActions.view && props.idDocument){
+            return (<>{ renderBillForm() }</>)
+        }
         else {
             if (props.billingInfo) {
                 if(actionBill === BillActions.create){
@@ -267,17 +283,18 @@ const Billing: React.FC<Props> = (props) => {
     }
     function renderBillForm() {
         switch (actionBill) {
+            case BillActions.view:
             case BillActions.update:
             case BillActions.create:
                 const billFormComponent = <BillForm patients={props.patients} personalFields={props.personalFields} withDiscount={props.withDiscount}
                                             currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                                             onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
-                                            onCancelBill={onCancelBill} print={false}
-                                            bill={currentBill} updatingBill={currentBill !== null}
+                                            onCancelBill={onCancelBill} print={false} 
+                                            bill={currentBill} updatingBill={currentBill ? currentBill.status !== DocumentStatus.DRAFT : false}
                                             idBillingInfo={props.billingInfo.id} surveyAdditionalInfo={props.surveyAdditionalInfo}
                                             locale={props.activeLanguage}
                                         />
-                if(actionBill === BillActions.create){
+                if([BillActions.create, BillActions.view].includes(actionBill)){
                     return(
                         billFormComponent
                     )

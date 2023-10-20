@@ -44,7 +44,8 @@ const GridContainer = styled(Grid)`
     }
 `
 export const BillForm:React.FC<Props> = (props) => {
-    const [patient, setPatient] = useState<null | IPatient>(props.bill ? props.bill.patientInvestigation : null);
+    const patientBill = props.bill ? props.patients.find((pat) => pat.id === props.bill.idPatientInvestigation) : undefined;
+    const [patient, setPatient] = useState<null | IPatient>(patientBill ? patientBill : null);
     const [loading, setLoading] = useState(false);
     const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);
     const [comboSelected, setComboSelected] = useState<BillableCombo | null>(null);
@@ -238,7 +239,7 @@ export const BillForm:React.FC<Props> = (props) => {
                         repeatBillItems={true} showTotal={true}
                         surveyAdditionalInfo={props.surveyAdditionalInfo}
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
-                        bill={props.bill} 
+                        bill={props.bill}  
                         updatingBill={props.updatingBill} uuidInvestigation={props.uuidInvestigation}
                         onBillItemsValidated={onBillItemsValidated} error={errorBill}
                         onCancelBill={props.onCancelBill}  />
