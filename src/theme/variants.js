@@ -74,8 +74,9 @@ const greenVariant = merge(defaultVariant, {
     name: THEMES.GREEN,
     palette: {
         primary: {
-            main: green[800],
+            main: "#49CEBF",
             contrastText: "#FFF",
+            color: "#49CEBF"
         },
         secondary: {
             main: green[500],

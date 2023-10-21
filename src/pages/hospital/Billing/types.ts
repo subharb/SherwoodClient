@@ -8,8 +8,6 @@ export interface Bill{
     billItems:BillItem[],
     type:DocumentType,
     status:DocumentStatus,
-    paid:null | Date,
-    used: null | Date,
     total:number,
     totalPaid:number,
     createdAt:Date

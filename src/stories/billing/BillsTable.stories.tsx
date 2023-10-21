@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, billables, edc_data1, bills } from '../example_data';
+import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, billables, edc_data1, billsExample } from '../example_data';
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -28,7 +28,7 @@ type Story = StoryObj<typeof BillsTable>;
 export const BillsTableS: Story = {
   args: {
     hasBudgets: true,
-    bills: bills,
+    bills: billsExample,
     languageCode: "fr",
     currency: "CFA",
     patients: patients_personal_data_decrypted(),

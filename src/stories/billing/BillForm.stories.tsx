@@ -7,12 +7,13 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from "redux-thunk";
 import ProviderSherwood from '../../providerSherwood';
 import * as types from "../../constants";
+import BillCreate from '../../pages/hospital/Billing/BillCreate';
 
 const composeEnhancers = composeWithDevTools({});
 
-const meta: Meta<typeof BillForm> = {
+const meta: Meta<typeof BillCreate> = {
   title: 'Hospital/Billing',
-  component: BillForm,
+  component: BillCreate,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
@@ -34,7 +35,7 @@ const rootReducer = (state = {
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 export default meta;
-type Story = StoryObj<typeof BillForm>;
+type Story = StoryObj<typeof BillCreate>;
 
 export const CreateBill: Story = {
   args: {

@@ -139,7 +139,7 @@ interface Props extends LocalizeContextProps {
     bills: Bill[];
     loading: boolean,
     surveyAdditionalInfo?: ISurvey,
-    section: "create_bill" | "billing" | "patient" | "view",
+    section: BillActions,
     idDocument?: number,
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
@@ -161,7 +161,7 @@ export enum BillActions {
 const Billing: React.FC<Props> = (props) => {
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [showModal, setShowModal] = useState(false);
-    const [actionBill, setActionBill] = useState<BillActions>(props.section === "create_bill" ? BillActions.create : BillActions.default);
+    const [actionBill, setActionBill] = useState<BillActions>(props.section);
     const [currentBill, setCurrentBill] = useState<Bill | null>(null);
     const [edit, setEdit] = useState(!props.billingInfo);
     const dispatch = useDispatch();
@@ -305,23 +305,23 @@ const Billing: React.FC<Props> = (props) => {
                         { billFormComponent }
                     </Modal>
                 )
-            case BillActions.preview:
-                return (
-                    <Modal key="modal" medium size="sm" open={showModal} title={""} closeModal={() => onCloseModal()}>
-                        <Document address={props.billingInfo.address} hospitalName={props.hospitalName} logoBlob={props.billingInfo.logoBlob} currency={props.billingInfo.currency}
-                            email={props.billingInfo.email} size="A4" phone={props.billingInfo.phone} name={currentBill ? "Bill" + currentBill.id : ""} >
-                            <BillForm patients={props.patients} personalFields={props.personalFields} withDiscount={props.withDiscount}
-                                currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
-                                surveyAdditionalInfo={props.surveyAdditionalInfo}
-                                onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
-                                onCancelBill={onCancelBill} print={true}
-                                idBillingInfo={props.billingInfo.id}
-                                bill={currentBill} updatingBill={currentBill !== null}
-                                locale={props.activeLanguage}
-                            />
-                        </Document>
-                    </Modal>
-                )
+            // case BillActions.preview:
+            //     return (
+            //         <Modal key="modal" medium size="sm" open={showModal} title={""} closeModal={() => onCloseModal()}>
+            //             <Document address={props.billingInfo.address} hospitalName={props.hospitalName} logoBlob={props.billingInfo.logoBlob} currency={props.billingInfo.currency}
+            //                 email={props.billingInfo.email} size="A4" phone={props.billingInfo.phone} name={currentBill ? "Bill" + currentBill.id : ""} >
+            //                 <BillForm patients={props.patients} personalFields={props.personalFields} withDiscount={props.withDiscount}
+            //                     currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
+            //                     surveyAdditionalInfo={props.surveyAdditionalInfo}
+            //                     onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
+            //                     onCancelBill={onCancelBill} print={true}
+            //                     idBillingInfo={props.billingInfo.id}
+            //                     bill={currentBill} updatingBill={currentBill !== null}
+            //                     locale={props.activeLanguage}
+            //                 />
+            //             </Document>
+            //         </Modal>
+            //     )
             default:
                 return null;
         }

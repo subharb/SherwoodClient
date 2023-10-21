@@ -2591,11 +2591,11 @@ export const listDecryptedPatients = [
     }
 ]
 
-export const bills = [{
+export const billsExample = [{
         "id": 57,
         "uuid": "02545aee-c08f-434c-a124-b19609edd031",
         "type": DocumentType.INVOICE,
-        "status": DocumentStatus.CLOSED,
+        "status": DocumentStatus.DRAFT,
         "billItems": [
             {
                 "id": 3627,
@@ -2619,6 +2619,7 @@ export const bills = [{
                 "amount": 75000,
             }
         ],
+        
         "total": 65000,
         "totalPaid": 165000,
         "idPatientInvestigation": 65,
@@ -2848,3 +2849,11 @@ export const billables = [
         "relatedBillables" : []
     },
 ]
+
+export const BillingInfo = {
+    id:1,
+    uuid:"02545aee-c08f-434c-a124-b19609edd031",
+    address : "Calle de la Ciencia 2",
+    currency : "CFA",
+    
+}
