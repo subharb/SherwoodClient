@@ -9,7 +9,7 @@ import { Alert } from '@mui/material';
 import { ButtonAdd, IconGenerator, TypographyStyled } from '../../../components/general/mini_components';
 import { BillForm } from './BillForm';
 import { FUNCTIONALITY, IPatient, ISurvey } from '../../../constants/types';
-import { Bill, BillingInfo, BillItemModes, DocumentStatus } from './types';
+import { Bill, BillingInfo, BillItemModes, DocumentStatus , DocumentType} from './types';
 import { Document } from '../Document';
 import { connect, useDispatch } from 'react-redux';
 import { getBillsPatientService, getBillsService } from '../../../services/billing';
@@ -24,11 +24,26 @@ import { HOSPITAL_BILLING, HOSPITAL_BILLING_CREATE_BILL, HOSPITAL_BILLING_VIEW_D
 import { getBillableComboAction, resetBillItems } from '../../../redux/actions/billingActions';
 import { TYPE_ADDITIONAL_INFO_SURVEY } from '../../../constants';
 import SectionHeader from '../../components/SectionHeader';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 interface PropsRedux {
     investigations: any,
     patients: { data: any },
     uuidInvestigation: string,
+}
+
+export function documentTypeToIcon(type:DocumentType){
+    switch(type){
+        case DocumentType.BUDGET:
+            return <BarChartIcon />;
+        case DocumentType.SUMMARY:
+            return <DescriptionIcon />;
+        case DocumentType.INVOICE:
+            return <ReceiptIcon />;
+    }
 }
 
 const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {

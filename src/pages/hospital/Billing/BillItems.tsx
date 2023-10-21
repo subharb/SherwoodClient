@@ -5,7 +5,7 @@ import { LocalizeContextProps, Translate, withLocalize } from "react-localize-re
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components";
 import { TYPES_DISCOUNT, TYPE_BILL_ITEM } from "../../../constants/types";
 import { calculateTotalBill } from "../../../utils/bill";
-import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable } from "./types";
+import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable, DocumentStatus, DocumentType } from "./types";
 import styled from "styled-components"
 import { Autocomplete } from "@mui/lab"
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
@@ -350,7 +350,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                 }
             })
             return {...rowElement, id: index, used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
-                    paid: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
+                    paid: (!TYPES_DISCOUNT.includes(val.type) && bill.type === DocumentType.INVOICE) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
                     delete: <IconButton onClick={() => removeItem(index)} size="large">
                         <IconGenerator type="delete" />
                     </IconButton>};
@@ -556,7 +556,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         // @ts-ignore: Unreachable code error
         headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
     }
-    else {
+    else if(bill?.type === DocumentType.INVOICE && bill.status === DocumentStatus.CLOSED) {
         headCells.push({ id: "paid", alignment: "right", label: <React.Fragment><Translate id="general.paid" /></React.Fragment> });
         headCells.push({ id: "used", alignment: "right", label: <React.Fragment><Translate id="general.used" /></React.Fragment> });
     }

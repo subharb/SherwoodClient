@@ -31,6 +31,8 @@ type Story = StoryObj<typeof BillView>;
 export const ViewBill: Story = {
   args: {
     bill:billsExample[0],
+    billStatus: DocumentStatus.CLOSED,
+    billType: DocumentType.INVOICE,
     currency:"CFA",
     canUpdateBill: false,
     patient : patients_personal_data_decrypted()[0],

@@ -1,4 +1,5 @@
-import { BillItem } from "../pages/hospital/Billing/types";
+import { blue, cyan, orange, purple } from "@mui/material/colors";
+import { BillItem, DocumentStatus, DocumentType } from "../pages/hospital/Billing/types";
 
 
 export function calculateTotalBill(items:BillItem[]){
@@ -13,4 +14,35 @@ export function calculateTotalBill(items:BillItem[]){
     const total = firstAmount - discountAmount;
     //Redondeo a dos decimales
     return  Math.round(total * 100) / 100
+}
+
+export function documentTypeToColor(type:DocumentType){
+    switch(type){
+        case DocumentType.BUDGET:
+            return blue[500];
+        case DocumentType.SUMMARY:
+            return orange[500];
+        case DocumentType.INVOICE:
+            return purple[500];
+    }
+}
+
+export function documentStatusToColor(type:DocumentStatus){
+    switch(type){
+        case DocumentStatus.DRAFT:
+            return cyan[500];
+        case DocumentStatus.CLOSED:
+            return "#000";
+    }
+}
+
+export function documentTypeToString(type:DocumentType){
+    switch(type){
+        case DocumentType.BUDGET:
+            return "budget";
+        case DocumentType.SUMMARY:
+            return "summary";
+        case DocumentType.INVOICE:
+            return "invoice";
+    }
 }

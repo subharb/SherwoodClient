@@ -12,6 +12,7 @@ import { TabsSherwood } from '../../components/Tabs';
 import { DocumentStatus, DocumentType } from './types';
 import { HOSPITAL_BILLING_VIEW_DOCUMENT } from '../../../routes/urls';
 import { useHistory } from 'react-router-dom';
+import { documentStatusToColor, documentTypeToColor } from '../../../utils/bill';
 
 type BillsTableProps = {
     bills: any[];
@@ -59,21 +60,21 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
     function renderStatus(billStatus:DocumentStatus, billType:DocumentType, hasBudgets:boolean, isPaid:boolean){
         let listChips = [];
         if(billStatus === DocumentStatus.DRAFT){
-            listChips.push(<ColourChip rgbcolor={yellow[900]} label={<Translate id="hospital.billing.bill.draft" />}/>);
+            listChips.push(<ColourChip rgbcolor={documentStatusToColor(billStatus)} label={<Translate id="hospital.billing.bill.draft" />}/>);
         }
         else{
-            listChips.push(<ColourChip rgbcolor={red[900]} label={<Translate id="hospital.billing.bill.closed" />}/>);
+            listChips.push(<ColourChip rgbcolor={documentStatusToColor(billStatus)} label={<Translate id="hospital.billing.bill.closed" />}/>);
         }
         if(hasBudgets){
             switch(billType){
                 case DocumentType.BUDGET:
-                    listChips.push(<ColourChip rgbcolor={yellow[900]} label={<Translate id="hospital.billing.bill.types.budget" />}/>);                                                         
+                    listChips.push(<ColourChip rgbcolor={documentTypeToColor(billType)} label={<Translate id="hospital.billing.bill.types.budget" />}/>);                                                         
                     break;
                 case DocumentType.INVOICE:
-                    listChips.push(<ColourChip rgbcolor={green[900]} label={<Translate id="hospital.billing.bill.types.invoice" />}/>);                                                         
+                    listChips.push(<ColourChip rgbcolor={documentTypeToColor(billType)} label={<Translate id="hospital.billing.bill.types.invoice" />}/>);                                                         
                     break;
                 case DocumentType.SUMMARY:
-                    listChips.push(<ColourChip rgbcolor={green[900]} label={<Translate id="hospital.billing.bill.types.summary" />}/>);                                                         
+                    listChips.push(<ColourChip rgbcolor={documentTypeToColor(billType)} label={<Translate id="hospital.billing.bill.types.summary" />}/>);                                                         
                     break;
             }
             
