@@ -18,12 +18,7 @@ const meta: Meta<typeof BillView> = {
   component: BillView,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
-  argTypes: {
-    section: {
-      options: ['create_bill', 'view', 'update'],
-      control: { type: 'radio' },
-    }
-    },
+  
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
     layout: 'fullscreen',
@@ -36,6 +31,8 @@ type Story = StoryObj<typeof BillView>;
 export const ViewBill: Story = {
   args: {
     bill:billsExample[0],
+    currency:"CFA",
+    canUpdateBill: false,
     patient : patients_personal_data_decrypted()[0],
     patients: patients_personal_data_decrypted(),
     withDiscount : true,

@@ -49,7 +49,7 @@ export interface BillItemsProps extends LocalizeContextProps{
     initItems:BillItem[],
     showTotal:boolean,
     repeatBillItems:boolean,
-    updatingBill:boolean,
+    canUpdateBill:boolean,
     uuidInvestigation:string,
     error:ReactElement | undefined,
     withDiscount:boolean,
@@ -66,8 +66,8 @@ const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
 })
 // Si tiene una columna de tipo "amount" entonces se calcula el total y se valida la suma de todos los amounts sea mayor que 0
 
-const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage, pdf,
-                                                    updatingBill, currency, print, withDiscount,
+const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
+                                                    canUpdateBill, currency, print, withDiscount,
                                                     surveyAdditionalInfo, uuidInvestigation,
                                                     uuidPatient,
                                                     bill, translate, showTotal, repeatBillItems, onBillItemsValidated, 
@@ -251,7 +251,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     }
    
     function renderTextOkButton() {
-        if (updatingBill) {
+        if (!canUpdateBill) {
             return <Translate id="hospital.billing.bill.update" />
         }
         else {
@@ -324,7 +324,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     const typeSelected = TYPES_BILL_ITEM[val.type][0] as string;
                     rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{<Translate id={`hospital.billing.item.types.${typeSelected.toLocaleLowerCase()}`} />}</Typography>
                 }
-                else if(col.type === "number" && !updatingBill){
+                else if(col.type === "number" && canUpdateBill){
                     rowElement[col.name] = <QuantitySelector quantity={val[col.name] as number} onQuantityChange={(q) => updateQuantityBillItem(index, q)} />
                 }
                 else{
@@ -514,7 +514,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
         const rowAddItem = renderRowAddItem();
         rows.push(rowAddItem)
     }
-    else if (!updatingBill) {
+    else if (canUpdateBill) {
         // @ts-ignore: Unreachable code error
         let field: BillItemTable = {}
         filteredColumns.forEach((col:Column) => {
@@ -552,7 +552,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     //     headCells.splice(1, 0, { id: "type", alignment: "left", label: <Translate id={`hospital.billing.item.type`} /> });
     // }
 
-    if (!updatingBill) {
+    if (canUpdateBill) {
         // @ts-ignore: Unreachable code error
         headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
     }
@@ -587,7 +587,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                     <GridBottom hide={print} item xs={12} >
                         <Button onClick={onCancelBill} data-testid="cancel-modal">
                             {
-                                updatingBill ? <Translate id="general.close" /> : <Translate id="general.cancel" />
+                                !canUpdateBill ? <Translate id="general.close" /> : <Translate id="general.cancel" />
                             }
                         </Button>
                         <Button disabled={items.length === 0} onClick={() => onClickContinue(items)} 

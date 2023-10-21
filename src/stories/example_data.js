@@ -2603,6 +2603,8 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 1,
                 "amount": 100000,
+                "paid" : null,
+                "used" : null
             },
             {
                 "id": 3625,
@@ -2610,6 +2612,8 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 3,
                 "amount": 90000,
+                "paid" : null,
+                "used" : null
             },
             {
                 "id": 3626,
@@ -2617,6 +2621,8 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 3,
                 "amount": 75000,
+                "paid" : null,
+                "used" : null
             }
         ],
         

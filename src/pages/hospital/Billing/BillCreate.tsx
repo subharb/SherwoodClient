@@ -112,7 +112,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
                 renderPatient()
             }
             
-            <BillForm {...props} />
+            <BillForm {...props} patient={patient}/>
         </>
     );
 };

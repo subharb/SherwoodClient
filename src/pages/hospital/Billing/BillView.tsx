@@ -15,6 +15,7 @@ interface BillViewProps {
     patients: IPatient[],
     personalFields: [],
     currency: string,
+    canUpdateBill: boolean,
     uuidInvestigation: string,
     idBillingInfo:number,
     locale: Language,
@@ -34,7 +35,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
                     <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.date" /></span>: {fullDateFromPostgresString(props.languageCode, props.bill.createdAt)}</Typography>
                 </Grid>
             } />
-            <BillForm {...props} />
+            <BillForm {...props}  />
         </>
     );
 };
