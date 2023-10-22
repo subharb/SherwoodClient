@@ -28,6 +28,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import DescriptionIcon from '@mui/icons-material/Description';
+import BillView from './BillView';
 
 interface PropsRedux {
     investigations: any,
@@ -55,7 +56,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
     let uuidPatient = useParams<{uuidPatient?:string}>().uuidPatient;
     let idDocument = useParams<{idDocument?:string}>().idDocument;
 
-    const section = location.pathname === HOSPITAL_BILLING_CREATE_BILL ? "create_bill" : uuidPatient ? "patient" : idDocument ? "view" : "billing";
+    const action = location.pathname === HOSPITAL_BILLING_CREATE_BILL ? BillActions.CREATE : uuidPatient ? BillActions.PATIENT_BILLS : idDocument ? BillActions.VIEW : BillActions.DEFAULT;
 
     const hasDiscounts = investigation && investigation.billingInfo && investigation.billingInfo.params && hasDiscountsActive(investigation.billingInfo.params, investigation.permissions);
     
@@ -108,11 +109,11 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
     }, [investigation]);
 
     useEffect(() => {
-        if(section === "create_bill" && investigation){
+        if(action === BillActions.CREATE && investigation){
             dispatch(getBillableComboAction(investigation.uuid, investigation.billingInfo.id));
         }
 
-        }, [section, investigation])
+        }, [action, investigation])
 
     if (investigation) {
         const surveyAdditionalInfo:ISurvey | undefined = investigation.surveys.find((survey: any) => survey.type === TYPE_ADDITIONAL_INFO_SURVEY);
@@ -120,7 +121,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
                     uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
                     personalFields={investigation.personalFields}
                     billingInfo={investigation.billingInfo} idDocument={Number(idDocument)}
-                    section={section} surveyAdditionalInfo={surveyAdditionalInfo}
+                    section={action} surveyAdditionalInfo={surveyAdditionalInfo}
                     bills={bills} loading={loading} uuidPatient={uuidPatient}
                     onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
                     onCreateBill={() => history.push(HOSPITAL_BILLING_CREATE_BILL)}
@@ -165,11 +166,12 @@ interface Props extends LocalizeContextProps {
 }
 
 export enum BillActions {
-    update = "update",
-    preview = "preview",
-    create = "create",
-    view = "view",
-    default = ""
+    UPDATE = "update",
+    PREVIEW = "preview",
+    CREATE = "create",
+    PATIENT_BILLS = "patient_bills",
+    VIEW = "view",
+    DEFAULT = ""
 }
 
 
@@ -185,7 +187,7 @@ const Billing: React.FC<Props> = (props) => {
         if (props.idDocument && props.section === "view") {
             const findBill = props.bills.find((bill) => bill.id === props.idDocument);
             if (findBill) {
-                setActionBill(BillActions.view);
+                setActionBill(BillActions.VIEW);
                 setCurrentBill(findBill);
             }
         }
@@ -194,7 +196,7 @@ const Billing: React.FC<Props> = (props) => {
 
     async function resetSnackBar() {
         setShowSnackbar({ show: false });
-        if(actionBill === BillActions.create){
+        if(actionBill === BillActions.CREATE){
             props.navigateToHomeBilling();
         }
     }
@@ -268,7 +270,7 @@ const Billing: React.FC<Props> = (props) => {
             return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={props.billingInfo && props.billingInfo.billables ? props.billingInfo.billables : []} withDiscount={props.withDiscount}
                 billingInfo={props.billingInfo} onBillingInfoSuccesfullyUpdated={(type: BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
         }
-        else if(props.section === "patient" && props.uuidPatient){
+        else if(props.section === BillActions.PATIENT_BILLS && props.uuidPatient){
             const currentPatient = props.patients.find((patient) => patient.uuid === props.uuidPatient);
             return(<>
                         { renderBillForm() }
@@ -277,12 +279,19 @@ const Billing: React.FC<Props> = (props) => {
                             makeActionBillCallBack={makeActionBill}/>
             </>)
         }
-        else if(props.section === BillActions.view && props.idDocument){
-            return (<>{ renderBillForm() }</>)
+        else if(props.section === BillActions.VIEW && props.idDocument && currentBill){
+            const currentPatient = props.patients.find((patient) => patient.id === currentBill.idPatientInvestigation);
+            return (<BillView bill={currentBill} billStatus={currentBill.status} billType={currentBill.type} 
+                        patient={currentPatient!} languageCode={props.activeLanguage.code} canUpdateBill={currentBill.status === DocumentStatus.DRAFT} 
+                        currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.billingInfo.id}
+                        print={false} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}
+                        onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
+                        onCancelBill={onCancelBill}
+                        />)
         }
         else {
             if (props.billingInfo) {
-                if(actionBill === BillActions.create){
+                if(actionBill === BillActions.CREATE){
                     return renderBillForm();
                 }
                 return (
@@ -298,18 +307,18 @@ const Billing: React.FC<Props> = (props) => {
     }
     function renderBillForm() {
         switch (actionBill) {
-            case BillActions.view:
-            case BillActions.update:
-            case BillActions.create:
-                const billFormComponent = <BillForm patients={props.patients} personalFields={props.personalFields} withDiscount={props.withDiscount}
+            case BillActions.VIEW:
+            case BillActions.UPDATE:
+            case BillActions.CREATE:
+                const billFormComponent = <BillForm withDiscount={props.withDiscount}
                                             currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
                                             onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
-                                            onCancelBill={onCancelBill} print={false} 
-                                            bill={currentBill} updatingBill={currentBill ? currentBill.status !== DocumentStatus.DRAFT : false}
+                                            onCancelBill={onCancelBill} print={false} patient={props.patients.find((pat) => pat.id === currentBill?.idPatientInvestigation)!}
+                                            bill={currentBill} canUpdateBill={currentBill ? currentBill.status === DocumentStatus.DRAFT : false}
                                             idBillingInfo={props.billingInfo.id} surveyAdditionalInfo={props.surveyAdditionalInfo}
                                             locale={props.activeLanguage}
                                         />
-                if([BillActions.create, BillActions.view].includes(actionBill)){
+                if([BillActions.CREATE, BillActions.VIEW].includes(actionBill)){
                     return(
                         billFormComponent
                     )
@@ -378,7 +387,7 @@ const Billing: React.FC<Props> = (props) => {
                                 <Translate id="hospital.billing.no_billing_info" />
                             </TypographyStyled>
                             :
-                            <ButtonAdd disabled={props.section === "create_bill" || props.loading || edit}
+                            <ButtonAdd disabled={props.section === BillActions.CREATE || props.loading || edit}
                                 type="button" data-testid="add_bill"
                                 onClick={props.onCreateBill} />
                         }

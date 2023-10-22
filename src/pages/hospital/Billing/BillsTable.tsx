@@ -114,7 +114,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         ];
 
         return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
-                        actions={[{"type" : "edit", "func" : (id:number) => makeActionBillCallBack(id, BillActions.update)},
+                        actions={[{"type" : "edit", "func" : (id:number) => makeActionBillCallBack(id, BillActions.UPDATE)},
                                 {"type" : "view", "func" : (id:number) => history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":idDocument", id.toString()))}]} 
                                 />
     }

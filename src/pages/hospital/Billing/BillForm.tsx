@@ -16,7 +16,6 @@ import { resetBillItems, saveBillingItems } from "../../../redux/actions/billing
 interface Props {
     canUpdateBill: boolean,
     patient: IPatient,
-    personalFields: [],
     currency: string,
     uuidInvestigation: string,
     idBillingInfo:number,

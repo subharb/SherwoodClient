@@ -16,14 +16,10 @@ interface BillViewProps {
     billType: DocumentType;
     patient: IPatient,
     languageCode: string,
-    updatingBill: boolean,
-    patients: IPatient[],
-    personalFields: [],
     currency: string,
     canUpdateBill: boolean,
     uuidInvestigation: string,
     idBillingInfo:number,
-    locale: Language,
     print: boolean,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
@@ -32,8 +28,6 @@ interface BillViewProps {
 }
 
 const BillView: React.FC<BillViewProps> = (props) => {
-    const iconDocument = documentTypeToIcon(props.billType);
-
     function convertDocument(type:DocumentType){
         console.log("Convert to ", documentTypeToString(type));
     }
@@ -48,13 +42,13 @@ const BillView: React.FC<BillViewProps> = (props) => {
                     )
             }
             else if(props.billType === DocumentType.SUMMARY){
+                return (
                 <Button variant="contained" color="primary" startIcon={documentTypeToIcon(DocumentType.INVOICE)} onClick={() => convertDocument(DocumentType.SUMMARY)}>
                     Convert to Invoice
                 </Button>
+                );
             }
         }
-        
-        
     }
     return (
         <>
