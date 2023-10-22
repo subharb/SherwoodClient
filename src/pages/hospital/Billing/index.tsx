@@ -29,6 +29,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import DescriptionIcon from '@mui/icons-material/Description';
 import BillView from './BillView';
+import BillCreate from './BillCreate';
 
 interface PropsRedux {
     investigations: any,
@@ -292,7 +293,11 @@ const Billing: React.FC<Props> = (props) => {
         else {
             if (props.billingInfo) {
                 if(actionBill === BillActions.CREATE){
-                    return renderBillForm();
+                    return <BillCreate patients={props.patients} personalFields={props.personalFields} currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation} 
+                                idBillingInfo={props.billingInfo.id} languageCode={props.activeLanguage.code} withDiscount={props.withDiscount} 
+                                onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
+                                onCancelBill={onCancelBill}
+                                />
                 }
                 return (
                     <>

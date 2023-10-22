@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IPatient, ReduxStore } from '../../../constants/types';
+import { IPatient, IPersonalData, ReduxStore } from '../../../constants/types';
 import { Bill, BillItem, BillableCombo } from './types';
 import { Language } from 'react-localize-redux';
 import { BillForm } from './BillForm';
@@ -13,15 +13,12 @@ import { Autocomplete } from "@mui/lab"
 import { ButtonAdd } from '../../../components/general/mini_components';
 
 interface BillCreateProps {
-    updatingBill: boolean,
-    patients: IPatient[],
-    personalFields: [],
+    patients:IPatient[],
+    personalFields:IPersonalData[],
     currency: string,
     uuidInvestigation: string,
     idBillingInfo:number,
-    bill: Bill | null,
-    locale: Language,
-    print: boolean,
+    languageCode: string,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
@@ -69,11 +66,11 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
         if(!patient){
             return <FindPatient patients={props.patients}
                         personalFields={props.personalFields}
-                        codeLanguage={props.locale.code}
+                        codeLanguage={props.languageCode}
                         onPatientSelected={(idPatient) => onPatientSelected(idPatient)} />
         }
         else{
-            return <PatientInfo patient={patient} languageCode={props.locale.code} rightSide={
+            return <PatientInfo patient={patient} languageCode={props.languageCode} rightSide={
                             <Grid container item xs={6} style={{ display:'flex', paddingTop: '1rem' }} >
                                 <Autocomplete
                                     disabled={loadingBillables}
@@ -112,7 +109,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
                 renderPatient()
             }
             
-            <BillForm {...props} patient={patient}/>
+            <BillForm {...props} patient={patient!} canUpdateBill={true}/>
         </>
     );
 };

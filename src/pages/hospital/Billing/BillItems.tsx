@@ -350,7 +350,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                 }
             })
             return {...rowElement, id: index, used: !TYPES_DISCOUNT.includes(val.type) ? renderCheckOrDate("primary", items[index].used, index, usedItem) : <React.Fragment></React.Fragment>,
-                    paid: (!TYPES_DISCOUNT.includes(val.type) && bill.type === DocumentType.INVOICE) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
+                    paid: (!TYPES_DISCOUNT.includes(val.type) && bill && bill.type === DocumentType.INVOICE) ? renderCheckOrDate("secondary", items[index].paid, index, paidItem) : <React.Fragment></React.Fragment>,
                     delete: <IconButton onClick={() => removeItem(index)} size="large">
                         <IconGenerator type="delete" />
                     </IconButton>};
