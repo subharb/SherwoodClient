@@ -109,7 +109,11 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
                 renderPatient()
             }
             
-            <BillForm {...props} patient={patient!} canUpdateBill={true}/>
+            <BillForm patient={patient!} canUpdateBill={true} currency={props.currency} idBillingInfo={props.idBillingInfo}
+                withDiscount={props.withDiscount} uuidInvestigation={props.uuidInvestigation} bill={null} 
+                print={false}
+                onBillSuccesfullyCreated={props.onBillSuccesfullyCreated} onCancelBill={props.onCancelBill}
+                />
         </>
     );
 };

@@ -20,7 +20,6 @@ interface Props {
     uuidInvestigation: string,
     idBillingInfo:number,
     bill: Bill | null,
-    locale: Language,
     print: boolean,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
@@ -75,7 +74,7 @@ export const BillForm:React.FC<Props> = (props) => {
         try{
             setLoading(true);
             let response: { status: number, bill?: Bill };
-            if (props.updatingBill && props.bill) {
+            if (!props.canUpdateBill && props.bill) {
                 response = await updateBillService(props.uuidInvestigation, props.bill.id, items);
             }
             else {
