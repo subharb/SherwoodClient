@@ -9,6 +9,7 @@ import { Dialog,
 import PropTypes from 'prop-types'; 
 import { Translate } from 'react-localize-redux';
 import CloseIcon from '@mui/icons-material/Close';
+import { red } from '@mui/material/colors';
 
 export default function Modal(props){
     let paperStyles = props.medium ? {
@@ -48,7 +49,7 @@ export default function Modal(props){
                 props.confirmAction &&
                 <DialogActions>
                     {props.closeModal &&
-                        <Button onClick={props.closeModal} data-testid="cancel-modal" color="primary">
+                        <Button onClick={props.closeModal} data-testid="cancel-modal" style={{color:red[500]}}>
                             <Translate id="general.cancel" />
                         </Button>
                     }
@@ -72,5 +73,6 @@ Modal.propTypes = {
         PropTypes.string.isRequired,
         PropTypes.object.isRequired
     ]),
-    closeModal:PropTypes.func
+    closeModal:PropTypes.func,
+    confirmAction:PropTypes.func
 }

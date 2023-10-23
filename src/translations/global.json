@@ -363,6 +363,12 @@
                     "budget" : ["Budget", "Presupuesto", "Budget"],
                     "summary" : ["Summary", "Resumen", "Résumé"]
                 },
+                "view" : {
+                    "modal" : {
+                        "title" : ["Confirmation of documente type change", "Confirmación de cambio de tipo de documento", "Confirmation du changement de type de document"],
+                        "message" : ["The change will automatically create a new document and close the current one. Are you sure you want create a new type of document?", "El cambio creará automáticamente un nuevo documento y cerrará el actual. ¿Está seguro de querer crear un nuevo tipo de documento?", "Le changement créera automatiquement un nouveau document et fermera l'actuel. Êtes-vous sûr de vouloir créer un nouveau type de document?"]
+                    }
+                },
                 "pending" : ["Pending", "Pendiente", "En attente"],
                 "draft" : ["Draft", "Borrador", "Brouillon"],
                 "closed" : ["Closed", "Cerrada", "Fermé"],
