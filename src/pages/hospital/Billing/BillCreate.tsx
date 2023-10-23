@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IPatient, IPersonalData, ReduxStore } from '../../../constants/types';
-import { Bill, BillItem, BillableCombo, DocumentType } from './types';
+import { Bill, BillItem, BillableCombo, DocumentStatus, DocumentType } from './types';
 import { Language, Translate } from 'react-localize-redux';
 import { BillForm } from './BillForm';
 import { FindPatient } from './find_patient';
@@ -30,7 +30,8 @@ interface BillCreateProps {
 const BillCreate: React.FC<BillCreateProps> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(null);
     const [typeDocument, setTypeDocument] = useState<DocumentType>(props.canCreateBugdet ? DocumentType.BUDGET : DocumentType.INVOICE);
-    
+    const [statusDocument, setStatusDocument] = useState<DocumentStatus>(DocumentStatus.CLOSED);
+
     const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);
     const billableCombos = useSelector((state:ReduxStore) => state.billing.data.billableCombos ? state.billing.data.billableCombos : []);
     const [comboSelected, setComboSelected] = useState<BillableCombo | null>(null);
@@ -56,6 +57,12 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
         }
     }
 
+    function onBillSuccesfullyCreated(bill: Bill) {
+        bill.type = typeDocument;
+        bill.status = statusDocument;
+        props.onBillSuccesfullyCreated(bill);
+    }
+
     function onPatientSelected(idPatient: number) {
         const findPatient = props.patients.find((patient) => patient.id === idPatient);
         if (findPatient) {
@@ -64,9 +71,31 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
         console.log(findPatient);
     }
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeType = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTypeDocument(Number((event.target as HTMLInputElement).value));
       };
+    
+    const handleChangeStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setStatusDocument(Number((event.target as HTMLInputElement).value));
+    };
+
+    function renderStatusDocument(){
+        return (
+            <FormControl>
+              <FormLabel id="demo-row-radio-buttons-group-label"><Translate id="hospital.billing.bill.status" /></FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                value={statusDocument}
+                onChange={handleChangeStatus}
+              >
+                <FormControlLabel value={DocumentStatus.DRAFT} control={<Radio />} label={<Translate id="hospital.billing.bill.draft" />} />
+                <FormControlLabel value={DocumentStatus.CLOSED} control={<Radio />} label={<Translate id="hospital.billing.bill.closed" />} />
+              </RadioGroup>
+            </FormControl>
+          );
+    }
 
     function renderTypeDocument(){
         if(props.canCreateBugdet && patient){
@@ -78,7 +107,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
                     aria-labelledby="demo-row-radio-buttons-group-label"
                     name="row-radio-buttons-group"
                     value={typeDocument}
-                    onChange={handleChange}
+                    onChange={handleChangeType}
                   >
                     <FormControlLabel value={DocumentType.BUDGET} control={<Radio />} label={<Translate id="hospital.billing.bill.types.budget" />} />
                     <FormControlLabel value={DocumentType.INVOICE} control={<Radio />} label={<Translate id="hospital.billing.bill.types.invoice" />} />
@@ -89,6 +118,21 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
         else{
             return null;
         }
+    }
+
+    function renderOptions(){
+        if(patient){
+            return (
+                <>
+                    { renderTypeDocument() }
+                    { renderStatusDocument() }
+                </>
+            )
+        }
+        else{
+            return null;
+        }
+        
     }
 
     function renderPatient(){
@@ -134,17 +178,18 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
     }
     return (
         <>
+            
             {
                 renderPatient()
             }
             {
-                renderTypeDocument()
+                renderOptions()
             }
             
             <BillForm patient={patient!} canUpdateBill={true} currency={props.currency} idBillingInfo={props.idBillingInfo}
                 withDiscount={props.withDiscount} uuidInvestigation={props.uuidInvestigation} bill={null} 
                 print={false}
-                onBillSuccesfullyCreated={props.onBillSuccesfullyCreated} onCancelBill={props.onCancelBill}
+                onBillSuccesfullyCreated={onBillSuccesfullyCreated} onCancelBill={props.onCancelBill}
                 />
         </>
     );

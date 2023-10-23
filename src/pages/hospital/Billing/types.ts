@@ -3,6 +3,7 @@ import { LocalizeContextProps } from "react-localize-redux"
 import { IPatient } from "../../../constants/types"
 
 export interface Bill{
+    uuid?:string,
     id:number,
     idPatientInvestigation:number,
     billItems:BillItem[],

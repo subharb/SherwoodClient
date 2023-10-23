@@ -12,7 +12,7 @@ import { FUNCTIONALITY, IPatient, ISurvey } from '../../../constants/types';
 import { Bill, BillingInfo, BillItemModes, DocumentStatus , DocumentType} from './types';
 import { Document } from '../Document';
 import { connect, useDispatch } from 'react-redux';
-import { getBillsPatientService, getBillsService } from '../../../services/billing';
+import { getBillsPatientService, getDocumentsService } from '../../../services/billing';
 import Loader from '../../../components/Loader';
 import { hasDiscountsActive } from '../../../utils/index.jsx';
 import EditBilling from './Edit';
@@ -69,7 +69,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
 
     function onBillSuccesfullyCreated(bill: Bill) {
         const tempBills = [...bills];
-        const existingBillIndex = tempBills.findIndex((aBill) => bill.id === aBill.id);
+        const existingBillIndex = tempBills.findIndex((aBill) => bill.uuid === aBill.uuid);
         if (existingBillIndex !== -1) {
             tempBills[existingBillIndex] = bill;
         }
@@ -93,7 +93,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
             setLoading(true);
             let response;
             if(!uuidPatient){
-                response = await getBillsService(investigation.uuid);
+                response = await getDocumentsService(investigation.uuid);
             }
             else{
                 response = await getBillsPatientService(investigation.uuid, uuidPatient);

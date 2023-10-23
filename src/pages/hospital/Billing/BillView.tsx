@@ -55,7 +55,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
                 <Translate id={`hospital.billing.bill.types.${documentTypeToString(props.billType)}`}/>
             </Button>
             </>
-        if(props.billStatus === DocumentStatus.CLOSED){
+        
             if(props.billType === DocumentType.BUDGET){
                 return (
                     <Grid  item xs={12} alignContent='center'  >
@@ -83,7 +83,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
                 
                 );
             }
-        }
+        
     }
     return (
         <>

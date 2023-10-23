@@ -75,7 +75,7 @@ export const BillForm:React.FC<Props> = (props) => {
             setLoading(true);
             let response: { status: number, bill?: Bill };
             if (!props.canUpdateBill && props.bill) {
-                response = await updateBillService(props.uuidInvestigation, props.bill.id, items);
+                response = await updateBillService(props.uuidInvestigation, props.bill.uuid, items);
             }
             else {
                 response = await createBillService(props.uuidInvestigation, props.patient!.uuid, items);

@@ -66,10 +66,10 @@ export function updateBillablesService(uuidInvestigation: string, idBillingInfo:
     });
 }
 
-export function getBillsService(uuidInvestigation: string): Promise<{ status: number, bills: Bill[] }> {
+export function getDocumentsService(uuidInvestigation: string): Promise<{ status: number, bills: Bill[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .get(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bills/", { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/documents", { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
