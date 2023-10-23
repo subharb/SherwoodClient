@@ -293,10 +293,11 @@ const Billing: React.FC<Props> = (props) => {
         else {
             if (props.billingInfo) {
                 if(actionBill === BillActions.CREATE){
-                    return <BillCreate patients={props.patients} personalFields={props.personalFields} currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation} 
+                    return <BillCreate patients={props.patients} personalFields={props.personalFields} currency={props.billingInfo.currency} 
+                                uuidInvestigation={props.uuidInvestigation} canCreateBugdet={Boolean(props.billingInfo.params.budgets)}
                                 idBillingInfo={props.billingInfo.id} languageCode={props.activeLanguage.code} withDiscount={props.withDiscount} 
                                 onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)}
-                                onCancelBill={onCancelBill}
+                                onCancelBill={onCancelBill} 
                                 />
                 }
                 return (
@@ -321,7 +322,6 @@ const Billing: React.FC<Props> = (props) => {
                                             onCancelBill={onCancelBill} print={false} patient={props.patients.find((pat) => pat.id === currentBill?.idPatientInvestigation)!}
                                             bill={currentBill} canUpdateBill={currentBill ? currentBill.status === DocumentStatus.DRAFT : false}
                                             idBillingInfo={props.billingInfo.id} surveyAdditionalInfo={props.surveyAdditionalInfo}
-                                            locale={props.activeLanguage}
                                         />
                 if([BillActions.CREATE, BillActions.VIEW].includes(actionBill)){
                     return(

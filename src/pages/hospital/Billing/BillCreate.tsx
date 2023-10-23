@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { IPatient, IPersonalData, ReduxStore } from '../../../constants/types';
-import { Bill, BillItem, BillableCombo } from './types';
-import { Language } from 'react-localize-redux';
+import { Bill, BillItem, BillableCombo, DocumentType } from './types';
+import { Language, Translate } from 'react-localize-redux';
 import { BillForm } from './BillForm';
 import { FindPatient } from './find_patient';
 import { useSnackBarState } from '../../../hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { pushBillables } from '../../../redux/actions/billingActions';
 import PatientInfo from './PatientInfo';
-import { Grid, TextField } from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from '@mui/material';
 import { Autocomplete } from "@mui/lab"
 import { ButtonAdd } from '../../../components/general/mini_components';
 
@@ -18,6 +18,7 @@ interface BillCreateProps {
     currency: string,
     uuidInvestigation: string,
     idBillingInfo:number,
+    canCreateBugdet: boolean,
     languageCode: string,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
@@ -28,7 +29,8 @@ interface BillCreateProps {
 
 const BillCreate: React.FC<BillCreateProps> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(null);
-    const [showSnackbar, setShowSnackbar] = useSnackBarState();
+    const [typeDocument, setTypeDocument] = useState<DocumentType>(props.canCreateBugdet ? DocumentType.BUDGET : DocumentType.INVOICE);
+    
     const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);
     const billableCombos = useSelector((state:ReduxStore) => state.billing.data.billableCombos ? state.billing.data.billableCombos : []);
     const [comboSelected, setComboSelected] = useState<BillableCombo | null>(null);
@@ -60,6 +62,33 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
             setPatient(findPatient);
         }
         console.log(findPatient);
+    }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTypeDocument(Number((event.target as HTMLInputElement).value));
+      };
+
+    function renderTypeDocument(){
+        if(props.canCreateBugdet && patient){
+            return (
+                <FormControl>
+                  <FormLabel id="demo-row-radio-buttons-group-label"><Translate id="hospital.billing.bill.type" /></FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    value={typeDocument}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel value={DocumentType.BUDGET} control={<Radio />} label={<Translate id="hospital.billing.bill.types.budget" />} />
+                    <FormControlLabel value={DocumentType.INVOICE} control={<Radio />} label={<Translate id="hospital.billing.bill.types.invoice" />} />
+                  </RadioGroup>
+                </FormControl>
+              );
+        }
+        else{
+            return null;
+        }
     }
 
     function renderPatient(){
@@ -107,6 +136,9 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
         <>
             {
                 renderPatient()
+            }
+            {
+                renderTypeDocument()
             }
             
             <BillForm patient={patient!} canUpdateBill={true} currency={props.currency} idBillingInfo={props.idBillingInfo}

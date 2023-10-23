@@ -42,6 +42,7 @@ export const CreateBill: Story = {
     updatingBill: false,
     patients: patients_personal_data_decrypted(),
     personalFields: personal_data_investigation1(),
+    canCreateBugdet: true,
     currency:"CFA",
     uuidInvestigation: getInvestigation.investigation.uuid,
     idBillingInfo:1,
