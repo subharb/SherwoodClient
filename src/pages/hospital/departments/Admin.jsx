@@ -631,6 +631,7 @@ function Departments(props) {
         
     }
     function resetModal(){
+        setDepartmentToAddUnit(false);
         setShowModal(false);
         setAddingDepartment(false);
         setIndexResearcherToEdit(false);
