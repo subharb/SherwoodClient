@@ -23,7 +23,7 @@ interface Props {
     print: boolean,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
-    onBillSuccesfullyCreated: (bill: Bill) => void,
+    onBillItemsValidated: (billItems: BillItem[]) => void,
     onCancelBill: () => void
 
 }
@@ -70,35 +70,7 @@ export const BillForm:React.FC<Props> = (props) => {
   
 
     async function onBillItemsValidated(items:BillItem[]){
-        
-        try{
-            setLoading(true);
-            let response: { status: number, bill?: Bill };
-            if (!props.canUpdateBill && props.bill) {
-                response = await updateBillService(props.uuidInvestigation, props.bill.uuid, items);
-            }
-            else {
-                response = await createBillService(props.uuidInvestigation, props.patient!.uuid, items);
-            }
-
-            if (response.status === 200 && response.bill) {
-                props.onBillSuccesfullyCreated(response.bill);
-            }
-            else {
-                setCurrentItems(items);
-                setErrorBill(<Translate id="hospital.bill.error.create" />);
-            }
-            setLoading(false);        
-        }
-        catch(error:any){
-            if(error.status === 401){
-                setCurrentItems(items);
-                setShowSnackbar({show:true, message: "hospital.billing.bill.error.permission", severity: 'error'});
-            }
-            
-            setLoading(false);
-        }
-        
+        props.onBillItemsValidated(items);
     }
 
     function renderItems(){

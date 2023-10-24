@@ -43,7 +43,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
     const history = useHistory();
     const billsPatients = useMemo(() => {
         return bills.map((bill) => {
-            const patient = patients.find((patient) => patient.id === bill.idPatientInvestigation);
+            const patient = patients.find((patient) => patient.uuid === bill.uuidPatient);
             return {
                 "id" : bill.id,
                 "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 

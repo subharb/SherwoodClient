@@ -108,7 +108,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
             <BillForm canUpdateBill={props.canUpdateBill} patient={props.patient} currency={props.currency} 
                 uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.idBillingInfo} bill={props.bill}
                 print={props.print} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}
-                onBillSuccesfullyCreated={props.onBillSuccesfullyCreated} onCancelBill={props.onCancelBill}
+                onBillItemsValidated={() => console.log("Not implemented")} onCancelBill={props.onCancelBill}
                 />
         </>
     );

@@ -5,13 +5,14 @@ import { IPatient } from "../../../constants/types"
 export interface Bill{
     uuid?:string,
     id:number,
-    idPatientInvestigation:number,
+    uuidPatient:string,
     billItems:BillItem[],
     type:DocumentType,
     status:DocumentStatus,
     total:number,
     totalPaid:number,
-    createdAt:Date
+    createdAt:Date,
+    updatedAt:Date
 }
 
 export interface Billable{

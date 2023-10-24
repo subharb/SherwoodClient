@@ -1,10 +1,10 @@
 import { Bill, Billable, BillablesServiceResponse, BillingInfoServiceResponse, BillItem } from "../pages/hospital/Billing/types";
 import axios from "../utils/axios";
 
-export function createBillService(uuidInstitution: string, uuidPatient: string, billItems: BillItem[]): Promise<{ status: number }> {
+export function createBillService(uuidInstitution: string, uuidPatient: string, bill: Bill): Promise<{ status: number }> {
     return new Promise((resolve, reject) => {
         axios
-            .post(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInstitution + "/bill/" + uuidPatient, billItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .post(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInstitution + "/bill/" + uuidPatient, bill, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
@@ -17,10 +17,10 @@ export function createBillService(uuidInstitution: string, uuidPatient: string, 
     });
 }
 
-export function updateBillService(uuidInvestigation: string, billId: number, billItems: BillItem[]): Promise<{ status: number }> {
+export function updateBillService(uuidInvestigation: string, uuidBill: string, billItems: BillItem[]): Promise<{ status: number }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bill/" + billId, billItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bill/" + uuidBill, billItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

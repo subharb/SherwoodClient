@@ -22,7 +22,7 @@ interface BillCreateProps {
     languageCode: string,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
-    onBillSuccesfullyCreated: (bill: Bill) => void,
+    onCreateBill: (bill: Bill) => void,
     onCancelBill: () => void
 
 }
@@ -57,10 +57,14 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
         }
     }
 
-    function onBillSuccesfullyCreated(bill: Bill) {
+    function onCreateBill(billItems: BillItem[]) {
+        console.log("onCreateBill BillCreate", billItems);
+        const bill: Bill = {} as Bill;
         bill.type = typeDocument;
         bill.status = statusDocument;
-        props.onBillSuccesfullyCreated(bill);
+        bill.billItems = billItems;
+        bill.uuidPatient = patient!.uuid;
+        props.onCreateBill(bill);
     }
 
     function onPatientSelected(idPatient: number) {
@@ -189,7 +193,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
             <BillForm patient={patient!} canUpdateBill={true} currency={props.currency} idBillingInfo={props.idBillingInfo}
                 withDiscount={props.withDiscount} uuidInvestigation={props.uuidInvestigation} bill={null} 
                 print={false}
-                onBillSuccesfullyCreated={onBillSuccesfullyCreated} onCancelBill={props.onCancelBill}
+                onBillItemsValidated={onCreateBill} onCancelBill={props.onCancelBill}
                 />
         </>
     );
