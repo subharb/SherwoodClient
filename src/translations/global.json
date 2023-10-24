@@ -377,6 +377,7 @@
                 "update" : ["Update", "Actualizar", "Mettre à jour"],
                 "date" : ["Date", "Fecha", "Date"],
                 "success" : {
+                    "changed" : ["Document type changed succesfully", "Tipo de documento cambiado correctamente", "Type de document modifié avec succès"],
                     "created" : ["Bill succesfully created", "Factura creada correctamente", "Facture créée avec succès"],
                     "updated" : ["Bill succesfully updated", "Factura actualizada correctamente", "Facture mis à jour avec succès"]
                 },

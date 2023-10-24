@@ -114,6 +114,10 @@ export interface BillablesServiceResponse {
     status: number, billables: Billable[] 
 }
 
+export interface BillServiceResponse {
+    status: number, bill:Bill
+}
+
 export enum BillItemModes{
     SHOW = "SHOW",
     EDIT = "EDIT",

@@ -42,10 +42,11 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
     const [statusFilter, setStatusFilter] = useState<BillStatus[]>([]);
     const history = useHistory();
     const billsPatients = useMemo(() => {
-        return bills.map((bill) => {
+        return bills.map((bill, indexBill) => {
             const patient = patients.find((patient) => patient.uuid === bill.uuidPatient);
             return {
-                "id" : bill.id,
+                "id" : indexBill,
+                "uuid" : bill.uuid,
                 "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 
                 "total" : new Intl.NumberFormat(languageCode).format(Number(bill.total)),
                 "status" : renderStatus(bill.status, bill.type, hasBudgets, (Number(bill.total) - Number(bill.totalPaid)) > 0),
@@ -114,8 +115,8 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         ];
 
         return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
-                        actions={[{"type" : "edit", "func" : (id:number) => makeActionBillCallBack(id, BillActions.UPDATE)},
-                                {"type" : "view", "func" : (id:number) => history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":idDocument", id.toString()))}]} 
+                        actions={[{"type" : "edit", "func" : (index:number) => makeActionBillCallBack(rows[index].id, BillActions.UPDATE)},
+                                {"type" : "view", "func" : (index:number) => history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":uuidDocument", rows[index].uuid))}]} 
                                 />
     }
 

@@ -26,6 +26,7 @@ interface BillViewProps {
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
     onBillSuccesfullyCreated: (bill: Bill) => void,
+    onChangeDocumentType: (uuidBill:string, type: DocumentType) => void,
     onCancelBill: () => void
 }
 
@@ -37,9 +38,13 @@ const BillView: React.FC<BillViewProps> = (props) => {
         setShowModal(false);
     }
 
-    function createDocumentType(){
+    function confirmChangeDocumentType(){
         console.log("Crear documento de tipo ", documentTypeToString(newDocumentType));
         setShowModal(false);
+        if(props.bill!.uuid){
+            props.onChangeDocumentType(props.bill.uuid, newDocumentType);
+        }
+        
     }
     
     function convertDocument(type:DocumentType){
@@ -88,7 +93,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
     return (
         <>
             <Modal key="modal" fullWidth medium open={showModal} title={<Translate id="hospital.billing.bill.view.modal.title" />} closeModal={() => onCloseModal()}
-                confirmAction={createDocumentType} >
+                confirmAction={confirmChangeDocumentType} >
                 <Typography variant="body2" component='span'><Translate id="hospital.billing.bill.view.modal.message" /></Typography>
             </Modal>
 

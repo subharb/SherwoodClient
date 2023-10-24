@@ -1,7 +1,7 @@
-import { Bill, Billable, BillablesServiceResponse, BillingInfoServiceResponse, BillItem } from "../pages/hospital/Billing/types";
+import { Bill, Billable, BillablesServiceResponse, BillingInfoServiceResponse, BillItem, BillServiceResponse, DocumentType } from "../pages/hospital/Billing/types";
 import axios from "../utils/axios";
 
-export function createBillService(uuidInstitution: string, uuidPatient: string, bill: Bill): Promise<{ status: number }> {
+export function createBillService(uuidInstitution: string, uuidPatient: string, bill: Bill): Promise<BillServiceResponse> {
     return new Promise((resolve, reject) => {
         axios
             .post(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInstitution + "/bill/" + uuidPatient, bill, { headers: { "Authorization": localStorage.getItem("jwt") } })
@@ -120,6 +120,23 @@ export function getBillableComboService(uuidInvestigation: string, idBillingInfo
     return new Promise((resolve, reject) => {
         axios
             .get(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billablecombo/" + idBillingInfo, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+
+export function updateDocumentType(uuidInvestigation: string, uuidBill: string, type:DocumentType): Promise<BillServiceResponse> {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(`${import.meta.env.VITE_APP_API_URL}/billing/investigation/${uuidInvestigation}/bill/${uuidBill}/change/${type}`, {}, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
