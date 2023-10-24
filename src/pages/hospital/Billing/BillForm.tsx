@@ -4,7 +4,7 @@ import { Language, Translate } from "react-localize-redux"
 import styled from "styled-components"
 import Loader from "../../../components/Loader"
 import { IPatient, ReduxStore } from "../../../constants/types"
-import { Bill, BillItem, BillItemModes } from "./types";
+import { Bill, BillItem, BillItemModes, DocumentType } from "./types";
 import { createBillService, updateBillService } from "../../../services/billing";
 import { Alert } from "@mui/lab"
 import { BillItems } from "./BillItems"
@@ -104,8 +104,8 @@ export const BillForm:React.FC<Props> = (props) => {
                     <BillItems key="bill_items" columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"amount", type:"amount", validation:""}]} 
                         uuidPatient={props.patient?.uuid} mode = {BillItemModes.SHOW}
                         initItems = {props.bill ? props.bill.billItems : currentItems.length > 0 ? currentItems : []}
-                        repeatBillItems={true} showTotal={true}
-                        surveyAdditionalInfo={props.surveyAdditionalInfo}
+                        repeatBillItems={true} showTotal={true} canUseAdditionalInfo={props.bill?.type === DocumentType.SUMMARY}
+                        surveyAdditionalInfo={props.surveyAdditionalInfo} 
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
                         bill={props.bill}  
                         canUpdateBill={props.canUpdateBill} uuidInvestigation={props.uuidInvestigation}

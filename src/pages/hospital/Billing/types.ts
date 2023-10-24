@@ -39,6 +39,8 @@ export interface BillItem{
     additionalInfoId?:number,
     relatedBillables?:number[],
     amount:number | string,
+    updatedAt?:Date,
+    createdAt?:Date,
     used?: boolean,
     paid?: boolean
 }

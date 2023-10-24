@@ -10,7 +10,7 @@ import styled from "styled-components"
 import { Autocomplete } from "@mui/lab"
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import _ from "lodash";
-import { hasDefaultValues } from "../../../utils/index.jsx";
+import { hasDefaultValues, stringDatePostgresToDate } from "../../../utils/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { pushBillingItems, saveBillingItems } from "../../../redux/actions/billingActions";
 import Modal from "../../../components/general/modal";
@@ -55,6 +55,7 @@ export interface BillItemsProps extends LocalizeContextProps{
     withDiscount:boolean,
     uuidPatient?:string,
     surveyAdditionalInfo:any,
+    canUseAdditionalInfo:boolean,
     onBillItemsValidated : (items: BillItem[]) => void,
     onCancelBill: () => void
 }
@@ -66,7 +67,7 @@ const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
 })
 // Si tiene una columna de tipo "amount" entonces se calcula el total y se valida la suma de todos los amounts sea mayor que 0
 
-const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLanguage,
+const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo, error, activeLanguage,
                                                     canUpdateBill, currency, print, withDiscount,
                                                     surveyAdditionalInfo, uuidInvestigation,
                                                     uuidPatient,
@@ -86,7 +87,12 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
     //const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : [])
     const items  = useSelector((state:any) => {
         console.log(state.billing.data.billItems);
-        return state.billing.data.billItems ? state.billing.data.billItems : []});
+        return state.billing.data.billItems ? state.billing.data.billItems.sort((bItemA:BillItem, bItemB:BillItem) => {
+            if(bItemA.updatedAt && !bItemB.updatedAt){
+                stringDatePostgresToDate(bItemB.updatedAt).getTime() - stringDatePostgresToDate(bItemA.updatedAt).getTime()
+            }
+            return 0;
+        }) : []});
     const billables:Billable[] = useSelector((state:any) => state.billing.data.billables ? state.billing.data.billables : []);
     //const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
@@ -289,10 +295,11 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                         uuidPatient={uuidPatient!} 
                         callBackDataCollectionSavedWithData = {async (data) => {
                             console.log("Data Saved", data);
-                            const amount = data.surveyRecords.find((record:any) => record.surveyField.name === "amount").value;
+                            const amount = data.surveyRecords.find((record:any) => record.surveyField.name.toLocaleLowerCase() === "amount").value;
                             const additionalItem:BillItem = {
                                 concept: translate(`hospital.billing.item.additional_info`).toString(),
                                 type: TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
+                                quantity:1,
                                 amount: amount,
                                 additionalInfoId: data.id,
                             }
@@ -432,8 +439,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, mode, error, activeLa
                             >
                                 {
                                     TYPES_BILL_ITEM.filter(([key, value]) => {
-                                        if(value === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO && !surveyAdditionalInfo){
-                                            return false;
+                                        if(value === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO){
+                                            return canUseAdditionalInfo && surveyAdditionalInfo;
                                         }
                                         return true;
                                     }).map(([key, value]) =>{

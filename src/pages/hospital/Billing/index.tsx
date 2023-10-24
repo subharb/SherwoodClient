@@ -14,7 +14,7 @@ import { Document } from '../Document';
 import { connect, useDispatch } from 'react-redux';
 import { createBillService, getBillsPatientService, getDocumentsService, updateBillService, updateDocumentType } from '../../../services/billing';
 import Loader from '../../../components/Loader';
-import { hasDiscountsActive } from '../../../utils/index.jsx';
+import { dateAndTimeFromPostgresString, hasDiscountsActive, stringDatePostgresToDate } from '../../../utils/index.jsx';
 import EditBilling from './Edit';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import BillsPatient from './BillsPatient';
@@ -73,12 +73,18 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
             setShowSnackbar({show:true, message: "hospital.billing.bill.error.permission", severity: 'error'});
         }
         else{
-            setShowSnackbar({show:true, message: "general.error", severity: 'error'});
+            if(error.errorCode === 1){
+                setShowSnackbar({show:true, message: "hospital.billing.bill.error.changed", severity: 'error'});
+            }
+            else{
+                setShowSnackbar({show:true, message: "general.error", severity: 'error'});
+            }
+            
         }
         setLoading(false);
     }
 
-    async function onCreateBill(bill: Bill) {
+    async function onCreateOrUpdateBill(bill: Bill) {
         console.log("onCreateBill", bill);
         try{
             setLoading(true);
@@ -103,16 +109,27 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
                 setShowSnackbar({show:true, message: "hospital.billing.bill.error.permission", severity: 'error'});
             }
             setLoading(false);     
-            const tempBills = [...bills];
-            const existingBillIndex = tempBills.findIndex((aBill) => bill.uuid === aBill.uuid);
-            if (existingBillIndex !== -1) {
-                tempBills[existingBillIndex] = bill;
+            if(typeof response.bill !== "undefined"){
+                const tempBills = [...bills];
+                const uuidBill = response.bill.uuid;
+                const existingBillIndex = tempBills.findIndex((aBill) => uuidBill === aBill.uuid);
+                if (existingBillIndex !== -1) {
+                    tempBills[existingBillIndex] = response.bill;
+                }
+                else {
+                    tempBills.push(response.bill);
+                    tempBills.sort((billA, billB) => {
+                        if(billA.updatedAt && billB.updatedAt){
+                            return stringDatePostgresToDate(billA.updatedAt).getTime() - stringDatePostgresToDate(billB.updatedAt).getTime();
+                        }
+                        else{
+                            return 0;
+                        }
+                    });
+                }
+                setBills(tempBills);
             }
-            else {
-                tempBills.push(bill);
-                tempBills.sort((billA, billB) => billB.updatedAt.getTime() - billA.updatedAt.getTime());
-            }
-            setBills(tempBills);
+            
 
         }
         catch(error:any){
@@ -138,10 +155,13 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
             setLoading(true);
             const response = await updateDocumentType(investigation.uuid, uuidBill, type);
             setShowSnackbar({ message: "hospital.billing.bill.success.changed", show: true, severity: "success" });    
-            if(response.status === 200){
-                history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":uuidDocument", uuidBill));
+            if(response.status === 200 && response.bill.uuid){
+                const tempBills = [...bills];
+                tempBills.push(response.bill);
+                setBills(tempBills);
+                history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":uuidDocument", response.bill.uuid));
             }
-            
+            setLoading(false);
         }
         catch(error:any){
             handleError(error);
@@ -187,13 +207,13 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
 
     if (investigation) {
         const surveyAdditionalInfo:ISurvey | undefined = investigation.surveys.find((survey: any) => survey.type === TYPE_ADDITIONAL_INFO_SURVEY);
-        return <BillingLocalized patients={patients.data[investigation.uuid]} withDiscount={hasDiscounts}
+        return <BillingLocalized key={uuidDocument} patients={patients.data[investigation.uuid]} withDiscount={hasDiscounts}
                     uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
                     personalFields={investigation.personalFields}
                     billingInfo={investigation.billingInfo} uuidDocument={uuidDocument}
                     section={action} surveyAdditionalInfo={surveyAdditionalInfo}
                     bills={bills} loading={loading} uuidPatient={uuidPatient} showSnackbar={showSnackbar}
-                    onCreateBill={(bill: Bill) => onCreateBill(bill)}    
+                    onCreateOrUpdateBill={(bill: Bill) => onCreateOrUpdateBill(bill)}    
                     onChangeDocumentType={onChangeDocumentType}                
                     onPatientSelected={(uuid:string) => onPatientSelected(uuid)}
                     navigateToHomeBilling={navigateToHomeBilling} createBill={() => history.push(HOSPITAL_BILLING_CREATE_BILL)}
@@ -230,9 +250,9 @@ interface Props extends LocalizeContextProps {
     uuidDocument?: string,
     withDiscount: boolean,
     onChangeDocumentType: (uuidBill:string, type: DocumentType) => void,
-    onBillSuccesfullyCreated: (bill: Bill) => void,
+    
     onPatientSelected: (uuid:string) => void
-    onCreateBill: (bill:Bill) => void,
+    onCreateOrUpdateBill: (bill:Bill) => void,
     createBill: () => void,
     onCancelBill: () => void,
     navigateToHomeBilling: () => void,
@@ -290,19 +310,7 @@ const Billing: React.FC<Props> = (props) => {
         }
     }, [props.showSnackbar]);
 
-    async function onBillSuccesfullyCreated(bill: Bill) {
-        // if (currentBill) {
-        //     setShowSnackbar({ message: "hospital.billing.bill.success.updated", show: true, severity: "success" });
-        // }
-        // else {
-        //     setShowSnackbar({ message: "hospital.billing.bill.success.created", show: true, severity: "success" });
-        // }
-        //await dispatch(resetBillItems());
-        onCloseModal();
-        props.onBillSuccesfullyCreated(bill);
-        //setCurrentBill(null);
 
-    }
     function makeActionBill(idBill: number, action: BillActions) {
         console.log(idBill);
         const tempBill = props.bills.find((bill) => bill.id === idBill);
@@ -358,7 +366,7 @@ const Billing: React.FC<Props> = (props) => {
                         patient={currentPatient!} languageCode={props.activeLanguage.code} canUpdateBill={currentBill.status === DocumentStatus.DRAFT} 
                         currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.billingInfo.id}
                         print={false} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}
-                        onBillSuccesfullyCreated={(bill: Bill) => onBillSuccesfullyCreated(bill)} 
+                        onUpdateBill={(bill: Bill) => props.onCreateOrUpdateBill(bill)} 
                         onChangeDocumentType={props.onChangeDocumentType}
                         onCancelBill={onCancelBill}
                         />)
@@ -369,7 +377,7 @@ const Billing: React.FC<Props> = (props) => {
                     return <BillCreate patients={props.patients} personalFields={props.personalFields} currency={props.billingInfo.currency} 
                                 uuidInvestigation={props.uuidInvestigation} canCreateBugdet={Boolean(props.billingInfo.params.budgets)}
                                 idBillingInfo={props.billingInfo.id} languageCode={props.activeLanguage.code} withDiscount={props.withDiscount} 
-                                onCreateBill={(bill: Bill) => props.onCreateBill(bill)}
+                                onCreateBill={(bill: Bill) => props.onCreateOrUpdateBill(bill)}
                                 onCancelBill={onCancelBill} 
                                 />
                 }

@@ -382,6 +382,7 @@
                     "updated" : ["Bill succesfully updated", "Factura actualizada correctamente", "Facture mis à jour avec succès"]
                 },
                 "error" : {
+                    "changed" : ["Can't change the document to this type", "No se puede cambiar el documento a este tipo", "Impossible de changer le document à ce type"],
                     "permission" : ["You don't have permission to apply discounts", "No tienes permiso para aplicar descuentos", "Vous n'avez pas la permission d'appliquer des réductions"],
                     "create" : ["There was an error creating the bill, please try again","Hubo un error al crear la factura, inténtalo de nuevo", "Une erreur s'est produite lors de la création de la facture, veuillez réessayer"],
                     "positive" : ["The total must be positive", "El total debe ser positivo", "Le total doit être positif"]

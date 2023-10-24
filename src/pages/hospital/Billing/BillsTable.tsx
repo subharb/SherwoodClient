@@ -45,6 +45,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         return bills.map((bill, indexBill) => {
             const patient = patients.find((patient) => patient.uuid === bill.uuidPatient);
             return {
+                "idInvestigation" : bill.count,
                 "id" : indexBill,
                 "uuid" : bill.uuid,
                 "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 
@@ -107,7 +108,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
             return shouldBeFiltered;
         })
         const headCells = [
-                { id: "id", alignment: "left", label: "ID" },
+                { id: "idInvestigation", alignment: "left", label: "ID" },
                 { id: "patient", alignment: "left", label: <Translate id={`hospital.billing.bill.patient`} /> },
                 { id: "total", alignment: "left", label: [<Translate id={`hospital.billing.bill.total`} />,"("+currency+")"] },
                 { id: "status", alignment: "left", label: [<Translate id={`hospital.billing.bill.status`} />]},

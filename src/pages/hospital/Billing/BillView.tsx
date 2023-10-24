@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bill, DocumentStatus, DocumentType } from './types';
+import { Bill, BillItem, DocumentStatus, DocumentType } from './types';
 import { IPatient } from '../../../constants/types';
 import PatientInfo from './PatientInfo';
 import { Button, Grid, Typography } from '@mui/material';
@@ -25,7 +25,7 @@ interface BillViewProps {
     print: boolean,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
-    onBillSuccesfullyCreated: (bill: Bill) => void,
+    onUpdateBill: (bill: Bill) => void,
     onChangeDocumentType: (uuidBill:string, type: DocumentType) => void,
     onCancelBill: () => void
 }
@@ -37,6 +37,12 @@ const BillView: React.FC<BillViewProps> = (props) => {
     function onCloseModal(){
         setShowModal(false);
     }
+
+    function onUpdateBill(billItems: BillItem[]) {
+        props.bill.billItems = [...billItems];
+        props.onUpdateBill(props.bill);
+    }
+
 
     function confirmChangeDocumentType(){
         console.log("Crear documento de tipo ", documentTypeToString(newDocumentType));
@@ -81,7 +87,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
                         { typeButton }
                         <KeyboardArrowRightIcon />
                         <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.SUMMARY)}}  startIcon={documentTypeToIcon(DocumentType.INVOICE)} 
-                            onClick={() => convertDocument(DocumentType.SUMMARY)}>
+                            onClick={() => convertDocument(DocumentType.INVOICE)}>
                             Convert to Invoice
                         </Button>
                     </Grid>
@@ -113,7 +119,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
             <BillForm canUpdateBill={props.canUpdateBill} patient={props.patient} currency={props.currency} 
                 uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.idBillingInfo} bill={props.bill}
                 print={props.print} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}
-                onBillItemsValidated={() => console.log("Not implemented")} onCancelBill={props.onCancelBill}
+                onBillItemsValidated={onUpdateBill} onCancelBill={props.onCancelBill}
                 />
         </>
     );
