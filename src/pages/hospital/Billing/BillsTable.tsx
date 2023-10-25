@@ -50,7 +50,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
                 "uuid" : bill.uuid,
                 "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 
                 "total" : new Intl.NumberFormat(languageCode).format(Number(bill.total)),
-                "status" : renderStatus(bill.status, bill.type, hasBudgets, (Number(bill.total) - Number(bill.totalPaid)) > 0),
+                "status" : renderStatus(bill.status, bill.type, hasBudgets, (Number(bill.total) - Number(bill.totalPaid)) === 0),
                 "paid" : (Number(bill.total) - Number(bill.totalPaid)) === 0,
                 "dateCreation" : fullDateFromPostgresString(languageCode, bill.createdAt)
             }

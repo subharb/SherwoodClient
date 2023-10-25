@@ -1,6 +1,6 @@
 import React from 'react'
 import {Translate} from 'react-localize-redux';
-import { PERSONAL_DATA_FIELDS, encryptData, decryptData, generateKey } from '../../../../utils/index.jsx';
+import { PERSONAL_DATA_FIELDS, encryptData, decryptData, generateKey, postErrorSlack } from '../../../../utils/index.jsx';
 import Form from '../../../general/form';
 import { Grid, Typography } from '@mui/material';
 
@@ -28,16 +28,20 @@ export default function PersonalDataForm(props) {
         for (const key of Object.keys(data)) {
             let value = data[key];
             const fieldForm = props.fields.find(field => field.name === key);
-             
-            if(fieldForm.encrypted !== false){
-                if(typeof value.getMonth === 'function'){
-                    value = value.getTime().toString();
+            if(fieldForm){
+                if(fieldForm.encrypted !== false){
+                    if(typeof value.getMonth === 'function'){
+                        value = value.getTime().toString();
+                    }
+                    value = encryptData(value.toString(), rawKeyInvestigation);
                 }
-                value = encryptData(value.toString(), rawKeyInvestigation);
+                const field = form[key];
+                field.value = value;
+                encryptedData.push(field) 
             }
-            const field = form[key];
-            field.value = value;
-            encryptedData.push(field)  
+            else{
+                postErrorSlack("", "fieldForm no found:"+key , "");
+            } 
         }
         
         

@@ -211,7 +211,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                 // changeField(billableSelected.amount.toString(), BillItemKeys.amount);
                 // changeField(billableSelected.type.toString(), BillItemKeys.type);
 
-                const updatedItem = {...currentItem, ...billableSelected, quantity : 1}
+                const updatedItem:BillItem = {...currentItem, ...billableSelected, quantity : 1}
+                delete updatedItem.id;
                 setCurrentItem(updatedItem);
                 
                 if(!hasDefaultValues(updatedItem, DEFAULT_CURRENT_ITEM)){
@@ -291,22 +292,33 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                             setEditSubmission(submission)} } />
         }
         else if(surveyAdditionalInfo){
-            return <FillSurvey initData={editSubmission} uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
+            return <FillSurvey initData={editSubmission} idSubmission={editSubmission ? editSubmission.id : undefined} uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
                         country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
                         uuidPatient={uuidPatient!} 
                         callBackDataCollectionSavedWithData = {async (data) => {
                             console.log("Data Saved", data);
                             const amount = data.surveyRecords.find((record:any) => record.surveyField.name.toLocaleLowerCase() === "amount").value;
-                            const additionalItem:BillItem = {
-                                concept: translate(`hospital.billing.item.additional_info`).toString(),
-                                type: TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
-                                quantity:1,
-                                amount: amount,
-                                additionalInfoId: data.id,
+                            const prevBillItemIndex = items.findIndex((item:BillItem) => item.additionalInfo && item.additionalInfo.id === data.id);
+
+                            if(prevBillItemIndex !== -1){
+                                const tempItems = [...items];
+                                tempItems[prevBillItemIndex].amount = amount;
+                                await dispatch(saveBillingItems(tempItems));
                             }
-                            await dispatch(pushBillingItems([additionalItem]))
+                            else{
+                                const additionalItem:BillItem = {
+                                    concept: translate(`hospital.billing.item.additional_info`).toString(),
+                                    type: TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
+                                    quantity:1,
+                                    amount: amount,
+                                    additionalInfoId: data.id,
+                                }
+                                await dispatch(pushBillingItems([additionalItem]))
+                            }
+                            
                             setCurrentItem(DEFAULT_CURRENT_ITEM);
                             setShowModal(false);
+                            setEditSubmission(undefined);
                         }
                         }/>
             
@@ -490,13 +502,15 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         }
         if (Object.values(tempFieldErrors).reduce((acc, val) => acc && (val === ""), true)) {
             let tempItems = [...items];
-
+            currentItem.updatedAt = new Date().toISOString();
             tempItems.push({...currentItem});
             if(currentItem.relatedBillables && currentItem.relatedBillables.length > 0){
                 for(let i = 0; i < currentItem.relatedBillables.length; i++){
                     const billable:Billable | undefined = billables.find((billable) => billable.id === currentItem?.relatedBillables[i]);
                     if(billable){
-                        tempItems.push({...billable, quantity:1});
+                        const currentBillItem:BillItem = {...billable, quantity:1}
+                        delete currentBillItem.id;
+                        tempItems.push(currentBillItem);
                     }
                 }
             }
