@@ -17,10 +17,10 @@ export function createBillService(uuidInstitution: string, uuidPatient: string, 
     });
 }
 
-export function updateBillService(uuidInvestigation: string, uuidBill: string, billItems: BillItem[]): Promise<{ status: number }> {
+export function updateBillService(uuidInvestigation: string, uuidBill: string, bill: Bill): Promise<{ status: number }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bill/" + uuidBill, billItems, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/bill/" + uuidBill, bill, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

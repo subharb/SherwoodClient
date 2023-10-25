@@ -10,6 +10,7 @@ import { documentTypeToIcon } from '.';
 import { documentStatusToColor, documentTypeToColor, documentTypeToString } from '../../../utils/bill';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Modal from '../../../components/general/modal';
+import { ColourChip } from '../../../components/general/mini_components-ts';
 
 
 interface BillViewProps {
@@ -61,40 +62,45 @@ const BillView: React.FC<BillViewProps> = (props) => {
 
     function renderConvertButton(){
         const typeButton = <>
-            <Typography variant="body2" component='span'><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.type" /></span>: </Typography>
-            <Button variant="contained" style={{backgroundColor:documentTypeToColor(props.billType)}}  startIcon={documentTypeToIcon(props.billType)}>
-                <Translate id={`hospital.billing.bill.types.${documentTypeToString(props.billType)}`}/>
-            </Button>
+                <Typography variant="body2" component='span'><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.type" /></span>: </Typography>
+                <ColourChip rgbcolor={documentTypeToColor(props.billType)} 
+                    label={<Translate id={`hospital.billing.bill.types.${documentTypeToString(props.billType)}`}/>}
+                    avatar={documentTypeToIcon(props.billType)}
+                    /> 
             </>
         
-            if(props.billType === DocumentType.BUDGET){
+            if(props.billType === DocumentType.BUDGET || props.billType === DocumentType.SUMMARY){
+                const converButton = props.billType === DocumentType.BUDGET ? 
+                                            <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.SUMMARY)}} endIcon={documentTypeToIcon(DocumentType.SUMMARY)} 
+                                                onClick={() => convertDocument(DocumentType.SUMMARY)}>
+                                                Convert to Summary
+                                            </Button> : 
+                                            <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.INVOICE)}}  endIcon={documentTypeToIcon(DocumentType.INVOICE)} 
+                                                onClick={() => convertDocument(DocumentType.INVOICE)}>
+                                                Convert to Invoice
+                                            </Button>  
+
                 return (
-                    <Grid  item xs={12} alignContent='center'  >
-                        
-                        { typeButton }
-                        <span style={{ display: 'inline', alignItems: 'center',}}><KeyboardArrowRightIcon /></span>
-                        <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.SUMMARY)}} startIcon={documentTypeToIcon(DocumentType.SUMMARY)} 
-                            onClick={() => convertDocument(DocumentType.SUMMARY)}>
-                            Convert to Summary
-                        </Button>
-                        
-                    </Grid>
-                    )
+                    <div style={{display:'flex', flexDirection:'row', 'paddingBottom' : '1rem'}}>
+                        <div >
+                            { typeButton }
+                        </div>
+                        <div>
+                            <div>
+                                <KeyboardArrowRightIcon />
+                            </div>
+                        </div>
+                        <div>
+                            {
+                                converButton
+                            }
+                        </div>
+                    </div>
+                )
             }
-            else if(props.billType === DocumentType.SUMMARY){
-                return (
-                    <Grid container item xs={6} >
-                        { typeButton }
-                        <KeyboardArrowRightIcon />
-                        <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.SUMMARY)}}  startIcon={documentTypeToIcon(DocumentType.INVOICE)} 
-                            onClick={() => convertDocument(DocumentType.INVOICE)}>
-                            Convert to Invoice
-                        </Button>
-                    </Grid>
-                
-                );
-            }
-        
+            else{
+                return typeButton;
+            }        
     }
     return (
         <>
@@ -115,7 +121,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
             {
                 renderConvertButton()
             }
-            
+
             <BillForm canUpdateBill={props.canUpdateBill} patient={props.patient} currency={props.currency} 
                 uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.idBillingInfo} bill={props.bill}
                 print={props.print} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}

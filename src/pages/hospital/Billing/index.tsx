@@ -30,6 +30,7 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import DescriptionIcon from '@mui/icons-material/Description';
 import BillView from './BillView';
 import BillCreate from './BillCreate';
+import { red } from '@mui/material/colors';
 
 interface PropsRedux {
     investigations: any,
@@ -40,11 +41,11 @@ interface PropsRedux {
 export function documentTypeToIcon(type:DocumentType){
     switch(type){
         case DocumentType.BUDGET:
-            return <BarChartIcon />;
+            return <BarChartIcon style={{color:'#fff'}}/>;
         case DocumentType.SUMMARY:
-            return <DescriptionIcon />;
+            return <DescriptionIcon style={{color:'#fff'}}/>;
         case DocumentType.INVOICE:
-            return <ReceiptIcon />;
+            return <ReceiptIcon style={{color:'#fff'}}/>;
     }
 }
 
@@ -89,15 +90,15 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
         try{
             setLoading(true);
             let response: { status: number, bill?: Bill };
-            if (bill.uuid && bill.type === DocumentType.INVOICE && bill.status === DocumentStatus.CLOSED) {
-                response = await updateBillService(investigation.uuid, bill.uuid, bill.billItems);
+            if (bill.uuid) {
+                response = await updateBillService(investigation.uuid, bill.uuid, bill);
             }
             else {
                 response = await createBillService(investigation.uuid, bill.uuidPatient, bill);
             }
 
             if (response.status === 200 && response.bill) {
-                if (bill.uuid) {
+                if (response.bill.uuid) {
                     setShowSnackbar({ message: "hospital.billing.bill.success.updated", show: true, severity: "success" });
                 }
                 else {

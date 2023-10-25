@@ -88,8 +88,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     const items  = useSelector((state:any) => {
         console.log(state.billing.data.billItems);
         return state.billing.data.billItems ? state.billing.data.billItems.sort((bItemA:BillItem, bItemB:BillItem) => {
-            if(bItemA.updatedAt && !bItemB.updatedAt){
-                stringDatePostgresToDate(bItemB.updatedAt).getTime() - stringDatePostgresToDate(bItemA.updatedAt).getTime()
+            if(bItemA.updatedAt && bItemB.updatedAt){
+                return stringDatePostgresToDate(bItemA.updatedAt).getTime() - stringDatePostgresToDate(bItemB.updatedAt).getTime()
             }
             return 0;
         }) : []});
