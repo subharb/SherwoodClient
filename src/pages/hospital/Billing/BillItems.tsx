@@ -97,7 +97,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     //const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
-    
+    const [editSubmission, setEditSubmission] = useState<any | undefined>(undefined);
+
     const [itemAdded, setItemAdded] = useState(false);
     
     const printRef = useRef<HTMLHeadingElement>(null);
@@ -283,14 +284,14 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     }
 
     function renderContentModal(){
-        if(showAdditionalInfoID !== -1){
+        if(showAdditionalInfoID !== -1 && !editSubmission){
             return <ShowSingleSubmissionPatient surveys={[surveyAdditionalInfo]} forceEdit={false}
-                        idSubmission={showAdditionalInfoID}
-                        callBackEditSubmission={() => console.log("nada")}  />
+                        idSubmission={showAdditionalInfoID} 
+                        callBackEditSubmission={(idSubmission:number, uuidSection:string, submission:any) => {
+                            setEditSubmission(submission)} } />
         }
         else if(surveyAdditionalInfo){
-
-            return <FillSurvey uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
+            return <FillSurvey initData={editSubmission} uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
                         country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
                         uuidPatient={uuidPatient!} 
                         callBackDataCollectionSavedWithData = {async (data) => {

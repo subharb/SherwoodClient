@@ -11,6 +11,7 @@ import { documentStatusToColor, documentTypeToColor, documentTypeToString } from
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Modal from '../../../components/general/modal';
 import { ColourChip } from '../../../components/general/mini_components-ts';
+import { useStatusDocument } from '../../../hooks';
 
 
 interface BillViewProps {
@@ -34,12 +35,14 @@ interface BillViewProps {
 const BillView: React.FC<BillViewProps> = (props) => {
     const [showModal, setShowModal] = React.useState(false);
     const [newDocumentType, setNewDocumentType] = React.useState<DocumentType>(DocumentType.BUDGET);
-    
+    const {statusDocument, renderStatusDocument} = useStatusDocument(props.bill.status, false);
+
     function onCloseModal(){
         setShowModal(false);
     }
 
     function onUpdateBill(billItems: BillItem[]) {
+        props.bill.status = statusDocument;
         props.bill.billItems = [...billItems];
         props.onUpdateBill(props.bill);
     }
@@ -68,7 +71,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
                     avatar={documentTypeToIcon(props.billType)}
                     /> 
             </>
-        
+            let convertGrid = null
             if(props.billType === DocumentType.BUDGET || props.billType === DocumentType.SUMMARY){
                 const converButton = props.billType === DocumentType.BUDGET ? 
                                             <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.SUMMARY)}} endIcon={documentTypeToIcon(DocumentType.SUMMARY)} 
@@ -80,11 +83,8 @@ const BillView: React.FC<BillViewProps> = (props) => {
                                                 Convert to Invoice
                                             </Button>  
 
-                return (
-                    <div style={{display:'flex', flexDirection:'row', 'paddingBottom' : '1rem'}}>
-                        <div >
-                            { typeButton }
-                        </div>
+                convertGrid = (
+                    <>
                         <div>
                             <div>
                                 <KeyboardArrowRightIcon />
@@ -95,12 +95,23 @@ const BillView: React.FC<BillViewProps> = (props) => {
                                 converButton
                             }
                         </div>
-                    </div>
-                )
+                    </>
+                );
             }
-            else{
-                return typeButton;
-            }        
+            return (
+                <div style={{'paddingBottom' : '1rem'}}>
+                    <div style={{display:'flex', flexDirection:'row'}}>
+                        <div >
+                            { typeButton }
+                        </div>
+                        { convertGrid } 
+                    </div>
+                    {
+                        renderStatusDocument
+                    }
+                </div>
+                
+            )      
     }
     return (
         <>
@@ -116,7 +127,6 @@ const BillView: React.FC<BillViewProps> = (props) => {
                     <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.type" /></span>: <Translate id={`hospital.billing.bill.types.${documentTypeToString(props.billType)}`}/></Typography>
                 </Grid>
             } />
-            
             
             {
                 renderConvertButton()

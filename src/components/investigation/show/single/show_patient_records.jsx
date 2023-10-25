@@ -93,6 +93,7 @@ export default function ShowPatientRecords(props) {
                         <RequestInfoWithFetch key={submission.id} idSubmission={submission.id} uuidInvestigation={props.uuidInvestigation} />
                     }
                     <ShowSingleSubmissionPatient surveys={props.surveys} 
+                        idSubmission={submission.id}
                         forceEdit={props.forceEdit} submission={submission} 
                         callBackEditSubmission={(uuidSubmission, uuidSection) => props.callBackEditSubmission(uuidSubmission, uuidSection)}  /> 
                 </div> )

@@ -12,7 +12,7 @@ interface ShowSubmissionPatientProps {
     forceEdit:boolean,
     submission?:any,
     idSubmission?:number,
-    callBackEditSubmission: (uuidSubmission:string, uuidSection:string) => void,
+    callBackEditSubmission: (idSubmission:number, uuidSection:string, submission:any) => void,
 }
 
 const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ surveys, forceEdit, submission, idSubmission, callBackEditSubmission }) => {
@@ -44,7 +44,7 @@ const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ sur
         return <Loader />
     }
     return <ShowSingleSubmissionPatientView surveys={surveys} forceEdit={forceEdit} submission={submissionCached} 
-                callBackEditSubmission={(uuidSubmission:string, uuidSection:string) => callBackEditSubmission(uuidSubmission, uuidSection)}  />
+                callBackEditSubmission={(idSubmission:number, uuidSection:string, submission:any) => callBackEditSubmission(idSubmission, uuidSection, submission)}  />
 };
 const ShowSingleSubmissionPatientView: React.FC<ShowSubmissionPatientProps> = ({ surveys, forceEdit, callBackEditSubmission, submission }) => {
 
@@ -55,8 +55,10 @@ const ShowSingleSubmissionPatientView: React.FC<ShowSubmissionPatientProps> = ({
 
         return(
             <ShowRecordsSection forceEdit={forceEdit}
-                callBackEditSubmission={(uuidSubmission:string, uuidSection:string) => callBackEditSubmission(uuidSubmission, uuidSection)} 
-                records={recordsSection} section={section} uuidResearcher = {submission.uuidResearcher}
+                callBackEditSubmission={(idSubmission:number, uuidSection:string) => {
+                    callBackEditSubmission(idSubmission, uuidSection, submission)
+                }} 
+                records={recordsSection} section={section} uuidResearcher = {submission.uuidResearcher ? submission.uuidResearcher : submission.researcher.uuid}
                 idSubmission = {submission.id}
                 updatedAt={submission.updatedAt}/>
         )

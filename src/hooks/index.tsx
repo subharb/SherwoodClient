@@ -5,7 +5,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { fetchUser } from "../services/authService";
 import { getCurrentResearcherUuid } from '../utils/index.jsx';
 import { SIGN_IN_ROUTE } from '../routes/urls';
-import { FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, Typography } from '@mui/material';
 import { Translate } from 'react-localize-redux';
 import { FieldWrapper } from '../components/general/mini_components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +20,9 @@ import SelectField from '../components/general/SelectField';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { getServiceGeneralService } from '../services/agenda';
 import { isArray, isObject } from 'lodash';
+import { DocumentStatus } from '../pages/hospital/Billing/types';
+import { ColourChip } from '../components/general/mini_components-ts';
+import { documentStatusToColor } from '../utils/bill';
 
 export interface SnackbarType{
     show: boolean;
@@ -381,6 +384,38 @@ export function useUnitSelector(units:IUnit[]){
         
     }
     return {unitSelected, renderUnitSelector, markAsErrorUnit}
+}
+
+export function useStatusDocument(status:DocumentStatus, editable:boolean = true){
+    const [statusDocument, setStatusDocument] = React.useState<DocumentStatus>(status);
+
+    const handleChangeStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setStatusDocument(Number((event.target as HTMLInputElement).value));
+    };
+
+    let renderStatusDocument = null;
+    if(status === DocumentStatus.CLOSED && !editable){
+        renderStatusDocument = <><Typography variant="body2" component='span' fontWeight='bold'><Translate id="hospital.billing.bill.status" /> : </Typography><ColourChip rgbcolor={documentStatusToColor(DocumentStatus.CLOSED)} label={<Translate id="hospital.billing.bill.closed" />}/></>
+    }
+    else{
+        renderStatusDocument =  (
+            <FormControl>
+              <FormLabel id="demo-row-radio-buttons-group-label">
+                    <Typography variant="body2" component='span' fontWeight='bold'><Translate id="hospital.billing.bill.status" /></Typography></FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                value={statusDocument}
+                onChange={handleChangeStatus}
+              >
+                <FormControlLabel value={DocumentStatus.DRAFT} control={<Radio />} label={<Typography variant="body2" component='span'><Translate id="hospital.billing.bill.draft" /></Typography>} />
+                <FormControlLabel value={DocumentStatus.CLOSED} control={<Radio />} label={<Typography variant="body2" component='span' ><Translate id="hospital.billing.bill.closed" /></Typography>} />
+              </RadioGroup>
+            </FormControl>
+          );
+    }
+    return {statusDocument, renderStatusDocument}
 }
 
 export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){

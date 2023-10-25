@@ -4,11 +4,11 @@ import { Bill, BillItem, BillableCombo, DocumentStatus, DocumentType } from './t
 import { Language, Translate } from 'react-localize-redux';
 import { BillForm } from './BillForm';
 import { FindPatient } from './find_patient';
-import { useSnackBarState } from '../../../hooks';
+import { useSnackBarState, useStatusDocument } from '../../../hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { pushBillables } from '../../../redux/actions/billingActions';
 import PatientInfo from './PatientInfo';
-import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import { Autocomplete } from "@mui/lab"
 import { ButtonAdd } from '../../../components/general/mini_components';
 
@@ -30,8 +30,8 @@ interface BillCreateProps {
 const BillCreate: React.FC<BillCreateProps> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(null);
     const [typeDocument, setTypeDocument] = useState<DocumentType>(props.canCreateBugdet ? DocumentType.BUDGET : DocumentType.INVOICE);
-    const [statusDocument, setStatusDocument] = useState<DocumentStatus>(DocumentStatus.CLOSED);
-
+    
+    const {statusDocument, renderStatusDocument} = useStatusDocument(DocumentStatus.CLOSED);
     const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);
     const billableCombos = useSelector((state:ReduxStore) => state.billing.data.billableCombos ? state.billing.data.billableCombos : []);
     const [comboSelected, setComboSelected] = useState<BillableCombo | null>(null);
@@ -79,33 +79,11 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
         setTypeDocument(Number((event.target as HTMLInputElement).value));
       };
     
-    const handleChangeStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setStatusDocument(Number((event.target as HTMLInputElement).value));
-    };
-
-    function renderStatusDocument(){
-        return (
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label"><Translate id="hospital.billing.bill.status" /></FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                value={statusDocument}
-                onChange={handleChangeStatus}
-              >
-                <FormControlLabel value={DocumentStatus.DRAFT} control={<Radio />} label={<Translate id="hospital.billing.bill.draft" />} />
-                <FormControlLabel value={DocumentStatus.CLOSED} control={<Radio />} label={<Translate id="hospital.billing.bill.closed" />} />
-              </RadioGroup>
-            </FormControl>
-          );
-    }
-
     function renderTypeDocument(){
         if(props.canCreateBugdet && patient){
             return (
                 <FormControl>
-                  <FormLabel id="demo-row-radio-buttons-group-label"><Translate id="hospital.billing.bill.type" /></FormLabel>
+                  <FormLabel id="demo-row-radio-buttons-group-label"><Typography variant="body2" component='span' fontWeight='bold' ><Translate id="hospital.billing.bill.type" /></Typography></FormLabel>
                   <RadioGroup
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"
@@ -113,8 +91,8 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
                     value={typeDocument}
                     onChange={handleChangeType}
                   >
-                    <FormControlLabel value={DocumentType.BUDGET} control={<Radio />} label={<Translate id="hospital.billing.bill.types.budget" />} />
-                    <FormControlLabel value={DocumentType.INVOICE} control={<Radio />} label={<Translate id="hospital.billing.bill.types.invoice" />} />
+                    <FormControlLabel value={DocumentType.BUDGET} control={<Radio />} label={<Typography variant="body2" component='span' ><Translate id="hospital.billing.bill.types.budget" /></Typography>} />
+                    <FormControlLabel value={DocumentType.INVOICE} control={<Radio />} label={<Typography variant="body2" component='span' ><Translate id="hospital.billing.bill.types.invoice" /></Typography>} />
                   </RadioGroup>
                 </FormControl>
               );
@@ -129,7 +107,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
             return (
                 <>
                     { renderTypeDocument() }
-                    { renderStatusDocument() }
+                    { renderStatusDocument }
                 </>
             )
         }
@@ -148,36 +126,36 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
         }
         else{
             return <PatientInfo patient={patient} languageCode={props.languageCode} rightSide={
-                            <Grid container item xs={6} style={{ display:'flex', paddingTop: '1rem' }} >
-                                <Autocomplete
-                                    disabled={loadingBillables}
-                                    value={comboSelected}
-                                    options={billableCombos}
-                                    onInputChange={(event, value, reason) => {
-                                        console.log("onInputChange",value);
-                                    }}
-                                    onChange={(event, newValue) => {
-                                        console.log("onchange", newValue);
-                                        selectCombo(newValue);
-                                        }
+                        <Grid container item xs={6} style={{ display:'flex', paddingTop: '1rem' }} >
+                            <Autocomplete
+                                disabled={loadingBillables}
+                                value={comboSelected}
+                                options={billableCombos}
+                                onInputChange={(event, value, reason) => {
+                                    console.log("onInputChange",value);
+                                }}
+                                onChange={(event, newValue) => {
+                                    console.log("onchange", newValue);
+                                    selectCombo(newValue);
                                     }
-                                    getOptionLabel={(option) => {
-                                        return option.name;
-                                    }}
-                                    style={{ width: 300 }}
-                                    renderInput={(params:any) => 
-                                        <TextField {...params} label="Select combo" error={false}
-                                            helperText={null} color="secondary"
-                                            //onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
-                                            variant="outlined" />
-                                        }
-                                />
-                                {
-                                    comboSelected &&
-                                    <ButtonAdd style={{marginTop:'0.5rem'}} onClick={() => addBillablesCombo()} />
                                 }
-                            </Grid>
-                    } />
+                                getOptionLabel={(option) => {
+                                    return option.name;
+                                }}
+                                style={{ width: 300 }}
+                                renderInput={(params:any) => 
+                                    <TextField {...params} label="Select combo" error={false}
+                                        helperText={null} color="secondary"
+                                        //onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+                                        variant="outlined" />
+                                    }
+                            />
+                            {
+                                comboSelected &&
+                                <ButtonAdd style={{marginTop:'0.5rem'}} onClick={() => addBillablesCombo()} />
+                            }
+                        </Grid>
+                } />
         }
     }
     return (
