@@ -111,6 +111,11 @@
             "staff" : ["Search for staff", "Buscar personal", "Rechercher du personnel"],
             "filter" : ["Filter", "Filtrar", "Filtrer"],
             "filters" : {
+                "budget" : ["Quotes", "Presupuestos", "Devis"], 
+                "invoices": ["Invoices", "Facturas", "Facture definitive"],
+                "summaries": ["Summaries", "Resúmenes", "Synthèse des actes"],
+                "draft" : ["Draft", "Borrador", "Brouillon"],
+                "closed" : ["Closed", "Cerrado", "Fermé"],
                 "low" : ["Low", "Bajo", "Faible"],
                 "finished" : ["Finished", "Finalizado", "Completé"],
                 "normal" : ["Normal", "Normal", "Normal"],
@@ -304,7 +309,7 @@
                     "updated" : ["Billables succesfully updated", "Elementos de facturación actualizada correctamente", "Elements de facturation mis à jour avec succès"]
                 }
             },
-            "budget" : ["Budget", "Presupuesto", "Budget"], 
+            "budget" : ["Quote", "Presupuesto", "Devis"], 
             "summary" : ["Summary", "Resumen", "Résumé"],
             "search_patient" : ["Search patient", "Buscar paciente", "Rechercher un patient"],
             "total_paid" : ["Total paid", "Total pagado", "Total payé"],
@@ -359,9 +364,9 @@
                 "status" : ["Status", "Estado", "Statut"],
                 "type" : ["Type", "Tipo", "Type"],
                 "types" : {
-                    "invoice" : ["Invoice", "Factura", "Facture"],
-                    "budget" : ["Budget", "Presupuesto", "Budget"],
-                    "summary" : ["Summary", "Resumen", "Résumé"]
+                    "invoice" : ["Bill", "Factura", "Facture definitive"],
+                    "budget" : ["Quote", "Presupuesto", "Devis"], 
+                    "summary" : ["Invoice", "Resumen", "Synthèse des actes"]
                 },
                 "view" : {
                     "modal" : {

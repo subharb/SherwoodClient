@@ -6,20 +6,20 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { ColourChip } from './mini_components-ts';
 
 interface SearchBoxProps extends LocalizeContextProps{
-    activeFilters:number[],
     selectFilter?:{
         value: string;
+        icon?: JSX.Element;
         options :  { value: string; label: string; }[],
         callBack:(value:string) => void;
     }
-    filterItems:{label:string, value:number, color:string, callBack:() => void}[],
+    filterItems:{label:string, value:number, selected:boolean, icon?: JSX.Element, color:string, callBack:() => void}[],
     textField:{
         label:string,
         callBack:(value:string) => void;
     }    
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, activeFilters, translate, textField }) => {
+const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, translate, textField }) => {
     return (
         <>
             <Grid item xs={12}>
@@ -32,12 +32,13 @@ const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, active
                         </Grid>
                         <Grid item xs={12} container alignItems='center'>
                             <Grid item zeroMinWidth>
-                                <Typography variant="body2" component="span"><Translate id="hospital.search_box.filter" /></Typography>
+                                <Typography variant="body2" component="span"><Translate id="hospital.search_box.filter" /></Typography>:
                                 {
                                     filterItems.map((item) => {
-                                        const selected = activeFilters.includes(item.value);
+                                        
                                         return(<ChipContainer>
-                                                    <ColourChip rgbcolor={item.color} active={!selected} 
+                                                    <ColourChip rgbcolor={item.color} active={!item.selected} 
+                                                        avatar={item.icon}
                                                         onClick={item.callBack} label={translate(`hospital.search_box.filters.${item.label}`)}/>
                                                 </ChipContainer>);
                                     })

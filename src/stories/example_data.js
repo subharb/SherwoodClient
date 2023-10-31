@@ -1299,6 +1299,7 @@ export const patients_personal_data_decrypted = () => {
         },
         {
             "id" : 67,
+            "uuid" : "e3ed69b5-d423-4dcf-9cfb-96c24f7a8df6",
             "personalData": 
             {
                 "email" : "jessie@hotmail.com",
@@ -2628,7 +2629,7 @@ export const billsExample = [{
         
         "total": 65000,
         "totalPaid": 165000,
-        "idPatientInvestigation": 65,
+        "uuidPatient": "801952ca-66da-4410-8583-3faa6f460e03",
         "createdAt": "2023-09-22T16:13:07.311Z",
     },
     {
@@ -2746,7 +2747,7 @@ export const billsExample = [{
         "totalPaid": 718000,
         "createdAt": "2023-09-11T14:37:18.864Z",
         "updatedAt": "2023-09-22T09:30:51.912Z",
-        "idPatientInvestigation": 68
+        "uuidPatient": "dc4515d1-0555-4734-a6a4-5e4fbc27c6a4"
     },
     {
         "id" : 58,
@@ -2776,9 +2777,9 @@ export const billsExample = [{
                 "amount": 75000,
             }
         ],
-        "total": 65000,
+        "total": 95000,
         "totalPaid": 165000,
-        "idPatientInvestigation": 65,
+        "uuidPatient": "e3ed69b5-d423-4dcf-9cfb-96c24f7a8df6",
         "createdAt": "2023-09-22T16:13:07.311Z",
     },{
         "id" : 59,
@@ -2810,7 +2811,7 @@ export const billsExample = [{
         ],
         "total": 65000,
         "totalPaid": 165000,
-        "idPatientInvestigation": 65,
+        "uuidPatient": "801952ca-66da-4410-8583-3faa6f460e03",
         "createdAt": "2023-09-22T16:13:07.311Z",
     }
 ]

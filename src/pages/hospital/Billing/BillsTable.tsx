@@ -1,18 +1,19 @@
 import React, { useMemo, useState } from 'react';
 import { Translate } from 'react-localize-redux';
-import { BillActions } from '.';
+import { BillActions, paidStatusToIcon, documentStatusToIcon, documentTypeToIcon, paidStatusToColor } from '.';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { fullDateFromPostgresString } from '../../../utils/index.jsx';
 import SearchBox from '../../../components/general/SearchBox';
 import { BillStatus } from '../Service/types';
 import { green, red, yellow } from '@mui/material/colors';
 import { Grid } from '@mui/material';
-import { ColourChip } from '../../../components/general/mini_components-ts';
+import { ColourButton, ColourChip } from '../../../components/general/mini_components-ts';
 import { TabsSherwood } from '../../components/Tabs';
 import { DocumentStatus, DocumentType } from './types';
 import { HOSPITAL_BILLING_VIEW_DOCUMENT } from '../../../routes/urls';
 import { useHistory } from 'react-router-dom';
 import { documentStatusToColor, documentTypeToColor } from '../../../utils/bill';
+import { Done, Edit, Lock, Schedule } from '@mui/icons-material';
 
 type BillsTableProps = {
     bills: any[];
@@ -23,23 +24,12 @@ type BillsTableProps = {
     makeActionBillCallBack: (index:number, action:BillActions) => void;
 };
 
-
-export const statusToColor = (status:BillStatus) => {
-    let colour = "#000";
-    switch(status){
-        case BillStatus.PAID:
-            colour = green[900];
-            break;
-        case BillStatus.PENDING_PAYMENT: 
-            colour = red[900];
-            break;
-    }
-    return colour;
-}
-
 const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, currency, hasBudgets, makeActionBillCallBack }) => {
     const [patientName, setPatientName] = useState<string>("");
-    const [statusFilter, setStatusFilter] = useState<BillStatus[]>([]);
+    const [statusPaidFilter, setStatusPaidFilter] = useState<BillStatus[]>([]);
+    const [documentStatusFilter, setDocumentStatusFilter] = useState<DocumentStatus[]>([]);
+    const [typeFilter, setTypeFilter] = useState<DocumentType[]>([]);
+
     const history = useHistory();
     const billsPatients = useMemo(() => {
         return bills.map((bill, indexBill) => {
@@ -48,10 +38,13 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
                 "idInvestigation" : bill.count,
                 "id" : indexBill,
                 "uuid" : bill.uuid,
-                "patient" : patient?.personalData.name+" "+patient?.personalData.surnames, 
+                "type" : bill.type,
+                "patientName" :patient?.personalData.name+" "+patient?.personalData.surnames, 
+                "patient" : <><ColourButton size='small' icon={documentTypeToIcon(bill.type)}  rgbcolor={documentTypeToColor(bill.type)} label={null}/> {patient?.personalData.name+" "+patient?.personalData.surnames}</>, 
                 "total" : new Intl.NumberFormat(languageCode).format(Number(bill.total)),
-                "status" : renderStatus(bill.status, bill.type, hasBudgets, (Number(bill.total) - Number(bill.totalPaid)) === 0),
-                "paid" : (Number(bill.total) - Number(bill.totalPaid)) === 0,
+                "status" : renderStatus(bill.status, bill.type, hasBudgets, (Number(bill.total) - Number(bill.totalPaid)) === 0 ? BillStatus.PAID : BillStatus.PENDING_PAYMENT),
+                "statusValue" : bill.status,
+                "paidStatus" : (bill.type === DocumentType.INVOICE && bill.status === DocumentStatus.CLOSED) ? (Number(bill.total) - Number(bill.totalPaid)) === 0 ? BillStatus.PAID : BillStatus.PENDING_PAYMENT : null,
                 "dateCreation" : fullDateFromPostgresString(languageCode, bill.createdAt)
             }
         })}, [bills, patients, languageCode]);
@@ -59,51 +52,38 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         setPatientName(name);        
     }
 
-    function renderStatus(billStatus:DocumentStatus, billType:DocumentType, hasBudgets:boolean, isPaid:boolean){
+    function renderStatus(billStatus:DocumentStatus, billType:DocumentType, hasBudgets:boolean, paidStatus:BillStatus){
         let listChips = [];
         if(billStatus === DocumentStatus.DRAFT){
-            listChips.push(<ColourChip rgbcolor={documentStatusToColor(billStatus)} label={<Translate id="hospital.billing.bill.draft" />}/>);
+            listChips.push(<ColourButton icon={documentStatusToIcon(billStatus)} rgbcolor={documentStatusToColor(billStatus)} label=""/>);
         }
         else{
-            listChips.push(<ColourChip rgbcolor={documentStatusToColor(billStatus)} label={<Translate id="hospital.billing.bill.closed" />}/>);
+            listChips.push(<ColourButton icon={documentStatusToIcon(billStatus)} rgbcolor={documentStatusToColor(billStatus)} label="" />);
         }
-        if(hasBudgets){
-            switch(billType){
-                case DocumentType.BUDGET:
-                    listChips.push(<ColourChip rgbcolor={documentTypeToColor(billType)} label={<Translate id="hospital.billing.bill.types.budget" />}/>);                                                         
-                    break;
-                case DocumentType.INVOICE:
-                    listChips.push(<ColourChip rgbcolor={documentTypeToColor(billType)} label={<Translate id="hospital.billing.bill.types.invoice" />}/>);                                                         
-                    break;
-                case DocumentType.SUMMARY:
-                    listChips.push(<ColourChip rgbcolor={documentTypeToColor(billType)} label={<Translate id="hospital.billing.bill.types.summary" />}/>);                                                         
-                    break;
-            }
-            
-        }
+        
         if(billStatus === DocumentStatus.CLOSED && billType === DocumentType.INVOICE){
-            const chipPaid = isPaid ? <ColourChip rgbcolor={green[900]} label={<Translate id="general.paid" />}/> : <ColourChip rgbcolor={red[900]} label={<Translate id="hospital.billing.bill.pending" />}/>;                                                         
-            listChips.push(chipPaid);
+            listChips.push(<ColourButton icon={paidStatusToIcon(paidStatus)} rgbcolor={paidStatusToColor(paidStatus)} label=""  /> );
         }
         
         return listChips;
     }
     function renderCore(){
         const rows = billsPatients.filter((bill) => {
-            let shouldBeFiltered = patientName.length === 0 && statusFilter.length === 0;
+            let shouldBeFiltered = patientName.length === 0;
             const activeNameFilter = patientName.length > 0;
             let matchNameFilter = false;
             if(activeNameFilter){
-                matchNameFilter = bill.patient.toLocaleLowerCase().includes(patientName.toLocaleLowerCase());
+                matchNameFilter = bill.patientName.toLocaleLowerCase().includes(patientName.toLocaleLowerCase());
                 shouldBeFiltered = matchNameFilter;
             }
-            if(statusFilter.length > 0){
-                if(statusFilter.includes(BillStatus.PAID)){
-                    shouldBeFiltered = activeNameFilter ? matchNameFilter && bill.paid : bill.paid;
-                }
-                if(statusFilter.includes(BillStatus.PENDING_PAYMENT)){
-                    shouldBeFiltered = activeNameFilter ? matchNameFilter && !bill.paid : !bill.paid;
-                }
+            if(statusPaidFilter.length > 0){
+                shouldBeFiltered = activeNameFilter ? matchNameFilter && statusPaidFilter.includes(bill.paidStatus) : statusPaidFilter.includes(bill.paidStatus);
+            }
+            if(typeFilter.length > 0){
+                shouldBeFiltered = activeNameFilter ? matchNameFilter && typeFilter.includes(bill.type) : typeFilter.includes(bill.type);
+            }
+            if(documentStatusFilter.length > 0){
+                shouldBeFiltered = activeNameFilter ? matchNameFilter && documentStatusFilter.includes(bill.statusValue) : documentStatusFilter.includes(bill.statusValue);
             }
             return shouldBeFiltered;
         })
@@ -121,32 +101,47 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
                                 />
     }
 
-    function applyStatusFilter(status:BillStatus){
-        if(statusFilter && statusFilter.includes(status)){
-            if(statusFilter.length === 1){
-                setStatusFilter([]);
+    function applyFilterGeneral(filter:number[] , functionAdd: (value:number[]) => void, value:number){
+        if(filter && filter.includes(value)){
+            if(filter.length === 1){
+                functionAdd([]);
             }
             else{
-                setStatusFilter(statusFilter.filter((s) => s !== status));
+                functionAdd(filter.filter((s) => s !== value));
             }
         }
-        else if(statusFilter){
-            setStatusFilter([...statusFilter, status]);
+        else if(filter){
+            functionAdd([...filter, value]);
         }
         else{
-            setStatusFilter([status]);
+            functionAdd([value]);
         }
-        
+    }
+
+    function applyDocumentStatus(status:DocumentStatus){
+        applyFilterGeneral(documentStatusFilter, setDocumentStatusFilter, status);
+    }
+
+    function applyTypeStatusFilter(type:DocumentType){
+        applyFilterGeneral(typeFilter, setTypeFilter, type);
+    }
+
+    function applyStatusPaidFilter(status:BillStatus){
+        applyFilterGeneral(statusPaidFilter, setStatusPaidFilter, status);
     }
 
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
                 <SearchBox textField={{label:"hospital.billing.search_patient", callBack:callbackNameTyped}}
-                    activeFilters={statusFilter}
                     filterItems={[
-                        {label:"paid", value:BillStatus.PAID, color:statusToColor(BillStatus.PAID), callBack:() => applyStatusFilter(BillStatus.PAID)},
-                        {label:"pending_payment", value:BillStatus.PENDING_PAYMENT, color:statusToColor(BillStatus.PENDING_PAYMENT), callBack:() => applyStatusFilter(BillStatus.PENDING_PAYMENT)},
+                        {label:"budget", selected: typeFilter.includes(DocumentType.BUDGET), value:DocumentType.BUDGET, icon:documentTypeToIcon(DocumentType.BUDGET), color:documentTypeToColor(DocumentType.BUDGET), callBack:() => applyTypeStatusFilter(DocumentType.BUDGET)},
+                        {label:"summaries", selected: typeFilter.includes(DocumentType.SUMMARY),  value:DocumentType.INVOICE, icon:documentTypeToIcon(DocumentType.SUMMARY), color:documentTypeToColor(DocumentType.SUMMARY), callBack:() => applyTypeStatusFilter(DocumentType.SUMMARY)},
+                        {label:"invoices", selected: typeFilter.includes(DocumentType.INVOICE),  value:DocumentType.INVOICE, icon:documentTypeToIcon(DocumentType.INVOICE), color:documentTypeToColor(DocumentType.INVOICE), callBack:() => applyTypeStatusFilter(DocumentType.INVOICE)},                        
+                        {label:"draft", selected: documentStatusFilter.includes(DocumentStatus.DRAFT),  value:DocumentStatus.DRAFT, icon:documentStatusToIcon(DocumentStatus.DRAFT), color:documentStatusToColor(DocumentStatus.DRAFT), callBack:() => applyDocumentStatus(DocumentStatus.DRAFT)},                        
+                        {label:"closed", selected: documentStatusFilter.includes(DocumentStatus.CLOSED),  value:DocumentStatus.CLOSED, icon:documentStatusToIcon(DocumentStatus.CLOSED), color:documentStatusToColor(DocumentStatus.CLOSED), callBack:() => applyDocumentStatus(DocumentStatus.CLOSED)},                        
+                        {label:"paid", selected: statusPaidFilter.includes(BillStatus.PAID), value:BillStatus.PAID, icon:paidStatusToIcon(BillStatus.PAID), color:paidStatusToColor(BillStatus.PAID), callBack:() => applyStatusPaidFilter(BillStatus.PAID)},
+                        {label:"pending_payment", selected: statusPaidFilter.includes(BillStatus.PENDING_PAYMENT),  value:BillStatus.PENDING_PAYMENT, icon:paidStatusToIcon(BillStatus.PENDING_PAYMENT), color:paidStatusToColor(BillStatus.PENDING_PAYMENT), callBack:() => applyStatusPaidFilter(BillStatus.PENDING_PAYMENT)},
                     ]} />
             </Grid>
             <Grid item xs={12}>

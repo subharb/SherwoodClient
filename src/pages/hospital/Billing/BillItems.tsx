@@ -1,5 +1,5 @@
 import { Button, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
-import { red } from "@mui/material/colors";
+import { blue, red } from "@mui/material/colors";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components";
@@ -332,7 +332,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     function renderInsertedBillItems() {
         let rows: BillItemTable[] = items.map((val:BillItemTable, index:number) => {
 
-            const color = TYPES_DISCOUNT.includes(parseInt(val.type)) ? red[900] : "black";
+            let color = TYPES_DISCOUNT.includes(parseInt(val.type)) ? red[900] : parseInt(val.type) === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO ? blue[900] : "black";
             const amountString =  TYPES_DISCOUNT.includes(val.type) ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;
             
             let rowElement:{[id: string] : JSX.Element} = {}
@@ -344,8 +344,13 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                     const typeSelected = TYPES_BILL_ITEM[val.type][0] as string;
                     rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{<Translate id={`hospital.billing.item.types.${typeSelected.toLocaleLowerCase()}`} />}</Typography>
                 }
-                else if(col.type === "number" && canUpdateBill){
-                    rowElement[col.name] = <QuantitySelector quantity={val[col.name] as number} onQuantityChange={(q) => updateQuantityBillItem(index, q)} />
+                else if(col.type === "number" ){
+                    if(!canUpdateBill){
+                        rowElement[col.name] =  <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
+                    }
+                    else{
+                        rowElement[col.name] = <QuantitySelector quantity={val[col.name] as number} onQuantityChange={(q) => updateQuantityBillItem(index, q)} />
+                    }
                 }
                 else{
                     const plainName = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>

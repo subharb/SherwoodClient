@@ -39,7 +39,7 @@ type Story = StoryObj<typeof BillItems>;
 
 export const BillItemsT: Story = {
   args: {
-    updatingBill: false,
+    canUpdateBill: false,
     columns : [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"amount", type:"amount", validation:""}], 
     uuidPatient:"",
     initItems:[],
@@ -80,7 +80,7 @@ export const BillItemsT: Story = {
                 },
                 {
                     concept:"Descuento 2 %",
-                    type:TYPE_BILL_ITEM.DISCOUNT_PERCENT,
+                    type:TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
                     quantity:1,
                     amount:10,
                     

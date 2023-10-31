@@ -76,7 +76,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
                 const converButton = props.billType === DocumentType.BUDGET ? 
                                             <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.SUMMARY)}} endIcon={documentTypeToIcon(DocumentType.SUMMARY)} 
                                                 onClick={() => convertDocument(DocumentType.SUMMARY)}>
-                                                Convert to Summary
+                                                Creer une synthesis des actes
                                             </Button> : 
                                             <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.INVOICE)}}  endIcon={documentTypeToIcon(DocumentType.INVOICE)} 
                                                 onClick={() => convertDocument(DocumentType.INVOICE)}>

@@ -30,7 +30,9 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import DescriptionIcon from '@mui/icons-material/Description';
 import BillView from './BillView';
 import BillCreate from './BillCreate';
-import { red } from '@mui/material/colors';
+import { green, red } from '@mui/material/colors';
+import { Done, Edit, Lock, MoneyOff } from '@mui/icons-material';
+import { BillStatus } from '../Service/types';
 
 interface PropsRedux {
     investigations: any,
@@ -41,11 +43,38 @@ interface PropsRedux {
 export function documentTypeToIcon(type:DocumentType){
     switch(type){
         case DocumentType.BUDGET:
-            return <BarChartIcon style={{color:'#fff'}}/>;
+            return <BarChartIcon />;
         case DocumentType.SUMMARY:
-            return <DescriptionIcon style={{color:'#fff'}}/>;
+            return <DescriptionIcon />;
         case DocumentType.INVOICE:
-            return <ReceiptIcon style={{color:'#fff'}}/>;
+            return <ReceiptIcon />;
+    }
+}
+
+export function documentStatusToIcon(type:DocumentStatus){
+    switch(type){
+        case DocumentStatus.DRAFT:
+            return <Edit />;
+        case DocumentStatus.CLOSED:
+            return <Lock />;
+    }
+}
+
+export function paidStatusToIcon(type:BillStatus){
+    switch(type){
+        case BillStatus.PAID:
+            return <Done />;
+        case BillStatus.PENDING_PAYMENT:
+            return <MoneyOff/>;
+    }
+}
+
+export function paidStatusToColor(type:BillStatus){
+    switch(type){
+        case BillStatus.PAID:
+            return green[500];
+        case BillStatus.PENDING_PAYMENT:
+            return red[500];
     }
 }
 
