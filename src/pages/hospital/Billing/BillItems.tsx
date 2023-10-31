@@ -89,7 +89,13 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         console.log(state.billing.data.billItems);
         return state.billing.data.billItems ? state.billing.data.billItems.sort((bItemA:BillItem, bItemB:BillItem) => {
             if(bItemA.updatedAt && bItemB.updatedAt){
-                return stringDatePostgresToDate(bItemA.updatedAt).getTime() - stringDatePostgresToDate(bItemB.updatedAt).getTime()
+                if((typeof bItemA.updatedAt === 'string' || bItemA.updatedAt instanceof String) && (typeof bItemB.updatedAt === 'string' || bItemB.updatedAt instanceof String)){
+                    return stringDatePostgresToDate(bItemA.updatedAt).getTime() - stringDatePostgresToDate(bItemB.updatedAt).getTime()
+                }
+                else{
+                    return bItemA.updatedAt.getTime() - bItemB.updatedAt.getTime()
+                }
+                
             }
             return 0;
         }) : []});
@@ -211,7 +217,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                 // changeField(billableSelected.amount.toString(), BillItemKeys.amount);
                 // changeField(billableSelected.type.toString(), BillItemKeys.type);
 
-                const updatedItem:BillItem = {...currentItem, ...billableSelected, quantity : 1}
+                const updatedItem:BillItem = {...currentItem, ...billableSelected, quantity : 1, updatedAt: new Date()};
                 delete updatedItem.id;
                 setCurrentItem(updatedItem);
                 
@@ -507,7 +513,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         }
         if (Object.values(tempFieldErrors).reduce((acc, val) => acc && (val === ""), true)) {
             let tempItems = [...items];
-            currentItem.updatedAt = new Date().toISOString();
+            currentItem.updatedAt = new Date();
             tempItems.push({...currentItem});
             if(currentItem.relatedBillables && currentItem.relatedBillables.length > 0){
                 for(let i = 0; i < currentItem.relatedBillables.length; i++){

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Translate } from 'react-localize-redux';
 import { BillActions, paidStatusToIcon, documentStatusToIcon, documentTypeToIcon, paidStatusToColor } from '.';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
@@ -29,8 +29,18 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
     const [statusPaidFilter, setStatusPaidFilter] = useState<BillStatus[]>([]);
     const [documentStatusFilter, setDocumentStatusFilter] = useState<DocumentStatus[]>([]);
     const [typeFilter, setTypeFilter] = useState<DocumentType[]>([]);
+    const [currentPageTable, setCurrentPageTable] = useState<number>(0);
 
     const history = useHistory();
+
+    useEffect(() => {
+        setCurrentPageTable(0);
+    }, [patientName, statusPaidFilter, documentStatusFilter, typeFilter]);
+
+    function changePageCallback(currentPage:number){
+        setCurrentPageTable(currentPage);
+    }
+
     const billsPatients = useMemo(() => {
         return bills.map((bill, indexBill) => {
             const patient = patients.find((patient) => patient.uuid === bill.uuidPatient);
@@ -48,7 +58,8 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
                 "dateCreation" : fullDateFromPostgresString(languageCode, bill.createdAt)
             }
         })}, [bills, patients, languageCode]);
-    function callbackNameTyped(name:string){
+    
+        function callbackNameTyped(name:string){
         setPatientName(name);        
     }
 
@@ -96,6 +107,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         ];
 
         return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
+                        currentPage={currentPageTable} changePageCallback={changePageCallback}
                         actions={[{"type" : "edit", "func" : (index:number) => makeActionBillCallBack(rows[index].id, BillActions.UPDATE)},
                                 {"type" : "view", "func" : (index:number) => history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":uuidDocument", rows[index].uuid))}]} 
                                 />

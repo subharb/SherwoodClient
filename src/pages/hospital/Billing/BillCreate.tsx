@@ -31,7 +31,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(null);
     const [typeDocument, setTypeDocument] = useState<DocumentType>(props.canCreateBugdet ? DocumentType.BUDGET : DocumentType.INVOICE);
     
-    const {statusDocument, renderStatusDocument} = useStatusDocument(DocumentStatus.CLOSED);
+    const {statusDocument, renderStatusDocument} = useStatusDocument(DocumentStatus.DRAFT);
     const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);
     const billableCombos = useSelector((state:ReduxStore) => state.billing.data.billableCombos ? state.billing.data.billableCombos : []);
     const [comboSelected, setComboSelected] = useState<BillableCombo | null>(null);
@@ -91,7 +91,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
                     value={typeDocument}
                     onChange={handleChangeType}
                   >
-                    <FormControlLabel value={DocumentType.BUDGET} control={<Radio />} label={<Typography variant="body2" component='span' ><Translate id="hospital.billing.bill.types.budget" /></Typography>} />
+                    <FormControlLabel value={DocumentType.SUMMARY} control={<Radio />} label={<Typography variant="body2" component='span' ><Translate id="hospital.billing.bill.types.summary" /></Typography>} />
                     <FormControlLabel value={DocumentType.INVOICE} control={<Radio />} label={<Typography variant="body2" component='span' ><Translate id="hospital.billing.bill.types.invoice" /></Typography>} />
                   </RadioGroup>
                 </FormControl>

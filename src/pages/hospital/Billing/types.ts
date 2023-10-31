@@ -81,8 +81,8 @@ export interface BillingInfoParams {
 }
 
 export enum DocumentType{
-    BUDGET = 0,
-    SUMMARY = 1,
+    SUMMARY = 0,
+    BUDGET = 1,
     INVOICE = 2,
 }
 

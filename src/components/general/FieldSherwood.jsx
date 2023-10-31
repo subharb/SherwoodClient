@@ -168,7 +168,9 @@ class FieldSherwood extends PureComponent{
     }
  
     handleDateChange(value){
-        this.props.input.onChange(value.toDate());
+        if (value !== null) {
+            this.props.input.onChange(value.toDate());
+        }
     }
     selectChange(value){
         console.log("Select Change", value);

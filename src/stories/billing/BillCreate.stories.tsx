@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, billables, edc_data1 } from '../example_data';
-import { BillForm } from '../../pages/hospital/Billing/BillForm';
-import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from "redux-thunk";

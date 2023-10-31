@@ -77,7 +77,7 @@ export default function reducer(state:BillingReducer = initialState, action:any)
                 const indexBillable = currentBillables.findIndex((b:Billable) => b.id === billableId.id);
                 console.log("indexBillable",indexBillable);
                 if( indexBillable !== -1){
-                    const currentBillItem = {...currentBillables[indexBillable], quantity:1}
+                    const currentBillItem = {...currentBillables[indexBillable], quantity:1, updatedAt: new Date()}
                     delete currentBillItem.id;
                     currentBillItems.push(currentBillItem);
                 }
