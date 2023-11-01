@@ -83,18 +83,9 @@ function DatesSelector(props:Props){
                     <DatePicker  label="Start Date"
                         defaultValue={dayjs(startDateCustom)}
                         format={formatDateByLocale(props.activeLanguage.code)}
-                        maxDate = {dayjs(endDateCustom)}
-                        //style={{display : 'none'}}
+                        maxDate = {dayjs()}
                         onChange={handleStartDateChange} 
-                        slotProps={{
-                            textField: {
-                                hidden: true,
-                                
-                            },
-                        }}
-                        
                         />
-                        
                     </Grid>
                     <Grid item >
                         <DatePicker label="End Date"
@@ -102,7 +93,6 @@ function DatesSelector(props:Props){
                             format={formatDateByLocale(props.activeLanguage.code)}
                             minDate={dayjs(startDateCustom)}
                             maxDate = {dayjs()}
-                            //style={{display : 'none'}}
                             onChange={handleEndDateChange} 
                             />
                     </Grid>
