@@ -2604,6 +2604,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 1,
                 "amount": 100000,
+                "updatedAt" : "2023-09-22T09:30:51.899Z",
                 "paid" : null,
                 "used" : null
             },
@@ -2614,7 +2615,8 @@ export const billsExample = [{
                 "type": 3,
                 "amount": 90000,
                 "paid" : null,
-                "used" : null
+                "used" : null,
+                "updatedAt" : "2023-09-22T09:30:51.899Z"
             },
             {
                 "id": 3626,
@@ -2622,6 +2624,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 3,
                 "amount": 75000,
+                "updatedAt" : "2023-09-22T09:30:51.899Z",
                 "paid" : null,
                 "used" : null
             }

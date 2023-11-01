@@ -4,13 +4,13 @@ import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components";
 import { TYPES_DISCOUNT, TYPE_BILL_ITEM } from "../../../constants/types";
-import { calculateTotalBill } from "../../../utils/bill";
+import { calculateTotalBill, getDateFromStringOrDate } from "../../../utils/bill";
 import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable, DocumentStatus, DocumentType } from "./types";
 import styled from "styled-components"
 import { Autocomplete } from "@mui/lab"
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import _ from "lodash";
-import { hasDefaultValues, stringDatePostgresToDate } from "../../../utils/index.jsx";
+import { dateToFullDateString, hasDefaultValues, stringDatePostgresToDate } from "../../../utils/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { pushBillingItems, saveBillingItems } from "../../../redux/actions/billingActions";
 import Modal from "../../../components/general/modal";
@@ -34,7 +34,7 @@ const GridBottom = styled(Grid) <{ hide: boolean }>`
     justify-content:end;
 `;
 
-interface Column{
+export interface Column{
     name:keyof BillItem,
     type:string,
     validation:string
@@ -89,13 +89,9 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         console.log(state.billing.data.billItems);
         return state.billing.data.billItems ? state.billing.data.billItems.sort((bItemA:BillItem, bItemB:BillItem) => {
             if(bItemA.updatedAt && bItemB.updatedAt){
-                if((typeof bItemA.updatedAt === 'string' || bItemA.updatedAt instanceof String) && (typeof bItemB.updatedAt === 'string' || bItemB.updatedAt instanceof String)){
-                    return stringDatePostgresToDate(bItemA.updatedAt).getTime() - stringDatePostgresToDate(bItemB.updatedAt).getTime()
-                }
-                else{
-                    return bItemA.updatedAt.getTime() - bItemB.updatedAt.getTime()
-                }
-                
+                const dateA = getDateFromStringOrDate(bItemA.updatedAt);
+                const dateB = getDateFromStringOrDate(bItemB.updatedAt);
+                return dateA.getTime() - dateB.getTime()
             }
             return 0;
         }) : []});
@@ -357,6 +353,10 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                     else{
                         rowElement[col.name] = <QuantitySelector quantity={val[col.name] as number} onQuantityChange={(q) => updateQuantityBillItem(index, q)} />
                     }
+                }
+                else if(col.type === "date"){
+                    const date = getDateFromStringOrDate(val[col.name]);
+                    rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{ dateToFullDateString(date, activeLanguage.code) }</Typography>
                 }
                 else{
                     const plainName = <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>

@@ -29,7 +29,7 @@ interface BillCreateProps {
 
 const BillCreate: React.FC<BillCreateProps> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(null);
-    const [typeDocument, setTypeDocument] = useState<DocumentType>(props.canCreateBugdet ? DocumentType.BUDGET : DocumentType.INVOICE);
+    const [typeDocument, setTypeDocument] = useState<DocumentType>(props.canCreateBugdet ? DocumentType.SUMMARY : DocumentType.INVOICE);
     
     const {statusDocument, renderStatusDocument} = useStatusDocument(DocumentStatus.DRAFT);
     const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);

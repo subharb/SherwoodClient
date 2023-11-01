@@ -73,10 +73,10 @@ const BillView: React.FC<BillViewProps> = (props) => {
             </>
             let convertGrid = null
             if(props.billType === DocumentType.BUDGET || props.billType === DocumentType.SUMMARY){
-                const converButton = props.billType === DocumentType.BUDGET ? 
-                                            <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.SUMMARY)}} endIcon={documentTypeToIcon(DocumentType.SUMMARY)} 
-                                                onClick={() => convertDocument(DocumentType.SUMMARY)}>
-                                                Creer une synthesis des actes
+                const converButton = props.billType === DocumentType.SUMMARY ? 
+                                            <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.BUDGET)}} endIcon={documentTypeToIcon(DocumentType.BUDGET)} 
+                                                onClick={() => convertDocument(DocumentType.BUDGET)}>
+                                                Creer une devis
                                             </Button> : 
                                             <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.INVOICE)}}  endIcon={documentTypeToIcon(DocumentType.INVOICE)} 
                                                 onClick={() => convertDocument(DocumentType.INVOICE)}>

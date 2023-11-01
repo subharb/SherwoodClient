@@ -1,5 +1,6 @@
 import { blue, cyan, orange, purple } from "@mui/material/colors";
 import { BillItem, DocumentStatus, DocumentType } from "../pages/hospital/Billing/types";
+import { stringDatePostgresToDate } from ".";
 
 
 export function calculateTotalBill(items:BillItem[]){
@@ -44,5 +45,14 @@ export function documentTypeToString(type:DocumentType){
             return "summary";
         case DocumentType.INVOICE:
             return "invoice";
+    }
+}
+
+export function getDateFromStringOrDate(date:string | Date){
+    if(typeof date === "string" || date instanceof String){
+        return stringDatePostgresToDate(date)
+    }
+    else{
+        return date;
     }
 }

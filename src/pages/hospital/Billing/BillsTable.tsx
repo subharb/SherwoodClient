@@ -109,7 +109,12 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
                         currentPage={currentPageTable} changePageCallback={changePageCallback}
                         actions={[{"type" : "edit", "func" : (index:number) => makeActionBillCallBack(rows[index].id, BillActions.UPDATE)},
-                                {"type" : "view", "func" : (index:number) => history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":uuidDocument", rows[index].uuid))}]} 
+                                {"type" : "view", "func" : (index:number) => {
+                                    const findBill = rows.find((bill) => bill.id === index);
+                                    if(findBill){
+                                        history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":uuidDocument", findBill.uuid))}
+                                    }
+                                }]} 
                                 />
     }
 

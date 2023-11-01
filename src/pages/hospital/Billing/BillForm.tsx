@@ -7,7 +7,7 @@ import { IPatient, ReduxStore } from "../../../constants/types"
 import { Bill, BillItem, BillItemModes, DocumentType } from "./types";
 import { createBillService, updateBillService } from "../../../services/billing";
 import { Alert } from "@mui/lab"
-import { BillItems } from "./BillItems"
+import { BillItems, Column } from "./BillItems"
 import { useSnackBarState } from "../../../hooks"
 import { useDispatch, useSelector } from "react-redux"
 import { getBillablesAction } from "../../../redux/actions/investigationsActions"
@@ -82,6 +82,9 @@ export const BillForm:React.FC<Props> = (props) => {
                     </Grid>)
         }
         if(props.patient){
+            let columns:Column[] = [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"amount", type:"amount", validation:""}, {name:"updatedAt", type:"date", validation:""}];
+           
+            
             return(
                 <>
                      <Snackbar
@@ -101,10 +104,10 @@ export const BillForm:React.FC<Props> = (props) => {
                                 }
                         </div>
                     </Snackbar>
-                    <BillItems key="bill_items" columns={[{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"amount", type:"amount", validation:""}]} 
+                    <BillItems key="bill_items" columns={columns} 
                         uuidPatient={props.patient?.uuid} mode = {BillItemModes.SHOW}
                         initItems = {props.bill ? props.bill.billItems : currentItems.length > 0 ? currentItems : []}
-                        repeatBillItems={true} showTotal={true} canUseAdditionalInfo={props.bill?.type === DocumentType.SUMMARY}
+                        repeatBillItems={true} showTotal={true} canUseAdditionalInfo={props.bill?.type === DocumentType.BUDGET}
                         surveyAdditionalInfo={props.surveyAdditionalInfo} 
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
                         bill={props.bill}  
