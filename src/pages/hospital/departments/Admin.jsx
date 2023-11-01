@@ -631,6 +631,7 @@ function Departments(props) {
         
     }
     function resetModal(){
+        setDepartmentToAddUnit(false);
         setShowModal(false);
         setAddingDepartment(false);
         setIndexResearcherToEdit(false);
@@ -695,7 +696,9 @@ function Departments(props) {
                 message = "register.researcher.error.general";
                 severity = "error";
             }
-            resetModal();
+            setTimeout(() => {
+                resetModal();
+            }, 0);
             setShowSnackbar({show:true, severity: severity, message : message});
         }
     }, [props.hospitalError])

@@ -48,7 +48,7 @@ const HospitalStats: React.FC<HospitalStatsProps> = ({ stats, departmentSelected
                         { id: "firstVisit", alignment: "left", label: <Translate id={`hospital.analytics.graphs.activity.first-visit`} /> },
                         { id: "monitoringVisit", alignment: "left", label: <Translate id={`hospital.analytics.graphs.activity.followup-visit`} /> },
                        ];
-    if(stats.departments.length === 0){
+    if(stats.departments.length === 0 || departmentSelected === "all"){
         const statsGlobal = stats.global.map((statRes) => {
             return {
                 researcher : statRes.researcher.name +" " +statRes.researcher.surnames,
@@ -77,12 +77,17 @@ const HospitalStats: React.FC<HospitalStatsProps> = ({ stats, departmentSelected
         return <Loader />
     }
     else if(stats.departments.length === 1 ||  departmentSelected){
+        let statsTable;
         const indexDepartment = !departmentSelected ? 0 : stats.departments.findIndex((department) => department.uuid === departmentSelected);
         if(indexDepartment === -1){
             return <Typography variant="body2" component="h2" style={{ color: "white" }}>No stats for this department</Typography>
-        }      
+        }  
+        else{
+            statsPerDepartment[indexDepartment]
+        }    
 
-        return <EnhancedTable noHeader noSelectable={true} rows={statsPerDepartment[indexDepartment]} headCells={headCells} />
+        return <EnhancedTable noHeader noSelectable={true} 
+                rows={statsPerDepartment[indexDepartment]} headCells={headCells} />
     }
     else{
         const nameDepartments:string[] = stats.departments.map((department) => department.name);
