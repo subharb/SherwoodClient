@@ -2764,6 +2764,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 1,
                 "amount": 100000,
+                "updatedAt": "2023-09-22T09:30:51.879Z",
             },
             {
                 "id": 3625,
@@ -2771,6 +2772,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 3,
                 "amount": 90000,
+                "updatedAt": "2023-09-22T09:30:51.879Z",
             },
             {
                 "id": 3626,
@@ -2778,6 +2780,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 3,
                 "amount": 75000,
+                "updatedAt": "2023-09-22T09:30:51.879Z",
             }
         ],
         "total": 95000,
@@ -2796,6 +2799,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 1,
                 "amount": 100000,
+                "updatedAt": "2023-09-22T09:30:51.879Z",
             },
             {
                 "id": 3625,
@@ -2803,6 +2807,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 3,
                 "amount": 90000,
+                "updatedAt": "2023-09-22T09:30:51.879Z",
             },
             {
                 "id": 3626,
@@ -2810,6 +2815,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 3,
                 "amount": 75000,
+                "updatedAt": "2023-09-22T09:30:51.879Z",
             }
         ],
         "total": 65000,

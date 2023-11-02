@@ -23,7 +23,7 @@ export const PHARMACY_ITEM_REQUEST_COLUMNS = [{name:"concept", type:"autocomplet
 
 const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyItemsInit, units, makePharmacyRequestCallback }) => {
     const [addingPharmacyItems, setAddingPharmacyItems] = React.useState<boolean>(false);
-    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartment} = useDeparmentsSelector(false, true);
+    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartmentCallback} = useDeparmentsSelector(false, true);
     
     const [requestPharmacyItems, setRequestPharmacyItems] = React.useState<RequestPharmacyItem[]>([]);
     // @ts-ignore: Unreachable code error
@@ -49,7 +49,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidInvestigation, pharmacyIt
     }
     function validateRequest(){
         if(departmentSelected === null){
-            markAsErrorDepartment();
+            markAsErrorDepartmentCallback();
             return;
         }
         if(requestPharmacyItems.length === 0){

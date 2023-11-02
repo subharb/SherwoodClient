@@ -417,6 +417,98 @@ export function useStatusDocument(status:DocumentStatus, editable:boolean = true
     }
     return {statusDocument, renderStatusDocument}
 }
+interface OptionSelector{
+    label:string,
+    value:string
+}
+function useSelectLogic(optionsSelector:OptionSelector[], canSelectNoOption:boolean = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){
+    const [optionSelected, setOptionSelected] = React.useState<string | null>(defaultValue ? defaultValue : null);
+    const [error, setError] = React.useState(false);
+    const [options, setOptions] = React.useState<OptionSelector[] | null>(null);
+
+    useEffect(() => {
+        if(options === null){
+            setOptions(optionsSelector);
+        }
+        if(optionsSelector && optionsSelector.length === 1){
+            setOptionSelected(optionsSelector[0].value as string);
+        }
+    }, [optionsSelector])
+
+    useEffect(() => {
+        if(optionSelected === ""){
+            setOptionSelected(null);
+        }
+    }, [optionSelected])
+
+    function markAsErrorCallback(){
+        setError(true);
+    }
+
+    function renderSelector(){
+        if(!options){
+            return <Loader />
+        }
+        if(options.length === 0){
+            return null;
+        }
+        else if(options.length === 1){
+            if(noReturnIfOnlyOne){
+                return null;
+            }
+            return(
+                <>
+                    <Typography variant="h4" gutterBottom>Department:</Typography>
+                    <Typography variant="h4" gutterBottom >{options[0].label}</Typography>
+                </>
+            )
+            //return null;
+        }
+        else{
+            let optionsArray = options.map((option) => {
+                return <MenuItem value={option.value}>{option.label}</MenuItem>
+            })
+            if(canSelectNoOption){
+                optionsArray = [<MenuItem value={"all"}><Translate id="hospital.departments.all_departments" /></MenuItem>, ...optionsArray]
+            }
+            return(
+                <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>
+                    <FormControl variant="outlined"  style={{minWidth: 220}} error={error} >
+                    <InputLabel id="department"><Translate id="pages.hospital.pharmacy.request.select_department" /></InputLabel>
+                        <Select 
+                            labelId="department"
+                            id="department"
+                            label="department"
+                            value={optionSelected}
+                            onChange={(event) => {
+                                setError(false);
+                                setOptionSelected(event.target.value as string)}}
+                        >
+                        { optionsArray }
+                        </Select>
+                    </FormControl>
+                </Grid>
+            )
+        }
+        
+    }
+    return { optionSelected, renderSelector, markAsErrorCallback}
+}
+
+export function useDeparmentsSelectorBis(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){
+    const { departments } = useDepartments(researchersDepartmentsOnly);
+    const departmentOptions = departments ? departments.map((department) => {
+        return {
+            label:department.name,
+            value: department!.uuid as string
+        }
+    }) : [];
+    const { optionSelected, renderSelector, markAsErrorCallback} = useSelectLogic(departmentOptions, selectNoDepartment, noReturnIfOnlyOne)
+    
+    return {departmentSelected:optionSelected, departments, 
+            renderDepartmentSelector:renderSelector, 
+            markAsErrorDepartmentCallback: markAsErrorCallback }
+}
 
 export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){
     const { departments } = useDepartments(researchersDepartmentsOnly);
@@ -435,7 +527,7 @@ export function useDeparmentsSelector(selectNoDepartment:boolean = false, resear
         }
     }, [departmentSelected])
 
-    function markAsErrorDepartment(){
+    function markAsErrorDepartmentCallback(){
         setErrorDepartment(true);
     }
 
@@ -486,5 +578,76 @@ export function useDeparmentsSelector(selectNoDepartment:boolean = false, resear
         }
         
     }
-    return { departmentSelected, renderDepartmentSelector, markAsErrorDepartment, departments}
+    return { departmentSelected, renderDepartmentSelector, markAsErrorDepartmentCallback, departments}
+}
+
+export function useResearchersSelector(selectNoDepartment:boolean = false, researchersFromDepartmentsOnly:string = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){
+    const { departments } = useDepartments(researchersDepartmentsOnly);
+    const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(defaultValue ? defaultValue : null);
+    const [errorDepartment, setErrorDepartment] = React.useState(false);
+
+    useEffect(() => {
+        if(departments && departments.length === 1){
+            setDepartmentSelected(departments[0].uuid as string);
+        }
+    }, [departments])
+
+    useEffect(() => {
+        if(departmentSelected === ""){
+            setDepartmentSelected(null);
+        }
+    }, [departmentSelected])
+
+    function markAsErrorDepartmentCallback(){
+        setErrorDepartment(true);
+    }
+
+    function renderDepartmentSelector(){
+        if(!departments){
+            return <Loader />
+        }
+        if(departments.length === 0){
+            return null;
+        }
+        else if(departments.length === 1){
+            if(noReturnIfOnlyOne){
+                return null;
+            }
+            return(
+                <>
+                    <Typography variant="h4" gutterBottom>Department:</Typography>
+                    <Typography variant="h4" gutterBottom >{departments[0].name}</Typography>
+                </>
+            )
+            //return null;
+        }
+        else{
+            let optionsArray = departments.map((department) => {
+                return <MenuItem value={department.uuid}>{department.name}</MenuItem>
+            })
+            if(selectNoDepartment){
+                optionsArray = [<MenuItem value={"all"}><Translate id="hospital.departments.all_departments" /></MenuItem>, ...optionsArray]
+            }
+            return(
+                <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>
+                    <FormControl variant="outlined"  style={{minWidth: 220}} error={errorDepartment} >
+                    <InputLabel id="department"><Translate id="pages.hospital.pharmacy.request.select_department" /></InputLabel>
+                        <Select 
+                            labelId="department"
+                            id="department"
+                            label="department"
+                            value={departmentSelected}
+                            onChange={(event) => {
+                                setErrorDepartment(false);
+                                setDepartmentSelected(event.target.value as string)}}
+                        >
+                        { optionsArray }
+                        </Select>
+                    </FormControl>
+                </Grid>
+            )
+        }
+        
+    }
+    return { departmentSelected, renderDepartmentSelector, markAsErrorDepartmentCallback, departments}
 }

@@ -62,28 +62,28 @@ export const BillItemsT: Story = {
                     type:TYPE_BILL_ITEM.CHARGE,
                     quantity:2,
                     amount:200,
-                    
+                    updatedAt: new Date(),
                 },
                 {
                     concept:"Item 2",
                     type:TYPE_BILL_ITEM.CHARGE,
                     quantity:3,
                     amount:400,
-                    
+                    updatedAt: new Date(),
                 },
                 {
                     concept:"Descuento 1",
                     type:TYPE_BILL_ITEM.DISCOUNT_AMOUNT,
                     quantity:1,
                     amount:20,
-                    
+                    updatedAt: new Date(),
                 },
                 {
                     concept:"Descuento 2 %",
                     type:TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
                     quantity:1,
                     amount:10,
-                    
+                    updatedAt: new Date(),
                 },]
         }
         }]

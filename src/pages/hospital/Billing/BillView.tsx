@@ -3,15 +3,15 @@ import { Bill, BillItem, DocumentStatus, DocumentType } from './types';
 import { IPatient } from '../../../constants/types';
 import PatientInfo from './PatientInfo';
 import { Button, Grid, Typography } from '@mui/material';
-import { Language, Translate } from 'react-localize-redux';
+import { Translate } from 'react-localize-redux';
 import { fullDateFromPostgresString } from '../../../utils';
 import { BillForm } from './BillForm';
 import { documentTypeToIcon } from '.';
-import { documentStatusToColor, documentTypeToColor, documentTypeToString } from '../../../utils/bill';
+import { documentTypeToColor, documentTypeToString } from '../../../utils/bill';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Modal from '../../../components/general/modal';
 import { ColourChip } from '../../../components/general/mini_components-ts';
-import { useStatusDocument } from '../../../hooks';
+import { useDeparmentsSelector, useDeparmentsSelectorBis, useDepartments, useStatusDocument } from '../../../hooks';
 
 
 interface BillViewProps {
@@ -36,13 +36,21 @@ const BillView: React.FC<BillViewProps> = (props) => {
     const [showModal, setShowModal] = React.useState(false);
     const [newDocumentType, setNewDocumentType] = React.useState<DocumentType>(DocumentType.BUDGET);
     const {statusDocument, renderStatusDocument} = useStatusDocument(props.bill.status, false);
+    const {renderDepartmentSelector, departmentSelected, departments, markAsErrorDepartmentCallback} = useDeparmentsSelectorBis(false, false, true);
+    
 
     function onCloseModal(){
         setShowModal(false);
     }
 
     function onUpdateBill(billItems: BillItem[]) {
+        if(!departmentSelected){
+            markAsErrorDepartmentCallback();
+            return
+        }
         props.bill.status = statusDocument;
+        
+        props.bill.department = departmentSelected;
         props.bill.billItems = [...billItems];
         props.onUpdateBill(props.bill);
     }
@@ -54,13 +62,19 @@ const BillView: React.FC<BillViewProps> = (props) => {
         if(props.bill!.uuid){
             props.onChangeDocumentType(props.bill.uuid, newDocumentType);
         }
-        
     }
     
     function convertDocument(type:DocumentType){
         console.log("Convert to ", documentTypeToString(type));
         setNewDocumentType(type);
         setShowModal(true);
+    }
+
+    function renderPrescribindDoctor(){
+        if(props.billType === DocumentType.INVOICE){
+            return renderDepartmentSelector()
+        }
+        return null;
     }
 
     function renderConvertButton(){
@@ -130,6 +144,10 @@ const BillView: React.FC<BillViewProps> = (props) => {
             
             {
                 renderConvertButton()
+            }
+
+            {
+                renderPrescribindDoctor()
             }
 
             <BillForm canUpdateBill={props.canUpdateBill} patient={props.patient} currency={props.currency} 
