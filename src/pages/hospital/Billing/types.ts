@@ -9,6 +9,8 @@ export interface Bill{
     billItems:BillItem[],
     type:DocumentType,
     status:DocumentStatus,
+    uuidDepartment:string | null,
+    uuidPrescribingDoctor:string | null,
     total:number,
     totalPaid:number,
     createdAt:Date,

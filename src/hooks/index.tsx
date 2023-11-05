@@ -3,7 +3,7 @@ import axios from 'axios';
 import DateFnsUtils from "@date-io/date-fns";
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchUser } from "../services/authService";
-import { getCurrentResearcherUuid } from '../utils/index.jsx';
+import { getCurrentResearcherUuid, researcherFullName } from '../utils/index.jsx';
 import { SIGN_IN_ROUTE } from '../routes/urls';
 import { FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, Typography } from '@mui/material';
 import { Translate } from 'react-localize-redux';
@@ -11,7 +11,7 @@ import { FieldWrapper } from '../components/general/mini_components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgendasInvestigationAction, getDepartmentsInvestigationAction } from '../redux/actions/hospitalActions';
 import { Color } from '@mui/lab';
-import { IAgenda, IDepartment, IUnit } from '../constants/types';
+import { IAgenda, IDepartment, IResearcher, IUnit } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
 import { IRequest, IService } from '../pages/hospital/Service/types';
 import { fetchProfileInfoAction } from '../redux/actions/profileActions';
@@ -19,7 +19,7 @@ import Loader from '../components/Loader';
 import SelectField from '../components/general/SelectField';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { getServiceGeneralService } from '../services/agenda';
-import { isArray, isObject } from 'lodash';
+import { isArray, isObject, set } from 'lodash';
 import { DocumentStatus } from '../pages/hospital/Billing/types';
 import { ColourChip } from '../components/general/mini_components-ts';
 import { documentStatusToColor } from '../utils/bill';
@@ -110,11 +110,12 @@ export function useServiceGeneral(serviceType:number){
     return { servicesGeneral, loadingServicesGeneral }
 }
 
-export function useDepartments(researchersDepartmentsOnly:boolean = false){
+export function useDepartments(researchersDepartmentsOnly:string = ""){
     const investigations= useSelector((state:any) => state.investigations);
-    const departments = useSelector((state:{hospital : {data: {departments : IDepartment[]}}}) => state.hospital.data.departments ? state.hospital.data.departments : null);
-    const researchers = useSelector((state:any) => state.hospital.data.researchers ? state.hospital.data.researchers : []);
+    const departments:IDepartment[] | null = useSelector((state:{hospital : {data: {departments : IDepartment[]}}}) => state.hospital.data.departments ? state.hospital.data.departments : null);
+    const researchers:IResearcher[] = useSelector((state:any) => state.hospital.data.researchers ? state.hospital.data.researchers : []);
     const loadingDepartments = useSelector((state:any) => state.hospital.loading || state.investigations.loading);
+    const [filteredDepartments, setFilteredDepartments] = useState<IDepartment[]>([]);
 
     const dispatch = useDispatch();
 
@@ -129,21 +130,29 @@ export function useDepartments(researchersDepartmentsOnly:boolean = false){
         }
     }, [investigations])
 
-    let filteredDepartments = departments;
-    if(researchersDepartmentsOnly){
-        
-        const currentResearcherUuid = getCurrentResearcherUuid();
-        const currentResearcher = researchers.find((researcher:any) => researcher.uuid === currentResearcherUuid);
-        if(currentResearcher){
-            console.log(currentResearcher.units);
-            const tempDepartments:{[uuidDepartment :string]: IDepartment} = {};
-            currentResearcher.units.forEach((unit:IUnit) => {
-                tempDepartments[unit.department.uuid as string] = unit.department;
-            })
-            filteredDepartments = Object.values(tempDepartments);
+    useEffect(() => {
+        if(departments !== null){
+            let tempFiltered = [...departments];
+            console.log("Departments", departments);
+            if(researchersDepartmentsOnly !== ""){
+            
+                const currentResearcher = researchers.find((researcher:any) => researcher.uuid === researchersDepartmentsOnly);
+                if(currentResearcher){
+                    console.log(currentResearcher.units);
+                    const tempDepartments:{[uuidDepartment :string]: IDepartment} = {};
+                    currentResearcher.units.forEach((unit:IUnit) => {
+                        tempDepartments[unit.department.uuid as string] = unit.department;
+                    })
+                    tempFiltered = Object.values(tempDepartments);
+                }
+                
+            }
+            console.log("Departments", tempFiltered);
+            setFilteredDepartments(tempFiltered);
         }
-        
-    }
+    }, [researchersDepartmentsOnly, departments])
+
+    
 
     return { departments: filteredDepartments, researchers, investigations, loadingDepartments}
 }
@@ -421,25 +430,26 @@ interface OptionSelector{
     label:string,
     value:string
 }
-function useSelectLogic(optionsSelector:OptionSelector[], canSelectNoOption:boolean = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){
-    const [optionSelected, setOptionSelected] = React.useState<string | null>(defaultValue ? defaultValue : null);
+function useSelectLogic(optionsSelector:OptionSelector[], key:string, defaultValue?:string, canSelectNoOption:boolean = false, noReturnIfOnlyOne:boolean = false){
+    const [optionSelected, setOptionSelected] = React.useState<string | null>(defaultValue ? defaultValue : "");
     const [error, setError] = React.useState(false);
     const [options, setOptions] = React.useState<OptionSelector[] | null>(null);
 
     useEffect(() => {
-        if(options === null){
+        if(options === null || options.length !== optionsSelector?.length){
             setOptions(optionsSelector);
         }
+        
         if(optionsSelector && optionsSelector.length === 1){
             setOptionSelected(optionsSelector[0].value as string);
         }
     }, [optionsSelector])
 
     useEffect(() => {
-        if(optionSelected === ""){
-            setOptionSelected(null);
+        if(defaultValue && defaultValue !== ""){
+            setOptionSelected(defaultValue);
         }
-    }, [optionSelected])
+    }, [defaultValue])
 
     function markAsErrorCallback(){
         setError(true);
@@ -450,7 +460,11 @@ function useSelectLogic(optionsSelector:OptionSelector[], canSelectNoOption:bool
             return <Loader />
         }
         if(options.length === 0){
-            return null;
+            if(canSelectNoOption){
+                return null;
+            }
+            return <Typography variant="h4" gutterBottom><Translate id={`general.use_selector.missing_option.${key}`} /></Typography>
+            
         }
         else if(options.length === 1){
             if(noReturnIfOnlyOne){
@@ -458,7 +472,7 @@ function useSelectLogic(optionsSelector:OptionSelector[], canSelectNoOption:bool
             }
             return(
                 <>
-                    <Typography variant="h4" gutterBottom>Department:</Typography>
+                    <Typography variant="h4" gutterBottom><Translate id={`general.use_selector.label.${key}`} />:</Typography>
                     <Typography variant="h4" gutterBottom >{options[0].label}</Typography>
                 </>
             )
@@ -468,17 +482,19 @@ function useSelectLogic(optionsSelector:OptionSelector[], canSelectNoOption:bool
             let optionsArray = options.map((option) => {
                 return <MenuItem value={option.value}>{option.label}</MenuItem>
             })
+            console.log(key)
+            console.log("optionsArray", optionsArray);
             if(canSelectNoOption){
-                optionsArray = [<MenuItem value={"all"}><Translate id="hospital.departments.all_departments" /></MenuItem>, ...optionsArray]
+                optionsArray = [<MenuItem value={"all"}><Translate id={`general.use_selector.all.${key}`} /></MenuItem>, ...optionsArray]
             }
             return(
                 <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>
                     <FormControl variant="outlined"  style={{minWidth: 220}} error={error} >
-                    <InputLabel id="department"><Translate id="pages.hospital.pharmacy.request.select_department" /></InputLabel>
+                    <InputLabel id={key}><Translate id={`general.use_selector.select.${key}`} /></InputLabel>
                         <Select 
-                            labelId="department"
-                            id="department"
-                            label="department"
+                            labelId={key}
+                            id={key}
+                            label={key}
                             value={optionSelected}
                             onChange={(event) => {
                                 setError(false);
@@ -495,22 +511,37 @@ function useSelectLogic(optionsSelector:OptionSelector[], canSelectNoOption:bool
     return { optionSelected, renderSelector, markAsErrorCallback}
 }
 
-export function useDeparmentsSelectorBis(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){
-    const { departments } = useDepartments(researchersDepartmentsOnly);
+export function useDeparmentsSelectorBis(defaultValue?:string, selectNoDepartment:boolean = false, uuidResearcher:string = "", noReturnIfOnlyOne:boolean = false){
+    const { departments, loadingDepartments } = useDepartments(uuidResearcher);
+    const [departmentSelected, setDepartmentSelected] = useState<IDepartment | null>(null);
+
+    console.log("uuidresearcher", uuidResearcher);
+    console.log("Departments", departments);
     const departmentOptions = departments ? departments.map((department) => {
         return {
             label:department.name,
             value: department!.uuid as string
         }
     }) : [];
-    const { optionSelected, renderSelector, markAsErrorCallback} = useSelectLogic(departmentOptions, selectNoDepartment, noReturnIfOnlyOne)
+
+    const { optionSelected, renderSelector, markAsErrorCallback} = useSelectLogic(departmentOptions, "department", defaultValue, selectNoDepartment, noReturnIfOnlyOne)
+
+    useEffect(() =>{
+        if(optionSelected){
+            const findDepartment = departments?.find((department) => department.uuid === optionSelected);
+            if(findDepartment){
+                setDepartmentSelected(findDepartment);
+            }
+        }
+        
+    }, [optionSelected, departments])
     
-    return {departmentSelected:optionSelected, departments, 
+    return {uuidDepartmentSelected:optionSelected, departments, departmentSelected, loadingDepartments,
             renderDepartmentSelector:renderSelector, 
             markAsErrorDepartmentCallback: markAsErrorCallback }
 }
 
-export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:boolean = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){
+export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:string = "", noReturnIfOnlyOne:boolean = false, defaultValue?:string){
     const { departments } = useDepartments(researchersDepartmentsOnly);
     const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(defaultValue ? defaultValue : null);
     const [errorDepartment, setErrorDepartment] = React.useState(false);
@@ -530,7 +561,7 @@ export function useDeparmentsSelector(selectNoDepartment:boolean = false, resear
     function markAsErrorDepartmentCallback(){
         setErrorDepartment(true);
     }
-
+    
     function renderDepartmentSelector(){
         if(!departments){
             return <Loader />
@@ -581,73 +612,45 @@ export function useDeparmentsSelector(selectNoDepartment:boolean = false, resear
     return { departmentSelected, renderDepartmentSelector, markAsErrorDepartmentCallback, departments}
 }
 
-export function useResearchersSelector(selectNoDepartment:boolean = false, researchersFromDepartmentsOnly:string = false, noReturnIfOnlyOne:boolean = false, defaultValue?:string){
-    const { departments } = useDepartments(researchersDepartmentsOnly);
-    const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(defaultValue ? defaultValue : null);
-    const [errorDepartment, setErrorDepartment] = React.useState(false);
+export function useResearchersSelector(defaultValue?:string, selectNoDepartment:boolean = false, noReturnIfOnlyOne:boolean = false){
+    const { researchers, loadingDepartments } = useDepartments();
+    const [researcherSelected, setResearcherSelected] = useState<IResearcher | null>(null);
 
-    useEffect(() => {
-        if(departments && departments.length === 1){
-            setDepartmentSelected(departments[0].uuid as string);
+    const researcherOptions = researchers ? researchers.map((researcher) => {
+        return {
+            label:researcherFullName(researcher),
+            value: researcher!.uuid as string
         }
-    }, [departments])
-
-    useEffect(() => {
-        if(departmentSelected === ""){
-            setDepartmentSelected(null);
-        }
-    }, [departmentSelected])
-
-    function markAsErrorDepartmentCallback(){
-        setErrorDepartment(true);
-    }
-
-    function renderDepartmentSelector(){
-        if(!departments){
-            return <Loader />
-        }
-        if(departments.length === 0){
-            return null;
-        }
-        else if(departments.length === 1){
-            if(noReturnIfOnlyOne){
-                return null;
+    }) : [];
+    const { optionSelected, renderSelector, markAsErrorCallback} = useSelectLogic(researcherOptions, "researcher", defaultValue, selectNoDepartment, noReturnIfOnlyOne)
+    
+    useEffect(() =>{
+        if(optionSelected){
+            const findResearcher = researchers?.find((researcher) => researcher.uuid === optionSelected);
+            if(findResearcher){
+                setResearcherSelected(findResearcher);
             }
-            return(
-                <>
-                    <Typography variant="h4" gutterBottom>Department:</Typography>
-                    <Typography variant="h4" gutterBottom >{departments[0].name}</Typography>
-                </>
-            )
-            //return null;
-        }
-        else{
-            let optionsArray = departments.map((department) => {
-                return <MenuItem value={department.uuid}>{department.name}</MenuItem>
-            })
-            if(selectNoDepartment){
-                optionsArray = [<MenuItem value={"all"}><Translate id="hospital.departments.all_departments" /></MenuItem>, ...optionsArray]
-            }
-            return(
-                <Grid item xs={12} style={{paddingTop:'0.5rem', paddingBottom:'0.5rem'}}>
-                    <FormControl variant="outlined"  style={{minWidth: 220}} error={errorDepartment} >
-                    <InputLabel id="department"><Translate id="pages.hospital.pharmacy.request.select_department" /></InputLabel>
-                        <Select 
-                            labelId="department"
-                            id="department"
-                            label="department"
-                            value={departmentSelected}
-                            onChange={(event) => {
-                                setErrorDepartment(false);
-                                setDepartmentSelected(event.target.value as string)}}
-                        >
-                        { optionsArray }
-                        </Select>
-                    </FormControl>
-                </Grid>
-            )
         }
         
+    }, [optionSelected, researchers])
+    
+    return {uuidResearcherSelected:optionSelected, researcherSelected, researchers, loadingResearchers:loadingDepartments,
+            renderResearcherSelector:renderSelector, 
+            markAsErrorReseacherCallback: markAsErrorCallback }
+}
+
+export function useResearcherDepartmentSelector(defaultValueResearcher?:string, defaultValueDepartment?:string){
+    
+    const { researchers, loadingResearchers, renderResearcherSelector, uuidResearcherSelected, researcherSelected, markAsErrorReseacherCallback  } = useResearchersSelector(defaultValueResearcher);
+    const { departments, loadingDepartments, renderDepartmentSelector, uuidDepartmentSelected, departmentSelected, markAsErrorDepartmentCallback } = useDeparmentsSelectorBis(defaultValueDepartment, false, researcherSelected ? researcherSelected : "", false);
+    console.log(departments);
+    function renderResearcherDepartmentSelector(){
+        let selects = [renderResearcherSelector()];
+        if(researcherSelected){
+            selects = [...selects, renderDepartmentSelector()]
+        }
+
+        return selects;
     }
-    return { departmentSelected, renderDepartmentSelector, markAsErrorDepartmentCallback, departments}
+    return {researchers, renderResearcherDepartmentSelector, loadingResearcherOrDepartments:(loadingDepartments || loadingResearchers), researcherSelected, uuidDepartmentSelected, departmentSelected,  markAsErrorReseacherCallback, markAsErrorDepartmentCallback}
 }

@@ -440,3 +440,12 @@ export async function resetHospitalAction() {
         dispatch({ type: types.HOSPITAL_RESET_ERROR })
     }
 }
+
+export function initializeHospital(newState) {
+    return async (dispatch) => {
+      dispatch({ 
+            type: types.INITIALIZE_HOSPITAL,
+            newState:newState
+      });
+    };
+}

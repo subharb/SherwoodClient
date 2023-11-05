@@ -2629,7 +2629,8 @@ export const billsExample = [{
                 "used" : null
             }
         ],
-        
+        "uuidPrescribingDoctor" : "1e7111be-27bc-402a-9281-2c05a2ce17d4",
+        "uuidDepartment" : "1c655e29-100e-4fce-ad9f-5eb63d495338",
         "total": 65000,
         "totalPaid": 165000,
         "uuidPatient": "801952ca-66da-4410-8583-3faa6f460e03",

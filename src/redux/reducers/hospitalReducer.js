@@ -346,6 +346,9 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading;   
             newState.error = initialState.error;
             return newState;
+        case types.INITIALIZE_HOSPITAL:
+            newState.data = action.payload;
+            return newState;
         default:
             return state;
     }

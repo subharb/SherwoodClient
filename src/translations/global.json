@@ -79,7 +79,29 @@
         },
         "here" : ["here", "aquí", "ici"],
         "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"],
-        "no-results" : ["No results", "Sin resultados", "Sans results"]
+        "no-results" : ["No results", "Sin resultados", "Sans results"],
+        "use_selector" : {
+            "placeholder" : {
+                "department" : ["Select department", "Seleccione departamento", "Sélectionnez le service"],
+                "researcher" : ["Select doctor", "Seleccione médico", "Sélectionnez le médecin"]
+            },
+            "label" : {
+                "department" : ["Department", "Departamento", "Service"],
+                "researcher" : ["Doctor", "Médico", "Médecin"]
+            },
+            "all":{
+                "department" : ["All departments", "Todos los departamentos", "Tous les départements"],
+                "researcher" : ["All doctors", "Todos los médicos", "Tous les médecins"]
+            },
+            "select" : {
+                "department" : ["Select department", "Seleccione departamento", "Sélectionnez le service"],
+                "researcher" : ["Select doctor", "Seleccione médico", "Sélectionnez le médecin"]
+            },
+            "missing_option" : {
+                "department" : ["This researcher doesn't have a department assigned", "Este médico no tiene un departamento asignado", "Ce médecin n'a pas de service attribué"]
+                
+            }
+        }
     },
     "sign-in" : {
         "title" : ["Welcome to Sherwood!", "Bienvenido a Sherwood!", "Bienvenu à Sherwood !"],
@@ -309,6 +331,8 @@
                     "updated" : ["Billables succesfully updated", "Elementos de facturación actualizada correctamente", "Elements de facturation mis à jour avec succès"]
                 }
             },
+            "department" : ["Department", "Departamento", "Service"],
+            "prescribingDoctor" : ["Prescribing Doctor", "Médico que prescribe", "Médecin prescripteur"],
             "budget" : ["Quote", "Presupuesto", "Devis"], 
             "summary" : ["Summary", "Resumen", "Résumé"],
             "search_patient" : ["Search patient", "Buscar paciente", "Rechercher un patient"],

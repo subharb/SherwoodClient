@@ -4,14 +4,15 @@ import { IPatient } from '../../../constants/types';
 import PatientInfo from './PatientInfo';
 import { Button, Grid, Typography } from '@mui/material';
 import { Translate } from 'react-localize-redux';
-import { fullDateFromPostgresString } from '../../../utils';
+import { fullDateFromPostgresString, researcherFullName } from '../../../utils';
 import { BillForm } from './BillForm';
 import { documentTypeToIcon } from '.';
 import { documentTypeToColor, documentTypeToString } from '../../../utils/bill';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Modal from '../../../components/general/modal';
 import { ColourChip } from '../../../components/general/mini_components-ts';
-import { useDeparmentsSelector, useDeparmentsSelectorBis, useDepartments, useStatusDocument } from '../../../hooks';
+import { useResearcherDepartmentSelector, useResearchersSelector, useStatusDocument } from '../../../hooks';
+import Loader from '../../../components/Loader';
 
 
 interface BillViewProps {
@@ -19,6 +20,7 @@ interface BillViewProps {
     billStatus: DocumentStatus;
     billType: DocumentType;
     patient: IPatient,
+    hasBudgets:boolean,
     languageCode: string,
     currency: string,
     canUpdateBill: boolean,
@@ -36,21 +38,28 @@ const BillView: React.FC<BillViewProps> = (props) => {
     const [showModal, setShowModal] = React.useState(false);
     const [newDocumentType, setNewDocumentType] = React.useState<DocumentType>(DocumentType.BUDGET);
     const {statusDocument, renderStatusDocument} = useStatusDocument(props.bill.status, false);
-    const {renderDepartmentSelector, departmentSelected, departments, markAsErrorDepartmentCallback} = useDeparmentsSelectorBis(false, false, true);
     
+    const {renderResearcherDepartmentSelector, loadingResearcherOrDepartments, 
+            researcherSelected, departmentSelected, uuidDepartmentSelected, 
+            researchers, markAsErrorDepartmentCallback, markAsErrorReseacherCallback} = useResearcherDepartmentSelector(props.bill.uuidPrescribingDoctor ? props.bill.uuidPrescribingDoctor : "", props.bill.uuidDepartment ? props.bill.uuidDepartment : "" );
 
     function onCloseModal(){
         setShowModal(false);
     }
 
     function onUpdateBill(billItems: BillItem[]) {
+        if(!researcherSelected){
+            markAsErrorReseacherCallback();
+            return
+        }
         if(!departmentSelected){
             markAsErrorDepartmentCallback();
             return
         }
         props.bill.status = statusDocument;
         
-        props.bill.department = departmentSelected;
+        props.bill.uuidDepartment = uuidDepartmentSelected;
+        props.bill.uuidPrescribingDoctor = researcherSelected;
         props.bill.billItems = [...billItems];
         props.onUpdateBill(props.bill);
     }
@@ -70,14 +79,37 @@ const BillView: React.FC<BillViewProps> = (props) => {
         setShowModal(true);
     }
 
-    function renderPrescribindDoctor(){
+    function renderPrescribingDoctor(){
         if(props.billType === DocumentType.INVOICE){
-            return renderDepartmentSelector()
+            if(loadingResearcherOrDepartments){
+                return <Loader />
+            }
+            if(props.billStatus === DocumentStatus.CLOSED){
+                let researcherAndDepartment = [];
+                if(researcherSelected){
+                    researcherAndDepartment.push([
+                        <Typography variant="body2"  fontWeight='bold'  component='span' ><Translate id="hospital.billing.prescribingDoctor" />: </Typography>, <Typography variant="body2"  component='span' >{researcherFullName(researcherSelected)}</Typography>, <br/> 
+                    ])
+                }
+                if(departmentSelected){
+                    researcherAndDepartment.push([
+                        <Typography variant="body2" fontWeight='bold'  component='span' ><Translate id="hospital.billing.department" />: </Typography>, <Typography variant="body2"   component='span'>{departmentSelected.name}</Typography>
+                    ])
+                }
+                return researcherAndDepartment;
+            }
+            else{
+                return renderResearcherDepartmentSelector()
+            }
+            
         }
         return null;
     }
 
     function renderConvertButton(){
+        if(!props.hasBudgets){
+            return null;
+        }
         const typeButton = <>
                 <Typography variant="body2" component='span'><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.type" /></span>: </Typography>
                 <ColourChip rgbcolor={documentTypeToColor(props.billType)} 
@@ -124,7 +156,6 @@ const BillView: React.FC<BillViewProps> = (props) => {
                         renderStatusDocument
                     }
                 </div>
-                
             )      
     }
     return (
@@ -147,7 +178,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
             }
 
             {
-                renderPrescribindDoctor()
+                renderPrescribingDoctor()
             }
 
             <BillForm canUpdateBill={props.canUpdateBill} patient={props.patient} currency={props.currency} 

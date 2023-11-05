@@ -1,16 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { patients_personal_data_decrypted, personal_data_investigation1, billables, edc_data1, billsExample, BillingInfo } from '../example_data';
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from "redux-thunk";
+import { patients_personal_data_decrypted, personal_data_investigation1, billables, billsExample, BillingInfo } from '../example_data';
 import ProviderSherwood from '../../providerSherwood';
 import * as types from "../../constants";
-
 import { TYPE_BILL_ITEM } from '../../constants/types';
-
 import { Bill, DocumentStatus, DocumentType } from '../../pages/hospital/Billing/types';
-
 import BillView from '../../pages/hospital/Billing/BillView';
 
 const meta: Meta<typeof BillView> = {
@@ -88,6 +81,107 @@ export const ViewBill: Story = {
                     updatedAt: new Date(),
                 },]
         }
+        }, {
+            type: types.INITIALIZE_HOSPITAL,
+            payload: {
+                researchers:[{
+                    "name": "Doctor",
+                    "uuid": "1e7111be-27bc-402a-9281-2c05a2ce17d4",
+                    "surnames": "Suave",
+                    "status": 2,
+                    "email": "suave@gmail.com",
+                    "permissions": [],
+                    "units": [
+                        {
+                            "id": 9,
+                            "uuid": "e3ff2e08-3a7c-46fd-9a81-8965c388c404",
+                            "code": "MOB",
+                            "name": "Mobile Clinic",
+                            "createdAt": "2022-09-28T05:34:49.732Z",
+                            "updatedAt": "2022-09-28T05:34:49.732Z",
+                            "deletedAt": null,
+                            "department": {
+                                "id": 35,
+                                "uuid": "1c655e29-100e-4fce-ad9f-5eb63d495338",
+                                "code": "",
+                                "name": "Service de Médecine",
+                                "type": 0,
+                                "createdAt": "2022-09-28T05:29:32.273Z",
+                                "updatedAt": "2022-09-28T05:29:32.273Z",
+                                "deletedAt": null
+                            }
+                        },
+                        {
+                            "id": 7,
+                            "uuid": "00458227-2c27-4797-81d8-c40e86e11a23",
+                            "code": "DERM",
+                            "name": "Dermatologie",
+                            "createdAt": "2022-09-28T05:33:43.387Z",
+                            "updatedAt": "2022-09-28T05:33:43.387Z",
+                            "deletedAt": null,
+                            "department": {
+                                "id": 35,
+                                "uuid": "00458227-2c27-4797-81d8-c40e86e11a23",
+                                "code": "",
+                                "name": "Service de Dermatologie",
+                                "type": 0,
+                                "createdAt": "2022-09-28T05:29:32.273Z",
+                                "updatedAt": "2022-09-28T05:29:32.273Z",
+                                "deletedAt": null
+                            }
+                        },
+                ]},
+                {
+                    "name": "Pedro",
+                    "uuid": "e3ff2e08-3a7c-46fd-9a81-8965c388c404",
+                    "surnames": "Rodriguez",
+                    "status": 2,
+                    "email": "pedro@gmail.com",
+                    "permissions": [],
+                    "units": [
+                        {
+                            "id": 9,
+                            "uuid": "e3ff2e08-3a7c-46fd-9a81-8965c388c404",
+                            "code": "MOB",
+                            "name": "Mobile Clinic",
+                            "createdAt": "2022-09-28T05:34:49.732Z",
+                            "updatedAt": "2022-09-28T05:34:49.732Z",
+                            "deletedAt": null,
+                            "department": {
+                                "id": 35,
+                                "uuid": "1c655e29-100e-4fce-ad9f-5eb63d495338",
+                                "code": "",
+                                "name": "Service de Médecine",
+                                "type": 0,
+                                "createdAt": "2022-09-28T05:29:32.273Z",
+                                "updatedAt": "2022-09-28T05:29:32.273Z",
+                                "deletedAt": null
+                            }
+                        },
+                ]},
+            ],
+                departments:[{
+                    "id": 35,
+                    "uuid": "1c655e29-100e-4fce-ad9f-5eb63d495338",
+                    "code": "",
+                    "name": "Service de Médecine",
+                    "type": 0,
+                    "createdAt": "2022-09-28T05:29:32.273Z",
+                    "updatedAt": "2022-09-28T05:29:32.273Z",
+                    "deletedAt": null,
+                }, 
+                {
+                    "id": 36,
+                    "uuid": "00458227-2c27-4797-81d8-c40e86e11a23",
+                    "code": "",
+                    "name": "Service de Dermatologie",
+                    "type": 0,
+                    "createdAt": "2022-09-28T05:29:32.273Z",
+                    "updatedAt": "2022-09-28T05:29:32.273Z",
+                    "deletedAt": null,
+                }],
+            }
+
         }]
     }> <Story /> </ProviderSherwood>),
   ],
