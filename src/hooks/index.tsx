@@ -646,7 +646,7 @@ export function useResearchersSelector(defaultValue?:string, selectNoDepartment:
 export function useResearcherDepartmentSelector(defaultValueResearcher?:string, defaultValueDepartment?:string){
     
     const { researchers, loadingResearchers, renderResearcherSelector, uuidResearcherSelected, researcherSelected, markAsErrorReseacherCallback  } = useResearchersSelector(defaultValueResearcher);
-    const { departments, loadingDepartments, renderDepartmentSelector, uuidDepartmentSelected, departmentSelected, markAsErrorDepartmentCallback } = useDeparmentsSelectorBis(defaultValueDepartment, false, researcherSelected ? researcherSelected : "", false);
+    const { departments, loadingDepartments, renderDepartmentSelector, uuidDepartmentSelected, departmentSelected, markAsErrorDepartmentCallback } = useDeparmentsSelectorBis(defaultValueDepartment, false, uuidResearcherSelected ? uuidResearcherSelected : "", false);
     console.log(departments);
     function renderResearcherDepartmentSelector(){
         let selects = [renderResearcherSelector()];

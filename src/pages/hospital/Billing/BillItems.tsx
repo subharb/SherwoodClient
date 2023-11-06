@@ -349,12 +349,18 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         let rows: BillItemTable[] = items.map((val:BillItemTable, index:number) => {
 
             let color = TYPES_DISCOUNT.includes(parseInt(val.type)) ? red[900] : parseInt(val.type) === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO ? blue[900] : "black";
-            const amountString =  TYPES_DISCOUNT.includes(val.type) ? "- " + val.amount + " " + (val.type === 2 ? "%" : currency) : val.amount + " " + currency;
+            
             
             let rowElement:{[id: string] : JSX.Element} = {}
             filteredColumns.forEach((col:Column) => {
                 if(col.type === "amount"){
-                    rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
+                    let amountString:string = val.amount;
+                    if(TYPES_DISCOUNT.includes(val.type)){
+                        const percentSymbol = (val.type === TYPE_BILL_ITEM.DISCOUNT_PERCENT ? "%" : currency);
+                        amountString =  `-  ${val.amount} ${percentSymbol} `;
+                    }
+                 
+                    rowElement[col.name] =  <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
                 }
                 else if(col.type === "type"){
                     const typeSelected = TYPES_BILL_ITEM[val.type][0] as string;

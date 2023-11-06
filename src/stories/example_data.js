@@ -2596,7 +2596,7 @@ export const billsExample = [{
         "id": 57,
         "uuid": "02545aee-c08f-434c-a124-b19609edd031",
         "type": DocumentType.INVOICE,
-        "status": DocumentStatus.CLOSED,
+        "status": DocumentStatus.DRAFT,
         "billItems": [
             {
                 "id": 3627,
@@ -2604,6 +2604,16 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 1,
                 "amount": 100000,
+                "updatedAt" : "2023-09-22T09:30:51.899Z",
+                "paid" : null,
+                "used" : null
+            },
+            {
+                "id": 3628,
+                "concept": "test reduction %",
+                "quantity": 1,
+                "type": 2,
+                "amount": 10,
                 "updatedAt" : "2023-09-22T09:30:51.899Z",
                 "paid" : null,
                 "used" : null
@@ -2764,6 +2774,14 @@ export const billsExample = [{
                 "concept": "test reduction",
                 "quantity": 1,
                 "type": 1,
+                "amount": 100000,
+                "updatedAt": "2023-09-22T09:30:51.879Z",
+            },
+            {
+                "id": 3628,
+                "concept": "test reduction &",
+                "quantity": 1,
+                "type": 2,
                 "amount": 100000,
                 "updatedAt": "2023-09-22T09:30:51.879Z",
             },
