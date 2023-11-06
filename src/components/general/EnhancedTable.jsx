@@ -166,7 +166,12 @@ function EnhancedTableHead(props) {
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
+    const [checkboxesState, setCheckboxesState] = React.useState({});
 
+    function changeCheckboxState(headId, callback){
+        setCheckboxesState({ ...checkboxesState, [headId]: !checkboxesState[headId] })
+        callback();
+    }
     return (
         <TableHead style={{fontWeight:'600'}}>
         <TableRow> 
@@ -188,6 +193,8 @@ function EnhancedTableHead(props) {
                 sortDirection={orderBy === headCell.id ? order : false}
                 
             >
+                
+                
                 <TableSortLabel
                 active={disableOrder ? false : orderBy === headCell.id }
                 hideSortIcon={disableOrder}
@@ -195,6 +202,15 @@ function EnhancedTableHead(props) {
                 onClick={createSortHandler(headCell.id)}
                 style={{fontWeight:"600"}}
                 >
+                {
+                    headCell.markAllCallback &&
+                    <span><Checkbox
+                       
+                        checked={checkboxesState[headCell.id] || false}
+                        onChange={() => changeCheckboxState(headCell.id, headCell.markAllCallback)}
+                        inputProps={{ "aria-label": "select all" }}
+                    /></span>
+                }
                 {headCell.label}
                 </TableSortLabel>
             </TableCell>

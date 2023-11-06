@@ -331,6 +331,8 @@
                     "updated" : ["Billables succesfully updated", "Elementos de facturación actualizada correctamente", "Elements de facturation mis à jour avec succès"]
                 }
             },
+            "markAsPaid" : ["Mark as paid", "Marcar como pagado", "Marquer comme payé"],
+            "markAsUsed" : ["Mark as used", "Marcar como usado", "Marquer comme utilisé"],
             "department" : ["Department", "Departamento", "Service"],
             "prescribingDoctor" : ["Prescribing Doctor", "Médico que prescribe", "Médecin prescripteur"],
             "budget" : ["Quote", "Presupuesto", "Devis"], 

@@ -12,7 +12,7 @@ import { FUNCTIONALITY, IPatient, ISurvey, SnackbarType } from '../../../constan
 import { Bill, BillingInfo, BillItem, BillItemModes, DocumentStatus , DocumentType} from './types';
 import { Document } from '../Document';
 import { connect, useDispatch } from 'react-redux';
-import { createBillService, getBillsPatientService, getDocumentsService, updateBillService, updateDocumentType } from '../../../services/billing';
+import { createBillService, getBillsPatientService, getDocumentsService, updateBillItemsStatusService, updateBillService, updateDocumentType } from '../../../services/billing';
 import Loader from '../../../components/Loader';
 import { dateAndTimeFromPostgresString, hasDiscountsActive, stringDatePostgresToDate } from '../../../utils/index.jsx';
 import EditBilling from './Edit';
@@ -38,6 +38,11 @@ interface PropsRedux {
     investigations: any,
     patients: { data: any },
     uuidInvestigation: string,
+}
+
+export enum TypeBillItemUpdate{
+    BillItems = "billItems",
+    BillItemsStatus = "billItemsStatus"
 }
 
 export function documentTypeToIcon(type:DocumentType){
@@ -114,13 +119,18 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
         setLoading(false);
     }
 
-    async function onCreateOrUpdateBill(bill: Bill) {
+    async function onCreateOrUpdateBill(bill: Bill, typeUpdate:TypeBillItemUpdate = TypeBillItemUpdate.BillItems) {
         console.log("onCreateBill", bill);
         try{
             setLoading(true);
             let response: { status: number, bill?: Bill };
             if (bill.uuid) {
-                response = await updateBillService(investigation.uuid, bill.uuid, bill);
+                if(typeUpdate === TypeBillItemUpdate.BillItems){
+                    response = await updateBillService(investigation.uuid, bill.uuid, bill);
+                }
+                else{
+                    response = await updateBillItemsStatusService(investigation.uuid, bill.uuid, bill);
+                }
             }
             else {
                 response = await createBillService(investigation.uuid, bill.uuidPatient, bill);
@@ -243,7 +253,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
                     billingInfo={investigation.billingInfo} uuidDocument={uuidDocument}
                     section={action} surveyAdditionalInfo={surveyAdditionalInfo}
                     bills={bills} loading={loading} uuidPatient={uuidPatient} showSnackbar={showSnackbar}
-                    onCreateOrUpdateBill={(bill: Bill) => onCreateOrUpdateBill(bill)}    
+                    onCreateOrUpdateBill={(bill: Bill, typeUpdate:TypeBillItemUpdate) => onCreateOrUpdateBill(bill, typeUpdate)}    
                     onChangeDocumentType={onChangeDocumentType}                
                     onPatientSelected={(uuid:string) => onPatientSelected(uuid)}
                     navigateToHomeBilling={navigateToHomeBilling} createBill={() => history.push(HOSPITAL_BILLING_CREATE_BILL)}
@@ -282,7 +292,7 @@ interface Props extends LocalizeContextProps {
     onChangeDocumentType: (uuidBill:string, type: DocumentType) => void,
     
     onPatientSelected: (uuid:string) => void
-    onCreateOrUpdateBill: (bill:Bill) => void,
+    onCreateOrUpdateBill: (bill:Bill, typeUpdate:TypeBillItemUpdate) => void,
     createBill: () => void,
     onCancelBill: () => void,
     navigateToHomeBilling: () => void,
@@ -396,10 +406,10 @@ const Billing: React.FC<Props> = (props) => {
                         patient={currentPatient!} hasBudgets={Boolean(props.billingInfo.params.budgets)} languageCode={props.activeLanguage.code} canUpdateBill={currentBill.status === DocumentStatus.DRAFT} 
                         currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.billingInfo.id}
                         print={false} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}
-                        onUpdateBill={(bill: Bill) => props.onCreateOrUpdateBill(bill)} 
+                        onUpdateBill={(bill: Bill, typeUpdate:TypeBillItemUpdate) => props.onCreateOrUpdateBill(bill, typeUpdate)} 
                         onChangeDocumentType={props.onChangeDocumentType}
                         onCancelBill={onCancelBill}
-                        />)
+                    />)
         }
         else {
             if (props.billingInfo) {
@@ -407,7 +417,7 @@ const Billing: React.FC<Props> = (props) => {
                     return <BillCreate patients={props.patients} personalFields={props.personalFields} currency={props.billingInfo.currency} 
                                 uuidInvestigation={props.uuidInvestigation} canCreateBugdet={Boolean(props.billingInfo.params.budgets)}
                                 idBillingInfo={props.billingInfo.id} languageCode={props.activeLanguage.code} withDiscount={props.withDiscount} 
-                                onCreateBill={(bill: Bill) => props.onCreateOrUpdateBill(bill)}
+                                onCreateBill={(bill: Bill) => props.onCreateOrUpdateBill(bill, TypeBillItemUpdate.BillItems)}
                                 onCancelBill={onCancelBill} 
                                 />
                 }

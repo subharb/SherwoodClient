@@ -2596,7 +2596,7 @@ export const billsExample = [{
         "id": 57,
         "uuid": "02545aee-c08f-434c-a124-b19609edd031",
         "type": DocumentType.INVOICE,
-        "status": DocumentStatus.DRAFT,
+        "status": DocumentStatus.CLOSED,
         "billItems": [
             {
                 "id": 3627,
@@ -2614,7 +2614,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": 3,
                 "amount": 90000,
-                "paid" : null,
+                "paid" : "2023-09-22T09:30:51.899Z",
                 "used" : null,
                 "updatedAt" : "2023-09-22T09:30:51.899Z"
             },

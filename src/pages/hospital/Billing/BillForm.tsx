@@ -24,6 +24,7 @@ interface Props {
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
     onBillItemsValidated: (billItems: BillItem[]) => void,
+    onUpdateBillItemStatus: (billItems: BillItem[]) => void,
     onCancelBill: () => void
 
 }
@@ -73,6 +74,11 @@ export const BillForm:React.FC<Props> = (props) => {
         props.onBillItemsValidated(items);
     }
 
+    async function onUpdateBillItemStatus(items:BillItem[]){
+        props.onUpdateBillItemStatus(items);
+    }
+    
+
     function renderItems(){
         if (loading || loadingBillables) {
             return (<Grid container >
@@ -83,8 +89,6 @@ export const BillForm:React.FC<Props> = (props) => {
         }
         if(props.patient){
             let columns:Column[] = [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"amount", type:"amount", validation:""}, {name:"updatedAt", type:"date", validation:""}];
-           
-            
             return(
                 <>
                      <Snackbar
@@ -112,7 +116,8 @@ export const BillForm:React.FC<Props> = (props) => {
                         currency={props.currency} print={props.print} withDiscount={props.withDiscount}
                         bill={props.bill}  
                         canUpdateBill={props.canUpdateBill} uuidInvestigation={props.uuidInvestigation}
-                        onBillItemsValidated={onBillItemsValidated} error={errorBill}
+                        onBillItemsValidated={onBillItemsValidated} onUpdateBillItemStatus={props.onUpdateBillItemStatus}
+                        error={errorBill}
                         onCancelBill={props.onCancelBill}  />
                     </>
                 ) 

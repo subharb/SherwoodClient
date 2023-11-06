@@ -6,13 +6,15 @@ import { Button, Grid, Typography } from '@mui/material';
 import { Translate } from 'react-localize-redux';
 import { fullDateFromPostgresString, researcherFullName } from '../../../utils';
 import { BillForm } from './BillForm';
-import { documentTypeToIcon } from '.';
+import { TypeBillItemUpdate, documentTypeToIcon } from '.';
 import { documentTypeToColor, documentTypeToString } from '../../../utils/bill';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Modal from '../../../components/general/modal';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import { useResearcherDepartmentSelector, useResearchersSelector, useStatusDocument } from '../../../hooks';
 import Loader from '../../../components/Loader';
+import { saveBillingItems } from '../../../redux/actions/billingActions';
+import { useDispatch } from 'react-redux';
 
 
 interface BillViewProps {
@@ -29,7 +31,7 @@ interface BillViewProps {
     print: boolean,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
-    onUpdateBill: (bill: Bill) => void,
+    onUpdateBill: (bill: Bill, typeUpdate:TypeBillItemUpdate) => void,
     onChangeDocumentType: (uuidBill:string, type: DocumentType) => void,
     onCancelBill: () => void
 }
@@ -37,17 +39,18 @@ interface BillViewProps {
 const BillView: React.FC<BillViewProps> = (props) => {
     const [showModal, setShowModal] = React.useState(false);
     const [newDocumentType, setNewDocumentType] = React.useState<DocumentType>(DocumentType.BUDGET);
-    const {statusDocument, renderStatusDocument} = useStatusDocument(props.bill.status, false);
-    
+    const {statusDocument, renderStatusDocument} = useStatusDocument(props.billStatus, false);
+    const dispatch = useDispatch();
+
     const {renderResearcherDepartmentSelector, loadingResearcherOrDepartments, 
             researcherSelected, departmentSelected, uuidDepartmentSelected, 
-            researchers, markAsErrorDepartmentCallback, markAsErrorReseacherCallback} = useResearcherDepartmentSelector(props.bill.uuidPrescribingDoctor ? props.bill.uuidPrescribingDoctor : "", props.bill.uuidDepartment ? props.bill.uuidDepartment : "" );
+            uuidResearcherSelected, markAsErrorDepartmentCallback, markAsErrorReseacherCallback} = useResearcherDepartmentSelector(props.bill.uuidPrescribingDoctor ? props.bill.uuidPrescribingDoctor : "", props.bill.uuidDepartment ? props.bill.uuidDepartment : "" );
 
     function onCloseModal(){
         setShowModal(false);
     }
 
-    function onUpdateBill(billItems: BillItem[]) {
+    function onUpdateBill(billItems: BillItem[], typeUpdate:TypeBillItemUpdate) {
         if(!researcherSelected){
             markAsErrorReseacherCallback();
             return
@@ -59,9 +62,9 @@ const BillView: React.FC<BillViewProps> = (props) => {
         props.bill.status = statusDocument;
         
         props.bill.uuidDepartment = uuidDepartmentSelected;
-        props.bill.uuidPrescribingDoctor = researcherSelected;
+        props.bill.uuidPrescribingDoctor = uuidResearcherSelected;
         props.bill.billItems = [...billItems];
-        props.onUpdateBill(props.bill);
+        props.onUpdateBill(props.bill, typeUpdate);
     }
 
 
@@ -96,7 +99,12 @@ const BillView: React.FC<BillViewProps> = (props) => {
                         <Typography variant="body2" fontWeight='bold'  component='span' ><Translate id="hospital.billing.department" />: </Typography>, <Typography variant="body2"   component='span'>{departmentSelected.name}</Typography>
                     ])
                 }
-                return researcherAndDepartment;
+                return (
+                <Grid container>
+                    <Grid item xs={6}  >
+                        {researcherAndDepartment}
+                    </Grid>
+                </Grid>)
             }
             else{
                 return renderResearcherDepartmentSelector()
@@ -106,6 +114,25 @@ const BillView: React.FC<BillViewProps> = (props) => {
         return null;
     }
 
+
+    // function renderMarkAsPaid(){
+    //     if(props.billType === DocumentType.INVOICE && props.billStatus === DocumentStatus.CLOSED){
+    //         return ([
+    //             <Grid item xs={6}  >
+    //                 <Button variant="contained" color="primary" onClick={() => toggleAllItemsAs("paid")}>
+    //                     <Translate id="hospital.billing.markAsPaid" />
+    //                 </Button>
+    //             </Grid>,
+    //             <Grid item xs={6}  >
+    //                 <Button variant="contained" color="secondary" onClick={() => toggleAllItemsAs("used")}>
+    //                     <Translate id="hospital.billing.markAsUsed" />
+    //                 </Button>
+    //             </Grid>
+    //             ]
+    //         )
+    //     }
+    //     return null;
+    // }
     function renderConvertButton(){
         if(!props.hasBudgets){
             return null;
@@ -153,7 +180,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
                         { convertGrid } 
                     </div>
                     {
-                        renderStatusDocument
+                        renderStatusDocument()
                     }
                 </div>
             )      
@@ -180,11 +207,12 @@ const BillView: React.FC<BillViewProps> = (props) => {
             {
                 renderPrescribingDoctor()
             }
-
             <BillForm canUpdateBill={props.canUpdateBill} patient={props.patient} currency={props.currency} 
                 uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.idBillingInfo} bill={props.bill}
                 print={props.print} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}
-                onBillItemsValidated={onUpdateBill} onCancelBill={props.onCancelBill}
+                onBillItemsValidated={(billItems:BillItem[]) => onUpdateBill(billItems, TypeBillItemUpdate.BillItems)}
+                onUpdateBillItemStatus={(billItems:BillItem[]) => onUpdateBill(billItems, TypeBillItemUpdate.BillItemsStatus)}
+                onCancelBill={props.onCancelBill} 
                 />
         </>
     );

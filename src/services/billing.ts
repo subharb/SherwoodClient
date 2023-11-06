@@ -33,6 +33,24 @@ export function updateBillService(uuidInvestigation: string, uuidBill: string, b
     });
 }
 
+export function updateBillItemsStatusService(uuidInvestigation: string, uuidBill: string, bill: Bill): Promise<{ status: number }> {
+    return new Promise((resolve, reject) => {
+        axios
+            .put(import.meta.env.VITE_APP_API_URL + "/billing/investigation/" + uuidInvestigation + "/billitems/" + uuidBill, bill, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
+
+
+
 export function createUpdateBillingInfoService(uuidInvestigation: string, billingInfo: any):Promise<BillingInfoServiceResponse> {
     return new Promise((resolve, reject) => {
         axios

@@ -402,28 +402,32 @@ export function useStatusDocument(status:DocumentStatus, editable:boolean = true
         setStatusDocument(Number((event.target as HTMLInputElement).value));
     };
 
-    let renderStatusDocument = null;
-    if(status === DocumentStatus.CLOSED && !editable){
-        renderStatusDocument = <><Typography variant="body2" component='span' fontWeight='bold'><Translate id="hospital.billing.bill.status" /> : </Typography><ColourChip rgbcolor={documentStatusToColor(DocumentStatus.CLOSED)} label={<Translate id="hospital.billing.bill.closed" />}/></>
+    function renderStatusDocument(){
+        let renderStatusDocument = null;
+        if(status === DocumentStatus.CLOSED){
+            renderStatusDocument = <><Typography variant="body2" component='span' fontWeight='bold'><Translate id="hospital.billing.bill.status" /> : </Typography><ColourChip rgbcolor={documentStatusToColor(DocumentStatus.CLOSED)} label={<Translate id="hospital.billing.bill.closed" />}/></>
+        }
+        else{
+            renderStatusDocument =  (
+                <FormControl>
+                <FormLabel id="demo-row-radio-buttons-group-label">
+                        <Typography variant="body2" component='span' fontWeight='bold'><Translate id="hospital.billing.bill.status" /></Typography></FormLabel>
+                <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    value={statusDocument}
+                    onChange={handleChangeStatus}
+                >
+                    <FormControlLabel value={DocumentStatus.DRAFT} control={<Radio />} label={<Typography variant="body2" component='span'><Translate id="hospital.billing.bill.draft" /></Typography>} />
+                    <FormControlLabel value={DocumentStatus.CLOSED} control={<Radio />} label={<Typography variant="body2" component='span' ><Translate id="hospital.billing.bill.closed" /></Typography>} />
+                </RadioGroup>
+                </FormControl>
+            );
+        }
+        return renderStatusDocument;
     }
-    else{
-        renderStatusDocument =  (
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">
-                    <Typography variant="body2" component='span' fontWeight='bold'><Translate id="hospital.billing.bill.status" /></Typography></FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                value={statusDocument}
-                onChange={handleChangeStatus}
-              >
-                <FormControlLabel value={DocumentStatus.DRAFT} control={<Radio />} label={<Typography variant="body2" component='span'><Translate id="hospital.billing.bill.draft" /></Typography>} />
-                <FormControlLabel value={DocumentStatus.CLOSED} control={<Radio />} label={<Typography variant="body2" component='span' ><Translate id="hospital.billing.bill.closed" /></Typography>} />
-              </RadioGroup>
-            </FormControl>
-          );
-    }
+    
     return {statusDocument, renderStatusDocument}
 }
 interface OptionSelector{
@@ -652,5 +656,6 @@ export function useResearcherDepartmentSelector(defaultValueResearcher?:string, 
 
         return selects;
     }
-    return {researchers, renderResearcherDepartmentSelector, loadingResearcherOrDepartments:(loadingDepartments || loadingResearchers), researcherSelected, uuidDepartmentSelected, departmentSelected,  markAsErrorReseacherCallback, markAsErrorDepartmentCallback}
+    return {researchers, renderResearcherDepartmentSelector, uuidResearcherSelected,
+            loadingResearcherOrDepartments:(loadingDepartments || loadingResearchers), researcherSelected, uuidDepartmentSelected, departmentSelected,  markAsErrorReseacherCallback, markAsErrorDepartmentCallback}
 }

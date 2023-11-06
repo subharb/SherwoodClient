@@ -27,11 +27,11 @@ export default defineConfig(() => {
         nodePolyfills({
           protocolImports: true,
         }),
-        sentryVitePlugin({
-            authToken: process.env.SENTRY_AUTH_TOKEN,
-            org: "sherwood",
-            project: "sherwood",
-          }),
+        // sentryVitePlugin({
+        //     authToken: process.env.SENTRY_AUTH_TOKEN,
+        //     org: "sherwood",
+        //     project: "sherwood",
+        //   }),
     ],
     alias: {
         stream: 'readable-stream',

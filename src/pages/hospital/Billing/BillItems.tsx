@@ -37,7 +37,8 @@ const GridBottom = styled(Grid) <{ hide: boolean }>`
 export interface Column{
     name:keyof BillItem,
     type:string,
-    validation:string
+    validation:string,
+    markAllCallback?:() => Promise<void>
 }
 
 export interface BillItemsProps extends LocalizeContextProps{
@@ -57,6 +58,7 @@ export interface BillItemsProps extends LocalizeContextProps{
     surveyAdditionalInfo:any,
     canUseAdditionalInfo:boolean,
     onBillItemsValidated : (items: BillItem[]) => void,
+    onUpdateBillItemStatus:(items: BillItem[]) => void,
     onCancelBill: () => void
 }
 
@@ -71,7 +73,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                                                     canUpdateBill, currency, print, withDiscount,
                                                     surveyAdditionalInfo, uuidInvestigation,
                                                     uuidPatient,
-                                                    bill, translate, showTotal, repeatBillItems, onBillItemsValidated, 
+                                                    bill, translate, showTotal, repeatBillItems, onUpdateBillItemStatus, onBillItemsValidated, 
                                                     onCancelBill }) => {
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
@@ -134,6 +136,18 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         setFieldErrors(tempFieldErrors);
         setCurrentItem(tempCurrentItem);
     }
+
+    async function toggleAllItemsAs(category:"paid" | "used"){
+        const tempItems = [...items];
+        tempItems.forEach((item) => {
+            const itemValue = item[category];
+            if (typeof itemValue == "boolean" || itemValue === null) {
+                item[category] = Boolean(!item[category]);
+            }            
+        });
+        await dispatch(saveBillingItems(tempItems));
+    }
+
 
     function updateQuantityBillItem(index:number, quantity:number){
         const tempItems = [...items];
@@ -231,17 +245,17 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     async function onClickContinue(items: BillItem[]) {
         
         if(filteredColumns.find((col) => col.type === BillItemKeys.amount)){
-            if (calculateTotalBill(items) > 0) {
-                onBillItemsValidated(items);
-            }
-            else {
+            if (calculateTotalBill(items) === 0) {
                 setErrorBill(<Translate id="hospital.billing.billing_info.error.positive" />);
+                return;    
             }
+        }
+        if(bill && bill.status === DocumentStatus.CLOSED){
+            onUpdateBillItemStatus(items);
         }
         else{
             onBillItemsValidated(items);
         }
-        
         setAddingItem(false);
     }
     
@@ -590,8 +604,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
     }
     else if(bill?.type === DocumentType.INVOICE && bill.status === DocumentStatus.CLOSED) {
-        headCells.push({ id: "paid", alignment: "right", label: <React.Fragment><Translate id="general.paid" /></React.Fragment> });
-        headCells.push({ id: "used", alignment: "right", label: <React.Fragment><Translate id="general.used" /></React.Fragment> });
+        headCells.push({ id: "paid", alignment: "right", markAllCallback: (async () => await toggleAllItemsAs("paid")), label: <React.Fragment><Translate id="general.paid" /></React.Fragment> });
+        headCells.push({ id: "used", alignment: "right", markAllCallback: (async () => await toggleAllItemsAs("used")), label: <React.Fragment><Translate id="general.used" /></React.Fragment> });
     }
    
     return (
