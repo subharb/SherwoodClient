@@ -25,10 +25,10 @@ export const ViewBill: Story = {
   args: {
     bill:billsExample[0],
     hasBudgets: true,
-    billStatus: DocumentStatus.CLOSED,
+    billStatus: DocumentStatus.DRAFT,
     billType: DocumentType.INVOICE,
     currency:"CFA",
-    canUpdateBill: false,
+    canUpdateBill: true,
     patient : patients_personal_data_decrypted()[0],
     patients: patients_personal_data_decrypted(),
     withDiscount : true,

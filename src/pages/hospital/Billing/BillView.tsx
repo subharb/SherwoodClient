@@ -2,7 +2,7 @@ import React from 'react';
 import { Bill, BillItem, DocumentStatus, DocumentType } from './types';
 import { IPatient } from '../../../constants/types';
 import PatientInfo from './PatientInfo';
-import { Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, Grid, Typography } from '@mui/material';
 import { Translate } from 'react-localize-redux';
 import { fullDateFromPostgresString, researcherFullName } from '../../../utils';
 import { BillForm } from './BillForm';
@@ -40,7 +40,6 @@ const BillView: React.FC<BillViewProps> = (props) => {
     const [showModal, setShowModal] = React.useState(false);
     const [newDocumentType, setNewDocumentType] = React.useState<DocumentType>(DocumentType.BUDGET);
     const {statusDocument, renderStatusDocument} = useStatusDocument(props.billStatus, false);
-    const dispatch = useDispatch();
 
     const {renderResearcherDepartmentSelector, loadingResearcherOrDepartments, 
             researcherSelected, departmentSelected, uuidDepartmentSelected, 
@@ -51,14 +50,17 @@ const BillView: React.FC<BillViewProps> = (props) => {
     }
 
     function onUpdateBill(billItems: BillItem[], typeUpdate:TypeBillItemUpdate) {
-        if(!researcherSelected){
-            markAsErrorReseacherCallback();
-            return
+        if(props.billType === DocumentType.INVOICE){
+            if(!researcherSelected){
+                markAsErrorReseacherCallback();
+                return
+            }
+            if(!departmentSelected){
+                markAsErrorDepartmentCallback();
+                return
+            }
         }
-        if(!departmentSelected){
-            markAsErrorDepartmentCallback();
-            return
-        }
+        
         props.bill.status = statusDocument;
         
         props.bill.uuidDepartment = uuidDepartmentSelected;
@@ -100,11 +102,15 @@ const BillView: React.FC<BillViewProps> = (props) => {
                     ])
                 }
                 return (
-                <Grid container>
-                    <Grid item xs={6}  >
-                        {researcherAndDepartment}
-                    </Grid>
-                </Grid>)
+                    <Card style={{margin:'10px'}}>
+                        <Box padding={2} >  
+                            <Grid container >
+                                <Grid item xs={6}  >
+                                    {researcherAndDepartment}
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Card>)
             }
             else{
                 return renderResearcherDepartmentSelector()
@@ -147,15 +153,14 @@ const BillView: React.FC<BillViewProps> = (props) => {
             let convertGrid = null
             if(props.billType === DocumentType.BUDGET || props.billType === DocumentType.SUMMARY){
                 const converButton = props.billType === DocumentType.SUMMARY ? 
-                                            <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.BUDGET)}} endIcon={documentTypeToIcon(DocumentType.BUDGET)} 
-                                                onClick={() => convertDocument(DocumentType.BUDGET)}>
-                                                Creer une devis
-                                            </Button> : 
-                                            <Button variant="contained" style={{backgroundColor:documentTypeToColor(DocumentType.INVOICE)}}  endIcon={documentTypeToIcon(DocumentType.INVOICE)} 
-                                                onClick={() => convertDocument(DocumentType.INVOICE)}>
-                                                Convert to Invoice
-                                            </Button>  
-
+                                            <ColourChip rgbcolor={documentTypeToColor(DocumentType.BUDGET)} avatar={documentTypeToIcon(DocumentType.BUDGET)} 
+                                                label={<Translate id="hospital.billing.convert.to_budget"/>}
+                                                onClick={() => convertDocument(DocumentType.BUDGET)} />    
+                                            : 
+                                            <ColourChip rgbcolor={documentTypeToColor(DocumentType.INVOICE)}  avatar={documentTypeToIcon(DocumentType.INVOICE)} 
+                                                onClick={() => convertDocument(DocumentType.INVOICE)} 
+                                                label={<Translate id="hospital.billing.convert.to_invoice"/>} /> 
+                                                
                 convertGrid = (
                     <>
                         <div>
@@ -172,17 +177,21 @@ const BillView: React.FC<BillViewProps> = (props) => {
                 );
             }
             return (
-                <div style={{'paddingBottom' : '1rem'}}>
-                    <div style={{display:'flex', flexDirection:'row'}}>
-                        <div >
-                            { typeButton }
+                <Card style={{margin:'10px'}}>
+                        <Box padding={2} >  
+                    <div style={{'paddingBottom' : '1rem'}}>
+                        <div style={{display:'flex', flexDirection:'row'}}>
+                            <div >
+                                { typeButton }
+                            </div>
+                            { convertGrid } 
                         </div>
-                        { convertGrid } 
+                        {
+                            renderStatusDocument()
+                        }
                     </div>
-                    {
-                        renderStatusDocument()
-                    }
-                </div>
+                </Box>
+                </Card>
             )      
     }
     return (
@@ -191,14 +200,17 @@ const BillView: React.FC<BillViewProps> = (props) => {
                 confirmAction={confirmChangeDocumentType} >
                 <Typography variant="body2" component='span'><Translate id="hospital.billing.bill.view.modal.message" /></Typography>
             </Modal>
-
-            <PatientInfo patient={props.patient} languageCode={props.languageCode} rightSide={
-                <Grid item xs={6}  >
-                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.num_bill" /></span>: {props.bill.id}</Typography>
-                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.date" /></span>: {fullDateFromPostgresString(props.languageCode, props.bill.createdAt)}</Typography>
-                    <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.type" /></span>: <Translate id={`hospital.billing.bill.types.${documentTypeToString(props.billType)}`}/></Typography>
-                </Grid>
-            } />
+            <Card style={{margin:'10px'}}>
+                <Box padding={2} >  
+                    <PatientInfo patient={props.patient} languageCode={props.languageCode} rightSide={
+                        <Grid item xs={6}  >
+                            <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.num_bill" /></span>: {props.bill.id}</Typography>
+                            <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.date" /></span>: {fullDateFromPostgresString(props.languageCode, props.bill.createdAt)}</Typography>
+                            <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.type" /></span>: <Translate id={`hospital.billing.bill.types.${documentTypeToString(props.billType)}`}/></Typography>
+                        </Grid>
+                    } />
+                </Box>
+            </Card>
             
             {
                 renderConvertButton()

@@ -1,3 +1,4 @@
+import { TYPE_BILL_ITEM } from "../constants/types"
 import { DocumentStatus, DocumentType } from "../pages/hospital/Billing/types"
 
 export const edc_data1 = () => {
@@ -2633,6 +2634,16 @@ export const billsExample = [{
                 "concept": "Anesthésie générale",
                 "quantity": 1,
                 "type": 3,
+                "amount": 75000,
+                "updatedAt" : "2023-09-22T09:30:51.899Z",
+                "paid" : null,
+                "used" : null
+            },
+            {
+                "id": 3627,
+                "concept": "Insurance letter",
+                "quantity": 1,
+                "type": TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
                 "amount": 75000,
                 "updatedAt" : "2023-09-22T09:30:51.899Z",
                 "paid" : null,

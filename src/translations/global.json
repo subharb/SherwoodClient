@@ -331,6 +331,10 @@
                     "updated" : ["Billables succesfully updated", "Elementos de facturación actualizada correctamente", "Elements de facturation mis à jour avec succès"]
                 }
             },
+            "convert" : {
+                "to_budget" : ["Convert to budget", "Convertir a presupuesto", "Convertir en devis"],
+                "to_invoice" : ["Convert to invoice", "Convertir a factura", "Convertir en facture"]
+            },
             "markAsPaid" : ["Mark as paid", "Marcar como pagado", "Marquer comme payé"],
             "markAsUsed" : ["Mark as used", "Marcar como usado", "Marquer comme utilisé"],
             "department" : ["Department", "Departamento", "Service"],
@@ -391,9 +395,9 @@
                 "status" : ["Status", "Estado", "Statut"],
                 "type" : ["Type", "Tipo", "Type"],
                 "types" : {
-                    "invoice" : ["Bill", "Factura", "Facture definitive"],
+                    "invoice" : ["Invoice", "Factura", "Facture definitive"],
                     "budget" : ["Quote", "Presupuesto", "Devis"], 
-                    "summary" : ["Invoice", "Resumen", "Synthèse des actes"]
+                    "summary" : ["Summary", "Resumen", "Synthèse des actes"]
                 },
                 "view" : {
                     "modal" : {
@@ -402,8 +406,8 @@
                     }
                 },
                 "pending" : ["Pending", "Pendiente", "En attente"],
-                "draft" : ["Draft", "Borrador", "Brouillon"],
-                "closed" : ["Closed", "Cerrada", "Fermé"],
+                "draft" : ["Draft", "Borrador", "Modifiable"],
+                "closed" : ["Closed", "Cerrada", "Non Modifiable"],
                 "patient" : ["Patient", "Paciente","Patient"],
                 "save" : ["Save", "Guardar", "Enregistrer"],
                 "update" : ["Update", "Actualizar", "Mettre à jour"],

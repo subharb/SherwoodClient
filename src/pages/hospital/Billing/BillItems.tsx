@@ -346,17 +346,26 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     }
 
     function renderInsertedBillItems() {
-        let rows: BillItemTable[] = items.map((val:BillItemTable, index:number) => {
+        let filteredItems = [...items];
+        if(print){
+            filteredItems = items.filter((item) =>{
+                return item.type !== TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO
+            } );
+        }
+        let rows: BillItemTable[] = filteredItems.map((val:BillItemTable, index:number) => {
 
+            if(val.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO && print){
+                return; 
+            }
             let color = TYPES_DISCOUNT.includes(parseInt(val.type)) ? red[900] : parseInt(val.type) === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO ? blue[900] : "black";
-            
+             
             
             let rowElement:{[id: string] : JSX.Element} = {}
             filteredColumns.forEach((col:Column) => {
                 if(col.type === "amount"){
                     let amountString:string = val.amount;
-                    if(TYPES_DISCOUNT.includes(val.type)){
-                        const percentSymbol = (val.type === TYPE_BILL_ITEM.DISCOUNT_PERCENT ? "%" : currency);
+                    if(TYPES_DISCOUNT.includes(Number(val.type))){
+                        const percentSymbol = (Number(val.type) === TYPE_BILL_ITEM.DISCOUNT_PERCENT ? "%" : currency);
                         amountString =  `-  ${val.amount} ${percentSymbol} `;
                     }
                  
@@ -539,7 +548,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                 for(let i = 0; i < currentItem.relatedBillables.length; i++){
                     const billable:Billable | undefined = billables.find((billable) => billable.id === currentItem?.relatedBillables[i]);
                     if(billable){
-                        const currentBillItem:BillItem = {...billable, quantity:1}
+                        const currentBillItem:BillItem = {...billable, quantity:1, updatedAt: new Date()}
                         delete currentBillItem.id;
                         tempItems.push(currentBillItem);
                     }
@@ -567,7 +576,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         const rowAddItem = renderRowAddItem();
         rows.push(rowAddItem)
     }
-    else if (canUpdateBill) {
+    else if (canUpdateBill && !print) {
         // @ts-ignore: Unreachable code error
         let field: BillItemTable = {}
         filteredColumns.forEach((col:Column) => {
@@ -584,6 +593,20 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                         }} /></React.Fragment>}
 
         rows.push(field);
+    }
+    if(print){        
+        const hasAdditionalInfo = items.find((item) =>{
+            return item.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO
+        });
+        if(hasAdditionalInfo){
+            rows.push({
+                id: "additiotal", 
+                concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} />{hasAdditionalInfo.concept}</Typography>,
+                type : <></>, 
+                amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{hasAdditionalInfo.amount + " " + currency}</Typography>,
+                delete: <React.Fragment></React.Fragment>,
+            });
+        }
     }
     if (items.length > 0 && showTotal) {
         let totalBill = calculateTotalBill(items);
