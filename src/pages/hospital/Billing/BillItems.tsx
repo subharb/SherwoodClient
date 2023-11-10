@@ -319,6 +319,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                             if(prevBillItemIndex !== -1){
                                 const tempItems = [...items];
                                 tempItems[prevBillItemIndex].amount = amount;
+                                tempItems[prevBillItemIndex].updatedAt = new Date();
                                 await dispatch(saveBillingItems(tempItems));
                             }
                             else{
@@ -328,6 +329,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                                     quantity:1,
                                     amount: amount,
                                     additionalInfoId: data.id,
+                                    updatedAt: new Date()
                                 }
                                 await dispatch(pushBillingItems([additionalItem]))
                             }
