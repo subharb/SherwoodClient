@@ -9,7 +9,7 @@ import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable, D
 import styled from "styled-components"
 import { Autocomplete } from "@mui/lab"
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
-import _ from "lodash";
+import _, { set } from "lodash";
 import { dateToFullDateString, hasDefaultValues, stringDatePostgresToDate } from "../../../utils/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { pushBillingItems, saveBillingItems } from "../../../redux/actions/billingActions";
@@ -18,6 +18,7 @@ import Form from "../../../components/general/form";
 import FillSurvey from "../FillSurvey";
 import ShowSingleSubmissionPatient from "../ShowSingleSubmissionPatient";
 import QuantitySelector from "./QuantitySelector";
+import { removeSubmissionPatient } from "../../../redux/actions/submissionsPatientActions";
 
 const FactureHolder = styled.div<{ hide: boolean }>`
     margin-top:2rem;
@@ -314,7 +315,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                         callBackDataCollectionSavedWithData = {async (data) => {
                             console.log("Data Saved", data);
                             const amount = data.surveyRecords.find((record:any) => record.surveyField.name.toLocaleLowerCase() === "amount").value;
-                            const prevBillItemIndex = items.findIndex((item:BillItem) => item.additionalInfo && item.additionalInfo.id === data.id);
+                            const prevBillItemIndex = items.findIndex((item:BillItem) => item.additionalInfoId === data.id);
 
                             if(prevBillItemIndex !== -1){
                                 const tempItems = [...items];
@@ -378,7 +379,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                     rowElement[col.name] = <Typography variant="body2" style={{ color: color }}>{<Translate id={`hospital.billing.item.types.${typeSelected.toLocaleLowerCase()}`} />}</Typography>
                 }
                 else if(col.type === "number" ){
-                    if(!canUpdateBill){
+                    if(!canUpdateBill ||  val.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO){
                         rowElement[col.name] =  <Typography variant="body2" style={{ color: color }}>{val[col.name]}</Typography>
                     }
                     else{
@@ -399,7 +400,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                             <IconButton
                                 onClick={(e) => {
                                     setShowModal(true);
-                                    setShowAdditionalInfoID(val.additionalInfo.id) 
+                                    setShowAdditionalInfoID(val.additionalInfoId) 
                                     e.stopPropagation();
                                     
                                 }}
@@ -567,6 +568,12 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     async function removeItem(index: number) {
         console.log("Borrar " + index);
         const tempItems = [...items];
+        const elementToDelete = {...tempItems[index]};
+        if(elementToDelete.additionalInfoId){
+            setEditSubmission(undefined);
+            setShowAdditionalInfoID(-1);
+            await dispatch(removeSubmissionPatient(uuidPatient ,elementToDelete.additionalInfoId, surveyAdditionalInfo.uuid));
+        }
         tempItems.splice(index, 1);
         await dispatch(saveBillingItems(tempItems));
         setErrorBill(undefined);

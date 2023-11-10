@@ -4,6 +4,19 @@ import {
 } from "../../services";
 
 
+export function removeSubmissionPatient(uuidPatient, idSubmission, uuidSurvey) {
+    
+    return async (dispatch) => {
+      dispatch({ 
+            type: types.REMOVE_SUBMISSIONS_PATIENT,
+            meta : {
+                uuidPatient:uuidPatient,
+                idSubmission,
+                uuidSurvey
+            }
+      });
+    };
+}
 
 export function fetchSubmissionsPatientInvestigationAction(uuidInvestigation, uuidPatient) {
     return async (dispatch) => {

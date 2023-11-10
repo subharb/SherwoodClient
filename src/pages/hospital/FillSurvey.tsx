@@ -50,18 +50,21 @@ const FillSurvey: React.FC<FillSurveyProps> = ({ sectionSelected, uuid, sections
     }
 
     useEffect(() => {
-        const oldSubmissions = !prevSubmissionsSurvey ? [] : prevSubmissionsSurvey;
-        if(submissionsSurvey.length !== oldSubmissions.length && callBackDataCollectionSavedWithData){
-            const lastSubmission = submissionsSurvey[submissionsSurvey.length - 1];
-            callBackDataCollectionSavedWithData(lastSubmission);
-        }
-        else if(idSubmission ){
-            const oldSubmission = oldSubmissions.find((sub:any) => sub.id === idSubmission);
-            const submission = submissionsSurvey.find((sub:any) => sub.id === idSubmission);
-            if(submission && callBackDataCollectionSavedWithData && (oldSubmission && oldSubmission.updatedAt !== submission.updatedAt)){
-                callBackDataCollectionSavedWithData(submission);
+        if(callBackDataCollectionSavedWithData){
+            const oldSubmissions = !prevSubmissionsSurvey ? [] : prevSubmissionsSurvey;
+            if(submissionsSurvey.length !== oldSubmissions.length){
+                const lastSubmission = submissionsSurvey[submissionsSurvey.length - 1];
+                callBackDataCollectionSavedWithData(lastSubmission);
+            }
+            else if(idSubmission ){
+                const oldSubmission = oldSubmissions.find((sub:any) => sub.id === idSubmission);
+                const submission = submissionsSurvey.find((sub:any) => sub.id === idSubmission);
+                if(submission && (oldSubmission && oldSubmission.updatedAt !== submission.updatedAt)){
+                    callBackDataCollectionSavedWithData(submission);
+                }
             }
         }
+        
     }, [submissionsSurvey]);
 
     useEffect(() => {

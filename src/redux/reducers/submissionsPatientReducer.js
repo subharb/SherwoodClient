@@ -14,6 +14,20 @@ import { decryptPatientsData } from '../../utils/index.jsx';
     nUpdatedRegisters : 0
 }
 
+function getSubmissions(uuidPatient, uuidSurvey, data){
+    if(data && data[uuidPatient] && data[uuidPatient][uuidSurvey]){
+        return data[uuidPatient][uuidSurvey].submissions;
+    }
+    return [];
+}
+
+function saveSubmissions(uuidPatient, uuidSurvey, submissions, data){
+    if(data && data[uuidPatient] && data[uuidPatient][uuidSurvey]){
+        data[uuidPatient][uuidSurvey].submissions = submissions;
+    }
+    return data;
+}
+
  
 export default function reducer(state = initialState, action){
     
@@ -34,6 +48,19 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.SUBMISSIONS_PATIENT_LOADING:
             newState.loading = true;
+            newState.error = initialState.error;
+            return newState;
+        case types.REMOVE_SUBMISSIONS_PATIENT:
+            tempData = {...newState.data};
+
+            const submissionsPatient = getSubmissions(action.meta.uuidPatient, action.meta.uuidSurvey, tempData);
+
+            const findSumission = submissionsPatient.findIndex(sub => sub.id === action.meta.idSubmission);
+            if(findSumission !== -1){
+                submissionsPatient.splice(findSumission, 1);
+            }
+            saveSubmissions(action.meta.uuidPatient, action.meta.uuidSurvey, submissionsPatient, tempData);
+            newState.loading = initialState.loading;
             newState.error = initialState.error;
             return newState;
         case types.UPDATE_SUBMISSIONS_PATIENT_SUCCESS:
