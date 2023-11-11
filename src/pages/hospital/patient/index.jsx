@@ -27,12 +27,12 @@ import { dischargePatientAction, getPatientStaysAction } from '../../../redux/ac
 import { FUNCTIONALITY } from '../../../constants/types';
 import TabsSurveys from './TabsSurveys';
 import RequestTable from '../Service/RequestTable';
-import { RequestInfoWithFetch } from '../Service/RequestInfo';
 import RequestForm from '../Service/RequestForm';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
+import SurveyRecordsTable from '../SurveyRecordsTable';
 
 
-const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe"};
+const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse"};
 const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
     newDict[TYPE_URL[key]] = parseInt(key);
     return newDict
@@ -78,6 +78,9 @@ function Patient(props) {
         //     return true;
         // }
         if(parameters.typeTest === "social" && survey.category === types.CATEGORY_DEPARTMENT_SOCIAL){
+            return true;
+        }
+        if(parameters.typeTest === "nurse" && survey.category === types.CATEGORY_DEPARTMENT_NURSE){
             return true;
         }
         if((!parameters.typeTest || parameters.typeTest === "medical") && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
@@ -370,6 +373,13 @@ function Patient(props) {
                     </TypographyStyled>
         }
         else{
+            if(currentSurveys.length > 0 && currentSurveys[0].type === types.TYPE_NURSE){
+                const fieldSurvey = currentSurveys[0].sections.reduce((acc, current) => {
+                    return acc.concat(current.fields)
+                }, [])
+                return <SurveyRecordsTable fields={fieldSurvey} submissions={filteredRecords} 
+                            onSelectSubmission={(index) => selectSubmission(index)}  />
+            }
             return(
                 <EnhancedTable noHeader noSelectable selectRow={(index) => selectSubmission(index)} 
                     rows={filteredRecords.map((record, index) => {
@@ -657,7 +667,6 @@ function Patient(props) {
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
                         typeSurveySelected={parameters.typeTest ? parameters.typeTest : "medical" }
-
                         categorySurveySelected = {categorySurveySelected}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
@@ -671,6 +680,7 @@ function Patient(props) {
                         labCallBack={() => goToTest(TYPE_LAB_SURVEY)}
                         socialCallBack={() => goToTest(TYPE_SOCIAL_SURVEY)}
                         shoeCallBack={() => goToTest(types.TYPE_SHOE_SURVEY)}
+                        nurseCallBack={() => goToTest(types.TYPE_NURSE)}
                         addRecordCallBack={addRecord}
                         hospitalize={ isPatientHospitalized ?  showConfirm : null }
                     />

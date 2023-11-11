@@ -16,6 +16,17 @@ export interface ReduxStore{
   form:any
 }
 
+export interface ISubmission{
+    surveyRecords: ISurveyRecord[],
+}
+
+export interface ISurveyRecord{
+    id: number,
+    value: string,
+    surveySection:any,
+    surveyField:IField,
+}
+
 export interface IBed{
     id:number,
     gender:number,

@@ -3,16 +3,17 @@ import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { ButtonAdd, IconGenerator, IconPatient } from "../../../components/general/mini_components"
 import { DepartmentType, IUnit, PersonalData } from "../../../constants/types"
-import {CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
+import {CATEGORY_DEPARTMENT_NURSE, CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
 import iconNotes from "../../../img/icons/history.png";
 import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
 import iconDS from "../../../img/icons/ds.png";
 import iconShoe from "../../../img/icons/shoe.png";
+import iconNurse from "../../../img/icons/nurse.svg";
 import iconNotesGreen from "../../../img/icons/history_green.png";
 import iconImagesGreen from "../../../img/icons/images_green.png";
 import iconLabGreen from "../../../img/icons/lab_green.png";
-import { disabledTransition } from "@dnd-kit/sortable/dist/hooks/defaults"
+
 import React from "react"
 
 interface Props{
@@ -35,6 +36,7 @@ interface Props{
     socialCallBack:() => void,
     shoeCallBack:() => void,
     testCallBack:() => void,
+    nurseCallBack:() => void,
     addRecordCallBack: () => void,
     hospitalize?:() => void,
     
@@ -55,7 +57,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                                                 writeMedicalPermission, disabled, typeSurveysAvailable,
                                                 unitsResearcher,
                                                 typeSurveySelected, categorySurveys, categorySurveySelected, years, 
-                                                addRecordCallBack, hospitalize, medicalNotesCallBack, 
+                                                addRecordCallBack, hospitalize, medicalNotesCallBack, nurseCallBack,
                                                 editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack}) =>{
 
     // use memo to store if the researcher belongs to a department of type social
@@ -144,10 +146,18 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                         </Grid>
                     }
                     {
-                        isResearcherShoe && 
+                        isResearcherShoe  && categorySurveys.includes(CATEGORY_DEPARTMENT_SHOE) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => shoeCallBack()} >
                                 <img src={categorySurveySelected === CATEGORY_DEPARTMENT_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
+                            </Button>
+                        </Grid>
+                    }
+                    {
+                        categorySurveys.includes(CATEGORY_DEPARTMENT_NURSE) && 
+                        <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                            <Button data-testid="show" onClick={() => nurseCallBack()} >
+                                <img src={categorySurveySelected === CATEGORY_DEPARTMENT_NURSE ? iconNurse : iconNurse} alt="Nurse" height="40" />
                             </Button>
                         </Grid>
                     }

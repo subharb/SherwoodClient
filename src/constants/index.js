@@ -148,8 +148,9 @@ export const TYPE_FILL_LAB_SURVEY = 8;
 export const TYPE_FILL_IMG_SURVEY = 9;
 export const TYPE_EDITABLE_SURVEY = 10;
 export const TYPE_ADDITIONAL_INFO_SURVEY = 11;
+export const TYPE_NURSE = 12;
 
-export const TYPE_SURVEYS = [{ value: TYPE_MEDICAL_SURVEY, name: "Medical" }, { value: TYPE_IMAGE_SURVEY, name: "Images" }, { value: TYPE_LAB_SURVEY, name: "Laboratory" },
+export const TYPE_SURVEYS = [{ value: TYPE_MEDICAL_SURVEY, name: "Medical" }, { value: TYPE_NURSE, name: "Nurse" }, { value: TYPE_IMAGE_SURVEY, name: "Images" }, { value: TYPE_LAB_SURVEY, name: "Laboratory" },
 { value: TYPE_FIRST_VISIT_SURVEY, name: "First Visit" }, { value: TYPE_MONITORING_VISIT_SURVEY, name: "Monitoring" },
 { value: TYPE_DISCHARGE_SURVEY, name: "Discharge" }, { value: TYPE_SOCIAL_SURVEY, name: "Social" }, { value: TYPE_SHOE_SURVEY, name: "Shoe" },
 { value: TYPE_FILL_LAB_SURVEY, name: "Fill Lab" }, { value: TYPE_FILL_IMG_SURVEY, name: "Fill IMG" },
@@ -159,7 +160,9 @@ export const TYPE_SURVEYS = [{ value: TYPE_MEDICAL_SURVEY, name: "Medical" }, { 
 export const CATEGORY_DEPARTMENT_MEDICAL = 0;
 export const CATEGORY_DEPARTMENT_SOCIAL = 1;
 export const CATEGORY_DEPARTMENT_SHOE = 3;
-export const CATEGORY_SURVEYS = [{ value: CATEGORY_DEPARTMENT_MEDICAL, name: "Medical" }, { value: CATEGORY_DEPARTMENT_SOCIAL, name: "Social", url: "social" }, { value: CATEGORY_DEPARTMENT_SHOE, name: "Shoe", url: "shoe" }];
+export const CATEGORY_DEPARTMENT_NURSE = 4;
+export const CATEGORY_SURVEYS = [{ value: CATEGORY_DEPARTMENT_MEDICAL, name: "Medical" }, { value: CATEGORY_DEPARTMENT_SOCIAL, name: "Social", url: "social" }, 
+                                    { value: CATEGORY_DEPARTMENT_SHOE, name: "Shoe", url: "shoe" }, { value: CATEGORY_DEPARTMENT_NURSE, name: "Nurse", url: "nurse" }];
 
 export const TYPE_REQUEST_LAB = 0;
 export const TYPE_REQUEST_IMG = 1;
