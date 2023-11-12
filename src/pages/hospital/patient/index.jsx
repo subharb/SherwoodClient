@@ -378,6 +378,7 @@ function Patient(props) {
                     return acc.concat(current.fields)
                 }, [])
                 return <SurveyRecordsTable fields={fieldSurvey} submissions={filteredRecords} 
+                            locale={props.activeLanguage.code}
                             onSelectSubmission={(index) => selectSubmission(index)}  />
             }
             return(

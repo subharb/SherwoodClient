@@ -17,6 +17,9 @@ export interface ReduxStore{
 }
 
 export interface ISubmission{
+    id:number,
+    createdAt:Date,
+    updatedAt:Date,
     surveyRecords: ISurveyRecord[],
 }
 

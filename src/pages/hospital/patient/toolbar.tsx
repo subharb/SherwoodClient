@@ -9,7 +9,8 @@ import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
 import iconDS from "../../../img/icons/ds.png";
 import iconShoe from "../../../img/icons/shoe.png";
-import iconNurse from "../../../img/icons/nurse.svg";
+import iconNurse from "../../../img/icons/nursing_black.png";
+import iconNurseGreen from "../../../img/icons/nursing_green.png";
 import iconNotesGreen from "../../../img/icons/history_green.png";
 import iconImagesGreen from "../../../img/icons/images_green.png";
 import iconLabGreen from "../../../img/icons/lab_green.png";
@@ -157,7 +158,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                         categorySurveys.includes(CATEGORY_DEPARTMENT_NURSE) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => nurseCallBack()} >
-                                <img src={categorySurveySelected === CATEGORY_DEPARTMENT_NURSE ? iconNurse : iconNurse} alt="Nurse" height="40" />
+                                <img src={typeSurveySelected === "nurse" ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
                             </Button>
                         </Grid>
                     }
