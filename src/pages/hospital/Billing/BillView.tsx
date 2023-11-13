@@ -113,7 +113,15 @@ const BillView: React.FC<BillViewProps> = (props) => {
                     </Card>)
             }
             else{
-                return renderResearcherDepartmentSelector()
+                return (
+                    <Card style={{margin:'10px'}}>
+                        <Box padding={2} >  
+                        {
+                            renderResearcherDepartmentSelector()
+                        }
+                        </Box>
+                    </Card>
+                )
             }
             
         }
