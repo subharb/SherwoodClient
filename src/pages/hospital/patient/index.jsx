@@ -32,6 +32,47 @@ import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import SurveyRecordsTable from '../SurveyRecordsTable';
 
 
+function urlToSection(urlType, dataCollectionSelected){
+    try{
+        if(typeof urlType === "undefined"){
+            if(dataCollectionSelected === null){
+                return types.PATIENT_TOOLBAR_SECTION_MEDICAL;
+            }
+            switch(dataCollectionSelected.category){
+                case types.CATEGORY_DEPARTMENT_MEDICAL:
+                    return types.PATIENT_TOOLBAR_SECTION_MEDICAL;
+                case types.CATEGORY_DEPARTMENT_SOCIAL:
+                    return types.PATIENT_TOOLBAR_SECTION_SOCIAL;
+                case types.CATEGORY_DEPARTMENT_NURSE:
+                    return types.PATIENT_TOOLBAR_SECTION_NURSE;
+                case types.CATEGORY_SURVEY_SHOE:
+                    return types.PATIENT_TOOLBAR_SECTION_SHOE;
+    
+            }
+            
+        }
+        switch(urlType){
+            case "images":
+                return types.PATIENT_TOOLBAR_SECTION_IMAGE;
+            case "lab":
+                return types.PATIENT_TOOLBAR_SECTION_LAB;
+            case "social":
+                return types.PATIENT_TOOLBAR_SECTION_SOCIAL;
+            case "shoe":
+                return types.PATIENT_TOOLBAR_SECTION_SHOE;
+            case "nurse":
+                return types.PATIENT_TOOLBAR_SECTION_NURSE;
+            default:
+                return types.PATIENT_TOOLBAR_SECTION_MEDICAL;
+        }
+    }
+    catch(error){
+        console.log("Error en urlToSection", error);
+        return types.PATIENT_TOOLBAR_SECTION_MEDICAL; 
+    }
+    
+}
+
 const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse"};
 const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
     newDict[TYPE_URL[key]] = parseInt(key);
@@ -667,8 +708,8 @@ function Patient(props) {
                 </Modal> 
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
-                        typeSurveySelected={parameters.typeTest ? parameters.typeTest : "medical" }
-                        categorySurveySelected = {categorySurveySelected}
+                        typeSurveySelected={ dataCollectionSelected ? dataCollectionSelected.type : parameters.typeTest ? parameters.typeTest : "medical" }
+                        sectionSelected = {urlToSection(parameters.typeTest, dataCollectionSelected)}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} disabled={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} 
