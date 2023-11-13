@@ -2,7 +2,7 @@ import { Button, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, 
 import { blue, red } from "@mui/material/colors";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
-import { ButtonAdd, IconGenerator } from "../../../components/general/mini_components";
+import { ButtonAdd, ButtonCancel, ButtonContinue, ButtonContinueStyles, ButtonOk, IconGenerator } from "../../../components/general/mini_components";
 import { TYPES_DISCOUNT, TYPE_BILL_ITEM } from "../../../constants/types";
 import { calculateTotalBill, getDateFromStringOrDate } from "../../../utils/bill";
 import { Bill, Billable, BillItem, BillItemKeys, BillItemModes, BillItemTable, DocumentStatus, DocumentType } from "./types";
@@ -669,16 +669,16 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                         </Grid>
                     }
                    
-                    <GridBottom hide={print} item xs={12} >
-                        <Button onClick={onCancelBill} data-testid="cancel-modal">
+                    <GridBottom hide={print} item xs={12} paddingTop={5} >
+                        <ButtonCancel style={{marginRight:'1rem'}}  onClick={onCancelBill} data-testid="cancel-modal">
                             {
                                 !canUpdateBill ? <Translate id="general.close" /> : <Translate id="general.cancel" />
                             }
-                        </Button>
-                        <Button disabled={items.length === 0} onClick={() => onClickContinue(items)} 
+                        </ButtonCancel>
+                        <ButtonOk disabled={items.length === 0} onClick={() => onClickContinue(items)} 
                             data-testid="continue-modal">
                             {renderTextOkButton()}
-                        </Button>
+                        </ButtonOk>
                     </GridBottom>
 
                 </Grid>

@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Tab, Tabs, Typography, TabProps } from "@mui/material";
 import { ReactNode, useState } from "react";
 import styled from "styled-components";
 
@@ -10,17 +10,21 @@ export function a11yProps(index:number) {
     };
 }
 
-const TabsStyled = styled(Tabs)(({ theme }) => ({
+interface CustomTabProps extends TabProps {
+    whiteBackground?: boolean;
+  }
+
+const TabsStyled = styled(Tabs)<CustomTabProps>(({ theme, whiteBackground }) => ({
     "& .MuiTabs-indicator": {
         backgroundColor: theme.palette.primary.color,
     },
     "& .MuiTab-root": {
-        color: theme.palette.primary.color,
+        color: whiteBackground ? "grey" : theme.palette.primary.color,
         "&.Mui-selected": {
-            color: theme.palette.primary.color,
+            color: whiteBackground ? "black" : theme.palette.primary.color,
         },
         "&:hover": {
-            color: theme.palette.primary.color,
+            color: whiteBackground ? "black" : theme.palette.primary.color,
         },
     }
 }));
@@ -50,19 +54,20 @@ export function TabPanel(props:TabPanelProps) {
     );
 }
 
-interface TabProps{
+interface TabSherwoodProps{
     name:string,
     children:ReactNode[],
     initTab?:number,
     labels:string[],
     style?:object,
+    whiteBackground:boolean,
     tabChangeCallback?:(tabSelected:number)=>void
 }
 
 const CustomTab = styled(Tab)(({ theme }) => ({
-    color: theme.palette.secondary.color, // Set the color using the secondary color from the theme
+    color: "red",//theme.palette.secondary.color, // Set the color using the secondary color from the theme
     "&.Mui-selected": {
-      color: theme.palette.secondary.main, // Set the color of the selected tab to red
+      color: "red", //theme.palette.secondary.main, // Set the color of the selected tab to red
     },
     "& .PrivateTabIndicator-colorSecondary": {
       backgroundColor: theme.palette.secondary.main, // Set the color of the indicator using the secondary color from the theme
@@ -71,7 +76,7 @@ const CustomTab = styled(Tab)(({ theme }) => ({
 
 
 
-export function TabsSherwood(props:TabProps){
+export function TabsSherwood(props:TabSherwoodProps){
     const [tabSelector, setTabSelector] = useState(props.initTab ? props.initTab : 0);
 
     function onTabChange(event: any, value: any){
@@ -83,7 +88,7 @@ export function TabsSherwood(props:TabProps){
 
     return (
         <>
-        <TabsStyled value={tabSelector} onChange={onTabChange} variant="scrollable"
+        <TabsStyled whiteBackground={props.whiteBackground} value={tabSelector} onChange={onTabChange} variant="scrollable"
             
             scrollButtons="auto"  aria-label={props.name} {...props}>
             {

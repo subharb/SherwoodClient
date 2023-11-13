@@ -295,6 +295,7 @@ export const ButtonOk = (props) =>{
     return <ButtonContinue 
         variant="contained"
         colorRGB={green[500]}
+        style={{color:'white'}}
         size="small"
         {...props}
         data-testid={props['data-testid'] ? props['data-testid'] : "continue"}

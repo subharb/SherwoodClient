@@ -104,7 +104,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                                                                     translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
     const [errorServices, setErrorServices] = React.useState(false);
-    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartmentCallback} = useDeparmentsSelector(false, true, true);
+    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartment} = useDeparmentsSelector(false, true, true);
 
     const serviceCategories = useMemo(() => {
         let categories:{[id:string]:IServiceInvestigation[]} = {};
@@ -124,7 +124,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
         const serviceInvestigationIds = Object.keys(servicesInvestigationSelected).filter((key) => servicesInvestigationSelected[key] === true).map((key) => parseInt(key.replace(SERVICE_SEPARATOR, "")));
         if((departmentSelected === null && units.length > 0) || serviceInvestigationIds.length === 0){
             if(departmentSelected === null){
-                markAsErrorDepartmentCallback();
+                markAsErrorDepartment();
             }
             if(serviceInvestigationIds.length === 0){
                 setErrorServices(true);   
@@ -176,7 +176,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                 key: category
             }}).sort((labelA, labelB) => labelA.label.localeCompare(labelB.label, activeLanguage.code))
             return (
-                <TabsSherwood name="Requests"   
+                <TabsSherwood name="Requests" whiteBackground={true}
                     labels={orderedLabels.map((orderedLabel) => orderedLabel.label) } >
                         { orderedLabels.map((orderedLabel) => orderedLabel.key).map((serviceCategory) => {
                             return <Grid container item xs={12} spacing={1}>

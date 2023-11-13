@@ -8,7 +8,7 @@ import { useSnackBarState, useStatusDocument } from '../../../hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { pushBillables } from '../../../redux/actions/billingActions';
 import PatientInfo from './PatientInfo';
-import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material';
+import { Box, Card, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import { Autocomplete } from "@mui/lab"
 import { ButtonAdd } from '../../../components/general/mini_components';
 
@@ -105,10 +105,12 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
     function renderOptions(){
         if(patient){
             return (
-                <>
-                    { renderTypeDocument() }
-                    { renderStatusDocument }
-                </>
+                <Card style={{margin:'10px'}}>
+                    <Box padding={2} > 
+                        { renderTypeDocument() }
+                        { renderStatusDocument }
+                    </Box>
+                </Card>
             )
         }
         else{
@@ -125,7 +127,10 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
                         onPatientSelected={(idPatient) => onPatientSelected(idPatient)} />
         }
         else{
-            return <PatientInfo patient={patient} languageCode={props.languageCode} rightSide={
+            return (
+                <Card style={{margin:'10px'}}>
+                    <Box padding={2} > 
+                    <PatientInfo patient={patient} languageCode={props.languageCode} rightSide={
                         <Grid container item xs={6} style={{ display:'flex', paddingTop: '1rem' }} >
                             <Autocomplete
                                 disabled={loadingBillables}
@@ -156,6 +161,9 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
                             }
                         </Grid>
                 } />
+                    </Box>
+                </Card>
+            )
         }
     }
     return (
