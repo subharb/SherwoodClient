@@ -9,6 +9,7 @@
         "actions" : ["Actions", "Acciones", "Actions"],
         "paid" : ["Paid", "Pagado", "Payé"],
         "used" : ["Used", "Usado", "Utilisé"],
+        "born" : ["born", "nacido", " né(e)"],
         "week_days" : {
             "monday" : ["Monday", "Lunes", "Lundi"],
             "tuesday" : ["Tuesday", "Martes", "Mardi"],
@@ -334,6 +335,20 @@
             "convert" : {
                 "to_budget" : ["Convert to budget", "Convertir a presupuesto", "Convertir en devis"],
                 "to_invoice" : ["Convert to invoice", "Convertir a factura", "Convertir en facture"]
+            },
+            "pdf" : {
+                "num_dossier" :["Dossier number", "Número de ficha", "Numéro de dossier" ] ,
+                "patient_identity" : ["Patient Identity", "Paciente", "Identité du patient"],
+                "title" : {
+                    "summary" : [],
+                    "budget" : ["DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL"]
+                },
+                "subtitle" : {
+                    "summary" : ["Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme <b>payées</b>."]
+                },
+                "billform_title" : {
+                    "budget" : ["Prestations comprises dans l'acte médical", "Prestations comprises dans l'acte médical", "Prestations comprises dans l'acte médical"]
+                }
             },
             "markAsPaid" : ["Mark as paid", "Marcar como pagado", "Marquer comme payé"],
             "markAsUsed" : ["Mark as used", "Marcar como usado", "Marquer comme utilisé"],

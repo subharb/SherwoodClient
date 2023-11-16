@@ -9,7 +9,7 @@ import { green, red, yellow } from '@mui/material/colors';
 import { Grid } from '@mui/material';
 import { ColourButton, ColourChip } from '../../../components/general/mini_components-ts';
 import { TabsSherwood } from '../../components/Tabs';
-import { DocumentStatus, DocumentType } from './types';
+import { Bill, DocumentStatus, DocumentType } from './types';
 import { HOSPITAL_BILLING_VIEW_DOCUMENT } from '../../../routes/urls';
 import { useHistory } from 'react-router-dom';
 import { documentStatusToColor, documentTypeToColor } from '../../../utils/bill';
@@ -107,14 +107,17 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         ];
 
         return <EnhancedTable noHeader headCells={headCells} rows={rows}  noSelectable
+                    selectRow={
+                        (index:number) => {
+                            const findBill = rows.find((bill) => bill.id === index);
+                            if(findBill){
+                                history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":uuidDocument", findBill.uuid))}
+                            }
+                        } 
                         currentPage={currentPageTable} changePageCallback={changePageCallback}
-                        actions={[{"type" : "edit", "func" : (index:number) => makeActionBillCallBack(rows[index].id, BillActions.UPDATE)},
-                                {"type" : "view", "func" : (index:number) => {
-                                    const findBill = rows.find((bill) => bill.id === index);
-                                    if(findBill){
-                                        history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":uuidDocument", findBill.uuid))}
-                                    }
-                                }]} 
+                        actions={[{"type" : "pdf", "check" :(bill:any) => bill.statusValue === DocumentStatus.CLOSED, 
+                                    "func" : (index:number) => makeActionBillCallBack(rows[index].uuid, BillActions.PREVIEW)},
+                                ]} 
                                 />
     }
 

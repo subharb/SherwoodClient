@@ -52,7 +52,7 @@ export interface BillItemsProps extends LocalizeContextProps{
     showTotal:boolean,
     repeatBillItems:boolean,
     canUpdateBill:boolean,
-    uuidInvestigation:string,
+    uuidInvestigation?:string,
     error:ReactElement | undefined,
     withDiscount:boolean,
     uuidPatient?:string,
@@ -308,7 +308,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                         callBackEditSubmission={(idSubmission:number, uuidSection:string, submission:any) => {
                             setEditSubmission(submission)} } />
         }
-        else if(surveyAdditionalInfo){
+        else if(surveyAdditionalInfo && uuidInvestigation){
             return <FillSurvey initData={editSubmission} idSubmission={editSubmission ? editSubmission.id : undefined} uuid={surveyAdditionalInfo.uuid} sections={surveyAdditionalInfo.sections} 
                         country={surveyAdditionalInfo.country} uuidInvestigation={uuidInvestigation}
                         uuidPatient={uuidPatient!} 
@@ -366,10 +366,10 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
             let rowElement:{[id: string] : JSX.Element} = {}
             filteredColumns.forEach((col:Column) => {
                 if(col.type === "amount"){
-                    let amountString:string = val.amount;
+                    let amountString:string = new Intl.NumberFormat(activeLanguage.code).format(val.amount);
                     if(TYPES_DISCOUNT.includes(Number(val.type))){
                         const percentSymbol = (Number(val.type) === TYPE_BILL_ITEM.DISCOUNT_PERCENT ? "%" : currency);
-                        amountString =  `-  ${val.amount} ${percentSymbol} `;
+                        amountString =  `-  ${amountString} ${percentSymbol} `;
                     }
                  
                     rowElement[col.name] =  <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
@@ -603,7 +603,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
 
         rows.push(field);
     }
-    if(print){        
+    if(!canUpdateBill && !print){        
         const hasAdditionalInfo = items.find((item) =>{
             return item.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO
         });
@@ -612,7 +612,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                 id: "additiotal", 
                 concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} />{hasAdditionalInfo.concept}</Typography>,
                 type : <></>, 
-                amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{hasAdditionalInfo.amount + " " + currency}</Typography>,
+                amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{new Intl.NumberFormat(activeLanguage.code).format(hasAdditionalInfo.amount) + " " + currency}</Typography>,
                 delete: <React.Fragment></React.Fragment>,
             });
         }
@@ -622,7 +622,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         rows.push({
             id: items.length, concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>,
             type : <></>, 
-            amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{totalBill + " " + currency}</Typography>,
+            amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{new Intl.NumberFormat(activeLanguage.code).format(totalBill) + " " + currency}</Typography>,
             delete: <React.Fragment></React.Fragment>,
         });
     }
@@ -656,9 +656,6 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         
             <Grid container item>
                 <Grid item xs={12}>
-                    <FactureHolder hide={!print}>
-                        <Translate id="hospital.billing.bill.name" />
-                    </FactureHolder>
                     <EnhancedTable noFooter noHeader noPagination noSelectable disableOrder headCells={headCells} rows={rows} />
                 </Grid>
                 <Grid item xs={12} style={{ display: "flex", flexDirection: "column" }} >

@@ -529,10 +529,6 @@ export function decryptPatientsData(patientsData, investigation){
     return tempDecryptedData;
 }
 
-export function fullNamePatient(patientData){
-    return patientData.name + " " + patientData.surnames;
-}
-
 export function decryptSinglePatientData(patientPersonalData, investigation){
 
     let encryptedFields = {};
@@ -617,6 +613,14 @@ export function stringDatePostgresToDate(date){
 
 export function researcherFullName(researcher){
     return researcher.name + " " + researcher.surnames;
+}
+
+export function patientFullName(patient){
+    return `${patient.personalData.name} ${patient.personalData.surnames}`
+}
+
+export function getPatientID(patient){
+    return patient.personalData.health_id ? patient.personalData.health_id : patient.id;
 }
 
 export function formatPatients(patients, personalFields, code = 'es-ES', insurances = []){

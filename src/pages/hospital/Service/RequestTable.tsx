@@ -9,7 +9,7 @@ import { ColourChip } from '../../../components/general/mini_components-ts';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
 import { useDepartments } from '../../../hooks';
-import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, fullNamePatient, getDepartmentFromUnit, researcherFullName, stringDatePostgresToDate } from '../../../utils/index.jsx';
+import { dateAndTimeFromPostgresString, decryptSinglePatientData, fullDateFromPostgresString, getDepartmentFromUnit, patientFullName, researcherFullName, stringDatePostgresToDate } from '../../../utils/index.jsx';
 import axios from '../../../utils/axios';
 
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation, RequestStatus, RequestType } from './types';
@@ -213,7 +213,7 @@ export const RequestTableComponent: React.FC<RequestTableComponentProps> = ({ uu
                 nhc: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.id : "",
                 service: request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation.length > 1 ? <ColourChip rgbcolor={serviceToColor(request.type)} label={<Translate id="general.several" />} /> : <ColourChip rgbcolor={serviceToColor(request.type)} label={request.requestsServiceInvestigation[0].serviceInvestigation.service.name} /> : "",
                 department:request.departmentRequest ? request.departmentRequest.name : "",
-                patient:request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.personalData ? fullNamePatient(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id.toLocaleString() : "",
+                patient:request.requestsServiceInvestigation[0] ? request.requestsServiceInvestigation[0].patientInvestigation.personalData ? patientFullName(decryptSinglePatientData(request.requestsServiceInvestigation[0].patientInvestigation.personalData, encryptionData)) : request.requestsServiceInvestigation[0].patientInvestigation.id.toLocaleString() : "",
                 researcher: researcherFullName(request.researcher),            
                 status: <RequestStatusToChip status={request.status} />,
                 type : request.requestsServiceInvestigation[0] ? <ServiceTypeToChip type={request.requestsServiceInvestigation[0].serviceInvestigation.service.type} /> : "", 

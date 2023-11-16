@@ -351,11 +351,12 @@ const Billing: React.FC<Props> = (props) => {
     }, [props.showSnackbar]);
 
 
-    function makeActionBill(idBill: number, action: BillActions) {
-        console.log(idBill);
-        const tempBill = props.bills.find((bill) => bill.id === idBill);
+    function makeActionBill(uuidBill: string, action: BillActions) {
+        console.log(uuidBill);
+        const tempBill = props.bills.find((bill) => bill.uuid === uuidBill);
 
         if (tempBill) {
+            
             const patient = props.patients.find((patient) => patient.uuid === tempBill.uuidPatient);
             if (patient) {
                 setActionBill(action);

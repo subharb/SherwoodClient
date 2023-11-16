@@ -27,6 +27,7 @@ import {
     Today as TodayIcon,
     Hotel as HotelIcon,
     Undo as UndoIcon,
+    PictureAsPdf as PdfIcon,
     Settings as SettingsIcon,
     ArrowBack as ArrowBackIcon,
     Today,
@@ -40,9 +41,10 @@ import {
     Divider as MuiDivider,
     Fab as MuiFab,
     IconButton as MuiIconButton,
+    
     Typography, Box, Grid, FormHelperText, FormControl, InputLabel, Select
   } from "@mui/material";  
-
+  
   import Button from '@mui/material/Button';
 
 import { spacing } from "@mui/system";
@@ -83,6 +85,8 @@ export const IconGenerator = withTheme((props) => {
             return <TimelineIcon style={{color : props.theme.buttonContinue.primary.background }}   />
         case "billing":
             return <MonetizationOnIcon style={{color : props.theme.buttonContinue.primary.background }}  />
+        case "pdf":
+            return <PdfIcon style={{color : props.theme.buttonContinue.primary.background }}  />
         default:
             return <AddIcon />
     }
