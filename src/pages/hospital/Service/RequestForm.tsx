@@ -176,7 +176,7 @@ export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servi
                 key: category
             }}).sort((labelA, labelB) => labelA.label.localeCompare(labelB.label, activeLanguage.code))
             return (
-                <TabsSherwood name="Requests"   
+                <TabsSherwood name="Requests" whiteBackground={true}
                     labels={orderedLabels.map((orderedLabel) => orderedLabel.label) } >
                         { orderedLabels.map((orderedLabel) => orderedLabel.key).map((serviceCategory) => {
                             return <Grid container item xs={12} spacing={1}>

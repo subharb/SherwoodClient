@@ -3,16 +3,18 @@ import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { ButtonAdd, IconGenerator, IconPatient } from "../../../components/general/mini_components"
 import { DepartmentType, IUnit, PersonalData } from "../../../constants/types"
-import {CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
+import {CATEGORY_DEPARTMENT_NURSE, CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, PATIENT_TOOLBAR_SECTION_IMAGE, PATIENT_TOOLBAR_SECTION_LAB, PATIENT_TOOLBAR_SECTION_MEDICAL, PATIENT_TOOLBAR_SECTION_NURSE, PATIENT_TOOLBAR_SECTION_SHOE, PATIENT_TOOLBAR_SECTION_SOCIAL, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
 import iconNotes from "../../../img/icons/history.png";
 import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
 import iconDS from "../../../img/icons/ds.png";
 import iconShoe from "../../../img/icons/shoe.png";
+import iconNurse from "../../../img/icons/nursing_black.png";
+import iconNurseGreen from "../../../img/icons/nursing_green.png";
 import iconNotesGreen from "../../../img/icons/history_green.png";
 import iconImagesGreen from "../../../img/icons/images_green.png";
 import iconLabGreen from "../../../img/icons/lab_green.png";
-import { disabledTransition } from "@dnd-kit/sortable/dist/hooks/defaults"
+
 import React from "react"
 
 interface Props{
@@ -27,7 +29,7 @@ interface Props{
     typeSurveysAvailable:number[],
     categorySurveys:number[],
     typeSurveySelected:string,
-    categorySurveySelected:number,
+    sectionSelected:number,
     stay:any,
     medicalNotesCallBack:() =>void,
     editCallBack:() => void,
@@ -35,6 +37,7 @@ interface Props{
     socialCallBack:() => void,
     shoeCallBack:() => void,
     testCallBack:() => void,
+    nurseCallBack:() => void,
     addRecordCallBack: () => void,
     hospitalize?:() => void,
     
@@ -54,8 +57,8 @@ const Container = styled(Grid)`
 export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMedicalPermission,
                                                 writeMedicalPermission, disabled, typeSurveysAvailable,
                                                 unitsResearcher,
-                                                typeSurveySelected, categorySurveys, categorySurveySelected, years, 
-                                                addRecordCallBack, hospitalize, medicalNotesCallBack, 
+                                                typeSurveySelected, categorySurveys, sectionSelected, years, 
+                                                addRecordCallBack, hospitalize, medicalNotesCallBack, nurseCallBack,
                                                 editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack}) =>{
 
     // use memo to store if the researcher belongs to a department of type social
@@ -122,32 +125,40 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                 <Grid item container xs={5}  justifyContent="center" alignItems="center">
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="medical-notes" onClick={() => medicalNotesCallBack()} >
-                            <img src={typeSurveySelected === "medical" ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
+                            <img src={sectionSelected === PATIENT_TOOLBAR_SECTION_MEDICAL ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
                         </Button>
                     </Grid>
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="images" onClick={() => testCallBack()} >
-                            <img src={typeSurveySelected === "images"  ? iconImagesGreen : iconImages} alt="Images" height="40" />
+                            <img src={sectionSelected === PATIENT_TOOLBAR_SECTION_IMAGE  ? iconImagesGreen : iconImages} alt="Images" height="40" />
                         </Button>
                     </Grid>
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="lab" onClick={() => labCallBack()} >
-                            <img src={typeSurveySelected === "lab"  ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                            <img src={sectionSelected === PATIENT_TOOLBAR_SECTION_LAB  ? iconLabGreen : iconLab} alt="Lab" height="40" />
                         </Button>
                     </Grid>
                     {
                         isResearcherSocial && categorySurveys.includes(CATEGORY_DEPARTMENT_SOCIAL) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="social" onClick={() => socialCallBack()} >
-                                <img src={typeSurveySelected === "social" ? iconDS : iconDS} alt="Social" height="20" />
+                                <img src={sectionSelected === PATIENT_TOOLBAR_SECTION_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
                             </Button>
                         </Grid>
                     }
                     {
-                        isResearcherShoe && 
+                        isResearcherShoe  && categorySurveys.includes(CATEGORY_DEPARTMENT_SHOE) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => shoeCallBack()} >
-                                <img src={categorySurveySelected === CATEGORY_DEPARTMENT_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
+                                <img src={sectionSelected === PATIENT_TOOLBAR_SECTION_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
+                            </Button>
+                        </Grid>
+                    }
+                    {
+                        categorySurveys.includes(CATEGORY_DEPARTMENT_NURSE) && 
+                        <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                            <Button data-testid="show" onClick={() => nurseCallBack()} >
+                                <img src={sectionSelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
                             </Button>
                         </Grid>
                     }
