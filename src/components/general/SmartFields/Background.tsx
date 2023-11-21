@@ -58,7 +58,7 @@ function Background(props: PropsSmartFieldLocalized) {
                             },
                           }}
                         onChange={(value: Date | null) => {
-                            const dateString = value ? value.toISOString() : null;
+                            const dateString = value && value.toISOString() ? value.toISOString() : null;
                             setDate(dateString);                         
                             setErrorDate(false);
                         }}/>
