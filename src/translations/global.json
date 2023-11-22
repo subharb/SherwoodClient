@@ -311,7 +311,6 @@
                     "title" : ["Appointment", "Cita", "Rendez-vous"],
                     "table-title" : ["Department", "Departamento", "Département"]
                 }
-
             }
         },
         "notification": {

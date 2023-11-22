@@ -11,7 +11,7 @@ import { FieldWrapper } from '../components/general/mini_components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgendasInvestigationAction, getDepartmentsInvestigationAction } from '../redux/actions/hospitalActions';
 import { Color } from '@mui/lab';
-import { IAgenda, IDepartment, IResearcher, IUnit } from '../constants/types';
+import { IAgenda, IDepartment, IInsurance, IResearcher, IUnit } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
 import { IRequest, IService } from '../pages/hospital/Service/types';
 import { fetchProfileInfoAction } from '../redux/actions/profileActions';
@@ -23,6 +23,7 @@ import { isArray, isObject, set } from 'lodash';
 import { DocumentStatus } from '../pages/hospital/Billing/types';
 import { ColourChip } from '../components/general/mini_components-ts';
 import { documentStatusToColor } from '../utils/bill';
+import { getInsurancesAction } from '../redux/actions/insuranceActions';
 
 export interface SnackbarType{
     show: boolean;
@@ -110,6 +111,37 @@ export function useServiceGeneral(serviceType:number){
     return { servicesGeneral, loadingServicesGeneral }
 }
 
+export function useInsurances(patientInsuranceId:number){
+    const investigations= useSelector((state:any) => state.investigations);
+    const insurances = useSelector((state:{insurances : {data: IInsurance[]}}) => state.insurances.data ? state.insurances.data : null);
+    const loadingInsurances = useSelector((state:any) => state.insurances.loading || state.investigations.loading);
+    const [patientInsurance, setPatientInsurance] = useState<IInsurance | null>(null);
+
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        async function getInsurances(uuidInvestigation:string){
+            await dispatch(
+                getInsurancesAction(uuidInvestigation)
+            ); 
+        }
+        if(investigations.data && investigations.currentInvestigation && insurances === null){
+            getInsurances(investigations.currentInvestigation.uuid)
+        }
+    }, [investigations])
+
+    useEffect(() => {
+        if(insurances && patientInsuranceId !== null){
+            const insurance = insurances.find((insurance) => insurance.id === patientInsuranceId);
+            if(insurance){
+                setPatientInsurance(insurance)
+            }
+        }
+    }, [insurances])
+
+    return [insurances, loadingInsurances, patientInsurance ]
+}
+
 export function useDepartments(researchersDepartmentsOnly:string = ""){
     const investigations= useSelector((state:any) => state.investigations);
     const departments:IDepartment[] | null = useSelector((state:{hospital : {data: {departments : IDepartment[]}}}) => state.hospital.data.departments ? state.hospital.data.departments : null);
@@ -161,8 +193,6 @@ export function useRequest(idRequest:number){
     const investigations= useSelector((state:any) => state.investigations);
     const [loadingRequest, setLoadingRequest] = useState(false);
     const [request, setRequest] = useState<IRequest | null>(null);
-
-    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchRequest = async () => {
@@ -659,3 +689,4 @@ export function useResearcherDepartmentSelector(defaultValueResearcher?:string, 
     return {researchers, renderResearcherDepartmentSelector, uuidResearcherSelected,
             loadingResearcherOrDepartments:(loadingDepartments || loadingResearchers), researcherSelected, uuidDepartmentSelected, departmentSelected,  markAsErrorReseacherCallback, markAsErrorDepartmentCallback}
 }
+

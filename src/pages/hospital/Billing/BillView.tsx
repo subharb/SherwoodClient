@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Bill, BillItem, DocumentStatus, DocumentType } from './types';
 import { IPatient } from '../../../constants/types';
 import PatientInfo from './PatientInfo';
@@ -11,10 +11,8 @@ import { documentTypeToColor, documentTypeToString } from '../../../utils/bill';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Modal from '../../../components/general/modal';
 import { ColourChip } from '../../../components/general/mini_components-ts';
-import { useResearcherDepartmentSelector, useResearchersSelector, useStatusDocument } from '../../../hooks';
+import { useInsurances, useResearcherDepartmentSelector, useResearchersSelector, useStatusDocument } from '../../../hooks';
 import Loader from '../../../components/Loader';
-import { saveBillingItems } from '../../../redux/actions/billingActions';
-import { useDispatch } from 'react-redux';
 
 
 interface BillViewProps {
@@ -40,6 +38,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
     const [showModal, setShowModal] = React.useState(false);
     const [newDocumentType, setNewDocumentType] = React.useState<DocumentType>(DocumentType.BUDGET);
     const {statusDocument, renderStatusDocument} = useStatusDocument(props.billStatus, false);
+    const [insurances, loadingInsurances, patientInsurance] = props.patient.personalData.insurance ? useInsurances(parseInt(props.patient.personalData.insurance.toString())) : [null, false];
 
     const {renderResearcherDepartmentSelector, loadingResearcherOrDepartments, 
             researcherSelected, departmentSelected, uuidDepartmentSelected, 
@@ -48,6 +47,10 @@ const BillView: React.FC<BillViewProps> = (props) => {
     function onCloseModal(){
         setShowModal(false);
     }
+
+    useEffect(() => {
+
+    }, [props.bill]);
 
     function onUpdateBill(billItems: BillItem[], typeUpdate:TypeBillItemUpdate) {
         if(props.billType === DocumentType.INVOICE){
@@ -128,25 +131,6 @@ const BillView: React.FC<BillViewProps> = (props) => {
         return null;
     }
 
-
-    // function renderMarkAsPaid(){
-    //     if(props.billType === DocumentType.INVOICE && props.billStatus === DocumentStatus.CLOSED){
-    //         return ([
-    //             <Grid item xs={6}  >
-    //                 <Button variant="contained" color="primary" onClick={() => toggleAllItemsAs("paid")}>
-    //                     <Translate id="hospital.billing.markAsPaid" />
-    //                 </Button>
-    //             </Grid>,
-    //             <Grid item xs={6}  >
-    //                 <Button variant="contained" color="secondary" onClick={() => toggleAllItemsAs("used")}>
-    //                     <Translate id="hospital.billing.markAsUsed" />
-    //                 </Button>
-    //             </Grid>
-    //             ]
-    //         )
-    //     }
-    //     return null;
-    // }
     function renderConvertButton(){
         if(!props.hasBudgets){
             return null;
@@ -215,6 +199,10 @@ const BillView: React.FC<BillViewProps> = (props) => {
                             <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.num_bill" /></span>: {props.bill.id}</Typography>
                             <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.date" /></span>: {fullDateFromPostgresString(props.languageCode, props.bill.createdAt)}</Typography>
                             <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.type" /></span>: <Translate id={`hospital.billing.bill.types.${documentTypeToString(props.billType)}`}/></Typography>
+                            {
+                                patientInsurance &&
+                                <Typography variant='body2'><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.insurance" /></span> : {patientInsurance.name} </Typography>
+                            }
                         </Grid>
                     } />
                 </Box>

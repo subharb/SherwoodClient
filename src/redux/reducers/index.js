@@ -11,6 +11,7 @@ import profileReducer from "./profileReducer";
 import hospitalReducer from "./hospitalReducer";
 import requestsReducer from "./requestsReducer";
 import billingReducer from "./billingReducer";
+import insurancesReducer from "./insurancesReducer";
 
 
 export const rootReducer = combineReducers({
@@ -25,5 +26,6 @@ export const rootReducer = combineReducers({
   hospital: hospitalReducer,
   requests:requestsReducer,
   billing: billingReducer,
+  insurances: insurancesReducer,
   form:formReducer
 });

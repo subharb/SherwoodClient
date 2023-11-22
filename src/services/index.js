@@ -36,6 +36,23 @@ export const fetchInvestigations = datalogger(() => {
     });
 });
 
+
+export const getInsurancesService = datalogger((uuidInvestigation) => {
+    return new Promise((resolve, reject) => {
+
+        axios.get(import.meta.env.VITE_APP_API_URL + '/billing/investigation/' + uuidInvestigation+ '/insurances', { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
+    });
+});
+
 export const fetchProfileService = datalogger((uuidInvestigation) => {
     return new Promise((resolve, reject) => {
 

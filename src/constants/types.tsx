@@ -199,6 +199,16 @@ export interface IPatient{
     dateCreated:Date
 }
 
+export interface IInsurance{
+    id:number,
+    name:string,
+    code:string,
+    active:boolean,
+    createdAt:Date,
+    updatedAt:Date,
+    deletedAt:Date,
+}
+
 export interface IOutpatientsInfo{
     params: IOutpatientsParams,
 }

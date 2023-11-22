@@ -115,6 +115,10 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, hospitalName, locale, 
                 <Grid item xs={12}>
                     <Typography variant='body2'>{patientFullName(patient)} <Translate id="general.born" /> {fullDateFromPostgresString(locale, patient.personalData.birthdate)}</Typography>
                     {
+                        patient.personalData.insurance &&
+                        <Typography variant='body2'><Translate id="investigation.create.personal_data.fields.insurance" /> : {patient.personalData.insurance} </Typography>
+                    }
+                    {
                         patient.personalData.health_id &&
                         <Typography variant='body2'><Translate id="hospital.billing.pdf.num_dossier" /> : {getPatientID(patient)} </Typography>
                     }
