@@ -38,6 +38,7 @@ export interface BillItem{
     concept:string,
     type:number,
     quantity:number,
+    unitCost:number,
     additionalInfoId?:number,
     relatedBillables?:number[],
     amount:number | string,

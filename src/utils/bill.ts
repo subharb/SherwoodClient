@@ -3,15 +3,20 @@ import { BillItem, DocumentStatus, DocumentType } from "../pages/hospital/Billin
 import { stringDatePostgresToDate } from ".";
 
 
-export function calculateTotalBill(items:BillItem[]){
-    let amountSeparation = [0,0,0,0,0];
+export function calculateTotalBill(items:BillItem[], withoutTypes:number[] = [], officialPrices = false){
+    let amountSeparation = [0,0,0,0,0, 0];
     for(let i = 0; i < items.length; i++){
         const currentBillItem = items[i];
-
-        amountSeparation[currentBillItem.type ? currentBillItem.type : 0] += Number(currentBillItem.amount) * Number(currentBillItem.quantity);  
+        if(!withoutTypes.includes(currentBillItem.type ? currentBillItem.type : 0)){
+            const amount = currentBillItem.amountAlter && !officialPrices ? Number(currentBillItem.amountAlter) : Number(currentBillItem.amount);
+            amountSeparation[currentBillItem.type ? currentBillItem.type : 0] += Number(amount) * Number(currentBillItem.quantity);  
+        }
     }
-    const firstAmount = (amountSeparation[0] + amountSeparation[3]) - (amountSeparation[1]+amountSeparation[4]);
-    const discountAmount = (firstAmount*amountSeparation[2])/100;
+    const firstAmount = (amountSeparation[0] + amountSeparation[3] + amountSeparation[5]) - (amountSeparation[1]);
+    let discountAmount = 0;
+    if(!withoutTypes.includes(2)){
+        discountAmount = (firstAmount*amountSeparation[2])/100;
+    }
     const total = firstAmount - discountAmount;
     //Redondeo a dos decimales
     return  Math.round(total * 100) / 100

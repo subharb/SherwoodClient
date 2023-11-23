@@ -40,7 +40,7 @@ type Story = StoryObj<typeof BillItems>;
 export const BillItemsT: Story = {
   args: {
     canUpdateBill: false,
-    columns : [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"amount", type:"amount", validation:""}], 
+    columns : [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""},{name:"unitCost", type:"amount", validation:""}, {name:"amount", type:"subtotal", validation:""}], 
     uuidPatient:"",
     initItems:[],
     repeatBillItems:true, showTotal:true,
@@ -80,11 +80,26 @@ export const BillItemsT: Story = {
                 },
                 {
                     concept:"Descuento 2 %",
+                    type:TYPE_BILL_ITEM.DISCOUNT_PERCENT,
+                    quantity:1,
+                    amount:30,
+                    updatedAt: new Date(),
+                },
+                {
+                    concept:"Insurance",
                     type:TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
                     quantity:1,
-                    amount:10,
+                    amount:1000,
                     updatedAt: new Date(),
-                },]
+                },
+                {
+                    concept:"Expensive machine",
+                    type:TYPE_BILL_ITEM.HIDDEN_VALUE,
+                    quantity:1,
+                    amount:10000,
+                    updatedAt: new Date(),
+                },
+            ]
         }
         }]
     }> <Story /> </ProviderSherwood>),

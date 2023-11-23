@@ -379,6 +379,7 @@
                 "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],
                 "concept" : ["Concept", "Concepto", "Concept"],
                 "updatedAt" : ["Updated At", "Actualizado", "Mis à jour"],
+                "unitCost" : ["Unit Cost", "Coste unitario", "Coût unitaire"],
                 "amount" : ["Amount", "Cantidad", "Montant"],
                 "type" : ["Type", "Tipo", "Type"],
                 "select_item" : ["Select", "Select", "Seleccionar"],
@@ -390,7 +391,8 @@
                     "discount_amount" : ["Amount Discount", "Cantidad descuento", "Reduction (montant)"],
                     "discount_percent" : ["Discount %", "Descuento %", "Reduction (%)"],
                     "service" : ["Service", "Servicio", "Service"],
-                    "discount_additional_info" : ["Discount Request", "Solicitud de descuento", "Demande de réduction"]
+                    "discount_additional_info" : ["Discount Request", "Solicitud de descuento", "Demande de réduction"],
+                    "hidden_value" : ["Hidden Value", "Valor oculto", "Valeur cachée"]
                 },
                 "error" : {
                     "concept_short" : ["Must have at 3 characters", "Debe tener al menos 3 caracteres", "Doit avoir 3 caractères"],

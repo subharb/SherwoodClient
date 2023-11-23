@@ -88,7 +88,7 @@ export const BillForm:React.FC<Props> = (props) => {
                     </Grid>)
         }
         if(props.patient){
-            let columns:Column[] = [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"amount", type:"amount", validation:""}, {name:"updatedAt", type:"date", validation:""}];
+            let columns:Column[] = [{name:"concept", type:"autocomplete", validation:""}, {name:"type", type:"type", validation:""}, {name:"quantity", type:"number", validation:""}, {name:"unitCost", type:"amount", validation:""}, {name:"amount", type:"subtotal", validation:""}, {name:"updatedAt", type:"date", validation:""}];
             return(
                 <>
                      <Snackbar

@@ -1,6 +1,6 @@
 import { Button, Checkbox, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { blue, red } from "@mui/material/colors";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { ButtonAdd, ButtonCancel, ButtonContinue, ButtonContinueStyles, ButtonOk, IconGenerator } from "../../../components/general/mini_components";
 import { TYPES_DISCOUNT, TYPE_BILL_ITEM } from "../../../constants/types";
@@ -84,11 +84,12 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         acc[column.name] = "";
         return acc;
     }, {});
+    const [updatedBillItemAmount, setUpdatedBillItemAmount] = useState(0);
     const DEFAULT_CURRENT_ITEM = initFieldErrors;
     const [fieldErrors, setFieldErrors] = useState(initFieldErrors);
     const [addingItem, setAddingItem] = useState(false);
     //const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : [])
-    const items  = useSelector((state:any) => {
+    const items:BillItem[]  = useSelector((state:any) => {
         console.log(state.billing.data.billItems);
         return state.billing.data.billItems ? state.billing.data.billItems.sort((bItemA:BillItem, bItemB:BillItem) => {
             if(bItemA.updatedAt && bItemB.updatedAt){
@@ -98,6 +99,18 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
             }
             return 0;
         }) : []});
+    const amountToDistribute = useMemo(() => {
+        const billItemHidden = items.find((item) => item.type === TYPE_BILL_ITEM.HIDDEN_VALUE);
+        if(billItemHidden){
+            return billItemHidden.amount;
+        }
+        return 0;
+    }, [items]);   
+    
+    const totalAmountBill = useMemo(() => {
+        return calculateTotalBill(items, [TYPE_BILL_ITEM.HIDDEN_VALUE, TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO]);
+    }, [items, updatedBillItemAmount]);  
+
     const billables:Billable[] = useSelector((state:any) => state.billing.data.billables ? state.billing.data.billables : []);
     //const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
@@ -116,6 +129,20 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         setItemAdded(false);
         
     }, [currentItem]);
+
+    useEffect(() => {
+        if(amountToDistribute !== 0 && print){
+            const totalNoHidden = calculateTotalBill(items, [TYPE_BILL_ITEM.HIDDEN_VALUE], true);
+            items.forEach((item) => {
+                if([TYPE_BILL_ITEM.CHARGE, TYPE_BILL_ITEM.SERVICE].includes(item.type)){
+                    const subtotal = item.amount * item.quantity;
+                    const amountToAdd = (subtotal * amountToDistribute) / totalNoHidden;
+                    item.amountAlter = item.amount + (amountToAdd/item.quantity);
+                }
+            });
+            setUpdatedBillItemAmount(updatedBillItemAmount + 1);
+        }
+    }, [items, amountToDistribute]);
 
     function updateStates(itemKey: BillItemKeys, error: string, value: string) {
         let tempFieldErrors = { ...fieldErrors };
@@ -149,7 +176,9 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         await dispatch(saveBillingItems(tempItems));
     }
 
-
+    function getAmount(val){
+        return val.amountAlter ? val.amountAlter : val.amount;
+    }
     function updateQuantityBillItem(index:number, quantity:number){
         const tempItems = [...items];
         const error = validateKeyItem(quantity.toString(), "quantity");
@@ -246,7 +275,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     async function onClickContinue(items: BillItem[]) {
         
         if(filteredColumns.find((col) => col.type === BillItemKeys.amount)){
-            if (calculateTotalBill(items) === 0) {
+            if (totalAmountBill === 0) {
                 setErrorBill(<Translate id="hospital.billing.billing_info.error.positive" />);
                 return;    
             }
@@ -329,6 +358,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                                     type: TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
                                     quantity:1,
                                     amount: amount,
+                                    unitCost: amount,
                                     additionalInfoId: data.id,
                                     updatedAt: new Date()
                                 }
@@ -352,7 +382,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         let filteredItems = [...items];
         if(print){
             filteredItems = items.filter((item) =>{
-                return item.type !== TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO
+                return ![TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO, TYPE_BILL_ITEM.HIDDEN_VALUE].includes(item.type)
             } );
         }
         let rows: BillItemTable[] = filteredItems.map((val:BillItemTable, index:number) => {
@@ -366,12 +396,27 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
             let rowElement:{[id: string] : JSX.Element} = {}
             filteredColumns.forEach((col:Column) => {
                 if(col.type === "amount"){
-                    let amountString:string = new Intl.NumberFormat(activeLanguage.code).format(val.amount);
-                    if(TYPES_DISCOUNT.includes(Number(val.type))){
-                        const percentSymbol = (Number(val.type) === TYPE_BILL_ITEM.DISCOUNT_PERCENT ? "%" : currency);
-                        amountString =  `-  ${amountString} ${percentSymbol} `;
+                    const amount = (TYPES_DISCOUNT.includes(Number(val.type))) ? parseInt(getAmount(val)) * -1 : parseInt(getAmount(val));
+                    let amountString:string = new Intl.NumberFormat(activeLanguage.code).format(amount);
+                    
+                    const percentSymbol = (Number(val.type) === TYPE_BILL_ITEM.DISCOUNT_PERCENT ? "%" : "");
+                    amountString =  `${amountString} ${percentSymbol} `;
+                    
+                    
+                    rowElement[col.name] =  <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
+                }
+                else if(col.type === "subtotal"){
+                    let subtotal = parseInt(getAmount(val)) * parseInt(val.quantity);
+                    if(Number(val.type) === TYPE_BILL_ITEM.DISCOUNT_PERCENT){             
+                        //Calculate the percetage of the subtotal
+                        subtotal = (calculateTotalBill(items, [TYPE_BILL_ITEM.DISCOUNT_PERCENT, TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO, TYPE_BILL_ITEM.HIDDEN_VALUE]) * parseInt(getAmount(val))) / 100;
+
+                        const amountString:string = new Intl.NumberFormat(activeLanguage.code).format(subtotal) + "%";
+                        rowElement[col.name] =  <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
                     }
-                 
+                    subtotal = (TYPES_DISCOUNT.includes(Number(val.type))) ? subtotal * -1 : subtotal;
+                    
+                    let amountString:string = new Intl.NumberFormat(activeLanguage.code).format(subtotal);
                     rowElement[col.name] =  <Typography variant="body2" style={{ color: color }}>{amountString}</Typography>   
                 }
                 else if(col.type === "type"){
@@ -603,14 +648,14 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
 
         rows.push(field);
     }
-    if(!canUpdateBill && !print){        
+    if(!canUpdateBill && print){        
         const hasAdditionalInfo = items.find((item) =>{
             return item.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO
         });
         if(hasAdditionalInfo){
             rows.push({
-                id: "additiotal", 
-                concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} />{hasAdditionalInfo.concept}</Typography>,
+                id: "additional", 
+                concept: <Typography style={{fontWeight:'bold'}} >{hasAdditionalInfo.concept}</Typography>,
                 type : <></>, 
                 amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{new Intl.NumberFormat(activeLanguage.code).format(hasAdditionalInfo.amount) + " " + currency}</Typography>,
                 delete: <React.Fragment></React.Fragment>,
@@ -618,11 +663,11 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         }
     }
     if (items.length > 0 && showTotal) {
-        let totalBill = calculateTotalBill(items);
+    
         rows.push({
             id: items.length, concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>,
             type : <></>, 
-            amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{new Intl.NumberFormat(activeLanguage.code).format(totalBill) + " " + currency}</Typography>,
+            amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{new Intl.NumberFormat(activeLanguage.code).format(totalAmountBill) + " " + currency}</Typography>,
             delete: <React.Fragment></React.Fragment>,
         });
     }

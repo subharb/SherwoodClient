@@ -2600,30 +2600,30 @@ export const billsExample = [{
         "type": DocumentType.INVOICE,
         "status": DocumentStatus.DRAFT,
         "billItems": [
-            {
-                "id": 3627,
-                "concept": "test reduction",
-                "quantity": 1,
-                "type": 1,
-                "amount": 10000,
-                "updatedAt" : "2023-09-22T09:30:51.899Z",
-                "paid" : null,
-                "used" : null
-            },
-            {
-                "id": 3628,
-                "concept": "test reduction %",
-                "quantity": 1,
-                "type": 2,
-                "amount": 10,
-                "updatedAt" : "2023-09-22T09:30:51.899Z",
-                "paid" : null,
-                "used" : null
-            },
+            // {
+            //     "id": 3627,
+            //     "concept": "test reduction",
+            //     "quantity": 1,
+            //     "type": 1,
+            //     "amount": 10000,
+            //     "updatedAt" : "2023-09-22T09:30:51.899Z",
+            //     "paid" : null,
+            //     "used" : null
+            // },
+            // {
+            //     "id": 3628,
+            //     "concept": "test reduction %",
+            //     "quantity": 1,
+            //     "type": 2,
+            //     "amount": 10,
+            //     "updatedAt" : "2023-09-22T09:30:51.899Z",
+            //     "paid" : null,
+            //     "used" : null
+            // },
             {
                 "id": 3625,
                 "concept": "AMOS",
-                "quantity": 1,
+                "quantity": 2,
                 "type": 3,
                 "amount": 90000,
                 "paid" : "2023-09-22T09:30:51.899Z",
@@ -2649,7 +2649,21 @@ export const billsExample = [{
                 "updatedAt" : "2023-09-22T09:30:51.899Z",
                 "paid" : null,
                 "used" : null
-            }
+            },
+            {
+                concept:"Insurance",
+                type:TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
+                quantity:1,
+                amount:1000,
+                updatedAt: new Date(),
+            },
+            {
+                concept:"Expensive machine",
+                type:TYPE_BILL_ITEM.HIDDEN_VALUE,
+                quantity:1,
+                amount:30000,
+                updatedAt: new Date(),
+            },
         ],
         "uuidPrescribingDoctor" : "1e7111be-27bc-402a-9281-2c05a2ce17d4",
         "uuidDepartment" : "1c655e29-100e-4fce-ad9f-5eb63d495338",
