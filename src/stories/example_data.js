@@ -1280,7 +1280,8 @@ export const patients_personal_data_decrypted = () => {
                     "name" : "Peter",
                     "surnames" : "Petrelli Jimenez",
                     "birthdate" : "1987/08/21",
-                    "sex" : "male"
+                    "sex" : "male",
+                    "insurance" : 1
                 },
             "dateCreated" : "2022-09-28T10:29:17.276Z",
             

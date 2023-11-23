@@ -24,7 +24,10 @@ export default function reducer(state = initialState, action:{type:string, insur
             newState.data = [...action.insurances];
             newState.loading = false;
             return newState;
-       
+        case types.INITIALIZE_INSURANCES:
+            newState.data = [...action.payload];
+            newState.loading = false;
+            return newState;
         case types.AUTH_SIGN_OUT:
             newState = {...initialState};
             return newState;

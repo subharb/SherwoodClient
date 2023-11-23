@@ -7,6 +7,7 @@ import { documentTypeToString } from '../../../utils/bill';
 import { Translate } from 'react-localize-redux';
 import { fullDateFromPostgresString, getPatientID, patientFullName } from '../../../utils';
 import { BillForm } from './BillForm';
+import { useInsurances } from '../../../hooks';
 
 
 interface BillPDFProps {
@@ -24,6 +25,8 @@ interface BillPDFProps {
 }
 
 const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, hospitalName, locale, type, logoBlob, email, phone, currency, address }) => {
+    const [insurances, loadingInsurances, patientInsurance] = patient.personalData.insurance ? useInsurances(parseInt(patient.personalData.insurance.toString())) : [null, false];
+
     function renderHeader(){
         return(
             <Grid container item xs={12}>
@@ -114,9 +117,10 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, hospitalName, locale, 
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='body2'>{patientFullName(patient)} <Translate id="general.born" /> {fullDateFromPostgresString(locale, patient.personalData.birthdate)}</Typography>
+
                     {
-                        patient.personalData.insurance &&
-                        <Typography variant='body2'><Translate id="investigation.create.personal_data.fields.insurance" /> : {patient.personalData.insurance} </Typography>
+                        patientInsurance &&
+                        <Typography variant='body2'><Translate id="investigation.create.personal_data.fields.insurance" /> : {patientInsurance.name} </Typography>
                     }
                     {
                         patient.personalData.health_id &&

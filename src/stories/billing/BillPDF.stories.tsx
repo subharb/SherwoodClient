@@ -39,6 +39,28 @@ export const BillPDFT: Story = {
   decorators: [
     (Story) =>  (<ProviderSherwood initStore={
         [{
+            type: types.INITIALIZE_INSURANCES,
+            payload: [
+                {
+                    "id": 1,
+                    "name": "PAF",
+                    "code": "PAF",
+                    "active": true,
+                    "createdAt": "2023-09-10T16:18:46.063Z",
+                    "updatedAt": "2023-09-10T16:18:46.063Z",
+                    "deletedAt": null
+                },
+                {
+                    "id": 2,
+                    "name": "IPM",
+                    "code": "IPM",
+                    "active": true,
+                    "createdAt": "2023-09-10T16:18:46.075Z",
+                    "updatedAt": "2023-09-10T16:18:46.075Z",
+                    "deletedAt": null
+                }
+            ]
+        },{
             type: types.INITIALIZE_BILLING,
             payload: {
                 billables:billables,
