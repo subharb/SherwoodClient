@@ -24,6 +24,7 @@ import { DocumentStatus } from '../pages/hospital/Billing/types';
 import { ColourChip } from '../components/general/mini_components-ts';
 import { documentStatusToColor } from '../utils/bill';
 import { getInsurancesAction } from '../redux/actions/insuranceActions';
+import { fetchSingleSubmissionsPatientInvestigationAction, fetchSubmissionsPatientInvestigationAction } from '../redux/actions/submissionsPatientActions';
 
 export interface SnackbarType{
     show: boolean;
@@ -109,6 +110,40 @@ export function useServiceGeneral(serviceType:number){
     }, []);
 
     return { servicesGeneral, loadingServicesGeneral }
+}
+
+export function usePatientSubmission(idSubmission:number){
+    const investigations = useSelector((state:any) => state.investigations);
+    const submissions = useSelector((state:any) => state.patientsSubmissions.data);
+    const [submission, setSubmission] = useState<any>(null);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        async function getSubmission() {
+            await dispatch(
+                fetchSingleSubmissionsPatientInvestigationAction(investigations.currentInvestigation.uuid, idSubmission)
+            );
+        }
+        if(investigations.data && investigations.currentInvestigation && idSubmission && !submission){
+            getSubmission();   
+        }    
+    }, [idSubmission, submission]);   
+    
+    useEffect(() => {
+        if(submissions && idSubmission){
+            Object.values(submissions).forEach((subSurvey:any) => {
+                Object.values(subSurvey).forEach((sub:any) => {
+                    const findSubmission = sub.find((subi:any) => subi.id === idSubmission);
+                    if(findSubmission){
+                        setSubmission(findSubmission);
+                    }
+                })
+            });
+            
+        }
+    }, [submissions])
+
+    return submission;
 }
 
 export function useInsurances(patientInsuranceId:number){

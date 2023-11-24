@@ -8,7 +8,7 @@ import { HeaderDocument } from "./header";
 import SaveIcon from '@mui/icons-material/Save';
 import { BillingInfo } from "../Billing/types";
 
-interface Props extends Omit<BillingInfo, 'id' | 'billables'>   {
+interface Props{
     size:"A4" | "ticket",
     name:string
 }
@@ -127,14 +127,9 @@ export const Document:React.FC<Props> = (props) => {
                     </Grid>
                 <Grid container xs={12}>
                     <div id="print" ref={printRef} style={{width:'700px', padding:'1rem'}}>
-                        <HeaderDocument size={props.size} hospitalName={props.hospitalName} logoBlob={props.logoBlob} currency={props.currency}
-                            phone={props.phone} address={props.address} email={props.email} 
-                            />
-                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
                         {
                             props.children
                         }
-                        </Grid> 
                     </div>
                 </Grid>
             </div>

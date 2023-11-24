@@ -339,15 +339,36 @@
                 "num_dossier" :["Dossier number", "Número de ficha", "Numéro de dossier" ] ,
                 "patient_identity" : ["Patient Identity", "Paciente", "Identité du patient"],
                 "title" : {
-                    "summary" : [],
+                    "invoice" : ["Invoice", "Factura", "FACTURE"],
+                    "summary" : ["SUMMARY OF ACTS", "RESUMEN DE ACTOS", "SYNTHÈSE DES ACTES"],
                     "budget" : ["DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL"]
                 },
                 "subtitle" : {
-                    "summary" : ["Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme <b>payées</b>."]
+                    "summary" : ["Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées."]
                 },
+                "doctor" : ["Practitioner", "Facultativo", "Praticien"],
                 "billform_title" : {
-                    "budget" : ["Prestations comprises dans l'acte médical", "Prestations comprises dans l'acte médical", "Prestations comprises dans l'acte médical"]
+                    "summary" : ["Medical benefits: Paid", "Beneficios médicos: Pagados", "Prestations médicales : Payé"],
+                    "budget" : ["Services included in the medical procedure", "Servicios incluidos en el procedimiento médico.", "Prestations comprises dans l'acte médical"],
+                    "invoice" : ["Services included in the medical procedure", "Servicios incluidos en el procedimiento médico.", "Prestations comprises dans l'acte médical"]
+                },
+                "invoice" : {
+                    "number" : ["Invoice number", "Número de factura", "Facture nº"],
+                    "police_number" : ["Police number", "Número de póliza", "Lettre de garantie/carte de mutuelle POLICE N°"],
+                    "date_emission" : ["Date of issue", "Fecha de emisión", "Date d'émission"],
+                    "date_surgery" : ["Date of surgery", "Fecha de intervención", "Date d'intervention"],
+                    "attention" : ["To the atention of", "A la atención de", "À l'attention de"]
+                },
+                "summary" : {
+                    "attention" : ["Quote brought to the attention of:", "Presupuesto puesto en conocimiento de:", "Devis porté à l'attention de : "] ,
+                    "total_rating" : ["Total rating:", "Valoración total:", "Cotation totale :"],
+                    "coverage" : ["Please enter the percentage covered by the organization:................................ %", 
+                                "Por favor, indique el porcentaje cubierto por la organización:................................ %",
+                                "Veuillez inscrire le pourcentage pris en charge par l'organisme :................................ %"
+                            ]
                 }
+                
+
             },
             "markAsPaid" : ["Mark as paid", "Marcar como pagado", "Marquer comme payé"],
             "markAsUsed" : ["Mark as used", "Marcar como usado", "Marquer comme utilisé"],

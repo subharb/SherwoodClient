@@ -1,6 +1,6 @@
 import * as types from "../../constants";
 import {
-    fetchRecordsPatientAllSurveysService, postRecordPatientService, updateRecordPatientService, fetchRecordsSurveysService
+    fetchRecordsPatientAllSurveysService, postRecordPatientService, updateRecordPatientService, fetchRecordsSurveysService, getSubmissionPatientService
 } from "../../services";
 
 
@@ -15,6 +15,35 @@ export function removeSubmissionPatient(uuidPatient, idSubmission, uuidSurvey) {
                 uuidSurvey
             }
       });
+    };
+}
+
+export function fetchSingleSubmissionsPatientInvestigationAction(uuidInvestigation, idSumission) {
+    return async (dispatch) => {
+      dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
+  
+      return getSubmissionPatientService(uuidInvestigation, idSumission)
+        .then((response) => {
+          dispatch({
+            type: types.FETCH_SUBMISSIONS_PATIENT_SUCCESS,
+            submission: response.submission,
+            meta:{uuidPatient}
+          });
+        })
+        .catch((error) => {
+          if(!error.response){
+            dispatch({
+              type: types.FETCH_SUBMISSIONS_PATIENT_SUCCESS,
+              surveys: [],
+              meta:{uuidPatient}
+            });
+          }
+          else{
+              dispatch({ type: types.FETCH_SUBMISSIONS_PATIENT_ERROR });
+              throw error;
+          }
+          
+        });
     };
 }
 

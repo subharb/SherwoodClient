@@ -1279,7 +1279,7 @@ export const patients_personal_data_decrypted = () => {
                     "phone" : "+34 7471771721",
                     "name" : "Peter",
                     "surnames" : "Petrelli Jimenez",
-                    "birthdate" : "1987/08/21",
+                    "birthdate" : new Date(1974, 1, 1),
                     "sex" : "male",
                     "insurance" : 1
                 },
@@ -2646,6 +2646,7 @@ export const billsExample = [{
                 "quantity": 1,
                 "type": TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO,
                 "amount": 75000,
+                "additionalInfoId": 21920,
                 "updatedAt" : "2023-09-22T09:30:51.899Z",
                 "paid" : null,
                 "used" : null

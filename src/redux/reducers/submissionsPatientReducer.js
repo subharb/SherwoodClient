@@ -33,15 +33,25 @@ export default function reducer(state = initialState, action){
     
     let tempData;
     let newState = { ...state};
+    let dictSurveys = {};
     switch(action.type){
         case types.FETCH_SUBMISSIONS_PATIENT_SUCCESS:
             tempData = newState.data === initialState.data ? {} : newState.data;
-            let dictSurveys = {};
+            dictSurveys = {};
             action.surveys.forEach(sur => {
                 dictSurveys[sur.uuid] = sur;
             })
             
             tempData[action.meta.uuidPatient] = dictSurveys;
+            newState.data = tempData;
+            newState.loading = initialState.loading;
+            newState.error = initialState.error;
+            return newState;
+        case types.INITIALIZE_SUBMISSION_PATIENT:
+            tempData = {};
+            dictSurveys[action.payload.uuidSurvey] = [action.payload];
+            
+            tempData[action.payload.uuidPatient] = dictSurveys;
             newState.data = tempData;
             newState.loading = initialState.loading;
             newState.error = initialState.error;

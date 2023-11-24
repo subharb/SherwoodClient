@@ -33,6 +33,7 @@ import BillCreate from './BillCreate';
 import { green, red } from '@mui/material/colors';
 import { Done, Edit, Lock, MoneyOff } from '@mui/icons-material';
 import { BillStatus } from '../Service/types';
+import BillPDF from './BillPDF';
 
 interface PropsRedux {
     investigations: any,
@@ -435,24 +436,18 @@ const Billing: React.FC<Props> = (props) => {
     }
     function renderBillForm() {
         switch (actionBill) {
-            case BillActions.VIEW:
-            case BillActions.UPDATE:
-                const billFormComponent = <BillForm withDiscount={props.withDiscount}
-                                            currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation}
-                                            onBillItemsValidated={() => console.log("onBillItemsValidated")}
-                                            onCancelBill={onCancelBill} print={false} patient={props.patients.find((pat) => pat.uuid === currentBill?.uuidPatient)!}
-                                            bill={currentBill} canUpdateBill={currentBill ? currentBill.status === DocumentStatus.DRAFT : false}
-                                            idBillingInfo={props.billingInfo.id} surveyAdditionalInfo={props.surveyAdditionalInfo}
-                                        />
-                if([BillActions.CREATE, BillActions.VIEW].includes(actionBill)){
-                    return(
-                        billFormComponent
-                    )
-                }
-                
+            case BillActions.PREVIEW:
+                const currentPatient = props.patients.find((patient) => patient.uuid === currentBill!.uuidPatient);
                 return (
                     <Modal key="modal" fullWidth medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
-                        { billFormComponent }
+                        <Document size='A4' name={currentBill!.id}>
+                        <BillPDF bill={currentBill!} type={currentBill!.type} patient={currentPatient!}
+                            hospitalName={props.billingInfo.hospitalName} phone={props.billingInfo.phone}
+                            address={props.billingInfo.address} logoBlob={props.billingInfo.logoBlob}
+                            currency={props.billingInfo.currency} email={props.billingInfo.email}
+                            locale={props.activeLanguage.code} uuidPrescribingDoctor={currentBill.uuidPrescribingDoctor}
+                            uuidInvestigation={props.uuidInvestigation} />
+                        </Document>
                     </Modal>
                 )
             // case BillActions.preview:
