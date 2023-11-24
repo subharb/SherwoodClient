@@ -70,6 +70,7 @@ export interface BillingInfo{
     currency:string,
     phone:string,
     email:string,
+    city:string,
     logoBlob:string,
     billables:Billable[],
     hospitalName:string,

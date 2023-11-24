@@ -33,6 +33,7 @@ export const BillPDFT: Story = {
     address: BillingInfo.address,
     phone: BillingInfo.phone,
     email: BillingInfo.email,
+    city: BillingInfo.city,
     logoBlob: BillingInfo.logoBlob,
     
     locale:"fr",

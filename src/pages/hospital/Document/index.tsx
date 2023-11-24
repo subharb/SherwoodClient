@@ -103,7 +103,7 @@ export const Document:React.FC<Props> = (props) => {
                 y: 0,
                 margin: [100, 0, 100, 60],
                 autoPaging: 'text',
-                width: 720, //target width in the PDF document
+                width: 870, //target width in the PDF document
                 windowWidth: 1000 //window width in CSS pixels
             });
 

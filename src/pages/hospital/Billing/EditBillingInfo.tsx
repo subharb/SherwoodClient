@@ -27,6 +27,13 @@ const BILLING_INFO_FORM: {[key in keyof BillingInfo]?: any} = {
         shortLabel: "hospital.billing.billing_info.address",
         validation: "textMin2"
     },
+    "city": {
+        required: true,
+        type: "text",
+        label: "hospital.billing.billing_info.city",
+        shortLabel: "hospital.billing.billing_info.city",
+        validation: "textMin2"
+    },
     "email": {
         required: true,
         type: "text",
@@ -67,7 +74,8 @@ const EditBillingInfo: React.FC<EditBillingInfoProps> = ({ billingInfo, callback
     }
     
     return (
-        <FormTSFunc fields={BILLING_INFO_FORM} initialData={initialData} fullWidth callBackForm={(field:any) => callBack(field)} 
+        <FormTSFunc fields={BILLING_INFO_FORM} initialData={initialData} fullWidth 
+            callBackForm={(field:any) => callBack(field)} 
             dataTestid="save-field" />
     );
 };

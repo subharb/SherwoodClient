@@ -371,7 +371,7 @@ const Billing: React.FC<Props> = (props) => {
     async function onCloseModal() {
         setShowModal(false);
         setCurrentBill(null);
-        
+        setActionBill(BillActions.DEFAULT);
     }
 
     function onBillingInfoSuccesfullyUpdated(type: BillItemModes) {
@@ -440,13 +440,14 @@ const Billing: React.FC<Props> = (props) => {
                 const currentPatient = props.patients.find((patient) => patient.uuid === currentBill!.uuidPatient);
                 return (
                     <Modal key="modal" fullWidth medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
-                        <Document size='A4' name={currentBill!.id}>
-                        <BillPDF bill={currentBill!} type={currentBill!.type} patient={currentPatient!}
-                            hospitalName={props.billingInfo.hospitalName} phone={props.billingInfo.phone}
-                            address={props.billingInfo.address} logoBlob={props.billingInfo.logoBlob}
-                            currency={props.billingInfo.currency} email={props.billingInfo.email}
-                            locale={props.activeLanguage.code} uuidPrescribingDoctor={currentBill.uuidPrescribingDoctor}
-                            uuidInvestigation={props.uuidInvestigation} />
+                        <Document size='A4' name={currentBill!.id.toString()}>
+                            <BillPDF bill={currentBill!} type={currentBill!.type} patient={currentPatient!}
+                                hospitalName={props.hospitalName} phone={props.billingInfo.phone}
+                                address={props.billingInfo.address} logoBlob={props.billingInfo.logoBlob}
+                                currency={props.billingInfo.currency} email={props.billingInfo.email}
+                                city={props.billingInfo.city} 
+                                locale={props.activeLanguage.code} uuidPrescribingDoctor={currentBill!.uuidPrescribingDoctor}
+                                uuidInvestigation={props.uuidInvestigation} />
                         </Document>
                     </Modal>
                 )

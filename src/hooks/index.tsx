@@ -181,7 +181,7 @@ export function useDepartments(researchersDepartmentsOnly:string = ""){
     const investigations= useSelector((state:any) => state.investigations);
     const departments:IDepartment[] | null = useSelector((state:{hospital : {data: {departments : IDepartment[]}}}) => state.hospital.data.departments ? state.hospital.data.departments : null);
     const researchers:IResearcher[] = useSelector((state:any) => state.hospital.data.researchers ? state.hospital.data.researchers : []);
-    const loadingDepartments = useSelector((state:any) => state.hospital.loading || state.investigations.loading);
+    const loadingDepartments:boolean = useSelector((state:any) => state.hospital.loading || state.investigations.loading);
     const [filteredDepartments, setFilteredDepartments] = useState<IDepartment[]>([]);
 
     const dispatch = useDispatch();
@@ -218,8 +218,6 @@ export function useDepartments(researchersDepartmentsOnly:string = ""){
             setFilteredDepartments(tempFiltered);
         }
     }, [researchersDepartmentsOnly, departments])
-
-    
 
     return { departments: filteredDepartments, researchers, investigations, loadingDepartments}
 }

@@ -1,15 +1,12 @@
 import { Grid, TextField, Typography } from "@mui/material";
 import React, { useState } from "react"
-import { Translate } from "react-localize-redux";
-import { connect } from "react-redux";
-import { EnhancedTable } from "../../../components/general/EnhancedTable";
-
-import { formatPatients } from "../../../utils/index.jsx";
 import { BillingInfo } from "../Billing/types";
+import { dateToFullDateString } from "../../../utils";
 
 
 interface Props extends Omit<BillingInfo, 'id' |  'billables' | 'params'>{
     size:"A4" | "ticket",
+    locale:string
  
 }
 export const HeaderDocument:React.FC<Props> = (props) => {
@@ -32,6 +29,9 @@ export const HeaderDocument:React.FC<Props> = (props) => {
                     </Grid>
                     <Grid>
                         <Typography variant="body2">{props.email}</Typography>
+                    </Grid>
+                    <Grid>
+                        <Typography variant="body2">{props.city}, {dateToFullDateString(new Date(), props.locale)}</Typography>
                     </Grid>
                 </Grid>   
             </Grid>

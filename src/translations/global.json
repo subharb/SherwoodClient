@@ -385,6 +385,7 @@
                 "logo" : ["Clinic/Hospital Logo", "Clinic/Hospital Logo", "Clinic/Hospital Logo"],
                 "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
                 "address" : ["Address", "Dirección", "Adresse"],
+                "city" : ["City", "Ciudad", "Ville"],
                 "currency" : ["Currency(ISO Code)", "Moneda(ISO Code)", "Devise(ISO Code)"],
                 "email":["Email", "Email", "Email"],
                 "success" : {
@@ -401,7 +402,7 @@
                 "concept" : ["Concept", "Concepto", "Concept"],
                 "updatedAt" : ["Updated At", "Actualizado", "Mis à jour"],
                 "unitCost" : ["Unit Cost", "Coste unitario", "Coût unitaire"],
-                "amount" : ["Amount", "Cantidad", "Montant"],
+                "amount" : ["Subtotal", "Subtotal", "Subtotal"],
                 "type" : ["Type", "Tipo", "Type"],
                 "select_item" : ["Select", "Select", "Seleccionar"],
                 "drug" : ["Drug", "Medicamento", "Médicament"],

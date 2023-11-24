@@ -20,19 +20,20 @@ interface BillPDFProps {
     uuidInvestigation:string;
     type:DocumentType;
     hospitalName:string;
-    uuidPrescribingDoctor:string;
+    uuidPrescribingDoctor:string | null;
     phone:string;
     address:string,
     email:string,
+    city:string;
     currency:string;
     locale:string;
     patient:IPatient;
     logoBlob:string;
 }
 
-const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidInvestigation, uuidPrescribingDoctor, hospitalName, locale, type, logoBlob, email, phone, currency, address }) => {
+const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, city, uuidInvestigation, uuidPrescribingDoctor, hospitalName, locale, type, logoBlob, email, phone, currency, address }) => {
     const [insurances, loadingInsurances, patientInsurance] = patient.personalData.insurance ? useInsurances(parseInt(patient.personalData.insurance.toString())) : [null, false];
-    const { researchers, loadingDepartments } = useDepartments();
+    const { researchers, loadingDepartments } = uuidPrescribingDoctor ? useDepartments() : { researchers: [], loadingDepartments: false};
 
     const prescribingDoctor:IResearcher | undefined = useMemo(() => {
         return researchers.find((researcher) => researcher.uuid === uuidPrescribingDoctor);
@@ -70,7 +71,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidInvestigation, uui
         return(
             <Grid container item xs={12}>
                 <HeaderDocument size='A4' currency={currency} address={address} 
-                    logoBlob={logoBlob}
+                    logoBlob={logoBlob} city={city} locale={locale}
                     hospitalName={hospitalName} email={email} phone={phone} />
             </Grid>
         );
