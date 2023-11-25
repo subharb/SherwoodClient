@@ -33,7 +33,7 @@ export default function Modal(props){
             aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
             {props.closeModal &&
-                    <IconButton
+                    <IconButton id="close-modal"
                         style={{position:"absolute",right:"0px"}}
                         onClick={props.closeModal}
                         size="large">
