@@ -8681,8 +8681,8 @@ __metadata:
     jquery: ^3.6.3
     jsdom: ^22.1.0
     jsonwebtoken: ^9.0.0
-    jspdf: ^2.5.1
-    jspdf-autotable: ^3.5.28
+    jspdf: 2.5.1
+    jspdf-autotable: 3.7.1
     jss: 10.5.0
     lodash: ^4.17.21
     material-ui-dropzone: 3.5.0
@@ -13957,16 +13957,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jspdf-autotable@npm:^3.5.28":
-  version: 3.7.0
-  resolution: "jspdf-autotable@npm:3.7.0"
+"jspdf-autotable@npm:3.7.1":
+  version: 3.7.1
+  resolution: "jspdf-autotable@npm:3.7.1"
   peerDependencies:
     jspdf: ^2.5.1
-  checksum: ce23eb1604353285d00cf81d979ab377f690641fbd5d0860886fc64ff6070f09d1416f6c14660e0749026c19c678d7d446e464f2d83d9b06555f831a9b681286
+  checksum: 93273426a6b305cb47a10eb5e87c4ad4d1e3d5498900e83c282aed25c6c384745dae13d0e0d73466ccd0c2ce553ed2a7dcf5693a6d7b309777fa5c71351f9af4
   languageName: node
   linkType: hard
 
-"jspdf@npm:^2.5.1":
+"jspdf@npm:2.5.1":
   version: 2.5.1
   resolution: "jspdf@npm:2.5.1"
   dependencies:
