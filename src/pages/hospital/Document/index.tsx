@@ -1,21 +1,13 @@
 import { Grid, TextField, Typography } from "@mui/material";
 import React, { useState } from "react"
-import ReactDOMServer from 'react-dom/server';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
-import {autoTable} from 'jspdf-autotable';
-import { HeaderDocument } from "./header";
 import SaveIcon from '@mui/icons-material/Save';
-import { BillingInfo } from "../Billing/types";
-import { callAddFont } from "./Montserrat-Regular-normal";
 
 interface Props{
     size:"A4" | "ticket",
     name:string
 }
 
-
-export const Document:React.FC<Props> = (props) => {
+export const DocumentPDF:React.FC<Props> = (props) => {
     const printRef = React.useRef<HTMLDivElement>(null);
     
     async function savePDF(){
@@ -76,9 +68,10 @@ export const Document:React.FC<Props> = (props) => {
         return(
             <div style={{overflow:'scroll'}}>
                 
-                    <Grid item xs={12} style={{textAlign:'right'}}>
-                        <button id="button_print" onClick={savePDF}><SaveIcon /></button>
-                    </Grid>
+                <Grid item xs={12} style={{textAlign:'right'}}>
+                    <button id="button_print" onClick={savePDF}><SaveIcon /></button>
+                </Grid>
+                
                 <Grid container xs={12}>
                     <div id="print" ref={printRef} style={{width:'700px', fontFamily: "Montserrat-Regular"}}>
                     <style>
@@ -88,8 +81,8 @@ export const Document:React.FC<Props> = (props) => {
                                 display:none;
                             }
                             @page { 
-                                // size: auto;  
-                                // margin: 0mm;                                 
+                                size: auto;  
+                                margin: 0mm;                                 
                             }
                         }
                         `}

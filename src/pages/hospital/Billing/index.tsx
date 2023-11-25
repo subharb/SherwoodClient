@@ -10,7 +10,7 @@ import { ButtonAdd, IconGenerator, TypographyStyled } from '../../../components/
 import { BillForm } from './BillForm';
 import { FUNCTIONALITY, IPatient, ISurvey, SnackbarType } from '../../../constants/types';
 import { Bill, BillingInfo, BillItem, BillItemModes, DocumentStatus , DocumentType} from './types';
-import { Document } from '../Document';
+import { DocumentPDF } from '../Document';
 import { connect, useDispatch } from 'react-redux';
 import { createBillService, getBillsPatientService, getDocumentsService, updateBillItemsStatusService, updateBillService, updateDocumentType } from '../../../services/billing';
 import Loader from '../../../components/Loader';
@@ -440,7 +440,7 @@ const Billing: React.FC<Props> = (props) => {
                 const currentPatient = props.patients.find((patient) => patient.uuid === currentBill!.uuidPatient);
                 return (
                     <Modal key="modal" fullWidth medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
-                        <Document size='A4' name={currentBill!.id.toString()}>
+                        <DocumentPDF size='A4' name={currentBill!.id.toString()}>
                             <BillPDF bill={currentBill!} type={currentBill!.type} patient={currentPatient!}
                                 hospitalName={props.hospitalName} phone={props.billingInfo.phone}
                                 address={props.billingInfo.address} logoBlob={props.billingInfo.logoBlob}
@@ -448,7 +448,7 @@ const Billing: React.FC<Props> = (props) => {
                                 city={props.billingInfo.city} 
                                 locale={props.activeLanguage.code} uuidPrescribingDoctor={currentBill!.uuidPrescribingDoctor}
                                 uuidInvestigation={props.uuidInvestigation} />
-                        </Document>
+                        </DocumentPDF>
                     </Modal>
                 )
             // case BillActions.preview:
