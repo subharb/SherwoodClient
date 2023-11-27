@@ -33,6 +33,7 @@ export default function reducer(state = initialState, action){
             for(const investigation of action.investigations){
                 
                 let tempDecryptedData = [];
+                console.log(investigation.name);
                 for(const patient of investigation.patientsPersonalData){
                     console.log(patient);
                     patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;

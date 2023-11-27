@@ -445,7 +445,7 @@ const Billing: React.FC<Props> = (props) => {
                                 hospitalName={props.hospitalName} phone={props.billingInfo.phone}
                                 address={props.billingInfo.address} logoBlob={props.billingInfo.logoBlob}
                                 currency={props.billingInfo.currency} email={props.billingInfo.email}
-                                city={props.billingInfo.city} 
+                                city={props.billingInfo.city} uuidDepartment={currentBill!.uuidDepartment}
                                 locale={props.activeLanguage.code} uuidPrescribingDoctor={currentBill!.uuidPrescribingDoctor}
                                 uuidInvestigation={props.uuidInvestigation} />
                         </DocumentPDF>

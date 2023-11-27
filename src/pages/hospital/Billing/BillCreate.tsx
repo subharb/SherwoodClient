@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { IPatient, IPersonalData, ReduxStore } from '../../../constants/types';
 import { Bill, BillItem, BillableCombo, DocumentStatus, DocumentType } from './types';
-import { Language, Translate } from 'react-localize-redux';
+import { Translate } from 'react-localize-redux';
 import { BillForm } from './BillForm';
 import { FindPatient } from './find_patient';
-import { useSnackBarState, useStatusDocument } from '../../../hooks';
+import { useStatusDocument } from '../../../hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { pushBillables } from '../../../redux/actions/billingActions';
 import PatientInfo from './PatientInfo';
-import { Box, Card, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material';
+import { Box, Card, FormControl, FormControlLabel, FormLabel, Grid, Radio, 
+        RadioGroup, TextField, Typography } from '@mui/material';
 import { Autocomplete } from "@mui/lab"
 import { ButtonAdd } from '../../../components/general/mini_components';
 

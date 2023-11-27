@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Bill, DocumentType } from './types';
 import { Grid, Typography } from '@mui/material';
-import { IPatient, IResearcher, TYPE_BILL_ITEM } from '../../../constants/types';
+import { IDepartment, IPatient, IResearcher, TYPE_BILL_ITEM } from '../../../constants/types';
 import { HeaderDocument } from '../Document/header';
 import { documentTypeToString } from '../../../utils/bill';
 import { Translate } from 'react-localize-redux';
@@ -13,6 +13,7 @@ import SignatureMedecin from '../../../img/signatures/CHOM-medecin.png';
 import SignatureFinancier from '../../../img/signatures/CHOM-financier.png';
 import SignatureDirecteur from '../../../img/signatures/CHOM-directeur.png';
 import Loader from '../../../components/Loader';
+import { de } from 'date-fns/locale';
 
 
 interface BillPDFProps {
@@ -21,6 +22,7 @@ interface BillPDFProps {
     type:DocumentType;
     hospitalName:string;
     uuidPrescribingDoctor:string | null;
+    uuidDepartment:string | null;
     phone:string;
     address:string,
     email:string,
@@ -31,13 +33,17 @@ interface BillPDFProps {
     logoBlob:string;
 }
 
-const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, city, uuidInvestigation, uuidPrescribingDoctor, hospitalName, locale, type, logoBlob, email, phone, currency, address }) => {
+const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, uuidInvestigation, uuidPrescribingDoctor, hospitalName, locale, type, logoBlob, email, phone, currency, address }) => {
     const [insurances, loadingInsurances, patientInsurance] = patient.personalData.insurance ? useInsurances(parseInt(patient.personalData.insurance.toString())) : [null, false];
-    const { researchers, loadingDepartments } = uuidPrescribingDoctor ? useDepartments() : { researchers: [], loadingDepartments: false};
+    const { researchers, loadingDepartments, departments } = uuidPrescribingDoctor ? useDepartments() : { researchers: [], loadingDepartments: false, departments: []};
 
     const prescribingDoctor:IResearcher | undefined = useMemo(() => {
         return researchers.find((researcher) => researcher.uuid === uuidPrescribingDoctor);
     }, [researchers]);
+
+    const department:IDepartment | undefined = useMemo(() => {
+        return uuidDepartment ? departments.find((department:IDepartment) => department.uuid === uuidDepartment) : undefined;
+    }, [departments]);
 
     const hasAdditionalInfo = bill.billItems.find((item) =>{
         return item.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO
@@ -104,15 +110,21 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, city, uuidInvestigatio
                                 <Translate id={`hospital.billing.pdf.doctor`} />: {researcherFullName(prescribingDoctor)}
                             </Typography> 
                         } 
+                        {
+                            department &&
+                            <Typography variant='body2'>
+                                <Translate id={`hospital.billing.pdf.department`} />: {department.name}
+                            </Typography> 
+                        }
                     </Grid>
                 )
             case DocumentType.BUDGET:
                 return(
                     <>
-                     {
-                        patientInformation()
-                    }
-                        </>
+                        {
+                            patientInformation()
+                        }
+                    </>
                 );
             case DocumentType.INVOICE:
                 return(
@@ -145,6 +157,12 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, city, uuidInvestigatio
                             prescribingDoctor &&
                             <Typography variant='body2'>
                                 <Translate id={`hospital.billing.pdf.doctor`} />: {researcherFullName(prescribingDoctor)}
+                            </Typography> 
+                        }
+                        {
+                            department &&
+                            <Typography variant='body2'>
+                                <Translate id={`hospital.billing.pdf.department`} />: {department.name}
                             </Typography> 
                         }
                         

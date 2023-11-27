@@ -137,8 +137,8 @@
                 "budget" : ["Quotes", "Presupuestos", "Devis"], 
                 "invoices": ["Invoices", "Facturas", "Facture definitive"],
                 "summaries": ["Summaries", "Resúmenes", "Synthèse des actes"],
-                "draft" : ["Draft", "Borrador", "Brouillon"],
-                "closed" : ["Closed", "Cerrado", "Fermé"],
+                "draft" : ["Draft", "Borrador", "Modifiable"],
+                "closed" : ["Closed", "Cerrado", "Non Modifiable"],
                 "low" : ["Low", "Bajo", "Faible"],
                 "finished" : ["Finished", "Finalizado", "Completé"],
                 "normal" : ["Normal", "Normal", "Normal"],
@@ -332,7 +332,7 @@
                 }
             },
             "convert" : {
-                "to_budget" : ["Convert to budget", "Convertir a presupuesto", "Convertir en devis"],
+                "to_budget" : ["Convert to quote", "Convertir a presupuesto", "Convertir en devis"],
                 "to_invoice" : ["Convert to invoice", "Convertir a factura", "Convertir en facture"]
             },
             "pdf" : {
@@ -347,6 +347,7 @@
                     "summary" : ["Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées."]
                 },
                 "doctor" : ["Practitioner", "Facultativo", "Praticien"],
+                "department" : ["Department", "Departamento", "Service"],
                 "billform_title" : {
                     "summary" : ["Medical benefits: Paid", "Beneficios médicos: Pagados", "Prestations médicales : Payé"],
                     "budget" : ["Services included in the medical procedure", "Servicios incluidos en el procedimiento médico.", "Prestations comprises dans l'acte médical"],
@@ -435,7 +436,7 @@
                 "types" : {
                     "invoice" : ["Invoice", "Factura", "Facture definitive"],
                     "budget" : ["Quote", "Presupuesto", "Devis"], 
-                    "summary" : ["Summary", "Resumen", "Synthèse des actes"]
+                    "summary" : ["Summary of Procedures", "Resumen", "Synthèse des actes"]
                 },
                 "view" : {
                     "modal" : {

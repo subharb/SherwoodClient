@@ -13,7 +13,7 @@ export const HeaderDocument:React.FC<Props> = (props) => {
     
     if(props.size === "A4"){
         return(
-            <Grid container xs={12} style={{paddingBottom:'2rem'}}>
+            <Grid container xs={12}>
                 <Grid xs={6} item style={{textAlign:'center'}}>
                     <img width="200" src={props.logoBlob} alt={props.hospitalName}/>
                 </Grid>    
@@ -30,7 +30,7 @@ export const HeaderDocument:React.FC<Props> = (props) => {
                     <Grid>
                         <Typography variant="body2">{props.email}</Typography>
                     </Grid>
-                    <Grid>
+                    <Grid style={{paddingTop:'2rem'}}>
                         <Typography variant="body2">{props.city}, {dateToFullDateString(new Date(), props.locale)}</Typography>
                     </Grid>
                 </Grid>   

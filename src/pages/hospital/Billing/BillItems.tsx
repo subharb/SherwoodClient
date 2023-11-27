@@ -687,8 +687,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
     }
     else if(bill?.type === DocumentType.INVOICE && bill.status === DocumentStatus.CLOSED) {
-        headCells.push({ id: "paid", alignment: "right", markAllCallback: (async () => await toggleAllItemsAs("paid")), label: <React.Fragment><Translate id="general.paid" /></React.Fragment> });
-        headCells.push({ id: "used", alignment: "right", markAllCallback: (async () => await toggleAllItemsAs("used")), label: <React.Fragment><Translate id="general.used" /></React.Fragment> });
+        headCells.push({ id: "paid", alignment: "right", markAllCallback: print ? null : (async () => await toggleAllItemsAs("paid")), label: <React.Fragment><Translate id="general.paid" /></React.Fragment> });
+        headCells.push({ id: "used", alignment: "right", markAllCallback: print ? null : (async () => await toggleAllItemsAs("used")), label: <React.Fragment><Translate id="general.used" /></React.Fragment> });
     }
    
     return (
