@@ -18,7 +18,6 @@ function DatesSelector(props:Props){
     const oneYearAgo = dayjs(today).subtract(1, 'year').toDate();
     const oneWeekAgo = dayjs(today).subtract(1, 'week').toDate()
     
-    const [typeRange, setTypeRange] = React.useState(null);
     const [startDate, setStartDate] = React.useState(oneWeekAgo);
     const [endDate, setEndDate] = React.useState(new Date());
     // Para separar la logica de cuando se seleccionan de los selectores
@@ -101,7 +100,7 @@ function DatesSelector(props:Props){
                                 color="primary" 
                                 onClick={() => {
                                     setStartDate(startDateCustom);
-                                    setEndDateCustom(endDateCustom);
+                                    setEndDate(endDateCustom);
                                 }}>Apply Changes</Button>   
                         
                     </Grid>

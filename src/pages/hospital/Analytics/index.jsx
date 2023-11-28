@@ -50,56 +50,6 @@ export function Analytics(props) {
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
 	const [loadingPatientsInfo, setLoadingPatientsInfo] = useState(false);
    
-	function changeDate(value) {
-		console.log("Date Changed!", value);
-		let tempStartDate = null;
-		let tempEndDate = null;
-		switch (value) {
-			case 0:
-				tempStartDate = new Date();
-				tempStartDate.setHours(0, 0, 0, 0);
-				tempEndDate = new Date();
-				break;
-			case 1:
-				tempStartDate = new Date(Date.now() - 172800000);
-				tempStartDate.setHours(0, 0, 0, 0);
-				tempEndDate = new Date(Date.now() - 86400000);
-				tempEndDate.setHours(0, 0, 0, 0);
-				break;
-			case 2:
-				tempStartDate = new Date(Date.now() - 604800000);
-				tempStartDate.setHours(0, 0, 0, 0);
-				tempEndDate = new Date();
-				break;
-			case 3:
-				tempStartDate = new Date(Date.now() - 2592000000);
-				tempStartDate.setHours(0, 0, 0, 0);
-				tempEndDate = new Date();
-				break;
-			case 4:
-				var date = new Date();
-				tempStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
-				tempStartDate.setHours(0, 0, 0, 0);
-				tempEndDate = new Date();
-				break;
-			case 5:
-				tempStartDate = new Date();
-				tempStartDate.setDate(0); // set to last day of previous month
-				tempStartDate.setDate(1); // set to the first day of that month
-				tempStartDate.setHours(0, 0, 0, 0);
-				tempEndDate = new Date();
-				tempEndDate.setDate(0); // set to last day of previous month
-				tempEndDate.setHours(23, 59, 59, 0);
-				break;
-			default:
-				console.log("Not defined");
-		}
-		console.log(tempStartDate.getTime());
-		console.log(tempEndDate.getTime());
-		setStartDate(tempStartDate.getTime());
-		setEndDate(tempEndDate.getTime());
-	}
-    
 	function datesSelected(dates) {
 		console.log("We have dates", dates);
 		setStartDate(dates[0].getTime());
