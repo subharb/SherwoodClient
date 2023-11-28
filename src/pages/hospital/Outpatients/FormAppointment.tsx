@@ -196,7 +196,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
 
     function renderDepartments(){
         if(departmentsWithAgenda.length === 0){
-            return  [<Translate id="pages.hospital.outpatients.form_appointment.no_agenda_department" />," ",<Link to={HOSPITAL_OUTPATIENTS_ROUTE}><Translate id="general.here" /></Link>]
+            return  null;
         }
         else if(departmentsWithAgenda.length === 1){
             return (
@@ -367,7 +367,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     }, [])
 
     function renderButtons(){
-        if(mode === "make" && !loading && !appointmentCreated && departmentsWithAgenda.length > 0){
+        if(mode === "make" && !loading && !appointmentCreated && (department && departmentsWithAgenda.length > 0) || (!department && departmentsWithAgenda.length === 0)){
             return (
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
                     <ButtonCancel onClick={resetModal} data-testid="cancel-modal"  spaceright={1}>
