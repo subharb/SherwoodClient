@@ -102,13 +102,14 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     const amountToDistribute = useMemo(() => {
         const billItemHidden = items.find((item) => item.type === TYPE_BILL_ITEM.HIDDEN_VALUE);
         if(billItemHidden){
-            return billItemHidden.amount;
+            return (parseInt(billItemHidden.amount as string) * billItemHidden.quantity);
         }
         return 0;
     }, [items]);   
     
     const totalAmountBill = useMemo(() => {
-        return calculateTotalBill(items, [TYPE_BILL_ITEM.HIDDEN_VALUE, TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO]);
+        const removeTypes = print ? [TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO, TYPE_BILL_ITEM.HIDDEN_VALUE] : [TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO];
+        return calculateTotalBill(items, removeTypes);
     }, [items, updatedBillItemAmount]);  
 
     const billables:Billable[] = useSelector((state:any) => state.billing.data.billables ? state.billing.data.billables : []);
