@@ -10,8 +10,6 @@ import { BillItem, BillItemModes, EditBillingProps } from './types';
 import { withLocalize } from 'react-localize-redux';
 
 
-
-
 const EditBilling: React.FC<EditBillingProps> = ({ billables, uuidInvestigation, billingInfo, withDiscount, translate, onBillingInfoSuccesfullyUpdated }) => {
     const [tabSelected, setTabSelected] = useState(0);
     const dispatch = useDispatch();

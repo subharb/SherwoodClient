@@ -12,6 +12,7 @@ export interface BillingReducer{
     data:{
         billItems:BillItem[] | null,
         billableCombos:BillableCombo[] | null,
+        billablesCurrentBill:Billable[] | null,
         billables:Billable[] | null
     },
     loading:boolean,
@@ -21,6 +22,7 @@ export interface BillingReducer{
     data: {
         //bills:null,
         billables:null,
+        billablesCurrentBill:null,
         billableCombos:null,
         billItems:null
     },
@@ -58,7 +60,7 @@ export default function reducer(state:BillingReducer = initialState, action:any)
             return newState;
         case types.GET_BILLABLES_SUCCESS:
         case types.UPDATE_BILLABLES_SUCCESS:
-            newState.data.billables = action.billables;
+            newState.data.billablesCurrentBill = action.billables;
             newState.loading = false; 
             newState.error = null; 
             return newState;     
@@ -69,7 +71,7 @@ export default function reducer(state:BillingReducer = initialState, action:any)
             return newState;
         case types.PUSH_BILLABLES:
             currentBillItems = newState.data.billItems ? newState.data.billItems : [];
-            currentBillables = newState.data.billables ? newState.data.billables : [];
+            currentBillables = newState.data.billablesCurrentBill ? newState.data.billablesCurrentBill : [];
             console.log("currentBillables",currentBillables);
             for(let i = 0; i < action.billablesId.length; i++){
                 const billableId = action.billablesId[i];

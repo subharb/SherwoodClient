@@ -176,18 +176,6 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
         catch(error:any){
             handleError(error);
         }
-        // const tempBills = [...bills];
-        // const existingBillIndex = tempBills.findIndex((aBill) => bill.uuid === aBill.uuid);
-        // if (existingBillIndex !== -1) {
-        //     tempBills[existingBillIndex] = bill;
-        // }
-        // else {
-        //     tempBills.push(bill);
-        //     tempBills.sort((billA, billB) => billB.id - billA.id);
-        // }
-        // setBills(tempBills);
-
-        // history.push(HOSPITAL_BILLING_CREATE_BILL);
     }
 
     async function onChangeDocumentType(uuidBill:string, type: DocumentType) {
@@ -404,14 +392,16 @@ const Billing: React.FC<Props> = (props) => {
         }
         else if(props.section === BillActions.VIEW && props.uuidDocument && currentBill){
             const currentPatient = props.patients.find((patient) => patient.uuid === currentBill.uuidPatient);
-            return (<BillView bill={currentBill} billStatus={currentBill.status} billType={currentBill.type} 
+            return (<>{ renderBillForm() }
+                    <BillView bill={currentBill} billStatus={currentBill.status} billType={currentBill.type} 
                         patient={currentPatient!} hasBudgets={Boolean(props.billingInfo.params.budgets)} languageCode={props.activeLanguage.code} canUpdateBill={currentBill.status === DocumentStatus.DRAFT} 
                         currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.billingInfo.id}
                         print={false} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}
                         onUpdateBill={(bill: Bill, typeUpdate:TypeBillItemUpdate) => props.onCreateOrUpdateBill(bill, typeUpdate)} 
-                        onChangeDocumentType={props.onChangeDocumentType}
+                        onChangeDocumentType={props.onChangeDocumentType} onClickPDF={(uuid) => makeActionBill(uuid, BillActions.PREVIEW)}
                         onCancelBill={onCancelBill}
-                    />)
+                    />
+                    </>)
         }
         else {
             if (props.billingInfo) {

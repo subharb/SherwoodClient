@@ -41,7 +41,7 @@ export default function Modal(props){
                     </IconButton>
                 }
             
-            <DialogContent >
+            <DialogContent style={{display:"flex",justifyContent:"center"}} >
                 {props.children}
             </DialogContent>
             

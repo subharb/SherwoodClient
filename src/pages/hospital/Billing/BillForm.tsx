@@ -39,7 +39,7 @@ const GridContainer = styled(Grid)`
 export const BillForm:React.FC<Props> = (props) => {
     const [loading, setLoading] = useState(false);
     const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);
-    const billables = useSelector((state:ReduxStore) => state.billing.data.billables ? state.billing.data.billables : []);
+    const billables = useSelector((state:ReduxStore) => state.billing.data.billablesCurrentBill ? state.billing.data.billablesCurrentBill : []);
     
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(undefined);
     const [currentItems, setCurrentItems] = useState<BillItem[]>([]);

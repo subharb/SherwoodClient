@@ -14,7 +14,6 @@ import { dateToFullDateString, hasDefaultValues, stringDatePostgresToDate } from
 import { useDispatch, useSelector } from "react-redux";
 import { pushBillingItems, saveBillingItems } from "../../../redux/actions/billingActions";
 import Modal from "../../../components/general/modal";
-import Form from "../../../components/general/form";
 import FillSurvey from "../FillSurvey";
 import ShowSingleSubmissionPatient from "../ShowSingleSubmissionPatient";
 import QuantitySelector from "./QuantitySelector";
@@ -73,7 +72,7 @@ const TYPES_BILL_ITEM = Object.entries(TYPE_BILL_ITEM).filter(([key, value]) =>{
 const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo, error, activeLanguage,
                                                     canUpdateBill, currency, print, withDiscount,
                                                     surveyAdditionalInfo, uuidInvestigation,
-                                                    uuidPatient,
+                                                    uuidPatient, initItems,
                                                     bill, translate, showTotal, repeatBillItems, onUpdateBillItemStatus, onBillItemsValidated, 
                                                     onCancelBill }) => {
     const dispatch = useDispatch();
@@ -88,9 +87,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     const DEFAULT_CURRENT_ITEM = initFieldErrors;
     const [fieldErrors, setFieldErrors] = useState(initFieldErrors);
     const [addingItem, setAddingItem] = useState(false);
-    //const [items, setItems] = useState<BillItem[]>(bill && mode === BillItemModes.BILL ? bill.billItems : mode === BillItemModes.BILLABLE && billables ? billables : [])
+    
     const items:BillItem[]  = useSelector((state:any) => {
-        console.log(state.billing.data.billItems);
         return state.billing.data.billItems ? state.billing.data.billItems.sort((bItemA:BillItem, bItemB:BillItem) => {
             if(bItemA.updatedAt && bItemB.updatedAt){
                 const dateA = getDateFromStringOrDate(bItemA.updatedAt);
@@ -112,7 +110,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         return calculateTotalBill(items, removeTypes);
     }, [items, updatedBillItemAmount]);  
 
-    const billables:Billable[] = useSelector((state:any) => state.billing.data.billables ? state.billing.data.billables : []);
+    const billables:Billable[] = useSelector((state:any) => state.billing.data.billablesCurrentBill ? state.billing.data.billablesCurrentBill : []);
     //const [items, setItems] = useState<BillItem[]>(initItems);
     const [currentItem, setCurrentItem] = useState<BillItem>(DEFAULT_CURRENT_ITEM as BillItem);    
     const [errorBill, setErrorBill] = useState<ReactElement | undefined>(error ? error : undefined);
@@ -130,6 +128,13 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         setItemAdded(false);
         
     }, [currentItem]);
+
+    //Si hay initItems, los cargo en redux
+    useEffect(() => {
+        if(initItems.length > 0){
+            dispatch(saveBillingItems(initItems));
+        }
+    }, [initItems]);
 
     useEffect(() => {
         if(amountToDistribute !== 0 && print){

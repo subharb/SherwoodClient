@@ -9,11 +9,9 @@ import { dateToFullDateString, fullDateFromPostgresString, getPatientID, patient
 import { BillForm } from './BillForm';
 import { useDepartments, useInsurances, usePatientSubmission } from '../../../hooks';
 import SignatureMajor from '../../../img/signatures/CHOM-major.png';
-import SignatureMedecin from '../../../img/signatures/CHOM-medecin.png';
 import SignatureFinancier from '../../../img/signatures/CHOM-financier.png';
 import SignatureDirecteur from '../../../img/signatures/CHOM-directeur.png';
 import Loader from '../../../components/Loader';
-import { de } from 'date-fns/locale';
 
 
 interface BillPDFProps {

@@ -13,6 +13,7 @@ import Modal from '../../../components/general/modal';
 import { ColourChip } from '../../../components/general/mini_components-ts';
 import { useInsurances, useResearcherDepartmentSelector, useResearchersSelector, useStatusDocument } from '../../../hooks';
 import Loader from '../../../components/Loader';
+import { IconGenerator } from '../../../components/general/mini_components';
 
 
 interface BillViewProps {
@@ -29,6 +30,7 @@ interface BillViewProps {
     print: boolean,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
+    onClickPDF: (uuid:string) => void,
     onUpdateBill: (bill: Bill, typeUpdate:TypeBillItemUpdate) => void,
     onChangeDocumentType: (uuidBill:string, type: DocumentType) => void,
     onCancelBill: () => void
@@ -132,7 +134,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
     }
 
     function renderConvertButton(){
-        if(!props.hasBudgets){
+        if(!props.hasBudgets || !patientInsurance){
             return null;
         }
         const typeButton = <>
@@ -144,7 +146,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
             </>
             let convertGrid = null
             if(props.billType === DocumentType.BUDGET || props.billType === DocumentType.SUMMARY){
-                const converButton = props.billType === DocumentType.SUMMARY ? 
+                const converButton = props.billType === DocumentType.SUMMARY && patientInsurance.name !== "PAF" ? 
                                             <ColourChip rgbcolor={documentTypeToColor(DocumentType.BUDGET)} avatar={documentTypeToIcon(DocumentType.BUDGET)} 
                                                 label={<Translate id="hospital.billing.convert.to_budget"/>}
                                                 onClick={() => convertDocument(DocumentType.BUDGET)} />    
@@ -202,6 +204,11 @@ const BillView: React.FC<BillViewProps> = (props) => {
                             {
                                 patientInsurance &&
                                 <Typography variant='body2'><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.insurance" /></span> : {patientInsurance.name} </Typography>
+                            }
+                            {
+                                props.billStatus === DocumentStatus.CLOSED &&
+                                <Button onClick={() => props.onClickPDF(props.bill!.uuid)} ><IconGenerator type="pdf" /></Button>
+                                
                             }
                         </Grid>
                     } />
