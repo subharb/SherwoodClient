@@ -35,7 +35,6 @@ export const BillPDFT: Story = {
     email: BillingInfo.email,
     city: BillingInfo.city,
     logoBlob: BillingInfo.logoBlob,
-    
     locale:"fr",
     onClose : () =>console.log("Close bill")
   },
@@ -239,7 +238,7 @@ export const BillPDFT: Story = {
                             "surveyField": {
                                 "id": 7475,
                                 "type": "text",
-                                "name": "Montant (en lettres)",
+                                "name": "amount_letters",
                                 "encrypted": false,
                                 "required": false,
                                 "validation": "notEmpty",

@@ -14,12 +14,18 @@ import { ColourChip } from '../../../components/general/mini_components-ts';
 import { useInsurances, useResearcherDepartmentSelector, useResearchersSelector, useStatusDocument } from '../../../hooks';
 import Loader from '../../../components/Loader';
 import { IconGenerator } from '../../../components/general/mini_components';
+import { DocumentPDF } from '../Document';
+import BillPDF from './BillPDF';
+import { render } from '@testing-library/react';
 
 
 interface BillViewProps {
     bill: Bill;
     billStatus: DocumentStatus;
     billType: DocumentType;
+    hospitalName: string;
+    billingInfo: any;
+    
     patient: IPatient,
     hasBudgets:boolean,
     languageCode: string,
@@ -37,22 +43,20 @@ interface BillViewProps {
 }
 
 const BillView: React.FC<BillViewProps> = (props) => {
-    const [showModal, setShowModal] = React.useState(false);
+    const [showModalConfirm, setShowModalConfirm] = React.useState(false);
+    const [showModalPDF, setShowModalPDF] = React.useState(false);
     const [newDocumentType, setNewDocumentType] = React.useState<DocumentType>(DocumentType.BUDGET);
     const {statusDocument, renderStatusDocument} = useStatusDocument(props.billStatus, false);
     const [insurances, loadingInsurances, patientInsurance] = props.patient.personalData.insurance ? useInsurances(parseInt(props.patient.personalData.insurance.toString())) : [null, false];
 
     const {renderResearcherDepartmentSelector, loadingResearcherOrDepartments, 
-            researcherSelected, departmentSelected, uuidDepartmentSelected, 
+            researcherSelected, departmentSelected, uuidDepartmentSelected, departments,
             uuidResearcherSelected, markAsErrorDepartmentCallback, markAsErrorReseacherCallback} = useResearcherDepartmentSelector(props.bill.uuidPrescribingDoctor ? props.bill.uuidPrescribingDoctor : "", props.bill.uuidDepartment ? props.bill.uuidDepartment : "" );
 
     function onCloseModal(){
-        setShowModal(false);
+        setShowModalConfirm(false);
+        setShowModalPDF(false);
     }
-
-    useEffect(() => {
-
-    }, [props.bill]);
 
     function onUpdateBill(billItems: BillItem[], typeUpdate:TypeBillItemUpdate) {
         if(props.billType === DocumentType.INVOICE){
@@ -60,7 +64,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
                 markAsErrorReseacherCallback();
                 return
             }
-            if(!departmentSelected){
+            if(!departmentSelected && departments.length > 0){
                 markAsErrorDepartmentCallback();
                 return
             }
@@ -77,7 +81,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
 
     function confirmChangeDocumentType(){
         console.log("Crear documento de tipo ", documentTypeToString(newDocumentType));
-        setShowModal(false);
+        setShowModalConfirm(false);
         if(props.bill!.uuid){
             props.onChangeDocumentType(props.bill.uuid, newDocumentType);
         }
@@ -86,7 +90,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
     function convertDocument(type:DocumentType){
         console.log("Convert to ", documentTypeToString(type));
         setNewDocumentType(type);
-        setShowModal(true);
+        setShowModalConfirm(true);
     }
 
     function renderPrescribingDoctor(){
@@ -188,12 +192,35 @@ const BillView: React.FC<BillViewProps> = (props) => {
                 </Card>
             )      
     }
+    function renderModal(){
+        if(showModalConfirm){
+            return(
+                <Modal key="modal" fullWidth medium open={true} title={<Translate id="hospital.billing.bill.view.modal.title" />} closeModal={() => onCloseModal()}
+                    confirmAction={confirmChangeDocumentType} >
+                    <Typography variant="body2" component='span'><Translate id="hospital.billing.bill.view.modal.message" /></Typography>
+                </Modal>
+            )
+        }
+        else if(showModalPDF){
+            return (<Modal key="modal" fullWidth medium open={true} title={!props.bill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
+                        <DocumentPDF size='A4' name={props.bill!.id.toString()}>
+                            <BillPDF bill={props.bill!} type={props.bill!.type} patient={props.patient}
+                                hospitalName={props.hospitalName} phone={props.billingInfo.phone}
+                                address={props.billingInfo.address} logoBlob={props.billingInfo.logoBlob}
+                                currency={props.billingInfo.currency} email={props.billingInfo.email}
+                                city={props.billingInfo.city} uuidDepartment={props.bill!.uuidDepartment}
+                                locale={props.languageCode} uuidPrescribingDoctor={props.bill!.uuidPrescribingDoctor}
+                                uuidInvestigation={props.uuidInvestigation} />
+                        </DocumentPDF>
+                    </Modal>)
+        }
+        return null;
+    }
     return (
         <>
-            <Modal key="modal" fullWidth medium open={showModal} title={<Translate id="hospital.billing.bill.view.modal.title" />} closeModal={() => onCloseModal()}
-                confirmAction={confirmChangeDocumentType} >
-                <Typography variant="body2" component='span'><Translate id="hospital.billing.bill.view.modal.message" /></Typography>
-            </Modal>
+            {
+                renderModal()
+            }
             <Card style={{margin:'10px'}}>
                 <Box padding={2} >  
                     <PatientInfo patient={props.patient} languageCode={props.languageCode} rightSide={
@@ -207,8 +234,7 @@ const BillView: React.FC<BillViewProps> = (props) => {
                             }
                             {
                                 props.billStatus === DocumentStatus.CLOSED &&
-                                <Button onClick={() => props.onClickPDF(props.bill!.uuid)} ><IconGenerator type="pdf" /></Button>
-                                
+                                <Button onClick={() => setShowModalPDF(true)} ><IconGenerator type="pdf" /></Button>   
                             }
                         </Grid>
                     } />

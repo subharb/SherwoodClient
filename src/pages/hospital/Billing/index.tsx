@@ -392,8 +392,10 @@ const Billing: React.FC<Props> = (props) => {
         }
         else if(props.section === BillActions.VIEW && props.uuidDocument && currentBill){
             const currentPatient = props.patients.find((patient) => patient.uuid === currentBill.uuidPatient);
-            return (<>{ renderBillForm() }
+            return (<>
+                    { renderBillForm() }
                     <BillView bill={currentBill} billStatus={currentBill.status} billType={currentBill.type} 
+                        billingInfo={props.billingInfo} hospitalName={props.hospitalName} 
                         patient={currentPatient!} hasBudgets={Boolean(props.billingInfo.params.budgets)} languageCode={props.activeLanguage.code} canUpdateBill={currentBill.status === DocumentStatus.DRAFT} 
                         currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.billingInfo.id}
                         print={false} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}

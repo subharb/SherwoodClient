@@ -343,6 +343,13 @@
                     "summary" : ["SUMMARY OF ACTS", "RESUMEN DE ACTOS", "SYNTHÈSE DES ACTES"],
                     "budget" : ["DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL"]
                 },
+                "total_cost" : ["Total cost", "Coste total", "Coût total"],
+                "paid_externally" : ["Paid externally", "Pagado externamente", "PEC extérieure"],
+                "paid" : ["Paid", "Pagado", "Payé"],
+                "to_pay" : ["To pay", "Por pagar", "À payer"],
+                "amount_paid_insurance" : ["Amount supported by", "Importe soportado por", "Montant pris en charge par"],
+                "amount_paid_patient" : ["Amount paid by patient", "Importe pagado por paciente", "Montant à charge du patient"],
+                "total_letters" : ["Arrested this present invoice at the sum of", "Detenido esta presente factura por la suma de", "Arrêté la présente facture à la somme de"],
                 "subtitle" : {
                     "summary" : ["Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées."]
                 },

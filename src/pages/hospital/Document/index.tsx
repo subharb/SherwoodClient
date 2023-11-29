@@ -82,7 +82,7 @@ export const DocumentPDF:React.FC<Props> = (props) => {
                             }
                             @page { 
                                 size: auto;  
-                                margin: -4mm;                                 
+                                margin: 0mm;                                 
                             }
                         }
                         `}

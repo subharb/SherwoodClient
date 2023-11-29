@@ -720,6 +720,9 @@ export function useResearcherDepartmentSelector(defaultValueResearcher?:string, 
         return selects;
     }
     return {researchers, renderResearcherDepartmentSelector, uuidResearcherSelected,
-            loadingResearcherOrDepartments:(loadingDepartments || loadingResearchers), researcherSelected, uuidDepartmentSelected, departmentSelected,  markAsErrorReseacherCallback, markAsErrorDepartmentCallback}
+            departments,
+            loadingResearcherOrDepartments:(loadingDepartments || loadingResearchers), 
+            researcherSelected, uuidDepartmentSelected, departmentSelected,  
+            markAsErrorReseacherCallback, markAsErrorDepartmentCallback}
 }
 

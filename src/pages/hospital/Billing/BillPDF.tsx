@@ -12,7 +12,7 @@ import SignatureMajor from '../../../img/signatures/CHOM-major.png';
 import SignatureFinancier from '../../../img/signatures/CHOM-financier.png';
 import SignatureDirecteur from '../../../img/signatures/CHOM-directeur.png';
 import Loader from '../../../components/Loader';
-
+import { Divider } from '@mui/material';
 
 interface BillPDFProps {
     bill:Bill;
@@ -69,7 +69,10 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
         return additionalInfo ? additionalInfo!.surveyRecords.find((record) => record.surveyField.name === "letter_number") : null;
     }
     , [additionalInfo]);
-
+    const amount_letter = useMemo(() => {
+        return additionalInfo ? additionalInfo!.surveyRecords.find((record) => record.surveyField.name === "amount_letters") : null;
+    }
+    ,[additionalInfo]);
     
     function renderHeader(){
         return(
@@ -118,11 +121,11 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                 )
             case DocumentType.BUDGET:
                 return(
-                    <>
+                    <Grid item xs={12}>
                         {
                             patientInformation()
                         }
-                    </>
+                    </Grid>
                 );
             case DocumentType.INVOICE:
                 return(
@@ -169,8 +172,43 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
         }      
     }
     function renderBillForm(){
+        let prelude;
+        switch(type){
+            case DocumentType.SUMMARY:
+                const totalCost = bill.total;
+                const paidExternally = patientInsurance && patientInsurance.name === "PAF" ? 0 : totalCost;
+                const paid = 0;
+                const toPay = patientInsurance && patientInsurance.name === "PAF" ? totalCost : 0;
+                prelude = (
+                    <>
+                        <Grid container item xs={12}>
+                            <Typography variant='body2'>
+                                <Translate id={`hospital.billing.pdf.total_cost`} />: { new Intl.NumberFormat(locale).format(bill.total) } {currency}
+                            </Typography>
+                        </Grid>
+                        <Grid container item xs={12}>
+                            <Typography variant='body2' style={{fontWeight:'bold'}}>
+                                <Translate id={`hospital.billing.pdf.paid_externally`} />: { new Intl.NumberFormat(locale).format(paidExternally) } {currency}
+                            </Typography>
+                        </Grid>
+                        <Grid container item xs={12}>
+                            <Typography variant='body2' style={{fontWeight:'bold'}}>
+                                <Translate id={`hospital.billing.pdf.paid`} />: { new Intl.NumberFormat(locale).format(paid) } {currency}
+                            </Typography>
+                        </Grid>
+                        <Grid container item xs={12}>
+                            <Typography variant='body2' style={{fontWeight:'bold'}}>
+                                <Translate id={`hospital.billing.pdf.to_pay`} />: { new Intl.NumberFormat(locale).format(toPay) } {currency}
+                            </Typography>
+                        </Grid>
+                    </>
+                )
+        }
         return(
             <Grid container item xs={12}>
+                {
+                    prelude
+                }
                 <Typography variant='h3'>
                     <Translate id={`hospital.billing.pdf.billform_title.${documentTypeToString(type)}`} />
                 </Typography>
@@ -191,10 +229,10 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                     insuranceName && insuranceAmount &&
                     <Grid item xs={12}>
                         <Typography variant='body2'>
-                            <Translate id={`hospital.billing.pdf.summary.attention`} />{insuranceName.value}
+                            <Translate id={`hospital.billing.pdf.summary.attention`} />{new Intl.NumberFormat(locale).format(insuranceName.value)}
                         </Typography>
                         <Typography variant='body2'>
-                            <Translate id={`hospital.billing.pdf.summary.total_rating`} />{insuranceAmount.value}
+                            <Translate id={`hospital.billing.pdf.summary.total_rating`} />{new Intl.NumberFormat(locale).format(insuranceAmount.value)}
                         </Typography>
                         <Typography variant='body2'>
                             <Translate id={`hospital.billing.pdf.summary.coverage`} />
@@ -222,7 +260,27 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                 )
             break;
             case DocumentType.INVOICE:
+                const paidPatient = insuranceAmount ? bill.total  - insuranceAmount.value: 0;
                 content = (<>
+                        {
+                            insuranceName && insuranceAmount &&
+                            <Grid item xs={12}>
+                                <Typography variant='body2'>
+                                    <Translate id={`hospital.billing.pdf.amount_paid_insurance`} /> <span style={{fontWeight:'bold'}}>{insuranceName.value}</span>: { new Intl.NumberFormat(locale).format(insuranceAmount.value) } {currency}
+                                </Typography>
+                                <Typography variant='body2'>
+                                    <Translate id={`hospital.billing.pdf.amount_paid_patient`} />: {new Intl.NumberFormat(locale).format(paidPatient)} {currency}
+                                </Typography>
+                                <Typography variant='body2'>
+                                    <Translate id={`hospital.billing.pdf.total_letters`} /> { amount_letter.value } {currency}
+                                </Typography>
+                            </Grid>
+                        }
+                        <Grid item xs={12}>
+                            <div style={{padding:'2rem'}}>
+                                <Divider style={{width:'100%'}} />
+                            </div>
+                        </Grid>
                         <Grid item xs={6}>
                             <img src={SignatureFinancier} width="100%" />
                         </Grid>
