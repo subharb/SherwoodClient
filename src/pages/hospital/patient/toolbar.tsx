@@ -3,7 +3,7 @@ import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { ButtonAdd, IconGenerator, IconPatient } from "../../../components/general/mini_components"
 import { DepartmentType, IUnit, PersonalData } from "../../../constants/types"
-import {CATEGORY_DEPARTMENT_NURSE, CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, PATIENT_TOOLBAR_SECTION_IMAGE, PATIENT_TOOLBAR_SECTION_LAB, PATIENT_TOOLBAR_SECTION_MEDICAL, PATIENT_TOOLBAR_SECTION_NURSE, PATIENT_TOOLBAR_SECTION_SHOE, PATIENT_TOOLBAR_SECTION_SOCIAL, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
+import {CATEGORY_DEPARTMENT_NURSE, CATEGORY_DEPARTMENT_PRESCRIPTIONS, CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, PATIENT_TOOLBAR_SECTION_IMAGE, PATIENT_TOOLBAR_SECTION_LAB, PATIENT_TOOLBAR_SECTION_MEDICAL, PATIENT_TOOLBAR_SECTION_NURSE, PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS, PATIENT_TOOLBAR_SECTION_SHOE, PATIENT_TOOLBAR_SECTION_SOCIAL, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
 import iconNotes from "../../../img/icons/history.png";
 import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
@@ -14,6 +14,8 @@ import iconNurseGreen from "../../../img/icons/nursing_green.png";
 import iconNotesGreen from "../../../img/icons/history_green.png";
 import iconImagesGreen from "../../../img/icons/images_green.png";
 import iconLabGreen from "../../../img/icons/lab_green.png";
+import iconPrescriptions from "../../../img/icons/prescription_black.svg";
+import iconPrescriptionsGreen from "../../../img/icons/prescription_green.svg";
 
 import React from "react"
 
@@ -24,6 +26,7 @@ interface Props{
     readMedicalPermission:boolean,
     writeMedicalPermission:boolean,
     disabled:boolean,
+    enableAddButton:boolean,
     unitsResearcher:IUnit[],
     categorySurveys:number[],
     typeSurveySelected:string,
@@ -72,7 +75,7 @@ const Container = styled(Grid)`
     }
 `
 export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMedicalPermission,
-                                                    writeMedicalPermission,
+                                                    writeMedicalPermission, enableAddButton,
                                                     unitsResearcher, categorySurveys, categorySelected, years, 
                                                     addRecordCallBack, hospitalize, medicalNotesCallBack, nurseCallBack,
                                                     editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack}) =>{
@@ -193,6 +196,14 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => nurseCallBack()} >
                                 <img src={categorySelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
+                            </Button>
+                        </Grid>
+                    }
+                    {
+                        categoriesAvailable.includes(CATEGORY_DEPARTMENT_PRESCRIPTIONS) && 
+                        <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                            <Button data-testid="show" onClick={() => nurseCallBack()} >
+                                <img src={categorySelected === PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS ? iconPrescriptions : iconPrescriptionsGreen} alt="Nurse" height="35" />
                             </Button>
                         </Grid>
                     }

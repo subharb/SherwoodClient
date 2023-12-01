@@ -62,6 +62,8 @@ function urlToSection(urlType, dataCollectionSelected){
                 return types.PATIENT_TOOLBAR_SECTION_SHOE;
             case "nurse":
                 return types.PATIENT_TOOLBAR_SECTION_NURSE;
+            case "prescriptions":
+                return types.PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS;
             default:
                 return types.PATIENT_TOOLBAR_SECTION_MEDICAL;
         }
@@ -712,7 +714,7 @@ function Patient(props) {
                         categorySelected = {urlToSection(parameters.typeTest, dataCollectionSelected)}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
-                        action={parameters} disabled={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} 
+                        action={parameters} enableAddButton={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} 
                         personalData={patient.personalData} years={years}
                         medicalNotesCallBack={() => backToRoot()} 
                         typeSurveysAvailable = { typesSurvey }
