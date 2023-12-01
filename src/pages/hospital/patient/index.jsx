@@ -709,7 +709,7 @@ function Patient(props) {
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
                         typeSurveySelected={ dataCollectionSelected ? dataCollectionSelected.type : parameters.typeTest ? parameters.typeTest : "medical" }
-                        sectionSelected = {urlToSection(parameters.typeTest, dataCollectionSelected)}
+                        categorySelected = {urlToSection(parameters.typeTest, dataCollectionSelected)}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} disabled={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} 

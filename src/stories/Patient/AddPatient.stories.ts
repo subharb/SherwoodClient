@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AddPatientComponent } from '../pages/hospital/AddPatient/View';
-import { getInvestigation, personal_data_investigation1, personal_data_with_insurances } from './example_data';
-import {keyInvestigation} from '../../.storybook/preview'
+import { AddPatientComponent } from '../../pages/hospital/AddPatient/View';
+import { getInvestigation, personal_data_investigation1, personal_data_with_insurances } from '../example_data';
+import {keyInvestigation} from '../../../.storybook/preview'
 
 const meta: Meta<typeof AddPatientComponent> = {
-  title: 'Hospital/Add Patient',
+  title: 'Hospital/Patient/Add Patient',
   component: AddPatientComponent,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
