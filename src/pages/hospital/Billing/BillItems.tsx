@@ -98,7 +98,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
             return 0;
         }) : []});
     const amountToDistribute = useMemo(() => {
-        const billItemHidden = items.find((item) => item.type === TYPE_BILL_ITEM.HIDDEN_VALUE);
+        const billItemHidden = items.find((item) => parseInt(item.type) === TYPE_BILL_ITEM.HIDDEN_VALUE);
         if(billItemHidden){
             return (parseInt(billItemHidden.amount as string) * billItemHidden.quantity);
         }

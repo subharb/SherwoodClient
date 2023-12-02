@@ -3,7 +3,7 @@ import { Bill, DocumentType } from './types';
 import { Grid, Typography } from '@mui/material';
 import { IDepartment, IPatient, IResearcher, TYPE_BILL_ITEM } from '../../../constants/types';
 import { HeaderDocument } from '../Document/header';
-import { documentTypeToString } from '../../../utils/bill';
+import { calculateTotalBill, documentTypeToString } from '../../../utils/bill';
 import { Translate } from 'react-localize-redux';
 import { dateToFullDateString, fullDateFromPostgresString, getPatientID, patientFullName, researcherFullName } from '../../../utils';
 import { BillForm } from './BillForm';
@@ -260,7 +260,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                 )
             break;
             case DocumentType.INVOICE:
-                const paidPatient = insuranceAmount ? bill.total  - insuranceAmount.value: 0;
+                const paidPatient = insuranceAmount ? calculateTotalBill(bill.billItems, [TYPE_BILL_ITEM.HIDDEN_VALUE])  - insuranceAmount.value: 0;
                 content = (<>
                         {
                             insuranceName && insuranceAmount &&

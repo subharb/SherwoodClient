@@ -7,7 +7,7 @@ export function calculateTotalBill(items:BillItem[], withoutTypes:number[] = [],
     let amountSeparation = [0,0,0,0,0, 0];
     for(let i = 0; i < items.length; i++){
         const currentBillItem = items[i];
-        if(!withoutTypes.includes(currentBillItem.type ? currentBillItem.type : 0)){
+        if(!withoutTypes.includes(currentBillItem.type ? parseInt(currentBillItem.type) : 0)){
             const amount = currentBillItem.amountAlter && !officialPrices ? Number(currentBillItem.amountAlter) : Number(currentBillItem.amount);
             amountSeparation[currentBillItem.type ? currentBillItem.type : 0] += Number(amount) * Number(currentBillItem.quantity);  
         }
