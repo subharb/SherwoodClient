@@ -5,7 +5,7 @@ import mixpanel from 'mixpanel-browser';
 import { Translate } from 'react-localize-redux';
 import { ServiceType } from '../pages/hospital/Service/types';
 import { PERMISSION } from '../components/investigation/share/user_roles';
-import { isObject } from 'lodash';
+import { isEmpty, isEqual, isObject, xorWith } from 'lodash';
 /**
  * Function that validates fields from anywhere in the app
  * 
@@ -571,6 +571,8 @@ export function dateToFullDateString(date, localeCode){
         day: '2-digit'
         })
 }
+
+export const areArraysEqual = (x, y) => isEmpty(xorWith(x, y, isEqual));
 
 export function hasRequestGroupState(request, status){
     return request.requestsServiceInvestigation.findIndex((req) => req.status === status) !== -1

@@ -16,7 +16,6 @@ import Loader from '../../../components/Loader';
 import { IconGenerator } from '../../../components/general/mini_components';
 import { DocumentPDF } from '../Document';
 import BillPDF from './BillPDF';
-import { render } from '@testing-library/react';
 
 
 interface BillViewProps {
@@ -36,7 +35,6 @@ interface BillViewProps {
     print: boolean,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
-    onClickPDF: (uuid:string) => void,
     onUpdateBill: (bill: Bill, typeUpdate:TypeBillItemUpdate) => void,
     onChangeDocumentType: (uuidBill:string, type: DocumentType) => void,
     onCancelBill: () => void
@@ -229,12 +227,13 @@ const BillView: React.FC<BillViewProps> = (props) => {
                             <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.date" /></span>: {fullDateFromPostgresString(props.languageCode, props.bill.createdAt)}</Typography>
                             <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.type" /></span>: <Translate id={`hospital.billing.bill.types.${documentTypeToString(props.billType)}`}/></Typography>
                             {
-                                patientInsurance &&
-                                <Typography variant='body2'><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.insurance" /></span> : {patientInsurance.name} </Typography>
-                            }
-                            {
                                 props.billStatus === DocumentStatus.CLOSED &&
-                                <Button onClick={() => setShowModalPDF(true)} ><IconGenerator type="pdf" /></Button>   
+                                <>
+                                    <Typography component="span" variant="body2"><span style={{ fontWeight: 'bold' }}>
+                                        <Translate id="hospital.billing.bill.view_pdf" /></span></Typography>
+                                        :
+                                    <Button onClick={() => setShowModalPDF(true)} ><IconGenerator type="pdf" /></Button>  
+                                </> 
                             }
                         </Grid>
                     } />

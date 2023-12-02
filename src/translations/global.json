@@ -367,7 +367,7 @@
                     "date_surgery" : ["Date of surgery", "Fecha de intervención", "Date d'intervention"],
                     "attention" : ["To the atention of", "A la atención de", "À l'attention de"]
                 },
-                "summary" : {
+                "budget" : {
                     "attention" : ["Quote brought to the attention of:", "Presupuesto puesto en conocimiento de:", "Devis porté à l'attention de : "] ,
                     "total_rating" : ["Total rating:", "Valoración total:", "Cotation totale :"],
                     "coverage" : ["Please enter the percentage covered by the organization:................................ %", 
@@ -451,6 +451,7 @@
                         "message" : ["The change will automatically create a new document and close the current one. Are you sure you want create a new type of document?", "El cambio creará automáticamente un nuevo documento y cerrará el actual. ¿Está seguro de querer crear un nuevo tipo de documento?", "Le changement créera automatiquement un nouveau document et fermera l'actuel. Êtes-vous sûr de vouloir créer un nouveau type de document?"]
                     }
                 },
+                "view_pdf" : ["View PDF", "Ver PDF", "Voir PDF"],
                 "pending" : ["Pending", "Pendiente", "En attente"],
                 "draft" : ["Draft", "Borrador", "Modifiable"],
                 "closed" : ["Closed", "Cerrada", "Non Modifiable"],
@@ -460,8 +461,8 @@
                 "date" : ["Date", "Fecha", "Date"],
                 "success" : {
                     "changed" : ["Document type changed succesfully", "Tipo de documento cambiado correctamente", "Type de document modifié avec succès"],
-                    "created" : ["Bill succesfully created", "Factura creada correctamente", "Facture créée avec succès"],
-                    "updated" : ["Bill succesfully updated", "Factura actualizada correctamente", "Facture mis à jour avec succès"]
+                    "created" : ["Document succesfully created", "Documento creada correctamente", "Document créée avec succès"],
+                    "updated" : ["Document succesfully updated", "Documento actualizada correctamente", "Document mis à jour avec succès"]
                 },
                 "error" : {
                     "changed" : ["Can't change the document to this type", "No se puede cambiar el documento a este tipo", "Impossible de changer le document à ce type"],

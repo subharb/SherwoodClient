@@ -46,7 +46,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
     const hasAdditionalInfo = bill.billItems.find((item) =>{
         return item.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO
     });
-    const additionalInfo = !hasAdditionalInfo ? null : usePatientSubmission(hasAdditionalInfo!.additionalInfoId)
+    const [additionalInfo, loadingPatientSubmission] = !hasAdditionalInfo ? [null, false] : usePatientSubmission(hasAdditionalInfo!.additionalInfoId, patient.uuid)
     
     const insuranceName = useMemo(() => {
         return additionalInfo ? additionalInfo!.surveyRecords.find((record) => record.surveyField.name === "insurance") : null;
@@ -229,13 +229,13 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                     insuranceName && insuranceAmount &&
                     <Grid item xs={12}>
                         <Typography variant='body2'>
-                            <Translate id={`hospital.billing.pdf.summary.attention`} />{new Intl.NumberFormat(locale).format(insuranceName.value)}
+                            <Translate id={`hospital.billing.pdf.budget.attention`} /> { insuranceName.value }
                         </Typography>
                         <Typography variant='body2'>
-                            <Translate id={`hospital.billing.pdf.summary.total_rating`} />{new Intl.NumberFormat(locale).format(insuranceAmount.value)}
+                            <Translate id={`hospital.billing.pdf.budget.total_rating`} /> {new Intl.NumberFormat(locale).format(insuranceAmount.value)}
                         </Typography>
                         <Typography variant='body2'>
-                            <Translate id={`hospital.billing.pdf.summary.coverage`} />
+                            <Translate id={`hospital.billing.pdf.budget.coverage`} />
                         </Typography>
                     </Grid>
                 }
@@ -324,7 +324,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
         )
     }
 
-    if(loadingDepartments){
+    if(loadingDepartments || loadingPatientSubmission){
         return <Loader />
     }
     return (
