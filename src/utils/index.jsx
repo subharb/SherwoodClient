@@ -564,6 +564,15 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
     return encryptedFields;
 }
 
+export function dateOrStringToDateString(date, locale){
+    if(date instanceof Date){
+        return dateToFullDateString(date, locale)
+    }
+    else{
+        return fullDateFromPostgresString(locale, date);
+    }
+}
+
 export function dateToFullDateString(date, localeCode){
     return date.toLocaleString(localeCode,{
         year: 'numeric',

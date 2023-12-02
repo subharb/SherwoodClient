@@ -5,7 +5,7 @@ import { IDepartment, IPatient, IResearcher, TYPE_BILL_ITEM } from '../../../con
 import { HeaderDocument } from '../Document/header';
 import { calculateTotalBill, documentTypeToString } from '../../../utils/bill';
 import { Translate } from 'react-localize-redux';
-import { dateToFullDateString, fullDateFromPostgresString, getPatientID, patientFullName, researcherFullName } from '../../../utils';
+import { dateOrStringToDateString, dateToFullDateString, fullDateFromPostgresString, getPatientID, patientFullName, researcherFullName } from '../../../utils';
 import { BillForm } from './BillForm';
 import { useDepartments, useInsurances, usePatientSubmission } from '../../../hooks';
 import SignatureMajor from '../../../img/signatures/CHOM-major.png';
@@ -143,10 +143,10 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                                     <Translate id={`hospital.billing.pdf.invoice.police_number`} />: {letterNumber.value}
                                 </Typography> 
                                 <Typography variant='body2'>
-                                    <Translate id={`hospital.billing.pdf.invoice.date_emission`} />: {dateToFullDateString(emissionDate.value, locale)}
+                                    <Translate id={`hospital.billing.pdf.invoice.date_emission`} />: {dateOrStringToDateString(emissionDate.value, locale)}
                                 </Typography>
                                 <Typography variant='body2'>
-                                    <Translate id={`hospital.billing.pdf.invoice.date_surgery`} />: {dateToFullDateString(surgeryDate.value, locale)}
+                                    <Translate id={`hospital.billing.pdf.invoice.date_surgery`} />: {dateOrStringToDateString(surgeryDate.value, locale)}
                                 </Typography>
                             </>
                         }
@@ -264,6 +264,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                 content = (<>
                         {
                             insuranceName && insuranceAmount &&
+                            <>
                             <Grid item xs={12}>
                                 <Typography variant='body2'>
                                     <Translate id={`hospital.billing.pdf.amount_paid_insurance`} /> <span style={{fontWeight:'bold'}}>{insuranceName.value}</span>: { new Intl.NumberFormat(locale).format(insuranceAmount.value) } {currency}
@@ -275,12 +276,13 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                                     <Translate id={`hospital.billing.pdf.total_letters`} /> { amount_letter.value } {currency}
                                 </Typography>
                             </Grid>
+                            <Grid item xs={12}>
+                                <div style={{padding:'2rem'}}>
+                                    <Divider style={{width:'100%'}} />
+                                </div>
+                            </Grid>
+                            </>
                         }
-                        <Grid item xs={12}>
-                            <div style={{padding:'2rem'}}>
-                                <Divider style={{width:'100%'}} />
-                            </div>
-                        </Grid>
                         <Grid item xs={6}>
                             <img src={SignatureFinancier} width="100%" />
                         </Grid>
@@ -308,7 +310,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant='body2'>{patientFullName(patient)} <Translate id="general.born" /> {dateToFullDateString(patient.personalData.birthdate, locale)}</Typography>
+                    <Typography variant='body2'>{patientFullName(patient)} <Translate id="general.born" /> {dateOrStringToDateString(patient.personalData.birthdate, locale)}</Typography>
 
                     {
                         patientInsurance &&
