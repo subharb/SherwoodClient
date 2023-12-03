@@ -126,21 +126,30 @@ export function usePatientSubmission(idSubmission:number, uuidPatient:string){
             );
         }
         if(investigations.data && investigations.currentInvestigation && idSubmission && !submission){
-            getSubmission();   
+            const foundSubmission = findSubmission(idSubmission);
+            if(foundSubmission === undefined){
+                getSubmission();   
+            }
+            else{
+                setSubmission(foundSubmission);
+            }
         }    
     }, [idSubmission, submission]);   
     
-    useEffect(() => {
+    function findSubmission(idSubmission:number){
         if(submissions && idSubmission){
-            Object.values(submissions).forEach((subSurvey:any) => {
-                Object.values(subSurvey).forEach((sub:any) => {
-                    const findSubmission = sub.submissions.find((subi:any) => subi.id === idSubmission);
-                    if(findSubmission){
-                        setSubmission(findSubmission);
-                    }
-                })
-            });
-            
+            const findSubmission = Object.values(submissions[uuidPatient]).flatMap((submissionsSurvey:any) => {
+                return submissionsSurvey.submissions;
+            }).find((subi:any) => subi.id === idSubmission);
+        
+            return findSubmission;
+        }
+    }
+
+    useEffect(() => {
+        const foundSubmission = findSubmission(idSubmission);
+        if(foundSubmission !== undefined){
+            setSubmission(foundSubmission);
         }
     }, [submissions])
 

@@ -25,7 +25,7 @@ export function fetchSingleSubmissionsPatientInvestigationAction(uuidInvestigati
       return getSubmissionPatientService(uuidInvestigation, idSumission)
         .then((response) => {
           dispatch({
-            type: types.FETCH_SUBMISSIONS_PATIENT_SUCCESS,
+            type: types.FETCH_SINGLE_SUBMISSIONS_PATIENT_SUCCESS,
             submission: response.submission,
             meta:{uuidPatient}
           });
@@ -33,7 +33,7 @@ export function fetchSingleSubmissionsPatientInvestigationAction(uuidInvestigati
         .catch((error) => {
           if(!error.response){
             dispatch({
-              type: types.FETCH_SUBMISSIONS_PATIENT_SUCCESS,
+              type: types.FETCH_SINGLE_SUBMISSIONS_PATIENT_SUCCESS,
               submission: response.submission,
               meta:{uuidPatient}
             });

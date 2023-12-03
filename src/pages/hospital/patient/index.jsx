@@ -492,7 +492,11 @@ function Patient(props) {
         async function fetchPatientsStay(){
             await dispatch(getPatientStaysAction(props.investigations.currentInvestigation.uuid, uuidPatient));
         }
-        if(props.investigations.data && (!props.patientsSubmissions.data || !props.patientsSubmissions.data.hasOwnProperty(uuidPatient))){
+
+        const submissionsNotOnlyAdditionalInfo = props.patientsSubmissions.data && props.patientsSubmissions.data.hasOwnProperty(uuidPatient) ? Object.values(props.patientsSubmissions.data[uuidPatient]).filter((surveySubs) => {  
+            return surveySubs.type !== types.TYPE_ADDITIONAL_INFO_SURVEY
+        }).length !== Object.values(props.patientsSubmissions.data[uuidPatient]).length : false;
+        if(props.investigations.data && (!props.patientsSubmissions.data || !submissionsNotOnlyAdditionalInfo)){
             fetchRecordsPatient();
             fetchPatientsStay()
         }
@@ -547,18 +551,6 @@ function Patient(props) {
                         return tempSub;
                     })
                     tempSubmissions = tempSubmissions.concat(tempSubs); 
-                    // tempSubmissions.concat(val.submissions);
-                    // let tempDict = {};
-                    // tempDict.surveyName = val.surveyName; 
-                    // tempDict.uuidSurvey = val.uuid; 
-                    // tempDict.typeSurvey = val.type; 
-                    // const researcher = val.submissions[val.submissions.length -1].researcher;
-                    // //Si es en modo offline no hay researcher.
-                    // tempDict.researcher = researcher.name ? researcher.name+" "+researcher.surnames : researcher;
-                    // tempDict.offline = researcher.name ? false : true;
-                    // tempDict.createdAt = val.submissions[val.submissions.length -1].surveyRecords[0].createdAt;
-    
-                    // return acc.concat(tempDict)
                 });
                 tempSubmissions.sort((a, b) => {
                     const aDate = new Date(a.createdAt);
