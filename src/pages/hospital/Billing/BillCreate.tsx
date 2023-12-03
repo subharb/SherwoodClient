@@ -104,7 +104,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
     }
 
     function renderOptions(){
-        if(patient){
+        if(patient && props.canCreateBugdet){
             return (
                 <Card style={{margin:'10px'}}>
                     <Box padding={2} > 
@@ -133,29 +133,32 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
                     <Box padding={2} > 
                     <PatientInfo patient={patient} languageCode={props.languageCode} rightSide={
                         <Grid container item xs={6} style={{ display:'flex', paddingTop: '1rem' }} >
-                            <Autocomplete
-                                disabled={loadingBillables}
-                                value={comboSelected}
-                                options={billableCombos}
-                                onInputChange={(event, value, reason) => {
-                                    console.log("onInputChange",value);
-                                }}
-                                onChange={(event, newValue) => {
-                                    console.log("onchange", newValue);
-                                    selectCombo(newValue);
+                            {
+                                billableCombos.length > 0 &&
+                                <Autocomplete
+                                    disabled={loadingBillables}
+                                    value={comboSelected}
+                                    options={billableCombos}
+                                    onInputChange={(event, value, reason) => {
+                                        console.log("onInputChange",value);
+                                    }}
+                                    onChange={(event, newValue) => {
+                                        console.log("onchange", newValue);
+                                        selectCombo(newValue);
+                                        }
                                     }
-                                }
-                                getOptionLabel={(option) => {
-                                    return option.name;
-                                }}
-                                style={{ width: 300 }}
-                                renderInput={(params:any) => 
-                                    <TextField {...params} label="Select combo" error={false}
-                                        helperText={null} color="secondary"
-                                        //onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
-                                        variant="outlined" />
-                                    }
-                            />
+                                    getOptionLabel={(option) => {
+                                        return option.name;
+                                    }}
+                                    style={{ width: 300 }}
+                                    renderInput={(params:any) => 
+                                        <TextField {...params} label="Select combo" error={false}
+                                            helperText={null} color="secondary"
+                                            //onChange={(event) => changeField(event.target.value, BillItemKeys.concept)}
+                                            variant="outlined" />
+                                        }
+                                />
+                            }
                             {
                                 comboSelected &&
                                 <ButtonAdd style={{marginTop:'0.5rem'}} onClick={() => addBillablesCombo()} />
