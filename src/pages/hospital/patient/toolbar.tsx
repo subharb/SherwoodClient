@@ -203,7 +203,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                         categoriesAvailable.includes(CATEGORY_DEPARTMENT_PRESCRIPTIONS) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => nurseCallBack()} >
-                                <img src={categorySelected === PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS ? iconPrescriptions : iconPrescriptionsGreen} alt="Nurse" height="35" />
+                                <img src={categorySelected === PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS ? iconPrescriptionsGreen : iconPrescriptions} alt="prescriptions" height="45" />
                             </Button>
                         </Grid>
                     }
