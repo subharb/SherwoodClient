@@ -18,7 +18,7 @@ export function removeSubmissionPatient(uuidPatient, idSubmission, uuidSurvey) {
     };
 }
 
-export function fetchSingleSubmissionsPatientInvestigationAction(uuidInvestigation, idSumission) {
+export function fetchSingleSubmissionsPatientInvestigationAction(uuidInvestigation, idSumission, uuidPatient) {
     return async (dispatch) => {
       dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
   
@@ -34,7 +34,7 @@ export function fetchSingleSubmissionsPatientInvestigationAction(uuidInvestigati
           if(!error.response){
             dispatch({
               type: types.FETCH_SUBMISSIONS_PATIENT_SUCCESS,
-              surveys: [],
+              submission: response.submission,
               meta:{uuidPatient}
             });
           }

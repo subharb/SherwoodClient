@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
 import DateFnsUtils from "@date-io/date-fns";
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchUser } from "../services/authService";
-import { getCurrentResearcherUuid, researcherFullName } from '../utils/index.jsx';
+import { areArraysEqual, getCurrentResearcherUuid, researcherFullName } from '../utils/index.jsx';
 import { SIGN_IN_ROUTE } from '../routes/urls';
 import { FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, Typography } from '@mui/material';
 import { Translate } from 'react-localize-redux';
@@ -112,16 +112,17 @@ export function useServiceGeneral(serviceType:number){
     return { servicesGeneral, loadingServicesGeneral }
 }
 
-export function usePatientSubmission(idSubmission:number){
+export function usePatientSubmission(idSubmission:number, uuidPatient:string){
     const investigations = useSelector((state:any) => state.investigations);
     const submissions = useSelector((state:any) => state.patientsSubmissions.data);
+    const loadingSubmissions = useSelector((state:any) => state.patientsSubmissions.loading);
     const [submission, setSubmission] = useState<any>(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
         async function getSubmission() {
             await dispatch(
-                fetchSingleSubmissionsPatientInvestigationAction(investigations.currentInvestigation.uuid, idSubmission)
+                fetchSingleSubmissionsPatientInvestigationAction(investigations.currentInvestigation.uuid, idSubmission, uuidPatient)
             );
         }
         if(investigations.data && investigations.currentInvestigation && idSubmission && !submission){
@@ -133,7 +134,7 @@ export function usePatientSubmission(idSubmission:number){
         if(submissions && idSubmission){
             Object.values(submissions).forEach((subSurvey:any) => {
                 Object.values(subSurvey).forEach((sub:any) => {
-                    const findSubmission = sub.find((subi:any) => subi.id === idSubmission);
+                    const findSubmission = sub.submissions.find((subi:any) => subi.id === idSubmission);
                     if(findSubmission){
                         setSubmission(findSubmission);
                     }
@@ -143,7 +144,7 @@ export function usePatientSubmission(idSubmission:number){
         }
     }, [submissions])
 
-    return submission;
+    return [submission, loadingSubmissions];
 }
 
 export function useInsurances(patientInsuranceId:number){
@@ -503,7 +504,7 @@ function useSelectLogic(optionsSelector:OptionSelector[], key:string, defaultVal
     const [options, setOptions] = React.useState<OptionSelector[] | null>(null);
 
     useEffect(() => {
-        if(options === null || options.length !== optionsSelector?.length){
+        if(options === null || !areArraysEqual(options, optionsSelector)){
             setOptions(optionsSelector);
         }
         
@@ -584,12 +585,14 @@ export function useDeparmentsSelectorBis(defaultValue?:string, selectNoDepartmen
 
     console.log("uuidresearcher", uuidResearcher);
     console.log("Departments", departments);
-    const departmentOptions = departments ? departments.map((department) => {
-        return {
-            label:department.name,
-            value: department!.uuid as string
-        }
-    }) : [];
+    const departmentOptions = useMemo(() => {
+        return departments ? departments.map((department) => {
+            return {
+                label:department.name,
+                value: department!.uuid as string
+            }
+        }) : [];
+    }, [departments]);
 
     const { optionSelected, renderSelector, markAsErrorCallback} = useSelectLogic(departmentOptions, "department", defaultValue, selectNoDepartment, noReturnIfOnlyOne)
 

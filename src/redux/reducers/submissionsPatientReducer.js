@@ -38,9 +38,15 @@ export default function reducer(state = initialState, action){
         case types.FETCH_SUBMISSIONS_PATIENT_SUCCESS:
             tempData = newState.data === initialState.data ? {} : newState.data;
             dictSurveys = {};
-            action.surveys.forEach(sur => {
-                dictSurveys[sur.uuid] = sur;
-            })
+            if(tempData[action.meta.uuidPatient]){
+                dictSurveys = {...tempData[action.meta.uuidPatient]};
+            }
+            if(dictSurveys[action.submission.uuidSurvey]){
+                dictSurveys[action.submission.uuidSurvey].submissions.push(action.submission);
+            }
+            else{
+                dictSurveys[action.submission.uuidSurvey] = {"submissions" : [action.submission]}; 
+            }
             
             tempData[action.meta.uuidPatient] = dictSurveys;
             newState.data = tempData;

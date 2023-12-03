@@ -400,7 +400,7 @@ const Billing: React.FC<Props> = (props) => {
                         currency={props.billingInfo.currency} uuidInvestigation={props.uuidInvestigation} idBillingInfo={props.billingInfo.id}
                         print={false} withDiscount={props.withDiscount} surveyAdditionalInfo={props.surveyAdditionalInfo}
                         onUpdateBill={(bill: Bill, typeUpdate:TypeBillItemUpdate) => props.onCreateOrUpdateBill(bill, typeUpdate)} 
-                        onChangeDocumentType={props.onChangeDocumentType} onClickPDF={(uuid) => makeActionBill(uuid, BillActions.PREVIEW)}
+                        onChangeDocumentType={props.onChangeDocumentType}
                         onCancelBill={onCancelBill}
                     />
                     </>)

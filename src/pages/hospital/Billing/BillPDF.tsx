@@ -3,9 +3,9 @@ import { Bill, DocumentType } from './types';
 import { Grid, Typography } from '@mui/material';
 import { IDepartment, IPatient, IResearcher, TYPE_BILL_ITEM } from '../../../constants/types';
 import { HeaderDocument } from '../Document/header';
-import { documentTypeToString } from '../../../utils/bill';
+import { calculateTotalBill, documentTypeToString } from '../../../utils/bill';
 import { Translate } from 'react-localize-redux';
-import { dateToFullDateString, fullDateFromPostgresString, getPatientID, patientFullName, researcherFullName } from '../../../utils';
+import { dateOrStringToDateString, dateToFullDateString, fullDateFromPostgresString, getPatientID, patientFullName, researcherFullName } from '../../../utils';
 import { BillForm } from './BillForm';
 import { useDepartments, useInsurances, usePatientSubmission } from '../../../hooks';
 import SignatureMajor from '../../../img/signatures/CHOM-major.png';
@@ -46,7 +46,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
     const hasAdditionalInfo = bill.billItems.find((item) =>{
         return item.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO
     });
-    const additionalInfo = !hasAdditionalInfo ? null : usePatientSubmission(hasAdditionalInfo!.additionalInfoId)
+    const [additionalInfo, loadingPatientSubmission] = !hasAdditionalInfo ? [null, false] : usePatientSubmission(hasAdditionalInfo!.additionalInfoId, patient.uuid)
     
     const insuranceName = useMemo(() => {
         return additionalInfo ? additionalInfo!.surveyRecords.find((record) => record.surveyField.name === "insurance") : null;
@@ -143,10 +143,10 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                                     <Translate id={`hospital.billing.pdf.invoice.police_number`} />: {letterNumber.value}
                                 </Typography> 
                                 <Typography variant='body2'>
-                                    <Translate id={`hospital.billing.pdf.invoice.date_emission`} />: {dateToFullDateString(emissionDate.value, locale)}
+                                    <Translate id={`hospital.billing.pdf.invoice.date_emission`} />: {dateOrStringToDateString(emissionDate.value, locale)}
                                 </Typography>
                                 <Typography variant='body2'>
-                                    <Translate id={`hospital.billing.pdf.invoice.date_surgery`} />: {dateToFullDateString(surgeryDate.value, locale)}
+                                    <Translate id={`hospital.billing.pdf.invoice.date_surgery`} />: {dateOrStringToDateString(surgeryDate.value, locale)}
                                 </Typography>
                             </>
                         }
@@ -229,13 +229,13 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                     insuranceName && insuranceAmount &&
                     <Grid item xs={12}>
                         <Typography variant='body2'>
-                            <Translate id={`hospital.billing.pdf.summary.attention`} />{new Intl.NumberFormat(locale).format(insuranceName.value)}
+                            <Translate id={`hospital.billing.pdf.budget.attention`} /> { insuranceName.value }
                         </Typography>
                         <Typography variant='body2'>
-                            <Translate id={`hospital.billing.pdf.summary.total_rating`} />{new Intl.NumberFormat(locale).format(insuranceAmount.value)}
+                            <Translate id={`hospital.billing.pdf.budget.total_rating`} /> {new Intl.NumberFormat(locale).format(insuranceAmount.value)}
                         </Typography>
                         <Typography variant='body2'>
-                            <Translate id={`hospital.billing.pdf.summary.coverage`} />
+                            <Translate id={`hospital.billing.pdf.budget.coverage`} />
                         </Typography>
                     </Grid>
                 }
@@ -260,10 +260,11 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                 )
             break;
             case DocumentType.INVOICE:
-                const paidPatient = insuranceAmount ? bill.total  - insuranceAmount.value: 0;
+                const paidPatient = insuranceAmount ? calculateTotalBill(bill.billItems, [TYPE_BILL_ITEM.HIDDEN_VALUE])  - insuranceAmount.value: 0;
                 content = (<>
                         {
                             insuranceName && insuranceAmount &&
+                            <>
                             <Grid item xs={12}>
                                 <Typography variant='body2'>
                                     <Translate id={`hospital.billing.pdf.amount_paid_insurance`} /> <span style={{fontWeight:'bold'}}>{insuranceName.value}</span>: { new Intl.NumberFormat(locale).format(insuranceAmount.value) } {currency}
@@ -275,12 +276,13 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                                     <Translate id={`hospital.billing.pdf.total_letters`} /> { amount_letter.value } {currency}
                                 </Typography>
                             </Grid>
+                            <Grid item xs={12}>
+                                <div style={{padding:'2rem'}}>
+                                    <Divider style={{width:'100%'}} />
+                                </div>
+                            </Grid>
+                            </>
                         }
-                        <Grid item xs={12}>
-                            <div style={{padding:'2rem'}}>
-                                <Divider style={{width:'100%'}} />
-                            </div>
-                        </Grid>
                         <Grid item xs={6}>
                             <img src={SignatureFinancier} width="100%" />
                         </Grid>
@@ -308,7 +310,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant='body2'>{patientFullName(patient)} <Translate id="general.born" /> {dateToFullDateString(patient.personalData.birthdate, locale)}</Typography>
+                    <Typography variant='body2'>{patientFullName(patient)} <Translate id="general.born" /> {dateOrStringToDateString(patient.personalData.birthdate, locale)}</Typography>
 
                     {
                         patientInsurance &&
@@ -324,7 +326,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
         )
     }
 
-    if(loadingDepartments){
+    if(loadingDepartments || loadingPatientSubmission){
         return <Loader />
     }
     return (

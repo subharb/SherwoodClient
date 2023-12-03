@@ -4,7 +4,7 @@ import { Bill, BillItem, BillableCombo, DocumentStatus, DocumentType } from './t
 import { Translate } from 'react-localize-redux';
 import { BillForm } from './BillForm';
 import { FindPatient } from './find_patient';
-import { useStatusDocument } from '../../../hooks';
+import { useInsurances, useStatusDocument } from '../../../hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { pushBillables } from '../../../redux/actions/billingActions';
 import PatientInfo from './PatientInfo';
@@ -31,11 +31,11 @@ interface BillCreateProps {
 const BillCreate: React.FC<BillCreateProps> = (props) => {
     const [patient, setPatient] = useState<null | IPatient>(null);
     const [typeDocument, setTypeDocument] = useState<DocumentType>(props.canCreateBugdet ? DocumentType.SUMMARY : DocumentType.INVOICE);
-    
     const {statusDocument, renderStatusDocument} = useStatusDocument(DocumentStatus.DRAFT);
     const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);
     const billableCombos = useSelector((state:ReduxStore) => state.billing.data.billableCombos ? state.billing.data.billableCombos : []);
     const [comboSelected, setComboSelected] = useState<BillableCombo | null>(null);
+    
     const dispatch = useDispatch();
 
     async function addBillablesCombo(){
