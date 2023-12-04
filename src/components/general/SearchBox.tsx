@@ -5,6 +5,14 @@ import { orange, red } from '@mui/material/colors';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { ColourChip } from './mini_components-ts';
 
+export interface FilterItem{
+    label:string, 
+    value:number, 
+    selected:boolean, 
+    icon?: JSX.Element, 
+    color:string, callBack:() => void
+}
+
 interface SearchBoxProps extends LocalizeContextProps{
     selectFilter?:{
         value: string;
@@ -12,7 +20,7 @@ interface SearchBoxProps extends LocalizeContextProps{
         options :  { value: string; label: string; }[],
         callBack:(value:string) => void;
     }
-    filterItems:{label:string, value:number, selected:boolean, icon?: JSX.Element, color:string, callBack:() => void}[],
+    filterItems:FilterItem[],
     textField:{
         label:string,
         callBack:(value:string) => void;

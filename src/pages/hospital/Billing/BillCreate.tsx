@@ -104,12 +104,12 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
     }
 
     function renderOptions(){
-        if(patient && props.canCreateBugdet){
+        if(patient){
             return (
                 <Card style={{margin:'10px'}}>
                     <Box padding={2} > 
                         { renderTypeDocument() }
-                        { renderStatusDocument }
+                        { renderStatusDocument() }
                     </Box>
                 </Card>
             )

@@ -3,7 +3,7 @@ import { Translate } from 'react-localize-redux';
 import { BillActions, paidStatusToIcon, documentStatusToIcon, documentTypeToIcon, paidStatusToColor } from '.';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { fullDateFromPostgresString } from '../../../utils/index.jsx';
-import SearchBox from '../../../components/general/SearchBox';
+import SearchBox, { FilterItem } from '../../../components/general/SearchBox';
 import { BillStatus } from '../Service/types';
 import { green, red, yellow } from '@mui/material/colors';
 import { Grid } from '@mui/material';
@@ -21,10 +21,12 @@ type BillsTableProps = {
     languageCode: string;
     currency: string;
     hasBudgets: boolean;
+    canCreateBugdet: boolean;
     makeActionBillCallBack: (index:number, action:BillActions) => void;
 };
 
-const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, currency, hasBudgets, makeActionBillCallBack }) => {
+const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, currency, canCreateBugdet, 
+                                                    hasBudgets, makeActionBillCallBack }) => {
     const [patientName, setPatientName] = useState<string>("");
     const [statusPaidFilter, setStatusPaidFilter] = useState<BillStatus[]>([]);
     const [documentStatusFilter, setDocumentStatusFilter] = useState<DocumentStatus[]>([]);
@@ -150,19 +152,26 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         applyFilterGeneral(statusPaidFilter, setStatusPaidFilter, status);
     }
 
+    let filterItems:FilterItem[] = [
+        {label:"draft", selected: documentStatusFilter.includes(DocumentStatus.DRAFT),  value:DocumentStatus.DRAFT, icon:documentStatusToIcon(DocumentStatus.DRAFT), color:documentStatusToColor(DocumentStatus.DRAFT), callBack:() => applyDocumentStatus(DocumentStatus.DRAFT)},                        
+        {label:"closed", selected: documentStatusFilter.includes(DocumentStatus.CLOSED),  value:DocumentStatus.CLOSED, icon:documentStatusToIcon(DocumentStatus.CLOSED), color:documentStatusToColor(DocumentStatus.CLOSED), callBack:() => applyDocumentStatus(DocumentStatus.CLOSED)},                        
+        {label:"paid", selected: statusPaidFilter.includes(BillStatus.PAID), value:BillStatus.PAID, icon:paidStatusToIcon(BillStatus.PAID), color:paidStatusToColor(BillStatus.PAID), callBack:() => applyStatusPaidFilter(BillStatus.PAID)},
+        {label:"pending_payment", selected: statusPaidFilter.includes(BillStatus.PENDING_PAYMENT),  value:BillStatus.PENDING_PAYMENT, icon:paidStatusToIcon(BillStatus.PENDING_PAYMENT), color:paidStatusToColor(BillStatus.PENDING_PAYMENT), callBack:() => applyStatusPaidFilter(BillStatus.PENDING_PAYMENT)},
+    ];
+    if(canCreateBugdet){
+        const bugetFilters:FilterItem[] = [
+            {label:"summaries", selected: typeFilter.includes(DocumentType.SUMMARY),  value:DocumentType.INVOICE, icon:documentTypeToIcon(DocumentType.SUMMARY), color:documentTypeToColor(DocumentType.SUMMARY), callBack:() => applyTypeStatusFilter(DocumentType.SUMMARY)},
+            {label:"budget", selected: typeFilter.includes(DocumentType.BUDGET), value:DocumentType.BUDGET, icon:documentTypeToIcon(DocumentType.BUDGET), color:documentTypeToColor(DocumentType.BUDGET), callBack:() => applyTypeStatusFilter(DocumentType.BUDGET)},
+            {label:"invoices", selected: typeFilter.includes(DocumentType.INVOICE),  value:DocumentType.INVOICE, icon:documentTypeToIcon(DocumentType.INVOICE), color:documentTypeToColor(DocumentType.INVOICE), callBack:() => applyTypeStatusFilter(DocumentType.INVOICE)},                         
+        ];
+        filterItems = [...bugetFilters, ...filterItems];
+    }
+
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
                 <SearchBox textField={{label:"hospital.billing.search_patient", callBack:callbackNameTyped}}
-                    filterItems={[
-                        {label:"summaries", selected: typeFilter.includes(DocumentType.SUMMARY),  value:DocumentType.INVOICE, icon:documentTypeToIcon(DocumentType.SUMMARY), color:documentTypeToColor(DocumentType.SUMMARY), callBack:() => applyTypeStatusFilter(DocumentType.SUMMARY)},
-                        {label:"budget", selected: typeFilter.includes(DocumentType.BUDGET), value:DocumentType.BUDGET, icon:documentTypeToIcon(DocumentType.BUDGET), color:documentTypeToColor(DocumentType.BUDGET), callBack:() => applyTypeStatusFilter(DocumentType.BUDGET)},
-                        {label:"invoices", selected: typeFilter.includes(DocumentType.INVOICE),  value:DocumentType.INVOICE, icon:documentTypeToIcon(DocumentType.INVOICE), color:documentTypeToColor(DocumentType.INVOICE), callBack:() => applyTypeStatusFilter(DocumentType.INVOICE)},                        
-                        {label:"draft", selected: documentStatusFilter.includes(DocumentStatus.DRAFT),  value:DocumentStatus.DRAFT, icon:documentStatusToIcon(DocumentStatus.DRAFT), color:documentStatusToColor(DocumentStatus.DRAFT), callBack:() => applyDocumentStatus(DocumentStatus.DRAFT)},                        
-                        {label:"closed", selected: documentStatusFilter.includes(DocumentStatus.CLOSED),  value:DocumentStatus.CLOSED, icon:documentStatusToIcon(DocumentStatus.CLOSED), color:documentStatusToColor(DocumentStatus.CLOSED), callBack:() => applyDocumentStatus(DocumentStatus.CLOSED)},                        
-                        {label:"paid", selected: statusPaidFilter.includes(BillStatus.PAID), value:BillStatus.PAID, icon:paidStatusToIcon(BillStatus.PAID), color:paidStatusToColor(BillStatus.PAID), callBack:() => applyStatusPaidFilter(BillStatus.PAID)},
-                        {label:"pending_payment", selected: statusPaidFilter.includes(BillStatus.PENDING_PAYMENT),  value:BillStatus.PENDING_PAYMENT, icon:paidStatusToIcon(BillStatus.PENDING_PAYMENT), color:paidStatusToColor(BillStatus.PENDING_PAYMENT), callBack:() => applyStatusPaidFilter(BillStatus.PENDING_PAYMENT)},
-                    ]} />
+                    filterItems={filterItems} />
             </Grid>
             <Grid item xs={12}>
                 {
