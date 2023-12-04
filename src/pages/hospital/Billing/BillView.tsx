@@ -137,7 +137,13 @@ const BillView: React.FC<BillViewProps> = (props) => {
 
     function renderConvertButton(){
         if(!props.hasBudgets || !patientInsurance){
-            return null;
+            return(
+                <Card style={{margin:'10px'}}>
+                    <Box padding={2} >  
+                     { renderStatusDocument() }
+                    </Box>
+                </Card>
+            )
         }
         const typeButton = <>
                 <Typography variant="body2" component='span'><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.type" /></span>: </Typography>

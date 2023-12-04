@@ -86,7 +86,7 @@ export const IconGenerator = withTheme((props) => {
         case "billing":
             return <MonetizationOnIcon style={{color : props.theme.buttonContinue.primary.background }}  />
         case "pdf":
-            return <PdfIcon style={{color : props.theme.buttonContinue.primary.background }}  />
+            return <PdfIcon style={{color : 'red' }}  />
         default:
             return <AddIcon />
     }
@@ -412,7 +412,7 @@ const CloseButtonHolder = styled.div`
     display:${props => props.hide ? "none" : "block"};
 `
 export const RedFormHelperText = styled(FormHelperText)`
-  color:red;
+  color:red!important;
 `
 
 export const CloseFrame = (props) => {

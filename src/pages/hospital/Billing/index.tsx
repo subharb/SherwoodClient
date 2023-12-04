@@ -419,7 +419,7 @@ const Billing: React.FC<Props> = (props) => {
                     <>
                         { renderBillForm() }
                         <BillsTable hasBudgets={Boolean(props.billingInfo.params.budgets)} patients={props.patients} currency={props.billingInfo.currency} 
-                            bills={props.bills} languageCode={props.activeLanguage.code} 
+                            bills={props.bills} languageCode={props.activeLanguage.code} canCreateBugdet={Boolean(props.billingInfo.params.budgets)}
                                 makeActionBillCallBack={makeActionBill}/>
                     </>
                 );
@@ -485,10 +485,6 @@ const Billing: React.FC<Props> = (props) => {
                     }
                 </div>
             </Snackbar>
-
-            {/* {
-                renderModal()
-            } */}
 
             <Grid justifyContent="space-between" direction='row' container padding={2} style={{ color: "white" }}>
                 <Grid item xs={12} container>

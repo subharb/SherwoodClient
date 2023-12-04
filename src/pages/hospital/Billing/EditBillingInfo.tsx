@@ -7,7 +7,7 @@ import { BillingInfo, EditBillingInfoProps } from './types';
 
 const BILLING_INFO_FORM: {[key in keyof BillingInfo]?: any} = {
     "logoBlob": {
-        required: false,
+        required: true,
         type: "file_base64",
         label: "hospital.billing.billing_info.logo",
         shortLabel: "hospital.billing.billing_info.logo",
