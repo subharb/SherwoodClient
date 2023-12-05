@@ -40,6 +40,7 @@ interface Props{
     nurseCallBack:() => void,
     addRecordCallBack: () => void,
     hospitalize?:() => void,
+    prescriptionsCallBack:() => void,
 }
 
 interface PropsComponent{
@@ -61,6 +62,7 @@ interface PropsComponent{
     shoeCallBack:() => void,
     testCallBack:() => void,
     nurseCallBack:() => void,
+    prescriptionsCallBack:() => void,
     addRecordCallBack: () => void,
     hospitalize?:() => void,
 }
@@ -78,6 +80,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                                                     writeMedicalPermission, enableAddButton,
                                                     unitsResearcher, categorySurveys, categorySelected, years, 
                                                     addRecordCallBack, hospitalize, medicalNotesCallBack, nurseCallBack,
+                                                    prescriptionsCallBack,
                                                     editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack}) =>{
         
         const isResearcherSocial = React.useMemo(() => {
@@ -104,6 +107,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                 years={years}
                 
                 addRecordCallBack={addRecordCallBack} hospitalize={hospitalize} 
+                prescriptionsCallBack={prescriptionsCallBack}
                 medicalNotesCallBack={medicalNotesCallBack} nurseCallBack={nurseCallBack}
                 editCallBack={editCallBack} labCallBack={labCallBack} socialCallBack={socialCallBack} 
                 shoeCallBack={shoeCallBack} testCallBack={testCallBack} 
@@ -112,7 +116,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
     }
 export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID, name, surnames, readMedicalPermission,
                                                 writeMedicalPermission, categoriesAvailable, health_id,
-                                                categorySelected, years, enableAddButton,
+                                                categorySelected, years, enableAddButton, prescriptionsCallBack,
                                                 addRecordCallBack, hospitalize, medicalNotesCallBack, nurseCallBack,
                                                 editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack
                                             }) =>{
@@ -202,7 +206,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                     {
                         categoriesAvailable.includes(CATEGORY_DEPARTMENT_PRESCRIPTIONS) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                            <Button data-testid="show" onClick={() => nurseCallBack()} >
+                            <Button data-testid="show" onClick={() => prescriptionsCallBack()} >
                                 <img src={categorySelected === PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS ? iconPrescriptionsGreen : iconPrescriptions} alt="prescriptions" height="45" />
                             </Button>
                         </Grid>

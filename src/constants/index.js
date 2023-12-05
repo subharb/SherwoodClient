@@ -172,7 +172,7 @@ export const CATEGORY_DEPARTMENT_MEDICAL = 0;
 export const CATEGORY_DEPARTMENT_SOCIAL = 1;
 export const CATEGORY_DEPARTMENT_SHOE = 3;
 export const CATEGORY_DEPARTMENT_NURSE = 4;
-export const CATEGORY_DEPARTMENT_PRESCRIPTIONS = 4;
+export const CATEGORY_DEPARTMENT_PRESCRIPTIONS = 5;
 
 export const CATEGORY_SURVEYS = [{ value: CATEGORY_DEPARTMENT_MEDICAL, name: "Medical" }, { value: CATEGORY_DEPARTMENT_SOCIAL, name: "Social", url: "social" }, 
                                     { value: CATEGORY_DEPARTMENT_SHOE, name: "Shoe", url: "shoe" }, { value: CATEGORY_DEPARTMENT_NURSE, name: "Nurse", url: "nurse" },

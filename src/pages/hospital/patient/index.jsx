@@ -75,7 +75,7 @@ function urlToSection(urlType, dataCollectionSelected){
     
 }
 
-const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse"};
+const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse", 13:"prescriptions"};
 const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
     newDict[TYPE_URL[key]] = parseInt(key);
     return newDict
@@ -124,6 +124,9 @@ function Patient(props) {
             return true;
         }
         if(parameters.typeTest === "nurse" && survey.category === types.CATEGORY_DEPARTMENT_NURSE){
+            return true;
+        }
+        if(parameters.typeTest === "prescriptions" && survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS){
             return true;
         }
         if((!parameters.typeTest || parameters.typeTest === "medical") && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
@@ -717,6 +720,7 @@ function Patient(props) {
                         socialCallBack={() => goToTest(TYPE_SOCIAL_SURVEY)}
                         shoeCallBack={() => goToTest(types.TYPE_SHOE_SURVEY)}
                         nurseCallBack={() => goToTest(types.TYPE_NURSE)}
+                        prescriptionsCallBack={() => goToTest(types.TYPE_PRESCRIPTIONS)}
                         addRecordCallBack={addRecord}
                         hospitalize={ isPatientHospitalized ?  showConfirm : null }
                     />
