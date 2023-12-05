@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config'
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import react from '@vitejs/plugin-react';
-
+import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig(() => {
   return {
@@ -15,6 +15,12 @@ export default defineConfig(() => {
       },
     plugins: [
         react(),
+        VitePWA({ 
+            registerType: 'autoUpdate',
+            devOptions: {
+                enabled: true
+            }
+        }),
         NodeGlobalsPolyfillPlugin({
             buffer: true
         }),

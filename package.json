@@ -204,6 +204,7 @@
     "storybook": "^7.2.0",
     "storybook-addon-mock": "^4.2.1",
     "vite": "^4.4.5",
+    "vite-plugin-pwa": "^0.17.3",
     "vitest": "^0.33.0",
     "webdriverio": "^8.14.2"
   },
