@@ -110,8 +110,6 @@ function Patient(props) {
     const idSubmission = parameters["idSubmission"] ? parseInt(parameters["idSubmission"]) : parameters["idSubmission"];
     const submission = idSubmission && surveyRecords ? surveyRecords.find(rec => rec.id === idSubmission) : null;
     const history = useHistory();
-
-    const isInitialMount = useRef(true);
     
     const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
     const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
@@ -322,8 +320,9 @@ function Patient(props) {
     async function saveRecord(data){
         // Save record solo gestiona el callback de social y medical, el resto son componentes y se gestionan de otra forma.
         let nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
-        if(dataCollectionSelected && dataCollectionSelected.category === types.CATEGORY_DEPARTMENT_SOCIAL){
-            nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", "social" )
+        if(dataCollectionSelected && Object.keys(TYPE_URL).includes(dataCollectionSelected.type.toString())){
+            const url = TYPE_URL[dataCollectionSelected.type];
+            nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", url )
             
         }
         setShowOptions(true);

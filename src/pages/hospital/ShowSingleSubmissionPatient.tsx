@@ -37,6 +37,9 @@ const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ sur
         }
         if(idSubmission && !submission){
             getSubmission();   
+        }
+        else{
+            setLoading(false);
         }    
     }, [idSubmission, submission]);
     
