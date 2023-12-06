@@ -348,8 +348,9 @@ const emptyRows =
                         data-testid={action.type}
                         aria-label={action.type}
                         onClick={(e) => {
-                            func(row.id);
                             e.stopPropagation();
+                            func(row.id);
+                            
                         }}
                         size="large">
                         <IconGenerator type={action.type} />

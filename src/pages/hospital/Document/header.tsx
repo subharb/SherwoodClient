@@ -4,7 +4,7 @@ import { BillingInfo } from "../Billing/types";
 import { dateToFullDateString } from "../../../utils";
 
 
-interface Props extends Omit<BillingInfo, 'id' |  'billables' | 'params'>{
+interface Props extends Omit<BillingInfo, 'id' |  'billables' | 'params' | 'currency'>{
     size:"A4" | "ticket",
     locale:string
  

@@ -217,7 +217,190 @@ export const edc_data1 = () => {
                         ]
                     }
                 ]
+            },
+            {
+                "id": 614,
+                "name": "Prescription",
+                "type": 13,
+                "unit": null,
+                "uuid": "3e99c0f8-3bed-47e1-a4e9-3b8e8b6c9641",
+                "order": 0,
+                "category": 5,
+                "isActive": true,
+                "sections": [
+                    {
+                        "id": 1588,
+                        "name": "Prescription",
+                        "uuid": "2e15bb07-b10d-438e-a64c-df9465088cf9",
+                        "order": 0,
+                        "fields": [
+                            {
+                                "id": 7993,
+                                "name": "treatment",
+                                "type": "treatment",
+                                "label": "Treatment",
+                                "order": 0,
+                                "slaves": [
+                                    {
+                                        "id": 7994,
+                                        "name": "drug-code",
+                                        "type": "drug-code",
+                                        "label": "Start Drug",
+                                        "order": 0,
+                                        "options": [],
+                                        "isActive": false,
+                                        "required": true,
+                                        "createdAt": "2023-11-30T16:05:57.597Z",
+                                        "encrypted": false,
+                                        "typeCombo": 2,
+                                        "updatedAt": "2023-12-04T06:52:33.646Z",
+                                        "validation": "arrayOrFalse"
+                                    },
+                                    {
+                                        "id": 7995,
+                                        "name": "treatment-frecuency",
+                                        "type": "treatment-frecuency",
+                                        "label": "frecuency",
+                                        "order": 0,
+                                        "options": [
+                                            {
+                                                "id": 3602,
+                                                "label": "hospital.frecuency-options.6h",
+                                                "value": "6h",
+                                                "isActive": true
+                                            },
+                                            {
+                                                "id": 3603,
+                                                "label": "hospital.frecuency-options.8h",
+                                                "value": "8h",
+                                                "isActive": true
+                                            },
+                                            {
+                                                "id": 3604,
+                                                "label": "hospital.frecuency-options.12h",
+                                                "value": "12h",
+                                                "isActive": true
+                                            },
+                                            {
+                                                "id": 3605,
+                                                "label": "hospital.frecuency-options.24h",
+                                                "value": "24h",
+                                                "isActive": true
+                                            }
+                                        ],
+                                        "isActive": false,
+                                        "required": true,
+                                        "createdAt": "2023-11-30T16:05:57.605Z",
+                                        "encrypted": false,
+                                        "typeCombo": 2,
+                                        "updatedAt": "2023-12-04T06:52:33.651Z",
+                                        "validation": "notEmpty"
+                                    },
+                                    {
+                                        "id": 7996,
+                                        "name": "treatment-dose",
+                                        "type": "treatment-dose",
+                                        "label": "Dose",
+                                        "order": 0,
+                                        "options": [
+                                            {
+                                                "id": 3606,
+                                                "label": "hospital.dose-options.1",
+                                                "value": "1",
+                                                "isActive": true
+                                            },
+                                            {
+                                                "id": 3607,
+                                                "label": "hospital.dose-options.3/4",
+                                                "value": "3/4",
+                                                "isActive": true
+                                            },
+                                            {
+                                                "id": 3608,
+                                                "label": "hospital.dose-options.1/2",
+                                                "value": "1/2",
+                                                "isActive": true
+                                            },
+                                            {
+                                                "id": 3609,
+                                                "label": "hospital.dose-options.1/4",
+                                                "value": "1/4",
+                                                "isActive": true
+                                            }
+                                        ],
+                                        "isActive": false,
+                                        "required": true,
+                                        "createdAt": "2023-11-30T16:05:57.628Z",
+                                        "encrypted": false,
+                                        "typeCombo": 2,
+                                        "updatedAt": "2023-12-04T06:52:33.658Z",
+                                        "validation": "notEmpty"
+                                    },
+                                    {
+                                        "id": 7997,
+                                        "name": "treatment-start",
+                                        "type": "treatment-start",
+                                        "label": "Start Drug",
+                                        "order": 0,
+                                        "options": [],
+                                        "isActive": false,
+                                        "required": true,
+                                        "createdAt": "2023-11-30T16:05:57.649Z",
+                                        "encrypted": false,
+                                        "typeCombo": 2,
+                                        "updatedAt": "2023-12-04T06:52:33.665Z",
+                                        "validation": "notEmpty"
+                                    },
+                                    {
+                                        "id": 7998,
+                                        "name": "treatment-finish",
+                                        "type": "treatment-finish",
+                                        "label": "Finish Drug",
+                                        "order": 0,
+                                        "options": [],
+                                        "isActive": false,
+                                        "required": true,
+                                        "createdAt": "2023-11-30T16:05:57.656Z",
+                                        "encrypted": false,
+                                        "typeCombo": 2,
+                                        "updatedAt": "2023-12-04T06:52:33.670Z",
+                                        "validation": "notEmpty"
+                                    }
+                                ],
+                                "options": [],
+                                "isActive": true,
+                                "required": false,
+                                "createdAt": "2023-11-30T16:05:57.590Z",
+                                "encrypted": false,
+                                "typeCombo": 1,
+                                "updatedAt": "2023-12-04T06:52:33.627Z",
+                                "extraField": null,
+                                "validation": "arrayOrFalse"
+                            },
+                            {
+                                "id": 7999,
+                                "name": "comments",
+                                "type": "textarea",
+                                "label": "Comments",
+                                "order": 1,
+                                "options": [],
+                                "isActive": true,
+                                "required": false,
+                                "createdAt": "2023-11-30T16:05:57.663Z",
+                                "encrypted": false,
+                                "typeCombo": 0,
+                                "updatedAt": "2023-12-04T06:52:33.641Z",
+                                "extraField": null,
+                                "validation": "notEmpty"
+                            }
+                        ],
+                        "repeats": false,
+                        "isActive": true
+                    }
+                ],
+                "hasRecords": false
             }
+
         ]
         , addingSection:false, editingIndexSection:false}
 }

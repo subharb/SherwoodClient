@@ -30,6 +30,8 @@ import RequestTable from '../Service/RequestTable';
 import RequestForm from '../Service/RequestForm';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import SurveyRecordsTable from '../SurveyRecordsTable';
+import SubmissionsTable from './SubmissionsTable';
+import PatientsTable from '../../../components/general/PatientsTable';
 
 
 function urlToSection(urlType, dataCollectionSelected){
@@ -37,6 +39,12 @@ function urlToSection(urlType, dataCollectionSelected){
         if(typeof urlType === "undefined"){
             if(dataCollectionSelected === null){
                 return types.PATIENT_TOOLBAR_SECTION_MEDICAL;
+            }
+            switch(dataCollectionSelected.type){
+                case types.TYPE_FILL_IMG_SURVEY:
+                    return types.PATIENT_TOOLBAR_SECTION_IMAGE;
+                case types.TYPE_FILL_LAB_SURVEY:
+                    return types.PATIENT_TOOLBAR_SECTION_LAB;
             }
             switch(dataCollectionSelected.category){
                 case types.CATEGORY_DEPARTMENT_MEDICAL:
@@ -47,7 +55,8 @@ function urlToSection(urlType, dataCollectionSelected){
                     return types.PATIENT_TOOLBAR_SECTION_NURSE;
                 case types.CATEGORY_SURVEY_SHOE:
                     return types.PATIENT_TOOLBAR_SECTION_SHOE;
-    
+                case types.CATEGORY_DEPARTMENT_PRESCRIPTIONS:
+                    return types.PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS;
             }
             
         }
@@ -75,6 +84,7 @@ function urlToSection(urlType, dataCollectionSelected){
     
 }
 
+const PRINTABLE_TYPE_SURVEYS = [types.TYPE_PRESCRIPTIONS]
 const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse", 13:"prescriptions"};
 const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
     newDict[TYPE_URL[key]] = parseInt(key);
@@ -95,7 +105,7 @@ function Patient(props) {
     const [indexDataCollection, setIndexDataCollection] = useState(-1);
     const [savedDataCollection, setSavedDataCollection] = useState(false);
     const [showRequestType, setShowRequestType] = useState(-1);
-    // const [indexSection, setIndexSection] = useState(-1);
+    
     const {departments, researchers, loadingDepartments } = useDepartments();
     
     const dispatch = useDispatch();
@@ -418,24 +428,21 @@ function Patient(props) {
                     </TypographyStyled>
         }
         else{
+            let fieldsSurvey;
             if(currentSurveys.length > 0 && currentSurveys[0].type === types.TYPE_NURSE){
-                const fieldSurvey = currentSurveys[0].sections.reduce((acc, current) => {
+                fieldsSurvey = currentSurveys[0].sections.reduce((acc, current) => {
                     return acc.concat(current.fields)
                 }, [])
-                return <SurveyRecordsTable fields={fieldSurvey} submissions={filteredRecords} 
-                            locale={props.activeLanguage.code}
-                            onSelectSubmission={(index) => selectSubmission(index)}  />
             }
-            return(
-                <EnhancedTable noHeader noSelectable selectRow={(index) => selectSubmission(index)} 
-                    rows={filteredRecords.map((record, index) => {
-                        const dateCreatedString = record.createdAt ? new Date(record.createdAt).toISOString().slice(0, 16).replace('T', ' ') : "Unsincronized";
-                        return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreatedString})
-                    })} headCells={[{ id: "researcher", alignment: "left", label: <Translate id="hospital.doctor" />}, { id: "surveyName", alignment: "left", label: <Translate id="hospital.data-collection" />},
-                                    { id: "date", alignment: "left", label: "Date"}]} />
-            )
+            return (
+                <SubmissionsTable fieldsSurvey={fieldsSurvey} typeSurveySelected={typeSurveySelected}
+                    surveys={currentSurveys}
+                    category={currentSurveys[0].category} filteredRecords={filteredRecords}
+                    onSelectSubmission={(index) => selectSubmission(index)} />
+            );
         }
     }
+
     function editPersonalData(){
         console.log("Edit personal data");
         const nextUrl = HOSPITAL_PATIENT_EDIT_PERSONAL_DATA.replace(":uuidPatient", uuidPatient);
@@ -705,7 +712,7 @@ function Patient(props) {
                 <Grid container spacing={3}>
                     <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
                         typeSurveySelected={ dataCollectionSelected ? dataCollectionSelected.type : parameters.typeTest ? parameters.typeTest : "medical" }
-                        categorySelected = {urlToSection(parameters.typeTest, dataCollectionSelected)}
+                        buttonSelected = { urlToSection(parameters.typeTest, dataCollectionSelected)}
                         writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
                         editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
                         action={parameters} enableAddButton={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} 

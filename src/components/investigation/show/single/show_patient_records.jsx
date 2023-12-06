@@ -85,6 +85,7 @@ export default function ShowPatientRecords(props) {
             }
             else{
                 const submission = props.submissions[indexSubmission];
+                const currentSurvey = surveys.find((sur) => sur.uuid === submission.uuidSurvey);
                 const belongsToRequest = submission && types.TYPE_FILL_SURVEY.includes(submission.typeSurvey);
                 return(
                 <div style={{paddingTop:"0.6rem"}}>
@@ -92,7 +93,7 @@ export default function ShowPatientRecords(props) {
                         belongsToRequest &&
                         <RequestInfoWithFetch key={submission.id} idSubmission={submission.id} uuidInvestigation={props.uuidInvestigation} />
                     }
-                    <ShowSingleSubmissionPatient surveys={props.surveys} 
+                    <ShowSingleSubmissionPatient currentSurvey={currentSurvey} 
                         idSubmission={submission.id}
                         forceEdit={props.forceEdit} submission={submission} 
                         callBackEditSubmission={(uuidSubmission, uuidSection) => props.callBackEditSubmission(uuidSubmission, uuidSection)}  /> 

@@ -338,7 +338,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
 
     function renderContentModal(){
         if(showAdditionalInfoID !== -1 && !editSubmission){
-            return <ShowSingleSubmissionPatient surveys={[surveyAdditionalInfo]} forceEdit={false}
+            return <ShowSingleSubmissionPatient currentSurvey={surveyAdditionalInfo} forceEdit={false}
                         idSubmission={showAdditionalInfoID} 
                         callBackEditSubmission={(idSubmission:number, uuidSection:string, submission:any) => {
                             setEditSubmission(submission)} } />

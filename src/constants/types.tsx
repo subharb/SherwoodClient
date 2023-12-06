@@ -20,6 +20,8 @@ export interface ISubmission{
     id:number,
     createdAt:Date,
     updatedAt:Date,
+    researcher:IResearcher,
+    uuidSurvey:string,
     surveyRecords: ISurveyRecord[],
 }
 
@@ -162,6 +164,12 @@ export interface IField{
     isActive:boolean,
     extraField:null | IField,
 
+}
+
+export interface EnhanceTableAction{
+    type: string,
+    check?: (index: number) => boolean,
+    func: (index: number) => void
 }
 export interface PersonalData{
     name ?: string,

@@ -29,8 +29,7 @@ interface Props{
     enableAddButton:boolean,
     unitsResearcher:IUnit[],
     categorySurveys:number[],
-    typeSurveySelected:string,
-    categorySelected:number,
+    buttonSelected:number,
     medicalNotesCallBack:() =>void,
     editCallBack:() => void,
     labCallBack:() => void,
@@ -50,8 +49,8 @@ interface PropsComponent{
     name:string,
     surnames:string,
     years:number,
-    categorySelected:number,
-    categoriesAvailable:number[],
+    buttonSelected:number,
+    buttonsAvailable:number[],
     enableAddButton:boolean,
     readMedicalPermission:boolean,
     writeMedicalPermission:boolean,
@@ -78,7 +77,7 @@ const Container = styled(Grid)`
 `
 export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMedicalPermission,
                                                     writeMedicalPermission, enableAddButton,
-                                                    unitsResearcher, categorySurveys, categorySelected, years, 
+                                                    unitsResearcher, categorySurveys, buttonSelected: categorySelected, years, 
                                                     addRecordCallBack, hospitalize, medicalNotesCallBack, nurseCallBack,
                                                     prescriptionsCallBack,
                                                     editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack}) =>{
@@ -99,24 +98,23 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
         }
 
         return <PatientToolBarComponent sex={personalData.sex} name={personalData!.name as string} 
-                health_id={personalData!.health_id as string} 
-                surnames={personalData!.surnames as string} patientID={patientID} 
-                categoriesAvailable={categorySurveys} categorySelected={categorySelected}
-                readMedicalPermission={readMedicalPermission} 
-                writeMedicalPermission={writeMedicalPermission}
-                years={years}
-                
-                addRecordCallBack={addRecordCallBack} hospitalize={hospitalize} 
-                prescriptionsCallBack={prescriptionsCallBack}
-                medicalNotesCallBack={medicalNotesCallBack} nurseCallBack={nurseCallBack}
-                editCallBack={editCallBack} labCallBack={labCallBack} socialCallBack={socialCallBack} 
-                shoeCallBack={shoeCallBack} testCallBack={testCallBack} 
+                    health_id={personalData!.health_id as string} 
+                    surnames={personalData!.surnames as string} patientID={patientID} 
+                    buttonsAvailable={categorySurveys} buttonSelected={categorySelected}
+                    readMedicalPermission={readMedicalPermission} 
+                    writeMedicalPermission={writeMedicalPermission}
+                    years={years} enableAddButton={enableAddButton}
+                    addRecordCallBack={addRecordCallBack} hospitalize={hospitalize} 
+                    prescriptionsCallBack={prescriptionsCallBack}
+                    medicalNotesCallBack={medicalNotesCallBack} nurseCallBack={nurseCallBack}
+                    editCallBack={editCallBack} labCallBack={labCallBack} socialCallBack={socialCallBack} 
+                    shoeCallBack={shoeCallBack} testCallBack={testCallBack} 
                 />
             
     }
 export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID, name, surnames, readMedicalPermission,
-                                                writeMedicalPermission, categoriesAvailable, health_id,
-                                                categorySelected, years, enableAddButton, prescriptionsCallBack,
+                                                writeMedicalPermission, buttonsAvailable: categoriesAvailable, health_id,
+                                                buttonSelected, years, enableAddButton, prescriptionsCallBack,
                                                 addRecordCallBack, hospitalize, medicalNotesCallBack, nurseCallBack,
                                                 editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack
                                             }) =>{
@@ -166,24 +164,24 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                 <Grid item container xs={5}  justifyContent="center" alignItems="center">
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="medical-notes" onClick={() => medicalNotesCallBack()} >
-                            <img src={categorySelected === PATIENT_TOOLBAR_SECTION_MEDICAL ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
+                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_MEDICAL ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
                         </Button>
                     </Grid>
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="images" onClick={() => testCallBack()} >
-                            <img src={categorySelected === PATIENT_TOOLBAR_SECTION_IMAGE  ? iconImagesGreen : iconImages} alt="Images" height="40" />
+                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_IMAGE  ? iconImagesGreen : iconImages} alt="Images" height="40" />
                         </Button>
                     </Grid>
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="lab" onClick={() => labCallBack()} >
-                            <img src={categorySelected === PATIENT_TOOLBAR_SECTION_LAB  ? iconLabGreen : iconLab} alt="Lab" height="40" />
+                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_LAB  ? iconLabGreen : iconLab} alt="Lab" height="40" />
                         </Button>
                     </Grid>
                     {
                         categoriesAvailable.includes(CATEGORY_DEPARTMENT_SOCIAL) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="social" onClick={() => socialCallBack()} >
-                                <img src={categorySelected === PATIENT_TOOLBAR_SECTION_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
+                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
                             </Button>
                         </Grid>
                     }
@@ -191,7 +189,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                         categoriesAvailable.includes(CATEGORY_DEPARTMENT_SHOE) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => shoeCallBack()} >
-                                <img src={categorySelected === PATIENT_TOOLBAR_SECTION_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
+                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
                             </Button>
                         </Grid>
                     }
@@ -199,7 +197,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                         categoriesAvailable.includes(CATEGORY_DEPARTMENT_NURSE) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => nurseCallBack()} >
-                                <img src={categorySelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
+                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
                             </Button>
                         </Grid>
                     }
@@ -207,7 +205,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                         categoriesAvailable.includes(CATEGORY_DEPARTMENT_PRESCRIPTIONS) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                             <Button data-testid="show" onClick={() => prescriptionsCallBack()} >
-                                <img src={categorySelected === PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS ? iconPrescriptionsGreen : iconPrescriptions} alt="prescriptions" height="45" />
+                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS ? iconPrescriptionsGreen : iconPrescriptions} alt="prescriptions" height="45" />
                             </Button>
                         </Grid>
                     }

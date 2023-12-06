@@ -8,14 +8,14 @@ import { useSelector } from 'react-redux';
 import { get, isNumber } from 'lodash';
 
 interface ShowSubmissionPatientProps {
-    surveys:ISurvey[],
+    currentSurvey:ISurvey,
     forceEdit:boolean,
     submission?:any,
     idSubmission?:number,
-    callBackEditSubmission: (idSubmission:number, uuidSection:string, submission:any) => void,
+    callBackEditSubmission?: (idSubmission:number, uuidSection:string, submission:any) => void,
 }
 
-const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ surveys, forceEdit, submission, idSubmission, callBackEditSubmission }) => {
+const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ currentSurvey, forceEdit, submission, idSubmission, callBackEditSubmission }) => {
     const uuidInvestigation = useSelector((state:any) => state.investigations.currentInvestigation.uuid);
     
     const [submisionLocal, setSubmissionLocal] = React.useState<any>(null);
@@ -46,12 +46,11 @@ const ShowSingleSubmissionPatient: React.FC<ShowSubmissionPatientProps> = ({ sur
     if(loading){
         return <Loader />
     }
-    return <ShowSingleSubmissionPatientView surveys={surveys} forceEdit={forceEdit} submission={submissionCached} 
-                callBackEditSubmission={(idSubmission:number, uuidSection:string, submission:any) => callBackEditSubmission(idSubmission, uuidSection, submission)}  />
+    return <ShowSingleSubmissionPatientView currentSurvey={currentSurvey} forceEdit={forceEdit} submission={submissionCached} 
+                callBackEditSubmission={(idSubmission:number, uuidSection:string, submission:any) => callBackEditSubmission!(idSubmission, uuidSection, submission)}  />
 };
-const ShowSingleSubmissionPatientView: React.FC<ShowSubmissionPatientProps> = ({ surveys, forceEdit, callBackEditSubmission, submission }) => {
+export const ShowSingleSubmissionPatientView: React.FC<ShowSubmissionPatientProps> = ({ currentSurvey, forceEdit, callBackEditSubmission, submission }) => {
 
-    const currentSurvey = surveys.find((sur:ISurvey) => sur.uuid === submission.uuidSurvey);
     const recordsSection = Object.values(currentSurvey!.sections).sort((a:any,b:any) => a.order - b.order).map((section:any) => {
    
         const recordsSection = filterRecordsFromSection(submission, section.uuid);
@@ -59,7 +58,7 @@ const ShowSingleSubmissionPatientView: React.FC<ShowSubmissionPatientProps> = ({
         return(
             <ShowRecordsSection forceEdit={forceEdit}
                 callBackEditSubmission={(idSubmission:number, uuidSection:string) => {
-                    callBackEditSubmission(idSubmission, uuidSection, submission)
+                    callBackEditSubmission!(idSubmission, uuidSection, submission)
                 }} 
                 records={recordsSection} section={section} uuidResearcher = {submission.uuidResearcher ? submission.uuidResearcher : submission.researcher.uuid}
                 idSubmission = {submission.id}
