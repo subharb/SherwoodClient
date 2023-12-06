@@ -40,6 +40,7 @@ export const HOSPITAL_IMAGING_REQUEST = "/images/request/:idRequest";
 export const HOSPITAL_LAB_RESULT = "/lab/result/:idSubmission/patient/:uuidPatient";
 export const ROUTE_401 = "/auth/401";
 export const HOSPITAL_BILLING = "/billing";
+export const HOSPITAL_BILLING_EDIT = "/billing/edit";
 export const HOSPITAL_BILLING_CREATE_BILL = "/billing/create_bill";
 export const HOSPITAL_BILLING_VIEW_DOCUMENT = "/billing/view/:uuidDocument";
 export const HOSPITAL_SHOES = "/shoes";
