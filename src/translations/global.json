@@ -490,7 +490,7 @@
         "dose" : ["Quantity", "Cantidad", "Quantité"],
         "treatment-dose-table" :["Quantity", "Cantidad", "Quantité"],
         "treatment_regular-dose-table" :["Quantity", "Cantidad", "Quantité"],
-        "treatment-start-table" : ["Start date", "F.Inicio", "Date de début"],
+        "treatment-start-table" : ["Start date", "F.Inicio", "Début"],
         "treatment-finish-table" : ["End date", "F. fin", "Date de fin"],
         "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
@@ -593,6 +593,7 @@
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
             },
             "patient" : {
+                "fill_billing_info" : ["In order to print PDFs you need to fill the billing information", "Para imprimir PDFs necesita rellenar la información de facturación", "Pour imprimer des PDF, vous devez remplir les informations de facturation"],
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
             "billing" : {

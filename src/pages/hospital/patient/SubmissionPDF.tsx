@@ -1,9 +1,15 @@
 import React from 'react';
-import { ISubmission, ISurvey } from '../../../constants/types';
+import { IPatient, ISubmission, ISurvey } from '../../../constants/types';
 import { render } from '@testing-library/react';
-import { Grid } from '@mui/material';
+import { Divider, Grid, Typography } from '@mui/material';
 import { HeaderDocument } from '../Document/header';
 import ShowSingleSubmissionPatient, { ShowSingleSubmissionPatientView } from '../ShowSingleSubmissionPatient';
+
+import { useInsurances } from '../../../hooks';
+import PatientInfo from '../Billing/PatientInfo';
+import { Translate } from 'react-localize-redux';
+import { dateAndTimeFromPostgresString, fullDateFromPostgresString, stringDatePostgresToDate } from '../../../utils';
+
 
 interface SubmissionPDFProps {
     submission:ISubmission,
@@ -15,11 +21,13 @@ interface SubmissionPDFProps {
     city:string,
     phone:string,
     email:string,
-
+    patient:IPatient
 }
 
-const SubmissionPDF: React.FC<SubmissionPDFProps> = ({ submission, locale, logoBlob, hospitalName, currentSurvey,
+const SubmissionPDF: React.FC<SubmissionPDFProps> = ({ submission, locale, patient, logoBlob, hospitalName, currentSurvey,
                                                         address, city, phone, email }) => {
+    const [insurances, loadingInsurances, patientInsurance] = patient.personalData.insurance ? useInsurances(parseInt(patient.personalData.insurance.toString())) : [null, false];
+    
     function renderHeader(){
         return(
             <Grid container item xs={12}>
@@ -32,10 +40,18 @@ const SubmissionPDF: React.FC<SubmissionPDFProps> = ({ submission, locale, logoB
 
     function renderBody(){
         return (
-            <ShowSingleSubmissionPatientView currentSurvey={currentSurvey} 
-                idSubmission={submission.id}
-                forceEdit={false} submission={submission} 
-            /> 
+            <>
+                <PatientInfo patient={patient} rightSide={
+                    <Grid item xs={6} textAlign="right" >
+                        <Typography variant='body2'>{dateAndTimeFromPostgresString(locale, submission.createdAt)}<br /></Typography>
+                    </Grid>
+                } />
+                <ShowSingleSubmissionPatientView currentSurvey={currentSurvey} 
+                    idSubmission={submission.id} printMode={true}
+                    forceEdit={false} submission={submission} 
+                /> 
+            </>
+            
         )
     }
 
@@ -44,17 +60,22 @@ const SubmissionPDF: React.FC<SubmissionPDFProps> = ({ submission, locale, logoB
     }
     
     return (
-        <>
+        <Grid container item xs={12} >
             {
                 renderHeader()
             }
+            <Grid item xs={12}>
+                <div style={{padding:'2rem'}}>
+                    <Divider style={{width:'100%'}} />
+                </div>
+            </Grid>
             {
                 renderBody()
             }
             {
                 renderFooter()
             }
-        </>
+        </Grid>
     );
 };
 

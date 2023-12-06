@@ -62,11 +62,13 @@ function ShowRecordsSection(props) {
             <React.Fragment>
                 {
                     props.section.fields.length > 1 &&
-                    <Typography variant="h6" color="textPrimary">
+                    <Typography variant="h6" color="textPrimary" fontWeight='800'>
                         {field.name}: 
                     </Typography>
                 }
-                <div dangerouslySetInnerHTML={{__html: valueRecord ? parsedValue : "-"}}></div>                    
+                <Typography variant="body2">
+                    <div dangerouslySetInnerHTML={{__html: valueRecord ? parsedValue : "-"}}></div>                    
+                </Typography>
             </React.Fragment>
             );
         }
@@ -196,7 +198,7 @@ function ShowRecordsSection(props) {
                                     { props.section.name }
                                 </Typography>
                                 {
-                                    (props.forceEdit || ((dateCreated.getTime() + 86400000 > new Date().getTime()) && props.uuidResearcher === getData("uuid"))) && 
+                                    (!props.printMode && (props.forceEdit || ((dateCreated.getTime() + 86400000 > new Date().getTime()) && props.uuidResearcher === getData("uuid")))) && 
                                     <ButtonEdit color="primary" onClick={() => editSection(props.section.uuid)} />
                                 }
                             </HeaderSection>
@@ -218,6 +220,7 @@ ShowRecordsSection.propTypes = {
     section: PropTypes.object,
     submissions: PropTypes.array,
     forceEdit: PropTypes.bool,
+    printMode: PropTypes.bool,
     callBackEditSubmission: PropTypes.func,
     records: PropTypes.array,
     uuidResearcher: PropTypes.string,

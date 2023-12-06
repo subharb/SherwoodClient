@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import SurveyRecordsTable from '../SurveyRecordsTable';
-import { EnhanceTableAction, IField, ISubmission, ISurvey } from '../../../constants/types';
+import { EnhanceTableAction, IField, IPatient, ISubmission, ISurvey } from '../../../constants/types';
 import { Translate } from 'react-localize-redux';
 import { CATEGORY_DEPARTMENT_PRESCRIPTIONS } from '../../../constants';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Modal from '../../../components/general/modal';
 import { DocumentPDF } from '../Document';
 import SubmissionPDF from './SubmissionPDF';
+import { Typography } from '@mui/material';
+import { HOSPITAL_BILLING_EDIT } from '../../../routes/urls';
+import { LinkStyled } from '../../../components/general/mini_components';
+import { Link } from 'react-router-dom';
+import { BillingInfo } from '../Billing/types';
 
 interface SubmissionsTableProps {
     locale:string,
@@ -14,10 +19,12 @@ interface SubmissionsTableProps {
     surveys: ISurvey[],
     filteredRecords: ISubmission[],
     category: number,
+    patient:IPatient,
+    billingInfo: BillingInfo | null,
     onSelectSubmission: (index:number) => void;
 }
 
-const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ locale, surveys, category, fieldsSurvey, filteredRecords, 
+const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ locale, surveys, patient, billingInfo, category, fieldsSurvey, filteredRecords, 
                                                         onSelectSubmission }) => {
     const [showModalPrintPDF, setShowModalPrintPDF] = useState(false);
     const [submissionPrint, setSubmissionPrint] = useState<ISubmission | null>(null);
@@ -29,14 +36,26 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ locale, surveys, ca
     }
     function renderPDFModal(){
         const currentSurvey = surveys.find((survey) => survey.uuid === submissionPrint?.uuidSurvey);
-        return(
-            <Modal key="modal" fullWidth medium open={showModalPrintPDF} title="" closeModal={() => setShowModalPrintPDF(false)}>
-                <DocumentPDF size='A4' name={""}>
-                    <SubmissionPDF submission={submissionPrint!} currentSurvey={currentSurvey!} locale={locale} 
-                        logoBlob={""} hospitalName={""} address={""} city={""} phone={""} email={""} />
-                </DocumentPDF>
-            </Modal>
-        )
+        if(!billingInfo){
+            return(
+                <Modal key="modal" fullWidth medium open={showModalPrintPDF} title="" closeModal={() => setShowModalPrintPDF(false)}>
+                    <Typography variant='body2'><Translate id="pages.hospital.patient.fill_billing_info" />, <Link to={HOSPITAL_BILLING_EDIT}><Translate id="general.here" /></Link></Typography>
+                </Modal>
+            )
+        }
+        else if(currentSurvey){
+            return(
+                <Modal key="modal" fullWidth medium open={showModalPrintPDF} title="" closeModal={() => setShowModalPrintPDF(false)}>
+                    <DocumentPDF size='A4' name={currentSurvey?.name}>
+                        <SubmissionPDF submission={submissionPrint!} currentSurvey={currentSurvey!} locale={locale} 
+                            patient={patient}
+                            logoBlob={billingInfo.logoBlob} hospitalName={billingInfo.hospitalName} address={billingInfo.address} 
+                            city={billingInfo.city} phone={billingInfo.phone} email={billingInfo.email} />
+                    </DocumentPDF>
+                </Modal>
+            )
+        }
+        
     }
     if(fieldsSurvey){
         return <SurveyRecordsTable fields={fieldsSurvey} submissions={filteredRecords} 

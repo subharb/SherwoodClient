@@ -77,7 +77,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
     function renderHeader(){
         return(
             <Grid container item xs={12}>
-                <HeaderDocument size='A4' currency={currency} address={address} 
+                <HeaderDocument size='A4' address={address} 
                     logoBlob={logoBlob} city={city} locale={locale}
                     hospitalName={hospitalName} email={email} phone={phone} />
             </Grid>

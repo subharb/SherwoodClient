@@ -29,9 +29,8 @@ import TabsSurveys from './TabsSurveys';
 import RequestTable from '../Service/RequestTable';
 import RequestForm from '../Service/RequestForm';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
-import SurveyRecordsTable from '../SurveyRecordsTable';
 import SubmissionsTable from './SubmissionsTable';
-import PatientsTable from '../../../components/general/PatientsTable';
+
 
 
 function urlToSection(urlType, dataCollectionSelected){
@@ -120,7 +119,7 @@ function Patient(props) {
     const idSubmission = parameters["idSubmission"] ? parseInt(parameters["idSubmission"]) : parameters["idSubmission"];
     const submission = idSubmission && surveyRecords ? surveyRecords.find(rec => rec.id === idSubmission) : null;
     const history = useHistory();
-    
+    const billingInfo = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.billingInfo : null;
     const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
     const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
     //const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typesCurrentSurvey.includes(sur.type)) : [];
@@ -436,7 +435,7 @@ function Patient(props) {
             }
             return (
                 <SubmissionsTable fieldsSurvey={fieldsSurvey} typeSurveySelected={typeSurveySelected}
-                    surveys={currentSurveys}
+                    surveys={currentSurveys} billingInfo={billingInfo} patient={patient}
                     category={currentSurveys[0].category} filteredRecords={filteredRecords}
                     onSelectSubmission={(index) => selectSubmission(index)} />
             );
