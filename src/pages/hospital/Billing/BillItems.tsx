@@ -692,7 +692,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         // @ts-ignore: Unreachable code error
         headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
     }
-    else if(bill?.type === DocumentType.INVOICE && bill.status === DocumentStatus.CLOSED) {
+    else if(bill?.type === DocumentType.INVOICE && bill.status === DocumentStatus.CLOSED && !print) {
         headCells.push({ id: "paid", alignment: "right", markAllCallback: print ? null : (async () => await toggleAllItemsAs("paid")), label: <React.Fragment><Translate id="general.paid" /></React.Fragment> });
         headCells.push({ id: "used", alignment: "right", markAllCallback: print ? null : (async () => await toggleAllItemsAs("used")), label: <React.Fragment><Translate id="general.used" /></React.Fragment> });
     }
@@ -707,7 +707,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         
             <Grid container item>
                 <Grid item xs={12}>
-                    <EnhancedTable noFooter noHeader noPagination noSelectable disableOrder headCells={headCells} rows={rows} />
+                    <EnhancedTable noFooter noHeader noPagination dense={print}
+                        noSelectable disableOrder headCells={headCells} rows={rows} />
                 </Grid>
                 <Grid item xs={12} style={{ display: "flex", flexDirection: "column" }} >
                     {

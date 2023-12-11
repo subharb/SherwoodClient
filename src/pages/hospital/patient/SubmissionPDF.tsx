@@ -31,9 +31,16 @@ const SubmissionPDF: React.FC<SubmissionPDFProps> = ({ submission, locale, patie
     function renderHeader(){
         return(
             <Grid container item xs={12}>
-                <HeaderDocument size='A4' address={address} 
-                    logoBlob={logoBlob} city={city} locale={locale}
-                    hospitalName={hospitalName} email={email} phone={phone} />
+                <Grid item xs={12}>
+                    <HeaderDocument size='A4' address={address} 
+                        logoBlob={logoBlob} city={city} locale={locale}
+                        hospitalName={hospitalName} email={email} phone={phone} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant='h2' style={{fontWeight:'bold'}}>
+                        <Translate id="hospital.patient.pdf.prescriptions.title" />
+                    </Typography>
+                </Grid>
             </Grid>
         );
     }
@@ -41,11 +48,7 @@ const SubmissionPDF: React.FC<SubmissionPDFProps> = ({ submission, locale, patie
     function renderBody(){
         return (
             <>
-                <PatientInfo patient={patient} rightSide={
-                    <Grid item xs={6} textAlign="right" >
-                        <Typography variant='body2'>{dateAndTimeFromPostgresString(locale, submission.createdAt)}<br /></Typography>
-                    </Grid>
-                } />
+                <PatientInfo patient={patient} rightSide={null} />
                 <ShowSingleSubmissionPatientView currentSurvey={currentSurvey} 
                     idSubmission={submission.id} printMode={true}
                     forceEdit={false} submission={submission} 

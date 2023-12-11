@@ -189,18 +189,16 @@ function EnhancedTableHead(props) {
             <TableCell
                 key={headCell.id}
                 align={headCell.alignment}
-                padding={headCell.disablePadding ? "none" : "default"}
+                padding={headCell.disablePadding || props.dense ? "none" : "default"}
                 sortDirection={orderBy === headCell.id ? order : false}
                 
             >
-                
-                
                 <TableSortLabel
-                active={disableOrder ? false : orderBy === headCell.id }
-                hideSortIcon={disableOrder}
-                direction={disableOrder ? "" : orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
-                style={{fontWeight:"600"}}
+                    active={disableOrder ? false : orderBy === headCell.id }
+                    hideSortIcon={disableOrder}
+                    direction={disableOrder ? "" : orderBy === headCell.id ? order : "asc"}
+                    onClick={createSortHandler(headCell.id)}
+                    style={{fontWeight:"600"}}
                 >
                 {
                     headCell.markAllCallback &&
@@ -265,7 +263,7 @@ export function EnhancedTable(props) {
     const [orderBy, setOrderBy] = React.useState("customer");
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState( 10);
+    const [rowsPerPage, setRowsPerPage] = React.useState( props.noFooter ? props.rows.length : 10);
     console.log("rowsPerPage", rowsPerPage);
     const {rows, headCells, actions, titleTable, noSelectable} = props;
 
@@ -393,7 +391,9 @@ function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dra
                     if(typeof row[headCell.id] === "boolean"){ 
                         value = <Checkbox checked={row[headCell.id]} onClick={props.callBackCheckbox ? () => props.callBackCheckbox(row.id, headCell.id, !row[headCell.id]) : null} />
                     }
-                    return <TableCell key={headCell.id} align={headCell.alignment}>{value}</TableCell>
+                    return <TableCell key={headCell.id} 
+                                padding={props.dense ? "none" : "default"}
+                                align={headCell.alignment}>{value}</TableCell>
                     
                 })
             }         
@@ -470,28 +470,29 @@ return (
             <EnhancedTableToolbar title={titleTable} numSelected={selected.length} />
         }
         <TableContainer>
-        <TableSizes miniTable={props.miniTable} 
-            aria-labelledby="tableTitle"
-            size={"medium"}
-            aria-label="enhanced table"
-        >
-            <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                disableOrder={props.disableOrder}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-                headCells={headCells}
-                actions={actions}
-                noSelectable={noSelectable}
-            />
-            {
-                renderBody()
-            }
-            
-        </TableSizes>
+            <TableSizes miniTable={props.miniTable} 
+                aria-labelledby="tableTitle"
+                size={"medium"} 
+                aria-label="enhanced table"
+            >
+                <EnhancedTableHead
+                    numSelected={selected.length}
+                    order={order}
+                    dense={props.dense}
+                    disableOrder={props.disableOrder}
+                    orderBy={orderBy}
+                    onSelectAllClick={handleSelectAllClick}
+                    onRequestSort={handleRequestSort}
+                    rowCount={rows.length}
+                    headCells={headCells}
+                    actions={actions}
+                    noSelectable={noSelectable}
+                />
+                {
+                    renderBody()
+                }
+                
+            </TableSizes>
         </TableContainer>
         {
             !props.noFooter &&

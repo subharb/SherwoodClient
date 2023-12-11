@@ -124,6 +124,7 @@ interface Props extends LocalizeContextProps {
     name : string,
     label : string,
     typeMargin : PropTypes.Margin | undefined,
+    printMode?:boolean,
     slaves : object[],
     type:string,
     error: boolean,
@@ -213,7 +214,8 @@ const SmartField:React.FC<Props> = (props) => {
             else{
                 return (
                     <Grid item xs={12}>
-                        <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} />
+                        <EnhancedTable noHeader noSelectable={true} rows={rows} 
+                            dense={props.printMode} noFooter={props.printMode} headCells={headCells} />
                     </Grid>
                 )
             }   

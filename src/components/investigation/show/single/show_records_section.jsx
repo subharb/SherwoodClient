@@ -21,7 +21,7 @@ const CardPadding = styled(Card)`
     margin-bottom:1rem;
 `;
 const GridPadded = styled(Grid)`
-    padding:0rem 0rem 1rem 1rem;
+    padding:${props => (props.padding ? '0rem 0rem 1rem 1rem' : '0rem')};
 `;
 const HeaderSection = styled.div`
     display:flex;
@@ -93,7 +93,7 @@ function ShowRecordsSection(props) {
         }
         else if(isSmartField(valueRecord.surveyField.type)){
             return <SmartField type={valueRecord.surveyField.type} mode="show" 
-                        initialState={{listElements:valueRecord.value}}
+                        initialState={{listElements:valueRecord.value}} printMode={props.printMode}
                         label={valueRecord.surveyField.label}  />
         }
         else if(typeof valueRecord.value.getMonth === 'function' ){
@@ -154,7 +154,7 @@ function ShowRecordsSection(props) {
         }
         else{
             return(
-                <GridPadded container direction="column" spacing={3}>
+                <GridPadded container padding={!props.printMode} direction="column" spacing={3}>
                     {
                         props.section.fields.sort((a,b) => a.order - b.order).map(field => {
                             const valueRecord = props.records.find(record => {
@@ -188,7 +188,7 @@ function ShowRecordsSection(props) {
     else{
         const dateCreated = new Date(props.updatedAt);
         return (
-            <CardPadding >
+            <CardPadding padding={props.printMode}>
                 <Grid container direction="column" spacing={3}>
                     <Grid item>
                         {
