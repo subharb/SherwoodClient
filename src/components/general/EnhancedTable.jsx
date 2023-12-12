@@ -392,7 +392,7 @@ function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dra
                         value = <Checkbox checked={row[headCell.id]} onClick={props.callBackCheckbox ? () => props.callBackCheckbox(row.id, headCell.id, !row[headCell.id]) : null} />
                     }
                     return <TableCell key={headCell.id} 
-                                padding={props.dense ? "none" : "default"}
+                                //padding={props.dense ? "none" : "default"}
                                 align={headCell.alignment}>{value}</TableCell>
                     
                 })
