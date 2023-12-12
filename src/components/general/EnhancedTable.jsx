@@ -189,7 +189,7 @@ function EnhancedTableHead(props) {
             <TableCell
                 key={headCell.id}
                 align={headCell.alignment}
-                padding={headCell.disablePadding || props.dense ? "none" : "default"}
+                //padding={headCell.disablePadding || props.dense ? "none" : "default"}
                 sortDirection={orderBy === headCell.id ? order : false}
                 
             >
