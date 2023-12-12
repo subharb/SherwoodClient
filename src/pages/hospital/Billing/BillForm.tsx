@@ -54,7 +54,7 @@ export const BillForm:React.FC<Props> = (props) => {
             const insuranceId = props.patient?.personalData.insurance ? props.patient.personalData.insurance : null;
             await dispatch(getBillablesAction(props.uuidInvestigation, props.idBillingInfo, insuranceId));
         }
-        if (props.patient && billables.length === 0) {
+        if (props.patient && billables.length === 0 && props.idBillingInfo) {
             getBillables();
         }
     
