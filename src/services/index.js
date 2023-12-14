@@ -489,6 +489,38 @@ export const getStatsOutpatients = datalogger((uuidInvestigation, startDate, end
     });
 });
 
+export const getBillingDepartments = datalogger((uuidInvestigation, startDate, endDate) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/billing/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+});
+
+export const getTotalBillingInsurances = datalogger((uuidInvestigation, startDate, endDate) => {
+    return new Promise((resolve, reject) => {
+        axios
+            .get(import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/billing/insurances/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+});
+
 
 
 export const getSharedResearchersService = datalogger((uuidInvestigation) => {

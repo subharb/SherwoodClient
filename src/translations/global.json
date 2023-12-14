@@ -315,6 +315,13 @@
                 "appointments" : {
                     "title" : ["Appointment", "Cita", "Rendez-vous"],
                     "table-title" : ["Department", "Departamento", "Département"]
+                },
+                "billing" : {
+                    "title" : ["Billing", "Facturación", "Facturation"]
+                },
+                "billing-insurances" : {
+                    "title" : ["Billing per Insurance", "Facturación por seguro", "Facturation par assurance"],
+                    "amount" : ["Amount", "Importe", "Montant"]
                 }
             }
         },

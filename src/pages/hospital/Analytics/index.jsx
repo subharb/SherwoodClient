@@ -14,13 +14,13 @@ import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components";
 import { yearsFromDate } from '../../../utils/index.jsx';
 import TimeTable from '../../dashboards/Analytics/TimeTable';
-import { getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsOutpatients } from '../../../services';
+import { getBillingDepartments, getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsOutpatients, getTotalBillingInsurances } from '../../../services';
 import { spacing } from "@mui/system";
 import DatesSelector from '../../dashboards/Analytics/DatesSelector';
 
 import SearchTable from '../../dashboards/Analytics/SearchTable';
 import HospitalStats from './HospitalStats';
-import { useDeparmentsSelector } from '../../../hooks';
+import { useDeparmentsSelector, useInsurances } from '../../../hooks';
 import PatientsBarChart from '../../dashboards/Analytics/PatientsBarChart';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import { FUNCTIONALITY } from '../../../constants/types';
@@ -28,6 +28,8 @@ import OutpatientsStats from './OutpatientsStats';
 import { TypographyStyled } from '../../../components/general/mini_components';
 import CommonDiagnosis from './CommonDiagnosis';
 import SectionHeader from '../../components/SectionHeader';
+import BillingChart from '../../dashboards/Analytics/BillingBarChart';
+import BillingInsuranceBars from '../../dashboards/Analytics/BillingInsuranceBars';
 
 const Divider = styled(MuiDivider)(spacing);
 
@@ -37,6 +39,7 @@ const COUNT_AGE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 export function Analytics(props) {
 	const history = useHistory();
 	const [startDate, setStartDate] = useState(null);
+    const [insurances] = useInsurances();
 	const [endDate, setEndDate] = useState(null);
 	const [statsFirstMonitoring, setStatsFirstMonitoring] = useState(null);
     const [loadingStatsFirstMonitoring, setLoadingStatsFirstMonitoring] = useState(false);
@@ -47,6 +50,8 @@ export function Analytics(props) {
     const onlyDepartmentsResearcher = props.investigations.currentInvestigation && props.investigations.currentInvestigation.permissions.includes(PERMISSION.ANALYTICS_DEPARTMENT);
 	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher, true, "all");
     const [appointmentsPerDepartment, setAppointmentsPerDepartment] = useState(null);
+    const [billingDepartments, setBillingDepartments] = useState(null);
+    const [billingInsurances, setBillingInsurances] = useState(null);
 	const [countAge, setCountAge] = useState([...COUNT_AGE])
 	const [loadingPatientsInfo, setLoadingPatientsInfo] = useState(false);
    
@@ -166,7 +171,18 @@ export function Analytics(props) {
                 .then(response => {
                     setAppointmentsPerDepartment(response.stats);
             })
-			
+            if(props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING)){
+                getBillingDepartments(props.investigations.currentInvestigation.uuid, startDate, endDate)
+                    .then(response => {
+                        setBillingDepartments(response.stats);
+                })
+                if(props.investigations.currentInvestigation.billingInfo && props.investigations.currentInvestigation.billingInfo.params["budgets"]){
+                    getTotalBillingInsurances(props.investigations.currentInvestigation.uuid, startDate, endDate)
+                        .then(response => {
+                            setBillingInsurances(response.stats);
+                    })
+                }
+            }
 		}
 
 		if (props.investigations.currentInvestigation && startDate && endDate) {
@@ -177,9 +193,7 @@ export function Analytics(props) {
     function renderCore(){
         if(loadingPatientsInfo){
             return (
-                
-                    <Loader />
-                
+                <Loader />
             )
         }
         else{
@@ -242,6 +256,28 @@ export function Analytics(props) {
                         </Grid>
                     </>
                 }
+
+                { props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING) &&
+                    <Grid container item spacing={1}>
+                        <Grid item xs={12} >
+                            <BillingChart loading={billingDepartments === null} 
+                                departments={departments} currency={props.investigations.currentInvestigation.billingInfo.currency}
+                                stats={billingDepartments} />
+                        </Grid>
+                    </Grid>
+                }
+                {
+                    (props.investigations.currentInvestigation.billingInfo && insurances && props.investigations.currentInvestigation.billingInfo.params["budgets"]) &&
+                    <Grid container item spacing={1}>
+                        <Grid item xs={12} >
+                            <BillingInsuranceBars loading={billingInsurances === null} 
+                                locale={props.activeLanguage.code}
+                                borderColor ={props.theme.palette.background.paper}
+                                insurances={insurances} currency={props.investigations.currentInvestigation.billingInfo.currency}
+                                stats={billingInsurances} />
+                        </Grid>
+                    </Grid>
+                }
 				
                 <Grid container item spacing={1}>
                     <Grid item xs={12} >
@@ -253,26 +289,10 @@ export function Analytics(props) {
                     (props.investigations.currentInvestigation && 
                         props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && 
                     <Grid container item spacing={1}>
-                        {/* <DoughnutChart title={props.translate("hospital.analytics.graphs.appointments.title")} labels={Object.keys(appointmentsPerDepartment).map((uuidDepartment) => departments.find((dep) => dep.uuid === uuidDepartment).name)}
-                            table={{ title: props.translate("hospital.analytics.graphs.appointments.table-title"), columns: [props.translate("hospital.analytics.graphs.sex.count")] }}
-                            innerInfo={{ title: props.translate("hospital.analytics.graphs.appointments.title"), value: outpatientsTotal }}
-
-                            datasets={[
-                                {
-                                    data: Object.values(appointmentsPerDepartment),
-                                    percents: Object.values(appointmentsPerDepartment).map((count) => Math.round((count / outpatientsTotal) * 100)),
-                                    backgroundColor: [props.theme.palette.secondary.main, red[500]],
-                                    borderWidth: 5,
-                                    borderColor: props.theme.palette.background.paper,
-                                }
-                            ]} /> */}
                         <OutpatientsStats functionalities={props.investigations.currentInvestigation.functionalities} 
                             appointmentsPerDepartment={appointmentsPerDepartment} theme={props.theme} departments={departments} />
-                    </Grid>
-                    
+                    </Grid>   
                 }
-                
-
 			</Grid>
             )
         }
