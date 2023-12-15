@@ -85,7 +85,7 @@ export default function ShowPatientRecords(props) {
             }
             else{
                 const submission = props.submissions[indexSubmission];
-                const currentSurvey = surveys.find((sur) => sur.uuid === submission.uuidSurvey);
+                const currentSurvey = props.surveys.find((sur) => sur.uuid === submission.uuidSurvey);
                 const belongsToRequest = submission && types.TYPE_FILL_SURVEY.includes(submission.typeSurvey);
                 return(
                 <div style={{paddingTop:"0.6rem"}}>
