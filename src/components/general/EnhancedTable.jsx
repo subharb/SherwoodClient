@@ -361,6 +361,15 @@ const emptyRows =
         
     }
 function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dragHandleProps, innerRef){
+    const hasColsPan = row.hasOwnProperty("colSpan");
+    let headCellColSpanPrev = null;
+    let headCellColSpan = null;
+    if(hasColsPan){
+        //find the headCell previous to the one that should have a colSpan
+        const headCellColSpanIndex = headCells.findIndex(headCell => headCell.id === row.colSpan);
+        headCellColSpan = headCells[headCellColSpanIndex];
+        headCellColSpanPrev = headCells[headCellColSpanIndex - 1];
+    }
     return(
         <TableRow
             hover
@@ -385,28 +394,32 @@ function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dra
             </TableCell>
         }
             
-            {
-                headCells.map(headCell =>{
-                    let value = row[headCell.id];
-                    if(typeof row[headCell.id] === "boolean"){ 
-                        value = <Checkbox checked={row[headCell.id]} onClick={props.callBackCheckbox ? () => props.callBackCheckbox(row.id, headCell.id, !row[headCell.id]) : null} />
+        {
+            headCells.map(headCell =>{
+                let value = row[headCell.id];
+                if(typeof row[headCell.id] === "boolean"){ 
+                    value = <Checkbox checked={row[headCell.id]} onClick={props.callBackCheckbox ? () => props.callBackCheckbox(row.id, headCell.id, !row[headCell.id]) : null} />
+                }
+                if(headCellColSpanPrev && headCellColSpanPrev.id === headCell.id){
+                    return null;
+                }
+                return <TableCell key={headCell.id} 
+                            colSpan={headCellColSpan && headCellColSpan.id === headCell.id ? 2 : 1}
+                            //padding={props.dense ? "none" : "default"}
+                            align={headCellColSpan && headCellColSpan.id === headCell.id ? "right" : headCell.alignment}>{value}</TableCell>
+                
+            })
+        }         
+        {
+            (props.actions && props.actions.length > 0) && 
+            <TableCell padding="none" align="right">
+                <Box mr={2}>
+                    {
+                        renderActions(row)
                     }
-                    return <TableCell key={headCell.id} 
-                                //padding={props.dense ? "none" : "default"}
-                                align={headCell.alignment}>{value}</TableCell>
-                    
-                })
-            }         
-            {
-                (props.actions && props.actions.length > 0) && 
-                <TableCell padding="none" align="right">
-                    <Box mr={2}>
-                        {
-                            renderActions(row)
-                        }
-                    </Box>
-                </TableCell>
-            }   
+                </Box>
+            </TableCell>
+        }   
             </TableRow>
     )
 }

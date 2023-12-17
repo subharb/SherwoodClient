@@ -670,7 +670,9 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
     }
     if (items.length > 0 && showTotal) {
         rows.push({
-            id: items.length, concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>,
+            id: items.length, 
+            colSpan:"amount",
+            concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>,
             type : <></>, 
             amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{new Intl.NumberFormat(activeLanguage.code).format(totalAmountBill) + " " + currency}</Typography>,
             delete: <React.Fragment></React.Fragment>,
