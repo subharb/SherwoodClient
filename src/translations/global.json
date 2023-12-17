@@ -355,6 +355,7 @@
                     "summary" : ["SUMMARY OF ACTS", "RESUMEN DE ACTOS", "SYNTHÈSE DES ACTES"],
                     "budget" : ["DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL"]
                 },
+                "detail" : ["Detail", "Detalle", "Detail"],
                 "total_cost" : ["Total cost", "Coste total", "Coût total"],
                 "paid_externally" : ["Paid externally", "Pagado externamente", "PEC extérieure"],
                 "paid" : ["Paid", "Pagado", "Payé"],
@@ -368,7 +369,7 @@
                 "doctor" : ["Practitioner", "Facultativo", "Praticien"],
                 "department" : ["Department", "Departamento", "Service"],
                 "billform_title" : {
-                    "summary" : ["Medical benefits: Paid", "Beneficios médicos: Pagados", "Prestations médicales : Payé"],
+                    "summary" : ["Medical benefits: Not Paid", "Beneficios médicos: No Pagados", "Prestations médicales : Non Payé"],
                     "budget" : ["Services included in the medical procedure", "Servicios incluidos en el procedimiento médico.", "Prestations comprises dans l'acte médical"],
                     "invoice" : ["Services included in the medical procedure", "Servicios incluidos en el procedimiento médico.", "Prestations comprises dans l'acte médical"]
                 },
@@ -420,8 +421,8 @@
             "item" : {
                 "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],
                 "concept" : ["Concept", "Concepto", "Concept"],
-                "updatedAt" : ["Updated At", "Actualizado", "Mis à jour"],
-                "unitCost" : ["Unit Cost", "Coste unitario", "Coût unitaire"],
+                "updatedAt" : ["Updated At", "Actualizado", "Date d’ajout"],
+                "unitCost" : ["Unit Cost", "Coste unitario", "Cotation"],
                 "amount" : ["Subtotal", "Subtotal", "Subtotal"],
                 "type" : ["Type", "Tipo", "Type"],
                 "select_item" : ["Select", "Select", "Seleccionar"],

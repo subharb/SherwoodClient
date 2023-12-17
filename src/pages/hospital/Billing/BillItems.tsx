@@ -658,18 +658,17 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         const hasAdditionalInfo = items.find((item) =>{
             return item.type === TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO
         });
-        if(hasAdditionalInfo){
-            rows.push({
-                id: "additional", 
-                concept: <Typography style={{fontWeight:'bold'}} >{hasAdditionalInfo.concept}</Typography>,
-                type : <></>, 
-                amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{new Intl.NumberFormat(activeLanguage.code).format(hasAdditionalInfo.amount) + " " + currency}</Typography>,
-                delete: <React.Fragment></React.Fragment>,
-            });
-        }
+        // if(hasAdditionalInfo){
+        //     rows.push({
+        //         id: "additional", 
+        //         concept: <Typography style={{fontWeight:'bold'}} >{hasAdditionalInfo.concept}</Typography>,
+        //         type : <></>, 
+        //         amount: <Typography style={{ fontWeight: 'bold', minWidth:'2rem' }} >{new Intl.NumberFormat(activeLanguage.code).format(hasAdditionalInfo.amount) + " " + currency}</Typography>,
+        //         delete: <React.Fragment></React.Fragment>,
+        //     });
+        // }
     }
     if (items.length > 0 && showTotal) {
-    
         rows.push({
             id: items.length, concept: <Typography style={{fontWeight:'bold'}} ><Translate id={`hospital.billing.bill.total`} /></Typography>,
             type : <></>, 
@@ -693,6 +692,8 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
         headCells.push({ id: "delete", alignment: "right", label: <React.Fragment></React.Fragment> });
     }
     else if(bill?.type === DocumentType.INVOICE && bill.status === DocumentStatus.CLOSED) {
+        //Remove  headcell with name updatedAt
+        headCells = headCells.filter((cell) => cell.id !== "updatedAt");
         headCells.push({ id: "paid", alignment: "right", markAllCallback: print ? null : (async () => await toggleAllItemsAs("paid")), label: <React.Fragment><Translate id="general.paid" /></React.Fragment> });
         headCells.push({ id: "used", alignment: "right", markAllCallback: print ? null : (async () => await toggleAllItemsAs("used")), label: <React.Fragment><Translate id="general.used" /></React.Fragment> });
     }

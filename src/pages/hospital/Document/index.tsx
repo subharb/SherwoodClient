@@ -82,8 +82,9 @@ export const DocumentPDF:React.FC<Props> = (props) => {
                             }
                             @page { 
                                 size: auto;  
-                                margin: 0mm;                                 
+                                margin: 0mm;      
                             }
+                            #header, #menu, #sidebar{ height: 1px; display: none;}
                         }
                         `}
                     </style>

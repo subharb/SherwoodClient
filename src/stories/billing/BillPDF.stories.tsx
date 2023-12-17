@@ -44,215 +44,227 @@ export const BillPDFT: Story = {
             {
                 type: types.INITIALIZE_SUBMISSION_PATIENT,
                 payload: {
-                    "uuidSurvey": "e294dfc6-e9f0-4561-8c46-eb59c16ba376",
-                    "uuidPatient": "3e886463-1eee-47ed-b910-ccad1db0d31f",
-                    "id": 21920,
-                    "uuidUnit": null,
-                    "researcher": {
-                        "uuid": "9c6dd74a-2362-4a30-b826-10330f250c07",
-                        "name": "Pedro ",
-                        "surnames": "- Sherwood Staff"
-                    },
-                    "surveyRecords": [
-                        {
-                            "id": 124811,
-                            "value": "dkv seguros",
-                            "createdAt": "2023-11-23T17:12:45.099Z",
-                            "updatedAt": "2023-11-23T17:12:45.099Z",
-                            "surveySection": {
-                                "id": 1406,
-                                "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
-                                "name": "Mutuelle",
-                                "repeats": false,
-                                "isActive": true,
-                                "order": 0
+                        "uuidSurvey" : "e294dfc6-e9f0-4561-8c46-eb59c16ba376",
+                        "uuidPatient": "801952ca-66da-4410-8583-3faa6f460e03",
+                        "surveyData":{
+                        "surveyName" : "Mututelle",
+                        "type" : 11,
+                        "uuid" : "e294dfc6-e9f0-4561-8c46-eb59c16ba376",
+                        
+                        submissions : [{
+                            "uuidSurvey": "e294dfc6-e9f0-4561-8c46-eb59c16ba376",
+                            "uuidPatient": "801952ca-66da-4410-8583-3faa6f460e03",
+                            "id": 21920,
+                            "uuidUnit": null,
+                            "researcher": {
+                                "uuid": "9c6dd74a-2362-4a30-b826-10330f250c07",
+                                "name": "Pedro ",
+                                "surnames": "- Sherwood Staff"
                             },
-                            "surveyField": {
-                                "id": 7469,
-                                "type": "text",
-                                "name": "insurance",
-                                "encrypted": false,
-                                "required": false,
-                                "validation": "notEmpty",
-                                "label": "Nom de l'organisme",
-                                "order": 0,
-                                "isActive": true,
-                                "typeCombo": 0,
-                                "createdAt": "2023-09-11T05:17:26.048Z",
-                                "updatedAt": "2023-09-11T06:58:06.755Z"
-                            }
-                        },
-                        {
-                            "id": 124812,
-                            "value": "10",
-                            "createdAt": "2023-11-23T17:12:45.107Z",
-                            "updatedAt": "2023-11-23T17:12:45.107Z",
-                            "surveySection": {
-                                "id": 1406,
-                                "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
-                                "name": "Mutuelle",
-                                "repeats": false,
-                                "isActive": true,
-                                "order": 0
-                            },
-                            "surveyField": {
-                                "id": 7470,
-                                "type": "text",
-                                "name": "Pourcentage de prise en charge",
-                                "encrypted": false,
-                                "required": false,
-                                "validation": "notEmpty",
-                                "label": "Pourcentage de prise en charge",
-                                "order": 1,
-                                "isActive": true,
-                                "typeCombo": 0,
-                                "createdAt": "2023-09-11T05:17:26.053Z",
-                                "updatedAt": "2023-09-11T06:58:06.769Z"
-                            }
-                        },
-                        {
-                            "id": 124813,
-                            "value": "10000",
-                            "createdAt": "2023-11-23T17:12:45.114Z",
-                            "updatedAt": "2023-11-23T17:12:45.114Z",
-                            "surveySection": {
-                                "id": 1406,
-                                "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
-                                "name": "Mutuelle",
-                                "repeats": false,
-                                "isActive": true,
-                                "order": 0
-                            },
-                            "surveyField": {
-                                "id": 7471,
-                                "type": "number",
-                                "name": "amount",
-                                "encrypted": false,
-                                "required": false,
-                                "validation": "notEmpty",
-                                "label": "Montant",
-                                "order": 2,
-                                "isActive": true,
-                                "typeCombo": 0,
-                                "createdAt": "2023-09-11T05:17:26.059Z",
-                                "updatedAt": "2023-09-11T06:58:06.779Z"
-                            }
-                        },
-                        {
-                            "id": 124814,
-                            "value": "1091291209100",
-                            "createdAt": "2023-11-23T18:14:48.727Z",
-                            "updatedAt": "2023-11-23T18:14:48.727Z",
-                            "surveySection": {
-                                "id": 1406,
-                                "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
-                                "name": "Mutuelle",
-                                "repeats": false,
-                                "isActive": true,
-                                "order": 0
-                            },
-                            "surveyField": {
-                                "id": 7472,
-                                "type": "number",
-                                "name": "letter_number",
-                                "encrypted": false,
-                                "required": false,
-                                "validation": "notEmpty",
-                                "label": "Numéro de la lettre de garantie",
-                                "order": 3,
-                                "isActive": true,
-                                "typeCombo": 0,
-                                "createdAt": "2023-09-11T05:17:26.064Z",
-                                "updatedAt": "2023-09-11T06:58:06.789Z"
-                            }
-                        },
-                        {
-                            "id": 124815,
-                            "value": new Date("2023-11-23"),
-                            "createdAt": "2023-11-23T18:14:48.746Z",
-                            "updatedAt": "2023-11-23T18:14:48.746Z",
-                            "surveySection": {
-                                "id": 1406,
-                                "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
-                                "name": "Mutuelle",
-                                "repeats": false,
-                                "isActive": true,
-                                "order": 0
-                            },
-                            "surveyField": {
-                                "id": 7473,
-                                "type": "date",
-                                "name": "date_emission",
-                                "encrypted": false,
-                                "required": false,
-                                "validation": "notEmpty",
-                                "label": "Date d'emission de la lettre de garantie",
-                                "order": 4,
-                                "isActive": true,
-                                "typeCombo": 0,
-                                "createdAt": "2023-09-11T05:17:26.069Z",
-                                "updatedAt": "2023-09-11T06:58:06.801Z"
-                            }
-                        },
-                        {
-                            "id": 124816,
-                            "value": "2024-08-08T23:00:00.000Z",
-                            "createdAt": "2023-11-23T18:14:48.752Z",
-                            "updatedAt": "2023-11-23T18:14:48.752Z",
-                            "surveySection": {
-                                "id": 1406,
-                                "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
-                                "name": "Mutuelle",
-                                "repeats": false,
-                                "isActive": true,
-                                "order": 0
-                            },
-                            "surveyField": {
-                                "id": 7474,
-                                "type": "date",
-                                "name": "date_surgery",
-                                "encrypted": false,
-                                "required": false,
-                                "validation": "notEmpty",
-                                "label": "Date de l'intervention",
-                                "order": 5,
-                                "isActive": true,
-                                "typeCombo": 0,
-                                "createdAt": "2023-09-11T05:17:26.074Z",
-                                "updatedAt": "2023-09-11T06:58:06.812Z"
-                            }
-                        },
-                        {
-                            "id": 124817,
-                            "value": "MILE MILLIONI",
-                            "createdAt": "2023-11-23T18:14:48.758Z",
-                            "updatedAt": "2023-11-23T18:14:48.758Z",
-                            "surveySection": {
-                                "id": 1406,
-                                "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
-                                "name": "Mutuelle",
-                                "repeats": false,
-                                "isActive": true,
-                                "order": 0
-                            },
-                            "surveyField": {
-                                "id": 7475,
-                                "type": "text",
-                                "name": "amount_letters",
-                                "encrypted": false,
-                                "required": false,
-                                "validation": "notEmpty",
-                                "label": "Montant (en lettres)",
-                                "order": 6,
-                                "isActive": true,
-                                "typeCombo": 0,
-                                "createdAt": "2023-09-11T05:17:26.079Z",
-                                "updatedAt": "2023-09-11T06:58:06.822Z"
-                            }
+                            
+                            "surveyRecords": [
+                                {
+                                    "id": 124811,
+                                    "value": "dkv seguros",
+                                    "createdAt": "2023-11-23T17:12:45.099Z",
+                                    "updatedAt": "2023-11-23T17:12:45.099Z",
+                                    "surveySection": {
+                                        "id": 1406,
+                                        "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
+                                        "name": "Mutuelle",
+                                        "repeats": false,
+                                        "isActive": true,
+                                        "order": 0
+                                    },
+                                    "surveyField": {
+                                        "id": 7469,
+                                        "type": "text",
+                                        "name": "insurance",
+                                        "encrypted": false,
+                                        "required": false,
+                                        "validation": "notEmpty",
+                                        "label": "Nom de l'organisme",
+                                        "order": 0,
+                                        "isActive": true,
+                                        "typeCombo": 0,
+                                        "createdAt": "2023-09-11T05:17:26.048Z",
+                                        "updatedAt": "2023-09-11T06:58:06.755Z"
+                                    }
+                                },
+                                {
+                                    "id": 124812,
+                                    "value": "10",
+                                    "createdAt": "2023-11-23T17:12:45.107Z",
+                                    "updatedAt": "2023-11-23T17:12:45.107Z",
+                                    "surveySection": {
+                                        "id": 1406,
+                                        "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
+                                        "name": "Mutuelle",
+                                        "repeats": false,
+                                        "isActive": true,
+                                        "order": 0
+                                    },
+                                    "surveyField": {
+                                        "id": 7470,
+                                        "type": "text",
+                                        "name": "Pourcentage de prise en charge",
+                                        "encrypted": false,
+                                        "required": false,
+                                        "validation": "notEmpty",
+                                        "label": "Pourcentage de prise en charge",
+                                        "order": 1,
+                                        "isActive": true,
+                                        "typeCombo": 0,
+                                        "createdAt": "2023-09-11T05:17:26.053Z",
+                                        "updatedAt": "2023-09-11T06:58:06.769Z"
+                                    }
+                                },
+                                {
+                                    "id": 124813,
+                                    "value": "10000",
+                                    "createdAt": "2023-11-23T17:12:45.114Z",
+                                    "updatedAt": "2023-11-23T17:12:45.114Z",
+                                    "surveySection": {
+                                        "id": 1406,
+                                        "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
+                                        "name": "Mutuelle",
+                                        "repeats": false,
+                                        "isActive": true,
+                                        "order": 0
+                                    },
+                                    "surveyField": {
+                                        "id": 7471,
+                                        "type": "number",
+                                        "name": "amount",
+                                        "encrypted": false,
+                                        "required": false,
+                                        "validation": "notEmpty",
+                                        "label": "Montant",
+                                        "order": 2,
+                                        "isActive": true,
+                                        "typeCombo": 0,
+                                        "createdAt": "2023-09-11T05:17:26.059Z",
+                                        "updatedAt": "2023-09-11T06:58:06.779Z"
+                                    }
+                                },
+                                {
+                                    "id": 124814,
+                                    "value": "1091291209100",
+                                    "createdAt": "2023-11-23T18:14:48.727Z",
+                                    "updatedAt": "2023-11-23T18:14:48.727Z",
+                                    "surveySection": {
+                                        "id": 1406,
+                                        "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
+                                        "name": "Mutuelle",
+                                        "repeats": false,
+                                        "isActive": true,
+                                        "order": 0
+                                    },
+                                    "surveyField": {
+                                        "id": 7472,
+                                        "type": "number",
+                                        "name": "letter_number",
+                                        "encrypted": false,
+                                        "required": false,
+                                        "validation": "notEmpty",
+                                        "label": "Numéro de la lettre de garantie",
+                                        "order": 3,
+                                        "isActive": true,
+                                        "typeCombo": 0,
+                                        "createdAt": "2023-09-11T05:17:26.064Z",
+                                        "updatedAt": "2023-09-11T06:58:06.789Z"
+                                    }
+                                },
+                                {
+                                    "id": 124815,
+                                    "value": new Date("2023-11-23"),
+                                    "createdAt": "2023-11-23T18:14:48.746Z",
+                                    "updatedAt": "2023-11-23T18:14:48.746Z",
+                                    "surveySection": {
+                                        "id": 1406,
+                                        "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
+                                        "name": "Mutuelle",
+                                        "repeats": false,
+                                        "isActive": true,
+                                        "order": 0
+                                    },
+                                    "surveyField": {
+                                        "id": 7473,
+                                        "type": "date",
+                                        "name": "date_emission",
+                                        "encrypted": false,
+                                        "required": false,
+                                        "validation": "notEmpty",
+                                        "label": "Date d'emission de la lettre de garantie",
+                                        "order": 4,
+                                        "isActive": true,
+                                        "typeCombo": 0,
+                                        "createdAt": "2023-09-11T05:17:26.069Z",
+                                        "updatedAt": "2023-09-11T06:58:06.801Z"
+                                    }
+                                },
+                                {
+                                    "id": 124816,
+                                    "value": "2024-08-08T23:00:00.000Z",
+                                    "createdAt": "2023-11-23T18:14:48.752Z",
+                                    "updatedAt": "2023-11-23T18:14:48.752Z",
+                                    "surveySection": {
+                                        "id": 1406,
+                                        "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
+                                        "name": "Mutuelle",
+                                        "repeats": false,
+                                        "isActive": true,
+                                        "order": 0
+                                    },
+                                    "surveyField": {
+                                        "id": 7474,
+                                        "type": "date",
+                                        "name": "date_surgery",
+                                        "encrypted": false,
+                                        "required": false,
+                                        "validation": "notEmpty",
+                                        "label": "Date de l'intervention",
+                                        "order": 5,
+                                        "isActive": true,
+                                        "typeCombo": 0,
+                                        "createdAt": "2023-09-11T05:17:26.074Z",
+                                        "updatedAt": "2023-09-11T06:58:06.812Z"
+                                    }
+                                },
+                                {
+                                    "id": 124817,
+                                    "value": "MILE MILLIONI",
+                                    "createdAt": "2023-11-23T18:14:48.758Z",
+                                    "updatedAt": "2023-11-23T18:14:48.758Z",
+                                    "surveySection": {
+                                        "id": 1406,
+                                        "uuid": "8f6948d6-02e9-4e4c-a2dd-fc937a5e12a6",
+                                        "name": "Mutuelle",
+                                        "repeats": false,
+                                        "isActive": true,
+                                        "order": 0
+                                    },
+                                    "surveyField": {
+                                        "id": 7475,
+                                        "type": "text",
+                                        "name": "amount_letters",
+                                        "encrypted": false,
+                                        "required": false,
+                                        "validation": "notEmpty",
+                                        "label": "Montant (en lettres)",
+                                        "order": 6,
+                                        "isActive": true,
+                                        "typeCombo": 0,
+                                        "createdAt": "2023-09-11T05:17:26.079Z",
+                                        "updatedAt": "2023-09-11T06:58:06.822Z"
+                                    }
+                                }
+                            ],
+                            "createdAt": "2023-11-23T17:12:45.081Z",
+                            "updatedAt": "2023-11-23T18:14:48.784Z"
+                        }]
                         }
-                    ],
-                    "createdAt": "2023-11-23T17:12:45.081Z",
-                    "updatedAt": "2023-11-23T18:14:48.784Z"
+                        
                 }
             },
         {

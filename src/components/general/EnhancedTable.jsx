@@ -27,7 +27,7 @@ import {
     Typography,
 } from "@mui/material";
 
-import { green, orange, red } from "@mui/material/colors";
+import { green, grey, orange, red } from "@mui/material/colors";
 
 import {
     Add as AddIcon,
@@ -173,7 +173,7 @@ function EnhancedTableHead(props) {
         callback();
     }
     return (
-        <TableHead style={{fontWeight:'600'}}>
+        <TableHead style={{fontWeight:'600', backgroundColor:grey[100]}}>
         <TableRow> 
             {!props.noSelectable &&
                 <TableCell padding="checkbox">

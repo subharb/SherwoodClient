@@ -73,6 +73,10 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
         return additionalInfo ? additionalInfo!.surveyRecords.find((record) => record.surveyField.name === "amount_letters") : null;
     }
     ,[additionalInfo]);
+
+    const totalBill = useMemo(() => {
+        return calculateTotalBill(bill.billItems, [TYPE_BILL_ITEM.HIDDEN_VALUE, TYPE_BILL_ITEM.DISCOUNT_ADDITIONAL_INFO]);
+    }, [bill.billItems])
     
     function renderHeader(){
         return(
@@ -88,7 +92,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
     function renderTitle(){
         return(
             <Grid container item xs={12}>
-                <Typography variant="h1" style={{textTransform:'capitalize'}}>
+                <Typography variant="h2" style={{textTransform:'capitalize'}}>
                     <Translate id={`hospital.billing.pdf.title.${documentTypeToString(type)}`}/>
                 </Typography>
             </Grid>
@@ -99,7 +103,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
             case DocumentType.SUMMARY:
                 return(
                     <Grid item xs={12}>
-                        <Typography variant='h4'>
+                        <Typography variant='h6'>
                             <Translate id={`hospital.billing.pdf.subtitle.${documentTypeToString(type)}`} />
                         </Typography> 
                         {
@@ -154,18 +158,6 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                         {
                             patientInformation()
                         }
-                        {
-                            prescribingDoctor &&
-                            <Typography variant='body2'>
-                                <Translate id={`hospital.billing.pdf.doctor`} />: {researcherFullName(prescribingDoctor)}
-                            </Typography> 
-                        }
-                        {
-                            department &&
-                            <Typography variant='body2'>
-                                <Translate id={`hospital.billing.pdf.department`} />: {department.name}
-                            </Typography> 
-                        }
                         
                     </Grid>
                 );
@@ -175,30 +167,50 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
         let prelude;
         switch(type){
             case DocumentType.SUMMARY:
-                const totalCost = bill.total;
+                const totalCost = totalBill;
                 const paidExternally = patientInsurance && patientInsurance.name === "PAF" ? 0 : totalCost;
                 const paid = 0;
                 const toPay = patientInsurance && patientInsurance.name === "PAF" ? totalCost : 0;
                 prelude = (
                     <>
+                        <Typography variant='h6' style={{fontWeight:'bold'}}>
+                            <Translate id={`hospital.billing.pdf.detail`} />
+                        </Typography> 
+                        <Grid item xs={12}>
+                            <div style={{paddingBottom:'0.5rem'}}>
+                                <Divider style={{width:'90%'}} />
+                            </div>
+                        </Grid>
+                        {
+                            prescribingDoctor &&
+                            <Typography variant='body2'>
+                                <span style={{fontWeight:'bold'}}><Translate id={`hospital.billing.pdf.doctor`} /></span>: {researcherFullName(prescribingDoctor)}
+                            </Typography> 
+                        }
+                        {
+                            department &&
+                            <Typography variant='body2'>
+                                <span style={{fontWeight:'bold'}}><Translate id={`hospital.billing.pdf.department`} /></span>: {department.name}
+                            </Typography> 
+                        }
                         <Grid container item xs={12}>
                             <Typography variant='body2'>
-                                <Translate id={`hospital.billing.pdf.total_cost`} />: { new Intl.NumberFormat(locale).format(bill.total) } {currency}
+                                <span style={{fontWeight:'bold'}}><Translate id={`hospital.billing.pdf.total_cost`} /></span>:  { new Intl.NumberFormat(locale).format(totalBill) } {currency}
                             </Typography>
                         </Grid>
                         <Grid container item xs={12}>
                             <Typography variant='body2' style={{fontWeight:'bold'}}>
-                                <Translate id={`hospital.billing.pdf.paid_externally`} />: { new Intl.NumberFormat(locale).format(paidExternally) } {currency}
+                                <span style={{fontWeight:'bold'}}><Translate id={`hospital.billing.pdf.paid_externally`} /></span>: { new Intl.NumberFormat(locale).format(paidExternally) } {currency}
                             </Typography>
                         </Grid>
                         <Grid container item xs={12}>
                             <Typography variant='body2' style={{fontWeight:'bold'}}>
-                                <Translate id={`hospital.billing.pdf.paid`} />: { new Intl.NumberFormat(locale).format(paid) } {currency}
+                                <span style={{fontWeight:'bold'}}><Translate id={`hospital.billing.pdf.paid`} /></span>: { new Intl.NumberFormat(locale).format(paid) } {currency}
                             </Typography>
                         </Grid>
                         <Grid container item xs={12}>
                             <Typography variant='body2' style={{fontWeight:'bold'}}>
-                                <Translate id={`hospital.billing.pdf.to_pay`} />: { new Intl.NumberFormat(locale).format(toPay) } {currency}
+                                <span style={{fontWeight:'bold'}}><Translate id={`hospital.billing.pdf.to_pay`} /></span>: { new Intl.NumberFormat(locale).format(toPay) } {currency}
                             </Typography>
                         </Grid>
                     </>
@@ -209,9 +221,11 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                 {
                     prelude
                 }
-                <Typography variant='h3'>
-                    <Translate id={`hospital.billing.pdf.billform_title.${documentTypeToString(type)}`} />
-                </Typography>
+                <Grid item xs={12} paddingTop={2}>
+                    <Typography variant='h4'>
+                        <Translate id={`hospital.billing.pdf.billform_title.${documentTypeToString(type)}`} />
+                    </Typography>
+                </Grid>
                 <BillForm canUpdateBill={false} currency={currency} patient={patient}
                     bill={bill} print={true} />
             </Grid>
@@ -232,7 +246,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                             <Translate id={`hospital.billing.pdf.budget.attention`} /> { insuranceName.value }
                         </Typography>
                         <Typography variant='body2'>
-                            <Translate id={`hospital.billing.pdf.budget.total_rating`} /> {new Intl.NumberFormat(locale).format(insuranceAmount.value)}
+                            <Translate id={`hospital.billing.pdf.budget.total_rating`} /> {new Intl.NumberFormat(locale).format(totalBill)} {currency}
                         </Typography>
                         <Typography variant='body2'>
                             <Translate id={`hospital.billing.pdf.budget.coverage`} />
@@ -305,9 +319,14 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
         return (
             <Grid container paddingTop={4} spacing={2}>
                 <Grid item xs={12}>
-                    <Typography variant='body2' style={{fontWeight:'bold'}}>
+                    <Typography variant='h5' style={{fontWeight:'bold'}}>
                         <Translate id="hospital.billing.pdf.patient_identity" />
                     </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <div style={{paddingBottom:'0.5rem'}}>
+                        <Divider style={{width:'90%'}} />
+                    </div>
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant='body2'>{patientFullName(patient)} <Translate id="general.born" /> {dateOrStringToDateString(patient.personalData.birthdate, locale)}</Typography>
@@ -320,7 +339,6 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                         patient.personalData.health_id &&
                         <Typography variant='body2'><Translate id="hospital.billing.pdf.num_dossier" />: {getPatientID(patient)} </Typography>
                     }
-                    <Typography variant='body2'><Translate id="investigation.create.personal_data.fields.id" />: {getPatientID(patient)} </Typography>
                 </Grid>
             </Grid>
         )

@@ -67,7 +67,7 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.INITIALIZE_SUBMISSION_PATIENT:
             tempData = {};
-            dictSurveys[action.payload.uuidSurvey] = [action.payload];
+            dictSurveys[action.payload.uuidSurvey] = action.payload.surveyData;
             
             tempData[action.payload.uuidPatient] = dictSurveys;
             newState.data = tempData;
