@@ -184,8 +184,6 @@ describe('AddPatientComponent', () => {
             fireEvent.click(submitButton); // Simulate the user clicking on the button
         });
         
-        // const errorMessages = screen.getAllByText(/This field can' be empty/i);
-        // expect(errorMessages.length).toBe(2); 
        
         expect(mockSavePatientFunction).toHaveBeenCalledTimes(1);
 

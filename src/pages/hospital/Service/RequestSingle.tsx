@@ -4,7 +4,6 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import Loader from '../../../components/Loader';
 import PatientInfo from '../../../components/PatientInfo';
-import { RequestStatusToChip, serviceToColor, statusToColor } from './RequestTable';
 import { IRequest, RequestStatus } from './types';
 
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
@@ -16,6 +15,7 @@ import { Alert } from '@mui/material';
 import { Translate } from 'react-localize-redux';
 import { useSelector } from 'react-redux';
 import RequestInfo from './RequestInfo';
+import { PERMISSION } from '../../../components/investigation/share/user_roles';
 
 
 
@@ -35,7 +35,7 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
     const [loading, setLoading] = useState(false);
     const [submissionData, setSubmissionData] = useState<{submission:any} | null>(null);
     const [editData, setEditData] = useState(false);
-    const [snackbar, setShowSnackbar] = useSnackBarState();
+    const [snackbar, setShowSnackbar] = useSnackBarState(); 
 
     useEffect(() => {
         if(request && patientsSubmissions.loading === false){
@@ -81,7 +81,10 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
         if(!survey){
             return <Typography variant="h4">The survey could not be found</Typography>
         }
-        if(!editData && request?.submissionPatient && submissionData){
+        if(!permissions.includes(PERMISSION.UPDATE_LAB_REQUESTS) && !submissionData){
+            return <Typography variant='body2'><Translate id="hospital.request.request_not_ready" /></Typography>;
+        }
+        else if(!editData && request?.submissionPatient && submissionData){ 
             const newSubmission = patientsSubmissions.data && patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid] && patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid][survey.uuid] ?  patientsSubmissions.data[request?.requestsServiceInvestigation[0].patientInvestigation.uuid][survey.uuid].submissions.find((submission:any) => submission.id === request?.submissionPatient.id) : null;
             const submissionDataLocal = newSubmission ? newSubmission : submissionData.submission;
             return (

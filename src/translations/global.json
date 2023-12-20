@@ -490,6 +490,7 @@
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
         "request" : {
+            "request_not_ready" : ["The request is not completed yet", "La solicitud no está completada", "La demande n'est pas encore terminée"],
             "laboratory" : ["Laboratory tests available", "Tests de laboratorio disponibles", "Tests de laboratoire disponibles"],
             "laboratory_table" : ["Request Lab", "Peticiones de Laboratorio", "Demande de laboratoire"],
             "medical-imaging" : ["Image tests available", "Pruebas de imagen disponibles", "Tests d'image disponibles"],
@@ -1248,7 +1249,7 @@
             },     
             "error" : {
                 "account_registered" : ["This email has already been used", "Este email ya ha sido utilizado", "Cet e-mail est déjà utilise"],
-                "general" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"]
+                "general" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une erreur s'est produite, veuillez réessayer plus tard"]
             }
         },
         "patient" : {
