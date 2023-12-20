@@ -113,7 +113,8 @@
     "eject": "react-scripts eject",
     "cypress": "node_modules/.bin/cypress open",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test-storybook": "test-storybook"
   },
   "eslintConfig": {
     "extends": [
@@ -167,8 +168,10 @@
     "@storybook/addon-links": "^7.2.0",
     "@storybook/addon-onboarding": "^1.0.8",
     "@storybook/blocks": "^7.2.0",
+    "@storybook/jest": "^0.2.3",
     "@storybook/react": "^7.2.0",
     "@storybook/react-vite": "^7.2.0",
+    "@storybook/test-runner": "^0.16.0",
     "@storybook/testing-library": "^0.2.0",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.0.0",
@@ -196,6 +199,7 @@
     "miragejs": "^0.1.46",
     "msw": "^0.20.5",
     "npm": "^9.8.1",
+    "playwright": "^1.40.1",
     "prettier": "2.2.1",
     "prop-types": "^15.8.1",
     "react-is": "^18.2.0",
