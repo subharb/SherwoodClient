@@ -88,7 +88,7 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, 
 
 const mapStateToProps = (state:any) =>{
     return {
-        patientsPersonalData:state.investigations.currentInvestigation ? state.investigations.currentInvestigation.patientsPersonalData : null
+        patientsPersonalData:state.investigations.currentInvestigation ? state.patients.data[state.investigations.currentInvestigation.uuid] : null
     }
 }
 
