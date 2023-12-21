@@ -162,7 +162,7 @@
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
             "hospitalized-in-ward" : ["Hospitalized in ward %X", "Hospitalizado en la planta %X", "Hospitalisé en service %X"],
-            "discharged-from-ward" : ["Discharged from ward %X", "Dado de alta de la planta %X", "Congé de service %X"],
+            "discharged-from-ward" : ["Discharged from ward %X", "Dado de alta de la planta %X", "Sortie de la %X"],
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"],
             "insurances" : {

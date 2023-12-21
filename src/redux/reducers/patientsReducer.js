@@ -83,6 +83,11 @@ export default function reducer(state = initialState, action){
             }
             
             return newState;
+            case types.INITIALIZE_PATIENTS:
+                newState.data = {};
+                newState.data[action.payload.uuidInvestigation] = action.payload.patients
+                
+                return newState;
             case types.AUTH_SIGN_OUT:
                 newState = {...initialState};
                 return newState;

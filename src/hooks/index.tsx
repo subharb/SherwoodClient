@@ -233,7 +233,7 @@ export function useDepartments(researchersDepartmentsOnly:string = ""){
 }
 
 export function useRequest(idRequest:number){
-    const investigations= useSelector((state:any) => state.investigations);
+    const investigations = useSelector((state:any) => state.investigations);
     const [loadingRequest, setLoadingRequest] = useState(false);
     const [request, setRequest] = useState<IRequest | null>(null);
 
@@ -242,7 +242,10 @@ export function useRequest(idRequest:number){
             setLoadingRequest(true);
             
             const response = await axios(`${import.meta.env.VITE_APP_API_URL}/hospital/${investigations.currentInvestigation.uuid}/request/${idRequest}`, { headers: {"Authorization" : localStorage.getItem("jwt")} })
-                    .catch(err => {console.log('Catch', err); return err;});
+                    .catch(err => {
+                        console.log('Catch', err); 
+                        return err;
+                    });
             if(response.status === 200){
                 setRequest(response.data.request);
             }
