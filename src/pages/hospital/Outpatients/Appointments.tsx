@@ -327,6 +327,7 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
                                     gender={patient.personalData.sex} />
                             ) 
                         }
+                       
                     })
                 }
             </Grid>

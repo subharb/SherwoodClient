@@ -192,6 +192,15 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
+    "treatment" : {
+        id : "treatment",
+        required : false,
+        type:"treatment",
+        name:"treatment",
+        label:"Long field for text area",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
 }
 
 

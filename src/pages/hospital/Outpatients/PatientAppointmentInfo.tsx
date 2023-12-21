@@ -155,15 +155,17 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
     }
     if(!createAppointment){
         return (
-            <>
-            <Grid item xs={12}>
-                <PatientInfo uuidPatient={uuidPatient} />
+            <Grid container xs={12}>
+                <Grid item xs={12}>
+                    <PatientInfo uuidPatient={uuidPatient} />
+                </Grid>
+                <Grid item xs={12}>
+                    <ButtonAdd onClick={() => setCreateAppointment(true)} />
+                    {
+                        renderAppointments()
+                    }
+                </Grid>
             </Grid>
-            <ButtonAdd onClick={() => setCreateAppointment(true)} />
-            {
-                renderAppointments()
-            }
-            </>
         );
     }
     return (

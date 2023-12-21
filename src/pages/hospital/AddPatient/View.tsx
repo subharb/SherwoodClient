@@ -111,8 +111,12 @@ return (
             confirmAction={() => props.callbackSavePatient(confirmPatient.encryptedData)}>
                 {
                     confirmPatient &&
-                    [<Translate id="pages.hospital.confirm-patient.description" />,
-                    <div>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Typography variant='body2' fontWeight='bold'><Translate id="pages.hospital.confirm-patient.description" /></Typography>
+                        </Grid>
+                        
+                    <Grid item xs={12}>
                         {
                             confirmPatient.rawData.hasOwnProperty("health_id") && 
                             <p><Translate id="investigation.create.personal_data.fields.health_id" />: {confirmPatient.rawData["health_id"]}</p>
@@ -120,8 +124,8 @@ return (
                         <p><Translate id="investigation.create.personal_data.fields.name" />: {confirmPatient.rawData["name"]}</p>
                         <p><Translate id="investigation.create.personal_data.fields.surnames" />: {confirmPatient.rawData["surnames"]}</p>
                         <p><Translate id="investigation.create.personal_data.fields.birthdate" />: {confirmPatient.rawData["birthdate"].toLocaleDateString()}</p>
-                    </div>
-                    ]
+                    </Grid>
+                    </Grid>
                 }
             
         </Modal>
