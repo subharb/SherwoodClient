@@ -263,7 +263,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                 // changeField(billableSelected.amount.toString(), BillItemKeys.amount);
                 // changeField(billableSelected.type.toString(), BillItemKeys.type);
 
-                const updatedItem:BillItem = {...currentItem, ...billableSelected, quantity : 1, updatedAt: new Date()};
+                const updatedItem:BillItem = {...currentItem, ...billableSelected, unitCost: billableSelected.amount, quantity : 1, updatedAt: new Date()};
                 delete updatedItem.id;
                 setCurrentItem(updatedItem);
                 
@@ -492,9 +492,9 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                                 return billable
                             }
                         }).sort((a,b) => a.concept > b.concept ? 1 : -1 ) as BillableOption[] : []} 
-                        onInputChange={(event, value, reason) => {
-                            onBillableSelected(value);
-                        }}
+                        // onInputChange={(event, value, reason) => {
+                        //     onBillableSelected(value);
+                        // }}
                         onChange={(event, newValue) => {
                             if (typeof newValue === 'string') {
                                 onBillableSelected(newValue);
