@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from '../../../components/general/form';
 import ProviderSherwood from '../../../providerSherwood';
+import SmartFields from '../../../components/general/SmartFields';
 
 const FIELDS_FORM = {
     "autocomplete":{
@@ -212,6 +213,7 @@ export default {
         <ProviderSherwood>
                 {story()}
         </ProviderSherwood>],
+    
 };
 
 const Template = (args) => <Form {...args} />;
@@ -219,6 +221,7 @@ const Template = (args) => <Form {...args} />;
 export const Basic = Template.bind({});
 Basic.args = {
     fields:FIELDS_FORM, 
+    
     creating : true,
     callBackForm : (values) => console.log("Result",JSON.stringify(values))
 };
