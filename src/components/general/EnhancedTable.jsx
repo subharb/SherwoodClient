@@ -117,13 +117,9 @@ createData(
 ];
 
 function descendingComparator(a, b, orderBy) {
-if (b[orderBy] < a[orderBy]) {
-    return -1;
-}
-if (b[orderBy] > a[orderBy]) {
-    return 1;
-}
-return 0;
+    const aString = a[orderBy] ? a[orderBy].toString().toLowerCase() : "";
+    const bString = b[orderBy] ? b[orderBy].toString().toLowerCase() : "";
+    return aString.localeCompare(bString)
 }
 
 function getComparator(order, orderBy) {

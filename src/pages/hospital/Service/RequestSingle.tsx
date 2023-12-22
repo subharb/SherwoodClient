@@ -7,7 +7,7 @@ import PatientInfo from '../../../components/PatientInfo';
 import { IRequest, RequestStatus } from './types';
 
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
-import { TYPE_FILL_IMG_SURVEY, TYPE_FILL_LAB_SURVEY, TYPE_REQUEST_LAB } from '../../../constants';
+import { TYPE_FILL_IMG_SURVEY, TYPE_FILL_LAB_SURVEY, TYPE_FILL_SHOE_SURVEY, TYPE_REQUEST_LAB, TYPE_REQUEST_SHOE } from '../../../constants';
 import { IResearcher, ISurvey, SnackbarTypeSeverity } from '../../../constants/types';
 import FillDataCollection from '../FillDataCollection';
 import { useRequest, useSnackBarState, useUpdateEffect } from '../../../hooks';
@@ -72,6 +72,9 @@ const RequestSingle: React.FC<RequestSingleProps> = ({ idRequest, researcher, uu
         const survey = surveys.find((survey) => {
             if(request?.type === TYPE_REQUEST_LAB){
                 return survey.type === TYPE_FILL_LAB_SURVEY;
+            }
+            if(request?.type === TYPE_REQUEST_SHOE){
+                return survey.type === TYPE_FILL_SHOE_SURVEY; 
             }
             else{
                 return survey.type === TYPE_FILL_IMG_SURVEY;

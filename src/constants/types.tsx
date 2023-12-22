@@ -16,6 +16,14 @@ export interface ReduxStore{
   form:any
 }
 
+export interface IDrug{
+    "id": number,
+    "cis": string,
+    "name": string,
+    "search_name": string,
+    "country": string
+}
+
 export interface ISubmission{
     id:number,
     createdAt:Date,

@@ -80,6 +80,7 @@ export interface TreatmentRegularType{
     "treatment_regular-posology": string
 }
 
+
 export interface BMIType{
     "bmi" : number,
     "bmi_height" : number,
@@ -113,7 +114,6 @@ export interface Diagnosis{
     "ict-code": string
 }
 
-enum DATE_FIELDS {"background-date", "treatment-start", "treatment-finish"};
 const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular", edd : "regular", edd_last_period:"regular"};
 
 const NO_TABLE_FIELDS = MEDICAL_HISTORY_FIELDS;
@@ -177,6 +177,7 @@ const SmartField:React.FC<Props> = (props) => {
                     if(val && DATE_FIELDS_FORMAT.hasOwnProperty(key)){
                         let dateObject = null;
                         const format = DATE_FIELDS_FORMAT[key] as string;
+
                         if(val && typeof val.getMonth === 'function'){
                             dateObject = val;
                         }   
@@ -245,7 +246,9 @@ const SmartField:React.FC<Props> = (props) => {
         if((addingElements && props.mode === "form") || NO_TABLE_FIELDS.includes(props.type)){
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
                 template : props.template,
-                cancel, language:props.language ? props.language : props.activeLanguage.code, country:props.country, error:props.error, slaves:props.slaves,
+                cancel, 
+                language:props.language ? props.language : props.activeLanguage.code, 
+                country:props.country, error:props.error, slaves:props.slaves,
                 size:"small", updateElement:(index:number, smartF:SmartFieldType) => updateElement(index, smartF) ,elementSelected:(smartF:SmartFieldType) => elementSelected(smartF)}
             
             let smartField = null;

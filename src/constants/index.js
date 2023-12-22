@@ -161,11 +161,12 @@ export const TYPE_EDITABLE_SURVEY = 10;
 export const TYPE_ADDITIONAL_INFO_SURVEY = 11;
 export const TYPE_NURSE = 12;
 export const TYPE_PRESCRIPTIONS = 13;
+export const TYPE_FILL_SHOE_SURVEY = 14;
 
 export const TYPE_SURVEYS = [{ value: TYPE_MEDICAL_SURVEY, name: "Medical" }, { value: TYPE_PRESCRIPTIONS, name: "Prescriptions" }, { value: TYPE_NURSE, name: "Nurse" }, { value: TYPE_IMAGE_SURVEY, name: "Images" }, { value: TYPE_LAB_SURVEY, name: "Laboratory" },
 { value: TYPE_FIRST_VISIT_SURVEY, name: "First Visit" }, { value: TYPE_MONITORING_VISIT_SURVEY, name: "Monitoring" },
 { value: TYPE_DISCHARGE_SURVEY, name: "Discharge" }, { value: TYPE_SOCIAL_SURVEY, name: "Social" }, { value: TYPE_SHOE_SURVEY, name: "Shoe" },
-{ value: TYPE_FILL_LAB_SURVEY, name: "Fill Lab" }, { value: TYPE_FILL_IMG_SURVEY, name: "Fill IMG" },
+{ value: TYPE_FILL_LAB_SURVEY, name: "Fill Lab" }, { value: TYPE_FILL_IMG_SURVEY, name: "Fill IMG" }, { value: TYPE_FILL_SHOE_SURVEY, name: "Fill Shoe" },
 { value: TYPE_EDITABLE_SURVEY, name: "Editable" }, { value: TYPE_ADDITIONAL_INFO_SURVEY, name: "Additional Info" }];
 
 
@@ -181,6 +182,7 @@ export const CATEGORY_SURVEYS = [{ value: CATEGORY_DEPARTMENT_MEDICAL, name: "Me
 
 export const TYPE_REQUEST_LAB = 0;
 export const TYPE_REQUEST_IMG = 1;
+export const TYPE_REQUEST_SHOE = 3;
 
 export const TYPE_REQUEST_FUNC = [TYPE_LAB_SURVEY, TYPE_IMAGE_SURVEY];
 export const TYPE_SERVICE_SURVEY = [TYPE_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_SHOE_SURVEY];
