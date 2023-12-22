@@ -253,7 +253,9 @@
                     "confirm" : ["Do you confirm you wish to remove unit %X? It should not have any staff assigned.", "¿Confirma que desea quitar la unidad %X? No debe tener personal asignado.", "Voulez-vous vraiment supprimer l'unité %X ? Il ne doit pas avoir de personnel affecté."]
                 },
                 "remove-department" : {
-                    "confirm" : ["Do you confirm you wish to remove department %X? It should not have any units.", "¿Confirma que desea quitar el departamento %X? No debe tener unidades.", "Voulez-vous vraiment supprimer le département %X ? Il ne doit pas avoir d'unités."]
+                    "confirm" : ["Do you confirm you wish to remove department %X? It should not have any units.", "¿Confirma que desea quitar el departamento %X? No debe tener unidades.", "Voulez-vous vraiment supprimer le département %X ? Il ne doit pas avoir d'unités."],
+                    "cannot_remove" : ["You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units"]
+
                 },
                 "types":{
                     "medical" : ["Medical", "Médico", "Médical"],

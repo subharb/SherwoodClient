@@ -542,24 +542,43 @@ function Departments(props) {
             )
         }
         else if(deletingDepartment){
-            const question = props.translate("hospital.departments.forms.remove-department.confirm").replace("%X", deletingDepartment.name);
-            return(
-                <Grid container>
-                    <Grid item xs={12}>
-                        <Typography variant="h6" component="div" gutterBottom>
-                            {question}
-                        </Typography>                        
+            if(deletingDepartment.units.length > 0){
+                const question = props.translate("hospital.departments.forms.remove-department.has_wards");
+                return(
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Typography variant="h6" component="div" gutterBottom>
+                                {question}
+                            </Typography>                        
+                        </Grid>
+                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                            <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                <Translate id="general.cancel" />
+                            </ButtonCancel>
+                        </Grid>
                     </Grid>
-                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                        <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
-                            <Translate id="general.cancel" />
-                        </ButtonCancel>
-                        <ButtonContinue onClick={() => deletedDepartment(deletingDepartment)} data-testid="continue-modal" color="primary">
-                            <Translate id="general.continue" />
-                        </ButtonContinue>
+                )
+            }
+            else{
+                const question = props.translate("hospital.departments.forms.remove-department.confirm").replace("%X", deletingDepartment.name);
+                return(
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Typography variant="h6" component="div" gutterBottom>
+                                {question}
+                            </Typography>                        
+                        </Grid>
+                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                            <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
+                                <Translate id="general.cancel" />
+                            </ButtonCancel>
+                            <ButtonContinue onClick={() => deletedDepartment(deletingDepartment)} data-testid="continue-modal" color="primary">
+                                <Translate id="general.continue" />
+                            </ButtonContinue>
+                        </Grid>
                     </Grid>
-                </Grid>
-            )
+                )
+            }
         } 
         else if(deletingUnit){
             const question = props.translate("hospital.departments.forms.remove-unit.confirm").replace("%X", deletingUnit.name);
