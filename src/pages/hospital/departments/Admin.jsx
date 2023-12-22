@@ -542,8 +542,8 @@ function Departments(props) {
             )
         }
         else if(deletingDepartment){
-            if(deletingDepartment.units.length > 0){
-                const question = props.translate("hospital.departments.forms.remove-department.has_wards");
+            if(deletingDepartment.units.length > 0 || deletingDepartment.wards.length > 0){
+                const question = props.translate("hospital.departments.forms.remove-department.cannot_remove");
                 return(
                     <Grid container>
                         <Grid item xs={12}>
