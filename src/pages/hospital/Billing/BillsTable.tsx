@@ -118,8 +118,13 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
                         } 
                         currentPage={currentPageTable} changePageCallback={changePageCallback}
                         actions={[{"type" : "pdf", "check" :(bill:any) => bill.statusValue === DocumentStatus.CLOSED, 
-                                    "func" : (index:number) => makeActionBillCallBack(rows[index].uuid, BillActions.PREVIEW)},
-                                ]} 
+                                    "func" : (index:number) => {
+                                        const findBill = rows.find((bill) => bill.id === index);
+                                        if(findBill){
+                                            makeActionBillCallBack(findBill.uuid, BillActions.PREVIEW)
+                                        }
+                                    }
+                                }]} 
                                 />
     }
 

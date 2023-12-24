@@ -170,7 +170,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                 const totalCost = totalBill;
                 const paidExternally = patientInsurance && patientInsurance.name === "PAF" ? 0 : totalCost;
                 const paid = 0;
-                const toPay = patientInsurance && patientInsurance.name === "PAF" ? totalCost : 0;
+                const toPay = totalBill - paidExternally;
                 prelude = (
                     <>
                         <Typography variant='h6' style={{fontWeight:'bold'}}>

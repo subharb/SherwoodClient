@@ -349,7 +349,9 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                         uuidPatient={uuidPatient!} 
                         callBackDataCollectionSavedWithData = {async (data) => {
                             console.log("Data Saved", data);
-                            const amount = data.surveyRecords.find((record:any) => record.surveyField.name.toLocaleLowerCase() === "amount").value;
+                            const amountField = data.surveyRecords.find((record:any) => record.surveyField.name.toLocaleLowerCase() === "amount");
+                            const amount = amountField ? amountField.value : 0;
+
                             const prevBillItemIndex = items.findIndex((item:BillItem) => item.additionalInfoId === data.id);
 
                             if(prevBillItemIndex !== -1){
@@ -559,7 +561,7 @@ const BillItemsCore:React.FC<BillItemsProps> = ({ columns, canUseAdditionalInfo,
                     </FormControl> : undefined
                 break;
                 case "amount":
-                    value = <TextField label="Amount" variant="outlined" 
+                    value = <TextField label={<Translate id="hospital.billing.item.unitCost" />} variant="outlined" 
                         helperText={helperText(BillItemKeys.amount)} 
                         color="secondary"
                         error={fieldErrors.amount !== ""} type="text" 
