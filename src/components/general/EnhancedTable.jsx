@@ -181,34 +181,39 @@ function EnhancedTableHead(props) {
                     />
                 </TableCell>
             }
-            {headCells.map((headCell) => (
-            <TableCell
-                key={headCell.id}
-                align={headCell.alignment}
-                //padding={headCell.disablePadding || props.dense ? "none" : "default"}
-                sortDirection={orderBy === headCell.id ? order : false}
-                
-            >
-                <TableSortLabel
-                    active={disableOrder ? false : orderBy === headCell.id }
-                    hideSortIcon={disableOrder}
-                    direction={disableOrder ? "" : orderBy === headCell.id ? order : "asc"}
-                    onClick={createSortHandler(headCell.id)}
-                    style={{fontWeight:"600"}}
-                >
-                {
-                    headCell.markAllCallback &&
-                    <span><Checkbox
-                       
-                        checked={checkboxesState[headCell.id] || false}
-                        onChange={() => changeCheckboxState(headCell.id, headCell.markAllCallback)}
-                        inputProps={{ "aria-label": "select all" }}
-                    /></span>
-                }
-                {headCell.label}
-                </TableSortLabel>
-            </TableCell>
-            ))}
+            {headCells.map((headCell) => {
+                const disableOrderCell = props.disableOrder || props.typeHeadCells[headCell.id] === 'object';
+                return(
+                    <TableCell
+                        key={headCell.id}
+                        align={headCell.alignment}
+                        //padding={headCell.disablePadding || props.dense ? "none" : "default"}
+                        sortDirection={orderBy === headCell.id ? order : false}
+                        
+                    >
+                        <TableSortLabel
+                            active={disableOrderCell ? false : orderBy === headCell.id }
+                            hideSortIcon={disableOrderCell}
+                            direction={disableOrderCell ? "" : orderBy === headCell.id ? order : "asc"}
+                            onClick={!disableOrderCell ? createSortHandler(headCell.id) : null}
+                            style={{fontWeight:"600"}}
+                        >
+                        {
+                            headCell.markAllCallback &&
+                            <span><Checkbox
+                            
+                                checked={checkboxesState[headCell.id] || false}
+                                onChange={() => changeCheckboxState(headCell.id, headCell.markAllCallback)}
+                                inputProps={{ "aria-label": "select all" }}
+                            /></span>
+                        }
+                        {headCell.label}
+                        </TableSortLabel>
+                    </TableCell>
+                )
+            }
+            
+            )}
             {
                 (props.actions && props.actions.length > 0) &&
                 <TableCell style={{fontWeight:"600"}} align="right"><Translate id="general.actions"/></TableCell>
@@ -471,6 +476,11 @@ function renderBody(){
         }
     </TableBody>;
 }
+const typeHeadCells = rows.length > 0 ? headCells.reduce((accumulator, headCell) => {
+    const valueType = rows[0][headCell.id] ? typeof rows[0][headCell.id] : null;
+    accumulator[headCell.id] = valueType;
+    return accumulator
+    }, {}) : {};
 return (
     <div >
     <Paper>
@@ -493,6 +503,7 @@ return (
                     onSelectAllClick={handleSelectAllClick}
                     onRequestSort={handleRequestSort}
                     rowCount={rows.length}
+                    typeHeadCells={typeHeadCells}
                     headCells={headCells}
                     actions={actions}
                     noSelectable={noSelectable}
