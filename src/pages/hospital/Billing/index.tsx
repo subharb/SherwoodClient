@@ -6,15 +6,14 @@ import { Grid, IconButton, Snackbar, Typography } from '@mui/material';
 import Modal from '../../../components/general/modal';
 import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@mui/material';
-import { ButtonAdd, IconGenerator, TypographyStyled } from '../../../components/general/mini_components';
-import { BillForm } from './BillForm';
-import { FUNCTIONALITY, IPatient, ISurvey, SnackbarType } from '../../../constants/types';
-import { Bill, BillingInfo, BillItem, BillItemModes, DocumentStatus , DocumentType} from './types';
+import { ButtonAdd, TypographyStyled } from '../../../components/general/mini_components';
+import { IPatient, ISurvey, SnackbarType } from '../../../constants/types';
+import { Bill, BillingInfo, BillItemModes, DocumentStatus , DocumentType} from './types';
 import { DocumentPDF } from '../Document';
 import { connect, useDispatch } from 'react-redux';
 import { createBillService, getBillsPatientService, getDocumentsService, updateBillItemsStatusService, updateBillService, updateDocumentType } from '../../../services/billing';
 import Loader from '../../../components/Loader';
-import { dateAndTimeFromPostgresString, hasDiscountsActive, stringDatePostgresToDate } from '../../../utils/index.jsx';
+import { hasDiscountsActive, stringDatePostgresToDate } from '../../../utils/index.jsx';
 import EditBilling from './Edit';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import BillsPatient from './BillsPatient';
@@ -391,8 +390,11 @@ const Billing: React.FC<Props> = (props) => {
             return <Loader />;
         }
         else if (editing) {
-            return <EditBilling uuidInvestigation={props.uuidInvestigation} billables={props.billingInfo && props.billingInfo.billables ? props.billingInfo.billables : []} withDiscount={props.withDiscount}
-                billingInfo={props.billingInfo} onBillingInfoSuccesfullyUpdated={(type: BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
+            return <EditBilling uuidInvestigation={props.uuidInvestigation} 
+                        billables={[]} 
+                        withDiscount={props.withDiscount}
+                        billingInfo={props.billingInfo} 
+                        onBillingInfoSuccesfullyUpdated={(type: BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
         }
         else if(props.section === BillActions.PATIENT_BILLS && props.uuidPatient){
             const currentPatient = props.patients.find((patient) => patient.uuid === props.uuidPatient);

@@ -20,10 +20,11 @@ import { useSnackBarState } from '../../../hooks';
 import { Alert } from "@mui/lab";
 
 interface SingleAgendaProps {
-    investigations:any
+    investigations:any,
+    personalData:IPatient[]
 }
 
-const SingleAgenda: React.FC<SingleAgendaProps> = ({ investigations }) => {
+const SingleAgenda: React.FC<SingleAgendaProps> = ({ investigations, personalData }) => {
     const {uuidAgenda} = useParams<{uuidAgenda:string}>();
     const {action} = useParams<{action:string}>();
     const [agenda, setAgenda] = React.useState<IAgenda | null>(null);
@@ -79,7 +80,7 @@ const SingleAgenda: React.FC<SingleAgendaProps> = ({ investigations }) => {
     }
     else if(agenda){
         return (
-            <SingleAgendaCore agenda={agenda} edit={action === "edit"} patientsPersonalData={investigations.currentInvestigation.patientsPersonalData} 
+            <SingleAgendaCore agenda={agenda} edit={action === "edit"} patientsPersonalData={personalData} 
                 uuidInvestigation={investigations.currentInvestigation.uuid} showSnackbar={showSnackbar} callbackUnBlockDate={unBlockDate}
                 callbackSetSnackbar={((snackbar:SnackbarType) => setShowSnackbar(snackbar))} callbackBlockDate={blockDate}/>
         );
@@ -92,7 +93,8 @@ const SingleAgenda: React.FC<SingleAgendaProps> = ({ investigations }) => {
 
 const mapStateToProps = (state:any) => {
 	return {
-		investigations: state.investigations
+		investigations: state.investigations,
+        personalData : state.investigations.currentInvestigation ? state.patients.data[state.investigations.currentInvestigation.uuid] : []
 	}
 }
 

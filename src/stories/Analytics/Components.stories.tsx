@@ -4,6 +4,8 @@ import DatesSelector from '../../pages/dashboards/Analytics/DatesSelector';
 import BillingBarChart from '../../pages/dashboards/Analytics/BillingBarChart';
 import { statsBilling } from './stats';
 import BillingInsuranceBars from '../../pages/dashboards/Analytics/BillingInsuranceBars';
+import { within, userEvent } from '@storybook/testing-library';
+import { expect } from '@storybook/jest';
 
 const meta: Meta<typeof DatesSelector> = {
   title: 'Hospital/Analytics',
@@ -24,6 +26,14 @@ export const DateSelectorTe = Template.bind({});
 DateSelectorTe.args = {
     onCallBack: (dates:Date[]) => {alert(`Dates selected ${dates[0]} ${dates[1]}`)},
   }
+  // Define the play function
+const play = async ({ page }) => {
+    // Interact with the page here
+    // For example, to click a button:
+    // await page.click('button');
+  };
+  
+  DateSelectorTe.play = play;
 
 
   const TemplateBilling = (args) => <BillingBarChart {...args} />

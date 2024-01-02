@@ -627,7 +627,7 @@ export function researcherFullName(researcher){
 }
 
 export function patientFullName(patient){
-    return `${patient.personalData.name} ${patient.personalData.surnames}`
+    return `${patient.name} ${patient.surnames}`
 }
 
 export function getPatientID(patient){

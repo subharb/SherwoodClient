@@ -88,7 +88,7 @@ export const fetchInvestigation = datalogger((uuid) => {
 export const searchDrugService = datalogger((searchText, country) => {
     return new Promise((resolve, reject) => {
 
-        axios.get(import.meta.env.VITE_APP_API_URL + '/hospital/search/drug/' + country + '/' + searchText, { headers: { "Authorization": localStorage.getItem("jwt") } })
+        axios.get(import.meta.env.VITE_APP_API_URL + '/hospital/search/drug/' + country + '/test', { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

@@ -5,7 +5,7 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { connect } from 'react-redux';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import Loader from '../../../components/Loader';
-import { IOutpatientsInfo, OutpatientsVisualizationMode } from '../../../constants/types';
+import { IOutpatientsInfo, IPatient, OutpatientsVisualizationMode } from '../../../constants/types';
 import { useAgendas, useSnackBarState } from '../../../hooks';
 import { getOutpatientsInfo } from '../../../services/agenda';
 import SectionHeader from '../../components/SectionHeader';
@@ -16,10 +16,11 @@ import { useHistory, useParams } from 'react-router-dom';
 import { HOSPITAL_OUTPATIENTS_EDIT_ROUTE, HOSPITAL_OUTPATIENTS_ROUTE } from '../../../routes/urls';
 
 interface OutpatientsProps extends LocalizeContextProps {
-    investigations:any
+    investigations:any,
+    personalData:IPatient
 }
 
-const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) => {
+const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData }) => {
     const {action} = useParams<{action:string}>();
     const [edit, setEdit] = React.useState(action === 'edit');
     const history = useHistory();
@@ -75,7 +76,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
         if(uuidAgenda && selectedDate){
             return(
                 <Appointments uuidAgenda={uuidAgenda} uuidInvestigation={investigations.currentInvestigation.uuid} dateSelected={selectedDate} mode={OutpatientsVisualizationMode.CONSULT}
-                    patientsPersonalData={investigations.currentInvestigation.patientsPersonalData} />
+                    patientsPersonalData={personalData} />
             )
         }
     }
@@ -150,7 +151,8 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, translate }) 
 
 const mapStateToProps = (state:any) => {
 	return {
-		investigations: state.investigations
+		investigations: state.investigations,
+        personalData : state.investigations.currentInvestigation ? state.patients.data[state.investigations.currentInvestigation.uuid] : []
 	}
 }
 

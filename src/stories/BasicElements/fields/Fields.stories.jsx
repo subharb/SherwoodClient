@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from '../../../components/general/form';
 import ProviderSherwood from '../../../providerSherwood';
+import SmartFields from '../../../components/general/SmartFields';
 
 const FIELDS_FORM = {
     "autocomplete":{
@@ -192,6 +193,15 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
+    "treatment" : {
+        id : "treatment",
+        required : false,
+        type:"treatment",
+        name:"treatment",
+        label:"Long field for text area",
+        shortLabel: "investigation.table.name",
+        validation : "textMin2"
+    },
 }
 
 
@@ -203,6 +213,7 @@ export default {
         <ProviderSherwood>
                 {story()}
         </ProviderSherwood>],
+    
 };
 
 const Template = (args) => <Form {...args} />;
@@ -210,6 +221,7 @@ const Template = (args) => <Form {...args} />;
 export const Basic = Template.bind({});
 Basic.args = {
     fields:FIELDS_FORM, 
+    
     creating : true,
     callBackForm : (values) => console.log("Result",JSON.stringify(values))
 };

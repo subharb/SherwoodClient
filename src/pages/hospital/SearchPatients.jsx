@@ -139,7 +139,6 @@ function SearchPatients(props){
     )
 }
 
-
 const mapStateToProps = (state) =>{
     return {
         patients : state.patients,

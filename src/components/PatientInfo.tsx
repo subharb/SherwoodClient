@@ -58,7 +58,7 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, 
         }
     }, [uuidPatient])
 
-    if(patient && !patient.personalData.name){
+    if(patient && (!patient.personalData || !patient.personalData.name)){
         return <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.id" /></span>: {patient.id}</Typography>
     }
     else if(patient && patient.personalData){
@@ -88,7 +88,7 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, 
 
 const mapStateToProps = (state:any) =>{
     return {
-        patientsPersonalData:state.investigations.currentInvestigation ? state.investigations.currentInvestigation.patientsPersonalData : null
+        patientsPersonalData:state.investigations.currentInvestigation ? state.patients.data[state.investigations.currentInvestigation.uuid] : null
     }
 }
 

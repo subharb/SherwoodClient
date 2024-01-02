@@ -16,6 +16,14 @@ export interface ReduxStore{
   form:any
 }
 
+export interface IDrug{
+    "id": number,
+    "cis": string,
+    "name": string,
+    "search_name": string,
+    "country": string
+}
+
 export interface ISubmission{
     id:number,
     createdAt:Date,
@@ -52,6 +60,7 @@ export interface IWard{
 export interface IDepartment{
     uuid?:string,
     id?:number,
+    code:string,
     type:DepartmentType,
     name:string,
     units:IUnit[],
@@ -81,6 +90,59 @@ export interface IAgenda{
     turn: number[][],
     serviceInvestigationFirstVisit:{id:number}
 }
+
+export interface RequestService {
+    id: number;
+    type: number;
+    status: number;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    researcher: IResearcher;
+    surveyRequest: null;
+    departmentRequest: IDepartment;
+    requestsPharmacy: any[]; // Replace with appropriate type
+    requestsServiceInvestigation: RequestServiceInvestigation[];
+    submissionPatient: null;
+}
+
+export interface RequestServiceInvestigation {
+    id: number;
+    status: number;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    patientInvestigation: any;
+    serviceInvestigation: ServiceInvestigation;
+    billItem: any;
+}
+
+interface ServiceInvestigation {
+    id: number;
+    description: string;
+    active: boolean;
+    category: string;
+    external: number;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
+    service: {
+      id: number;
+      code: string;
+      name: string;
+      type: number;
+      category: string;
+    };
+    billable: {
+      id: number;
+      type: number;
+      concept: string;
+      createdAt: string;
+      updatedAt: string;
+      deletedAt: string | null;
+    };
+    survey: null;
+  }
 
 export interface IRequestAppointment{
     status:number,
@@ -116,7 +178,7 @@ export interface IPersonalData{
     birthdate: Date,
     sex: string,
     health_id ?:string,
-    insurance:number
+    insurance:number | null,
 }
 
 export enum OutpatientsVisualizationMode{
@@ -128,8 +190,10 @@ export interface SnackbarType{
     show: boolean; message?: string; severity?: Color; }
 
 export interface IResearcher{
+    id?:number,
     uuid:string,
     name:string,
+    email:string,
     surnames:string,
     units:IUnit[]
 }

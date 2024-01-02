@@ -1,6 +1,4 @@
 import React from 'react';
-import Billing from '.';
-import Form from '../../../components/general/form';
 import FormTSFunc from '../../../components/general/formTSFunction';
 import { BillingInfo, EditBillingInfoProps } from './types';
 

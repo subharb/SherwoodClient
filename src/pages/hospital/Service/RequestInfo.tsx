@@ -90,8 +90,6 @@ const RequestInfo: React.FC<RequestInfoProps> = ({ request, translate }) => {
         
     }
 
-    
-    
     return (
         <Grid item xs={12}>
             <Card style={{padding:"1rem"}}>
@@ -100,7 +98,6 @@ const RequestInfo: React.FC<RequestInfoProps> = ({ request, translate }) => {
                 {
                     renderServices()
                 }
-                
             </Card>  
         </Grid>
     );

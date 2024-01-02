@@ -82,3 +82,12 @@ export function selectInvestigation(idInvestigation) {
         });
   }
 }
+
+export function initializeBilling(newState) {
+    return async (dispatch) => {
+      dispatch({ 
+            type: types.INITIALIZE_INVESTIGATIONS,
+            newState:newState
+      });
+    };
+}

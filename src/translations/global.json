@@ -162,7 +162,7 @@
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
             "hospitalized-in-ward" : ["Hospitalized in ward %X", "Hospitalizado en la planta %X", "Hospitalisé en service %X"],
-            "discharged-from-ward" : ["Discharged from ward %X", "Dado de alta de la planta %X", "Congé de service %X"],
+            "discharged-from-ward" : ["Discharged from ward %X", "Dado de alta de la planta %X", "Sortie de la %X"],
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"],
             "insurances" : {
@@ -253,7 +253,9 @@
                     "confirm" : ["Do you confirm you wish to remove unit %X? It should not have any staff assigned.", "¿Confirma que desea quitar la unidad %X? No debe tener personal asignado.", "Voulez-vous vraiment supprimer l'unité %X ? Il ne doit pas avoir de personnel affecté."]
                 },
                 "remove-department" : {
-                    "confirm" : ["Do you confirm you wish to remove department %X? It should not have any units.", "¿Confirma que desea quitar el departamento %X? No debe tener unidades.", "Voulez-vous vraiment supprimer le département %X ? Il ne doit pas avoir d'unités."]
+                    "confirm" : ["Do you confirm you wish to remove department %X? It should not have any units.", "¿Confirma que desea quitar el departamento %X? No debe tener unidades.", "Voulez-vous vraiment supprimer le département %X ? Il ne doit pas avoir d'unités."],
+                    "cannot_remove" : ["You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units"]
+
                 },
                 "types":{
                     "medical" : ["Medical", "Médico", "Médical"],
@@ -490,6 +492,7 @@
         },
         "treatment-name" : ["Name", "Nombre", "Nom"],
         "request" : {
+            "request_not_ready" : ["The request is not completed yet", "La solicitud no está completada", "La demande n'est pas encore terminée"],
             "laboratory" : ["Laboratory tests available", "Tests de laboratorio disponibles", "Tests de laboratoire disponibles"],
             "laboratory_table" : ["Request Lab", "Peticiones de Laboratorio", "Demande de laboratoire"],
             "medical-imaging" : ["Image tests available", "Pruebas de imagen disponibles", "Tests d'image disponibles"],
@@ -1248,7 +1251,7 @@
             },     
             "error" : {
                 "account_registered" : ["This email has already been used", "Este email ya ha sido utilizado", "Cet e-mail est déjà utilise"],
-                "general" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"]
+                "general" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une erreur s'est produite, veuillez réessayer plus tard"]
             }
         },
         "patient" : {
