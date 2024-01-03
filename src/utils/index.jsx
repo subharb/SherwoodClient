@@ -5,7 +5,7 @@ import mixpanel from 'mixpanel-browser';
 import { Translate } from 'react-localize-redux';
 import { ServiceType } from '../pages/hospital/Service/types';
 import { PERMISSION } from '../components/investigation/share/user_roles';
-import { isEmpty, isEqual, isObject, xorWith } from 'lodash';
+import { difference, isEmpty, isEqual, isObject, xorWith } from 'lodash';
 /**
  * Function that validates fields from anywhere in the app
  * 
@@ -902,4 +902,28 @@ export function translateOrderOptions(options, orderValue, translate){
         translatedOptions.push(otherOption);
     }
     return translatedOptions;
+}
+
+export function differenceDatesToString(dateStart, dateEnd){
+    const difference = dateEnd.getTime() - dateStart.getTime();
+
+    const nDays = difference / 86400000;
+    const nWeeks = nDays / 7;
+    const nMonths = nDays / 30;
+
+    if(nMonths > 0 &&  Number.isInteger(nMonths)){
+        return {
+            "months" : nMonths
+        }
+    }
+    else if(nWeeks > 1 && Number.isInteger(nWeeks)){
+        return {
+            "weeks" : nWeeks
+        }
+    }
+    else{
+        return {
+            "days" : nDays
+        }
+    }
 }

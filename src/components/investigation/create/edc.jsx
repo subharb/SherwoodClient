@@ -197,9 +197,7 @@ export default class EDC extends Component{
                 </Grid>
             )
         }
-        
     }
-    
 }
 
 
