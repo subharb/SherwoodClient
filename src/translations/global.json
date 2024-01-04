@@ -554,6 +554,7 @@
         "edd_last_period-table" : ["Last period", "Última menstruación", "Dernière menstruation"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "treatment-table" : ["Drug", "Medicamento", "Médicament"],
+        "treatment_prescription-table" : ["Drug", "Medicamento", "Médicament"],
         "treatment_regular-table" : ["Drug", "Medicamento", "Médicament"],
         "allergy-plural" : ["Allergies", "Alergias medicamentosas", "Allergies aux medicam"],
         "allergy-table" : ["Allergies", "Alergias medicamentosas", "Allergies aux medicam"],

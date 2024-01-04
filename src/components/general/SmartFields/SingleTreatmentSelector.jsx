@@ -71,13 +71,16 @@ function SingleTreatmentSelector(props){
                 finishDate = addMinutes(startDate, duration);
             }
             
-             props.elementSelected({
-                treatment:drug.name,"drug-code" : drug.id, 
+            const key = props.type === "treatment" ? "treatment" : "treatment_prescription";
+            const elementSelected = {
+                "drug-code" : drug.id, 
                 "treatment-frecuency": frecuency, 
                 "treatment-dose": dose, 
                 "treatment-start" : startDate, 
                 "treatment-finish" : finishDate, 
-            });
+            };
+            elementSelected[key] = drug.name,
+             props.elementSelected(elementSelected);
         }
     }
     function drugSelected(drug){
