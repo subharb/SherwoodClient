@@ -187,12 +187,17 @@ const SmartField:React.FC<Props> = (props) => {
                     
                     if(val && DATE_FIELDS_FORMAT.hasOwnProperty(key)){
                         if(props.type === "treatment_prescription"){
-                            const startDate = getDateFromStringOrDate(element["treatment-start"]);
-                            const finishDate = getDateFromStringOrDate(element["treatment-finish"]);
-                            const objectDifference = differenceDatesToString(startDate, finishDate);
-                            
-                            const timeUnit = Object.keys(objectDifference)[0];
-                            valueDict["duration"] = objectDifference[timeUnit] + " "+props.translate(`hospital.time-unit-options.${timeUnit}`);
+                            if(element["treatment-finish"] !== null){
+                                const startDate = getDateFromStringOrDate(element["treatment-start"]);
+                                const finishDate = getDateFromStringOrDate(element["treatment-finish"]);
+                                const objectDifference = differenceDatesToString(startDate, finishDate);
+                                
+                                const timeUnit = Object.keys(objectDifference)[0];
+                                valueDict["duration"] = objectDifference[timeUnit] + " "+props.translate(`hospital.time-unit-options.${timeUnit}`);
+                            }
+                            else{
+                                valueDict["duration"] = props.translate(`hospital.chronic`);
+                            }
                         }
                         let dateObject = null;
                         const format = DATE_FIELDS_FORMAT[key] as string;
