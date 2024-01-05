@@ -89,7 +89,6 @@ export function TabsSherwood(props:TabSherwoodProps){
     return (
         <>
         <TabsStyled whiteBackground={props.whiteBackground} value={tabSelector} onChange={onTabChange} variant="scrollable"
-            
             scrollButtons="auto"  aria-label={props.name} {...props}>
             {
                 props.labels.map((label, index) => {
