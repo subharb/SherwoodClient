@@ -187,7 +187,7 @@ export function useInsurances(patientInsuranceId:number){
     return [insurances, loadingInsurances, patientInsurance ]
 }
 
-export function useDepartments(researchersDepartmentsOnly:string = ""){
+export function useDepartments(uuidResearchersDepartmentsOnly:string = ""){
     const investigations= useSelector((state:any) => state.investigations);
     const departments:IDepartment[] | null = useSelector((state:{hospital : {data: {departments : IDepartment[]}}}) => state.hospital.data.departments ? state.hospital.data.departments : null);
     const researchers:IResearcher[] = useSelector((state:any) => state.hospital.data.researchers ? state.hospital.data.researchers : []);
@@ -211,9 +211,9 @@ export function useDepartments(researchersDepartmentsOnly:string = ""){
         if(departments !== null){
             let tempFiltered = [...departments];
             console.log("Departments", departments);
-            if(researchersDepartmentsOnly !== ""){
+            if(uuidResearchersDepartmentsOnly !== ""){
             
-                const currentResearcher = researchers.find((researcher:any) => researcher.uuid === researchersDepartmentsOnly);
+                const currentResearcher = researchers.find((researcher:any) => researcher.uuid === uuidResearchersDepartmentsOnly);
                 if(currentResearcher){
                     console.log(currentResearcher.units);
                     const tempDepartments:{[uuidDepartment :string]: IDepartment} = {};
@@ -227,7 +227,7 @@ export function useDepartments(researchersDepartmentsOnly:string = ""){
             console.log("Departments", tempFiltered);
             setFilteredDepartments(tempFiltered);
         }
-    }, [researchersDepartmentsOnly, departments])
+    }, [uuidResearchersDepartmentsOnly, departments])
 
     return { departments: filteredDepartments, researchers, investigations, loadingDepartments}
 }
@@ -623,8 +623,8 @@ export function useDeparmentsSelectorBis(defaultValue?:string, selectNoDepartmen
             markAsErrorDepartmentCallback: markAsErrorCallback }
 }
 
-export function useDeparmentsSelector(selectNoDepartment:boolean = false, researchersDepartmentsOnly:string = "", noReturnIfOnlyOne:boolean = false, defaultValue?:string){
-    const { departments } = useDepartments(researchersDepartmentsOnly);
+export function useDeparmentsSelector(selectNoDepartment:boolean = false, uuidResearchersDepartmentsOnly:string = "", noReturnIfOnlyOne:boolean = false, defaultValue?:string){
+    const { departments } = useDepartments(uuidResearchersDepartmentsOnly);
     const [departmentSelected, setDepartmentSelected] = React.useState<string | null>(defaultValue ? defaultValue : null);
     const [errorDepartment, setErrorDepartment] = React.useState(false);
 

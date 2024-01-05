@@ -16,7 +16,7 @@ interface CustomTabProps extends TabProps {
 
 const TabsStyled = styled(Tabs)<CustomTabProps>(({ theme, whiteBackground }) => ({
     "& .MuiTabs-indicator": {
-        backgroundColor: theme.palette.primary.color,
+        backgroundColor: theme.palette.secondary.color,
     },
     "& .MuiTab-root": {
         color: whiteBackground ? "grey" : theme.palette.primary.color,
