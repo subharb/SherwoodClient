@@ -30,6 +30,7 @@
     "@mui/styles": "^5.13.2",
     "@mui/x-data-grid": "^5.17.17",
     "@mui/x-date-pickers": "^6.8.0",
+    "@ohif/viewer": "^4.12.51",
     "@sentry/browser": "7.47.0",
     "@sentry/react": "7.47.0",
     "@sentry/tracing": "7.47.0",

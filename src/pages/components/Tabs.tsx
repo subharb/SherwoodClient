@@ -16,7 +16,7 @@ interface CustomTabProps extends TabProps {
 
 const TabsStyled = styled(Tabs)<CustomTabProps>(({ theme, whiteBackground }) => ({
     "& .MuiTabs-indicator": {
-        backgroundColor: theme.palette.primary.color,
+        backgroundColor: theme.palette.secondary.color,
     },
     "& .MuiTab-root": {
         color: whiteBackground ? "grey" : theme.palette.primary.color,
@@ -89,7 +89,6 @@ export function TabsSherwood(props:TabSherwoodProps){
     return (
         <>
         <TabsStyled whiteBackground={props.whiteBackground} value={tabSelector} onChange={onTabChange} variant="scrollable"
-            
             scrollButtons="auto"  aria-label={props.name} {...props}>
             {
                 props.labels.map((label, index) => {

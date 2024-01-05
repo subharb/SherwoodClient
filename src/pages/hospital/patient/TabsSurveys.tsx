@@ -71,7 +71,7 @@ const TabsSurveys: React.FC<TabsSurveysProps> = ({ surveys, units, departments, 
             }
             return (
                 <div >
-                    <TabsSherwood name="Billing Info" style={{  color: "white" }} 
+                    <TabsSherwood name="Billing Info" whiteBackground={false}
                         labels={unitsWithSurveys.map((unit)=> unit.name)} >
                             { renderSurveysInUnit(surveysPerUnitDict)}
                             <></>

@@ -488,6 +488,7 @@ class FieldSherwood extends PureComponent{
             case "background":
             case "ict" : 
             case "treatment" : 
+            case "treatment_prescription" : 
             case "treatment_regular" : 
             case "request_lab" : 
             case "request_img" : 

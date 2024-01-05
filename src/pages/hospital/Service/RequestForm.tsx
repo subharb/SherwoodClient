@@ -7,7 +7,7 @@ import Form from '../../../components/general/form';
 import { ButtonAccept, ButtonCancel, ButtonOk } from '../../../components/general/mini_components';
 import Loader from '../../../components/Loader';
 import { IDepartment, IUnit, SnackbarTypeSeverity } from '../../../constants/types';
-import { useSnackBarState, SnackbarType, useUnitSelector, useDeparmentsSelector } from '../../../hooks';
+import { useSnackBarState, SnackbarType, useUnitSelector, useDeparmentsSelector, useProfileInfo } from '../../../hooks';
 import { serviceTypeToTranslation } from '../../../utils/index.jsx';
 import { TabsSherwood } from '../../components/Tabs';
 import { IRequest, IRequestServiceInvestigation, IServiceInvestigation } from './types';
@@ -27,7 +27,8 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, units, serviceTy
     const [snackbar, setShowSnackbar] = useSnackBarState();
     const [servicesInvestigation, setServicesInvestigation] = React.useState<null | IServiceInvestigation[]>(initServicesInvestigation ? initServicesInvestigation : null);
     const [request, setRequest] = React.useState<null | IRequest>(null);
-    
+    const {profile, loadingProfile} = useProfileInfo();
+
     function handleClose(){
         setShowSnackbar({show:false});
         if(snackbar.severity === SnackbarTypeSeverity.SUCCESS && request !== null){
@@ -85,8 +86,12 @@ const RequestForm: React.FC<RequestFormProps> = ({ uuidPatient, units, serviceTy
     //         <Typography variant="body2"><Translate id="pages.hospital.pharmacy.no_units" /></Typography>
     //     )
     // }
+    if(loadingProfile){
+        return <Loader />;
+    }
     return <RequestFormCoreLocalized loading={loading} snackbar={snackbar} servicesInvestigation={servicesInvestigation ? servicesInvestigation : []}
                 handleCloseSnackBar={handleClose} cancel={cancel} units={units} serviceType={serviceType}
+                uuidResearcher={profile.uuid}
                 callBackFormSubmitted={(servicesInvestigation:number[], uuidDepartment:string | null) => makeRequest(uuidPatient, servicesInvestigation, serviceType, uuidDepartment)} />;
 }
 
@@ -95,16 +100,18 @@ export default RequestForm;
 interface RequestFormCoreProps extends Omit<RequestFormProps, 'uuidPatient' | 'uuidInvestigation' | 'callBackRequestFinished' > , LocalizeContextProps {
     loading: boolean;
     snackbar: SnackbarType;
+    uuidResearcher:string,
     servicesInvestigation:IServiceInvestigation[],
     handleCloseSnackBar:()=>void,
     callBackFormSubmitted:(serviceInvestigation:number[], uuidDepartment:string | null) => void
 }
 
-export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, serviceType, units, activeLanguage,
+export const RequestFormCore: React.FC<RequestFormCoreProps> = ({ loading, servicesInvestigation, snackbar, uuidResearcher, serviceType, units, activeLanguage,
                                                                     translate, callBackFormSubmitted, handleCloseSnackBar, cancel }) => {
     const [servicesInvestigationSelected, setServicesInvestigationSelected] = React.useState<{ [id: string] : boolean; }>({});
     const [errorServices, setErrorServices] = React.useState(false);
-    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartment} = useDeparmentsSelector(false, true, true);
+    
+    const {renderDepartmentSelector, departmentSelected, markAsErrorDepartment} = useDeparmentsSelector(false, uuidResearcher, true);
 
     const serviceCategories = useMemo(() => {
         let categories:{[id:string]:IServiceInvestigation[]} = {};

@@ -4,7 +4,7 @@ import { Alert, Autocomplete } from '@mui/material';
 import { searchDrugService } from '../../../services';
 import { Translate, withLocalize } from 'react-localize-redux';
 
-import { ButtonAccept, ButtonCancel } from '../mini_components';
+import { ButtonAccept, ButtonCancel, ButtonOk } from '../mini_components';
 import DrugSelector from './DrugSelector';
 import {addMinutes} from 'date-fns'
 
@@ -71,13 +71,16 @@ function SingleTreatmentSelector(props){
                 finishDate = addMinutes(startDate, duration);
             }
             
-             props.elementSelected({
-                treatment:drug.name,"drug-code" : drug.id, 
+            const key = props.type === "treatment" ? "treatment" : "treatment_prescription";
+            const elementSelected = {
+                "drug-code" : drug.id, 
                 "treatment-frecuency": frecuency, 
                 "treatment-dose": dose, 
                 "treatment-start" : startDate, 
                 "treatment-finish" : finishDate, 
-            });
+            };
+            elementSelected[key] = drug.name,
+             props.elementSelected(elementSelected);
         }
     }
     function drugSelected(drug){
@@ -126,7 +129,7 @@ function SingleTreatmentSelector(props){
     return (
         <Grid container spacing={2}>
             <Grid item xs={12}>
-                <Grid item xs={12} sm={4} lg={3}>
+                <Grid item xs={12} sm={10} lg={3}>
                     <DrugSelector drugSelected={(drug) => drugSelected(drug) } 
                         country={props.country}
                         error={errorDrug} variant={props.variant} type="treatment"
@@ -164,7 +167,7 @@ function SingleTreatmentSelector(props){
             </Grid>
             
             {
-                props.type === "treatment" &&
+                ["treatment", "treatment_prescription"].includes(props.type) &&
                 <Grid item xs={12}>
                     <FormControlLabel 
                         control={<Checkbox checked={isOneDose} onChange={onChangeIsOnce} />}
@@ -176,10 +179,8 @@ function SingleTreatmentSelector(props){
                 <Grid item xs={12} sm={4} lg={3}>
                     <Autocomplete
                         id="frecuency" disabled={isOneDose}
-                        
                         options={selectfrecuency.options}
                         getOptionLabel={(option) => props.translate(option.label)}
-                        
                         onInputChange={(event, value, reason) => {
                             frecuencySelected(value);
                         }}
@@ -199,7 +200,7 @@ function SingleTreatmentSelector(props){
                 </Grid>
             </Grid>
             {
-                props.type === "treatment" &&
+                 ["treatment", "treatment_prescription"].includes(props.type) &&
                 <React.Fragment>
                     <Grid item xs={12}>
                         <FormControlLabel disabled={isOneDose}
@@ -241,7 +242,7 @@ function SingleTreatmentSelector(props){
             }
             <Grid container item xs={12} spacing={1}>
                 <Grid item>
-                    <ButtonAccept onClick={saveDrug}><Translate id="general.add" /></ButtonAccept>
+                    <ButtonOk onClick={saveDrug}><Translate id="general.add" /></ButtonOk>
                 </Grid>
                 <Grid item>
                     <ButtonCancel onClick={cancel} ><Translate id="general.cancel" /></ButtonCancel>    

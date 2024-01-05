@@ -16,6 +16,8 @@ import { isInteger } from 'lodash';
 import RequestField from './RequestField';
 import MedicalHistoryAI from './MedicalHistory';
 import { MEDICAL_HISTORY_FIELDS } from '../../../constants';
+import { getDateFromStringOrDate } from '../../../utils/bill';
+import { differenceDatesToString } from '../../../utils';
 
 
 
@@ -161,7 +163,7 @@ const SmartField:React.FC<Props> = (props) => {
     }
     function renderElements(){
         if(listElements.length > 0 && !addingElements && ! NO_TABLE_FIELDS.includes(props.type)){
-            const headCells = [];//[{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
+            let headCells = [];//[{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
             
             const keys = Object.keys(listElements[0]);
             for(let i = 0; i < keys.length;i++){
@@ -170,11 +172,33 @@ const SmartField:React.FC<Props> = (props) => {
                     headCells.push({ id: keys[i], alignment: "left", label: <Translate id={`hospital.${keys[i]}-table`} /> }) 
                 }
             }
+            if(props.type === "treatment_prescription"){
+                headCells = headCells.filter((item) => {
+                    if((item.id === "treatment-start" || item.id === "treatment-finish")){
+                        return false;
+                    }
+                    return true;
+                });
+                headCells.push({ id: "duration", alignment: "left", label: <Translate id={`hospital.treatment-duration`} /> });
+            }
             const rows = listElements.map((element, index) => {
                 let valueDict:any = {...element};
                 for(const [key, val] of Object.entries(element)) {
                     
                     if(val && DATE_FIELDS_FORMAT.hasOwnProperty(key)){
+                        if(props.type === "treatment_prescription"){
+                            if(element["treatment-finish"] !== null){
+                                const startDate = getDateFromStringOrDate(element["treatment-start"]);
+                                const finishDate = getDateFromStringOrDate(element["treatment-finish"]);
+                                const objectDifference = differenceDatesToString(startDate, finishDate);
+                                
+                                const timeUnit = Object.keys(objectDifference)[0];
+                                valueDict["duration"] = objectDifference[timeUnit] + " "+props.translate(`hospital.time-unit-options.${timeUnit}`);
+                            }
+                            else{
+                                valueDict["duration"] = props.translate(`hospital.chronic`);
+                            }
+                        }
                         let dateObject = null;
                         const format = DATE_FIELDS_FORMAT[key] as string;
 
@@ -266,6 +290,7 @@ const SmartField:React.FC<Props> = (props) => {
                     smartField = <ICTSelectorGeneral {...propsSmartField} />    
                     break;
                 case "treatment":
+                case "treatment_prescription":
                     smartField = <SingleTreatmentSelector {...propsSmartField} />
                     break;
                 case "treatment_regular":

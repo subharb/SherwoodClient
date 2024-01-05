@@ -98,6 +98,7 @@ class Section extends Component{
                         {"label": "investigation.create.edc.evaluation", "value" : "evaluation"},
                         {"label": "investigation.create.edc.diagnosis", "value" : "ict"},
                         {"label": "investigation.create.edc.treatment", "value" : "treatment"},
+                        {"label": "investigation.create.edc.treatment_prescription", "value" : "treatment_prescription"},
                         {"label": "investigation.create.edc.treatment_regular", "value" : "treatment_regular"},
                         {"label": "investigation.create.edc.allergy", "value" : "allergy"},
                         {"label": "investigation.create.edc.background", "value" : "background"},
