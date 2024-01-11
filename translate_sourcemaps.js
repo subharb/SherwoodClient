@@ -20,11 +20,11 @@ function getOriginalPosition(error, sourceMapConsumer) {
 }
 
 const error = {
-    lineNumber: 1154,
-    columnNumber: 8773,
-    fileName: 'index-dbb3ea19.js',
+    lineNumber: 1173,
+    columnNumber: 5035,
+    fileName: 'index-b3f2d26c.js',
 };
-const sourceMapFile = 'build/assets/index-dbb3ea19.js.map';
+const sourceMapFile = 'build/assets/index-b3f2d26c.js';
 const sourceMapConsumer = await getSourceMapConsumer(sourceMapFile);
 console.log('sourceMapConsumer:', sourceMapConsumer);   
 const originalPosition = getOriginalPosition(error, sourceMapConsumer);

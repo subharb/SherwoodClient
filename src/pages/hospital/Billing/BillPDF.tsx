@@ -329,7 +329,7 @@ const BillPDF: React.FC<BillPDFProps> = ({ patient, bill, uuidDepartment, city, 
                     </div>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant='body2'>{patientFullName(patient)} <Translate id="general.born" /> {dateOrStringToDateString(patient.personalData.birthdate, locale)}</Typography>
+                    <Typography variant='body2'>{patientFullName(patient.personalData)} <Translate id="general.born" /> {dateOrStringToDateString(patient.personalData.birthdate, locale)}</Typography>
 
                     {
                         patientInsurance &&
