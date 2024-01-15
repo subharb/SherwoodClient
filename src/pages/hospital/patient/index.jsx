@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { connect } from 'react-redux';
-import * as types from "../../../constants";
+
 import { Grid, Typography, Snackbar } from '@mui/material';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../../redux/actions/submissionsPatientActions';
@@ -427,16 +427,17 @@ function Patient(props) {
                     </TypographyStyled>
         }
         else{
-            let fieldsSurvey;
-            if(currentSurveys.length > 0 && currentSurveys[0].type === types.TYPE_NURSE){
-                fieldsSurvey = currentSurveys[0].sections.reduce((acc, current) => {
-                    return acc.concat(current.fields)
-                }, [])
-            }
+            
+            return (
+                <SubmissionsTable typeSurveySelected={typeSurveySelected}
+                    surveys={currentSurveys} billingInfo={billingInfo} patient={patient}
+                    category={currentSurveys[0].category} records={filteredRecords}
+                    onSelectSubmission={(index) => selectSubmission(index)} />
+            )
             return (
                 <SubmissionsTable fieldsSurvey={fieldsSurvey} typeSurveySelected={typeSurveySelected}
                     surveys={currentSurveys} billingInfo={billingInfo} patient={patient}
-                    category={currentSurveys[0].category} filteredRecords={filteredRecords}
+                    category={currentSurveys[0].category} records={filteredRecords}
                     onSelectSubmission={(index) => selectSubmission(index)} />
             );
         }
