@@ -5,7 +5,7 @@ import { BillingInfo } from '../Billing/types';
 import { Button, Grid, Typography } from '@mui/material';
 import { Translate } from 'react-localize-redux';
 import SurveyRecordsTable from '../SurveyRecordsTable';
-import { ButtonBack } from '../../../components/general/mini_components';
+import { ButtonBack, TypographyStyled } from '../../../components/general/mini_components';
 
 
 interface SubmissionsTableSelectorProps {
@@ -52,13 +52,13 @@ const SubmissionsTableSelector: React.FC<SubmissionsTableSelectorProps> = ({ sur
                     </Typography>
                 </Grid>
                 {
-                    surveysWithRecords.map((survey) => {
+                    surveysWithRecords.sort((surA, surB) => surB.order > surA.order ? 1 : -1).map((survey) => {
                         return (
                             <Grid item xs={12}>
                                 <Button onClick={() => onSurveySelected(survey)}>
-                                    <Typography variant='body2'>
+                                    <TypographyStyled variant='body2'>
                                         {survey.name}
-                                    </Typography>
+                                    </TypographyStyled>
                                 </Button>
                             </Grid>
                         )
@@ -83,9 +83,9 @@ const SubmissionsTableSelector: React.FC<SubmissionsTableSelectorProps> = ({ sur
                     }
                     
                     <Grid item xs={12}>
-                        <SurveyRecordsTable fields={fieldsSurvey} submissions={records} 
-                        locale={locale}
-                        onSelectSubmission={(index) => onSelectSubmission(index)}  />
+                        <SurveyRecordsTable fields={fieldsSurvey} submissions={surveysRecords} 
+                            locale={locale} onSelectSubmission={(index) => onSelectSubmission(index)}  
+                        />    
                     </Grid>
                 </Grid>
             )

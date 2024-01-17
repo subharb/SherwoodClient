@@ -175,7 +175,7 @@
             },
             "submission-table": {
                 "selector" : {
-                    "title" : ["Select a survey:", "Seleccione un formulario:", "Sélectionner une option:"]
+                    "title" : ["Select a survey to visualize its data:", "Seleccione una encuesta para visualizar sus datos:", "Sélectionnez une enquête pour visualiser ses données:"]
                 }
             },
             "error" : {
