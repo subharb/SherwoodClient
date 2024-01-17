@@ -147,7 +147,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                             [<Translate id="investigation.create.personal_data.fields.health_id" />, ":", health_id]
                         }
                         {
-                            health_id &&
+                            !health_id &&
                             ["ID", ":", patientID ]
                         }                                    
                         

@@ -3,7 +3,7 @@ import SurveyRecordsTable from '../SurveyRecordsTable';
 import { EnhanceTableAction, IField, IPatient, ISubmission, ISurvey } from '../../../constants/types';
 import { Translate } from 'react-localize-redux';
 import { CATEGORY_DEPARTMENT_PRESCRIPTIONS } from '../../../constants';
-import { EnhancedTable } from '../../../components/general/EnhancedTable';
+import * as types from "../../../constants";
 import Modal from '../../../components/general/modal';
 import { DocumentPDF } from '../Document';
 import SubmissionPDF from './SubmissionPDF';
@@ -12,19 +12,21 @@ import { HOSPITAL_BILLING_EDIT } from '../../../routes/urls';
 import { LinkStyled } from '../../../components/general/mini_components';
 import { Link } from 'react-router-dom';
 import { BillingInfo } from '../Billing/types';
+import SubmissionsTableSelector from './SubmissionsTableSelector';
+import { EnhancedTable } from '../../../components/general/EnhancedTable';
 
 interface SubmissionsTableProps {
     locale:string,
     fieldsSurvey?: IField[],
     surveys: ISurvey[],
-    filteredRecords: ISubmission[],
+    records: ISubmission[],
     category: number,
     patient:IPatient,
     billingInfo: BillingInfo | null,
     onSelectSubmission: (index:number) => void;
 }
 
-const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ locale, surveys, patient, billingInfo, category, fieldsSurvey, filteredRecords, 
+const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ locale, surveys, patient, billingInfo, category, fieldsSurvey, records, 
                                                         onSelectSubmission }) => {
     const [showModalPrintPDF, setShowModalPrintPDF] = useState(false);
     const [submissionPrint, setSubmissionPrint] = useState<ISubmission | null>(null);
@@ -57,9 +59,9 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ locale, surveys, pa
         }
         
     }
-    if(fieldsSurvey){
-        return <SurveyRecordsTable fields={fieldsSurvey} submissions={filteredRecords} 
-                    locale={locale}
+    if(surveys.length > 0 && surveys[0].type === types.TYPE_NURSE){
+        return <SubmissionsTableSelector surveys={surveys} records={records} 
+                    locale={locale} billingInfo={billingInfo}
                     onSelectSubmission={(index) => onSelectSubmission(index)}  />
     }
         
@@ -67,17 +69,17 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ locale, surveys, pa
                         { id: "date", alignment: "left", label: "Date"}];
     let actions:EnhanceTableAction[] = [];
     if(category === CATEGORY_DEPARTMENT_PRESCRIPTIONS){
-        actions = [{"type" : "pdf", "func" : (index) => printSubmission(filteredRecords[index])}]
+        actions = [{"type" : "pdf", "func" : (index) => printSubmission(records[index])}]
     }
     return(
         <>
             {renderPDFModal()}
             <EnhancedTable noHeader noSelectable selectRow={(index:number) => onSelectSubmission(index)} 
-            rows={filteredRecords.map((record, index) => {
-                const dateCreatedString = record.createdAt ? new Date(record.createdAt).toISOString().slice(0, 16).replace('T', ' ') : "Unsincronized";
-                return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreatedString})
-            })} headCells={headCells} 
-                actions={actions} /> 
+                rows={records.map((record, index) => {
+                    const dateCreatedString = record.createdAt ? new Date(record.createdAt).toISOString().slice(0, 16).replace('T', ' ') : "Unsincronized";
+                    return({id : index, researcher : record.researcher, surveyName : record.surveyName, date : dateCreatedString})
+                })} headCells={headCells} 
+                    actions={actions} /> 
         </>
         
     )

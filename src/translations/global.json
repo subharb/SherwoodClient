@@ -173,6 +173,11 @@
                     "title" : ["Prescription", "Prescripción", "Orddonnace"]
                 }
             },
+            "submission-table": {
+                "selector" : {
+                    "title" : ["Select a survey to visualize its data:", "Seleccione una encuesta para visualizar sus datos:", "Sélectionnez une enquête pour visualiser ses données:"]
+                }
+            },
             "error" : {
                 "general" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
                 "patient-alredy-discharged" : ["This patient was already discharged, please refresh the clinical history", "Este paciente ya fue dado de alta, actualice la historia clínica", "Ce patient a déjà obtenu son congé, veuillez actualiser l'historique clinique"],
