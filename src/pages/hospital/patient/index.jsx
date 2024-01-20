@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { connect } from 'react-redux';
 import * as types from "../../../constants";
 import { Grid, Typography, Snackbar } from '@mui/material';
-import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../../redux/actions/submissionsPatientActions';
 import Loader from '../../../components/Loader';
 import { BoxBckgr, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue, TypographyStyled } from '../../../components/general/mini_components';
@@ -16,9 +15,7 @@ import { useDispatch } from "react-redux";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
         HOSPITAL_PATIENT_MAKE_TESTS,
         HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS } from '../../../routes/urls';
-
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
-
 import { useDepartments, useSnackBarState, useUpdateEffect } from '../../../hooks';
 import { fetchProfileInfoAction } from '../../../redux/actions/profileActions';
 import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY } from '../../../constants';
@@ -120,9 +117,7 @@ function Patient(props) {
     const submission = idSubmission && surveyRecords ? surveyRecords.find(rec => rec.id === idSubmission) : null;
     const history = useHistory();
     const billingInfo = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.billingInfo : null;
-    const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
-    const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
-    //const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typesCurrentSurvey.includes(sur.type)) : [];
+    
     const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter((survey) => {
         // if(parameters.typeTest === "shoe" && survey.category === types.CATEGORY_SURVEY_SHOE){
         //     return true;
@@ -142,10 +137,13 @@ function Patient(props) {
         if(parameters.typeTest === "images" && [types.TYPE_FILL_IMG_SURVEY, types.TYPE_IMAGE_SURVEY].includes(survey.type)){
             return true;
         }
-        if(parameters.typeTest === "lab" && [types.TYPE_FILL_LAB_SURVEY, types.TYPE_FILL_LAB_SURVEY].includes(survey.type)){
+        if(parameters.typeTest === "lab" && [types.TYPE_FILL_LAB_SURVEY, types.TYPE_LAB_SURVEY].includes(survey.type)){
             return true;
         }
     }) : [];
+    const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
+    const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
+    
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const staysPatient = props.hospital.data.stays && props.hospital.data.stays[uuidPatient] ? props.hospital.data.stays[uuidPatient] : [];

@@ -6,7 +6,6 @@ import { filterRecordsFromSection, filterRecordsFromSubmissions, numberRecordsSe
 import { Translate } from 'react-localize-redux';
 import PropTypes from 'prop-types';
 import { EnhancedTable } from '../../../general/EnhancedTable';
-import { fetchRecordsPatientFromSurvey } from '../../../../services';
 import { Card, CardContent, Typography, Grid, Paper } from '@mui/material';
 import Loader from '../../../Loader';
 import ShowSingleSubmissionPatient from '../../../../pages/hospital/ShowSingleSubmissionPatient';

@@ -5,7 +5,6 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import ShowRecordsSection from './show_records_section';
 import ShowPatientRecords from './show_patient_records';
 import PropTypes from 'prop-types';
-import { fetchRecordsPatientFromSurvey } from '../../../../services';
 import { filterRecordsFromSubmissions } from '../../../../utils/index.jsx';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';

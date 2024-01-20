@@ -17,7 +17,7 @@ export default function reducer(state = initialState, action){
     let tempInvestigations;
     switch(action.type){
         case types.FETCH_NEW_PATIENTS_SUCCESS:
-            let tempPatients = [...newState.data[action.investigation.uuid]];
+            let tempPatients = newState.data[action.investigation.uuid] ? [...newState.data[action.investigation.uuid]] : [];
             
             for(const patient of action.patients){
                 patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, action.investigation) : null;
