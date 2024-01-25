@@ -107,7 +107,7 @@ class DwvComponent extends React.Component {
     });
 
     return (
-      <div id="dwv">
+      <div id="dwv" style={{height:"500px"}}>
         <LinearProgress variant="determinate" value={loadProgress} />
         <Stack direction="row" spacing={1} padding={1} justifyContent="center">
           <ToggleButtonGroup size="small"
@@ -163,7 +163,7 @@ class DwvComponent extends React.Component {
           <div id="dropBox"></div>
         </div>
 
-        <div><p className="legend">
+        {/* <div><p className="legend">
           <Typography variant="caption">Powered by <Link
               href="https://github.com/ivmartel/dwv"
               title="dwv on github"
@@ -174,7 +174,7 @@ class DwvComponent extends React.Component {
               color="inherit">React
             </Link> {versions.react}
           </Typography>
-        </p></div>
+        </p></div> */}
 
       </div>
     );

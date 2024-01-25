@@ -17,6 +17,7 @@ import { fetchProfileInfoAction } from '../../redux/actions/profileActions';
 import AllInvestigations from '../../components/investigation/show/all';
 import { FUNCTIONALITY } from '../../constants/types';
 import { PERMISSION } from '../../components/investigation/share/user_roles';
+import DICOMViewer from './patient/DICOMViewer';
 
 function HomeSchedule(props) {
     const [loading, setLoading] = useState(false);
@@ -150,6 +151,7 @@ function HomeSchedule(props) {
             )
         }
     }
+    return <DICOMViewer />
     
     if(pathname === MY_SCHEDULE_ROUTE){
         return(

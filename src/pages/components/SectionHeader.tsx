@@ -87,12 +87,11 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ section, edit,alterTitle,
                         color={theme.palette.primary.color} />
                 </IconButton>
             }
-            </Grid>
-       
-        {
-            addCallback &&
-            <ButtonAdd onClick={addCallback} />
-        }
+            {
+                addCallback &&
+                <ButtonAdd onClick={addCallback} />
+            }
+        </Grid>
     </SectionContainer>
     );
 };
