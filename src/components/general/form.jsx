@@ -191,7 +191,7 @@ class Form extends Component {
                             department={this.props.department}
                             uuidPatient={this.props.uuidPatient}
                             uuidInvestigation={this.props.uuidInvestigation}
-                            hideTitle = { currentSection.length === 1 }
+                            hideTitle = { currentSection.length === 1 && currentSection.name === this.props.fields[key].label}
                             fullWidth={this.props.fullWidth}
                             country={this.props.country}
                             label={this.props.fields[key].label}
