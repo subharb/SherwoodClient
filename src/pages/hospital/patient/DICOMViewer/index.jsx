@@ -2,11 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, useTheme } from '@mui/styles';
 import Typography from '@mui/material/Typography';
-
 import Stack from '@mui/material/Stack';
 import LinearProgress from '@mui/material/LinearProgress';
-
-import Link from '@mui/material/Link';
 import IconButton from '@mui/material/IconButton';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -34,6 +31,7 @@ import {
   getDwvVersion,
   decoderScripts
 } from 'dwv';
+import { Button } from '@mui/material';
 
 // Image decoders (for web workers)
 decoderScripts.jpeg2000 = `${process.env.PUBLIC_URL}/assets/dwv/decoders/pdfjs/decode-jpeg2000.js`;
@@ -107,7 +105,7 @@ class DwvComponent extends React.Component {
     });
 
     return (
-      <div id="dwv" style={{height:"500px"}}>
+      <div id="dwv" >
         <LinearProgress variant="determinate" value={loadProgress} />
         <Stack direction="row" spacing={1} padding={1} justifyContent="center">
           <ToggleButtonGroup size="small"
@@ -139,7 +137,26 @@ class DwvComponent extends React.Component {
             disabled={!dataLoaded}
             onClick={this.handleTagsDialogOpen}
           ><LibraryBooksIcon /></ToggleButton>
+            <Button onClick={() => {
+                fetch('https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm')
+                    .then((response) => response.arrayBuffer())
+                    .then((arrayBuffer) => {
+                        // Now you can use the ArrayBuffer as needed
+                        console.log(arrayBuffer);
+                        
+                        // For example, you can create a Blob from the ArrayBuffer
+                        const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
+                        
+                        // Or convert it to a TypedArray (e.g., Uint8Array)
+                        const uint8Array = new Uint8Array(arrayBuffer);
 
+                        this.state.dwvApp.loadImageObject(arrayBuffer);
+                        // Use the ArrayBuffer, Blob, or TypedArray as per your requirements
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }}>Load of a </Button>
           <Dialog
             open={this.state.showDicomTags}
             onClose={this.handleTagsDialogClose}
