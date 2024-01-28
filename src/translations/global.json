@@ -1514,6 +1514,8 @@
                 "PRIVATE_DOCTOR" : ["Private Doctor", "Médico Privado", "Médecin Privée"],
                 "ADMIN" : ["Administrator", "Administrador", "Administrateur"],
                 "NURSE" : ["Nurse", "Enfermería", "Infirmière"],
+                "NURSE_FW" : ["Nurse FW", "Enfermería FW", "Infirmière FW"],
+                "CARE_GIVER" : ["Care Giver", "Cuidador", "Soignant"],
                 "NURSE_PRACTITIONER" : ["Nurse Practitioner", "Enfermera Practicante", "Infirmière Praticienne"],
                 "EXECUTIVE_DIRECTOR" : ["Executive director", "Director ejecutivo ", "Directeur général"],
                 "BUSINESS_ASSISTANT" : ["Executive Assistant", "Asistente ejecutivo", "Business Assistant"],

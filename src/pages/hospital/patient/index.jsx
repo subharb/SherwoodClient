@@ -153,10 +153,7 @@ function Patient(props) {
     const typesSurvey = props.investigations.data ? props.investigations.currentInvestigation.surveys.map((survey) => {
             return survey.type;
     }) : [];
-    const categorySurveys = props.investigations.data ? props.investigations.currentInvestigation.surveys.map((survey) => {
-        return survey.category;
-    }) : [];
-
+    const categorySurveys = props.investigations.data ? [...new Set(props.investigations.currentInvestigation.surveys.map(survey => survey.category))]: [];
     let filteredRecords = useMemo(() => {
         if(idSubmission && surveyRecords){
             const currentSub = surveyRecords.find((rec) => rec.id === idSubmission);
@@ -712,14 +709,12 @@ function Patient(props) {
                     }
                 </Modal> 
                 <Grid container spacing={3}>
-                    <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
+                    <PatientToolBar permissions={props.investigations.currentInvestigation.permissions}
                         typeSurveySelected={ dataCollectionSelected ? dataCollectionSelected.type : parameters.typeTest ? parameters.typeTest : "medical" }
                         buttonSelected = { urlToSection(parameters.typeTest, dataCollectionSelected)}
-                        writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
-                        editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
+                        editCallBack={editPersonalData}
                         action={parameters} enableAddButton={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} 
                         personalData={patient.personalData} years={years}
-                        
                         typeSurveysAvailable = { typesSurvey }
                         categorySurveys = {categorySurveys}
                         unitsResearcher={props.profile.info.units}

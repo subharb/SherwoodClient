@@ -176,10 +176,17 @@ export const CATEGORY_DEPARTMENT_SOCIAL = 1;
 export const CATEGORY_DEPARTMENT_SHOE = 3;
 export const CATEGORY_DEPARTMENT_NURSE = 4;
 export const CATEGORY_DEPARTMENT_PRESCRIPTIONS = 5;
+export const CATEGORY_DEPARTMENT_CARE_GIVER_FW = 6;
+export const CATEGORY_DEPARTMENT_NURSE_FW = 7;
+export const CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW = 8;
+
 
 export const CATEGORY_SURVEYS = [{ value: CATEGORY_DEPARTMENT_MEDICAL, name: "Medical" }, { value: CATEGORY_DEPARTMENT_SOCIAL, name: "Social", url: "social" }, 
                                     { value: CATEGORY_DEPARTMENT_SHOE, name: "Shoe", url: "shoe" }, { value: CATEGORY_DEPARTMENT_NURSE, name: "Nurse", url: "nurse" },
-                                    { value: CATEGORY_DEPARTMENT_PRESCRIPTIONS, name: "Prescriptions", url: "prescriptions" }];
+                                    { value: CATEGORY_DEPARTMENT_PRESCRIPTIONS, name: "Prescriptions", url: "prescriptions" }, 
+                                    { value: CATEGORY_DEPARTMENT_CARE_GIVER_FW, name: "Care Giver FW", url: "care-giver" },
+                                    { value: CATEGORY_DEPARTMENT_NURSE_FW, name: "Nurse FW", url: "nurse-fw" }, 
+                                    { value: CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW, name: "Prescriptions FW", url: "prescriptions-fw" }];
 
 export const TYPE_REQUEST_LAB = 0;
 export const TYPE_REQUEST_IMG = 1;
