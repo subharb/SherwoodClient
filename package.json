@@ -106,7 +106,7 @@
     "serve": "vite preview",
     "start-hospital": "VITE_APP_PRODUCT=HOSPITAL vite --host",
     "build:research": "env-cmd -f .env.production.local node --max_old_space_size=16384 ./node_modules/vite/bin/vite.js build && rm -r build-research/ && rsync -a build/ build-research/",
-    "build:beta:research": "env-cmd -f .env.beta-research vite build && rm -r build-beta-research/ && rsync -a build/ build-beta-research/",
+    "build:beta:research": "env-cmd -f .env.beta-research node --max_old_space_size=16384 ./node_modules/vite/bin/vite.js build && rm -r build-beta-research/ && rsync -a build/ build-beta-research/",
     "build:beta:hospital": "env-cmd -f .env.beta-hospital node --max_old_space_size=16384 ./node_modules/vite/bin/vite.js build && rm -r build-beta-hospital/ && rsync -a build/ build-beta-hospital/",
     "build:local:hospital": "rm -r build-beta-hospital/ && env-cmd -f .env.local-hospital vite build && rsync -a build/ build-beta-hospital/",
     "build:hospital": "rm -r build-hospital/ && env-cmd -f .env.hospital vite build && rsync -a build/ build-hospital/",
