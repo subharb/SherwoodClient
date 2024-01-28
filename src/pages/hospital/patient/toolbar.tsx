@@ -182,25 +182,32 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                                 <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_LAB  ? iconLabGreen : iconLab} alt="Lab" height="40" />
                             </Button>
                         </Grid>
-                        {
-                            buttonsAvailable.includes(CATEGORY_DEPARTMENT_SOCIAL) && 
-                            <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                                <Button data-testid="social" onClick={() => buttonClickedCallBack(TYPE_SOCIAL_SURVEY)} >
-                                    <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
-                                </Button>
-                            </Grid>
-                        }
-                        {
-                            buttonsAvailable.includes(CATEGORY_DEPARTMENT_SHOE) && 
-                            <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                                <Button data-testid="shoe" onClick={() => buttonClickedCallBack(TYPE_SHOE_SURVEY)} >
-                                    <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
-                                </Button>
-                            </Grid>
-                        }
-                        
                     </>
             }
+                {
+                    buttonsAvailable.includes(CATEGORY_DEPARTMENT_SOCIAL) && 
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                        <Button data-testid="social" onClick={() => buttonClickedCallBack(TYPE_SOCIAL_SURVEY)} >
+                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
+                        </Button>
+                    </Grid>
+                }
+                {
+                    buttonsAvailable.includes(CATEGORY_DEPARTMENT_SHOE) && 
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                        <Button data-testid="shoe" onClick={() => buttonClickedCallBack(TYPE_SHOE_SURVEY)} >
+                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
+                        </Button>
+                    </Grid>
+                }
+                {
+                    buttonsAvailable.includes(CATEGORY_DEPARTMENT_CARE_GIVER_FW) && 
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                        <Button data-testid="social" onClick={() => buttonClickedCallBack(TYPE_SOCIAL_SURVEY)} >
+                        <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
+                        </Button>
+                    </Grid>
+                }
                 {
                     buttonsAvailable.includes(CATEGORY_DEPARTMENT_NURSE) && 
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>

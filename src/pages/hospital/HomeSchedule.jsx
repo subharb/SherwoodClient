@@ -102,7 +102,7 @@ function HomeSchedule(props) {
                     </Grid>
                     <Grid item container  spacing={3}>
                         {
-                            investigation.permissions.includes(PERMISSION.MEDICAL_READ) &&
+                            
                             <React.Fragment>
                                 <Grid item xs={12} style={{textAlign:"center"}}>
                                     <LinkPlain to={SEARCH_PATIENT_ROUTE}>

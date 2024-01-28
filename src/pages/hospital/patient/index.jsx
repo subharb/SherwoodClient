@@ -80,7 +80,7 @@ function urlToSection(urlType, dataCollectionSelected){
     
 }
 
-const PRINTABLE_TYPE_SURVEYS = [types.TYPE_PRESCRIPTIONS]
+
 const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse", 13:"prescriptions"};
 const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
     newDict[TYPE_URL[key]] = parseInt(key);
@@ -489,10 +489,20 @@ function Patient(props) {
             setShowSnackbar({show:true, severity:"error", message : message});
         }
     }, [props.hospital.error])
+    
     useEffect(() => {
         setShowOptions(false);
         setShowModal(false);
     }, [uuidSection])
+
+    useEffect(() => {
+        console.log(parameters);
+        if(!parameters.typeTest && !props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ)){
+            
+        }
+        
+    }, [])
+    
     useEffect(() => {
         async function fetchRecordsPatient(){
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.currentInvestigation.uuid, uuidPatient));
