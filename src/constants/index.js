@@ -163,6 +163,8 @@ export const TYPE_ADDITIONAL_INFO_SURVEY = 11;
 export const TYPE_NURSE = 12;
 export const TYPE_PRESCRIPTIONS = 13;
 export const TYPE_FILL_SHOE_SURVEY = 14;
+export const TYPE_CARE_GIVER = 15;
+
 
 export const TYPE_SURVEYS = [{ value: TYPE_MEDICAL_SURVEY, name: "Medical" }, { value: TYPE_PRESCRIPTIONS, name: "Prescriptions" }, { value: TYPE_NURSE, name: "Nurse" }, { value: TYPE_IMAGE_SURVEY, name: "Images" }, { value: TYPE_LAB_SURVEY, name: "Laboratory" },
 { value: TYPE_FIRST_VISIT_SURVEY, name: "First Visit" }, { value: TYPE_MONITORING_VISIT_SURVEY, name: "Monitoring" },

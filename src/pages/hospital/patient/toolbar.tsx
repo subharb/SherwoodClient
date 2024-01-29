@@ -3,7 +3,7 @@ import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { ButtonAdd, IconGenerator, IconPatient } from "../../../components/general/mini_components"
 import { DepartmentType, IUnit, PersonalData } from "../../../constants/types"
-import {CATEGORY_DEPARTMENT_NURSE, CATEGORY_DEPARTMENT_PRESCRIPTIONS, CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, TYPE_PRESCRIPTIONS, PATIENT_TOOLBAR_SECTION_IMAGE, PATIENT_TOOLBAR_SECTION_LAB, PATIENT_TOOLBAR_SECTION_MEDICAL, PATIENT_TOOLBAR_SECTION_NURSE, PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS, PATIENT_TOOLBAR_SECTION_SHOE, PATIENT_TOOLBAR_SECTION_SOCIAL, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_NURSE, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY, CATEGORY_DEPARTMENT_NURSE_FW, CATEGORY_DEPARTMENT_CARE_GIVER_FW, CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW } from '../../../constants';
+import {CATEGORY_DEPARTMENT_NURSE, CATEGORY_DEPARTMENT_PRESCRIPTIONS, CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, TYPE_PRESCRIPTIONS, PATIENT_TOOLBAR_SECTION_IMAGE, PATIENT_TOOLBAR_SECTION_LAB, PATIENT_TOOLBAR_SECTION_MEDICAL, PATIENT_TOOLBAR_SECTION_NURSE, PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS, PATIENT_TOOLBAR_SECTION_SHOE, PATIENT_TOOLBAR_SECTION_SOCIAL, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_NURSE, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY, CATEGORY_DEPARTMENT_NURSE_FW, CATEGORY_DEPARTMENT_CARE_GIVER_FW, CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW, TYPE_CARE_GIVER } from '../../../constants';
 import iconNotes from "../../../img/icons/history.png";
 import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
@@ -19,7 +19,7 @@ import iconPrescriptionsGreen from "../../../img/icons/prescription_green.svg";
 import React from "react";
 import { PERMISSION } from "../../../components/investigation/share/user_roles"
 
-type SurveyType = | typeof TYPE_MEDICAL_SURVEY | typeof TYPE_IMAGE_SURVEY | typeof TYPE_SOCIAL_SURVEY | typeof TYPE_LAB_SURVEY |  typeof TYPE_SHOE_SURVEY | typeof TYPE_NURSE | typeof TYPE_PRESCRIPTIONS;
+type SurveyType = | typeof TYPE_MEDICAL_SURVEY | typeof TYPE_IMAGE_SURVEY | typeof TYPE_SOCIAL_SURVEY | typeof TYPE_LAB_SURVEY |  typeof TYPE_SHOE_SURVEY | typeof TYPE_NURSE | typeof TYPE_CARE_GIVER | typeof TYPE_PRESCRIPTIONS;
 
 interface Props{
     personalData:PersonalData,
@@ -203,8 +203,9 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                 {
                     buttonsAvailable.includes(CATEGORY_DEPARTMENT_CARE_GIVER_FW) && 
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                        <Button data-testid="social" onClick={() => buttonClickedCallBack(TYPE_SOCIAL_SURVEY)} >
-                        <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
+                        <Button data-testid="social" onClick={() => buttonClickedCallBack(TYPE_CARE_GIVER)} >
+                        {/* <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" /> */}
+                        CARE GIVER
                         </Button>
                     </Grid>
                 }
@@ -220,7 +221,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                     buttonsAvailable.includes(CATEGORY_DEPARTMENT_NURSE_FW) && 
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="nurse_fw" onClick={() => buttonClickedCallBack(TYPE_NURSE)} >
-                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconLabGreen : iconLab} alt="Nurse" height="35" />
+                            NURSE
                         </Button>
                     </Grid>
                 }

@@ -81,7 +81,7 @@ function urlToSection(urlType, dataCollectionSelected){
 }
 
 
-const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse", 13:"prescriptions"};
+const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse", 13:"prescriptions", 15:"care_giver"};
 const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
     newDict[TYPE_URL[key]] = parseInt(key);
     return newDict
@@ -125,10 +125,13 @@ function Patient(props) {
         if(parameters.typeTest === "social" && survey.category === types.CATEGORY_DEPARTMENT_SOCIAL){
             return true;
         }
-        if(parameters.typeTest === "nurse" && survey.category === types.CATEGORY_DEPARTMENT_NURSE){
+        if(parameters.typeTest === "nurse" && (survey.category === types.CATEGORY_DEPARTMENT_NURSE || survey.category === types.CATEGORY_DEPARTMENT_NURSE_FW)){
             return true;
         }
-        if(parameters.typeTest === "prescriptions" && survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS){
+        if(parameters.typeTest === "care_giver" && survey.category === types.CATEGORY_DEPARTMENT_CARE_GIVER_FW){
+            return true;
+        }
+        if(parameters.typeTest === "prescriptions" && (survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS || survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW)){
             return true;
         }
         if((!parameters.typeTest || parameters.typeTest === "medical") && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
