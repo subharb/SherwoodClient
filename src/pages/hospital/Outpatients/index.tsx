@@ -138,8 +138,9 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
                 </div>
             </Snackbar>
             <Grid container spacing={3} >
-                <SectionHeader section="outpatients" edit={edit} editCallback={canEditOutPatients ? toogleEdit : undefined}  />
-                
+                <Grid item xs={12}>
+                    <SectionHeader section="outpatients" edit={edit} editCallback={canEditOutPatients ? toogleEdit : undefined}  />
+                </Grid>
                     {
                         renderCore()
                     }     

@@ -484,7 +484,7 @@ const dashboardInpatientsRoutes = {
     path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
     icon: <HotelIcon />,
     badge: "",
-    permissions : [PERMISSION.MEDICAL_READ],
+    permissions : [PERMISSION.VIEW_HOSPITALIZATION],
     functionalities:[FUNCTIONALITY.HOSPITALIZATION],
     component: {
         path: HOSPITAL_MY_DEPARTMENTS_ROUTE,
@@ -529,7 +529,7 @@ const dashboardBillingRoutes = {
     path: HOSPITAL_BILLING,
     icon: <MonetizationOnIcon />,
     badge: "",
-    permissions : [PERMISSION.MEDICAL_READ],
+    permissions : [PERMISSION.VIEW_BILLING],
     functionalities:[FUNCTIONALITY.BILLING],
     component: {
         path: HOSPITAL_BILLING,

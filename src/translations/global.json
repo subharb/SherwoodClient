@@ -1507,7 +1507,7 @@
                 "role" :  ["Role", "Role", "Role"]
             },
             "roles" : {
-                "MEDICAL_DIRECTOR" : ["Medical Director", "Director Médico", "Directeur médical"],
+                "MEDICAL_DIRECTOR" : ["Superadmin", "Superadmin", "Superadmin"],
                 "STUDENT" : ["Student", "Estudiante", "Étudiant"],
                 "SHERWOOD_STAFF" : ["Sherwood Staff", "Sherwood Staff", "Sherwood Staff"],
                 "DOCTOR" : ["Medical Doctor", "Médico", "Médecin"],
