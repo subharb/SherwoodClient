@@ -3,6 +3,7 @@ import { IField, ISubmission } from '../../constants/types';
 import survey from '../../components/investigation/survey';
 import { EnhancedTable } from '../../components/general/EnhancedTable';
 import { dateAndTimeFromPostgresString, fullDateFromPostgresString } from '../../utils';
+import Check from '@mui/icons-material/Check';
 
 interface SurveyRecordsTableProps {
     fields: IField[];
@@ -18,13 +19,25 @@ const SurveyRecordsTable: React.FC<SurveyRecordsTableProps> = ({ fields, locale,
         label: field.label
     }));
     
+    function renderValue(value:any, type:string){
+        switch(type){
+            case "textarea":
+                return <div dangerouslySetInnerHTML={{__html: value }}></div>;
+            case "multioption":
+                return value[0].multioption;
+            case "checkbox":
+                return <Check checked={value === "true"} />
+            default:
+                return value;
+        }
+    }
     const rows = submissions.map((submission, index) => {
         let record = {id:index, date : dateAndTimeFromPostgresString(locale, submission.updatedAt)};
 
         for(let i = 0; i < headCells.length; i++){
             const valueField = headCells[i].id;
             const field = submission.surveyRecords.find((record) => record.surveyField.name === valueField);
-            const value = field?.surveyField.type === "textarea" ?  <div dangerouslySetInnerHTML={{__html: field.value }}></div>   : field?.value;
+            const value = renderValue(field?.value, field?.surveyField.type || "text");
             record[headCells[i].id] = value;
         }
 

@@ -59,7 +59,7 @@ const SubmissionsTable: React.FC<SubmissionsTableProps> = ({ locale, surveys, pa
         }
         
     }
-    if(surveys.length > 0 && surveys[0].type === types.TYPE_NURSE){
+    if(surveys.length > 0 && [types.CATEGORY_DEPARTMENT_NURSE, types.CATEGORY_DEPARTMENT_NURSE_FW].includes(surveys[0].category)){
         return <SubmissionsTableSelector surveys={surveys} records={records} 
                     locale={locale} billingInfo={billingInfo}
                     onSelectSubmission={(index) => onSelectSubmission(index)}  />

@@ -30,11 +30,14 @@ import SubmissionsTable from './SubmissionsTable';
 
 
 
-function urlToSection(urlType, dataCollectionSelected){
+function urlToSection(urlType, dataCollectionSelected, permissions){
     try{
         if(typeof urlType === "undefined"){
-            if(dataCollectionSelected === null){
+            if(dataCollectionSelected === null && permissions.includes(PERMISSION.MEDICAL_READ)){
                 return types.PATIENT_TOOLBAR_SECTION_MEDICAL;
+            }
+            else if(dataCollectionSelected === null && permissions.includes(PERMISSION.NURSE_FW)){
+                return types.PATIENT_TOOLBAR_SECTION_NURSE;
             }
             switch(dataCollectionSelected.type){
                 case types.TYPE_FILL_IMG_SURVEY:
@@ -119,22 +122,21 @@ function Patient(props) {
     const billingInfo = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.billingInfo : null;
     
     const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter((survey) => {
-        // if(parameters.typeTest === "shoe" && survey.category === types.CATEGORY_SURVEY_SHOE){
-        //     return true;
-        // }
+        const roleNurse = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.permissions.includes(PERMISSION.NURSE_FW) : false;
+        const hasMedicalReadPermission = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) : false;
+        if(survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW){
+            console.log("Prescriptions", survey.name);
+        }
         if(parameters.typeTest === "social" && survey.category === types.CATEGORY_DEPARTMENT_SOCIAL){
             return true;
         }
-        if(parameters.typeTest === "nurse" && (survey.category === types.CATEGORY_DEPARTMENT_NURSE || survey.category === types.CATEGORY_DEPARTMENT_NURSE_FW)){
+        if(((!parameters.typeTest && !hasMedicalReadPermission) || parameters.typeTest === "nurse") && (survey.category === types.CATEGORY_DEPARTMENT_NURSE || survey.type === types.TYPE_CARE_GIVER || ( survey.category === types.CATEGORY_DEPARTMENT_NURSE_FW && survey.type === types.TYPE_NURSE && roleNurse ))){
             return true;
         }
-        if(parameters.typeTest === "care_giver" && survey.category === types.CATEGORY_DEPARTMENT_CARE_GIVER_FW){
+        if(parameters.typeTest === "prescriptions" && (survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS || (survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW  && roleNurse))){
             return true;
         }
-        if(parameters.typeTest === "prescriptions" && (survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS || survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW)){
-            return true;
-        }
-        if((!parameters.typeTest || parameters.typeTest === "medical") && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
+        if(((!parameters.typeTest && hasMedicalReadPermission) || parameters.typeTest === "medical") && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
             return true;
         }
         if(parameters.typeTest === "images" && [types.TYPE_FILL_IMG_SURVEY, types.TYPE_IMAGE_SURVEY].includes(survey.type)){
@@ -492,19 +494,11 @@ function Patient(props) {
             setShowSnackbar({show:true, severity:"error", message : message});
         }
     }, [props.hospital.error])
-    
+
     useEffect(() => {
         setShowOptions(false);
         setShowModal(false);
     }, [uuidSection])
-
-    useEffect(() => {
-        console.log(parameters);
-        if(!parameters.typeTest && !props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ)){
-            
-        }
-        
-    }, [])
     
     useEffect(() => {
         async function fetchRecordsPatient(){
@@ -724,7 +718,7 @@ function Patient(props) {
                 <Grid container spacing={3}>
                     <PatientToolBar permissions={props.investigations.currentInvestigation.permissions}
                         typeSurveySelected={ dataCollectionSelected ? dataCollectionSelected.type : parameters.typeTest ? parameters.typeTest : "medical" }
-                        buttonSelected = { urlToSection(parameters.typeTest, dataCollectionSelected)}
+                        buttonSelected = { urlToSection(parameters.typeTest, dataCollectionSelected, props.investigations.currentInvestigation.permissions)}
                         editCallBack={editPersonalData}
                         action={parameters} enableAddButton={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} 
                         personalData={patient.personalData} years={years}

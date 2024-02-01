@@ -166,7 +166,7 @@ export const TYPE_FILL_SHOE_SURVEY = 14;
 export const TYPE_CARE_GIVER = 15;
 
 
-export const TYPE_SURVEYS = [{ value: TYPE_MEDICAL_SURVEY, name: "Medical" }, { value: TYPE_PRESCRIPTIONS, name: "Prescriptions" }, { value: TYPE_NURSE, name: "Nurse" }, { value: TYPE_IMAGE_SURVEY, name: "Images" }, { value: TYPE_LAB_SURVEY, name: "Laboratory" },
+export const TYPE_SURVEYS = [{ value: TYPE_MEDICAL_SURVEY, name: "Medical" }, { value: TYPE_PRESCRIPTIONS, name: "Prescriptions" }, { value: TYPE_NURSE, name: "Nurse" }, { value: TYPE_CARE_GIVER, name: "Care giver" },{ value: TYPE_IMAGE_SURVEY, name: "Images" }, { value: TYPE_LAB_SURVEY, name: "Laboratory" },
 { value: TYPE_FIRST_VISIT_SURVEY, name: "First Visit" }, { value: TYPE_MONITORING_VISIT_SURVEY, name: "Monitoring" },
 { value: TYPE_DISCHARGE_SURVEY, name: "Discharge" }, { value: TYPE_SOCIAL_SURVEY, name: "Social" }, { value: TYPE_SHOE_SURVEY, name: "Shoe" },
 { value: TYPE_FILL_LAB_SURVEY, name: "Fill Lab" }, { value: TYPE_FILL_IMG_SURVEY, name: "Fill IMG" }, { value: TYPE_FILL_SHOE_SURVEY, name: "Fill Shoe" },
@@ -178,15 +178,13 @@ export const CATEGORY_DEPARTMENT_SOCIAL = 1;
 export const CATEGORY_DEPARTMENT_SHOE = 3;
 export const CATEGORY_DEPARTMENT_NURSE = 4;
 export const CATEGORY_DEPARTMENT_PRESCRIPTIONS = 5;
-export const CATEGORY_DEPARTMENT_CARE_GIVER_FW = 6;
-export const CATEGORY_DEPARTMENT_NURSE_FW = 7;
-export const CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW = 8;
+export const CATEGORY_DEPARTMENT_NURSE_FW = 6;
+export const CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW = 7;
 
 
 export const CATEGORY_SURVEYS = [{ value: CATEGORY_DEPARTMENT_MEDICAL, name: "Medical" }, { value: CATEGORY_DEPARTMENT_SOCIAL, name: "Social", url: "social" }, 
                                     { value: CATEGORY_DEPARTMENT_SHOE, name: "Shoe", url: "shoe" }, { value: CATEGORY_DEPARTMENT_NURSE, name: "Nurse", url: "nurse" },
                                     { value: CATEGORY_DEPARTMENT_PRESCRIPTIONS, name: "Prescriptions", url: "prescriptions" }, 
-                                    { value: CATEGORY_DEPARTMENT_CARE_GIVER_FW, name: "Care Giver FW", url: "care-giver" },
                                     { value: CATEGORY_DEPARTMENT_NURSE_FW, name: "Nurse FW", url: "nurse-fw" }, 
                                     { value: CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW, name: "Prescriptions FW", url: "prescriptions-fw" }];
 
