@@ -16,7 +16,7 @@ interface SurveyRecordsTableProps {
 
 const SurveyRecordsTable: React.FC<SurveyRecordsTableProps> = ({ fields, locale, submissions, onSelectSubmission }) => {
     const { researchers, loadingDepartments } = useDepartments();
-    let headCells = fields.map((field) => ({
+    let headCells = fields.sort((fieldA, fieldB) => fieldA.order - fieldB.order > 0 ? 1 : -1).map((field) => ({
         id: field.name,
         alignment: "left",
         label: field.label

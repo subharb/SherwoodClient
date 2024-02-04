@@ -18,6 +18,9 @@ export default function reducer(state = initialState, action){
         case types.FETCH_PROFILE_LOADING:
             newState.loading = true
             return newState;
+        case types.AUTH_SIGN_OUT:
+            newState = {...initialState};
+            return newState;
         default:
             return state;    
     }

@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { IField, IPatient, ISection, ISubmission, ISurvey } from '../../../constants/types';
-import SubmissionsTable from './SubmissionsTable';
 import { BillingInfo } from '../Billing/types';
 import { Button, Grid, Typography } from '@mui/material';
 import { Translate } from 'react-localize-redux';
@@ -52,7 +51,7 @@ const SubmissionsTableSelector: React.FC<SubmissionsTableSelectorProps> = ({ sur
                     </Typography>
                 </Grid>
                 {
-                    surveysWithRecords.sort((surA, surB) => surB.order > surA.order ? 1 : -1).map((survey) => {
+                    surveysWithRecords.sort((a, b) => a.order - b.order).map((survey) => {
                         return (
                             <Grid item xs={12}>
                                 <Button onClick={() => onSurveySelected(survey)}>

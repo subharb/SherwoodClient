@@ -334,7 +334,8 @@ function Patient(props) {
         // Save record solo gestiona el callback de social y medical, el resto son componentes y se gestionan de otra forma.
         let nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
         if(dataCollectionSelected && Object.keys(TYPE_URL).includes(dataCollectionSelected.type.toString())){
-            const url = TYPE_URL[dataCollectionSelected.type];
+            const url = TYPE_URL[dataCollectionSelected.type] === "care_giver" ? "nurse" : TYPE_URL[dataCollectionSelected.type];
+
             nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", url )
             
         }
