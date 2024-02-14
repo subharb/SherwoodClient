@@ -311,12 +311,13 @@ export function Analytics(props) {
 			<Grid container spacing={6}>
 				<Grid item xs={12} style={{ color: "white" }}>
                     <SectionHeader section="analytics"  />
-									
 				</Grid>
-				<Grid spacing={3} item container xs={12} style={{background:'white', padding:'1rem'}}>
+				<Grid spacing={3} item xs={12} style={{background:'white', padding:'1rem'}}>
+                    <Grid container spacing={3}>
                     {
                         renderSelectors()
                     }
+                    </Grid>    
                 </Grid>
 			</Grid>
             {
