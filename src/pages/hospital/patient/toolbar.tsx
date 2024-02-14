@@ -196,14 +196,6 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                     </Grid>
                 }
                 {
-                    buttonsAvailable.includes(CATEGORY_DEPARTMENT_NURSE) && 
-                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                        <Button data-testid="show" onClick={() => buttonClickedCallBack(TYPE_NURSE)} >
-                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
-                        </Button>
-                    </Grid>
-                }
-                {
                     showNurse && 
                     <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
                         <Button data-testid="nurse_fw" onClick={() => buttonClickedCallBack(TYPE_NURSE)} >
