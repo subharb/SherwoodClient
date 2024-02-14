@@ -166,9 +166,12 @@ class Form extends Component {
         let fieldsMarkup = [];
         let currentSection = [];
         let pastInput = [];
+        let currentSectionTitle = "";
         Object.keys(this.props.fields).map((key, index) => {
             if(this.props.fields[key].type !== "options"){
+                
                 if(this.props.fields[key].type === "title_section"){
+                    currentSectionTitle = this.props.fields[key].label;
                     if(currentSection.length > 0){
                         fieldsMarkup.push(
                             <Paper elevation={3} style={{padding:"1rem", marginTop:'1rem'}} >
@@ -191,7 +194,7 @@ class Form extends Component {
                             department={this.props.department}
                             uuidPatient={this.props.uuidPatient}
                             uuidInvestigation={this.props.uuidInvestigation}
-                            hideTitle = { currentSection.length === 1 && currentSection.name === this.props.fields[key].label}
+                            hideTitle = { currentSection.length === 1 && currentSectionTitle === this.props.fields[key].label}
                             fullWidth={this.props.fullWidth}
                             country={this.props.country}
                             label={this.props.fields[key].label}
