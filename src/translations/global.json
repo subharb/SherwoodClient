@@ -514,7 +514,7 @@
         "treatment-start-table" : ["Start date", "F.Inicio", "Début"],
         "treatment-finish-table" : ["End date", "F. fin", "Date de fin"],
         "treatment-duration" : ["Duration", "Duración", "Durée"],
-        "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
+        "chronic" : ["Chronic medication", "Crónico", "chronique / à long terme"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
         "number-elements" : ["Number", "Número", "Número"],
         "time-unit" : ["Time", "Tiempo", "Temps"],
