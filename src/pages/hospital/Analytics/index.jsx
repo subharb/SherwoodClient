@@ -1,10 +1,10 @@
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {  useHistory } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import PropTypes from 'prop-types';
 import { green, red, orange, yellow, blue, amber, brown, cyan, deepOrange } from "@mui/material/colors";
-import { Box, Button, Card, CardContent, Divider as MuiDivider, Grid, IconButton, Paper, Snackbar, Typography } from '@mui/material';
+import { Divider as MuiDivider, Grid } from '@mui/material';
 
 import { connect } from 'react-redux';
 import Loader from '../../../components/Loader';
@@ -13,7 +13,6 @@ import { ROUTE_401 } from '../../../routes/urls';
 import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components";
 import { yearsFromDate } from '../../../utils/index.jsx';
-import TimeTable from '../../dashboards/Analytics/TimeTable';
 import { getBillingDepartments, getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsOutpatients, getTotalBillingInsurances } from '../../../services';
 import { spacing } from "@mui/system";
 import DatesSelector from '../../dashboards/Analytics/DatesSelector';
@@ -25,7 +24,6 @@ import PatientsBarChart from '../../dashboards/Analytics/PatientsBarChart';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import { FUNCTIONALITY } from '../../../constants/types';
 import OutpatientsStats from './OutpatientsStats';
-import { TypographyStyled } from '../../../components/general/mini_components';
 import CommonDiagnosis from './CommonDiagnosis';
 import SectionHeader from '../../components/SectionHeader';
 import BillingChart from '../../dashboards/Analytics/BillingBarChart';
@@ -257,7 +255,7 @@ export function Analytics(props) {
                     </>
                 }
 
-                { props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING) &&
+                { props.investigations.currentInvestigation.billingInfo && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING) &&
                     <Grid container item spacing={1}>
                         <Grid item xs={12} >
                             <BillingChart loading={billingDepartments === null} 

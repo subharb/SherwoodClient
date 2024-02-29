@@ -1,17 +1,17 @@
-import React from 'react';
-import { Viewer } from '@ohif/viewer';
+// import React from 'react';
+// import { Viewer } from '@ohif/viewer';
 
-interface DICOMViewerProps {
+// interface DICOMViewerProps {
     
-}
+// }
 
-const DICOMViewer: React.FC<DICOMViewerProps> = ({  }) => {
-    return (
-        <>
-            DICOMViewer
-            <Viewer />
-        </>
-    );
-};
+// const DICOMViewer: React.FC<DICOMViewerProps> = ({  }) => {
+//     return (
+//         <>
+//             DICOMViewer
+//             <Viewer />
+//         </>
+//     );
+// };
 
-export default DICOMViewer;
+// export default DICOMViewer;

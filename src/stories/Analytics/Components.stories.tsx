@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, billables, edc_data1 } from '../example_data';
+
 import DatesSelector from '../../pages/dashboards/Analytics/DatesSelector';
 import BillingBarChart from '../../pages/dashboards/Analytics/BillingBarChart';
+import TrendComponent from '../../pages/dashboards/Analytics/Trend';
 import { statsBilling } from './stats';
 import BillingInsuranceBars from '../../pages/dashboards/Analytics/BillingInsuranceBars';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
 
 const meta: Meta<typeof DatesSelector> = {
   title: 'Hospital/Analytics',
@@ -82,4 +81,13 @@ BillingBars.args = {
                 code:"Personnel"
             }
         ],
+    }
+
+const TemplateTrend = (args) => <TrendComponent {...args} />
+export const Trend = TemplateTrend.bind({});
+Trend.args = {
+        label : "Total number of patients",
+        totalNumber : 400,
+        type : "line",
+        series : [4, 8, 10, 12, 14, 16, 6  ]
     }
