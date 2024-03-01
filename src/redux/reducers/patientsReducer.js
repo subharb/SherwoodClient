@@ -28,20 +28,16 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error;                         
             return newState;
         case types.FETCH_INVESTIGATIONS_SUCCESS:
+        case types.SELECT_INVESTIGATION:
             //Desencripto los datos de los pacientes
             tempInvestigations = {};
-            for(const investigation of action.investigations){
-                
-                let tempDecryptedData = [];
-                console.log(investigation.name);
-                for(const patient of investigation.patientsPersonalData){
-                    console.log(patient);
-                    patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
-                    tempDecryptedData.push(patient);
-                }
-                tempInvestigations[investigation.uuid] = tempDecryptedData;
-                
+            const investigation = action.investigations[localStorage.getItem("indexHospital")];
+            let tempDecryptedData = [];
+            for(const patient of investigation.patientsPersonalData){
+                patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
+                tempDecryptedData.push(patient);
             }
+            tempInvestigations[investigation.uuid] = tempDecryptedData;
             newState.data = tempInvestigations;                            
             return newState;
         case types.SAVE_PATIENT_LOADING:
