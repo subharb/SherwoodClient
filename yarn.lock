@@ -8952,6 +8952,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-query@npm:^1.2.9":
+  version: 1.2.9
+  resolution: "@types/react-query@npm:1.2.9"
+  dependencies:
+    react-query: "*"
+  checksum: 9bddd0e810f3453276c8145450b294674c14f69daba75da9fdc953f0a6329ab533b64db6fe212267dc79ba61485f6eb673a9c2ad119c072b2ecae59c2bb593e4
+  languageName: node
+  linkType: hard
+
 "@types/react-redux@npm:^7.1.20, @types/react-redux@npm:^7.1.24":
   version: 7.1.28
   resolution: "@types/react-redux@npm:7.1.28"
@@ -11660,6 +11669,7 @@ __metadata:
     "@types/react-datepicker": ^4.8.0
     "@types/react-dom": ^17.0.18
     "@types/react-helmet": ^6.1.6
+    "@types/react-query": ^1.2.9
     "@types/react-redux": ^7.1.24
     "@types/react-router-dom": ^5.3.1
     "@types/redux-form": ^8.3.5
@@ -11720,7 +11730,6 @@ __metadata:
     react-jvectormap: 0.0.16
     react-localize-redux: ^3.5.3
     react-perfect-scrollbar: 1.5.8
-    react-query: ^3.39.2
     react-quill: 1.3.5
     react-redux: 7.2.2
     react-router-dom: 5.2.0
@@ -22888,7 +22897,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.39.2":
+"react-query@npm:*":
   version: 3.39.3
   resolution: "react-query@npm:3.39.3"
   dependencies:
