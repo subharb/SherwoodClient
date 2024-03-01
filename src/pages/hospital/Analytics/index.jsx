@@ -28,13 +28,18 @@ import CommonDiagnosis from './CommonDiagnosis';
 import SectionHeader from '../../components/SectionHeader';
 import BillingChart from '../../dashboards/Analytics/BillingBarChart';
 import BillingInsuranceBars from '../../dashboards/Analytics/BillingInsuranceBars';
+import OutpatientsAnalytics from './Outpatients';
 
-const Divider = styled(MuiDivider)(spacing);
 
 export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
 const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
 const COUNT_AGE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
 export function Analytics(props) {
+
+    return <OutpatientsAnalytics startDate={1} endDate={1702487841503} 
+                uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
+
 	const history = useHistory();
 	const [startDate, setStartDate] = useState(null);
     const [insurances] = useInsurances();
