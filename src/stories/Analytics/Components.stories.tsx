@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import DatesSelector from '../../pages/dashboards/Analytics/DatesSelector';
 import BillingBarChart from '../../pages/dashboards/Analytics/BillingBarChart';
-import TrendComponent from '../../pages/dashboards/Analytics/Trend';
+import { TrendView } from '../../pages/dashboards/Analytics/Trend';
 import { statsBilling } from './stats';
 import BillingInsuranceBars from '../../pages/dashboards/Analytics/BillingInsuranceBars';
 
@@ -83,7 +83,7 @@ BillingBars.args = {
         ],
     }
 
-const TemplateTrend = (args) => <TrendComponent {...args} />
+const TemplateTrend = (args) => <TrendView {...args} />
 export const Trend = TemplateTrend.bind({});
 Trend.args = {
         label : "Total number of patients",

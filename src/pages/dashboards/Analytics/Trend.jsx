@@ -1,17 +1,46 @@
 import { Avatar, Box, Button, Card, CardHeader, Divider, Grid, Typography, useTheme } from '@mui/material';
-import Chart from 'react-apexcharts';
 import ChevronUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import ChevronDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { LineChart } from './LineChart';
 import { BarChartLine } from './BarChartLine';
 import { alpha } from '@material-ui/core';
 import { useMemo } from 'react';
+import Loader from '../../../components/Loader';
+import {
+    useQuery,
+  } from '@tanstack/react-query'
 
-const Trend = ({ label, type }) => {
+
+export const Trend = ({ label, type, url }) => {
+    console.log(url)
+    const { isPending, error, data } = useQuery({
+        queryKey: ['repoData'],
+        queryFn: () =>
+          fetch(url, {
+            headers : {
+                "Authorization": localStorage.getItem("jwt")
+            }
+        })
+        .then((res) =>
+            res.json(),
+        ),
+    })
     
+    if(isPending){
+        return <Loader />
+    }
+    if(error){
+        return <div>Error: {error.message}</div>
+    }
+    if(!data){
+        return "NO DATA"
+    }
+    return (
+        <TrendView label={label} series={data.trend.data} totalNumber={data.total} type={type} />
+    )
 }
 
-const TrendView = ({ label, series, totalNumber, type }) => {
+export const TrendView = ({ label, series, totalNumber, type }) => {
     const theme = useTheme();
     const percentage = useMemo(() => ((series[series.length - 1] - series[0]) / series[0]) * 100);
     function renderIcon(percentage) {
