@@ -1,23 +1,24 @@
-import { Box, Container, Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
+import { Box } from '@mui/system';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { Trend } from '../../dashboards/Analytics/Trend';
-import { BillingChart } from '../../dashboards/Analytics/BillingBarChart';
-import { BillingInsuranceBars } from '../../dashboards/Analytics/BillingInsuranceBars';
 import { Selector } from './Selector';
 
-interface BillingAnalyticsProps {
-    startDate: number;
-    endDate: number;
-    uuidInvestigation: string;
-    locale: string;
-    currency: string;
-    hasBudgets: boolean;
-    onlyDepartmentsResearcher: string;
+interface MedicalAnalyticsProps {
+    onlyDepartmentsResearcher: string,
 }
 
-const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate, uuidInvestigation, 
-                                                                locale, currency, onlyDepartmentsResearcher, hasBudgets }) => {
+const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ onlyDepartmentsResearcher }) => {
+    return (
+        <MedicalAnalyticsView onlyDepartmentsResearcher={onlyDepartmentsResearcher} 
+            
+            />
+    )};
+
+interface MedicalAnalyticsViewProps extends MedicalAnalyticsProps {
+
+}
+const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ onlyDepartmentsResearcher }) => {
     return (
         <>
         <Helmet>
@@ -36,7 +37,7 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                     justifyContent="space-between"
                     spacing={3}
                 >
-                    <Selector 
+                    <Selector
                         onlyDepartmentsResearcher={onlyDepartmentsResearcher} 
                         onDatesSelected={() => {
                             console.log("dates selected");
@@ -111,4 +112,3 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
     );
 };
 
-export default BillingAnalytics;

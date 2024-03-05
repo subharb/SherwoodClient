@@ -3,14 +3,17 @@ import React from 'react';
 import Loader from '../../../components/Loader';
 import { IDepartment } from '../../../constants/types';
 import DatesSelector from '../../dashboards/Analytics/DatesSelector';
+import { useDeparmentsSelector } from '../../../hooks';
 
-interface AppProps {
-    departments : IDepartment[] | null,
+interface SelectorProps {
+    onlyDepartmentsResearcher: string,
     onDatesSelected: (dates:Date[]) => void,
-    renderDepartmentSelector: () => JSX.Element
 }
 
-const App: React.FC<AppProps> = ({ departments, renderDepartmentSelector,  onDatesSelected }) => {
+export const Selector: React.FC<SelectorProps> = ({ onlyDepartmentsResearcher, onDatesSelected }) => {
+    
+    const { renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher, true, "all");
+
     if(departments === null){
         return (
             <Grid item xs={12}>
@@ -37,5 +40,3 @@ const App: React.FC<AppProps> = ({ departments, renderDepartmentSelector,  onDat
         
     )
 };
-
-export default App;

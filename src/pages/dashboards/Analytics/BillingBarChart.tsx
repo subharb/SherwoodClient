@@ -42,7 +42,7 @@ export const BillingChart: React.FC<BillingChartProps> = ({ startDate, endDate, 
         return <div>Error: {error.message}</div>;
     }
     return <BillingChartView currency={currency} 
-            stats={data} departments={departments} />;
+            stats={data.stats} departments={departments} />;
 };
         
 interface BillingChartViewProps extends Omit<BillingChartProps, "uuidInvestigation" | "startDate" | "endDate"> {
@@ -57,7 +57,10 @@ export const BillingChartView: React.FC<BillingChartViewProps> = ({ currency, st
         if(!stats){
             return [];
         }
-        return Object.keys(stats).map((dateString) => new Date(dateString)).sort((a, b) => a.getTime() - b.getTime() );
+        return Object.keys(stats).map((dateString) => {
+            console.log(dateString);
+            return new Date(dateString)
+        });
     }, [stats]);
 
     const seriesDepartment:SeriesDepartment[] = useMemo(() => {

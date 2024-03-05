@@ -28,6 +28,7 @@ import CommonDiagnosis from './CommonDiagnosis';
 import SectionHeader from '../../components/SectionHeader';
 
 import BillingAnalytics from './Billing';
+import { TabsSherwood } from '../../components/Tabs';
 
 
 export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
@@ -47,7 +48,7 @@ export function Analytics(props) {
     const [activityPatients, setActivityPatients] = useState([]);
 	const [countSex, setCountSex] = useState({ male: 0, female: 0 });
     const onlyDepartmentsResearcher = props.investigations.currentInvestigation && props.investigations.currentInvestigation.permissions.includes(PERMISSION.ANALYTICS_DEPARTMENT);
-	const {renderDepartmentSelector, departmentSelected, departments} = useDeparmentsSelector(true, onlyDepartmentsResearcher, true, "all");
+	
     const [appointmentsPerDepartment, setAppointmentsPerDepartment] = useState(null);
     const [billingDepartments, setBillingDepartments] = useState(null);
     const [billingInsurances, setBillingInsurances] = useState(null);
@@ -91,7 +92,9 @@ export function Analytics(props) {
     useEffect(() => {
         let tempCountSex = {male : 0, female : 0};
         filteredPatients.forEach(patient => {
-            
+            if(!patient.personalData){
+                postErrorSlack(window.location, "No personal data in patient:"+JSON.stringify(patient.personalData) , "");
+            }
             if (patient.personalData.sex.toLowerCase() === "male") {
                 tempCountSex.male++;
             }
@@ -190,6 +193,16 @@ export function Analytics(props) {
 	}, [startDate, endDate, props.investigations.currentInvestigation]);
 
     function renderCore(){
+        return(
+            <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={true}>
+                <div>OTRO TAB</div>
+                <BillingAnalytics startDate={1} endDate={1702487841503} 
+                    onlyDepartmentsResearcher={onlyDepartmentsResearcher}
+                    locale={props.activeLanguage.code} currency={"CFA"}
+                    hasBudgets={ props.investigations.currentInvestigation.billingInfo.params["budgets"] }
+                    uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
+            </TabsSherwood>
+        );
         if(loadingPatientsInfo){
             return (
                 <Loader />
@@ -304,10 +317,7 @@ export function Analytics(props) {
 		history.push(ROUTE_401);
 		return <Loader />
 	}
-    return <BillingAnalytics startDate={1} endDate={1702487841503} 
-                locale={props.activeLanguage.code} currency={"CFA"}
-                hasBudgets={ props.investigations.currentInvestigation.billingInfo.params["budgets"] }
-                uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
+
 	return (
 		<React.Fragment>
 			<Helmet title="Analytics Dashboard" />
