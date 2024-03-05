@@ -7,9 +7,10 @@ interface OutpatientsAnalyticsProps {
     startDate: number;
     endDate: number;
     uuidInvestigation: string;
+    locale: string;
 }
 
-const OutpatientsAnalytics: React.FC<OutpatientsAnalyticsProps> = ({ startDate, endDate, uuidInvestigation }) => {
+const OutpatientsAnalytics: React.FC<OutpatientsAnalyticsProps> = ({ startDate, endDate, uuidInvestigation, locale }) => {
     return (
         <>
             <Helmet>
@@ -40,6 +41,8 @@ const OutpatientsAnalytics: React.FC<OutpatientsAnalyticsProps> = ({ startDate, 
                             >
                                 <Trend key="appointments"
                                     label="Total number of appointments"
+                                    totalIndex={0}
+                                    locale={locale}
                                     url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/startDate/${startDate}/endDate/${endDate}`}
                                     type="line"
                                 />
@@ -52,6 +55,8 @@ const OutpatientsAnalytics: React.FC<OutpatientsAnalyticsProps> = ({ startDate, 
                             >
                                 <Trend key="patients"
                                     label="Total number of patients"
+                                    totalIndex={0}
+                                    locale={locale}
                                     url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/patients/startDate/${startDate}/endDate/${endDate}`}
                                     type="line"
                                 />
@@ -62,7 +67,14 @@ const OutpatientsAnalytics: React.FC<OutpatientsAnalyticsProps> = ({ startDate, 
                                 sm={6}
                                 xs={12}
                             >
-                                COMponente
+                                <Trend key="billing"
+                                    label="Total billing"
+                                    totalIndex={1}
+                                    locale={locale}
+                                    url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/billing/startDate/${startDate}/endDate/${endDate}`}
+                                    type="bars"
+                                />
+                                
                             </Grid>
                         </Grid>
                     </Grid>

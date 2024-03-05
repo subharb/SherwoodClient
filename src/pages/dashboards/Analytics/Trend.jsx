@@ -11,10 +11,9 @@ import {
   } from '@tanstack/react-query'
 
 
-export const Trend = ({ label, type, url }) => {
-    console.log(url)
+export const Trend = ({ label, type, url, totalIndex, locale }) => {
     const { isPending, error, data } = useQuery({
-        queryKey: ['repoData'],
+        queryKey: [url],
         queryFn: () =>
           fetch(url, {
             headers : {
@@ -36,13 +35,20 @@ export const Trend = ({ label, type, url }) => {
         return "NO DATA"
     }
     return (
-        <TrendView label={label} series={data.trend.data} totalNumber={data.total} type={type} />
+        <TrendView label={label} series={data.trend.data} locale={locale}
+            totalNumber={data.trend.totals[totalIndex]} type={type} />
     )
 }
 
-export const TrendView = ({ label, series, totalNumber, type }) => {
+export const TrendView = ({ label, series, totalNumber, type, locale }) => {
     const theme = useTheme();
-    const percentage = useMemo(() => ((series[series.length - 1] - series[0]) / series[0]) * 100);
+    const percentage = useMemo(() => {
+        const firstNonZero = series.findIndex((item) => item !== 0);
+        if(firstNonZero === -1){
+            return 0;
+        }
+        return ((series[series.length - 1] - series[firstNonZero]) / series[firstNonZero]) * 100;
+    }, [series]);
     function renderIcon(percentage) {
         let icon = <ChevronDownIcon fontSize="small" />;
         let color = theme.palette.error.main;
@@ -96,7 +102,7 @@ export const TrendView = ({ label, series, totalNumber, type }) => {
                         {label}
                     </Typography>
                     <Typography style={{ fontSize: '20px' }} color="textPrimary" sx={{ mt: 1 }} variant="h4">
-                        {totalNumber}
+                        {new Intl.NumberFormat(locale).format(totalNumber) }
                     </Typography>
                 </div>
                 {

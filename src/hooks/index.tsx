@@ -156,7 +156,7 @@ export function usePatientSubmission(idSubmission:number, uuidPatient:string){
     return [submission, loadingSubmissions];
 }
 
-export function useInsurances(patientInsuranceId:number){
+export function useInsurances(patientInsuranceId?:number){
     const investigations= useSelector((state:any) => state.investigations);
     const insurances = useSelector((state:{insurances : {data: IInsurance[]}}) => state.insurances.data ? state.insurances.data : null);
     const loadingInsurances = useSelector((state:any) => state.insurances.loading || state.investigations.loading);
