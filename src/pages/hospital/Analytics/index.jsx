@@ -12,7 +12,7 @@ import { Translate, withLocalize } from 'react-localize-redux';
 import { ROUTE_401 } from '../../../routes/urls';
 import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import styled, { withTheme } from "styled-components";
-import { yearsFromDate } from '../../../utils/index.jsx';
+import { postErrorSlack, yearsFromDate } from '../../../utils/index.jsx';
 import TimeTable from '../../dashboards/Analytics/TimeTable';
 import { getBillingDepartments, getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsOutpatients, getTotalBillingInsurances } from '../../../services';
 import { spacing } from "@mui/system";
@@ -92,7 +92,9 @@ export function Analytics(props) {
     useEffect(() => {
         let tempCountSex = {male : 0, female : 0};
         filteredPatients.forEach(patient => {
-            
+            if(!patient.personalData){
+                postErrorSlack(window.location, "No personal data in patient:"+JSON.stringify(patient.personalData) , "");
+            }
             if (patient.personalData.sex.toLowerCase() === "male") {
                 tempCountSex.male++;
             }
