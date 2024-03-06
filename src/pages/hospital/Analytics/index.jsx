@@ -93,7 +93,7 @@ export function Analytics(props) {
         let tempCountSex = {male : 0, female : 0};
         filteredPatients.forEach(patient => {
             if(!patient.personalData){
-                postErrorSlack(window.location, "No personal data in patient:"+JSON.stringify(patient.personalData) , "");
+                postErrorSlack(window.location, "No personal data in patient:"+JSON.stringify(patient) , "");
             }
             if (patient.personalData.sex.toLowerCase() === "male") {
                 tempCountSex.male++;
