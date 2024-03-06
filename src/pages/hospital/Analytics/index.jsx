@@ -29,6 +29,7 @@ import SectionHeader from '../../components/SectionHeader';
 
 import BillingAnalytics from './Billing';
 import { TabsSherwood } from '../../components/Tabs';
+import { Selector } from './Selector';
 
 
 export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
@@ -61,33 +62,33 @@ export function Analytics(props) {
 		setEndDate(dates[1].getTime());
 	}
 	
-    function renderSelectors(){
-        if(departments === null){
-            return (
-                <Grid item xs={12}>
-                    <Loader />
-                </Grid>
-            )
-        }
-        if(departments.length === 1){
-            return (
-                <Grid item xs={12}>
-                    <DatesSelector onCallBack={datesSelected} />
-                </Grid>
-            )
-        }
-        return(
-            <>
-                <Grid item sm={6} xs={12}>
-                    { renderDepartmentSelector() }
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <DatesSelector onCallBack={datesSelected} />
-                </Grid>
-            </>
+    // function renderSelectors(){
+    //     if(departments === null){
+    //         return (
+    //             <Grid item xs={12}>
+    //                 <Loader />
+    //             </Grid>
+    //         )
+    //     }
+    //     if(departments.length === 1){
+    //         return (
+    //             <Grid item xs={12}>
+    //                 <DatesSelector onCallBack={datesSelected} />
+    //             </Grid>
+    //         )
+    //     }
+    //     return(
+    //         <>
+    //             <Grid item sm={6} xs={12}>
+    //                 { renderDepartmentSelector() }
+    //             </Grid>
+    //             <Grid item sm={6} xs={12}>
+    //                 <DatesSelector onCallBack={datesSelected} />
+    //             </Grid>
+    //         </>
             
-        )
-    }
+    //     )
+    // }
     
     useEffect(() => {
         let tempCountSex = {male : 0, female : 0};
@@ -118,40 +119,40 @@ export function Analytics(props) {
         setCountSex(tempCountSex);
     }, [filteredPatients]);
     
-    useEffect(() => {
-        if(departmentSelected && props.investigations.currentInvestigation && startDate && endDate){
-            setLoadingPatientsInfo(true);
-            getPatientIdFromDepartment(props.investigations.currentInvestigation.uuid, departmentSelected, startDate, endDate)
-                .then(response => {
-                    if(response.stats.patientIds){
-                        const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
-                            return response.stats.patientIds.includes(patient.id);
-                        })
-                        setLoadingPatientsInfo(false);
-                        setFilteredPatients(tempFilterPatients);
-                    }  
-                })
-        }
+    // useEffect(() => {
+    //     if(departmentSelected && props.investigations.currentInvestigation && startDate && endDate){
+    //         setLoadingPatientsInfo(true);
+    //         getPatientIdFromDepartment(props.investigations.currentInvestigation.uuid, departmentSelected, startDate, endDate)
+    //             .then(response => {
+    //                 if(response.stats.patientIds){
+    //                     const tempFilterPatients = props.investigations.currentInvestigation.patientsPersonalData.filter(patient => {
+    //                         return response.stats.patientIds.includes(patient.id);
+    //                     })
+    //                     setLoadingPatientsInfo(false);
+    //                     setFilteredPatients(tempFilterPatients);
+    //                 }  
+    //             })
+    //     }
         
-    }, [departmentSelected, props.investigations.currentInvestigation, startDate , endDate]);
+    // }, [departmentSelected, props.investigations.currentInvestigation, startDate , endDate]);
 
-    useEffect(() => {
-        let tempFilteredPatients = [];
-        for(let i = 0; i < Object.keys(activityPatients).length; i++){
-            const key = Object.keys(activityPatients)[i];
-            const patientsActivity = departmentSelected !== "all" ? activityPatients[key].filter((patient) => {
-                return patient.department.uuid === departmentSelected;
-            }) : activityPatients[key];
+    // useEffect(() => {
+    //     let tempFilteredPatients = [];
+    //     for(let i = 0; i < Object.keys(activityPatients).length; i++){
+    //         const key = Object.keys(activityPatients)[i];
+    //         const patientsActivity = departmentSelected !== "all" ? activityPatients[key].filter((patient) => {
+    //             return patient.department.uuid === departmentSelected;
+    //         }) : activityPatients[key];
             
-            const patientsPersonalData = patientsActivity.map((patientAct) => {
-                const patientFound = props.investigations.currentInvestigation.patientsPersonalData.find((patient) => patient.id === patientAct.idPatientInvestigation);
-                return patientFound;
-            })
-            tempFilteredPatients = tempFilteredPatients.concat(patientsPersonalData);
-        }
-        setFilteredPatients(tempFilteredPatients);
+    //         const patientsPersonalData = patientsActivity.map((patientAct) => {
+    //             const patientFound = props.investigations.currentInvestigation.patientsPersonalData.find((patient) => patient.id === patientAct.idPatientInvestigation);
+    //             return patientFound;
+    //         })
+    //         tempFilteredPatients = tempFilteredPatients.concat(patientsPersonalData);
+    //     }
+    //     setFilteredPatients(tempFilteredPatients);
         
-    }, [activityPatients]);
+    // }, [activityPatients]);
 	
     useEffect(() => {
 		async function getStats() {
@@ -194,14 +195,18 @@ export function Analytics(props) {
 
     function renderCore(){
         return(
-            <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={true}>
-                <div>OTRO TAB</div>
+            <>
+                <Selector onDatesSelected={() => console.log("buu")} />
+                <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={true}>
+                    <div>TEST</div>
                 <BillingAnalytics startDate={1} endDate={1702487841503} 
                     onlyDepartmentsResearcher={onlyDepartmentsResearcher}
                     locale={props.activeLanguage.code} currency={"CFA"}
                     hasBudgets={ props.investigations.currentInvestigation.billingInfo.params["budgets"] }
                     uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
             </TabsSherwood>
+            </>
+            
         );
         if(loadingPatientsInfo){
             return (
@@ -325,13 +330,13 @@ export function Analytics(props) {
 				<Grid item xs={12} style={{ color: "white" }}>
                     <SectionHeader section="analytics"  />
 				</Grid>
-				<Grid spacing={3} item xs={12} style={{background:'white', padding:'1rem'}}>
+				{/* <Grid spacing={3} item xs={12} style={{background:'white', padding:'1rem'}}>
                     <Grid container spacing={3}>
                     {
                         renderSelectors()
                     }
                     </Grid>    
-                </Grid>
+                </Grid> */}
 			</Grid>
             {
                 renderCore()
