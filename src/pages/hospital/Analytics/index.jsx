@@ -20,7 +20,7 @@ import DatesSelector from '../../dashboards/Analytics/DatesSelector';
 import SearchTable from '../../dashboards/Analytics/SearchTable';
 import HospitalStats from './HospitalStats';
 import { useDeparmentsSelector, useInsurances } from '../../../hooks';
-import PatientsBarChart from '../../dashboards/Analytics/PatientsBarChart';
+import PatientsBarChart from './Medical/PatientsBarChart';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import { FUNCTIONALITY } from '../../../constants/types';
 import OutpatientsStats from './OutpatientsStats';
@@ -30,6 +30,7 @@ import SectionHeader from '../../components/SectionHeader';
 import BillingAnalytics from './Billing';
 import { TabsSherwood } from '../../components/Tabs';
 import { Selector } from './Selector';
+import { MedicalAnalytics } from './Medical';
 
 
 export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
@@ -198,13 +199,16 @@ export function Analytics(props) {
             <>
                 <Selector onDatesSelected={() => console.log("buu")} />
                 <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={true}>
-                    <div>TEST</div>
-                <BillingAnalytics startDate={1} endDate={1702487841503} 
-                    onlyDepartmentsResearcher={onlyDepartmentsResearcher}
-                    locale={props.activeLanguage.code} currency={"CFA"}
-                    hasBudgets={ props.investigations.currentInvestigation.billingInfo.params["budgets"] }
-                    uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
-            </TabsSherwood>
+                    <MedicalAnalytics startDate={1} endDate={1702487841503} 
+                        locale={props.activeLanguage.code} currency={"CFA"}
+                        hasBudgets={ props.investigations.currentInvestigation.billingInfo?.params["budgets"] }
+                        uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308'   />
+                    <BillingAnalytics startDate={1} endDate={1702487841503} 
+                        onlyDepartmentsResearcher={onlyDepartmentsResearcher}
+                        locale={props.activeLanguage.code} currency={"CFA"}
+                        hasBudgets={ props.investigations.currentInvestigation.billingInfo?.params["budgets"] }
+                        uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
+                </TabsSherwood>
             </>
             
         );

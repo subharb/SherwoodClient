@@ -16,8 +16,6 @@ import { INITIAL_SELECT } from '../components/general/SmartFields';
 import { IRequest, IService } from '../pages/hospital/Service/types';
 import { fetchProfileInfoAction } from '../redux/actions/profileActions';
 import Loader from '../components/Loader';
-import SelectField from '../components/general/SelectField';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { getServiceGeneralService } from '../services/agenda';
 import { isArray, isObject, set } from 'lodash';
 import { DocumentStatus } from '../pages/hospital/Billing/types';
