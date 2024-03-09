@@ -11,9 +11,8 @@ interface PatientsBarChartProps {
     endDate: number,
     departments:IDepartment[],
     departmentSelected:IDepartment,
-    
     patients:any[],
-    title:Element
+    title:string
 }
 
 export const PatientsBarChart: React.FC<PatientsBarChartProps> = ({ uuidInvestigation, startDate, endDate, departments, title, patients, departmentSelected, statsPerDepartment }) => {

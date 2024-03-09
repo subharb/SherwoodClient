@@ -1,6 +1,6 @@
 import { Container, Grid } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Selector } from '../Selector';
 import { Trend } from '../../../dashboards/Analytics/Trend';
@@ -8,43 +8,52 @@ import DoughnutChart from '../../../dashboards/Analytics/DoughnutChart';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { blue, orange, red, yellow } from '@mui/material/colors';
 import { usePatientFromDepartment } from '../../../../hooks/analytics';
-import { IPatient } from '../../../../constants/types';
+import { IDepartment, IPatient } from '../../../../constants/types';
 import Loader from '../../../../components/Loader';
 import { postErrorSlack, yearsFromDate } from '../../../../utils';
 import { useTheme } from 'styled-components';
-import PatientsBarChart from './PatientsBarChart';
+import { PatientsBarChart } from './PatientsBarChart';
+import { useDepartments } from '../../../../hooks';
+import {AnalyticsContext} from '../Context';
 
 interface MedicalAnalyticsProps {
     currency: string,
-    locale: string,
-    uuidInvestigation : string,
-    startDate: number,
-    endDate: number,
-
+    locale: string,   
 }
 
-export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, locale, uuidInvestigation, startDate, endDate }) => {
-    const {filteredPatients, isPending } = usePatientFromDepartment(uuidInvestigation, "all", startDate, endDate);
+export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, locale}) => {
+    const { startDate, endDate, uuidInvestigation, departments, departmentSelected} = useContext(AnalyticsContext);
+    if(startDate === null || endDate === null || uuidInvestigation === null){
+        return <div>Loading</div>
+    }
+    const {filteredPatients, isPending } = usePatientFromDepartment(uuidInvestigation!, "all", startDate, endDate);
 
     if(isPending){
         return <Loader />
     }
     return (
         <LocalizedMedicalAnalyticsView currency={currency} startDate={startDate} endDate={endDate}
-            locale={locale} uuidInvestigation={uuidInvestigation} filteredPatients={filteredPatients}/>
+            locale={locale} uuidInvestigation={uuidInvestigation} filteredPatients={filteredPatients}
+            departments={ departments ? departments : [] } departmentSelected={departmentSelected ? departmentSelected : ""} />
     )};
 
 interface MedicalAnalyticsViewProps extends MedicalAnalyticsProps, LocalizeContextProps {
     filteredPatients:IPatient[];
+    startDate: number;
+    endDate: number;
+    uuidInvestigation: string;
+    departments: IDepartment[];
+    departmentSelected: string
 }
-const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvestigation, currency, locale, filteredPatients,
-                                                                        startDate, endDate, translate }) => {
+const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvestigation, departments, departmentSelected, startDate, endDate, currency, locale, filteredPatients,
+                                                                        translate }) => {
     
     const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
     const COUNT_AGE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     const [countAge, setCountAge] = useState([...COUNT_AGE])
     const [countSex, setCountSex] = useState({ male: 0, female: 0 });
     const theme = useTheme();
+    
                                                                             
     useEffect(() => {
         let tempCountSex = {male : 0, female : 0};
@@ -168,8 +177,8 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                             sm={6}
                             xs={12}
                         >
-                        <PatientsBarChart title={translate("hospital.analytics.graphs.patients.title")} 
-                            departments={departments} statsPerDepartment = {activityPatients}
+                        <PatientsBarChart title={translate("hospital.analytics.graphs.patients.title").toString()} 
+                            departments={ departments }
                             departmentSelected={departments ? departments.find((dep) => dep.uuid === departmentSelected) : null} />                 
                         </Grid>
                     </Grid>

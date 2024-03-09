@@ -38,7 +38,7 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                 >
                     <Selector 
                         onlyDepartmentsResearcher={onlyDepartmentsResearcher} 
-                        onDatesSelected={() => {
+                        onDatesSelectedCallback={() => {
                             console.log("dates selected");
                         }}
                         />

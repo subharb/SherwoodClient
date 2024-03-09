@@ -22,7 +22,8 @@
   },
   "include": [
     "src",
+    "vite/client",
     "vite.config.js", 
-    "global.d.ts"
+    "src/vite-env.d.ts"
 ]
 }

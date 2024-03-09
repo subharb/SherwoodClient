@@ -11,16 +11,14 @@ import Loader from '../../../components/Loader';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { ROUTE_401 } from '../../../routes/urls';
 import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
-import styled, { withTheme } from "styled-components";
+import { withTheme } from "styled-components";
 import { yearsFromDate } from '../../../utils/index.jsx';
 import { getBillingDepartments, getPatientIdFromDepartment, getStatsActivityService, getStatsFirstMonitoring, getStatsMostCommonDiagnosis, getStatsOutpatients, getTotalBillingInsurances } from '../../../services';
-import { spacing } from "@mui/system";
-import DatesSelector from '../../dashboards/Analytics/DatesSelector';
 
 import SearchTable from '../../dashboards/Analytics/SearchTable';
 import HospitalStats from './HospitalStats';
-import { useDeparmentsSelector, useInsurances } from '../../../hooks';
-import PatientsBarChart from './Medical/PatientsBarChart';
+import { useInsurances } from '../../../hooks';
+import { PatientsBarChart } from './Medical/PatientsBarChart';
 import { PERMISSION } from '../../../components/investigation/share/user_roles';
 import { FUNCTIONALITY } from '../../../constants/types';
 import OutpatientsStats from './OutpatientsStats';
@@ -31,6 +29,7 @@ import BillingAnalytics from './Billing';
 import { TabsSherwood } from '../../components/Tabs';
 import { Selector } from './Selector';
 import { MedicalAnalytics } from './Medical';
+import { AnalyticsContext, AnalyticsContextProvider } from './Context';
 
 
 export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
@@ -40,7 +39,6 @@ const COUNT_AGE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 export function Analytics(props) {
 
 	const history = useHistory();
-	const [startDate, setStartDate] = useState(null);
     const [insurances] = useInsurances();
 	const [endDate, setEndDate] = useState(null);
 	const [statsFirstMonitoring, setStatsFirstMonitoring] = useState(null);
@@ -155,169 +153,44 @@ export function Analytics(props) {
         
     // }, [activityPatients]);
 	
-    useEffect(() => {
-		async function getStats() {
-            setLoadingStatsFirstMonitoring(true);
-			getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate)
-							.then(response => {
-								setStatsFirstMonitoring(response);
-                                setLoadingStatsFirstMonitoring(false);
-							})
-			getStatsMostCommonDiagnosis(props.investigations.currentInvestigation.uuid, startDate, endDate)
-							.then(response => {
-								setMostCommonDiagnosis(response.stats);
-							})
-            getStatsActivityService(props.investigations.currentInvestigation.uuid, startDate, endDate)
-                            .then(response => {
-                                setActivityPatients(response.stats);
-                            })
-            getStatsOutpatients(props.investigations.currentInvestigation.uuid, startDate, endDate)
-                .then(response => {
-                    setAppointmentsPerDepartment(response.stats);
-            })
-            if(props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING)){
-                getBillingDepartments(props.investigations.currentInvestigation.uuid, startDate, endDate)
-                    .then(response => {
-                        setBillingDepartments(response.stats);
-                })
-                if(props.investigations.currentInvestigation.billingInfo && props.investigations.currentInvestigation.billingInfo.params["budgets"]){
-                    getTotalBillingInsurances(props.investigations.currentInvestigation.uuid, startDate, endDate)
-                        .then(response => {
-                            setBillingInsurances(response.stats);
-                    })
-                }
-            }
-		}
+    // useEffect(() => {
+	// 	async function getStats() {
+    //         setLoadingStatsFirstMonitoring(true);
+	// 		getStatsFirstMonitoring(props.investigations.currentInvestigation.uuid, startDate, endDate)
+	// 						.then(response => {
+	// 							setStatsFirstMonitoring(response);
+    //                             setLoadingStatsFirstMonitoring(false);
+	// 						})
+	// 		getStatsMostCommonDiagnosis(props.investigations.currentInvestigation.uuid, startDate, endDate)
+	// 						.then(response => {
+	// 							setMostCommonDiagnosis(response.stats);
+	// 						})
+    //         getStatsActivityService(props.investigations.currentInvestigation.uuid, startDate, endDate)
+    //                         .then(response => {
+    //                             setActivityPatients(response.stats);
+    //                         })
+    //         getStatsOutpatients(props.investigations.currentInvestigation.uuid, startDate, endDate)
+    //             .then(response => {
+    //                 setAppointmentsPerDepartment(response.stats);
+    //         })
+    //         if(props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING)){
+    //             getBillingDepartments(props.investigations.currentInvestigation.uuid, startDate, endDate)
+    //                 .then(response => {
+    //                     setBillingDepartments(response.stats);
+    //             })
+    //             if(props.investigations.currentInvestigation.billingInfo && props.investigations.currentInvestigation.billingInfo.params["budgets"]){
+    //                 getTotalBillingInsurances(props.investigations.currentInvestigation.uuid, startDate, endDate)
+    //                     .then(response => {
+    //                         setBillingInsurances(response.stats);
+    //                 })
+    //             }
+    //         }
+	// 	}
 
-		if (props.investigations.currentInvestigation && startDate && endDate) {
-			getStats();
-		}
-	}, [startDate, endDate, props.investigations.currentInvestigation]);
-
-    function renderCore(){
-        return(
-            <>
-                <Selector onDatesSelected={() => console.log("buu")} />
-                <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={true}>
-                    <MedicalAnalytics startDate={1} endDate={1702487841503} 
-                        locale={props.activeLanguage.code} currency={"CFA"}
-                        hasBudgets={ props.investigations.currentInvestigation.billingInfo?.params["budgets"] }
-                        uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308'   />
-                    <BillingAnalytics startDate={1} endDate={1702487841503} 
-                        onlyDepartmentsResearcher={onlyDepartmentsResearcher}
-                        locale={props.activeLanguage.code} currency={"CFA"}
-                        hasBudgets={ props.investigations.currentInvestigation.billingInfo?.params["budgets"] }
-                        uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
-                </TabsSherwood>
-            </>
-            
-        );
-        if(loadingPatientsInfo){
-            return (
-                <Loader />
-            )
-        }
-        else{
-            return(
-                <Grid container spacing={6} style={{marginTop:'1rem'}}>
-				{
-					props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) &&
-					<Grid item xs={12}>
-						<Grid container spacing={6}>
-							<Grid item xs={12} sm={12} md={6}>
-								<DoughnutChart title={props.translate("hospital.analytics.graphs.sex.title")} labels={[props.translate("hospital.analytics.graphs.sex.male"), props.translate("hospital.analytics.graphs.sex.female")]}
-									table={{ title: props.translate("hospital.analytics.graphs.sex.table-title"), columns: [props.translate("hospital.analytics.graphs.sex.count")] }}
-									innerInfo={{ title: "Patients", value: filteredPatients.length }}
-
-									datasets={[
-										{
-											data: [countSex.male, countSex.female],
-											percents: [Math.round(countSex.male / (countSex.male + countSex.female) * 100), Math.round(countSex.female / (countSex.male + countSex.female) * 100)],
-											backgroundColor: ["#028186", "#ef6657"],
-											borderWidth: 5,
-											borderColor: props.theme.palette.background.paper,
-										}
-									]} />
-							</Grid>
-							<Grid item xs={12} sm={12} md={6}>
-								<DoughnutChart title={props.translate("hospital.analytics.graphs.age.title")} labels={ageGroups.map(groupAge => { if (groupAge[1] === 1000) { return ">" + groupAge[0] } else { return groupAge[0] + "-" + groupAge[1] } })}
-									table={{ title: props.translate("hospital.analytics.graphs.age.table-title"), columns: [[props.translate("hospital.analytics.graphs.sex.count")]] }}
-
-
-									datasets={[
-										{
-											data: countAge,
-											percents: countAge.map(countAge => Math.round((countAge / filteredPatients.length) * 100)),
-											backgroundColor: [props.theme.palette.secondary.main, red[500], orange[500], yellow[500], blue[500], props.theme.palette.secondary.main, red[500], orange[500], yellow[500], blue[500]],
-											borderWidth: 5,
-											borderColor: props.theme.palette.background.paper,
-										}
-									]} />
-							</Grid>
-                            <Grid item xs={12}>
-                                <PatientsBarChart title={<Translate id="hospital.analytics.graphs.patients.title" />} 
-                                    departments={departments} statsPerDepartment = {activityPatients}
-                                    departmentSelected={departments ? departments.find((dep) => dep.uuid === departmentSelected) : null} />
-                            </Grid>
-						</Grid>
-					</Grid>
-				}
-                {
-                    (!departmentSelected || departmentSelected === 'all' ) &&
-                    <>
-                        <Grid item xs={12}> 
-                            <SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
-                                uuidInvestigation={props.investigations.currentInvestigation.uuid}
-                                startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
-                                title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
-                        </Grid>
-                        <Grid item xs={12} >
-                            <CommonDiagnosis patientsPersonalData={props.investigations.currentInvestigation.patientsPersonalData} 
-                                loading={mostCommonDiagnosis === null} data={mostCommonDiagnosis} />
-                        </Grid>
-                    </>
-                }
-
-                { props.investigations.currentInvestigation.billingInfo && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING) &&
-                    <Grid container item spacing={1}>
-                        <Grid item xs={12} >
-                            <BillingChart loading={billingDepartments === null} 
-                                departments={departments} currency={props.investigations.currentInvestigation.billingInfo.currency}
-                                stats={billingDepartments} />
-                        </Grid>
-                    </Grid>
-                }
-                {
-                    (props.investigations.currentInvestigation.billingInfo && insurances && props.investigations.currentInvestigation.billingInfo.params["budgets"]) &&
-                    <Grid container item spacing={1}>
-                        <Grid item xs={12} >
-                            <BillingInsuranceBars loading={billingInsurances === null} 
-                                locale={props.activeLanguage.code}
-                                borderColor ={props.theme.palette.background.paper}
-                                insurances={insurances} currency={props.investigations.currentInvestigation.billingInfo.currency}
-                                stats={billingInsurances} />
-                        </Grid>
-                    </Grid>
-                }
-				
-                <Grid container item spacing={1}>
-                    <Grid item xs={12} >
-                        <HospitalStats loading={loadingStatsFirstMonitoring} stats={statsFirstMonitoring} 
-                            departmentSelected={departmentSelected} />
-                    </Grid>
-                </Grid>
-				{
-                    (props.investigations.currentInvestigation && 
-                        props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && 
-                    <Grid container item spacing={1}>
-                        <OutpatientsStats functionalities={props.investigations.currentInvestigation.functionalities} 
-                            appointmentsPerDepartment={appointmentsPerDepartment} theme={props.theme} departments={departments} />
-                    </Grid>   
-                }
-			</Grid>
-            )
-        }
-    }
+	// 	if (props.investigations.currentInvestigation && startDate && endDate) {
+	// 		getStats();
+	// 	}
+	// }, [startDate, endDate, props.investigations.currentInvestigation]);
 
 	if (props.investigations.loading) {
 		return <Loader />
@@ -328,7 +201,7 @@ export function Analytics(props) {
 	}
 
 	return (
-		<React.Fragment>
+		<AnalyticsContextProvider uuidInvestigation={props.investigations.currentInvestigation.uuid}>
 			<Helmet title="Analytics Dashboard" />
 			<Grid container spacing={6}>
 				<Grid item xs={12} style={{ color: "white" }}>
@@ -342,11 +215,10 @@ export function Analytics(props) {
                     </Grid>    
                 </Grid> */}
 			</Grid>
-            {
-                renderCore()
-            }
+            <AnalyticsCore languageCode={props.activeLanguage.code} onlyDepartmentsResearcher={onlyDepartmentsResearcher}
+                billingInfo={props.investigations.currentInvestigation.billingInfo} />
 			
-		</React.Fragment>
+		</AnalyticsContextProvider>
 	)
 }
 
@@ -361,3 +233,132 @@ const mapStateToProps = (state) => {
 	}
 }
 export default withTheme(withLocalize(connect(mapStateToProps, null)(Analytics)))
+
+
+export function AnalyticsCore({languageCode, billingInfo, onlyDepartmentsResearcher}) {
+    const { startDate, endDate, departmentSelected } = React.useContext(AnalyticsContext); 
+
+    return(
+        <>
+            <Selector onDatesSelectedCallback={(startDate, endDate) => console.log(`Fechas: ${startDate} ${endDate}`)} />
+            <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={true}>
+                <MedicalAnalytics startDate={1} endDate={1702487841503} 
+                    locale={languageCode} currency={billingInfo?.currency}
+                    hasBudgets={ billingInfo?.params["budgets"] }
+                    uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308'   />
+                <BillingAnalytics startDate={1} endDate={1702487841503} 
+                    onlyDepartmentsResearcher={onlyDepartmentsResearcher}
+                    locale={languageCode} currency={billingInfo?.currency}
+                    hasBudgets={ billingInfo?.params["budgets"] }
+                    uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
+            </TabsSherwood>
+        </>
+        
+    );
+    if(loadingPatientsInfo){
+        return (
+            <Loader />
+        )
+    }
+    else{
+        return(
+            <Grid container spacing={6} style={{marginTop:'1rem'}}>
+            {
+                props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) &&
+                <Grid item xs={12}>
+                    <Grid container spacing={6}>
+                        <Grid item xs={12} sm={12} md={6}>
+                            <DoughnutChart title={props.translate("hospital.analytics.graphs.sex.title")} labels={[props.translate("hospital.analytics.graphs.sex.male"), props.translate("hospital.analytics.graphs.sex.female")]}
+                                table={{ title: props.translate("hospital.analytics.graphs.sex.table-title"), columns: [props.translate("hospital.analytics.graphs.sex.count")] }}
+                                innerInfo={{ title: "Patients", value: filteredPatients.length }}
+
+                                datasets={[
+                                    {
+                                        data: [countSex.male, countSex.female],
+                                        percents: [Math.round(countSex.male / (countSex.male + countSex.female) * 100), Math.round(countSex.female / (countSex.male + countSex.female) * 100)],
+                                        backgroundColor: ["#028186", "#ef6657"],
+                                        borderWidth: 5,
+                                        borderColor: props.theme.palette.background.paper,
+                                    }
+                                ]} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={6}>
+                            <DoughnutChart title={props.translate("hospital.analytics.graphs.age.title")} labels={ageGroups.map(groupAge => { if (groupAge[1] === 1000) { return ">" + groupAge[0] } else { return groupAge[0] + "-" + groupAge[1] } })}
+                                table={{ title: props.translate("hospital.analytics.graphs.age.table-title"), columns: [[props.translate("hospital.analytics.graphs.sex.count")]] }}
+
+
+                                datasets={[
+                                    {
+                                        data: countAge,
+                                        percents: countAge.map(countAge => Math.round((countAge / filteredPatients.length) * 100)),
+                                        backgroundColor: [props.theme.palette.secondary.main, red[500], orange[500], yellow[500], blue[500], props.theme.palette.secondary.main, red[500], orange[500], yellow[500], blue[500]],
+                                        borderWidth: 5,
+                                        borderColor: props.theme.palette.background.paper,
+                                    }
+                                ]} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <PatientsBarChart title={<Translate id="hospital.analytics.graphs.patients.title" />} 
+                                departments={departments} statsPerDepartment = {activityPatients}
+                                departmentSelected={departments ? departments.find((dep) => dep.uuid === departmentSelected) : null} />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            }
+            {
+                (!departmentSelected || departmentSelected === 'all' ) &&
+                <>
+                    <Grid item xs={12}> 
+                        <SearchTable label={props.translate("hospital.analytics.graphs.search-diagnose.search").toString()}
+                            uuidInvestigation={props.investigations.currentInvestigation.uuid}
+                            startDate={startDate} endDate={endDate} locale={props.activeLanguage.code}
+                            title={props.translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
+                    </Grid>
+                    <Grid item xs={12} >
+                        <CommonDiagnosis patientsPersonalData={props.investigations.currentInvestigation.patientsPersonalData} 
+                            loading={mostCommonDiagnosis === null} data={mostCommonDiagnosis} />
+                    </Grid>
+                </>
+            }
+
+            { props.investigations.currentInvestigation.billingInfo && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING) &&
+                <Grid container item spacing={1}>
+                    <Grid item xs={12} >
+                        <BillingChart loading={billingDepartments === null} 
+                            departments={departments} currency={props.investigations.currentInvestigation.billingInfo.currency}
+                            stats={billingDepartments} />
+                    </Grid>
+                </Grid>
+            }
+            {
+                (props.investigations.currentInvestigation.billingInfo && insurances && props.investigations.currentInvestigation.billingInfo.params["budgets"]) &&
+                <Grid container item spacing={1}>
+                    <Grid item xs={12} >
+                        <BillingInsuranceBars loading={billingInsurances === null} 
+                            locale={props.activeLanguage.code}
+                            borderColor ={props.theme.palette.background.paper}
+                            insurances={insurances} currency={props.investigations.currentInvestigation.billingInfo.currency}
+                            stats={billingInsurances} />
+                    </Grid>
+                </Grid>
+            }
+            
+            <Grid container item spacing={1}>
+                <Grid item xs={12} >
+                    <HospitalStats loading={loadingStatsFirstMonitoring} stats={statsFirstMonitoring} 
+                        departmentSelected={departmentSelected} />
+                </Grid>
+            </Grid>
+            {
+                (props.investigations.currentInvestigation && 
+                    props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && 
+                <Grid container item spacing={1}>
+                    <OutpatientsStats functionalities={props.investigations.currentInvestigation.functionalities} 
+                        appointmentsPerDepartment={appointmentsPerDepartment} theme={props.theme} departments={departments} />
+                </Grid>   
+            }
+        </Grid>
+        )
+    }
+    
+}
