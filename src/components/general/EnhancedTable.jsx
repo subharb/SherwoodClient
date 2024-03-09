@@ -290,7 +290,7 @@ export function EnhancedTable(props) {
     };
 
     useEffect(() => {
-        if(props.noPagination){
+        if(props.noPagination || props.noFooter){
             setRowsPerPage(props.rows.length + 1);
         }
     }, [props.rows])
