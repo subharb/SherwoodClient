@@ -2,7 +2,7 @@ import Chart from 'react-apexcharts';
 import { useTheme } from '@material-ui/core/styles';
 
 
-export const BarChartLine = () => {
+export const BarChartLine = ({series}) => {
     const theme = useTheme();
   
     const chart = {
@@ -62,7 +62,7 @@ export const BarChartLine = () => {
       },
       series: [
         {
-          data: [10, 20, 30, 40, 50, 60, 5]
+          data: series
         }
       ]
     };

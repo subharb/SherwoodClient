@@ -26,13 +26,14 @@ export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, lo
     if(startDate === null || endDate === null || uuidInvestigation === null){
         return <div>Loading</div>
     }
-    const {filteredPatients, isPending } = usePatientFromDepartment(uuidInvestigation!, "all", startDate, endDate);
+    const {filteredPatients, isPending, trend } = usePatientFromDepartment(uuidInvestigation!, "all", startDate, endDate);
 
     if(isPending){
         return <Loader />
     }
     return (
         <LocalizedMedicalAnalyticsView currency={currency} startDate={startDate} endDate={endDate}
+            trend={trend}
             locale={locale} uuidInvestigation={uuidInvestigation} filteredPatients={filteredPatients}
             departments={ departments ? departments : [] } departmentSelected={departmentSelected ? departmentSelected : ""} />
     )};
@@ -41,11 +42,13 @@ interface MedicalAnalyticsViewProps extends MedicalAnalyticsProps, LocalizeConte
     filteredPatients:IPatient[];
     startDate: number;
     endDate: number;
+    trend: {data:number[], total:number};
     uuidInvestigation: string;
     departments: IDepartment[];
     departmentSelected: string
 }
-const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvestigation, departments, departmentSelected, startDate, endDate, currency, locale, filteredPatients,
+const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvestigation, departments, departmentSelected, trend,
+                                                                        startDate, endDate, currency, locale, filteredPatients,
                                                                         translate }) => {
     
     const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
@@ -112,11 +115,11 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                             sm={6}
                             xs={12}
                         >
-                           <Trend key="billing"
-                                label={`Total billing ${currency}`}
-                                totalIndex={1}
+                           <Trend key="patients"
+                                label={`Total patients ${currency}`}
+                                totalIndex={0}
                                 locale={locale}
-                                url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/billing/startDate/${startDate}/endDate/${endDate}`}
+                                dataTrend={trend}
                                 type="bars"
                             />
                         </Grid>

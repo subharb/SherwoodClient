@@ -14,5 +14,5 @@ export function usePatientFromDepartment(uuidInvestigation:string, uuidDepartmen
     const filteredPatients = !isPending && data.stats && data.stats.patientIds ? patientsPersonalData.filter(patient => {
                                 return data.stats.patientIds.includes(patient.id);
                             }) : [];
-    return { isPending, error, filteredPatients };
+    return { isPending, error, filteredPatients, trend : data ? data.trend : []};
 }
