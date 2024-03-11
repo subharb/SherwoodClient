@@ -2,14 +2,44 @@ import React, { useMemo } from 'react';
 import { countSexPatients } from '../../../utils/index.jsx';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { Translate } from 'react-localize-redux';
+import { IPatient, IPersonalData } from '../../../constants/types.js';
+import { useQuery } from '@tanstack/react-query';
+import { getStatsMostCommonDiagnosis } from '../../../services/index.js';
+import Loader from '../../../components/Loader.jsx';
 
 interface CommonDiagnosisProps {
+    uuidInvestigation: string,
+    startDate: number,
+    endDate: number,
+    patientsPersonalData: IPatient[],
+}
+
+const CommonDiagnosis: React.FC<CommonDiagnosisProps> = ({ patientsPersonalData, uuidInvestigation, 
+                                                            startDate, endDate }) => {
+
+    const { isPending, error, data } = useQuery({
+        queryKey: ['getStatsMostCommonDiagnosis', uuidInvestigation, startDate, endDate],
+        queryFn: () =>
+        getStatsMostCommonDiagnosis(uuidInvestigation, startDate, endDate),
+    })
+
+    if(isPending){
+        return <Loader />;
+    }
+    if(error){
+        return <div>Error: {error.message}</div>;
+    }
+    return <CommonDiagnosisView loading={isPending} data={data.stats} 
+                patientsPersonalData={patientsPersonalData} />;
+}
+
+interface CommonDiagnosisViewProps {
     loading:boolean,
     patientsPersonalData:any[], 
     data:Record<string, {name:string, patientIds:number[]}>
 }
 
-const CommonDiagnosis: React.FC<CommonDiagnosisProps> = ({ loading, data, patientsPersonalData }) => {
+const CommonDiagnosisView: React.FC<CommonDiagnosisViewProps> = ({ loading, data, patientsPersonalData }) => {
     const rows = useMemo(() => {
         if(!data){
             return [];

@@ -104,7 +104,6 @@ function SearchTable(props:Props){
     return(
         <Paper style={{padding:'1rem'}}>
             <Typography variant="h4" gutterBottom={true}>{props.title}</Typography>
-            
               <ICT type="ict" variant='outlined' language={props.activeLanguage.code} typeMargin="normal" 
                   error={false} elementSelected={diagnoseSelectedCallBack}
                   resetICTSelectorCallback = {resetICTSelectorCallback}/>

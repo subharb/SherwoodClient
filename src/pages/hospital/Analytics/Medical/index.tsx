@@ -15,6 +15,8 @@ import { useTheme } from 'styled-components';
 import { PatientsBarChart } from './PatientsBarChart';
 import { useDepartments } from '../../../../hooks';
 import {AnalyticsContext} from '../Context';
+import SearchTable from '../../../dashboards/Analytics/SearchTable';
+import CommonDiagnosis from '../CommonDiagnosis';
 
 interface MedicalAnalyticsProps {
     currency: string,
@@ -22,6 +24,7 @@ interface MedicalAnalyticsProps {
 }
 
 export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, locale}) => {
+
     const { startDate, endDate, uuidInvestigation, departments, departmentSelected} = useContext(AnalyticsContext);
     if(startDate === null || endDate === null || uuidInvestigation === null){
         return <div>Loading</div>
@@ -111,7 +114,7 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                     >
                         <Grid
                             item
-                            md={3}
+                            md={4}
                             sm={6}
                             xs={12}
                         >
@@ -125,21 +128,35 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                         </Grid>
                         <Grid
                             item
-                            md={3}
+                            md={4}
                             sm={6}
                             xs={12}
                         >
-                            <Trend key="total discount"
-                                label={`Total ${currency}`}
-                                totalIndex={1}
-                                locale={locale}
-                                url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/billing/startDate/${startDate}/endDate/${endDate}`}
-                                type="bars"
-                            />
+                            <Trend key="patients"
+                                    label="Total number of patients"
+                                    totalIndex={0}
+                                    locale={locale}
+                                    url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/patients/startDate/${startDate}/endDate/${endDate}`}
+                                    type="line"
+                                />
                         </Grid>
                         <Grid
                             item
-                            md={3}
+                            md={4}
+                            sm={6}
+                            xs={12}
+                        >
+                            <Trend key="appointments"
+                                        label="Total number of appointments"
+                                        totalIndex={0}
+                                        locale={locale}
+                                        url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/startDate/${startDate}/endDate/${endDate}`}
+                                        type="line"
+                                    />
+                        </Grid>
+                        <Grid
+                            item
+                            md={6}
                             sm={6}
                             xs={12}
                         >
@@ -158,7 +175,7 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                         </Grid>  
                         <Grid
                             item
-                            md={3}
+                            md={6}
                             sm={6}
                             xs={12}
                         >
@@ -180,10 +197,28 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                             sm={6}
                             xs={12}
                         >
-                        <PatientsBarChart title={translate("hospital.analytics.graphs.patients.title").toString()} 
-                            departments={ departments }
-                            departmentSelected={departments ? departments.find((dep) => dep.uuid === departmentSelected) : null} />                 
+                            
                         </Grid>
+                        {
+                            (!departmentSelected || departmentSelected === 'all' ) &&
+                            <Grid
+                                item
+                                xs={12}
+                            >
+                                <Grid item xs={12}> 
+                                    <SearchTable label={translate("hospital.analytics.graphs.search-diagnose.search").toString()}
+                                        uuidInvestigation={uuidInvestigation}
+                                        startDate={new Date(startDate)} endDate={new Date(endDate)} 
+                                        locale={locale}
+                                        title={translate("hospital.analytics.graphs.search-diagnose.title").toString()} />
+                                </Grid>
+                                <Grid item xs={12} >
+                                    <CommonDiagnosis patientsPersonalData={filteredPatients}
+                                        uuidInvestigation={uuidInvestigation} startDate={startDate} endDate={endDate} 
+                                    />
+                                </Grid>
+                            </Grid>
+                        }
                     </Grid>
                 </Grid>
             </Container>

@@ -123,7 +123,7 @@ export const TrendView: React.FC<TrendViewProps> = ({ label, series, totalNumber
     }
 
     return (
-        <Card style={{ width: '300px' }}>
+        <Card style={{ width: '100%' }}>
             <Box sx={{
                 alignItems: 'center',
                 display: 'flex',
