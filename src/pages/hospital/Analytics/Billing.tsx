@@ -36,12 +36,12 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                     justifyContent="space-between"
                     spacing={3}
                 >
-                    <Selector 
+                    {/* <Selector 
                         onlyDepartmentsResearcher={onlyDepartmentsResearcher} 
                         onDatesSelectedCallback={() => {
                             console.log("dates selected");
                         }}
-                        />
+                        /> */}
                 </Grid>
                 <Grid
                     container

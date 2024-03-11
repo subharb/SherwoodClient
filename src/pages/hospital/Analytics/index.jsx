@@ -242,11 +242,11 @@ export function AnalyticsCore({languageCode, billingInfo, onlyDepartmentsResearc
         <>
             <Selector onDatesSelectedCallback={(startDate, endDate) => console.log(`Fechas: ${startDate} ${endDate}`)} />
             <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={true}>
-                <MedicalAnalytics startDate={1} endDate={1702487841503} 
+                <MedicalAnalytics startDate={startDate} endDate={endDate} 
                     locale={languageCode} currency={billingInfo?.currency}
                     hasBudgets={ billingInfo?.params["budgets"] }
                     uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308'   />
-                <BillingAnalytics startDate={1} endDate={1702487841503} 
+                <BillingAnalytics startDate={startDate} endDate={endDate} 
                     onlyDepartmentsResearcher={onlyDepartmentsResearcher}
                     locale={languageCode} currency={billingInfo?.currency}
                     hasBudgets={ billingInfo?.params["budgets"] }

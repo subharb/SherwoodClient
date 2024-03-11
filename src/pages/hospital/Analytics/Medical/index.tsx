@@ -25,9 +25,11 @@ interface MedicalAnalyticsProps {
 
 export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, locale}) => {
 
-    const { startDate, endDate, uuidInvestigation, departments, departmentSelected} = useContext(AnalyticsContext);
+    const { startDate, endDate, uuidInvestigation, 
+            departments, departmentSelected} = useContext(AnalyticsContext);
+    
     if(startDate === null || endDate === null || uuidInvestigation === null){
-        return <div>Loading</div>
+        return <Loader />
     }
     const {filteredPatients, isPending, trend } = usePatientFromDepartment(uuidInvestigation!, "all", startDate, endDate);
 
@@ -197,7 +199,9 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                             sm={6}
                             xs={12}
                         >
-                            
+                            <PatientsBarChart title={translate("hospital.analytics.graphs.patients.title").toString()} 
+                                departments={ departments } uuidInvestigation={uuidInvestigation} startDate={startDate} endDate={endDate}
+                                departmentSelected={departments ? departments.find((dep) => dep.uuid === departmentSelected) : null} />                 
                         </Grid>
                         {
                             (!departmentSelected || departmentSelected === 'all' ) &&

@@ -33,7 +33,7 @@ function SearchTable(props:Props){
             return <Loader />
         }
         else if(JSON.stringify(stats) === '{}' ){
-            return "No hay resultados"
+            return <Translate id="general.no_results" />
         }
         else if(stats !== null && ict) {
             const labels = Object.keys(stats).map(key => {
