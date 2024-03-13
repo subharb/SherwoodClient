@@ -8,6 +8,7 @@ export function usePatientFromDepartment(uuidInvestigation:string, uuidDepartmen
         queryKey: ['getPatientIdFromDepartment', uuidInvestigation, uuidDepartment, startDate, endDate],
         queryFn: () =>
             getPatientIdFromDepartment(uuidInvestigation, uuidDepartment, startDate, endDate),
+            staleTime: Infinity,
     })
     const patientsPersonalData:IPatient[] = useSelector((state:any) => state.investigations.currentInvestigation.patientsPersonalData);
 
@@ -15,4 +16,5 @@ export function usePatientFromDepartment(uuidInvestigation:string, uuidDepartmen
                                 return data.stats.patientIds.includes(patient.id);
                             }) : [];
     return { isPending, error, filteredPatients, trend : data ? data.trend : []};
+
 }

@@ -10,7 +10,7 @@ interface PatientsBarChartProps {
     startDate: number,
     endDate: number,
     departments:IDepartment[],
-    departmentSelected:IDepartment,
+    departmentSelected:string,
     patients:any[],
     title:string
 }
@@ -19,8 +19,10 @@ export const PatientsBarChart: React.FC<PatientsBarChartProps> = ({ uuidInvestig
     const { isPending, error, data } = useQuery({
         queryKey: ['getStatsActivityService', uuidInvestigation, startDate, endDate],
         queryFn: () =>
-        getStatsActivityService(uuidInvestigation, startDate, endDate),
+            getStatsActivityService(uuidInvestigation, startDate, endDate),
+        staleTime: Infinity,
     })
+    
     const filteredPatients = useMemo(() => {
         if(data){
             let tempFilteredPatients:IPatient[] = [];

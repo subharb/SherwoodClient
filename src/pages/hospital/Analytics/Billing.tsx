@@ -5,6 +5,7 @@ import { Trend } from '../../dashboards/Analytics/Trend';
 import { BillingChart } from '../../dashboards/Analytics/BillingBarChart';
 import { BillingInsuranceBars } from '../../dashboards/Analytics/BillingInsuranceBars';
 import { Selector } from './Selector';
+import { useQuery } from '@tanstack/react-query';
 
 interface BillingAnalyticsProps {
     startDate: number;
@@ -18,6 +19,20 @@ interface BillingAnalyticsProps {
 
 const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate, uuidInvestigation, 
                                                                 locale, currency, onlyDepartmentsResearcher, hasBudgets }) => {
+    
+    const url = `${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/billing/startDate/${startDate}/endDate/${endDate}`;
+    const { isPending, error, data } = useQuery({
+        queryKey: [url],
+        queryFn: () =>
+            fetch(url, {
+                headers: {
+                    "Authorization": localStorage.getItem("jwt")
+                }
+            })
+                .then((res) => res.json()),
+            staleTime: Infinity,
+    });
+
     return (
         <>
         <Helmet>
@@ -62,7 +77,8 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                                 label={`Total billing ${currency}`}
                                 totalIndex={1}
                                 locale={locale}
-                                url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/billing/startDate/${startDate}/endDate/${endDate}`}
+                                isLoading={isPending}
+                                dataTrend={data.trend}
                                 type="bars"
                             />
                         </Grid>
@@ -73,10 +89,11 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                             xs={12}
                         >
                             <Trend key="total discount"
-                                label={`Total ${currency}`}
-                                totalIndex={1}
+                                label={`Total discount ${currency}`}
+                                totalIndex={2}
                                 locale={locale}
-                                url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/billing/startDate/${startDate}/endDate/${endDate}`}
+                                isLoading={isPending}
+                                dataTrend={data.trend}
                                 type="bars"
                             />
                         </Grid>

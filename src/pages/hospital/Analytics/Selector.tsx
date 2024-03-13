@@ -48,14 +48,13 @@ export const Selector: React.FC<SelectorProps> = ({ onlyDepartmentsResearcher, o
         )
     }
     return(
-        <>
-            <Grid item sm={6} xs={12}>
+        <Grid container>
+            <Grid item xs={12}>
                 { renderDepartmentSelector() }
-            </Grid>
-            <Grid item sm={6} xs={12}>
                 <DatesSelector onCallBack={onDatesSelected} />
             </Grid>
-        </>
+            
+        </Grid>
         
     )
 };

@@ -21,6 +21,7 @@ const CommonDiagnosis: React.FC<CommonDiagnosisProps> = ({ patientsPersonalData,
         queryKey: ['getStatsMostCommonDiagnosis', uuidInvestigation, startDate, endDate],
         queryFn: () =>
         getStatsMostCommonDiagnosis(uuidInvestigation, startDate, endDate),
+        staleTime: Infinity,
     })
 
     if(isPending){

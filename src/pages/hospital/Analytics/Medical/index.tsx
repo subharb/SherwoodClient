@@ -17,6 +17,7 @@ import { useDepartments } from '../../../../hooks';
 import {AnalyticsContext} from '../Context';
 import SearchTable from '../../../dashboards/Analytics/SearchTable';
 import CommonDiagnosis from '../CommonDiagnosis';
+import { TrendDepartment } from './TrendDepartment';
 
 interface MedicalAnalyticsProps {
     currency: string,
@@ -31,7 +32,7 @@ export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, lo
     if(startDate === null || endDate === null || uuidInvestigation === null){
         return <Loader />
     }
-    const {filteredPatients, isPending, trend } = usePatientFromDepartment(uuidInvestigation!, "all", startDate, endDate);
+    const {filteredPatients, isPending, trend } = usePatientFromDepartment(uuidInvestigation!, !departmentSelected ? "all" : departmentSelected, startDate, endDate);
 
     if(isPending){
         return <Loader />
@@ -92,6 +93,7 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
         setCountSex(tempCountSex);
     }, [filteredPatients]);           
 
+
     return (
         <>
         <Helmet>
@@ -121,7 +123,7 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                             xs={12}
                         >
                            <Trend key="patients"
-                                label={`Total patients ${currency}`}
+                                label={`Total patients`}
                                 totalIndex={0}
                                 locale={locale}
                                 dataTrend={trend}
@@ -134,11 +136,11 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                             sm={6}
                             xs={12}
                         >
-                            <Trend key="patients"
-                                    label="Total number of patients"
+                            <Trend key="outpatient_patients"
+                                    label="Outpatients patients"
                                     totalIndex={0}
                                     locale={locale}
-                                    url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/patients/startDate/${startDate}/endDate/${endDate}`}
+                                    url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/patients/${departmentSelected}/startDate/${startDate}/endDate/${endDate}`}
                                     type="line"
                                 />
                         </Grid>
@@ -149,12 +151,12 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                             xs={12}
                         >
                             <Trend key="appointments"
-                                        label="Total number of appointments"
-                                        totalIndex={0}
-                                        locale={locale}
-                                        url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/startDate/${startDate}/endDate/${endDate}`}
-                                        type="line"
-                                    />
+                                    label="Total number of appointments"
+                                    totalIndex={0}
+                                    locale={locale}
+                                    url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/appointments/${departmentSelected}/startDate/${startDate}/endDate/${endDate}`}
+                                    type="line"
+                                />
                         </Grid>
                         <Grid
                             item

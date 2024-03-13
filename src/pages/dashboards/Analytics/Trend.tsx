@@ -8,25 +8,27 @@ import { useMemo } from 'react';
 import Loader from '../../../components/Loader';
 import { useQuery } from '@tanstack/react-query';
 
-interface TrendProps {
+export interface TrendProps {
     label: string;
     type: string;
     url?: string;
     dataTrend?: any;
     totalIndex: number;
     locale: string;
+    isLoading?: boolean;
 }
 
 type ExclusiveProps<T> = T extends { url: any } ? { url: string } : { dataTrend: any };
 
 
-interface TrendViewProps extends TrendProps{
+interface TrendViewProps extends Omit<TrendProps, "url" | "dataTrend" | "isLoading" | "totalIndex">{
     series: number[];
     totalNumber: number;
     type: string;
+    
 }
 
-export const Trend: React.FC<TrendProps & ExclusiveProps<TrendProps>> = ({ label, type, url, dataTrend, totalIndex, locale }) => {
+export const Trend: React.FC<TrendProps & ExclusiveProps<TrendProps>> = ({ label, isLoading, type, url, dataTrend, totalIndex, locale }) => {
     let isPending = false;
     let error: Error | null = null;
     let trend: any | null = null;
@@ -41,6 +43,7 @@ export const Trend: React.FC<TrendProps & ExclusiveProps<TrendProps>> = ({ label
                     }
                 })
                     .then((res) => res.json()),
+                staleTime: Infinity,
         });
         isPending = response.isPending;
         error = response.error;
@@ -51,7 +54,7 @@ export const Trend: React.FC<TrendProps & ExclusiveProps<TrendProps>> = ({ label
         trend = dataTrend;
     }
 
-    if (isPending) {
+    if (isPending || isLoading) {
         return <Loader />;
     }
     if (error) {
@@ -60,8 +63,7 @@ export const Trend: React.FC<TrendProps & ExclusiveProps<TrendProps>> = ({ label
     if (!trend) {
         return <div>NO DATA</div>;
     }
-    console.log(JSON.stringify(trend));
-    console.log(JSON.stringify(trend.trend));
+
     return (
         <TrendView
             label={label}
@@ -108,6 +110,7 @@ export const TrendView: React.FC<TrendViewProps> = ({ label, series, totalNumber
     }
 
     function renderTrend(percentage: number) {
+        console.log(percentage);
         if (percentage > 0) {
             return `${percentage.toFixed(0)}% increase`;
         } else {
