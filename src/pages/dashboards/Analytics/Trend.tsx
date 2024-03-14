@@ -7,6 +7,7 @@ import { alpha } from '@material-ui/core';
 import { useMemo } from 'react';
 import Loader from '../../../components/Loader';
 import { useQuery } from '@tanstack/react-query';
+import { RadialChartLine } from './RadialChart';
 
 export interface TrendProps {
     label: string;
@@ -122,7 +123,10 @@ export const TrendView: React.FC<TrendViewProps> = ({ label, series, totalNumber
         if (type === "line") {
             return <LineChart series={series} />;
         }
-        return <BarChartLine series={series} />;
+        else if (type === "bars") {
+            return <BarChartLine series={series} />;
+        }
+        return <RadialChartLine series={series} />;
     }
 
     return (
