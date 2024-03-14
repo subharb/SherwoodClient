@@ -529,13 +529,14 @@
         "duration" : ["Duration", "Duración", "Durée"],
         "frecuency-options" : {
             "4h" : ["4 hours", "4 horas", "4 heures"],
-            "6h" : ["qsd", "6 horas", "6 heures"],
-            "8h" : ["tsd", "8 horas", "8 heures"],
+            "6h" : ["qds", "6 horas", "6 heures"],
+            "8h" : ["tds", "8 horas", "8 heures"],
             "12h" : ["bd", "12 horas", "12 heures"],
             "24h" : ["od", "24 horas", "24 heures"],
             "48h" : ["48 hours", "48 horas", "48 heures"],
-            "week" : ["1 week", "1 semana", "1 semaine"],
-            "nocte" : ["nocte", "una vez por la noche", "une fois pendant la nuit"]
+            "nocte" : ["nocte", "una vez por la noche", "une fois pendant la nuit"],
+            "week" : ["1 week", "1 semana", "1 semaine"]
+            
         },
         "dose-options" : {
             "1" : ["1 tablet", "1 comprimido", "1 pilule"],
