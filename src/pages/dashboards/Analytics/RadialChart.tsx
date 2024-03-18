@@ -37,7 +37,7 @@ export const RadialChartLine = ({series}: {series: number[]}) => {
               width: 8,
               height: 8
             },
-            show: true
+            show: false
           },
           stroke: {
             width: 0
@@ -51,7 +51,7 @@ export const RadialChartLine = ({series}: {series: number[]}) => {
   
     return (
         <Chart
-          height={100}
+          height={110}
           type="donut"
           {...chart}
         />

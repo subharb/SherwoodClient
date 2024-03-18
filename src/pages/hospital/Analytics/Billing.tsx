@@ -90,7 +90,7 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                         >
                             <Trend key="total discount"
                                 label={`Total discount ${currency}`}
-                                totalIndex={3}
+                                totalIndex={2}
                                 locale={locale}
                                 isLoading={isPending}
                                 dataTrend={data ? {...data.trend, data: [data.trend.totals[1], data.trend.totals[2]]} : {}}
