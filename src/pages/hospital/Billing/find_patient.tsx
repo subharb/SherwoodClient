@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { Translate } from "react-localize-redux";
 import { connect } from "react-redux";
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
-import { IPatient } from "../../../constants/types";
+import { IInsurance, IPatient } from "../../../constants/types";
 import { formatPatients } from "../../../utils/index.jsx";
 
 
@@ -11,6 +11,7 @@ interface Props{
     patients:IPatient[],
     personalFields:any[],
     codeLanguage:string,
+    insurances: IInsurance[],
     onPatientSelected:(idPatient:number) => void,
     selectingPatientCallBack?:(value:boolean) => void
 }
@@ -38,6 +39,7 @@ export const FindPatient:React.FC<Props> = (props) => {
                 return "No patients match the criteria"
             }
             else{
+
                 const hasPhone = props.personalFields.find((pF) => pF.name === "phone");
                 let headCells = [{ id: "name", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.name`} /> },
                                     { id: "surnames", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.surnames`} /> },
@@ -47,8 +49,11 @@ export const FindPatient:React.FC<Props> = (props) => {
                 if(hasPhone){
                     headCells.splice(3, 0, { id: "phone", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.phone`} /> });
                 }
+                if(props.insurances.length > 0){
+                    headCells.splice(3, 0, { id: "insurance", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.insurance`} /> });
+                }
                     
-                const rows = formatPatients(filteredPatients, props.personalFields, props.codeLanguage)
+                const rows = formatPatients(filteredPatients, props.personalFields, props.codeLanguage, props.insurances)
                 return(
                     <EnhancedTable noHeader noSelectable noFooter rows={rows} headCells={headCells} selectRow={(idPatient:number)=> props.onPatientSelected(idPatient)} />
                 )

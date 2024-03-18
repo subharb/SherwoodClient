@@ -69,7 +69,7 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                     >
                         <Grid
                             item
-                            md={3}
+                            
                             sm={6}
                             xs={12}
                         >
@@ -84,7 +84,7 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                         </Grid>
                         <Grid
                             item
-                            md={3}
+                            
                             sm={6}
                             xs={12}
                         >
@@ -99,7 +99,7 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                         </Grid>
                         <Grid
                             item
-                            md={3}
+                            
                             sm={6}
                             xs={12}
                         >
@@ -110,10 +110,10 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                         {
                             hasBudgets &&
                             <Grid
-                            item
-                            md={3}
-                            sm={6}
-                            xs={12}
+                                item
+                                
+                                sm={6}
+                                xs={12}
                         >
                             <BillingInsuranceBars locale={locale} startDate={1702487541503} endDate={endDate} uuidInvestigation={uuidInvestigation}
                                 currency={currency} />

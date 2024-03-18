@@ -7,7 +7,7 @@ import Modal from '../../../components/general/modal';
 import { useSnackBarState } from '../../../hooks';
 import { Alert } from '@mui/material';
 import { ButtonAdd, TypographyStyled } from '../../../components/general/mini_components';
-import { IPatient, ISurvey, SnackbarType } from '../../../constants/types';
+import { IInsurance, IPatient, ISurvey, SnackbarType } from '../../../constants/types';
 import { Bill, BillingInfo, BillItemModes, DocumentStatus , DocumentType} from './types';
 import { DocumentPDF } from '../Document';
 import { connect, useDispatch } from 'react-redux';
@@ -240,6 +240,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
                     personalFields={investigation.personalFields}
                     billingInfo={investigation.billingInfo} uuidDocument={uuidDocument}
                     section={action} surveyAdditionalInfo={surveyAdditionalInfo}
+                    insurances={investigation.insurances}
                     bills={bills} loading={loading} uuidPatient={uuidPatient} showSnackbar={showSnackbar}
                     onCreateOrUpdateBill={(bill: Bill, typeUpdate:TypeBillItemUpdate) => onCreateOrUpdateBill(bill, typeUpdate)}    
                     onChangeDocumentType={onChangeDocumentType}                
@@ -277,6 +278,7 @@ interface Props extends LocalizeContextProps {
     section: BillActions,
     uuidDocument?: string,
     withDiscount: boolean,
+    insurances: IInsurance[],
     onChangeDocumentType: (uuidBill:string, type: DocumentType) => void,
     
     onPatientSelected: (uuid:string) => void
@@ -425,6 +427,7 @@ const Billing: React.FC<Props> = (props) => {
                 if(actionBill === BillActions.CREATE){
                     return <BillCreate patients={props.patients} personalFields={props.personalFields} currency={props.billingInfo.currency} 
                                 uuidInvestigation={props.uuidInvestigation} canCreateBugdet={Boolean(props.billingInfo.params.budgets)}
+                                insurances={props.insurances}
                                 idBillingInfo={props.billingInfo.id} languageCode={props.activeLanguage.code} withDiscount={props.withDiscount} 
                                 onCreateBill={(bill: Bill) => props.onCreateOrUpdateBill(bill, TypeBillItemUpdate.BillItems)}
                                 onCancelBill={onCancelBill} 

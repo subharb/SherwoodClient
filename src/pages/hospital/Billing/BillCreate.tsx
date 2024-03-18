@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IPatient, IPersonalData, ReduxStore } from '../../../constants/types';
+import { IInsurance, IPatient, IPersonalData, ReduxStore } from '../../../constants/types';
 import { Bill, BillItem, BillableCombo, DocumentStatus, DocumentType } from './types';
 import { Translate } from 'react-localize-redux';
 import { BillForm } from './BillForm';
@@ -20,6 +20,7 @@ interface BillCreateProps {
     uuidInvestigation: string,
     idBillingInfo:number,
     canCreateBugdet: boolean,
+    insurances: IInsurance[],
     languageCode: string,
     surveyAdditionalInfo?: any,
     withDiscount: boolean,
@@ -35,7 +36,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
     const loadingBillables = useSelector((state:ReduxStore) => state.billing.loading);
     const billableCombos = useSelector((state:ReduxStore) => state.billing.data.billableCombos ? state.billing.data.billableCombos : []);
     const [comboSelected, setComboSelected] = useState<BillableCombo | null>(null);
-    
+    const [insurances] = useInsurances();
     const dispatch = useDispatch();
 
     async function addBillablesCombo(){
@@ -125,6 +126,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
             return <FindPatient patients={props.patients}
                         personalFields={props.personalFields}
                         codeLanguage={props.languageCode}
+                        insurances={insurances}
                         onPatientSelected={(idPatient) => onPatientSelected(idPatient)} />
         }
         else{
