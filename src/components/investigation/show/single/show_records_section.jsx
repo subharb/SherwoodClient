@@ -36,32 +36,36 @@ function ShowRecordsSection(props) {
         props.callBackEditSubmission(props.idSubmission, uuidSection);
     }
 
-    function renderValue(valueRecord, field){
+    function renderValue(valueRecord, field, hideField = false){
+        const showField = props.section.fields.length > 1 && !hideField;
         if(!valueRecord || !valueRecord.value){
-            return <React.Fragment>
+            return(
+            <Grid item paddingLeft={3}>
                 {
-                    props.section.fields.length > 1 &&
+                    showField &&
                     <Typography variant="h6" color="textPrimary">
                         {field.name}: 
                     </Typography>
                 }
                 {
                     ALL_SMARTFIELDS_TYPES.includes(field.type) &&
-                    <Translate id="general.no" />
+                    <Typography variant="body2">
+                        <Translate id="general.no" />
+                    </Typography>
                 }
                 {
                     !ALL_SMARTFIELDS_TYPES.includes(field.type) &&
                     "-"
                 }
-            </React.Fragment>;
+            </Grid>)
         }
         if(field.type === "textarea" || MEDICAL_HISTORY_FIELDS.includes(field.type)){
             const value = MEDICAL_HISTORY_FIELDS.includes(field.type) ? valueRecord.value[0].medical_history_ai : valueRecord.value;
             const parsedValue = value.replace('<h1>','').replace('</h1>','').replace('<h2>','').replace('</h2>','');;
             return(
-            <React.Fragment>
+            <Grid item paddingLeft={3}>
                 {
-                    props.section.fields.length > 1 &&
+                    showField &&
                     <Typography variant="h6" color="textPrimary" fontWeight='800'>
                         {field.name}: 
                     </Typography>
@@ -69,7 +73,7 @@ function ShowRecordsSection(props) {
                 <Typography variant="body2">
                     <div dangerouslySetInnerHTML={{__html: valueRecord ? parsedValue : "-"}}></div>                    
                 </Typography>
-            </React.Fragment>
+            </Grid>
             );
         }
         else if(valueRecord.surveyField.type === "file"){
@@ -79,6 +83,7 @@ function ShowRecordsSection(props) {
         else if(valueRecord.surveyField.type === "appointment"){
             const dateAppointment = stringDatePostgresToDate(valueRecord.value);
             return (
+                <Grid item paddingLeft={3}>
                 <Typography variant="h6" color="textPrimary">
                     <Translate id="general.date" />: {dateAppointment.toLocaleString(props.activeLanguage.code,{
                         year: 'numeric',
@@ -86,19 +91,24 @@ function ShowRecordsSection(props) {
                         day: '2-digit'
                         })}
                 </Typography>
+                </Grid>
             )
         }
         else if(valueRecord.surveyField.type === "multioption"){
             return (<Multioption mode="show" label= {field.name} options={field.options} value={valueRecord.value} />);
         }
         else if(isSmartField(valueRecord.surveyField.type)){
-            return <SmartField type={valueRecord.surveyField.type} mode="show" 
+            return(
+                <Grid item paddingLeft={3}>
+                    <SmartField type={valueRecord.surveyField.type} mode="show" 
                         initialState={{listElements:valueRecord.value}} printMode={props.printMode}
                         label={valueRecord.surveyField.label}  />
+                </Grid>)
         }
         else if(typeof valueRecord.value.getMonth === 'function' ){
-            return(<React.Fragment>
-                { props.section.fields.length > 1 &&
+            return(
+                <Grid item paddingLeft={3}>
+                { showField &&
                     <Typography variant="h6" color="textPrimary">
                         {field.name}: 
                     </Typography>
@@ -106,14 +116,14 @@ function ShowRecordsSection(props) {
                 <Typography variant="body2" gutterBottom>
                     { valueRecord.value.toISOString() }
                 </Typography>
-            </React.Fragment>
+            </Grid>
             );
         }   
         else if(valueRecord.surveyField.type === "date"){
             
             return (
-                <React.Fragment>
-                    { props.section.fields.length > 1 &&
+                <Grid item paddingLeft={3}>
+                    { showField &&
                         <Typography variant="h6" color="textPrimary">
                             {field.name}: 
                         </Typography>
@@ -121,12 +131,13 @@ function ShowRecordsSection(props) {
                     <Typography variant="body2" gutterBottom>
                         { fullDateFromPostgresString( props.activeLanguage.code, valueRecord.value) }
                     </Typography>
-                </React.Fragment>
+                </Grid>   
             )
         }
         else{
-            return(<React.Fragment>
-                { props.section.fields.length > 1 &&
+            return(
+                <Grid item paddingLeft={3}>
+                { showField &&
                     <Typography variant="h6" color="textPrimary">
                         {field.name}: 
                     </Typography>
@@ -134,7 +145,7 @@ function ShowRecordsSection(props) {
                 <Typography variant="body2" gutterBottom>
                     { valueRecord.value }
                 </Typography>
-            </React.Fragment>
+            </Grid>
             );
         }
     }
@@ -143,11 +154,13 @@ function ShowRecordsSection(props) {
     function renderSubmission(){
         if(props.records.length === 0){
             return (
-                <GridPadded item>
+                <GridPadded container padding={!props.printMode}>
                     <Grid item xs={12}>
-                        <Typography variant="body2" gutterBottom>
-                            No records available
-                        </Typography>
+                        <Grid item paddingLeft={3}>
+                            <Typography variant="body2" gutterBottom>
+                                No records available
+                            </Typography>
+                        </Grid>
                     </Grid>
                 </GridPadded>
             )   
@@ -164,7 +177,7 @@ function ShowRecordsSection(props) {
                             return (
                                 <Grid item xs={12}>
                                     {
-                                        renderValue(valueRecord, field)                                    
+                                        renderValue(valueRecord, field, field.name === props.section.name)                                    
                                     }
                                     
                                 </Grid>
