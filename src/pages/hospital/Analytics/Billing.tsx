@@ -93,7 +93,7 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                                 totalIndex={2}
                                 locale={locale}
                                 isLoading={isPending}
-                                dataTrend={data ? {...data.trend, data: [data.trend.totals[1], data.trend.totals[2]]} : {}}
+                                dataTrend={(data && data.trend.totals) ? {...data.trend, data: [data.trend.totals[1], data.trend.totals[2]]} : {}}
                                 type="radial"
                             />
                         </Grid>

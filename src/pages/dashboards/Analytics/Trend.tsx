@@ -83,7 +83,11 @@ export const TrendView: React.FC<TrendViewProps> = ({ label, series, totalNumber
         if (firstNonZero === -1) {
             return 0;
         }
-        return ((series[series.length - 1] - series[firstNonZero]) / series[firstNonZero]) * 100;
+        const percentage = ((series[series.length - 1] - series[firstNonZero]) / series[firstNonZero]) * 100;
+        if(isNaN(percentage)){
+            return 0;
+        }
+        return percentage;
     }, [series]);
 
     function renderIcon(percentage: number) {
@@ -143,7 +147,7 @@ export const TrendView: React.FC<TrendViewProps> = ({ label, series, totalNumber
                         {label}
                     </Typography>
                     <Typography style={{ fontSize: '20px' }} color="textPrimary" sx={{ mt: 1 }} variant="h4">
-                        {new Intl.NumberFormat(locale).format(totalNumber)}
+                        {isNaN(totalNumber) ? "0" : new Intl.NumberFormat(locale).format(totalNumber)}
                     </Typography>
                 </div>
                 {renderGraph(type, series)}
