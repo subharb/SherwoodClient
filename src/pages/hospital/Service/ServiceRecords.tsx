@@ -30,7 +30,8 @@ const ServiceRecords: React.FC<ServiceRecordsProps> = ({ submissions, patients, 
     function goToSubmission(index:number){
         console.log(surveyRecords[index]);
         const patient = surveyRecords[index].patient;
-        const nextUrl = HOSPITAL_PATIENT_SUBMISSION.replace(":uuidPatient", patient.uuid).replace(":action", "show").replace(":idSubmission", surveyRecords[index].id);
+        const typeTest = type === 1 ? "images" : "lab";
+        const nextUrl = HOSPITAL_PATIENT_SUBMISSION.replace(":uuidPatient", patient.uuid).replace(":action", "show").replace(":idSubmission", surveyRecords[index].id).replace(":typeTest", typeTest);
         console.log("Next url", nextUrl);
         history.push(nextUrl);
     }
