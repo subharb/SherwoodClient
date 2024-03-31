@@ -91,9 +91,9 @@ export function Analytics(props) {
     
     useEffect(() => {
         let tempCountSex = {male : 0, female : 0};
-        filteredPatients.forEach(patient => {
+        filteredPatients.forEach((patient, index) => {
             if(!patient){
-                postErrorSlack(window.location, "No personal data in patient:"+JSON.stringify(filteredPatients) , "");
+                postErrorSlack(window.location, "No personal data in patient index:"+index+" FilteredPatients:"+JSON.stringify(filteredPatients) , "");
             }
             if (patient.personalData.sex.toLowerCase() === "male") {
                 tempCountSex.male++;
