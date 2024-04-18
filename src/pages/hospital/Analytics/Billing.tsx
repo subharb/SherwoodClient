@@ -115,7 +115,7 @@ const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate,
                                 sm={6}
                                 xs={12}
                         >
-                            <BillingInsuranceBars locale={locale} startDate={1702487541503} endDate={endDate} uuidInvestigation={uuidInvestigation}
+                            <BillingInsuranceBars locale={locale} startDate={startDate} endDate={endDate} uuidInvestigation={uuidInvestigation}
                                 currency={currency} />
                         </Grid>
                         }

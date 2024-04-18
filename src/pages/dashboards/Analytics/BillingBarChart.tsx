@@ -6,6 +6,7 @@ import Loader from '../../../components/Loader';
 import { stat } from 'fs';
 import { useQuery } from '@tanstack/react-query';
 import { useDepartments } from '../../../hooks';
+import { start } from 'repl';
 
 interface BillingChartProps {
     currency:string,
@@ -23,7 +24,7 @@ export const BillingChart: React.FC<BillingChartProps> = ({ startDate, endDate, 
     const {departments, loadingDepartments } = useDepartments();
     const url = import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/billing/startDate/" + startDate + "/endDate/" + endDate;
     const { isPending, error, data } = useQuery({
-        queryKey: ["billingChart"],
+        queryKey: ["billingChart", startDate, endDate, uuidInvestigation],
         queryFn: () =>
           fetch(url, {
             headers : {
@@ -31,8 +32,9 @@ export const BillingChart: React.FC<BillingChartProps> = ({ startDate, endDate, 
             }
         })
         .then((res) =>
-            res.json(),
+            res.json(),  
         ),
+        staleTime: Infinity,
     });
 
     if(isPending || loadingDepartments){

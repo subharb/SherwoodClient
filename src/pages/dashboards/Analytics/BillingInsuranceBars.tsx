@@ -20,7 +20,7 @@ export const BillingInsuranceBars: React.FC<BillingInsuranceBarsProps> = ({ star
     const [insurances, loadingInsurances] = useInsurances();
     const url = import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/billing/insurances/startDate/" + startDate + "/endDate/" + endDate;
     const { isPending, error, data } = useQuery({
-        queryKey: ["billingChartBars"],
+        queryKey: ["billingChartBars", startDate, endDate, uuidInvestigation],
         queryFn: () =>
           fetch(url, {
             headers : {
@@ -30,6 +30,7 @@ export const BillingInsuranceBars: React.FC<BillingInsuranceBarsProps> = ({ star
         .then((res) =>
             res.json(),
         ),
+        staleTime: Infinity,
     });
     if(isPending || loadingInsurances){
         return <Loader />;
