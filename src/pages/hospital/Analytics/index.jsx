@@ -18,6 +18,7 @@ import { TabsSherwood } from '../../components/Tabs';
 import { Selector } from './Selector';
 import { MedicalAnalytics } from './Medical';
 import { AnalyticsContext, AnalyticsContextProvider } from './Context';
+import { GeneralAnalytics } from './General';
 
 
 export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
@@ -72,23 +73,40 @@ export default withTheme(withLocalize(connect(mapStateToProps, null)(Analytics))
 
 export function AnalyticsCore({languageCode, billingInfo, onlyDepartmentsResearcher}) {
     const { startDate, endDate, departmentSelected } = React.useContext(AnalyticsContext); 
-
+    
+    function renderDashboards() {
+        if(billingInfo && billingInfo.params["budgets"]){
+            return(
+                <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={false}>
+                    <MedicalAnalytics startDate={startDate} endDate={endDate} 
+                        locale={languageCode} currency={billingInfo?.currency}
+                        hasBudgets={ billingInfo?.params["budgets"] }
+                        uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308'   />
+                    <BillingAnalytics startDate={startDate} endDate={endDate} 
+                        onlyDepartmentsResearcher={onlyDepartmentsResearcher}
+                        locale={languageCode} currency={billingInfo?.currency}
+                        hasBudgets={ billingInfo?.params["budgets"] }
+                        uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
+                </TabsSherwood>
+            )
+        }
+        else{
+            return(
+                <GeneralAnalytics startDate={startDate} endDate={endDate} 
+                    locale={languageCode} currency={billingInfo?.currency}
+                    hasBudgets={ billingInfo?.params["budgets"] }
+                    uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308'   />
+            )
+        }
+    }
     return(
         <>
             <Card style={{ width: '100%', padding:'1rem' }}>
                 <Selector onDatesSelectedCallback={(startDate, endDate) => console.log(`Fechas: ${startDate} ${endDate}`)} />
             </Card>
-            <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={false}>
-                <MedicalAnalytics startDate={startDate} endDate={endDate} 
-                    locale={languageCode} currency={billingInfo?.currency}
-                    hasBudgets={ billingInfo?.params["budgets"] }
-                    uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308'   />
-                <BillingAnalytics startDate={startDate} endDate={endDate} 
-                    onlyDepartmentsResearcher={onlyDepartmentsResearcher}
-                    locale={languageCode} currency={billingInfo?.currency}
-                    hasBudgets={ billingInfo?.params["budgets"] }
-                    uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308' />
-            </TabsSherwood>
+            {
+                renderDashboards()
+            }
         </>
         
     );    

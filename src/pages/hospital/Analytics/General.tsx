@@ -2,29 +2,27 @@ import { Container, Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Selector } from '../Selector';
-import { Trend } from '../../../dashboards/Analytics/Trend';
-import DoughnutChart from '../../../dashboards/Analytics/DoughnutChart';
+import { Trend } from '../../dashboards/Analytics/Trend';
+import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { blue, orange, red, yellow } from '@mui/material/colors';
-import { usePatientFromDepartment } from '../../../../hooks/analytics';
-import { IDepartment, IPatient } from '../../../../constants/types';
-import Loader from '../../../../components/Loader';
-import { postErrorSlack, yearsFromDate } from '../../../../utils';
+import { useBillingAnalytics, usePatientFromDepartment } from '../../../hooks/analytics';
+import { IDepartment, IPatient } from '../../../constants/types';
+import Loader from '../../../components/Loader';
+import { postErrorSlack, yearsFromDate } from '../../../utils';
 import { useTheme } from 'styled-components';
-import { PatientsBarChart } from './PatientsBarChart';
-import { useDepartments } from '../../../../hooks';
-import {AnalyticsContext} from '../Context';
-import SearchTable from '../../../dashboards/Analytics/SearchTable';
-import CommonDiagnosis from '../Graphs/CommonDiagnosis';
-import { TrendDepartment } from './TrendDepartment';
+import { PatientsBarChart } from './Medical/PatientsBarChart';
+import {AnalyticsContext} from './Context';
+import SearchTable from '../../dashboards/Analytics/SearchTable';
+import CommonDiagnosis from './Graphs/CommonDiagnosis';
+import { BillingChart } from '../../dashboards/Analytics/BillingBarChart';
 
-interface MedicalAnalyticsProps {
+interface GeneralAnalyticsProps {
     currency: string,
     locale: string,   
 }
 
-export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, locale}) => {
+export const GeneralAnalytics: React.FC<GeneralAnalyticsProps> = ({ currency, locale}) => {
 
     const { startDate, endDate, uuidInvestigation, 
             departments, departmentSelected} = useContext(AnalyticsContext);
@@ -32,29 +30,34 @@ export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, lo
     if(startDate === null || endDate === null || uuidInvestigation === null){
         return <Loader />
     }
-    const {filteredPatients, isPending, trend } = usePatientFromDepartment(uuidInvestigation!, !departmentSelected ? "all" : departmentSelected, startDate, endDate);
 
-    if(isPending){
+    const { isPending: isPendingBilling, error, data : dataBilling } = currency ? useBillingAnalytics(uuidInvestigation, startDate, endDate) : {isPending:false, error:null, data:null};
+
+    const {filteredPatients, isPending: isPendingPatients, trend } = usePatientFromDepartment(uuidInvestigation!, !departmentSelected ? "all" : departmentSelected, startDate, endDate);
+
+    if(isPendingPatients || isPendingBilling){
         return <Loader />
     }
     return (
         <LocalizedMedicalAnalyticsView currency={currency} startDate={startDate} endDate={endDate}
             trend={trend}
+            dataBilling={dataBilling}
             locale={locale} uuidInvestigation={uuidInvestigation} filteredPatients={filteredPatients}
             departments={ departments ? departments : [] } departmentSelected={departmentSelected ? departmentSelected : ""} />
     )};
 
-interface MedicalAnalyticsViewProps extends MedicalAnalyticsProps, LocalizeContextProps {
+interface GeneralAnalyticsViewProps extends GeneralAnalyticsProps, LocalizeContextProps {
     filteredPatients:IPatient[];
     startDate: number;
     endDate: number;
     trend: {data:number[], total:number};
     uuidInvestigation: string;
     departments: IDepartment[];
+    dataBilling: {trend : {data:number[], total:number}};
     departmentSelected: string
 }
-const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvestigation, departments, departmentSelected, trend,
-                                                                        startDate, endDate, currency, locale, filteredPatients,
+const GeneralAnalyticsView: React.FC<GeneralAnalyticsViewProps> = ({ uuidInvestigation, departments, departmentSelected, trend,
+                                                                        startDate, endDate, dataBilling, currency, locale, filteredPatients,
                                                                         translate }) => {
     
     const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
@@ -62,7 +65,6 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
     const [countAge, setCountAge] = useState([...COUNT_AGE])
     const [countSex, setCountSex] = useState({ male: 0, female: 0 });
     const theme = useTheme();
-    
                                                                             
     useEffect(() => {
         let tempCountSex = {male : 0, female : 0};
@@ -158,6 +160,25 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                                     type="line"
                                 />
                         </Grid>
+                        {
+                            dataBilling && 
+                            <Grid
+                                item
+                                md={4}
+                                sm={6}
+                                xs={12}
+                            >
+                                <Trend key="billing"
+                                        label={`Total billing ${currency}`}
+                                        totalIndex={1}
+                                        locale={locale}
+                                        isLoading={false}
+                                        dataTrend={dataBilling?.trend}
+                                        type="bars"
+                                    />
+                            </Grid>
+                        }
+                        
                         <Grid
                             item
                             md={6}
@@ -206,6 +227,19 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                                 departmentSelected={departments ? departments.find((dep) => dep.uuid === departmentSelected) : null} />                 
                         </Grid>
                         {
+                            <Grid
+                                item
+                                md={3}
+                                sm={6}
+                                xs={12}
+                            >
+                            <BillingChart startDate={startDate} endDate={endDate} uuidInvestigation={uuidInvestigation} 
+                                currency={currency}
+                                />
+                            </Grid>
+                        }
+                        
+                        {
                             (!departmentSelected || departmentSelected === 'all' ) &&
                             <Grid
                                 item
@@ -233,7 +267,7 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
     );
 };
 
-const LocalizedMedicalAnalyticsView = withLocalize(MedicalAnalyticsView);
+const LocalizedMedicalAnalyticsView = withLocalize(GeneralAnalyticsView);
 
 // Use a named export instead of the default export
 export { LocalizedMedicalAnalyticsView };

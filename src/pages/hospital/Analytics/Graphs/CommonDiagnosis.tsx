@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { countSexPatients } from '../../../utils/index.jsx';
-import { EnhancedTable } from '../../../components/general/EnhancedTable';
+import { countSexPatients } from '../../../../utils/index.jsx';
+import { EnhancedTable } from '../../../../components/general/EnhancedTable.jsx';
 import { Translate } from 'react-localize-redux';
-import { IPatient, IPersonalData } from '../../../constants/types.js';
+import { IPatient, IPersonalData } from '../../../../constants/types.js';
 import { useQuery } from '@tanstack/react-query';
-import { getStatsMostCommonDiagnosis } from '../../../services/index.js';
-import Loader from '../../../components/Loader.jsx';
+import { getStatsMostCommonDiagnosis } from '../../../../services/index.js';
+import Loader from '../../../../components/Loader.jsx';
 
 interface CommonDiagnosisProps {
     uuidInvestigation: string,

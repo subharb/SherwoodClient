@@ -6,6 +6,7 @@ import { BillingChart } from '../../dashboards/Analytics/BillingBarChart';
 import { BillingInsuranceBars } from '../../dashboards/Analytics/BillingInsuranceBars';
 import { Selector } from './Selector';
 import { useQuery } from '@tanstack/react-query';
+import { useBillingAnalytics } from '../../../hooks/analytics';
 
 interface BillingAnalyticsProps {
     startDate: number;
@@ -20,18 +21,7 @@ interface BillingAnalyticsProps {
 const BillingAnalytics: React.FC<BillingAnalyticsProps> = ({ startDate, endDate, uuidInvestigation, 
                                                                 locale, currency, onlyDepartmentsResearcher, hasBudgets }) => {
     
-    const url = `${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/billing/startDate/${startDate}/endDate/${endDate}`;
-    const { isPending, error, data } = useQuery({
-        queryKey: [url],
-        queryFn: () =>
-            fetch(url, {
-                headers: {
-                    "Authorization": localStorage.getItem("jwt")
-                }
-            })
-                .then((res) => res.json()),
-            staleTime: Infinity,
-    });
+    const { isPending, error, data } = useBillingAnalytics(uuidInvestigation, startDate, endDate);
 
     return (
         <>

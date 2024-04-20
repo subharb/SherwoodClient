@@ -18,3 +18,19 @@ export function usePatientFromDepartment(uuidInvestigation:string, uuidDepartmen
     return { isPending, error, filteredPatients, trend : data ? data.trend : []};
 
 }
+
+export function useBillingAnalytics(uuidInvestigation:string, startDate:number, endDate:number){
+    const url = `${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/billing/startDate/${startDate}/endDate/${endDate}`;
+    const { isPending, error, data } = useQuery({
+        queryKey: [url],
+        queryFn: () =>
+            fetch(url, {
+                headers: {
+                    "Authorization": localStorage.getItem("jwt")
+                }
+            })
+                .then((res) => res.json()),
+            staleTime: Infinity,
+    });
+    return { isPending, error, data };
+}
