@@ -94,6 +94,9 @@ export const TrendView: React.FC<TrendViewProps> = ({ label, series, totalNumber
         let icon = <ChevronDownIcon fontSize="small" />;
         let color = theme.palette.error.main;
         let colorString = "error.main";
+        if(percentage === 0){
+            return null;
+        }
         if (percentage > 0) {
             icon = <ChevronUpIcon fontSize="small" />;
             color = theme.palette.success.main;
