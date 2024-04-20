@@ -4,7 +4,7 @@ import {  useHistory } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import PropTypes from 'prop-types';
 import { green, red, orange, yellow, blue, amber, brown, cyan, deepOrange } from "@mui/material/colors";
-import { Divider as MuiDivider, Grid } from '@mui/material';
+import { Divider as MuiDivider, Grid, Box, Card } from '@mui/material';
 
 import { connect } from 'react-redux';
 import Loader from '../../../components/Loader';
@@ -21,8 +21,6 @@ import { AnalyticsContext, AnalyticsContextProvider } from './Context';
 
 
 export const LIST_COLORS = [green[500], red[500], orange[500], yellow[500], blue[500], amber[500], brown[500], cyan[500], cyan[500], deepOrange[500]]
-const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
-const COUNT_AGE = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 export function Analytics(props) {
 
@@ -77,8 +75,10 @@ export function AnalyticsCore({languageCode, billingInfo, onlyDepartmentsResearc
 
     return(
         <>
-            <Selector onDatesSelectedCallback={(startDate, endDate) => console.log(`Fechas: ${startDate} ${endDate}`)} />
-            <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={true}>
+            <Card style={{ width: '100%', padding:'1rem' }}>
+                <Selector onDatesSelectedCallback={(startDate, endDate) => console.log(`Fechas: ${startDate} ${endDate}`)} />
+            </Card>
+            <TabsSherwood labels={["Medical", "Billing"]} initTab={0} whiteBackground={false}>
                 <MedicalAnalytics startDate={startDate} endDate={endDate} 
                     locale={languageCode} currency={billingInfo?.currency}
                     hasBudgets={ billingInfo?.params["budgets"] }

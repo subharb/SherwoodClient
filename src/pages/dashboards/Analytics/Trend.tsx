@@ -114,7 +114,7 @@ export const TrendView: React.FC<TrendViewProps> = ({ label, series, totalNumber
         );
     }
 
-    function renderTrend(percentage: number) {
+    function renderTrend(percentage: number, type: string) {
         console.log(percentage);
         if (percentage > 0) {
             return `${percentage.toFixed(0)}% increase`;
@@ -152,24 +152,30 @@ export const TrendView: React.FC<TrendViewProps> = ({ label, series, totalNumber
                 </div>
                 {renderGraph(type, series)}
             </Box>
-            <Divider />
-            <Box
-                sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    px: 3,
-                    py: 2
-                }}
-            >
-                {renderIcon(percentage)}
-                <Typography
-                    color="textSecondary"
-                    sx={{ ml: 1 }}
-                    variant="caption"
-                >
-                    {renderTrend(percentage)}
-                </Typography>
-            </Box>
+            {
+                type !== "radial" && 
+                <>
+                    <Divider />
+                        <Box
+                            sx={{
+                                alignItems: 'center',
+                                display: 'flex',
+                                px: 3,
+                                py: 2
+                            }}
+                        >
+                            {renderIcon(percentage)}
+                            <Typography
+                                color="textSecondary"
+                                sx={{ ml: 1 }}
+                                variant="caption"
+                            >
+                                {renderTrend(percentage, type)}
+                            </Typography>
+                        </Box>
+                </>
+            }
+            
         </Card>
     );
 };
