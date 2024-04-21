@@ -179,6 +179,12 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
 											borderColor: theme.palette.background.paper,
 										}
 									]} />
+                                {
+                            (functionalities.includes(FUNCTIONALITY.OUTPATIENTS))  && 
+                            <Grid container item spacing={1}>
+                                <OutpatientsStats functionalities={functionalities} />
+                            </Grid>   
+                        }
                         </Grid>  
                         <Grid
                             item
@@ -233,12 +239,7 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                                 <HospitalStatsView />
                             </Grid>
                         </Grid>
-                        {
-                            (functionalities.includes(FUNCTIONALITY.OUTPATIENTS))  && 
-                            <Grid container item spacing={1}>
-                                <OutpatientsStats functionalities={functionalities} />
-                            </Grid>   
-                        }
+                        
                     </Grid>
                 </Grid>
             </Container>

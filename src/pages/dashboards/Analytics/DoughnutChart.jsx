@@ -28,6 +28,7 @@ import Loader from "../../../components/Loader";
 const Card = styled(MuiCard)(spacing);
 
 const CardContent = styled(MuiCardContent)`
+    
   &:last-child {
     padding-bottom: ${(props) => props.theme.spacing(2)};
   }
@@ -35,6 +36,7 @@ const CardContent = styled(MuiCardContent)`
 
 const ChartWrapper = styled.div`
   height: 168px;
+  width: 100%;
   position: relative;
 `;
 
@@ -93,7 +95,7 @@ function DoughnutChart({ theme, title, labels, datasets, table, innerInfo }) {
   };
 
   return (
-    <Card mb={3}>
+    <Card mb={3} style={{width: "100%"}}>
       <CardHeader
         action={
           <IconButton aria-label="settings" size="large">

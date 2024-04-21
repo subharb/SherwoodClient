@@ -473,10 +473,10 @@ export const getStatsActivityService = datalogger((uuidInvestigation, startDate,
     });
 });
 
-export const getStatsOutpatients = datalogger((uuidInvestigation, startDate, endDate) => {
+export const getStatsAppointmentsDepartment = datalogger((uuidInvestigation, department, startDate, endDate) => {
     return new Promise((resolve, reject) => {
         axios
-            .get(import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/outpatients/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/analytics/" + uuidInvestigation + "/outpatients/appointments/"+department+"/startDate/" + startDate + "/endDate/" + endDate, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

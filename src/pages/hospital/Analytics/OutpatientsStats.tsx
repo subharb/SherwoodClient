@@ -7,7 +7,7 @@ import { FUNCTIONALITY, IDepartment } from '../../../constants/types';
 import DoughnutChart from '../../dashboards/Analytics/DoughnutChart';
 import { AnalyticsContext } from './Context';
 import { useQuery } from '@tanstack/react-query';
-import { getStatsOutpatients } from '../../../services';
+import { getStatsAppointmentsDepartment, getStatsOutpatients } from '../../../services';
 import Loader from '../../../components/Loader';
 
 interface OutpatientsStatsProps {
@@ -26,9 +26,9 @@ const OutpatientsStats: React.FC<OutpatientsStatsProps> = ({functionalities }) =
         departments, departmentSelected} = useContext(AnalyticsContext);
     
     const { isPending, error, data } = useQuery({
-        queryKey: ['statsFirstMonitoring', uuidInvestigation, departmentSelected, startDate, endDate],
+        queryKey: ['getStatsAppointmentsDepartment', uuidInvestigation, departmentSelected, startDate, endDate],
         queryFn: () =>
-            getStatsOutpatients(uuidInvestigation, startDate, endDate),
+            getStatsAppointmentsDepartment(uuidInvestigation, departmentSelected, startDate, endDate), 
             staleTime: Infinity,
     })
 
@@ -37,7 +37,7 @@ const OutpatientsStats: React.FC<OutpatientsStatsProps> = ({functionalities }) =
     }
 
     return <OutpatientsStatsViewLocalizedThemed functionalities={functionalities} departments={departments ? departments : []} 
-        appointmentsPerDepartment={data.departments} />;
+        appointmentsPerDepartment={data.stats} />;
 };
 
 const OutpatientsStatsViewLocalized: React.FC<OutpatientsStatsViewProps> = ({ functionalities, departments, appointmentsPerDepartment, translate, theme }) => {
