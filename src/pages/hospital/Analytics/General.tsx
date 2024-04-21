@@ -218,8 +218,8 @@ const GeneralAnalyticsView: React.FC<GeneralAnalyticsViewProps> = ({ uuidInvesti
                         </Grid>   
                         <Grid
                             item
-                            md={3}
-                            sm={6}
+                            md={12}
+                            sm={12}
                             xs={12}
                         >
                             <PatientsBarChart title={translate("hospital.analytics.graphs.patients.title").toString()} 
