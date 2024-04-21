@@ -8,7 +8,7 @@ import DoughnutChart from '../../../dashboards/Analytics/DoughnutChart';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { blue, orange, red, yellow } from '@mui/material/colors';
 import { usePatientFromDepartment } from '../../../../hooks/analytics';
-import { IDepartment, IPatient } from '../../../../constants/types';
+import { FUNCTIONALITY, IDepartment, IPatient } from '../../../../constants/types';
 import Loader from '../../../../components/Loader';
 import { postErrorSlack, yearsFromDate } from '../../../../utils';
 import { useTheme } from 'styled-components';
@@ -229,17 +229,16 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                         }
                          <Grid container item spacing={1}>
                             <Grid item xs={12} >
-                                <HospitalStatsView loading={loadingStatsFirstMonitoring} stats={statsFirstMonitoring} 
-                                    departmentSelected={departmentSelected} />
+                                <HospitalStatsView />
                             </Grid>
                         </Grid>
-                        {
+                        {/* {
                             (functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && 
                             <Grid container item spacing={1}>
                                 <OutpatientsStats functionalities={props.investigations.currentInvestigation.functionalities} 
                                     appointmentsPerDepartment={appointmentsPerDepartment} theme={props.theme} departments={departments} />
                             </Grid>   
-                        }
+                        } */}
                     </Grid>
                 </Grid>
             </Container>
