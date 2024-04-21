@@ -19,6 +19,7 @@ import SearchTable from '../../../dashboards/Analytics/SearchTable';
 import CommonDiagnosis from '../Graphs/CommonDiagnosis';
 import { TrendDepartment } from './TrendDepartment';
 import HospitalStatsView from '../HospitalStats';
+import OutpatientsStats from '../OutpatientsStats';
 
 interface MedicalAnalyticsProps {
     currency: string,
@@ -139,12 +140,12 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                             xs={12}
                         >
                             <Trend key="outpatient_patients"
-                                    label="Outpatients patients"
-                                    totalIndex={0}
-                                    locale={locale}
-                                    url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/patients/${departmentSelected}/startDate/${startDate}/endDate/${endDate}`}
-                                    type="line"
-                                />
+                                label="Outpatients patients"
+                                totalIndex={0}
+                                locale={locale}
+                                url={`${import.meta.env.VITE_APP_API_URL}/analytics/${uuidInvestigation}/outpatients/patients/${departmentSelected}/startDate/${startDate}/endDate/${endDate}`}
+                                type="line"
+                            />
                         </Grid>
                         <Grid
                             item
@@ -232,13 +233,12 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                                 <HospitalStatsView />
                             </Grid>
                         </Grid>
-                        {/* {
-                            (functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && 
+                        {
+                            (functionalities.includes(FUNCTIONALITY.OUTPATIENTS))  && 
                             <Grid container item spacing={1}>
-                                <OutpatientsStats functionalities={props.investigations.currentInvestigation.functionalities} 
-                                    appointmentsPerDepartment={appointmentsPerDepartment} theme={props.theme} departments={departments} />
+                                <OutpatientsStats functionalities={functionalities} />
                             </Grid>   
-                        } */}
+                        }
                     </Grid>
                 </Grid>
             </Container>
