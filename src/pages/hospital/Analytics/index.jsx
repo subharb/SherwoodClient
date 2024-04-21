@@ -43,17 +43,10 @@ export function Analytics(props) {
 				<Grid item xs={12} style={{ color: "white" }}>
                     <SectionHeader section="analytics"  />
 				</Grid>
-				{/* <Grid spacing={3} item xs={12} style={{background:'white', padding:'1rem'}}>
-                    <Grid container spacing={3}>
-                    {
-                        renderSelectors()
-                    }
-                    </Grid>    
-                </Grid> */}
 			</Grid>
             <AnalyticsCore languageCode={props.activeLanguage.code} onlyDepartmentsResearcher={onlyDepartmentsResearcher}
-                billingInfo={props.investigations.currentInvestigation.billingInfo} />
-			
+                billingInfo={props.investigations.currentInvestigation.billingInfo} 
+                functionalities={props.investigations.currentInvestigation.functionalities} />
 		</AnalyticsContextProvider>
 	)
 }
@@ -71,7 +64,7 @@ const mapStateToProps = (state) => {
 export default withTheme(withLocalize(connect(mapStateToProps, null)(Analytics)))
 
 
-export function AnalyticsCore({languageCode, billingInfo, onlyDepartmentsResearcher}) {
+export function AnalyticsCore({languageCode, billingInfo, onlyDepartmentsResearcher, functionalities}) {
     const { startDate, endDate, departmentSelected } = React.useContext(AnalyticsContext); 
     
     function renderDashboards() {
@@ -81,6 +74,7 @@ export function AnalyticsCore({languageCode, billingInfo, onlyDepartmentsResearc
                     <MedicalAnalytics startDate={startDate} endDate={endDate} 
                         locale={languageCode} currency={billingInfo?.currency}
                         hasBudgets={ billingInfo?.params["budgets"] }
+                        functionalities={functionalities}
                         uuidInvestigation='cd54d9d8-23af-439b-af94-616fd8e24308'   />
                     <BillingAnalytics startDate={startDate} endDate={endDate} 
                         onlyDepartmentsResearcher={onlyDepartmentsResearcher}

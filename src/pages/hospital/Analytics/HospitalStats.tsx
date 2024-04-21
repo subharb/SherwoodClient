@@ -39,6 +39,11 @@ interface HospitalStatsProps {
 }
 
 const HospitalStats: React.FC<HospitalStatsProps> = ({ stats, departmentSelected, loading }) => {
+    
+    return <HospitalStatsView stats={stats} departmentSelected={departmentSelected} loading={loading} />
+};
+
+const HospitalStatsView: React.FC<HospitalStatsProps> = ({ stats, departmentSelected, loading }) => {
     if(stats === null){
         return <Loader />
     }

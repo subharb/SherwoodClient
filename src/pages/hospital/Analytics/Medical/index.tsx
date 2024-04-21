@@ -18,13 +18,15 @@ import {AnalyticsContext} from '../Context';
 import SearchTable from '../../../dashboards/Analytics/SearchTable';
 import CommonDiagnosis from '../Graphs/CommonDiagnosis';
 import { TrendDepartment } from './TrendDepartment';
+import HospitalStatsView from '../HospitalStats';
 
 interface MedicalAnalyticsProps {
     currency: string,
     locale: string,   
+    functionalities: string[],
 }
 
-export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, locale}) => {
+export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, locale, functionalities}) => {
 
     const { startDate, endDate, uuidInvestigation, 
             departments, departmentSelected} = useContext(AnalyticsContext);
@@ -39,7 +41,7 @@ export const MedicalAnalytics: React.FC<MedicalAnalyticsProps> = ({ currency, lo
     }
     return (
         <LocalizedMedicalAnalyticsView currency={currency} startDate={startDate} endDate={endDate}
-            trend={trend}
+            trend={trend} functionalities={functionalities}
             locale={locale} uuidInvestigation={uuidInvestigation} filteredPatients={filteredPatients}
             departments={ departments ? departments : [] } departmentSelected={departmentSelected ? departmentSelected : ""} />
     )};
@@ -54,7 +56,7 @@ interface MedicalAnalyticsViewProps extends MedicalAnalyticsProps, LocalizeConte
     departmentSelected: string
 }
 const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvestigation, departments, departmentSelected, trend,
-                                                                        startDate, endDate, currency, locale, filteredPatients,
+                                                                        startDate, endDate, functionalities, locale, filteredPatients,
                                                                         translate }) => {
     
     const ageGroups = [[0, 10], [11, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70], [71, 80], [81, 1000]];
@@ -224,6 +226,19 @@ const MedicalAnalyticsView: React.FC<MedicalAnalyticsViewProps> = ({ uuidInvesti
                                     />
                                 </Grid>
                             </Grid>
+                        }
+                         <Grid container item spacing={1}>
+                            <Grid item xs={12} >
+                                <HospitalStatsView loading={loadingStatsFirstMonitoring} stats={statsFirstMonitoring} 
+                                    departmentSelected={departmentSelected} />
+                            </Grid>
+                        </Grid>
+                        {
+                            (functionalities.includes(FUNCTIONALITY.OUTPATIENTS)) && appointmentsPerDepartment && 
+                            <Grid container item spacing={1}>
+                                <OutpatientsStats functionalities={props.investigations.currentInvestigation.functionalities} 
+                                    appointmentsPerDepartment={appointmentsPerDepartment} theme={props.theme} departments={departments} />
+                            </Grid>   
                         }
                     </Grid>
                 </Grid>
