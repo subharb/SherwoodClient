@@ -38,10 +38,12 @@ const ServiceRecords: React.FC<ServiceRecordsProps> = ({ submissions, patients, 
     useEffect(() => {
         async function fetchRecordsPatient(){
             const survey = investigations.currentInvestigation.surveys.find((sur:any) => sur.type === type);
-            setLoading(true);
-            await dispatch(fetchSubmissionsSurveyAction(investigations.currentInvestigation.uuid, survey.uuid));
-            setSurveyTests(survey);
-            setLoading(false);
+            if(survey && investigations.currentInvestigation){
+                setLoading(true);
+                await dispatch(fetchSubmissionsSurveyAction(investigations.currentInvestigation.uuid, survey.uuid));
+                setSurveyTests(survey);
+                setLoading(false);
+            }
         }
         if(investigations.currentInvestigation){
             fetchRecordsPatient()

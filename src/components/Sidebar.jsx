@@ -7,7 +7,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import "../vendor/perfect-scrollbar.css";
 import pathLogo from '../img/logo_sherwood_web.png';
 import { spacing } from "@mui/system";
-import { useDepartments, useProfileInfo } from '../hooks';
+import { useProfileInfo } from '../hooks';
 import { getData } from '../utils/index.jsx';
 import {
     Badge,

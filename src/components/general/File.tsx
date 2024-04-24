@@ -367,7 +367,7 @@ const File:React.FC<Props> = (props) => {
                             type="file" 
                             onChange={(e) => onFileSelected(e)} />
                         <label htmlFor="image">
-                            <IconButton color="primary" aria-label="upload picture" component="span" size="large">
+                            <IconButton color="secondary" aria-label="upload picture" component="span" size="large">
                                 <PhotoCamera />
                             </IconButton>
                         </label>

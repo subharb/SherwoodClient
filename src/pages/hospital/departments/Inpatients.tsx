@@ -103,7 +103,7 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
     return (
         <BoxBckgr>
             <Helmet title={titleHelmet} />
-            <Grid container spacing={3}>
+            <Grid container spacing={3} padding={2}>
                 <Grid item xs={12}>
                     <Grid item xs={6} >
                         <TypographyStyled variant="h3" gutterBottom display="inline">

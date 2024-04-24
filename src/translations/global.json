@@ -173,6 +173,11 @@
                     "title" : ["Prescription", "Prescripción", "Orddonnace"]
                 }
             },
+            "submission-table": {
+                "selector" : {
+                    "title" : ["Select a survey to visualize its data:", "Seleccione una encuesta para visualizar sus datos:", "Sélectionnez une enquête pour visualiser ses données:"]
+                }
+            },
             "error" : {
                 "general" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
                 "patient-alredy-discharged" : ["This patient was already discharged, please refresh the clinical history", "Este paciente ya fue dado de alta, actualice la historia clínica", "Ce patient a déjà obtenu son congé, veuillez actualiser l'historique clinique"],
@@ -509,7 +514,7 @@
         "treatment-start-table" : ["Start date", "F.Inicio", "Début"],
         "treatment-finish-table" : ["End date", "F. fin", "Date de fin"],
         "treatment-duration" : ["Duration", "Duración", "Durée"],
-        "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
+        "chronic" : ["Chronic medication", "Crónico", "chronique / à long terme"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
         "number-elements" : ["Number", "Número", "Número"],
         "time-unit" : ["Time", "Tiempo", "Temps"],
@@ -529,7 +534,8 @@
             "12h" : ["tds", "12 horas", "12 heures"],
             "24h" : ["qds", "24 horas", "24 heures"],
             "48h" : ["48 hours", "48 horas", "48 heures"],
-            "week" : ["1 week", "1 semana", "1 semaine"]
+            "week" : ["1 week", "1 semana", "1 semaine"],
+            "nocte" : ["nocte", "una vez por la noche", "une fois pendant la nuit"]
         },
         "dose-options" : {
             "1" : ["1 tablet", "1 comprimido", "1 pilule"],
@@ -1502,13 +1508,16 @@
                 "role" :  ["Role", "Role", "Role"]
             },
             "roles" : {
-                "MEDICAL_DIRECTOR" : ["Medical Director", "Director Médico", "Directeur médical"],
+                "MEDICAL_DIRECTOR" : ["Superadmin", "Superadmin", "Superadmin"],
                 "STUDENT" : ["Student", "Estudiante", "Étudiant"],
                 "SHERWOOD_STAFF" : ["Sherwood Staff", "Sherwood Staff", "Sherwood Staff"],
                 "DOCTOR" : ["Medical Doctor", "Médico", "Médecin"],
                 "PRIVATE_DOCTOR" : ["Private Doctor", "Médico Privado", "Médecin Privée"],
                 "ADMIN" : ["Administrator", "Administrador", "Administrateur"],
                 "NURSE" : ["Nurse", "Enfermería", "Infirmière"],
+                "NURSE_FW" : ["Nurse FW", "Enfermería FW", "Infirmière FW"],
+                "NURSE_MANAGER" : ["Nurse Manager", "Enfermería Jefe", "Infirmière Manager"],
+                "CARE_GIVER" : ["Care Giver", "Cuidador", "Soignant"],
                 "NURSE_PRACTITIONER" : ["Nurse Practitioner", "Enfermera Practicante", "Infirmière Praticienne"],
                 "EXECUTIVE_DIRECTOR" : ["Executive director", "Director ejecutivo ", "Directeur général"],
                 "BUSINESS_ASSISTANT" : ["Executive Assistant", "Asistente ejecutivo", "Business Assistant"],

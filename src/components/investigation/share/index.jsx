@@ -75,6 +75,15 @@ export const PermissionChip = withLocalize((props) => {
         case "NURSE":
             colour = orange[100];
             break;
+        case "NURSE_FW":
+            colour = orange[100];
+            break;
+        case "NURSE_MANAGER":
+            colour = yellow[900];
+            break;
+        case "CARE_GIVER": 
+            colour = blue[900];
+            break;
         case "BUSINESS_MANAGER": 
             colour = blue[900];
             break;
@@ -231,7 +240,7 @@ function ShareInvestigation(props) {
                             <Translate id="investigation.share.confirm_dialog.description" />
                         </Typography>
                     </Modal>,
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3} padding={3}>
                         <Grid item xs={12}>
                             <EnhancedTable titleTable={<Translate id="investigation.share.new_researchers" />}  noSelectable
                                     headCells={Object.keys(RESEARCHER_FORM).map(key => {
@@ -401,7 +410,7 @@ function ShareInvestigation(props) {
                         }
                 </div>
             </Snackbar>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} padding={3}>
                 <SectionHeader section="users" infoCallback={showInfo} />
                 <Grid item container xs={12} spacing={3}>
                     <Grid item xs={12} >

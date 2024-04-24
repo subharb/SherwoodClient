@@ -54,7 +54,8 @@ const FORM_CONTINUE:IForm = {
             {"label": "hospital.frecuency-options.8h", "value" : "8h"},
             {"label": "hospital.frecuency-options.12h", "value" : "12h"},
             {"label": "hospital.frecuency-options.24h", "value" : "24h"},
-            {"label": "hospital.frecuency-options.48h", "value" : "48h"}
+            {"label": "hospital.frecuency-options.48h", "value" : "48h"},
+            {"label": "hospital.frecuency-options.nocte", "value" : "nocte"}
         ],
         "validation" : "notEmpty",
     },

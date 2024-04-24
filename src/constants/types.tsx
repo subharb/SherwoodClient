@@ -30,6 +30,7 @@ export interface ISubmission{
     updatedAt:Date,
     researcher:IResearcher,
     uuidSurvey:string,
+    surveyName:string,
     surveyRecords: ISurveyRecord[],
 }
 

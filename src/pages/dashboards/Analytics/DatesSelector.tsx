@@ -138,4 +138,6 @@ function DatesSelector(props:Props){
         
 }
 
-export default withLocalize(DatesSelector)
+const LocalizedDatesSelector = withLocalize(DatesSelector);
+
+export default LocalizedDatesSelector

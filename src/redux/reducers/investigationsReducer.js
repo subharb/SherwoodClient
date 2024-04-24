@@ -19,7 +19,7 @@ export default function reducer(state = initialState, action){
     switch(action.type){
         case types.FETCH_INVESTIGATIONS_SUCCESS:
             newState.data = action.investigations;    
-            if(action.investigations.length === 1){
+            if(action.investigations && action.investigations.length === 1){
                 newState.currentInvestigation = action.investigations[0];
             }
             else if(localStorage.getItem("indexHospital")){

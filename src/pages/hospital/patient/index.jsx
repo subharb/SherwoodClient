@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { connect } from 'react-redux';
 import * as types from "../../../constants";
 import { Grid, Typography, Snackbar } from '@mui/material';
-import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { fetchSubmissionsPatientInvestigationAction, resetPatientsSubmissionsError } from '../../../redux/actions/submissionsPatientActions';
 import Loader from '../../../components/Loader';
 import { BoxBckgr, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue, TypographyStyled } from '../../../components/general/mini_components';
@@ -16,9 +15,7 @@ import { useDispatch } from "react-redux";
 import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDIT_PERSONAL_DATA,
         HOSPITAL_PATIENT_MAKE_TESTS,
         HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS } from '../../../routes/urls';
-
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
-
 import { useDepartments, useSnackBarState, useUpdateEffect } from '../../../hooks';
 import { fetchProfileInfoAction } from '../../../redux/actions/profileActions';
 import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY } from '../../../constants';
@@ -33,11 +30,14 @@ import SubmissionsTable from './SubmissionsTable';
 
 
 
-function urlToSection(urlType, dataCollectionSelected){
+function urlToSection(urlType, dataCollectionSelected, permissions){
     try{
         if(typeof urlType === "undefined"){
-            if(dataCollectionSelected === null){
+            if(dataCollectionSelected === null && permissions.includes(PERMISSION.MEDICAL_READ)){
                 return types.PATIENT_TOOLBAR_SECTION_MEDICAL;
+            }
+            else if(dataCollectionSelected === null && permissions.includes(PERMISSION.NURSE_FW)){
+                return types.PATIENT_TOOLBAR_SECTION_NURSE;
             }
             switch(dataCollectionSelected.type){
                 case types.TYPE_FILL_IMG_SURVEY:
@@ -83,8 +83,8 @@ function urlToSection(urlType, dataCollectionSelected){
     
 }
 
-const PRINTABLE_TYPE_SURVEYS = [types.TYPE_PRESCRIPTIONS]
-const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse", 13:"prescriptions"};
+
+const TYPE_URL = {1 : "images", 2 : "lab", 6 : "social", 7:"shoe", 12:"nurse", 13:"prescriptions", 15:"care_giver"};
 const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
     newDict[TYPE_URL[key]] = parseInt(key);
     return newDict
@@ -120,32 +120,35 @@ function Patient(props) {
     const submission = idSubmission && surveyRecords ? surveyRecords.find(rec => rec.id === idSubmission) : null;
     const history = useHistory();
     const billingInfo = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.billingInfo : null;
-    const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
-    const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
-    //const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter(sur => typesCurrentSurvey.includes(sur.type)) : [];
+    
     const currentSurveys = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.surveys.filter((survey) => {
-        // if(parameters.typeTest === "shoe" && survey.category === types.CATEGORY_SURVEY_SHOE){
-        //     return true;
-        // }
+        const roleNurse = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.permissions.includes(PERMISSION.NURSE_FW) : false;
+        const hasMedicalReadPermission = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) : false;
+        if(survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW){
+            console.log("Prescriptions", survey.name);
+        }
         if(parameters.typeTest === "social" && survey.category === types.CATEGORY_DEPARTMENT_SOCIAL){
             return true;
         }
-        if(parameters.typeTest === "nurse" && survey.category === types.CATEGORY_DEPARTMENT_NURSE){
+        if(((!parameters.typeTest && !hasMedicalReadPermission) || parameters.typeTest === "nurse") && (survey.category === types.CATEGORY_DEPARTMENT_NURSE || survey.type === types.TYPE_CARE_GIVER || ( survey.category === types.CATEGORY_DEPARTMENT_NURSE_FW && survey.type === types.TYPE_NURSE && roleNurse ))){
             return true;
         }
-        if(parameters.typeTest === "prescriptions" && survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS){
+        if(parameters.typeTest === "prescriptions" && (survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS || (survey.category === types.CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW  && roleNurse))){
             return true;
         }
-        if((!parameters.typeTest || parameters.typeTest === "medical") && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
+        if(((!parameters.typeTest && hasMedicalReadPermission) || parameters.typeTest === "medical") && MEDICAL_SURVEYS.includes(survey.type) && survey.category === types.CATEGORY_DEPARTMENT_MEDICAL){
             return true;
         }
         if(parameters.typeTest === "images" && [types.TYPE_FILL_IMG_SURVEY, types.TYPE_IMAGE_SURVEY].includes(survey.type)){
             return true;
         }
-        if(parameters.typeTest === "lab" && [types.TYPE_FILL_LAB_SURVEY, types.TYPE_FILL_LAB_SURVEY].includes(survey.type)){
+        if(parameters.typeTest === "lab" && [types.TYPE_FILL_LAB_SURVEY, types.TYPE_LAB_SURVEY].includes(survey.type)){
             return true;
         }
     }) : [];
+    const dataCollectionSelected = props.investigations.data ? (submission ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === submission.uuidSurvey) : uuidDataCollection ? props.investigations.currentInvestigation.surveys.find(sur => sur.uuid === uuidDataCollection) : indexDataCollection !== -1 ? currentSurveys[indexDataCollection] : null) : null;
+    const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
+    
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
     const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
     const staysPatient = props.hospital.data.stays && props.hospital.data.stays[uuidPatient] ? props.hospital.data.stays[uuidPatient] : [];
@@ -155,10 +158,7 @@ function Patient(props) {
     const typesSurvey = props.investigations.data ? props.investigations.currentInvestigation.surveys.map((survey) => {
             return survey.type;
     }) : [];
-    const categorySurveys = props.investigations.data ? props.investigations.currentInvestigation.surveys.map((survey) => {
-        return survey.category;
-    }) : [];
-
+    const categorySurveys = props.investigations.data ? [...new Set(props.investigations.currentInvestigation.surveys.map(survey => survey.category))]: [];
     let filteredRecords = useMemo(() => {
         if(idSubmission && surveyRecords){
             const currentSub = surveyRecords.find((rec) => rec.id === idSubmission);
@@ -253,6 +253,10 @@ function Patient(props) {
         //
     }
     function goToTest(value){
+        if(value === TYPE_MEDICAL_SURVEY){
+            backToRoot();
+            return;
+        }
         const nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", TYPE_URL[value])
         history.push(nextUrl);
     }
@@ -330,7 +334,8 @@ function Patient(props) {
         // Save record solo gestiona el callback de social y medical, el resto son componentes y se gestionan de otra forma.
         let nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient);
         if(dataCollectionSelected && Object.keys(TYPE_URL).includes(dataCollectionSelected.type.toString())){
-            const url = TYPE_URL[dataCollectionSelected.type];
+            const url = TYPE_URL[dataCollectionSelected.type] === "care_giver" ? "nurse" : TYPE_URL[dataCollectionSelected.type];
+
             nextUrl = HOSPITAL_PATIENT_TESTS.replace(":uuidPatient", uuidPatient).replace(":typeTest", url )
             
         }
@@ -427,16 +432,17 @@ function Patient(props) {
                     </TypographyStyled>
         }
         else{
-            let fieldsSurvey;
-            if(currentSurveys.length > 0 && currentSurveys[0].type === types.TYPE_NURSE){
-                fieldsSurvey = currentSurveys[0].sections.reduce((acc, current) => {
-                    return acc.concat(current.fields)
-                }, [])
-            }
+            
+            return (
+                <SubmissionsTable typeSurveySelected={typeSurveySelected}
+                    surveys={currentSurveys} billingInfo={billingInfo} patient={patient}
+                    category={currentSurveys[0].category} records={filteredRecords}
+                    onSelectSubmission={(index) => selectSubmission(index)} />
+            )
             return (
                 <SubmissionsTable fieldsSurvey={fieldsSurvey} typeSurveySelected={typeSurveySelected}
                     surveys={currentSurveys} billingInfo={billingInfo} patient={patient}
-                    category={currentSurveys[0].category} filteredRecords={filteredRecords}
+                    category={currentSurveys[0].category} records={filteredRecords}
                     onSelectSubmission={(index) => selectSubmission(index)} />
             );
         }
@@ -489,10 +495,12 @@ function Patient(props) {
             setShowSnackbar({show:true, severity:"error", message : message});
         }
     }, [props.hospital.error])
+
     useEffect(() => {
         setShowOptions(false);
         setShowModal(false);
     }, [uuidSection])
+    
     useEffect(() => {
         async function fetchRecordsPatient(){
             await dispatch(fetchSubmissionsPatientInvestigationAction(props.investigations.currentInvestigation.uuid, uuidPatient));
@@ -709,23 +717,17 @@ function Patient(props) {
                     }
                 </Modal> 
                 <Grid container spacing={3}>
-                    <PatientToolBar readMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_READ) }
+                    <PatientToolBar permissions={props.investigations.currentInvestigation.permissions}
                         typeSurveySelected={ dataCollectionSelected ? dataCollectionSelected.type : parameters.typeTest ? parameters.typeTest : "medical" }
-                        buttonSelected = { urlToSection(parameters.typeTest, dataCollectionSelected)}
-                        writeMedicalPermission={props.investigations.currentInvestigation.permissions.includes(PERMISSION.MEDICAL_WRITE)} 
-                        editCallBack={props.investigations.currentInvestigation.permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editPersonalData : null}
+                        buttonSelected = { urlToSection(parameters.typeTest, dataCollectionSelected, props.investigations.currentInvestigation.permissions)}
+                        editCallBack={editPersonalData}
                         action={parameters} enableAddButton={dataCollectionSelected !== null || parameters === "fill"} patientID={patient.id} 
                         personalData={patient.personalData} years={years}
-                        medicalNotesCallBack={() => backToRoot()} 
                         typeSurveysAvailable = { typesSurvey }
                         categorySurveys = {categorySurveys}
                         unitsResearcher={props.profile.info.units}
-                        testCallBack={() => goToTest(TYPE_IMAGE_SURVEY)} 
-                        labCallBack={() => goToTest(TYPE_LAB_SURVEY)}
-                        socialCallBack={() => goToTest(TYPE_SOCIAL_SURVEY)}
-                        shoeCallBack={() => goToTest(types.TYPE_SHOE_SURVEY)}
-                        nurseCallBack={() => goToTest(types.TYPE_NURSE)}
-                        prescriptionsCallBack={() => goToTest(types.TYPE_PRESCRIPTIONS)}
+                        medicalNotesCallBack={() => backToRoot()} 
+                        buttonClickedCallBack = { (buttonClicked) => goToTest(buttonClicked)}
                         addRecordCallBack={addRecord}
                         hospitalize={ isPatientHospitalized ?  showConfirm : null }
                     />

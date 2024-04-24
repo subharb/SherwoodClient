@@ -17,7 +17,7 @@ export default function reducer(state = initialState, action){
     let tempInvestigations;
     switch(action.type){
         case types.FETCH_NEW_PATIENTS_SUCCESS:
-            let tempPatients = [...newState.data[action.investigation.uuid]];
+            let tempPatients = newState.data[action.investigation.uuid] ? [...newState.data[action.investigation.uuid]] : [];
             
             for(const patient of action.patients){
                 patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, action.investigation) : null;
@@ -28,22 +28,21 @@ export default function reducer(state = initialState, action){
             newState.error = initialState.error;                         
             return newState;
         case types.FETCH_INVESTIGATIONS_SUCCESS:
+        case types.SELECT_INVESTIGATION:
             //Desencripto los datos de los pacientes
             tempInvestigations = {};
-            for(const investigation of action.investigations){
-                
+            if(localStorage.getItem("indexHospital")){
+                const investigation = action.investigations[localStorage.getItem("indexHospital")];
                 let tempDecryptedData = [];
-                console.log(investigation.name);
                 for(const patient of investigation.patientsPersonalData){
-                    console.log(patient);
                     patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
                     tempDecryptedData.push(patient);
                 }
                 tempInvestigations[investigation.uuid] = tempDecryptedData;
-                
+                newState.data = tempInvestigations;                            
+                return newState;
             }
-            newState.data = tempInvestigations;                            
-            return newState;
+            
         case types.SAVE_PATIENT_LOADING:
             newState.loading = true;
             newState.error = initialState.error;

@@ -103,7 +103,7 @@ function HomeSchedule(props) {
                     </Grid>
                     <Grid item container  spacing={3}>
                         {
-                            investigation.permissions.includes(PERMISSION.MEDICAL_READ) &&
+                            
                             <React.Fragment>
                                 <Grid item xs={12} style={{textAlign:"center"}}>
                                     <LinkPlain to={SEARCH_PATIENT_ROUTE}>
@@ -117,18 +117,23 @@ function HomeSchedule(props) {
                                         </LinkPlain>
                                     </Grid>
                                 }
-                                <Grid item xs={12} style={{textAlign:"center"}}>
-                                    <LinkPlain to={HOSPITAL_LAB}>
-                                        <ButtonGrey data-testid="lab" ><Translate id="pages.hospital.laboratory.name" /></ButtonGrey>
-                                    </LinkPlain>
-                                </Grid>
-                                <Grid item xs={12} style={{textAlign:"center"}}>
-                                    <LinkPlain to={HOSPITAL_IMAGES}>
-                                        <ButtonGrey data-testid="medical-imaging" ><Translate id="pages.hospital.medical-imaging.name" /></ButtonGrey>
-                                    </LinkPlain>
-                                </Grid>
+                                {(investigation.permissions.includes(PERMISSION.MEDICAL_READ)) &&
+                                <>
+                                        <Grid item xs={12} style={{textAlign:"center"}}>
+                                            <LinkPlain to={HOSPITAL_LAB}>
+                                                <ButtonGrey data-testid="lab" ><Translate id="pages.hospital.laboratory.name" /></ButtonGrey>
+                                            </LinkPlain>
+                                        </Grid>
+                                        <Grid item xs={12} style={{textAlign:"center"}}>
+                                            <LinkPlain to={HOSPITAL_IMAGES}>
+                                                <ButtonGrey data-testid="medical-imaging" ><Translate id="pages.hospital.medical-imaging.name" /></ButtonGrey>
+                                            </LinkPlain>
+                                        </Grid>
+                                </>
+                                }
+                                
                                 {
-                                    (investigation.permissions.includes(PERMISSION.MEDICAL_WRITE) && investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION)) &&
+                                    (investigation.permissions.includes(PERMISSION.VIEW_HOSPITALIZATION) && investigation.functionalities.includes(FUNCTIONALITY.HOSPITALIZATION)) &&
                                     <Grid item xs={12} style={{textAlign:"center"}}>
                                         <LinkPlain to={HOSPITAL_MY_DEPARTMENTS_ROUTE}>
                                             <ButtonGrey data-testid="inpatients" ><Translate id="pages.hospital.inpatients.title" /></ButtonGrey>

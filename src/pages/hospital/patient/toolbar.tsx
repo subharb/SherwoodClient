@@ -3,7 +3,7 @@ import { Translate } from "react-localize-redux"
 import styled from "styled-components"
 import { ButtonAdd, IconGenerator, IconPatient } from "../../../components/general/mini_components"
 import { DepartmentType, IUnit, PersonalData } from "../../../constants/types"
-import {CATEGORY_DEPARTMENT_NURSE, CATEGORY_DEPARTMENT_PRESCRIPTIONS, CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, LAB_SURVEYS, PATIENT_TOOLBAR_SECTION_IMAGE, PATIENT_TOOLBAR_SECTION_LAB, PATIENT_TOOLBAR_SECTION_MEDICAL, PATIENT_TOOLBAR_SECTION_NURSE, PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS, PATIENT_TOOLBAR_SECTION_SHOE, PATIENT_TOOLBAR_SECTION_SOCIAL, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_MONITORING_VISIT_SURVEY, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY } from '../../../constants';
+import {CATEGORY_DEPARTMENT_NURSE, CATEGORY_DEPARTMENT_PRESCRIPTIONS, CATEGORY_DEPARTMENT_SHOE, CATEGORY_DEPARTMENT_SOCIAL, IMG_SURVEYS, TYPE_PRESCRIPTIONS, PATIENT_TOOLBAR_SECTION_IMAGE, PATIENT_TOOLBAR_SECTION_LAB, PATIENT_TOOLBAR_SECTION_MEDICAL, PATIENT_TOOLBAR_SECTION_NURSE, PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS, PATIENT_TOOLBAR_SECTION_SHOE, PATIENT_TOOLBAR_SECTION_SOCIAL, TYPE_FILL_LAB_SURVEY, TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY, TYPE_NURSE, TYPE_SHOE_SURVEY, TYPE_SOCIAL_SURVEY, CATEGORY_DEPARTMENT_NURSE_FW, CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW, TYPE_CARE_GIVER } from '../../../constants';
 import iconNotes from "../../../img/icons/history.png";
 import iconImages from "../../../img/icons/images.png";
 import iconLab from "../../../img/icons/lab.png";
@@ -16,13 +16,16 @@ import iconImagesGreen from "../../../img/icons/images_green.png";
 import iconLabGreen from "../../../img/icons/lab_green.png";
 import iconPrescriptions from "../../../img/icons/prescription_black.svg";
 import iconPrescriptionsGreen from "../../../img/icons/prescription_green.svg";
+import React from "react";
+import { PERMISSION } from "../../../components/investigation/share/user_roles"
 
-import React from "react"
+type SurveyType = | typeof TYPE_MEDICAL_SURVEY | typeof TYPE_IMAGE_SURVEY | typeof TYPE_SOCIAL_SURVEY | typeof TYPE_LAB_SURVEY |  typeof TYPE_SHOE_SURVEY | typeof TYPE_NURSE | typeof TYPE_CARE_GIVER | typeof TYPE_PRESCRIPTIONS;
 
 interface Props{
     personalData:PersonalData,
     patientID:number,
     years:number,
+    permissions:PERMISSION[],
     readMedicalPermission:boolean,
     writeMedicalPermission:boolean,
     disabled:boolean,
@@ -30,13 +33,8 @@ interface Props{
     unitsResearcher:IUnit[],
     categorySurveys:number[],
     buttonSelected:number,
-    medicalNotesCallBack:() =>void,
+    buttonClickedCallBack: (typeButtonClicked: SurveyType) => void,
     editCallBack:() => void,
-    labCallBack:() => void,
-    socialCallBack:() => void,
-    shoeCallBack:() => void,
-    testCallBack:() => void,
-    nurseCallBack:() => void,
     addRecordCallBack: () => void,
     hospitalize?:() => void,
     prescriptionsCallBack:() => void,
@@ -54,14 +52,8 @@ interface PropsComponent{
     enableAddButton:boolean,
     readMedicalPermission:boolean,
     writeMedicalPermission:boolean,
-    medicalNotesCallBack:() =>void,
-    editCallBack:() => void,
-    labCallBack:() => void,
-    socialCallBack:() => void,
-    shoeCallBack:() => void,
-    testCallBack:() => void,
-    nurseCallBack:() => void,
-    prescriptionsCallBack:() => void,
+    buttonClickedCallBack: (typeButtonClicked: SurveyType) => void,
+    editCallBack:(() => void) | null,
     addRecordCallBack: () => void,
     hospitalize?:() => void,
 }
@@ -75,12 +67,11 @@ const Container = styled(Grid)`
         top:60px;
     }
 `
-export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMedicalPermission,
-                                                    writeMedicalPermission, enableAddButton,
-                                                    unitsResearcher, categorySurveys, buttonSelected: categorySelected, years, 
-                                                    addRecordCallBack, hospitalize, medicalNotesCallBack, nurseCallBack,
-                                                    prescriptionsCallBack,
-                                                    editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack}) =>{
+
+export const PatientToolBar:React.FC<Props> = ({personalData, patientID, enableAddButton, permissions,
+                                                unitsResearcher, categorySurveys, buttonSelected: categorySelected, years, 
+                                                addRecordCallBack, hospitalize, buttonClickedCallBack, 
+                                                editCallBack}) =>{
         
         const isResearcherSocial = React.useMemo(() => {
             return unitsResearcher.some(unit => unit.department.type === DepartmentType.SOCIAL)
@@ -96,6 +87,12 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
         if(categorySurveys.includes(CATEGORY_DEPARTMENT_SHOE) && !isResearcherShoe){
             categorySurveys = categorySurveys.filter(category => category !== CATEGORY_DEPARTMENT_SHOE)
         }
+        if(categorySurveys.includes(CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW) && !permissions.includes(PERMISSION.NURSE_FW)){
+            categorySurveys = categorySurveys.filter(category => category !== CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW)
+        }
+        const readMedicalPermission = permissions.includes(PERMISSION.MEDICAL_READ);
+        const writeMedicalPermission = permissions.includes(PERMISSION.MEDICAL_WRITE);
+        const canEditPersonalData = permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editCallBack : null
 
         return <PatientToolBarComponent sex={personalData.sex} name={personalData!.name as string} 
                     health_id={personalData!.health_id as string} 
@@ -105,27 +102,29 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, readMed
                     writeMedicalPermission={writeMedicalPermission}
                     years={years} enableAddButton={enableAddButton}
                     addRecordCallBack={addRecordCallBack} hospitalize={hospitalize} 
-                    prescriptionsCallBack={prescriptionsCallBack}
-                    medicalNotesCallBack={medicalNotesCallBack} nurseCallBack={nurseCallBack}
-                    editCallBack={editCallBack} labCallBack={labCallBack} socialCallBack={socialCallBack} 
-                    shoeCallBack={shoeCallBack} testCallBack={testCallBack} 
+                    buttonClickedCallBack={(typeButton:SurveyType) => buttonClickedCallBack(typeButton)}
+                    editCallBack={canEditPersonalData}
                 />
             
-    }
+}
+
 export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID, name, surnames, readMedicalPermission,
-                                                writeMedicalPermission, buttonsAvailable: categoriesAvailable, health_id,
-                                                buttonSelected, years, enableAddButton, prescriptionsCallBack,
-                                                addRecordCallBack, hospitalize, medicalNotesCallBack, nurseCallBack,
-                                                editCallBack, labCallBack, socialCallBack, shoeCallBack, testCallBack
+                                                writeMedicalPermission, buttonsAvailable, health_id,
+                                                buttonSelected, years, enableAddButton, buttonClickedCallBack,
+                                                addRecordCallBack, hospitalize, editCallBack, 
                                             }) =>{
-    
+    const showPrescriptions = [CATEGORY_DEPARTMENT_PRESCRIPTIONS, CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW].filter(value => buttonsAvailable.includes(value)).length > 0; 
+    const showNurse = [CATEGORY_DEPARTMENT_NURSE_FW, CATEGORY_DEPARTMENT_NURSE].filter(value => buttonsAvailable.includes(value)).length > 0;
     return (
         <Container item container className="patient_toolbar" xs={12}>
             <Grid item container xs={3} >
-                <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}
-                    onClick={editCallBack} >
-                    <IconPatient gender={sex ? sex : "undefined"} />
-                </Grid>
+                {
+                    editCallBack && 
+                    <Grid item xs={12} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}
+                        onClick={editCallBack} >
+                        <IconPatient gender={sex ? sex : "undefined"} />
+                    </Grid>
+                } 
             </Grid>
             <Grid item container xs={4}>
                 <Grid item xs={12}>
@@ -147,7 +146,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                             [<Translate id="investigation.create.personal_data.fields.health_id" />, ":", health_id]
                         }
                         {
-                            health_id &&
+                            !health_id &&
                             ["ID", ":", patientID ]
                         }                                    
                         
@@ -159,76 +158,77 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                     </Typography>
                 </Grid>
             </Grid>
+            <Grid item container xs={5}  justifyContent="center" alignItems="center">
             {
                 readMedicalPermission &&
-                <Grid item container xs={5}  justifyContent="center" alignItems="center">
-                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                        <Button data-testid="medical-notes" onClick={() => medicalNotesCallBack()} >
-                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_MEDICAL ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
-                        </Button>
-                    </Grid>
-                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                        <Button data-testid="images" onClick={() => testCallBack()} >
-                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_IMAGE  ? iconImagesGreen : iconImages} alt="Images" height="40" />
-                        </Button>
-                    </Grid>
-                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                        <Button data-testid="lab" onClick={() => labCallBack()} >
-                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_LAB  ? iconLabGreen : iconLab} alt="Lab" height="40" />
-                        </Button>
-                    </Grid>
-                    {
-                        categoriesAvailable.includes(CATEGORY_DEPARTMENT_SOCIAL) && 
+                    <>
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                            <Button data-testid="social" onClick={() => socialCallBack()} >
-                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
+                            <Button data-testid="medical-notes" onClick={() => buttonClickedCallBack(TYPE_MEDICAL_SURVEY)} >
+                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_MEDICAL ? iconNotesGreen : iconNotes} alt="Medical Notes" height="40" />
                             </Button>
                         </Grid>
-                    }
-                    {
-                        categoriesAvailable.includes(CATEGORY_DEPARTMENT_SHOE) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                            <Button data-testid="show" onClick={() => shoeCallBack()} >
-                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
+                            <Button data-testid="images" onClick={() => buttonClickedCallBack(TYPE_IMAGE_SURVEY)} >
+                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_IMAGE  ? iconImagesGreen : iconImages} alt="Images" height="40" />
                             </Button>
                         </Grid>
-                    }
-                    {
-                        categoriesAvailable.includes(CATEGORY_DEPARTMENT_NURSE) && 
                         <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                            <Button data-testid="show" onClick={() => nurseCallBack()} >
-                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
+                            <Button data-testid="lab" onClick={() => buttonClickedCallBack(TYPE_LAB_SURVEY)} >
+                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_LAB  ? iconLabGreen : iconLab} alt="Lab" height="40" />
                             </Button>
                         </Grid>
-                    }
-                    {
-                        categoriesAvailable.includes(CATEGORY_DEPARTMENT_PRESCRIPTIONS) && 
-                        <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
-                            <Button data-testid="show" onClick={() => prescriptionsCallBack()} >
-                                <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS ? iconPrescriptionsGreen : iconPrescriptions} alt="prescriptions" height="45" />
-                            </Button>
-                        </Grid>
-                    }
-                    <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
-                        {
-                            (hospitalize && writeMedicalPermission) &&
-                            <Button data-testid="lab" onClick={ hospitalize} >
-                                <IconGenerator type="hospital" size="large" />
-                            </Button>
-                        }
-                    </Grid>
-                    <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
-                        {
-                            writeMedicalPermission && 
-                            <ButtonAdd disabled={enableAddButton} data-testid="add-record" onClick={addRecordCallBack} />
-                        }
-                    </Grid>
-                    <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
-                        
-                    </Grid>
-                </Grid>
+                    </>
             }
-            
+                {
+                    buttonsAvailable.includes(CATEGORY_DEPARTMENT_SOCIAL) && 
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                        <Button data-testid="social" onClick={() => buttonClickedCallBack(TYPE_SOCIAL_SURVEY)} >
+                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SOCIAL ? iconDS : iconDS} alt="Social" height="20" />
+                        </Button>
+                    </Grid>
+                }
+                {
+                    buttonsAvailable.includes(CATEGORY_DEPARTMENT_SHOE) && 
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                        <Button data-testid="shoe" onClick={() => buttonClickedCallBack(TYPE_SHOE_SURVEY)} >
+                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_SHOE ? iconShoe : iconShoe} alt="Social" height="40" />
+                        </Button>
+                    </Grid>
+                }
+                {
+                    showNurse && 
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                        <Button data-testid="nurse_fw" onClick={() => buttonClickedCallBack(TYPE_NURSE)} >
+                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_NURSE ? iconNurseGreen : iconNurse} alt="Nurse" height="35" />
+                        </Button>
+                    </Grid>
+                }
+                {
+                    showPrescriptions && 
+                    <Grid item xs={4} style={{display: 'flex', justifyContent: 'center', alignItems:'middle'}}>
+                        <Button data-testid="show" onClick={() => buttonClickedCallBack(TYPE_PRESCRIPTIONS)} >
+                            <img src={buttonSelected === PATIENT_TOOLBAR_SECTION_PRESCRIPTIONS ? iconPrescriptionsGreen : iconPrescriptions} alt="prescriptions" height="45" />
+                        </Button>
+                    </Grid>
+                }
+                <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
+                    {
+                        (hospitalize && writeMedicalPermission) &&
+                        <Button data-testid="lab" onClick={ hospitalize} >
+                            <IconGenerator type="hospital" size="large" />
+                        </Button>
+                    }
+                </Grid>
+                <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
+                    {
+                        writeMedicalPermission && 
+                        <ButtonAdd disabled={enableAddButton} data-testid="add-record" onClick={addRecordCallBack} />
+                    }
+                </Grid>
+                <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
+                    
+                </Grid>
+            </Grid>
         </Container>
     );
 }

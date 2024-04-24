@@ -1,10 +1,13 @@
 import { Typography } from '@mui/material';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Translate } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Loader from '../../../components/Loader';
 import { TabsSherwood } from '../../components/Tabs';
 import TimeTable from '../../dashboards/Analytics/TimeTable';
+import { useQuery } from '@tanstack/react-query';
+import { getStatsFirstMonitoring } from '../../../services';
+import { AnalyticsContext } from './Context';
 
 interface IStatReseacher{
     name: string,
@@ -29,7 +32,10 @@ interface IStatDepartment{
     uuid:string,
     units:IStatUnit
 }
-interface HospitalStatsProps {
+interface HospitalStatsProps{
+ 
+}
+interface HospitalStatsViewProps {
     loading:boolean,
     departmentSelected:string,
     stats:{
@@ -38,7 +44,25 @@ interface HospitalStatsProps {
     }
 }
 
-const HospitalStats: React.FC<HospitalStatsProps> = ({ stats, departmentSelected, loading }) => {
+const HospitalStats: React.FC<HospitalStatsProps> = ({ }) => {
+    const { startDate, endDate, uuidInvestigation, 
+        departments, departmentSelected} = useContext(AnalyticsContext);
+
+    const { isPending, error, data } = useQuery({
+        queryKey: ['statsFirstMonitoring', uuidInvestigation, departmentSelected, startDate, endDate],
+        queryFn: () =>
+            getStatsFirstMonitoring(uuidInvestigation, startDate, endDate),
+            staleTime: Infinity,
+    })
+
+    if(isPending){
+        return <Loader />
+    }
+
+    return <HospitalStatsView stats={data} departmentSelected={departmentSelected ? departmentSelected : "all"} loading={isPending} />
+};
+
+const HospitalStatsView: React.FC<HospitalStatsViewProps> = ({ stats, departmentSelected, loading }) => {
     if(stats === null){
         return <Loader />
     }

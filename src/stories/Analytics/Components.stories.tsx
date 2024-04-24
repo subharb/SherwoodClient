@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, billables, edc_data1 } from '../example_data';
+
 import DatesSelector from '../../pages/dashboards/Analytics/DatesSelector';
-import BillingBarChart from '../../pages/dashboards/Analytics/BillingBarChart';
+import { BillingChartView } from '../../pages/dashboards/Analytics/BillingBarChart';
+import { TrendView } from '../../pages/dashboards/Analytics/Trend';
 import { statsBilling } from './stats';
-import BillingInsuranceBars from '../../pages/dashboards/Analytics/BillingInsuranceBars';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
+import { BillingInsuranceBarsView } from '../../pages/dashboards/Analytics/BillingInsuranceBars';
 
 const meta: Meta<typeof DatesSelector> = {
   title: 'Hospital/Analytics',
@@ -36,9 +35,9 @@ const play = async ({ page }) => {
   DateSelectorTe.play = play;
 
 
-  const TemplateBilling = (args) => <BillingBarChart {...args} />
-  export const BillingChart = TemplateBilling.bind({});
-  BillingChart.args = {
+  const TemplateBilling = (args) => <BillingChartView {...args} />
+  export const BillingChartTemplate = TemplateBilling.bind({});
+  BillingChartTemplate.args = {
         stats:statsBilling(),
         currency:"XAF",
         departments:[{
@@ -55,7 +54,7 @@ const play = async ({ page }) => {
         }],
     }
 
-const TemplateBillingInsurance = (args) => <BillingInsuranceBars {...args} />
+const TemplateBillingInsurance = (args) => <BillingInsuranceBarsView {...args} />
 export const BillingBars = TemplateBillingInsurance.bind({});
 BillingBars.args = {
         stats:{
@@ -82,4 +81,13 @@ BillingBars.args = {
                 code:"Personnel"
             }
         ],
+    }
+
+const TemplateTrend = (args) => <TrendView {...args} />
+export const Trend = TemplateTrend.bind({});
+Trend.args = {
+        label : "Total number of patients",
+        totalNumber : 400,
+        type : "line",
+        series : [0, 3, 0, 0, 1, 1]
     }

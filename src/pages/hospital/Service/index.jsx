@@ -119,8 +119,13 @@ export function TestsHomeComponent(props) {
         <React.Fragment>
             <Grid container spacing={3} >
                 <Grid item xs={12}>
+<<<<<<< HEAD
                 <SectionHeader section={serviceTypeToTranslation(props.type)} 
                     edit={edit} editCallback={showRequests ? toogleEditLab : null} />
+=======
+                    <SectionHeader section={serviceTypeToTranslation(props.type)} 
+                        edit={edit} editCallback={showRequests ? toogleEditLab : null} />
+>>>>>>> feature/analytics
                 </Grid>
                 <Grid item xs={12}>
                     {
