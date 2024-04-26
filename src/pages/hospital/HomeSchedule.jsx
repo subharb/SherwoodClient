@@ -63,6 +63,13 @@ function HomeSchedule(props) {
             })
         }
         else{
+            return (
+                <Grid container spacing={3} style={{height:'100%'}}>
+                    <Grid item xs={12} style={{textAlign:"center", height:'100%'}}>
+                        <DICOMViewer />
+                    </Grid>
+                </Grid>
+            )
             const investigation = props.investigations.currentInvestigation;
             return(
                 <React.Fragment>
@@ -156,9 +163,9 @@ function HomeSchedule(props) {
             )
         }
     }
-    return <DICOMViewer />
     
     if(pathname === MY_SCHEDULE_ROUTE){
+        
         return(
             
                 <Grid container spacing={3}>
@@ -195,7 +202,7 @@ function HomeSchedule(props) {
         }
         
         return (
-            <BoxBckgr style={{ color:"white", padding:"1rem"}} color="text.primary">
+            <BoxBckgr style={{ color:"white", padding:"1rem", height:'100%'}} color="text.primary">
                 <Grid container spacing={3}>
                     <Grid item  xs={12} style={{textAlign:"center"}}>
                         <TypographyStyled variant="h1" gutterBottom display="inline" >

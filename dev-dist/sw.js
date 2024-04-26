@@ -82,11 +82,7 @@ define(['./workbox-8cc11778'], (function (workbox) { 'use strict';
     "revision": "3ca0b8505b4bec776b69afdba2768812"
   }, {
     "url": "index.html",
-<<<<<<< HEAD
-    "revision": "0.qcuher5gr9g"
-=======
-    "revision": "0.pkg1qs4t9lo"
->>>>>>> feature/DICOMViewer2
+    "revision": "0.t2gbqb7772g"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
