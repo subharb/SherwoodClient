@@ -15,13 +15,13 @@ import { connect } from 'react-redux';
 import EditServices from './Edit';
 import { RequestStatus, ServiceType } from './types';
 import RequestTable, { serviceToColor } from './RequestTable';
-import { fetchProfileInfoAction } from '../../../redux/actions/profileActions';
 import RequestSingle from './RequestSingle';
 import { TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_REQUEST_LAB } from '../../../constants';
 import SectionHeader from '../../components/SectionHeader';
 import { serviceTypeToTranslation } from '../../../utils/index.jsx';
 import { FUNCTIONALITY } from '../../../constants/types';
 import ServiceRecords from './ServiceRecords';
+import { useProfileInfo } from '../../../hooks';
 
 
 
@@ -34,6 +34,7 @@ export function TestsHome(props){
 
 export function TestsHomeComponent(props) {
     const [edit, setEdit] = useState(false);
+    //const { profile } = useProfileInfo();
     const history = useHistory();
     const idRequest = props.parameters.idRequest;
    
@@ -43,15 +44,6 @@ export function TestsHomeComponent(props) {
         ||(props.type === ServiceType.SHOE && props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.SHOE_SHOP))) : false;
     }, [props.investigations]);
 
-
-    useEffect(() => {
-        
-        if(props.investigations.currentInvestigation){
-            if(!props.profile.info){
-                dispatch(fetchProfileInfoAction(props.investigations.currentInvestigation.uuid));
-            }
-        }
-    }, [ props.investigations]);
     
     function toogleEditLab(){
         setEdit(edit => !edit);
@@ -144,8 +136,7 @@ const mapStateToProps = (state) =>{
     return {
         investigations:state.investigations,
         submissions:state.submissions,
-        patients:state.patients,
-        profile:state.profile,
+        patients:state.patients
     }
 }
 
