@@ -144,11 +144,11 @@ class DwvComponent extends React.Component {
                         // Now you can use the ArrayBuffer as needed
                         console.log(arrayBuffer);
                         
-                        // For example, you can create a Blob from the ArrayBuffer
-                        const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
+                        // // For example, you can create a Blob from the ArrayBuffer
+                        // const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
                         
-                        // Or convert it to a TypedArray (e.g., Uint8Array)
-                        const uint8Array = new Uint8Array(arrayBuffer);
+                        // // Or convert it to a TypedArray (e.g., Uint8Array)
+                        // const uint8Array = new Uint8Array(arrayBuffer);
 
                         this.state.dwvApp.loadImageObject(arrayBuffer);
                         // Use the ArrayBuffer, Blob, or TypedArray as per your requirements
@@ -281,6 +281,10 @@ class DwvComponent extends React.Component {
 
     // possible load from location
     app.loadFromUri(window.location.href);
+
+    if(this.props.dicomBuffer){
+        this.state.dwvApp.loadImageObject(dicomBuffer);
+    }
   }
 
   /**

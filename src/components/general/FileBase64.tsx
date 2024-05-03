@@ -13,8 +13,6 @@ interface FileBase64Props {
     callBackBase64 : (imgBase64:string) => void
 }
 
-
-
 export const FileBase64: React.FC<FileBase64Props> = ({ label, error ,value , callBackBase64 }) => {
     
     const [imageSelected, setImageSelected] = useState("");

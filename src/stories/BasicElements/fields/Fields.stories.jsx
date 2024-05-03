@@ -202,6 +202,7 @@ const FIELDS_FORM = {
         shortLabel: "investigation.table.name",
         validation : "textMin2"
     },
+    
 }
 
 

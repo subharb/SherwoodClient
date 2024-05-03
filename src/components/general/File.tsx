@@ -9,8 +9,10 @@ import { Check } from 'react-feather';
 import Modal from './modal';
 import LogoSherwood from '../../img/favicon-96x96.png';
 import PDFLogo from '../../img/pdf_logo.jpeg';
+import DICOM_icon from '../../img/dicom_icon.svg';
 import { isImageType } from '../../utils/index.jsx';
 import { CloseFrame } from './mini_components';
+import DICOMViewer from '../../pages/hospital/patient/DICOMViewer';
 
 enum UPLOAD_STATE{
     NOT_UPLOAD = 0,
@@ -76,6 +78,7 @@ const ImageFile = styled.img`
 const File:React.FC<Props> = (props) => {
     const [filesSelected, setFilesSelected] = useState<FileUpload[]>([]);
     const [showModal, setShowModal] = useState(false);
+    const [dicomBuffer, setDicomBuffer] = useState<ArrayBufferLike>();
     const [localImage, setLocalImage] = useState("");
     const prevFilesSelected:FileUpload[] | undefined = usePrevious(filesSelected);
     const prevValue:FileUpload[] | undefined = usePrevious(props.value);
@@ -113,6 +116,14 @@ const File:React.FC<Props> = (props) => {
         }
         
     }
+    
+    function showDICOM(index:number){
+        const dataBuffer = filesSelected[index].buffer;
+        if(dataBuffer){  
+            setDicomBuffer(dataBuffer.data);
+        }
+    }
+    
     function downloadPDF(indexPDF:number){
         console.log("El archivo es el ", indexPDF);
 
@@ -303,6 +314,9 @@ const File:React.FC<Props> = (props) => {
                                         </GridImage>
                                     </CloseFrame>) 
                             }
+                            else if(file.type === "DICOM"){
+                                return "DICOM"
+                            }
                             else{
                                 return(
                                     <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
@@ -332,6 +346,23 @@ const File:React.FC<Props> = (props) => {
                                         </GridImage>
                                     </CloseFrame>
                                 )
+                            }
+                            else if(file.type === "DICOM"){
+                                if(!dicomBuffer) {
+                                    return (
+                                        <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                            <GridImage item xs={2}>
+                                                <ImageFile onClick={() => showDICOM(index)}  src={DICOM_icon} alt="pdf" />
+                                            </GridImage>
+                                        </CloseFrame>
+                                    )
+                                }
+                                else{
+                                    return(
+                                        <DICOMViewer data={dicomBuffer} />
+                                    )
+                                }
+                                
                             }
                             else{
                                 return(
