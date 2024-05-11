@@ -138,6 +138,7 @@ class DwvComponent extends React.Component {
             onClick={this.handleTagsDialogOpen}
           ><LibraryBooksIcon /></ToggleButton>
             <Button onClick={() => {
+                //this.state.dwvApp.loadFromUri('https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm');
                 fetch('https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm')
                     .then((response) => response.arrayBuffer())
                     .then((arrayBuffer) => {
@@ -148,7 +149,7 @@ class DwvComponent extends React.Component {
                         // const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
                         
                         // // Or convert it to a TypedArray (e.g., Uint8Array)
-                        // const uint8Array = new Uint8Array(arrayBuffer);
+                        const uint8Array = new Uint8Array(arrayBuffer);
 
                         this.state.dwvApp.loadImageObject(arrayBuffer);
                         // Use the ArrayBuffer, Blob, or TypedArray as per your requirements
@@ -283,7 +284,7 @@ class DwvComponent extends React.Component {
     app.loadFromUri(window.location.href);
 
     if(this.props.dicomBuffer){
-        this.state.dwvApp.loadImageObject(dicomBuffer);
+        app.loadImageObject(this.props.dicomBuffer, "DATA");
     }
   }
 

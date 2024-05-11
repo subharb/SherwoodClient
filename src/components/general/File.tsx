@@ -120,7 +120,23 @@ const File:React.FC<Props> = (props) => {
     function showDICOM(index:number){
         const dataBuffer = filesSelected[index].buffer;
         if(dataBuffer){  
-            setDicomBuffer(dataBuffer.data);
+            // Convert the Body.data array into a Uint8Array
+            const uint8Array = new Uint8Array(dataBuffer.data);
+
+            // Obtain the underlying ArrayBuffer from the Uint8Array
+            const arrayBuffer = uint8Array.buffer;
+
+            // Create an object conforming to loadImageObject's expectations
+            const imageDataObject = {
+                name: 'imageDataName', // Choose a suitable name for your image data
+                filename: 'imageDataFilename', // Choose a suitable filename for your image data
+                data: arrayBuffer,
+                "Content-Type" : 'application/dicom'
+            };
+
+            // Place this object in an array
+            const dataArray = [imageDataObject];
+            setDicomBuffer(dataArray);
         }
     }
     
@@ -359,7 +375,7 @@ const File:React.FC<Props> = (props) => {
                                 }
                                 else{
                                     return(
-                                        <DICOMViewer data={dicomBuffer} />
+                                        <DICOMViewer dicomBuffer={dicomBuffer} />
                                     )
                                 }
                                 
