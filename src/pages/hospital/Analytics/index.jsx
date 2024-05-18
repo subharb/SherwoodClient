@@ -259,7 +259,7 @@ export function Analytics(props) {
                     </>
                 }
 
-                { props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING) &&
+                { props.investigations.currentInvestigation.functionalities.includes(FUNCTIONALITY.BILLING) && props.investigations.currentInvestigation.billingInfo &&
                     <Grid container item spacing={1}>
                         <Grid item xs={12} >
                             <BillingChart loading={billingDepartments === null} 
