@@ -82,11 +82,7 @@ define(['./workbox-8cc11778'], (function (workbox) { 'use strict';
     "revision": "3ca0b8505b4bec776b69afdba2768812"
   }, {
     "url": "index.html",
-<<<<<<< HEAD
-    "revision": "0.8pb8g39nk5g"
-=======
-    "revision": "0.bkvfahbj61g"
->>>>>>> release/3.5Tao
+    "revision": "0.d79s0iph02g"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
@@ -94,3 +90,4 @@ define(['./workbox-8cc11778'], (function (workbox) { 'use strict';
   }));
 
 }));
+//# sourceMappingURL=sw.js.map

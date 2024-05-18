@@ -283,9 +283,14 @@ class DwvComponent extends React.Component {
     // possible load from location
     app.loadFromUri(window.location.href);
 
-    if(this.props.dicomBuffer){
-        app.loadImageObject(this.props.dicomBuffer, "DATA");
-    }
+    
+    app.loadURLs([
+       'https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm'
+    ]);
+    
+    // if(this.props.dicomBuffer){
+    //     app.loadImageObject(this.props.dicomBuffer, "DATA");
+    // }
   }
 
   /**
