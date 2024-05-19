@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import { Dialog,
-    Typography,
     DialogTitle, 
     DialogContent,
-    DialogContentText,
-    Button, TextField,DialogActions, Card, CardContent, IconButton
+    Button, DialogActions, IconButton
 } from "@mui/material";
 import PropTypes from 'prop-types'; 
 import { Translate } from 'react-localize-redux';
@@ -27,6 +25,11 @@ export default function Modal(props){
     return (
         <Dialog className='modal' maxWidth="lg" fullWidth={props.fullWidth} disableEscapeKeyDown 
             PaperProps={{style : paperStyles}}
+            sx={{
+                '& .MuiDialog-paper': {
+                  height: '90vh', // Set the height of the dialog
+                }
+              }}
             open={props.open}
             disablePortal={false}
             onClose={props.closeModal}

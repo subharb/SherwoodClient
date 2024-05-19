@@ -137,7 +137,7 @@ class DwvComponent extends React.Component {
             disabled={!dataLoaded}
             onClick={this.handleTagsDialogOpen}
           ><LibraryBooksIcon /></ToggleButton>
-            <Button onClick={() => {
+            {/* <Button onClick={() => {
                 //this.state.dwvApp.loadFromUri('https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm');
                 fetch('https://raw.githubusercontent.com/ivmartel/dwv/master/tests/data/bbmri-53323851.dcm')
                     .then((response) => response.arrayBuffer())
@@ -157,7 +157,7 @@ class DwvComponent extends React.Component {
                     .catch((error) => {
                         console.error(error);
                     });
-            }}>Load of a </Button>
+            }}>Load of a </Button> */}
           <Dialog
             open={this.state.showDicomTags}
             onClose={this.handleTagsDialogClose}

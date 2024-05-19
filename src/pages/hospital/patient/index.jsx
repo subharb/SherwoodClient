@@ -383,8 +383,8 @@ function Patient(props) {
             }
             
         }
-        else if(idSubmission !== null && action === "show"){
-            const belongsToRequest = idSubmission && types.TYPE_FILL_SURVEY.includes(typeSurveySelected);
+        else if(idSubmission !== null && action === "show" && dataCollectionSelected){
+            //const belongsToRequest = idSubmission && types.TYPE_FILL_SURVEY.includes(typeSurveySelected);
             const forceEdit =  dataCollectionSelected.type === types.TYPE_EDITABLE_SURVEY
             return (
                 <>  

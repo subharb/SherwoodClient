@@ -118,6 +118,7 @@ const File:React.FC<Props> = (props) => {
     }
     
     function showDICOM(index:number){
+        setShowModal(true);
         const dataBuffer = filesSelected[index].buffer;
         if(dataBuffer){  
             // Convert the Body.data array into a Uint8Array
@@ -363,22 +364,31 @@ const File:React.FC<Props> = (props) => {
                                     </CloseFrame>
                                 )
                             }
-                            else if(file.type === "DICOM"){
+                            else if(true){
+                            //else if(file.type === "DICOM"){
                                 if(!dicomBuffer) {
                                     return (
                                         <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
-                                            <GridImage item xs={2}>
-                                                <ImageFile onClick={() => showDICOM(index)}  src={DICOM_icon} alt="pdf" />
+                                            <GridImage item xs={8}>
+                                                <ImageFile onClick={() => showDICOM(index)} src={DICOM_icon} alt="DICOM" />
                                             </GridImage>
                                         </CloseFrame>
                                     )
                                 }
                                 else{
                                     return(
-                                        <DICOMViewer dicomBuffer={dicomBuffer} />
+                                        <Modal 
+                                            open={showModal} fullWidth
+                                            closeModal={() => setShowModal(false)}
+                                            >
+                                            <Grid container spacing={3} style={{height:'100%'}}>
+                                                <Grid item xs={12} style={{textAlign:"center", height:'100%'}}>
+                                                    <DICOMViewer dicomBuffer={dicomBuffer} />
+                                                </Grid>
+                                            </Grid>                                            
+                                        </Modal>
                                     )
-                                }
-                                
+                                }                                
                             }
                             else{
                                 return(
@@ -410,7 +420,7 @@ const File:React.FC<Props> = (props) => {
                     props.mode === "form" &&
                     
                     <Grid item xs={2}>
-                        <input accept="image/*,application/pdf,application/vnd.ms-excel" id="image" name="image" style={{display:'none'}} 
+                        <input accept="image/*,application/pdf,application/vnd.ms-exce" id="image" name="image" style={{display:'none'}} 
                             type="file" 
                             onChange={(e) => onFileSelected(e)} />
                         <label htmlFor="image">
