@@ -42,7 +42,7 @@ export default function reducer(state = initialState, action){
                 newState.data = tempInvestigations;                            
                 return newState;
             }
-            
+            return newState;
         case types.SAVE_PATIENT_LOADING:
             newState.loading = true;
             newState.error = initialState.error;

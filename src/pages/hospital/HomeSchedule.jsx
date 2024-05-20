@@ -63,13 +63,6 @@ function HomeSchedule(props) {
             })
         }
         else{
-            return (
-                <Grid container spacing={3} style={{height:'100%'}}>
-                    <Grid item xs={12} style={{textAlign:"center", height:'100%'}}>
-                        <DICOMViewer />
-                    </Grid>
-                </Grid>
-            )
             const investigation = props.investigations.currentInvestigation;
             return(
                 <React.Fragment>
