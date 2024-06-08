@@ -75,7 +75,7 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
                         <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
                             {
                                 <WardView loading={false} mode={WardModes.View} ward={ward}
-                                    patients={patients} inModule
+                                    patients={patients} inModule={true}
                                     bedsProps={ward.beds} error={null}
                                     viewCallBack={(uuidPatient) => goToPatientHistoryCallBack(uuidPatient)} />
                             }                        

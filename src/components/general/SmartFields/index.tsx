@@ -291,8 +291,6 @@ const SmartField:React.FC<Props> = (props) => {
                     break;
                 case "treatment":
                 case "treatment_prescription":
-                    smartField = <SingleTreatmentSelector {...propsSmartField} />
-                    break;
                 case "treatment_regular":
                     smartField = <SingleTreatmentSelector {...propsSmartField} />
                     break;
