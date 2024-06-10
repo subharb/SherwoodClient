@@ -682,9 +682,10 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                             patientToTransfer && 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography variant="h6" component="div" gutterBottom dangerouslySetInnerHTML={{__html : translate("hospital.ward.transfer-ward-patient").toString().replace("%X", patientFullName(patientToTransfer.personalData)) }}>
+                                    <Typography variant="h6" component="div" gutterBottom 
+                                        dangerouslySetInnerHTML={{__html : translate("hospital.ward.transfer-ward-patient").toString().replace("%X", patientFullName(patientToTransfer.personalData)) }}>
                                     </Typography>
-                                    
+                                    SELECT WITH ALL WARDS
                                 </Grid>
                                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
                                     <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
