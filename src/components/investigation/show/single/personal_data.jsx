@@ -44,7 +44,6 @@ export default function PersonalDataForm(props) {
             } 
         }
         
-        
         //Generación de claves de paciente de Sherwood
         const rawKeyPatient = import.meta.env.VITE_APP_DEFAULT_PATIENT_PASSWORD;// o la clave que se imprime
         const patientKeyEncrInvestigation = encryptData(rawKeyInvestigation, rawKeyPatient);

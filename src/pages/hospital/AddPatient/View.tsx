@@ -9,6 +9,7 @@ import PersonalDataForm from '../../../components/investigation/show/single/pers
 import { BoxBckgr, GridContainer } from '../../../components/general/mini_components';
 import { areSameDates } from '../../../utils/index.jsx';
 import Modal from '../../../components/general/modal';
+import { IField, IPatient, IPersonalData } from '../../../constants/types';
 
 interface Props {
   investigations: any; // Replace 'any' with the appropriate type
@@ -27,6 +28,7 @@ export function AddPatientComponent(props: Props) {
   console.log('AddPatientComponent', props);
   const [isLoading, setIsLoading] = useState(false);
   const [showSnackbar, setShowSnackbar] = useSnackBarState();
+  const [personalFields, setPersonalFields] = useState<IField[]>([]);
   
   const [confirmPatient, setConfirmPatient] = useState<any | null>(null);
   const [lastPatient, setLastPatient] = useState<any | null>(null);
@@ -35,6 +37,19 @@ export function AddPatientComponent(props: Props) {
   function handleClose() {
     setShowSnackbar({ show: false });
   }
+
+  useEffect(() => {
+    const findAutomatedHealthId = props.personalFields.find((field) => field.name === 'automated_health_id');
+    if(findAutomatedHealthId){
+        //Remove the automated health id field from the list
+        const newFields = props.personalFields.filter((field) => field.name !== 'automated_health_id');
+        setPersonalFields(newFields);
+    }
+    else{
+        setPersonalFields(props.personalFields);
+    }
+    
+  }, []);
 
   useEffect(() => {
         console.log("Han cambiado los pacientes");
@@ -170,7 +185,7 @@ return (
             </GridContainer>
             <Grid item xs={12}>
                 <Paper style={{padding:'1rem'}}>
-                    <PersonalDataForm fields={ props.personalFields } hospital={true}
+                    <PersonalDataForm fields={ personalFields } hospital={true}
                         keyResearcherInvestigation={props.keyResearcherInvestigation}
                         submitText={props.patient ? "general.update" : null}
                         initialData={props.patient ? props.patient.personalData : null} 

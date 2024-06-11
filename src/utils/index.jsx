@@ -300,6 +300,15 @@ export const PERSONAL_DATA_FIELDS = {
         shortLabel:"investigation.create.personal_data.fields.health_id",
         validation : "textMin2"
     },
+    "automated_health_id" : {
+        name: "automated_health_id",
+        required : true,
+        type:"hidden",
+        encrypted : true,
+        label:"investigation.create.personal_data.fields.automated_health_id",
+        shortLabel:"investigation.create.personal_data.fields.automated_health_id",
+        validation : "textMin2"
+    },
     "national_id" : {
         name: "national_id",
         required : true,
