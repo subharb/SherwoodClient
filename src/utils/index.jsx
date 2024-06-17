@@ -303,7 +303,7 @@ export const PERSONAL_DATA_FIELDS = {
     "automated_health_id" : {
         name: "automated_health_id",
         required : true,
-        type:"hidden",
+        type:"text",
         encrypted : false,
         label:"investigation.create.personal_data.fields.automated_health_id",
         shortLabel:"investigation.create.personal_data.fields.automated_health_id",

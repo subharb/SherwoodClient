@@ -105,6 +105,9 @@ function SearchPatients(props){
                                             patientBirthday.getMonth() === value.getMonth() &&
                                             patientBirthday.getDate() === value.getDate();
                             }
+                            else if(keyValue === "automated_health_id" && value !== ""){
+                                result = patient.personalData["automated_health_id"] === value;
+                            }
                             else if(value !== "" && patient.personalData[keyValue] && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
                                 result = false;
                             }
