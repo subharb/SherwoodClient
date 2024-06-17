@@ -41,8 +41,14 @@ export function AddPatientComponent(props: Props) {
   useEffect(() => {
     const findAutomatedHealthId = props.personalFields.find((field) => field.name === 'automated_health_id');
     if(findAutomatedHealthId){
-        //Remove the automated health id field from the list
-        const newFields = props.personalFields.filter((field) => field.name !== 'automated_health_id');
+        //Hide the automated health id field from the list
+        const newFields = props.personalFields.map((field) => {
+            if(field.name === 'automated_health_id'){
+                return {...field, type:'hidden', required:false};
+            }
+            return field;
+        
+        });
         setPersonalFields(newFields);
     }
     else{
@@ -188,7 +194,7 @@ return (
                     <PersonalDataForm fields={ personalFields } hospital={true}
                         keyResearcherInvestigation={props.keyResearcherInvestigation}
                         submitText={props.patient ? "general.update" : null}
-                        initialData={props.patient ? props.patient.personalData : null} 
+                        initialData={props.patient ? props.patient.personalData : {'automated_health_id': ''}} 
                         callBackForm={(personalData, rawPersonalData) => callBackSaveUpdate(personalData, rawPersonalData)}/>
                 </Paper>
             </Grid>

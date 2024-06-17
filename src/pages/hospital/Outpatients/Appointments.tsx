@@ -11,7 +11,7 @@ import { IAppointment, IPatient, OutpatientsVisualizationMode } from '../../../c
 import { SnackbarType, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_PATIENT } from '../../../routes/urls';
 import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsService } from '../../../services/agenda';
-import { areSameDates, yearsFromDate } from '../../../utils/index.jsx';
+import { areSameDates, getPatientID, yearsFromDate } from '../../../utils/index.jsx';
 import { RequestStatus } from '../Service/types';
 
 interface AppointmentsProps {
@@ -165,16 +165,10 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
                                     
                                         <Grid item xs={12}>
                                             {
-                                                patient.personalData.health_id &&
+                                        
                                                 [
-                                                    <Translate id="investigation.create.personal_data.fields.health_id" />, ":", patient.personalData.health_id
+                                                    <Translate id="investigation.create.personal_data.fields.health_id" />, ":", getPatientID(patient.personalData)
                                                 ]
-                                            }
-                                            {
-                                                !patient.personalData.health_id && 
-                                                <Typography variant="body2" >
-                                                    <Translate id="investigation.create.personal_data.fields.uuid" />:{ selectedAppointment.patient?.id}
-                                                </Typography>
                                             }
                                             <Typography variant="body2">
                                                 <Translate id="investigation.create.personal_data.fields.name" />: {patient.personalData.name}

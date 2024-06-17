@@ -1326,6 +1326,7 @@
                     "address" : ["Address", "Dirección", "Adresse"],
                     "insurance" : ["Insurance", "Seguro", "Statut"],
                     "health_id" : ["Health ID", "NHC", "ID de santé"],
+                    "automated_health_id" : ["MRN", "NHC", "ID de santé"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
                     "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],

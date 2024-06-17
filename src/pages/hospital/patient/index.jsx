@@ -682,9 +682,9 @@ function Patient(props) {
                                 </Typography>
                                 <Typography variant="body2" style={{fontWeight:'bold'}} component="div" gutterBottom>
                                 {
-                                    patient.personalData.health_id &&
+                                    patient.personalData &&
                                     [
-                                        <Translate id="investigation.create.personal_data.fields.health_id" />, ",", patient.personalData.health_id
+                                        <Translate id="investigation.create.personal_data.fields.health_id" />, ",", getPatientID(patient.personalData)
                                     ]
                                 }
                                 <Typography variant="body2">

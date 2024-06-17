@@ -29,7 +29,7 @@ import { useDepartments, useSnackBarState } from '../../../../hooks';
 import { getWardService } from '../../../../services';
 import { Alert } from '@mui/material';
 import { HOSPITAL_PATIENT } from '../../../../routes/urls';
-import { sexNumberToString, yearsFromDate } from '../../../../utils/index.jsx';
+import { getPatientID, sexNumberToString, yearsFromDate } from '../../../../utils/index.jsx';
 import FormTSFunc, { FormValues } from '../../../../components/general/formTSFunction';
 
 export enum WardModes {
@@ -459,15 +459,9 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                 <Grid container item xs={12}>
                     <Grid item xs={12}>
                         {
-                            patient?.personalData.health_id && 
+                            patient && 
                             <Typography variant="body2" >
-                                <Translate id="investigation.create.personal_data.fields.health_id" />:{ patient?.personalData.health_id}
-                            </Typography>
-                        }
-                        {
-                            !patient?.personalData.health_id && 
-                            <Typography variant="body2" >
-                                <Translate id="investigation.create.personal_data.fields.uuid" />:{ patient?.id}
+                                <Translate id="investigation.create.personal_data.fields.health_id" />:{ getPatientID(patient?.personalData)}
                             </Typography>
                         }
                         <Typography variant="body2" >
