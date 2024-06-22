@@ -1304,7 +1304,7 @@
                 "intro" : ["Please select the personal data you are planning to include in your study" ,"Seleccione los datos personales que desea incluir en su estudio", "Sélectionnez les données personnelles que vous souhaitez inclure dans votre étude"],
                 "fields" : {
                     "health_id" : ["Health ID", "NHC", "ID de santé"],
-                    "automated_health_id" : ["MRN", "NHC", "ID de santé"],
+                    "automated_health_id" : ["MRN", "NHC", "NDM"],
                     "id" : ["Patient ID", "ID de paciente", "ID de patient"],
                     "name" : ["Name", "Nombre","Prénom"],
                     "surnames" : ["Surnames", "Apellidos", "Nom"],
@@ -1326,7 +1326,7 @@
                     "address" : ["Address", "Dirección", "Adresse"],
                     "insurance" : ["Insurance", "Seguro", "Statut"],
                     "health_id" : ["Health ID", "NHC", "ID de santé"],
-                    "automated_health_id" : ["MRN", "NHC", "ID de santé"],
+                    "automated_health_id" : ["MRN", "NHC", "NDM"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
                     "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
