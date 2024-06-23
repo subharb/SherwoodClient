@@ -31,6 +31,7 @@ import { Alert } from '@mui/material';
 import { HOSPITAL_PATIENT } from '../../../../routes/urls';
 import { patientFullName, sexNumberToString, yearsFromDate } from '../../../../utils/index.jsx';
 import FormTSFunc, { FormValues } from '../../../../components/general/formTSFunction';
+import TransferWardForm from './TransferWardForm';
 
 export enum WardModes {
     Edit = "edit",
@@ -179,6 +180,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     },[departments])    
     
     return <Ward loading={props.loading} error={props.hospital.error} mode={props.mode} ward={ward} 
+                departments={departments}
                 bedsProps={ward ? ward.beds : null} patient={patient} patients={props.patients.data ? props.patients.data[investigations.currentInvestigation.uuid] : []}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
                 assignBedPatientCallBack = {assignBedPatientCallBack} resetErrorHospital={resetErrorHospital}
@@ -208,6 +210,7 @@ interface Props extends LocalizeContextProps{
     patient?:IPatient,
     patients?:IPatient[],
     inModule?:boolean,
+    departments:IDepartment[],
     editCallBack ?: (bed:IBed) => void,
     deleteCallBack ?: (bed:IBed) => void,
     addCallBack ?: (bed:IBed) => void,    
@@ -235,7 +238,7 @@ enum ModalAction{
 export const WardView :React.FC<PropsView> = (props) => <WardLocalized {...props} mode={WardModes.View} />
 
 
-const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, patients, inModule,
+const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, patients, inModule, departments,
                         editCallBack, addCallBack, deleteCallBack, saveOrderCallBack, assignBedPatientCallBack, 
                         resetErrorHospital, goToPatientHistory, viewCallBack, translate}) => {
     const [isDropped, setIsDropped] = useState(false);
@@ -680,23 +683,9 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         }
                         {
                             patientToTransfer && 
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography variant="h6" component="div" gutterBottom 
-                                        dangerouslySetInnerHTML={{__html : translate("hospital.ward.transfer-ward-patient").toString().replace("%X", patientFullName(patientToTransfer.personalData)) }}>
-                                    </Typography>
-                                    SELECT WITH ALL WARDS
-                                </Grid>
-                                <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
-                                        <Translate id="general.cancel" />
-                                    </ButtonCancel>
-                                    &nbsp;
-                                    <ButtonContinue onClick={assignBedPatientConfirm} data-testid="continue-modal" color="green">
-                                        <Translate id="general.continue" />
-                                    </ButtonContinue>
-                                </Grid>
-                            </Grid>
+                            <TransferWardForm departments={departments} currentWard={ward.uuid!}
+                                patientToTransfer = {patientToTransfer}
+                                resetModal={resetModal} transferBedConfirm={(wardDestination) => console.log("Transfer a "+wardDestination)} />
                         }
                         </div>
                 </Modal>
