@@ -24,7 +24,7 @@ import {
 import { useEffect } from 'react';
 import { IBed, IDepartment, IPatient, IWard } from '../../../../constants/types';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { createBedAction, createStayPatientAction, deleteBedAction, resetHospitalAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
+import { createBedAction, createStayPatientAction, deleteBedAction, resetHospitalAction, transferPatientAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../../hooks';
 import { getWardService } from '../../../../services';
 import { Alert } from '@mui/material';
@@ -98,6 +98,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     const [ward, setWard] = useState<IWard | null>(null);
     const [uuidDepartment, setUuidDepartment] = useState<string | null>(null);
     const {departments, researchers} = useDepartments();
+    const [department, setDepartment] = useState<IDepartment | null>(null);
     const investigations = useSelector((state:any) => state.investigations);
     const [patient, setPatient] = useState<IPatient | undefined>(undefined);
 
@@ -174,13 +175,14 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
                 if(ward){
                     setWard(ward);
                 }
+                setDepartment(department);
             }
         }
         
     },[departments])    
     
     return <Ward loading={props.loading} error={props.hospital.error} mode={props.mode} ward={ward} 
-                departments={departments}
+                departments={departments} department = {department}
                 bedsProps={ward ? ward.beds : null} patient={patient} patients={props.patients.data ? props.patients.data[investigations.currentInvestigation.uuid] : []}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
                 assignBedPatientCallBack = {assignBedPatientCallBack} resetErrorHospital={resetErrorHospital}
@@ -211,6 +213,7 @@ interface Props extends LocalizeContextProps{
     patients?:IPatient[],
     inModule?:boolean,
     departments:IDepartment[],
+    department:IDepartment | null,
     editCallBack ?: (bed:IBed) => void,
     deleteCallBack ?: (bed:IBed) => void,
     addCallBack ?: (bed:IBed) => void,    
@@ -219,6 +222,7 @@ interface Props extends LocalizeContextProps{
     resetErrorHospital?: () => void,
     goToPatientHistory?:() => void,
     viewCallBack?:(uuidPatient:string) => void,
+    transferPatientCallBack?:(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string) => void
 }
 
 interface PropsView extends Omit<Props, "editCallBack" | "deleteCallBack" | "addCallBack"  | "saveOrderCallBack" | "assignBedPatientCallBack" | "saveOrderCallBack" >{
@@ -239,8 +243,9 @@ export const WardView :React.FC<PropsView> = (props) => <WardLocalized {...props
 
 
 const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, patients, inModule, departments,
+                        department,
                         editCallBack, addCallBack, deleteCallBack, saveOrderCallBack, assignBedPatientCallBack, 
-                        resetErrorHospital, goToPatientHistory, viewCallBack, translate}) => {
+                        resetErrorHospital, goToPatientHistory, viewCallBack, transferPatientCallBack}) => {
     const [isDropped, setIsDropped] = useState(false);
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
@@ -253,6 +258,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
 
     const [bedToEdit, setBedToEdit] = useState<IBed | null>(null);
     const [bedToDelete, setBedToDelete] = useState<IBed | null>(null);
+    const [bedFromTransfer, setBedFromTransfer] = useState<IBed | null>(null);
     const [patientToTransfer, setPatientToTransfer ] = useState<IPatient | null>(null);
     const [bedToAssign, setBedToAssign] = useState<IBed | null>(null);
     const [addingBed, setAddingBed] = useState(false);
@@ -336,12 +342,13 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         
     }
 
-    function transferPatient(uuidPatient:string){
+    function transferPatient(uuidPatient:string, currentBed:IBed){
         console.log("Transfer patient", uuidPatient);
         const patientToTransfer = patients!.find((pat:IPatient) => pat.uuid === uuidPatient);
         if(patientToTransfer){
             setPatientToTransfer(patientToTransfer);
             setShowModal({show:true, action:ModalAction.TRANSFER_PATIENT});
+            setBedFromTransfer(currentBed);
         }
 
     }
@@ -418,7 +425,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
             case WardModes.View:
                 buttonBed = <BedButtonViewPatient patient={personalData} gender={gender} showPersonalData={hasStay}
                                 active={bed.active} name={bed.name} stayDays={stayDays} age={ageYears}
-                                onTransferCallBack={ (currentPatient && transferPatient) ? () => transferPatient(currentPatient.uuid) : undefined}
+                                onTransferCallBack={ (currentPatient && transferPatient) ? () => transferPatient(currentPatient.uuid, bed) : undefined}
                                 onClickCallBack={(  currentPatient && viewCallBack) ? () => viewCallBack(currentPatient.uuid) : undefined}
                             />
             break;
@@ -684,8 +691,15 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         {
                             patientToTransfer && 
                             <TransferWardForm departments={departments} currentWard={ward.uuid!}
-                                patientToTransfer = {patientToTransfer}
-                                resetModal={resetModal} transferBedConfirm={(wardDestination) => console.log("Transfer a "+wardDestination)} />
+                                patientToTransfer = {patientToTransfer} currentDepartment={department!.uuid!}
+                                resetModal={resetModal} 
+                                transferWardConfirm={(uuidDepartmentDestination, uuidWardDestination) => {
+                                    console.log("uuidDepartmentDestination", uuidDepartmentDestination);
+                                    console.log("uuidWardDestination", uuidWardDestination);
+                                    console.log("uuidCurrentDepartment", department!.uuid);
+                                    console.log("patientToTransfer!.uuid", patientToTransfer!.uuid);
+                                    transferPatientCallBack(department!.uuid!, ward.uuid!, bedFromTransfer!.id, uuidDepartmentDestination, uuidWardDestination, patientToTransfer!.uuid)
+                                }} />
                         }
                         </div>
                 </Modal>

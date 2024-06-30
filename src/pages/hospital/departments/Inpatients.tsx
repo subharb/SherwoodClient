@@ -6,12 +6,13 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { AccordionSummary, Accordion, Grid, Typography, AccordionDetails, List, ListItem, ListItemText } from '@mui/material';
 import { useDepartments } from '../../../hooks';
 import Loader from '../../../components/Loader';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { IDepartment, IPatient, IWard } from '../../../constants/types';
 import Ward, { WardModes, WardView } from './Ward';
 import { ExpandMore } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { HOSPITAL_DEPARTMENTS_SETTINGS_ROUTE, HOSPITAL_PATIENT } from '../../../routes/urls';
+import { transferPatientAction } from '../../../redux/actions/hospitalActions';
 
 
 interface PropsRedux {
@@ -24,10 +25,15 @@ const InpatientsRedux:React.FC<PropsRedux> = ({investigations, loading, patients
     const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
     const {departments, researchers} = useDepartments();
     const history = useHistory();
+    const dispatch = useDispatch();
     
     function goToPatientHistory(uuidPatient:string){
         console.log(uuidPatient);
         history.push(HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient));
+    }
+
+    async function transferPatientCallBack(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string) {
+        await(dispatch(transferPatientAction(investigations.currentInvestigation.uuid, uuidCurrentDepartment, uuidCurrentWard, idCurrentBed, uuidDepartmentDestination, uuidWardDestination, uuidPatient)))
     }
 
     if(loading || !departments){
@@ -35,7 +41,8 @@ const InpatientsRedux:React.FC<PropsRedux> = ({investigations, loading, patients
     }
     return <InpatientsLocalized departments={departments} 
                 patients={patients.data[investigations.currentInvestigation.uuid]} 
-                goToPatientHistoryCallBack={goToPatientHistory} />
+                goToPatientHistoryCallBack={goToPatientHistory} 
+                transferPatientCallBack={transferPatientCallBack}/>
     
 }
 
@@ -55,8 +62,9 @@ interface Props extends LocalizeContextProps{
     departments:IDepartment[],
     patients:IPatient[],
     goToPatientHistoryCallBack:(uuidPatient:string) => void
+    transferPatientCallBack:(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string) => void
 }
-const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, goToPatientHistoryCallBack}) => {
+const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, goToPatientHistoryCallBack, transferPatientCallBack}) => {
     const titleHelmet:string = translate("pages.hospital.inpatients.title").toString();
 
     
@@ -76,8 +84,9 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
                             {
                                 <WardView loading={false} mode={WardModes.View} ward={ward}
                                     patients={patients} inModule={true} departments={departments}
-                                    bedsProps={ward.beds} error={null}
-                                    viewCallBack={(uuidPatient) => goToPatientHistoryCallBack(uuidPatient)} />
+                                    bedsProps={ward.beds} error={null} department={department}
+                                    viewCallBack={(uuidPatient) => goToPatientHistoryCallBack(uuidPatient)} 
+                                    transferPatientCallBack={transferPatientCallBack}/>
                             }                        
                         </AccordionDetails>
                     </Accordion>
