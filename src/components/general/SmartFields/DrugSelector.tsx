@@ -1,9 +1,9 @@
-import { TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { TextField } from '@mui/material';
+import { Autocomplete } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
 import { PropsSmartFieldLocalized, DrugType } from './index'
-import { searchDrugComponentService, searchDrugService } from '../../../services/sherwoodService';
+import { searchDrugComponentService, searchDrugService } from '../../../services';
 import AutocompleteSherwood from '../Autocomplete';
 import { useOffline } from '../../../hooks';
 import { OfflineField } from './OfflineField';
@@ -13,6 +13,7 @@ interface Props extends LocalizeContextProps {
     chemicalComponent?:boolean,
     country:string,
     type:string,
+    freeSolo:boolean,
     variant:"standard" | "filled" | "outlined" | undefined,
     drugSelected:(drug:DrugType) => void,
     callbackError:(error:boolean) => void
@@ -72,12 +73,16 @@ function DrugSelector(props: Props) {
 
     if(offline){
         return <OfflineField label={props.translate(`hospital.select-${props.type}`).toString()} 
-                error={props.error} variant={props.variant} 
-                callbackOffline={(value) => getOffline(value)} />
+                    error={props.error} variant={props.variant} 
+                    callbackOffline={(value) => getOffline(value)} />
     }    
     return(
-        <AutocompleteSherwood error={props.error} remoteSearch={props.chemicalComponent ? searchDrugComponentService : searchDrugService} 
-            country={props.country} getOptionsResponse={props.chemicalComponent ? (response) => response.drugComposition : (response) => response.drugs}
+        <AutocompleteSherwood label={props.translate("hospital.select-treatment").toString()} 
+            error={props.error} 
+            remoteSearch={props.chemicalComponent ? searchDrugComponentService : searchDrugService} 
+            params={{country : props.country}} 
+            getOptionsResponse={props.chemicalComponent ? (response) => response.drugComposition : (response) => response.drugs}
+            freeSolo = { props.freeSolo}
             onValueSelected={(value) =>drugSelected(value)}
             getOptionLabel={(option) => option.name}/>
     )

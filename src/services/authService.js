@@ -1,11 +1,11 @@
 import axios from "../utils/axios";
-import { decryptData, saveData } from '../utils';
+import { decryptData, saveData } from '../utils/index.jsx';
 import jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
 
 export function fetchUser(){
     return new Promise((resolve, reject) => {
-        axios.get(process.env.REACT_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
+        axios.get(import.meta.env.VITE_APP_API_URL+'/researcher/validate', { headers: {"Authorization" : localStorage.getItem("jwt")}})
             .then((response) => {
                 resolve(response.status === 200);
             })
@@ -16,8 +16,10 @@ export function fetchUser(){
 export function signIn(credentials, typeUser) {
   return new Promise((resolve, reject) => {
     saveData("password", credentials.password); 
+    console.log("Pass", credentials.password);
     credentials.password = CryptoJS.SHA256(credentials.password).toString(CryptoJS.enc.Base64) 
-    axios.post(process.env.REACT_APP_API_URL+'/'+typeUser+'/login', credentials)
+    console.log("Pass Encr", credentials.password);
+    axios.post(import.meta.env.VITE_APP_API_URL+'/'+typeUser+'/login', credentials)
         .then((response) => {
             if(response.status === 200){
                 console.log("TOKEN: "+response.data.jwt);
@@ -28,6 +30,7 @@ export function signIn(credentials, typeUser) {
                 saveData("rawKeyResearcher", rawKeyResearcher);
                 saveData("name", payload.name);
                 saveData("surnames", payload.surnames);
+                saveData("uuid", payload.uuid);
                 axios.defaults.headers['Authorization'] = localStorage.getItem('jwt');
                 resolve(response.data);
             }

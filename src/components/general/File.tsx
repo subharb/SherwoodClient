@@ -1,13 +1,16 @@
-import { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Typography } from '@material-ui/core';
-import { PhotoCamera, Replay } from '@material-ui/icons';
+import { Button, Checkbox, CircularProgress, FormControl, FormControlLabel, Grid, IconButton, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { PhotoCamera, Replay } from '@mui/icons-material';
 import React, {SyntheticEvent, useEffect, useState} from 'react';
-import { uploadFile, getFile } from '../../services/sherwoodService';
+import { uploadFile, getFile } from '../../services';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { useUpdateEffect, usePrevious } from '../../hooks';
 import styled from 'styled-components';
 import { Check } from 'react-feather';
 import Modal from './modal';
 import LogoSherwood from '../../img/favicon-96x96.png';
+import PDFLogo from '../../img/pdf_logo.jpeg';
+import { isImageType } from '../../utils/index.jsx';
+import { CloseFrame } from './mini_components';
 
 enum UPLOAD_STATE{
     NOT_UPLOAD = 0,
@@ -17,11 +20,13 @@ enum UPLOAD_STATE{
 }
 
 interface PostFile{
-    file:string, "file-date":Date
+    file:string, 
+    file_type:string
 }
 interface FileUpload{
     image?:FileList, 
-    buffer?:string,
+    buffer?:{data:ArrayBufferLike, type:string},
+    type:string,
     status:UPLOAD_STATE, 
     remoteName?:string
 }
@@ -29,7 +34,7 @@ interface Props extends LocalizeContextProps{
     initialState : {listFiles:FileUpload[]},
     label:string,
     mode:string,
-    value:{file:string, "file-date" : string}[],
+    value:{file:string, file_type : string}[],
     imagesSelected : (images : PostFile[]) => void 
 }
 
@@ -52,12 +57,13 @@ const StatusLayer = styled.div`
 `;
 
 const GridImage = styled(Grid)`
-    display:flex;
+    display:inline-block;
     position:relative;
     align-items: center;
     justify-content: center;
     padding:0.5rem;
-    height:10rem;
+    max-height:10rem;
+    max-width: 10rem;
     overflow: hidden;
 `;
 
@@ -65,25 +71,66 @@ const ImageFile = styled.img`
     max-width:100%;
     display:block;
     height:auto;
+    cursor:pointer;
 `;
 const File:React.FC<Props> = (props) => {
     const [filesSelected, setFilesSelected] = useState<FileUpload[]>([]);
     const [showModal, setShowModal] = useState(false);
-    const [bufferDataFile, setBufferDataFile] = useState("");
+    const [localImage, setLocalImage] = useState("");
     const prevFilesSelected:FileUpload[] | undefined = usePrevious(filesSelected);
     const prevValue:FileUpload[] | undefined = usePrevious(props.value);
+    const [addingFile, setAddingFile] = useState(false);
 
+    function dataToImageUrl(data:ArrayBufferLike){
+        const uint8Array = new Uint8Array(data);
+
+        // Create a Blob from the Uint8Array with the appropriate MIME type
+        const blob = new Blob([uint8Array], { type: 'image/jpeg' }); // Adjust the type as needed
+        
+        return URL.createObjectURL(blob);
+    }
+    function removeFile(index:number){
+        let newFilesSelected = [...filesSelected];
+        newFilesSelected.splice(index, 1);
+        setFilesSelected(newFilesSelected);
+        let remoteNames:PostFile[] = [];
+        for(let i = 0; i < newFilesSelected.length; i++){
+            const file = newFilesSelected[i];
+            const element:PostFile = {
+                file:file.remoteName as string,
+                file_type : file.type
+            }
+            remoteNames.push(element);
+        }
+        
+        props.imagesSelected(remoteNames);
+    }
     function showFullSize(index:number){
         const file = filesSelected[index];
-        if(file.buffer){
-            let buf = Buffer.from(file.buffer);
-            let base64 = buf.toString('base64');
-            setBufferDataFile(base64);
+        if(file.buffer){            
+            setLocalImage(dataToImageUrl(file.buffer.data));
             setShowModal(true);
         }
         
     }
-    
+    function downloadPDF(indexPDF:number){
+        console.log("El archivo es el ", indexPDF);
+
+        const dataBuffer = filesSelected[indexPDF].buffer;
+        if(dataBuffer){        
+            const link = document.createElement('a');
+            // create a blobURI pointing to our Blob
+            const arr = new Uint8Array(dataBuffer.data);
+            const blob = new Blob([arr], { type: 'application/pdf' });
+            link.href = URL.createObjectURL(blob);
+            link.download = filesSelected[indexPDF].remoteName as string;
+            // some browser needs the anchor to be in the doc
+            document.body.append(link);
+            link.click();
+            link.remove();
+        }
+        
+    }
     function renderFileStatus(status:number, index:number){
         switch(status){
             case UPLOAD_STATE.LOADING:
@@ -106,13 +153,14 @@ const File:React.FC<Props> = (props) => {
         }
     }
     async function onFileSelected(e:React.ChangeEvent<HTMLInputElement>){
-        if(e !== null && e.target.files !== null){
+        if(e !== null && e.target.files !== null && e.target.files.length > 0){
             const value = e.target.files;
             console.log("File selected");
             let tempFilesSelected = [...filesSelected];
             
-            tempFilesSelected.push({image:value, status:UPLOAD_STATE.LOADING});
+            tempFilesSelected.push({image:value, status:UPLOAD_STATE.LOADING, type:value[0].type});
             console.log(tempFilesSelected);
+            setAddingFile(true);
             setFilesSelected(tempFilesSelected);
             
         }
@@ -138,8 +186,7 @@ const File:React.FC<Props> = (props) => {
             else{
                 return false;
             }
-            
-            
+
         }
         catch(err){
             console.log(err);
@@ -159,7 +206,7 @@ const File:React.FC<Props> = (props) => {
                 const file = tempFilesSelected[i];
                 const element:PostFile = {
                     file:file.remoteName as string,
-                    "file-date" : new Date()
+                    file_type : file.type
                 }
                 remoteNames.push(element);
             }
@@ -187,7 +234,8 @@ const File:React.FC<Props> = (props) => {
     }
     useEffect(()=>{
         async function changeFiles(){
-            if((props.value && props.value.length > 0) && filesSelected.length === props.value.length){
+            if((props.value && props.value.length > 0) && (filesSelected.length === props.value.length) && !addingFile){
+                // si es el mount inicial, me traigo los archivos
                 for(let i = 0; i < filesSelected.length; i++){
                     if(!((filesSelected[i].status === UPLOAD_STATE.OK) || (filesSelected[i].status === UPLOAD_STATE.ERROR))){
                         await getAndUpdate(i);
@@ -195,10 +243,11 @@ const File:React.FC<Props> = (props) => {
                 } 
             }
             else if(prevFilesSelected){
-                    if(prevFilesSelected.length < filesSelected.length){
+                    if(prevFilesSelected.length < filesSelected.length && addingFile){
                         //Mando la imagen al servidor
                         const lastIndex = filesSelected.length -1;
                         await uploadAndUpdate(lastIndex);
+                        setAddingFile(false);
                     }
                     else if(prevFilesSelected.length > filesSelected.length){
                         //Borro la imagen que falte
@@ -210,67 +259,101 @@ const File:React.FC<Props> = (props) => {
     }, [filesSelected]);
     useEffect(() =>{
         async function loadFiles(){
-            if(typeof prevValue === "undefined" && props.value && props.value.length > 0 ){
+            if(typeof prevValue === "undefined" && props.value && props.value.length > 0 && (props.mode === "show" || filesSelected.length === 0)){
                 const tempFiles:FileUpload[] = props.value.map(file => {
                     return {
                         remoteName:file.file,
-                        status:UPLOAD_STATE.LOADING
+                        status:UPLOAD_STATE.LOADING,
+                        type:file.file_type
                     }
                 })
-                
                 setFilesSelected(tempFiles);
-                
             }
         }
         loadFiles();
     }, [props.value]);
     
-    return(
+    return (
         <Grid container>
-            <Modal
+            <Modal 
                 open={showModal}
                 closeModal={() => setShowModal(false)}
                 >
-                <ImageFile src={`data:image/jpeg;base64, ${bufferDataFile}`} width="100%" alt="Logo"/>
+                <ImageFile src={localImage} width="100%" alt="Logo"/>
             </Modal>
             <Grid item xs={12}>
                 <Typography variant="body2" gutterBottom>
                     {props.label}
                 </Typography>
             </Grid>
-            <Grid item container direction={'row'}  spacing={3} xs={12}>
+            <Grid className='files_container' item container direction={'row'}  spacing={3} xs={12}>
                 {
                     filesSelected.map((file, index) =>{
                         if(file.image){
-                            return(
-                                <GridImage item xs={2}>
-                                    {
-                                        renderFileStatus(file.status, index)
-                                    }
-                                    <OpacityLayer />
-                                    
-                                    <ImageFile src={URL.createObjectURL(file.image[0])} alt="imagen" />
-                                </GridImage>)  
+                            if(file.type === "image/png" || file.type === "image/jpeg" || file.type === "image/jpg"){
+                                return(
+                                    <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                        <GridImage item>
+                                            {
+                                                renderFileStatus(file.status, index)
+                                            }
+                                            <OpacityLayer />
+                                            
+                                            <ImageFile src={URL.createObjectURL(file.image[0])} alt="imagen" />
+                                        </GridImage>
+                                    </CloseFrame>) 
+                            }
+                            else{
+                                return(
+                                    <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                        <GridImage>
+                                            {
+                                                renderFileStatus(file.status, index)
+                                            }
+                                            <OpacityLayer />
+                                            
+                                            <ImageFile src={PDFLogo} alt="pdf" />
+                                        </GridImage>
+                                    </CloseFrame>) 
+                            }
+                             
                         }
-                   
                         if(file.buffer){
-                            let buf = Buffer.from(file.buffer);
-                            let base64 = buf.toString('base64');
-                            return(
-                                <GridImage item xs={2}>
-                                    <ImageFile onClick={() => showFullSize(index)} src={`data:image/jpeg;base64, ${base64}`} alt=""/>
-                                </GridImage>
-                            )
+                            if(isImageType(file.type)){
+                                const dataUrl = dataToImageUrl(file.buffer.data)
+
+                                // Create a data URL
+                                //const dataUrl = `data:image/jpeg;base64,${base64String}`; // Change the format as needed
+                            
+                                return(
+                                    <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                        <GridImage item xs={2}>
+                                            <ImageFile onClick={() => showFullSize(index)} src={dataUrl} alt=""/>
+                                        </GridImage>
+                                    </CloseFrame>
+                                )
+                            }
+                            else{
+                                return(
+                                    <CloseFrame hide={props.mode === "show"} onClick={() => removeFile(index)}>
+                                        <GridImage item xs={2}>
+                                            <ImageFile onClick={() => downloadPDF(index)}  src={PDFLogo} alt="pdf" />
+                                        </GridImage>
+                                    </CloseFrame>
+                                )
+                            }
                         }
                         else{
                             return(
-                                <GridImage item xs={2}>
-                                    {
-                                        renderFileStatus(file.status, index)
-                                    }
-                                    <OpacityLayer />
-                                    <ImageFile src={LogoSherwood} width="100%" alt="Logo"/>
-                                </GridImage>
+                            
+                                    <GridImage item xs={2}>
+                                        {
+                                            renderFileStatus(file.status, index)
+                                        }
+                                        <OpacityLayer />
+                                        <ImageFile src={LogoSherwood} width="100%" alt="Logo"/>
+                                    </GridImage>
+                            
                             )
                         }
                         
@@ -280,11 +363,11 @@ const File:React.FC<Props> = (props) => {
                     props.mode === "form" &&
                     
                     <Grid item xs={2}>
-                        <input accept="image/*" id="image" name="image" style={{display:'none'}} 
+                        <input accept="image/*,application/pdf,application/vnd.ms-excel" id="image" name="image" style={{display:'none'}} 
                             type="file" 
                             onChange={(e) => onFileSelected(e)} />
                         <label htmlFor="image">
-                            <IconButton color="primary" aria-label="upload picture" component="span">
+                            <IconButton color="secondary" aria-label="upload picture" component="span" size="large">
                                 <PhotoCamera />
                             </IconButton>
                         </label>
@@ -293,8 +376,8 @@ const File:React.FC<Props> = (props) => {
                 
             </Grid>
             
-        </Grid>        
-    )
+        </Grid>
+    );
 }
 
 export default withLocalize(File);

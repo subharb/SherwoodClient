@@ -1,4 +1,5 @@
-import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import { responsiveFontSizes, adaptV4Theme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles'
 import variants from "./variants";
 import typography from "./typography";
 import overrides from "./overrides";
@@ -6,7 +7,7 @@ import breakpoints from "./breakpoints";
 import props from "./props";
 import shadows from "./shadows";
 
-const createTheme = (name) => {
+const createMuiTheme = (name) => {
     let themeConfig = variants.find((variant) => variant.name === name);
 
     if (!themeConfig) {
@@ -14,8 +15,7 @@ const createTheme = (name) => {
         themeConfig = variants[0];
     }
 
-    return responsiveFontSizes(createMuiTheme(
-        {
+    return responsiveFontSizes(createTheme({
         spacing: 4,
         breakpoints: breakpoints,
         overrides: overrides,
@@ -24,8 +24,15 @@ const createTheme = (name) => {
         shadows: shadows,
         palette: themeConfig.palette,
         buttonContinue : {
-            background : "#48bb78",
-            color : "#FFF"
+            primary: {
+                background : "#48bb78",
+                color : "#FFF"
+            },
+            secondary: {
+                background : "#ccc",
+                color : "#FFF"
+            }
+            
         },
         buttonCancel: {
             background : "#e53e3e",
@@ -44,15 +51,12 @@ const createTheme = (name) => {
         primary : {
             background : "#35887D",
             color : "#FFF",
-        }
         },
-        {
         name: themeConfig.name,
         header: themeConfig.header,
         footer: themeConfig.footer,
         sidebar: themeConfig.sidebar,
-        }
-    ));
+    }));
 };
 
-export default createTheme;
+export default createMuiTheme;

@@ -22,3 +22,7 @@ h1{
 [type="checkbox"]+span:not(.lever).error:before{
     border: 2px solid red;
 }
+
+iframe {
+    display: none;
+} 

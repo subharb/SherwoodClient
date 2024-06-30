@@ -7,7 +7,7 @@ const initialState = {
 }
 
 export default function reducer(state = initialState, action){
-    console.log(action)
+    
     let newState = { ...state};
     switch(action.type){
         case types.FETCH_PROFILE_SUCCESS:
@@ -17,6 +17,9 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.FETCH_PROFILE_LOADING:
             newState.loading = true
+            return newState;
+        case types.AUTH_SIGN_OUT:
+            newState = {...initialState};
             return newState;
         default:
             return state;    

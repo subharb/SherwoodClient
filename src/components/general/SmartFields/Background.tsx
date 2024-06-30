@@ -1,20 +1,21 @@
 // @flow
 import DateFnsUtils from '@date-io/date-fns';
-import { Grid } from '@material-ui/core';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { Grid } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import React, {useState} from 'react';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { ButtonAccept, ButtonCancel } from '../mini_components';
 import ICT from './ICT';
-import { PropsSmartField, Diagnosis, BackgroundType, SmartFieldType, PropsSmartFieldLocalized } from './index'
+import { Diagnosis, BackgroundType, SmartFieldType, PropsSmartFieldLocalized } from './index'
+import { formatDateByLocale } from '../../../utils';
 
 type Props = {
 
 };
 function Background(props: PropsSmartFieldLocalized) {
     const [diagnose, setDiagnose] = useState<Diagnosis | null>(null);
-    const [date, setDate] = useState<string | null | undefined>(null);
+    const [date, setDate] = useState<string | null>(null);
     const [error, setError] = useState(false);
     const [errorDate, setErrorDate] = useState(false);
 
@@ -45,39 +46,32 @@ function Background(props: PropsSmartFieldLocalized) {
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <ICT {...props} error={error} cancel={false} elementSelected={diagnoseSelected} />
+                <ICT {...props} error={error} cancel={props.cancel} elementSelected={diagnoseSelected} />
             </Grid>
             <Grid item xs={12}>
-                <MuiPickersUtilsProvider key="end-date" utils={DateFnsUtils} >
-                    <KeyboardDatePicker
-                        margin={props.typeMargin}
-                        id="date"
-                        inputVariant="outlined"
-                        size="small"
-                        label={date ? "" : dateLabel}
-                        format="yyyy"
-                        value={date}
-                        views={["year"]}
-                        defaultValue={date} 
-                        openTo="year"
-                        maxDate={new Date()}
-                        onChange={(date: MaterialUiPickersDate, value?: string | null | undefined) => {
-                            setDate(value);
+                <DatePicker value={date} label={dateLabel}
+                        format={formatDateByLocale(props.activeLanguage.code)}
+                        slotProps={{
+                            textField: {
+                              error: errorDate,
+                              helperText: "Insert valid date",
+                            },
+                          }}
+                        onChange={(value: Date | null) => {
+                            const dateString = value && value.toISOString() ? value.toISOString() : null;
+                            setDate(dateString);                         
                             setErrorDate(false);
-                        }}
-                        
-                        emptyLabel={emptyLabel}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                        error={errorDate} 
-                        // helperText={errorString} 
-                    />
-                </MuiPickersUtilsProvider>
+                        }}/>
+                
             </Grid>
-            <Grid item xs={12}>
-                <ButtonAccept onClick={addBackground}><Translate id="general.add" /></ButtonAccept> 
-                <ButtonCancel onClick={props.cancel} ><Translate id="general.cancel" /></ButtonCancel>
+            <Grid container item xs={12} spacing={1}>
+                <Grid item>
+                    <ButtonAccept onClick={addBackground}><Translate id="general.add" /></ButtonAccept> 
+                </Grid>
+                <Grid item>
+                    <ButtonCancel onClick={props.cancel} ><Translate id="general.cancel" /></ButtonCancel>
+                </Grid>
+                
             </Grid>
             
         </Grid>

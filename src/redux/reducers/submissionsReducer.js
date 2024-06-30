@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { decryptPatientsData } from '../../utils'; 
+import { decryptPatientsData } from '../../utils/index.jsx'; 
 /**
  * Reducer that saves all the investigations loaded
  * @constructor
@@ -14,7 +14,7 @@ import { decryptPatientsData } from '../../utils';
 
  
 export default function reducer(state = initialState, action){
-    console.log(action)
+    
     let newState = { ...state};
     let tempData;
     switch(action.type){
@@ -45,6 +45,9 @@ export default function reducer(state = initialState, action){
         case types.SAVE_SUBMISSION_SUCCESS:
             newState.loading = initialState.loading;
             newState.error = initialState.error;
+            return newState;
+        case types.AUTH_SIGN_OUT:
+            newState = {...initialState};
             return newState;
         default:
             return state;

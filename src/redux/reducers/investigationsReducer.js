@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { decryptPatientsData } from '../../utils'; 
+import { decryptPatientsData } from '../../utils/index.jsx'; 
 /**
  * Reducer that saves all the investigations loaded
  * @constructor
@@ -14,12 +14,12 @@ import { decryptPatientsData } from '../../utils';
 }
  
 export default function reducer(state = initialState, action){
-    console.log(action)
+    
     let newState = { ...state};
     switch(action.type){
         case types.FETCH_INVESTIGATIONS_SUCCESS:
             newState.data = action.investigations;    
-            if(action.investigations.length === 1){
+            if(action.investigations && action.investigations.length === 1){
                 newState.currentInvestigation = action.investigations[0];
             }
             else if(localStorage.getItem("indexHospital")){
@@ -34,6 +34,20 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.SELECT_INVESTIGATION:    
             newState.currentInvestigation = newState.data[action.selectedInvestigation];
+            return newState;
+        case types.UPDATE_BILLING_INFO_SUCCESS:
+            newState.currentInvestigation.billingInfo = action.billingInfo;
+            newState.loading = false; 
+            newState.error = null; 
+            return newState;
+        case types.INITIALIZE_INVESTIGATIONS:
+            newState.data = action.payload.investigations;
+            newState.currentInvestigation = action.payload.investigations[0];
+            newState.loading = false; 
+            newState.error = null; 
+            return newState;   
+        case types.AUTH_SIGN_OUT:
+            newState = {...initialState};
             return newState;
         default:
             return state;

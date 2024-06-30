@@ -1,0 +1,7 @@
+yarn add v1.22.19
+warning package.json: "dependencies" has dependency "prop-types" with range "^15.7.2" that collides with a dependency in "devDependencies" of the same name with version "15.8.1"
+warning client@0.1.0: "dependencies" has dependency "prop-types" with range "^15.7.2" that collides with a dependency in "devDependencies" of the same name with version "15.8.1"
+[1/4] Resolving packages...
+error An unexpected error occurred: "https://registry.yarnpkg.com/storybook: Socket connection timeout".
+info If you think this is a bug, please open a bug report with the information provided in "/Users/david/Development/sherwood-client/yarn-error.log".
+info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.

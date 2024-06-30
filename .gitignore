@@ -12,7 +12,8 @@
 /build
 /build-hospital
 /build-beta-hospital
-
+/build-beta-research
+/build-research
 # misc
 .DS_Store
 .env.local
@@ -21,6 +22,10 @@
 .env.production.local
 .eslintcache
 
+.yarn/*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Sentry Config File
+.env.sentry-build-plugin

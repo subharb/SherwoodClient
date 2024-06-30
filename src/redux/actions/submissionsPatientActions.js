@@ -1,13 +1,55 @@
 import * as types from "../../constants";
 import {
-    fetchRecordsPatientAllSurveysService, postRecordPatientService, updateRecordPatientService, fetchRecordsSurveysService
-} from "../../services/sherwoodService";
+    fetchRecordsPatientAllSurveysService, postRecordPatientService, updateRecordPatientService, fetchRecordsSurveysService, getSubmissionPatientService
+} from "../../services";
 
 
+export function removeSubmissionPatient(uuidPatient, idSubmission, uuidSurvey) {
+    
+    return async (dispatch) => {
+      dispatch({ 
+            type: types.REMOVE_SUBMISSIONS_PATIENT,
+            meta : {
+                uuidPatient:uuidPatient,
+                idSubmission,
+                uuidSurvey
+            }
+      });
+    };
+}
+
+export function fetchSingleSubmissionsPatientInvestigationAction(uuidInvestigation, idSumission, uuidPatient) {
+    return async (dispatch) => {
+      dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
+  
+      return getSubmissionPatientService(uuidInvestigation, idSumission)
+        .then((response) => {
+          dispatch({
+            type: types.FETCH_SINGLE_SUBMISSIONS_PATIENT_SUCCESS,
+            submission: response.submission,
+            meta:{uuidPatient}
+          });
+        })
+        .catch((error) => {
+          if(!error.response){
+            dispatch({
+              type: types.FETCH_SINGLE_SUBMISSIONS_PATIENT_SUCCESS,
+              submission: response.submission,
+              meta:{uuidPatient}
+            });
+          }
+          else{
+              dispatch({ type: types.FETCH_SUBMISSIONS_PATIENT_ERROR });
+              throw error;
+          }
+          
+        });
+    };
+}
 
 export function fetchSubmissionsPatientInvestigationAction(uuidInvestigation, uuidPatient) {
     return async (dispatch) => {
-      dispatch({ type: types.SUBMISSIONS_LOADING });
+      dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
   
       return fetchRecordsPatientAllSurveysService(uuidInvestigation, uuidPatient)
         .then((response) => {
@@ -34,7 +76,37 @@ export function fetchSubmissionsPatientInvestigationAction(uuidInvestigation, uu
     };
 }
 
-export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, surveyUUID, surveyName, surveyType) {
+// export function getSubmissionPatientAction(uuidInvestigation, idSubmission) {
+//     return async (dispatch) => {
+//       dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
+  
+//       return fetchRecordsPatientAllSurveysService(uuidInvestigation, idSubmission)
+//         .then((response) => {
+//           dispatch({
+//             type: types.FETCH_SINGLE_SUBMISSIONS_PATIENT_SUCCESS,
+//             surveys: response.surveys,
+//             meta:{idSubmission}
+//           });
+//         })
+//         .catch((error) => {
+//           if(!error.response){
+//             dispatch({
+//               type: types.FETCH_SUBMISSIONS_PATIENT_SUCCESS,
+//               surveys: [],
+//               meta:{uuidPatient}
+//             });
+//           }
+//           else{
+//               dispatch({ type: types.FETCH_SUBMISSIONS_PATIENT_ERROR });
+//               throw error;
+//           }
+          
+//         });
+//     };
+// }
+
+
+export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPatient, surveyUUID, surveyName, surveyType, oldIdSubmission) {
     return async (dispatch) => {
       dispatch({ type: types.SUBMISSIONS_PATIENT_LOADING });
   
@@ -42,13 +114,13 @@ export function postSubmissionPatientAction(postObj, uuidInvestigation, uuidPati
         .then((response) => {
           dispatch({
             type: types.SAVE_SUBMISSIONS_PATIENT_SUCCESS,
-            submission: response.submissions[0],
-            meta:{uuidPatient, surveyUUID, surveyName, surveyType}
+            submission: response.submission,
+            meta:{uuidPatient, surveyUUID, surveyName, surveyType, oldIdSubmission}
           });
         })
         .catch(function (error) {
           if(!error.status && !error.response){
-                const offlinePost = postObj[0];
+                const offlinePost = postObj;
                 //offlinePost.surveyRecords = postObj.submission[0].answers;
                 dispatch({
                   type: types.SAVE_SUBMISSIONS_PATIENT_OFFLINE,
@@ -95,6 +167,28 @@ export function updateSubmissionPatientAction(postObj, uuidInvestigation, uuidPa
          
         });
     };
+}
+
+export function resendOfflineRecords(offlineRecords, uuidInvestigation){
+    return async (dispatch) => {
+        let hasSentRecords = false;
+        Object.keys(offlineRecords.data).forEach((uuidPatient) => {
+            const surveysOffline = offlineRecords.data[uuidPatient]
+            Object.keys(surveysOffline).forEach((uuidSurvey) => {
+                const records = surveysOffline[uuidSurvey]; 
+                records.submissions.forEach(async(submission) => { 
+                    if(submission.offline){
+                        await dispatch( postSubmissionPatientAction(submission, uuidInvestigation, uuidPatient, uuidSurvey, records.surveyName, records.type, submission.id));
+                        dispatch({ type: types.RESET_OFFLINE_NOTIFICATIONS});
+                    }
+                })
+                
+            })
+        })
+        if(hasSentRecords){
+            
+        }
+    }
 }
 
 export function resetPatientsSubmissionsError() {

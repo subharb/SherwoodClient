@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { AllergyType, DrugType, PropsSmartFieldLocalized } from './index';
 import DrugSelector from './DrugSelector';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import { ButtonCancel } from '../mini_components';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 
 function Allergy(props: PropsSmartFieldLocalized) {
     const [drug, setDrug] = useState<DrugType | null>(null);
@@ -14,7 +14,7 @@ function Allergy(props: PropsSmartFieldLocalized) {
         setDrug(drug);
         const allergy:AllergyType={
             allergy:drug.name,
-            "drug-id":drug.id
+            "compo-code":drug.id
         }
         props.elementSelected(allergy);
     }  
@@ -26,14 +26,15 @@ function Allergy(props: PropsSmartFieldLocalized) {
             </Alert>);
     }
     return(
-        <Grid container spacing={3}>
+        <Grid container spacing={0}>
             <Grid xs={12}>
                 <DrugSelector type={props.type} variant={props.variant} error={error || props.error} 
                     callbackError={(error) => setError(error)}  
-                    chemicalComponent country={props.language}
+                    freeSolo
+                    chemicalComponent country={props.country as string}
                     drugSelected={(drug) => drugSelected(drug)} />
             </Grid>
-            <Grid xs={12}>
+            <Grid xs={12} style={{paddingTop:'1rem'}}>
                 <ButtonCancel onClick={props.cancel} ><Translate id="general.cancel" /></ButtonCancel>
             </Grid>
             

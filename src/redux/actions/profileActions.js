@@ -1,12 +1,12 @@
 import * as types from "../../constants";
-import { fetchProfileService } from "../../services/sherwoodService";
+import { fetchProfileService } from "../../services";
 
 
-export function fetchProfileInfo(value) {
+export function fetchProfileInfoAction(uuidInvestigation) {
   
   return async (dispatch) => {
     dispatch({ type: types.FETCH_PROFILE_LOADING });
-    return fetchProfileService()
+    return fetchProfileService(uuidInvestigation)
         .then((response) => {
             dispatch({
             type: types.FETCH_PROFILE_SUCCESS,
@@ -17,8 +17,5 @@ export function fetchProfileInfo(value) {
             dispatch({ type: types.FETCH_PROFILE_ERROR });
             throw error;
       });
-    
-
-    
   };
 }

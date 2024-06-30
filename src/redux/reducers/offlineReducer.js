@@ -6,7 +6,7 @@ const initialState = {
 }
 
 export default function reducer(state = initialState, action){
-    console.log(action)
+    
     let newState = { ...state};
     let tempPendingActions;
     switch(action.type){
@@ -28,6 +28,8 @@ export default function reducer(state = initialState, action){
             tempPendingActions.push({action : "submission"});
             newState.pendingActions = tempPendingActions;
             return newState;
+        case types.RESET_OFFLINE_NOTIFICATIONS:
+            return initialState;
         default:
             return state;    
     }

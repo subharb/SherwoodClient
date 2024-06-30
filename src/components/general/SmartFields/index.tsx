@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ICTSelectorOMS from './ICT/ICTSelectorOMS';
 import { ButtonDelete, ButtonPlus } from '../mini_components';
-import { Grid, PropTypes, Typography } from '@material-ui/core';
+import { Card, CardContent, Grid, PropTypes, Typography } from '@mui/material';
 import { useSelectSmartField, useUpdateEffect } from '../../../hooks';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../EnhancedTable';
@@ -10,16 +10,29 @@ import Background from './Background';
 import Allergy from './Allergy';
 import FamilyBackground from './FamilyBackground';
 import SingleTreatmentSelector from './SingleTreatmentSelector';
+import BMIField from './BMIField';
+import EDDField from './EDDField';
+import { isInteger } from 'lodash';
+import RequestField from './RequestField';
+import MedicalHistoryAI from './MedicalHistory';
+import { MEDICAL_HISTORY_FIELDS } from '../../../constants';
+import { getDateFromStringOrDate } from '../../../utils/bill';
+import { differenceDatesToString } from '../../../utils';
+
+
 
 
 export interface PropsSmartField {
     variant:"standard" | "filled" | "outlined" | undefined,
-    size:string,
+    size?:string,
     language:string,
     typeMargin:PropTypes.Margin | undefined,
     type:string,
     slaves?:object[],
-    cancel: boolean | (() => void),
+    country?:string,
+    template? : string,
+    cancel?: (() => void),
+    updateElement?: (index:number, element:SmartFieldType) => void,
     elementSelected: (element:SmartFieldType) => void,
     error:boolean,
 }
@@ -38,7 +51,7 @@ export interface DrugType{
 }
 export interface AllergyType{
     allergy : string,
-    "drug-id" : string
+    "compo-code" : string
 }
 
 
@@ -56,44 +69,89 @@ export interface FamilyBackgroundType{
 
 export interface TreatmentType{
     "treatment" : string,
-    "drug-id" : string,
+    "drug-code" : string,
     "treatment-posology": string, 
     "treatment-dose": string, 
     "treatment-start" : string, 
     "treatment-finish" : string 
 }
 
-export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType;
+export interface TreatmentRegularType{
+    "treatment_regular" : string,
+    "drug-code" : string,
+    "treatment_regular-posology": string
+}
+
+
+export interface BMIType{
+    "bmi" : number,
+    "bmi_height" : number,
+    "bmi_weight": number
+}
+
+export interface EDDType{
+    "edd" : Date,
+    "edd_last_period" : Date
+}
+
+export interface RequestLabType{
+    "request_lab" : string,
+    "request_id" : number
+}
+
+export interface RequestImageType{
+    "request_img" : string,
+    request_id: number
+}
+
+export interface MedicalHistoryType{
+    medical_history_ai : string,
+    "medical_history_ai-send_email"?: boolean
+}
+
+export type SmartFieldType = Diagnosis | BackgroundType | FamilyBackgroundType | AllergyType | TreatmentType | TreatmentRegularType | BMIType | EDDType | RequestLabType | RequestImageType | MedicalHistoryType;
 
 export interface Diagnosis{
     ict : string,
     "ict-code": string
 }
 
-const DATE_FIELDS = ["background-date", "treatment-start", "treatment-finish"];
+const DATE_FIELDS_FORMAT:{[key: string]: any} = {"background-date" : "YYYY", "treatment-start" : "regular", "treatment-finish" : "regular", edd : "regular", edd_last_period:"regular"};
+
+const NO_TABLE_FIELDS = MEDICAL_HISTORY_FIELDS;
+const SINGLE_SMARTFIELDS = ["bmi", "edd", ...MEDICAL_HISTORY_FIELDS];
+export const INITIAL_SELECT = ["ict", "background", "treatment", "treatment_regular", "family-background", "allergy"];
 
 interface Props extends LocalizeContextProps {
     name : string,
     label : string,
     typeMargin : PropTypes.Margin | undefined,
+    printMode?:boolean,
     slaves : object[],
     type:string,
     error: boolean,
     mode : string,
+    country:string,
     language?:string,
+    uuidPatient?:string,
+    template? : string,
+    formValues?:any,
+    uuidSurvey?:string,
+    uuidInvestigation?:string,
     initialState:{
         addingElements:boolean,
         listElements:Diagnosis[]
     },
+    updateElement?: (index:number, element:SmartFieldType) => void,
     elementSelected: (treatments:SmartFieldType[] | boolean) => void
 }
 
-const TRANSLATED_COLUMNS = ["treatment-posology"]
+const TRANSLATED_COLUMNS = ["treatment-posology", "treatment-frecuency"]
 
 const SmartField:React.FC<Props> = (props) => {
     const [listElements, setListElements] = useState<SmartFieldType[]>(props.initialState ? props.initialState.listElements : []);
     const [addingElements, setAddingElements] = useState(props.mode === "form");
-    const [addElement, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.error, setAddingElements);
+    const [addElement, renderSelect, resetState ] = useSelectSmartField(props.initialState, props.label, props.type, props.error, setAddingElements);
 
     function cancel(){
         if(listElements.length === 0){
@@ -104,8 +162,8 @@ const SmartField:React.FC<Props> = (props) => {
         }
     }
     function renderElements(){
-        if(listElements.length > 0 && !addingElements){
-            const headCells = [];//[{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
+        if(listElements.length > 0 && !addingElements && ! NO_TABLE_FIELDS.includes(props.type)){
+            let headCells = [];//[{ id: "name", alignment: "left", label: <Translate id={`hospital.${props.type}-plural`} /> }]
             
             const keys = Object.keys(listElements[0]);
             for(let i = 0; i < keys.length;i++){
@@ -114,17 +172,43 @@ const SmartField:React.FC<Props> = (props) => {
                     headCells.push({ id: keys[i], alignment: "left", label: <Translate id={`hospital.${keys[i]}-table`} /> }) 
                 }
             }
+            if(props.type === "treatment_prescription"){
+                headCells = headCells.filter((item) => {
+                    if((item.id === "treatment-start" || item.id === "treatment-finish")){
+                        return false;
+                    }
+                    return true;
+                });
+                headCells.push({ id: "duration", alignment: "left", label: <Translate id={`hospital.treatment-duration`} /> });
+            }
             const rows = listElements.map((element, index) => {
                 let valueDict:any = {...element};
                 for(const [key, val] of Object.entries(element)) {
                     
-                    if(val && DATE_FIELDS.includes(key)){
+                    if(val && DATE_FIELDS_FORMAT.hasOwnProperty(key)){
+                        if(props.type === "treatment_prescription"){
+                            if(element["treatment-finish"] !== null){
+                                const startDate = getDateFromStringOrDate(element["treatment-start"]);
+                                const finishDate = getDateFromStringOrDate(element["treatment-finish"]);
+                                const objectDifference = differenceDatesToString(startDate, finishDate);
+                                
+                                const timeUnit = Object.keys(objectDifference)[0];
+                                valueDict["duration"] = objectDifference[timeUnit] + " "+props.translate(`hospital.time-unit-options.${timeUnit}`);
+                            }
+                            else{
+                                valueDict["duration"] = props.translate(`hospital.chronic`);
+                            }
+                        }
+                        let dateObject = null;
+                        const format = DATE_FIELDS_FORMAT[key] as string;
+
                         if(val && typeof val.getMonth === 'function'){
-                            valueDict[key] = val.toLocaleDateString();
+                            dateObject = val;
                         }   
                         else if(val && Date.parse(val)){
-                            valueDict[key] = new Date(val.replace(' ', 'T').replace(' ', 'Z')).toLocaleDateString();
+                            dateObject =  new Date(val.replace(' ', 'T').replace(' ', 'Z'));
                         }
+                        valueDict[key] = format === "regular" ? dateObject.toLocaleDateString() : dateObject.getFullYear();
                     }
                     else if( val && TRANSLATED_COLUMNS.includes(key)){
                         const translation = props.translate(`hospital.${key}-values.${val}`).toString();
@@ -132,7 +216,12 @@ const SmartField:React.FC<Props> = (props) => {
                     } 
                     
                     else{
-                        valueDict[key] = val;
+                        if(isNaN(val) || isInteger(val)){
+                            valueDict[key] = val;
+                        }
+                        else{
+                            valueDict[key] = parseFloat(val).toFixed(2);
+                        }
                     }
                 }
                 valueDict.id = index;
@@ -140,58 +229,116 @@ const SmartField:React.FC<Props> = (props) => {
                 return valueDict
             })
             if(props.mode === "form"){
-                return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
-                    actions={{"delete" : (index:number) => removeDiagnosis(index)}}
-                />
+                return <Grid item xs={12} spacing={3}>
+                        <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
+                            actions={[{"type" : "delete", "func" : (index:number) => removeElement(index)}]}
+                            />
+                    </Grid>
+                    
             }
             else{
-                return <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells}     
-                    />
+                return (
+                    <Grid item xs={12}>
+                        <EnhancedTable noHeader noSelectable={true} rows={rows} 
+                            dense={props.printMode} noFooter={props.printMode} headCells={headCells} />
+                    </Grid>
+                )
             }   
         }
     }
-    function removeDiagnosis(id:number){
+
+    function removeElement(id:number){
         setListElements(listElements.filter((item, index) => index !== id));
     }
+
+    function updateElement(id:number, element:SmartFieldType){
+        if(listElements.length > 0){
+            setListElements(listElements.map((item, index) => index === id ? element : item));
+        }
+        else{
+            setListElements([element]);
+        }
+    }
+
     function elementSelected(diagnose:SmartFieldType){
         console.log(diagnose);
         setListElements(oldArray => [...oldArray, diagnose]);
         setAddingElements(false);
     }
-    function addDiagnose(){
-        setAddingElements(true);
-    }
+   
     function renderSelector(){
-        if(addingElements && props.mode === "form"){
+        if((addingElements && props.mode === "form") || NO_TABLE_FIELDS.includes(props.type)){
             const propsSmartField:PropsSmartField = {type:props.type, variant:"outlined", typeMargin:props.typeMargin, 
-                cancel:cancel, language:props.language ? props.language : props.activeLanguage.code, error:props.error, slaves:props.slaves,
-                size:"small", elementSelected:(diag:SmartFieldType) => elementSelected(diag)}
+                template : props.template,
+                cancel, 
+                language:props.language ? props.language : props.activeLanguage.code, 
+                country:props.country, error:props.error, slaves:props.slaves,
+                size:"small", updateElement:(index:number, smartF:SmartFieldType) => updateElement(index, smartF) ,elementSelected:(smartF:SmartFieldType) => elementSelected(smartF)}
+            
+            let smartField = null;
+            switch(props.type){
+                case "background":
+                    smartField = <Background {...propsSmartField} />
+                    break;
+                case "family-background":
+                    smartField = <FamilyBackground {...propsSmartField} />        
+                    break;
+                case "allergy":
+                    smartField = <Allergy {...propsSmartField}/>
+                    break;
+                case "ict": 
+                    smartField = <ICTSelectorGeneral {...propsSmartField} />    
+                    break;
+                case "treatment":
+                case "treatment_prescription":
+                    smartField = <SingleTreatmentSelector {...propsSmartField} />
+                    break;
+                case "treatment_regular":
+                    smartField = <SingleTreatmentSelector {...propsSmartField} />
+                    break;
+                case "bmi":
+                    smartField = <BMIField {...propsSmartField} />
+                    break;
+                case "medical_history_ai":
+                case "medical_history_template":
+                case "medical_history_template_fill":
+                    smartField = <MedicalHistoryAI {...propsSmartField} listElements={listElements} uuidInvestigation={props.uuidInvestigation as string} formValues={props.formValues} />
+                    break;
+                case "edd":
+                    smartField = <EDDField {...propsSmartField} />
+                    break;
+                case "request_lab":
+                case "request_img":
+                    if(props.uuidPatient && props.uuidInvestigation && props.uuidSurvey){
+                        const serviceType = props.type === "request_lab" ? 0 : 1;
+                        smartField = <RequestField cancel={cancel} serviceType={serviceType} uuidInvestigation={props.uuidInvestigation} 
+                                        uuidSurvey={props.uuidSurvey}
+                                        uuidPatient={props.uuidPatient} {...propsSmartField} />
+                    }
+                    else{
+                        smartField = <div>Missing uuidPatient</div>
+                    }
+                    break;
                 
-            if(props.type === "background"){
-                return <Background {...propsSmartField} />
+                default:
+                    smartField = "Smarfield not defined"
             }
-            if(props.type === "family-background"){
-                return <FamilyBackground {...propsSmartField} />
-            }
-            if(props.type === "allergy"){
-                return <Allergy {...propsSmartField}/>
-            }
-            else if(props.type === "ict"){
-                return <ICTSelectorGeneral {...propsSmartField} />
-            }
-            else if(props.type === "treatment"){
-                return <SingleTreatmentSelector {...propsSmartField} />
-            }
-            // return <BackgroundSelector type={props.type} variant="outlined" typeMargin={props.typeMargin} 
-            //         cancel={cancel} size="small" error={props.errorState} language={props.activeLanguage.code} 
-            //         elementSelected={(diag:Smartfield) => elementSelected(diag)} />
+            return(
+                <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                    <Typography color="textSecondary" gutterBottom>
+                        <Translate id={`hospital.${props.type}`} />
+                    </Typography>
+                    { smartField }
+                </Grid>
+            ) 
         }
     }
     useUpdateEffect(() =>{
-        if(props.initialState && props.initialState.listElements.length >0 ){
+        if(props.initialState && props.initialState.listElements.length > 0 ){
             setListElements(props.initialState.listElements);
             setAddingElements(false);
         }
+    
         
     }, [props.initialState]);
     
@@ -209,27 +356,34 @@ const SmartField:React.FC<Props> = (props) => {
             props.elementSelected(false);
         }
     }, [addElement]);
-    if(!addElement && listElements.length === 0){
+    
+    if((!addElement && listElements.length === 0)){
         return renderSelect();
     }
-
-    return (
-        <React.Fragment>
-            {
-                (!addingElements && props.mode === "form") &&
-                <React.Fragment>
-                    <ButtonPlus onClick={addDiagnose} />
-                    <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
-                </React.Fragment>
-            }
-            {
-                renderSelector()
-            }
-            
-            {
-                renderElements()
-            }
-        </React.Fragment>
-    )
+    else{
+        return (
+            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                    <Card variant="outlined">
+                        <CardContent>
+                        {
+                            (!addingElements && props.mode === "form" && !SINGLE_SMARTFIELDS.includes(props.type)) &&
+                            <Grid item xs={12}>
+                                <ButtonPlus onClick={() =>  setAddingElements(true)} />
+                                <Typography variant="body2" component="span">{props.translate(`hospital.add-${props.type}`)}</Typography>
+                            </Grid>
+                        }
+                        {
+                            renderSelector()
+                        }
+                        
+                        {
+                            renderElements()
+                        }
+                        </CardContent>
+                </Card>
+            </Grid>
+        )
+    }
+    
 }
 export default withLocalize(SmartField);

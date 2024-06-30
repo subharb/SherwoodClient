@@ -48,7 +48,7 @@
 
       return true;
     },
-    createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
+    createHandlerBoundToURL(import.meta.env.PUBLIC_URL + '/index.html')
   );
 
   // An example runtime caching route for requests that aren't handled by the
@@ -69,13 +69,21 @@
   // This allows the web app to trigger skipWaiting via
   // registration.waiting.postMessage({type: 'SKIP_WAITING'})
   self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
-      self.skipWaiting();
-    }
-    else if (event.data && event.data.type === 'FORCE_UPDATE') {
-      console.log("You force to update");
-      console.log("Pending Requests", bgSyncPlugin);
-  }
+      console.log("[Service Worker] Mensaje de Post");
+      if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+      }
+      else if (event.data && event.data.type === 'FORCE_UPDATE') {
+        console.log("You force to update");
+        console.log("Pending Requests", bgSyncPlugin);
+      }
+
+      // self.clients.matchAll().then(clients => {
+      //     clients.forEach(client => {
+      //         console.log(client);
+      //         client.postMessage({updatingRecords: true})
+      //     });
+      // })
   });
 
   // Any other custom service worker logic can go here.
@@ -85,8 +93,12 @@
       maxRetentionTime: 48 * 60, // Retry for max of 24 Hours (specified in minutes),
       onSync: async ({queue}) => {
         console.log("Callback on SYNC 11!", queue);
-        const channel = new BroadcastChannel('sw-messages');
-        channel.postMessage({updatingRecords : true});
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => {
+              console.log(client);
+              client.postMessage({updatingRecords: true})
+          });
+        })
         let entry;
         let uuidPatients = [];
         
@@ -144,7 +156,12 @@
             throw error;
           }
         }
-        channel.postMessage({updatingRecords : false});
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => {
+              console.log(client);
+              client.postMessage({updatingRecords: false})
+          });
+        })
         console.log("Replay complete!");
       }
   });
@@ -166,7 +183,7 @@
 
   registerRoute(
     // Add in any other file extensions or routing criteria as needed.
-    ({ url }) => { console.log("Rutas GET "+process.env.REACT_APP_API_URL , url.origin); return url.origin === process.env.REACT_APP_API_URL }, // Customize this strategy as needed, e.g., by changing to CacheFirst.
+    ({ url }) => { console.log("Rutas GET "+import.meta.env.VITE_APP_API_URL , url.origin); return url.origin === import.meta.env.VITE_APP_API_URL }, // Customize this strategy as needed, e.g., by changing to CacheFirst.
     new NetworkFirst()
   );
 

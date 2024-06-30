@@ -1,8 +1,9 @@
-import { CircularProgress, TextField, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, TextField, Typography } from '@mui/material';
 
 import React, { useEffect, useState } from 'react';
-import { LocalizeContextProps, withLocalize } from 'react-localize-redux';
+import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import styled from 'styled-components';
+import { ButtonAccept, FieldWrapper } from './mini_components';
 
 const ContainerOptions = styled.div`
     position:absolute;
@@ -19,11 +20,13 @@ const Option = styled.div`
 
 interface Props extends LocalizeContextProps{
     error:boolean,
-    country:string,
+    label:string,
+    params:{ [country: string]: string },
+    freeSolo:boolean,
     getOptionsResponse:(option:any) => any, 
-    remoteSearch:(searchText: string, country: string) => Promise<any>,
+    remoteSearch:(...args: any[])  => Promise<any>,
     getOptionLabel:(option:{name:string}) => string,
-    onValueSelected:(option:any) => void
+    onValueSelected?:(option:any) => void
 }
 const MIN_LENGTH_SEARCH:number = 3;
 
@@ -40,7 +43,20 @@ const AutocompleteSherwood = (props:Props) => {
     }
     function onOptionSelected(index:number, term:string){
         setSearchterm(term);
-        props.onValueSelected(options[index]);
+        if(props.onValueSelected){
+            props.onValueSelected(options[index]);
+        }
+        
+        setOptionSelected(true);
+    }
+    function saveField(){
+        if(props.onValueSelected){
+            props.onValueSelected({
+                name : searchTerm,
+                id : ""
+            });
+        }
+        
         setOptionSelected(true);
     }
     function restart(){
@@ -52,8 +68,21 @@ const AutocompleteSherwood = (props:Props) => {
         if(loading){
             return <CircularProgress />;
         }
-        else if(options.length === 0 && searchTerm.length > MIN_LENGTH_SEARCH){
-            return "No hay resultados";
+        else if(!optionSelected && (options.length === 0 && searchTerm.length > MIN_LENGTH_SEARCH)){
+   
+            return(
+            <Grid container>
+                <Grid item xs={12}>
+                    <Typography variant="body2" gutterBottom><Translate id="general.no-results"/></Typography> 
+                </Grid>
+                {
+                        props.freeSolo &&
+                        <Grid item>
+                            <ButtonAccept onClick={saveField}><Translate id="general.add" /></ButtonAccept>
+                        </Grid>
+                }                
+            </Grid>
+            );
         }
         else if(searchTerm.length <= MIN_LENGTH_SEARCH || optionSelected){
             return null;
@@ -74,7 +103,8 @@ const AutocompleteSherwood = (props:Props) => {
             try{
                 if(searchTerm.length > MIN_LENGTH_SEARCH){
                     setLoading(true);
-                    const response = await props.remoteSearch(searchTerm, props.country);
+                    const params = Object.values(props.params);
+                    const response = await props.remoteSearch(searchTerm, params);
                     if(response.status === 200){
                         setOptions(props.getOptionsResponse(response));
                     }
@@ -96,8 +126,9 @@ const AutocompleteSherwood = (props:Props) => {
     return (
         <React.Fragment>
             <TextField value={searchTerm} error={errorSearch || props.error} onFocus={restart}
-            onChange={(event) => changeInput(event.target.value)}
-            label={props.translate("hospital.select-treatment")} variant="outlined" />
+                onChange={(event) => changeInput(event.target.value)} fullWidth
+                label={props.label} variant="outlined" />
+            
             {
                 renderOptions()
             }

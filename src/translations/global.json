@@ -4,13 +4,48 @@
     "general" : {
         "yes" : ["Yes", "Si", "Oui"], 
         "no" : ["No", "No", "Non"], 
+        "total" : ["Total", "Total", "Total"],
+        "not_defined" : ["Not defined", "No definido", "Non défini"],
+        "actions" : ["Actions", "Acciones", "Actions"],
+        "paid" : ["Paid", "Pagado", "Payé"],
+        "used" : ["Used", "Usado", "Utilisé"],
+        "born" : ["born", "nacido", " né(e)"],
+        "week_days" : {
+            "monday" : ["Monday", "Lunes", "Lundi"],
+            "tuesday" : ["Tuesday", "Martes", "Mardi"],
+            "wednesday" : ["Wednesday", "Miércoles", "Mercredi"],
+            "thursday" : ["Thursday", "Jueves", "Jeudi"],
+            "friday" : ["Friday", "Viernes", "Vendredi"],
+            "saturday" : ["Saturday", "Sábado", "Samedi"],
+            "sunday" : ["Sunday", "Domingo", "Dimanche"],
+            "Mon" : ["Monday", "Lunes", "Lundi"],
+            "Tue" : ["Tuesday", "Martes", "Mardi"],
+            "Wed" : ["Wednesday", "Miércoles", "Mercredi"],
+            "Thu" : ["Thursday", "Jueves", "Jeudi"],
+            "Fri" : ["Friday", "Viernes", "Vendredi"],
+            "Sat" : ["Saturday", "Sábado", "Samedi"],
+            "Sun" : ["Sunday", "Domingo", "Dimanche"]
+
+        },
+        "years" : ["years", "años", "ans"],
+        "several" : ["Several", "Varios", "Plusieurs"],
+        "patient" : ["Patient", "Paciente", "Patient"],
+        "save" : ["Save", "Guardar", "Enregistrer"],
+        "discard" : ["Discard", "Descartar", "Jeter"],
         "updating-records" : ["We are syncronizing the records, please hold on.", "Estamos actualizando los registros, por favor espere.", "Nous mettons à jour les enregistrements, veuillez patienter."],
         "delete" : ["Delete", "Borrar", "Effacer"],
         "cancel" : ["Cancel", "Cancelar", "Annuler"],
+        "continue" : ["Continue", "Continuar", "Continue"],
+        "name" : ["Name", "Nombre", "Nom"],
         "edit" : ["Edit", "Editar", "Éditer"],
         "update" : ["Update", "Actualizar", "Mettre à jour"],
         "back" : ["Back", "Atrás", "Returner"],
         "add" : ["Add", "Añadir", "Ajouter"],
+        "male" : ["Male", "Masculino", "Homme"],
+        "close" : ["Close", "Cerrar", "Fermer"],
+        "female" : ["Female", "Femenino", "Femme"],
+        "undetermined" : ["Undetermined", "Indeterminado", "Indéterminé"],
+        "any" : ["Any", "Indiferente", "Indifférent"],
         "view" : ["View", "Ver", "Voir"],
         "startDate" : ["Start Date", "Fecha Inicio", "Date de début"],
         "endDate" : ["End Date", "Fecha fin", "Date de fin"],
@@ -28,26 +63,274 @@
         "offline-update" : {
             "title" : ["Offline", "Sin conexión", "Sans connexion"],
             "description" : ["There are some items to be syncronized. The app will automaticly upload these items when the connection is recovered. Please don't refresh the page until this message disappears.", "Hay algunos elementos para sincronizar. La aplicación cargará automáticamente estos elementos cuando se recupere la conexión. No actualice la página hasta que desaparezca este mensaje.", "Il y a certains éléments à synchroniser. L'application téléchargera automatiquement ces éléments lorsque la connexion sera rétablie. Veuillez ne pas actualiser la page jusqu'à ce que ce message disparaisse."]
+        },
+        "default-label" : {
+            "text" : ["Enter text", "Introducir texto", "Entrez du texte"],
+            "select" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "family-background" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "background" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "file" : ["Select files", "Seleccionar archivos", "Sélectionnez les fichiers"],
+            "ict" : ["Add diagnosis", "¿Añadir diagnóstico?", "Ajouter un diagnostic ?"],
+            "allergy" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "treatment_regular" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "treatment" : ["Select", "Seleccionar", "Pour sélectionner"],
+            "appointment" : ["Date", "Fecha", "Date"],
+            "request_lab" : ["Do you wish to request a lab test?", "¿Desea solicitar un examen de laboratorio?", "Voulez-vous demander un test de laboratoire?"],
+            "request_img" : ["Do you wish to request an imaging test?", "¿Desea solicitar un examen de imagen?", "Voulez-vous demander un test d'imagerie?"]
+        },
+        "here" : ["here", "aquí", "ici"],
+        "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"],
+        "no-results" : ["No results", "Sin resultados", "Sans results"],
+        "use_selector" : {
+            "placeholder" : {
+                "department" : ["Select department", "Seleccione departamento", "Sélectionnez le service"],
+                "researcher" : ["Select doctor", "Seleccione médico", "Sélectionnez le médecin"]
+            },
+            "label" : {
+                "department" : ["Department", "Departamento", "Service"],
+                "researcher" : ["Doctor", "Médico", "Médecin"]
+            },
+            "all":{
+                "department" : ["All departments", "Todos los departamentos", "Tous les départements"],
+                "researcher" : ["All doctors", "Todos los médicos", "Tous les médecins"]
+            },
+            "select" : {
+                "department" : ["Select department", "Seleccione departamento", "Sélectionnez le service"],
+                "researcher" : ["Select doctor", "Seleccione médico", "Sélectionnez le médecin"]
+            },
+            "missing_option" : {
+                "department" : ["This researcher doesn't have a department assigned", "Este médico no tiene un departamento asignado", "Ce médecin n'a pas de service attribué"]
+                
+            }
         }
     },
-    
+    "sign-in" : {
+        "title" : ["Welcome to Sherwood!", "Bienvenido a Sherwood!", "Bienvenu à Sherwood !"],
+        "description" : ["Sign in to your account to continue or ", "Inicie sesión en su cuenta para continuar o ", "Connectez-vous à votre compte pour continuer ou"],
+        "sign-up" : ["Sign up", "Regístrate", "S'inscrire"],
+        "sign-in" : ["Sign in", "Entrar", "Sign in"],
+        "remember-me" : ["Remember me", "Recordarme", "Souviens-toi de moi"]
+    },
+    "countries" :{
+        "es" : ["Spain", "España", "Espagne"],
+        "ml" : ["Mali", "Malí", "Mali"],
+        "sn" : ["Senegal", "Senegal", "Senegal"],
+        "mx" : ["Mexico", "México", "Mexico"],
+        "bj" : ["Benin", "Benín", "Benin"],
+        "do" : ["Dominican Republic", "República Dominicana", "République Dominicaine"]
+    },
     "hospital" : {
         "doctor" : ["Doctor", "Médico", "Médecin"],
+        "staff" : ["Staff", "Personal", "Staff"],
         "data-collection" : ["Form", "Formulario", "Forme"],
         "data-collections" : ["Surveys", "Encuestas", "Enquêtes"],
         "sections" : ["Sections", "Secciones", "Sections"],
+        "appointment" : ["Next Appointment", "Próxima Cita", "Prochaine Rendez-Vous"],
+        "medical_history_ai" : ["Medical History AI", "Historia Clínica AI", "Historique médical AI"],
+        "send_to_email" : ["Send to email", "Enviar por correo electrónico", "Envoyer par email"],
+        "generate_medical_history" : ["Generate Medical History", "Generar Historia Clínica", "Générer l'histoire médicale"],
+        "search_box" : {
+            "patients" : ["Search for patients", "Buscar pacientes", "Rechercher des patients"],
+            "staff" : ["Search for staff", "Buscar personal", "Rechercher du personnel"],
+            "filter" : ["Filter", "Filtrar", "Filtrer"],
+            "filters" : {
+                "budget" : ["Quotes", "Presupuestos", "Devis"], 
+                "invoices": ["Invoices", "Facturas", "Facture definitive"],
+                "summaries": ["Summaries", "Resúmenes", "Synthèse des actes"],
+                "draft" : ["Draft", "Borrador", "Modifiable"],
+                "closed" : ["Closed", "Cerrado", "Non Modifiable"],
+                "low" : ["Low", "Bajo", "Faible"],
+                "finished" : ["Finished", "Finalizado", "Completé"],
+                "normal" : ["Normal", "Normal", "Normal"],
+                "completed" : ["Completed", "Completado", "Completé"],
+                "accepted" : ["Accepted", "Aceptado", "Accepté"],
+                "pending_payment" : ["Pending payment", "Pago pendiente", "Paiement en attente"],
+                "some_accepted" : ["Some accepted", "Algunos aceptados", "Certains acceptés"],
+                "in_progress" : ["In progress", "En progreso", "En cours"],
+                "paid" : ["Paid", "Pagado", "Payé"]
+            },
+            "all" : ["All", "Todos", "Tous"]
+
+        },
         "patient" : {
             "fill-in" : ["Fill in details", "Rellene el formulario", "Remplir le formulaire"],
             "no-update" : ["This record can't be edited anymore", "Este registro ya no se puede editar", "Cet enregistrement n'est plus modifiable" ],
             "new-record" : ["Record saved", "Registro Guardado", "Enregistrement enregistré"],
             "new-record-offline" : ["Record saved offline", "Registro Guardado offline", "Enregistrement enregistré offline"],
-            "error" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
             "updated-record" : ["Record updated!", "Registro Actualizado", "Fichier mis à jour"],
             "updated-record-offline" : ["Record updated Offline!", "Registro Actualizado Offline", "Fichier mis à jour Offline"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
+            "hospitalized-in-ward" : ["Hospitalized in ward %X", "Hospitalizado en la planta %X", "Hospitalisé en service %X"],
+            "discharged-from-ward" : ["Discharged from ward %X", "Dado de alta de la planta %X", "Sortie de la %X"],
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
-            "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"]
+            "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"],
+            "insurances" : {
+                "select" : ["Select the patient's insurance", "Seleccione el seguro del paciente", "Sélectionnez l'assurance du patient"]
+            },
+            "pdf" : {
+                "prescriptions" : {
+                    "title" : ["Prescription", "Prescripción", "Orddonnace"]
+                }
+            },
+            "submission-table": {
+                "selector" : {
+                    "title" : ["Select a survey to visualize its data:", "Seleccione una encuesta para visualizar sus datos:", "Sélectionnez une enquête pour visualiser ses données:"]
+                }
+            },
+            "error" : {
+                "general" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
+                "patient-alredy-discharged" : ["This patient was already discharged, please refresh the clinical history", "Este paciente ya fue dado de alta, actualice la historia clínica", "Ce patient a déjà obtenu son congé, veuillez actualiser l'historique clinique"],
+                "no-patient" : ["You don't have access to this patient, please verify this patient belongs to the hospital you are logged in", "No tiene acceso a este paciente, verifique que este paciente pertenece al hospital en el que inició sesión", "Vous n'avez pas accès à ce patient, veuillez vérifier que ce patient appartient à l'hôpital auquel vous êtes connecté"],
+                "missing-discharge-survey" : ["The survey for to discharge patients is missing, please contact Sherwood for more details", "Falta el formulario para dar de alta a los pacientes, comuníquese con Sherwood para obtener más detalles.", "L'enquête pour la sortie des patients est manquante, veuillez contacter Sherwood pour plus de détails"]
+            }
+        },
+        "ward" : {
+            "title" : ["Ward", "Sala", "Paroisse"],
+            "edit-bed" : ["Edit bed", "Editar cama", "Modifier le lit"],
+            "add-bed" : ["Add bed", "Añadir cama", "Ajouter le lit"],
+            "save-order" : ["Save the changes once you finished reordering", "Guarde los cambios una vez que haya terminado de reordenar", "Enregistrez les modifications une fois que vous avez terminé de réorganiser"],
+            "delete-bed" : ["Delete bed", "Eliminar cama", "Supprimer le lit"],
+            "select-bed" : ["Select the bed you wish to hospitalize the patient", "Seleccione la cama en la que desea hospitalizar a la paciente.", "Sélectionnez le lit dans lequel vous souhaitez hospitaliser le patient"],
+            "assign-bed-ward-prompt" : ["Are you sure to want to assign this bed?", "¿Estás seguro de querer asignar esta cama?", "Êtes-vous sûr de vouloir attribuer ce lit ?"],
+            "assign-bed-success" : ["Bed assigned correctly", "Cama asignada correctamente", "Lit correctement attribué"],
+            "reorder" : ["Switch to reorder", "Activar para reordenar", "Activer pour réorganiser"],
+            "delete-bed-prompt" : ["Are you sure to delete this bed?", "¿Está seguro de borrar esta cama?", "Êtes-vous sûr de supprimer ce lit ?"],
+            "bed-update-success" : ["Bed updated succesfully", "Cama actualizada correctamente", "Lit mis à jour avec succès"],
+            "bed" : {
+                "name" : ["Name", "Nombre", "Nom"],
+                "genre" : ["Genre", "Género", "Genre"],
+                "active" : ["Active", "Activa", "Active"]
+            },
+            "error" : {
+                "default" : ["An error happened while saving, please try again later", "Ha habido un error al guardar, intentelo más tarde", "Une erreur s'est produite lors de l'enregistrement, veuillez réessayer plus tard"],
+                "bed-not-exist" : ["Bed does not exist, please refresh the page", "La cama no existe, refresque la página.", "Le lit n'existe pas, veuillez rafraîchir la page"],
+                "delete_busy_bed" : ["Can't delete busy bed", "No se puede borrar una cama ocupada", "Impossible de supprimer le lit occupé"],
+                
+                "bed-assigned" : ["This bed is already busy", "Esta cama ya esta ocupada", "Ce lit est déjà occupé"],
+                "bed-edit-assigned" : ["Can't change a busy bed", "No puede cambiar una cama ocupada", "Impossible de changer un lit occupé"],
+                "patient-not-exist" : ["patient does not exist", "El paciente no existe", "les patients n'existent pas"],
+                "name-bed-error" : ["There is a bed with that name already, choose a different one", "Ya hay una cama con ese nombre, elige una diferente", "Il y a déjà un lit avec ce nom, choisissez-en un autre"],
+                "ward-patient-bed" : ["This ward has beds occupied, please discharge any patients first", "Esta sala tiene camas ocupadas, primero dé el alta a los pacientes", "Ce service a des lits occupés, veuillez d'abord libérer les patients"],
+                "patient-already-hospitalized" : ["This patient is already hospitalized, please discharge him from his bed first", "Este paciente ya está hospitalizado, primero déle de alta de su cama.", "Este paciente ya está hospitalizado, primero déle de alta de su cama."]
+
+            }
+            
+        },
+        "departments" : {
+            "title" : ["Hospital Departments", "Departamentos", "Services"],
+            "modal" : {
+                "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
+            },
+            "all_departments" : ["All departments", "Todos los departamentos", "Tous les départements"],
+            "department" : ["Department", "Departamento", "Service"],
+            "departments" : ["Departments", "Departamentos", "Services"],
+            "unit" : ["Unit", "Unidad", "Service"],
+            "users" : ["Users", "Usuarios", "Personnel"],
+            "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Hospitalisation"],
+            "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
+            "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
+            "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "Êtes-vous sûr de supprimer cette pièce ?"],
+            "no-my-departments" : ["You haven't been added any department, ask your administrator", "No se le ha agregado ningún departamento, pregunte a su administrador", "Vous n'avez été ajouté à aucun département, demandez à votre administrateur"],
+            "no-wards" : ["No current wards", "No hay salas en este departamento", "Il n'y a pas de salles d'hospitalisation dans ce service"],
+            "errors" : {
+                "has-researchers" : ["Can't delete a unit with staff", "No se puede borrar una unidad con personal", "Impossible de supprimer un service avec du personnel"],
+                "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce département"],
+                "bad-configuration" : ["Doesn't match total number beds, check amount of female/male beds", "No coincide con el número total de camas, verifique la cantidad de camas femeninas / masculinas", "Ne correspond pas au nombre total de lits, vérifiez le nombre de lits pour femmes/hommes"]
+            },
+            "no-edit-ward" : ["Can't edit wards with busy beds", "Can't edit wards with busy beds","Can't edit wards with busy beds"],
+            "action-success" : ["Action performed successfully!", "Action performed successfully!", "Action effectuée avec succès !"],
+            "forms" : {
+                "ward" : {
+                    "title" : ["Fill the ward details", "Complete los detalles de la sala", "Remplissez les détails de la salle d'hospitalisation"],
+                    "name" : ["Name ward", "Nombre sala", "Nom de la salle"],
+                    "beds" : ["Number Beds", "Número camas", "Nombre de lits"],
+                    "male" : ["Male beds", "Camas para hombres", "Lits pour hommes"],
+                    "female" : ["Female beds", "Camas para mujeres", "Lits pour femmes"]
+                },
+                "unit" : {
+                    "name" : ["Name Unit", "Nombre unidad", "Nom unit"]
+                },
+                "remove-researcher" : {
+                    "confirm" : ["Do you confirm you wish to remove %X from unit %Y?", "¿Confirma que desea quitar a %X de la unidad %Y?", "Voulez-vous vraiment supprimer %X du lecteur %Y?"]
+                },
+                "remove-unit" : {
+                    "confirm" : ["Do you confirm you wish to remove unit %X? It should not have any staff assigned.", "¿Confirma que desea quitar la unidad %X? No debe tener personal asignado.", "Voulez-vous vraiment supprimer l'unité %X ? Il ne doit pas avoir de personnel affecté."]
+                },
+                "remove-department" : {
+                    "confirm" : ["Do you confirm you wish to remove department %X? It should not have any units.", "¿Confirma que desea quitar el departamento %X? No debe tener unidades.", "Voulez-vous vraiment supprimer le département %X ? Il ne doit pas avoir d'unités."],
+                    "cannot_remove" : ["You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units"]
+
+                },
+                "types":{
+                    "medical" : ["Medical", "Médico", "Médical"],
+                    "pharmacy" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                    "social" : ["Social", "Social", "Social"],
+                    "shoes" : ["Shoes", "Calzado", "Cordonerie"],
+                    "admin" : ["Admin", "Administración", "Administration"]
+                    
+                },
+                "department" : {
+                    "title" : ["Add department", "Añadir Departamento", "Ajouter Service"],
+                    "name" : ["Name department", "Nombre departamento", "Nom du service"],
+                    "type" : ["Type", "Tipo", "Type"]
+                }
+            }
+        },
+        "analytics" : {
+            "title" : ["Analytics", "Analítica", "Analytique"],
+            "date_selector" : {
+                "select_period" : ["Date Selector", "Selector de fecha", "Sélecteur de date"],
+                "last_week" : ["Last Week", "Última semana", "Semaine dernière"],
+                "last_month" : ["Last Month", "Último mes", "Mois dernier"],
+                "custom_period" : ["Custom Period", "Período personalizado", "Période personnalisée"],
+                "current_period" : ["Current Period", "Período actual", "Période actuelle"]
+            },
+            "graphs" : {
+                "search-diagnose" : {
+                    "title" : ["Search metric per Diagnose", "Búsqueda de estadistica por diagnóstico", "Recherche de statistiques par diagnostic"],
+                    "search" : ["Search diagnostic", "Buscar diagnóstico", "Trouver un diagnostic"]
+                },
+                "percentage" : ["Percentage", "Porcentaje", "Pourcentage"],
+                "most-common-diagnosis" : {
+                    "title" :["Most Common Diagnosis", "Diagnósticos más comunes", "Les diagnostics les plus courants"],
+                    "table-title" : ["Most Common Diagnosis", "Diagnósticos más comunes", "Les diagnostics les plus courants"],
+                    "diagnostic" : ["Diagnostic", "Diagnóstico", "Diagnostic"],
+                    "count" : ["Count", "Número", "Quantité"]
+                }, 
+                "sex" : {
+                    "title" : ["Sex", "Sexo", "Sex"],
+                    "table-title" : ["Sex", "Sexo", "Sex"],
+                    "count" : ["Count", "Número", "Quantité"],
+                    "male" : ["Male", "Masculino", "Homme"],
+                    "female" : ["Female", "Femenino", "Femme"]
+                },
+                "age" : {
+                    "title" : ["Age", "Edad", "Âge"],
+                    "table-title" : ["Age (years)", "Edad (años)", "Âge (ans)"],
+                    "count" : ["Count", "Número", "Quantité"]
+                },
+                "activity" : {
+                    "title" : ["Hospital Activity", "Actividad Hospitalaria", "Activité hospitalière"],
+                    "table-title" : ["Doctor", "Médico", "Médecin"],
+                    "first-visit" : ["First visit", "Primera visita", "Première visite"],
+                    "followup-visit" : ["Follow up visit", "Visita de seguimiento", "Visite de suivi"]
+                },
+                "patients" : {
+                    "title" : ["Patients visits", "Visitas de pacientes", "Visites des patients"]
+                },
+                "appointments" : {
+                    "title" : ["Appointment", "Cita", "Rendez-vous"],
+                    "table-title" : ["Department", "Departamento", "Département"]
+                },
+                "billing" : {
+                    "title" : ["Billing", "Facturación", "Facturation"]
+                },
+                "billing-insurances" : {
+                    "title" : ["Billing per Insurance", "Facturación por seguro", "Facturation par assurance"],
+                    "amount" : ["Amount", "Importe", "Montant"]
+                }
+            }
         },
         "notification": {
             "offline" : {
@@ -55,18 +338,187 @@
                 "submission" : ["Patient submission pending", "Envío de datos pendiente", "En attente de soumission des données"]
             }
         },
+        "billing" : {
+            "title" : ["Billing", "Facturación", "Facturation"],
+            "no_billing_info" : ["Update your billing information", "Actualice la información de facturación", "Mettre à jour les informations de facturation."],
+            "no_bills" : ["Click the plus button to create your first bill", "Haga clic en el botón más para crear su primera factura", "Cliquez sur le bouton plus pour créer votre première facture"],
+            "all_bills" : ["All Bills", "Todas las facturas", "Toutes les factures"],
+            "metrics" : ["Metrics", "Métricas", "Metrics"],
+            "billables" : {
+                "title" : ["Billables", "Elementos de facturación", "Billables"],
+                "success" : {
+                    "updated" : ["Billables succesfully updated", "Elementos de facturación actualizada correctamente", "Elements de facturation mis à jour avec succès"]
+                }
+            },
+            "convert" : {
+                "to_budget" : ["Convert to quote", "Convertir a presupuesto", "Convertir en devis"],
+                "to_invoice" : ["Convert to invoice", "Convertir a factura", "Convertir en facture"]
+            },
+            "pdf" : {
+                "num_dossier" :["Dossier number", "Número de ficha", "Numéro de dossier" ] ,
+                "patient_identity" : ["Patient Identity", "Paciente", "Identité du patient"],
+                "title" : {
+                    "invoice" : ["Invoice", "Factura", "FACTURE"],
+                    "summary" : ["SUMMARY OF ACTS", "RESUMEN DE ACTOS", "SYNTHÈSE DES ACTES"],
+                    "budget" : ["DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL", "DEVIS POUR LA RÉALISATION D'UN ACTE MÉDICAL"]
+                },
+                "detail" : ["Detail", "Detalle", "Detail"],
+                "total_cost" : ["Total cost", "Coste total", "Coût total"],
+                "paid_externally" : ["Paid externally", "Pagado externamente", "PEC extérieure"],
+                "paid" : ["Paid", "Pagado", "Payé"],
+                "to_pay" : ["To pay", "Por pagar", "À payer"],
+                "amount_paid_insurance" : ["Amount supported by", "Importe soportado por", "Montant pris en charge par"],
+                "amount_paid_patient" : ["Amount paid by patient", "Importe pagado por paciente", "Montant à charge du patient"],
+                "total_letters" : ["Arrested this present invoice at the sum of", "Detenido esta presente factura por la suma de", "Arrêté la présente facture à la somme de"],
+                "subtitle" : {
+                    "summary" : ["Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées.", "Ce document ouvre droit à l'exécution des prestations si elles sont marquées comme payées."]
+                },
+                "doctor" : ["Practitioner", "Facultativo", "Praticien"],
+                "department" : ["Department", "Departamento", "Service"],
+                "billform_title" : {
+                    "summary" : ["Medical benefits: Not Paid", "Beneficios médicos: No Pagados", "Prestations médicales : Non Payé"],
+                    "budget" : ["Services included in the medical procedure", "Servicios incluidos en el procedimiento médico.", "Prestations comprises dans l'acte médical"],
+                    "invoice" : ["Services included in the medical procedure", "Servicios incluidos en el procedimiento médico.", "Prestations comprises dans l'acte médical"]
+                },
+                "invoice" : {
+                    "number" : ["Invoice number", "Número de factura", "Facture nº"],
+                    "police_number" : ["Police number", "Número de póliza", "Lettre de garantie/carte de mutuelle POLICE N°"],
+                    "date_emission" : ["Date of issue", "Fecha de emisión", "Date d'émission"],
+                    "date_surgery" : ["Date of surgery", "Fecha de intervención", "Date d'intervention"],
+                    "attention" : ["To the atention of", "A la atención de", "À l'attention de"]
+                },
+                "budget" : {
+                    "attention" : ["Quote brought to the attention of:", "Presupuesto puesto en conocimiento de:", "Devis porté à l'attention de : "] ,
+                    "total_rating" : ["Total rating:", "Valoración total:", "Cotation totale :"],
+                    "coverage" : ["Please enter the percentage covered by the organization:................................ %", 
+                                "Por favor, indique el porcentaje cubierto por la organización:................................ %",
+                                "Veuillez inscrire le pourcentage pris en charge par l'organisme :................................ %"
+                            ]
+                }
+                
+
+            },
+            "markAsPaid" : ["Mark as paid", "Marcar como pagado", "Marquer comme payé"],
+            "markAsUsed" : ["Mark as used", "Marcar como usado", "Marquer comme utilisé"],
+            "department" : ["Department", "Departamento", "Service"],
+            "prescribingDoctor" : ["Prescribing Doctor", "Médico que prescribe", "Médecin prescripteur"],
+            "budget" : ["Quote", "Presupuesto", "Devis"], 
+            "summary" : ["Summary", "Resumen", "Résumé"],
+            "search_patient" : ["Search patient", "Buscar paciente", "Rechercher un patient"],
+            "total_paid" : ["Total paid", "Total pagado", "Total payé"],
+            "total_amount" : ["Total amount", "Monto total", "Montant total"],
+            "billing_info" : {
+                "title" : ["Billing Info", "Información de facturación", "Détails de facturation"],
+                "hospitalName" : ["Clinic/Hospital Name", "Nombre del centro", "Nom du centre"],
+                "logo" : ["Clinic/Hospital Logo", "Clinic/Hospital Logo", "Clinic/Hospital Logo"],
+                "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
+                "address" : ["Address", "Dirección", "Adresse"],
+                "city" : ["City", "Ciudad", "Ville"],
+                "currency" : ["Currency(ISO Code)", "Moneda(ISO Code)", "Devise(ISO Code)"],
+                "email":["Email", "Email", "Email"],
+                "success" : {
+                    "created" : ["Bill succesfully created", "Factura creada correctamente", "Facture créée avec succès"],
+                    "updated" : ["BillingInfo succesfully updated", "Información de facturación actualizada correctamente", "Détails de facturation mis à jour avec succès"]
+                },
+                "error" : {
+                    "create" : ["There was an error creating the bill, please try again","Hubo un error al crear la factura, inténtalo de nuevo", "Une erreur s'est produite lors de la création de la facture, veuillez réessayer"],
+                    "positive" : ["The total must be positive", "El total debe ser positivo", "Le total doit être positif"]
+                }
+            },
+            "item" : {
+                "add_item" : ["Add Item", "Añadir Elemento", "Ajouter un élément"],
+                "concept" : ["Concept", "Concepto", "Concept"],
+                "updatedAt" : ["Updated At", "Actualizado", "Date d’ajout"],
+                "unitCost" : ["Unit Cost", "Coste unitario", "Cotation"],
+                "amount" : ["Subtotal", "Subtotal", "Subtotal"],
+                "type" : ["Type", "Tipo", "Type"],
+                "select_item" : ["Select", "Select", "Seleccionar"],
+                "drug" : ["Drug", "Medicamento", "Médicament"],
+                "quantity" : ["Quantity", "Cantidad", "Quantité"],
+                "additional_info" : ["Additional Info", "Información adicional", "Informations supplémentaires"],
+                "types" : {
+                    "charge" : ["Charge", "Cargo", "Frais"],
+                    "discount_amount" : ["Amount Discount", "Cantidad descuento", "Reduction (montant)"],
+                    "discount_percent" : ["Discount %", "Descuento %", "Reduction (%)"],
+                    "service" : ["Service", "Servicio", "Service"],
+                    "discount_additional_info" : ["Discount Request", "Solicitud de descuento", "Demande de réduction"],
+                    "hidden_value" : ["Hidden Value", "Valor oculto", "Valeur cachée"]
+                },
+                "error" : {
+                    "concept_short" : ["Must have at 3 characters", "Debe tener al menos 3 caracteres", "Doit avoir 3 caractères"],
+                    "amount_negative" : ["Must be positive", "Debe ser positivo", "Doit être positif"], 
+                    "valid_number" : ["Must be a number", "Debe ser un numero", "Doit être numero"], 
+                    "amount_percent" : ["Must be lower than 100", "Debe ser menor a 100", "Doit être inférieur à 100"],
+                    "type_not_selected" : ["Must select one", "Debe seleccionar uno", "Doit en sélectionner un"],
+                    "amount_exceeded" : ["Currently there's not enough stock", "Actualmente no hay suficiente stock", "Il n'y a pas assez de stock actuellement"],
+                    "amount_zero" : ["Must be greater than 0", "Debe ser mayor a 0", "Doit être supérieur à 0"]
+                }
+            },
+            "bill" : {
+                "name" : ["Bill", "Factura", "Facture"],
+                "num_bill" : ["#Bill", "Nº Factura", "Nº Facture"],
+                "total" : ["Total", "Total", "Total"],
+                "status" : ["Status", "Estado", "Statut"],
+                "type" : ["Type", "Tipo", "Type"],
+                "types" : {
+                    "invoice" : ["Invoice", "Factura", "Facture definitive"],
+                    "budget" : ["Quote", "Presupuesto", "Devis"], 
+                    "summary" : ["Summary of Procedures", "Resumen", "Synthèse des actes"]
+                },
+                "view" : {
+                    "modal" : {
+                        "title" : ["Confirmation of documente type change", "Confirmación de cambio de tipo de documento", "Confirmation du changement de type de document"],
+                        "message" : ["The change will automatically create a new document and close the current one. Are you sure you want create a new type of document?", "El cambio creará automáticamente un nuevo documento y cerrará el actual. ¿Está seguro de querer crear un nuevo tipo de documento?", "Le changement créera automatiquement un nouveau document et fermera l'actuel. Êtes-vous sûr de vouloir créer un nouveau type de document?"]
+                    }
+                },
+                "view_pdf" : ["View PDF", "Ver PDF", "Voir PDF"],
+                "pending" : ["Pending", "Pendiente", "En attente"],
+                "draft" : ["Draft", "Borrador", "Modifiable"],
+                "closed" : ["Closed", "Cerrada", "Non Modifiable"],
+                "patient" : ["Patient", "Paciente","Patient"],
+                "save" : ["Save", "Guardar", "Enregistrer"],
+                "update" : ["Update", "Actualizar", "Mettre à jour"],
+                "date" : ["Date", "Fecha", "Date"],
+                "success" : {
+                    "changed" : ["Document type changed succesfully", "Tipo de documento cambiado correctamente", "Type de document modifié avec succès"],
+                    "created" : ["Document succesfully created", "Documento creada correctamente", "Document créée avec succès"],
+                    "updated" : ["Document succesfully updated", "Documento actualizada correctamente", "Document mis à jour avec succès"]
+                },
+                "error" : {
+                    "changed" : ["Can't change the document to this type", "No se puede cambiar el documento a este tipo", "Impossible de changer le document à ce type"],
+                    "permission" : ["You don't have permission to apply discounts", "No tienes permiso para aplicar descuentos", "Vous n'avez pas la permission d'appliquer des réductions"],
+                    "create" : ["There was an error creating the bill, please try again","Hubo un error al crear la factura, inténtalo de nuevo", "Une erreur s'est produite lors de la création de la facture, veuillez réessayer"],
+                    "positive" : ["The total must be positive", "El total debe ser positivo", "Le total doit être positif"]
+                }
+            }
+        },
+        "shoe_shop":{
+            "title" : ["Shoe Shop", "Tienda de Zapatos", "Cordonerie"]
+        },
         "treatment-name" : ["Name", "Nombre", "Nom"],
-        "posology" : ["Frequency", "Frecuencia", "Fréquence"],
-        "treatment-posology-table" : ["Frequency", "Frecuencia", "Fréquence"],
+        "request" : {
+            "request_not_ready" : ["The request is not completed yet", "La solicitud no está completada", "La demande n'est pas encore terminée"],
+            "laboratory" : ["Laboratory tests available", "Tests de laboratorio disponibles", "Tests de laboratoire disponibles"],
+            "laboratory_table" : ["Request Lab", "Peticiones de Laboratorio", "Demande de laboratoire"],
+            "medical-imaging" : ["Image tests available", "Pruebas de imagen disponibles", "Tests d'image disponibles"],
+            "medical-imaging_table" : ["Request Imaging", "Solicitar Imagen", "Demander une imagerie"],
+            "shoe_shop" : ["Shoe Shop services", "Servicios de Zapatería", "Services de Cordonerie"],
+            "shoe_shop_table" : ["Requests Shoe Shop", "Solicitudes Zapatería", "Demander Cordonerie"]
+        },
+        "frecuency" : ["Frequency", "Frecuencia", "Fréquence"],
+        "treatment-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],
+        "treatment_regular-frecuency-table" : ["Frequency", "Frecuencia", "Fréquence"],
         "dose" : ["Quantity", "Cantidad", "Quantité"],
         "treatment-dose-table" :["Quantity", "Cantidad", "Quantité"],
-        "treatment-start-table" : ["Start date", "F.Inicio", "Date de début"],
-        "treatment-finish-table" : ["End date", "Fecha fin", "Date de fin"],
-        "chronic" : ["Long-term use", "Crónico", "chronique / à long terme"],
+        "treatment_regular-dose-table" :["Quantity", "Cantidad", "Quantité"],
+        "treatment-start-table" : ["Start date", "F.Inicio", "Début"],
+        "treatment-finish-table" : ["End date", "F. fin", "Date de fin"],
+        "treatment-duration" : ["Duration", "Duración", "Durée"],
+        "chronic" : ["Chronic medication", "Crónico", "chronique / à long terme"],
         "single-dose" : ["Single dose", "Dosis única", "Une seule dose"],
-        "number-elements" : ["Number", "Nombre", "Número"],
+        "number-elements" : ["Number", "Número", "Número"],
         "time-unit" : ["Time", "Tiempo", "Temps"],
-        "treatment-posology-values" : {
+        "treatment-frecuency-values" : {
             "single-dose" : ["Single dose", "Dosis única", "Une seule dose"]
         },
         "time-unit-options" : {
@@ -75,51 +527,72 @@
             "months" : ["months", "meses", "mois"]
         },
         "duration" : ["Duration", "Duración", "Durée"],
-        "posology-options" : {
+        "frecuency-options" : {
             "4h" : ["4 hours", "4 horas", "4 heures"],
-            "6h" : ["od", "6 horas", "6 heures"],
-            "8h" : ["bd", "8 horas", "8 heures"],
-            "12h" : ["tds", "12 horas", "12 heures"],
-            "24h" : ["qds", "24 horas", "24 heures"],
+            "6h" : ["qds", "6 horas", "6 heures"],
+            "8h" : ["tds", "8 horas", "8 heures"],
+            "12h" : ["bd", "12 horas", "12 heures"],
+            "24h" : ["od", "24 horas", "24 heures"],
             "48h" : ["48 hours", "48 horas", "48 heures"],
+            "nocte" : ["nocte", "una vez por la noche", "une fois pendant la nuit"],
             "week" : ["1 week", "1 semana", "1 semaine"]
+            
         },
         "dose-options" : {
-            "1" : ["One tablet", "Una pastilla", "une pilule"],
-            "3/4" : ["3/4 of a tablet", "3/4 de pastilla", "3/4 pilule"],
-            "1/2" : ["half a tablet", "Media pastilla", "Media pilule"],
-            "1/4" : ["1/4 of a tablet", "1/4 de pastilla", "1/4 pilule"]
+            "1" : ["1 tablet", "1 comprimido", "1 pilule"],
+            "3/4" : ["3/4 of a tablet", "3/4 de comprimido", "3/4 pilule"],
+            "1/2" : ["1/2 a tablet", "1/2 comprimido", "1/2 pilule"],
+            "1/4" : ["1/4 of a tablet", "1/4 de comprimido", "1/4 pilule"]
         },
-        "ict" : ["Diagnostic", "Diagnostico", "Diagnostic"],
+        "ict" : ["Diagnostic", "Diagnóstico", "Diagnostic"],
         "treatment" : ["Treatment", "Tratamiento", "Traitement"],
-        "allergy" : ["Allergy", "Alergía", "Allergie"],
+        "treatment_prescription" : ["Treatment Prescription", "Prescripción de Tratamiento", "Prescription de traitement"],
+        "treatment_regular" : ["Regular Treatment", "Tratamiento Regular", "Traitement Regulier"],
+        "allergy" : ["Allergy", "Alergia", "Allergie"],
         "background" : ["PMH", "Antecedentes", "Antécédents"],
         "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],     
         "family-relation" : ["Relationship", "Relación Familiar", "Relation de famille"],     
-        "ict-plural" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
-        "ict-table" : ["Diagnoses", "Diagnosticos", "Diagnostics"],
+        "ict-plural" : ["Diagnoses", "Diagnósticos", "Diagnostics"],
+        "ict-table" : ["Diagnoses", "Entidad", "Diagnostics"],
+        "bmi-table" : ["BMI", "IMC", "IMC"],
+        "bmi_height-table" : ["Height(cm.)", "Altura(cm.)", "Taille(cm.)"],
+        "bmi_weight-table" : ["Weight(kg.)", "Peso(kg.)", "Poids(kg.)"],
+        "edd-table" : ["EDD", "Fecha salida de cuentas", "Date de livraison prévue"],
+        "edd_last_period-table" : ["Last period", "Última menstruación", "Dernière menstruation"],
         "treatment-plural" : ["Treatments", "Tratamientos", "Traitement"],
         "treatment-table" : ["Drug", "Medicamento", "Médicament"],
-        "allergy-plural" : ["Allergies", "Alergías", "Allergies aux medicam"],
-        "allergy-table" : ["Allergies", "Alergías", "Allergies aux medicam"],
+        "treatment_prescription-table" : ["Drug", "Medicamento", "Médicament"],
+        "treatment_regular-table" : ["Drug", "Medicamento", "Médicament"],
+        "allergy-plural" : ["Allergies", "Alergias medicamentosas", "Allergies aux medicam"],
+        "allergy-table" : ["Allergies", "Alergias medicamentosas", "Allergies aux medicam"],
         "background-plural" : ["Past Medical History", "Antecedentes", "Antécédents"],
         "background-table" : ["Past Medical History", "Antecedentes", "Antécédents"],
-        "background-date" : ["Enter date", "Introduzca la fecha", "Entrez la date"],
+        "background-date" : ["Enter date", "Introducir fecha", "Entrez la date"],
         "background-date-table" : ["Date", "Fecha", "Date"],
+        "bmi" : ["Body Mass Index", "Índice de Masa Corporal", "Indice de masse corporelle"],
+        "bmi-weight" : ["Weight(kg.)", "Peso(kg.)", "Poids(kg.)"],
+        "bmi-height" : ["Height(cm.)", "Altura(cm.)", "Taille(cm.)"],
+        "bmi-error-message" : ["Enter a weight in kg and a height in cm. valid","Entrez un poids en kg et une taille en cm. valide"],
+        "edd" : ["Expected Delivery Date", "Fecha de salida de cuenta", "Date de livraison prévue"],
+        "edd-title" : ["Select the date of the first day of the last period", "Seleccione la fecha del primer día de la ultima regla", "Sélectionnez la date du premier jour de la dernière période"],
         "family-background-plural" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "family-background-table" : ["Family Past Medical History", "Antecedentes Familiares", "Histoire de famille"],
         "family-background-relation-table" : ["Relationship", "Relación Familiar", "Relation de famille"],  
-        "select-ict" : ["Enter diagnostic", "Seleccione diagnostico", "Entrer le diagnostic"],
+        "select-ict" : ["Enter diagnostic", "Introducir diagnóstico", "Entrer le diagnostic"],
         "select-test" : ["Select Test", "Seleccione tipo de prueba", "Sélectionnez le type de test"],
         "select-treatment" : ["Drug name", "Nombre medicamento", "Nom du médicament"],
-        "select-background" : ["Enter Past Medical History", "Seleccione Antecedente", "Entrer un antécédent"],
+        "select-background" : ["Enter Past Medical History", "Introducir Antecedente", "Entrer un antécédent"],
         "select-family-background" : ["Enter Family Past Medical History", "Seleccione Antecedente Familiar", "Entrer un antécédent"],
-        "select-allergy" : ["Enter Allergy", "Seleccione Alergía", "Entrer Allergie"],
+        "select-allergy" : ["Enter Allergy", "Seleccione Alergia", "Entrer Allergie"],
         "add-ict" : ["Add Diagnosis", "Añadir Diagnóstico", "Ajouter un diagnostic"],
+        "add-request_lab" : ["Add Lab Request", "Añadir Test", "Ajouter un test"],
+        "add-request_img" : ["Add Image Request", "Añadir prueba Imagen", "Ajouter une image"],
         "add-treatment" : ["Add Treatment", "Añadir Tratamiento", "Ajouter un traitement"],
+        "add-treatment_regular" : ["Add Regular Treatment", "Añadir Tratamiento Regular", "Ajouter un traitement regulier"],
+        "add-treatment_prescription" : ["Add Treatment Prescription", "Añadir Prescripción de Tratamiento", "Ajouter une prescription de traitement"],
         "add-background" : ["Add Background", "Añadir Antecedente", "Ajouter un antécédent"],
-        "add-family-background" : ["Add Family Past Medical History", "Añadir Antecedente Familiar", "Ajouter des antécédents familiaux"],
-        "add-allergy" : ["Add Allergy", "Añadir Alergía", "Ajouter une allergie"],
+        "add-family-background" : ["Add Family Past Medical History", "Añadir Antecedente", "Ajouter des antécédents"],
+        "add-allergy" : ["Add Allergy", "Añadir Alergia", "Ajouter une allergie"],
         
         "type-test" : {
             "eco-ab" : ["Abdominal ultrasound", "Ecografía abdominal", "Échographie abdominale"],
@@ -127,11 +600,11 @@
         }
     },
     "breadcrumb" : {
-        "password" : ["Password", "Contraseña", "Mot de passe"],
-        "key_generation": ["Key Generation", "Generación de clave", "Génération de clé"],
-        "personal_info" : ["Personal Info", "Datos personales", "Informations personnelles"],
-        "contact_info" : ["Contact Info", "Datos de contacto", "Informations de contact"]
-    },
+        "password" : ["3", "3", "3"],
+        "key_generation": ["4", "4", "4"],
+        "personal_info" : ["1", "1", "1"],
+        "functionalities" : ["2", "2", "2"]
+    },    
     "error" : {
         "not_login" : ["You need to sign in to access this resource", "Para acceder a este recurso necesita iniciar sesión", "Vous devez vous connecter pour accéder à cette ressource"]
     },
@@ -141,24 +614,540 @@
             "home" : ["Home", "Home", "Accueil"],
             "search-patient" : {
                 "title" : ["Search Patient", "Buscar Paciente", "Recherche patient"],
+                "by-personal-details" : ["By Personal details", "Por datos personales", "Par les données personnelles"],
+                "by-diagnose" : ["By Diagnose", "Por diagnóstico", "Par diagnostic"],
                 "back-button" : ["Back to search", "Nueva búsqueda", "Nouvelle recherche"],
                 "note" : ["Hit search without data to see all patients", "Pulsa buscar con parámetros vacíos para ver todos los pacientes", "Cliquez sur rechercher sans données pour voir tous les patients"]
             },
             "patient" : {
+                "fill_billing_info" : ["In order to print PDFs you need to fill the billing information", "Para imprimir PDFs necesita rellenar la información de facturación", "Pour imprimer des PDF, vous devez remplir les informations de facturation"],
                 "no-records" : ["No medical records available", "No dispone de registros médicos", "Dossier médical vide"]
             },
+            "billing" : {
+                "title" : ["Billing", "Facturación", "Facturation"]
+            },
+            "users":{
+                "title" : ["User Managment", "Gestión de usuarios", "Gestion des utilisateurs"]
+            },
+            "pharmacy" : {
+                "title" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                "success" : ["Request made successfully", "Solicitud realizada correctamente", "Demande effectuée avec succès"],
+                "error" : ["Error making request", "Error realizando la solicitud", "Erreur lors de la demande"],
+                "listItems" : {
+                    "error" : {
+                        "amount" : ["There are't enough items in pharmacy", "No hay suficientes medicamentos en la farmacia", "Il n'y a pas assez de médicaments en pharmacie"],
+                        "item" : ["This item is not currently in the pharmacy", "Este medicamento no se encuentra actualmente en la farmacia", "Ce médicament n'est pas actuellement en pharmacie"]
+                    }
+                },
+                "modal" : {
+                    "title" : {
+                        "edit" : ["Edit", "Editar", "Modifier"],
+                        "delete" : ["Delete", "Eliminar", "Supprimer"],
+                        "add" : ["Add", "Añadir", "Ajouter"]
+                    },
+                    "message" : {
+                        "add" : ["Add pharmacy item", "Añadir medicamento", "Ajouter un médicament"],
+                        "edit" : ["Are you sure you want to edit this item?", "¿Está seguro que desea editar este elemento?", "Êtes-vous sûr de vouloir modifier cet élément?"],
+                        "delete" : ["Are you sure you want to delete this item?", "¿Está seguro que desea eliminar este elemento?", "Êtes-vous sûr de vouloir supprimer cet élément?"]
+                    }
+                    
+                },
+                "filter_box" : {
+                    "search_item" : ["Search item", "Buscar medicamento", "Rechercher un médicament"],
+                    "no_items" : ["No items found", "No se han encontrado medicamentos", "Aucun médicament trouvé"]
+                },
+                "pharmacy_items" : {
+                    "name" : ["Name", "Nombre", "Nom"],
+                    "code" : ["Code", "Código", "Code"],
+                    "price" : ["Price", "Precio", "Prix"],
+                    "amount": ["Amount", "Cantidad", "Quantité"],
+                    "type" : ["Type", "Tipo", "Type"],
+                    "activePrinciple" : ["Active Principle", "Principio Activo", "Principe actif"],
+                    "unit" : ["Unit", "Unidad", "Unité"],
+                    "provider" : ["Provider", "Proveedor", "Fournisseur"],
+                    "threshold" : ["Threshold", "Umbral", "Seuil"],
+                    "status" : ["Status", "Estado", "Statut"],
+                    "dossage_form" : ["Dossage Form", "Forma Farmacéutica", "Forme pharmaceutique"],
+                    "routes" : ["Routes", "Vías de administración", "Voies d'administration"],
+                    "category" : ["Category", "Categoría", "Catégorie"],
+                    "status_values" : {
+                        "finished" : ["Finished", "Agotado", "Complété"],
+                        "low" : ["Low", "Bajo", "Faible"],
+                        "normal" : ["Normal", "Normal", "Normal"]
+                    },
+                    "options" : {
+                        "type": {
+                            "MED": ["Medications", "Medicamentos", "Médicaments"],
+                            "MDS": ["Medical Supplies", "Material médico", "Matériel médical"],
+                            "SGP": ["Surgical products", "Material quirúrgico", "Matériels chirurgicaux"],
+                            "PN": ["Parenteral Nutrition", "Nutrición parenteral", "Nutrition parentérale"],
+                            "IMZ": ["Immunizing Agents", "Vacunas", "Agents immunisants"],
+                            "CMD": ["Compounded Medications", "Fórmulas magistrales", "Médicaments composés"]
+                        },                                            
+                        "dossage_form": {
+                            "TAB": ["Tablets", "Comprimidos", "Comprimés"],
+                            "CAP": ["Capsules", "Cápsulas", "Gélules"],
+                            "LIQ": ["Liquids (syrups, solutions, suspensions, elixirs)", "Líquidos (jarabes, soluciones, suspensiones, elixires)", "Liquides (sirops, solutions, suspensions, élixirs)"],
+                            "INJ": ["Injectables (vials, ampoules, prefilled syringes)", "Inyectables (vials, ampollas, jeringas precargadas)", "Injectables (vials, ampoules, seringues pré-remplies)"],
+                            "TOP": ["Topical (cream, gels, lotions, sprays, etc.)", "Tópicos (cremas, geles, lociones, sprays, etc.)", "Topiques (crèmes, gels, lotions, sprays, etc.)"],
+                            "INH": ["Inhalers", "Inhaladores", "Inhalateurs"],
+                            "SUP": ["Suppositories", "Supositorios", "Suppositoires"],
+                            "PAT": ["Patches", "Parches", "Patchs"],
+                            "EYE": ["Eye and ear drops", "Gotas para los ojos y los oídos", "Gouttes pour les yeux et oreilles"],
+                            "NAS": ["Nasal sprays", "Spray nasal", "Vaporisateurs nasaux"],
+                            "OTH": ["Others", "Otros productos", "Autres produits"]
+                        },                          
+                        "routes": {
+                            "PO": ["Oral (PO)", "Vía oral (PO)", "Voie orale (PO)"],
+                            "TOP": ["Topical (T)", "Tópica (T)", "Topique (T)"],
+                            "INH": ["Inhalation (INH)", "Inhalación (INH)", "Inhalation (INH)"],
+                            "IV": ["Intravenous (IV)", "Intravenosa (IV)", "Intraveineuse (IV)"],
+                            "IM": ["Intramuscular (IM)", "Intramuscular (IM)", "Intramusculaire (IM)"],
+                            "SC": ["Subcutaneous (SC)", "Subcutánea (SC)", "Sous-cutanée (SC)"],
+                            "PR": ["Rectal (PR)", "Rectal (PR)", "Voie rectale (PR)"],
+                            "PV": ["Vaginal (PV)", "Vaginal (PV)", "Vaginale (PV)"],
+                            "NS": ["Nasal (NS)", "Nasal (NS)", "Nasal (NS)"],
+                            "OPH": ["Ophthalmic (OPH)", "Oftálmica (OPH)", "Ophtalmique (OPH)"],
+                            "OTH": ["Others", "Otros", "Autres"]
+                        },                                          
+                        "category": {
+                            "ALG": ["Analgesics and Anti-inflammatory agents", "Analgésicos y anti-inflamatorios", "Analgésiques et anti-inflammatoires"],
+                            "ANE": ["Anesthetics", "Anesthésiques", "Anestésicos"],
+                            "ALL": ["Anti-allergic agents", "Antialérgicos", "Antiallergiques"],
+                            "HTN": ["Anti-hypertensive agents", "Antihipertensivos", "Antihypertenseurs"],
+                            "ARR": ["Anti-arrhythmics", "Antiarrítmicos", "Anti-arythmiques"],
+                            "ABX": ["Antibiotics", "Antibióticos", "Antibiotiques"],
+                            "ACG": ["Anticoagulants and anti-platelets agents", "Anticoagulantes y antiplaquetarios", "Anticoagulants et antiplaquettaires"],
+                            "DPR": ["Antidepressants and Anti-psychotic agents", "Antidepresivos y antipsicóticos", "Antidépresseurs et antipsychotiques"],
+                            "DBT": ["Anti-diabetic agents", "Antidiabéticos", "Antidiabétiques"],
+                            "EME": ["Anti-emetics", "Antieméticos", "Antiémétiques"],
+                            "EPL": ["Anti-epileptic agents", "Antiepilépticos", "Antiépileptiques"],
+                            "AFG": ["Anti-fungal agents", "Antifúngicos", "Antifongiques"],
+                            "MLR": ["Anti-malarial", "Antimaláricos", "Antipaludéens"],
+                            "ANEPC": ["Anti-neoplastic (chemotherapy)", "Antineoplásicos (quimioterapia)", "Anti-néoplasiques (chimiothérapie)"],
+                            "PRK": ["Anti-Parkinson agents", "Antiparkinsonianos", "Antiparkinsoniens"],
+                            "ARV": ["Anti-retroviral", "Antirretrovirales", "Antirétroviraux"],
+                            "SPM": ["Anti-spasmodics and Skeletal muscle relaxants", "Antiespasmódicos y relajantes musculares", "Antispasmodiques et myorelaxants"],
+                            "ULC": ["Anti-ulcer agents and antacids", "Antiulcerosos y antiácidos", "Antiulcéreux et antiacides"],
+                            "AVR": ["Anti-virals", "Antivirales", "Antiviraux"],
+                            "BEN": ["Benzodiazepines and Sedatives", "Benzodiacepinas y sedantes", "Benzodiazépines et sédatifs"],
+                            "BRN": ["Bronchodilators and Expectorants", "Broncodilatadores y expectorantes", "Bronchodilatateurs et expectorants"],
+                            "DRT": ["Diuretics", "Diuréticos", "Diurétiques"],
+                            "HRM": ["Hormones", "Hormonas", "Hormones"],
+                            "INMUNO": ["Immunosuppressants", "Inmunosupresores", "Immunosuppresseurs"],
+                            "LAX": ["Laxatives", "Laxantes", "Laxatifs"],
+                            "VIT": ["Vitamins", "Vitaminas", "Vitamines"],
+                            "OTH": ["Others", "Otros", "Autres"]
+                    }
+                }
+                },
+                "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un département pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
+                "request" : {
+                    "table" : {
+                        "nameDrug" : ["Name", "Nombre", "Nom"],
+                        "status": ["Status", "Estado", "Statut"],
+                        "amountApproved" : ["Amount Approved", "Cantidad Aprobada", "Montant approuvé"],
+                        "amountRequested" : ["Amount Requested", "Cantidad Solicitada", "Montant demandé"],
+                        "actions" : ["Actions", "Acciones", "Actions"]
+                    },
+                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
+                    "select_unit" : ["Select unit", "Seleccione unidad", "Sélectionnez l'unité"],
+                    "select_items" : ["Select the elements of your request", "Seleccione los elementos de su solicitud", "Sélectionnez les éléments de votre demande"],
+                    "edit_items_request" : ["Edit Items Request", "Editar Solicitud", "Modifier la demande"],
+                    "make_request" : ["Make Request", "Realizar Solicitud", "Faire une demande"]
+                },
+                "inventory" : {
+                    "load_excel" : ["Select a excel from your computer", "Seleccione un excel de su ordenador", "Sélectionnez un excel de votre ordinateur"]
+                }
+            },
+            "outpatients" : {
+                "title" : ["Outpatients", "Consultas externas", "Consultations"],
+                "select_date" : ["Select date", "Seleccione fecha", "Sélectionnez la date"],
+                "sections" : {
+                    "boxes_and_agendas" : ["Boxes and Agendas", "Cajas y agendas", "Boîtes et agendas"],
+                    "prices" : ["Prices", "Precios", "Prix"]
+                },
+                "edit" : {
+                    "no_billing" : ["In order to start using outpatients you need to have the billing information set up. Please go to the billing section and fill the information ", "Para empezar a usar consultas externas necesita tener la información de facturación configurada, puede hacerlo ", "Pour commencer à utiliser les consultations externes, vous devez avoir les informations de facturation configurées. Vous pouvez le faire "],
+                    "first_setup":{
+                        "title" : ["In order to start using outpatients you need to have the following elements set up:", "Para empezar a usar consultas externas necesita tener los siguientes elementos configurados:", "Pour commencer à utiliser les consultations externes, vous devez avoir les éléments suivants configurés:"],
+                        "explanation" : {
+                            "box" : ["Box is the physical space in your facility where the practice will take place", "El box es el espacio físico en su centro donde se realizará la práctica", "La boîte est l'espace physique dans votre établissement où la pratique aura lieu"],
+                            "service" : ["Service is the type of service you will provide in the box(first visit or follow up visit) and the price associated with it", "El servicio es el tipo de servicio que proporcionará en la caja y el precio asociado a él", "Le service est le type de service que vous fournirez dans la boîte et le prix associé"],
+                            "agenda" : ["Agenda is the schedule of the box, you can have multiple agendas for the same box", "La agenda es el horario de la caja, puede tener varias agendas para la misma caja", "L'agenda est l'horaire de la boîte, vous pouvez avoir plusieurs agendas pour la même boîte"]
+                        }
+                    },                    
+                    "modal" : {
+                        "title" : {
+                            "box" : ["Create Box", "Crear Box", "Créer une box"],
+                            "box_edit" : ["Edit Box", "Editar Box", "Modifier la box"],
+                            "agenda" : ["Create Agenda", "Crear Agenda", "Créer une agenda"],
+                            "service" : ["Create Precio", "Crear Precio", "Créer un prix"],
+                            "service_edit" : ["Edit Service", "Editar Servicio", "Modifier le service"],
+                            "delete_service_confirm" : ["Delete service", "Eliminar servicio", "Supprimer le service"],
+                            "error_service_agenda" : ["Error", "Error", "Erreur"],
+                            "agenda_error_appointments" : ["Error", "Error", "Erreur"],
+                            "delete_agenda" : ["Delete agenda", "Eliminar agenda", "Supprimer l'agenda"],
+                            "delete_box_error" : ["Error", "Error", "Erreur"],
+                            "delete_box" : ["Delete box", "Eliminar box", "Supprimer la box"]
+                        }
+                    }
+                },
+                "confirm" : {
+                    "CHECKIN" : ["Patient check-in", "Confirmar check-in", "Confirmer check-in"],
+                    "CANCEL" : ["Cancel appointment", "Cancelar cita", "Annuler le rendez-vous"],
+                    "ERROR_CANCEL" : ["Error", "Error", "Erreur"],
+                    "DELETE_SERVICE" : ["Are you sure you want to delete the following service?", "¿Está seguro de que desea eliminar el siguiente servicio?", "Êtes-vous sûr de vouloir supprimer le service suivant?"],
+                    "error_service_agenda" : ["You can't delete a service that is used in a agenda, first delete the agenda.", "No puede eliminar un servicio que está siendo usado en una agenda, primero elimine la agenda.", "Vous ne pouvez pas supprimer un service qui est utilisé dans un agenda, supprimez d'abord l'agenda."],
+                    "ERROR_DELETE_AGENDA" : ["You can't delete an agenda that has appointments, cancel them first.", "No puede eliminar una agenda que tiene citas, cáncelalas primero.", "Vous ne pouvez pas supprimer un agenda qui a des rendez-vous, annulez-les d'abord."],
+                    "SURE_DELETE_AGENDA" : ["Are you sure you want to delete this agenda?", "¿Está seguro de que desea eliminar esta agenda?", "Êtes-vous sûr de vouloir supprimer cet agenda?"],
+                    "SURE_DELETE_BOX" : ["Are you sure you want to delete this box?", "¿Está seguro de que desea eliminar esta caja?", "Êtes-vous sûr de vouloir supprimer cette boîte?"],
+                    "ERROR_DELETE_BOX" : ["You can't delete a box that has agendas, delete them first.", "No puede eliminar una caja que tiene agendas, elimínelas primero.", "Vous ne pouvez pas supprimer une boîte qui a des agendas, supprimez-les d'abord."]
+                },
+                "single_agenda" : {
+                    "block" : {
+                        "title" : ["Block a date", "Bloquear una fecha", "Bloquer une date"],
+                        "message" : ["Are you sure you want to block this date?", "¿Está seguro de que desea bloquear esta fecha?", "Êtes-vous sûr de vouloir bloquer cette date?"],
+                        "button" : ["Block", "Bloquear", "Bloquer"]
+                    },
+                    "no_block" : {
+                        "title" : ["Warning", "Aviso", "Attention"],
+                        "message" : ["You can't block a date that has appointments", "No puede bloquear una fecha que tiene citas", "Vous ne pouvez pas bloquer une date qui a des rendez-vous"]
+                    },
+                    "un_block" : {
+                        "title" : ["Warning", "Aviso", "Attention"],
+                        "message" : ["Are you sure you want to make available this date?", "¿Está seguro de que desea hacer disponible esta fecha?", "Êtes-vous sûr de vouloir rendre cette date disponible?"],
+                        "button" : ["Make available", "Hacer disponible", "Rendre disponible"]
+                    },
+                    "date_blocked" : ["Date blocked succesfully", "Fecha bloqueada correctamente", "Date bloquée avec succès"],
+                    "date_un_blocked" : ["Date freed succesfully", "Fecha liberada correctamente", "Date libérée avec succès"]
+                },
+                "error_cancel" : ["Can't cancel a accepted appointment", "No se puede cancelar una cita aceptada", "Impossible d'annuler un rendez-vous accepté"],
+                "checked_in_patients" : ["Checked in patients", "Pacientes en consulta", "Patients en consultation"],
+                "not_confirmed_patients" : ["Not confirmed patients", "Pacientes no confirmados", "Patients non confirmés"],
+                "no_appointments" : ["No appointments for this day", "No hay citas para este día", "Pas de rendez-vous pour ce jour"],
+                "no_appointments_patient" : ["No appointments for this patient", "No hay citas para este paciente", "Pas de rendez-vous pour ce patient"],
+                "table_patient_appointments" : {
+                    "department" : ["Department", "Departamento", "Département"],
+                    "doctor" : ["Doctor", "Doctor", "Docteur"],
+                    "date" : ["Date Appointment", "Fecha de cita", "Date de rendez-vous"],
+                    "turn" : ["Shift", "Turno", "Tourner"],
+                    "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
+                    "show" : ["Show", "Mostrar", "Montrer"]
+                },
+                "box":{
+                    "title" : ["Box", "Caja", "Boîte"],
+                    "name" : ["Name", "Nombre", "Nom"],
+                    "add_box" : ["Add Box", "Agregar Box", "Ajouter une box"],
+                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
+                    "no_department" : ["No department", "Sin departamento", "Pas de département"],
+                    "success" : {
+                        "saved" : ["Box created successfully", "Box creada correctamente", "Box créée avec succès"],
+                        "deleted" : ["Box removed succesfully", "Box eliminada correctamente", "Box supprimée avec succès"],
+                        "updated" : ["Box updated successfully", "Box actualizada correctamente", "Box mise à jour avec succès"]
+                    }
+                },
+                "service":{
+                    
+                    "title" : ["Service", "Servicio", "Service"],
+                    "name" : ["Name", "Nombre", "Nom"],
+                    "type_service" : ["Type Service", "Tipo de servicio", "Type de service"],
+                    "price" : ["Price", "Precio", "Prix"],
+                    "success":{
+                        "saved" : ["Service created successfully", "Servicio creado correctamente", "Service créé avec succès"],
+                        "deleted" : ["Service removed succesfully", "Servicio eliminado correctamente", "Service supprimé avec succès"],
+                        "updated" : ["Service updated successfully", "Servicio actualizado correctamente", "Service mis à jour avec succès"]
+                    }
+                },
+                "agenda":{
+                    
+                    "title" : ["Agenda", "Agenda", "Agenda"],
+                    "duration" : ["Duration Visit(min.)", "Duración Consulta(min.)", "Durée de la visite(min.)"],
+                    "slotsPerDay" : ["Slots per day", "Citas por día", "Visites par jour"],
+                    "doctor" : ["Doctor", "Doctor", "Docteur"],
+                    "service" : ["Service", "Servicio", "Service"],
+                    "turn_start" : ["Shift start", "Inicio de turno", "Début du tour"],
+                    "turn_end" : ["Shift end", "Fin de turno", "Fin du tour"],
+                    "week_days" : ["Week days", "Días de la semana", "Jours de la semaine"],
+                    "schedule" : ["Schedule", "Horario", "Horaire"],
+                    "success" : {
+                        "deleted" : ["Agenda removed succesfully", "Agenda eliminada correctamente", "Agenda supprimée avec succès"],
+                        "saved" : ["Agenda saved succesfully", "Agenda guardada correctamente", "Agenda enregistrée avec succès"],
+                        "updated" : ["Agenda updated succesfully", "Agenda actualizada correctamente", "Agenda mise à jour avec succès"]
+                    },
+                    "errors" : {
+                        "error_0" : ["Confict of agendas on this box", "Conflicto de agendas en esta sala", "Conflit d'agendas dans cette box"],
+                        "error_1" : ["Finish time is earlier than start time", "La hora de fin es anterior a la hora de inicio", "L'heure de fin est antérieure à l'heure de début"],
+                        "error_4" : ["This agenda has already been deleted. Please refresh", "Esta agenda ya ha sido eliminada. Por favor refresque", "Cette agenda a déjà été supprimée. S'il vous plaît rafraîchir"]
+                    }
+                },
+                "no_permissions" : ["You don't have permissions to make appointments", "No tiene permisos para hacer citas", "Vous n'avez pas les autorisations pour prendre rendez-vous"],
+                "checkin_success" : ["Check in succeded", "Check in realizado correctamente", "Check in réussi"],
+                "cancel_success" : ["Appointment cancelled succesfully", "Cita cancelada correctamente", "Rendez-vous annulé avec succès"],
+                "appointment" : {
+                    "title" : ["Making appointment: ", "Haciendo cita: ", "Prendre rendez-vous: "],
+                    "date" : ["Appointment date", "Fecha de la cita", "Date du rendez-vous"],
+                    "success" : ["Appointment created succesfully", "Cita creada correctamente", "Rendez-vous créé avec succès"],
+                    "error" : {
+                        "date_time" : ["Functionality not implemented yet"],
+                        "full_agenda" : ["The agenda is full for this day, please select another day", "La agenda está llena para este día, por favor seleccione otro día", "L'agenda est pleine pour ce jour, s'il vous plaît sélectionnez un autre jour"],
+                        "date_blocked" : ["The date selected is blocked, please select another day", "La fecha seleccionada está bloqueada, por favor seleccione otro día", "La date sélectionnée est bloquée, s'il vous plaît sélectionnez un autre jour"],
+                        "week_day_not_available" : ["The week day selected is not available, please select another day", "El día de la semana seleccionado no está disponible, por favor seleccione otro día", "Le jour de la semaine sélectionnée n'est pas disponible, s'il vous plaît sélectionnez un autre jour"]
+                    }
+                },
+                "form_appointment" : {
+                    "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"],
+                    "no_agenda_department" : ["First you need to create an agenda for this department", "Primero necesita crear una agenda para este departamento", "Vous devez d'abord créer un agenda pour ce département"]
+                }
+            },
+            "shoe_shop":{
+                "title" : ["Shoe Shop", "Tienda de Zapatos", "Cordonerie"]
+            },
+            "services" : {
+                "description" : ["Manage your hospital facilities by adding or deleting services.", "Gestione sus instalaciones añadiendo o eliminando servicios.", "Gérez vos installations en ajoutant ou supprimant des services"],
+                "edit" : {
+                    "new_service" : {
+                        "title" : ["Add new service", "Añadir nuevo servicio", "Ajouter un nouveau service"]
+                    },
+                    "delete_service" : {
+                        "title" : ["Delete service", "Eliminar servicio", "Supprimer le service"],
+                        "description" : ["Are you sure you want to delete this service?", "¿Está seguro de que desea eliminar este servicio?", "Êtes-vous sûr de vouloir supprimer ce service?"]
+                    },
+                    "no_services_remaining" : ["You have selected all services available, if you need more please contact customersupport@sherwood.science", "No quedan servicios disponibles, si necesita más por favor contacte con customersupport@sherwood.science", "Vous avez sélectionné tous les services disponibles, si vous en avez besoin, veuillez contacter ustomersupport@sherwood.science"]
+                },
+                "save_and_complete" : ["Save and finish", "Guardar y finalizar", "Sauvegarder et terminer"],
+                "save_changes" : ["Save changes", "Guardar cambios", "Sauvegarder les modifications"],
+                "no_requests" : ["No requests available", "No hay solicitudes disponibles", "Aucune demande disponible"],
+                "no_services" : ["No services available", "No hay servicios disponibles", "Aucun service disponible"],
+                "success_removed" : ["Service removed successfully", "Servicio eliminado correctamente", "Service supprimé avec succès"],
+                "success" : ["Service saved succesfully", "Servicio guardado correctamente", "Service enregistré avec succès"],
+                "form" : {
+                    "service" : ["Service", "Servicio", "Service"],
+                    "price" : ["Price", "Precio", "Prix"],
+                    "external" : ["Is it an external service?", "¿Es un servicio externo?", "Est-ce un service externe?"],
+                    "survey" : ["Survey", "Formulario", "Formulaire"]
+
+                },
+                "service" : ["Test", "Test", "Test"],
+                "error":{
+                    "previous_request" : ["You have already made a request for this service for this patient", "Ya ha realizado una solicitud para este servicio para este paciente", "Vous avez déjà fait une demande pour ce service pour ce patient"],
+                    "delete_service" : ["You can't delete this service because it has an pending request", "No puede eliminar este servicio porque tiene una solicitud pendiente", "Vous ne pouvez pas supprimer ce service car il a une demande en attente"]
+                },
+                
+                "request":{
+                    "request_id" : ["Request ID", "Solicitud ID", "Demande ID"],
+                    "status" : ["Request Status", "Estado de la solicitud", "Statut de la demande"],
+                    "accepted" : ["Accepted Items", "Pruebas aceptadas", "Items acceptés"],
+                    "pending" : ["Pending Items", "Pruebas pendientes", "Articles en attente"],
+                    "completed" : ["Completed Items", "Pruebas completadas", "Articles complétés"],
+                    "title" : ["Request Services", "Solicitar Servicios", "Demander des services"],
+                    "success" : ["Request saved succesfully", "Solicitud guardada correctamente", "Demande enregistrée avec succès"],
+                    "make_request" : ["Make Request", "Realizar Solicitud", "Faire une demande"],
+                    "select_services" : ["Select the services you want to request", "Seleccione los servicios que desea solicitar", "Sélectionnez les services que vous souhaitez demander"]
+                },
+                "status" : ["Status", "Status", "Status"],
+                "request_status" : {
+                    "PENDING" : ["Pending", "Pendiente", "Pendant"],
+                    "PENDING_APPROVAL" : ["Pending Approval", "Pendiente de Aprobación", "En attente d'approbation"],
+                    "PENDING_PAYMENT" : ["Pending Payment", "Pendiente de Pago", "En attente de paiement"],
+                    "ACCEPTED" : ["Accepted", "Aceptado", "Accepté"],
+                    "SOME_ACCEPTED" : ["Some Accepted", "Algunos Aceptados", "Certains acceptés"],
+                    "CANCELLED" : ["Cancelled", "Cancelado", "Annulé"],
+                    "EXPIRED" : ["Expired", "Caducado", "Expiré"],
+                    "DENIED" : ["Denied", "Denegado", "Refusé"],
+                    "COMPLETED" : ["Completed", "Completado", "Complété"],   
+                    "IN_PROGRESS" : ["In progress", "En progreso", "En cours"],
+                    "INCOMPLETE" : ["Incomplete", "Incompleto", "Incomplet"],
+                    "INCOMPLETE_ACCEPTED" : ["Incomplete Accepted", "Incompleto Aceptado", "Incomplet Accepté"]
+                },
+                "type" : ["Type", "Tipo", "Type"],
+                "service_type": {
+                    "LABORATORY" : ["Laboratory", "Laboratorio", "Laboratoire"],
+                    "IMAGING" : ["Imaging", "Imagen", "Imagerie"],
+                    "SHOE" : ["Shoe", "Zapato", "Chaussure"],
+                    "PHARMACY" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                    "INTERCONSULT" : ["Interconsult", "Interconsulta", "Interconsultation"]
+                },
+                "tests": {
+                    "laboratory" : {
+                            "BQ001": ["Uric acid", "Acido úrico", "Acide urique"],
+                            "BQ002": ["Urea", "Urea", "Azótemia"],
+                            "BQ003": ["Bilirrubine", "Bilirrubina", "Bilirubine (sérum)"],
+                            "BQ004": ["Calcium blood", "Calcio en sangre", "Calcémie"],
+                            "BQ005": ["Cholesterol HDL", "Colesterol HDL", "Cholestérol HDL"],
+                            "BQ006": ["Cholesterol LDL", "Colesterol LDL", "Cholestérol LDL"],
+                            "BQ007": ["Total Cholesterol", "Colesterol total", "Cholestérol total"],
+                            "BQ008": ["Creatinine", "Creatinina", "Créatininémie"],
+                            "BQ009": ["T3", "T3", "Dosage T3"],
+                            "BQ010": ["T4", "T4", "Dosage T4"],
+                            "BQ011": ["TSH", "TSH", "Dosage TSH"],
+                            "BQ012": ["Ferritine", "Ferritina", "Ferritine (sérum)"],
+                            "BQ013": ["GGT ", "GGT", "GGT"],
+                            "BQ014": ["Fasting blood glucose", "Glucemia en ayuno", "Glycémie à jeun"],
+                            "BQ015": ["Blood glucose", "Glucemia", "Glycémie post-prandiale"],
+                            "BQ016": ["HbA1C", "HbA1C", "HbA1C"],
+                            "BQ017": ["Electrolyte test", "Ionograma", "Ionogramme sanguin"],
+                            "BQ018": ["LDH", "LDH", "LDH (sérum)"],
+                            "BQ019": ["Magnesium", "Magnesio", "Magnésémie"],
+                            "BQ020": ["Alkaline phosphatase", "Fosfatasa alcaline", "Phosphatase alcaline"],
+                            "BQ021": ["Phosphate", "Fosfato", "Phosphorémie"],
+                            "BQ022": ["C-reactive protein (CRP)", "Proteina C reactiva (PCR)", "Protéine C réactive (CRP)"],
+                            "BQ023": ["AST", "AST", "TGO/ASAT"],
+                            "BQ024": ["ALT", "ALT", "TGP/ALAT"],
+                            "BQ025": ["Triglycerides", "Triglicéridos", "Triglycérides"],
+                            "BQ026": ["Uric acid", "Acido úrico", "Uricémie"],
+                            "BQ027": ["Urine: albuminuria", "Orina: albuminuria", "Urine: albuminurie"],
+                            "BQ028": ["Urine: Beta-HCG", "Orina: Beta-HCG", "Urine: Béta HCG"],
+                            "BQ029": ["Urine: ketone bodies", "Orina: cuerpos cetónicos", "Urine: corps cétonuriques"],
+                            "BQ030": ["Urine: glucose", "Orina: glucosa", "Urine: glucose"],
+                            "BQ031": ["Urine: 24-hour proteinuria", "Orina: proteinuria 24 horas", "Urine: proténuries des 24h"],
+                            "HEM001": ["Hemoglobin electrophoresis", "Electroforesis de hemoblogina", "Electrophores Hemoglobine"],
+                            "HEM002": ["Fibrinogen", "Fibrinógeno", "Fibrinemie"],
+                            "HEM003": ["Blood group and Rh factor", "Grupo sanguíneo y factor Rh", "Groupage Sanguin et Facteur Rhésus (GSRh)"],
+                            "HEM004": ["INR", "INR", "INR"],
+                            "HEM005": ["Complete blood count", "Hemograma", "Numération de formule sanguine (NFS)"],
+                            "HEM006": ["Prothrombin time (PT)", "Tiempo de protrombina (TP)", "Taux de prothrombine (TP)"],
+                            "HEM007": ["Partial thromboplastin time (PTT)", "Tiempo de cefalina (TPPa)", "Temps de céphaline activée (TCK/TCA)"],
+                            "HEM008": ["Erythrocyte Sedimentation Rate (ESR)", "Velocidad de sedimentación globular (VSG)", "Vitesse de sédimentation (VS)"],
+                            "MB001": ["HBsAg", "Ag HBs", "Antigène HBs"],
+                            "MB002": ["HVCAg", "Ag HVC", "Antigène HVC"],
+                            "MB003": ["Anti-StreptoLysin O (ASLO)", "Acs Anti-estreptolisina O (ASLO)", "Anti-StreptoLysine O (ASLO)"],
+                            "MB004": ["GeneXpert", "GeneXpert", "GeneXpert"],
+                            "MB005": ["Tick drop", "Gota gruesa", "Goutte épaisse"],
+                            "MB006": ["QBC Malaria test", "QBC Malaria test", "QBC Malaria test"],
+                            "MB007": ["RPR (VDRL) ", "RPR (VDRL) ", "RPR (VDRL) "],
+                            "MB008": ["HIV serology", "Serología VIH", "Serologie rétroviral"],
+                            "MB009": ["HVB serology", "Serología VHB", "Serologie Hépatite B"],
+                            "MB010": ["HVC serology", "Serología VHC", "Serologie Hépatite C"],
+                            "MB011": ["Emmel test", "Test de Emmel", "Test d'Emmel"],
+                            "MB012": ["Felix-Widal Test", "Test de Widal y Félix", "Test de Widal et Félix"],
+                            "IMM001": ["Rheumatoid factor", "Factor reumatoide", "Facteur rhumatoïde"]
+                    },
+                    "medical-imaging":{
+                        "R001": ["Forearm left", "Antebrazo izq","Avant-bras gauche"],
+                        "R002": ["Forearm right", "Antebrazo dcho","Avant-bras droit"],
+                        "R003": ["Pelvis", "Pelvis","Bassin"],
+                        "R004": ["Pelvis 3/4 shutter", "Persiana de pelvis 3/4","Bassin 3/4 obturateur"],
+                        "R005": ["Arm left", "Brazo izq","Bras gauche"],
+                        "R006": ["Arm right", "Brazo dcho","Bras droit"],
+                        "R007": ["Calcaneum left", "Calcáneo izq","Calcaneum gauche"],
+                        "R008": ["Calcaneum right", "Calcáneo dcho","Calcaneum droit"],
+                        "R009": ["Ankle left", "Tobillo izq","Cheville gauche"],
+                        "R010": ["Ankle right", "Tobillo dcho","Cheville droite"],
+                        "R011": ["Clavicle left", "Clavícula izq","Clavicule gauche"],
+                        "R012": ["Clavicle right", "Clavícula dcho","Clavicule droite"],
+                        "R013": ["Elbow left", "Codo izq","Coude gauche"],
+                        "R014": ["Elbow right", "Codo dcho","Coude droit"],
+                        "R015": ["Cranium", "Cráneo","Crâne"],
+                        "R016": ["Shoulder left (F/P)", "Hombro (F/P) izq","Épaule gauche (F/P)"],
+                        "R017": ["Shoulder right (F/P)", "Hombro (F/P) dcho","Épaule droite (F/P) "],
+                        "R018": ["Shoulder 3 sides", "Hombro 3 caras","Épaule 3 faces"],
+                        "R019": ["Shoulder profile axilar left", "Perfil de hombro axilar izq","Épaule gauche, profil axillaire"],
+                        "R020": ["Shoulder profile axilar right", "Perfil de hombro axilar dcho","Épaule droite, profil axillaire"],
+                        "R021": ["Shoulder profile of Bernargeau left", "Perfil de hombro de Bernargeau izq","Épaule gauche, profil de Bernargeau"],
+                        "R022": ["Shoulder profile of Bernargeau right", "Perfil de hombro de Bernargeau dcho","Épaule droite, profil de Bernargeau"],
+                        "R023": ["Shoulder profile of Lamy left", "Perfil de hombro de Lamy izq","Épaule gauche, profil de Lamy"],
+                        "R024": ["Shoulder profile of Lamy right", "Perfil de hombro de Lamy dcho","Épaule droite, profil de Lamy"],
+                        "R025": ["Femur left", "Fémur izq ","Fémur gauche"],
+                        "R026": ["Femur right", "Fémur dcho","Fémur droit"],
+                        "R027": ["Knee (F/P) left", "Rodilla (F/P) izq","Genou gauche (F/P)"],
+                        "R028": ["Knee (F/P) right", "Rodilla (F/P) dcha","Genou droit (F/P)"],
+                        "R029": ["Knee x-ray 3/4 external and internal left", "Rodilla 3/4 externa e interna izq","Genou gauche, 3/4 externe et interne"],
+                        "R030": ["Knee x-ray 3/4 external and internal right", "Rodilla 3/4 externa e interna dcha","Genou droit, 3/4 externe et interne"],
+                        "R031": ["Loaded knee (F/P) left", "Rodilla cargada (F/P) izq","Genou gauche en charge (F/P)"],
+                        "R032": ["Loaded knee (F/P) right", "Rodilla cargada (F/P) dcha","Genou droit en charge (F/P) "],
+                        "R033": ["Costal grid", "Parrilla costal","Grill costal"],
+                        "R034": ["Hip left", "Cadera izq","Hanche gauche"],
+                        "R035": ["Hip right", "Cadera dcha","Hanche droite"],
+                        "R036": ["Humerus left", "Húmero izq","Humérus gauche"],
+                        "R037": ["Humerus right", "Húmero dcho","Humérus droite"],
+                        "R038": ["IFP 60-90-30 Patella left", "IFP 60-90-30 Rótula izq","IFP 60-90-30 Rotule gauche"],
+                        "R039": ["IFP 60-90-30 Patella right", "IFP 60-90-30 Rótula dcha","IFP 60-90-30 Rotule droite"],
+                        "R040": ["Schneck's Incidence left", "Incidencia de Schneck dcha","Incidence de Schneck gauche"],
+                        "R041": ["Schneck's Incidence right", "Incidencia de Schneck izq","Incidence de Schneck droite"],
+                        "R042": ["Leg left", "Pierna izq","Jambe gauche"],
+                        "R043": ["Leg right", "Pierna dcha","Jambe droite"],
+                        "R044": ["Hand left", "Mano izq","Main gauche"],
+                        "R045": ["Hand right", "Mano dcha","Main droite"],
+                        "R046": ["Foot left", "Pie izq","Pied gauche"],
+                        "R047": ["Foot right", "Pie dcho","Pied droit"],
+                        "R048": ["Wrist (F/P) left", "Muñeca (F/P) izq","Poignet gauche (F/P)"],
+                        "R049": ["Wrist (F/P) right", "Muñeca (F/P) dcha","Poignet droite (F/P)"],
+                        "R050": ["Cervical spine", "Columna cervical","Rachis cervical"],
+                        "R051": ["Dorsal spine", "Columna dorsal","Rachis dorsal"],
+                        "R052": ["Dorsolumbar spine", "Columna dorsolumbar","Rachis dorso-lombaire"],
+                        "R053": ["Lumbar spine (F/P)", "Columna lumbar (F/P)","Rachis lombaire (F/P)"],
+                        "R054": ["Lumbar spine in flexion and extension", "Columna lumbar en flexión y extensión","Rachis lombaire en flexion et en extension"],
+                        "R055": ["Sacro Coccygeal", "Sacrococcígeo","Sacro Coccygien"],
+                        "R056": ["Schuss left", "Schuss izq","Schuss gauche"],
+                        "R057": ["Schuss right", "Schuss dcho","Schuss droit"],
+                        "R058": ["Thorax", "Tórax","Thorax"],
+                        "R059": ["Abdominal ultrasound", "Ecografía abdominal","Échographie abdominale"],
+                        "R060": ["Pelvic ultrasound", "Ecografía pélvica","Échographie pelvienne"],
+                        "R061": ["Kidney ultrasound", "Ecografía renal","Échographie renale"],
+                        "R062": ["Prostate ultrasound", "Ecografía prostática","Échographie prostatique"],
+                        "R063": ["Thyroid ultrasound", "Ecografía de tiroides","Échographie thyroidienne"],
+                        "R064": ["Bladder ultrasound", "Ecografía vesical","Échographie vésicale"],
+                        "R065": ["Testicular ultrasound", "Ecografía testicular","Échographie testiculaire"],
+                        "R066": ["Breast ultrasound", "Ecografía mamaria","Échographie mammaire"],
+                        "R067": ["Transvaginal ultrasound", "Ecografía transvaginal","Échographie transvaginale"],
+                        "R068": ["Chest ultrasound", "Ecografía torácica","Échographie thoracique"],
+                        "R069": ["Transtoracic echocardiogram", "Ecocardiograma transtorácico","Échocardiogramme transthoracique"],
+                        "R070": ["Transesophageal echocardiogram ", "Ecocardiograma transesofágico","Échocardiogramme transoesophagien"],
+                        "R071": ["First-trimester ultrasound", "Ecografía del primer trimestre","Échographie 1ère trimestre"],
+                        "R072": ["Second-trimester ultrasound", "Ecografía del segundo trimestre","Échographie 2ème trimestre"],
+                        "R073": ["Third-trimester ultrasound", "Ecografía del tercer trimestre","Échographie 3ème trimestre"],
+                        "R074": ["Neonatal cerebral ultrasound", "Ecografía transfotanelar","Échographie transfontanellaire"],
+                        "R075": ["Carotid ultrasound", "Ecografía troncos supraaórticos","Échographie troncs supra aortiques"]
+                    },
+                    "shoe_shop" : {
+                        "Z001": ["Microcellulose shoes", "Zapatos microcelulosa","Chaussures en microcellulose"],
+                        "Z002": ["Plastazote shoes", "Zapatos plastazote","Chaussures en plastazote"]
+                    }                       
+                }
+            },
             "laboratory":{
+                "category" : {
+                    "biochemistry" : ["Biochemistry", "Bioquímica", "Biochimie"],
+                    "hematology" : ["Hematology", "Hematología", "Hématologie"],
+                    "immunology" : ["Immunology", "Inmunología", "Immunologie"],
+                    "microbiology" : ["Microbiology", "Microbiología", "Microbiologie"]
+                },
                 "no-records" : ["No lab results available", "No dispone de pruebas de laboratorio", "Aucun test de laboratoire"],
                 "name" : ["Laboratory", "Laboratorio", "Laboratoire"],
                 "title" : ["Laboratory", "Laboratorio", "Laboratoire"]
+                
             },
             "medical-imaging" : {
                 "no-records" : ["No medical images available", "No dispone de imágenes", "Aucune image"], 
-                "name" : ["Medical Imaging", "Pruebas de Imagen", "Imagerie"],
-                "title" : ["Images requests", "Petición de imagen", "Demandes d'imagerie"]
+                "name" : ["Imaging", "Pruebas de Imagen", "Radiologie"],
+                "title" : ["Imaging", "Pruebas de Imagen", "Radiologie"],
+                "category" : {
+                    "ultrasound" : ["Ultrasound", "Ecografía", "Échographie"],
+                    "x-ray" : ["X-rays", "Radiografías", "Radiographies"]
+                }
+            },
+            "other" : {
+                "no-records" : ["No records available", "No hay registros", "Aucun enregistrement disponible"]
             },
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
-            "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"]
+            "go-to-patient" : ["View Patient", "Ver Paciente", "Voir le dossier"],
+            "analytics" : {
+                "title" : ["Analytics", "Analítica", "Analytique"]
+            },
+            "user_mgmt" : ["Users", "Usuarios", "Utilisateurs"],
+            "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"],
+            "confirm-patient" : {
+                "title" : ["Attention", "Atención", "Attention"],
+                "description" : ["There is already a patient with this data, do you want to save it anyway?", "Ya existe un paciente con estos datos ¿desea guardarlo de todos modos?", "Il y a déjà un patient avec ces données, voulez-vous quand même les enregistrer ?"]
+            },
+            "inpatients" : {
+                "title" : ["Inpatients", "Pacientes ingresados", "Hospitalisation"],
+                "no-departments" : ["You have no departments. Please create them ", "No tiene departamentos. Por favor, cree uno ", "Vous n'avez pas de départements. Veuillez les créer "],
+                "confirm" : ["Do you wish to hospitalize this patient?", "¿Desea hospitalizar a este paciente?", "Voulez-vous hospitaliser ce patient?"],
+                "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le département"]
+            },
+            "admin-departments" : ["Departments", "Departamentos", "Gestion des services"]
         }
     },
     "dashboard":{
@@ -181,6 +1170,31 @@
     },
     "register" : {
         "common" : {
+            "functionalities" : {
+                "basic" : ["Basic functionalities", "Funcionalidades básicas", "Fonctionnalités de base"],
+                "basic_explanation" : ["Basic funcionality includes electronic medical records, outpatient module and billing", "La funcionalidad básica incluye consultas externas, facturación e historias clínicas", "La fonctionnalité de base comprend les consultations externes, la facturation et les dossiers médicaux"],
+                "inpatients" : ["Inpatient module", "Módulo de hospitalización", "Module d'hospitalisation"],
+                "inpatients_explanation" : ["Creation of virtual hospital wards, as well as the admission, discharge and transfer of patients.", "Creación de salas de hospital virtual, así como el ingreso, alta y traslado de pacientes.", "Création de salles d'hôpital virtuelles, ainsi que l'admission, le congé et le transfert de patients."],
+                "pharmacy" : ["Pharmacy", "Farmacia", "Pharmacie"],
+                "pharmacy_explanation" : ["Pharmacy stock / inventory management", "Gestión de stock / inventario de farmacia", "Gestion des stocks / inventaire de pharmacie"],
+                "requests" : ["Laboratory and radiology", "Módulo de laboratorio y radiología", "Module de laboratoire et de radiologie"],
+                "requests_explanation" : ["Creation and management of laboratory and radiology requests. Configuration of customized catalogue of available tests.", "Creación y gestión de peticiones de laboratorio y radiología, incluyendo la configuración de un catálogo personalizado de pruebas disponibles.", "Création et gestion des demandes de laboratoire et de radiologie, y compris la configuration d'un catalogue personnalisé des tests disponibles."],
+                "country" : ["Country", "País", "Pays"],
+                "type" : ["Type", "Tipo", "Type"],
+                "type_options" : {
+                    "single_doctor" : ["Single doctor Clinic", "Clínica de un solo doctor", "Clinique d'un seul médecin"],
+                    "clinic" : ["Clinic", "Clínica", "Clinique"],
+                    "health_centre" : ["Health Centre", "Centro de Salud", "Centre de santé"],
+                    "hospital" : ["Hospital", "Hospital", "Hôpital"]
+                },
+                "language" : ["What language do you want to use?", "¿Qué idioma desea utilizar?", "Quelle langue souhaitez-vous utiliser ?"],
+                "language_options" : {
+                    "english" : ["English", "Inglés", "Anglais"],
+                    "spanish" : ["Spanish", "Español", "Espagnol"],
+                    "french" : ["French", "Francés", "Français"]
+                }
+        
+            },
             "password" : {
                 "password" : ["Password", "Contraseña", "Mot de passe"],
                 "repeat_password" : ["Repeat Password", "Repetir Contraseña", "Répéter le mot de passe"]
@@ -188,29 +1202,56 @@
             "personal_info" : {
                 "name" : ["Name", "Nombre", "Prenom"],
                 "surnames" : ["Surnames", "Apellidos", "Nom" ],
-                "surname" : ["Surname", "Apellido", "Nom"],
-                "country" : ["Country", "País", "Pays"]
+                "surname" : ["Surname", "Apellido", "Nom"]
+            },
+            "clinic" : {
+                "country" : ["Country", "País", "Pays"],
+                "type" : ["Type", "Tipo", "Type"],
+                "type_options" : {
+                    "single_doctor" : ["Single doctor Clinic", "Clínica de un solo doctor", "Clinique d'un seul médecin"],
+                    "clinic" : ["Clinic", "Clínica", "Clinique"],
+                    "health_centre" : ["Health Centre", "Centro de Salud", "Centre de santé"],
+                    "hospital" : ["Hospital", "Hospital", "Hôpital"]
+                },
+                "language" : ["What language do you want to use?", "¿Qué idioma desea utilizar?", "Quelle langue souhaitez-vous utiliser ?"],
+                "language_options" : {
+                    "english" : ["English", "Inglés", "Anglais"],
+                    "spanish" : ["Spanish", "Español", "Espagnol"],
+                    "french" : ["French", "Francés", "Français"]
+                }
+
             },
             "contact_info" : {
                 "email" : ["Email", "Email", "Email"],
                 "phone" : ["Phone", "Teléfono", "Téléphone"]
             },
             "key_generation" : {
-                "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
-            }
+                "encription_key" : ["Private key: ", "Clave privada", "Clé privée"],
+                "confirm" : ["CONFIRM", "CONFIRMAR", "CONFIRMER"]
+            },
+            "create-account" : ["Create account", "Crear cuenta", "Créer un compte"],
+            "accept-policy" : ["I agree to Sherwood Science terms of use and privacy statement", "Acepto las condiciones de uso y la declaración de privacidad de Sherwood Science", "J'accepte les conditions d'utilisation et la déclaration de confidentialité de Sherwood Science"]
         },
         "researcher" : {
             "personal_info" : {
-                "explanation" : ["Few details to address you appropriately", "Introduzca sus datos para registrarse", "Entrez vos coordonées pour vous inscrire"]
+                "title" : ["What's your name?", "¿Cuál es tu nombre?", "Quel est votre nom ?"],
+                "explanation" : ["", "",""]
             },
             "contact_info" : {
-                "explanation" : ["We will use this information for contact reasons", "Usaremos esta información para motivos de contacto","Nous utiliserons ces informations pour des raisons de contact"]
+                "title" : ["What are your contact details?", "¿Cúales son tus datos de contacto?","Quelles sont vos coordonnées ?"],
+                "explanation" : ["", "",""]
+            },
+            "functionalities" : {
+                "title" : ["What functionalities do you want to use?", "¿Qué funcionalidades quieres utilizar?","Quelles fonctionnalités souhaitez-vous utiliser ?"],
+                "explanation" : ["", "",""]
             },
             "password" : {
-                "explanation" : ["Choose a password that is at least 6 characters long", "Elige una clave de al menos 6 caracteres","Choisissez un mot de passe d'au moons 6 characters"]
+                "title" : ["Create a password", "Crea tu contraseña", "Créer un mot de passe"],
+                "explanation" : ["Enter the password you would like to use with your account (must be at least 6 characteres long)", "Introduzca la contraseña que desea utilizar con su cuenta (debe tener al menos 6 caracteres)","Entrez le mot de passe que vous souhaitez utiliser pour votre compte (doit comporter au moins 6 caractères)"]
             },
             "key_generation" : {
-                "explanation" : ["Once you have saved your in a secure place, key please write 'CONFIRM', in the box below", "Una vez haya guardado la clave en un lugar seguro, por favor escriba 'CONFIRM' en el recuadro", "Une foes que vous aves enregistré voter clean dans un endroit sécurisé, veuillez écrire le text 'CONFIRM' dans la case ci-dessous" ],
+                "title" : ["Save your private key", "Guarda tu clave privada", "Enregistrez votre clé privée"],
+                "explanation" : ["Your personal private key is used to encrypt your patients' personal data. Save it in a safe place, <a target='blank' href='https://www.sherwood.science/privacy'>know more</a>", "Su clave privada personal se utiliza para cifrar los datos personales de sus pacientes. Guárdela en un lugar seguro, <a target='blank' href='https://www.sherwood.science/privacy'>saber más</a>", "Votre clé privée personnelle est utilisée pour crypter les données personnelles de vos patients. Enregistrez-le dans un endroit sûr, <a target='blank' href='https://www.sherwood.science/privacy'>savoir plus</a>" ],
                 "key" : ["Key", "Clave", "Mot de paste"],
                 "email_error" : ["This email is already in use", "Este email ya se ha usado", "Cet e-mail est déjà utilise"]
             },
@@ -221,7 +1262,7 @@
             },     
             "error" : {
                 "account_registered" : ["This email has already been used", "Este email ya ha sido utilizado", "Cet e-mail est déjà utilise"],
-                "general" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"]
+                "general" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une erreur s'est produite, veuillez réessayer plus tard"]
             }
         },
         "patient" : {
@@ -233,7 +1274,7 @@
                 "key" : ["Key", "Clave"],
                 "success_title" : ["Success!", "Enhorabuena!", "Felicitations"],
                 "success_text" : ["Check your email to validate your user account and create your own study and data collection forms with privacy as a priority","Revisa tu correo para verificar tu cuenta de usuario y poder crear tu propio estudio y hojas de recolección de datos con la privacidad como prioridad", "Vérifiez votre messagerie pour valider votre compte utilisateur et créez vos propres formulaires d'étude et de collecte de données avec la confidentialité comme priorité"],
-                "confirm" : ["CONFIRM", "CONFIRMAR", "VALIDER"]
+                "confirm" : ["CONFIRM", "CONFIRMAR", "CONFIRMER"]
             },
             "success_text" : ["You are only one step ahead to participate in the investigation and grant access to your personal information, deny or see who has accesed it.",
                 "Estás a un paso de participar en la investigación y dar acceso a tus datos personales, denegarlo o ver quien ha accedido a ellos."],
@@ -262,16 +1303,20 @@
                 "title" : ["Personal Data", "Datos Personales", "Données personnelles"],
                 "intro" : ["Please select the personal data you are planning to include in your study" ,"Seleccione los datos personales que desea incluir en su estudio", "Sélectionnez les données personnelles que vous souhaitez inclure dans votre étude"],
                 "fields" : {
+                    "health_id" : ["Health ID", "NHC", "ID de santé"],
+                    "automated_health_id" : ["MRN", "NHC", "NDM"],
+                    "id" : ["Patient ID", "ID de paciente", "ID de patient"],
                     "name" : ["Name", "Nombre","Prénom"],
                     "surnames" : ["Surnames", "Apellidos", "Nom"],
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
-                    "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
+                    "insurance" : ["Insurance", "Seguro", "Statut"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
-                    "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
+                    "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["Date of birth", "Fecha de nacimiento", "Date de naissance"],
+                    "dateCreated" : ["Creation Date", "Fecha de alta", "Date de création"],
                     "sex" : ["Sex", "Sexo", "Sex"]
                 },
                 "short-fields" : {
@@ -279,13 +1324,17 @@
                     "surnames" : ["Surnames", "Apellidos", "Nom"],
                     "surname" : ["Surname", "Apellido", "Nom"],
                     "address" : ["Address", "Dirección", "Adresse"],
-                    "health_id" : ["Health ID", "ID de salud", "Identifiant de santé"],
+                    "insurance" : ["Insurance", "Seguro", "Statut"],
+                    "health_id" : ["Health ID", "NHC", "ID de santé"],
+                    "automated_health_id" : ["MRN", "NHC", "NDM"],
                     "national_id" : ["National ID card", "Documento nacional de identidad", "carte d'identité"],
                     "email" : ["Email", "Email", "Email"],
-                    "phone" : ["Phone number", "Número de teléfono", "Numéro téléphone"],
+                    "phone" : ["Phone number", "Número teléfono", "Numéro téléphone"],
                     "uuid" : ["ID", "ID", "ID"],
                     "birthdate" : ["DOB", "Fecha de nacimiento", "Date de naissance"],
-                    "sex" : ["Sex", "Sexo", "Sex"]
+                    "dateCreated" : ["Creation Date", "Fecha de alta", "Date de création"],
+                    "sex" : ["Sex", "Sexo", "Sex"],
+                    "id" : ["ID", "ID", "ID"]
                 }
             }, 
             "edc" : {
@@ -335,24 +1384,36 @@
                 },
                 "no_fields" : ["No fields added yet", "No se ha agregado ningún campo", "Aucun champ ajouté pour le moment"], 
                 "type_text" : ["Text", "Texto", "Text"],
-                "type_number" : ["Number", "Número", "Nombre"],
-                "diagnosis" : ["Diagnosis", "Diagnostico", "Diagnostic"],
+                "type_number" : ["Number", "Número", "Número"],
+                "diagnosis" : ["Diagnosis", "Diagnóstico", "Diagnostic"],
                 "treatment" : ["Treatment", "Tratamiento", "Traitement"],
-                "allergy" : ["Allergy", "Alergía", "Allergie"],
-                "background" : ["PMH", "Antecedentes", "Antécédents"],
-                "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],                
+                "treatment_prescription" : ["Treatment Prescription", "Prescripción de tratamiento", "Prescription de traitement"],
+                "treatment_regular" : ["Regular Treatment", "Tratamiento Regular", "Traitement Regulier"],
+                "allergy" : ["Allergy", "Alergia", "Allergie"],
+                "background" : ["PMH", "Antecedentes Personales", "Antécédents personnel"],
+                "family-background" : ["FPMH", "Antecedente Familiar", "Histoire de famille"],   
                 "files" : ["File/Image", "Imágenes", "Images"],       
                 "checkbox" : ["Checkbox", "Checkbox", "Checkbox"],
                 "textarea" : ["Texarea", "Texto largo", "Texarea"],
                 "multioption" : ["Multioption", "Multiopción", "Multioption"],
+                "medical_history_ai" : ["Medical History AI", "Historia Médica AI", "Historique médical AI"],
+                "medical_history_template" : ["Medical History Template", "Historia Médica de Plantilla", "Historique médical Modèle"],
+                "medical_history_template_fill" : ["Medical History Template AutoFill", "Historia Médica de Plantilla AutoFill", "Historique médical Modèle AutoFill"],
+                "appointment" : ["Appointment", "Cita", "Rendez-vous"],
                 "evaluation" : ["Evaluation", "Evaluación", "Evaluation"],
                 "radio" : ["Radio button", "Radio button", "Radio button"],
+                "autocomplete" : ["Autocomplete", "Autocomplete", "Autocomplete"],
                 "dropdown" : ["Dropdown", "Dropdown", "Dropdown"],
-                "type_date" : ["Date", "Fecha", "Date"], 
+                "type_date" : ["Date", "Fecha", "Date"],
+                "template": ["Write template. To fill the gaps add $label$", "Escriba la plantilla. Las variables que se tengan que rellenar introduzca el valor del campo entre $, $campo$", "Escriba la plantilla. Las variables que se tengan que rellenar introduzca el valor del campo entre $, $campo$"],
                 "choose" : ["Choose an option", "Elija una opción", "Choisir une option"],
                 "personal_info" : ["Is it a personal data?", "¿Es un dato personal?", "S'agit-il d'une donnée personnelle?"],
                 "choose_patient" : ["Choose a patient", "Elija un paciente", "Choisir un patient"],
                 "type" : ["Type of study", "Tipo de estudio", "Type d'étude"],
+                "separator" : ["Divider", "Separador", "Divider"],
+                "text_blob" : ["Explaining text", "Texto explicativo", "Explaining text"],
+                "bmi" : ["Body Mass Index", "Índice Masa Corporal", "Indice de masse corporelle"],
+                "edd" : ["Expected Delivery Date", "Fecha de salida de cuenta", "Date de livraison prévue"],
                 "type_study" : {
                     "audit" : ["Clinical audit", "Auditoría clínica", "Audit clinique"],
                     "clinical_trial" : ["Clinical trial", "Ensayo clínico", "Essai clinique"],
@@ -380,6 +1441,7 @@
                 "explanation" : ["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a nunc quis massa laoreet blandit. Quisque dignissim sodales diam, vestibulum tempus sem tincidunt vestibulum. Ut bibendum nibh eget dolor feugiat, a mollis ex pulvinar. Vestibulum at euismod quam. Duis mollis magna sed diam sagittis, quis ultrices orci viverra. Vivamus convallis mollis nisi. Sed tempus arcu ac dui congue porta. Aenean in tristique orci. Sed ultrices nisi non lacinia pellentesque. Fusce quis arcu egestas, dictum velit ut, ultrices lorem. Proin id ante lectus. Morbi et ex dui."],
                 "personal_data" : ["Provide a brief explanation as to why you need to collect personal data", "Proporcione una breve explicación de por qué necesita recopilar datos personales", "Expliquez brièvement pourquoi vous devez collecter des données personnelles"],
                 "email" : ["Email", "Email", "Email"]
+
             },
             "consent" : {
                 "title" : ["Add consent forms", "Añadir formularios de consentimiento informado", "Ajouter des formulaires de consentement éclairé"],
@@ -436,44 +1498,89 @@
             "search" : ["Search", "Buscar", "Rechercher"]
         },
         "share" : {
-            "title" : ["Share my study", "Compartir mi estudio", "Partager mon étude"],
-            "add_researcher" : ["Add investigator", "Añadir investigador", "Ajouter un chercheur"],
-            "researchers" : ["Investigators", "Investigadores", "Chercheurs"],
-            "current_researchers" : ["Investigators granted access to my study", "Investigadores con acceso a mi estudio", "Chercheurs ayant accès à mon étude"],
-            "new_researchers" : ["New Researchers", "Nuevos Investigadores", "Nouveaux chercheurs"],
+            "title" : ["User Managment", "Administración de usuarios", "Gestion des utilisateurs"],
+            "add_researcher" : ["Add user", "Añadir usuario", "Ajouter un utilisateur"],
+            "edit_researcher" : ["Change user", "Modificar usuario", "Modifier un utilisateur"],
+            "info_roles" : ["Permissions of users", "Permisos de los usuarios", "Permissions des utilisateurs"],
+            "researchers" : ["Users", "Usuarios", "Utilisateurs"],
+            "current_researchers" : ["Current users", "Usuarios actuales", "Personnel actuel"],
+            "new_researchers" : ["New users", "Nuevos Usuarios", "Nouveaux Utilisateurs"],
+            "shared-by" : ["You were invited by: ", "Has sido invitado por: ", "Vous avez été invité par: "],
             "form" : {
                 "email" : ["Email", "Email", "Email"],
-                "permission" :  ["Permissions", "Permisos", "Autorisations"]
+                "role" :  ["Role", "Role", "Role"]
+            },
+            "roles" : {
+                "MEDICAL_DIRECTOR" : ["Superadmin", "Superadmin", "Superadmin"],
+                "STUDENT" : ["Student", "Estudiante", "Étudiant"],
+                "SHERWOOD_STAFF" : ["Sherwood Staff", "Sherwood Staff", "Sherwood Staff"],
+                "DOCTOR" : ["Medical Doctor", "Médico", "Médecin"],
+                "PRIVATE_DOCTOR" : ["Private Doctor", "Médico Privado", "Médecin Privée"],
+                "ADMIN" : ["Administrator", "Administrador", "Administrateur"],
+                "NURSE" : ["Nurse", "Enfermería", "Infirmière"],
+                "NURSE_FW" : ["Nurse FW", "Enfermería FW", "Infirmière FW"],
+                "NURSE_MANAGER" : ["Nurse Manager", "Enfermería Jefe", "Infirmière Manager"],
+                "CARE_GIVER" : ["Care Giver", "Cuidador", "Soignant"],
+                "NURSE_PRACTITIONER" : ["Nurse Practitioner", "Enfermera Practicante", "Infirmière Praticienne"],
+                "EXECUTIVE_DIRECTOR" : ["Executive director", "Director ejecutivo ", "Directeur général"],
+                "BUSINESS_ASSISTANT" : ["Executive Assistant", "Asistente ejecutivo", "Business Assistant"],
+                "LAB_MANAGER" : ["Lab Manager", "Director de laboratorio", "Directeur de laboratoire"],
+                "LAB_ASSISTANT" : ["Lab technician ", "Técnico laboratorio ", "Technicien de laboratoire"],
+                "SOCIAL" : ["Social", "Social", "Social"],
+                "PHARMACY_MANAGER" : ["Pharmacy Manager", "Director de farmacia", "Directeur de pharmacie"],
+                "PHARMACY_ASSISTANT" : ["Pharmacy Assistant", "Asistente de farmacia", "Assistant de pharmacie"],
+                "MAJOR" : ["Major", "Mayor", "Major"],
+                "DEPARTMENT_HEAD" : ["Head of Department", "Jefe de departamento", "Chef de service"],
+                "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {
                 "name" : ["Name", "Nombre", "Nom"],
                 "status" : ["Status", "Status", "Status"],
-                "permission" : ["Permission", "Permisos", "Autorisations"]
+                "permissions" : ["User type", "Tipo", "Type d'utilisateur"],
+                "department" : ["Department", "Departamento", "Service"],
+                "units" : ["Units", "Unidades", "Services"]
+                
+            },
+            "permissions" : {
+                "MEDICAL_WRITE" : ["Write medical data", "Escribir datos médicos", "Écrire des données médicales"],
+                "MEDICAL_READ" : ["Read medical data", "Leer datos médicos", "Lire des données médicales"],
+                "PERSONAL_ACCESS" : ["Write/Read personal data", "Escribir/Leer datos personales", "Écrire/Lire des données personnelles"],
+                "BUSINESS_READ" : ["Read business data", "Leer datos de negocio", "Lire des données commerciales"],
+                "BUSINESS_WRITE" : ["Write business data", "Escribir datos de negocio", "Écrire des données commerciales"],
+                "SHARE_RESEARCHERS" : ["Manage users", "Administrar usuarios", "Gérer les utilisateurs"],
+                "EDIT_SUBMISSIONS" : ["Edit submissions", "Editar envíos", "Modifier les soumissions"],
+                "EDIT_INVESTIGATION" : ["Edit investigation", "Editar estudio", "Modifier l'étude"],
+                "MAKE_DISCOUNTS" : ["Make discounts", "Hacer descuentos", "Faire des remises"],
+                "MANAGE_PHARMACY_CENTRAL" : ["Manage pharmacy central", "Administrar farmacia central", "Gérer la pharmacie centrale"],
+                "MAKE_PHARMACY_REQUESTS" : ["Make pharmacy requests", "Hacer pedidos de farmacia", "Faire des demandes de pharmacie"],
+                "UPDATE_PHARMACY_CENTRAL" : ["Update pharmacy central", "Actualizar farmacia central", "Mettre à jour la pharmacie centrale"],
+                "ANALYTICS_DEPARTMENT" : ["View Department Stats", "Ver estadísticas de departamento", "Voir les statistiques du département"],
+                "CREATE_APPOINTMENTS" : ["Create appointments", "Crear citas", "Créer des rendez-vous"],
+                "CANCEL_APPOINTMENTS" : ["Cancel appointments", "Cancelar citas", "Annuler les rendez-vous"],
+                "VISUALIZE_APPOINTMENTS" : ["Visualize appointments", "Visualizar citas", "Visualiser les rendez-vous"],
+                "EDIT_OUTPATIENTS" : ["Edit outpatients", "Editar pacientes externos", "Modifier les patients externes"]
             },
             "not_shared" : ["This investigation is currently not shared with any other investigator", "Este estudio no se comparte actualmente con ningún otro investigador", "Cette étude n'est actuellement partagée avec aucun autre chercheur"],
             "confirm_dialog" : {
-                "title" : ["Please confirm", "Por favor confirmar","Veuillez confirmer"],
-                "description" : ["An email will be sent to the following email addresses with instructions on how to create a Sherwood account if they do not have one. Once they have agreed to participate in the study, they will be able to access the research data and perform the actions to which you have given them access. You can edit permissions at any time. Do you wish to continue?",
-                                "Se enviará un correo electrónico a las siguientes direcciones de correo electrónico con instrucciones sobre cómo crear una cuenta de Sherwood si no tienen una. Una vez que hayan aceptado participar en el estudio, podrán acceder a los datos de la investigación y realizar las acciones a las que les hayas dado acceso. Puede editar los permisos en cualquier momento. ¿Desea continuar?",
-
-				"Un e-mail sera envoyé aux adresses e-mail suivantes avec des instructions sur la façon de créer un compte Sherwood s'ils n'en ont pas. Une fois qu'ils auront accepté de participer à l'étude, ils pourront accéder aux données de la recherche et réaliser les actions auxquelles vous leur avez donné accès. Vous pouvez modifier les autorisations à tout moment. Souhaitez-vous continuer?"]
+                "title" : ["Please note", "Atención","Attention"],
+                "description" : ["an email will be sent to the email addresses entered with an invitation to create a Sherwood user account. Once the invitation has been accepted, users will have access to the data of the hospital or health centre. Access to medical and personal data as well as other functionalities will be limited by the type of user profile (this can be changed at a later date).",
+                                "A continuación se enviará un email a las direcciones de correo introducidas con instrucciones para crear una cuenta de usuario en Sherwood. Una vez aceptada la invitación, los usuarios tendrán acceso a los datos del hospital o centro de salud en cuestión. El acceso a datos medicos y personales y otras funcionalidades vendrá delimitado por el tipo de perfil elegido para cada usuario.",
+                                "Un courriel sera envoyé aux adresses électroniques saisies avec une invitation à créer un compte utilisateur Sherwood. Une fois l'invitation acceptée, les utilisateurs auront accès aux données de l'hôpital ou du centre de santé. L'accès aux données médicales et personnelles ainsi qu'à d'autres fonctionnalités sera limité par le type de profil d'utilisateur (ceci peut être modifié ultérieurement)."
+				]
             },
+            "success" : ["The invitation has been sent successfully", "La invitación se ha enviado correctamente", "L'invitation a été envoyée avec succès"],
             "error" : {
                 "title" : ["Error", "Error", "Erreur"],
+                "already_invited" : ["This user has already been invited", "Este usuario ya ha sido invitado", "Cet utilisateur a déjà été invité"],
                 "description" : ["An error ocurred, please try again later", "Se ha producido un error, inténtelo de nuevo más tarde", "Une erreur s'est produite, veuillez réessayer plus tard"]
             },
-            "share" : ["Share", "Compartir", "Partager"],
-            "permissions" : {
-                "read_no_personal_data" : ["Read only medical data", "Solo lectura de datos médicos", "Lire uniquement les données médicales"],
-                "read_personal_data" : ["Read medical and personal data", "Lectura de datos personales y médicos", "Lire des données personnelles et médicales"],
-                "create_personal_data" : ["Add medical and personal data", "Añadir datos médicos y personales", "Ajouter des données médicales et personnelles"]
-            },
+            "share" : ["Send", "Enviar", "Envoyer"],
             "status" : {
                 "pending" : ["Pending", "Pendiente", "En attendant"],
-                "accepted" : ["Accepted", "Aceptada", "Accepté"],
+                "accepted" : ["Active", "Activo", "Active"],
                 "denied" : ["Denied", "Rechazada", "Refusée"]
             },
-            "no_researchers_added" : ["You have not added any investigators!", "No has añadido ningún investigador!", "Vous n'avez ajouté aucun enquêteur"]
+            "no_researchers_added" : ["You have not added any investigators!", "No has añadido ningún usuario!", "Vous n'avez ajouté aucun enquêteur"]
         },
         "show" : {
             "view_investigation" : ["View study", "Ver estudio", "Voir l'étude"],
@@ -512,12 +1619,14 @@
         "errors" : {
             "error_email" : ["Email not valid", "Email no válido", "Email invalide"],
             "error_phone" : ["Phone not valid", "Teléfono no válido", "Téléphone non valide"],
+            "error_fileBase64" : ["Select a file", "Seleccione un archivo", "Sélectionner un fichier"],
             "error_password" : ["Password has to be at least 7 characters long", "La contraseña debe contener al menos 7 caracteres", "Le mot de passe doit contenir au moins 7 caractères"],
             "error_length6" : ["It has to be at least 6 characters long","Debe tener al menos 6 caracteres", "Il doit comporter au moins 6 caractères"],
-            "error_length2" : ["This field can't be empty","Este campo no se puede dejar vacío"],
-            "error_not_empty" : ["This field can' be empty", "Este campo no puede estar vacío", "Ce champ ne peut pas être vide"],
+            "error_length2" : ["This field can't be empty","Debe tener al menos 2 caracteres", "Il doit comporter au moins 2 caractères"],
+            "error_not_empty" : ["This field can' be empty", "No debe estar vacío", "Il doit comporter au moins 2 caractères"],
             "error_not_same" : ["Fields have to be the same", "El valor de los campos tiene que ser igual", "Les champs doivent être les mêmes"],
-            "error_past_date" : ["You must choose a past date", "Debe seleccionar una fecha pasada", "Vous devez choisir une date passée"]
+            "error_past_date" : ["You must choose a past date", "Debe seleccionar una fecha pasada", "Vous devez choisir une date passée"],
+            "error_notnumber" : ["Insert a valid number", "Debe introducir un número", "Vous devez entrer un numero"]
 
         }
     },

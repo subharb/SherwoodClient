@@ -8,6 +8,11 @@ import patientsReducer from "./patientsReducer";
 import patientsSubmissions from "./submissionsPatientReducer";
 import offlineReducer from "./offlineReducer";
 import profileReducer from "./profileReducer";
+import hospitalReducer from "./hospitalReducer";
+import requestsReducer from "./requestsReducer";
+import billingReducer from "./billingReducer";
+import insurancesReducer from "./insurancesReducer";
+
 
 export const rootReducer = combineReducers({
   themeReducer,
@@ -18,5 +23,9 @@ export const rootReducer = combineReducers({
   patientsSubmissions: patientsSubmissions,
   offline: offlineReducer,
   profile: profileReducer,
+  hospital: hospitalReducer,
+  requests:requestsReducer,
+  billing: billingReducer,
+  insurances: insurancesReducer,
   form:formReducer
 });

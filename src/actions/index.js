@@ -1,7 +1,8 @@
 import axios from 'axios'
 import jwt from 'jsonwebtoken';
+import { LOADING } from '../constants';
 
-import { LOGIN_USER, LOADING, FETCH_INVESTIGATION } from './types';
+
 
 /**
  *  Makes a request to login a user
@@ -10,7 +11,7 @@ import { LOGIN_USER, LOADING, FETCH_INVESTIGATION } from './types';
 */
 export const loginUser = (email, password) => async dispatch => {
     const postObj = {email:email, password:password};
-    const request = await axios.post(process.env.REACT_APP_API_URL+'/researchers/login', postObj)
+    const request = await axios.post(import.meta.env.VITE_APP_API_URL+'/researchers/login', postObj)
         .catch(err => console.log('Catch', err)); 
     
     //Guardamos el token si la request fue exitosa
@@ -24,21 +25,21 @@ export const loginUser = (email, password) => async dispatch => {
 
 
 
-/**
- *  Fetches an investigation
- * @param {string} uuidInvestigation - uuidInvestigation
-*/
-export const fetchInvestigation = (uuidInvestigation) => async dispatch => {
+// /**
+//  *  Fetches an investigation
+//  * @param {string} uuidInvestigation - uuidInvestigation
+// */
+// export const fetchInvestigation = (uuidInvestigation) => async dispatch => {
     
-    const request = await axios.get(process.env.REACT_APP_API_URL+'/'+localStorage.getItem('type')+'/investigation/'+uuidInvestigation)
+//     const request = await axios.get(import.meta.env.VITE_APP_API_URL+'/'+localStorage.getItem('type')+'/investigation/'+uuidInvestigation)
        
     
-    dispatch({
-        type : FETCH_INVESTIGATION,
-        payload : request,
-        meta: uuidInvestigation
-    });
-}
+//     dispatch({
+//         type : FETCH_INVESTIGATION,
+//         payload : request,
+//         meta: uuidInvestigation
+//     });
+// }
 
 /**
  * Changes the state of Loading, that hides or shows the loading screen
