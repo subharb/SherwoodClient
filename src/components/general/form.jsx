@@ -27,11 +27,12 @@ class Form extends Component {
         this.sherwoodValidation = this.sherwoodValidation.bind(this)
         this.mounted = false;
         this.labelValues = {};
+        this.updateDictFields = {}
         //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
         this.state = {showOptions:{}}
     }
     sherwoodValidation(value, allValues, propsForm, key){
-        if(this.props.fields[key]){
+        if(this.updateDictFields[key]){
             const fieldValueCompare = this.props.fields[key].validationField ? allValues[this.props.fields[key].validationField] : this.props.fields[key].validationValue ? this.props.translate(this.props.fields[key].validationValue) : null;
             const valueField = this.props.fields[key].type === "textarea" && typeof value !== "undefined" ? value.replace(/<[^>]+>/g, '') : value;
             const validationFunc = this.props.fields[key].validation ? this.props.fields[key].validation : "notEmpty";
@@ -97,6 +98,7 @@ class Form extends Component {
             }
             
         });
+        this.updateDictFields = this.props.fields;
         this.mounted = true;
         this.props.initialize(initData)
     }
@@ -159,17 +161,12 @@ class Form extends Component {
             
         }
         if(conditionalValues && conditionalFields && conditionalValues.includes(value)){
-            const conditionalField = {...conditionalFields[value]};
-            return (
-                <div className="container">
-                    <Field name={conditionalField.name} type={conditionalField.type} component={FieldSherwood} 
-                        label={conditionalField.label} key={key} uuidSurvey={this.props.uuidSurvey} 
-                        department={this.props.department} uuidPatient={this.props.uuidPatient} 
-                        uuidInvestigation={this.props.uuidInvestigation} fullWidth={this.props.fullWidth} 
-                        country={this.props.country} validate={[this.sherwoodValidation]} 
-                        formValues={{...this.labelValues}} {...conditionalField} color="secondary" />
-                </div>
-            )
+            const conditionalFieldsForValue = conditionalFields[value];
+            
+            return conditionalFieldsForValue.map((conditionalField, key) =>{
+                this.updateDictFields[conditionalField.name] = conditionalField;
+                
+            })
         
         }
     }

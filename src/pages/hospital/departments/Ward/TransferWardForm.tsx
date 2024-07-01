@@ -25,14 +25,15 @@ const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, 
     const activatedSelectWardBeds = wardsDepartments.reduce((acc, value) => {
             const ward = value.ward;
             const key = value.department.uuid +"&"+ value.ward.uuid;
-            const bedsValue = {
+            const bedsValue = [{
+                name : "bed_selected",
                 required : true,
                 type:"select",
                 validation : "notEmpty",
-                label : "investigation.create.edc.choose",
-                shortLabel: "investigation.table.type",
-                options : ward.beds.sort((bedA, bedB) => bedA.name.toLowerCase().localeCompare(bedB.name.toLocaleLowerCase())).filter((bed) => !(ward.uuid === currentWard && bed.id === currentBed.id) ).map((bed: any) => ({label: "Bed "+bed.name, value: bed.id})),
-            }
+                label : "hospital.ward.choose-bed",
+                shortLabel: "hospital.ward.choose-bed",
+                options : ward.beds.sort((bedA, bedB) => bedA.name.toLowerCase().localeCompare(bedB.name.toLocaleLowerCase())).filter((bed) => !((ward.uuid === currentWard && bed.id === currentBed.id) || bed.busy)).map((bed: any) => ({label: "Bed "+bed.name, value: bed.id})),
+            }];
             acc[key] = bedsValue;
             return acc;
         }, {});

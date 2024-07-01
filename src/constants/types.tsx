@@ -47,6 +47,7 @@ export interface IBed{
     name:string,
     active:boolean,
     order:number,
+    busy:boolean,
     stays?:any
 }
 
