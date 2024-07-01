@@ -382,7 +382,7 @@ export function transferPatientAction(uuidInvestigation, uuidCurrentDepartment, 
     return async (dispatch) => {
         dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
-        return transferPatientService(uuidInvestigation, uuidWardDestination, uuidPatient)
+        return transferPatientService(uuidInvestigation, uuidWardDestination, uuidPatient, idTransferBed)
             .then((response) => {
                 dispatch({
                     type: types.TRANSFER_PATIENT_SUCCESS,

@@ -32,7 +32,7 @@ const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, 
                 validation : "notEmpty",
                 label : "hospital.ward.choose-bed",
                 shortLabel: "hospital.ward.choose-bed",
-                options : ward.beds.sort((bedA, bedB) => bedA.name.toLowerCase().localeCompare(bedB.name.toLocaleLowerCase())).filter((bed) => !((ward.uuid === currentWard && bed.id === currentBed.id) || bed.busy)).map((bed: any) => ({label: "Bed "+bed.name, value: bed.id})),
+                options : ward.beds.filter((bed) => !((ward.uuid === currentWard && bed.id === currentBed.id) || bed.busy)).sort((bedA, bedB) => bedA.name.toLowerCase().localeCompare(bedB.name.toLocaleLowerCase())).map((bed: any) => ({label: "Bed "+bed.name, value: bed.id})),
             }];
             acc[key] = bedsValue;
             return acc;
