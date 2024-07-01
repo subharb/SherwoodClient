@@ -145,7 +145,7 @@ class Form extends Component {
     renderExtraFields(key){
         //Un field que habilita la aparición de otro field
        
-        const {activationValues, activatedFields} = {...this.props.fields[key]};
+        const {activationValues, activatedFields, conditionalValues, conditionalFields} = {...this.props.fields[key]};
         const value = this.props.formValues[key];
 
         if(activatedFields && activationValues && activationValues.includes(value)){
@@ -157,6 +157,20 @@ class Form extends Component {
                     </div>
                 )
             
+        }
+        if(conditionalValues && conditionalFields && conditionalValues.includes(value)){
+            const conditionalField = {...conditionalFields[value]};
+            return (
+                <div className="container">
+                    <Field name={conditionalField.name} type={conditionalField.type} component={FieldSherwood} 
+                        label={conditionalField.label} key={key} uuidSurvey={this.props.uuidSurvey} 
+                        department={this.props.department} uuidPatient={this.props.uuidPatient} 
+                        uuidInvestigation={this.props.uuidInvestigation} fullWidth={this.props.fullWidth} 
+                        country={this.props.country} validate={[this.sherwoodValidation]} 
+                        formValues={{...this.labelValues}} {...conditionalField} color="secondary" />
+                </div>
+            )
+        
         }
     }
     renderFields(){

@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import React from 'react';
 import { ButtonCancel, ButtonContinue } from '../../../../components/general/mini_components';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { IDepartment, IPatient } from '../../../../constants/types';
+import { IBed, IDepartment, IPatient } from '../../../../constants/types';
 import Form from '../../../../components/general/form';
 import { patientFullName } from '../../../../utils';
 
@@ -13,11 +13,29 @@ interface TransferWardFormProps extends LocalizeContextProps{
     departments: IDepartment[];
     patientToTransfer: IPatient;
     currentDepartment: string;
+    currentBed: IBed;
     resetModal: () => void;
     transferWardConfirm : (uuidDepartmentDestination: string, uuidWardDestination: string) => void;
 }
 
-const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, currentWard, currentDepartment, departments, translate, resetModal, transferWardConfirm }) => {
+const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, currentBed, currentWard, departments, translate, resetModal, transferWardConfirm }) => {
+    const wardsDepartments = departments.flatMap((department) => department.wards.map((ward) => ({department: department, ward: ward})));
+    const selectWardValues = wardsDepartments.map((value) => value.department.uuid +"&"+ value.ward.uuid);
+    const selectWardOptions = wardsDepartments.map((value) => ({ label: value.department.name +" - " +value.ward.name, value: value.department.uuid +"&"+ value.ward.uuid }));
+    const activatedSelectWardBeds = wardsDepartments.reduce((acc, value) => {
+            const ward = value.ward;
+            const key = value.department.uuid +"&"+ value.ward.uuid;
+            const bedsValue = {
+                required : true,
+                type:"select",
+                validation : "notEmpty",
+                label : "investigation.create.edc.choose",
+                shortLabel: "investigation.table.type",
+                options : ward.beds.sort((bedA, bedB) => bedA.name.toLowerCase().localeCompare(bedB.name.toLocaleLowerCase())).filter((bed) => !(ward.uuid === currentWard && bed.id === currentBed.id) ).map((bed: any) => ({label: "Bed "+bed.name, value: bed.id})),
+            }
+            acc[key] = bedsValue;
+            return acc;
+        }, {});
     return (
         <Grid container>
             <Grid item xs={12}>
@@ -32,9 +50,12 @@ const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, 
                         label:"hospital.ward.select-ward-transfer",
                         validation : "notEmpty",
                         defaultOption:{"text" : "investigation.create.edc.choose", "value" : ""},
-                        options : departments.flatMap((department) => department.wards.filter((ward) => ward.uuid !== currentWard).map((ward) => ({ label: department.name +" - " +ward.name, value: department.uuid +"&"+ ward.uuid }))),
-                        value: ""
-                    },
+                        options : selectWardOptions,
+                        value: "",
+                        conditionalValues : selectWardValues,
+                        conditionalFields: activatedSelectWardBeds
+                    }
+                    ,
                 }} typeMargin="normal" 
                     key="form"
                     callBackForm={(values) => transferWardConfirm(values.department_ward_selected.split('&')[0], values.department_ward_selected.split('&')[1])} 

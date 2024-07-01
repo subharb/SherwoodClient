@@ -692,7 +692,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                             patientToTransfer && 
                             <TransferWardForm departments={departments} currentWard={ward.uuid!}
                                 patientToTransfer = {patientToTransfer} currentDepartment={department!.uuid!}
-                                resetModal={resetModal} 
+                                resetModal={resetModal} currentBed={bedFromTransfer!}
                                 transferWardConfirm={(uuidDepartmentDestination, uuidWardDestination) => {
                                     console.log("uuidDepartmentDestination", uuidDepartmentDestination);
                                     console.log("uuidWardDestination", uuidWardDestination);
