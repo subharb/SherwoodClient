@@ -32,8 +32,8 @@ const InpatientsRedux:React.FC<PropsRedux> = ({investigations, loading, patients
         history.push(HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient));
     }
 
-    async function transferPatientCallBack(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string) {
-        await(dispatch(transferPatientAction(investigations.currentInvestigation.uuid, uuidCurrentDepartment, uuidCurrentWard, idCurrentBed, uuidDepartmentDestination, uuidWardDestination, uuidPatient)))
+    async function transferPatientCallBack(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string, idTransferBed:number) {
+        await(dispatch(transferPatientAction(investigations.currentInvestigation.uuid, uuidCurrentDepartment, uuidCurrentWard, idCurrentBed, uuidDepartmentDestination, uuidWardDestination, uuidPatient, idTransferBed)))
     }
 
     if(loading || !departments){

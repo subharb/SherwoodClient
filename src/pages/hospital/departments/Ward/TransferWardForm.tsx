@@ -15,7 +15,7 @@ interface TransferWardFormProps extends LocalizeContextProps{
     currentDepartment: string;
     currentBed: IBed;
     resetModal: () => void;
-    transferWardConfirm : (uuidDepartmentDestination: string, uuidWardDestination: string) => void;
+    transferWardConfirm : (uuidDepartmentDestination: string, uuidWardDestination: string, idBed:number) => void;
 }
 
 const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, currentBed, currentWard, departments, translate, resetModal, transferWardConfirm }) => {
@@ -59,7 +59,7 @@ const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, 
                     ,
                 }} typeMargin="normal" 
                     key="form"
-                    callBackForm={(values) => transferWardConfirm(values.department_ward_selected.split('&')[0], values.department_ward_selected.split('&')[1])} 
+                    callBackForm={(values) => transferWardConfirm(values.department_ward_selected.split('&')[0], values.department_ward_selected.split('&')[1], values.bed_selected)} 
                     closeCallBack = {resetModal}
                     submitText={"hospital.ward.select-ward-transfer"} />
             </Grid>

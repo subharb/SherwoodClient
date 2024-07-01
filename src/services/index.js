@@ -856,11 +856,12 @@ export function createStayPatientService(uuidInvestigation, idBed, uuidPatient) 
     });
 }
 
-export function transferPatientService(uuidInvestigation, uuidWardDestination, uuidPatient) {
+export function transferPatientService(uuidInvestigation, uuidWardDestination, uuidPatient, idTransferBed) {
     return new Promise((resolve, reject) => {
         axios
             .patch(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/patient/" + uuidPatient + "/ward", { 
                 "uuidWardDestination": uuidWardDestination,
+                "idTransferBed" : idTransferBed
              }, { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {

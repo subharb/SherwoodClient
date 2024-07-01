@@ -378,7 +378,7 @@ export function createStayPatientAction(uuidInvestigation, uuidDepartment, uuidW
     };
 }
 
-export function transferPatientAction(uuidInvestigation, uuidCurrentDepartment, uuidCurrentWard, idCurrentBed, uuidDepartmentDestination, uuidWardDestination, uuidPatient) {
+export function transferPatientAction(uuidInvestigation, uuidCurrentDepartment, uuidCurrentWard, idCurrentBed, uuidDepartmentDestination, uuidWardDestination, uuidPatient, idTransferBed) {
     return async (dispatch) => {
         dispatch({ type: types.FETCH_HOSPITAL_LOADING });
 
@@ -390,6 +390,7 @@ export function transferPatientAction(uuidInvestigation, uuidCurrentDepartment, 
                     uuidCurrentDepartment: uuidCurrentDepartment,
                     uuidCurrentWard : uuidCurrentWard,
                     idCurrentBed : idCurrentBed,
+                    idTransferBed : idTransferBed,
                     uuidWardDestination: uuidWardDestination,
                     uuidDepartmentDestination : uuidDepartmentDestination,
                     uuidPatient :uuidPatient

@@ -222,7 +222,7 @@ interface Props extends LocalizeContextProps{
     resetErrorHospital?: () => void,
     goToPatientHistory?:() => void,
     viewCallBack?:(uuidPatient:string) => void,
-    transferPatientCallBack?:(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string) => void
+    transferPatientCallBack?:(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string, idTransferBed:number) => void
 }
 
 interface PropsView extends Omit<Props, "editCallBack" | "deleteCallBack" | "addCallBack"  | "saveOrderCallBack" | "assignBedPatientCallBack" | "saveOrderCallBack" >{
@@ -693,12 +693,12 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                             <TransferWardForm departments={departments} currentWard={ward.uuid!}
                                 patientToTransfer = {patientToTransfer} currentDepartment={department!.uuid!}
                                 resetModal={resetModal} currentBed={bedFromTransfer!}
-                                transferWardConfirm={(uuidDepartmentDestination, uuidWardDestination) => {
+                                transferWardConfirm={(uuidDepartmentDestination, uuidWardDestination, idBed) => {
                                     console.log("uuidDepartmentDestination", uuidDepartmentDestination);
                                     console.log("uuidWardDestination", uuidWardDestination);
                                     console.log("uuidCurrentDepartment", department!.uuid);
                                     console.log("patientToTransfer!.uuid", patientToTransfer!.uuid);
-                                    transferPatientCallBack(department!.uuid!, ward.uuid!, bedFromTransfer!.id, uuidDepartmentDestination, uuidWardDestination, patientToTransfer!.uuid)
+                                    transferPatientCallBack(department!.uuid!, ward.uuid!, bedFromTransfer!.id, uuidDepartmentDestination, uuidWardDestination, patientToTransfer!.uuid, idBed)
                                 }} />
                         }
                         </div>
