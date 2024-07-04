@@ -14,11 +14,13 @@ interface TransferWardFormProps extends LocalizeContextProps{
     patientToTransfer: IPatient;
     currentDepartment: string;
     currentBed: IBed;
+    patients: IPatient[];
+    beds: IBed[];
     resetModal: () => void;
     transferWardConfirm : (uuidDepartmentDestination: string, uuidWardDestination: string, idBed:number) => void;
 }
 
-const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, currentBed, currentWard, departments, translate, resetModal, transferWardConfirm }) => {
+const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, currentBed, currentWard, departments, patients, translate, resetModal, transferWardConfirm }) => {
     const wardsDepartments = departments.flatMap((department) => department.wards.map((ward) => ({department: department, ward: ward})));
     const selectWardValues = wardsDepartments.map((value) => value.department.uuid +"&"+ value.ward.uuid);
     const selectWardOptions = wardsDepartments.map((value) => ({ label: value.department.name +" - " +value.ward.name, value: value.department.uuid +"&"+ value.ward.uuid }));
@@ -32,7 +34,18 @@ const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, 
                 validation : "notEmpty",
                 label : "hospital.ward.choose-bed",
                 shortLabel: "hospital.ward.choose-bed",
-                options : ward.beds.filter((bed) => !((ward.uuid === currentWard && bed.id === currentBed.id) || bed.busy)).sort((bedA, bedB) => bedA.name.toLowerCase().localeCompare(bedB.name.toLocaleLowerCase())).map((bed: any) => ({label: "Bed "+bed.name, value: bed.id})),
+                options : ward.beds.filter((bed) => !(ward.uuid === currentWard && bed.id === currentBed.id)).sort((bedA, bedB) => bedA.name.toLowerCase().localeCompare(bedB.name.toLocaleLowerCase())).map((bed: any) => {
+                    if(bed.busy){
+                        const currentStayIndex = bed.stays.findIndex((stay) => stay.dateOut === null);
+                        if(currentStayIndex !== -1){
+                            const stay = bed.stays[currentStayIndex];
+                            const patient = patients.find((patient) => patient.id === stay.patientInvestigation.patientIdInvestigation);
+                            const patientName = patientFullName(patient!.personalData)
+                            return ({label: "Bed "+bed.name + " - swap with " +patientName, value: bed.id})
+                        }
+                    }
+                    return ({label: "Bed "+bed.name, value: bed.id})
+                }),
             }];
             acc[key] = bedsValue;
             return acc;

@@ -1,10 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BoxBckgr, LinkStyled, TypographyStyled } from '../../../components/general/mini_components';
 import Helmet from "react-helmet";
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
-import { AccordionSummary, Accordion, Grid, Typography, AccordionDetails, List, ListItem, ListItemText } from '@mui/material';
-import { useDepartments } from '../../../hooks';
+import { AccordionSummary, Accordion, Grid, Typography, AccordionDetails, List, ListItem, ListItemText, Snackbar, Alert } from '@mui/material';
+import { SnackbarType, useDepartments, useSnackBarState } from '../../../hooks';
 import Loader from '../../../components/Loader';
 import { connect, useDispatch } from 'react-redux';
 import { IDepartment, IPatient, IWard } from '../../../constants/types';
@@ -18,28 +18,44 @@ import { transferPatientAction } from '../../../redux/actions/hospitalActions';
 interface PropsRedux {
     investigations:any,
     patients:any,
+    hospital:any,
     loading:boolean
 }
 
-const InpatientsRedux:React.FC<PropsRedux> = ({investigations, loading, patients}) => {
+const InpatientsRedux:React.FC<PropsRedux> = ({investigations, loading, patients, hospital}) => {
     const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
     const {departments, researchers} = useDepartments();
+    const [openWard, setOpenWard] = useState<string | null>(null);
     const history = useHistory();
     const dispatch = useDispatch();
+    const [showSnackbar, setShowSnackbar] = useSnackBarState();
+
     
+    useEffect(() => {
+        if(!hospital.loading && !hospital.error && openWard){
+            setShowSnackbar({show:true, severity: "success", message : "hospital.ward.assign-bed-success"});
+        }
+        if(!hospital.loading && hospital.error && openWard){
+            setShowSnackbar({show:true, severity: "error", message : "hospital.ward.error.default"});
+        }
+    }, [hospital.loading, hospital.error]);
     function goToPatientHistory(uuidPatient:string){
         console.log(uuidPatient);
         history.push(HOSPITAL_PATIENT.replace(":uuidPatient", uuidPatient));
     }
 
     async function transferPatientCallBack(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string, idTransferBed:number) {
+        setOpenWard(uuidCurrentWard);
         await(dispatch(transferPatientAction(investigations.currentInvestigation.uuid, uuidCurrentDepartment, uuidCurrentWard, idCurrentBed, uuidDepartmentDestination, uuidWardDestination, uuidPatient, idTransferBed)))
     }
 
     if(loading || !departments){
         return <Loader/>
     }
-    return <InpatientsLocalized departments={departments} 
+
+    return <InpatientsLocalized departments={departments} showSnackbar={showSnackbar} 
+                setShowSnackbar={setShowSnackbar}
+                openWard={openWard}
                 patients={patients.data[investigations.currentInvestigation.uuid]} 
                 goToPatientHistoryCallBack={goToPatientHistory} 
                 transferPatientCallBack={transferPatientCallBack}/>
@@ -61,19 +77,26 @@ export default connect(mapStateToProps, null)(InpatientsRedux);
 interface Props extends LocalizeContextProps{
     departments:IDepartment[],
     patients:IPatient[],
+    showSnackbar:SnackbarType,
+    openWard:string | null,
+    setShowSnackbar:(showSnackbar:SnackbarType) => void,
     goToPatientHistoryCallBack:(uuidPatient:string) => void
     transferPatientCallBack:(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string) => void
 }
-const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, goToPatientHistoryCallBack, transferPatientCallBack}) => {
+const InpatientsComponent:React.FC<Props> = ({translate, departments, openWard, patients, showSnackbar, setShowSnackbar, goToPatientHistoryCallBack, transferPatientCallBack}) => {
+    
     const titleHelmet:string = translate("pages.hospital.inpatients.title").toString();
 
     
     function renderWards(department:IDepartment){
         return department.wards.sort((wardA, wardB) => wardA.name > wardB.name ? 1 : -1).map((ward:IWard) => {
+            console.log(ward.uuid)
+            
+
             return(
                 <div style={{width:'100%', paddingTop:'0.5rem'}}>
-                     <Accordion>
-                        <AccordionSummary
+                     <Accordion expanded={openWard === ward.uuid ? true : undefined} >
+                        <AccordionSummary onChange={() => console.log(ward.uuid)}
                             expandIcon={<ExpandMore />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
@@ -112,6 +135,25 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, patients, 
     return (
         <BoxBckgr>
             <Helmet title={titleHelmet} />
+            <Snackbar
+                    anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                    }}
+                    open={showSnackbar.show}
+                    autoHideDuration={2000}
+                    onClose={()=>setShowSnackbar({show:false})}>
+                        <div>
+                            {
+                                (showSnackbar.message && showSnackbar.severity) &&
+                                <Alert onClose={() => setShowSnackbar({show:false})} severity={showSnackbar.severity}>
+                                    <Translate id={showSnackbar.message} />
+                                </Alert>
+                            }
+                        </div>
+                        
+                        
+                </Snackbar>
             <Grid container spacing={3} padding={2}>
                 <Grid item xs={12}>
                     <Grid item xs={6} >

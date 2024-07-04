@@ -193,7 +193,7 @@
             "save-order" : ["Save the changes once you finished reordering", "Guarde los cambios una vez que haya terminado de reordenar", "Enregistrez les modifications une fois que vous avez terminé de réorganiser"],
             "delete-bed" : ["Delete bed", "Eliminar cama", "Supprimer le lit"],
             "select-bed" : ["Select the bed you wish to hospitalize the patient", "Seleccione la cama en la que desea hospitalizar a la paciente.", "Sélectionnez le lit dans lequel vous souhaitez hospitaliser le patient"],
-            "transfer-ward-patient" : ["To what ward do you want to transfer the patient <b>%X</b>?", "¿A qué sala desea transferir al paciente <b>%X</b>?", "Dans quel service souhaitez-vous transférer le patient <b>%X</b>?"],
+            "transfer-ward-patient" : ["To which ward do you want to transfer the patient <b>%X</b>?", "¿A qué sala desea transferir al paciente <b>%X</b>?", "Dans quel service souhaitez-vous transférer le patient <b>%X</b>?"],
             "transfer-ward-patient-success" : ["Patient transferred successfully", "Paciente transferido correctamente", "Patient transféré avec succès"],
             "select-ward-transfer" : ["Select ward", "Seleccione sala", "Sélectionnez la salle"],
             "confirm-transfer" : ["Confirm", "Confirmar", "Confirmer"],
