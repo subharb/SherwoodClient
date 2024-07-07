@@ -55,7 +55,7 @@ const InpatientsRedux:React.FC<PropsRedux> = ({investigations, loading, patients
 
     return <InpatientsLocalized departments={departments} showSnackbar={showSnackbar} 
                 setShowSnackbar={setShowSnackbar}
-                openWard={openWard}
+                openWard={openWard} setOpenWard={setOpenWard}
                 patients={patients.data[investigations.currentInvestigation.uuid]} 
                 goToPatientHistoryCallBack={goToPatientHistory} 
                 transferPatientCallBack={transferPatientCallBack}/>
@@ -79,11 +79,12 @@ interface Props extends LocalizeContextProps{
     patients:IPatient[],
     showSnackbar:SnackbarType,
     openWard:string | null,
+    setOpenWard:(openWard:string | null) => void,
     setShowSnackbar:(showSnackbar:SnackbarType) => void,
     goToPatientHistoryCallBack:(uuidPatient:string) => void
     transferPatientCallBack:(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string) => void
 }
-const InpatientsComponent:React.FC<Props> = ({translate, departments, openWard, patients, showSnackbar, setShowSnackbar, goToPatientHistoryCallBack, transferPatientCallBack}) => {
+const InpatientsComponent:React.FC<Props> = ({translate, departments, openWard, patients, showSnackbar, setOpenWard, setShowSnackbar, goToPatientHistoryCallBack, transferPatientCallBack}) => {
     
     const titleHelmet:string = translate("pages.hospital.inpatients.title").toString();
 
@@ -95,8 +96,15 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, openWard, 
 
             return(
                 <div style={{width:'100%', paddingTop:'0.5rem'}}>
-                     <Accordion expanded={openWard === ward.uuid ? true : undefined} >
-                        <AccordionSummary onChange={() => console.log(ward.uuid)}
+                     <Accordion expanded={openWard === ward.uuid ? true : undefined} 
+                        onChange={() => {
+                            if(openWard === ward.uuid){
+                                setOpenWard(null);
+                            }else{
+                                setOpenWard(ward.uuid!);
+                            }
+                        }} >
+                        <AccordionSummary 
                             expandIcon={<ExpandMore />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
