@@ -190,6 +190,8 @@
             "edit-bed" : ["Edit bed", "Editar cama", "Modifier le lit"],
             "add-bed" : ["Add bed", "Añadir cama", "Ajouter le lit"],
             "choose-bed" : ["Choose bed", "Elija cama", "Choisissez le lit"],
+            "transfer-bed" : ["Bed %X%", "Cama %X%", "Lit %X%"],
+            "transfer-patient" : ["Bed %X% - swap with %Y%", "Cama %X% - intercambiar con %Y%", "Lit %X% - échanger avec %Y%"],
             "save-order" : ["Save the changes once you finished reordering", "Guarde los cambios una vez que haya terminado de reordenar", "Enregistrez les modifications une fois que vous avez terminé de réorganiser"],
             "delete-bed" : ["Delete bed", "Eliminar cama", "Supprimer le lit"],
             "select-bed" : ["Select the bed you wish to hospitalize the patient", "Seleccione la cama en la que desea hospitalizar a la paciente.", "Sélectionnez le lit dans lequel vous souhaitez hospitaliser le patient"],

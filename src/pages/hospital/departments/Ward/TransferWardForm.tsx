@@ -35,16 +35,18 @@ const TransferWardForm: React.FC<TransferWardFormProps> = ({ patientToTransfer, 
                 label : "hospital.ward.choose-bed",
                 shortLabel: "hospital.ward.choose-bed",
                 options : ward.beds.filter((bed) => !(ward.uuid === currentWard && bed.id === currentBed.id)).sort((bedA, bedB) => bedA.name.toLowerCase().localeCompare(bedB.name.toLocaleLowerCase())).map((bed: any) => {
+                    let bedLabel = translate("hospital.ward.transfer-bed").toString().replace("%X%", bed.name);
                     if(bed.busy){
                         const currentStayIndex = bed.stays.findIndex((stay) => stay.dateOut === null);
                         if(currentStayIndex !== -1){
                             const stay = bed.stays[currentStayIndex];
                             const patient = patients.find((patient) => patient.id === stay.patientInvestigation.patientIdInvestigation);
                             const patientName = patientFullName(patient!.personalData)
-                            return ({label: "Bed "+bed.name + " - swap with " +patientName, value: bed.id})
+                            bedLabel = translate("hospital.ward.transfer-patient").toString().replace("%X%", bed.name).replace("%Y%", patientName);
+                            return ({label: bedLabel, value: bed.id})
                         }
                     }
-                    return ({label: "Bed "+bed.name, value: bed.id})
+                    return ({label: bedLabel, value: bed.id})
                 }),
             }];
             acc[key] = bedsValue;
