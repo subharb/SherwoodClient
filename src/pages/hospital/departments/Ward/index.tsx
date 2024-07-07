@@ -24,13 +24,14 @@ import {
 import { useEffect } from 'react';
 import { IBed, IDepartment, IPatient, IWard } from '../../../../constants/types';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { createBedAction, createStayPatientAction, deleteBedAction, resetHospitalAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
+import { createBedAction, createStayPatientAction, deleteBedAction, resetHospitalAction, transferPatientAction, updateBedAction, updateOrderBedsAction } from '../../../../redux/actions/hospitalActions';
 import { useDepartments, useSnackBarState } from '../../../../hooks';
 import { getWardService } from '../../../../services';
 import { Alert } from '@mui/material';
 import { HOSPITAL_PATIENT } from '../../../../routes/urls';
-import { getPatientID, sexNumberToString, yearsFromDate } from '../../../../utils/index.jsx';
+import { patientFullName, sexNumberToString, yearsFromDate } from '../../../../utils/index.jsx';
 import FormTSFunc, { FormValues } from '../../../../components/general/formTSFunction';
+import TransferWardForm from './TransferWardForm';
 
 export enum WardModes {
     Edit = "edit",
@@ -83,7 +84,7 @@ const BED_FORM = {
     },
 }
 
-interface PropsRouter extends LocalizeContextProps{
+interface PropsRouter extends LocalizeContextProps {
     departments:IDepartment[],
     investigations:any,
     hospital:any,
@@ -97,6 +98,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     const [ward, setWard] = useState<IWard | null>(null);
     const [uuidDepartment, setUuidDepartment] = useState<string | null>(null);
     const {departments, researchers} = useDepartments();
+    const [department, setDepartment] = useState<IDepartment | null>(null);
     const investigations = useSelector((state:any) => state.investigations);
     const [patient, setPatient] = useState<IPatient | undefined>(undefined);
 
@@ -173,17 +175,19 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
                 if(ward){
                     setWard(ward);
                 }
+                setDepartment(department);
             }
         }
         
     },[departments])    
     
     return <Ward loading={props.loading} error={props.hospital.error} mode={props.mode} ward={ward} 
+                departments={departments} department = {department}
                 bedsProps={ward ? ward.beds : null} patient={patient} patients={props.patients.data ? props.patients.data[investigations.currentInvestigation.uuid] : []}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
                 assignBedPatientCallBack = {assignBedPatientCallBack} resetErrorHospital={resetErrorHospital}
                 saveOrderCallBack={saveOrderCallBack} addCallBack={addCallBack} goToPatientHistory={goToPatientHistory}
-                viewCallBack={viewCallBack}
+                viewCallBack={viewCallBack} translate={props.translate}
             />
 }
 
@@ -195,11 +199,11 @@ const mapStateToProps = (state:any) =>{
     }
 }
 
-const WardLocalized = withLocalize(connect(mapStateToProps, null)(WardRouter));
-export { WardLocalized };
+const WardRouterLocalized = withLocalize(connect(mapStateToProps, null)(WardRouter));
+export { WardRouterLocalized };
 
 
-interface Props {
+interface Props extends LocalizeContextProps{
     loading:boolean,
     ward:null | IWard,
     error:number | null,
@@ -208,6 +212,8 @@ interface Props {
     patient?:IPatient,
     patients?:IPatient[],
     inModule?:boolean,
+    departments:IDepartment[],
+    department:IDepartment | null,
     editCallBack ?: (bed:IBed) => void,
     deleteCallBack ?: (bed:IBed) => void,
     addCallBack ?: (bed:IBed) => void,    
@@ -216,7 +222,7 @@ interface Props {
     resetErrorHospital?: () => void,
     goToPatientHistory?:() => void,
     viewCallBack?:(uuidPatient:string) => void,
-    
+    transferPatientCallBack?:(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string, idTransferBed:number) => void
 }
 
 interface PropsView extends Omit<Props, "editCallBack" | "deleteCallBack" | "addCallBack"  | "saveOrderCallBack" | "assignBedPatientCallBack" | "saveOrderCallBack" >{
@@ -229,14 +235,17 @@ enum ModalAction{
     DELETE_BED = "DELETE_BED",
     EDIT_BED = "EDIT_BED",
     ERROR_DELETE_BED = "ERROR_DELETE_BED",
-    ADD_BED = "ADD_BED"
+    ADD_BED = "ADD_BED",
+    TRANSFER_PATIENT = "TRANSFER_PATIENT"
 }
 
-export const WardView :React.FC<PropsView> = (props) => <Ward {...props} mode={WardModes.View}/>
+export const WardView :React.FC<PropsView> = (props) => <WardLocalized {...props} mode={WardModes.View} />
 
-const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, patients, inModule,
+
+const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, patients, inModule, departments,
+                        department,
                         editCallBack, addCallBack, deleteCallBack, saveOrderCallBack, assignBedPatientCallBack, 
-                        resetErrorHospital, goToPatientHistory, viewCallBack}) => {
+                        resetErrorHospital, goToPatientHistory, viewCallBack, transferPatientCallBack}) => {
     const [isDropped, setIsDropped] = useState(false);
     const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
@@ -249,6 +258,8 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
 
     const [bedToEdit, setBedToEdit] = useState<IBed | null>(null);
     const [bedToDelete, setBedToDelete] = useState<IBed | null>(null);
+    const [bedFromTransfer, setBedFromTransfer] = useState<IBed | null>(null);
+    const [patientToTransfer, setPatientToTransfer ] = useState<IPatient | null>(null);
     const [bedToAssign, setBedToAssign] = useState<IBed | null>(null);
     const [addingBed, setAddingBed] = useState(false);
     const [showNameError, setShowNameError] = useState(false);
@@ -305,6 +316,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     }
 
     function resetModal(){
+        console.log("Reset modal");
         setShowModal({show:false});
         setBedToEdit(null);
         setBedToDelete(null);
@@ -329,6 +341,18 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         }
         
     }
+
+    function transferPatient(uuidPatient:string, currentBed:IBed){
+        console.log("Transfer patient", uuidPatient);
+        const patientToTransfer = patients!.find((pat:IPatient) => pat.uuid === uuidPatient);
+        if(patientToTransfer){
+            setPatientToTransfer(patientToTransfer);
+            setShowModal({show:true, action:ModalAction.TRANSFER_PATIENT});
+            setBedFromTransfer(currentBed);
+        }
+
+    }
+
     function deleteCallBackForm(){
         if(bedToDelete && deleteCallBack){
             deleteCallBack(bedToDelete);
@@ -401,6 +425,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
             case WardModes.View:
                 buttonBed = <BedButtonViewPatient patient={personalData} gender={gender} showPersonalData={hasStay}
                                 active={bed.active} name={bed.name} stayDays={stayDays} age={ageYears}
+                                onTransferCallBack={ (currentPatient && transferPatient) ? () => transferPatient(currentPatient.uuid, bed) : undefined}
                                 onClickCallBack={(  currentPatient && viewCallBack) ? () => viewCallBack(currentPatient.uuid) : undefined}
                             />
             break;
@@ -576,15 +601,9 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                 
             }
         })
-        if(inModule){
-            return(
-                <Grid container>
-                    { bedsList }
-                </Grid>
-            )
-        }
+   
         return(
-            <BoxBckgr style={{padding:'1rem'}}>
+            <BoxBckgr style={{padding:'1rem' }} defaultStyles={inModule} >
                 <Snackbar
                     anchorOrigin={{
                     vertical: 'top',
@@ -621,7 +640,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         }
                         {
                             bedToDelete &&
-                            <Grid container>
+                            <Grid container >
                                 <Grid item xs={12}>
                                     <Typography variant="h6" component="div" gutterBottom>
                                         <Translate id="hospital.ward.delete-bed-prompt" />
@@ -634,6 +653,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                                     <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="red" spaceright={1}>
                                         <Translate id="general.cancel" />
                                     </ButtonCancel>
+                                    &nbsp;
                                     <ButtonContinue onClick={deleteCallBackForm} data-testid="continue-modal" color="green">
                                         <Translate id="general.continue" />
                                     </ButtonContinue>
@@ -655,20 +675,37 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                                     <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                         <Translate id="general.cancel" />
                                     </ButtonCancel>
+                                    &nbsp;
                                     <ButtonContinue onClick={assignBedPatientConfirm} data-testid="continue-modal" color="green">
                                         <Translate id="general.continue" />
                                     </ButtonContinue>
                                 </Grid>
                             </Grid>
                         }
+                        {
+                            patientToTransfer && 
+                            <TransferWardForm departments={departments} currentWard={ward.uuid!}
+                                beds={bedsProps!} patients={patients!}
+                                patientToTransfer = {patientToTransfer} currentDepartment={department!.uuid!}
+                                resetModal={resetModal} currentBed={bedFromTransfer!}
+                                transferWardConfirm={(uuidDepartmentDestination, uuidWardDestination, idBed) => {
+                                    console.log("uuidDepartmentDestination", uuidDepartmentDestination);
+                                    console.log("uuidWardDestination", uuidWardDestination);
+                                    console.log("uuidCurrentDepartment", department!.uuid);
+                                    console.log("patientToTransfer!.uuid", patientToTransfer!.uuid);
+                                    transferPatientCallBack(department!.uuid!, ward.uuid!, bedFromTransfer!.id, uuidDepartmentDestination, uuidWardDestination, patientToTransfer!.uuid, idBed)
+                                }} />
+                        }
                         </div>
                 </Modal>
                 
-                <Typography variant="h3" gutterBottom display="inline">
-                    {ward.name}
-                </Typography>
-                
-                
+                {
+                    !inModule &&
+                    <Typography variant="h3" gutterBottom display="inline">
+                        {ward.name}
+                    </Typography>
+                }
+        
                 <Grid container>
                     {
                         renderSettingControls()
@@ -700,5 +737,5 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
     }
 
 }
-
-export default Ward;
+const WardLocalized = withLocalize(Ward);
+export default WardLocalized;

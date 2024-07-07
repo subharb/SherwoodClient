@@ -84,19 +84,6 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading;
             newState.error = initialState.error;
             return newState;
-        // case types.FETCH_HOSPITAL_APPOINTMENT_SUCCESS:
-        //     let tempAppointments = [];
-        //     if(newState.data.appointments){
-        //         tempAppointments = [...newState.data.appointments];
-        //     }
-            
-        //     tempAppointments.push(action.appointment);
-        //     newState.data.appointments = tempAppointments;
-
-        //     newState.loading = initialState.loading;
-        //     newState.error = initialState.error;
-        //     return newState;
-
         case types.SAVE_DEPARTMENT_SUCCESS:
             tempDepartments = [...newState.data.departments];
             tempDepartments.push(action.department);
@@ -107,9 +94,9 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.EDIT_DEPARTMENT_SUCCESS:
             tempDepartments = [...newState.data.departments];
-            const indexDepartement = tempDepartments.findIndex(dep => dep.uuid === action.department.uuid);
-            if(indexDepartement !== -1){
-                tempDepartments[indexDepartement] = action.department;
+            indexDepartment = tempDepartments.findIndex(dep => dep.uuid === action.department.uuid);
+            if(indexDepartment !== -1){
+                tempDepartments[indexDepartment] = action.department;
             }
             newState.data.departments = tempDepartments;
             newState.loading = initialState.loading; 
@@ -156,16 +143,6 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error;   
             return newState;
-        // case types.EDIT_UNIT_SUCCESS:
-        //     tempDepartments = [...newState.data.departments];
-        //     const indexDepartement = tempDepartments.findIndex(dep => dep.uuid === action.department.uuid);
-        //     if(indexDepartement !== -1){
-        //         tempDepartments[indexDepartement] = action.department;
-        //     }
-        //     newState.data.departments = tempDepartments;
-        //     newState.loading = initialState.loading; 
-        //     newState.error = initialState.error;   
-        //     return newState;
         case types.SAVE_WARD_SUCCESS:
             tempDepartments = [...newState.data.departments];
             indexDepartment = tempDepartments.findIndex(dep => dep.uuid === action.uuidDepartment);
@@ -242,6 +219,87 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading; 
             newState.error = initialState.error; 
             return newState;
+        case types.TRANSFER_PATIENT_SUCCESS:
+            // indexDepartment = findIndexDepartment(newState.data.departments, action.uuidCurrentDepartment);
+            // const indexDepartmentDestination = findIndexDepartment(newState.data.departments, action.uuidDepartmentDestination);
+            // tempDepartments = [...newState.data.departments];
+            // department = tempDepartments[indexDepartment];
+            // indexWard = findIndexWard(department, action.uuidCurrentWard);
+            // ward = department.wards[indexWard];
+            // bedIndex = ward.beds.findIndex((bed) => bed.id === action.idCurrentBed);
+            
+            // const indexStay = ward.beds[bedIndex].stays.findIndex(stay => stay.patientInvestigation.uuid === action.uuidPatient);
+
+            // const departmentDestination = tempDepartments[indexDepartmentDestination];
+            // const indexWardDestination = findIndexWard(departmentDestination, action.uuidWardDestination);
+            // const wardDestination = department.wards[indexWardDestination];
+            // const bedIndexDestination = wardDestination.beds.findIndex((bed) => bed.id === action.stay.bed.id);
+            // const currentStay = ward.beds[bedIndexDestination].stays.filter((stay) => stay.dateOut === null)[0]
+            // tempDepartments[indexDepartmentDestination].wards[indexWardDestination].beds[bedIndexDestination].stays.push(action.stay);
+
+            // if (indexStay !== -1) {
+            //     if(!ward.beds[bedIndexDestination].busy){
+            //         newState.data.departments[indexDepartment].wards[indexWard].beds[bedIndex].stays.splice(indexStay, 1);
+            //         newState.data.departments[indexDepartment].wards[indexWard].beds[bedIndex].busy = false;
+            //     }
+            //     else{
+            //         newState.data.departments[indexDepartment].wards[indexWard].beds[bedIndex].stays[indexStay] = currentStay;
+            //     }
+            // }
+
+            // indexDepartment = findIndexDepartment(tempDepartments, action.uuidDepartmentDestination);
+
+            
+
+            // newState.data.departments = tempDepartments;
+            // newState.loading = initialState.loading; 
+            // newState.error = initialState.error; 
+            // return newState;
+            
+
+            indexDepartment = findIndexDepartment(newState.data.departments, action.uuidCurrentDepartment);
+            tempDepartments = [...newState.data.departments];
+            department = tempDepartments[indexDepartment];
+            indexWard = findIndexWard(department, action.uuidCurrentWard);
+            ward = department.wards[indexWard];
+            bedIndex = ward.beds.findIndex((bed) => bed.id === action.idCurrentBed);
+            const currentStay = ward.beds[bedIndex].stays.filter((stay) => stay.dateOut === null)[0]
+
+            const indexDepartmentDestination = findIndexDepartment(newState.data.departments, action.uuidDepartmentDestination);
+            const departmentDestination = tempDepartments[indexDepartmentDestination];
+            const indexWardDestination = findIndexWard(departmentDestination, action.uuidWardDestination);
+            const wardDestination = department.wards[indexWardDestination];
+            const bedIndexDestination = wardDestination.beds.findIndex((bed) => bed.id === action.stay.bed.id);
+            
+            
+            const indexStay = ward.beds[bedIndex].stays.findIndex(stay => stay.patientInvestigation.uuid === action.uuidPatient);
+            if (indexStay !== -1) {
+                if(!ward.beds[bedIndexDestination].busy){
+                    newState.data.departments[indexDepartment].wards[indexWard].beds[bedIndex].stays.splice(indexStay, 1);
+                    newState.data.departments[indexDepartment].wards[indexWard].beds[bedIndex].busy = false;
+                }
+                else{
+                    const destinationStay = newState.data.departments[indexDepartmentDestination].wards[indexWardDestination].beds[bedIndexDestination].stays.filter((stay) => stay.dateOut == null)[0];
+                    destinationStay.dateIn = action.stay.dateIn;
+                    newState.data.departments[indexDepartment].wards[indexWard].beds[bedIndex].stays[indexStay] = {...destinationStay};
+                    const indexStayDestination = ward.beds[bedIndexDestination].stays.findIndex(stay => stay.dateOut === null);
+                    newState.data.departments[indexDepartmentDestination].wards[indexWardDestination].beds[bedIndexDestination].stays[indexStayDestination] = action.stay;
+                }
+            }
+
+            indexDepartment = findIndexDepartment(tempDepartments, action.uuidDepartmentDestination);
+
+            department = tempDepartments[indexDepartment];
+            indexWard = findIndexWard(department, action.uuidWardDestination);
+            ward = department.wards[indexWard];
+            bedIndex = ward.beds.findIndex((bed) => bed.id === action.stay.bed.id);
+            ward.beds[bedIndex].stays.push(action.stay);
+
+            newState.data.departments = tempDepartments;
+            newState.loading = initialState.loading; 
+            newState.error = initialState.error; 
+            return newState;
+            
         case types.UPDATE_BED_WARD_SUCCESS:
             indexDepartment = findIndexDepartment(newState.data.departments, action.uuidDepartment);
             tempDepartments = [...newState.data.departments];
