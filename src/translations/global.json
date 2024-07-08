@@ -161,8 +161,10 @@
             "updated-record-offline" : ["Record updated Offline!", "Registro Actualizado Offline", "Fichier mis à jour Offline"],
             "updated-patient" : ["Patient updated!", "Paciente Actualizado", "Patient mis à jour"],
             "new-patient" : ["Patient saved!", "Nuevo paciente añadido", "Nouveau patient ajouté"],
-            "hospitalized-in-ward" : ["Hospitalized in ward %X", "Hospitalizado en la planta %X", "Hospitalisé en service %X"],
+            "hospitalized-in-ward" : ["Admitted to  %X ward", "Ingresado en el servicio de %X", "Admis dans le service de e %X"],
             "discharged-from-ward" : ["Discharged from ward %X", "Dado de alta de la planta %X", "Sortie de la %X"],
+            "transfered-to-ward" : ["Transfered to ward %X", "Transferido a la planta %X", "Transféré à la %X"],
+            "changed-bed-same-ward" : ["Changed bed in ward %X", "Cambiado de cama en la planta %X", "Changement de lit dans la %X"], 
             "new-patient-offline" : ["Patient saved Offline!", "Nuevo paciente añadido Offline", "Nouveau patient ajouté Offline"],
             "updated-patient-offline" : ["Patient updated Offline!", "Paciente Actualizado Offline", "Patient mis à jour Offline"],
             "insurances" : {

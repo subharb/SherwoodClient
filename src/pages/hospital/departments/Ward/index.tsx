@@ -397,7 +397,8 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         let hasStay:boolean = false;
         let sex = "";
         if(currentStay){
-            var date1 = new Date(currentStay.dateIn);
+            const dateIn = currentStay.prevTransferStay ? currentStay.prevTransferStay.dateIn : currentStay.dateIn;
+            var date1 = new Date(dateIn);
             var date2 = new Date();
             var Difference_In_Time = date2.getTime() - date1.getTime();
             stayDays = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
