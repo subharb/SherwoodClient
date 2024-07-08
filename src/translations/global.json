@@ -1310,8 +1310,7 @@
                 "title" : ["Personal Data", "Datos Personales", "Données personnelles"],
                 "intro" : ["Please select the personal data you are planning to include in your study" ,"Seleccione los datos personales que desea incluir en su estudio", "Sélectionnez les données personnelles que vous souhaitez inclure dans votre étude"],
                 "fields" : {
-                    "health_id" : ["Health ID", "NHC", "ID de santé"],
-                    "automated_health_id" : ["MRN", "NHC", "NDM"],
+                    "health_id" : ["MRN", "NHC", "NDM"],
                     "id" : ["Patient ID", "ID de paciente", "ID de patient"],
                     "name" : ["Name", "Nombre","Prénom"],
                     "surnames" : ["Surnames", "Apellidos", "Nom"],
