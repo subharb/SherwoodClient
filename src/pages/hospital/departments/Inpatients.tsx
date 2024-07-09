@@ -54,7 +54,7 @@ const InpatientsRedux:React.FC<PropsRedux> = ({investigations, loading, patients
     }
 
     return <InpatientsLocalized departments={departments} showSnackbar={showSnackbar} 
-                setShowSnackbar={setShowSnackbar}
+                setShowSnackbar={setShowSnackbar} permissions={investigations.currentInvestigation.permissions}
                 openWard={openWard} setOpenWard={setOpenWard}
                 patients={patients.data[investigations.currentInvestigation.uuid]} 
                 goToPatientHistoryCallBack={goToPatientHistory} 
@@ -84,7 +84,7 @@ interface Props extends LocalizeContextProps{
     goToPatientHistoryCallBack:(uuidPatient:string) => void
     transferPatientCallBack:(uuidCurrentDepartment:string, uuidCurrentWard:string, idCurrentBed:number, uuidDepartmentDestination:string, uuidWardDestination:string, uuidPatient:string) => void
 }
-const InpatientsComponent:React.FC<Props> = ({translate, departments, openWard, patients, showSnackbar, setOpenWard, setShowSnackbar, goToPatientHistoryCallBack, transferPatientCallBack}) => {
+const InpatientsComponent:React.FC<Props> = ({translate, permissions, departments, openWard, patients, showSnackbar, setOpenWard, setShowSnackbar, goToPatientHistoryCallBack, transferPatientCallBack}) => {
     
     const titleHelmet:string = translate("pages.hospital.inpatients.title").toString();
 
@@ -114,6 +114,7 @@ const InpatientsComponent:React.FC<Props> = ({translate, departments, openWard, 
                         <AccordionDetails style={{"flexDirection": "column"}} className="accordion_details">
                             {
                                 <WardView loading={false} mode={WardModes.View} ward={ward}
+                                    permissions={permissions}
                                     patients={patients} inModule={true} departments={departments}
                                     bedsProps={ward.beds} error={null} department={department}
                                     viewCallBack={(uuidPatient) => goToPatientHistoryCallBack(uuidPatient)} 

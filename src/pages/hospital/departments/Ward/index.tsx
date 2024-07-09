@@ -183,6 +183,7 @@ const WardRouter:React.FC<PropsRouter> = (props) => {
     
     return <Ward loading={props.loading} error={props.hospital.error} mode={props.mode} ward={ward} 
                 departments={departments} department = {department}
+                permissions={investigations.currentInvestigation ? investigations.currentInvestigation.permissions : []}
                 bedsProps={ward ? ward.beds : null} patient={patient} patients={props.patients.data ? props.patients.data[investigations.currentInvestigation.uuid] : []}
                 editCallBack={editCallBack} deleteCallBack={deleteCallBack} 
                 assignBedPatientCallBack = {assignBedPatientCallBack} resetErrorHospital={resetErrorHospital}
@@ -214,6 +215,7 @@ interface Props extends LocalizeContextProps{
     inModule?:boolean,
     departments:IDepartment[],
     department:IDepartment | null,
+    permissions:string[],
     editCallBack ?: (bed:IBed) => void,
     deleteCallBack ?: (bed:IBed) => void,
     addCallBack ?: (bed:IBed) => void,    
@@ -243,7 +245,7 @@ export const WardView :React.FC<PropsView> = (props) => <WardLocalized {...props
 
 
 const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, patients, inModule, departments,
-                        department,
+                        department, permissions,
                         editCallBack, addCallBack, deleteCallBack, saveOrderCallBack, assignBedPatientCallBack, 
                         resetErrorHospital, goToPatientHistory, viewCallBack, transferPatientCallBack}) => {
     const [isDropped, setIsDropped] = useState(false);
@@ -424,9 +426,10 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                             /> 
             break;
             case WardModes.View:
+                const permissionToTransfer = permissions.includes("HOSPITALIZATION");
                 buttonBed = <BedButtonViewPatient patient={personalData} gender={gender} showPersonalData={hasStay}
                                 active={bed.active} name={bed.name} stayDays={stayDays} age={ageYears}
-                                onTransferCallBack={ (currentPatient && transferPatient) ? () => transferPatient(currentPatient.uuid, bed) : undefined}
+                                onTransferCallBack={ ( permissionToTransfer && currentPatient && transferPatient) ? () => transferPatient(currentPatient.uuid, bed) : undefined}
                                 onClickCallBack={(  currentPatient && viewCallBack) ? () => viewCallBack(currentPatient.uuid) : undefined}
                             />
             break;

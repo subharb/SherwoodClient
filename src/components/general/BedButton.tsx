@@ -166,7 +166,7 @@ const BedButton:React.FC<Props> = (props) => {
                                 <ButtonDelete onClick={(e:Event) => deleteAction(e)}  />
                             }
                             {
-                                props.mode === "view" && patientName &&
+                                props.mode === "view" && patientName && props.onTransferCallBack &&
                                 <ButtonTransfer onClick={(e:Event) => transferAction(e)}  />
                             }
                         </div>
