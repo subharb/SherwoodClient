@@ -268,7 +268,7 @@ export default function reducer(state = initialState, action){
             const indexDepartmentDestination = findIndexDepartment(newState.data.departments, action.uuidDepartmentDestination);
             const departmentDestination = tempDepartments[indexDepartmentDestination];
             const indexWardDestination = findIndexWard(departmentDestination, action.uuidWardDestination);
-            const wardDestination = department.wards[indexWardDestination];
+            const wardDestination = departmentDestination.wards[indexWardDestination];
             const bedIndexDestination = wardDestination.beds.findIndex((bed) => bed.id === action.stay.bed.id);
             
             
@@ -289,11 +289,11 @@ export default function reducer(state = initialState, action){
 
             indexDepartment = findIndexDepartment(tempDepartments, action.uuidDepartmentDestination);
 
-            department = tempDepartments[indexDepartment];
-            indexWard = findIndexWard(department, action.uuidWardDestination);
-            ward = department.wards[indexWard];
+            department = tempDepartments[indexDepartmentDestination];
+            //indexWard = findIndexWard(department, action.uuidWardDestination);
+            ward = department.wards[indexWardDestination];
             bedIndex = ward.beds.findIndex((bed) => bed.id === action.stay.bed.id);
-            ward.beds[bedIndex].stays.push(action.stay);
+            ward.beds[bedIndexDestination].stays.push(action.stay);
 
             newState.data.departments = tempDepartments;
             newState.loading = initialState.loading; 

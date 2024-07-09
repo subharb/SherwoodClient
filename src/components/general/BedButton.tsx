@@ -171,14 +171,9 @@ const BedButton:React.FC<Props> = (props) => {
                             }
                         </div>
                     }
-                    
-                    
                     <Typography variant="body2" style={{lineHeight:1}} component="div" gutterBottom>
                        {patientName}
                     </Typography>
-                    
-                    
-                    
                 </GridHeaderPatient>
                 <Grid xs={12} item container>
                     {
