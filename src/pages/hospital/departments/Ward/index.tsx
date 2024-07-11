@@ -29,7 +29,7 @@ import { useDepartments, useSnackBarState } from '../../../../hooks';
 import { getWardService } from '../../../../services';
 import { Alert } from '@mui/material';
 import { HOSPITAL_PATIENT } from '../../../../routes/urls';
-import { patientFullName, sexNumberToString, yearsFromDate } from '../../../../utils/index.jsx';
+import { getPatientID, patientFullName, sexNumberToString, yearsFromDate } from '../../../../utils/index.jsx';
 import FormTSFunc, { FormValues } from '../../../../components/general/formTSFunction';
 import TransferWardForm from './TransferWardForm';
 
@@ -495,7 +495,7 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
                         {
                             patient && 
                             <Typography variant="body2" >
-                                <Translate id="investigation.create.personal_data.fields.health_id" />:{ getPatientID(patient?.personalData)}
+                                <Translate id="investigation.create.personal_data.fields.health_id" />:{ getPatientID(patient)}
                             </Typography>
                         }
                         <Typography variant="body2" >
