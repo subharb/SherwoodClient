@@ -742,6 +742,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         if(services.length > 0){
             return <>
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                 <ButtonAdd onClick={() => setModalInfo({showModal: true, type:"service"})} />
                     {
                         services.map((service) => {
                             return (
