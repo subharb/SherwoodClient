@@ -180,13 +180,29 @@ function Patient(props) {
 
     if(typeSurveySelected === TYPE_MEDICAL_SURVEY){
         staysPatient.forEach((stay) => {
-            filteredRecords.push({
-                researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
-                surveyName : props.translate("hospital.patient.hospitalized-in-ward").toString().replace("%X", stay.bed.ward.name),
-                createdAt : stay.dateIn,
-                type:"stay"
-            })
-            if(stay.dateOut){
+            if(stay.prevTransferStay){
+                const stayPrevStay = staysPatient.find((stayLink) => stay.prevTransferStay && stay.prevTransferStay.id === stayLink.id);
+                let label = "hospital.patient.transfered-to-ward";
+                if(stayPrevStay && stayPrevStay.bed.ward.uuid === stay.bed.ward.uuid){
+                    label = "hospital.patient.changed-bed-same-ward";
+                }
+                filteredRecords.push({
+                    researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
+                    surveyName : props.translate(label).toString().replace("%X", stay.bed.ward.name),
+                    createdAt : stay.dateIn,
+                    type:"stay"
+                })
+            }
+            else{
+                filteredRecords.push({
+                    researcher : stay.checkInResearcher.researcher.name +" "+stay.checkInResearcher.researcher.surnames,
+                    surveyName : props.translate("hospital.patient.hospitalized-in-ward").toString().replace("%X", stay.bed.ward.name),
+                    createdAt : stay.dateIn,
+                    type:"stay"
+                })
+            }
+            const stayLinked = staysPatient.find((stayLink) => stayLink.prevTransferStay && stayLink.prevTransferStay.id === stay.id);
+            if(stay.dateOut && !stayLinked){
                 filteredRecords.push({
                     researcher : stay.checkoutResearcher.researcher.name +" "+stay.checkoutResearcher.researcher.surnames,
                     surveyName : props.translate("hospital.patient.discharged-from-ward").toString().replace("%X", stay.bed.ward.name),

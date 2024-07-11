@@ -32,36 +32,25 @@ class Form extends Component {
   constructor(props) {
     super(props);
 
-    this.renderFields = this.renderFields.bind(this);
-    this.sherwoodValidation = this.sherwoodValidation.bind(this);
-    this.mounted = false;
-    this.labelValues = {};
-    //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
-    this.state = { showOptions: {} };
-  }
-  sherwoodValidation(value, allValues, propsForm, key) {
-    if (this.props.fields[key]) {
-      const fieldValueCompare = this.props.fields[key].validationField
-        ? allValues[this.props.fields[key].validationField]
-        : this.props.fields[key].validationValue
-        ? this.props.translate(this.props.fields[key].validationValue)
-        : null;
-      const valueField =
-        this.props.fields[key].type === "textarea" &&
-        typeof value !== "undefined"
-          ? value.replace(/<[^>]+>/g, "")
-          : value;
-      const validationFunc = this.props.fields[key].validation
-        ? this.props.fields[key].validation
-        : "notEmpty";
-      const validation = validateField(
-        {
-          value: valueField,
-          validation: validationFunc,
-          required: this.props.fields[key].required,
-        },
-        fieldValueCompare
-      );
+        this.renderFields= this.renderFields.bind(this);
+        this.sherwoodValidation = this.sherwoodValidation.bind(this)
+        this.mounted = false;
+        this.labelValues = {};
+        this.updateDictFields = {}
+        //Para guardar el estado de los extra fields con opciones, si mostrarlos o no
+        this.state = {showOptions:{}}
+    }
+    sherwoodValidation(value, allValues, propsForm, key){
+        if(this.updateDictFields[key]){
+            const fieldValueCompare = this.props.fields[key].validationField ? allValues[this.props.fields[key].validationField] : this.props.fields[key].validationValue ? this.props.translate(this.props.fields[key].validationValue) : null;
+            const valueField = this.props.fields[key].type === "textarea" && typeof value !== "undefined" ? value.replace(/<[^>]+>/g, '') : value;
+            const validationFunc = this.props.fields[key].validation ? this.props.fields[key].validation : "notEmpty";
+            const validation = validateField({  
+                                    value : valueField, 
+                                    validation:validationFunc, 
+                                    required:this.props.fields[key].required
+                                },
+                                fieldValueCompare);
 
       return validation.result ? undefined : validation.messageCode;
     } else {
@@ -117,21 +106,38 @@ class Form extends Component {
         } else if (this.props.fields[key].type === "checkbox") {
           initData[key] = false;
         }
-      }
-    });
-    this.mounted = true;
-    this.props.initialize(initData);
-  }
-  showOptions(key) {
-    let tempState = this.state;
-    tempState.showOptions[key] = true;
-    this.setState(tempState);
-  }
-  closeOptions(key) {
-    let tempState = this.state;
-    tempState.showOptions[key] = false;
-    this.setState(tempState);
-  }
+    }
+    componentDidMount(){
+        //Busco el campo DefaultValue para inicializar el form con esos valores
+        let initData = {};
+        Object.keys(this.props.fields).forEach(key => {
+            if(this.props.initialData){
+                initData[key] = this.props.initialData[key];
+            }
+            else{
+                if(this.props.fields[key].hasOwnProperty("defaultValue")){
+                    initData[key] = this.props.fields[key].defaultValue;
+                }
+                else if(this.props.fields[key].type === "checkbox"){
+                    initData[key] = false;
+                }
+            }
+            
+        });
+        this.updateDictFields = this.props.fields;
+        this.mounted = true;
+        this.props.initialize(initData)
+    }
+    showOptions(key){
+        let tempState = this.state;
+        tempState.showOptions[key] = true;
+        this.setState(tempState);
+    }
+    closeOptions(key){
+        let tempState = this.state;
+        tempState.showOptions[key] = false;
+        this.setState(tempState);
+    }
 
   renderOptions = ({ fields, activatedField, meta: { error } }) => (
     <ul>
@@ -185,7 +191,33 @@ class Form extends Component {
             component={this.renderOptions}
           />
         </div>
-      );
+    )
+
+    renderExtraFields(key){
+        //Un field que habilita la aparición de otro field
+       
+        const {activationValues, activatedFields, conditionalValues, conditionalFields} = {...this.props.fields[key]};
+        const value = this.props.formValues[key];
+
+        if(activatedFields && activationValues && activationValues.includes(value)){
+                const activatedField = {...activatedFields[value]};
+                return (
+                    <div className="container">
+                        <FieldArray name={`${key}_options`} activatedField={activatedField}
+                            label={activatedField.label} key={key} component={this.renderOptions} />
+                    </div>
+                )
+            
+        }
+        if(conditionalValues && conditionalFields && conditionalValues.includes(value)){
+            const conditionalFieldsForValue = conditionalFields[value];
+            
+            return conditionalFieldsForValue.map((conditionalField, key) =>{
+                this.updateDictFields[conditionalField.name] = conditionalField;
+                
+            })
+        
+        }
     }
   }
   renderFields() {
