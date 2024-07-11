@@ -7,7 +7,7 @@ import Loader from '../../../components/Loader';
 import { BoxBckgr, CheckCircleOutlineSvg, ButtonGrey, ButtonCancel, ButtonContinue, TypographyStyled } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import { useParams, useHistory } from 'react-router-dom';
-import { yearsFromDate, postErrorSlack, getUnitsResearcher } from '../../../utils/index.jsx';
+import { yearsFromDate, postErrorSlack, getUnitsResearcher, getPatientID } from '../../../utils/index.jsx';
 import FillDataCollection from '../FillDataCollection';
 import { Translate, withLocalize } from 'react-localize-redux';
 import { Alert } from "@mui/lab";
