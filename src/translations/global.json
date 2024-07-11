@@ -1210,6 +1210,7 @@
             },
             "personal_info" : {
                 "name" : ["Name", "Nombre", "Prenom"],
+                "cloudflare":["cloudflare","cloudflare","cloudflare"],
                 "surnames" : ["Surnames", "Apellidos", "Nom" ],
                 "surname" : ["Surname", "Apellido", "Nom"]
             },
