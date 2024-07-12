@@ -3,6 +3,7 @@ import { Grid } from "@mui/material";
 import { RedFormHelperText } from "../mini_components";
 import { Translate } from "react-localize-redux";
 
+
 // interface cloudflareProps {
 //   callback: (token: string) => void;
 //   error: boolean;
@@ -11,12 +12,13 @@ import { Translate } from "react-localize-redux";
 
 const CloudFlare = (props) => {
   const turnstileRef = useRef(null);
-
+  
   useEffect(() => {
     const renderTurnstile = () => {
       window.turnstile.ready(function () {
+        const sitekey:string = import.meta.env.VITE_APP_SITE_KEY_CLOUDFALRE
         window.turnstile.render(turnstileRef.current, {
-          sitekey: "1x00000000000000000000AA",
+          sitekey,
           callback: function (token: string) {
             if (token) {
               props.callback(token);
