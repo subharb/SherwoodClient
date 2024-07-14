@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 import React from 'react'
-import { ButtonDelete, IconPatient } from './mini_components'
+import { ButtonDelete, ButtonTransfer, IconPatient } from './mini_components'
 import styled, { css } from 'styled-components';
 import { BedButtonModes, WardModes } from '../../pages/hospital/departments/Ward';
 import { IPatient, PersonalData } from '../../constants/types';
@@ -77,6 +77,7 @@ interface Props {
     age?:number | null,
     patient?:PersonalData | null
     deleteCallBack?:() => void,
+    onTransferCallBack?:() => void,
     onClickCallBack?:(patient?:PersonalData) => void,
     onSelectPatient?:() => void,
 }
@@ -134,9 +135,16 @@ const BedButton:React.FC<Props> = (props) => {
             props.deleteCallBack();
         }
     }
+
+    function transferAction(e:Event){
+        e.stopPropagation();
+        if(props.onTransferCallBack){
+            props.onTransferCallBack();
+        }
+    }
     
     const active = !props.active ? false : (props.mode === WardModes.AssignPatient && props.showPersonalData) ? true : (props.mode === WardModes.View && !props.showPersonalData) ? false : props.active;
-    const patientName = props.patient ? props.patient.name+" "+props.patient.surnames : "" ;
+    const patientName = props.patient ? props.patient.name+" "+props.patient.surnames : null ;
     //const name = props.mode === WardModes.View && props.patient ? props.patient.name+" "+props.patient.surnames : props.name;  
     const showIcon = props.patient;
     return (
@@ -157,16 +165,15 @@ const BedButton:React.FC<Props> = (props) => {
                                 props.mode === "edit" && !props.showPersonalData &&
                                 <ButtonDelete onClick={(e:Event) => deleteAction(e)}  />
                             }
+                            {
+                                props.mode === "view" && patientName && props.onTransferCallBack &&
+                                <ButtonTransfer onClick={(e:Event) => transferAction(e)}  />
+                            }
                         </div>
                     }
-                    
-                    
                     <Typography variant="body2" style={{lineHeight:1}} component="div" gutterBottom>
                        {patientName}
                     </Typography>
-                    
-                    
-                    
                 </GridHeaderPatient>
                 <Grid xs={12} item container>
                     {

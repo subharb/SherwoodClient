@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+dev-dist/*
 
 # testing
 /coverage
@@ -16,7 +17,7 @@
 /build-research
 # misc
 .DS_Store
-.env.local
+.env
 .env.development.local
 .env.test.local
 .env.production.local
@@ -29,3 +30,5 @@ yarn-error.log*
 
 # Sentry Config File
 .env.sentry-build-plugin
+dev-dist/sw.js
+dev-dist/sw.js.map

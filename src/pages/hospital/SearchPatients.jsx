@@ -14,7 +14,7 @@ import { updatePatientsFromId } from '../../redux/actions/patientsActions';
 import _ from 'lodash';
 import Modal from '../../components/general/modal';
 import { DepartmentsAccordionRedux } from './departments/DepartmentsAccordion';
-import { decryptSinglePatientData, yearsFromDate } from '../../utils/index.jsx';
+import { decryptSinglePatientData, getPatientID, yearsFromDate } from '../../utils/index.jsx';
 import ICT from '../../components/general/SmartFields/ICT';
 import { searchPatientByDiagnosis } from '../../services';
 import PatientAppointmentInfo from './Outpatients/PatientAppointmentInfo';
