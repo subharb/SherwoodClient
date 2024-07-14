@@ -300,6 +300,15 @@ export const PERSONAL_DATA_FIELDS = {
         shortLabel:"investigation.create.personal_data.fields.health_id",
         validation : "textMin2"
     },
+    "automated_health_id" : {
+        name: "automated_health_id",
+        required : true,
+        type:"text",
+        encrypted : false,
+        label:"investigation.create.personal_data.fields.automated_health_id",
+        shortLabel:"investigation.create.personal_data.fields.automated_health_id",
+        validation : "textMin2"
+    },
     "national_id" : {
         name: "national_id",
         required : true,
@@ -631,7 +640,7 @@ export function patientFullName(patient){
 }
 
 export function getPatientID(patient){
-    return patient.personalData.health_id ? patient.personalData.health_id : patient.id;
+    return patient.personalData.automated_health_id ? patient.personalData.automated_health_id : patient.personalData.health_id ? patient.personalData.health_id : patient.id;
 }
 
 export function formatPatients(patients, personalFields, code = 'es-ES', insurances = []){

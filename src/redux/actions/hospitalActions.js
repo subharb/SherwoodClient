@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteDepartmentService, deleteUnitService, deleteWardService, dischargePatientService, editDepartmentService, editUnitService, getAgendasInvestigationService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, makeAppointmentService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, updateBedService, updateOrderBedsService } from "../../services";
+import { assignUnitToResearcherService, createBedService, createStayPatientService, deleteBedService, deleteDepartmentService, deleteUnitService, deleteWardService, dischargePatientService, editDepartmentService, editUnitService, getAgendasInvestigationService, getDepartmentsInstitutionService as getDepartmentsInsvestigationService, getPatientStaysService, makeAppointmentService, removeUnitToResearcherService, saveDepartmentService, saveUnitService, saveUpdateWardService, transferPatientService, updateBedService, updateOrderBedsService } from "../../services";
 import { saveAgendaService } from "../../services/agenda";
 
 
@@ -376,6 +376,33 @@ export function createStayPatientAction(uuidInvestigation, uuidDepartment, uuidW
                 throw error;
             });
     };
+}
+
+export function transferPatientAction(uuidInvestigation, uuidCurrentDepartment, uuidCurrentWard, idCurrentBed, uuidDepartmentDestination, uuidWardDestination, uuidPatient, idTransferBed) {
+    return async (dispatch) => {
+        dispatch({ type: types.FETCH_HOSPITAL_LOADING });
+
+        return transferPatientService(uuidInvestigation, uuidWardDestination, uuidPatient, idTransferBed)
+            .then((response) => {
+                dispatch({
+                    type: types.TRANSFER_PATIENT_SUCCESS,
+                    stay: response.stay,
+                    uuidCurrentDepartment: uuidCurrentDepartment,
+                    uuidCurrentWard : uuidCurrentWard,
+                    idCurrentBed : idCurrentBed,
+                    idTransferBed : idTransferBed,
+                    uuidWardDestination: uuidWardDestination,
+                    uuidDepartmentDestination : uuidDepartmentDestination,
+                    uuidPatient :uuidPatient
+                });
+            })
+            .catch((error) => {
+
+                dispatch({ ...error, type: types.HOSPITAL_ERROR });
+                throw error;
+            });
+    };
+    
 }
 
 export function getPatientStaysAction(uuidInvestigation, uuidPatient) {

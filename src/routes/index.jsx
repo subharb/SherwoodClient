@@ -45,7 +45,7 @@ import Departments from  "../pages/hospital/departments/Admin";
 import InPatients from  "../pages/hospital/departments/Inpatients";
 import PharmacyCentral from  "../pages/hospital/Pharmacy";
 import Billing from  "../pages/hospital/Billing";
-import { WardLocalized, WardModes } from  "../pages/hospital/departments/Ward";
+import { WardRouterLocalized, WardModes } from  "../pages/hospital/departments/Ward";
 import { FUNCTIONALITY } from "../constants/types";
 import Pharmacy from "../pages/hospital/Pharmacy";
 import Outpatients from "../pages/hospital/Outpatients";
@@ -298,18 +298,18 @@ const hospitalRoutes = {
         {
             path: HOSPITAL_WARD_ROUTE,
             name: "Ward",
-            component: () => <WardLocalized mode={WardModes.View} />,
+            component: () => <WardRouterLocalized mode={WardModes.View} />,
         },
         
         {
             path: HOSPITAL_WARD_SETTINGS_ROUTE,
             name: "Ward",
-            component: () => <WardLocalized mode={WardModes.Edit} />,
+            component: () => <WardRouterLocalized mode={WardModes.Edit} />,
         },
         {
             path: HOSPITAL_WARD_ASSIGN_PATIENT_ROUTE,
             name: "Ward",
-            component: () =>  <WardLocalized mode={WardModes.AssignPatient} />,
+            component: () =>  <WardRouterLocalized mode={WardModes.AssignPatient} />,
         },
         {
             path: HOSPITAL_BILLING,

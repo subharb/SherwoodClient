@@ -14,7 +14,7 @@ import { updatePatientsFromId } from '../../redux/actions/patientsActions';
 import _ from 'lodash';
 import Modal from '../../components/general/modal';
 import { DepartmentsAccordionRedux } from './departments/DepartmentsAccordion';
-import { decryptSinglePatientData, yearsFromDate } from '../../utils/index.jsx';
+import { decryptSinglePatientData, getPatientID, yearsFromDate } from '../../utils/index.jsx';
 import ICT from '../../components/general/SmartFields/ICT';
 import { searchPatientByDiagnosis } from '../../services';
 import PatientAppointmentInfo from './Outpatients/PatientAppointmentInfo';
@@ -104,6 +104,9 @@ function SearchPatients(props){
                                 result = patientBirthday.getFullYear() === value.getFullYear() &&
                                             patientBirthday.getMonth() === value.getMonth() &&
                                             patientBirthday.getDate() === value.getDate();
+                            }
+                            else if(keyValue === "automated_health_id" && value !== ""){
+                                result = patient.personalData["automated_health_id"] === value;
                             }
                             else if(value !== "" && patient.personalData[keyValue] && !patient.personalData[keyValue].toLowerCase().includes(value.toLowerCase())){
                                 result = false;
@@ -207,17 +210,12 @@ export const SearchPatientsComponent = withLocalize((props) => {
                             <Grid container>
                                 <Grid item xs={12}>
                                     {
-                                        props.patients[indexPatient].personalData.health_id &&
+                                       
                                         [
-                                            <Translate id="investigation.create.personal_data.fields.health_id" />, ",", props.patients[indexPatient].personalData.health_id
+                                            <Translate id="investigation.create.personal_data.fields.health_id" />, ",", getPatientID(props.patients[indexPatient])
                                         ]
                                     }
-                                    {
-                                        !props.patients[indexPatient].personalData.health_id && 
-                                        <Typography variant="body2" >
-                                            <Translate id="investigation.create.personal_data.fields.uuid" />:{ props.patients[indexPatient]?.id}
-                                        </Typography>
-                                    }
+                                    
                                     <Typography variant="body2">
                                         <Translate id="investigation.create.personal_data.fields.name" />: {props.patients[indexPatient].personalData.name}
                                     </Typography>

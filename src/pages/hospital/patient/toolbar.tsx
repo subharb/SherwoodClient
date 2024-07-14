@@ -18,6 +18,7 @@ import iconPrescriptions from "../../../img/icons/prescription_black.svg";
 import iconPrescriptionsGreen from "../../../img/icons/prescription_green.svg";
 import React from "react";
 import { PERMISSION } from "../../../components/investigation/share/user_roles"
+import { getPatientID } from "../../../utils"
 
 type SurveyType = | typeof TYPE_MEDICAL_SURVEY | typeof TYPE_IMAGE_SURVEY | typeof TYPE_SOCIAL_SURVEY | typeof TYPE_LAB_SURVEY |  typeof TYPE_SHOE_SURVEY | typeof TYPE_NURSE | typeof TYPE_CARE_GIVER | typeof TYPE_PRESCRIPTIONS;
 
@@ -95,7 +96,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, enableA
         const canEditPersonalData = permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editCallBack : null
 
         return <PatientToolBarComponent sex={personalData.sex} name={personalData!.name as string} 
-                    health_id={personalData!.health_id as string} 
+                    health_id={ getPatientID({personalData:personalData}) as string} 
                     surnames={personalData!.surnames as string} patientID={patientID} 
                     buttonsAvailable={categorySurveys} buttonSelected={categorySelected}
                     readMedicalPermission={readMedicalPermission} 
@@ -143,7 +144,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                     <Typography variant="body2" gutterBottom>
                         {
                             health_id &&
-                            [<Translate id="investigation.create.personal_data.fields.health_id" />, ":", health_id]
+                            [<Translate id="investigation.create.personal_data.fields.health_id" />, ": ", health_id]
                         }
                         {
                             !health_id &&

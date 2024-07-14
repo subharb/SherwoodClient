@@ -7,7 +7,7 @@ import { connect, connectAdvanced } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { IPatient, IPersonalData } from '../constants/types';
 import { HOSPITAL_PATIENT } from '../routes/urls';
-import { dateToFullDateString } from '../utils/index.jsx';
+import { dateToFullDateString, getPatientID } from '../utils/index.jsx';
 import { ColourChip } from './general/mini_components-ts';
 
 
@@ -65,10 +65,10 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ activeLanguage, uuidPatient, 
         return (
             <Grid container spacing={1}>
                 <Grid item xs={12}>
-                    { 
-                        patient.personalData.health_id &&
-                        <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.health_id" /></span>: {patient.personalData.health_id}</Typography>
-                    }
+                     
+                        
+                        <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.health_id" /></span>: {getPatientID(patient)}</Typography>
+                    
                     <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="hospital.billing.bill.patient" /></span>: {patient.personalData.name} {patient.personalData.surnames} &nbsp; <ColourChip rgbcolor={green[500]} onClick={goToPatient} label={<Translate id="pages.hospital.go-to-patient" />}/></Typography>
                     <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.birthdate" /></span>: {dateToFullDateString(patient.personalData.birthdate, activeLanguage.code)}</Typography>
                     <Typography variant="body2"><span style={{ fontWeight: 'bold' }}><Translate id="investigation.create.personal_data.fields.sex" /></span>: {patient.personalData.sex}</Typography>

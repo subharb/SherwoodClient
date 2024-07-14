@@ -858,6 +858,26 @@ export function createStayPatientService(uuidInvestigation, idBed, uuidPatient) 
     });
 }
 
+export function transferPatientService(uuidInvestigation, uuidWardDestination, uuidPatient, idTransferBed) {
+    return new Promise((resolve, reject) => {
+        axios
+            .patch(import.meta.env.VITE_APP_API_URL + "/hospital/" + uuidInvestigation + "/patient/" + uuidPatient + "/ward", { 
+                "uuidWardDestination": uuidWardDestination,
+                "idTransferBed" : idTransferBed
+             }, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                error.errorCode = 500;
+                reject(error);
+            });
+    });
+}
+
 
 export function saveResearcherPermissions(uuidInvestigation, permissions) {
     return new Promise((resolve, reject) => {

@@ -3,6 +3,7 @@ import styled, { css, withTheme } from 'styled-components';
 import icon_male from "../../img/icons/icon_male.svg";
 import { Link } from 'react-router-dom'
 import icon_female from "../../img/icons/icon_female.svg";
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import icon_undefined from "../../img/icons/icon_undefined.svg";
 import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
 import { green, blue } from '@mui/material/colors';
@@ -123,9 +124,11 @@ export const GridContainer = styled(Grid)`
 `;
 
 export const BoxBckgr = styled(Box)`
-    background-color:${props => props.theme.palette.background.default};
+    ${({ defaultStyles }) => !defaultStyles && css`
+        background-color:${props => props.theme.palette.background.default};
+        color:${props => props.theme.palette.primary.color};
+    `}
     min-height:100vh;
-    color:${props => props.theme.palette.primary.color};
 `
 
 export const Divider = styled(MuiDivider)(spacing);
@@ -245,6 +248,14 @@ export const ButtonDelete = (props) =>{
     )
 }
 
+export const ButtonTransfer = (props) =>{
+    return(
+        <Button {...props}>
+            <SwapHorizIcon />
+        </Button>
+    )
+}
+
 export const ButtonBack = (props) =>{
     return <ButtonOtherStyles 
         variant="contained"
@@ -309,15 +320,15 @@ export const ButtonOk = (props) =>{
 }
 
 export const ButtonCancel = (props) =>{
-    return <ButtonCancelStyles
+    return <Button
+        {...props}
         variant="contained"
         color="primary"
         size="small"
         endIcon={<ClearIcon />}
-        {...props}
     >
         {props.children}
-    </ButtonCancelStyles>
+    </Button>
 }
 
 export const TypographyStyled = styled(Typography)`

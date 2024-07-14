@@ -47,6 +47,7 @@ export interface IBed{
     name:string,
     active:boolean,
     order:number,
+    busy:boolean,
     stays?:any
 }
 
@@ -179,6 +180,7 @@ export interface IPersonalData{
     birthdate: Date,
     sex: string,
     health_id ?:string,
+    automated_health_id ?:string,
     insurance:number | null,
 }
 

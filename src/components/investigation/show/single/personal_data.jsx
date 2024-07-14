@@ -5,13 +5,18 @@ import Form from '../../../general/form';
 import { Grid, Typography } from '@mui/material';
 
 export default function PersonalDataForm(props) {
-    let form = {}
-    const orderedFields = props.fields.sort((a,b) => a.order - b.order)
-    for(let i = 0; i < orderedFields.length; i++){
-        const value = orderedFields[i];
-        
-        form[value.name] = orderedFields[i]; 
-    }
+    const orderedFields = React.useMemo(() => {
+        return props.fields.sort((a,b) => a.order - b.order);
+    }, [props.fields]);
+    const form = React.useMemo(() => {
+        let formObj = {};
+        for (let i = 0; i < orderedFields.length; i++) {
+            const value = orderedFields[i];
+            formObj[value.name] = orderedFields[i];
+        }
+        return formObj;
+    }, [orderedFields]);
+
     //Se generan las claves del paciente, tanto para el researcher como para el posterior acceso del paciente
     async function encryptPersonalData(data){
         if(!localStorage.getItem("password")){
@@ -43,7 +48,6 @@ export default function PersonalDataForm(props) {
                 postErrorSlack("", "fieldForm no found:"+key , "");
             } 
         }
-        
         
         //Generación de claves de paciente de Sherwood
         const rawKeyPatient = import.meta.env.VITE_APP_DEFAULT_PATIENT_PASSWORD;// o la clave que se imprime
@@ -86,6 +90,9 @@ export default function PersonalDataForm(props) {
     }
     const personalFields = {};
     
+    if(JSON.stringify(form) === '{}'){
+        return "LOading"
+    }
     return (
         <Grid container spacing={1}>
             <Grid item xs={12}>
