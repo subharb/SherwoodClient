@@ -16,7 +16,7 @@ const CloudFlare = (props) => {
   useEffect(() => {
     const renderTurnstile = () => {
       window.turnstile.ready(function () {
-        const sitekey:string = import.meta.env.VITE_APP_SITE_KEY_CLOUDFALRE
+        const sitekey:string = import.meta.env.VITE_APP_SITE_KEY_CLOUDFLARE
         window.turnstile.render(turnstileRef.current, {
           sitekey,
           callback: function (token: string) {
