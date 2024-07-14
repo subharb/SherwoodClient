@@ -141,13 +141,13 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                         show: renderShowIcon(appointment.requestAppointment.status, appointment.startDateTime),
                         startDateTime : appointment.startDateTime
                     }
-                });
+                }).sort((a, b) => new Date(a.startDateTime) < new Date(b.startDateTime) ? 1 : -1);
                 return(
                     <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
                             actions={[{"type" : "delete", "check" : (row:any) => {
                                 return new Date(row.startDateTime) > new Date()
                             }, "func" : (id:number) => deleteAppointmentCallback(id)}]}
-                            />
+                        />
                 )
             }
         }
@@ -155,7 +155,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
     }
     if(!createAppointment){
         return (
-            <Grid container xs={12}>
+            <Grid xs={12}>
                 <Grid item xs={12}>
                     <PatientInfo uuidPatient={uuidPatient} />
                 </Grid>

@@ -404,7 +404,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                     
                 </Snackbar>
 
-                <Grid container spacing={1}>
+                <Grid spacing={1}>
                     { (uuidPatient && !hidePatientInfo) &&
                         <Grid item xs={12}>
                             <PatientInfo uuidPatient={uuidPatient} />
