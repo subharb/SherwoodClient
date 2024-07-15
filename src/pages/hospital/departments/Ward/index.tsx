@@ -399,12 +399,12 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
         let hasStay:boolean = false;
         let sex = "";
         if(currentStay){
-            let dateIn = currentStay.dateIn;
-            if(currentStay.prevTransferStay){
-                const wardFromDepartment = department?.wards.find((ward:IWard) => ward.uuid === currentStay.prevTransferStay.bed.ward.uuid);
-                dateIn = wardFromDepartment ? currentStay.prevTransferStay.dateIn : currentStay.dateIn;
+            let dateIn = currentStay.firstDateIn ? currentStay.firstDateIn : currentStay.dateIn;
+            // if(currentStay.prevTransferStay){
+            //     const wardFromDepartment = department?.wards.find((ward:IWard) => ward.uuid === currentStay.prevTransferStay.bed.ward.uuid);
+            //     dateIn = wardFromDepartment ? currentStay.prevTransferStay.dateIn : currentStay.dateIn;
             
-            }
+            // }
             var date1 = new Date(dateIn);
             var date2 = new Date();
             var Difference_In_Time = date2.getTime() - date1.getTime();
