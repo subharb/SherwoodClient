@@ -493,10 +493,10 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     shortLabel:"pages.hospital.outpatients.agenda.service",
                     validation : "notEmpty",
                 },
-                "idServiceInvestigationFirstVisit":{
+                "listServicesInvestigation":{
                     required : true,
-                    type:"select",
-                    name:"idServiceInvestigationFirstVisit",
+                    type:"multioption",
+                    name:"listServicesInvestigation",
                     label:"pages.hospital.outpatients.agenda.service",
                     shortLabel:"pages.hospital.outpatients.agenda.service",
                     validation : "notEmpty",
@@ -553,6 +553,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         agendaPost.turn = [turnStart, turnEnd];
         setInitDataAgenda(agenda);
         agendaPost.daysWeek = agenda.daysWeek.map((day:{multioption : string}) => day.multioption);
+        agendaPost.listServicesInvestigation = agenda.listServicesInvestigation.map((day:{multioption : string}) => day.multioption);
         if(agenda.uuid){
             updateAgendaCallback(agendaPost);
         }
@@ -584,7 +585,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     turnStart: new Date(0,0,0, turnStart[0], turnStart[1]), turnEnd: new Date(0,0,0, turnEnd[0], turnEnd[1]),
                     principalResearcher: agendaSelected.principalResearcher?.uuid,
                     box: box!.uuid as string,
-                    idServiceInvestigationFirstVisit : agendaSelected.serviceInvestigationFirstVisit.id,
+                    listServicesInvestigation : agendaSelected.listServicesInvestigation.map((serviceInvestigation) => {return {"multioption" : serviceInvestigation.id}}),
                     otherStaff:[]
                 };
             setInitDataAgenda(agendaEdit);
