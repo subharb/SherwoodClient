@@ -90,7 +90,7 @@ export interface IAgenda{
     box:IBox | string,
     datesOccupancy:{[date:string]:number}
     turn: number[][],
-    serviceInvestigationFirstVisit:{id:number}
+    listServicesInvestigation:{id:number}[]
 }
 
 export interface RequestService {
