@@ -905,6 +905,9 @@
                     }
                 },
                 "form_appointment" : {
+                    "agenda" : ["Agenda", "Agenda", "Agenda"],
+                    "service" : ["Service", "Servicio", "Service"],
+                    "no-services" : ["This agenda doesn't have services attached, please add them in the outpatients configuration", "Esta agenda no tiene servicios asociados, por favor añádalos en la configuración de consultas externas", "Cette agenda n'a pas de services attachés, veuillez les ajouter dans la configuration des consultations externes"],
                     "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"],
                     "no_agenda_department" : ["First you need to create an agenda for this department", "Primero necesita crear una agenda para este departamento", "Vous devez d'abord créer un agenda pour ce département"]
                 }

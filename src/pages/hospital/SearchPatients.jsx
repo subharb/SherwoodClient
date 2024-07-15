@@ -210,12 +210,10 @@ export const SearchPatientsComponent = withLocalize((props) => {
                             <Grid container>
                                 <Grid item xs={12}>
                                     {
-                                       
                                         [
                                             <Translate id="investigation.create.personal_data.fields.health_id" />, ",", getPatientID(props.patients[indexPatient])
                                         ]
                                     }
-                                    
                                     <Typography variant="body2">
                                         <Translate id="investigation.create.personal_data.fields.name" />: {props.patients[indexPatient].personalData.name}
                                     </Typography>
@@ -237,6 +235,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                                         <Translate id="general.continue" />
                                     </ButtonContinue>
                                 </Grid>
+                                
                             </Grid>
                         }
                         {
