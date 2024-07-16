@@ -585,7 +585,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     turnStart: new Date(0,0,0, turnStart[0], turnStart[1]), turnEnd: new Date(0,0,0, turnEnd[0], turnEnd[1]),
                     principalResearcher: agendaSelected.principalResearcher?.uuid,
                     box: box!.uuid as string,
-                    listServicesInvestigation : agendaSelected.listServicesInvestigation.map((serviceInvestigation) => {return {"multioption" : serviceInvestigation.id}}),
+                    listServicesInvestigation : agendaSelected.listServicesInvestigation.map((serviceInvestigation) => {return {"multioption" : serviceInvestigation.id.toString()}}),
                     otherStaff:[]
                 };
             setInitDataAgenda(agendaEdit);
@@ -643,7 +643,6 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             const reseachersDepartment = researchers.filter((researcher) => researcher.units.filter((unit) => unit.department.uuid === uuidDepartmentBox).length > 0);
             setResearchersDepartment(reseachersDepartment);
             setInitDataAgenda({department: boxSelected.department.uuid, otherStaff:[], box:boxSelected.uuid});
-            setModalInfo({showModal: true, type:"agenda"});
         }
         else if(boxSelected){
             setInitDataAgenda({otherStaff:[], box:boxSelected.uuid});
@@ -732,18 +731,21 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                         </Grid>
                         </>
                     } 
-                    
                     </>      
                 </Modal>
             )
         }
         return null;
     }
+    function addService(){
+        setInitDataService(initialServiceInfo);
+        setModalInfo({showModal: true, type:"service"})
+    }
     function renderServices(){
         if(services.length > 0){
             return <>
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                 <ButtonAdd onClick={() => setModalInfo({showModal: true, type:"service"})} />
+                 <ButtonAdd onClick={addService} />
                     {
                         services.map((service) => {
                             return (
@@ -813,7 +815,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             })
             return (
                 
-                <TabsSherwood name='Outpatients' style={{  color: "white" }} labels={[translate("pages.hospital.outpatients.sections.boxes_and_agendas").toString(), translate("pages.hospital.outpatients.sections.prices").toString()]} >
+                <TabsSherwood name='Outpatients' style={{ color: "white" }} labels={[translate("pages.hospital.outpatients.sections.boxes_and_agendas").toString(), translate("pages.hospital.outpatients.sections.prices").toString()]} >
                     <>
                         <Translate id="pages.hospital.outpatients.box.add_box" />: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
                         <Accordion2Levels orderedMainElements={elements} deleteMainElementCallBack={(uuid) => deleteBox(uuid)} 
