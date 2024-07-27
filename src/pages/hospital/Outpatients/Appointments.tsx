@@ -196,6 +196,7 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
                                                 <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                                     <Translate id="general.cancel" />
                                                 </ButtonCancel>
+                                                &nbsp;
                                                 <ButtonContinue onClick={confirm} data-testid="continue-modal" color="primary">
                                                     <Translate id="general.continue" />
                                                 </ButtonContinue>
