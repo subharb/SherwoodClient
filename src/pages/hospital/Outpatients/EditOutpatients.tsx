@@ -624,7 +624,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         }
     }
     function deleteService(idService:number){
-        const agendaWithService = agendas?.find((agenda) => agenda.serviceInvestigationFirstVisit.id === idService);
+        const agendaWithService = agendas?.find((agenda) => agenda.listServicesInvestigation.find((serv) => serv.id === idService));
         if(agendaWithService){
             setModalInfo({showModal: true, type:"error_service_agenda"});
         }
@@ -676,22 +676,27 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     }
                     {
                         deletedService && modalInfo.type === "delete_service_confirm" && 
-                        <>
-                            <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.DELETE_SERVICE" /></Typography>
-                            { deletedService.description }
-                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                        <Grid container>
+                            <Grid xs={12} style={{paddingTop:'1rem'}}>
+                                <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.DELETE_SERVICE" /></Typography>
+                                    { deletedService.description }
+                            </Grid>
+                            <Grid xs={12} style={{paddingTop:'1rem'}}>
                                 <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                     <Translate id="general.cancel" />
                                 </ButtonCancel>
+                                &nbsp;
                                 <ButtonContinue onClick={ () => callbackDeleteService(deletedService.id)} data-testid="continue-modal" color="green">
                                     <Translate id="general.continue" />
                                 </ButtonContinue>
                             </Grid>
-                        </>
+                        </Grid>
                     }
                     {
                         modalInfo.type === "error_service_agenda" && 
-                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.error_service_agenda" /></Typography>
+                        <Typography variant="body1">
+                            <Translate id="pages.hospital.outpatients.confirm.error_service_agenda" />
+                        </Typography>
                     } 
                     {
                         modalInfo.type === "agenda_error_appointments" && 
