@@ -91,7 +91,7 @@
                 "researcher" : ["Doctor", "Médico", "Médecin"]
             },
             "all":{
-                "department" : ["All departments", "Todos los departamentos", "Tous les départements"],
+                "department" : ["All departments", "Todos los departamentos", "Tous les services"],
                 "researcher" : ["All doctors", "Todos los médicos", "Tous les médecins"]
             },
             "select" : {
@@ -231,20 +231,20 @@
             "modal" : {
                 "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
             },
-            "all_departments" : ["All departments", "Todos los departamentos", "Tous les départements"],
+            "all_departments" : ["All departments", "Todos los departamentos", "Tous les services"],
             "department" : ["Department", "Departamento", "Service"],
             "departments" : ["Departments", "Departamentos", "Services"],
             "unit" : ["Unit", "Unidad", "Service"],
             "users" : ["Users", "Usuarios", "Personnel"],
             "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Hospitalisation"],
-            "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
+            "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun service n'a encore été ajouté"],
             "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
             "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "Êtes-vous sûr de supprimer cette pièce ?"],
-            "no-my-departments" : ["You haven't been added any department, ask your administrator", "No se le ha agregado ningún departamento, pregunte a su administrador", "Vous n'avez été ajouté à aucun département, demandez à votre administrateur"],
+            "no-my-departments" : ["You haven't been added any department, ask your administrator", "No se le ha agregado ningún departamento, pregunte a su administrador", "Vous n'avez été ajouté à aucun service, demandez à votre administrateur"],
             "no-wards" : ["No current wards", "No hay salas en este departamento", "Il n'y a pas de salles d'hospitalisation dans ce service"],
             "errors" : {
                 "has-researchers" : ["Can't delete a unit with staff", "No se puede borrar una unidad con personal", "Impossible de supprimer un service avec du personnel"],
-                "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce département"],
+                "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce service"],
                 "bad-configuration" : ["Doesn't match total number beds, check amount of female/male beds", "No coincide con el número total de camas, verifique la cantidad de camas femeninas / masculinas", "Ne correspond pas au nombre total de lits, vérifiez le nombre de lits pour femmes/hommes"]
             },
             "no-edit-ward" : ["Can't edit wards with busy beds", "Can't edit wards with busy beds","Can't edit wards with busy beds"],
@@ -267,7 +267,7 @@
                     "confirm" : ["Do you confirm you wish to remove unit %X? It should not have any staff assigned.", "¿Confirma que desea quitar la unidad %X? No debe tener personal asignado.", "Voulez-vous vraiment supprimer l'unité %X ? Il ne doit pas avoir de personnel affecté."]
                 },
                 "remove-department" : {
-                    "confirm" : ["Do you confirm you wish to remove department %X? It should not have any units.", "¿Confirma que desea quitar el departamento %X? No debe tener unidades.", "Voulez-vous vraiment supprimer le département %X ? Il ne doit pas avoir d'unités."],
+                    "confirm" : ["Do you confirm you wish to remove department %X? It should not have any units.", "¿Confirma que desea quitar el departamento %X? No debe tener unidades.", "Voulez-vous vraiment supprimer le service %X ? Il ne doit pas avoir d'unités."],
                     "cannot_remove" : ["You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units"]
 
                 },
@@ -330,7 +330,7 @@
                 },
                 "appointments" : {
                     "title" : ["Appointment", "Cita", "Rendez-vous"],
-                    "table-title" : ["Department", "Departamento", "Département"]
+                    "table-title" : ["Department", "Departamento", "service"]
                 },
                 "billing" : {
                     "title" : ["Billing", "Facturación", "Facturation"]
@@ -750,7 +750,7 @@
                     }
                 }
                 },
-                "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un département pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
+                "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un service pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
                 "request" : {
                     "table" : {
                         "nameDrug" : ["Name", "Nombre", "Nom"],
@@ -759,7 +759,7 @@
                         "amountRequested" : ["Amount Requested", "Cantidad Solicitada", "Montant demandé"],
                         "actions" : ["Actions", "Acciones", "Actions"]
                     },
-                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
+                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le service"],
                     "select_unit" : ["Select unit", "Seleccione unidad", "Sélectionnez l'unité"],
                     "select_items" : ["Select the elements of your request", "Seleccione los elementos de su solicitud", "Sélectionnez les éléments de votre demande"],
                     "edit_items_request" : ["Edit Items Request", "Editar Solicitud", "Modifier la demande"],
@@ -837,19 +837,19 @@
                 "no_appointments" : ["No appointments for this day", "No hay citas para este día", "Pas de rendez-vous pour ce jour"],
                 "no_appointments_patient" : ["No appointments for this patient", "No hay citas para este paciente", "Pas de rendez-vous pour ce patient"],
                 "table_patient_appointments" : {
-                    "department" : ["Department", "Departamento", "Département"],
-                    "doctor" : ["Doctor", "Doctor", "Docteur"],
+                    "department" : ["Department", "Departamento", "Service"],
+                    "doctor" : ["Doctor", "Doctor", "Staff"],
                     "date" : ["Date Appointment", "Fecha de cita", "Date de rendez-vous"],
-                    "turn" : ["Shift", "Turno", "Tourner"],
+                    "turn" : ["Shift", "Turno", "Horaire"],
                     "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
-                    "show" : ["Show", "Mostrar", "Montrer"]
+                    "show" : ["Show", "Mostrar", "RV Honoré"]
                 },
                 "box":{
                     "title" : ["Box", "Caja", "Boîte"],
                     "name" : ["Name", "Nombre", "Nom"],
                     "add_box" : ["Add Box", "Agregar Box", "Ajouter une box"],
-                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
-                    "no_department" : ["No department", "Sin departamento", "Pas de département"],
+                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le service"],
+                    "no_department" : ["No department", "Sin departamento", "Pas de service"],
                     "success" : {
                         "saved" : ["Box created successfully", "Box creada correctamente", "Box créée avec succès"],
                         "deleted" : ["Box removed succesfully", "Box eliminada correctamente", "Box supprimée avec succès"],
@@ -909,7 +909,7 @@
                     "service" : ["Service", "Servicio", "Service"],
                     "no-services" : ["This agenda doesn't have services attached, please add them in the outpatients configuration", "Esta agenda no tiene servicios asociados, por favor añádalos en la configuración de consultas externas", "Cette agenda n'a pas de services attachés, veuillez les ajouter dans la configuration des consultations externes"],
                     "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"],
-                    "no_agenda_department" : ["First you need to create an agenda for this department", "Primero necesita crear una agenda para este departamento", "Vous devez d'abord créer un agenda pour ce département"]
+                    "no_agenda_department" : ["First you need to create an agenda for this department", "Primero necesita crear una agenda para este departamento", "Vous devez d'abord créer un agenda pour ce service"]
                 }
             },
             "shoe_shop":{
@@ -1033,7 +1033,10 @@
                             "MB010": ["HVC serology", "Serología VHC", "Serologie Hépatite C"],
                             "MB011": ["Emmel test", "Test de Emmel", "Test d'Emmel"],
                             "MB012": ["Felix-Widal Test", "Test de Widal y Félix", "Test de Widal et Félix"],
-                            "IMM001": ["Rheumatoid factor", "Factor reumatoide", "Facteur rhumatoïde"]
+                            "IMM001": ["Rheumatoid factor", "Factor reumatoide", "Facteur rhumatoïde"],
+                            "APATH001" : ["Liver biopsy puncture", "Punción biopsia hepática", "Punction biopsie hepatique"],
+                            "APATH002" : ["Cytopuncture", "Citopunción", "Cytoponction"],
+                            "APATH003" : ["Small punctures", "Pequeñas punciones", "Petites punctions"]
                     },
                     "medical-imaging":{
                         "R001": ["Forearm left", "Antebrazo izq","Avant-bras gauche"],
@@ -1155,9 +1158,9 @@
             },
             "inpatients" : {
                 "title" : ["Inpatients", "Pacientes ingresados", "Hospitalisation"],
-                "no-departments" : ["You have no departments. Please create them ", "No tiene departamentos. Por favor, cree uno ", "Vous n'avez pas de départements. Veuillez les créer "],
+                "no-departments" : ["You have no departments. Please create them ", "No tiene departamentos. Por favor, cree uno ", "Vous n'avez pas de services. Veuillez les créer "],
                 "confirm" : ["Do you wish to hospitalize this patient?", "¿Desea hospitalizar a este paciente?", "Voulez-vous hospitaliser ce patient?"],
-                "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le département"]
+                "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le service"]
             },
             "admin-departments" : ["Departments", "Departamentos", "Gestion des services"]
         }
@@ -1567,7 +1570,7 @@
                 "MANAGE_PHARMACY_CENTRAL" : ["Manage pharmacy central", "Administrar farmacia central", "Gérer la pharmacie centrale"],
                 "MAKE_PHARMACY_REQUESTS" : ["Make pharmacy requests", "Hacer pedidos de farmacia", "Faire des demandes de pharmacie"],
                 "UPDATE_PHARMACY_CENTRAL" : ["Update pharmacy central", "Actualizar farmacia central", "Mettre à jour la pharmacie centrale"],
-                "ANALYTICS_DEPARTMENT" : ["View Department Stats", "Ver estadísticas de departamento", "Voir les statistiques du département"],
+                "ANALYTICS_DEPARTMENT" : ["View Department Stats", "Ver estadísticas de departamento", "Voir les statistiques du service"],
                 "CREATE_APPOINTMENTS" : ["Create appointments", "Crear citas", "Créer des rendez-vous"],
                 "CANCEL_APPOINTMENTS" : ["Cancel appointments", "Cancelar citas", "Annuler les rendez-vous"],
                 "VISUALIZE_APPOINTMENTS" : ["Visualize appointments", "Visualizar citas", "Visualiser les rendez-vous"],
