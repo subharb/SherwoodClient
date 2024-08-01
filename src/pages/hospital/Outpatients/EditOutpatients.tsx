@@ -503,7 +503,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     options:services.map((service) => {
                         return {
                             label: service.service.name +" - " +service.description,
-                            value: service.id
+                            value: service.id.toString()
                         }
                     })
                 }

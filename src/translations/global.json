@@ -99,7 +99,7 @@
                 "researcher" : ["Select doctor", "Seleccione médico", "Sélectionnez le médecin"]
             },
             "missing_option" : {
-                "department" : ["This researcher doesn't have a department assigned", "Este médico no tiene un departamento asignado", "Ce médecin n'a pas de service attribué"]
+                "department" : ["This doctor is not part of a department", "Este médico no forma parte de un departamento", "Ce médecin ne fait pas partie d'un service"]
                 
             }
         }

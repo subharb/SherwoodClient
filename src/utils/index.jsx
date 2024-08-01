@@ -558,6 +558,9 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
                     decryptedValue = decryptData(encryptedField.value, keyInvestigation);
                 
                     if(encryptedField.type === "date"){
+                        if(decryptedValue === "" || decryptedValue === null){
+                            console.log("Fecha vacía");
+                        }
                         decryptedValue = new Date(parseInt(decryptedValue));
                     }
                 }

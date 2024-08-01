@@ -405,8 +405,8 @@ const Ward:React.FC<Props> = ({loading, bedsProps, ward, mode, patient, error, p
             var Difference_In_Time = date2.getTime() - date1.getTime();
             stayDays = Math.ceil(Difference_In_Time / (1000 * 3600 * 24));
             hasStay = true;
-            ageYears = yearsFromDate(personalData?.birthdate);
-            sex = personalData!.sex;
+            ageYears = personalData?.birthdate ? yearsFromDate(personalData?.birthdate) : "";
+            sex = personalData?.sex ? personalData!.sex : "";
         }
         switch(mode){
             case WardModes.AssignPatient:
