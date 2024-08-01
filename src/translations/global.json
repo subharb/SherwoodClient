@@ -1122,7 +1122,7 @@
                         "R086" : ["Electrocardiogram (ECG)", "Electrocardiograma (ECG)", "Électrocardiogramme (ECG)"],
                         "R087" : ["Holter", "Holter", "Holter"],
                         "R088" : ["Ambulatory blood pressure monitoring (ABPM)", "Monitorización ambulatoria de la presión arterial (MAPA)", "Mesure ambulatoire de la pression artérielle (MAPA)"],
-                        "R089" : ["Pulmonary function testing (PFT)", "Pruebas función respiratoria (PFR)", "Exploration fonctionnelle respiratoire (EFR)"],
+                        "R089" : ["Pulmonary function testing (PFT)", "Pruebas función respiratoria (PFR)", "Exploration fonctionnelle respiratoire (EFR)"]
                     },
                     "shoe_shop" : {
                         "Z001": ["Microcellulose shoes", "Zapatos microcelulosa","Chaussures en microcellulose"],
