@@ -1115,7 +1115,7 @@
                         "R074": ["Neonatal cerebral ultrasound", "Ecografía transfotanelar","Échographie transfontanellaire"],
                         "R075": ["Carotid ultrasound", "Ecografía troncos supraaórticos","Échographie troncs supra aortiques"],
                         "R076" : ["Fibroscan", "Fibroscan", "Fibroscan"],
-                        "R082" : ["Colonoscopy", "Colonoscopia", "Coloscopie"],
+                        "R082" : ["Colonoscopy", "Colonoscopia", "Colonoscopie"],
                         "R083" : ["Esophagogastroduodenoscopy (EGD)", "Esofagogastroduodenoscopia (EGD)", "Fibroscopie oeso-gastroduodénale (FOGD)"],
                         "R084" : ["Esophagogastroduodenoscopy (EGD) with GA", "Esofagogastroduodenoscopia (EGD) con AG", "Fibroscopie oeso-gastroduodénale (FOGD) sous AG"],
                         "R085" : ["Rectoscopy", "Rectoscopia", "Rectoscopie"],
