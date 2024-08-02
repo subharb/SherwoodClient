@@ -45,7 +45,7 @@ export function NewInvestigation(props){
 
         const rawKeyResearcherInvestigation = await generateKey();
         investigationInfo.keyResearcherInvestigation = encryptData(rawKeyResearcherInvestigation, localStorage.getItem("rawKeyResearcher"));
-    
+        delete investigationInfo.patientsPersonalData;
         console.log("Enviamos: "+JSON.stringify(investigationInfo));
         let response;
         if(props.hasOwnProperty("uuid")){
