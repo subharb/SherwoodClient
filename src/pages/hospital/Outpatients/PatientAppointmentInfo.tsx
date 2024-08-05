@@ -1,13 +1,13 @@
 import { CircularProgress, Grid, Typography } from '@mui/material';
 import { CheckCircleIcon } from '@material-ui/data-grid';
-import { Remove, RemoveCircleOutline } from '@mui/icons-material';
+import { MonetizationOn, Remove, RemoveCircleOutline } from '@mui/icons-material';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { ButtonAdd } from '../../../components/general/mini_components';
 import PatientInfo from '../../../components/PatientInfo';
 import { IAppointment } from '../../../constants/types';
-import { getPatientsAppoinmentsService, cancelAppointmentService } from '../../../services/agenda';
+import { getPatientsAppoinmentsService, cancelAppointmentService, updateAppoinmentsService } from '../../../services/agenda';
 import { dateAndTimeFromPostgresString, fullDateFromPostgresString, researcherFullName, stringDatePostgresToDate, turnsToSchedule } from '../../../utils/index.jsx';
 import { RequestStatus } from '../Service/types';
 import { FormMakeAppointment } from './FormAppointment';
@@ -42,6 +42,33 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
             })
     }, []);
 
+    function showUpPatient(idAppointment:number){
+        setLoadingPatientsAppointments(true);
+        const appointmentToUpdate = patientsAppointments.find(appointment => appointment.id === idAppointment);
+        if(appointmentToUpdate){
+            const uuidAppointment = appointmentToUpdate.uuid;
+            updateAppoinmentsService(uuidInvestigation, uuidAppointment)
+                .then(response => {
+                    const indexAppointment = patientsAppointments.findIndex((appointment) => appointment.uuid === uuidAppointment);
+                    if(indexAppointment !== -1){
+                        const currentAppointment = patientsAppointments[indexAppointment];
+                        currentAppointment.requestAppointment.status = response.appointment.requestAppointment.status;
+                    }
+                    //setShowSnackbar({show:true, message:"pages.hospital.outpatients.checkin_success", severity:"success"});
+                    setLoadingPatientsAppointments(false);
+                })
+                .catch(err => {
+                    let message = "general.error";
+                    if(err.response.status === 401){
+                        message = "pages.hospital.outpatients.no_permissions";
+                    }
+                    //setShowSnackbar({show:true, message:message, severity:"error"});
+                    setLoadingPatientsAppointments(false);
+                })
+        }
+        
+    }
+
     function deleteAppointment(idAppointment:number){
         setLoadingPatientsAppointments(true);
         const appointmentToDelete = patientsAppointments.find(appointment => appointment.id === idAppointment);
@@ -64,7 +91,10 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
         <>
             <PatientAppointmentInfoLocalized uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} resetModal={resetModal}
                 appointmentMadeCallback={appointmentMadeCallback} patientsAppointments={patientsAppointments} 
-                loadingPatientsAppointments={loadingPatientsAppointments} deleteAppointmentCallback={(idAppointment:number) => deleteAppointment(idAppointment)} />
+                loadingPatientsAppointments={loadingPatientsAppointments} 
+                deleteAppointmentCallback={(idAppointment:number) => deleteAppointment(idAppointment)}
+                showUpPatientCallback={(idAppointment:number) => showUpPatient(idAppointment)} 
+                />
         </>
     );
 };
@@ -75,10 +105,11 @@ interface PatientAppointmentInfoCoreProps extends PatientAppointmentInfoProps, L
     patientsAppointments:IAppointment[];
     loadingPatientsAppointments: boolean;
     deleteAppointmentCallback: (id:number) => void;
+    showUpPatientCallback: (id:number) => void;
 }
 
 const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({ uuidPatient, uuidInvestigation, activeLanguage, loadingPatientsAppointments, 
-                                                                                    patientsAppointments, appointmentMadeCallback, deleteAppointmentCallback }) => {
+                                                                                    patientsAppointments, appointmentMadeCallback, showUpPatientCallback, deleteAppointmentCallback }) => {
     const [createAppointment, setCreateAppointment] = React.useState<boolean>(false);
 
 
@@ -88,15 +119,22 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
     function renderShowIcon(status:number, date:number){
         if(isAppointmentDone(status)){
             return (
-                <Typography variant="body2" component="div" gutterBottom style={{height:'1px', color:"green"}} >
-                    <CheckCircleIcon style={{fontSize:"1.2rem"}} /> 
+                <Typography variant="body2" component="div" gutterBottom style={{height:'1px', textAlign:"center"}} >
+                    <CheckCircleIcon style={{fontSize:"1.2rem", color:"green"}} /> 
+                </Typography>
+            )
+        }
+        else if(status === RequestStatus.PENDING_PAYMENT){
+            return(
+                <Typography variant='body2'  component="div" gutterBottom style={{textAlign:"center"}} >
+                    <MonetizationOn style={{fontSize:"1.2rem", color:"red"}} />
                 </Typography>
             )
         }
         else if(stringDatePostgresToDate(date) > new Date()){
             return (
-                <Typography variant='body2'  component="div" gutterBottom style={{height:'1px', color:"orange"}} >
-                    <Remove style={{fontSize:"1.2rem"}} />
+                <Typography variant='body2'  component="div" gutterBottom style={{height:'1px', textAlign:"center"}} >
+                    <Remove style={{fontSize:"1.2rem", color:"orange"}} />
                 </Typography>
             )
         }
@@ -131,7 +169,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                                     { id: "date", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.date`} /> },
                                     { id: "turn", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.turn`} /> }, 
                                     { id: "bookingDate", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.bookingDate`} /> }, 
-                                    { id: "show", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.show`} /> }  
+                                    { id: "status", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.status`} /> }  
                                 ];
                 const rows = patientsAppointments.map((appointment:IAppointment) => {
                     return {
@@ -142,7 +180,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                         date : fullDateFromPostgresString(activeLanguage.code, appointment.startDateTime),
                         turn : turnsToSchedule(appointment.agenda.turn),
                         bookingDate : dateAndTimeFromPostgresString(activeLanguage.code, appointment.createdAt),
-                        show: renderShowIcon(appointment.requestAppointment.status, appointment.startDateTime),
+                        status: renderShowIcon(appointment.requestAppointment.status, appointment.startDateTime),
                         appointmentStatus : appointment.requestAppointment.status,
                         startDateTime : appointment.startDateTime
                     }
@@ -153,8 +191,8 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                                 return new Date(row.startDateTime) > new Date()
                             }, "func" : (id:number) => deleteAppointmentCallback(id)}, 
                             {"type" : "show_up", "check" : (row:any) => {
-                                return isAppointmentDone(row.appointmentStatus)
-                            }, "func" : (id:number) => deleteAppointmentCallback(id)}]}
+                                return row.appointmentStatus === RequestStatus.PENDING_APPROVAL
+                            }, "func" : (id:number) => showUpPatientCallback(id)}]}
                         />
                 )
             }
