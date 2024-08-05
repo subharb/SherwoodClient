@@ -239,7 +239,8 @@ export const AppointmentsCore: React.FC<AppointmentsCoreProps> = ({loadingAppoin
                 else{
                     const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", currentAppointment.patient.uuid)
                     console.log("Next url", nextUrl);
-                    history.push(nextUrl);
+                    //history.push(nextUrl);
+                    window.open(nextUrl, '_blank');
                     console.log("Cita NO aceptada, navegamos a la historia clinica del paciente");    
                 }
                 

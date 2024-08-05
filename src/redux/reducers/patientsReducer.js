@@ -1,4 +1,5 @@
 import * as types from "../../constants";
+import { initDB, savePatientData } from "../../db";
 import { decryptPatientsData, decryptSinglePatientData } from '../../utils/index.jsx'; 
 /**
  * Reducer that saves all the investigations loaded
@@ -38,10 +39,13 @@ export default function reducer(state = initialState, action){
                     console.log(patient);
                     patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
                     tempDecryptedData.push(patient);
+                    // savePatientData(patient);
                 }
                 tempInvestigations[investigation.uuid] = tempDecryptedData;
                 
             }
+            //const request = initDB(); 
+
             newState.data = tempInvestigations;                            
             return newState;
         case types.SAVE_PATIENT_LOADING:
