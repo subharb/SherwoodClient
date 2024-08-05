@@ -81,8 +81,12 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                                                                                     patientsAppointments, appointmentMadeCallback, deleteAppointmentCallback }) => {
     const [createAppointment, setCreateAppointment] = React.useState<boolean>(false);
 
+
+    function isAppointmentDone(status:number){
+        return [RequestStatus.ACCEPTED, RequestStatus.COMPLETED].includes(status);
+    }
     function renderShowIcon(status:number, date:number){
-        if([RequestStatus.ACCEPTED, RequestStatus.COMPLETED].includes(status)){
+        if(isAppointmentDone(status)){
             return (
                 <Typography variant="body2" component="div" gutterBottom style={{height:'1px', color:"green"}} >
                     <CheckCircleIcon style={{fontSize:"1.2rem"}} /> 
@@ -139,6 +143,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                         turn : turnsToSchedule(appointment.agenda.turn),
                         bookingDate : dateAndTimeFromPostgresString(activeLanguage.code, appointment.createdAt),
                         show: renderShowIcon(appointment.requestAppointment.status, appointment.startDateTime),
+                        appointmentStatus : appointment.requestAppointment.status,
                         startDateTime : appointment.startDateTime
                     }
                 }).sort((a, b) => new Date(a.startDateTime) < new Date(b.startDateTime) ? 1 : -1);
@@ -146,6 +151,9 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                     <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
                             actions={[{"type" : "delete", "check" : (row:any) => {
                                 return new Date(row.startDateTime) > new Date()
+                            }, "func" : (id:number) => deleteAppointmentCallback(id)}, 
+                            {"type" : "show_up", "check" : (row:any) => {
+                                return isAppointmentDone(row.appointmentStatus)
                             }, "func" : (id:number) => deleteAppointmentCallback(id)}]}
                         />
                 )
