@@ -8,7 +8,7 @@ import { ButtonCancel, ButtonContinue } from '../../../components/general/mini_c
 import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { IAppointment, IPatient, OutpatientsVisualizationMode } from '../../../constants/types';
-import { SnackbarType, useSnackBarState } from '../../../hooks';
+import usePageVisibility, { SnackbarType, useSnackBarState } from '../../../hooks';
 import { HOSPITAL_PATIENT } from '../../../routes/urls';
 import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsService } from '../../../services/agenda';
 import { areSameDates, getPatientID, yearsFromDate } from '../../../utils/index.jsx';
@@ -78,7 +78,14 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
             getAppoinmentsDate(uuidAgenda, dateSelected)
         }
 
-    }, [uuidAgenda, dateSelected])
+    }, [uuidAgenda, dateSelected]);
+
+    usePageVisibility(() => {
+        if(uuidAgenda && dateSelected){
+            getAppoinmentsDate(uuidAgenda, dateSelected)
+        }
+    });
+
     async function getAppoinmentsDate(uuidAgenda:string, date:Date){
         setLoadingAppointments(true);
         getAppoinmentsDateService(uuidInvestigation, uuidAgenda, date)
