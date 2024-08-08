@@ -1511,11 +1511,14 @@
             "title" : ["User Managment", "Administración de usuarios", "Gestion des utilisateurs"],
             "add_researcher" : ["Add user", "Añadir usuario", "Ajouter un utilisateur"],
             "edit_researcher" : ["Change user", "Modificar usuario", "Modifier un utilisateur"],
+            "delete_researcher" : ["Delete user", "Borrar usuario", "Supprimer un utilisateur"],
             "info_roles" : ["Permissions of users", "Permisos de los usuarios", "Permissions des utilisateurs"],
             "researchers" : ["Users", "Usuarios", "Utilisateurs"],
             "current_researchers" : ["Current users", "Usuarios actuales", "Personnel actuel"],
             "new_researchers" : ["New users", "Nuevos Usuarios", "Nouveaux Utilisateurs"],
             "shared-by" : ["You were invited by: ", "Has sido invitado por: ", "Vous avez été invité par: "],
+            "delete_Confirmation_user":["Are you sure you want to delete this user?","¿Estás seguro de que deseas eliminar este usuario?", "Êtes-vous sûr de vouloir supprimer cet utilisateur ?" ],
+            "confirm_delete_title":["Delete user?","Borrar usuario","Supprimer l'utilisateur" ],
             "form" : {
                 "email" : ["Email", "Email", "Email"],
                 "role" :  ["Role", "Role", "Role"]
