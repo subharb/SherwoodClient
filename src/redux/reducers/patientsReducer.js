@@ -1,4 +1,5 @@
 import * as types from "../../constants";
+import { doesDBPatientsExist, doesInvestigationPatientsStoreExist, getAllPatients, initDB, savePatientData } from "../../db";
 import { decryptPatientsData, decryptSinglePatientData } from '../../utils/index.jsx'; 
 /**
  * Reducer that saves all the investigations loaded
@@ -11,7 +12,7 @@ import { decryptPatientsData, decryptSinglePatientData } from '../../utils/index
     loading: false,
     error: null
 }
-export default function reducer(state = initialState, action){
+export default async function reducer(state = initialState, action){
     let patientsData = null;
     let newState = { ...state};
     let tempInvestigations;
@@ -34,13 +35,19 @@ export default function reducer(state = initialState, action){
                 
                 let tempDecryptedData = [];
                 console.log(investigation.name);
-                for(const patient of investigation.patientsPersonalData){
-                    console.log(patient);
-                    patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
-                    tempDecryptedData.push(patient);
+                if(await doesInvestigationPatientsStoreExist()){
+                    tempInvestigations[investigation.uuid] = await getAllPatients();
                 }
-                tempInvestigations[investigation.uuid] = tempDecryptedData;
-                
+                else{
+                    await initDB(investigation.uuid);
+                    for(const patient of investigation.patientsPersonalData){
+                        console.log(patient);
+                        patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
+                        tempDecryptedData.push(patient);
+                        await savePatientData(patient);
+                    }
+                }
+                tempInvestigations[investigation.uuid] = await getAllPatients();   
             }
             newState.data = tempInvestigations;                            
             return newState;
