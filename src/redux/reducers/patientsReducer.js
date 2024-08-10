@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { doesDBPatientsExist, doesInvestigationPatientsStoreExist, getAllPatients, initDB, savePatientData } from "../../db";
+import { resetDatabase, doesInvestigationPatientsStoreExist, getAllPatients, initDB, savePatientData } from "../../db";
 import { decryptPatientsData, decryptSinglePatientData } from '../../utils/index.jsx'; 
 /**
  * Reducer that saves all the investigations loaded
@@ -35,19 +35,17 @@ export default async function reducer(state = initialState, action){
                 
                 let tempDecryptedData = [];
                 console.log(investigation.name);
-                if(await doesInvestigationPatientsStoreExist()){
-                    tempInvestigations[investigation.uuid] = await getAllPatients();
-                }
-                else{
+                if(!await doesInvestigationPatientsStoreExist()){
                     await initDB(investigation.uuid);
                     for(const patient of investigation.patientsPersonalData){
                         console.log(patient);
                         patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
                         tempDecryptedData.push(patient);
-                        await savePatientData(patient);
+                        await savePatientData(patient, investigation.uuid);
                     }
                 }
-                tempInvestigations[investigation.uuid] = await getAllPatients();   
+
+                tempInvestigations[investigation.uuid] = await getAllPatients(investigation.uuid);   
             }
             newState.data = tempInvestigations;                            
             return newState;
@@ -97,6 +95,7 @@ export default async function reducer(state = initialState, action){
                 return newState;
             case types.AUTH_SIGN_OUT:
                 newState = {...initialState};
+                resetDatabase();
                 return newState;
         default:
             return state;

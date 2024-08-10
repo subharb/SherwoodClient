@@ -10,11 +10,12 @@ const STORE_PATIENTS_NAME = 'patients';
 // Initialize IndexedDB
 export const initDB = (): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open(DB_PATIENTS_NAME, 1);
+        const request = indexedDB.open(DB_PATIENTS_NAME, 1.6);
 
         request.onupgradeneeded = event => {
             const db = (event.target as IDBOpenDBRequest).result;
-            db.createObjectStore(STORE_PATIENTS_NAME, { keyPath: 'id' });
+            const store = db.createObjectStore(STORE_PATIENTS_NAME, { keyPath: 'id' });
+            store.createIndex('uuidInvestigationIndex', 'uuidInvestigation', { unique: false });
         };
 
         request.onsuccess = event => {
@@ -28,31 +29,6 @@ export const initDB = (): Promise<IDBDatabase> => {
         };
     });
 };
-
-export const getAllPatients = async (uuidInvestigation:string): Promise<PatientData[]> => {
-    const db = await initDB();
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([uuidInvestigation], 'readonly');
-      const store = transaction.objectStore(uuidInvestigation);
-      const request = store.openCursor();
-      const patients: PatientData[] = [];
-  
-      request.onsuccess = event => {
-        const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
-        if (cursor) {
-          const patientData = (cursor.value.data) as PatientData;
-          patients.push(patientData);
-          cursor.continue();
-        } else {
-          resolve(patients);
-        }
-      };
-  
-      request.onerror = event => {
-        reject(new Error(`Cursor error: ${(event.target as IDBRequest).error}`));
-      };
-    });
-  };
 
 export const doesDBPatientsExist = (): Promise<boolean> => {
     return doesDBExist(DB_PATIENTS_NAME);
@@ -131,14 +107,37 @@ export const doesStoreExist = (storeName: string, dbName: string, version?: numb
     });
 };
 
-
+export const getAllPatients = async (uuidInvestigation:string): Promise<PatientData[]> => {
+    const db = await initDB();
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction([STORE_PATIENTS_NAME], 'readonly');
+        const store = transaction.objectStore(STORE_PATIENTS_NAME);
+        const index = store.index('uuidInvestigationIndex');
+        const request = index.getAll(uuidInvestigation);
+        
+        const patients: PatientData[] = [];
+  
+        request.onsuccess = event => {
+            const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
+            if (cursor) {
+                resolve(cursor);
+            } else {
+                resolve(patients);
+            }
+        };
+    
+        request.onerror = event => {
+            reject(new Error(`Cursor error: ${(event.target as IDBRequest).error}`));
+        };
+    });
+  };
 // Save data to IndexedDB
-export const savePatientData = async (patientData: PatientData): Promise<void> => {
+export const savePatientData = async (patientData: PatientData, uuidInvestigation:string): Promise<void> => {
     const db = await initDB();
     return new Promise((resolve, reject) => {
         const transaction = db.transaction([STORE_PATIENTS_NAME], 'readwrite');
         const store = transaction.objectStore(STORE_PATIENTS_NAME);
-        const request = store.put({ id: patientData.id, data: patientData });
+        const request = store.put({ id: patientData.id, uuidInvestigation: uuidInvestigation, data: patientData });
 
         request.onsuccess = () => {
             resolve();
@@ -173,3 +172,55 @@ export const fetchPatientData = async (patientId: string): Promise<PatientData |
         };
     });
 };
+
+export function resetDatabase(): void {
+    // Reference to the database connection
+    let db: IDBDatabase | null = null;
+
+    // Function to open the database
+    const openDatabase = () => {
+        const request = indexedDB.open(DB_PATIENTS_NAME, 1);
+
+        request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+            const db = (event.target as IDBOpenDBRequest).result;
+            const store = db.createObjectStore('YourObjectStoreName', { keyPath: 'id' });
+            store.createIndex('uuidInvestigationIndex', 'uuidInvestigation', { unique: false });
+        };
+
+        request.onsuccess = (event: Event) => {
+            db = (event.target as IDBOpenDBRequest).result;
+            console.log('Database recreated successfully');
+        };
+
+        request.onerror = (event: Event) => {
+            console.error('Error opening database:', (event.target as IDBRequest).error);
+        };
+    };
+
+    // Function to delete the database
+    const deleteDatabase = () => {
+        const deleteRequest = indexedDB.deleteDatabase(DB_PATIENTS_NAME);
+
+        deleteRequest.onsuccess = () => {
+            console.log('Database deleted successfully');
+            openDatabase(); // Optionally recreate the database after deletion
+        };
+
+        deleteRequest.onerror = (event: Event) => {
+            console.error('Error deleting database:', (event.target as IDBRequest).error);
+        };
+
+        deleteRequest.onblocked = () => {
+            console.warn('Delete operation blocked. Close all other connections before deleting.');
+        };
+    };
+
+    // Close the existing database connection if it's open
+    if (db) {
+        (db as IDBDatabase).close();
+        db = null;
+    }
+
+    // Call the function to delete the database
+    deleteDatabase();
+}
