@@ -183,7 +183,7 @@ export function resetDatabase(): void {
 
         request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
             const db = (event.target as IDBOpenDBRequest).result;
-            const store = db.createObjectStore('YourObjectStoreName', { keyPath: 'id' });
+            const store = db.createObjectStore(STORE_PATIENTS_NAME, { keyPath: 'id' });
             store.createIndex('uuidInvestigationIndex', 'uuidInvestigation', { unique: false });
         };
 
