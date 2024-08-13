@@ -1,18 +1,38 @@
 import * as types from "../../constants";
+import { deleteAllPatientsFromInvestigation, getAllPatientsInvestigation, savePatient } from "../../db";
 import {
     fetchInvestigations as fetchInvestigationsService
 } from "../../services";
 import { createUpdateBillingInfoService, getBillablesService, updateBillablesService } from "../../services/billing";
+import { decryptSinglePatientData } from "../../utils";
 
 export function fetchInvestigations() {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_INVESTIGATIONS_LOADING });
 
     return fetchInvestigationsService()
-      .then((response) => {
+      .then(async (response) => {
+        for(const investigation of response.investigations){
+            let patientsInvestigation = await getAllPatientsInvestigation(investigation.uuid);
+            if(patientsInvestigation.length !== investigation.patientsPersonalData.length){
+                await deleteAllPatientsFromInvestigation(investigation.uuid);
+                for(const patient of investigation.patientsPersonalData){
+                    try{
+                        patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
+                        await savePatient(patient, investigation.uuid);
+                    }
+                    catch(e){
+                        console.log(e);
+                        console.log(patient);
+                    }
+                }
+                patientsInvestigation = await getAllPatientsInvestigation(investigation.uuid);
+            }
+            investigation.patientsPersonalData = patientsInvestigation;
+        }
         dispatch({
-          type: types.FETCH_INVESTIGATIONS_SUCCESS,
-          investigations: response.investigations,
+            type: types.FETCH_INVESTIGATIONS_SUCCESS,
+            investigations: response.investigations,
         });
       })
       .catch((error) => {

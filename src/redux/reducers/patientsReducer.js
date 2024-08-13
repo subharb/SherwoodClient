@@ -1,5 +1,4 @@
 import * as types from "../../constants";
-import { resetDatabase, doesInvestigationPatientsStoreExist, getAllPatients, initDB, savePatientData } from "../../db";
 import { decryptPatientsData, decryptSinglePatientData } from '../../utils/index.jsx'; 
 /**
  * Reducer that saves all the investigations loaded
@@ -12,7 +11,7 @@ import { decryptPatientsData, decryptSinglePatientData } from '../../utils/index
     loading: false,
     error: null
 }
-export default async function reducer(state = initialState, action){
+export default function reducer(state = initialState, action){
     let patientsData = null;
     let newState = { ...state};
     let tempInvestigations;
@@ -32,20 +31,22 @@ export default async function reducer(state = initialState, action){
             //Desencripto los datos de los pacientes
             tempInvestigations = {};
             for(const investigation of action.investigations){
+                tempInvestigations[investigation.uuid] = investigation.patientsPersonalData;
+                // let tempDecryptedData = [];
+                // console.log(investigation.name);
+                // for(const patient of investigation.patientsPersonalData){
+                //     console.log(patient);
+                //     try{
+                //         patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
+                //         tempDecryptedData.push(patient);
+                //     }
+                //     catch(e){
+                //         console.log(e);
+                //         console.log(patient);
+                //     }
+                // }
+                // tempInvestigations[investigation.uuid] = tempDecryptedData;
                 
-                let tempDecryptedData = [];
-                console.log(investigation.name);
-                if(!await doesInvestigationPatientsStoreExist()){
-                    await initDB(investigation.uuid);
-                    for(const patient of investigation.patientsPersonalData){
-                        console.log(patient);
-                        patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
-                        tempDecryptedData.push(patient);
-                        await savePatientData(patient, investigation.uuid);
-                    }
-                }
-
-                tempInvestigations[investigation.uuid] = await getAllPatients(investigation.uuid);   
             }
             newState.data = tempInvestigations;                            
             return newState;
@@ -95,7 +96,6 @@ export default async function reducer(state = initialState, action){
                 return newState;
             case types.AUTH_SIGN_OUT:
                 newState = {...initialState};
-                resetDatabase();
                 return newState;
         default:
             return state;
