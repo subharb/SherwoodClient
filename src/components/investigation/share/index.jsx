@@ -171,6 +171,7 @@ function ShareInvestigation(props) {
     const [errorShare, setErrorShare] = useState(false);
     const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
     const [indexResearcherToDelete, setIndexResearcherToDelete] = useState(false);
+    const [researcherToDelete, setResearcherToDelete] = useState([]);
     const [showingRoles, setShowingRoles] = useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const history = useHistory();
@@ -319,7 +320,10 @@ function ShareInvestigation(props) {
                             return row;
                         })}
                         actions={[{"type" : "edit" , "func" : (index) => editAResearcher(index)},
-                            { "type": "delete", "func": (index) => deleteAResearcher(index) },
+                            // { "type": "delete", "func": (index) => deleteAResearcher(index) },
+                              { "type": "delete", "func": (index) => deleteAResearcher(index), 
+                                visible: (index) => sharedResearchers[index]?.permissions?.includes("DELETE-USER") || false
+                              },
                         ]} 
                         
         />
@@ -341,13 +345,12 @@ function ShareInvestigation(props) {
         }
         else if(indexResearcherToDelete !== false){
             title =  props.translate("investigation.share.delete_researcher");
-        //     confirmAction = handleDelete;
-        // confirmButtonLabel = "general.delete";
-        modalProps = {
+            modalProps = {
             confirmAction: handleDeleteResearcher,
-            confirmButtonLabel: "general.delete"
+            confirmButtonLabel: "general.delete",
+            researcherToDelete: sharedResearchers[indexResearcherToDelete] 
         };
-        }
+        }   
         else{
             title =  props.translate("investigation.share.info_roles");
            
@@ -361,7 +364,6 @@ function ShareInvestigation(props) {
                 // confirmAction={confirmAction}
                 // confirmButtonLabel={confirmButtonLabel}
                 {...modalProps}
-
                 
                 >
                     {
@@ -371,9 +373,10 @@ function ShareInvestigation(props) {
                             closeCallBack={resetModal}/>
                     }
                     {
+                        
                         indexResearcherToDelete !== false &&
                         
-                        <>
+                       <>
                     <Typography variant="body2" gutterBottom>
                         <Translate id="investigation.share.delete_Confirmation_user" />
                     </Typography>
@@ -393,32 +396,27 @@ function ShareInvestigation(props) {
             </Modal>
         )
     }
-    
-    async function deleteAResearcher(index){
 
-        console.log("confirm to delete", sharedResearchers[index].uuid);
-        console.log("index", index);
-        const uuidInvestigation = props.investigations.currentInvestigation.uuid;
-        const uuidDeleteResearcher = sharedResearchers[index].uuid;
-        
-        setIndexResearcherToDelete(index)
-        setShowModal(true);
-
-       
-
-    }
-    async function handleDeleteResearcher(uuidInvestigation,uuidDeleteResearcher){
-        //this is the function which is getting called when i click on delete button of a modal
-        console.log("delete researcher function");
-       
-        // const uuidInvestigation = props.investigations.currentInvestigation.uuid
-        console.log("uuidInvestigation", uuidInvestigation)
-        console.log("uuidDeleteResearcher", uuidDeleteResearcher)
-
-        const response = await deleteResearcher(uuidInvestigation, uuidDeleteResearcher);    
-        console.log("response delete user cha", response)
-        resetModal()
+    async function handleDeleteResearcher() {
+//        
+            const response = await deleteResearcher(props.investigations.currentInvestigation.uuid,researcherToDelete.uuid);
+            console.log("Response from delete user:", response);
+            console.log("sharedResearchers",sharedResearchers)
+            setSharedResearchers(prev => prev.filter((researcher) => researcher.uuid !== researcherToDelete.uuid));
+            //filter by uuid
       
+        resetModal();
+    }
+
+    async function deleteAResearcher(index) {
+        console.log(`adasdasd ${sharedResearchers[index].name}`)
+
+        console.log("Confirm to delete:", sharedResearchers[index]);
+        const deleteResearcherUser = sharedResearchers[index];
+        setIndexResearcherToDelete(true);//this state shows the delete buttons 
+        setResearcherToDelete(deleteResearcherUser);
+        setShowModal(true);
+        //name of the researcher should be shown in modal
     }
 
     async function editCallBack(values){
@@ -428,7 +426,9 @@ function ShareInvestigation(props) {
         const permissions = {"permissions" : [{
             uuidResearcher : sharedResearchers[indexResearcherToEdit].uuid,
             role : values["permissions"]
+        
         }]}
+        console.log("checking permissions", permissions)
         setIsLoadingShare(true);
         const response = await saveResearcherPermissions(props.investigations.currentInvestigation.uuid, permissions);
         setIsLoadingShare(false);

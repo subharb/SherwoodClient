@@ -894,11 +894,12 @@ export function saveResearcherPermissions(uuidInvestigation, permissions) {
     });
 }
 // add delete researcher here
-export function deleteResearcher( uuidInvestigation,uuidDeleteResearcher) {
-    console.log("uuidInvestigation", uuidInvestigation)
+export function deleteResearcher(uuidInvestigation,uuidDeleteResearcher) {
+    // console.log("uuidInvestigation", uuidInvestigation)
+    console.log("deleteResearcher service fun")
     return new Promise((resolve, reject) => {
         axios
-            .delete(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/" , uuidDeleteResearcher , { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .delete(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/" + uuidDeleteResearcher , { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
