@@ -1,5 +1,4 @@
 import * as types from "../../constants";
-import { initDB, savePatientData } from "../../db";
 import { decryptPatientsData, decryptSinglePatientData } from '../../utils/index.jsx'; 
 /**
  * Reducer that saves all the investigations loaded

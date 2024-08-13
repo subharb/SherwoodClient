@@ -1033,6 +1033,7 @@
                             "MB010": ["HVC serology", "Serología VHC", "Serologie Hépatite C"],
                             "MB011": ["Emmel test", "Test de Emmel", "Test d'Emmel"],
                             "MB012": ["Felix-Widal Test", "Test de Widal y Félix", "Test de Widal et Félix"],
+                            
                             "IMM001": ["Rheumatoid factor", "Factor reumatoide", "Facteur rhumatoïde"],
                             "APATH001" : ["Liver biopsy puncture", "Punción biopsia hepática", "Punction biopsie hepatique"],
                             "APATH002" : ["Cytopuncture", "Citopunción", "Cytoponction"],
@@ -1122,7 +1123,10 @@
                         "R086" : ["Electrocardiogram (ECG)", "Electrocardiograma (ECG)", "Électrocardiogramme (ECG)"],
                         "R087" : ["Holter", "Holter", "Holter"],
                         "R088" : ["Ambulatory blood pressure monitoring (ABPM)", "Monitorización ambulatoria de la presión arterial (MAPA)", "Mesure ambulatoire de la pression artérielle (MAPA)"],
-                        "R089" : ["Pulmonary function testing (PFT)", "Pruebas función respiratoria (PFR)", "Exploration fonctionnelle respiratoire (EFR)"]
+                        "R089" : ["Pulmonary function testing (PFT)", "Pruebas función respiratoria (PFR)", "Exploration fonctionnelle respiratoire (EFR)"],
+                        "R090" : ["Hip (Lowenstein or Frog View)", "Cadera (Incidencia de Lowenstein o Vista de Rana)", "Hanche (Incidence de Lowenstein ou de crapeau)"],
+                        "R091" : ["Right Foot - AP and Oblique (3/4) Views" , "Pie Derecho - Vistas AP y Oblicua (3/4)", "Pied droit strict F/P ET 3/4"],
+                        "R092" : ["Left Foot - AP and Oblique (3/4) Views", "Pie Izquierdo - Vistas AP y Oblicua (3/4)", "Pied gauche strict F/P ET 3/4"]
                     },
                     "shoe_shop" : {
                         "Z001": ["Microcellulose shoes", "Zapatos microcelulosa","Chaussures en microcellulose"],
