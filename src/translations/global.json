@@ -1013,6 +1013,8 @@
                             "BQ029": ["Urine: ketone bodies", "Orina: cuerpos cetónicos", "Urine: corps cétonuriques"],
                             "BQ030": ["Urine: glucose", "Orina: glucosa", "Urine: glucose"],
                             "BQ031": ["Urine: 24-hour proteinuria", "Orina: proteinuria 24 horas", "Urine: proténuries des 24h"],
+                            "BQ032" : ["Bilirubin (direct)", "Bilirrubina conjugada", "Bilirubine directe"],
+                            "BQ033" : ["Postprandial glucose test", "Glucemia postpandrial", "Glycémie post-prandiale"],
                             "HEM001": ["Hemoglobin electrophoresis", "Electroforesis de hemoblogina", "Electrophores Hemoglobine"],
                             "HEM002": ["Fibrinogen", "Fibrinógeno", "Fibrinemie"],
                             "HEM003": ["Blood group and Rh factor", "Grupo sanguíneo y factor Rh", "Groupage Sanguin et Facteur Rhésus (GSRh)"],
@@ -1033,7 +1035,7 @@
                             "MB010": ["HVC serology", "Serología VHC", "Serologie Hépatite C"],
                             "MB011": ["Emmel test", "Test de Emmel", "Test d'Emmel"],
                             "MB012": ["Felix-Widal Test", "Test de Widal y Félix", "Test de Widal et Félix"],
-                            
+                            "MB013" : ["Stool culture", "Coprocultivo", "Examen parasitologique des selles (KAOP)"],
                             "IMM001": ["Rheumatoid factor", "Factor reumatoide", "Facteur rhumatoïde"],
                             "APATH001" : ["Liver biopsy puncture", "Punción biopsia hepática", "Punction biopsie hepatique"],
                             "APATH002" : ["Cytopuncture", "Citopunción", "Cytoponction"],
