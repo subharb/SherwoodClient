@@ -48,7 +48,7 @@ export function signUp(credentials) {
 
 export function signOut() {
   return async (dispatch) => {
-    clearPatientsStore();
+    await clearPatientsStore();
     dispatch({
       type: types.AUTH_SIGN_OUT,
     });

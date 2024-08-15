@@ -1,73 +1,8 @@
-import Dexie from 'dexie';
 import { IPatient } from '../constants/types';
-
 
 
 const DB_PATIENTS_NAME = 'Patients';
 const STORE_PATIENTS_NAME = 'patients';
-
-// const initializeDatabase = (storeName: string) => {
-//     const db = new Dexie(DB_PATIENTS_NAME);
-
-//     // Create the schema object dynamically
-//     const schema = {
-//         [storeName]: 'id, uuidInvestigation' // Use 'id' as primary key and index on 'uuidInvestigation'
-//     };
-
-//     // Apply the schema
-//     db.version(1).stores(schema);
-
-//     return db;
-// };
-
-// const db = initializeDatabase(STORE_PATIENTS_NAME);
-
-// export const saveIPatient = async (patientData: IPatient, uuidInvestigation: string): Promise<void> => {
-//     try {
-//         await db.table(STORE_PATIENTS_NAME).put({
-//             id: patientData.id,
-//             uuidInvestigation: uuidInvestigation,
-//             data: patientData
-//         });
-//         console.log('Patient data saved successfully');
-//     } catch (error) {
-//         throw new Error(`Save error: ${error}`);
-//     }
-// };
-
-// export const fetchIPatient = async (patientId: string): Promise<IPatient | null> => {
-//     try {
-//         const record = await db.table(STORE_PATIENTS_NAME).get(patientId);
-//         if (record) {
-//             return record.data as IPatient;
-//         } else {
-//             return null;
-//         }
-//     } catch (error) {
-//         throw new Error(`Fetch error: ${error}`);
-//     }
-// };
-
-// export const getAllPatientsInvestigation = async (uuidInvestigation: string): Promise<IPatient[]> => {
-//     try {
-//         const patients = await db.table(STORE_PATIENTS_NAME)
-//             .where('uuidInvestigation')
-//             .equals(uuidInvestigation)
-//             .toArray();
-//         return patients;
-//     } catch (error) {
-//         throw new Error(`Fetch error: ${error}`);
-//     }
-// };
-
-// export const clearPatientsStore = async (): Promise<void> => {
-//     try {
-//         await db.table(STORE_PATIENTS_NAME).clear();
-//         console.log('All patient data has been deleted.');
-//     } catch (error) {
-//         throw new Error(`Clear store error: ${error}`);
-//     }
-// };
 
 let db: IDBDatabase | null = null;
 
@@ -87,8 +22,10 @@ export const initDB = (): Promise<IDBDatabase> => {
 
         request.onupgradeneeded = event => {
             const db = (event.target as IDBOpenDBRequest).result;
-            const store = db.createObjectStore(STORE_PATIENTS_NAME, { keyPath: 'id' });
+            const store = db.createObjectStore(STORE_PATIENTS_NAME, { keyPath: 'id', autoIncrement: true });
             store.createIndex('uuidInvestigationIndex', 'uuidInvestigation', { unique: false });
+            store.createIndex('patientIdInvestigationIndex', 'patientIdInvestigation', { unique: false });
+
         };
 
         request.onsuccess = event => {
@@ -240,17 +177,27 @@ export const getAllPatientsInvestigation = async (uuidInvestigation:string): Pro
 export const savePatient = async (patientData: IPatient, uuidInvestigation:string): Promise<void> => {
     const db = await getDB();
     return new Promise((resolve, reject) => {
-        const transaction = db.transaction([STORE_PATIENTS_NAME], 'readwrite');
-        const store = transaction.objectStore(STORE_PATIENTS_NAME);
-        const request = store.put({ id: patientData.id, uuidInvestigation: uuidInvestigation, dateCreated:patientData.dateCreated , personalData: patientData.personalData });
-
-        request.onsuccess = () => {
-            resolve();
-        };
-
-        request.onerror = event => {
-            reject(new Error(`Save error: ${(event.target as IDBRequest).error}`));
-        };
+        try{
+            const transaction = db.transaction([STORE_PATIENTS_NAME], 'readwrite');
+            const store = transaction.objectStore(STORE_PATIENTS_NAME);
+            const request = store.put({ patientIdInvestigation: patientData.id, 
+                                        uuid : patientData.uuid,
+                                        uuidInvestigation: uuidInvestigation, dateCreated:patientData.dateCreated , 
+                                        personalData: patientData.personalData });
+            request.onsuccess = () => {
+                resolve();
+            };
+    
+            request.onerror = event => {
+                reject(new Error(`Save error: ${(event.target as IDBRequest).error}`));
+            };
+        }
+        catch(error){
+            console.log(error);
+            console.log("Error saving patient");
+        }
+        
+        
     });
 };
 
@@ -280,35 +227,13 @@ export const fetchPatient = async (patientId: string): Promise<IPatient | null> 
 
 export function clearPatientsStore(): void {
     // Reference to the database connection
-    let db: IDBDatabase | null = null;
-
-    // Function to open the database
-    const openDatabase = () => {
-        const request = indexedDB.open(DB_PATIENTS_NAME, 1);
-
-        request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-            const db = (event.target as IDBOpenDBRequest).result;
-            const store = db.createObjectStore(STORE_PATIENTS_NAME, { keyPath: 'id' });
-            store.createIndex('uuidInvestigationIndex', 'uuidInvestigation', { unique: false });
-        };
-
-        request.onsuccess = (event: Event) => {
-            db = (event.target as IDBOpenDBRequest).result;
-            console.log('Database recreated successfully');
-        };
-
-        request.onerror = (event: Event) => {
-            console.error('Error opening database:', (event.target as IDBRequest).error);
-        };
-    };
-
     // Function to delete the database
     const deleteDatabase = () => {
         const deleteRequest = indexedDB.deleteDatabase(DB_PATIENTS_NAME);
 
         deleteRequest.onsuccess = () => {
             console.log('Database deleted successfully');
-            openDatabase(); // Optionally recreate the database after deletion
+        
         };
 
         deleteRequest.onerror = (event: Event) => {
