@@ -22,9 +22,9 @@ export const initDB = (): Promise<IDBDatabase> => {
 
         request.onupgradeneeded = event => {
             const db = (event.target as IDBOpenDBRequest).result;
-            const store = db.createObjectStore(STORE_PATIENTS_NAME, { keyPath: 'id', autoIncrement: true });
+            const store = db.createObjectStore(STORE_PATIENTS_NAME, { keyPath: 'uuid' });
             store.createIndex('uuidInvestigationIndex', 'uuidInvestigation', { unique: false });
-            store.createIndex('patientIdInvestigationIndex', 'patientIdInvestigation', { unique: false });
+            store.createIndex('patientIdInvestigationIndex', 'id', { unique: false });
 
         };
 
@@ -162,13 +162,7 @@ export const getAllPatientsInvestigation = async (uuidInvestigation:string): Pro
         request.onsuccess = event => {
             const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
             if (cursor) {
-                const modifiedPatients = cursor.map((patient: IPatient) => ({
-                    ...patient,
-                    id: patient.patientIdInvestigation, // Rename property
-                    // Optionally delete the old property
-                    // patientIdInvestigation: undefined, // Uncomment to remove the old property
-                }));
-                resolve(modifiedPatients);
+                resolve(cursor);
             } else {
                 resolve(patients);
             }
@@ -186,9 +180,10 @@ export const savePatient = async (patientData: IPatient, uuidInvestigation:strin
         try{
             const transaction = db.transaction([STORE_PATIENTS_NAME], 'readwrite');
             const store = transaction.objectStore(STORE_PATIENTS_NAME);
-            const request = store.put({ patientIdInvestigation: patientData.id, 
+            const request = store.put({ id: patientData.id, 
                                         uuid : patientData.uuid,
-                                        uuidInvestigation: uuidInvestigation, dateCreated:patientData.dateCreated , 
+                                        uuidInvestigation: uuidInvestigation, 
+                                        dateCreated:patientData.dateCreated, 
                                         personalData: patientData.personalData });
             request.onsuccess = () => {
                 resolve();
