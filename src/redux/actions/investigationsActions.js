@@ -1,5 +1,5 @@
 import * as types from "../../constants";
-import { deleteAllPatientsFromInvestigation, getAllPatientsInvestigation, savePatient } from "../../db";
+import { deleteAllPatientsFromInvestigation, getAllPatientsInvestigation, saveListPatients, savePatient } from "../../db";
 import {
     fetchInvestigations as fetchInvestigationsService
 } from "../../services";
@@ -16,16 +16,7 @@ export function fetchInvestigations() {
             let patientsInvestigation = await getAllPatientsInvestigation(investigation.uuid);
             if(patientsInvestigation.length !== investigation.patientsPersonalData.length){
                 await deleteAllPatientsFromInvestigation(investigation.uuid);
-                for(const patient of investigation.patientsPersonalData){
-                    try{
-                        patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
-                        await savePatient(patient, investigation.uuid);
-                    }
-                    catch(e){
-                        console.log(e);
-                        console.log(patient);
-                    }
-                }
+                await saveListPatients(investigation.patientsPersonalData, investigation);
                 patientsInvestigation = await getAllPatientsInvestigation(investigation.uuid);
             }
             investigation.patientsPersonalData = patientsInvestigation;

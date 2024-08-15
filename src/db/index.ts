@@ -1,4 +1,5 @@
 import { IPatient } from '../constants/types';
+import { decryptSinglePatientData } from '../utils';
 
 
 const DB_PATIENTS_NAME = 'Patients';
@@ -147,6 +148,13 @@ export const deleteAllPatientsFromInvestigation = async (uuidInvestigation: stri
         };
     });
 };
+
+export const saveListPatients = async (patients: IPatient[], investigation: any): Promise<void> => {
+    for(const patient of patients){
+        patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
+        await savePatient(patient, investigation.uuid);
+    }
+}
 
 
 export const getAllPatientsInvestigation = async (uuidInvestigation:string): Promise<IPatient[]> => {
