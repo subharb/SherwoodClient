@@ -162,7 +162,13 @@ export const getAllPatientsInvestigation = async (uuidInvestigation:string): Pro
         request.onsuccess = event => {
             const cursor = (event.target as IDBRequest<IDBCursorWithValue>).result;
             if (cursor) {
-                resolve(cursor);
+                const modifiedPatients = cursor.map((patient: IPatient) => ({
+                    ...patient,
+                    id: patient.patientIdInvestigation, // Rename property
+                    // Optionally delete the old property
+                    // patientIdInvestigation: undefined, // Uncomment to remove the old property
+                }));
+                resolve(modifiedPatients);
             } else {
                 resolve(patients);
             }
