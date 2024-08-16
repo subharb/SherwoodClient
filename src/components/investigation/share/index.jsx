@@ -320,10 +320,8 @@ function ShareInvestigation(props) {
                             return row;
                         })}
                         actions={[{"type" : "edit" , "func" : (index) => editAResearcher(index)},
-                            // { "type": "delete", "func": (index) => deleteAResearcher(index) },
-                              { "type": "delete", "func": (index) => deleteAResearcher(index), 
-                                visible: (index) => sharedResearchers[index]?.permissions?.includes("DELETE-USER") || false
-                              },
+                            { "type": "delete", "check": (permissions) => permissions === sharedResearchers[index].permissions,
+                            "func" : (index) => deleteAResearcher(index) }
                         ]} 
                         
         />
@@ -407,6 +405,9 @@ function ShareInvestigation(props) {
       
         resetModal();
     }
+    // async function hideDeleteIcon(index) {
+        
+    // }
 
     async function deleteAResearcher(index) {
         console.log(`adasdasd ${sharedResearchers[index].name}`)
