@@ -19,7 +19,7 @@ import { deleteResearcher, getSharedResearchersService, saveResearcherPermission
 import SectionHeader from '../../../pages/components/SectionHeader';
 import UserRoles from './UserRoles';
 import { useSnackBarState } from "../../../hooks"
-import { ALL_ROLES, USER_ROLES } from './user_roles';
+import { ALL_ROLES, PERMISSION, USER_ROLES } from './user_roles';
 import { ColourChip } from '../../general/mini_components-ts';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -320,7 +320,7 @@ function ShareInvestigation(props) {
                             return row;
                         })}
                         actions={[{"type" : "edit" , "func" : (index) => editAResearcher(index)},
-                            { "type": "delete", "check": (permissions) => permissions === sharedResearchers[index].permissions,
+                            { "type": "delete", "check": () => {console.log("check", props.investigations.currentInvestigation.permissions); return props.investigations.currentInvestigation.permissions.includes(PERMISSION.DELETE_RESEARCHER)},
                             "func" : (index) => deleteAResearcher(index) }
                         ]} 
                         
