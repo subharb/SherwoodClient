@@ -185,11 +185,6 @@ export const getAllPatientsInvestigation = async (uuidInvestigation:string): Pro
 // Save data to IndexedDB
 export const savePatient = async (patientData: IPatient, uuidInvestigation:string): Promise<void> => {
     const db = await getDB();
-    const patientExists = await fetchPatient(patientData.uuid);
-    if(patientExists){
-        console.error("Patient already exists");
-        return;
-    }
     return new Promise((resolve, reject) => {
         try{
             
@@ -205,6 +200,7 @@ export const savePatient = async (patientData: IPatient, uuidInvestigation:strin
             };
     
             request.onerror = event => {
+                console.error(`Save error: ${(event.target as IDBRequest).error}`);
                 reject(new Error(`Save error: ${(event.target as IDBRequest).error}`));
             };
         }
