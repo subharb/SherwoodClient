@@ -1548,6 +1548,7 @@
                 "DOCTOR" : ["Medical Doctor", "Médico", "Médecin"],
                 "PRIVATE_DOCTOR" : ["Private Doctor", "Médico Privado", "Médecin Privée"],
                 "ADMIN" : ["Administrator", "Administrador", "Administrateur"],
+                "ADMIN_FW" : ["Administrator FW", "Administrador FW", "Administrateur FW"],
                 "NURSE" : ["Nurse", "Enfermería", "Infirmière"],
                 "NURSE_FW" : ["Nurse FW", "Enfermería FW", "Infirmière FW"],
                 "NURSE_MANAGER" : ["Nurse Manager", "Enfermería Jefe", "Infirmière Manager"],
