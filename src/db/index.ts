@@ -150,10 +150,11 @@ export const deleteAllPatientsFromInvestigation = async (uuidInvestigation: stri
 };
 
 export const saveListPatients = async (patients: IPatient[], investigation: any): Promise<void> => {
-    for(const patient of patients){
+    patients.forEach(async(patient, index) => {
+        console.log("Saving patient Index: ", index);
         patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
         await savePatient(patient, investigation.uuid);
-    }
+    })
 }
 
 
@@ -184,8 +185,14 @@ export const getAllPatientsInvestigation = async (uuidInvestigation:string): Pro
 // Save data to IndexedDB
 export const savePatient = async (patientData: IPatient, uuidInvestigation:string): Promise<void> => {
     const db = await getDB();
+    const patientExists = await fetchPatient(patientData.uuid);
+    if(patientExists){
+        console.error("Patient already exists");
+        return;
+    }
     return new Promise((resolve, reject) => {
         try{
+            
             const transaction = db.transaction([STORE_PATIENTS_NAME], 'readwrite');
             const store = transaction.objectStore(STORE_PATIENTS_NAME);
             const request = store.put({ id: patientData.id, 
@@ -211,26 +218,44 @@ export const savePatient = async (patientData: IPatient, uuidInvestigation:strin
 };
 
 // Fetch data from IndexedDB
-export const fetchPatient = async (patientId: string): Promise<IPatient | null> => {
+export const fetchPatient = async (uuidPatient: string): Promise<IPatient | null> => {
     const db = await getDB();
     return new Promise((resolve, reject) => {
         const transaction = db.transaction([STORE_PATIENTS_NAME], 'readonly');
         const store = transaction.objectStore(STORE_PATIENTS_NAME);
-        const request = store.get(patientId);
+        const request = store.get(uuidPatient);
 
         request.onsuccess = event => {
-            if ((event.target as IDBRequest).result) {
-                const data = (event.target as IDBRequest).result.data;
-                // const patientData = decryptData(encryptedData) as IPatient;
-                resolve(data);
-            } else {
-                resolve(null);
-            }
+            const result = (event.target as IDBRequest).result;
+            resolve(result ? result : null); // Directly resolve the result
         };
 
         request.onerror = event => {
             reject(new Error(`Fetch error: ${(event.target as IDBRequest).error}`));
         };
+    });
+};
+
+export const findPatientByUUID = async (uuidPatient: string): Promise<IPatient | null> => {
+    const db = await getDB();
+    return new Promise((resolve, reject) => {
+        try {
+            const transaction = db.transaction([STORE_PATIENTS_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_PATIENTS_NAME);
+            const request = store.get(uuidPatient);
+
+            request.onsuccess = event => {
+                const result = (event.target as IDBRequest).result;
+                resolve(result ? result : null);
+            };
+
+            request.onerror = event => {
+                reject(new Error(`Fetch error: ${(event.target as IDBRequest).error}`));
+            };
+        } catch (error) {
+            console.log(error);
+            reject(new Error("Error fetching patient"));
+        }
     });
 };
 

@@ -12,7 +12,7 @@ import * as Sentry from "@sentry/react";
 
 let dsn = "";//"https://4e273ea1b6e04f6cb8f483979eb3233a@o491166.ingest.sentry.io/5992676";
 if (import.meta.env.PROD) {
-    console.log = function () {};
+    //console.log = function () {};
     dsn = "https://1e889cc84edc4a2fa8fffba2173af28b@o491166.ingest.sentry.io/5556260";
     //LogRocket.init('apd2q8/sherwood');
 }
