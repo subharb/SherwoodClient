@@ -351,7 +351,7 @@ const emptyRows =
                             func(row.id);
                             
                         }}
-                        size="large">
+                        size="medium">
                         <IconGenerator type={action.type} />
                     </IconButton>
                 );

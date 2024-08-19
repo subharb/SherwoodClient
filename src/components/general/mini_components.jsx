@@ -32,8 +32,10 @@ import {
     Settings as SettingsIcon,
     ArrowBack as ArrowBackIcon,
     Today,
-    DirectionsRun
+    DirectionsRun,
+    AssignmentTurnedIn as AssignmentTurnedInIcon,
   } from "@mui/icons-material";
+
   import {
     Icon, IconButton,
     Breadcrumbs as MuiBreadcrumbs,
@@ -88,6 +90,8 @@ export const IconGenerator = withTheme((props) => {
             return <MonetizationOnIcon style={{color : props.theme.buttonContinue.primary.background }}  />
         case "pdf":
             return <PdfIcon style={{color : 'red' }}  />
+        case "show_up":
+            return <AssignmentTurnedInIcon style={{color:"#000"}}  />
         default:
             return <AddIcon />
     }

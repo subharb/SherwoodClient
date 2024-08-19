@@ -75,7 +75,8 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
     function renderAppointments(){
         if(uuidAgenda && selectedDate){
             return(
-                <Appointments uuidAgenda={uuidAgenda} uuidInvestigation={investigations.currentInvestigation.uuid} dateSelected={selectedDate} mode={OutpatientsVisualizationMode.CONSULT}
+                <Appointments uuidAgenda={uuidAgenda} uuidInvestigation={investigations.currentInvestigation.uuid} 
+                    dateSelected={selectedDate} mode={OutpatientsVisualizationMode.CONSULT}
                     patientsPersonalData={personalData} />
             )
         }

@@ -842,7 +842,7 @@
                     "date" : ["Date Appointment", "Fecha de cita", "Date de rendez-vous"],
                     "turn" : ["Shift", "Turno", "Horaire"],
                     "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
-                    "show" : ["Show", "Mostrar", "RV Honoré"]
+                    "status" : ["Status", "Status", "Status"]
                 },
                 "box":{
                     "title" : ["Box", "Caja", "Boîte"],
