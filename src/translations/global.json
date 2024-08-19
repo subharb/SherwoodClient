@@ -1563,6 +1563,7 @@
                 "PHARMACY_ASSISTANT" : ["Pharmacy Assistant", "Asistente de farmacia", "Assistant de pharmacie"],
                 "MAJOR" : ["Major", "Mayor", "Major"],
                 "DEPARTMENT_HEAD" : ["Head of Department", "Jefe de departamento", "Chef de service"],
+                "NO_ROLE_ASSIGNED" : ["No role", "Sin rol", "Aucun rôle"],
                 "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {

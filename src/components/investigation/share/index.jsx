@@ -90,6 +90,9 @@ export const PermissionChip = withLocalize((props) => {
         case "ADMIN": 
             colour = blue[500];            
             break;
+        case "ADMIN_FW": 
+            colour = blue[400];            
+            break;
         case "BUSINESS_ASSISTANT": 
             colour = blue[300];            
             break;
@@ -111,7 +114,7 @@ export const PermissionChip = withLocalize((props) => {
         case "MAJOR": 
             colour = red[500];            
             break;
-        case "NO_PERMISSIONS": 
+        case "NO_ROLE_ASSIGNED": 
             colour = purple[500];            
             break;
         default:
