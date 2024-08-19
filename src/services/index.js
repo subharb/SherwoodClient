@@ -884,11 +884,32 @@ export function saveResearcherPermissions(uuidInvestigation, permissions) {
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
+                    console.log("edited user")
                 }
                 reject(response.data);
             })
             .catch((error) => {
                 reject(error);
+            });
+    });
+}
+// add delete researcher here
+export function deleteResearcher(uuidInvestigation,uuidDeleteResearcher) {
+    // console.log("uuidInvestigation", uuidInvestigation)
+    console.log("deleteResearcher service fun")
+    return new Promise((resolve, reject) => {
+        axios
+            .delete(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/" + uuidDeleteResearcher , { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                    console.log("deleted user",response.data)
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+                console.log(error, "error in deleteing user")
             });
     });
 }
