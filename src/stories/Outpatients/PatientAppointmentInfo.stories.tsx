@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { getInvestigation, patients_personal_data_decrypted, personal_data_investigation1, billables, edc_data1 } from '../example_data';
-import { within, userEvent } from '@storybook/testing-library';
-import { expect } from '@storybook/jest';
-import PatientAppointmentInfo from '../../pages/hospital/Outpatients/PatientAppointmentInfo';
+import PatientAppointmentInfo, { PatientAppointmentInfoLocalized } from '../../pages/hospital/Outpatients/PatientAppointmentInfo';
 
 
 const meta: Meta<typeof PatientAppointmentInfo> = {
@@ -19,7 +16,24 @@ const meta: Meta<typeof PatientAppointmentInfo> = {
 
 export default meta;
 
+
+
 const Template = (args) => <PatientAppointmentInfo {...args} />
+type PatientAppointmentInfoLocalizedProps = {
+    uuidPatient?: string;
+    uuidInvestigation?: string;
+    resetModal?: () => void;
+    appointmentMadeCallback?: () => void;
+    patientsAppointments?: any; // Replace 'any' with the actual type if known
+    loadingPatientsAppointments?: boolean;
+    deleteAppointmentCallback?: () => void;
+    showUpPatientCallback?: () => void;
+};
+const TemplateTable = (args: PatientAppointmentInfoLocalizedProps) => <PatientAppointmentInfoLocalized {...args} />
+// ... existing code ...
+TemplateTable.args = {
+    uuidPatient: '1234',
+};
 
 export const Standard = Template.bind({});
 Standard.args = {
