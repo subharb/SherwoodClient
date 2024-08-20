@@ -36,6 +36,7 @@ function SearchPatients(props){
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [patientsDiagnoseLoading, setPatientsDiagnoseLoading] = useState(false);
     const insurances = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.insurances : [];
+    const outpatientsInfo = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.outpatientsInfo : {};
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     const dispatch = useDispatch();
     const history = useHistory();
@@ -132,7 +133,7 @@ function SearchPatients(props){
                 personalFields={props.investigations.currentInvestigation.personalFields}
                 permissions={props.investigations.currentInvestigation.permissions}
                 functionalities={props.investigations.currentInvestigation.functionalities}
-                insurances={insurances}
+                insurances={insurances} outpatientsInfo={outpatientsInfo}
                 searchPatientCallBack={searchPatientCallBack}
                 backToSearchCallBack={backToSearchCallBack} 
                 patientSelectedCallBack={patientSelectedCallBack}
@@ -246,6 +247,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                         {
                             patientAppointment &&
                             <PatientAppointmentInfo uuidInvestigation={props.investigation.uuid}  uuidPatient={patientAppointment.uuid} 
+                                outpatientsInfo={props.outpatientsInfo}
                                 appointmentMadeCallback={resetModal} /> 
                         }
                         

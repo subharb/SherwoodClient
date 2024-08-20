@@ -26,6 +26,7 @@ import {
     LocalHospital as HospitalIcon,
     MonetizationOn as MonetizationOnIcon,
     Today as TodayIcon,
+    EventBusy as EventBusyIcon,
     Hotel as HotelIcon,
     Undo as UndoIcon,
     PictureAsPdf as PdfIcon,
@@ -66,6 +67,8 @@ export const IconGenerator = withTheme((props) => {
             return <HotelIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"} />
         case "appointment":
             return <Today style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
+        case "cancel_appointment":
+            return <EventBusyIcon style={{color:"red"}} fontSize={props.size ? props.size : "small"}  />               
         case "undo":
             return <UndoIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />    
         case "settings":

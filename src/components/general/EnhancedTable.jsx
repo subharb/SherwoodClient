@@ -355,7 +355,7 @@ const emptyRows =
                             
                         }}
                         size="medium">
-                        <IconGenerator type={action.type} />
+                        <IconGenerator type={action.type} size="medium" />
                     </IconButton>
                 );
             }
@@ -417,7 +417,7 @@ function renderTableRow(isItemSelected, index, labelId, row, draggableProps, dra
         {
             (props.actions && props.actions.length > 0) && 
             <TableCell padding="none" align="right">
-                <Box mr={2}>
+                <Box mr={2} display="flex">
                     {
                         renderActions(row)
                     }

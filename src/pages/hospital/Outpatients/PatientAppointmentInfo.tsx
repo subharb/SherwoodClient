@@ -4,22 +4,27 @@ import { MonetizationOn, Remove, RemoveCircleOutline } from '@mui/icons-material
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { ButtonAdd } from '../../../components/general/mini_components';
+import { ButtonAdd, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
 import PatientInfo from '../../../components/PatientInfo';
 import { IAppointment } from '../../../constants/types';
 import { getPatientsAppoinmentsService, cancelAppointmentService, updateAppoinmentsService } from '../../../services/agenda';
 import { dateAndTimeFromPostgresString, fullDateFromPostgresString, researcherFullName, stringDatePostgresToDate, turnsToSchedule } from '../../../utils/index.jsx';
 import { RequestStatus } from '../Service/types';
 import { FormMakeAppointment } from './FormAppointment';
+import Modal from '../../../components/general/modal';
+import { func } from 'prop-types';
+import { canCancelAppointment } from '../../../utils/agenda';
+import { OutpatientsInfo } from '../../../constants/agenda_types';
 
 interface PatientAppointmentInfoProps {
     uuidPatient: string;
     uuidInvestigation: string;
+    outpatientsInfo: OutpatientsInfo;
     resetModal: () => void;
     appointmentMadeCallback: () => void;
 }
 
-const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPatient, uuidInvestigation, appointmentMadeCallback, resetModal }) => {
+const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPatient, uuidInvestigation, outpatientsInfo, appointmentMadeCallback, resetModal }) => {
     const [patientsAppointments, setPatientsAppointments] = React.useState<IAppointment[]>([]);
     const [loadingPatientsAppointments, setLoadingPatientsAppointments] = React.useState<boolean>(true);
 
@@ -69,7 +74,7 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
         
     }
 
-    function deleteAppointment(idAppointment:number){
+    function cancelAppointment(idAppointment:number){
         setLoadingPatientsAppointments(true);
         const appointmentToDelete = patientsAppointments.find(appointment => appointment.id === idAppointment);
         if(appointmentToDelete){
@@ -92,7 +97,8 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
             <PatientAppointmentInfoLocalized uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} resetModal={resetModal}
                 appointmentMadeCallback={appointmentMadeCallback} patientsAppointments={patientsAppointments} 
                 loadingPatientsAppointments={loadingPatientsAppointments} 
-                deleteAppointmentCallback={(idAppointment:number) => deleteAppointment(idAppointment)}
+                outpatientsInfo={outpatientsInfo}
+                cancelAppointmentCallback={(idAppointment:number) => cancelAppointment(idAppointment)}
                 showUpPatientCallback={(idAppointment:number) => showUpPatient(idAppointment)} 
                 />
         </>
@@ -103,15 +109,19 @@ export default PatientAppointmentInfo;
 
 interface PatientAppointmentInfoCoreProps extends PatientAppointmentInfoProps, LocalizeContextProps {
     patientsAppointments:IAppointment[];
+    outpatientsInfo: OutpatientsInfo;
     loadingPatientsAppointments: boolean;
-    deleteAppointmentCallback: (id:number) => void;
+    cancelAppointmentCallback: (id:number) => void;
     showUpPatientCallback: (id:number) => void;
 }
 
 const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({ uuidPatient, uuidInvestigation, activeLanguage, loadingPatientsAppointments, 
-                                                                                    patientsAppointments, appointmentMadeCallback, showUpPatientCallback, deleteAppointmentCallback }) => {
+                                                                                    outpatientsInfo,
+                                                                                    patientsAppointments, appointmentMadeCallback, showUpPatientCallback, cancelAppointmentCallback }) => {
     const [createAppointment, setCreateAppointment] = React.useState<boolean>(false);
-
+    const [showModal, setShowModal] = React.useState<boolean>(false);
+    const [showupAppointmentId, setShowupAppointmentId] = React.useState<number>(0);
+    const [cancelAppointmentId, setCancelAppointmentId] = React.useState<number>(0);
 
     function isAppointmentDone(status:number){
         return [RequestStatus.ACCEPTED, RequestStatus.COMPLETED].includes(status);
@@ -140,12 +150,77 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
         }
         else{
             return (
-                <Typography variant='body2'  component="div" gutterBottom style={{height:'1px', color:"red"}} >
+                <Typography variant='body2'  component="div" gutterBottom style={{height:'1px', textAlign:"center", color:"red"}} >
                     <RemoveCircleOutline style={{fontSize:"1.2rem"}} />
                 </Typography>
             )
         }
     }
+
+    function resetModal(){
+        setShowModal(false);
+        setShowupAppointmentId(0);
+        setCancelAppointmentId(0);
+    }
+
+    function showModalShowUp(idAppointment:number){
+        setShowupAppointmentId(idAppointment);
+        setShowModal(true);
+    }
+
+    function showModalCancel(idAppointment:number){
+        setCancelAppointmentId(idAppointment);
+        setShowModal(true);
+    }
+
+    function renderModal(){
+        return (
+            <Modal open={showModal} onClose={resetModal} 
+                title={<Translate id="pages.hospital.outpatients.table_patient_appointments.modal.title" />} >
+                <>
+                {
+                    showupAppointmentId !== 0 &&
+                    <Grid container>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                            <Typography variant="body1" component="div" gutterBottom>
+                                <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.show_up.message" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                            <ButtonCancel onClick={resetModal} data-testid="cancel-modal"  spaceright={1}>
+                                <Translate id="general.cancel" />
+                            </ButtonCancel>
+                            &nbsp;
+                            <ButtonContinue onClick={showUpPatientCallback} data-testid="continue-modal" >
+                                <Translate id="general.continue" />
+                            </ButtonContinue>
+                        </Grid>
+                    </Grid>
+                }
+                {
+                    cancelAppointmentId !== 0 &&
+                    <Grid container>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                            <Typography variant="body1" component="div" gutterBottom>
+                                <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.cancel.message" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                            <ButtonCancel onClick={resetModal} data-testid="cancel-modal" spaceright={1}>
+                                <Translate id="general.cancel" />
+                            </ButtonCancel>
+                            &nbsp;
+                            <ButtonContinue onClick={cancelAppointmentCallback} data-testid="continue-modal" >
+                                <Translate id="general.continue" />
+                            </ButtonContinue>
+                        </Grid>
+                    </Grid>
+                }
+                </>
+            </Modal>
+        )
+    }
+
     function renderAppointments(){
         if(loadingPatientsAppointments){
             return (
@@ -187,12 +262,13 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                 }).sort((a, b) => new Date(a.startDateTime) < new Date(b.startDateTime) ? 1 : -1);
                 return(
                     <EnhancedTable noHeader noSelectable={true} rows={rows} headCells={headCells} 
-                            actions={[{"type" : "delete", "check" : (row:any) => {
-                                return new Date(row.startDateTime) > new Date()
-                            }, "func" : (id:number) => deleteAppointmentCallback(id)}, 
+                            actions={[{"type" : "cancel_appointment", "check" : (row:any) => {
+                                console.log("Date appointment ", new Date(row.startDateTime))
+                                return canCancelAppointment(new Date(row.startDateTime), row.appointmentStatus, outpatientsInfo)
+                            }, "func" : (id:number) => showModalShowUp(id)}, 
                             {"type" : "show_up", "check" : (row:any) => {
                                 return row.appointmentStatus === RequestStatus.PENDING_APPROVAL
-                            }, "func" : (id:number) => showUpPatientCallback(id)}]}
+                            }, "func" : (id:number) => showModalCancel(id)}]}
                         />
                 )
             }
@@ -202,6 +278,9 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
     if(!createAppointment){
         return (
             <Grid xs={12}>
+               {
+                renderModal()
+               }
                 <Grid item xs={12}>
                     <PatientInfo uuidPatient={uuidPatient} />
                 </Grid>

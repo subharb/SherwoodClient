@@ -842,7 +842,17 @@
                     "date" : ["Date Appointment", "Fecha de cita", "Date de rendez-vous"],
                     "turn" : ["Shift", "Turno", "Horaire"],
                     "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
-                    "status" : ["Status", "Status", "Status"]
+                    "status" : ["Status", "Status", "Status"],
+                    "modal" : {
+                        "title" : ["Confirm action", "Confirmar acción", "Confirmer l'action"],
+                        "cancel" : {
+                            "message" : ["Are you sure you want to cancel this appointment?", "¿Está seguro de que desea cancelar esta cita?", "Êtes-vous sûr de vouloir annuler ce rendez-vous?"]
+                        },
+                        "show_up" : {
+                            "message" : ["Are you sure the patient showed up?", "¿Está seguro de que el paciente se presentó?", "Êtes-vous sûr que le patient est présent?"]
+                        }
+                        
+                    }
                 },
                 "box":{
                     "title" : ["Box", "Caja", "Boîte"],
