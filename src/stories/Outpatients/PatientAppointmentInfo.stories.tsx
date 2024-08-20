@@ -116,7 +116,7 @@ Standard.args = {
             "requestAppointment": {
                 "id": 3267,
                 "type": 4,
-                "status": RequestStatus.ACCEPTED,
+                "status": RequestStatus.PENDING_APPROVAL,
                 "createdAt": "2024-08-05T14:56:07.862Z",
                 "updatedAt": "2024-08-05T14:56:52.799Z",
                 "deletedAt": null,

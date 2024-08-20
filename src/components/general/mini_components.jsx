@@ -94,7 +94,7 @@ export const IconGenerator = withTheme((props) => {
         case "pdf":
             return <PdfIcon style={{color : 'red' }}  />
         case "show_up":
-            return <AssignmentTurnedInIcon style={{color:"#000"}}  />
+            return <AssignmentTurnedInIcon style={{color:"green"}}  />
         default:
             return <AddIcon />
     }

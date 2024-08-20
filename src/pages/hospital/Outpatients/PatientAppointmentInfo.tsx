@@ -6,20 +6,20 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import { ButtonAdd, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
 import PatientInfo from '../../../components/PatientInfo';
-import { IAppointment } from '../../../constants/types';
+import { IAppointment, IOutpatientsParams } from '../../../constants/types';
 import { getPatientsAppoinmentsService, cancelAppointmentService, updateAppoinmentsService } from '../../../services/agenda';
 import { dateAndTimeFromPostgresString, fullDateFromPostgresString, researcherFullName, stringDatePostgresToDate, turnsToSchedule } from '../../../utils/index.jsx';
 import { RequestStatus } from '../Service/types';
 import { FormMakeAppointment } from './FormAppointment';
 import Modal from '../../../components/general/modal';
 import { func } from 'prop-types';
-import { canCancelAppointment } from '../../../utils/agenda';
-import { OutpatientsInfo } from '../../../constants/agenda_types';
+import { canCancelAppointment, canShowUpAppointment, isAppointmentDone } from '../../../utils/agenda';
+import EventIcon from '@mui/icons-material/Event';
 
 interface PatientAppointmentInfoProps {
     uuidPatient: string;
     uuidInvestigation: string;
-    outpatientsInfo: OutpatientsInfo;
+    outpatientsInfo: IOutpatientsParams;
     resetModal: () => void;
     appointmentMadeCallback: () => void;
 }
@@ -82,7 +82,7 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
             .then(response => {
                 const indexAppointment = patientsAppointments.findIndex((appointment) => appointment.uuid === appointmentToDelete.uuid);
                 if(indexAppointment !== -1){
-                    patientsAppointments.splice(indexAppointment, 1);
+                    patientsAppointments[indexAppointment].requestAppointment.status = RequestStatus.CANCELED;
                 }
                 setLoadingPatientsAppointments(false);
             })
@@ -123,35 +123,33 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
     const [showupAppointmentId, setShowupAppointmentId] = React.useState<number>(0);
     const [cancelAppointmentId, setCancelAppointmentId] = React.useState<number>(0);
 
-    function isAppointmentDone(status:number){
-        return [RequestStatus.ACCEPTED, RequestStatus.COMPLETED].includes(status);
-    }
+   
     function renderShowIcon(status:number, date:number){
         if(isAppointmentDone(status)){
             return (
-                <Typography variant="body2" component="div" gutterBottom style={{height:'1px', textAlign:"center"}} >
+                <Typography variant='body2'  component="div" style={{textAlign:"center"}} >
                     <CheckCircleIcon style={{fontSize:"1.2rem", color:"green"}} /> 
                 </Typography>
             )
         }
         else if(status === RequestStatus.PENDING_PAYMENT){
             return(
-                <Typography variant='body2'  component="div" gutterBottom style={{textAlign:"center"}} >
+                <Typography variant='body2'  component="div" style={{textAlign:"center"}} >
                     <MonetizationOn style={{fontSize:"1.2rem", color:"red"}} />
                 </Typography>
             )
         }
-        else if(stringDatePostgresToDate(date) > new Date()){
+        else if(status === RequestStatus.PENDING_APPROVAL && stringDatePostgresToDate(date) > new Date()){//Is an appointment that is pending to be approved, meaning the user didnt show up
             return (
-                <Typography variant='body2'  component="div" gutterBottom style={{height:'1px', textAlign:"center"}} >
-                    <Remove style={{fontSize:"1.2rem", color:"orange"}} />
+                <Typography variant='body2'  component="div" style={{textAlign:"center"}} >
+                <EventIcon style={{fontSize:"1.5rem", color:"DodgerBlue", textAlign:"center"}} />
                 </Typography>
             )
         }
         else{
             return (
-                <Typography variant='body2'  component="div" gutterBottom style={{height:'1px', textAlign:"center", color:"red"}} >
-                    <RemoveCircleOutline style={{fontSize:"1.2rem"}} />
+                <Typography variant='body2'  component="div" style={{textAlign:"center"}} >
+                    <RemoveCircleOutline style={{fontSize:"1.2rem", color:"red"}} />
                 </Typography>
             )
         }
@@ -173,6 +171,16 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
         setShowModal(true);
     }
 
+    function confirmShowUpPatient(){
+        resetModal();
+        showUpPatientCallback(showupAppointmentId);
+    }
+
+    function confirmCancelAppointment(){
+        resetModal();
+        cancelAppointmentCallback(cancelAppointmentId);
+    }
+
     function renderModal(){
         return (
             <Modal open={showModal} onClose={resetModal} 
@@ -187,11 +195,11 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                             </Typography>
                         </Grid>
                         <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                            <ButtonCancel onClick={resetModal} data-testid="cancel-modal"  spaceright={1}>
+                            <ButtonCancel onClick={ resetModal } data-testid="cancel-modal"  spaceright={1}>
                                 <Translate id="general.cancel" />
                             </ButtonCancel>
                             &nbsp;
-                            <ButtonContinue onClick={showUpPatientCallback} data-testid="continue-modal" >
+                            <ButtonContinue onClick={ confirmShowUpPatient } data-testid="continue-modal" >
                                 <Translate id="general.continue" />
                             </ButtonContinue>
                         </Grid>
@@ -210,7 +218,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                                 <Translate id="general.cancel" />
                             </ButtonCancel>
                             &nbsp;
-                            <ButtonContinue onClick={cancelAppointmentCallback} data-testid="continue-modal" >
+                            <ButtonContinue onClick={ confirmCancelAppointment } data-testid="continue-modal" >
                                 <Translate id="general.continue" />
                             </ButtonContinue>
                         </Grid>
@@ -265,10 +273,10 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                             actions={[{"type" : "cancel_appointment", "check" : (row:any) => {
                                 console.log("Date appointment ", new Date(row.startDateTime))
                                 return canCancelAppointment(new Date(row.startDateTime), row.appointmentStatus, outpatientsInfo)
-                            }, "func" : (id:number) => showModalShowUp(id)}, 
+                            }, "func" : (id:number) => showModalCancel(id)}, 
                             {"type" : "show_up", "check" : (row:any) => {
-                                return row.appointmentStatus === RequestStatus.PENDING_APPROVAL
-                            }, "func" : (id:number) => showModalCancel(id)}]}
+                                return canShowUpAppointment(new Date(row.startDateTime), row.appointmentStatus, outpatientsInfo)
+                            }, "func" : (id:number) => showModalShowUp(id)}]}
                         />
                 )
             }
