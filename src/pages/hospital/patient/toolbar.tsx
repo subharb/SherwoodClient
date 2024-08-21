@@ -92,7 +92,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, enableA
             categorySurveys = categorySurveys.filter(category => category !== CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW)
         }
         const readMedicalPermission = permissions.includes(PERMISSION.MEDICAL_READ);
-        const writeMedicalPermission = permissions.includes(PERMISSION.MEDICAL_WRITE);
+        const writeMedicalPermission = permissions.includes(PERMISSION.DISCHARGE_PATIENT);
         const canEditPersonalData = permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editCallBack : null
 
         return <PatientToolBarComponent sex={personalData.sex} name={personalData!.name as string} 
