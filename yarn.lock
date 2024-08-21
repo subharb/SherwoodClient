@@ -2869,6 +2869,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.13.8, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.6.3":
+  version: 7.25.0
+  resolution: "@babel/runtime@npm:7.25.0"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: 4a2a374a58eb01aaa65c5762606e90b3a1f448e0c637d42278b6cc0b42a9f5399b5f381ba9f237ee087da2860d14dd2d1de7bddcbe18be6a3cafba97e44bed64
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.22.15, @babel/template@npm:^7.22.5":
   version: 7.22.15
   resolution: "@babel/template@npm:7.22.15"
@@ -3782,57 +3791,98 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fullcalendar/common@npm:~5.5.0":
-  version: 5.5.1
-  resolution: "@fullcalendar/common@npm:5.5.1"
+"@fullcalendar/core@npm:^6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/core@npm:6.1.15"
   dependencies:
-    ical.js: ^1.4.0
-    tslib: ^2.0.3
-  checksum: 008aa3c408a516bb075a302023e8ad232763388d24cbbdb1364cb496d195963f4db46eb45af946f931bde0c726e883f977afc079c7fd605d33416935aa252b1a
+    preact: ~10.12.1
+  checksum: 40c3b237a64ac1f79a35b031a1c10aec70ccd4f638212af0784ff04e7e554b7ca74f5861d8336d5ccd64ed819b185dd4c14c212b3ff19d5930a5a909ad41dc68
   languageName: node
   linkType: hard
 
-"@fullcalendar/core@npm:5.5.0":
-  version: 5.5.0
-  resolution: "@fullcalendar/core@npm:5.5.0"
-  dependencies:
-    "@fullcalendar/common": ~5.5.0
-    preact: ^10.0.5
-    tslib: ^2.0.3
-  checksum: 95a50e7ff277b8f47d96515262c35ac363ec90ba6bad3e74a516a4858b5f6923f055967637231c2769ed18d70889a0157694fa642679c5447dd892819a320ad6
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/daygrid@npm:5.5.0":
-  version: 5.5.0
-  resolution: "@fullcalendar/daygrid@npm:5.5.0"
-  dependencies:
-    "@fullcalendar/common": ~5.5.0
-    tslib: ^2.0.3
-  checksum: 703146511c90b321655bda8ef93a96822c4efbbe5fe263c533ad69e1470ff4a0ba5f9d1fe25d6b1670814ab673a37c72991c7ab2dc45ba8e2340cc19dc20bdad
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/interaction@npm:5.5.0":
-  version: 5.5.0
-  resolution: "@fullcalendar/interaction@npm:5.5.0"
-  dependencies:
-    "@fullcalendar/common": ~5.5.0
-    tslib: ^2.0.3
-  checksum: e9596809bfe0546107ed7fe001e2afc887a3c882b2edbeab1210d95469c7f3ff17e2bf5d039186dcd5dd3877dba344a115cfc9ef3666856a7c82bdca1fea73f9
-  languageName: node
-  linkType: hard
-
-"@fullcalendar/react@npm:5.5.0":
-  version: 5.5.0
-  resolution: "@fullcalendar/react@npm:5.5.0"
-  dependencies:
-    "@fullcalendar/common": ~5.5.0
-    tslib: ^2.0.3
+"@fullcalendar/daygrid@npm:^6.1.15, @fullcalendar/daygrid@npm:~6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/daygrid@npm:6.1.15"
   peerDependencies:
-    react: ^16.7.0 || ^17
-    react-dom: ^16.7.0 || ^17
-  checksum: eba88da3be86c1a7103c702bb0fc7a5c297eb59a87a58e80a7763f0cf765793794cd13cada25bf8c0d90ed23ba82ffc46052bdde9ed80a00a1d9ad7c1a2febdd
+    "@fullcalendar/core": ~6.1.15
+  checksum: 16763615c2410be622e428f3f1a7379745769c4a8aa1a3475fce7fc74b7f3f9625f5817a614d46089ff7b54040e6b5e295bd984a8240b49b23c347caec2b9f20
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/interaction@npm:^6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/interaction@npm:6.1.15"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+  checksum: 25a321c40f4419bdfbd9471fef31b1ed4832d0fc8cdd5fe746fa9c545604ebe6302c7aaf7ced93a289bb167f28e82b55aa8eb3916fd812bbbb2e04380299c2ae
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/premium-common@npm:~6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/premium-common@npm:6.1.15"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+  checksum: db08910fa4cab81f3de992892dfd70a3839c422bab4cbdc431c8d2afe488008b7affc7eca97d82b5b58e56cb982e1956ded003552279efd521aa96e373bdc45c
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/react@npm:^6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/react@npm:6.1.15"
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+    react: ^16.7.0 || ^17 || ^18 || ^19
+    react-dom: ^16.7.0 || ^17 || ^18 || ^19
+  checksum: 177f98611a60e6f9d0248c6b9b8ef074ee408a7becf4800d71dd37e53d50a1305c51e7341d196c3a4c3fbe45f0d826e2c52cde18976ce79b5b2e7a3cc14de693
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/resource-timeline@npm:^6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/resource-timeline@npm:6.1.15"
+  dependencies:
+    "@fullcalendar/premium-common": ~6.1.15
+    "@fullcalendar/scrollgrid": ~6.1.15
+    "@fullcalendar/timeline": ~6.1.15
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+    "@fullcalendar/resource": ~6.1.15
+  checksum: bd8fd54ab0f6e9a9959ccbb7aaecdc210c7f53a285f04548e3dc969ff69dc6375b9de8f82d31e949901c176521270446d3f46c4ed144bfb63c1d9e0189635d74
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/scrollgrid@npm:~6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/scrollgrid@npm:6.1.15"
+  dependencies:
+    "@fullcalendar/premium-common": ~6.1.15
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+  checksum: a22e132f841c721aba0f0f300cbe5d7573dd69679c03e2fd0e8b4d18146815487b69fc0fb14fc7d6ea8a1971cd6bc1339dfa04db6753202ecf6e7d0f3c55072b
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/timegrid@npm:^6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/timegrid@npm:6.1.15"
+  dependencies:
+    "@fullcalendar/daygrid": ~6.1.15
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+  checksum: 37d2a9d62245b927a48a411142c2b4ea915dc25178242103745749533a949327e618177b370f4cb8ef8f2e07dd53a59fab836156329ea92344ae76fe91e0ce79
+  languageName: node
+  linkType: hard
+
+"@fullcalendar/timeline@npm:~6.1.15":
+  version: 6.1.15
+  resolution: "@fullcalendar/timeline@npm:6.1.15"
+  dependencies:
+    "@fullcalendar/premium-common": ~6.1.15
+    "@fullcalendar/scrollgrid": ~6.1.15
+  peerDependencies:
+    "@fullcalendar/core": ~6.1.15
+  checksum: c259494e39d024f04ea17b268fb2ece3b93d1aa3073aadd90a7ef9056ca14703ba615286ee996bd4eb90983f3a252bed1408de4ae0dc37b2bf350670ad477f99
   languageName: node
   linkType: hard
 
@@ -5586,7 +5636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@popperjs/core@npm:^2.11.8, @popperjs/core@npm:^2.9.2":
+"@popperjs/core@npm:^2.11.6, @popperjs/core@npm:^2.11.8, @popperjs/core@npm:^2.9.2":
   version: 2.11.8
   resolution: "@popperjs/core@npm:2.11.8"
   checksum: e5c69fdebf52a4012f6a1f14817ca8e9599cb1be73dd1387e1785e2ed5e5f0862ff817f420a87c7fc532add1f88a12e25aeb010ffcbdc98eace3d55ce2139cf0
@@ -6217,6 +6267,17 @@ __metadata:
     react-redux:
       optional: true
   checksum: ac25dec73a5d2df9fc7fbe98c14ccc73919e5ee1d6f251db0d2ec8f90273f92ef39c26716704bf56b5a40189f72d94b4526dc3a8c7ac3986f5daf44442bcc364
+  languageName: node
+  linkType: hard
+
+"@restart/hooks@npm:^0.4.7":
+  version: 0.4.16
+  resolution: "@restart/hooks@npm:0.4.16"
+  dependencies:
+    dequal: ^2.0.3
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: d8097878baa1226c02a697a893a25e6fd0df73baef4ee1329f40ce3f94ed36e0623252d16095bc963379d73e03b31855894c5d20d462e0cdea0b994cb12bbc7f
   languageName: node
   linkType: hard
 
@@ -9303,6 +9364,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react@npm:>=16.9.11":
+  version: 18.3.4
+  resolution: "@types/react@npm:18.3.4"
+  dependencies:
+    "@types/prop-types": "*"
+    csstype: ^3.0.2
+  checksum: 555ccd1af86a23c781dea0360de64b2f7a0708cdcbf9e6496744b77630065868526fd55147c727dc5ef11b7fd712b04f7898757a84c67e2eb9dfd4c4ead10d95
+  languageName: node
+  linkType: hard
+
 "@types/react@npm:^17, @types/react@npm:^17.0.52":
   version: 17.0.69
   resolution: "@types/react@npm:17.0.69"
@@ -9473,6 +9544,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 2711a9ef4af3995efd442acb806d3bba0a03ef3a7eb07b1734ddd8a42b6682414f6b57ed7536fb6a5df6c6449ca24c3d42924a9d896ae3eb1065b2abbe988a18
+  languageName: node
+  linkType: hard
+
+"@types/warning@npm:^3.0.0":
+  version: 3.0.3
+  resolution: "@types/warning@npm:3.0.3"
+  checksum: 862b71c918283d2ace5cab4e9f0167507a15ee9cf4d46035c858bdd4bf1ee83cbfb42bcfd4da6e7e254a2efa32200b6521f3719c729e39e88e336309d53bb4c4
   languageName: node
   linkType: hard
 
@@ -11915,10 +11993,12 @@ __metadata:
     "@emotion/react": ^11.11.1
     "@emotion/styled": ^11.11.0
     "@esbuild-plugins/node-globals-polyfill": ^0.2.3
-    "@fullcalendar/core": 5.5.0
-    "@fullcalendar/daygrid": 5.5.0
-    "@fullcalendar/interaction": 5.5.0
-    "@fullcalendar/react": 5.5.0
+    "@fullcalendar/core": ^6.1.15
+    "@fullcalendar/daygrid": ^6.1.15
+    "@fullcalendar/interaction": ^6.1.15
+    "@fullcalendar/react": ^6.1.15
+    "@fullcalendar/resource-timeline": ^6.1.15
+    "@fullcalendar/timegrid": ^6.1.15
     "@material-ui/core": ^4.11.2
     "@material-ui/data-grid": 4.0.0-alpha.13
     "@material-ui/docs": 4.0.0-beta.3
@@ -12014,6 +12094,7 @@ __metadata:
     react-apexcharts: ^1.4.0
     react-app-polyfill: 2.0.0
     react-beautiful-dnd: ^13.1.1
+    react-big-calendar: ^1.13.3
     react-chartjs-2: 2.11.1
     react-dom: ^18.2.0
     react-dragula: 1.1.17
@@ -13073,6 +13154,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-arithmetic@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "date-arithmetic@npm:4.1.0"
+  checksum: 656c099864d09dd7f6246e6ff1ce23870615fda80b21d302abb6c4223969a3ff32a8a5e7791b1021ca3bb596e1ced7e9924fabde1eacd50a0903424ad09df876
+  languageName: node
+  linkType: hard
+
 "date-fns@npm:^1.27.2":
   version: 1.30.1
   resolution: "date-fns@npm:1.30.1"
@@ -13093,6 +13181,13 @@ __metadata:
   version: 4.0.14
   resolution: "date-format@npm:4.0.14"
   checksum: dfe5139df6af5759b9dd3c007b899b3f60d45a9240ffeee6314ab74e6ab52e9b519a44ccf285888bdd6b626c66ee9b4c8a523075fa1140617b5beb1cbb9b18d1
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.7":
+  version: 1.11.13
+  resolution: "dayjs@npm:1.11.13"
+  checksum: f388db88a6aa93956c1f6121644e783391c7b738b73dbc54485578736565c8931bdfba4bb94e9b1535c6e509c97d5deb918bbe1ae6b34358d994de735055cca9
   languageName: node
   linkType: hard
 
@@ -13690,7 +13785,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dom-helpers@npm:^5.0.1":
+"dom-helpers@npm:^5.0.1, dom-helpers@npm:^5.2.0, dom-helpers@npm:^5.2.1":
   version: 5.2.1
   resolution: "dom-helpers@npm:5.2.1"
   dependencies:
@@ -15914,6 +16009,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"globalize@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "globalize@npm:0.1.1"
+  checksum: bc69e81c5ff258821585baae4cb281d196d63339a945104aa5da27f1721ed572f286213126434e287a28f36ac5f6f518e03cec32616ab4eb13a24c5a15443ab6
+  languageName: node
+  linkType: hard
+
 "globals@npm:^11.1.0":
   version: 11.12.0
   resolution: "globals@npm:11.12.0"
@@ -16568,13 +16670,6 @@ __metadata:
   dependencies:
     "@babel/runtime": ^7.3.1
   checksum: 3ad4695a67da021456af2a7913bd5333817d3ea124359672c58e4c3bb6ea691ecccc1b1146f80697fc683f2d348c3d89aeae1e0b2b707e52b824a34f482d8078
-  languageName: node
-  linkType: hard
-
-"ical.js@npm:^1.4.0":
-  version: 1.5.0
-  resolution: "ical.js@npm:1.5.0"
-  checksum: 51df7a01f462dc8a02b3c3c28acb288756071044c4a8b56ff5179995bb219e569e72cfedac6f4ab03dc643be34f5d88c09a7d79c4be6ba8a7623b7336eecb110
   languageName: node
   linkType: hard
 
@@ -19252,7 +19347,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash-es@npm:^4.17.11, lodash-es@npm:^4.17.14, lodash-es@npm:^4.17.15":
+"lodash-es@npm:^4.17.11, lodash-es@npm:^4.17.14, lodash-es@npm:^4.17.15, lodash-es@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash-es@npm:4.17.21"
   checksum: 05cbffad6e2adbb331a4e16fbd826e7faee403a1a04873b82b42c0f22090f280839f85b95393f487c1303c8a3d2a010048bf06151a6cbe03eee4d388fb0a12d2
@@ -19654,6 +19749,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"luxon@npm:^3.2.1":
+  version: 3.5.0
+  resolution: "luxon@npm:3.5.0"
+  checksum: f290fe5788c8e51e748744f05092160d4be12150dca70f9fadc0d233e53d60ce86acd82e7d909a114730a136a77e56f0d3ebac6141bbb82fd310969a4704825b
+  languageName: node
+  linkType: hard
+
 "lz-string@npm:^1.5.0":
   version: 1.5.0
   resolution: "lz-string@npm:1.5.0"
@@ -19894,6 +19996,13 @@ __metadata:
   version: 5.2.1
   resolution: "memoize-one@npm:5.2.1"
   checksum: a3cba7b824ebcf24cdfcd234aa7f86f3ad6394b8d9be4c96ff756dafb8b51c7f71320785fbc2304f1af48a0467cbbd2a409efc9333025700ed523f254cb52e3d
+  languageName: node
+  linkType: hard
+
+"memoize-one@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "memoize-one@npm:6.0.0"
+  checksum: f185ea69f7cceae5d1cb596266dcffccf545e8e7b4106ec6aa93b71ab9d16460dd118ac8b12982c55f6d6322fcc1485de139df07eacffaae94888b9b3ad7675f
   languageName: node
   linkType: hard
 
@@ -20372,6 +20481,15 @@ __metadata:
   peerDependencies:
     esbuild: ^0.14.0 || ^0.15.0 || ^0.16.0 || ^0.17.0 || ^0.18.0
   checksum: 2cf0c7fe4c15efa02702576e799ce20e0ff85e4db39516cc566c2c17cd45702ec56f1f1b57e40d4126f4c94f2bcff6923ed48191d2323c0f059d51c2e2b45d7b
+  languageName: node
+  linkType: hard
+
+"moment-timezone@npm:^0.5.40":
+  version: 0.5.45
+  resolution: "moment-timezone@npm:0.5.45"
+  dependencies:
+    moment: ^2.29.4
+  checksum: a22e9f983fbe1a01757ce30685bce92e3f6efa692eb682afd47b82da3ff960b3c8c2c3883ec6715c124bc985a342b57cba1f6ba25a1c8b4c7ad766db3cd5e1d0
   languageName: node
   linkType: hard
 
@@ -22026,10 +22144,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact@npm:^10.0.5":
-  version: 10.18.1
-  resolution: "preact@npm:10.18.1"
-  checksum: 691030149fdbd026cac7c07147756f48c6cb8cdea6a8af8c0f383e4c31f5bce48cdc751e4bccf8826560a0d2db77ada401c0308f2bcae2961d16972c26c95607
+"preact@npm:~10.12.1":
+  version: 10.12.1
+  resolution: "preact@npm:10.12.1"
+  checksum: 0de99f477563ab7f94a0f964952ad216375973c0dcd9eb49881f8eb5effc5ed6948da062548c87d5bb0d82f1a1e516b649020e760eab3a0503dfdd8e64d34a26
   languageName: node
   linkType: hard
 
@@ -22757,6 +22875,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-big-calendar@npm:^1.13.3":
+  version: 1.13.3
+  resolution: "react-big-calendar@npm:1.13.3"
+  dependencies:
+    "@babel/runtime": ^7.20.7
+    clsx: ^1.2.1
+    date-arithmetic: ^4.1.0
+    dayjs: ^1.11.7
+    dom-helpers: ^5.2.1
+    globalize: ^0.1.1
+    invariant: ^2.2.4
+    lodash: ^4.17.21
+    lodash-es: ^4.17.21
+    luxon: ^3.2.1
+    memoize-one: ^6.0.0
+    moment: ^2.29.4
+    moment-timezone: ^0.5.40
+    prop-types: ^15.8.1
+    react-overlays: ^5.2.1
+    uncontrollable: ^7.2.1
+  peerDependencies:
+    react: ^16.14.0 || ^17 || ^18
+    react-dom: ^16.14.0 || ^17 || ^18
+  checksum: 8177a759dfbc649875677bc855ea8ec030027db7dca33cdcc303988eed2b3cb5307c036810d605a56018ea27598059ca2182930cf55629f17a71dd179554071e
+  languageName: node
+  linkType: hard
+
 "react-chartjs-2@npm:2.11.1":
   version: 2.11.1
   resolution: "react-chartjs-2@npm:2.11.1"
@@ -23197,6 +23342,25 @@ __metadata:
     react: ^0.14.9 || >=15.3.0
     react-dom: ^0.14.9 || >=15.3.0
   checksum: bcef5c6fe431dd70a46d71f8b3e486113fb3c211453cbeba9b36b3df5d7dba19fd23567505c8a8f8d3137d9aea80bc95ca0b8003666d47f29ce78ab140648dda
+  languageName: node
+  linkType: hard
+
+"react-overlays@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "react-overlays@npm:5.2.1"
+  dependencies:
+    "@babel/runtime": ^7.13.8
+    "@popperjs/core": ^2.11.6
+    "@restart/hooks": ^0.4.7
+    "@types/warning": ^3.0.0
+    dom-helpers: ^5.2.0
+    prop-types: ^15.7.2
+    uncontrollable: ^7.2.1
+    warning: ^4.0.3
+  peerDependencies:
+    react: ">=16.3.0"
+    react-dom: ">=16.3.0"
+  checksum: ac43b3876829081c6912f083b53016384fe1357c2c819cf80ffa961dcc650b0d504da0c87d1e6139775976d514321061f39f6b69ab128d619c6917b70cb179d6
   languageName: node
   linkType: hard
 
@@ -26348,7 +26512,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1 || ^1.9.3, tslib@npm:^2.5.2":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1 || ^1.9.3, tslib@npm:^2.5.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
@@ -26633,6 +26797,20 @@ __metadata:
     buffer: ^5.2.1
     through: ^2.3.8
   checksum: 0e67c4a91f4fa0fc7b4045f8b914d3498c2fc2e8c39c359977708ec85ac6d6029840e97f508675fdbdf21fcb8d276ca502043406f3682b70f075e69aae626d1d
+  languageName: node
+  linkType: hard
+
+"uncontrollable@npm:^7.2.1":
+  version: 7.2.1
+  resolution: "uncontrollable@npm:7.2.1"
+  dependencies:
+    "@babel/runtime": ^7.6.3
+    "@types/react": ">=16.9.11"
+    invariant: ^2.2.4
+    react-lifecycles-compat: ^3.0.4
+  peerDependencies:
+    react: ">=15.0.0"
+  checksum: 3345c0c1916193ddb9cc6f2b78711dc9f22b919d780485e15b95690722e9d1797fc702c4ebb30c0acaae6a772b865d0a9ddc83fa1da44958f089aee78f2f5eab
   languageName: node
   linkType: hard
 

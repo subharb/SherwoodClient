@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { RequestStatus } from '../../pages/hospital/Service/types';
 import AgendaTimes from '../../pages/hospital/Outpatients/AgendaTimes';
-
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
 
 const meta: Meta<typeof AgendaTimes> = {
-  title: 'Outpatients/Patient Appointment',
+  title: 'Outpatients/Staff Agenda',
   component: AgendaTimes,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -39,9 +40,28 @@ TemplateTable.args = {
 
 export const Standard = TemplateTable.bind({});
 Standard.args = {
-    uuidPatient: '1234',
-    outpatientsInfo : {type : "date"},
-    patientsAppointments : []
+    localizer: momentLocalizer(moment),
+    appointments : [
+        {
+          time: '08:00',
+          slots: [
+            { doctor: 'B. Assani', name: 'CHEIKH OMAR MBAYE', age: 33, gender: 'male' },
+            { doctor: 'H. Ndiaye', name: 'CHEIKH OMAR MBAYE', age: 33, gender: 'male' },
+            { doctor: 'X. Doctor', slot: 'FREE SLOT' },
+            { doctor: 'X. Doctor', name: 'CHEIKH OMAR MBAYE', age: 33, gender: 'male' },
+          ],
+        },
+        {
+            time: '09:00',
+            slots: [
+              { doctor: 'B. Assani', name: 'CHEIKH OMAR MBAYE', age: 33, gender: 'male' },
+              { doctor: 'H. Ndiaye', name: 'CHEIKH OMAR MBAYE', age: 33, gender: 'male' },
+              { doctor: 'X. Doctor', slot: 'FREE SLOT' },
+              { doctor: 'X. Doctor', name: 'CHEIKH OMAR MBAYE', age: 33, gender: 'male' },
+            ],
+          },
+        // Add more time slots as needed
+      ]
 };
 
 

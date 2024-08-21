@@ -17,13 +17,13 @@ import { RequestStatus } from '../Service/types';
 interface AppointmentsProps {
     uuidInvestigation: string;
     patientsPersonalData: IPatient[];
-    uuidAgenda: string;
+    uuidAgendas: string[];
     dateSelected: Date;
     mode:OutpatientsVisualizationMode,
     callbackAppointments?: (appointments:IAppointment[]) => void;
 }
 
-const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uuidAgenda, dateSelected, patientsPersonalData, callbackAppointments }) => {
+const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uuidAgendas, dateSelected, patientsPersonalData, callbackAppointments }) => {
     const [loadingAppointments, setLoadingAppointments] = React.useState(false);
     const [appointments, setAppointments] = React.useState<IAppointment[]>([]);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
@@ -73,22 +73,28 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
                 setLoadingAppointments(false);
             })
     }
-    useEffect(() => {
-        if(uuidAgenda && dateSelected){
+
+    function getAllAgendas(){
+        uuidAgendas.forEach((uuidAgenda) => {
             getAppoinmentsDate(uuidAgenda, dateSelected)
+        });
+    }
+    useEffect(() => {
+        if(uuidAgendas && dateSelected){
+            getAllAgendas();
         }
 
-    }, [uuidAgenda, dateSelected]);
+    }, [uuidAgendas, dateSelected]);
 
     usePageVisibility(() => {
-        if(uuidAgenda && dateSelected){
-            getAppoinmentsDate(uuidAgenda, dateSelected)
+        if(uuidAgendas && dateSelected){
+            getAllAgendas();
         }
     });
 
-    async function getAppoinmentsDate(uuidAgenda:string, date:Date){
+    async function getAppoinmentsDate(uuidAgendas:string, date:Date){
         setLoadingAppointments(true);
-        getAppoinmentsDateService(uuidInvestigation, uuidAgenda, date)
+        getAppoinmentsDateService(uuidInvestigation, uuidAgendas, date)
             .then(response => {
                 setAppointments(response.appointments);
                 setLoadingAppointments(false);
