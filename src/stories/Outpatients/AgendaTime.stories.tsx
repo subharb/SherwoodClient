@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { RequestStatus } from '../../pages/hospital/Service/types';
-import AgendaTimes from '../../pages/hospital/Outpatients/AgendaTimes';
+import AgendaTimes from '../../pages/hospital/Outpatients/Appointments/AppointmentsTimes';
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 

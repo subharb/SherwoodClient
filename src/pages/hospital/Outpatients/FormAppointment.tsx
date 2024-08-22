@@ -261,7 +261,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         }
     }
     function renderServices(){
-        if(!agendasSelected || mode === 'consult'){
+        if(!agendaSelected || mode === 'consult'){
             return null;
         }
         if(agendaSelected!.listServicesInvestigation.length === 0){
