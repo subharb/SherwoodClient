@@ -115,6 +115,9 @@ export default function MultiAgenda({ date, appointments, agendas, patients, can
                 step={60}
                 views={views}
                 onSelectEvent={handleSelectEvent}
+                components={{
+                    toolbar: () => null
+                }}
             />
       </div>
     </>
