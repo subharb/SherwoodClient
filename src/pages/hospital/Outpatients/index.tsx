@@ -76,8 +76,10 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
         if(uuidAgendasSelected && selectedDate){
             return(
                 <Appointments uuidAgendas={uuidAgendasSelected} uuidInvestigation={investigations.currentInvestigation.uuid} 
+                    type={outpatientsInfo?.params.type} agendas={agendas} 
                     dateSelected={selectedDate} mode={OutpatientsVisualizationMode.CONSULT}
-                    patientsPersonalData={personalData} />
+                    patientsPersonalData={personalData} 
+                />
             )
         }
     }
@@ -99,7 +101,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
                         <Grid container spacing={3}>
                             <Grid item xs={12} style={{padding:'2rem'}}>
                                 <FormConsultAppointment uuidInvestigation={investigations.currentInvestigation.uuid} 
-                                    showAllAgendas={false} viewAllAgendasOption={outpatientsInfo ? outpatientsInfo.params.type === "date_time" : false}
+                                    showAllAgendas={false} dateTimeAppointment={outpatientsInfo ? outpatientsInfo.params.type === "date_time" : false}
                                     infoAppointmentReadyCallback={(uuidAgendas, date) => {
                                         setUuidAgendasSelected(uuidAgendas);
                                         setSelectedDate(date);

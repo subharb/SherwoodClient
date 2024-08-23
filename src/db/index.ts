@@ -16,7 +16,12 @@ export const getDB = async (): Promise<IDBDatabase> => { // Specify return type 
 // // Initialize IndexedDB
 export const initDB = (): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
-        if(db !== null){
+        const timeout = setTimeout(() => {
+            reject(new Error("Database initialization timed out"));
+        }, 5000); // 5 seconds timeout
+
+        if (db !== null) {
+            clearTimeout(timeout);
             resolve(db);
         }
         const request = indexedDB.open(DB_PATIENTS_NAME, 1);

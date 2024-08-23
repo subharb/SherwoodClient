@@ -155,9 +155,12 @@ export interface IAppointment{
     id:number,
     uuid:string,
     startDateTime:number,
+    endDateTime:number,
+    duration:number,
     patient:IPatient,
     order:number,
     agenda:IAgenda,
+    agendaId:number,
     requestAppointment:IRequestAppointment,
     type:number,//0 first visit, 1 follow up
     createdAt:number,
@@ -289,6 +292,11 @@ export interface IOutpatientsInfo{
 }
 export interface IOutpatientsParams {
     type: "date" | "date_time"
+}
+
+export enum OutpatientsTypes{
+    DATE = "date",
+    DATE_TIME = "date_time"
 }
 export enum FUNCTIONALITY {
     HOSPITALIZATION = "HOSPITALIZATION",

@@ -304,7 +304,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
     return (
         <>
             <FormMakeAppointment showAllAgendas={false} uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} 
-                appointmentMadeCallback={appointmentMadeCallback} />
+                appointmentMadeCallback={appointmentMadeCallback} dateTimeAppointment={outpatientsInfo.type === "date_time"} />
         </>
     );
 };

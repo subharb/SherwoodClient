@@ -1,30 +1,23 @@
-import { Grid, Snackbar, Typography } from '@mui/material';
-import { Alert } from "@mui/lab";
 import React, { useEffect } from 'react';
-import { Translate } from 'react-localize-redux';
-import { useHistory } from 'react-router-dom';
-import { ButtonPatient } from '../../../../components/general/BedButton';
-import { ButtonCancel, ButtonContinue } from '../../../../components/general/mini_components';
-import Modal from '../../../../components/general/modal';
-import Loader from '../../../../components/Loader';
-import { IAppointment, IPatient, OutpatientsVisualizationMode } from '../../../../constants/types';
+import { IAgenda, IAppointment, IOutpatientsParams, IPatient, OutpatientsTypes, OutpatientsVisualizationMode } from '../../../../constants/types';
 import usePageVisibility, { SnackbarType, useSnackBarState } from '../../../../hooks';
-import { HOSPITAL_PATIENT } from '../../../../routes/urls';
 import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsService } from '../../../../services/agenda';
-import { areSameDates, getPatientID, yearsFromDate } from '../../../../utils/index.jsx';
-import { RequestStatus } from '../../Service/types';
 import { AppointmentsDate } from './AppointmentsDate';
+import MultiAgenda from './MultiAgenda';
 
 interface AppointmentsProps {
     uuidInvestigation: string;
     patientsPersonalData: IPatient[];
     uuidAgendas: string[];
+    agendas:IAgenda[];
     dateSelected: Date;
+    type: OutpatientsTypes;
     mode:OutpatientsVisualizationMode,
     callbackAppointments?: (appointments:IAppointment[]) => void;
 }
 
-const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uuidAgendas, dateSelected, patientsPersonalData, callbackAppointments }) => {
+const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uuidAgendas, dateSelected,agendas,
+                                                    type, patientsPersonalData, callbackAppointments }) => {
     const [loadingAppointments, setLoadingAppointments] = React.useState(false);
     const [appointments, setAppointments] = React.useState<IAppointment[]>([]);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
@@ -76,6 +69,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
     }
 
     function getAllAgendas(){
+        setAppointments([]);
         uuidAgendas.forEach((uuidAgenda) => {
             getAppoinmentsDate(uuidAgenda, dateSelected)
         });
@@ -97,7 +91,9 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
         setLoadingAppointments(true);
         getAppoinmentsDateService(uuidInvestigation, uuidAgendas, date)
             .then(response => {
-                setAppointments(response.appointments);
+                const prevAppointments = [...appointments]
+                const allAppointments = [...appointments, ...response.appointments];
+                setAppointments(allAppointments);
                 setLoadingAppointments(false);
                 if(callbackAppointments){
                     callbackAppointments(response.appointments);
@@ -107,6 +103,15 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
             .catch(err => {
                 setLoadingAppointments(false);
             })
+    }
+    
+    if(type === OutpatientsTypes.DATE_TIME){
+        const filteredAgendas = agendas.filter(agenda => uuidAgendas.includes(agenda.uuid));
+        const uuidPatients = appointments.map(appointment => appointment.patient.uuid);
+        const filteredPatients = patientsPersonalData.filter(patient => uuidPatients.includes(patient.uuid));
+        return <MultiAgenda date={dateSelected} agendas={filteredAgendas} appointments={appointments}
+                patients={filteredPatients} 
+                    cancelCallback={cancelAppointment} showUpCallback={updateAppointment} />
     }
     return (
         <AppointmentsDate loadingAppointments={loadingAppointments} appointments={appointments} 
@@ -119,4 +124,3 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
 };
 
 export default Appointments;
-
