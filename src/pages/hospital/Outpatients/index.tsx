@@ -102,6 +102,9 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
                             <Grid item xs={12} style={{padding:'2rem'}}>
                                 <FormConsultAppointment uuidInvestigation={investigations.currentInvestigation.uuid} 
                                     showAllAgendas={false} dateTimeAppointment={outpatientsInfo ? outpatientsInfo.params.type === "date_time" : false}
+                                    agendaChangedCallback={(uuidAgendas) => {
+                                        setUuidAgendasSelected(uuidAgendas);
+                                    }}
                                     infoAppointmentReadyCallback={(uuidAgendas, date) => {
                                         setUuidAgendasSelected(uuidAgendas);
                                         setSelectedDate(date);

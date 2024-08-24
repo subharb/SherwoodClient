@@ -8,7 +8,7 @@ import { ButtonAdd, ButtonCancel, ButtonContinue } from '../../../components/gen
 import PatientInfo from '../../../components/PatientInfo';
 import { IAppointment, IOutpatientsParams } from '../../../constants/types';
 import { getPatientsAppoinmentsService, cancelAppointmentService, updateAppoinmentsService } from '../../../services/agenda';
-import { dateAndTimeFromPostgresString, fullDateFromPostgresString, researcherFullName, stringDatePostgresToDate, turnsToSchedule } from '../../../utils/index.jsx';
+import { dateAndTimeFromPostgresString, fullDateFromPostgresString, researcherFullName, stringDatePostgresToDate, timeFromPostgresString, turnsToSchedule } from '../../../utils/index.jsx';
 import { RequestStatus } from '../Service/types';
 import { FormMakeAppointment } from './FormAppointment';
 import Modal from '../../../components/general/modal';
@@ -250,10 +250,13 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                                     { id: "department", alignment: "right", label: <Translate id="pages.hospital.outpatients.table_patient_appointments.department" /> },
                                     { id: "doctor", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.doctor`} /> },
                                     { id: "date", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.date`} /> },
-                                    { id: "turn", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.turn`} /> }, 
+                                    
                                     { id: "bookingDate", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.bookingDate`} /> }, 
                                     { id: "status", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.status`} /> }  
                                 ];
+                if(outpatientsInfo.type === "date_time"){
+                    headCells.splice(2, 0, { id: "time", alignment: "right", label: <Translate id={`pages.hospital.outpatients.table_patient_appointments.time`} /> });
+                }
                 const rows = patientsAppointments.map((appointment:IAppointment) => {
                     return {
                         id : appointment.id,
@@ -261,7 +264,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
                         //@ts-ignore
                         doctor : researcherFullName(appointment.agenda.principalResearcher.researcher),
                         date : fullDateFromPostgresString(activeLanguage.code, appointment.startDateTime),
-                        turn : turnsToSchedule(appointment.agenda.turn),
+                        time : timeFromPostgresString( "es", appointment.startDateTime), 
                         bookingDate : dateAndTimeFromPostgresString(activeLanguage.code, appointment.createdAt),
                         status: renderShowIcon(appointment.requestAppointment.status, appointment.startDateTime),
                         appointmentStatus : appointment.requestAppointment.status,

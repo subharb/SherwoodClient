@@ -21,3 +21,15 @@ export function canShowUpAppointment(appointmentDate:Date, appointmentStatus:Req
 export function isAppointmentDone(status:number){
     return [RequestStatus.ACCEPTED, RequestStatus.COMPLETED].includes(status);
 }
+
+export function turnsAgendaDates(turns:number[][]):Date[]{
+    const today = new Date();
+    const startTurn = new Date(today);
+    startTurn.setHours(turns[0][0]);
+    startTurn.setMinutes(turns[0][1]);
+    const endTurn = new Date(today);
+    endTurn.setHours(turns[1][0]);
+    endTurn.setMinutes(turns[1][1]);
+    return [startTurn, endTurn];
+
+}

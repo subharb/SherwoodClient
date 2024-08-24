@@ -843,6 +843,7 @@
                     "turn" : ["Shift", "Turno", "Horaire"],
                     "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
                     "status" : ["Status", "Status", "Status"],
+                    "time" : ["Time", "Hora", "Heure"],
                     "modal" : {
                         "title" : ["Confirm action", "Confirmar acción", "Confirmer l'action"],
                         "cancel" : {

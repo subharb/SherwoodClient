@@ -76,6 +76,9 @@ export default function MultiAgenda({ date, appointments, agendas, patients, can
         setAppointmentId(0);
     }
 
+    if(agendas.length === 0){
+        return "No Agendas"
+    }
     return (
     <>
         <Modal open={showModal} onClose={resetModal} 
