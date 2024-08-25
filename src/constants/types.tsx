@@ -148,7 +148,21 @@ interface ServiceInvestigation {
 
 export interface IRequestAppointment{
     status:number,
-    type:number,
+    type:RequestStatus,
+}
+
+export enum RequestStatus {
+    PENDING_APPROVAL = 0,
+    PENDING_PAYMENT = 1,
+    ACCEPTED = 2,
+    SOME_ACCEPTED = 3,
+    DENIED = 4,
+    CANCELED = 5,// Cancelado por el usuario
+    EXPIRED = 6,
+    COMPLETED = 7,
+    IN_PROGRESS = 8,
+    INCOMPLETE = 9,
+    INCOMPLETE_ACCEPTED = 10, //Pensada para farmacia
 }
 
 export interface IAppointment{

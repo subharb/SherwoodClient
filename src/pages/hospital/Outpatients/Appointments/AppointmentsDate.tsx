@@ -10,7 +10,6 @@ import Loader from '../../../../components/Loader';
 import { IAppointment, IPatient, OutpatientsVisualizationMode } from '../../../../constants/types';
 import usePageVisibility, { SnackbarType, useSnackBarState } from '../../../../hooks';
 import { HOSPITAL_PATIENT } from '../../../../routes/urls';
-import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsService } from '../../../../services/agenda';
 import { areSameDates, getPatientID, yearsFromDate } from '../../../../utils/index.jsx';
 import { RequestStatus } from '../../Service/types';
 

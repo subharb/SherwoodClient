@@ -448,6 +448,9 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         else if(error === 4){
             setShowSnackbar({show:true, message:`${errorTranslationPath}.outside_agenda_hours`, severity:"error"});
         }
+        else if(error === 5){
+            setShowSnackbar({show:true, message:`${errorTranslationPath}.conflict_appointment`, severity:"error"});
+        }
         else if(appointmentCreated){
             setShowSnackbar({show:true, message:`pages.hospital.outpatients.appointment.success`, severity:"success"});            
         }

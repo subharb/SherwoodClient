@@ -23,6 +23,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
     const [appointments, setAppointments] = React.useState<IAppointment[]>([]);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [loadingSingleAppointment, setLoadingSingleAppointment] = React.useState(false);
+    const [lastUpdate, setLastUpdate] = React.useState(new Date());
     const [showModal, setShowModal] = React.useState(false);
 
     function updateAppointment(uuidAppointment:string){
@@ -36,6 +37,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.checkin_success", severity:"success"});
                 setLoadingSingleAppointment(false);
                 resetModal();
+                setLastUpdate(new Date());
             })
             .catch(err => {
                 let message = "general.error";
@@ -62,10 +64,12 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
                 }
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.cancel_success", severity:"success"});
                 setLoadingAppointments(false);
+                setLastUpdate(new Date());
             })
             .catch(err => {
                 setShowSnackbar({show:true, message:"general.error", severity:"error"});
                 setLoadingAppointments(false);
+                setLastUpdate(new Date());
             })
     }
 
@@ -76,7 +80,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
             const uuidAgenda = uuidAgendas[i];
             await getAppoinmentsDate(uuidAgenda, dateSelected, appointmentsNew)
         }
-
+        setLastUpdate(new Date());
         setAppointments(appointmentsNew);
     }
     useEffect(() => {
@@ -86,11 +90,11 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
 
     }, [uuidAgendas, dateSelected]);
 
-    // usePageVisibility(() => {
-    //     if(uuidAgendas && dateSelected){
-    //         getAllAgendas();
-    //     }
-    // });
+    usePageVisibility(() => {
+        if(uuidAgendas && dateSelected){
+            getAllAgendas();
+        }
+    });
 
     async function getAppoinmentsDate(uuidAgendas:string, date:Date, appointmentsExt:IAppointment[]){
         setLoadingAppointments(true);
@@ -111,9 +115,10 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
         const filteredAgendas = agendas.filter(agenda => uuidAgendas.includes(agenda.uuid));
         const uuidPatients = appointments.map(appointment => appointment.patient.uuid);
         const filteredPatients = patientsPersonalData.filter(patient => uuidPatients.includes(patient.uuid));
-        return <MultiAgenda date={dateSelected} agendas={filteredAgendas} appointments={appointments}
-                patients={filteredPatients} 
-                    cancelCallback={cancelAppointment} showUpCallback={updateAppointment} />
+        return <MultiAgenda key={`${dateSelected.getUTCMilliseconds()}-${appointments.length}`} date={dateSelected} agendas={filteredAgendas} appointments={appointments}
+                patients={filteredPatients} showSnackbar={showSnackbar} lastUpdate={lastUpdate.getTime()}
+                callbackSetSnackbar={(showSnackbar:SnackbarType) => setShowSnackbar(showSnackbar)}
+                cancelCallback={cancelAppointment} showUpCallback={updateAppointment} />
     }
     return (
         <AppointmentsDate loadingAppointments={loadingAppointments} appointments={appointments} 
