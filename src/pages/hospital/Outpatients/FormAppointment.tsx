@@ -303,12 +303,13 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                                 </FieldWrapper>
             return (
                 <Grid container xs={12}>
+                    { dateTimeAppointment && mode === 'make' &&
+                        <Grid item xs={12}>     
+                            { timePicker }
+                        </Grid>
+                    }
                     <Grid item xs={12}>
-                        { dateTimeAppointment && mode === 'make' && 
-                        timePicker }
-                    </Grid>
-                    <Grid item xs={12}>
-                        <FieldWrapper noWrap ={null}>
+                        
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <AppointmentDatePicker availableDaysWeek = {agendaSelected!.daysWeek} blockedDates={agendaSelected! .blockedDates} autoCurrentDate={true}
                                     slotsPerDay={agendaSelected!.slotsPerDay} datesOccupancy={agendaSelected!.datesOccupancy} onDateChangeCallback={(dateSel:Date) => 
@@ -316,7 +317,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                                         onDateChange(dateSel, timeSelected)
                                     }} />
                             </MuiPickersUtilsProvider>
-                        </FieldWrapper>
+                        
                     </Grid>
                 </Grid>
             )

@@ -4,6 +4,7 @@ import usePageVisibility, { SnackbarType, useSnackBarState } from '../../../../h
 import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsService } from '../../../../services/agenda';
 import { AppointmentsDate } from './AppointmentsDate';
 import MultiAgenda from './MultiAgenda';
+import { set } from 'lodash';
 
 interface AppointmentsProps {
     uuidInvestigation: string;
@@ -68,11 +69,15 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
             })
     }
 
-    function getAllAgendas(){
-        setAppointments([]);
-        uuidAgendas.forEach((uuidAgenda) => {
-            getAppoinmentsDate(uuidAgenda, dateSelected)
-        });
+    async function getAllAgendas(){
+        
+        let appointmentsNew: IAppointment[] = [];
+        for(let i = 0; i < uuidAgendas.length; i++){
+            const uuidAgenda = uuidAgendas[i];
+            await getAppoinmentsDate(uuidAgenda, dateSelected, appointmentsNew)
+        }
+
+        setAppointments(appointmentsNew);
     }
     useEffect(() => {
         if(uuidAgendas && dateSelected){
@@ -81,28 +86,25 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
 
     }, [uuidAgendas, dateSelected]);
 
-    usePageVisibility(() => {
-        if(uuidAgendas && dateSelected){
-            getAllAgendas();
-        }
-    });
+    // usePageVisibility(() => {
+    //     if(uuidAgendas && dateSelected){
+    //         getAllAgendas();
+    //     }
+    // });
 
-    async function getAppoinmentsDate(uuidAgendas:string, date:Date){
+    async function getAppoinmentsDate(uuidAgendas:string, date:Date, appointmentsExt:IAppointment[]){
         setLoadingAppointments(true);
-        getAppoinmentsDateService(uuidInvestigation, uuidAgendas, date)
-            .then(response => {
-                const prevAppointments = [...appointments]
-                const allAppointments = [...appointments, ...response.appointments];
-                setAppointments(allAppointments);
-                setLoadingAppointments(false);
-                if(callbackAppointments){
-                    callbackAppointments(response.appointments);
-                }
-                
-            })
-            .catch(err => {
-                setLoadingAppointments(false);
-            })
+        try {
+            const response = await getAppoinmentsDateService(uuidInvestigation, uuidAgendas, date);
+            appointmentsExt.push(...response.appointments); // Modify appointmentsExt directly
+            if (callbackAppointments) {
+                callbackAppointments(response.appointments);
+            }
+        } catch (err) {
+            // Handle error if needed
+        } finally {
+            setLoadingAppointments(false);
+        }
     }
     
     if(type === OutpatientsTypes.DATE_TIME){
