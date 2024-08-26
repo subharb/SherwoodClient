@@ -26,14 +26,17 @@ import {
     LocalHospital as HospitalIcon,
     MonetizationOn as MonetizationOnIcon,
     Today as TodayIcon,
+    EventBusy as EventBusyIcon,
     Hotel as HotelIcon,
     Undo as UndoIcon,
     PictureAsPdf as PdfIcon,
     Settings as SettingsIcon,
     ArrowBack as ArrowBackIcon,
     Today,
-    DirectionsRun
+    DirectionsRun,
+    AssignmentTurnedIn as AssignmentTurnedInIcon,
   } from "@mui/icons-material";
+
   import {
     Icon, IconButton,
     Breadcrumbs as MuiBreadcrumbs,
@@ -64,6 +67,8 @@ export const IconGenerator = withTheme((props) => {
             return <HotelIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"} />
         case "appointment":
             return <Today style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
+        case "cancel_appointment":
+            return <EventBusyIcon style={{color:"red"}} fontSize={props.size ? props.size : "small"}  />               
         case "undo":
             return <UndoIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />    
         case "settings":
@@ -88,6 +93,8 @@ export const IconGenerator = withTheme((props) => {
             return <MonetizationOnIcon style={{color : props.theme.buttonContinue.primary.background }}  />
         case "pdf":
             return <PdfIcon style={{color : 'red' }}  />
+        case "show_up":
+            return <AssignmentTurnedInIcon style={{color:"green"}}  fontSize={props.size ? props.size : "small"} />
         default:
             return <AddIcon />
     }

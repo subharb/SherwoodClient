@@ -152,6 +152,7 @@ const AppointmentDatePicker: React.FC<AppointmentDatePickerProps> = ({ available
     function onAcceptDate() {
         console.log("onAcceptDate")
         if (selectedDate) {
+            console.log("selectedDate", selectedDate.toDate())
             onDateChangeCallback(selectedDate.toDate());
         }        
     }

@@ -622,6 +622,14 @@ export function dateAndTimeFromPostgresString(localeCode, dateString){
             })
 }
 
+export function timeFromPostgresString(localeCode, dateString){
+    const dateObject =  stringDatePostgresToDate(dateString);
+    return dateObject.toLocaleString(localeCode,{
+            hour: '2-digit',
+            minute: '2-digit',
+            })
+}
+
 export function fullDateFromPostgresString(localeCode, dateString){
     const dateObject =  stringDatePostgresToDate(dateString);
     return dateObject.toLocaleString(localeCode,{
@@ -938,4 +946,8 @@ export function differenceDatesToString(dateStart, dateEnd){
             "days" : nDays
         }
     }
+}
+
+export function twoDigits(number){
+    return number < 10 ? "0"+number : number;
 }

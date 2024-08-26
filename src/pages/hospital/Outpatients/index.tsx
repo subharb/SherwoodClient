@@ -28,7 +28,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     
     const [outpatientsInfo, setOutpatientsInfo] = React.useState<IOutpatientsInfo | null>(null);
-    const [uuidAgenda, setUuidAgenda] = React.useState<string | null>(null);
+    const [uuidAgendasSelected, setUuidAgendasSelected] = React.useState<string[]>([]);
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
 
     const canEditOutPatients = useMemo(() =>{
@@ -73,10 +73,13 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
     }, [edit, canEditOutPatients])
 
     function renderAppointments(){
-        if(uuidAgenda && selectedDate){
+        if(uuidAgendasSelected && selectedDate){
             return(
-                <Appointments uuidAgenda={uuidAgenda} uuidInvestigation={investigations.currentInvestigation.uuid} dateSelected={selectedDate} mode={OutpatientsVisualizationMode.CONSULT}
-                    patientsPersonalData={personalData} />
+                <Appointments uuidAgendas={uuidAgendasSelected} uuidInvestigation={investigations.currentInvestigation.uuid} 
+                    type={outpatientsInfo?.params.type} agendas={agendas} 
+                    dateSelected={selectedDate} mode={OutpatientsVisualizationMode.CONSULT}
+                    patientsPersonalData={personalData} 
+                />
             )
         }
     }
@@ -98,8 +101,12 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
                         <Grid container spacing={3}>
                             <Grid item xs={12} style={{padding:'2rem'}}>
                                 <FormConsultAppointment uuidInvestigation={investigations.currentInvestigation.uuid} 
-                                    showAllAgendas={false} infoAppointmentReadyCallback={(uuidAgenda, date) => {
-                                        setUuidAgenda(uuidAgenda);
+                                    showAllAgendas={false} dateTimeAppointment={outpatientsInfo ? outpatientsInfo.params.type === "date_time" : false}
+                                    agendaChangedCallback={(uuidAgendas) => {
+                                        setUuidAgendasSelected(uuidAgendas);
+                                    }}
+                                    infoAppointmentReadyCallback={(uuidAgendas, date) => {
+                                        setUuidAgendasSelected(uuidAgendas);
                                         setSelectedDate(date);
                                     }} 
                                     />

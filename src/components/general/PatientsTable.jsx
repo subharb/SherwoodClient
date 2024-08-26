@@ -26,7 +26,6 @@ function PatientsTable(props) {
             actions={actions}
             />
     )
-    
 }
 
 PatientsTable.propTypes = {

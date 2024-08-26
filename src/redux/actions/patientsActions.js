@@ -1,4 +1,5 @@
 import * as types from "../../constants";
+import { getAllPatientsInvestigation, saveListPatients, savePatient } from "../../db";
 import {
     addPatient as addPatientService, updatePersonalDataPatientService, getPatientsFromId,
 } from "../../services";
@@ -11,12 +12,15 @@ export function savePatientAction(investigation, patientData) {
     dispatch({ type: types.SAVE_PATIENT_LOADING });
 
     return addPatientService(investigation.uuid, patientData)
-      .then((response) => {
-        dispatch({
-          type: types.SAVE_PATIENT_SUCCESS,
-          patient: {...response.patient},
-          investigation:investigation
-        });
+        .then(async (response) => {
+            await saveListPatients([response.patient], investigation);
+            const updatedListPatients = await getAllPatientsInvestigation(investigation.uuid);
+            investigation.patientsPersonalData = updatedListPatients;
+            dispatch({
+                type: types.SAVE_PATIENT_SUCCESS,
+                patient: {...response.patient},
+                investigation:investigation
+            });
       })
       .catch((error) => {
         if(!error.status && !error.response){
@@ -43,12 +47,15 @@ export function updatePatientsFromId(investigation, idPatient) {
     dispatch({ type: types.SAVE_PATIENT_LOADING });
 
     return getPatientsFromId(investigation.uuid, idPatient)
-      .then((response) => {
-        dispatch({
-          type: types.FETCH_NEW_PATIENTS_SUCCESS,
-          patients: [...response.patients],
-          investigation:investigation
-        });
+        .then(async (response) => {
+            await saveListPatients(response.patients, investigation);
+            const updatedListPatients = await getAllPatientsInvestigation(investigation.uuid);
+            investigation.patientsPersonalData = updatedListPatients;
+            dispatch({
+                type: types.FETCH_NEW_PATIENTS_SUCCESS,
+                patients: [...response.patients],
+                investigation: investigation
+            });
       })
       .catch((error) => {
         if(!error.status && !error.response){
