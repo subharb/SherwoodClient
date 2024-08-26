@@ -202,8 +202,10 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     const [date, setDate] = useState<Date | null>(null);
     const [service, setService] = useState<number | null>(null);
 
-    const agendaSelected = React.useMemo(() => {
-        return agendasSelected.length > 0 ? agendasSelected[0] : null;
+    const [agendaSelected, setAgendaSelected] = useState<IAgenda | null>(null);
+
+    useEffect(() => {
+        setAgendaSelected(agendasSelected.length > 0 ? agendasSelected[0] : null);
     }, [agendasSelected]);
     
     useEffect(() => {
@@ -459,7 +461,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
 
     useEffect(() => {
         if(listAgendas.length === 1){
-            setAgendasSelected(listAgendas[0]);
+            setAgendasSelected(listAgendas);
         }
     }, [listAgendas])
 
