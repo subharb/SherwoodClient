@@ -17,6 +17,9 @@ export default function reducer(state = initialState, action){
     let tempInvestigations;
     switch(action.type){
         case types.FETCH_NEW_PATIENTS_SUCCESS:
+            tempInvestigations = {...newState.data};
+            tempInvestigations[action.investigation.uuid] = action.investigation.patientsPersonalData;
+            newState.data = tempInvestigations;
             newState.loading = initialState.loading;
             newState.error = initialState.error;                         
             return newState;
