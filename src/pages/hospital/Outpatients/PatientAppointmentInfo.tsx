@@ -24,9 +24,11 @@ interface PatientAppointmentInfoProps {
     appointmentMadeCallback: () => void;
 }
 
-const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPatient, uuidInvestigation, outpatientsInfo, appointmentMadeCallback, resetModal }) => {
+const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPatient, uuidInvestigation, outpatientsInfo, 
+                                                                            appointmentMadeCallback, resetModal }) => {
     const [patientsAppointments, setPatientsAppointments] = React.useState<IAppointment[]>([]);
     const [loadingPatientsAppointments, setLoadingPatientsAppointments] = React.useState<boolean>(true);
+    const [lastUpdate, setLastUpdate] = React.useState(new Date());
 
     useEffect(() => {
         setLoadingPatientsAppointments(true);
@@ -61,6 +63,7 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
                     }
                     //setShowSnackbar({show:true, message:"pages.hospital.outpatients.checkin_success", severity:"success"});
                     setLoadingPatientsAppointments(false);
+                    setLastUpdate(new Date());
                 })
                 .catch(err => {
                     let message = "general.error";
@@ -85,6 +88,7 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
                     patientsAppointments[indexAppointment].requestAppointment.status = RequestStatus.CANCELED;
                 }
                 setLoadingPatientsAppointments(false);
+                setLastUpdate(new Date());
             })
             .catch(err => {
                 setLoadingPatientsAppointments(false);
@@ -94,7 +98,7 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
 
     return (
         <>
-            <PatientAppointmentInfoLocalized uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} resetModal={resetModal}
+            <PatientAppointmentInfoLocalized key={lastUpdate.getTime()} uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} resetModal={resetModal}
                 appointmentMadeCallback={appointmentMadeCallback} patientsAppointments={patientsAppointments} 
                 loadingPatientsAppointments={loadingPatientsAppointments} 
                 outpatientsInfo={outpatientsInfo}

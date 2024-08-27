@@ -287,6 +287,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                                     <TimePicker
                                         label="Controlled picker"
                                         value={dayjs(timeSelected)}
+                                        ampm={false}
                                         // shouldDisableTime={(timeValue, clockType) => {
                                         //     if(clockType === 'hours'){
                                         //         return timeValue.hour() < turnsDates[0].getHours() || timeValue.hour() > turnsDates[1].getHours();    
