@@ -241,7 +241,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                 </>)
         }
         else {
-            const optionsArray = departmentsWithAgenda.map((department) => {
+            const optionsArray = departmentsWithAgenda.sort((a, b) => a.name.localeCompare(b.name)).map((department) => {
                 return <MenuItem key={department.uuid} value={department.uuid}>{department.name}</MenuItem>
             })
             return (
@@ -251,7 +251,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                         <Select
                             labelId="department"
                             id="department"
-                            label="Select Department"
+                            label={<Translate id="pages.hospital.outpatients.agenda.select_department" />}
                             onChange={(event) => {
                                 const uuidDepartment = event.target.value as string;
                                 const department = departmentsWithAgenda.find((department) => department.uuid === uuidDepartment);
@@ -296,7 +296,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
             const turnsDates = turnsAgendaDates(agendaSelected?.turn);
             const timePicker = <FieldWrapper noWrap ={null}>
                                     <TimePicker
-                                        label="Controlled picker"
+                                        label={<Translate id="pages.hospital.outpatients.agenda.select_time" />}
                                         value={dayjs(timeSelected)}
                                         ampm={false}
                                         // shouldDisableTime={(timeValue, clockType) => {
@@ -344,7 +344,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         if(agendaSelected!.listServicesInvestigation.length === 0){
             return <Typography variant="body2"><Translate id="pages.hospital.outpatients.form_appointment.no-services" /></Typography>
         }
-        const optionsArray = agendaSelected!.listServicesInvestigation.map((service) => {
+        const optionsArray = agendaSelected!.listServicesInvestigation.sort((a, b) => a.description.localeCompare(b.description)).map((service) => {
             return (
                 <MenuItem value={service.id}>{service.description}</MenuItem>
             )
@@ -384,7 +384,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
             );
         }
         else{
-            let optionsArray = listAgendas.map((agenda) => {
+            let optionsArray = listAgendas.sort((a, b) => a.name.localeCompare(b.name)).map((agenda) => {
                 return (
                     <MenuItem value={agenda.uuid}>{agenda.name}</MenuItem>
                 )

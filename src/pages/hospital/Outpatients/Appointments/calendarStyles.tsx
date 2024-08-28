@@ -1,4 +1,5 @@
 import { RequestStatus } from "../../Service/types";
+import { EventProps } from 'react-big-calendar'
 
 export const eventStyleGetter = (event) => {
     let backgroundColor = '';
@@ -30,4 +31,8 @@ export const eventStyleGetter = (event) => {
     return {
       style,
     };
+  };
+
+export const CustomEvent: React.FC<EventProps> = ({ title }) => {
+    return <span>{title}</span>;
   };

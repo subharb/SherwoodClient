@@ -10,7 +10,7 @@ import { IconGenerator } from '../../../../components/general/mini_components';
 import moment from 'moment';
 import { turnsAgendaDates } from '../../../../utils/agenda';
 import { Translate } from 'react-localize-redux';
-import { eventStyleGetter } from './calendarStyles';
+import { CustomEvent, eventStyleGetter } from './calendarStyles';
 import { render } from '@testing-library/react';
 import { RequestStatus } from '../../Service/types';
 import { HOSPITAL_PATIENT } from '../../../../routes/urls';
@@ -128,7 +128,6 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                     <>
                     <Grid item xs={12} style={{paddingTop:'1rem'}}>
                             <Typography variant="body1" component="div" gutterBottom>
-                                What action do you want to take?
                                 <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.show_up.message" />
                             </Typography>
                         </Grid>
@@ -207,14 +206,17 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                 localizer={momentLocalizer(moment)}
                 resourceIdAccessor="resourceId"
                 resources={resourceMap}
+                formats={{ eventTimeRangeFormat: () => null }}
                 resourceTitleAccessor="resourceTitle"
                 step={60}
                 timeslots={1} 
                 views={views}
                 onSelectEvent={handleSelectEvent}
                 components={{
-                    toolbar: () => null
+                    toolbar: () => null,
+                    event: CustomEvent
                 }}
+                
                 eventPropGetter={eventStyleGetter}
                 style={{ height: 1000 }}
                 min={new Date(2024, 8, 21, minHour, 0, 0)} // 8:00 AM
