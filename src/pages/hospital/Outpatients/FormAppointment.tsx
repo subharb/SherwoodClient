@@ -259,6 +259,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                                     setDepartment(department);
                                     setAgendasSelected([]);
                                     setDate(null);
+                                    setService(null);
                                 }
                             }}
                         >
