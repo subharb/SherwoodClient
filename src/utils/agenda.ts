@@ -8,7 +8,7 @@ export function canCancelAppointment(appointmentDate:Date, appointmentStatus:Req
         return isTodayOrFutureDate && (appointmentStatus !== RequestStatus.ACCEPTED && appointmentStatus !== RequestStatus.CANCELED);
     }
     else if(outpatientsInfo.type === "date_time"){
-        return appointmentDate > new Date() && appointmentStatus !== RequestStatus.ACCEPTED;
+        return appointmentDate > new Date() && (appointmentStatus !== RequestStatus.ACCEPTED && appointmentStatus !== RequestStatus.CANCELED);
     }
     return false;
 }

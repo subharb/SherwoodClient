@@ -205,7 +205,17 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     const [agendaSelected, setAgendaSelected] = useState<IAgenda | null>(null);
 
     useEffect(() => {
-        setAgendaSelected(agendasSelected.length > 0 ? agendasSelected[0] : null);
+        if(agendasSelected.length > 1){
+            const daysWeek = agendasSelected.flatMap(agenda => agenda.daysWeek);
+            const slotsPerDay = agendasSelected.reduce((acc, agenda) => acc + agenda.slotsPerDay, 0);
+            const blockedDates = agendasSelected.flatMap(agenda => agenda.blockedDates);
+            const newAgenda = {...agendasSelected[0], daysWeek, slotsPerDay, blockedDates};
+            setAgendaSelected(newAgenda);
+        }
+        else{
+            setAgendaSelected(agendasSelected.length === 1 ? agendasSelected[0] : null);
+        }
+        
     }, [agendasSelected]);
     
     useEffect(() => {
@@ -314,7 +324,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                     <Grid item xs={12}>
                         
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <AppointmentDatePicker availableDaysWeek = {agendaSelected!.daysWeek} blockedDates={agendaSelected! .blockedDates} autoCurrentDate={true}
+                                <AppointmentDatePicker availableDaysWeek = {agendaSelected!.daysWeek} blockedDates={agendaSelected!.blockedDates} autoCurrentDate={true}
                                     slotsPerDay={agendaSelected!.slotsPerDay} datesOccupancy={agendaSelected!.datesOccupancy} onDateChangeCallback={(dateSel:Date) => 
                                     {
                                         onDateChange(dateSel, timeSelected)

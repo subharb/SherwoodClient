@@ -1,10 +1,10 @@
-import { CircularProgress, Grid, Typography } from '@mui/material';
+import { CircularProgress, Grid, Icon, Typography } from '@mui/material';
 import { CheckCircleIcon } from '@material-ui/data-grid';
 import { MonetizationOn, Remove, RemoveCircleOutline } from '@mui/icons-material';
 import React, { useEffect } from 'react';
 import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-redux';
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
-import { ButtonAdd, ButtonCancel, ButtonContinue } from '../../../components/general/mini_components';
+import { ButtonAdd, ButtonCancel, ButtonContinue, IconGenerator } from '../../../components/general/mini_components';
 import PatientInfo from '../../../components/PatientInfo';
 import { IAppointment, IOutpatientsParams } from '../../../constants/types';
 import { getPatientsAppoinmentsService, cancelAppointmentService, updateAppoinmentsService } from '../../../services/agenda';
@@ -147,6 +147,13 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
             return (
                 <Typography variant='body2'  component="div" style={{textAlign:"center"}} >
                 <EventIcon style={{fontSize:"1.5rem", color:"DodgerBlue", textAlign:"center"}} />
+                </Typography>
+            )
+        }
+        else if(status === RequestStatus.CANCELED){
+            return (
+                <Typography variant='body2'  component="div" style={{textAlign:"center"}} >
+                    <IconGenerator type="cancel_appointment" />
                 </Typography>
             )
         }
