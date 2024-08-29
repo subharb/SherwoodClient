@@ -1185,7 +1185,7 @@
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "go-to-patient" : ["View Patient", "Ver Paciente", "Voir le dossier"],
             "analytics" : {
-                "title" : ["Analytics", "Analítica", "Analytique"]
+                "title" : ["Analytics", "Analítica", "Statistiques"]
             },
             "user_mgmt" : ["Users", "Usuarios", "Utilisateurs"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"],

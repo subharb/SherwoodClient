@@ -18,7 +18,6 @@ export const initDB = (): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
             reject(new Error("Database initialization timed out"));
-            alert("Please close all Sherwood tabs and try again");
         }, 5000); // 5 seconds timeout
 
         if (db !== null) {

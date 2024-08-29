@@ -92,7 +92,8 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, enableA
             categorySurveys = categorySurveys.filter(category => category !== CATEGORY_DEPARTMENT_PRESCRIPTIONS_FW)
         }
         const readMedicalPermission = permissions.includes(PERMISSION.MEDICAL_READ);
-        const writeMedicalPermission = permissions.includes(PERMISSION.DISCHARGE_PATIENT);
+        const writeMedicalPermission = permissions.includes(PERMISSION.MEDICAL_WRITE);
+        const canDischarge = permissions.includes(PERMISSION.DISCHARGE_PATIENT);
         const canEditPersonalData = permissions.includes(PERMISSION.PERSONAL_ACCESS) ? editCallBack : null
 
         return <PatientToolBarComponent sex={personalData.sex} name={personalData!.name as string} 
@@ -102,7 +103,7 @@ export const PatientToolBar:React.FC<Props> = ({personalData, patientID, enableA
                     readMedicalPermission={readMedicalPermission} 
                     writeMedicalPermission={writeMedicalPermission}
                     years={years} enableAddButton={enableAddButton}
-                    addRecordCallBack={addRecordCallBack} hospitalize={hospitalize} 
+                    addRecordCallBack={addRecordCallBack} hospitalize={hospitalize && canDischarge ? hospitalize : undefined} 
                     buttonClickedCallBack={(typeButton:SurveyType) => buttonClickedCallBack(typeButton)}
                     editCallBack={canEditPersonalData}
                 />
@@ -214,7 +215,7 @@ export const PatientToolBarComponent:React.FC<PropsComponent> = ({sex, patientID
                 }
                 <Grid item xs={4} style={{display:'flex', justifyContent:'center'}}>
                     {
-                        (hospitalize && writeMedicalPermission) &&
+                        (hospitalize) &&
                         <Button data-testid="lab" onClick={ hospitalize} >
                             <IconGenerator type="hospital" size="large" />
                         </Button>
