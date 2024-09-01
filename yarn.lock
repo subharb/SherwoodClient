@@ -12082,6 +12082,8 @@ __metadata:
     date-fns: ^2.29.3
     dayjs: ^1.11.8
     deepmerge: 4.2.2
+    dexie: ^4.0.8
+    dexie-react-hooks: ^1.1.7
     dom-to-image: ^2.6.0
     env-cmd: ^10.1.0
     eslint-config-prettier: 6.15.0
@@ -13650,6 +13652,24 @@ __metadata:
   version: 0.0.1209236
   resolution: "devtools-protocol@npm:0.0.1209236"
   checksum: f50157153417e1909ac4ad708df3b67570a64766c9a187c57b104ac8472b90b91f6d2b75715c65ffff68715f8756e52614d2e4305cda208dcdda0b76b6e0e82c
+  languageName: node
+  linkType: hard
+
+"dexie-react-hooks@npm:^1.1.7":
+  version: 1.1.7
+  resolution: "dexie-react-hooks@npm:1.1.7"
+  peerDependencies:
+    "@types/react": ">=16"
+    dexie: ^3.2 || ^4.0.1-alpha
+    react: ">=16"
+  checksum: d1133546ab8d345a8e10d38d272eaa1efa3a34e7bdefacd2acc2419f30e52ea02ab29b19d8911755fbda5882e59d132ba5c3cb840dd4430d3cbca15ef5ea610e
+  languageName: node
+  linkType: hard
+
+"dexie@npm:^4.0.8":
+  version: 4.0.8
+  resolution: "dexie@npm:4.0.8"
+  checksum: 156e0809d5102ec0522cdee473c842e2d8c5a9b91d92792c8a17829953317f11370b34bc2418a66c5c4dec7f99306a6ae8a53d02f530af85f98d8803965bc6bb
   languageName: node
   linkType: hard
 

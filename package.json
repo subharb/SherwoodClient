@@ -53,6 +53,8 @@
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.8",
     "deepmerge": "4.2.2",
+    "dexie": "^4.0.8",
+    "dexie-react-hooks": "^1.1.7",
     "dom-to-image": "^2.6.0",
     "env-cmd": "^10.1.0",
     "formik": "2.2.6",
