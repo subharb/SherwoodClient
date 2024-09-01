@@ -20,6 +20,7 @@ export const deleteAllPatientsFromInvestigation = async (uuidInvestigation: stri
 };
 
 export const saveListPatients = async (patients: IPatient[], investigation: any): Promise<void> => {
+    console.time("Decrypting Patient Data");
     const patientsToSave = patients.map(patient => {
         patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
         return {
@@ -30,8 +31,10 @@ export const saveListPatients = async (patients: IPatient[], investigation: any)
             personalData: patient.personalData
         };
     });
-
+    console.timeEnd("Decrypting Patient Data");
+    console.time("Saving Bulk Patients");
     await db.patients.bulkPut(patientsToSave);
+    console.timeEnd("Saving Bulk Patients");
 }
 
 
