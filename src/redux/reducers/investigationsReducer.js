@@ -9,7 +9,7 @@ import { decryptPatientsData } from '../../utils/index.jsx';
  const initialState = {
     data: null,
     currentInvestigation:null,
-    loading: false,
+    loading: 0,
     error: null
 }
  
@@ -25,11 +25,11 @@ export default function reducer(state = initialState, action){
             else if(localStorage.getItem("indexHospital")){
                 newState.currentInvestigation = action.investigations[localStorage.getItem("indexHospital")];
             }
-            newState.loading = false; 
+            newState.loading = 0; 
             newState.error = null;   
             return newState;
         case types.FETCH_INVESTIGATIONS_LOADING:
-            newState.loading = true;   
+            newState.loading = 1;   
             newState.error = null;                           
             return newState;
         case types.SELECT_INVESTIGATION:    
@@ -37,13 +37,17 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.UPDATE_BILLING_INFO_SUCCESS:
             newState.currentInvestigation.billingInfo = action.billingInfo;
-            newState.loading = false; 
+            newState.loading = 0; 
+            newState.error = null; 
+            return newState;
+        case types.FETCH_INVESTIGATIONS_DECRYPTING_DATA:
+            newState.loading = 2; 
             newState.error = null; 
             return newState;
         case types.INITIALIZE_INVESTIGATIONS:
             newState.data = action.payload.investigations;
             newState.currentInvestigation = action.payload.investigations[0];
-            newState.loading = false; 
+            newState.loading = 0; 
             newState.error = null; 
             return newState;   
         case types.AUTH_SIGN_OUT:

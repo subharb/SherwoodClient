@@ -1,6 +1,6 @@
 
 import React, {useEffect, useState} from 'react'
-import { useProfileInfo, useRouter } from '../../hooks';
+import { useLoadingMessage, useProfileInfo, useRouter } from '../../hooks';
 import { connect, useSelector } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@mui/material';
 import { useHistory, Link } from 'react-router-dom'
@@ -19,10 +19,12 @@ import { FUNCTIONALITY } from '../../constants/types';
 import { PERMISSION } from '../../components/investigation/share/user_roles';
 
 function HomeSchedule(props) {
-    const [loading, setLoading] = useState(false);
+    
     const { profile } = useProfileInfo();
     const { pathname }= useRouter(props.initialState ? props.initialState.pathname : false);
     const dispatch = useDispatch();
+
+    const [loading, loadingComponent] = useLoadingMessage();
 
     // useEffect(() => {
     //     if(props.investigations.currentInvestigation && !profile){
@@ -188,8 +190,8 @@ function HomeSchedule(props) {
         )
     }
     else{
-        if(props.investigations.loading || (!props.profile.info && props.investigations.currentInvestigation) ){
-            return <Loader />
+        if(loading !== 0 || (!props.profile.info && props.investigations.currentInvestigation) ){
+            return loadingComponent
         }
         
         return (

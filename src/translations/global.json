@@ -27,6 +27,10 @@
             "Sun" : ["Sunday", "Domingo", "Dimanche"]
 
         },
+        "loading" : {
+            "investigations" : ["Downloading data", "Descargando datos", "Téléchargement des données"],
+            "decrypting" : ["Processing patients", "Procesando pacientes", "Traitement des patients"]
+        },
         "years" : ["years", "años", "ans"],
         "several" : ["Several", "Varios", "Plusieurs"],
         "patient" : ["Patient", "Paciente", "Patient"],

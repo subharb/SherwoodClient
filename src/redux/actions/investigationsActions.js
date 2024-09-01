@@ -12,6 +12,10 @@ export function fetchInvestigations() {
 
     return fetchInvestigationsService()
       .then(async (response) => {
+        dispatch({
+            type: types.FETCH_INVESTIGATIONS_DECRYPTING_DATA,
+            investigations: response.investigations,
+        });
         for(const investigation of response.investigations){
             let patientsInvestigation = await getAllPatientsInvestigation(investigation.uuid);
             if(patientsInvestigation.length !== investigation.patientsPersonalData.length){

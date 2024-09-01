@@ -51,6 +51,30 @@ export function useRouter(initValue:any){
     }
 }
 
+export function useLoadingMessage(){
+    const investigations = useSelector((state:any) => state.investigations);
+    const loading = useSelector((state:any) => state.investigations.loading);
+
+    let message;
+
+    switch(loading){
+        case 1:
+            message = "general.loading.investigations";
+            break;
+        case 2:
+            message = "general.loading.decrypting";
+            break;
+        default:
+            message = null;
+    }
+   
+    return [loading, (
+        <>
+            <Loader infoString={<Translate id={`${message}`} />} />
+        </>
+    )]
+}
+
 export function useProfileInfo(){
     const investigations = useSelector((state:any) => state.investigations);
     const profile = useSelector((state:any) => state.profile.info);
