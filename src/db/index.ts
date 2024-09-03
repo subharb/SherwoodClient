@@ -31,8 +31,12 @@ export const saveListPatients = async (patients: IPatient[], investigation: any)
         patientChunks.push(patients.slice(i, i + chunkSize));
     }
 
-    const promises = patientChunks.map((chunk) => {
+    const promises = patientChunks.map((chunk, index) => {
+        console.log("Chunk", index);
+        
         return new Promise((resolve, reject) => {
+            console.log("Number patients", chunk.length);
+            console.log("First patient chunk", chunk[0]);
             const worker = new Worker(new URL('../webworkers/decryptWorker.ts', import.meta.url), { type: 'module' });
 
             worker.onmessage = (event) => {
@@ -49,7 +53,7 @@ export const saveListPatients = async (patients: IPatient[], investigation: any)
             const uuidInvestigation = investigation.uuid;
             const permissions = investigation.permissions;
             const personalFields = investigation.personalFields;
-            worker.postMessage({ patients, keyInvestigation, uuidInvestigation, permissions, personalFields });
+            worker.postMessage({ chunk, keyInvestigation, uuidInvestigation, permissions, personalFields });
         });
     });
 
