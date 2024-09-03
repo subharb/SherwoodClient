@@ -31,12 +31,8 @@ export const saveListPatients = async (patients: IPatient[], investigation: any)
         patientChunks.push(patients.slice(i, i + chunkSize));
     }
 
-    const promises = patientChunks.map((chunk, index) => {
-        console.log("Chunk", index);
-        
+    const promises = patientChunks.map((chunk, index) => {        
         return new Promise((resolve, reject) => {
-            console.log("Number patients", chunk.length);
-            console.log("First patient chunk", chunk[0]);
             const worker = new Worker(new URL('../webworkers/decryptWorker.ts', import.meta.url), { type: 'module' });
 
             worker.onmessage = (event) => {
