@@ -60,7 +60,7 @@ function Footer() {
           <List>
             <ListItem button={true}>
               <ListItemText
-                primary={`© ${new Date().getFullYear()} - Sherwood Hospital v3.8.3 - Dexie`}
+                primary={`© ${new Date().getFullYear()} - Sherwood Hospital v3.8.4 - Dexie`}
               />
             </ListItem>
           </List>

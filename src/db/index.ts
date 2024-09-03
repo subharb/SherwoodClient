@@ -21,7 +21,9 @@ export const deleteAllPatientsFromInvestigation = async (uuidInvestigation: stri
 
 export const saveListPatients = async (patients: IPatient[], investigation: any): Promise<void> => {
     console.time("Decrypting Patient Data");
-    const patientsToSave = patients.map(patient => {
+    console.log("Number patients", patients.length);
+    const patientsToSave = patients.map((patient, id) => {
+        console.log("Decrypting Patient Data", id);
         patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
         return {
             id: patient.id,

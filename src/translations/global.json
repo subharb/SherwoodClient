@@ -29,7 +29,8 @@
         },
         "loading" : {
             "investigations" : ["Downloading data", "Descargando datos", "Téléchargement des données"],
-            "decrypting" : ["Processing patients", "Procesando pacientes", "Traitement des patients"]
+            "decrypting" : ["Processing patients", "Procesando pacientes", "Traitement des patients"],
+            "loading" : ["Loading", "Cargando", "Chargement"]
         },
         "years" : ["years", "años", "ans"],
         "several" : ["Several", "Varios", "Plusieurs"],

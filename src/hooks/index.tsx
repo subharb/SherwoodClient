@@ -65,7 +65,7 @@ export function useLoadingMessage(){
             message = "general.loading.decrypting";
             break;
         default:
-            message = null;
+            message = "general.loading.loading";
     }
    
     return [loading, (

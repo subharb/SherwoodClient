@@ -538,13 +538,23 @@ export function decryptPatientsData(patientsData, investigation){
     return tempDecryptedData;
 }
 
+export function getInvestigationRawKey(encryptedKeyUsed, keyResearcherInvestigation){
+    let keyInvestigation = localStorage.getItem("rawKeyInvestigation");
+    if(keyInvestigation !== null){
+        return keyInvestigation;
+    }
+    const rawKeyResearcher = encryptedKeyUsed === 0 ? import.meta.env.VITE_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");    
+    keyInvestigation = decryptData(keyResearcherInvestigation, rawKeyResearcher);
+    localStorage.setItem("rawKeyInvestigation", keyInvestigation);
+    return keyInvestigation;
+}
+
 export function decryptSinglePatientData(patientPersonalData, investigation){
 
     let encryptedFields = {};
     if(investigation.permissions !== 0){
-        const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? import.meta.env.VITE_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
         
-        const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
+        const keyInvestigation = getInvestigationRawKey(investigation.encryptedKeyUsed, investigation.keyResearcherInvestigation);
         
         for(const personalField of investigation.personalFields){
             const encryptedField = patientPersonalData.find(pData =>{

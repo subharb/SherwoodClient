@@ -51,6 +51,7 @@ export default function reducer(state = initialState, action){
             newState.error = null; 
             return newState;   
         case types.AUTH_SIGN_OUT:
+            localStorage.removeItem("rawKeyInvestigation");
             newState = {...initialState};
             return newState;
         default:
