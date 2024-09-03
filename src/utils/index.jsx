@@ -549,14 +549,14 @@ export function getInvestigationRawKey(encryptedKeyUsed, keyResearcherInvestigat
     return keyInvestigation;
 }
 
-export function decryptSinglePatientData(patientPersonalData, investigation){
+export function decryptSinglePatientData(patientPersonalData, keyInvestigation, permissions, personalFields){
 
     let encryptedFields = {};
-    if(investigation.permissions !== 0){
+    if(permissions !== 0){
         
-        const keyInvestigation = getInvestigationRawKey(investigation.encryptedKeyUsed, investigation.keyResearcherInvestigation);
         
-        for(const personalField of investigation.personalFields){
+        
+        for(const personalField of personalFields){
             const encryptedField = patientPersonalData.find(pData =>{
                 return pData.name === personalField.name;
             });
