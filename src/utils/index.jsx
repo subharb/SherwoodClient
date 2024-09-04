@@ -6,6 +6,7 @@ import { Translate } from 'react-localize-redux';
 import { ServiceType } from '../pages/hospital/Service/types';
 import { PERMISSION } from '../components/investigation/share/user_roles';
 import { difference, isEmpty, isEqual, isObject, xorWith } from 'lodash';
+import * as sodium from 'libsodium-wrappers';
 /**
  * Function that validates fields from anywhere in the app
  * 
@@ -159,18 +160,33 @@ export function encryptData(data, key){
     return ciphertext;
 }
 
-export function decryptData(ciphertext, key){
-    try{
-        var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
-        var originalText = bytes.toString(CryptoJS.enc.Utf8);
-
-        return originalText;
-    }
-    catch(e){
-        return "";
-    }
+export async function decryptData(ciphertext, key) {
+    try {
+        await sodium.ready;
     
-}
+        // Convertir los datos de entrada a Uint8Array si no lo son ya
+        if (typeof ciphertext === 'string') {
+            const str = atob(ciphertext);
+            const len = str.length;
+            ciphertext = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                ciphertext[i] = str.charCodeAt(i);
+            }
+        }
+        if (typeof key === 'string') {
+        key = sodium.from_hex(key);
+        }
+  
+
+      const nonce = ciphertext.slice(0, sodium.crypto_secretbox_NONCEBYTES);
+      const actualCiphertext = ciphertext.slice(sodium.crypto_secretbox_NONCEBYTES);
+      const decrypted = sodium.crypto_secretbox_open_easy(actualCiphertext, nonce, key);
+  
+      return sodium.to_string(decrypted);
+    } catch (e) {
+      return "";
+    }
+  }
 
 export const isUserLoggedIn = () => localStorage.getItem("jwt");
 
@@ -538,13 +554,13 @@ export function decryptPatientsData(patientsData, investigation){
     return tempDecryptedData;
 }
 
-export function getInvestigationRawKey(encryptedKeyUsed, keyResearcherInvestigation){
+export async function getInvestigationRawKey(encryptedKeyUsed, keyResearcherInvestigation){
     let keyInvestigation = localStorage.getItem("rawKeyInvestigation");
     if(keyInvestigation !== null){
         return keyInvestigation;
     }
     const rawKeyResearcher = encryptedKeyUsed === 0 ? import.meta.env.VITE_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");    
-    keyInvestigation = decryptData(keyResearcherInvestigation, rawKeyResearcher);
+    keyInvestigation = await decryptData(keyResearcherInvestigation, rawKeyResearcher);
     localStorage.setItem("rawKeyInvestigation", keyInvestigation);
     return keyInvestigation;
 }
