@@ -151,6 +151,19 @@ export async function importKey(key){
     return keyObj;
 }
 
+export function decryptData(ciphertext, key){
+    try{
+        var bytes  = CryptoJS.AES.decrypt(ciphertext, key);
+        var originalText = bytes.toString(CryptoJS.enc.Utf8);
+
+        return originalText;
+    }
+    catch(e){
+        return "";
+    }
+    
+}
+
 export function encryptData(data, key){
     var KeyObj = CryptoJS.AES.encrypt(data, key);
     var ciphertext = KeyObj.toString();
@@ -160,7 +173,29 @@ export function encryptData(data, key){
     return ciphertext;
 }
 
-export async function decryptData(ciphertext, key) {
+export async function generateKeySodium() {
+    await sodium.ready;
+    const key = sodium.crypto_secretbox_keygen();
+    return key;
+  }
+
+export async function encryptDataSodium(data, key) {
+    // Ensure sodium is ready
+    await sodium.ready;
+
+    const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+    const dataBytes = sodium.from_string(data);
+    const ciphertext = sodium.crypto_secretbox_easy(dataBytes, nonce, key);
+
+    // Combine nonce and ciphertext for decryption
+    const combined = new Uint8Array(nonce.length + ciphertext.length);
+    combined.set(nonce);
+    combined.set(ciphertext, nonce.length);
+
+    return sodium.to_base64(combined); // Return as base64 string for easy transport
+}
+
+export async function decryptDataSodium(ciphertext, key) {
     try {
         await sodium.ready;
     
@@ -174,13 +209,17 @@ export async function decryptData(ciphertext, key) {
             }
         }
         if (typeof key === 'string') {
-        key = sodium.from_hex(key);
+            const len = key.length;
+            key = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                key[i] = key.charCodeAt(i);
+            }
         }
   
 
-      const nonce = ciphertext.slice(0, sodium.crypto_secretbox_NONCEBYTES);
-      const actualCiphertext = ciphertext.slice(sodium.crypto_secretbox_NONCEBYTES);
-      const decrypted = sodium.crypto_secretbox_open_easy(actualCiphertext, nonce, key);
+        const nonce = ciphertext.slice(0, sodium.crypto_secretbox_NONCEBYTES);
+        const actualCiphertext = ciphertext.slice(sodium.crypto_secretbox_NONCEBYTES);
+        const decrypted = sodium.crypto_secretbox_open_easy(actualCiphertext, nonce, key);
   
       return sodium.to_string(decrypted);
     } catch (e) {

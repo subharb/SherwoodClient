@@ -8,7 +8,7 @@ import { loginUser, toggleLoading } from '../../actions';
 import FieldSherwood  from '../general/FieldSherwood';
 import Header from '../general/header';
 import LoadingScreen from '../general/loading_screen';
-import { validateField, decryptData } from '../../utils/index.jsx';
+import { validateField, decryptData, encryptDataSodium } from '../../utils/index.jsx';
 import { ButtonContinue } from '../../components/general/mini_components';
 import jwt from 'jsonwebtoken';
 
@@ -85,8 +85,14 @@ class Login extends Component {
         this.loginUser(values.email, hashPassword);
        
     }
-    render() {
+    async render() {
         console.log("Render");
+        const cipherText = await encryptDataSodium("Hola", "1234");
+        console.log("CipherText", cipherText);
+        const plainText = await decryptData(cipherText, "1234");
+        console.log("PlainText", plainText);
+
+        
         return ([
             <LoadingScreen />,
             <Header key="header" />,
