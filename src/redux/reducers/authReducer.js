@@ -13,10 +13,11 @@ export default function reducer(state = {}, actions) {
       };
 
     case types.AUTH_SIGN_OUT:
-      return {
-        ...state,
-        user: undefined,
-      };
+        localStorage.clear();
+        return {
+            ...state,
+            user: undefined,
+        };
 
     default:
       return state;
