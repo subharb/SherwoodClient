@@ -31,6 +31,7 @@ interface FormAppointmentGeneralProps {
     hidePatientInfo?: boolean,
     showAllAgendas:boolean,
     dateTimeAppointment?:boolean,
+    phoneNumber? : boolean,
     department?: IDepartment,
     appointmentMadeCallback?: (appointment:IAppointment) => void;
     infoAppointmentReadyCallback?:(uuidAgenda:string[], date:Date) => void;
@@ -44,6 +45,7 @@ interface FormMakeAppointmentProps {
     showAllAgendas:boolean,
     hidePatientInfo?: boolean,
     dateTimeAppointment:boolean,
+    phoneNumber : string,
     appointmentMadeCallback: (appointment:IAppointment) => void;
 }
 
@@ -63,15 +65,15 @@ export const FormConsultAppointment: React.FC<FormConsultAppointmentProps> = ({ 
         agendaChangedCallback={agendaChangedCallback} />
 };
 
-export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, department, dateTimeAppointment, uuidInvestigation, hidePatientInfo, appointmentMadeCallback }) => {
+export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, department, dateTimeAppointment, uuidInvestigation, hidePatientInfo, phoneNumber, appointmentMadeCallback }) => {
     
     return <FormAppointmentGeneralConnected showAllAgendas={showAllAgendas} uuidInvestigation={uuidInvestigation} uuidPatient={uuidPatient} mode='make'
-                hidePatientInfo={hidePatientInfo} department={department} dateTimeAppointment={dateTimeAppointment}
+                hidePatientInfo={hidePatientInfo} department={department} dateTimeAppointment={dateTimeAppointment} phoneNumber={phoneNumber}
                 appointmentMadeCallback={appointmentMadeCallback} />
 };
 
 const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInvestigation, department, uuidPatient, mode, hospital, hidePatientInfo, showAllAgendas, 
-                                                                            dateTimeAppointment,
+                                                                            dateTimeAppointment, phoneNumber,
                                                                             appointmentMadeCallback, infoAppointmentReadyCallback, agendaChangedCallback }) => {
     const {agendas, loadingAgendas} = useAgendas();
     //const appointments =  useSelector((state:any) => state.hospital.data.appointments);
@@ -87,7 +89,7 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
     async function makeAppointment(uuidAgenda:string, date:Date, idService:number){
         setLoading(true);
         setError(-1);
-        makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date, idService)
+        makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date, idService, phoneNumber)
             .then((response) => {
                 const tempAppointments = appointments ? [...appointments] : [];
                 tempAppointments.push(response.appointment);

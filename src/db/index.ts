@@ -25,6 +25,9 @@ export const saveListPatients = async (patients: IPatient[], investigation: any)
     const patientsToSave = patients.map((patient, id) => {
         console.log("Decrypting Patient Data", id);
         patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
+        if(!patient.personalData){
+            console.error("Patient without personal data", patient);
+        }
         return {
             id: patient.id,
             uuid: patient.uuid,

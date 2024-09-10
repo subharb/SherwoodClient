@@ -247,7 +247,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                         {
                             patientAppointment &&
                             <PatientAppointmentInfo uuidInvestigation={props.investigation.uuid}  uuidPatient={patientAppointment.uuid} 
-                                outpatientsInfo={props.outpatientsInfo}
+                                outpatientsInfo={props.outpatientsInfo} phoneNumber={ Array(props.outpatientsInfo.sms) ? patientAppointment.personalData.phone : null}
                                 appointmentMadeCallback={resetModal} /> 
                         }
                         

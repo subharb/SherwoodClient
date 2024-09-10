@@ -20,11 +20,12 @@ interface PatientAppointmentInfoProps {
     uuidPatient: string;
     uuidInvestigation: string;
     outpatientsInfo: IOutpatientsParams;
+    phoneNumber: string;
     resetModal: () => void;
     appointmentMadeCallback: () => void;
 }
 
-const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPatient, uuidInvestigation, outpatientsInfo, 
+const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPatient, uuidInvestigation, outpatientsInfo, phoneNumber,
                                                                             appointmentMadeCallback, resetModal }) => {
     const [patientsAppointments, setPatientsAppointments] = React.useState<IAppointment[]>([]);
     const [loadingPatientsAppointments, setLoadingPatientsAppointments] = React.useState<boolean>(true);
@@ -101,7 +102,7 @@ const PatientAppointmentInfo: React.FC<PatientAppointmentInfoProps> = ({ uuidPat
             <PatientAppointmentInfoLocalized key={lastUpdate.getTime()} uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} resetModal={resetModal}
                 appointmentMadeCallback={appointmentMadeCallback} patientsAppointments={patientsAppointments} 
                 loadingPatientsAppointments={loadingPatientsAppointments} 
-                outpatientsInfo={outpatientsInfo}
+                outpatientsInfo={outpatientsInfo} phoneNumber={phoneNumber}
                 cancelAppointmentCallback={(idAppointment:number) => cancelAppointment(idAppointment)}
                 showUpPatientCallback={(idAppointment:number) => showUpPatient(idAppointment)} 
                 />
@@ -120,7 +121,7 @@ interface PatientAppointmentInfoCoreProps extends PatientAppointmentInfoProps, L
 }
 
 const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({ uuidPatient, uuidInvestigation, activeLanguage, loadingPatientsAppointments, 
-                                                                                    outpatientsInfo,
+                                                                                    outpatientsInfo, phoneNumber,
                                                                                     patientsAppointments, appointmentMadeCallback, showUpPatientCallback, cancelAppointmentCallback }) => {
     const [createAppointment, setCreateAppointment] = React.useState<boolean>(false);
     const [showModal, setShowModal] = React.useState<boolean>(false);
@@ -318,7 +319,8 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
     return (
         <>
             <FormMakeAppointment showAllAgendas={false} uuidPatient={uuidPatient} uuidInvestigation={uuidInvestigation} 
-                appointmentMadeCallback={appointmentMadeCallback} dateTimeAppointment={outpatientsInfo.type === "date_time"} />
+                appointmentMadeCallback={appointmentMadeCallback} dateTimeAppointment={outpatientsInfo.type === "date_time"} 
+                phoneNumber = {phoneNumber}/>
         </>
     );
 };
