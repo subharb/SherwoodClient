@@ -79,13 +79,16 @@ export function updatePatientAction(investigation, uuidPatient, patientData) {
       dispatch({ type: types.SAVE_PATIENT_LOADING });
   
       return updatePersonalDataPatientService(investigation.uuid, uuidPatient, patientData)
-        .then((response) => {
-          dispatch({
-            type: types.UPDATE_PATIENT_SUCCESS,
-            patient: {...response.patient},
-            uuidPatient:uuidPatient,
-            investigation:investigation
-          });
+        .then(async (response) => {
+            await saveListPatients([response.patient], investigation);
+            const updatedListPatients = await getAllPatientsInvestigation(investigation.uuid);
+            investigation.patientsPersonalData = updatedListPatients;
+            dispatch({
+                type: types.UPDATE_PATIENT_SUCCESS,
+                patient: {...response.patient},
+                uuidPatient:uuidPatient,
+                investigation:investigation
+            });
         })
         .catch((error) => {
           if(!error.status && !error.response){
