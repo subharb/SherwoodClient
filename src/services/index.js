@@ -561,7 +561,7 @@ export const makeAppointmentService = datalogger((uuidInvestigation, uuidAgenda,
         timestamp: date.getTime(),
         idService,
         phone : phoneNumber, 
-        reason,
+        reasonVisit : reason,
         note
     }
     return new Promise((resolve, reject) => {
