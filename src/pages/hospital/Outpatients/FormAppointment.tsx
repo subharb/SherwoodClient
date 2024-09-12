@@ -369,11 +369,11 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                 <Grid item xs={4}>
                     <FieldWrapper noWrap ={null}>
                     <FormControl style={{width:'200px'}} variant="outlined" margin="dense" >
-                        <InputLabel id="reason">Select reason</InputLabel>
+                        <InputLabel id="reason">Sélectionner le motif</InputLabel>
                             <Select
                                 labelId="reason"
                                 id="reason"
-                                label="Select reason"
+                                label="Sélectionner le motif"
                                 onChange={(event) => {
                                     const reason = event.target.value as string;
                                     setReason(reason);
