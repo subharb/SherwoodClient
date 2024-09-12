@@ -555,12 +555,14 @@ export const getAgendasInvestigationService = datalogger((uuidInvestigation) => 
     });
 });
 
-export const makeAppointmentService = datalogger((uuidInvestigation, uuidAgenda, uuidPatient, date, idService, phoneNumber) => {
+export const makeAppointmentService = datalogger((uuidInvestigation, uuidAgenda, uuidPatient, date, idService, phoneNumber, reason, note) => {
     const postObj = {
         uuidPatient,
         timestamp: date.getTime(),
         idService,
-        phone : phoneNumber
+        phone : phoneNumber, 
+        reason,
+        note
     }
     return new Promise((resolve, reject) => {
         axios

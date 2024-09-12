@@ -1,4 +1,4 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Snackbar } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, Snackbar, TextField } from '@mui/material';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import React, { useEffect, useMemo, useState } from 'react';
@@ -20,8 +20,14 @@ import { TimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { turnsAgendaDates } from '../../../utils/agenda';
 import { turnsToSchedule, twoDigits } from '../../../utils';
+import { QuillWrapper } from '../../../components/general/FieldSherwood';
+import ReactQuill from 'react-quill';
 
-
+interface ExtraAppointmentData {
+    idService : number, 
+    reason: string, 
+    note:string
+}
 
 interface FormAppointmentGeneralProps {
     uuidPatient?: string;
@@ -36,6 +42,7 @@ interface FormAppointmentGeneralProps {
     appointmentMadeCallback?: (appointment:IAppointment) => void;
     infoAppointmentReadyCallback?:(uuidAgenda:string[], date:Date) => void;
     agendaChangedCallback?:(uuidAgendas: string[]) => void;
+    cancelCallback?: () => void;
 }
 
 interface FormMakeAppointmentProps {
@@ -47,6 +54,7 @@ interface FormMakeAppointmentProps {
     dateTimeAppointment:boolean,
     phoneNumber : string,
     appointmentMadeCallback: (appointment:IAppointment) => void;
+    cancelCallback: () => void;
 }
 
 interface FormConsultAppointmentProps {
@@ -65,16 +73,17 @@ export const FormConsultAppointment: React.FC<FormConsultAppointmentProps> = ({ 
         agendaChangedCallback={agendaChangedCallback} />
 };
 
-export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, department, dateTimeAppointment, uuidInvestigation, hidePatientInfo, phoneNumber, appointmentMadeCallback }) => {
+export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, department, dateTimeAppointment, uuidInvestigation, hidePatientInfo, phoneNumber, appointmentMadeCallback, cancelCallback }) => {
     
     return <FormAppointmentGeneralConnected showAllAgendas={showAllAgendas} uuidInvestigation={uuidInvestigation} uuidPatient={uuidPatient} mode='make'
                 hidePatientInfo={hidePatientInfo} department={department} dateTimeAppointment={dateTimeAppointment} phoneNumber={phoneNumber}
-                appointmentMadeCallback={appointmentMadeCallback} />
+                appointmentMadeCallback={appointmentMadeCallback} cancelCallback={cancelCallback} />
 };
 
 const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInvestigation, department, uuidPatient, mode, hospital, hidePatientInfo, showAllAgendas, 
                                                                             dateTimeAppointment, phoneNumber,
-                                                                            appointmentMadeCallback, infoAppointmentReadyCallback, agendaChangedCallback }) => {
+                                                                            appointmentMadeCallback, infoAppointmentReadyCallback, agendaChangedCallback,
+                                                                            cancelCallback }) => {
     const {agendas, loadingAgendas} = useAgendas();
     //const appointments =  useSelector((state:any) => state.hospital.data.appointments);
     const [appointments, setAppointments] = useState<IAppointment[] | null>(null);
@@ -86,10 +95,10 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
 
     const dispatch = useDispatch();
 
-    async function makeAppointment(uuidAgenda:string, date:Date, idService:number){
+    async function makeAppointment(uuidAgenda:string, date:Date, makeAppointmentData: ExtraAppointmentData){
         setLoading(true);
         setError(-1);
-        makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date, idService, phoneNumber)
+        makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date, makeAppointmentData.idService, phoneNumber, makeAppointmentData.reason, makeAppointmentData.note)  
             .then((response) => {
                 const tempAppointments = appointments ? [...appointments] : [];
                 tempAppointments.push(response.appointment);
@@ -104,9 +113,9 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
             });
     }
 
-    function infoAppointmentReady(uuidAgendas:string[], date:Date, idService:number){
+    function infoAppointmentReady(uuidAgendas:string[], date:Date, makeAppointmentData?: ExtraAppointmentData){
         if(appointmentMadeCallback){
-            makeAppointment(uuidAgendas[0], date, idService)
+            makeAppointment(uuidAgendas[0], date, makeAppointmentData)
         }
         else if(infoAppointmentReadyCallback){
             infoAppointmentReadyCallback(uuidAgendas, date);
@@ -159,7 +168,8 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
                     loading={loading} hidePatientInfo={hidePatientInfo}
                     appointmentCreated={Boolean(appointmentCreated)}
                     agendas={agendas} infoAppointmentCallback={infoAppointmentReady}
-                    agendaChangedCallback={agendaChangedCallback} />
+                    agendaChangedCallback={agendaChangedCallback}
+                    cancelCallback={cancelCallback} />
             </>
         );
     }
@@ -187,12 +197,13 @@ interface FormAppointmentCoreProps extends Omit<FormAppointmentGeneralProps, 'ma
     hidePatientInfo?:boolean,
     loading:boolean;
     appointmentCreated:boolean;
-    infoAppointmentCallback: (uuidAgendas: string[], date: Date, idService?: number) => void;
+    infoAppointmentCallback: (uuidAgendas: string[], date: Date, makeAppointmentData?: ExtraAppointmentData) => void;
+    cancelCallback: () => void;
 }
 
 export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPatient, loading, showAllAgendas, dateTimeAppointment, 
                                                                             departmentsWithAgenda, hidePatientInfo, agendas, mode, error, appointmentCreated, 
-                                                                            infoAppointmentCallback, agendaChangedCallback }) => {
+                                                                            infoAppointmentCallback, agendaChangedCallback, cancelCallback }) => {
     const [department, setDepartment] = useState<IDepartment | null>(null);
     const [errorState, setErrorState] = useState<{department:boolean, agenda:boolean, service:boolean, date:boolean}>({department:false, agenda:false, date:false, service:false});
     const [listAgendas, setListAgendas] = useState<IAgenda[]>([]); 
@@ -203,7 +214,8 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     const [timeSelected, setTimeSelected] = useState<Date>(now);
     const [date, setDate] = useState<Date | null>(null);
     const [service, setService] = useState<number | null>(null);
-
+    const [reason, setReason] = useState<string>("");
+    const [note, setNote] = useState<string>("");
     const [agendaSelected, setAgendaSelected] = useState<IAgenda | null>(null);
 
     useEffect(() => {
@@ -296,7 +308,8 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     function renderCalendar(){
         if((service && mode !== 'consult') || (agendaSelected && mode === 'consult')){
             const turnsDates = turnsAgendaDates(agendaSelected?.turn);
-            const timePicker = <FieldWrapper noWrap ={null}>
+            const timePicker = <FormControl fullWidth variant="outlined" margin="dense"  >
+                                    <FieldWrapper noWrap ={null}>
                                     <TimePicker
                                         label={<Translate id="pages.hospital.outpatients.agenda.select_time" />}
                                         value={dayjs(timeSelected)}
@@ -317,6 +330,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                                         {turnsToSchedule(agendaSelected!.turn)}
                                     </Typography>
                                 </FieldWrapper>
+                                </FormControl>
             return (
                 <Grid container xs={12}>
                     { dateTimeAppointment && mode === 'make' &&
@@ -324,8 +338,8 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                             { timePicker }
                         </Grid>
                     }
-                    <Grid item xs={12}>
-                        
+                    <Grid item xs={4}>
+                        <FormControl fullWidth variant="outlined" margin="dense"  >
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <AppointmentDatePicker availableDaysWeek = {agendaSelected!.daysWeek} blockedDates={agendaSelected!.blockedDates} autoCurrentDate={true}
                                     slotsPerDay={agendaSelected!.slotsPerDay} datesOccupancy={agendaSelected!.datesOccupancy} onDateChangeCallback={(dateSel:Date) => 
@@ -333,11 +347,78 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                                         onDateChange(dateSel, timeSelected)
                                     }} />
                             </MuiPickersUtilsProvider>
-                        
+                        </FormControl>
                     </Grid>
+                    {
+                        renderExtraInfo()
+                    }
                 </Grid>
             )
         }
+    }
+
+    function renderExtraInfo(){
+        if((service && mode !== 'consult') || (agendaSelected && mode === 'consult')){
+            const optionsArray = ["Autres motifs", "Bronchiolite", "Cervicalgie", "Discopathie", "Dorsalgie","Dorsolombalgie", "Drainage lymphatique", "Entorse", "Fracture", "Gonalgie", "Gonarthrose", "Hemiparesie / Hemiplegie", "Hernie discale", "Lombalgie", "Lombosciatalgie", "Nevralgie cervico brachiale", "Paralyse facial", "Paralyse cerebral / IMC", "Reeducation perineale", "Reeducation uro-gynecologique", "Ruptures tendons ou tissus mous", "Tendinite", "Traumatiste"].map((option) => {
+                return (
+                    <MenuItem value={option}>{option}</MenuItem>
+                )
+            });
+            return (
+                <>
+                <Grid item xs={4}>
+                    <FieldWrapper noWrap ={null}>
+                    <FormControl style={{width:'200px'}} variant="outlined" margin="dense" >
+                        <InputLabel id="reason">Select reason</InputLabel>
+                            <Select
+                                labelId="reason"
+                                id="reason"
+                                label="Select reason"
+                                onChange={(event) => {
+                                    const reason = event.target.value as string;
+                                    setReason(reason);
+                                }}
+                            >
+                            { optionsArray }
+                            </Select>
+                        
+                    </FormControl>
+                   
+                    <FormControl style={{width:'200px'}} variant="outlined" margin="dense" >
+                    <TextField
+                        fullWidth
+                        id="note"
+                        label="Notes"
+                        value={note}
+                        onChange={(event) => {
+                            setNote(event.target.value);
+                        }}
+                    />
+                     </FormControl>
+                     </FieldWrapper>
+                </Grid>
+                <Grid item xs={4}>
+                   
+                    {/* <QuillWrapper className="note">
+                        <ReactQuill
+                            style={{ fontSize: "24px" }}
+                            {...note}
+                            onChange={(newValue, delta, source) => {
+                            if (source === "user") {
+                                setNote(newValue);
+                            }
+                            }}
+                            onBlur={(range, source, quill) => {
+                            //note.onBlur(quill.getHTML());
+                            }}
+                        />
+                    </QuillWrapper> */}
+                </Grid>
+                </>
+
+            )
+        }
+        
     }
     function renderServices(){
         if(!agendaSelected || mode === 'consult'){
@@ -429,6 +510,8 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     }
 
     function confirm(){
+        console.log("Note", note);
+        console.log("Reason", reason);
         if(department === null && departmentsWithAgenda.length > 0){
             setErrorState({...errorState, department:true});
         }
@@ -443,7 +526,8 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         }
         if(agendaSelected && date){
             const uuidAgendas = agendasSelected.map((agenda) => agenda.uuid)
-            infoAppointmentCallback(uuidAgendas, date, service!.id);
+            const makeAppointmentData = {idService: service!.id, reason, note};
+            infoAppointmentCallback(uuidAgendas, date, makeAppointmentData);
         }
     }
 
@@ -509,7 +593,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         if(mode === "make" && !loading && !appointmentCreated && (department && departmentsWithAgenda.length > 0) || (!department && departmentsWithAgenda.length === 0)){
             return (
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal"  spaceright={1}>
+                    <ButtonCancel onClick={cancelCallback} data-testid="cancel-modal"  spaceright={1}>
                         <Translate id="general.cancel" />
                     </ButtonCancel>
                     &nbsp;
