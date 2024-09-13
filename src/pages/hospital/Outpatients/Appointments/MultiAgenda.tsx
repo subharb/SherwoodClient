@@ -50,6 +50,8 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
             return {
                 id: appointment.id,
                 title: patientName,
+                reason: appointment.reasonVisit,
+                notes: appointment.notes,
                 type: appointment.requestAppointment.status,
                 start: new Date(appointment.startDateTime),
                 end: new Date(appointment.endDateTime),

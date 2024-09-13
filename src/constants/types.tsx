@@ -175,6 +175,8 @@ export interface IAppointment{
     order:number,
     agenda:IAgenda,
     agendaId:number,
+    reasonVisit:string,
+    notes:string,
     requestAppointment:IRequestAppointment,
     type:number,//0 first visit, 1 follow up
     createdAt:number,
