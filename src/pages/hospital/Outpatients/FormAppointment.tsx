@@ -26,7 +26,7 @@ import ReactQuill from 'react-quill';
 interface ExtraAppointmentData {
     idService : number, 
     reason: string, 
-    note:string
+    notes:string
 }
 
 interface FormAppointmentGeneralProps {
@@ -98,7 +98,7 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
     async function makeAppointment(uuidAgenda:string, date:Date, makeAppointmentData: ExtraAppointmentData){
         setLoading(true);
         setError(-1);
-        makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date, makeAppointmentData.idService, phoneNumber, makeAppointmentData.reason, makeAppointmentData.note)  
+        makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date, makeAppointmentData.idService, phoneNumber, makeAppointmentData.reason, makeAppointmentData.notes)  
             .then((response) => {
                 const tempAppointments = appointments ? [...appointments] : [];
                 tempAppointments.push(response.appointment);
@@ -215,7 +215,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     const [date, setDate] = useState<Date | null>(null);
     const [service, setService] = useState<number | null>(null);
     const [reason, setReason] = useState<string>("");
-    const [note, setNote] = useState<string>("");
+    const [notes, setNotes] = useState<string>("");
     const [agendaSelected, setAgendaSelected] = useState<IAgenda | null>(null);
 
     useEffect(() => {
@@ -389,9 +389,9 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                         fullWidth
                         id="note"
                         label="Notes"
-                        value={note}
+                        value={notes}
                         onChange={(event) => {
-                            setNote(event.target.value);
+                            setNotes(event.target.value);
                         }}
                     />
                      </FormControl>
@@ -510,7 +510,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     }
 
     function confirm(){
-        console.log("Note", note);
+        console.log("Note", notes);
         console.log("Reason", reason);
         if(department === null && departmentsWithAgenda.length > 0){
             setErrorState({...errorState, department:true});
@@ -526,7 +526,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         }
         if(agendaSelected && date){
             const uuidAgendas = agendasSelected.map((agenda) => agenda.uuid)
-            const makeAppointmentData = {idService: service!.id, reason, note};
+            const makeAppointmentData = {idService: service!.id, reason, notes: notes};
             infoAppointmentCallback(uuidAgendas, date, makeAppointmentData);
         }
     }
