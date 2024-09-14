@@ -1591,6 +1591,8 @@
                 "SOCIAL" : ["Social", "Social", "Social"],
                 "PHARMACY_MANAGER" : ["Pharmacy Manager", "Director de farmacia", "Directeur de pharmacie"],
                 "PHARMACY_ASSISTANT" : ["Pharmacy Assistant", "Asistente de farmacia", "Assistant de pharmacie"],
+                "CASHIER" : ["Cashier", "Cajero", "Caissier"],
+                "CASHIER_MANAGER" : ["Cashier Manager", "Jefe de caja", "Chef de caisse"],
                 "MAJOR" : ["Major", "Mayor", "Major"],
                 "DEPARTMENT_HEAD" : ["Head of Department", "Jefe de departamento", "Chef de service"],
                 "NO_ROLE_ASSIGNED" : ["No role", "Sin rol", "Aucun rôle"],
