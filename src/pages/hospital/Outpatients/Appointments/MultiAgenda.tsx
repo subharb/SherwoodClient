@@ -61,7 +61,7 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
     }, [appointments, lastUpdate])
     
     const resourceMap = useMemo(() => {
-        return agendas.map((agenda, index) => {
+        return agendas.sort((a, b) => a.name.localeCompare(b.name)).map((agenda, index) => {
             return {
                 resourceId: agenda.id,
                 resourceTitle: agenda.name
