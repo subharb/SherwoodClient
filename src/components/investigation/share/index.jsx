@@ -10,27 +10,18 @@ import { BoxBckgr, ButtonAdd, ButtonContinue, TypographyStyled } from '../../gen
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { EnhancedTable } from "../../general/EnhancedTable";
-import styled from 'styled-components';
 import { yellow, green, blue, red, orange, purple, grey } from "@mui/material/colors";
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
 import { deleteResearcher, getSharedResearchersService, saveResearcherPermissions } from '../../../services';
-
 import SectionHeader from '../../../pages/components/SectionHeader';
 import UserRoles from './UserRoles';
 import { useSnackBarState } from "../../../hooks"
 import { ALL_ROLES, PERMISSION, USER_ROLES } from './user_roles';
 import { ColourChip } from '../../general/mini_components-ts';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 
 
-
-const optionsPermissions = Object.keys(USER_ROLES).map(keyRole => {
+const optionsPermissions = Object.keys(USER_ROLES).sort().map(keyRole => {
     return {"label" : "investigation.share.roles."+keyRole, "value" :USER_ROLES[keyRole]}
 })
 
@@ -97,6 +88,12 @@ export const PermissionChip = withLocalize((props) => {
             break;
         case "ADMIN_FW": 
             colour = blue[400];            
+            break;
+        case "CASHIER": 
+            colour = blue[400];            
+            break;
+        case "CASHIER_MANAGER": 
+            colour = blue[700];            
             break;
         case "BUSINESS_ASSISTANT": 
             colour = blue[300];            
