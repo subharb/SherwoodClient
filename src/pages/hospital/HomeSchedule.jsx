@@ -23,6 +23,7 @@ function HomeSchedule(props) {
     const { profile } = useProfileInfo();
     const { pathname }= useRouter(props.initialState ? props.initialState.pathname : false);
     const dispatch = useDispatch();
+    const pendingInvestigation = props.investigations.data ? props.investigations.data.find(inv => inv.shareStatus === 0) : false;
 
     const [loading, loadingComponent] = useLoadingMessage();
 
@@ -190,7 +191,8 @@ function HomeSchedule(props) {
         )
     }
     else{
-        if(loading !== 0 || (!props.profile.info && props.investigations.currentInvestigation) ){
+
+        if(loading !== 0 || (!props.profile.info && props.investigations.currentInvestigation && !pendingInvestigation) ){
             return loadingComponent
         }
         
