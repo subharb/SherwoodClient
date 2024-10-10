@@ -50,6 +50,7 @@ export const CustomEvent: React.FC<EventProps<MyEvent>> = ({event}) => {
     const [showTooltip, setShowTooltip] = useState(true);
     const [tooltipPos, setTooltipPos] = useState<{top:number, left:number} | {}>({});
 
+    const enableTooltip = reason || notes;
     const handleMouseEnter = (e) => {
         const rect = e.target.getBoundingClientRect();
         setTooltipPos({
@@ -66,8 +67,8 @@ export const CustomEvent: React.FC<EventProps<MyEvent>> = ({event}) => {
     return (
         <>
         <div
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={enableTooltip ? handleMouseEnter : undefined}
+            onMouseLeave={enableTooltip ? handleMouseLeave : undefined}
             style={{ overflow: 'visible', height: '100%', width: '100%' }}
         >
             <span>{title}</span>

@@ -743,7 +743,6 @@ class FieldSherwood extends PureComponent {
           >
             <CloudFlare
               class="cf-turnstile"
-              data-sitekey="1x00000000000000000000AA"
               callback={this.handleTurnstileCallback}
               error={errorState}
             />
