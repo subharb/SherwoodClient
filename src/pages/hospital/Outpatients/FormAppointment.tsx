@@ -93,9 +93,7 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
     const [error, setError] = useState<number>(-1);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
-
-    async function makeAppointment(uuidAgenda:string, date:Date, makeAppointmentData: ExtraAppointmentData){
+    function makeAppointment(uuidAgenda:string, date:Date, makeAppointmentData: ExtraAppointmentData){
         setLoading(true);
         setError(-1);
         makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date, makeAppointmentData.idService, phoneNumber, makeAppointmentData.reason, makeAppointmentData.notes)  
@@ -301,7 +299,6 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                 const uuidsAgendas = agendasSelected ? agendasSelected.map((agenda) => agenda.uuid) : [];
                 infoAppointmentCallback(uuidsAgendas, dateSelected);
             }
-            
         }
     }
 
@@ -359,64 +356,14 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
 
     function renderExtraInfo(){
         if((service && mode !== 'consult')){
-            const optionsArray = ["Autres motifs", "Bronchiolite", "Cervicalgie", "Discopathie", "Dorsalgie","Dorsolombalgie", "Drainage lymphatique", "Entorse", "Fracture", "Gonalgie", "Gonarthrose", "Hemiparesie / Hemiplegie", "Hernie discale", "Lombalgie", "Lombosciatalgie", "Nevralgie cervico brachiale", "Paralyse facial", "Paralyse cerebral / IMC", "Reeducation perineale", "Reeducation uro-gynecologique", "Ruptures tendons ou tissus mous", "Tendinite", "Traumatiste"].map((option) => {
-                return (
-                    <MenuItem value={option}>{option}</MenuItem>
-                )
-            });
             return (
-                <>
-                <Grid item xs={4}>
-                    <FieldWrapper noWrap ={null}>
-                    <FormControl style={{width:'200px'}} variant="outlined" margin="dense" >
-                        <InputLabel id="reason">Sélectionner le motif</InputLabel>
-                            <Select
-                                labelId="reason"
-                                id="reason"
-                                label="Sélectionner le motif"
-                                onChange={(event) => {
-                                    const reason = event.target.value as string;
-                                    setReason(reason);
-                                }}
-                            >
-                            { optionsArray }
-                            </Select>
-                        
-                    </FormControl>
-                   
-                    <FormControl style={{width:'200px'}} variant="outlined" margin="dense" >
-                    <TextField
-                        fullWidth
-                        id="note"
-                        label="Notes"
-                        value={notes}
-                        onChange={(event) => {
-                            setNotes(event.target.value);
-                        }}
-                    />
-                     </FormControl>
-                     </FieldWrapper>
-                </Grid>
-                <Grid item xs={4}>
-                   
-                    {/* <QuillWrapper className="note">
-                        <ReactQuill
-                            style={{ fontSize: "24px" }}
-                            {...note}
-                            onChange={(newValue, delta, source) => {
-                            if (source === "user") {
-                                setNote(newValue);
-                            }
-                            }}
-                            onBlur={(range, source, quill) => {
-                            //note.onBlur(quill.getHTML());
-                            }}
-                        />
-                    </QuillWrapper> */}
-                </Grid>
-                </>
-
-            )
+                <ExtraAppointmentInfo
+                  reason={reason}
+                  setReason={setReason}
+                  notes={notes}
+                  setNotes={setNotes}
+                />
+              );
         }
         
     }
@@ -665,3 +612,49 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         
     );
 };
+
+
+
+interface ExtraAppointmentInfoProps {
+    reason: string;
+    setReason: (reason: string) => void;
+    notes: string;
+    setNotes: (notes: string) => void;
+  }
+  
+export const ExtraAppointmentInfo: React.FC<ExtraAppointmentInfoProps> = ({ reason, setReason, notes, setNotes }) => {
+    const optionsArray = ["Autres motifs", "Bronchiolite", "Cervicalgie", "Discopathie", "Dorsalgie", "Dorsolombalgie", "Drainage lymphatique", "Entorse", "Fracture", "Gonalgie", "Gonarthrose", "Hemiparesie / Hemiplegie", "Hernie discale", "Lombalgie", "Lombosciatalgie", "Nevralgie cervico brachiale", "Paralyse facial", "Paralyse cerebral / IMC", "Reeducation perineale", "Reeducation uro-gynecologique", "Ruptures tendons ou tissus mous", "Tendinite", "Traumatiste"];
+  
+    return (
+      <>
+        <Grid item xs={4}>
+          <FieldWrapper noWrap={null}>
+            <FormControl style={{width:'200px'}} variant="outlined" margin="dense">
+              <InputLabel id="reason">Sélectionner le motif</InputLabel>
+              <Select
+                labelId="reason"
+                id="reason"
+                label="Sélectionner le motif"
+                value={reason}
+                onChange={(event) => setReason(event.target.value as string)}
+              >
+                {optionsArray.map((option) => (
+                  <MenuItem key={option} value={option}>{option}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            
+            <FormControl style={{width:'200px'}} variant="outlined" margin="dense">
+              <TextField
+                fullWidth
+                id="note"
+                label="Notes"
+                value={notes}
+                onChange={(event) => setNotes(event.target.value)}
+              />
+            </FormControl>
+          </FieldWrapper>
+        </Grid>
+      </>
+    );
+  };

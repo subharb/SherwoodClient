@@ -11,8 +11,8 @@ export let db = new Dexie(DB_PATIENTS_NAME) as Dexie & {
 };
 
 // Define the database schema
-db.version(1).stores({
-    patients: 'uuid, uuidInvestigation, id, dateCreated, personalData' // Define primary key and indexes
+db.version(2).stores({
+    patients: 'uuid, uuidInvestigation, id, dateCreated, personalData.name, personalData.surnames'
 });
 
 export const deleteAllPatientsFromInvestigation = async (uuidInvestigation: string): Promise<void> => {
@@ -61,6 +61,25 @@ export const savePatient = async (patientData: IPatient, uuidInvestigation: stri
 export const fetchPatient = async (uuidPatient: string): Promise<IPatient | null> => {
     const patient = await db.patients.get(uuidPatient); // Use Dexie's get method directly
     return patient ? patient : null;
+};
+export const findPatientByIdAndInvestigation = async (id: number, uuidInvestigation: string): Promise<IPatient | null> => {
+    const patient = await db.patients
+        .where('uuidInvestigation')
+        .equals(uuidInvestigation)
+        .and(patient => patient.id === id)
+        .first();
+    return patient ? patient : null;
+};
+
+export const findPatientsByNameOrSurname = async (nameOrSurname: string, uuidInvestigation: string): Promise<IPatient[]> => {
+    const searchTerms = nameOrSurname.toLowerCase().split(' ');
+    return await db.patients
+        .where('uuidInvestigation').equals(uuidInvestigation)
+        .and(patient => {
+            const fullName = `${patient.personalData.name} ${patient.personalData.surnames}`.toLowerCase();
+            return searchTerms.every(term => fullName.includes(term));
+        })
+        .toArray();
 };
 
 

@@ -25,6 +25,7 @@ export default function reducer(state = initialState, action){
             else if(localStorage.getItem("indexHospital")){
                 newState.currentInvestigation = action.investigations[localStorage.getItem("indexHospital")];
             }
+    
             newState.loading = 0; 
             newState.error = null;   
             return newState;

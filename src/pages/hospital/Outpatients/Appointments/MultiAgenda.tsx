@@ -14,6 +14,7 @@ import { CustomEvent, eventStyleGetter } from './calendarStyles';
 import { render } from '@testing-library/react';
 import { RequestStatus } from '../../Service/types';
 import { HOSPITAL_PATIENT } from '../../../../routes/urls';
+import NewAppointment from './NewAppointment';
 
 
 interface Event {
@@ -31,15 +32,20 @@ export interface MultiAgendaProps {
     date: Date,
     lastUpdate: number,
     showSnackbar:SnackbarType,
+    extraForm? : number,
+    canCreateAppointments: boolean,
     cancelCallback: (uuidAgenda:string) => void,
     showUpCallback: (uuidAgenda:string) => void,
     callbackSetSnackbar: (showSnackbar:SnackbarType) => void;
+    appointmentCreatedCallback: (appointment:IAppointment) => void;
+    appointmentErrorCallback: (error:any) => void;
 }
 
-export default function MultiAgenda({ date, appointments, agendas, patients, showSnackbar, lastUpdate,
-                                        callbackSetSnackbar, cancelCallback, showUpCallback }: MultiAgendaProps) {
+export default function MultiAgenda({ date, appointments, agendas, patients, showSnackbar, lastUpdate, extraForm, canCreateAppointments,
+                                        callbackSetSnackbar, appointmentCreatedCallback, appointmentErrorCallback, cancelCallback, showUpCallback }: MultiAgendaProps) {
     const [showModal, setShowModal] = useState(false);
     const [appointment, setAppointment] = useState<IAppointment | null>(null);
+    const [newAppointment, setNewAppointment] = useState<IAppointment | null>(null);
 
     const events = useMemo(() => {
         return appointments.map((appointment, index) => {
@@ -123,7 +129,7 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
         }
     }
 
-    function renderModalCore(){
+    function renderModalAppointmentCore(){
         switch(appointment?.requestAppointment.status){
             case RequestStatus.PENDING_APPROVAL:
                 return (
@@ -173,12 +179,49 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                 window.open(nextUrl, '_blank');
                 resetModal();
         }
-    
+    }
+
+    function renderCoreModal(){
+        if(appointment){
+            return renderModalAppointmentCore()
+        }
+        else if(newAppointment){
+            return(
+                <NewAppointment appointmentInfo={newAppointment} 
+                    extraForm={extraForm} cancelCallback={resetModal}
+                    appointmentCreatedCallback={appointmentCreatedCallback}
+                    appointmentErrorCallback={appointmentErrorCallback}
+                    />
+            )
+        }
     }
 
     function resetModal() {
         setShowModal(false);
         setAppointment(null);
+        setNewAppointment(null);
+    }
+
+    function handleOnClickSlot(slotInfo:any){
+        if(!canCreateAppointments){
+            return null;
+        }
+        const { start, resourceId } = slotInfo;
+        console.log('Start time:', start);
+        console.log('Resource ID:', resourceId);
+
+        const currentAgenda = agendas.find(agenda => agenda.id === resourceId);
+        console.log('Current Agenda:', currentAgenda);
+        // Get just the hour of the clicked date
+        const clickedHour = start.getHours();
+        console.log('Clicked Hour:', clickedHour);
+        const newAppointment = {
+            startDateTime: start,
+            agendaId: resourceId,
+        }
+        setNewAppointment(newAppointment);
+        setShowModal(true);
+        
     }
 
     if(agendas.length === 0){
@@ -204,15 +247,10 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                 </div>
             </Snackbar>
         <Modal open={showModal} closeModal={resetModal} 
-            title={<Translate id="pages.hospital.outpatients.table_patient_appointments.modal.title" />} >
+            title={appointment ? <Translate id="pages.hospital.outpatients.calendar.modal.existing_appointment.title" /> : <Translate id="pages.hospital.outpatients.calendar.modal.new_appointment.title" />} >
             <>
             {
-                appointment !== null &&
-                <Grid container>
-                    {
-                        renderModalCore()
-                    }
-                </Grid>
+                renderCoreModal()
             }
             </>
         </Modal>
@@ -227,8 +265,10 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                 resources={resourceMap}
                 formats={{ eventTimeRangeFormat: () => null }}
                 resourceTitleAccessor="resourceTitle"
-                step={60}
+                step={15}
                 timeslots={1} 
+                selectable={true} 
+                onSelectSlot = {handleOnClickSlot}
                 views={views}
                 onSelectEvent={handleSelectEvent}
                 components={{

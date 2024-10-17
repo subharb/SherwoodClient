@@ -880,7 +880,6 @@
                     }
                 },
                 "service":{
-                    
                     "title" : ["Service", "Servicio", "Service"],
                     "name" : ["Name", "Nombre", "Nom"],
                     "type_service" : ["Type Service", "Tipo de servicio", "Type de service"],
@@ -892,7 +891,6 @@
                     }
                 },
                 "agenda":{
-                    
                     "title" : ["Agenda", "Agenda", "Agenda"],
                     "duration" : ["Duration Visit(min.)", "Duración Consulta(min.)", "Durée de la visite(min.)"],
                     "slotsPerDay" : ["Slots per day", "Citas por día", "Visites par jour"],
@@ -929,6 +927,23 @@
                         "week_day_not_available" : ["The week day selected is not available, please select another day", "El día de la semana seleccionado no está disponible, por favor seleccione otro día", "Le jour de la semaine sélectionnée n'est pas disponible, s'il vous plaît sélectionnez un autre jour"],
                         "outside_agenda_hours" : ["The time selected is outside the agenda hours, please select another time", "La hora seleccionada está fuera del horario de la agenda, por favor seleccione otra hora", "L'heure sélectionnée est en dehors des heures de l'agenda, veuillez sélectionner une autre heure"],
                         "conflict_appointment" : ["There's an appointment at this time, please select another time", "Ya hay una cita a esta hora, por favor seleccione otra hora", "Il y a un rendez-vous à cette heure, veuillez sélectionner une autre heure"]
+                    }
+                },
+                "calendar" : {
+                    "modal" : {
+                        "existing_appointment" : {
+                            "title" : ["Confirm action", "Confirmar acción", "Confirmer l'action"]
+                        },
+                        "new_appointment" : {
+                            "title" : ["New appointment", "Nueva cita", "Nouveau rendez-vous"]
+                      
+                        }
+                    },
+                    "new_appointment" : {
+                        "success" : ["Appointment created succesfully", "Cita creada correctamente", "Rendez-vous créé avec succès"],
+                        "error" : {
+                            "outside_agenda_hours" : ["The time selected is outside the agenda hours", "L'heure sélectionnée est en dehors des heures de l'agenda", "La hora seleccionada está fuera del horario de la agenda"]
+                        }
                     }
                 },
                 "form_appointment" : {

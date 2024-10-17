@@ -491,7 +491,6 @@ const Billing: React.FC<Props> = (props) => {
                     <Grid item xs={6} style={{ paddingBottom: '1rem' }}>
                         <SectionHeader section="billing" edit={editing} 
                             editCallback={toogleEditBillingInfo}  />
-                        
                         {!props.billingInfo ?
                             <TypographyStyled variant="body2" gutterBottom >
                                 <Translate id="hospital.billing.no_billing_info" />

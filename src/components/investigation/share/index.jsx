@@ -116,11 +116,11 @@ export const PermissionChip = withLocalize((props) => {
         case "MAJOR": 
             colour = red[500];            
             break;
-        case "NO_ROLE_ASSIGNED": 
+        case "EXECUTIVE_DIRECTOR": 
             colour = purple[500];            
             break;
         default:
-            return <ColourChip rgbcolor={colour} label={props.translate("investigation.share.roles.NO_PERMISSIONS")} />
+            return <ColourChip rgbcolor={colour} label={props.translate("investigation.share.roles.NO_ROLE_ASSIGNED")} />
     }
     return <ColourChip rgbcolor={colour} label={props.translate("investigation.share.roles."+role)}/>
 })
@@ -306,7 +306,7 @@ function ShareInvestigation(props) {
             }) 
     
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
-                        headCells={arrayHeader}
+                        headCells={arrayHeader} order={{"property" : "name", "orderBy" : "desc" }}
                         rows={sharedResearchers.map((researcher, idx) => {
                             const name = researcher.name ? researcher.name+" "+researcher.surnames : researcher.email;
 
@@ -344,10 +344,10 @@ function ShareInvestigation(props) {
         else if(indexResearcherToDelete !== false){
             title =  props.translate("investigation.share.delete_researcher");
             modalProps = {
-            confirmAction: handleDeleteResearcher,
-            confirmButtonLabel: "general.delete",
-            researcherToDelete: sharedResearchers[indexResearcherToDelete] 
-        };
+                confirmAction: handleDeleteResearcher,
+                confirmButtonLabel: "general.delete",
+                researcherToDelete: sharedResearchers[indexResearcherToDelete] 
+            };
         }   
         else{
             title =  props.translate("investigation.share.info_roles");

@@ -38,6 +38,13 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
         else return false;
     }, [investigations.currentInvestigation])
 
+    const canCreateAppointments = useMemo(() =>{
+        if(investigations.currentInvestigation){
+            return investigations.currentInvestigation.permissions.includes(PERMISSION.CREATE_APPOINTMENTS);
+        }
+        else return false;
+    }, [investigations.currentInvestigation])
+
     function toogleEdit(){
         let nextUrl;
         if(edit){
@@ -76,8 +83,9 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
         if(uuidAgendasSelected && selectedDate){
             return(
                 <Appointments uuidAgendas={uuidAgendasSelected} uuidInvestigation={investigations.currentInvestigation.uuid} 
-                    type={outpatientsInfo?.params.type} agendas={agendas} 
-                    dateSelected={selectedDate} mode={OutpatientsVisualizationMode.CONSULT}
+                    type={outpatientsInfo?.params.type} agendas={agendas} extraForm = {outpatientsInfo?.params.extraForm}
+                    dateSelected={selectedDate} mode={OutpatientsVisualizationMode.CONSULT} 
+                    canCreateAppointments={canCreateAppointments}
                     patientsPersonalData={personalData} 
                 />
             )

@@ -307,7 +307,8 @@ export interface IOutpatientsInfo{
     params: IOutpatientsParams,
 }
 export interface IOutpatientsParams {
-    type: "date" | "date_time"
+    type: "date" | "date_time",
+    extraForm ?: number
 }
 
 export enum OutpatientsTypes{

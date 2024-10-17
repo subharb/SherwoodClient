@@ -61,7 +61,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
             }
         })}, [bills, patients, languageCode]);
     
-        function callbackNameTyped(name:string){
+    function callbackNameTyped(name:string){
         setPatientName(name);        
     }
 

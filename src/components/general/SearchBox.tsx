@@ -35,7 +35,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, transl
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Grid item xs={6}>
-                                <TextField fullWidth onChange={(event) => textField.callBack(event.target.value)} variant="outlined" label={translate(textField.label)} />
+                                <TextField fullWidth onChange={(event) => textField.callBack(event.target.value)} 
+                                    variant="outlined" label={translate(textField.label)} />
                             </Grid>
                         </Grid>
                         <Grid item xs={12} container alignItems='center'>
@@ -43,7 +44,6 @@ const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, transl
                                 <Typography variant="body2" component="span"><Translate id="hospital.search_box.filter" /></Typography>:
                                 {
                                     filterItems.map((item) => {
-                                        
                                         return(<ChipContainer>
                                                     <ColourChip rgbcolor={item.color} active={!item.selected} 
                                                         avatar={item.icon}
