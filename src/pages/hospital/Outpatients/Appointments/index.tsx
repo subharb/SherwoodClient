@@ -5,6 +5,7 @@ import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsS
 import { AppointmentsDate } from './AppointmentsDate';
 import MultiAgenda from './MultiAgenda';
 import { set } from 'lodash';
+import { errorCodesCreateAppointment } from '../../../../utils/agenda';
 
 interface AppointmentsProps {
     uuidInvestigation: string;
@@ -82,7 +83,9 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
     }
 
     function appointmentErrorCallback(error:any){
-        setShowSnackbar({show:true, message:"general.error", severity:"error"});
+        if(error.errorCode){
+            setShowSnackbar({show:true, message:errorCodesCreateAppointment(error.errorCode), severity:"error"});    
+        }
     }
 
     async function getAllAgendas(){

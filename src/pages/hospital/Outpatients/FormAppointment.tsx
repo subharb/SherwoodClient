@@ -18,7 +18,7 @@ import { isArray } from 'lodash';
 import { makeAppointmentService } from '../../../services';
 import { TimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { turnsAgendaDates } from '../../../utils/agenda';
+import { errorCodesCreateAppointment, turnsAgendaDates } from '../../../utils/agenda';
 import { turnsToSchedule } from '../../../utils';
 
 interface ExtraAppointmentData {
@@ -477,24 +477,8 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     }
 
     useEffect(() => {
-        const errorTranslationPath = "pages.hospital.outpatients.appointment.error";
-        if(error === 0){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.date_time`, severity:"error"});
-        }
-        else if(error === 1){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.full_agenda`, severity:"error"});
-        }
-        else if(error === 2){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.date_blocked`, severity:"error"});
-        }
-        else if(error === 3){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.week_day_not_available`, severity:"error"});
-        }
-        else if(error === 4){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.outside_agenda_hours`, severity:"error"});
-        }
-        else if(error === 5){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.conflict_appointment`, severity:"error"});
+        if(error){
+            setShowSnackbar({show:true, message:errorCodesCreateAppointment(error), severity:"error"});
         }
         else if(appointmentCreated){
             setShowSnackbar({show:true, message:`pages.hospital.outpatients.appointment.success`, severity:"success"});            

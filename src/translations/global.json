@@ -84,7 +84,7 @@
             "request_img" : ["Do you wish to request an imaging test?", "¿Desea solicitar un examen de imagen?", "Voulez-vous demander un test d'imagerie?"]
         },
         "here" : ["here", "aquí", "ici"],
-        "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"],
+        "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une erreur s'est produite, veuillez réessayer plus tard"],
         "no-results" : ["No results", "Sin resultados", "Sans results"],
         "use_selector" : {
             "placeholder" : {
