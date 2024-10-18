@@ -78,7 +78,7 @@ export const IconGenerator = withTheme((props) => {
         case "pharmacy":
             return <LocalPharmacyIcon style={{color:props.theme.palette.primary.color }} />
         case "outpatients":
-            return <TodayIcon style={{color:props.theme.palette.primary.color }} />
+            return <TodayIcon style={{color: props.color ? props.color : props.theme.palette.primary.color }} fontSize={props.size ? props.size : "small"}  />
         case "shoe_shop":
             return <DirectionsRun style={{color:props.theme.palette.primary.color }} />
         case "image":

@@ -15,6 +15,8 @@ import { render } from '@testing-library/react';
 import { RequestStatus } from '../../Service/types';
 import { HOSPITAL_PATIENT } from '../../../../routes/urls';
 import NewAppointment from './NewAppointment';
+import { FormMakeAppointment } from '../FormAppointment';
+import { fetchPatient } from '../../../../db';
 
 
 interface Event {
@@ -34,6 +36,7 @@ export interface MultiAgendaProps {
     showSnackbar:SnackbarType,
     extraForm? : number,
     canCreateAppointments: boolean,
+    uuidInvestigation: string,
     cancelCallback: (uuidAgenda:string) => void,
     showUpCallback: (uuidAgenda:string) => void,
     callbackSetSnackbar: (showSnackbar:SnackbarType) => void;
@@ -41,11 +44,13 @@ export interface MultiAgendaProps {
     appointmentErrorCallback: (error:any) => void;
 }
 
-export default function MultiAgenda({ date, appointments, agendas, patients, showSnackbar, lastUpdate, extraForm, canCreateAppointments,
+export default function MultiAgenda({ date, appointments, agendas, patients, showSnackbar, uuidInvestigation, lastUpdate, extraForm, canCreateAppointments,
                                         callbackSetSnackbar, appointmentCreatedCallback, appointmentErrorCallback, cancelCallback, showUpCallback }: MultiAgendaProps) {
     const [showModal, setShowModal] = useState(false);
     const [appointment, setAppointment] = useState<IAppointment | null>(null);
     const [newAppointment, setNewAppointment] = useState<IAppointment | null>(null);
+    const [showNewAppointment, setShowNewAppointment] = useState(false);
+    const [fetchedPatient, setFetchedPatient] = useState<IPatient | null>(null);
 
     const events = useMemo(() => {
         return appointments.map((appointment, index) => {
@@ -110,6 +115,16 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
         }
     }, [showSnackbar.show]);
 
+    useEffect(() => {
+        async function fetchPatientData() {
+            if (showNewAppointment && appointment) {
+                const patient = await fetchPatient(appointment.patient.uuid);
+                setFetchedPatient(patient);
+            }
+        }
+        fetchPatientData();
+    }, [showNewAppointment, appointment]);
+
     function handleSelectEvent(event:Event) {
         console.log("Selected event: ", event);
         setShowModal(true);
@@ -129,24 +144,31 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
         }
     }
 
+    function sheduleNewAppointment(){
+        setShowNewAppointment(true);
+    }
+
     function renderModalAppointmentCore(){
         switch(appointment?.requestAppointment.status){
             case RequestStatus.PENDING_APPROVAL:
                 return (
                     <>
-                    <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                            <Typography variant="body1" component="div" gutterBottom>
-                                <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.show_up.message" />
-                            </Typography>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                                <Typography variant="body1" component="div" gutterBottom>
+                                    <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.show_up.message" />
+                                </Typography>
+                            </Grid>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                            <Button onClick={cancelAppointment}>
+                                <IconGenerator type="cancel_appointment" size="large" />
+                            </Button>
+                            <Button onClick={showUpAppointment}>
+                                <IconGenerator type="show_up" size="large" />
+                            </Button>    
+                            <Button onClick={sheduleNewAppointment}>
+                                <IconGenerator color="black" type="outpatients" size="large" />
+                            </Button>                          
                         </Grid>
-                    <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                        <Button onClick={cancelAppointment}>
-                            <IconGenerator type="cancel_appointment" size="large" />
-                        </Button>
-                        <Button onClick={showUpAppointment}>
-                            <IconGenerator type="show_up" size="large" />
-                        </Button>                            
-                    </Grid>
                     </>
                 );
             case RequestStatus.PENDING_PAYMENT:
@@ -181,18 +203,32 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
         }
     }
 
-    function renderCoreModal(){
-        if(appointment){
-            return renderModalAppointmentCore()
-        }
-        else if(newAppointment){
-            return(
-                <NewAppointment appointmentInfo={newAppointment} 
-                    extraForm={extraForm} cancelCallback={resetModal}
+    function renderCoreModal() {
+        if (showNewAppointment && appointment && fetchedPatient) {
+            return (
+                <FormMakeAppointment
+                    uuidPatient={appointment.patient.uuid}
+                    uuidInvestigation={uuidInvestigation}
+                    showAllAgendas={false}
+                    hidePatientInfo={false}
+                    dateTimeAppointment={true}
+                    cancelCallback={resetModal}
+                    phoneNumber={fetchedPatient.personalData.phone}
+                    appointmentMadeCallback={(date) => appointmentCreatedCallback(date)}
+                />
+            );
+        } else if (appointment) {
+            return renderModalAppointmentCore();
+        } else if (newAppointment) {
+            return (
+                <NewAppointment
+                    appointmentInfo={newAppointment}
+                    extraForm={extraForm}
+                    cancelCallback={resetModal}
                     appointmentCreatedCallback={appointmentCreatedCallback}
                     appointmentErrorCallback={appointmentErrorCallback}
-                    />
-            )
+                />
+            );
         }
     }
 
@@ -200,6 +236,8 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
         setShowModal(false);
         setAppointment(null);
         setNewAppointment(null);
+        setFetchedPatient(null);
+        setShowNewAppointment(false);
     }
 
     function handleOnClickSlot(slotInfo:any){
@@ -275,7 +313,6 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                     toolbar: () => null,
                     event: CustomEvent
                 }}
-                
                 eventPropGetter={eventStyleGetter}
                 style={{ height: 1000 }}
                 min={new Date(2024, 8, 21, minHour, 0, 0)} // 8:00 AM

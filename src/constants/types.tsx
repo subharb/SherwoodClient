@@ -198,6 +198,7 @@ export interface IPersonalData{
     surnames: string,
     birthdate: Date,
     sex: string,
+    phone: string,
     health_id ?:string,
     automated_health_id ?:string,
     insurance:number | null,

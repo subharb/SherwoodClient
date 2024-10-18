@@ -129,6 +129,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
         const filteredPatients = patientsPersonalData.filter(patient => uuidPatients.includes(patient.uuid));
         return <MultiAgenda key={`${dateSelected.getUTCMilliseconds()}-${appointments.length}`} date={dateSelected} agendas={filteredAgendas} appointments={appointments}
                     patients={filteredPatients} showSnackbar={showSnackbar} lastUpdate={lastUpdate.getTime()}
+                    uuidInvestigation={uuidInvestigation}
                     extraForm={extraForm} appointmentCreatedCallback={appointmentCreatedCallback}
                     appointmentErrorCallback={appointmentErrorCallback} canCreateAppointments={canCreateAppointments}
                     callbackSetSnackbar={(showSnackbar:SnackbarType) => setShowSnackbar(showSnackbar)}

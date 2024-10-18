@@ -12,16 +12,14 @@ import Loader from '../../../components/Loader';
 import { Translate } from 'react-localize-redux';
 import Grid from '@mui/joy/Grid';
 
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect} from 'react-redux';
 import { Alert } from '@mui/material';
 import { isArray } from 'lodash';
 import { makeAppointmentService } from '../../../services';
 import { TimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { turnsAgendaDates } from '../../../utils/agenda';
-import { turnsToSchedule, twoDigits } from '../../../utils';
-import { QuillWrapper } from '../../../components/general/FieldSherwood';
-import ReactQuill from 'react-quill';
+import { turnsToSchedule } from '../../../utils';
 
 interface ExtraAppointmentData {
     idService : number, 
