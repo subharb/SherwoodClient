@@ -152,24 +152,32 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
         switch(appointment?.requestAppointment.status){
             case RequestStatus.PENDING_APPROVAL:
                 return (
-                    <>
-                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                                <Typography variant="body1" component="div" gutterBottom>
-                                    <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.show_up.message" />
-                                </Typography>
-                            </Grid>
-                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
                             <Button onClick={cancelAppointment}>
                                 <IconGenerator type="cancel_appointment" size="large" />
                             </Button>
+                            <Typography variant="body1" component="span" gutterBottom>
+                                <Translate id="pages.hospital.outpatients.calendar.modal.cancel_appoinment" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
                             <Button onClick={showUpAppointment}>
                                 <IconGenerator type="show_up" size="large" />
-                            </Button>    
+                            </Button>  
+                            <Typography variant="body1" component="span" gutterBottom>
+                                <Translate id="pages.hospital.outpatients.calendar.modal.check_in_patient" />
+                            </Typography>  
+                        </Grid>
+                        <Grid item xs={12}>
                             <Button onClick={sheduleNewAppointment}>
                                 <IconGenerator color="black" type="outpatients" size="large" />
-                            </Button>                          
+                            </Button>     
+                            <Typography variant="body1" component="span" gutterBottom>
+                                <Translate id="pages.hospital.outpatients.calendar.modal.new_appointment.title" />
+                            </Typography>             
                         </Grid>
-                    </>
+                    </Grid>
                 );
             case RequestStatus.PENDING_PAYMENT:
                 return (

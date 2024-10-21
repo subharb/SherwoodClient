@@ -936,8 +936,10 @@
                         },
                         "new_appointment" : {
                             "title" : ["New appointment", "Nueva cita", "Nouveau rendez-vous"]
-                      
-                        }
+                        },
+                        "cancel_appoinment" : ["Cancel appointment", "Cancelar cita", "Annuler le rendez-vous"],
+                        "check_in_patient" : ["Check in patient", "Check in paciente", "Check in du patient"]
+                        
                     },
                     "new_appointment" : {
                         "success" : ["Appointment created succesfully", "Cita creada correctamente", "Rendez-vous créé avec succès"],
