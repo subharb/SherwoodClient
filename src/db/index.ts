@@ -80,11 +80,11 @@ export const findPatientsByNameOrSurname = async (nameOrSurname: string, uuidInv
         .where('uuidInvestigation').equals(uuidInvestigation)
         .and(patient => {
             const fullName = `${patient.personalData.name} ${patient.personalData.surnames}`.toLowerCase();
-            return searchTerms.every(term => fullName.includes(term));
+            const matchhealthId = patient.personalData.automated_health_id ? patient.personalData.automated_health_id.toLowerCase().includes(nameOrSurname.toLowerCase()) : false;
+            return searchTerms.every(term => fullName.includes(term)) || matchhealthId;
         })
         .toArray();
 };
-
 
 export async function clearPatientsStore(): Promise<void> {
     await db.patients.clear(); // Use Dexie's clear method to remove all entries

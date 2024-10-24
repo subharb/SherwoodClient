@@ -36,6 +36,7 @@ interface FormAppointmentGeneralProps {
     showAllAgendas:boolean,
     dateTimeAppointment?:boolean,
     phoneNumber? : boolean,
+    extraForm?: number,
     department?: IDepartment,
     appointmentMadeCallback?: (appointment:IAppointment) => void;
     infoAppointmentReadyCallback?:(uuidAgenda:string[], date:Date) => void;
@@ -51,6 +52,7 @@ interface FormMakeAppointmentProps {
     hidePatientInfo?: boolean,
     dateTimeAppointment:boolean,
     phoneNumber : string,
+    extraForm?: number,
     appointmentMadeCallback: (appointment:IAppointment) => void;
     cancelCallback: () => void;
 }
@@ -71,15 +73,17 @@ export const FormConsultAppointment: React.FC<FormConsultAppointmentProps> = ({ 
         agendaChangedCallback={agendaChangedCallback} />
 };
 
-export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, department, dateTimeAppointment, uuidInvestigation, hidePatientInfo, phoneNumber, appointmentMadeCallback, cancelCallback }) => {
+export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, department, dateTimeAppointment, 
+                                                                            extraForm, uuidInvestigation, hidePatientInfo, phoneNumber, appointmentMadeCallback, cancelCallback }) => {
     
     return <FormAppointmentGeneralConnected showAllAgendas={showAllAgendas} uuidInvestigation={uuidInvestigation} uuidPatient={uuidPatient} mode='make'
                 hidePatientInfo={hidePatientInfo} department={department} dateTimeAppointment={dateTimeAppointment} phoneNumber={phoneNumber}
+                extraForm={extraForm}
                 appointmentMadeCallback={appointmentMadeCallback} cancelCallback={cancelCallback} />
 };
 
 const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInvestigation, department, uuidPatient, mode, hospital, hidePatientInfo, showAllAgendas, 
-                                                                            dateTimeAppointment, phoneNumber,
+                                                                            dateTimeAppointment, phoneNumber, extraForm,
                                                                             appointmentMadeCallback, infoAppointmentReadyCallback, agendaChangedCallback,
                                                                             cancelCallback }) => {
     const {agendas, loadingAgendas} = useAgendas();
@@ -162,7 +166,7 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
                 <FormAppointmentCore uuidPatient={uuidPatient} departmentsWithAgenda={departmentsWithAgenda} 
                     error={error } mode={mode} showAllAgendas={showAllAgendas} dateTimeAppointment={Boolean(dateTimeAppointment)}
                     loading={loading} hidePatientInfo={hidePatientInfo}
-                    appointmentCreated={Boolean(appointmentCreated)}
+                    appointmentCreated={Boolean(appointmentCreated)} extraForm={extraForm}
                     agendas={agendas} infoAppointmentCallback={infoAppointmentReady}
                     agendaChangedCallback={agendaChangedCallback}
                     cancelCallback={cancelCallback} />
@@ -192,12 +196,13 @@ interface FormAppointmentCoreProps extends Omit<FormAppointmentGeneralProps, 'ma
     dateTimeAppointment:boolean;
     hidePatientInfo?:boolean,
     loading:boolean;
+    extraForm?:number;
     appointmentCreated:boolean;
     infoAppointmentCallback: (uuidAgendas: string[], date: Date, makeAppointmentData?: ExtraAppointmentData) => void;
     cancelCallback: () => void;
 }
 
-export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPatient, loading, showAllAgendas, dateTimeAppointment, 
+export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPatient, loading, showAllAgendas, dateTimeAppointment, extraForm,
                                                                             departmentsWithAgenda, hidePatientInfo, agendas, mode, error, appointmentCreated, 
                                                                             infoAppointmentCallback, agendaChangedCallback, cancelCallback }) => {
     const [department, setDepartment] = useState<IDepartment | null>(null);
@@ -353,13 +358,14 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     }
 
     function renderExtraInfo(){
-        if((service && mode !== 'consult')){
+        if((service && mode !== 'consult' )){
             return (
                 <ExtraAppointmentInfo
-                  reason={reason}
-                  setReason={setReason}
-                  notes={notes}
-                  setNotes={setNotes}
+                    extraForm={extraForm}
+                    reason={reason}
+                    setReason={setReason}
+                    notes={notes}
+                    setNotes={setNotes}
                 />
               );
         }
@@ -597,42 +603,47 @@ interface ExtraAppointmentInfoProps {
     reason: string;
     setReason: (reason: string) => void;
     notes: string;
+    extraForm?: number;
     setNotes: (notes: string) => void;
   }
   
-export const ExtraAppointmentInfo: React.FC<ExtraAppointmentInfoProps> = ({ reason, setReason, notes, setNotes }) => {
+export const ExtraAppointmentInfo: React.FC<ExtraAppointmentInfoProps> = ({ reason, extraForm, setReason, notes, setNotes }) => {
     const optionsArray = ["Autres motifs", "Bronchiolite", "Cervicalgie", "Discopathie", "Dorsalgie", "Dorsolombalgie", "Drainage lymphatique", "Entorse", "Fracture", "Gonalgie", "Gonarthrose", "Hemiparesie / Hemiplegie", "Hernie discale", "Lombalgie", "Lombosciatalgie", "Nevralgie cervico brachiale", "Paralyse facial", "Paralyse cerebral / IMC", "Reeducation perineale", "Reeducation uro-gynecologique", "Ruptures tendons ou tissus mous", "Tendinite", "Traumatiste"];
-  
-    return (
-      <>
-        <Grid item xs={4}>
-          <FieldWrapper noWrap={null}>
-            <FormControl style={{width:'200px'}} variant="outlined" margin="dense">
-              <InputLabel id="reason">Sélectionner le motif</InputLabel>
-              <Select
-                labelId="reason"
-                id="reason"
-                label="Sélectionner le motif"
-                value={reason}
-                onChange={(event) => setReason(event.target.value as string)}
-              >
-                {optionsArray.map((option) => (
-                  <MenuItem key={option} value={option}>{option}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            
-            <FormControl style={{width:'200px'}} variant="outlined" margin="dense">
-              <TextField
-                fullWidth
-                id="note"
-                label="Notes"
-                value={notes}
-                onChange={(event) => setNotes(event.target.value)}
-              />
-            </FormControl>
-          </FieldWrapper>
-        </Grid>
-      </>
-    );
+    
+    switch(extraForm){
+        case 1:
+            return <>
+                <Grid item xs={4}>
+                    <FieldWrapper noWrap={null}>
+                        <FormControl style={{width:'200px'}} variant="outlined" margin="dense">
+                        <InputLabel id="reason">Sélectionner le motif</InputLabel>
+                        <Select
+                            labelId="reason"
+                            id="reason"
+                            label="Sélectionner le motif"
+                            value={reason}
+                            onChange={(event) => setReason(event.target.value as string)}
+                        >
+                            {optionsArray.map((option) => (
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
+                            ))}
+                        </Select>
+                        </FormControl>
+                        
+                        <FormControl style={{width:'200px'}} variant="outlined" margin="dense">
+                        <TextField
+                            fullWidth
+                            id="note"
+                            label="Notes"
+                            value={notes}
+                            onChange={(event) => setNotes(event.target.value)}
+                        />
+                        </FormControl>
+                    </FieldWrapper>
+                </Grid>
+            </>
+        default:
+            return null;
+    }
+
   };

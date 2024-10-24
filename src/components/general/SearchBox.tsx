@@ -36,6 +36,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ filterItems, selectFilter, transl
                         <Grid item xs={12}>
                             <Grid item xs={6}>
                                 <TextField fullWidth onChange={(event) => textField.callBack(event.target.value)} 
+                                    helperText={<Translate id="hospital.search_box.find_patient.helperText" />} 
                                     variant="outlined" label={translate(textField.label)} />
                             </Grid>
                         </Grid>

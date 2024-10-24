@@ -64,7 +64,9 @@ export const FindPatient:React.FC<Props> = (props) => {
             <Grid item xs={12}>
                 <Card>
                     <CardContent>
-                        <TextField label="Search Patient" color="secondary" onChange={(event) => onChange(event) } />
+                        <TextField label={<Translate id="hospital.search_box.find_patient.label" />} color="secondary" 
+                            helperText={<Translate id="hospital.search_box.find_patient.helperText" />}   
+                            onChange={(event) => onChange(event) } />
                     </CardContent>
                 </Card>
             </Grid>

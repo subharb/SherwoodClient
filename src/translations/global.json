@@ -136,6 +136,10 @@
         "generate_medical_history" : ["Generate Medical History", "Generar Historia Clínica", "Générer l'histoire médicale"],
         "search_box" : {
             "patients" : ["Search for patients", "Buscar pacientes", "Rechercher des patients"],
+            "find_patient" : {
+                "label" : ["Search Patient", "Buscar Paciente", "Rechercher Patient"],
+                "helperText" : ["Type name, surname or MRN", "Escriba nombre, apellido o NHC", "Tapez le nom, le prénom ou le NDM"]
+            },
             "staff" : ["Search for staff", "Buscar personal", "Rechercher du personnel"],
             "filter" : ["Filter", "Filtrar", "Filtrer"],
             "filters" : {
