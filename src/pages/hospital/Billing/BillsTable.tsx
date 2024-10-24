@@ -103,6 +103,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         })
         const headCells = [
                 { id: "idInvestigation", alignment: "left", label: "ID" },
+                { id: "health_id", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.automated_health_id`} /> },
                 { id: "patient", alignment: "left", label: <Translate id={`hospital.billing.bill.patient`} /> },
                 { id: "total", alignment: "left", label: [<Translate id={`hospital.billing.bill.total`} />,"("+currency+")"] },
                 { id: "status", alignment: "left", label: [<Translate id={`hospital.billing.bill.status`} />]},
