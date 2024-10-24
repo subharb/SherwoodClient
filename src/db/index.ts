@@ -32,7 +32,7 @@ export const saveListPatients = async (patients: IPatient[], investigation: any)
             id: patient.id,
             uuid: patient.uuid,
             uuidInvestigation: investigation.uuid,
-            dateCreated: patient.dateCreated,
+            dateCreated: new Date(patient.dateCreated),
             personalData: patient.personalData
         };
     });
@@ -44,7 +44,10 @@ export const saveListPatients = async (patients: IPatient[], investigation: any)
 
 
 export const getAllPatientsInvestigation = async (uuidInvestigation:string): Promise<IPatient[]> => {
-    return await db.patients.where('uuidInvestigation').equals(uuidInvestigation).toArray();
+    return await db.patients
+        .where('uuidInvestigation')
+        .equals(uuidInvestigation)
+        .sortBy('dateCreated')
   };
 // Save data to IndexedDB
 export const savePatient = async (patientData: IPatient, uuidInvestigation: string): Promise<void> => {

@@ -450,10 +450,6 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         
     }
 
-    function resetModal(){
-
-    }
-
     function confirm(){
         console.log("Note", notes);
         console.log("Reason", reason);
@@ -477,7 +473,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     }
 
     useEffect(() => {
-        if(error){
+        if(error !== -1){
             setShowSnackbar({show:true, message:errorCodesCreateAppointment(error), severity:"error"});
         }
         else if(appointmentCreated){

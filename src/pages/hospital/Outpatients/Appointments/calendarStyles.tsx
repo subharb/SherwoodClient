@@ -3,6 +3,8 @@ import { RequestStatus } from "../../Service/types";
 import { EventProps } from 'react-big-calendar'
 import ReactDOM from 'react-dom';
 import { Typography } from "@mui/material";
+import { Done, EventBusy, MoneyOff } from "@mui/icons-material";
+import { func } from "prop-types";
 
 interface MyEvent {
     title: string;
@@ -18,18 +20,21 @@ export const eventStyleGetter = (event) => {
 
     // Set color based on event type or other criteria
     switch (event.type) {
-      case RequestStatus.ACCEPTED:
-        backgroundColor = '#32cd32'; // LimeGreen
-        break;
-      case RequestStatus.PENDING_PAYMENT:
-        backgroundColor = '#ff7f50'; // Coral
-        break;
-      case RequestStatus.PENDING_APPROVAL:
-        backgroundColor = '#1e90ff'; // DodgerBlue
-        break;
-      default:
-        backgroundColor = '#d3d3d3'; // LightGray for default/other events
-        break;
+        case RequestStatus.ACCEPTED:
+            backgroundColor = '#32cd32'; // LimeGreen
+            break;
+        case RequestStatus.PENDING_PAYMENT:
+            backgroundColor = '#ff7f50'; // Coral
+            break;
+        case RequestStatus.PENDING_APPROVAL:
+            backgroundColor = '#1e90ff'; // DodgerBlue
+            break;
+        case RequestStatus.EXPIRED:
+            backgroundColor = '#b22222'; // Tomato
+            break;
+        default:
+            backgroundColor = '#d3d3d3'; // LightGray for default/other events
+            break;
     }
 
     const style = {
@@ -64,15 +69,49 @@ export const CustomEvent: React.FC<EventProps<MyEvent>> = ({event}) => {
         setShowTooltip(false);
       };
 
+    function renderIcon(type: RequestStatus) {
+        let icon = null;
+        switch (type) {
+            case RequestStatus.ACCEPTED:
+                icon = <Done fontSize="small" />;
+                break;
+            case RequestStatus.PENDING_PAYMENT:
+                icon = <MoneyOff fontSize="small" />;
+                break;
+            case RequestStatus.EXPIRED:
+                icon = <EventBusy fontSize="small" />;
+                break;
+            default:
+                return null;
+        }
+        return (
+            <div style={{
+                position: 'absolute',
+                bottom: '2px',
+                right: '2px',
+                borderRadius: '50%',
+                padding: '2px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+                {icon}
+            </div>
+        );
+    }
+    function capitalizeFirstLetter(string: string): string {
+        return string.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+      }
+
     return (
         <>
         <div
             onMouseEnter={enableTooltip ? handleMouseEnter : undefined}
             onMouseLeave={enableTooltip ? handleMouseLeave : undefined}
-            style={{ overflow: 'visible', height: '100%', width: '100%' }}
+            style={{ overflow: 'visible', height: '100%', width: '100%', position: 'relative' }}
         >
-            <span>{title}</span>
-            
+            <span>{capitalizeFirstLetter(title)}</span>
+            {renderIcon(event.type)}
         </div>
         {showTooltip &&
         ReactDOM.createPortal(

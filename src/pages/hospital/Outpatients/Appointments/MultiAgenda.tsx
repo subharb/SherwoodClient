@@ -57,14 +57,17 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
             const uuidPatient = appointment.patient.uuid;
             const patient = patients.find(pat => pat.uuid === uuidPatient);
             const patientName = patient ? patientFullName(patient?.personalData) : "Unknown";
-            console.log("StartDate: ", new Date(appointment.startDateTime));
+            const startDateTime = new Date(appointment.startDateTime);
+            const twoHoursAgo = new Date(new Date().getTime() - 2 * 60 * 60 * 1000);
+            const appointmentStatus = (appointment.requestAppointment.status === RequestStatus.PENDING_APPROVAL) && startDateTime < twoHoursAgo ? RequestStatus.EXPIRED : appointment.requestAppointment.status;
+            console.log("StartDate: ", startDateTime);
             return {
                 id: appointment.id,
                 title: patientName,
                 reason: appointment.reasonVisit,
                 notes: appointment.notes,
-                type: appointment.requestAppointment.status,
-                start: new Date(appointment.startDateTime),
+                type: appointmentStatus,
+                start: startDateTime,
                 end: new Date(appointment.endDateTime),
                 resourceId: appointment.agendaId
             }
