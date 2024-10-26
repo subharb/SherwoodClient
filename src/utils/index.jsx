@@ -691,7 +691,7 @@ export function formatPatients(patients, personalFields, code = 'es-ES', insuran
             }
             
         }
-        const dateObject =  stringDatePostgresToDate(patient.dateCreated);
+        const dateObject =  patient.dateCreated;
         tempRow["dateCreated"] = dateObject.toLocaleString(code,{
             year: 'numeric',
             month: '2-digit',

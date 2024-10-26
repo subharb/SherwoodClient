@@ -175,6 +175,8 @@ export interface IAppointment{
     order:number,
     agenda:IAgenda,
     agendaId:number,
+    reasonVisit:string,
+    notes:string,
     requestAppointment:IRequestAppointment,
     type:number,//0 first visit, 1 follow up
     createdAt:number,
@@ -196,6 +198,7 @@ export interface IPersonalData{
     surnames: string,
     birthdate: Date,
     sex: string,
+    phone: string,
     health_id ?:string,
     automated_health_id ?:string,
     insurance:number | null,
@@ -305,7 +308,8 @@ export interface IOutpatientsInfo{
     params: IOutpatientsParams,
 }
 export interface IOutpatientsParams {
-    type: "date" | "date_time"
+    type: "date" | "date_time",
+    extraForm ?: number
 }
 
 export enum OutpatientsTypes{

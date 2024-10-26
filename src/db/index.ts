@@ -11,8 +11,8 @@ export let db = new Dexie(DB_PATIENTS_NAME) as Dexie & {
 };
 
 // Define the database schema
-db.version(1).stores({
-    patients: 'uuid, uuidInvestigation, id, dateCreated, personalData' // Define primary key and indexes
+db.version(2).stores({
+    patients: 'uuid, uuidInvestigation, id, dateCreated, personalData.name, personalData.surnames'
 });
 
 export const deleteAllPatientsFromInvestigation = async (uuidInvestigation: string): Promise<void> => {
@@ -32,7 +32,7 @@ export const saveListPatients = async (patients: IPatient[], investigation: any)
             id: patient.id,
             uuid: patient.uuid,
             uuidInvestigation: investigation.uuid,
-            dateCreated: patient.dateCreated,
+            dateCreated: new Date(patient.dateCreated),
             personalData: patient.personalData
         };
     });
@@ -44,7 +44,10 @@ export const saveListPatients = async (patients: IPatient[], investigation: any)
 
 
 export const getAllPatientsInvestigation = async (uuidInvestigation:string): Promise<IPatient[]> => {
-    return await db.patients.where('uuidInvestigation').equals(uuidInvestigation).toArray();
+    return await db.patients
+        .where('uuidInvestigation')
+        .equals(uuidInvestigation)
+        .sortBy('dateCreated')
   };
 // Save data to IndexedDB
 export const savePatient = async (patientData: IPatient, uuidInvestigation: string): Promise<void> => {
@@ -62,7 +65,26 @@ export const fetchPatient = async (uuidPatient: string): Promise<IPatient | null
     const patient = await db.patients.get(uuidPatient); // Use Dexie's get method directly
     return patient ? patient : null;
 };
+export const findPatientByIdAndInvestigation = async (id: number, uuidInvestigation: string): Promise<IPatient | null> => {
+    const patient = await db.patients
+        .where('uuidInvestigation')
+        .equals(uuidInvestigation)
+        .and(patient => patient.id === id)
+        .first();
+    return patient ? patient : null;
+};
 
+export const findPatientsByNameOrSurname = async (nameOrSurname: string, uuidInvestigation: string): Promise<IPatient[]> => {
+    const searchTerms = nameOrSurname.toLowerCase().split(' ');
+    return await db.patients
+        .where('uuidInvestigation').equals(uuidInvestigation)
+        .and(patient => {
+            const fullName = `${patient.personalData.name} ${patient.personalData.surnames}`.toLowerCase();
+            const matchhealthId = patient.personalData.automated_health_id ? patient.personalData.automated_health_id.toLowerCase().includes(nameOrSurname.toLowerCase()) : false;
+            return searchTerms.every(term => fullName.includes(term)) || matchhealthId;
+        })
+        .toArray();
+};
 
 export async function clearPatientsStore(): Promise<void> {
     await db.patients.clear(); // Use Dexie's clear method to remove all entries

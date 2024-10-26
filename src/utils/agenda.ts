@@ -33,3 +33,30 @@ export function turnsAgendaDates(turns:number[][]):Date[]{
     return [startTurn, endTurn];
 
 }
+
+export function errorCodesCreateAppointment(error:number){
+    const errorTranslationPath = "pages.hospital.outpatients.appointment.error";
+    let message = "";
+    if(error === 0){
+        message = `${errorTranslationPath}.date_time`
+    }
+    else if(error === 1){
+        message = `${errorTranslationPath}.full_agenda`
+    }
+    else if(error === 2){
+        message = `${errorTranslationPath}.date_blocked`
+    }
+    else if(error === 3){
+        message = `${errorTranslationPath}.week_day_not_available`
+    }
+    else if(error === 4){
+        message = `${errorTranslationPath}.outside_agenda_hours`
+    }
+    else if(error === 5){
+        message = `${errorTranslationPath}.conflict_appointment`
+    }
+    else{
+        return "general.error";
+    }
+    return message;
+}

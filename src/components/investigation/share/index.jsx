@@ -10,27 +10,18 @@ import { BoxBckgr, ButtonAdd, ButtonContinue, TypographyStyled } from '../../gen
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { EnhancedTable } from "../../general/EnhancedTable";
-import styled from 'styled-components';
 import { yellow, green, blue, red, orange, purple, grey } from "@mui/material/colors";
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
 import { deleteResearcher, getSharedResearchersService, saveResearcherPermissions } from '../../../services';
-
 import SectionHeader from '../../../pages/components/SectionHeader';
 import UserRoles from './UserRoles';
 import { useSnackBarState } from "../../../hooks"
 import { ALL_ROLES, PERMISSION, USER_ROLES } from './user_roles';
 import { ColourChip } from '../../general/mini_components-ts';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 
 
-
-const optionsPermissions = Object.keys(USER_ROLES).map(keyRole => {
+const optionsPermissions = Object.keys(USER_ROLES).sort().map(keyRole => {
     return {"label" : "investigation.share.roles."+keyRole, "value" :USER_ROLES[keyRole]}
 })
 
@@ -98,6 +89,12 @@ export const PermissionChip = withLocalize((props) => {
         case "ADMIN_FW": 
             colour = blue[400];            
             break;
+        case "CASHIER": 
+            colour = blue[400];            
+            break;
+        case "CASHIER_MANAGER": 
+            colour = blue[700];            
+            break;
         case "BUSINESS_ASSISTANT": 
             colour = blue[300];            
             break;
@@ -119,11 +116,11 @@ export const PermissionChip = withLocalize((props) => {
         case "MAJOR": 
             colour = red[500];            
             break;
-        case "NO_ROLE_ASSIGNED": 
+        case "EXECUTIVE_DIRECTOR": 
             colour = purple[500];            
             break;
         default:
-            return <ColourChip rgbcolor={colour} label={props.translate("investigation.share.roles.NO_PERMISSIONS")} />
+            return <ColourChip rgbcolor={colour} label={props.translate("investigation.share.roles.NO_ROLE_ASSIGNED")} />
     }
     return <ColourChip rgbcolor={colour} label={props.translate("investigation.share.roles."+role)}/>
 })
@@ -309,7 +306,7 @@ function ShareInvestigation(props) {
             }) 
     
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
-                        headCells={arrayHeader}
+                        headCells={arrayHeader} order={{"property" : "name", "orderBy" : "desc" }}
                         rows={sharedResearchers.map((researcher, idx) => {
                             const name = researcher.name ? researcher.name+" "+researcher.surnames : researcher.email;
 
@@ -347,10 +344,10 @@ function ShareInvestigation(props) {
         else if(indexResearcherToDelete !== false){
             title =  props.translate("investigation.share.delete_researcher");
             modalProps = {
-            confirmAction: handleDeleteResearcher,
-            confirmButtonLabel: "general.delete",
-            researcherToDelete: sharedResearchers[indexResearcherToDelete] 
-        };
+                confirmAction: handleDeleteResearcher,
+                confirmButtonLabel: "general.delete",
+                researcherToDelete: sharedResearchers[indexResearcherToDelete] 
+            };
         }   
         else{
             title =  props.translate("investigation.share.info_roles");

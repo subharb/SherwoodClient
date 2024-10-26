@@ -129,13 +129,13 @@ return order === "desc"
 }
 
 function stableSort(array, comparator) {
-const stabilizedThis = array.map((el, index) => [el, index]);
-stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-});
-return stabilizedThis.map((el) => el[0]);
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
 }
 
 const headCells = [
@@ -263,8 +263,8 @@ return (
 };
 
 export function EnhancedTable(props) {
-    const [order, setOrder] = React.useState("asc");
-    const [orderBy, setOrderBy] = React.useState("customer");
+    const [order, setOrder] = React.useState( props.order ? props.order.orderBy : "asc");
+    const [orderBy, setOrderBy] = React.useState(props.order ? props.order.property : "customer");
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState( props.noFooter ? props.rows.length : 10);

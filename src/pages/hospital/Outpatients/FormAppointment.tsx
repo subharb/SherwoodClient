@@ -1,4 +1,4 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Snackbar } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, Snackbar, TextField } from '@mui/material';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import React, { useEffect, useMemo, useState } from 'react';
@@ -12,16 +12,20 @@ import Loader from '../../../components/Loader';
 import { Translate } from 'react-localize-redux';
 import Grid from '@mui/joy/Grid';
 
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { connect} from 'react-redux';
 import { Alert } from '@mui/material';
 import { isArray } from 'lodash';
 import { makeAppointmentService } from '../../../services';
 import { TimePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { turnsAgendaDates } from '../../../utils/agenda';
-import { turnsToSchedule, twoDigits } from '../../../utils';
+import { errorCodesCreateAppointment, turnsAgendaDates } from '../../../utils/agenda';
+import { turnsToSchedule } from '../../../utils';
 
-
+interface ExtraAppointmentData {
+    idService : number, 
+    reason: string, 
+    notes:string
+}
 
 interface FormAppointmentGeneralProps {
     uuidPatient?: string;
@@ -32,10 +36,12 @@ interface FormAppointmentGeneralProps {
     showAllAgendas:boolean,
     dateTimeAppointment?:boolean,
     phoneNumber? : boolean,
+    extraForm?: number,
     department?: IDepartment,
     appointmentMadeCallback?: (appointment:IAppointment) => void;
     infoAppointmentReadyCallback?:(uuidAgenda:string[], date:Date) => void;
     agendaChangedCallback?:(uuidAgendas: string[]) => void;
+    cancelCallback?: () => void;
 }
 
 interface FormMakeAppointmentProps {
@@ -46,7 +52,9 @@ interface FormMakeAppointmentProps {
     hidePatientInfo?: boolean,
     dateTimeAppointment:boolean,
     phoneNumber : string,
+    extraForm?: number,
     appointmentMadeCallback: (appointment:IAppointment) => void;
+    cancelCallback: () => void;
 }
 
 interface FormConsultAppointmentProps {
@@ -65,16 +73,19 @@ export const FormConsultAppointment: React.FC<FormConsultAppointmentProps> = ({ 
         agendaChangedCallback={agendaChangedCallback} />
 };
 
-export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, department, dateTimeAppointment, uuidInvestigation, hidePatientInfo, phoneNumber, appointmentMadeCallback }) => {
+export const FormMakeAppointment: React.FC<FormMakeAppointmentProps> = ({ uuidPatient, showAllAgendas, department, dateTimeAppointment, 
+                                                                            extraForm, uuidInvestigation, hidePatientInfo, phoneNumber, appointmentMadeCallback, cancelCallback }) => {
     
     return <FormAppointmentGeneralConnected showAllAgendas={showAllAgendas} uuidInvestigation={uuidInvestigation} uuidPatient={uuidPatient} mode='make'
                 hidePatientInfo={hidePatientInfo} department={department} dateTimeAppointment={dateTimeAppointment} phoneNumber={phoneNumber}
-                appointmentMadeCallback={appointmentMadeCallback} />
+                extraForm={extraForm}
+                appointmentMadeCallback={appointmentMadeCallback} cancelCallback={cancelCallback} />
 };
 
 const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInvestigation, department, uuidPatient, mode, hospital, hidePatientInfo, showAllAgendas, 
-                                                                            dateTimeAppointment, phoneNumber,
-                                                                            appointmentMadeCallback, infoAppointmentReadyCallback, agendaChangedCallback }) => {
+                                                                            dateTimeAppointment, phoneNumber, extraForm,
+                                                                            appointmentMadeCallback, infoAppointmentReadyCallback, agendaChangedCallback,
+                                                                            cancelCallback }) => {
     const {agendas, loadingAgendas} = useAgendas();
     //const appointments =  useSelector((state:any) => state.hospital.data.appointments);
     const [appointments, setAppointments] = useState<IAppointment[] | null>(null);
@@ -84,12 +95,10 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
     const [error, setError] = useState<number>(-1);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
-
-    async function makeAppointment(uuidAgenda:string, date:Date, idService:number){
+    function makeAppointment(uuidAgenda:string, date:Date, makeAppointmentData: ExtraAppointmentData){
         setLoading(true);
         setError(-1);
-        makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date, idService, phoneNumber)
+        makeAppointmentService(uuidInvestigation, uuidAgenda, uuidPatient, date, makeAppointmentData.idService, phoneNumber, makeAppointmentData.reason, makeAppointmentData.notes)  
             .then((response) => {
                 const tempAppointments = appointments ? [...appointments] : [];
                 tempAppointments.push(response.appointment);
@@ -104,9 +113,9 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
             });
     }
 
-    function infoAppointmentReady(uuidAgendas:string[], date:Date, idService:number){
+    function infoAppointmentReady(uuidAgendas:string[], date:Date, makeAppointmentData?: ExtraAppointmentData){
         if(appointmentMadeCallback){
-            makeAppointment(uuidAgendas[0], date, idService)
+            makeAppointment(uuidAgendas[0], date, makeAppointmentData)
         }
         else if(infoAppointmentReadyCallback){
             infoAppointmentReadyCallback(uuidAgendas, date);
@@ -157,9 +166,10 @@ const FormAppointmentGeneral: React.FC<FormAppointmentGeneralProps> = ({ uuidInv
                 <FormAppointmentCore uuidPatient={uuidPatient} departmentsWithAgenda={departmentsWithAgenda} 
                     error={error } mode={mode} showAllAgendas={showAllAgendas} dateTimeAppointment={Boolean(dateTimeAppointment)}
                     loading={loading} hidePatientInfo={hidePatientInfo}
-                    appointmentCreated={Boolean(appointmentCreated)}
+                    appointmentCreated={Boolean(appointmentCreated)} extraForm={extraForm}
                     agendas={agendas} infoAppointmentCallback={infoAppointmentReady}
-                    agendaChangedCallback={agendaChangedCallback} />
+                    agendaChangedCallback={agendaChangedCallback}
+                    cancelCallback={cancelCallback} />
             </>
         );
     }
@@ -186,13 +196,15 @@ interface FormAppointmentCoreProps extends Omit<FormAppointmentGeneralProps, 'ma
     dateTimeAppointment:boolean;
     hidePatientInfo?:boolean,
     loading:boolean;
+    extraForm?:number;
     appointmentCreated:boolean;
-    infoAppointmentCallback: (uuidAgendas: string[], date: Date, idService?: number) => void;
+    infoAppointmentCallback: (uuidAgendas: string[], date: Date, makeAppointmentData?: ExtraAppointmentData) => void;
+    cancelCallback: () => void;
 }
 
-export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPatient, loading, showAllAgendas, dateTimeAppointment, 
+export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPatient, loading, showAllAgendas, dateTimeAppointment, extraForm,
                                                                             departmentsWithAgenda, hidePatientInfo, agendas, mode, error, appointmentCreated, 
-                                                                            infoAppointmentCallback, agendaChangedCallback }) => {
+                                                                            infoAppointmentCallback, agendaChangedCallback, cancelCallback }) => {
     const [department, setDepartment] = useState<IDepartment | null>(null);
     const [errorState, setErrorState] = useState<{department:boolean, agenda:boolean, service:boolean, date:boolean}>({department:false, agenda:false, date:false, service:false});
     const [listAgendas, setListAgendas] = useState<IAgenda[]>([]); 
@@ -203,7 +215,8 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
     const [timeSelected, setTimeSelected] = useState<Date>(now);
     const [date, setDate] = useState<Date | null>(null);
     const [service, setService] = useState<number | null>(null);
-
+    const [reason, setReason] = useState<string>("");
+    const [notes, setNotes] = useState<string>("");
     const [agendaSelected, setAgendaSelected] = useState<IAgenda | null>(null);
 
     useEffect(() => {
@@ -289,14 +302,14 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                 const uuidsAgendas = agendasSelected ? agendasSelected.map((agenda) => agenda.uuid) : [];
                 infoAppointmentCallback(uuidsAgendas, dateSelected);
             }
-            
         }
     }
 
     function renderCalendar(){
         if((service && mode !== 'consult') || (agendaSelected && mode === 'consult')){
             const turnsDates = turnsAgendaDates(agendaSelected?.turn);
-            const timePicker = <FieldWrapper noWrap ={null}>
+            const timePicker = <FormControl fullWidth variant="outlined" margin="dense"  >
+                                    <FieldWrapper noWrap ={null}>
                                     <TimePicker
                                         label={<Translate id="pages.hospital.outpatients.agenda.select_time" />}
                                         value={dayjs(timeSelected)}
@@ -317,6 +330,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                                         {turnsToSchedule(agendaSelected!.turn)}
                                     </Typography>
                                 </FieldWrapper>
+                                </FormControl>
             return (
                 <Grid container xs={12}>
                     { dateTimeAppointment && mode === 'make' &&
@@ -324,8 +338,8 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                             { timePicker }
                         </Grid>
                     }
-                    <Grid item xs={12}>
-                        
+                    <Grid item xs={4}>
+                        <FormControl fullWidth variant="outlined" margin="dense"  >
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <AppointmentDatePicker availableDaysWeek = {agendaSelected!.daysWeek} blockedDates={agendaSelected!.blockedDates} autoCurrentDate={true}
                                     slotsPerDay={agendaSelected!.slotsPerDay} datesOccupancy={agendaSelected!.datesOccupancy} onDateChangeCallback={(dateSel:Date) => 
@@ -333,11 +347,29 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
                                         onDateChange(dateSel, timeSelected)
                                     }} />
                             </MuiPickersUtilsProvider>
-                        
+                        </FormControl>
                     </Grid>
+                    {
+                        renderExtraInfo()
+                    }
                 </Grid>
             )
         }
+    }
+
+    function renderExtraInfo(){
+        if((service && mode !== 'consult' )){
+            return (
+                <ExtraAppointmentInfo
+                    extraForm={extraForm}
+                    reason={reason}
+                    setReason={setReason}
+                    notes={notes}
+                    setNotes={setNotes}
+                />
+              );
+        }
+        
     }
     function renderServices(){
         if(!agendaSelected || mode === 'consult'){
@@ -424,11 +456,9 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         
     }
 
-    function resetModal(){
-
-    }
-
     function confirm(){
+        console.log("Note", notes);
+        console.log("Reason", reason);
         if(department === null && departmentsWithAgenda.length > 0){
             setErrorState({...errorState, department:true});
         }
@@ -443,29 +473,14 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         }
         if(agendaSelected && date){
             const uuidAgendas = agendasSelected.map((agenda) => agenda.uuid)
-            infoAppointmentCallback(uuidAgendas, date, service!.id);
+            const makeAppointmentData = {idService: service!.id, reason, notes: notes};
+            infoAppointmentCallback(uuidAgendas, date, makeAppointmentData);
         }
     }
 
     useEffect(() => {
-        const errorTranslationPath = "pages.hospital.outpatients.appointment.error";
-        if(error === 0){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.date_time`, severity:"error"});
-        }
-        else if(error === 1){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.full_agenda`, severity:"error"});
-        }
-        else if(error === 2){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.date_blocked`, severity:"error"});
-        }
-        else if(error === 3){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.week_day_not_available`, severity:"error"});
-        }
-        else if(error === 4){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.outside_agenda_hours`, severity:"error"});
-        }
-        else if(error === 5){
-            setShowSnackbar({show:true, message:`${errorTranslationPath}.conflict_appointment`, severity:"error"});
+        if(error !== -1){
+            setShowSnackbar({show:true, message:errorCodesCreateAppointment(error), severity:"error"});
         }
         else if(appointmentCreated){
             setShowSnackbar({show:true, message:`pages.hospital.outpatients.appointment.success`, severity:"success"});            
@@ -509,7 +524,7 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         if(mode === "make" && !loading && !appointmentCreated && (department && departmentsWithAgenda.length > 0) || (!department && departmentsWithAgenda.length === 0)){
             return (
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                    <ButtonCancel onClick={resetModal} data-testid="cancel-modal"  spaceright={1}>
+                    <ButtonCancel onClick={cancelCallback} data-testid="cancel-modal"  spaceright={1}>
                         <Translate id="general.cancel" />
                     </ButtonCancel>
                     &nbsp;
@@ -581,3 +596,54 @@ export const FormAppointmentCore: React.FC<FormAppointmentCoreProps> = ({ uuidPa
         
     );
 };
+
+
+
+interface ExtraAppointmentInfoProps {
+    reason: string;
+    setReason: (reason: string) => void;
+    notes: string;
+    extraForm?: number;
+    setNotes: (notes: string) => void;
+  }
+  
+export const ExtraAppointmentInfo: React.FC<ExtraAppointmentInfoProps> = ({ reason, extraForm, setReason, notes, setNotes }) => {
+    const optionsArray = ["Autres motifs", "Bronchiolite", "Cervicalgie", "Discopathie", "Dorsalgie", "Dorsolombalgie", "Drainage lymphatique", "Entorse", "Fracture", "Gonalgie", "Gonarthrose", "Hemiparesie / Hemiplegie", "Hernie discale", "Lombalgie", "Lombosciatalgie", "Nevralgie cervico brachiale", "Paralyse facial", "Paralyse cerebral / IMC", "Reeducation perineale", "Reeducation uro-gynecologique", "Ruptures tendons ou tissus mous", "Tendinite", "Traumatiste"];
+    
+    switch(extraForm){
+        case 1:
+            return <>
+                <Grid item xs={4}>
+                    <FieldWrapper noWrap={null}>
+                        <FormControl style={{width:'200px'}} variant="outlined" margin="dense">
+                        <InputLabel id="reason">Sélectionner le motif</InputLabel>
+                        <Select
+                            labelId="reason"
+                            id="reason"
+                            label="Sélectionner le motif"
+                            value={reason}
+                            onChange={(event) => setReason(event.target.value as string)}
+                        >
+                            {optionsArray.map((option) => (
+                            <MenuItem key={option} value={option}>{option}</MenuItem>
+                            ))}
+                        </Select>
+                        </FormControl>
+                        
+                        <FormControl style={{width:'200px'}} variant="outlined" margin="dense">
+                        <TextField
+                            fullWidth
+                            id="note"
+                            label="Notes"
+                            value={notes}
+                            onChange={(event) => setNotes(event.target.value)}
+                        />
+                        </FormControl>
+                    </FieldWrapper>
+                </Grid>
+            </>
+        default:
+            return null;
+    }
+
+  };

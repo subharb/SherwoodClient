@@ -101,15 +101,7 @@ const forms = {
       label: "register.common.clinic.country",
       shortLabel: "register.common.clinic.country",
       validation: "notEmpty",
-    },
-    cloudflareToken: {
-      name: "cloudflareToken",
-      required: true,
-      type: "cloudflare",
-      label: "register.common.personal_info.cloudflare",
-      shortLabel: "register.common.personal_info.cloudflare",
-      validation: "notEmpty",
-    },
+    }
   },
   password: {
     password: {
@@ -163,6 +155,14 @@ const forms = {
     },
   },
   key_generation: {
+    cloudflareToken: {
+      name: "cloudflareToken",
+      required: true,
+      type: "cloudflare",
+      label: "register.common.personal_info.cloudflare",
+      shortLabel: "register.common.personal_info.cloudflare",
+      validation: "notEmpty",
+    },
     confirm: {
       name: "confirm",
       required: true,
@@ -237,9 +237,9 @@ class Register extends Component {
 
       if (this.props.typeUser === "researcher") {
         const url = import.meta.env.VITE_APP_API_URL + "/researcher/register";
-
+        const postInfo = { ...tempState.info, cloudflareToken: data.cloudflareToken };
         tempState.info.language = this.props.activeLanguage.code;
-        response = await axios.post(url, tempState.info).catch((err) => {
+        response = await axios.post(url, postInfo).catch((err) => {
           console.log("Catch", err);
           return err;
         });

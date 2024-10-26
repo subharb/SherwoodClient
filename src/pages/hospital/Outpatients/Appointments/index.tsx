@@ -5,20 +5,23 @@ import { cancelAppointmentService, getAppoinmentsDateService, updateAppoinmentsS
 import { AppointmentsDate } from './AppointmentsDate';
 import MultiAgenda from './MultiAgenda';
 import { set } from 'lodash';
+import { errorCodesCreateAppointment } from '../../../../utils/agenda';
 
 interface AppointmentsProps {
     uuidInvestigation: string;
     patientsPersonalData: IPatient[];
     uuidAgendas: string[];
+    extraForm?: number;
     agendas:IAgenda[];
     dateSelected: Date;
+    canCreateAppointments: boolean;
     type: OutpatientsTypes;
     mode:OutpatientsVisualizationMode,
     callbackAppointments?: (appointments:IAppointment[]) => void;
 }
 
-const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uuidAgendas, dateSelected,agendas,
-                                                    type, patientsPersonalData, callbackAppointments }) => {
+const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uuidAgendas, dateSelected,agendas, canCreateAppointments,
+                                                    type, patientsPersonalData, extraForm, callbackAppointments }) => {
     const [loadingAppointments, setLoadingAppointments] = React.useState(false);
     const [appointments, setAppointments] = React.useState<IAppointment[]>([]);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
@@ -73,6 +76,18 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
             })
     }
 
+    function appointmentCreatedCallback(appointment:IAppointment){
+        setAppointments([...appointments, appointment]);
+        setShowSnackbar({show:true, message:"pages.hospital.outpatients.calendar.new_appointment.success", severity:"success"});
+        setLastUpdate(new Date());
+    }
+
+    function appointmentErrorCallback(error:any){
+        if(error.errorCode){
+            setShowSnackbar({show:true, message:errorCodesCreateAppointment(error.errorCode), severity:"error"});    
+        }
+    }
+
     async function getAllAgendas(){
         
         let appointmentsNew: IAppointment[] = [];
@@ -116,9 +131,12 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
         const uuidPatients = appointments.map(appointment => appointment.patient.uuid);
         const filteredPatients = patientsPersonalData.filter(patient => uuidPatients.includes(patient.uuid));
         return <MultiAgenda key={`${dateSelected.getUTCMilliseconds()}-${appointments.length}`} date={dateSelected} agendas={filteredAgendas} appointments={appointments}
-                patients={filteredPatients} showSnackbar={showSnackbar} lastUpdate={lastUpdate.getTime()}
-                callbackSetSnackbar={(showSnackbar:SnackbarType) => setShowSnackbar(showSnackbar)}
-                cancelCallback={cancelAppointment} showUpCallback={updateAppointment} />
+                    patients={filteredPatients} showSnackbar={showSnackbar} lastUpdate={lastUpdate.getTime()}
+                    uuidInvestigation={uuidInvestigation}
+                    extraForm={extraForm} appointmentCreatedCallback={appointmentCreatedCallback}
+                    appointmentErrorCallback={appointmentErrorCallback} canCreateAppointments={canCreateAppointments}
+                    callbackSetSnackbar={(showSnackbar:SnackbarType) => setShowSnackbar(showSnackbar)}
+                    cancelCallback={cancelAppointment} showUpCallback={updateAppointment} />
     }
     return (
         <AppointmentsDate loadingAppointments={loadingAppointments} appointments={appointments} 
@@ -126,7 +144,8 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
             callbackResetModal={callbackResetModal} mode={mode} patientsPersonalData={patientsPersonalData}
             callbackSetSnackbar={(showSnackbar:SnackbarType) => setShowSnackbar(showSnackbar)}
             callbackCancelAppointment={(uuidAppointment) => cancelAppointment(uuidAppointment)}
-            callbackUpdateAppointment={(uuidAppointment) => updateAppointment(uuidAppointment)}/>
+            callbackUpdateAppointment={(uuidAppointment) => updateAppointment(uuidAppointment)}
+            />
     );
 };
 

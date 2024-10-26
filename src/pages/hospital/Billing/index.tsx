@@ -96,7 +96,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
     const action = location.pathname === HOSPITAL_BILLING_CREATE_BILL ? BillActions.CREATE : uuidPatient ? BillActions.PATIENT_BILLS : uuidDocument ? BillActions.VIEW : BillActions.DEFAULT;
 
     const hasDiscounts = investigation && investigation.billingInfo && investigation.billingInfo.params && hasDiscountsActive(investigation.billingInfo.params, investigation.permissions);
-    
+    const canCreateBills = investigation && investigation.permissions && investigation.permissions.includes("CREATE_BILLING");
     const dispatch = useDispatch();
 
     function navigateToHomeBilling(){
@@ -241,6 +241,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
                     billingInfo={investigation.billingInfo} uuidDocument={uuidDocument}
                     section={action} surveyAdditionalInfo={surveyAdditionalInfo}
                     bills={bills} loading={loading} uuidPatient={uuidPatient} showSnackbar={showSnackbar}
+                    canCreateBills={canCreateBills}
                     onCreateOrUpdateBill={(bill: Bill, typeUpdate:TypeBillItemUpdate) => onCreateOrUpdateBill(bill, typeUpdate)}    
                     onChangeDocumentType={onChangeDocumentType}                
                     onPatientSelected={(uuid:string) => onPatientSelected(uuid)}
@@ -272,6 +273,7 @@ interface Props extends LocalizeContextProps {
     uuidPatient?:string,
     showSnackbar:SnackbarType,
     bills: Bill[];
+    canCreateBills: boolean,
     loading: boolean,
     surveyAdditionalInfo?: ISurvey,
     section: BillActions,
@@ -489,15 +491,16 @@ const Billing: React.FC<Props> = (props) => {
                     <Grid item xs={6} style={{ paddingBottom: '1rem' }}>
                         <SectionHeader section="billing" edit={editing} 
                             editCallback={toogleEditBillingInfo}  />
-                        
                         {!props.billingInfo ?
                             <TypographyStyled variant="body2" gutterBottom >
                                 <Translate id="hospital.billing.no_billing_info" />
                             </TypographyStyled>
                             :
+                            props.canCreateBills ? 
                             <ButtonAdd disabled={props.section === BillActions.CREATE || props.loading || editing}
                                 type="button" data-testid="add_bill"
                                 onClick={props.createBill} />
+                            : null
                         }
                     </Grid>
                 </Grid>
