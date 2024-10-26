@@ -21,7 +21,7 @@ export const FindPatient:React.FC<Props> = (props) => {
     useEffect(() => {
         (async () => {
             if(patientName.length > 2){
-                const filteredPatients = (await findPatientsByNameOrSurname(patientName, props.uuidInvestigation)).sort((a,b) => a.dateCreated > b.dateCreated ? -1 : 1);
+                const filteredPatients = (await findPatientsByNameOrSurname(patientName, props.uuidInvestigation));
                 setFilteredPatients(filteredPatients);
             }
         })();
