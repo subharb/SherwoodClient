@@ -204,6 +204,5 @@ return (
 }
 
 AddPatientComponent.propTypes = {
-investigations:PropTypes.object
-
+    investigations:PropTypes.object
 };
