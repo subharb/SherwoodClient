@@ -5,6 +5,7 @@ import {
 } from "../../services";
 import { createUpdateBillingInfoService, getBillablesService, updateBillablesService } from "../../services/billing";
 import { decryptSinglePatientData } from "../../utils";
+import { fetchPatients } from "./patientsActions";
 
 export function fetchInvestigations() {
   return async (dispatch) => {
@@ -12,23 +13,24 @@ export function fetchInvestigations() {
 
     return fetchInvestigationsService()
       .then(async (response) => {
-        dispatch({
-            type: types.FETCH_INVESTIGATIONS_DECRYPTING_DATA,
-            investigations: response.investigations,
-        });
-        for(const investigation of response.investigations){
-            let patientsInvestigation = await getAllPatientsInvestigation(investigation.uuid);
-            if(patientsInvestigation.length !== investigation.patientsPersonalData.length){
-                await deleteAllPatientsFromInvestigation(investigation.uuid);
-                await saveListPatients(investigation.patientsPersonalData, investigation);
-                patientsInvestigation = await getAllPatientsInvestigation(investigation.uuid);
-            }
-            investigation.patientsPersonalData = patientsInvestigation;
-        }
+        
         dispatch({
             type: types.FETCH_INVESTIGATIONS_SUCCESS,
             investigations: response.investigations,
         });
+
+        if(response.investigations.length === 1){
+            dispatch({ 
+                type: types.SELECT_INVESTIGATION,
+                selectedInvestigation :  response.investigations[0].uuid
+            });
+            fetchPatients(response.investigations[0])
+        }
+        else if(localStorage.getItem("uuidInvestigation")){
+            dispatch(selectInvestigation(localStorage.getItem("uuidInvestigation")));
+            fetchPatients(response.investigations[0])
+        }
+        
       })
       .catch((error) => {
         dispatch({ type: types.FETCH_INVESTIGATIONS_ERROR });
@@ -89,12 +91,15 @@ export function getBillablesAction(uuidInvestigation, idBillingInfo, idInsurance
             });
     };
 }
-export function selectInvestigation(idInvestigation) {
-    return async (dispatch) => {
+export function selectInvestigation(uuidInvestigation) {
+    return async (dispatch, getState) => {
         dispatch({ 
             type: types.SELECT_INVESTIGATION,
-            selectedInvestigation :  idInvestigation
+            selectedInvestigation :  uuidInvestigation
         });
+        const currentState = getState().investigations;
+        const investigation = currentState.data.find((investigation) => investigation.uuid === uuidInvestigation);
+        dispatch(fetchPatients(investigation))
   }
 }
 

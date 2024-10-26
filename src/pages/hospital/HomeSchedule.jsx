@@ -46,9 +46,9 @@ function HomeSchedule(props) {
         
     }
 
-    async function selectHospital(index){
-        await dispatch(selectInvestigation(index));
-        localStorage.setItem("indexHospital", index);
+    async function selectHospital(uuidInvestigation){
+        await dispatch(selectInvestigation(uuidInvestigation));
+        localStorage.setItem("uuidInvestigation", uuidInvestigation);
     }
     function renderCore(){
         if(props.investigations.data.find(inv => inv.shareStatus === 0)){
@@ -60,7 +60,7 @@ function HomeSchedule(props) {
             return props.investigations.data.map((inv, index) =>{
                 return(
                     <Grid item xs={12} style={{display: 'flex',justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
-                        <ButtonGrey onClick={()=>selectHospital(index)} data-testid="select-hospital" >{inv.name}</ButtonGrey>
+                        <ButtonGrey onClick={()=>selectHospital(inv.uuid)} data-testid="select-hospital" >{inv.name}</ButtonGrey>
                     </Grid>) 
             })
         }

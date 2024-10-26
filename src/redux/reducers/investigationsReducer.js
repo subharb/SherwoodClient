@@ -18,14 +18,7 @@ export default function reducer(state = initialState, action){
     let newState = { ...state};
     switch(action.type){
         case types.FETCH_INVESTIGATIONS_SUCCESS:
-            newState.data = action.investigations;    
-            if(action.investigations && action.investigations.length === 1){
-                newState.currentInvestigation = action.investigations[0];
-            }
-            else if(localStorage.getItem("indexHospital")){
-                newState.currentInvestigation = action.investigations[localStorage.getItem("indexHospital")];
-            }
-    
+            newState.data = action.investigations;       
             newState.loading = 0; 
             newState.error = null;   
             return newState;
@@ -34,7 +27,8 @@ export default function reducer(state = initialState, action){
             newState.error = null;                           
             return newState;
         case types.SELECT_INVESTIGATION:    
-            newState.currentInvestigation = newState.data[action.selectedInvestigation];
+            const indexInvestigation = newState.data.findIndex((investigation) => investigation.uuid === action.selectedInvestigation);
+            newState.currentInvestigation = newState.data[indexInvestigation];
             return newState;
         case types.UPDATE_BILLING_INFO_SUCCESS:
             newState.currentInvestigation.billingInfo = action.billingInfo;
@@ -43,6 +37,14 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.FETCH_INVESTIGATIONS_DECRYPTING_DATA:
             newState.loading = 2; 
+            newState.error = null; 
+            return newState;
+        case types.UPDATING_PATIENTS_LOADING:
+            newState.loading = 3; 
+            newState.error = null; 
+            return newState;
+        case types.FETCH_NEW_PATIENTS_SUCCESS:
+            newState.loading = 0; 
             newState.error = null; 
             return newState;
         case types.INITIALIZE_INVESTIGATIONS:

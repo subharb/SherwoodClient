@@ -2,6 +2,7 @@ import * as types from "../../constants";
 import { getAllPatientsInvestigation, saveListPatients, savePatient } from "../../db";
 import {
     addPatient as addPatientService, updatePersonalDataPatientService, getPatientsFromId,
+    getPatientsFromUpdatedDate,
 } from "../../services";
 
 export function savePatientAction(investigation, patientData) {
@@ -41,37 +42,79 @@ export function savePatientAction(investigation, patientData) {
   };
 }
 
-export function updatePatientsFromId(investigation, idPatient) {
- 
-  return async (dispatch) => {
-    dispatch({ type: types.SAVE_PATIENT_LOADING });
-
-    return getPatientsFromId(investigation.uuid, idPatient)
-        .then(async (response) => {
-            await saveListPatients(response.patients, investigation);
-            const updatedListPatients = await getAllPatientsInvestigation(investigation.uuid);
-            investigation.patientsPersonalData = updatedListPatients;
+export function fetchPatients(investigation){
+    return async (dispatch) => {
+        dispatch({ type: types.UPDATING_PATIENTS_LOADING });
+        const lastUpdatePatients = localStorage.getItem("lastUpdatePatients") ? parseInt(localStorage.getItem("lastUpdatePatients")) : 0;
+        return getPatientsFromUpdatedDate(investigation.uuid, lastUpdatePatients)
+            .then(async (response) => {
+                await saveListPatients(response.patients, investigation);
+                const updatedListPatients = await getAllPatientsInvestigation(investigation.uuid);
+                investigation.patientsPersonalData = updatedListPatients;
+                localStorage.setItem("lastUpdatePatients", new Date().toISOString());
+                dispatch({
+                    type: types.FETCH_NEW_PATIENTS_SUCCESS,
+                    patients: [...response.patients],
+                    investigation: investigation
+                });
+        })
+        .catch((error) => {
+            if(!error.status && !error.response){
+                    
             dispatch({
                 type: types.FETCH_NEW_PATIENTS_SUCCESS,
-                patients: [...response.patients],
-                investigation: investigation
+                investigation:{investigation:{investigation:{patientsPersonalData:[]}}},
+                patients: [],
             });
-      })
-      .catch((error) => {
-        if(!error.status && !error.response){
-                  
-          dispatch({
-            type: types.FETCH_NEW_PATIENTS_SUCCESS,
-            investigation:{investigation:{investigation:{patientsPersonalData:[]}}},
-            patients: [],
-          });
-        }
-        else{
-          dispatch({ type: types.SAVE_PATIENT_ERROR });
-          throw error;
-        }
-      });
-  };
+            }
+            else{
+            dispatch({ type: types.SAVE_PATIENT_ERROR });
+            throw error;
+            }
+        });
+    };
+    // for(const investigation of response.investigations){
+    //     let patientsInvestigation = await getAllPatientsInvestigation(investigation.uuid);
+    //     if(patientsInvestigation.length !== investigation.patientsPersonalData.length){
+    //         await deleteAllPatientsFromInvestigation(investigation.uuid);
+    //         await saveListPatients(investigation.patientsPersonalData, investigation);
+    //         patientsInvestigation = await getAllPatientsInvestigation(investigation.uuid);
+    //     }
+    //     investigation.patientsPersonalData = patientsInvestigation;
+    // }
+}
+
+export function updatePatientsFromId(investigation, idPatient) {
+ 
+    return async (dispatch) => {
+        dispatch({ type: types.SAVE_PATIENT_LOADING });
+
+        return getPatientsFromId(investigation.uuid, idPatient)
+            .then(async (response) => {
+                await saveListPatients(response.patients, investigation);
+                const updatedListPatients = await getAllPatientsInvestigation(investigation.uuid);
+                investigation.patientsPersonalData = updatedListPatients;
+                dispatch({
+                    type: types.FETCH_NEW_PATIENTS_SUCCESS,
+                    patients: [...response.patients],
+                    investigation: investigation
+                });
+        })
+        .catch((error) => {
+            if(!error.status && !error.response){
+                    
+            dispatch({
+                type: types.FETCH_NEW_PATIENTS_SUCCESS,
+                investigation:{investigation:{investigation:{patientsPersonalData:[]}}},
+                patients: [],
+            });
+            }
+            else{
+            dispatch({ type: types.SAVE_PATIENT_ERROR });
+            throw error;
+            }
+        });
+        };
 }
 
 export function updatePatientAction(investigation, uuidPatient, patientData) {

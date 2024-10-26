@@ -392,6 +392,22 @@ export const getPatientsFromId = datalogger((uuidInvestigation, patientId) => {
     });
 });
 
+export const getPatientsFromUpdatedDate = datalogger((uuidInvestigation, lastUpdatedPatient) => {
+    return new Promise((resolve, reject) => {
+
+        axios.get(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patients/updateddate/" + lastUpdatedPatient, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
+    });
+});
+
 export const resetPassword = datalogger((credentials) => {
     return new Promise((resolve, reject) => {
         axios

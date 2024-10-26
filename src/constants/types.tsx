@@ -291,7 +291,7 @@ export interface IPatient{
     uuid:string,
     id:number,
     personalData: IPersonalData,
-    dateCreated:Date
+    dateCreated:Date,
 }
 
 export interface IInsurance{

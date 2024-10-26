@@ -123,7 +123,7 @@ function SearchPatients(props){
         }
     }, [props.patients.loading])
 
-    if(!props.investigations.data || props.patients.loading || patientsDiagnoseLoading){
+    if(!props.investigations.data || !props.investigations.currentInvestigation || props.patients.loading || patientsDiagnoseLoading){
         return <Loader />
     }
     return(

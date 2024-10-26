@@ -91,6 +91,16 @@ const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
 }, {})
 
 function Patient(props) {
+
+    if(props.loading || !props.investigations.currentInvestigation){
+        return <Loader />
+    }
+    else{
+        return <PatientView {...props} />
+    }
+}
+
+function PatientView(props) {
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
     const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
