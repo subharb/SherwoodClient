@@ -280,12 +280,7 @@ function ShareInvestigation(props) {
             )
         }
     }
-    function removeResearcher(index){
-        const copyResearchers = [...newResearchers];
-        copyResearchers.splice(index, 1); 
-        setNewResearchers(copyResearchers);
-        console.log("hey i there")
-    }
+
     function addResearcher(researcher){
         resetModal();
         setNewResearchers(array => [...array, researcher]);
@@ -456,7 +451,7 @@ function ShareInvestigation(props) {
         setShowModal(true);
     }
 
-    if(props.investigations.loading || isLoadingShare){
+    if(props.investigations.loading || !investigation || isLoadingShare){
         return <Loader />
     }
     return (
