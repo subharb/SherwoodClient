@@ -23,6 +23,10 @@ export default function reducer(state = initialState, action){
             newState.loading = initialState.loading;
             newState.error = initialState.error;                         
             return newState;
+        case types.UPDATING_PATIENTS_LOADING:
+            newState.loading = true;
+            newState.error = initialState.error;
+            return newState;
         case types.FETCH_INVESTIGATIONS_SUCCESS:
             //Desencripto los datos de los pacientes
             tempInvestigations = {};

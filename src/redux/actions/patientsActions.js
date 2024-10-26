@@ -51,7 +51,7 @@ export function fetchPatients(investigation){
                 await saveListPatients(response.patients, investigation);
                 const updatedListPatients = await getAllPatientsInvestigation(investigation.uuid);
                 investigation.patientsPersonalData = updatedListPatients;
-                localStorage.setItem("lastUpdatePatients", new Date().toISOString());
+                localStorage.setItem("lastUpdatePatients", new Date().getTime());
                 dispatch({
                     type: types.FETCH_NEW_PATIENTS_SUCCESS,
                     patients: [...response.patients],

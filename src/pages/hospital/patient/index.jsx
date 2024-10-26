@@ -92,7 +92,8 @@ const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
 
 function Patient(props) {
 
-    if(props.loading || !props.investigations.currentInvestigation){
+    const currentInvestigation = props.investigations.currentInvestigation;
+    if(props.loading || !currentInvestigation || !props.patients.data[currentInvestigation.uuid]){
         return <Loader />
     }
     else{

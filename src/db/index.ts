@@ -88,4 +88,5 @@ export const findPatientsByNameOrSurname = async (nameOrSurname: string, uuidInv
 
 export async function clearPatientsStore(): Promise<void> {
     await db.patients.clear(); // Use Dexie's clear method to remove all entries
+    localStorage.removeItem("lastUpdatePatients");
 }
