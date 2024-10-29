@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useReducer } from 'react';
 import axios from 'axios';
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchUser } from "../services/authService";
@@ -10,7 +10,7 @@ import { FieldWrapper } from '../components/general/mini_components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgendasInvestigationAction, getDepartmentsInvestigationAction } from '../redux/actions/hospitalActions';
 import { Color } from '@mui/lab';
-import { IAgenda, IDepartment, IInsurance, IResearcher, IUnit } from '../constants/types';
+import { IAgenda, IDepartment, IInsurance, IPatient, IResearcher, IUnit } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
 import { IRequest, IService } from '../pages/hospital/Service/types';
 import { fetchProfileInfoAction } from '../redux/actions/profileActions';
@@ -24,6 +24,7 @@ import { ColourChip } from '../components/general/mini_components-ts';
 import { documentStatusToColor } from '../utils/bill';
 import { getInsurancesAction } from '../redux/actions/insuranceActions';
 import { fetchSingleSubmissionsPatientInvestigationAction, fetchSubmissionsPatientInvestigationAction } from '../redux/actions/submissionsPatientActions';
+import { fetchPatientsAction } from '../redux/actions/patientsActions';
 
 export interface SnackbarType{
     show: boolean;
@@ -781,3 +782,28 @@ const usePageVisibility = (onVisible: () => void) => {
   };
   
   export default usePageVisibility;
+
+
+  export function usePatients(uuidInvestigation:string){
+    const patients:IPatient[] = useSelector((state: any) => state.patients.data[uuidInvestigation]);
+    const loadingPatients = useSelector((state: any) => state.patients.loading);
+    const investigations = useSelector((state: any) => state.investigations);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        async function fetchPatients() {
+            if (investigations.currentInvestigation?.uuid) {
+                // Assuming you have a Redux action for fetching patients
+                await dispatch(
+                    fetchPatientsAction(investigations.currentInvestigation)
+                );
+            }
+        }
+
+        if (investigations.currentInvestigation) {
+            fetchPatients();
+        }
+    }, [investigations.currentInvestigation]);
+
+    return { patients, loadingPatients };
+}

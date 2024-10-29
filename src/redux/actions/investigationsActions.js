@@ -5,7 +5,7 @@ import {
 } from "../../services";
 import { createUpdateBillingInfoService, getBillablesService, updateBillablesService } from "../../services/billing";
 import { decryptSinglePatientData } from "../../utils";
-import { fetchPatients } from "./patientsActions";
+import { fetchPatientsAction } from "./patientsActions";
 
 export function fetchInvestigations() {
   return async (dispatch) => {
@@ -24,11 +24,11 @@ export function fetchInvestigations() {
                 type: types.SELECT_INVESTIGATION,
                 selectedInvestigation :  response.investigations[0].uuid
             });
-            fetchPatients(response.investigations[0])
+            fetchPatientsAction(response.investigations[0])
         }
         else if(localStorage.getItem("uuidInvestigation")){
             dispatch(selectInvestigation(localStorage.getItem("uuidInvestigation")));
-            fetchPatients(response.investigations[0])
+            fetchPatientsAction(response.investigations[0])
         }
         
       })
@@ -99,7 +99,7 @@ export function selectInvestigation(uuidInvestigation) {
         });
         const currentState = getState().investigations;
         const investigation = currentState.data.find((investigation) => investigation.uuid === uuidInvestigation);
-        dispatch(fetchPatients(investigation))
+        dispatch(fetchPatientsAction(investigation))
   }
 }
 

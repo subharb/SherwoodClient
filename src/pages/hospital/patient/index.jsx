@@ -16,7 +16,7 @@ import { HOSPITAL_PATIENT, HOSPITAL_PATIENT_DATACOLLECTION, HOSPITAL_PATIENT_EDI
         HOSPITAL_PATIENT_MAKE_TESTS,
         HOSPITAL_PATIENT_SECTION, HOSPITAL_PATIENT_SINGLE_SUBMISSION, HOSPITAL_PATIENT_SUBMISSION, HOSPITAL_PATIENT_TESTS } from '../../../routes/urls';
 import ShowPatientRecords from '../../../components/investigation/show/single/show_patient_records';
-import { useDepartments, useSnackBarState, useUpdateEffect } from '../../../hooks';
+import { useDepartments, usePatients, useSnackBarState, useUpdateEffect } from '../../../hooks';
 import { fetchProfileInfoAction } from '../../../redux/actions/profileActions';
 import { MEDICAL_SURVEYS, TYPE_SOCIAL_SURVEY,  TYPE_IMAGE_SURVEY, TYPE_LAB_SURVEY, TYPE_MEDICAL_SURVEY } from '../../../constants';
 import { PatientToolBar } from './toolbar';
@@ -91,7 +91,6 @@ const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
 }, {})
 
 function Patient(props) {
-
     const currentInvestigation = props.investigations.currentInvestigation;
     if(props.loading || !currentInvestigation || !props.patients.data[currentInvestigation.uuid]){
         return <Loader />
@@ -102,6 +101,7 @@ function Patient(props) {
 }
 
 function PatientView(props) {
+    const { patients } = usePatients(props.investigations.currentInvestigation.uuid);
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
     const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
@@ -161,7 +161,7 @@ function PatientView(props) {
     const typesCurrentSurvey = dataCollectionSelected ? (MEDICAL_SURVEYS.includes(dataCollectionSelected.type) ? MEDICAL_SURVEYS : [dataCollectionSelected.type]) : (parameters.hasOwnProperty("typeTest") ? (URL_TYPE[parameters["typeTest"]] ? [URL_TYPE[parameters["typeTest"]]] : MEDICAL_SURVEYS) : MEDICAL_SURVEYS);
     
     //const surveyRecords = props.patientsSubmissions.data && props.patientsSubmissions.data[uuidPatient] ? props.patientsSubmissions.data[uuidPatient] : [];
-    const patient = props.investigations.data && props.patients.data ? props.patients.data[props.investigations.currentInvestigation.uuid].find(pat => pat.uuid === uuidPatient) : null
+    const patient = patients.find(pat => pat.uuid === uuidPatient);
     const staysPatient = props.hospital.data.stays && props.hospital.data.stays[uuidPatient] ? props.hospital.data.stays[uuidPatient] : [];
     const typeSurveySelected = typesCurrentSurvey.length === 1 ? typesCurrentSurvey[0] : dataCollectionSelected ? dataCollectionSelected.type : TYPE_MEDICAL_SURVEY;
     const categorySurveySelected = dataCollectionSelected ? dataCollectionSelected.category : null;

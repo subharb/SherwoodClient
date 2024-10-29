@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { Grid, IconButton, Snackbar, Typography } from '@mui/material';
 import Modal from '../../../components/general/modal';
-import { useSnackBarState } from '../../../hooks';
+import { usePatients, useSnackBarState } from '../../../hooks';
 import { Alert } from '@mui/material';
 import { ButtonAdd, TypographyStyled } from '../../../components/general/mini_components';
 import { IPatient, ISurvey, SnackbarType } from '../../../constants/types';
@@ -83,7 +83,8 @@ export function paidStatusToColor(type:BillStatus){
     }
 }
 
-const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
+const BillingRedux: React.FC<PropsRedux> = ({ investigations }) => {
+    
     const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
     const [bills, setBills] = useState<Bill[]>([]);
     const [loading, setLoading] = useState(false);
@@ -235,7 +236,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
 
     if (investigation) {
         const surveyAdditionalInfo:ISurvey | undefined = investigation.surveys.find((survey: any) => survey.type === TYPE_ADDITIONAL_INFO_SURVEY);
-        return <BillingLocalized key={uuidDocument} patients={patients.data[investigation.uuid]} withDiscount={hasDiscounts}
+        return <BillingLocalized key={uuidDocument} withDiscount={hasDiscounts}
                     uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
                     personalFields={investigation.personalFields}
                     billingInfo={investigation.billingInfo} uuidDocument={uuidDocument}
@@ -256,8 +257,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
 
 const mapStateToProps = (state: any) => {
     return {
-        investigations: state.investigations,
-        patients: state.patients,
+        investigations: state.investigations
     }
 }
 
@@ -299,6 +299,7 @@ export enum BillActions {
 
 
 const Billing: React.FC<Props> = (props) => {
+    const { patients } = usePatients(props.uuidInvestigation);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const [showModal, setShowModal] = useState(false);
     const [actionBill, setActionBill] = useState<BillActions>(props.section);
@@ -361,7 +362,7 @@ const Billing: React.FC<Props> = (props) => {
 
         if (tempBill) {
             
-            const patient = props.patients.find((patient) => patient.uuid === tempBill.uuidPatient);
+            const patient = patients.find((patient) => patient.uuid === tempBill.uuidPatient);
             if (patient) {
                 setActionBill(action);
                 setShowModal(true);
@@ -399,7 +400,7 @@ const Billing: React.FC<Props> = (props) => {
                         onBillingInfoSuccesfullyUpdated={(type: BillItemModes) => onBillingInfoSuccesfullyUpdated(type)} />
         }
         else if(props.section === BillActions.PATIENT_BILLS && props.uuidPatient){
-            const currentPatient = props.patients.find((patient) => patient.uuid === props.uuidPatient);
+            const currentPatient = patients.find((patient) => patient.uuid === props.uuidPatient);
             return(<>
                         { renderBillForm() }
                         <BillsPatient patient={currentPatient} uuidPatient={props.uuidPatient} bills={props.bills} 
@@ -408,7 +409,7 @@ const Billing: React.FC<Props> = (props) => {
             </>)
         }
         else if(props.section === BillActions.VIEW && props.uuidDocument && currentBill){
-            const currentPatient = props.patients.find((patient) => patient.uuid === currentBill.uuidPatient);
+            const currentPatient = patients.find((patient) => patient.uuid === currentBill.uuidPatient);
             return (<>
                     { renderBillForm() }
                     <BillView bill={currentBill} billStatus={currentBill.status} billType={currentBill.type} 
@@ -425,7 +426,7 @@ const Billing: React.FC<Props> = (props) => {
         else {
             if (props.billingInfo) {
                 if(actionBill === BillActions.CREATE){
-                    return <BillCreate patients={props.patients} personalFields={props.personalFields} currency={props.billingInfo.currency} 
+                    return <BillCreate patients={patients} personalFields={props.personalFields} currency={props.billingInfo.currency} 
                                 uuidInvestigation={props.uuidInvestigation} canCreateBugdet={Boolean(props.billingInfo.params.budgets)}
                                 idBillingInfo={props.billingInfo.id} languageCode={props.activeLanguage.code} withDiscount={props.withDiscount} 
                                 onCreateBill={(bill: Bill) => props.onCreateOrUpdateBill(bill, TypeBillItemUpdate.BillItems)}
@@ -435,7 +436,7 @@ const Billing: React.FC<Props> = (props) => {
                 return (
                     <>
                         { renderBillForm() }
-                        <BillsTable hasBudgets={Boolean(props.billingInfo.params.budgets)} patients={props.patients} currency={props.billingInfo.currency} 
+                        <BillsTable hasBudgets={Boolean(props.billingInfo.params.budgets)} patients={patients} currency={props.billingInfo.currency} 
                             bills={props.bills} languageCode={props.activeLanguage.code} canCreateBugdet={Boolean(props.billingInfo.params.budgets)}
                                 makeActionBillCallBack={makeActionBill}/>
                     </>
@@ -446,7 +447,7 @@ const Billing: React.FC<Props> = (props) => {
     function renderBillForm() {
         switch (actionBill) {
             case BillActions.PREVIEW:
-                const currentPatient = props.patients.find((patient) => patient.uuid === currentBill!.uuidPatient);
+                const currentPatient = patients.find((patient) => patient.uuid === currentBill!.uuidPatient);
                 return (
                     <Modal key="modal" fullWidth medium open={showModal} title={!currentBill ? "Create bill" : ""} closeModal={() => onCloseModal()}>
                         <DocumentPDF size='A4' name={currentBill!.id.toString()}>

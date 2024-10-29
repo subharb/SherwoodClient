@@ -42,7 +42,7 @@ export function savePatientAction(investigation, patientData) {
   };
 }
 
-export function fetchPatients(investigation){
+export function fetchPatientsAction(investigation){
     return async (dispatch) => {
         dispatch({ type: types.UPDATING_PATIENTS_LOADING });
         const lastUpdatePatients = localStorage.getItem("lastUpdatePatients") ? parseInt(localStorage.getItem("lastUpdatePatients")) : 0;
