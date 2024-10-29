@@ -1203,7 +1203,9 @@
                 "title" : ["Imaging", "Pruebas de Imagen", "Radiologie"],
                 "category" : {
                     "ultrasound" : ["Ultrasound", "Ecografía", "Échographie"],
-                    "x-ray" : ["X-rays", "Radiografías", "Radiographies"]
+                    "x-ray" : ["X-rays", "Radiografías", "Radiographies"],
+                    "funcional_test" : ["Functional tests", "Pruebas funcionales", "Tests fonctionnels"],
+                    "endoscopy" : ["Endoscopy", "Endoscopia", "Endoscopie"]
                 }
             },
             "other" : {
