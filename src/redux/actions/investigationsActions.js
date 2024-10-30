@@ -28,7 +28,8 @@ export function fetchInvestigations() {
         }
         else if(localStorage.getItem("uuidInvestigation")){
             dispatch(selectInvestigation(localStorage.getItem("uuidInvestigation")));
-            fetchPatientsAction(response.investigations[0])
+            const investigation = response.investigations.find((investigation) => investigation.uuid === localStorage.getItem("uuidInvestigation"));
+            fetchPatientsAction(investigation)
         }
         
       })

@@ -29,13 +29,13 @@ export default function reducer(state = initialState, action){
             return newState;
         case types.FETCH_INVESTIGATIONS_SUCCESS:
             //Desencripto los datos de los pacientes
-            tempInvestigations = {};
-            for(const investigation of action.investigations){
-                tempInvestigations[investigation.uuid] = investigation.patientsPersonalData;
-            }
+            // tempInvestigations = {};
+            // for(const investigation of action.investigations){
+            //     tempInvestigations[investigation.uuid] = investigation.patientsPersonalData;
+            // }
 
-            newState.data = tempInvestigations;                            
-            return newState;
+            // newState.data = tempInvestigations;                            
+            // return newState;
         case types.SAVE_PATIENT_LOADING:
             newState.loading = true;
             newState.error = initialState.error;

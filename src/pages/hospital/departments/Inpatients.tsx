@@ -49,7 +49,7 @@ const InpatientsRedux:React.FC<PropsRedux> = ({investigations, loading, patients
         await(dispatch(transferPatientAction(investigations.currentInvestigation.uuid, uuidCurrentDepartment, uuidCurrentWard, idCurrentBed, uuidDepartmentDestination, uuidWardDestination, uuidPatient, idTransferBed)))
     }
 
-    if(loading || !departments){
+    if(loading || !departments || !investigation || patients.loading){
         return <Loader/>
     }
 
