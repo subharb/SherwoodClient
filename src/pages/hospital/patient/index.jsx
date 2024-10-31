@@ -91,17 +91,19 @@ const URL_TYPE = Object.keys(TYPE_URL).reduce((newDict, key) =>{
 }, {})
 
 function Patient(props) {
+    let { uuidPatient } = useParams();
     const currentInvestigation = props.investigations.currentInvestigation;
-    if(props.loading || !currentInvestigation || !props.patients.data[currentInvestigation.uuid]){
+    if(props.loading || !currentInvestigation || !props.patients.data || !props.patients.data[currentInvestigation.uuid]){
         return <Loader />
     }
     else{
-        return <PatientView {...props} />
+        return <PatientView key={uuidPatient} {...props} />
     }
 }
 
 function PatientView(props) {
-    const { patients } = usePatients(props.investigations.currentInvestigation.uuid);
+    //const { patients } = usePatients(props.investigations.currentInvestigation.uuid);
+    const patients = props.patients.data[props.investigations.currentInvestigation.uuid];
     const [loading, setLoading] = useState(props.initialState ? props.initialState.loading : false)
     const [error, setError] = useState(props.initialState ? props.initialState.error : false)
     const [saved, setSaved] = useState(props.initialState ? props.initialState.saved : false);
