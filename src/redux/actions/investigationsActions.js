@@ -20,16 +20,13 @@ export function fetchInvestigations() {
         });
 
         if(response.investigations.length === 1){
-            dispatch({ 
-                type: types.SELECT_INVESTIGATION,
-                selectedInvestigation :  response.investigations[0].uuid
-            });
-            fetchPatientsAction(response.investigations[0])
+            dispatch(selectInvestigation(response.investigations[0].uuid));
         }
         else if(localStorage.getItem("uuidInvestigation")){
-            dispatch(selectInvestigation(localStorage.getItem("uuidInvestigation")));
             const investigation = response.investigations.find((investigation) => investigation.uuid === localStorage.getItem("uuidInvestigation"));
-            fetchPatientsAction(investigation)
+            if(investigation){
+                dispatch(selectInvestigation(investigation.uuid));
+            }
         }
         
       })
