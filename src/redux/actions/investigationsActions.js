@@ -19,15 +19,20 @@ export function fetchInvestigations() {
             investigations: response.investigations,
         });
 
-        if(response.investigations.length === 1){
-            dispatch(selectInvestigation(response.investigations[0].uuid));
-        }
-        else if(localStorage.getItem("uuidInvestigation")){
-            const investigation = response.investigations.find((investigation) => investigation.uuid === localStorage.getItem("uuidInvestigation"));
-            if(investigation){
-                dispatch(selectInvestigation(investigation.uuid));
+        const pendingApprovalInvestigation = response.investigations.find((investigation) => investigation.shareStatus === 0);
+
+        if(!pendingApprovalInvestigation){
+            if(response.investigations.length === 1){
+                dispatch(selectInvestigation(response.investigations[0].uuid));
+            }
+            else if(localStorage.getItem("uuidInvestigation")){
+                const investigation = response.investigations.find((investigation) => investigation.uuid === localStorage.getItem("uuidInvestigation"));
+                if(investigation){
+                    dispatch(selectInvestigation(investigation.uuid));
+                }
             }
         }
+        
         
       })
       .catch((error) => {

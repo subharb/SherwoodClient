@@ -40,9 +40,11 @@ export const eventStyleGetter = (event) => {
     const style = {
       backgroundColor,
       borderRadius: '5px',
-      border: 'none',
+      border: '1px solid white',
       color: 'white',
       display: 'block',
+      width: '20%!important', 
+      marginLeft: '10px',
     };
 
     return {
