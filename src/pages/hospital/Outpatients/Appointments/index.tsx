@@ -114,7 +114,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
     async function getAppoinmentsDate(uuidAgendas:string, date:Date, appointmentsExt:IAppointment[]){
         setLoadingAppointments(true);
         try {
-            const response = await getAppoinmentsDateService(uuidInvestigation, uuidAgendas, date);
+            const response = await getAppoinmentsDateService(uuidInvestigation, uuidAgendas, date, true);
             appointmentsExt.push(...response.appointments); // Modify appointmentsExt directly
             if (callbackAppointments) {
                 callbackAppointments(response.appointments);

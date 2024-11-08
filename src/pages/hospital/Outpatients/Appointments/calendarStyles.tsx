@@ -12,6 +12,7 @@ interface MyEvent {
     end: Date;
     reason?: string;
     notes?: string;
+    overlapCount?:number
   }
 
 export const eventStyleGetter = (event) => {
@@ -31,6 +32,9 @@ export const eventStyleGetter = (event) => {
             break;
         case RequestStatus.EXPIRED:
             backgroundColor = '#b22222'; // Tomato
+            break;
+        case RequestStatus.CANCELED:
+            backgroundColor = 'gold'; // Yellow
             break;
         default:
             backgroundColor = '#d3d3d3'; // LightGray for default/other events
