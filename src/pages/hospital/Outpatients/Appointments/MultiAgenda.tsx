@@ -11,7 +11,6 @@ import moment from 'moment';
 import { turnsAgendaDates } from '../../../../utils/agenda';
 import { Translate } from 'react-localize-redux';
 import { CustomEvent, eventStyleGetter } from './calendarStyles';
-import { render } from '@testing-library/react';
 import { RequestStatus } from '../../Service/types';
 import { HOSPITAL_PATIENT } from '../../../../routes/urls';
 import NewAppointment from './NewAppointment';
@@ -37,7 +36,7 @@ export interface MultiAgendaProps {
     extraForm? : number,
     canCreateAppointments: boolean,
     uuidInvestigation: string,
-    cancelCallback: (uuidAgenda:string) => void,
+    cancelCallback: (uuidAgenda:string, byUser:boolean) => void,
     showUpCallback: (uuidAgenda:string) => void,
     callbackSetSnackbar: (showSnackbar:SnackbarType) => void;
     appointmentCreatedCallback: (appointment:IAppointment) => void;
@@ -135,9 +134,9 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
         setAppointment(appointment);
     }
 
-    function cancelAppointment(){
+    function cancelAppointment(byUser:boolean){
         if(appointment){
-            cancelCallback(appointment.uuid);
+            cancelCallback(appointment.uuid, byUser);
         }
     }
 
@@ -157,7 +156,7 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                 return (
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <Button onClick={cancelAppointment}>
+                            <Button onClick={() => cancelAppointment(false)}>
                                 <IconGenerator type="cancel_appointment" size="large" />
                             </Button>
                             <Typography variant="body1" component="span" gutterBottom>
@@ -180,28 +179,58 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                                 <Translate id="pages.hospital.outpatients.calendar.modal.new_appointment.title" />
                             </Typography>             
                         </Grid>
+                        <Grid item xs={12}>
+                            <Button onClick={() => cancelAppointment(true)}>
+                                <IconGenerator type="cancel_appointment_by_user" size="large" />
+                            </Button>
+                            <Typography variant="body1" component="span" gutterBottom>
+                                <Translate id="pages.hospital.outpatients.calendar.modal.cancel_appoinment_by_user" />
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                );
+            case RequestStatus.CANCELED_BY_USER:
+                case RequestStatus.PENDING_APPROVAL:
+                return (
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Button onClick={() => cancelAppointment(false)}>
+                                <IconGenerator type="cancel_appointment" size="large" />
+                            </Button>
+                            <Typography variant="body1" component="span" gutterBottom>
+                                <Translate id="pages.hospital.outpatients.calendar.modal.cancel_appoinment" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button onClick={sheduleNewAppointment}>
+                                <IconGenerator color="black" type="outpatients" size="large" />
+                            </Button>     
+                            <Typography variant="body1" component="span" gutterBottom>
+                                <Translate id="pages.hospital.outpatients.calendar.modal.new_appointment.title" />
+                            </Typography>             
+                        </Grid>
                     </Grid>
                 );
             case RequestStatus.PENDING_PAYMENT:
                 return (
                     <>
                     <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                    <Typography variant="body1" component="p" >
-                        <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.pending_payment.message" />
-                    </Typography>
+                        <Typography variant="body1" component="p" >
+                            <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.pending_payment.message" />
+                        </Typography>
                     </Grid>
                     <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                    <Typography component="p" variant="body1" >
-                    <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.pending_payment.message_2" />
-                    <Button onClick={() => {
-                        const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", appointment!.patient.uuid)
-                        console.log("Next url", nextUrl);
-                        //history.push(nextUrl);
-                        window.open(nextUrl, '_blank');
-                    }}>
-                        <IconGenerator type="view" size="large" />
-                    </Button>
-                    </Typography>
+                        <Typography component="p" variant="body1" >
+                        <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.pending_payment.message_2" />
+                        <Button onClick={() => {
+                            const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", appointment!.patient.uuid)
+                            console.log("Next url", nextUrl);
+                            //history.push(nextUrl);
+                            window.open(nextUrl, '_blank');
+                        }}>
+                            <IconGenerator type="view" size="large" />
+                        </Button>
+                        </Typography>
                     </Grid>
                     </>
                 ); 

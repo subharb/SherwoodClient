@@ -942,6 +942,7 @@
                             "title" : ["New appointment", "Nueva cita", "Nouveau rendez-vous"]
                         },
                         "cancel_appoinment" : ["Cancel appointment", "Cancelar cita", "Annuler le rendez-vous"],
+                        "cancel_appoinment_by_user" : ["Cancel appointment(excused)", "Cancelar cita(justificada)", "Annuler le rendez-vous(excusé)"],
                         "check_in_patient" : ["Check in patient", "Check in paciente", "Check in du patient"]
                         
                     },

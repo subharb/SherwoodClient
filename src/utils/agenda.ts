@@ -60,3 +60,28 @@ export function errorCodesCreateAppointment(error:number){
     }
     return message;
 }
+
+export function requestAppointmentStatusToColor(requestStatus:RequestStatus){
+    let color = '';
+    switch (requestStatus) {
+        case RequestStatus.ACCEPTED:
+            color = '#32cd32'; // LimeGreen
+            break;
+        case RequestStatus.PENDING_PAYMENT:
+            color = '#ff7f50'; // Coral
+            break;
+        case RequestStatus.PENDING_APPROVAL:
+            color = '#1e90ff'; // DodgerBlue
+            break;
+        case RequestStatus.EXPIRED:
+            color = '#b22222'; // Tomato
+            break;
+        case RequestStatus.CANCELED_BY_USER:
+            color = 'gold'; // Yellow
+            break;
+        default:
+            color = '#d3d3d3'; // LightGray for default/other events
+            break;
+    }
+    return color;
+}

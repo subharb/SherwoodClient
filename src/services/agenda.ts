@@ -271,10 +271,10 @@ export function getAppoinmentsDateService(uuidInvestigation: string, uuidAgenda:
     });
 }
 
-export function cancelAppointmentService(uuidInvestigation: string, uuidAppointment:string): Promise<{ status: number, appointments: IAppointment[] }> {
+export function cancelAppointmentService(uuidInvestigation: string, uuidAppointment:string, byUser:boolean): Promise<{ status: number, appointments: IAppointment[] }> {
     return new Promise((resolve, reject) => {
         axios
-            .put(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/"+uuidAppointment+"/cancel", {},{ headers: { "Authorization": localStorage.getItem("jwt") } })
+            .put(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/"+uuidAppointment+"/cancel", { byUser },{ headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

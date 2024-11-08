@@ -68,7 +68,9 @@ export const IconGenerator = withTheme((props) => {
         case "appointment":
             return <Today style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />
         case "cancel_appointment":
-            return <EventBusyIcon style={{color:"red"}} fontSize={props.size ? props.size : "small"}  />               
+            return <EventBusyIcon style={{color:"red"}} fontSize={props.size ? props.size : "small"}  />    
+        case "cancel_appointment_by_user":
+            return <EventBusyIcon style={{color:"gold"}} fontSize={props.size ? props.size : "small"}  />               
         case "undo":
             return <UndoIcon style={{color:"#000"}} fontSize={props.size ? props.size : "small"}  />    
         case "settings":

@@ -6,6 +6,7 @@ import { AppointmentsDate } from './AppointmentsDate';
 import MultiAgenda from './MultiAgenda';
 import { set } from 'lodash';
 import { errorCodesCreateAppointment } from '../../../../utils/agenda';
+import { RequestStatus } from '../../Service/types';
 
 interface AppointmentsProps {
     uuidInvestigation: string;
@@ -57,13 +58,16 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
     function callbackResetModal(){
         resetModal();
     }
-    function cancelAppointment(uuidAppointment:string){
+    function cancelAppointment(uuidAppointment:string, byUser:boolean = false){
         setLoadingAppointments(true);
-        cancelAppointmentService(uuidInvestigation, uuidAppointment)
+        cancelAppointmentService(uuidInvestigation, uuidAppointment, byUser)
             .then(response => {
                 const indexAppointment = appointments.findIndex((appointment) => appointment.uuid === uuidAppointment);
-                if(indexAppointment !== -1){
+                if(!byUser){
                     appointments.splice(indexAppointment, 1);
+                }
+                else{
+                    appointments[indexAppointment].requestAppointment.status = RequestStatus.CANCELED_BY_USER;
                 }
                 setShowSnackbar({show:true, message:"pages.hospital.outpatients.cancel_success", severity:"success"});
                 setLoadingAppointments(false);

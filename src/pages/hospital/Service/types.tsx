@@ -34,6 +34,7 @@ export enum RequestStatus {
     IN_PROGRESS = 8,
     INCOMPLETE = 9,
     INCOMPLETE_ACCEPTED = 10, //Pensada para farmacia
+    CANCELED_BY_USER = 11,
 }
 
 export enum BillStatus {

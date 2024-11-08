@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 import { Typography } from "@mui/material";
 import { Done, EventBusy, MoneyOff } from "@mui/icons-material";
 import { func } from "prop-types";
+import { requestAppointmentStatusToColor } from "../../../../utils/agenda";
+import { ColourChip } from "../../../../components/general/mini_components-ts";
 
 interface MyEvent {
     title: string;
@@ -17,35 +19,16 @@ interface MyEvent {
 
 export const eventStyleGetter = (event) => {
     
-    let backgroundColor = '';
+    const backgroundColor = requestAppointmentStatusToColor(event.type);
 
     // Set color based on event type or other criteria
-    switch (event.type) {
-        case RequestStatus.ACCEPTED:
-            backgroundColor = '#32cd32'; // LimeGreen
-            break;
-        case RequestStatus.PENDING_PAYMENT:
-            backgroundColor = '#ff7f50'; // Coral
-            break;
-        case RequestStatus.PENDING_APPROVAL:
-            backgroundColor = '#1e90ff'; // DodgerBlue
-            break;
-        case RequestStatus.EXPIRED:
-            backgroundColor = '#b22222'; // Tomato
-            break;
-        case RequestStatus.CANCELED:
-            backgroundColor = 'gold'; // Yellow
-            break;
-        default:
-            backgroundColor = '#d3d3d3'; // LightGray for default/other events
-            break;
-    }
+    
 
     const style = {
-      backgroundColor,
+      backgroundColor: backgroundColor,
       borderRadius: '5px',
       border: '1px solid white',
-      color: 'white',
+      color: 'black',
       display: 'block',
       width: '20%!important', 
       marginLeft: '10px',
@@ -87,6 +70,9 @@ export const CustomEvent: React.FC<EventProps<MyEvent>> = ({event}) => {
             case RequestStatus.EXPIRED:
                 icon = <EventBusy fontSize="small" />;
                 break;
+            case RequestStatus.CANCELED_BY_USER:
+                icon = <EventBusy fontSize="small" />;
+                break;
             default:
                 return null;
         }
@@ -99,7 +85,10 @@ export const CustomEvent: React.FC<EventProps<MyEvent>> = ({event}) => {
                 padding: '2px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                fontWeight: 'bold',
+                color: 'white',
+                background: requestAppointmentStatusToColor(type)
             }}>
                 {icon}
             </div>
