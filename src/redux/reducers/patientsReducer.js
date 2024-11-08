@@ -30,21 +30,6 @@ export default function reducer(state = initialState, action){
         case types.FETCH_INVESTIGATIONS_SUCCESS:
         case types.SELECT_INVESTIGATION:
             //Desencripto los datos de los pacientes
-<<<<<<< HEAD
-            tempInvestigations = {};
-            if(localStorage.getItem("indexHospital")){
-                const investigation = action.investigations[localStorage.getItem("indexHospital")];
-                let tempDecryptedData = [];
-                for(const patient of investigation.patientsPersonalData){
-                    patient.personalData = patient.personalData ? decryptSinglePatientData(patient.personalData, investigation) : null;
-                    tempDecryptedData.push(patient);
-                }
-                tempInvestigations[investigation.uuid] = tempDecryptedData;
-                newState.data = tempInvestigations;                            
-                return newState;
-            }
-            return newState;
-=======
             // tempInvestigations = {};
             // for(const investigation of action.investigations){
             //     tempInvestigations[investigation.uuid] = investigation.patientsPersonalData;
@@ -52,7 +37,6 @@ export default function reducer(state = initialState, action){
 
             // newState.data = tempInvestigations;                            
             // return newState;
->>>>>>> master
         case types.SAVE_PATIENT_LOADING:
             newState.loading = true;
             newState.error = initialState.error;

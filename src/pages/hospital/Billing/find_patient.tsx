@@ -10,11 +10,8 @@ import { findPatientsByNameOrSurname } from "../../../db";
 interface Props{
     personalFields:any[],
     codeLanguage:string,
-<<<<<<< HEAD
     insurances: IInsurance[],
-=======
     uuidInvestigation:string,
->>>>>>> master
     onPatientSelected:(idPatient:number) => void,
     selectingPatientCallBack?:(value:boolean) => void
 }
