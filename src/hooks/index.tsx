@@ -783,7 +783,7 @@ const usePageVisibility = (onVisible: () => void) => {
 
 
   export function usePatients(uuidInvestigation:string){
-    const patients:IPatient[] = useSelector((state: any) => state.patients.data[uuidInvestigation]);
+    const patients:IPatient[] = useSelector((state: any) => state.patients.data ? state.patients.data[uuidInvestigation] : null) ;
     const loadingPatients = useSelector((state: any) => state.patients.loading);
     const investigations = useSelector((state: any) => state.investigations);
     const dispatch = useDispatch();

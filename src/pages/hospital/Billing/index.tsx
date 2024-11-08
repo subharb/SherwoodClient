@@ -33,6 +33,7 @@ import { green, red } from '@mui/material/colors';
 import { Done, Edit, Lock, MoneyOff } from '@mui/icons-material';
 import { BillStatus } from '../Service/types';
 import BillPDF from './BillPDF';
+import { patients } from '../../../stories/Outpatients/example_data';
 
 interface PropsRedux {
     investigations: any,
@@ -83,7 +84,7 @@ export function paidStatusToColor(type:BillStatus){
     }
 }
 
-const BillingRedux: React.FC<PropsRedux> = ({ investigations }) => {
+const BillingRedux: React.FC<PropsRedux> = ({ investigations, patients }) => {
     
     const investigation = investigations.data && investigations.currentInvestigation ? investigations.currentInvestigation : null;
     const [bills, setBills] = useState<Bill[]>([]);
@@ -234,7 +235,7 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations }) => {
 
         }, [action, investigation])
 
-    if (investigation) {
+    if (investigation && patients) {
         const surveyAdditionalInfo:ISurvey | undefined = investigation.surveys.find((survey: any) => survey.type === TYPE_ADDITIONAL_INFO_SURVEY);
         return <BillingLocalized key={uuidDocument} withDiscount={hasDiscounts}
                     uuidInvestigation={investigation.uuid as string} hospitalName={investigation.name}
@@ -258,7 +259,8 @@ const BillingRedux: React.FC<PropsRedux> = ({ investigations }) => {
 
 const mapStateToProps = (state: any) => {
     return {
-        investigations: state.investigations
+        investigations: state.investigations,
+        patients : state.investigations.currentInvestigation && state.patients.data ? state.patients.data[state.investigations.currentInvestigation.uuid] : null
     }
 }
 
