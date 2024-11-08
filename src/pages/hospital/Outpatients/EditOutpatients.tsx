@@ -493,17 +493,17 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     shortLabel:"pages.hospital.outpatients.agenda.service",
                     validation : "notEmpty",
                 },
-                "idServiceInvestigationFirstVisit":{
+                "listServicesInvestigation":{
                     required : true,
-                    type:"select",
-                    name:"idServiceInvestigationFirstVisit",
+                    type:"multioption",
+                    name:"listServicesInvestigation",
                     label:"pages.hospital.outpatients.agenda.service",
                     shortLabel:"pages.hospital.outpatients.agenda.service",
                     validation : "notEmpty",
                     options:services.map((service) => {
                         return {
                             label: service.service.name +" - " +service.description,
-                            value: service.id
+                            value: service.id.toString()
                         }
                     })
                 }
@@ -553,6 +553,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         agendaPost.turn = [turnStart, turnEnd];
         setInitDataAgenda(agenda);
         agendaPost.daysWeek = agenda.daysWeek.map((day:{multioption : string}) => day.multioption);
+        agendaPost.listServicesInvestigation = agenda.listServicesInvestigation.map((day:{multioption : string}) => day.multioption);
         if(agenda.uuid){
             updateAgendaCallback(agendaPost);
         }
@@ -584,7 +585,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     turnStart: new Date(0,0,0, turnStart[0], turnStart[1]), turnEnd: new Date(0,0,0, turnEnd[0], turnEnd[1]),
                     principalResearcher: agendaSelected.principalResearcher?.uuid,
                     box: box!.uuid as string,
-                    idServiceInvestigationFirstVisit : agendaSelected.serviceInvestigationFirstVisit.id,
+                    listServicesInvestigation : agendaSelected.listServicesInvestigation.map((serviceInvestigation) => {return {"multioption" : serviceInvestigation.id.toString()}}),
                     otherStaff:[]
                 };
             setInitDataAgenda(agendaEdit);
@@ -623,7 +624,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
         }
     }
     function deleteService(idService:number){
-        const agendaWithService = agendas?.find((agenda) => agenda.serviceInvestigationFirstVisit.id === idService);
+        const agendaWithService = agendas?.find((agenda) => agenda.listServicesInvestigation.find((serv) => serv.id === idService));
         if(agendaWithService){
             setModalInfo({showModal: true, type:"error_service_agenda"});
         }
@@ -642,7 +643,6 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             const reseachersDepartment = researchers.filter((researcher) => researcher.units.filter((unit) => unit.department.uuid === uuidDepartmentBox).length > 0);
             setResearchersDepartment(reseachersDepartment);
             setInitDataAgenda({department: boxSelected.department.uuid, otherStaff:[], box:boxSelected.uuid});
-            setModalInfo({showModal: true, type:"agenda"});
         }
         else if(boxSelected){
             setInitDataAgenda({otherStaff:[], box:boxSelected.uuid});
@@ -676,22 +676,27 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                     }
                     {
                         deletedService && modalInfo.type === "delete_service_confirm" && 
-                        <>
-                            <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.DELETE_SERVICE" /></Typography>
-                            { deletedService.description }
-                            <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                        <Grid container>
+                            <Grid xs={12} style={{paddingTop:'1rem'}}>
+                                <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.DELETE_SERVICE" /></Typography>
+                                    { deletedService.description }
+                            </Grid>
+                            <Grid xs={12} style={{paddingTop:'1rem'}}>
                                 <ButtonCancel onClick={resetModal} data-testid="cancel-modal" color="primary" spaceright={1}>
                                     <Translate id="general.cancel" />
                                 </ButtonCancel>
+                                &nbsp;
                                 <ButtonContinue onClick={ () => callbackDeleteService(deletedService.id)} data-testid="continue-modal" color="green">
                                     <Translate id="general.continue" />
                                 </ButtonContinue>
                             </Grid>
-                        </>
+                        </Grid>
                     }
                     {
                         modalInfo.type === "error_service_agenda" && 
-                        <Typography variant="body1"><Translate id="pages.hospital.outpatients.confirm.error_service_agenda" /></Typography>
+                        <Typography variant="body1">
+                            <Translate id="pages.hospital.outpatients.confirm.error_service_agenda" />
+                        </Typography>
                     } 
                     {
                         modalInfo.type === "agenda_error_appointments" && 
@@ -731,18 +736,21 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
                         </Grid>
                         </>
                     } 
-                    
                     </>      
                 </Modal>
             )
         }
         return null;
     }
+    function addService(){
+        setInitDataService(initialServiceInfo);
+        setModalInfo({showModal: true, type:"service"})
+    }
     function renderServices(){
         if(services.length > 0){
             return <>
                 <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                 <ButtonAdd onClick={() => setModalInfo({showModal: true, type:"service"})} />
+                 <ButtonAdd onClick={addService} />
                     {
                         services.map((service) => {
                             return (
@@ -812,7 +820,7 @@ const EditOutpatientsLocalized: React.FC<EditPropsComponent> = ({ boxes, agendas
             })
             return (
                 
-                <TabsSherwood name='Outpatients' style={{  color: "white" }} labels={[translate("pages.hospital.outpatients.sections.boxes_and_agendas").toString(), translate("pages.hospital.outpatients.sections.prices").toString()]} >
+                <TabsSherwood name='Outpatients' style={{ color: "white" }} labels={[translate("pages.hospital.outpatients.sections.boxes_and_agendas").toString(), translate("pages.hospital.outpatients.sections.prices").toString()]} >
                     <>
                         <Translate id="pages.hospital.outpatients.box.add_box" />: <ButtonAdd onClick={()=>setModalInfo({showModal:true, type:"box"})} />
                         <Accordion2Levels orderedMainElements={elements} deleteMainElementCallBack={(uuid) => deleteBox(uuid)} 

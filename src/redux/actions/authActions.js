@@ -1,4 +1,5 @@
 import * as types from "../../constants";
+import { clearPatientsStore } from "../../db";
 import {
   signIn as authSignIn,
   signUp as authSignUp,
@@ -47,6 +48,7 @@ export function signUp(credentials) {
 
 export function signOut() {
   return async (dispatch) => {
+    await clearPatientsStore();
     dispatch({
       type: types.AUTH_SIGN_OUT,
     });

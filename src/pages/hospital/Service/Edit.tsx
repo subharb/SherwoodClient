@@ -7,7 +7,7 @@ import { LocalizeContextProps, Translate, withLocalize } from 'react-localize-re
 import { EnhancedTable } from '../../../components/general/EnhancedTable';
 import Form from '../../../components/general/form';
 import FormTSFunc from '../../../components/general/formTSFunction';
-import { ButtonAccept, ButtonAdd, ButtonCancel } from '../../../components/general/mini_components';
+import { ButtonAccept, ButtonAdd, ButtonCancel, ButtonOk } from '../../../components/general/mini_components';
 import Modal from '../../../components/general/modal';
 import Loader from '../../../components/Loader';
 import { ISurvey } from '../../../constants/types';
@@ -292,7 +292,7 @@ const EditServicesComponent: React.FC<EditServicesLocalizedProps> = ({ serviceTy
             <Modal key="modal" medium
                 open={showModal} title={<Translate id={`pages.hospital.services.edit.${addingService ? "new_service" : "delete_service"}.title`} />}
                 closeModal={() => setShowModal(false)}>
-                <>
+                <Grid container>
                     {
                         loading &&
                         <Loader />
@@ -319,12 +319,12 @@ const EditServicesComponent: React.FC<EditServicesLocalizedProps> = ({ serviceTy
                             <Typography variant="body2" style={{fontWeight:'bold'}} gutterBottom><Translate id="pages.hospital.services.edit.delete_service.description" /></Typography>
                             <Translate id={`pages.hospital.services.tests.${serviceTypeToTranslation(serviceType)}.${selectedService.code as string}`} />
                             <div style={{paddingTop:'1rem'}}>
-                                <ButtonAccept onClick={confirmDelete}>Delete</ButtonAccept>
+                                <ButtonOk onClick={confirmDelete}>Delete</ButtonOk>
                                 <ButtonCancel style={{marginLeft:'1rem'}} onClick={cancel}>Cancel</ButtonCancel>
                             </div>
                         </>
                     }
-                </>
+                </Grid>
             </Modal>
             <Snackbar
                 anchorOrigin={{

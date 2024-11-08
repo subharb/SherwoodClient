@@ -36,6 +36,7 @@ function SearchPatients(props){
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [patientsDiagnoseLoading, setPatientsDiagnoseLoading] = useState(false);
     const insurances = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.insurances : [];
+    const outpatientsInfo = props.investigations.currentInvestigation ? props.investigations.currentInvestigation.outpatientsInfo : {};
     const patients = props.patients.data && props.investigations.currentInvestigation ? props.patients.data[props.investigations.currentInvestigation.uuid] : [];
     const dispatch = useDispatch();
     const history = useHistory();
@@ -122,7 +123,7 @@ function SearchPatients(props){
         }
     }, [props.patients.loading])
 
-    if(!props.investigations.data || props.patients.loading || patientsDiagnoseLoading){
+    if(!props.investigations.data || !props.investigations.currentInvestigation || props.patients.loading || patientsDiagnoseLoading){
         return <Loader />
     }
     return(
@@ -132,7 +133,7 @@ function SearchPatients(props){
                 personalFields={props.investigations.currentInvestigation.personalFields}
                 permissions={props.investigations.currentInvestigation.permissions}
                 functionalities={props.investigations.currentInvestigation.functionalities}
-                insurances={insurances}
+                insurances={insurances} outpatientsInfo={outpatientsInfo}
                 searchPatientCallBack={searchPatientCallBack}
                 backToSearchCallBack={backToSearchCallBack} 
                 patientSelectedCallBack={patientSelectedCallBack}
@@ -210,12 +211,10 @@ export const SearchPatientsComponent = withLocalize((props) => {
                             <Grid container>
                                 <Grid item xs={12}>
                                     {
-                                       
                                         [
                                             <Translate id="investigation.create.personal_data.fields.health_id" />, ",", getPatientID(props.patients[indexPatient])
                                         ]
                                     }
-                                    
                                     <Typography variant="body2">
                                         <Translate id="investigation.create.personal_data.fields.name" />: {props.patients[indexPatient].personalData.name}
                                     </Typography>
@@ -237,6 +236,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                                         <Translate id="general.continue" />
                                     </ButtonContinue>
                                 </Grid>
+                                
                             </Grid>
                         }
                         {
@@ -247,6 +247,7 @@ export const SearchPatientsComponent = withLocalize((props) => {
                         {
                             patientAppointment &&
                             <PatientAppointmentInfo uuidInvestigation={props.investigation.uuid}  uuidPatient={patientAppointment.uuid} 
+                                outpatientsInfo={props.outpatientsInfo} phoneNumber={ Array(props.outpatientsInfo.sms) ? patientAppointment.personalData.phone : null}
                                 appointmentMadeCallback={resetModal} /> 
                         }
                         

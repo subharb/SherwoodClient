@@ -146,7 +146,7 @@ export async function importKey(key){
         true,
         ["encrypt", "decrypt"]
     );
-
+hello
     return keyObj;
 }
 
@@ -538,13 +538,24 @@ export function decryptPatientsData(patientsData, investigation){
     return tempDecryptedData;
 }
 
+export function getInvestigationRawKey(uuid, encryptedKeyUsed, keyResearcherInvestigation){
+    const nameKey = "rawKeyInvestigation_"+uuid;
+    let keyInvestigation = localStorage.getItem(nameKey);
+    if(keyInvestigation !== null){
+        return keyInvestigation;
+    }
+    const rawKeyResearcher = encryptedKeyUsed === 0 ? import.meta.env.VITE_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");    
+    keyInvestigation = decryptData(keyResearcherInvestigation, rawKeyResearcher);
+    localStorage.setItem(nameKey, keyInvestigation);
+    return keyInvestigation;
+}
+
 export function decryptSinglePatientData(patientPersonalData, investigation){
 
     let encryptedFields = {};
     if(investigation.permissions !== 0){
-        const rawKeyResearcher = investigation.encryptedKeyUsed === 0 ? import.meta.env.VITE_APP_DEFAULT_RESEARCH_PASSWORD : localStorage.getItem("rawKeyResearcher");
         
-        const keyInvestigation = decryptData(investigation.keyResearcherInvestigation, rawKeyResearcher);
+        const keyInvestigation = getInvestigationRawKey(investigation.uuid, investigation.encryptedKeyUsed, investigation.keyResearcherInvestigation);
         
         for(const personalField of investigation.personalFields){
             const encryptedField = patientPersonalData.find(pData =>{
@@ -558,6 +569,9 @@ export function decryptSinglePatientData(patientPersonalData, investigation){
                     decryptedValue = decryptData(encryptedField.value, keyInvestigation);
                 
                     if(encryptedField.type === "date"){
+                        if(decryptedValue === "" || decryptedValue === null){
+                            console.log("Fecha vacía");
+                        }
                         decryptedValue = new Date(parseInt(decryptedValue));
                     }
                 }
@@ -619,6 +633,14 @@ export function dateAndTimeFromPostgresString(localeCode, dateString){
             })
 }
 
+export function timeFromPostgresString(localeCode, dateString){
+    const dateObject =  stringDatePostgresToDate(dateString);
+    return dateObject.toLocaleString(localeCode,{
+            hour: '2-digit',
+            minute: '2-digit',
+            })
+}
+
 export function fullDateFromPostgresString(localeCode, dateString){
     const dateObject =  stringDatePostgresToDate(dateString);
     return dateObject.toLocaleString(localeCode,{
@@ -669,7 +691,7 @@ export function formatPatients(patients, personalFields, code = 'es-ES', insuran
             }
             
         }
-        const dateObject =  stringDatePostgresToDate(patient.dateCreated);
+        const dateObject =  patient.dateCreated;
         tempRow["dateCreated"] = dateObject.toLocaleString(code,{
             year: 'numeric',
             month: '2-digit',
@@ -935,4 +957,8 @@ export function differenceDatesToString(dateStart, dateEnd){
             "days" : nDays
         }
     }
+}
+
+export function twoDigits(number){
+    return number < 10 ? "0"+number : number;
 }

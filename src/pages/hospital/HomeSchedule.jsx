@@ -1,6 +1,6 @@
 
 import React, {useEffect, useState} from 'react'
-import { useProfileInfo, useRouter } from '../../hooks';
+import { useLoadingMessage, useProfileInfo, useRouter } from '../../hooks';
 import { connect, useSelector } from 'react-redux';
 import { Button, Grid, Typography, Box } from '@mui/material';
 import { useHistory, Link } from 'react-router-dom'
@@ -20,10 +20,13 @@ import { PERMISSION } from '../../components/investigation/share/user_roles';
 import DICOMViewer from './patient/DICOMViewer';
 
 function HomeSchedule(props) {
-    const [loading, setLoading] = useState(false);
+    
     const { profile } = useProfileInfo();
     const { pathname }= useRouter(props.initialState ? props.initialState.pathname : false);
     const dispatch = useDispatch();
+    const pendingInvestigation = props.investigations.data ? props.investigations.data.find(inv => inv.shareStatus === 0) : false;
+
+    const [loading, loadingComponent] = useLoadingMessage();
 
     // useEffect(() => {
     //     if(props.investigations.currentInvestigation && !profile){
@@ -44,9 +47,9 @@ function HomeSchedule(props) {
         
     }
 
-    async function selectHospital(index){
-        await dispatch(selectInvestigation(index));
-        localStorage.setItem("indexHospital", index);
+    async function selectHospital(uuidInvestigation){
+        await dispatch(selectInvestigation(uuidInvestigation));
+        localStorage.setItem("uuidInvestigation", uuidInvestigation);
     }
     function renderCore(){
         if(props.investigations.data.find(inv => inv.shareStatus === 0)){
@@ -58,7 +61,7 @@ function HomeSchedule(props) {
             return props.investigations.data.map((inv, index) =>{
                 return(
                     <Grid item xs={12} style={{display: 'flex',justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
-                        <ButtonGrey onClick={()=>selectHospital(index)} data-testid="select-hospital" >{inv.name}</ButtonGrey>
+                        <ButtonGrey onClick={()=>selectHospital(inv.uuid)} data-testid="select-hospital" >{inv.name}</ButtonGrey>
                     </Grid>) 
             })
         }
@@ -190,8 +193,9 @@ function HomeSchedule(props) {
         )
     }
     else{
-        if(props.investigations.loading || (!props.profile.info && props.investigations.currentInvestigation) ){
-            return <Loader />
+
+        if(loading !== 0 || (!props.profile.info && props.investigations.currentInvestigation && !pendingInvestigation) ){
+            return loadingComponent
         }
         
         return (

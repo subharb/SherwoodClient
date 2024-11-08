@@ -51,6 +51,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
                 "id" : indexBill,
                 "uuid" : bill.uuid,
                 "type" : bill.type,
+                "health_id" : patient?.personalData.automated_health_id ? patient?.personalData.automated_health_id : patient?.personalData.healthId,
                 "patientName" :patient?.personalData.name+" "+patient?.personalData.surnames, 
                 "patient" : <><ColourButton size='small' icon={documentTypeToIcon(bill.type)}  rgbcolor={documentTypeToColor(bill.type)} label={null}/> {patient?.personalData.name+" "+patient?.personalData.surnames}</>, 
                 "total" : new Intl.NumberFormat(languageCode).format(Number(bill.total)),
@@ -61,7 +62,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
             }
         })}, [bills, patients, languageCode]);
     
-        function callbackNameTyped(name:string){
+    function callbackNameTyped(name:string){
         setPatientName(name);        
     }
 
@@ -86,7 +87,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
             const activeNameFilter = patientName.length > 0;
             let matchNameFilter = false;
             if(activeNameFilter){
-                matchNameFilter = bill.patientName.toLocaleLowerCase().includes(patientName.toLocaleLowerCase());
+                matchNameFilter = bill.patientName.toLocaleLowerCase().includes(patientName.toLocaleLowerCase()) || bill.health_id?.toLocaleLowerCase().includes(patientName.toLocaleLowerCase());
                 shouldBeFiltered = matchNameFilter;
             }
             if(statusPaidFilter.length > 0){
@@ -102,6 +103,7 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
         })
         const headCells = [
                 { id: "idInvestigation", alignment: "left", label: "ID" },
+                { id: "health_id", alignment: "left", label: <Translate id={`investigation.create.personal_data.short-fields.automated_health_id`} /> },
                 { id: "patient", alignment: "left", label: <Translate id={`hospital.billing.bill.patient`} /> },
                 { id: "total", alignment: "left", label: [<Translate id={`hospital.billing.bill.total`} />,"("+currency+")"] },
                 { id: "status", alignment: "left", label: [<Translate id={`hospital.billing.bill.status`} />]},
@@ -116,7 +118,8 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
                                 history.push(HOSPITAL_BILLING_VIEW_DOCUMENT.replace(":uuidDocument", findBill.uuid))}
                             }
                         } 
-                        currentPage={currentPageTable} changePageCallback={changePageCallback}
+                        currentPage={currentPageTable} 
+                        changePageCallback={changePageCallback}
                         actions={[{"type" : "pdf", "check" :(bill:any) => bill.statusValue === DocumentStatus.CLOSED, 
                                     "func" : (index:number) => {
                                         const findBill = rows.find((bill) => bill.id === index);
@@ -124,8 +127,8 @@ const BillsTable: React.FC<BillsTableProps> = ({ bills, patients, languageCode, 
                                             makeActionBillCallBack(findBill.uuid, BillActions.PREVIEW)
                                         }
                                     }
-                                }]} 
-                                />
+                            }]} 
+                            />
     }
 
     function applyFilterGeneral(filter:number[] , functionAdd: (value:number[]) => void, value:number){

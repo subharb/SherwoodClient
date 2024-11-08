@@ -90,7 +90,7 @@ export interface IAgenda{
     box:IBox | string,
     datesOccupancy:{[date:string]:number}
     turn: number[][],
-    serviceInvestigationFirstVisit:{id:number}
+    listServicesInvestigation:{id:number}[]
 }
 
 export interface RequestService {
@@ -148,16 +148,35 @@ interface ServiceInvestigation {
 
 export interface IRequestAppointment{
     status:number,
-    type:number,
+    type:RequestStatus,
+}
+
+export enum RequestStatus {
+    PENDING_APPROVAL = 0,
+    PENDING_PAYMENT = 1,
+    ACCEPTED = 2,
+    SOME_ACCEPTED = 3,
+    DENIED = 4,
+    CANCELED = 5,// Cancelado por el usuario
+    EXPIRED = 6,
+    COMPLETED = 7,
+    IN_PROGRESS = 8,
+    INCOMPLETE = 9,
+    INCOMPLETE_ACCEPTED = 10, //Pensada para farmacia
 }
 
 export interface IAppointment{
     id:number,
     uuid:string,
     startDateTime:number,
+    endDateTime:number,
+    duration:number,
     patient:IPatient,
     order:number,
     agenda:IAgenda,
+    agendaId:number,
+    reasonVisit:string,
+    notes:string,
     requestAppointment:IRequestAppointment,
     type:number,//0 first visit, 1 follow up
     createdAt:number,
@@ -179,6 +198,7 @@ export interface IPersonalData{
     surnames: string,
     birthdate: Date,
     sex: string,
+    phone: string,
     health_id ?:string,
     automated_health_id ?:string,
     insurance:number | null,
@@ -271,7 +291,7 @@ export interface IPatient{
     uuid:string,
     id:number,
     personalData: IPersonalData,
-    dateCreated:Date
+    dateCreated:Date,
 }
 
 export interface IInsurance{
@@ -288,7 +308,13 @@ export interface IOutpatientsInfo{
     params: IOutpatientsParams,
 }
 export interface IOutpatientsParams {
-    type: "date" | "date_time"
+    type: "date" | "date_time",
+    extraForm ?: number
+}
+
+export enum OutpatientsTypes{
+    DATE = "date",
+    DATE_TIME = "date_time"
 }
 export enum FUNCTIONALITY {
     HOSPITALIZATION = "HOSPITALIZATION",

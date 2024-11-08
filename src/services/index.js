@@ -394,6 +394,22 @@ export const getPatientsFromId = datalogger((uuidInvestigation, patientId) => {
     });
 });
 
+export const getPatientsFromUpdatedDate = datalogger((uuidInvestigation, lastUpdatedPatient) => {
+    return new Promise((resolve, reject) => {
+
+        axios.get(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/patients/updateddate/" + lastUpdatedPatient, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                }
+                else {
+                    reject(response.data);
+                }
+            })
+            .catch(err => { console.log('Catch', err); reject(err); });
+    });
+});
+
 export const resetPassword = datalogger((credentials) => {
     return new Promise((resolve, reject) => {
         axios
@@ -557,11 +573,14 @@ export const getAgendasInvestigationService = datalogger((uuidInvestigation) => 
     });
 });
 
-export const makeAppointmentService = datalogger((uuidInvestigation, uuidAgenda, uuidPatient, date) => {
+export const makeAppointmentService = datalogger((uuidInvestigation, uuidAgenda, uuidPatient, date, idService, phoneNumber, reason, notes) => {
     const postObj = {
         uuidPatient,
         timestamp: date.getTime(),
-        type: 0
+        idService,
+        phone : phoneNumber, 
+        reasonVisit : reason,
+        notes
     }
     return new Promise((resolve, reject) => {
         axios
@@ -886,11 +905,32 @@ export function saveResearcherPermissions(uuidInvestigation, permissions) {
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);
+                    console.log("edited user")
                 }
                 reject(response.data);
             })
             .catch((error) => {
                 reject(error);
+            });
+    });
+}
+// add delete researcher here
+export function deleteResearcher(uuidInvestigation,uuidDeleteResearcher) {
+    // console.log("uuidInvestigation", uuidInvestigation)
+    console.log("deleteResearcher service fun")
+    return new Promise((resolve, reject) => {
+        axios
+            .delete(import.meta.env.VITE_APP_API_URL + "/researcher/investigation/" + uuidInvestigation + "/" + uuidDeleteResearcher , { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .then((response) => {
+                if (response.status === 200) {
+                    resolve(response.data);
+                    console.log("deleted user",response.data)
+                }
+                reject(response.data);
+            })
+            .catch((error) => {
+                reject(error);
+                console.log(error, "error in deleteing user")
             });
     });
 }

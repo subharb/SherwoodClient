@@ -156,7 +156,7 @@ return (
             horizontal: 'center',
             }}
             open={showSnackbar.show}
-            autoHideDuration={4000}
+            autoHideDuration={6000}
             onClose={handleClose}>
                 <Alert severity={showSnackbar.severity}>
                     <Translate id={showSnackbar.message} />
@@ -204,6 +204,5 @@ return (
 }
 
 AddPatientComponent.propTypes = {
-investigations:PropTypes.object
-
+    investigations:PropTypes.object
 };

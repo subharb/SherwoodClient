@@ -47,7 +47,7 @@ export function AddPatient(props: Props) {
 
     useEffect(() => {
         setCurrentInvestigation(props.investigations.currentInvestigation)
-    }, [props.investigations.data])
+    }, [props.investigations.currentInvestigation])
 
     async function callbackSavePatient(patientData) {
 
@@ -82,7 +82,7 @@ export function AddPatient(props: Props) {
         }
     }, [addedPatient])
 
-    if (isLoading || props.investigations.loading || props.isLoading) {
+    if (isLoading || props.investigations.loading || !props.investigations.currentInvestigation || props.isLoading) {
         return <Loader />;
     } 
     else if (

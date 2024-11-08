@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useReducer } from 'react';
 import axios from 'axios';
-import DateFnsUtils from "@date-io/date-fns";
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchUser } from "../services/authService";
 import { areArraysEqual, getCurrentResearcherUuid, researcherFullName } from '../utils/index.jsx';
@@ -11,7 +10,7 @@ import { FieldWrapper } from '../components/general/mini_components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAgendasInvestigationAction, getDepartmentsInvestigationAction } from '../redux/actions/hospitalActions';
 import { Color } from '@mui/lab';
-import { IAgenda, IDepartment, IInsurance, IResearcher, IUnit } from '../constants/types';
+import { IAgenda, IDepartment, IInsurance, IPatient, IResearcher, IUnit } from '../constants/types';
 import { INITIAL_SELECT } from '../components/general/SmartFields';
 import { IRequest, IService } from '../pages/hospital/Service/types';
 import { fetchProfileInfoAction } from '../redux/actions/profileActions';
@@ -23,6 +22,7 @@ import { ColourChip } from '../components/general/mini_components-ts';
 import { documentStatusToColor } from '../utils/bill';
 import { getInsurancesAction } from '../redux/actions/insuranceActions';
 import { fetchSingleSubmissionsPatientInvestigationAction, fetchSubmissionsPatientInvestigationAction } from '../redux/actions/submissionsPatientActions';
+import { fetchPatientsAction } from '../redux/actions/patientsActions';
 
 export interface SnackbarType{
     show: boolean;
@@ -47,6 +47,30 @@ export function useRouter(initValue:any){
         pathname : initValue ? initValue : history.location.pathname,
 
     }
+}
+
+export function useLoadingMessage(){
+    const investigations = useSelector((state:any) => state.investigations);
+    const loading = useSelector((state:any) => state.investigations.loading);
+
+    let message;
+
+    switch(loading){
+        case 1:
+            message = "general.loading.investigations";
+            break;
+        case 2:
+            message = "general.loading.decrypting";
+            break;
+        default:
+            message = "general.loading.loading";
+    }
+   
+    return [loading, (
+        <>
+            <Loader infoString={<Translate id={`${message}`} />} />
+        </>
+    )]
 }
 
 export function useProfileInfo(){
@@ -739,3 +763,45 @@ export function useResearcherDepartmentSelector(defaultValueResearcher?:string, 
             markAsErrorReseacherCallback, markAsErrorDepartmentCallback}
 }
 
+const usePageVisibility = (onVisible: () => void) => {
+    useEffect(() => {
+      const handleVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+          onVisible();
+        }
+      };
+  
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+  
+      return () => {
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+      };
+    }, [onVisible]);
+  };
+  
+  export default usePageVisibility;
+
+
+  export function usePatients(uuidInvestigation:string){
+    const patients:IPatient[] = useSelector((state: any) => state.patients.data[uuidInvestigation]);
+    const loadingPatients = useSelector((state: any) => state.patients.loading);
+    const investigations = useSelector((state: any) => state.investigations);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        async function fetchPatients() {
+            if (investigations.currentInvestigation?.uuid) {
+                // Assuming you have a Redux action for fetching patients
+                await dispatch(
+                    fetchPatientsAction(investigations.currentInvestigation)
+                );
+            }
+        }
+
+        if (investigations.currentInvestigation) {
+            fetchPatients();
+        }
+    }, [investigations.currentInvestigation]);
+
+    return { patients, loadingPatients };
+}

@@ -94,7 +94,7 @@ const SingleAgenda: React.FC<SingleAgendaProps> = ({ investigations, personalDat
 const mapStateToProps = (state:any) => {
 	return {
 		investigations: state.investigations,
-        personalData : state.investigations.currentInvestigation ? state.patients.data[state.investigations.currentInvestigation.uuid] : []
+        personalData : state.investigations.currentInvestigation && state.patients.data ? state.patients.data[state.investigations.currentInvestigation.uuid] : []
 	}
 }
 

@@ -1,19 +1,39 @@
 import * as types from "../../constants";
+import { deleteAllPatientsFromInvestigation, getAllPatientsInvestigation, saveListPatients, savePatient } from "../../db";
 import {
     fetchInvestigations as fetchInvestigationsService
 } from "../../services";
 import { createUpdateBillingInfoService, getBillablesService, updateBillablesService } from "../../services/billing";
+import { decryptSinglePatientData } from "../../utils";
+import { fetchPatientsAction } from "./patientsActions";
 
 export function fetchInvestigations() {
   return async (dispatch) => {
     dispatch({ type: types.FETCH_INVESTIGATIONS_LOADING });
 
     return fetchInvestigationsService()
-      .then((response) => {
+      .then(async (response) => {
+        
         dispatch({
-          type: types.FETCH_INVESTIGATIONS_SUCCESS,
-          investigations: response.investigations,
+            type: types.FETCH_INVESTIGATIONS_SUCCESS,
+            investigations: response.investigations,
         });
+
+        const pendingApprovalInvestigation = response.investigations.find((investigation) => investigation.shareStatus === 0);
+
+        if(!pendingApprovalInvestigation){
+            if(response.investigations.length === 1){
+                dispatch(selectInvestigation(response.investigations[0].uuid));
+            }
+            else if(localStorage.getItem("uuidInvestigation")){
+                const investigation = response.investigations.find((investigation) => investigation.uuid === localStorage.getItem("uuidInvestigation"));
+                if(investigation){
+                    dispatch(selectInvestigation(investigation.uuid));
+                }
+            }
+        }
+        
+        
       })
       .catch((error) => {
         dispatch({ type: types.FETCH_INVESTIGATIONS_ERROR });
@@ -74,12 +94,15 @@ export function getBillablesAction(uuidInvestigation, idBillingInfo, idInsurance
             });
     };
 }
-export function selectInvestigation(idInvestigation) {
-    return async (dispatch) => {
+export function selectInvestigation(uuidInvestigation) {
+    return async (dispatch, getState) => {
         dispatch({ 
             type: types.SELECT_INVESTIGATION,
-            selectedInvestigation :  idInvestigation
+            selectedInvestigation :  uuidInvestigation
         });
+        const currentState = getState().investigations;
+        const investigation = currentState.data.find((investigation) => investigation.uuid === uuidInvestigation);
+        dispatch(fetchPatientsAction(investigation))
   }
 }
 

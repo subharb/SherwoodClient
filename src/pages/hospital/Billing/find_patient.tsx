@@ -1,22 +1,35 @@
 import { Card, CardContent, Grid, TextField } from "@mui/material";
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Translate } from "react-localize-redux";
-import { connect } from "react-redux";
 import { EnhancedTable } from "../../../components/general/EnhancedTable";
 import { IInsurance, IPatient } from "../../../constants/types";
 import { formatPatients } from "../../../utils/index.jsx";
+import { findPatientsByNameOrSurname } from "../../../db";
 
 
 interface Props{
-    patients:IPatient[],
     personalFields:any[],
     codeLanguage:string,
+<<<<<<< HEAD
     insurances: IInsurance[],
+=======
+    uuidInvestigation:string,
+>>>>>>> master
     onPatientSelected:(idPatient:number) => void,
     selectingPatientCallBack?:(value:boolean) => void
 }
 export const FindPatient:React.FC<Props> = (props) => {
     const [patientName, setPatientName] = useState<string>("");
+    const [filteredPatients, setFilteredPatients] = useState<IPatient[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            if(patientName.length > 2){
+                const filteredPatients = (await findPatientsByNameOrSurname(patientName, props.uuidInvestigation));
+                setFilteredPatients(filteredPatients);
+            }
+        })();
+    }, [patientName]);
     
     function onChange(event:React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>){
         console.log(event.target.value);
@@ -24,17 +37,10 @@ export const FindPatient:React.FC<Props> = (props) => {
         if(props.selectingPatientCallBack){
             props.selectingPatientCallBack(event.target.value.length !== 0);
         }
-        
     }
     
     function renderResults(){
-        if(patientName !== ""){
-            const filteredPatients:IPatient[] = props.patients.filter((patient) => {
-                const currentPatientData = patient.personalData;
-                const currentPatientFullName = currentPatientData.name+" "+currentPatientData.surnames;
-                return currentPatientFullName.toLocaleLowerCase().includes(patientName.toLocaleLowerCase());
-            }).sort((a,b) => a.dateCreated > b.dateCreated ? -1 : 1);
-    
+        if(patientName !== "" &&  patientName.length > 2){
             if(filteredPatients.length === 0){
                 return "No patients match the criteria"
             }
@@ -66,7 +72,9 @@ export const FindPatient:React.FC<Props> = (props) => {
             <Grid item xs={12}>
                 <Card>
                     <CardContent>
-                        <TextField label="Search Patient" color="secondary" onChange={(event) => onChange(event) } />
+                        <TextField label={<Translate id="hospital.search_box.find_patient.label" />} color="secondary" 
+                            helperText={<Translate id="hospital.search_box.find_patient.helperText" />}   
+                            onChange={(event) => onChange(event) } />
                     </CardContent>
                 </Card>
             </Grid>

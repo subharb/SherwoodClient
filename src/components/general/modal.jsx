@@ -57,7 +57,7 @@ export default function Modal(props){
                         </Button>
                     }
                     <Button onClick={props.confirmAction} data-testid="continue-modal" color="green">
-                        <Translate id="general.continue" />
+                        <Translate id={props.confirmButtonLabel || "general.continue"} />
                     </Button>
                 </DialogActions> 
             }
@@ -77,5 +77,6 @@ Modal.propTypes = {
         PropTypes.object.isRequired
     ]),
     closeModal:PropTypes.func,
-    confirmAction:PropTypes.func
+    confirmAction:PropTypes.func,
+    confirmButtonLabel:PropTypes.string
 }

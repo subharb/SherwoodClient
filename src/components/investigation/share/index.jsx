@@ -10,20 +10,18 @@ import { BoxBckgr, ButtonAdd, ButtonContinue, TypographyStyled } from '../../gen
 import Modal from '../../general/modal';
 import Form from '../../general/form';
 import { EnhancedTable } from "../../general/EnhancedTable";
-import styled from 'styled-components';
 import { yellow, green, blue, red, orange, purple, grey } from "@mui/material/colors";
 import axios from '../../../utils/axios';
 import { useHistory } from "react-router-dom";
-import { getSharedResearchersService, saveResearcherPermissions } from '../../../services';
-
+import { deleteResearcher, getSharedResearchersService, saveResearcherPermissions } from '../../../services';
 import SectionHeader from '../../../pages/components/SectionHeader';
 import UserRoles from './UserRoles';
 import { useSnackBarState } from "../../../hooks"
-import { ALL_ROLES, USER_ROLES } from './user_roles';
+import { ALL_ROLES, PERMISSION, USER_ROLES } from './user_roles';
 import { ColourChip } from '../../general/mini_components-ts';
 
 
-const optionsPermissions = Object.keys(USER_ROLES).map(keyRole => {
+const optionsPermissions = Object.keys(USER_ROLES).sort().map(keyRole => {
     return {"label" : "investigation.share.roles."+keyRole, "value" :USER_ROLES[keyRole]}
 })
 
@@ -46,9 +44,7 @@ const RESEARCHER_FORM = {
         defaultOption:{"text" : "investigation.create.edc.choose", "value" : "0"},
         options:optionsPermissions
     },
-}
-
-
+} 
 
 export const PermissionChip = withLocalize((props) => {
     const role = permissionsToRole(props.value);
@@ -90,6 +86,15 @@ export const PermissionChip = withLocalize((props) => {
         case "ADMIN": 
             colour = blue[500];            
             break;
+        case "ADMIN_FW": 
+            colour = blue[400];            
+            break;
+        case "CASHIER": 
+            colour = blue[400];            
+            break;
+        case "CASHIER_MANAGER": 
+            colour = blue[700];            
+            break;
         case "BUSINESS_ASSISTANT": 
             colour = blue[300];            
             break;
@@ -111,11 +116,11 @@ export const PermissionChip = withLocalize((props) => {
         case "MAJOR": 
             colour = red[500];            
             break;
-        case "NO_PERMISSIONS": 
+        case "EXECUTIVE_DIRECTOR": 
             colour = purple[500];            
             break;
         default:
-            return <ColourChip rgbcolor={colour} label={props.translate("investigation.share.roles.NO_PERMISSIONS")} />
+            return <ColourChip rgbcolor={colour} label={props.translate("investigation.share.roles.NO_ROLE_ASSIGNED")} />
     }
     return <ColourChip rgbcolor={colour} label={props.translate("investigation.share.roles."+role)}/>
 })
@@ -165,6 +170,8 @@ function ShareInvestigation(props) {
     const [isLoadingShare, setIsLoadingShare] = useState(false);
     const [errorShare, setErrorShare] = useState(false);
     const [indexResearcherToEdit, setIndexResearcherToEdit] = useState(false);
+    const [indexResearcherToDelete, setIndexResearcherToDelete] = useState(false);
+    const [researcherToDelete, setResearcherToDelete] = useState([]);
     const [showingRoles, setShowingRoles] = useState(false);
     const [showSnackbar, setShowSnackbar] = useSnackBarState();
     const history = useHistory();
@@ -173,11 +180,12 @@ function ShareInvestigation(props) {
         setShowModal(true)
     }
     function resetModal(){
-        console.log("Close modal");
+        console.log("Close modal2");
         setShowModal(false);
         setIndexResearcherToEdit(false);
         setAddingResearcher(false);
         setShowingRoles(false);
+        setIndexResearcherToDelete(false)
     }
     async function sendInvitations(){
         setShowModal(false);
@@ -259,7 +267,7 @@ function ShareInvestigation(props) {
                                         }
                                         return tempSection;
                                     })}
-                                    actions={[{"type" : "delete", "func" : (index) => removeResearcher(index)}]}
+                                    // actions={[{"type" : "delete", "func" : (index) => removeResearcher(index)}]}
                                 />
                         </Grid>
                         <Grid item xs={12} >
@@ -272,11 +280,7 @@ function ShareInvestigation(props) {
             )
         }
     }
-    function removeResearcher(index){
-        const copyResearchers = [...newResearchers];
-        copyResearchers.splice(index, 1); 
-        setNewResearchers(copyResearchers);
-    }
+
     function addResearcher(researcher){
         resetModal();
         setNewResearchers(array => [...array, researcher]);
@@ -297,7 +301,7 @@ function ShareInvestigation(props) {
             }) 
     
             content = <EnhancedTable noSelectable titleTable={<Translate id="investigation.share.current_researchers" />}  
-                        headCells={arrayHeader}
+                        headCells={arrayHeader} order={{"property" : "name", "orderBy" : "desc" }}
                         rows={sharedResearchers.map((researcher, idx) => {
                             const name = researcher.name ? researcher.name+" "+researcher.surnames : researcher.email;
 
@@ -310,7 +314,11 @@ function ShareInvestigation(props) {
                             
                             return row;
                         })}
-                        actions={[{"type" : "edit" , "func" : (index) => editAResearcher(index)}]} 
+                        actions={[{"type" : "edit" , "func" : (index) => editAResearcher(index)},
+                            { "type": "delete", "check": () => {console.log("check", props.investigations.currentInvestigation.permissions); return props.investigations.currentInvestigation.permissions.includes(PERMISSION.DELETE_RESEARCHER)},
+                            "func" : (index) => deleteAResearcher(index) }
+                        ]} 
+                        
         />
         }
         return (
@@ -321,25 +329,53 @@ function ShareInvestigation(props) {
     }
     function renderModal(){
         let title;
+        let modalProps = {};
         if(addingResearcher){
             title = props.translate("investigation.share.add_researcher");
         }
         else if(indexResearcherToEdit){
             title =  props.translate("investigation.share.edit_researcher");
         }
+        else if(indexResearcherToDelete !== false){
+            title =  props.translate("investigation.share.delete_researcher");
+            modalProps = {
+                confirmAction: handleDeleteResearcher,
+                confirmButtonLabel: "general.delete",
+                researcherToDelete: sharedResearchers[indexResearcherToDelete] 
+            };
+        }   
         else{
             title =  props.translate("investigation.share.info_roles");
+           
         }
         
         return(
             <Modal key="modal" open={ showModal } 
                 closeModal={resetModal}
-                title={title}>
+                title={title}
+                // confirmAction={handleDelete}
+                // confirmAction={confirmAction}
+                // confirmButtonLabel={confirmButtonLabel}
+                {...modalProps}
+                
+                >
                     {
                         indexResearcherToEdit !== false &&
                         <Form fields={RESEARCHER_FORM} fullWidth callBackForm={editCallBack}
                             initialData={sharedResearchers[indexResearcherToEdit]} 
                             closeCallBack={resetModal}/>
+                    }
+                    {
+                        
+                        indexResearcherToDelete !== false &&
+                        
+                       <>
+                    <Typography variant="body2" gutterBottom>
+                        <Translate id="investigation.share.delete_Confirmation_user" />
+                    </Typography>
+                    
+                </>      
+                      
                     }
                     {
                         addingResearcher &&
@@ -353,15 +389,42 @@ function ShareInvestigation(props) {
             </Modal>
         )
     }
-    function deleteAResearcher(index){
-        console.log("confirm to delete", sharedResearchers[index]);
+
+    async function handleDeleteResearcher() {
+//        
+            const response = await deleteResearcher(props.investigations.currentInvestigation.uuid,researcherToDelete.uuid);
+            console.log("Response from delete user:", response);
+            console.log("sharedResearchers",sharedResearchers)
+            setSharedResearchers(prev => prev.filter((researcher) => researcher.uuid !== researcherToDelete.uuid));
+            //filter by uuid
+      
+        resetModal();
     }
+    // async function hideDeleteIcon(index) {
+        
+    // }
+
+    async function deleteAResearcher(index) {
+        console.log(`adasdasd ${sharedResearchers[index].name}`)
+
+        console.log("Confirm to delete:", sharedResearchers[index]);
+        const deleteResearcherUser = sharedResearchers[index];
+        setIndexResearcherToDelete(true);//this state shows the delete buttons 
+        setResearcherToDelete(deleteResearcherUser);
+        setShowModal(true);
+        //name of the researcher should be shown in modal
+    }
+
     async function editCallBack(values){
         console.log("Datos nuevos de researcher", values);
+        console.log("props ::", props);
+        console.log("edit permision of users here check");
         const permissions = {"permissions" : [{
             uuidResearcher : sharedResearchers[indexResearcherToEdit].uuid,
             role : values["permissions"]
+        
         }]}
+        console.log("checking permissions", permissions)
         setIsLoadingShare(true);
         const response = await saveResearcherPermissions(props.investigations.currentInvestigation.uuid, permissions);
         setIsLoadingShare(false);
@@ -370,7 +433,11 @@ function ShareInvestigation(props) {
         setSharedResearchers(copySharedResearchers);
         resetModal()
     }
+
+
     function editAResearcher(index){
+        
+        console.log("index ::", index);
         console.log("confirm to edit", sharedResearchers[index]);
         let valuesForm = {};
         valuesForm["email"] = sharedResearchers[index]["email"];
@@ -384,7 +451,7 @@ function ShareInvestigation(props) {
         setShowModal(true);
     }
 
-    if(props.investigations.loading || isLoadingShare){
+    if(props.investigations.loading || !investigation || isLoadingShare){
         return <Loader />
     }
     return (

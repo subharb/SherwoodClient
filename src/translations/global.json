@@ -27,6 +27,11 @@
             "Sun" : ["Sunday", "Domingo", "Dimanche"]
 
         },
+        "loading" : {
+            "investigations" : ["Downloading data", "Descargando datos", "Téléchargement des données"],
+            "decrypting" : ["Processing patients", "Procesando pacientes", "Traitement des patients"],
+            "loading" : ["Loading", "Cargando", "Chargement"]
+        },
         "years" : ["years", "años", "ans"],
         "several" : ["Several", "Varios", "Plusieurs"],
         "patient" : ["Patient", "Paciente", "Patient"],
@@ -79,7 +84,7 @@
             "request_img" : ["Do you wish to request an imaging test?", "¿Desea solicitar un examen de imagen?", "Voulez-vous demander un test d'imagerie?"]
         },
         "here" : ["here", "aquí", "ici"],
-        "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une error siesta products, veuillez r'essayer plus tard"],
+        "error" : ["An error ocurred, please try again later", "Se ha producido un error, por favor inténtelo más tarde", "Une erreur s'est produite, veuillez réessayer plus tard"],
         "no-results" : ["No results", "Sin resultados", "Sans results"],
         "use_selector" : {
             "placeholder" : {
@@ -91,7 +96,7 @@
                 "researcher" : ["Doctor", "Médico", "Médecin"]
             },
             "all":{
-                "department" : ["All departments", "Todos los departamentos", "Tous les départements"],
+                "department" : ["All departments", "Todos los departamentos", "Tous les services"],
                 "researcher" : ["All doctors", "Todos los médicos", "Tous les médecins"]
             },
             "select" : {
@@ -99,7 +104,7 @@
                 "researcher" : ["Select doctor", "Seleccione médico", "Sélectionnez le médecin"]
             },
             "missing_option" : {
-                "department" : ["This researcher doesn't have a department assigned", "Este médico no tiene un departamento asignado", "Ce médecin n'a pas de service attribué"]
+                "department" : ["This doctor is not part of a department", "Este médico no forma parte de un departamento", "Ce médecin ne fait pas partie d'un service"]
                 
             }
         }
@@ -131,6 +136,10 @@
         "generate_medical_history" : ["Generate Medical History", "Generar Historia Clínica", "Générer l'histoire médicale"],
         "search_box" : {
             "patients" : ["Search for patients", "Buscar pacientes", "Rechercher des patients"],
+            "find_patient" : {
+                "label" : ["Search Patient", "Buscar Paciente", "Rechercher Patient"],
+                "helperText" : ["Type name, surname or MRN", "Escriba nombre, apellido o NHC", "Tapez le nom, le prénom ou le NDM"]
+            },
             "staff" : ["Search for staff", "Buscar personal", "Rechercher du personnel"],
             "filter" : ["Filter", "Filtrar", "Filtrer"],
             "filters" : {
@@ -231,20 +240,20 @@
             "modal" : {
                 "title" : ["Select an option", "Seleccione una opción", "Sélectionner une option"]
             },
-            "all_departments" : ["All departments", "Todos los departamentos", "Tous les départements"],
+            "all_departments" : ["All departments", "Todos los departamentos", "Tous les services"],
             "department" : ["Department", "Departamento", "Service"],
             "departments" : ["Departments", "Departamentos", "Services"],
             "unit" : ["Unit", "Unidad", "Service"],
             "users" : ["Users", "Usuarios", "Personnel"],
             "inpatients" : ["Inpatients", "Pacientes hospitalizados", "Hospitalisation"],
-            "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun département n'a encore été ajouté"],
+            "no-departments" : ["No departments added yet", "Aún no se agregaron departamentos", "Aucun service n'a encore été ajouté"],
             "no-doctors" : ["No current staff", "No hay personal actual", "Aucun personnel actuel"],
             "delete-ward-prompt" : ["Are you sure to delete this ward?", "¿Está seguro de borrar esta sala?", "Êtes-vous sûr de supprimer cette pièce ?"],
-            "no-my-departments" : ["You haven't been added any department, ask your administrator", "No se le ha agregado ningún departamento, pregunte a su administrador", "Vous n'avez été ajouté à aucun département, demandez à votre administrateur"],
+            "no-my-departments" : ["You haven't been added any department, ask your administrator", "No se le ha agregado ningún departamento, pregunte a su administrador", "Vous n'avez été ajouté à aucun service, demandez à votre administrateur"],
             "no-wards" : ["No current wards", "No hay salas en este departamento", "Il n'y a pas de salles d'hospitalisation dans ce service"],
             "errors" : {
                 "has-researchers" : ["Can't delete a unit with staff", "No se puede borrar una unidad con personal", "Impossible de supprimer un service avec du personnel"],
-                "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce département"],
+                "ward-same-name" : ["You already have a ward with this name in this department", "Ya tienes una sala con este nombre en este departamento.", "Vous avez déjà un service avec ce nom dans ce service"],
                 "bad-configuration" : ["Doesn't match total number beds, check amount of female/male beds", "No coincide con el número total de camas, verifique la cantidad de camas femeninas / masculinas", "Ne correspond pas au nombre total de lits, vérifiez le nombre de lits pour femmes/hommes"]
             },
             "no-edit-ward" : ["Can't edit wards with busy beds", "Can't edit wards with busy beds","Can't edit wards with busy beds"],
@@ -267,7 +276,7 @@
                     "confirm" : ["Do you confirm you wish to remove unit %X? It should not have any staff assigned.", "¿Confirma que desea quitar la unidad %X? No debe tener personal asignado.", "Voulez-vous vraiment supprimer l'unité %X ? Il ne doit pas avoir de personnel affecté."]
                 },
                 "remove-department" : {
-                    "confirm" : ["Do you confirm you wish to remove department %X? It should not have any units.", "¿Confirma que desea quitar el departamento %X? No debe tener unidades.", "Voulez-vous vraiment supprimer le département %X ? Il ne doit pas avoir d'unités."],
+                    "confirm" : ["Do you confirm you wish to remove department %X? It should not have any units.", "¿Confirma que desea quitar el departamento %X? No debe tener unidades.", "Voulez-vous vraiment supprimer le service %X ? Il ne doit pas avoir d'unités."],
                     "cannot_remove" : ["You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units", "You can't delete this department, first delete its wards and units"]
 
                 },
@@ -330,7 +339,7 @@
                 },
                 "appointments" : {
                     "title" : ["Appointment", "Cita", "Rendez-vous"],
-                    "table-title" : ["Department", "Departamento", "Département"]
+                    "table-title" : ["Department", "Departamento", "service"]
                 },
                 "billing" : {
                     "title" : ["Billing", "Facturación", "Facturation"]
@@ -750,7 +759,7 @@
                     }
                 }
                 },
-                "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un département pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
+                "no_departments" : ["You need to be assigned to a department in order to make requests. Please contact your admin.", "Necesita estar asignado a un departamento para poder realizar solicitudes. Por favor contacte con su administrador.", "Vous devez être affecté à un service pour pouvoir faire des demandes. S'il vous plaît contactez votre administrateur."],
                 "request" : {
                     "table" : {
                         "nameDrug" : ["Name", "Nombre", "Nom"],
@@ -759,7 +768,7 @@
                         "amountRequested" : ["Amount Requested", "Cantidad Solicitada", "Montant demandé"],
                         "actions" : ["Actions", "Acciones", "Actions"]
                     },
-                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
+                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le service"],
                     "select_unit" : ["Select unit", "Seleccione unidad", "Sélectionnez l'unité"],
                     "select_items" : ["Select the elements of your request", "Seleccione los elementos de su solicitud", "Sélectionnez les éléments de votre demande"],
                     "edit_items_request" : ["Edit Items Request", "Editar Solicitud", "Modifier la demande"],
@@ -837,19 +846,37 @@
                 "no_appointments" : ["No appointments for this day", "No hay citas para este día", "Pas de rendez-vous pour ce jour"],
                 "no_appointments_patient" : ["No appointments for this patient", "No hay citas para este paciente", "Pas de rendez-vous pour ce patient"],
                 "table_patient_appointments" : {
-                    "department" : ["Department", "Departamento", "Département"],
-                    "doctor" : ["Doctor", "Doctor", "Docteur"],
+                    "department" : ["Department", "Departamento", "Service"],
+                    "doctor" : ["Doctor", "Doctor", "Staff"],
                     "date" : ["Date Appointment", "Fecha de cita", "Date de rendez-vous"],
-                    "turn" : ["Shift", "Turno", "Tourner"],
+                    "turn" : ["Shift", "Turno", "Horaire"],
                     "bookingDate" : ["Booking Date", "Fecha de reserva", "Date de réservation"],
-                    "show" : ["Show", "Mostrar", "Montrer"]
+                    "status" : ["Status", "Status", "Status"],
+                    "time" : ["Time", "Hora", "Heure"],
+                    "modal" : {
+                        "title" : ["Confirm action", "Confirmar acción", "Confirmer l'action"],
+                        "cancel" : {
+                            "message" : ["Are you sure you want to cancel this appointment?", "¿Está seguro de que desea cancelar esta cita?", "Êtes-vous sûr de vouloir annuler ce rendez-vous?"]
+                        },
+                        "show_up" : {
+                            "message" : ["Are you sure the patient showed up?", "¿Está seguro de que el paciente se presentó?", "Êtes-vous sûr que le patient est présent?"]
+                        },
+                        "pending_payment":{
+                            "message" : ["Patient needs to clear the bill for this appointment. Go to billing to do so", "El paciente necesita pagar la factura de esta cita. Vaya a facturación para hacerlo", "Le patient doit régler la facture de ce rendez-vous. Allez à la facturation pour le faire"],
+                            "message_2" : ["You can view the patient's history here", "Puedes ver el historial del paciente aquí", "Vous pouvez voir l'historique du patient ici"]
+                        },
+                        "go_to_patient":{
+                            "message" : ["Navigate to patient's history", "Ir al historial del paciente", "Accéder à l'historique du patient"]
+                        }
+                        
+                    }
                 },
                 "box":{
                     "title" : ["Box", "Caja", "Boîte"],
                     "name" : ["Name", "Nombre", "Nom"],
                     "add_box" : ["Add Box", "Agregar Box", "Ajouter une box"],
-                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le département"],
-                    "no_department" : ["No department", "Sin departamento", "Pas de département"],
+                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le service"],
+                    "no_department" : ["No department", "Sin departamento", "Pas de service"],
                     "success" : {
                         "saved" : ["Box created successfully", "Box creada correctamente", "Box créée avec succès"],
                         "deleted" : ["Box removed succesfully", "Box eliminada correctamente", "Box supprimée avec succès"],
@@ -857,7 +884,6 @@
                     }
                 },
                 "service":{
-                    
                     "title" : ["Service", "Servicio", "Service"],
                     "name" : ["Name", "Nombre", "Nom"],
                     "type_service" : ["Type Service", "Tipo de servicio", "Type de service"],
@@ -869,16 +895,17 @@
                     }
                 },
                 "agenda":{
-                    
                     "title" : ["Agenda", "Agenda", "Agenda"],
                     "duration" : ["Duration Visit(min.)", "Duración Consulta(min.)", "Durée de la visite(min.)"],
                     "slotsPerDay" : ["Slots per day", "Citas por día", "Visites par jour"],
-                    "doctor" : ["Doctor", "Doctor", "Docteur"],
+                    "doctor" : ["Staff", "Staff", "Staff"],
                     "service" : ["Service", "Servicio", "Service"],
                     "turn_start" : ["Shift start", "Inicio de turno", "Début du tour"],
                     "turn_end" : ["Shift end", "Fin de turno", "Fin du tour"],
                     "week_days" : ["Week days", "Días de la semana", "Jours de la semaine"],
                     "schedule" : ["Schedule", "Horario", "Horaire"],
+                    "select_time" : ["Select time", "Seleccione hora", "Sélectionnez l'heure"],
+                    "select_department" : ["Select department", "Seleccione departamento", "Sélectionnez le service"],
                     "success" : {
                         "deleted" : ["Agenda removed succesfully", "Agenda eliminada correctamente", "Agenda supprimée avec succès"],
                         "saved" : ["Agenda saved succesfully", "Agenda guardada correctamente", "Agenda enregistrée avec succès"],
@@ -901,12 +928,37 @@
                         "date_time" : ["Functionality not implemented yet"],
                         "full_agenda" : ["The agenda is full for this day, please select another day", "La agenda está llena para este día, por favor seleccione otro día", "L'agenda est pleine pour ce jour, s'il vous plaît sélectionnez un autre jour"],
                         "date_blocked" : ["The date selected is blocked, please select another day", "La fecha seleccionada está bloqueada, por favor seleccione otro día", "La date sélectionnée est bloquée, s'il vous plaît sélectionnez un autre jour"],
-                        "week_day_not_available" : ["The week day selected is not available, please select another day", "El día de la semana seleccionado no está disponible, por favor seleccione otro día", "Le jour de la semaine sélectionnée n'est pas disponible, s'il vous plaît sélectionnez un autre jour"]
+                        "week_day_not_available" : ["The week day selected is not available, please select another day", "El día de la semana seleccionado no está disponible, por favor seleccione otro día", "Le jour de la semaine sélectionnée n'est pas disponible, s'il vous plaît sélectionnez un autre jour"],
+                        "outside_agenda_hours" : ["The time selected is outside the agenda hours, please select another time", "La hora seleccionada está fuera del horario de la agenda, por favor seleccione otra hora", "L'heure sélectionnée est en dehors des heures de l'agenda, veuillez sélectionner une autre heure"],
+                        "conflict_appointment" : ["There's an appointment at this time, please select another time", "Ya hay una cita a esta hora, por favor seleccione otra hora", "Il y a un rendez-vous à cette heure, veuillez sélectionner une autre heure"]
+                    }
+                },
+                "calendar" : {
+                    "modal" : {
+                        "existing_appointment" : {
+                            "title" : ["Confirm action", "Confirmar acción", "Confirmer l'action"]
+                        },
+                        "new_appointment" : {
+                            "title" : ["New appointment", "Nueva cita", "Nouveau rendez-vous"]
+                        },
+                        "cancel_appoinment" : ["Cancel appointment", "Cancelar cita", "Annuler le rendez-vous"],
+                        "check_in_patient" : ["Check in patient", "Check in paciente", "Check in du patient"]
+                        
+                    },
+                    "new_appointment" : {
+                        "success" : ["Appointment created succesfully", "Cita creada correctamente", "Rendez-vous créé avec succès"],
+                        "error" : {
+                            "outside_agenda_hours" : ["The time selected is outside the agenda hours", "L'heure sélectionnée est en dehors des heures de l'agenda", "La hora seleccionada está fuera del horario de la agenda"]
+                        }
                     }
                 },
                 "form_appointment" : {
+                    "agenda" : ["Agenda", "Agenda", "Agenda"],
+                    "service" : ["Service", "Servicio", "Service"],
+                    "no-services" : ["This agenda doesn't have services attached, please add them in the outpatients configuration", "Esta agenda no tiene servicios asociados, por favor añádalos en la configuración de consultas externas", "Cette agenda n'a pas de services attachés, veuillez les ajouter dans la configuration des consultations externes"],
                     "select_agenda" : ["Select agenda", "Seleccione agenda", "Sélectionnez l'agenda"],
-                    "no_agenda_department" : ["First you need to create an agenda for this department", "Primero necesita crear una agenda para este departamento", "Vous devez d'abord créer un agenda pour ce département"]
+                    "no_agenda_department" : ["First you need to create an agenda for this department", "Primero necesita crear una agenda para este departamento", "Vous devez d'abord créer un agenda pour ce service"],
+                    "select_all_agendas" : ["Select all agendas", "Seleccione todas las agendas", "Sélectionnez toutes les agendas"]
                 }
             },
             "shoe_shop":{
@@ -1010,6 +1062,8 @@
                             "BQ029": ["Urine: ketone bodies", "Orina: cuerpos cetónicos", "Urine: corps cétonuriques"],
                             "BQ030": ["Urine: glucose", "Orina: glucosa", "Urine: glucose"],
                             "BQ031": ["Urine: 24-hour proteinuria", "Orina: proteinuria 24 horas", "Urine: proténuries des 24h"],
+                            "BQ032" : ["Bilirubin (direct)", "Bilirrubina conjugada", "Bilirubine directe"],
+                            "BQ033" : ["Postprandial glucose test", "Glucemia postpandrial", "Glycémie post-prandiale"],
                             "HEM001": ["Hemoglobin electrophoresis", "Electroforesis de hemoblogina", "Electrophores Hemoglobine"],
                             "HEM002": ["Fibrinogen", "Fibrinógeno", "Fibrinemie"],
                             "HEM003": ["Blood group and Rh factor", "Grupo sanguíneo y factor Rh", "Groupage Sanguin et Facteur Rhésus (GSRh)"],
@@ -1030,7 +1084,11 @@
                             "MB010": ["HVC serology", "Serología VHC", "Serologie Hépatite C"],
                             "MB011": ["Emmel test", "Test de Emmel", "Test d'Emmel"],
                             "MB012": ["Felix-Widal Test", "Test de Widal y Félix", "Test de Widal et Félix"],
-                            "IMM001": ["Rheumatoid factor", "Factor reumatoide", "Facteur rhumatoïde"]
+                            "MB013" : ["Stool culture", "Coprocultivo", "Examen parasitologique des selles (KAOP)"],
+                            "IMM001": ["Rheumatoid factor", "Factor reumatoide", "Facteur rhumatoïde"],
+                            "APATH001" : ["Liver biopsy puncture", "Punción biopsia hepática", "Punction biopsie hepatique"],
+                            "APATH002" : ["Cytopuncture", "Citopunción", "Cytoponction"],
+                            "APATH003" : ["Small punctures", "Pequeñas punciones", "Petites punctions"]
                     },
                     "medical-imaging":{
                         "R001": ["Forearm left", "Antebrazo izq","Avant-bras gauche"],
@@ -1107,7 +1165,19 @@
                         "R072": ["Second-trimester ultrasound", "Ecografía del segundo trimestre","Échographie 2ème trimestre"],
                         "R073": ["Third-trimester ultrasound", "Ecografía del tercer trimestre","Échographie 3ème trimestre"],
                         "R074": ["Neonatal cerebral ultrasound", "Ecografía transfotanelar","Échographie transfontanellaire"],
-                        "R075": ["Carotid ultrasound", "Ecografía troncos supraaórticos","Échographie troncs supra aortiques"]
+                        "R075": ["Carotid ultrasound", "Ecografía troncos supraaórticos","Échographie troncs supra aortiques"],
+                        "R076" : ["Fibroscan", "Fibroscan", "Fibroscan"],
+                        "R082" : ["Colonoscopy", "Colonoscopia", "Colonoscopie"],
+                        "R083" : ["Esophagogastroduodenoscopy (EGD)", "Esofagogastroduodenoscopia (EGD)", "Fibroscopie oeso-gastroduodénale (FOGD)"],
+                        "R084" : ["Esophagogastroduodenoscopy (EGD) with GA", "Esofagogastroduodenoscopia (EGD) con AG", "Fibroscopie oeso-gastroduodénale (FOGD) sous AG"],
+                        "R085" : ["Rectoscopy", "Rectoscopia", "Rectoscopie"],
+                        "R086" : ["Electrocardiogram (ECG)", "Electrocardiograma (ECG)", "Électrocardiogramme (ECG)"],
+                        "R087" : ["Holter", "Holter", "Holter"],
+                        "R088" : ["Ambulatory blood pressure monitoring (ABPM)", "Monitorización ambulatoria de la presión arterial (MAPA)", "Mesure ambulatoire de la pression artérielle (MAPA)"],
+                        "R089" : ["Pulmonary function testing (PFT)", "Pruebas función respiratoria (PFR)", "Exploration fonctionnelle respiratoire (EFR)"],
+                        "R090" : ["Hip (Lowenstein or Frog View)", "Cadera (Incidencia de Lowenstein o Vista de Rana)", "Hanche (Incidence de Lowenstein ou de crapeau)"],
+                        "R091" : ["Right Foot - AP and Oblique (3/4) Views" , "Pie Derecho - Vistas AP y Oblicua (3/4)", "Pied droit strict F/P ET 3/4"],
+                        "R092" : ["Left Foot - AP and Oblique (3/4) Views", "Pie Izquierdo - Vistas AP y Oblicua (3/4)", "Pied gauche strict F/P ET 3/4"]
                     },
                     "shoe_shop" : {
                         "Z001": ["Microcellulose shoes", "Zapatos microcelulosa","Chaussures en microcellulose"],
@@ -1133,7 +1203,9 @@
                 "title" : ["Imaging", "Pruebas de Imagen", "Radiologie"],
                 "category" : {
                     "ultrasound" : ["Ultrasound", "Ecografía", "Échographie"],
-                    "x-ray" : ["X-rays", "Radiografías", "Radiographies"]
+                    "x-ray" : ["X-rays", "Radiografías", "Radiographies"],
+                    "funcional_test" : ["Functional tests", "Pruebas funcionales", "Tests fonctionnels"],
+                    "endoscopy" : ["Endoscopy", "Endoscopia", "Endoscopie"]
                 }
             },
             "other" : {
@@ -1142,7 +1214,7 @@
             "add-patient" : ["Add Patient", "Añadir paciente", "Ajouter un patient"],
             "go-to-patient" : ["View Patient", "Ver Paciente", "Voir le dossier"],
             "analytics" : {
-                "title" : ["Analytics", "Analítica", "Analytique"]
+                "title" : ["Analytics", "Analítica", "Statistiques"]
             },
             "user_mgmt" : ["Users", "Usuarios", "Utilisateurs"],
             "edit-patient" : ["Update Patient", "Actualizar paciente", "Mettre à jour le patient"],
@@ -1152,9 +1224,9 @@
             },
             "inpatients" : {
                 "title" : ["Inpatients", "Pacientes ingresados", "Hospitalisation"],
-                "no-departments" : ["You have no departments. Please create them ", "No tiene departamentos. Por favor, cree uno ", "Vous n'avez pas de départements. Veuillez les créer "],
+                "no-departments" : ["You have no departments. Please create them ", "No tiene departamentos. Por favor, cree uno ", "Vous n'avez pas de services. Veuillez les créer "],
                 "confirm" : ["Do you wish to hospitalize this patient?", "¿Desea hospitalizar a este paciente?", "Voulez-vous hospitaliser ce patient?"],
-                "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le département"]
+                "choose-ward" : ["Select the ward", "Seleccione la sala", "Sélectionnez le service"]
             },
             "admin-departments" : ["Departments", "Departamentos", "Gestion des services"]
         }
@@ -1313,7 +1385,7 @@
                 "title" : ["Personal Data", "Datos Personales", "Données personnelles"],
                 "intro" : ["Please select the personal data you are planning to include in your study" ,"Seleccione los datos personales que desea incluir en su estudio", "Sélectionnez les données personnelles que vous souhaitez inclure dans votre étude"],
                 "fields" : {
-                    "health_id" : ["MRN", "NHC", "NDM"],
+                    "health_id" : ["Health ID", "NHC", "ID de santé"],
                     "automated_health_id" : ["MRN", "NHC", "NDM"],
                     "id" : ["Patient ID", "ID de paciente", "ID de patient"],
                     "name" : ["Name", "Nombre","Prénom"],
@@ -1511,11 +1583,14 @@
             "title" : ["User Managment", "Administración de usuarios", "Gestion des utilisateurs"],
             "add_researcher" : ["Add user", "Añadir usuario", "Ajouter un utilisateur"],
             "edit_researcher" : ["Change user", "Modificar usuario", "Modifier un utilisateur"],
+            "delete_researcher" : ["Delete user", "Borrar usuario", "Supprimer un utilisateur"],
             "info_roles" : ["Permissions of users", "Permisos de los usuarios", "Permissions des utilisateurs"],
             "researchers" : ["Users", "Usuarios", "Utilisateurs"],
             "current_researchers" : ["Current users", "Usuarios actuales", "Personnel actuel"],
             "new_researchers" : ["New users", "Nuevos Usuarios", "Nouveaux Utilisateurs"],
             "shared-by" : ["You were invited by: ", "Has sido invitado por: ", "Vous avez été invité par: "],
+            "delete_Confirmation_user":["Are you sure you want to delete this user?","¿Estás seguro de que deseas eliminar este usuario?", "Êtes-vous sûr de vouloir supprimer cet utilisateur ?" ],
+            "confirm_delete_title":["Delete user?","Borrar usuario","Supprimer l'utilisateur" ],
             "form" : {
                 "email" : ["Email", "Email", "Email"],
                 "role" :  ["Role", "Role", "Role"]
@@ -1527,6 +1602,7 @@
                 "DOCTOR" : ["Medical Doctor", "Médico", "Médecin"],
                 "PRIVATE_DOCTOR" : ["Private Doctor", "Médico Privado", "Médecin Privée"],
                 "ADMIN" : ["Administrator", "Administrador", "Administrateur"],
+                "ADMIN_FW" : ["Administrator FW", "Administrador FW", "Administrateur FW"],
                 "NURSE" : ["Nurse", "Enfermería", "Infirmière"],
                 "NURSE_FW" : ["Nurse FW", "Enfermería FW", "Infirmière FW"],
                 "NURSE_MANAGER" : ["Nurse Manager", "Enfermería Jefe", "Infirmière Manager"],
@@ -1539,8 +1615,11 @@
                 "SOCIAL" : ["Social", "Social", "Social"],
                 "PHARMACY_MANAGER" : ["Pharmacy Manager", "Director de farmacia", "Directeur de pharmacie"],
                 "PHARMACY_ASSISTANT" : ["Pharmacy Assistant", "Asistente de farmacia", "Assistant de pharmacie"],
+                "CASHIER" : ["Cashier", "Cajero", "Caissier"],
+                "CASHIER_MANAGER" : ["Cashier Manager", "Jefe de caja", "Chef de caisse"],
                 "MAJOR" : ["Major", "Mayor", "Major"],
                 "DEPARTMENT_HEAD" : ["Head of Department", "Jefe de departamento", "Chef de service"],
+                "NO_ROLE_ASSIGNED" : ["No role", "Sin rol", "Aucun rôle"],
                 "NO_PERMISSIONS" : ["No permissions", "No permissions", "No permissions"]
             },
             "researcher" : {
@@ -1564,7 +1643,7 @@
                 "MANAGE_PHARMACY_CENTRAL" : ["Manage pharmacy central", "Administrar farmacia central", "Gérer la pharmacie centrale"],
                 "MAKE_PHARMACY_REQUESTS" : ["Make pharmacy requests", "Hacer pedidos de farmacia", "Faire des demandes de pharmacie"],
                 "UPDATE_PHARMACY_CENTRAL" : ["Update pharmacy central", "Actualizar farmacia central", "Mettre à jour la pharmacie centrale"],
-                "ANALYTICS_DEPARTMENT" : ["View Department Stats", "Ver estadísticas de departamento", "Voir les statistiques du département"],
+                "ANALYTICS_DEPARTMENT" : ["View Department Stats", "Ver estadísticas de departamento", "Voir les statistiques du service"],
                 "CREATE_APPOINTMENTS" : ["Create appointments", "Crear citas", "Créer des rendez-vous"],
                 "CANCEL_APPOINTMENTS" : ["Cancel appointments", "Cancelar citas", "Annuler les rendez-vous"],
                 "VISUALIZE_APPOINTMENTS" : ["Visualize appointments", "Visualizar citas", "Visualiser les rendez-vous"],
