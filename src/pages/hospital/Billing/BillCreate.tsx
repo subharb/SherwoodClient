@@ -122,7 +122,7 @@ const BillCreate: React.FC<BillCreateProps> = (props) => {
 
     function renderPatient(){
         if(!patient){
-            return <FindPatient patients={props.patients}
+            return <FindPatient patients={props.patients} uuidInvestigation={props.uuidInvestigation}
                         personalFields={props.personalFields}
                         codeLanguage={props.languageCode}
                         onPatientSelected={(idPatient) => onPatientSelected(idPatient)} />
