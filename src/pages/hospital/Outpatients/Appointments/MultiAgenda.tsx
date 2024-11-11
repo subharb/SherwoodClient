@@ -213,26 +213,26 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                 );
             case RequestStatus.PENDING_PAYMENT:
                 return (
-                    <>
-                    <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                        <Typography variant="body1" component="p" >
-                            <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.pending_payment.message" />
-                        </Typography>
+                    <Grid container>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                            <Typography variant="body1" component="p" >
+                                <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.pending_payment.message" />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} style={{paddingTop:'1rem'}}>
+                            <Typography component="p" variant="body1" >
+                            <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.pending_payment.message_2" />
+                            <Button onClick={() => {
+                                const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", appointment!.patient.uuid)
+                                console.log("Next url", nextUrl);
+                                //history.push(nextUrl);
+                                window.open(nextUrl, '_blank');
+                            }}>
+                                <IconGenerator type="view" size="large" />
+                            </Button>
+                            </Typography>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} style={{paddingTop:'1rem'}}>
-                        <Typography component="p" variant="body1" >
-                        <Translate id="pages.hospital.outpatients.table_patient_appointments.modal.pending_payment.message_2" />
-                        <Button onClick={() => {
-                            const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", appointment!.patient.uuid)
-                            console.log("Next url", nextUrl);
-                            //history.push(nextUrl);
-                            window.open(nextUrl, '_blank');
-                        }}>
-                            <IconGenerator type="view" size="large" />
-                        </Button>
-                        </Typography>
-                    </Grid>
-                    </>
                 ); 
             default:
                 const nextUrl = HOSPITAL_PATIENT.replace(":uuidPatient", appointment!.patient.uuid)
@@ -251,6 +251,7 @@ export default function MultiAgenda({ date, appointments, agendas, patients, sho
                     uuidInvestigation={uuidInvestigation}
                     showAllAgendas={false}
                     hidePatientInfo={false}
+                    extraForm={extraForm}
                     dateTimeAppointment={true}
                     cancelCallback={resetModal}
                     phoneNumber={fetchedPatient.personalData.phone}

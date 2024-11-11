@@ -108,7 +108,7 @@ export const CustomEvent: React.FC<EventProps<MyEvent>> = ({event}) => {
             <span>{capitalizeFirstLetter(title)}</span>
             {renderIcon(event.type)}
         </div>
-        {showTooltip &&
+        {(showTooltip && (reason || notes)) &&
         ReactDOM.createPortal(
             <div
                 className="tooltip"

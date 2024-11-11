@@ -114,7 +114,7 @@ export default PatientAppointmentInfo;
 
 interface PatientAppointmentInfoCoreProps extends PatientAppointmentInfoProps, LocalizeContextProps {
     patientsAppointments:IAppointment[];
-    outpatientsInfo: OutpatientsInfo;
+    outpatientsInfo: IOutpatientsParams;
     loadingPatientsAppointments: boolean;
     cancelAppointmentCallback: (id:number) => void;
     showUpPatientCallback: (id:number) => void;
@@ -147,7 +147,7 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
         else if(status === RequestStatus.PENDING_APPROVAL && stringDatePostgresToDate(date) > new Date()){//Is an appointment that is pending to be approved, meaning the user didnt show up
             return (
                 <Typography variant='body2'  component="div" style={{textAlign:"center"}} >
-                <EventIcon style={{fontSize:"1.5rem", color:"DodgerBlue", textAlign:"center"}} />
+                <EventIcon style={{fontSize:"1.5rem", color:"DodgerBlue", textAlign:"center"}} /> 
                 </Typography>
             )
         }
@@ -155,6 +155,13 @@ const PatientAppointmentInfoCore: React.FC<PatientAppointmentInfoCoreProps> = ({
             return (
                 <Typography variant='body2'  component="div" style={{textAlign:"center"}} >
                     <IconGenerator type="cancel_appointment" />
+                </Typography>
+            )
+        }
+        else if(status === RequestStatus.CANCELED_BY_USER){
+            return (
+                <Typography variant='body2'  component="div" style={{textAlign:"center"}} >
+                    <IconGenerator type="cancel_appointment_by_user" /> 
                 </Typography>
             )
         }

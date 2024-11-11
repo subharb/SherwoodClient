@@ -254,11 +254,10 @@ export function freeDateAgenda(uuidInvestigation: string, uuidAgenda:string, dat
     });
 }
 
-export function getAppoinmentsDateService(uuidInvestigation: string, uuidAgenda:string, date:Date, includeCancelled:boolean): Promise<{ status: number, appointments: IAppointment[] }> {
+export function getAppoinmentsDateService(uuidInvestigation: string, uuidAgenda:string, date:Date,): Promise<{ status: number, appointments: IAppointment[] }> {
     return new Promise((resolve, reject) => {
-        const includeCancelledString = includeCancelled ? "?includeCancelled=true" : "";
         axios
-            .get(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/agenda/"+uuidAgenda+"/date/"+date.getTime()+includeCancelledString, { headers: { "Authorization": localStorage.getItem("jwt") } })
+            .get(import.meta.env.VITE_APP_API_URL + "/agenda/" + uuidInvestigation + "/appointment/agenda/"+uuidAgenda+"/date/"+date.getTime(), { headers: { "Authorization": localStorage.getItem("jwt") } })
             .then((response) => {
                 if (response.status === 200) {
                     resolve(response.data);

@@ -15,7 +15,7 @@ export function canCancelAppointment(appointmentDate:Date, appointmentStatus:Req
 
 export function canShowUpAppointment(appointmentDate:Date, appointmentStatus:RequestStatus, outpatientsInfo:IOutpatientsParams): boolean{
     const isToday = (appointmentDate.toDateString() === new Date().toDateString());
-    return isToday && appointmentStatus !== RequestStatus.ACCEPTED;
+    return isToday && [RequestStatus.PENDING_APPROVAL].includes(appointmentStatus);
 }
 
 export function isAppointmentDone(status:number){

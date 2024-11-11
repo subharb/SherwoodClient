@@ -132,6 +132,7 @@ const NewAppointment: React.FC<NewAppointmentProps> = ({ activeLanguage, appoint
                     {
                         extraForm === 1 && 
                             <ExtraAppointmentInfo
+                                extraForm={extraForm}
                                 reason={reason}
                                 setReason={setReason}
                                 notes={notes}
