@@ -105,7 +105,7 @@ async function callBackSaveUpdate(patientData:any, rawPatientData:any){
             const patSurname = pat.personalData["surnames"].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             console.log(`${rawName} === ${patName} =>${rawName === patName}`);
             console.log(`${rawSurName} === ${patSurname} =>${rawSurName === patSurname}`);
-            console.log(`${rawPatientData["birthdate"]} === ${pat.personalData["birthdate"]} =>${areSameDates(rawPatientData["birthdate"], pat.personalData["birthdate"])}`);
+            //console.log(`${rawPatientData["birthdate"]} === ${pat.personalData["birthdate"]} =>${areSameDates(rawPatientData["birthdate"], pat.personalData["birthdate"])}`);
             
             if(rawName === patName && 
                 rawSurName === patSurname &&
