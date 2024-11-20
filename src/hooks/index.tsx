@@ -795,7 +795,7 @@ const usePageVisibility = (onVisible: () => void) => {
             if (investigations.currentInvestigation?.uuid) {
                 // Assuming you have a Redux action for fetching patients
                 await dispatch(
-                    fetchPatientsAction(investigations.currentInvestigation)
+                    fetchPatientsAction(investigations.currentInvestigation.uuid)
                 );
             }
         }

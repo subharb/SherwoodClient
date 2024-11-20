@@ -7,6 +7,8 @@ import MultiAgenda from './MultiAgenda';
 import { set } from 'lodash';
 import { errorCodesCreateAppointment } from '../../../../utils/agenda';
 import { RequestStatus } from '../../Service/types';
+import { fetchPatientsAction } from '../../../../redux/actions/patientsActions';
+import { useDispatch } from 'react-redux';
 
 interface AppointmentsProps {
     uuidInvestigation: string;
@@ -29,6 +31,7 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
     const [loadingSingleAppointment, setLoadingSingleAppointment] = React.useState(false);
     const [lastUpdate, setLastUpdate] = React.useState(new Date());
     const [showModal, setShowModal] = React.useState(false);
+    const dispatch = useDispatch();
 
     function updateAppointment(uuidAppointment:string){
         setLoadingSingleAppointment(true);
@@ -110,10 +113,24 @@ const Appointments: React.FC<AppointmentsProps> = ({ uuidInvestigation, mode, uu
     }, [uuidAgendas, dateSelected]);
 
     usePageVisibility(() => {
+        
+    });
+
+    usePageVisibility(() => {
+        const fetchData = async () => {
+          try {
+            await dispatch(fetchPatientsAction(uuidInvestigation, true));
+          } catch (error) {
+            console.error('Error fetching patients:', error);
+          }
+        };
+        
         if(uuidAgendas && dateSelected){
             getAllAgendas();
         }
-    });
+        
+        fetchData();
+      });
 
     async function getAppoinmentsDate(uuidAgendas:string, date:Date, appointmentsExt:IAppointment[]){
         setLoadingAppointments(true);

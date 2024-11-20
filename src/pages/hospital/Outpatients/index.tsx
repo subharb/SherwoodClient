@@ -14,7 +14,6 @@ import EditOutpatients from './EditOutpatients';
 import Appointments from './Appointments';
 import { useHistory, useParams } from 'react-router-dom';
 import { HOSPITAL_OUTPATIENTS_EDIT_ROUTE, HOSPITAL_OUTPATIENTS_ROUTE } from '../../../routes/urls';
-import { fetchPatientsAction } from '../../../redux/actions/patientsActions';
 
 interface OutpatientsProps extends LocalizeContextProps {
     investigations:any,
@@ -23,7 +22,6 @@ interface OutpatientsProps extends LocalizeContextProps {
 
 const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData }) => {
     const {action} = useParams<{action:string}>();
-    const dispatch = useDispatch();
     const [edit, setEdit] = React.useState(action === 'edit');
     const history = useHistory();
     const {agendas, loadingAgendas} = useAgendas();
@@ -71,19 +69,7 @@ const Outpatients: React.FC<OutpatientsProps> = ({ investigations, personalData 
         }
        
     }, [investigations.currentInvestigation])
-
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            await dispatch(fetchPatientsAction(investigations.currentInvestigation));
-          } catch (error) {
-            console.error('Error fetching patients:', error);
-          }
-        };
-    
-        fetchData();
-      }, [dispatch, investigations.currentInvestigation]);
-   
+  
 
     useEffect(() => {
         if(investigations.currentInvestigation && edit){

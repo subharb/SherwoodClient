@@ -102,7 +102,7 @@ export function selectInvestigation(uuidInvestigation) {
         });
         const currentState = getState().investigations;
         const investigation = currentState.data.find((investigation) => investigation.uuid === uuidInvestigation);
-        dispatch(fetchPatientsAction(investigation))
+        dispatch(fetchPatientsAction(investigation.uuid));
   }
 }
 

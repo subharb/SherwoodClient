@@ -42,9 +42,14 @@ export function savePatientAction(investigation, patientData) {
   };
 }
 
-export function fetchPatientsAction(investigation){
-    return async (dispatch) => {
-        dispatch({ type: types.UPDATING_PATIENTS_LOADING });
+export function fetchPatientsAction(uuidInvestigation, silent = false) {
+    return async (dispatch, getState) => {
+        if(!silent){
+            dispatch({ type: types.UPDATING_PATIENTS_LOADING });
+        }
+        const state = getState();
+        const investigations = state.investigations; // Adjust according to your state structure
+        const investigation = investigations.data.find(investigation => investigation.uuid === uuidInvestigation);
         const lastUpdatePatients = localStorage.getItem("lastUpdatePatients") ? parseInt(localStorage.getItem("lastUpdatePatients")) : 0;
         return getPatientsFromUpdatedDate(investigation.uuid, lastUpdatePatients)
             .then(async (response) => {
